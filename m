@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-65721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729AA94AB98
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C39294AB01
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:02:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C97728140F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 311541F29565
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A357823A9;
-	Wed,  7 Aug 2024 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A079878B60;
+	Wed,  7 Aug 2024 15:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0jz5e4k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAscgH5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A7B7E0E9;
-	Wed,  7 Aug 2024 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4F023CE;
+	Wed,  7 Aug 2024 15:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043227; cv=none; b=CT1ot42QVz3uoUUDRhDlqBXvRvCiToriUe2KbFN4uBEiKaJXfWB4HAS15csG88HTuFZxD6VMbK45ztTChamt2CNpAr/W1hY+6Daapd8YfjjZBrkdzb6YkUVBl4JnF+VKiW86PNJY2fH/7K3ZhmxAlKLuu8ChisP6xB/mU8nTAHI=
+	t=1723042929; cv=none; b=SwCXS6xgToUHdKey+oCYSkzjFiMjD3uoTpPElhlzxeSdI1NpHG1yowj1/ccerAIzKTrCv4kL96OEvnl2WWnoLSRyUv/8InzdSj3voBMG/1YkX4oSSEG3TACjvmwKrCqJvsSRH4ZXoji9QgfRnf0TYnMe8a26YuQPZj3g51zfQGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043227; c=relaxed/simple;
-	bh=2ucXzWvipWvIYsLIu1e+w9Ggpu0Vwc5JEDKjE4ENY8Y=;
+	s=arc-20240116; t=1723042929; c=relaxed/simple;
+	bh=2ZqsQDzuFTqByRYneP2KY+RM7q2g9Ay3qHIM8g3nJWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpxwzxrMeBAzDrOzDf/ujN5ILwnReunjIRatrZafsSSbjUfyTJyySh+/f87EEn45bFkAPH4PWZsUgNEQs+KV8bJyeJFLzOW6VWvsiJlA9p/B32CtTl15slF6GAs8kkTiJTZbZ54qlMCUofte67P0DEpIMzo+PSCSOio61dRllW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0jz5e4k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB2CC4AF0E;
-	Wed,  7 Aug 2024 15:07:06 +0000 (UTC)
+	 MIME-Version; b=cMy85HelENlbeaXGRnBr71HdefJEraKhShtYttPiMufV1xioQn4gP9zZpgSN3F5xCcFkJdl38GDcPS/F/of/eUo37BYswGNU89tGx2kv3hiuY/MyG82p811Xt/8b2aadP7rN3rcm728eh/V2hoa5MwEUNC0rwMisMSiBqFSKhKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAscgH5P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E49C32781;
+	Wed,  7 Aug 2024 15:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043226;
-	bh=2ucXzWvipWvIYsLIu1e+w9Ggpu0Vwc5JEDKjE4ENY8Y=;
+	s=korg; t=1723042929;
+	bh=2ZqsQDzuFTqByRYneP2KY+RM7q2g9Ay3qHIM8g3nJWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n0jz5e4kU1UtRoZ+0sTwshQlJ5Q6w1twuqDH9A0YYNuHI4byEaBeqs54Pw2RrHQ2r
-	 uQ0WN2JQ+XcsEWs+poAKCTaZWcO9gjroUT17xiyi2ZgNngxasWmb8ny2LfDKIhRqJ7
-	 jLdVP1uDd+7XoDfOjdWXq/TNQWL611YOZBuWcJkE=
+	b=PAscgH5P8Q391zg47eeaEPCi7yg9f3XAApgjzRWhcepejUteRCJwyxEfqLkPv9ETH
+	 bRsxNj/0Ljb/S1EqIn+K/FuXAuSpDZgDMfB9tMlx3sziXuk2WWJUFqYJ7BxzWWc2FY
+	 Kj6H1rKruDpmnEUCcgtLh0uCP3aEy6hgNHwtiKdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Gladkov <legion@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Joel Granados <joel.granados@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/121] sysctl: allow to change limits for posix messages queues
+Subject: [PATCH 6.10 027/123] drm/vmwgfx: Trigger a modeset when the screen moves
 Date: Wed,  7 Aug 2024 16:59:06 +0200
-Message-ID: <20240807150019.838720255@linuxfoundation.org>
+Message-ID: <20240807150021.697119196@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,97 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Gladkov <legion@kernel.org>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit f9436a5d0497f759330d07e1189565edd4456be8 ]
+[ Upstream commit 75c3e8a26a35d4f3eee299b3cc7e465f166f4e2d ]
 
-All parameters of posix messages queues (queues_max/msg_max/msgsize_max)
-end up being limited by RLIMIT_MSGQUEUE.  The code in mqueue_get_inode is
-where that limiting happens.
+When multi-monitor is cycled the X,Y position of the Screen Target will
+likely change but the resolution will not. We need to trigger a modeset
+when this occurs in order to recreate the Screen Target with the correct
+X,Y position.
 
-The RLIMIT_MSGQUEUE is bound to the user namespace and is counted
-hierarchically.
+Fixes a bug where multiple displays are shown in a single scrollable
+host window rather than in 2+ windows on separate host displays.
 
-We can allow root in the user namespace to modify the posix messages
-queues parameters.
-
-Link: https://lkml.kernel.org/r/6ad67f23d1459a4f4339f74aa73bac0ecf3995e1.1705333426.git.legion@kernel.org
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
-Link: https://lkml.kernel.org/r/7eb21211c8622e91d226e63416b1b93c079f60ee.1663756794.git.legion@kernel.org
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Joel Granados <joel.granados@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Manfred Spraul <manfred@colorfullife.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
+Fixes: 426826933109 ("drm/vmwgfx: Filter modes which exceed graphics memory")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240624205951.23343-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- ipc/mq_sysctl.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c | 29 +++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/ipc/mq_sysctl.c b/ipc/mq_sysctl.c
-index ebb5ed81c151a..21fba3a6edaf7 100644
---- a/ipc/mq_sysctl.c
-+++ b/ipc/mq_sysctl.c
-@@ -12,6 +12,7 @@
- #include <linux/stat.h>
- #include <linux/capability.h>
- #include <linux/slab.h>
-+#include <linux/cred.h>
- 
- static int msg_max_limit_min = MIN_MSGMAX;
- static int msg_max_limit_max = HARD_MSGMAX;
-@@ -76,8 +77,43 @@ static int set_is_seen(struct ctl_table_set *set)
- 	return &current->nsproxy->ipc_ns->mq_set == set;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+index a04e0736318da..9becd71bc93bc 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+@@ -877,6 +877,32 @@ vmw_stdu_connector_mode_valid(struct drm_connector *connector,
+ 	return MODE_OK;
  }
  
-+static void mq_set_ownership(struct ctl_table_header *head,
-+			     struct ctl_table *table,
-+			     kuid_t *uid, kgid_t *gid)
++/*
++ * Trigger a modeset if the X,Y position of the Screen Target changes.
++ * This is needed when multi-mon is cycled. The original Screen Target will have
++ * the same mode but its relative X,Y position in the topology will change.
++ */
++static int vmw_stdu_connector_atomic_check(struct drm_connector *conn,
++					   struct drm_atomic_state *state)
 +{
-+	struct ipc_namespace *ns =
-+		container_of(head->set, struct ipc_namespace, mq_set);
++	struct drm_connector_state *conn_state;
++	struct vmw_screen_target_display_unit *du;
++	struct drm_crtc_state *new_crtc_state;
 +
-+	kuid_t ns_root_uid = make_kuid(ns->user_ns, 0);
-+	kgid_t ns_root_gid = make_kgid(ns->user_ns, 0);
++	conn_state = drm_atomic_get_connector_state(state, conn);
++	du = vmw_connector_to_stdu(conn);
 +
-+	*uid = uid_valid(ns_root_uid) ? ns_root_uid : GLOBAL_ROOT_UID;
-+	*gid = gid_valid(ns_root_gid) ? ns_root_gid : GLOBAL_ROOT_GID;
++	if (!conn_state->crtc)
++		return 0;
++
++	new_crtc_state = drm_atomic_get_new_crtc_state(state, conn_state->crtc);
++	if (du->base.gui_x != du->base.set_gui_x ||
++	    du->base.gui_y != du->base.set_gui_y)
++		new_crtc_state->mode_changed = true;
++
++	return 0;
 +}
 +
-+static int mq_permissions(struct ctl_table_header *head, struct ctl_table *table)
-+{
-+	int mode = table->mode;
-+	kuid_t ns_root_uid;
-+	kgid_t ns_root_gid;
-+
-+	mq_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
-+
-+	if (uid_eq(current_euid(), ns_root_uid))
-+		mode >>= 6;
-+
-+	else if (in_egroup_p(ns_root_gid))
-+		mode >>= 3;
-+
-+	mode &= 7;
-+
-+	return (mode << 6) | (mode << 3) | mode;
-+}
-+
- static struct ctl_table_root set_root = {
- 	.lookup = set_lookup,
-+	.permissions = mq_permissions,
-+	.set_ownership = mq_set_ownership,
+ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
+ 	.dpms = vmw_du_connector_dpms,
+ 	.detect = vmw_du_connector_detect,
+@@ -891,7 +917,8 @@ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
+ static const struct
+ drm_connector_helper_funcs vmw_stdu_connector_helper_funcs = {
+ 	.get_modes = vmw_connector_get_modes,
+-	.mode_valid = vmw_stdu_connector_mode_valid
++	.mode_valid = vmw_stdu_connector_mode_valid,
++	.atomic_check = vmw_stdu_connector_atomic_check,
  };
  
- bool setup_mq_sysctls(struct ipc_namespace *ns)
+ 
 -- 
 2.43.0
 
