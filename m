@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-65925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346C394AC8A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:16:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F71594AC8D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65E5D1C22645
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:16:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD0FEB249EA
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3343884A22;
-	Wed,  7 Aug 2024 15:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F6D129A78;
+	Wed,  7 Aug 2024 15:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTiaN10w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWOmBk5Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FF233CD2;
-	Wed,  7 Aug 2024 15:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E3133CD2;
+	Wed,  7 Aug 2024 15:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043772; cv=none; b=kH0sV82mWpBR9yAIvglbNBmPiXbftgPc26dNK+pIAvsBcWsQQYrRfaFxjqac1fm2IVW6lOJyRTHYGU6tbgCSSBE+DwaUHoLGuIyCMyKfeWYJgMC0aCr7FnCM1LTY9GqVr+PJFi71ngTpWRMC1x46+r1wQqzFG6wIFxDxDV1u/ik=
+	t=1723043761; cv=none; b=HwC/aBhO6+NPzM0XsLbckWfZ0jzAqQ34ViEm0XU76uCYJRnDt/JDiXmTwM/FLyUT4PiVOSpJcgRSLQtw+ggnOAGPNT/bapDAJOYv2zY24fMRYvmvWaVWpv0+XkNhTxtOl1vTtBdQc4BrMHEDthcQE4PBFCq5tufa2F68+kL6+2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043772; c=relaxed/simple;
-	bh=MaFW/eCFusasbPoRLoI81YbOqOXz/L7x6BhUeKI5SZ4=;
+	s=arc-20240116; t=1723043761; c=relaxed/simple;
+	bh=gQeBjhaANXWgUaolDFeOyaBKBEVor1W/eFjP2Nsn3oM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbfhBtmYQi2OSxi2wMb0yJQQiVqE9ZFC0dID1cnWKguFUjpACD3jOoOypP3hvU8ahg7yKSqgz9CwjRaOUK2C1/HasmJqI465pzddwbo52llyZiBVGsi57MOOjFYy8luzEK7gYaO2wvZzATS73Ul/FtopD7V55+1+YeDrXNLX4XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTiaN10w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC9CC32781;
-	Wed,  7 Aug 2024 15:16:11 +0000 (UTC)
+	 MIME-Version; b=kXfGOw/h1K7BdAAVPdgrSvTJMu14r25s1Kw/SmOfuQ4zvA/mXyWPIVC8iyNnJNbRNQxn7CZ4dX6zqrY7R9kPs/reqk5OpZ0M6cVxXvICrDIrzmgRIgOw+wVVoTRotZUteJVed4UsCjka5mhEc9D0d2uZf8qYqj0OQDs3nL2z/S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWOmBk5Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74F3C32781;
+	Wed,  7 Aug 2024 15:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043771;
-	bh=MaFW/eCFusasbPoRLoI81YbOqOXz/L7x6BhUeKI5SZ4=;
+	s=korg; t=1723043761;
+	bh=gQeBjhaANXWgUaolDFeOyaBKBEVor1W/eFjP2Nsn3oM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTiaN10w0E0XVM+/fN5tMPpmYSstle4ZUW7IoocQBdI6AtjSB4fKvEtfo0+2r//Xy
-	 LIDC/8fCqg0U8yjyShu42R3F7OsWCD9BdVHcA5PnXMzHcN5P8T76DBO+nQ1ROupLOg
-	 dUdn221m8fVZ49+OuFejvaTKMO2qm2pMYPfhelBo=
+	b=qWOmBk5ZmzwBiG1C8mX8OZaw2W91w12b918NVgpx6NUUhTDSqpN0nbZmJajQlaRlC
+	 DZpta/lkBz585bBvRQE/yiKgA74aOXECFBIxsnn0tWLGOwfZJWYB3Wb/8/8fhav1ic
+	 jMTajEI9d0yFcUba5KOGYDqALn8HIVurnFMXxV4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 82/86] mptcp: fix NL PM announced address accounting
-Date: Wed,  7 Aug 2024 17:01:01 +0200
-Message-ID: <20240807150041.997428808@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.1 83/86] mptcp: fix bad RCVPRUNED mib accounting
+Date: Wed,  7 Aug 2024 17:01:02 +0200
+Message-ID: <20240807150042.032904861@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
 References: <20240807150039.247123516@linuxfoundation.org>
@@ -68,61 +68,52 @@ Content-Transfer-Encoding: 8bit
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit 4b317e0eb287bd30a1b329513531157c25e8b692 upstream.
+commit 0a567c2a10033bf04ed618368d179bce6977984b upstream.
 
-Currently the per connection announced address counter is never
-decreased. As a consequence, after connection establishment, if
-the NL PM deletes an endpoint and adds a new/different one, no
-additional subflow is created for the new endpoint even if the
-current limits allow that.
+Since its introduction, the mentioned MIB accounted for the wrong
+event: wake-up being skipped as not-needed on some edge condition
+instead of incoming skb being dropped after landing in the (subflow)
+receive queue.
 
-Address the issue properly updating the signaled address counter
-every time the NL PM removes such addresses.
+Move the increment in the correct location.
 
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Fixes: ce599c516386 ("mptcp: properly account bulk freed memory")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/mptcp/protocol.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1445,6 +1445,7 @@ static bool mptcp_pm_remove_anno_addr(st
- 	ret = remove_anno_list_by_saddr(msk, addr);
- 	if (ret || force) {
- 		spin_lock_bh(&msk->pm.lock);
-+		msk->pm.add_addr_signaled -= ret;
- 		mptcp_pm_remove_addr(msk, &list);
- 		spin_unlock_bh(&msk->pm.lock);
- 	}
-@@ -1609,17 +1610,18 @@ void mptcp_pm_remove_addrs_and_subflows(
- 	struct mptcp_pm_addr_entry *entry;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -363,8 +363,10 @@ static bool __mptcp_move_skb(struct mptc
+ 	skb_orphan(skb);
  
- 	list_for_each_entry(entry, rm_list, list) {
--		if (lookup_subflow_by_saddr(&msk->conn_list, &entry->addr) &&
--		    slist.nr < MPTCP_RM_IDS_MAX)
-+		if (slist.nr < MPTCP_RM_IDS_MAX &&
-+		    lookup_subflow_by_saddr(&msk->conn_list, &entry->addr))
- 			slist.ids[slist.nr++] = entry->addr.id;
+ 	/* try to fetch required memory from subflow */
+-	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize))
++	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize)) {
++		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
+ 		goto drop;
++	}
  
--		if (remove_anno_list_by_saddr(msk, &entry->addr) &&
--		    alist.nr < MPTCP_RM_IDS_MAX)
-+		if (alist.nr < MPTCP_RM_IDS_MAX &&
-+		    remove_anno_list_by_saddr(msk, &entry->addr))
- 			alist.ids[alist.nr++] = entry->addr.id;
- 	}
+ 	has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
  
- 	if (alist.nr) {
- 		spin_lock_bh(&msk->pm.lock);
-+		msk->pm.add_addr_signaled -= alist.nr;
- 		mptcp_pm_remove_addr(msk, &alist);
- 		spin_unlock_bh(&msk->pm.lock);
- 	}
+@@ -851,10 +853,8 @@ void mptcp_data_ready(struct sock *sk, s
+ 		sk_rbuf = ssk_rbuf;
+ 
+ 	/* over limit? can't append more skbs to msk, Also, no need to wake-up*/
+-	if (__mptcp_rmem(sk) > sk_rbuf) {
+-		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
++	if (__mptcp_rmem(sk) > sk_rbuf)
+ 		return;
+-	}
+ 
+ 	/* Wake-up the reader only for in-sequence data */
+ 	mptcp_data_lock(sk);
 
 
 
