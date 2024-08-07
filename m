@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2539694A9B8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:15:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8D094A9BC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C661F2A817
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:15:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C985F1C234F5
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09B97D412;
-	Wed,  7 Aug 2024 14:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E195820E;
+	Wed,  7 Aug 2024 14:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIQYoqO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siKhGRyM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A231A763EE
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EBF26AFC
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723040108; cv=none; b=Ri/n72Qb6RzgWR/xw9q7pwsCEw8IUGV3I5gle17WxvtMRzyXNfoPdtPvNQHffPB3QEKbr2uwG2/vcb+xGbAxrBx8DiJ7r6J/CJNbJ1qn/ZYk8wthqOaq3mtOKfQVt7dCOVvKwDvBLw0si4UFRnL/31xiHWVksfwCMARuUEY24nw=
+	t=1723040131; cv=none; b=RNQfX/9k5T/IlueOaBRQ5QQgxDhf0AVcgyGDnZKF3UomjHqlPw5ruASBhQYwtBlEqqZIoe9IDR4mokZ+wnwvzaCQ+b/kq7d/7Nv80tJWVjVD60ONFSRYOdjlCFUenwhqvSW053aRUbmG+kdAeU0gEKxDfHDCyZpNrN0nNAoydM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723040108; c=relaxed/simple;
-	bh=jQFKhJxW0nbHsrudodklahqRY8zJWqojvuPSQo/UegY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aLldAebe1O2UTJeoQvLoW6QC2lKtYoV/0VMP6UuXjoHzNg2WaKlVrXUTXq7EvmwMq0br8QdrKtxUMWS/AY22LpHvsDroF5sjQ0W/PJue690Sp8Ni5mYm6t35ZGPyv4Rfj4BAN8MQhMI2jM/DSUpDt9zUO+9tnlsH/UnC25ZLPDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIQYoqO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85F6C32782;
-	Wed,  7 Aug 2024 14:15:07 +0000 (UTC)
+	s=arc-20240116; t=1723040131; c=relaxed/simple;
+	bh=V5NJvnwwP2RJWtx+fmveUfAEx74EiQSI/oyg+GbIETE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KDqH++XJ9Se8E0lavZ7Eb1qSUeKeTNut8dkbccNIHkwUr9vi3xf5uJz/v4MTmk3jIxjcfDbEJF58FkkNXNzbw1x9hz/OWQdroTRzWypzHNX6Vuuc8O7/uWrbX41s6+IL3offWJG3DjZnREkOFDwQPQv3GIdT0F0OLkO2r8It+rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siKhGRyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDC1C32781;
+	Wed,  7 Aug 2024 14:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723040108;
-	bh=jQFKhJxW0nbHsrudodklahqRY8zJWqojvuPSQo/UegY=;
+	s=korg; t=1723040130;
+	bh=V5NJvnwwP2RJWtx+fmveUfAEx74EiQSI/oyg+GbIETE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NIQYoqO4Tt34Z3hIe9vbUh60DPA/BJUxR5rbtVVdfq83ptybxlbYec79GzCyk9G0p
-	 eyxwHMSdO1Sy4YckqRFAQp0br9sxsCm/Zu9QBKF/mkRBLP4RNo1BVc9SS/N0yjqpTc
-	 r5hLxgHOvEbrmQ8ivn3NvaA5VIbtta9wizngxrjg=
-Subject: FAILED: patch "[PATCH] mptcp: pm: only set request_bkup flag when sending MP_PRIO" failed to apply to 5.15-stable tree
+	b=siKhGRyMHiLwFliiUEhER2QWv5p0eZgBlFPO1a+NuRkG8iteK6vwV2LiJAaftDTq5
+	 MXuYpV978rrdUX0ibSf7IkujUd+dSUVhUzwskdNRtCM/RtNloJU56Kjgsqg6iJV4Ye
+	 9uFrf+79DOwG9gnM5sYaV+fK10i7Ez/3PO38m4Dc=
+Subject: FAILED: patch "[PATCH] mptcp: pm: fix backup support in signal endpoints" failed to apply to 6.6-stable tree
 To: matttbe@kernel.org,martineau@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 07 Aug 2024 16:15:05 +0200
-Message-ID: <2024080704-coconut-decorated-b5ae@gregkh>
+Date: Wed, 07 Aug 2024 16:15:26 +0200
+Message-ID: <2024080726-educator-stubble-a08d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4258b94831bb7ff28ab80e3c8d94db37db930728
+git cherry-pick -x 6834097fc38c5416701c793da94558cea49c0a1f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080704-coconut-decorated-b5ae@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080726-educator-stubble-a08d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-4258b94831bb ("mptcp: pm: only set request_bkup flag when sending MP_PRIO")
-f5360e9b314c ("mptcp: introduce and use mptcp_pm_send_ack()")
-892f396c8e68 ("mptcp: netlink: issue MP_PRIO signals from userspace PMs")
-a657430260e5 ("mptcp: Acquire the subflow socket lock before modifying MP_PRIO flags")
-c21b50d5912b ("mptcp: Avoid acquiring PM lock for subflow priority changes")
-702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
-d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
-9ab4807c84a4 ("mptcp: netlink: Add MPTCP_PM_CMD_ANNOUNCE")
-982f17ba1a25 ("mptcp: netlink: split mptcp_pm_parse_addr into two functions")
-8b20137012d9 ("mptcp: read attributes of addr entries managed by userspace PMs")
-4638de5aefe5 ("mptcp: handle local addrs announced by userspace PMs")
-c682bf536cf4 ("mptcp: add pm_nl_pernet helpers")
-0e203c324752 ("mptcp: reset the packet scheduler on PRIO change")
-4cf86ae84c71 ("mptcp: strict local address ID selection")
-d045b9eb95a9 ("mptcp: introduce implicit endpoints")
-90d930882139 ("mptcp: constify a bunch of of helpers")
-33397b83eee6 ("selftests: mptcp: add backup with port testcase")
-09f12c3ab7a5 ("mptcp: allow to use port and non-signal in set_flags")
-6a0653b96f5d ("selftests: mptcp: add fullmesh setting tests")
-73c762c1f07d ("mptcp: set fullmesh flag in pm_netlink")
+6834097fc38c ("mptcp: pm: fix backup support in signal endpoints")
+9ae7846c4b6b ("mptcp: dump addrs in userspace pm list")
+34e74a5cf3b7 ("mptcp: implement mptcp_userspace_pm_dump_addr")
+aab4d8564947 ("net: mptcp: use policy generated by YAML spec")
+1e07938e29c5 ("net: mptcp: rename netlink handlers to mptcp_pm_nl_<blah>_{doit,dumpit}")
+1d0507f46843 ("net: mptcp: convert netlink from small_ops to ops")
 
 thanks,
 
@@ -96,32 +82,148 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4258b94831bb7ff28ab80e3c8d94db37db930728 Mon Sep 17 00:00:00 2001
+From 6834097fc38c5416701c793da94558cea49c0a1f Mon Sep 17 00:00:00 2001
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Sat, 27 Jul 2024 12:01:25 +0200
-Subject: [PATCH] mptcp: pm: only set request_bkup flag when sending MP_PRIO
+Date: Sat, 27 Jul 2024 12:01:28 +0200
+Subject: [PATCH] mptcp: pm: fix backup support in signal endpoints
 
-The 'backup' flag from mptcp_subflow_context structure is supposed to be
-set only when the other peer flagged a subflow as backup, not the
-opposite.
+There was a support for signal endpoints, but only when the endpoint's
+flag was changed during a connection. If an endpoint with the signal and
+backup was already present, the MP_JOIN reply was not containing the
+backup flag as expected.
 
-Fixes: 067065422fcd ("mptcp: add the outgoing MP_PRIO support")
+That's confusing to have this inconsistent behaviour. On the other hand,
+the infrastructure to set the backup flag in the SYN + ACK + MP_JOIN was
+already there, it was just never set before. Now when requesting the
+local ID from the path-manager, the backup status is also requested.
+
+Note that when the userspace PM is used, the backup flag can be set if
+the local address was already used before with a backup flag, e.g. if
+the address was announced with the 'backup' flag, or a subflow was
+created with the 'backup' flag.
+
+Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
 Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/507
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 55406720c607..23bb89c94e90 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -426,6 +426,18 @@ int mptcp_pm_get_local_id(struct mptcp_sock *msk, struct sock_common *skc)
+ 	return mptcp_pm_nl_get_local_id(msk, &skc_local);
+ }
+ 
++bool mptcp_pm_is_backup(struct mptcp_sock *msk, struct sock_common *skc)
++{
++	struct mptcp_addr_info skc_local;
++
++	mptcp_local_address((struct sock_common *)skc, &skc_local);
++
++	if (mptcp_pm_is_userspace(msk))
++		return mptcp_userspace_pm_is_backup(msk, &skc_local);
++
++	return mptcp_pm_nl_is_backup(msk, &skc_local);
++}
++
+ int mptcp_pm_get_flags_and_ifindex_by_id(struct mptcp_sock *msk, unsigned int id,
+ 					 u8 *flags, int *ifindex)
+ {
 diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index f65831de5c1a..7635fac91539 100644
+index 7635fac91539..37954a0b087d 100644
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -471,7 +471,6 @@ static void __mptcp_pm_send_ack(struct mptcp_sock *msk, struct mptcp_subflow_con
- 	slow = lock_sock_fast(ssk);
- 	if (prio) {
- 		subflow->send_mp_prio = 1;
--		subflow->backup = backup;
- 		subflow->request_bkup = backup;
+@@ -1101,6 +1101,24 @@ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc
+ 	return ret;
+ }
+ 
++bool mptcp_pm_nl_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc)
++{
++	struct pm_nl_pernet *pernet = pm_nl_get_pernet_from_msk(msk);
++	struct mptcp_pm_addr_entry *entry;
++	bool backup = false;
++
++	rcu_read_lock();
++	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list) {
++		if (mptcp_addresses_equal(&entry->addr, skc, entry->addr.port)) {
++			backup = !!(entry->flags & MPTCP_PM_ADDR_FLAG_BACKUP);
++			break;
++		}
++	}
++	rcu_read_unlock();
++
++	return backup;
++}
++
+ #define MPTCP_PM_CMD_GRP_OFFSET       0
+ #define MPTCP_PM_EV_GRP_OFFSET        1
+ 
+diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
+index f0a4590506c6..8eaa9fbe3e34 100644
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -165,6 +165,24 @@ int mptcp_userspace_pm_get_local_id(struct mptcp_sock *msk,
+ 	return mptcp_userspace_pm_append_new_local_addr(msk, &new_entry, true);
+ }
+ 
++bool mptcp_userspace_pm_is_backup(struct mptcp_sock *msk,
++				  struct mptcp_addr_info *skc)
++{
++	struct mptcp_pm_addr_entry *entry;
++	bool backup = false;
++
++	spin_lock_bh(&msk->pm.lock);
++	list_for_each_entry(entry, &msk->pm.userspace_pm_local_addr_list, list) {
++		if (mptcp_addresses_equal(&entry->addr, skc, false)) {
++			backup = !!(entry->flags & MPTCP_PM_ADDR_FLAG_BACKUP);
++			break;
++		}
++	}
++	spin_unlock_bh(&msk->pm.lock);
++
++	return backup;
++}
++
+ int mptcp_pm_nl_announce_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index b8b25124e7de..60c6b073d65f 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1109,6 +1109,9 @@ bool mptcp_pm_rm_addr_signal(struct mptcp_sock *msk, unsigned int remaining,
+ int mptcp_pm_get_local_id(struct mptcp_sock *msk, struct sock_common *skc);
+ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
+ int mptcp_userspace_pm_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
++bool mptcp_pm_is_backup(struct mptcp_sock *msk, struct sock_common *skc);
++bool mptcp_pm_nl_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
++bool mptcp_userspace_pm_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
+ int mptcp_pm_dump_addr(struct sk_buff *msg, struct netlink_callback *cb);
+ int mptcp_pm_nl_dump_addr(struct sk_buff *msg,
+ 			  struct netlink_callback *cb);
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index be406197b1c4..0e4b5bfbeaa1 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -100,6 +100,7 @@ static struct mptcp_sock *subflow_token_join_request(struct request_sock *req)
+ 		return NULL;
  	}
+ 	subflow_req->local_id = local_id;
++	subflow_req->request_bkup = mptcp_pm_is_backup(msk, (struct sock_common *)req);
+ 
+ 	return msk;
+ }
+@@ -620,6 +621,8 @@ static int subflow_chk_local_id(struct sock *sk)
+ 		return err;
+ 
+ 	subflow_set_local_id(subflow, err);
++	subflow->request_bkup = mptcp_pm_is_backup(msk, (struct sock_common *)sk);
++
+ 	return 0;
+ }
  
 
 
