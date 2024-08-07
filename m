@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-65844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262D094AC29
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C386B94AB4D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C334A1F212EE
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 695E11F27E87
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AEF823A9;
-	Wed,  7 Aug 2024 15:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB7513210D;
+	Wed,  7 Aug 2024 15:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yK+sFJL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPaleSuO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937ED374CC;
-	Wed,  7 Aug 2024 15:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489B883CA0;
+	Wed,  7 Aug 2024 15:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043556; cv=none; b=rKRZgXhJFuFRqe//aiid5aOc2tnKM3mUv8tg7eotR9FL1ZLEN5MZQGOIOhgeGP0LoCVjctoxqiDFAQtl+C8DxQwgcSPp6HEx/D6Vm21Bf7rnoM5l0cANKJ3AwQartTYMmtEgaLbHXZ+soE6PhzA+2EpCtUZRBE4FlwB8fz9lUDY=
+	t=1723043054; cv=none; b=Aw7Cgch5PxyAKwDtpFlLPSRinhH+G6V1bxijLJR+kiBeeJa38M8JIb+Q8prqSw0+Ad9IZHQegVSCWsOWxrpQdEhXRMW9NS8L5F07pgi8pMzI1vBnPKX3N6Dp8j8ZwAt6xY698BNhr0KTL4RvZ/+wfvW4Zul9u/DBnZIjEjuSYoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043556; c=relaxed/simple;
-	bh=Im2eOhP1EyDjF6ibj5IkMf797K3/q4Z8+fR4NvCG2ik=;
+	s=arc-20240116; t=1723043054; c=relaxed/simple;
+	bh=wFexN6JJ0A9l8zh7AZV3JBJMMSVVgZslrzbGhoYoqpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f46i1K72WVq62CCZoJZHH20jdRfPK6ZaBAscPR22QXbJwBsgtxVW/J1c/BfDv3wCgJ0lzFELaTlWt4oz6VGrL1Cw8nZDZvBK4PXTuUtwRDQPYjOWSK6/d2/jiP2FsxGbKy/NUu/486yL28HkB3kfIao0AGnOdXaaTvgHqxJBmFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK+sFJL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFC0C32781;
-	Wed,  7 Aug 2024 15:12:35 +0000 (UTC)
+	 MIME-Version; b=tZ+hu3GOw4bYTvKtGfrbJ3zfrC0ZIqpEnZNpBW1rp6EMhmSw3fH4lgg6mwmbqbbqeGF5vgwz4yYBjtZRNygaM9ikmmHPWqHYXoQiabVQ1inHeKoYLae9DE7E0lvPvpK1L0fSkdYhXI+kmDeIWxDei5TfZdmG6+6GYsJ3pZktTUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPaleSuO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF00C4AF0D;
+	Wed,  7 Aug 2024 15:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043556;
-	bh=Im2eOhP1EyDjF6ibj5IkMf797K3/q4Z8+fR4NvCG2ik=;
+	s=korg; t=1723043054;
+	bh=wFexN6JJ0A9l8zh7AZV3JBJMMSVVgZslrzbGhoYoqpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yK+sFJL+YvYlzWcgg1HnLot5Ggw6PUjJfKfRcwAHnSpPfeB82okhuVEUMetIHVYSM
-	 jqqqrRrbk3OViYZdB86IMvmhwZ1lXfu0vA3AHyQPowIgmOckdPkJBj1XkRw+jUTvqg
-	 5aqdS66H0V+JkbUFQHuKFiUcY8uaZfZZrxkZ/T48=
+	b=bPaleSuOQuFxsUL4y9fE70KuvPJeBe/Pmcim/hN6eA4EYasZ0mOvAwAcxqLkSBDCi
+	 ZcsSmpxEdNqRvybOq9t9N4iOsKJIRTcsDyLzWvcaCpSTAB/hdcMqARgxt5j+DueS5T
+	 n62fbxoTV3E15e2rBUgAPrf2/9N7h47XAISzqZts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Alexander Potapenko <glider@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/86] cpufreq: qcom-nvmem: Simplify driver data allocation
+Subject: [PATCH 6.10 074/123] arm64: jump_label: Ensure patched jump_labels are visible to all CPUs
 Date: Wed,  7 Aug 2024 16:59:53 +0200
-Message-ID: <20240807150039.709751835@linuxfoundation.org>
+Message-ID: <20240807150023.192120705@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,137 +65,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit 2a5d46c3ad6b0e62d2b04356ad999d504fb564e0 ]
+[ Upstream commit cfb00a35786414e7c0e6226b277d9f09657eae74 ]
 
-Simplify the allocation and cleanup of driver data by using devm
-together with a flexible array. Prepare for adding additional per-CPU
-data by defining a struct qcom_cpufreq_drv_cpu instead of storing the
-opp_tokens directly.
+Although the Arm architecture permits concurrent modification and
+execution of NOP and branch instructions, it still requires some
+synchronisation to ensure that other CPUs consistently execute the newly
+written instruction:
 
-Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: d01c84b97f19 ("cpufreq: qcom-nvmem: fix memory leaks in probe error paths")
+ >  When the modified instructions are observable, each PE that is
+ >  executing the modified instructions must execute an ISB or perform a
+ >  context synchronizing event to ensure execution of the modified
+ >  instructions
+
+Prior to commit f6cc0c501649 ("arm64: Avoid calling stop_machine() when
+patching jump labels"), the arm64 jump_label patching machinery
+performed synchronisation using stop_machine() after each modification,
+however this was problematic when flipping static keys from atomic
+contexts (namely, the arm_arch_timer CPU hotplug startup notifier) and
+so we switched to the _nosync() patching routines to avoid "scheduling
+while atomic" BUG()s during boot.
+
+In hindsight, the analysis of the issue in f6cc0c501649 isn't quite
+right: it cites the use of IPIs in the default patching routines as the
+cause of the lockup, whereas stop_machine() does not rely on IPIs and
+the I-cache invalidation is performed using __flush_icache_range(),
+which elides the call to kick_all_cpus_sync(). In fact, the blocking
+wait for other CPUs is what triggers the BUG() and the problem remains
+even after f6cc0c501649, for example because we could block on the
+jump_label_mutex. Eventually, the arm_arch_timer driver was fixed to
+avoid the static key entirely in commit a862fc2254bd
+("clocksource/arm_arch_timer: Remove use of workaround static key").
+
+This all leaves the jump_label patching code in a funny situation on
+arm64 as we do not synchronise with other CPUs to reduce the likelihood
+of a bug which no longer exists. Consequently, toggling a static key on
+one CPU cannot be assumed to take effect on other CPUs, leading to
+potential issues, for example with missing preempt notifiers.
+
+Rather than revert f6cc0c501649 and go back to stop_machine() for each
+patch site, implement arch_jump_label_transform_apply() and kick all
+the other CPUs with an IPI at the end of patching.
+
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Fixes: f6cc0c501649 ("arm64: Avoid calling stop_machine() when patching jump labels")
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240731133601.3073-1-will@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/qcom-cpufreq-nvmem.c | 49 ++++++++++------------------
- 1 file changed, 18 insertions(+), 31 deletions(-)
+ arch/arm64/include/asm/jump_label.h |  1 +
+ arch/arm64/kernel/jump_label.c      | 11 +++++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-index 91634b84baa87..983991c0afd5c 100644
---- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
-+++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-@@ -53,10 +53,14 @@ struct qcom_cpufreq_match_data {
- 	const char **genpd_names;
- };
+diff --git a/arch/arm64/include/asm/jump_label.h b/arch/arm64/include/asm/jump_label.h
+index 4e753908b8018..a0a5bbae7229e 100644
+--- a/arch/arm64/include/asm/jump_label.h
++++ b/arch/arm64/include/asm/jump_label.h
+@@ -13,6 +13,7 @@
+ #include <linux/types.h>
+ #include <asm/insn.h>
  
-+struct qcom_cpufreq_drv_cpu {
-+	int opp_token;
-+};
++#define HAVE_JUMP_LABEL_BATCH
+ #define JUMP_LABEL_NOP_SIZE		AARCH64_INSN_SIZE
+ 
+ #define JUMP_TABLE_ENTRY(key, label)			\
+diff --git a/arch/arm64/kernel/jump_label.c b/arch/arm64/kernel/jump_label.c
+index faf88ec9c48e8..f63ea915d6ad2 100644
+--- a/arch/arm64/kernel/jump_label.c
++++ b/arch/arm64/kernel/jump_label.c
+@@ -7,11 +7,12 @@
+  */
+ #include <linux/kernel.h>
+ #include <linux/jump_label.h>
++#include <linux/smp.h>
+ #include <asm/insn.h>
+ #include <asm/patching.h>
+ 
+-void arch_jump_label_transform(struct jump_entry *entry,
+-			       enum jump_label_type type)
++bool arch_jump_label_transform_queue(struct jump_entry *entry,
++				     enum jump_label_type type)
+ {
+ 	void *addr = (void *)jump_entry_code(entry);
+ 	u32 insn;
+@@ -25,4 +26,10 @@ void arch_jump_label_transform(struct jump_entry *entry,
+ 	}
+ 
+ 	aarch64_insn_patch_text_nosync(addr, insn);
++	return true;
++}
 +
- struct qcom_cpufreq_drv {
--	int *opp_tokens;
- 	u32 versions;
- 	const struct qcom_cpufreq_match_data *data;
-+	struct qcom_cpufreq_drv_cpu cpus[];
- };
- 
- static struct platform_device *cpufreq_dt_pdev, *cpufreq_pdev;
-@@ -284,42 +288,32 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
- 		return -ENOENT;
- 	}
- 
--	drv = kzalloc(sizeof(*drv), GFP_KERNEL);
-+	drv = devm_kzalloc(&pdev->dev, struct_size(drv, cpus, num_possible_cpus()),
-+		           GFP_KERNEL);
- 	if (!drv)
- 		return -ENOMEM;
- 
- 	match = pdev->dev.platform_data;
- 	drv->data = match->data;
--	if (!drv->data) {
--		ret = -ENODEV;
--		goto free_drv;
--	}
-+	if (!drv->data)
-+		return -ENODEV;
- 
- 	if (drv->data->get_version) {
- 		speedbin_nvmem = of_nvmem_cell_get(np, NULL);
--		if (IS_ERR(speedbin_nvmem)) {
--			ret = dev_err_probe(cpu_dev, PTR_ERR(speedbin_nvmem),
--					    "Could not get nvmem cell\n");
--			goto free_drv;
--		}
-+		if (IS_ERR(speedbin_nvmem))
-+			return dev_err_probe(cpu_dev, PTR_ERR(speedbin_nvmem),
-+					     "Could not get nvmem cell\n");
- 
- 		ret = drv->data->get_version(cpu_dev,
- 							speedbin_nvmem, &pvs_name, drv);
- 		if (ret) {
- 			nvmem_cell_put(speedbin_nvmem);
--			goto free_drv;
-+			return ret;
- 		}
- 		nvmem_cell_put(speedbin_nvmem);
- 	}
- 	of_node_put(np);
- 
--	drv->opp_tokens = kcalloc(num_possible_cpus(), sizeof(*drv->opp_tokens),
--				  GFP_KERNEL);
--	if (!drv->opp_tokens) {
--		ret = -ENOMEM;
--		goto free_drv;
--	}
--
- 	for_each_possible_cpu(cpu) {
- 		struct dev_pm_opp_config config = {
- 			.supported_hw = NULL,
-@@ -345,9 +339,9 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
- 		}
- 
- 		if (config.supported_hw || config.genpd_names) {
--			drv->opp_tokens[cpu] = dev_pm_opp_set_config(cpu_dev, &config);
--			if (drv->opp_tokens[cpu] < 0) {
--				ret = drv->opp_tokens[cpu];
-+			drv->cpus[cpu].opp_token = dev_pm_opp_set_config(cpu_dev, &config);
-+			if (drv->cpus[cpu].opp_token < 0) {
-+				ret = drv->cpus[cpu].opp_token;
- 				dev_err(cpu_dev, "Failed to set OPP config\n");
- 				goto free_opp;
- 			}
-@@ -366,11 +360,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
- 
- free_opp:
- 	for_each_possible_cpu(cpu)
--		dev_pm_opp_clear_config(drv->opp_tokens[cpu]);
--	kfree(drv->opp_tokens);
--free_drv:
--	kfree(drv);
--
-+		dev_pm_opp_clear_config(drv->cpus[cpu].opp_token);
- 	return ret;
++void arch_jump_label_transform_apply(void)
++{
++	kick_all_cpus_sync();
  }
- 
-@@ -382,10 +372,7 @@ static void qcom_cpufreq_remove(struct platform_device *pdev)
- 	platform_device_unregister(cpufreq_dt_pdev);
- 
- 	for_each_possible_cpu(cpu)
--		dev_pm_opp_clear_config(drv->opp_tokens[cpu]);
--
--	kfree(drv->opp_tokens);
--	kfree(drv);
-+		dev_pm_opp_clear_config(drv->cpus[cpu].opp_token);
- }
- 
- static struct platform_driver qcom_cpufreq_driver = {
 -- 
 2.43.0
 
