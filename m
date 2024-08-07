@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-65722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AC694AB99
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F037B94AB02
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B6712812E8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC150282E42
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25C280638;
-	Wed,  7 Aug 2024 15:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62FB580638;
+	Wed,  7 Aug 2024 15:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnU937/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEmgcG1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B069678B4C;
-	Wed,  7 Aug 2024 15:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5FE78C92;
+	Wed,  7 Aug 2024 15:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043229; cv=none; b=eOWvhIy1GxiyLwLeG4D8UZOF+WHWzpTkA00Qxo2Dcribjt35a1+EfWcklivZtAjvnIMqehSEzlXxkMk/9gyeNvufR5tNh0PTGH90eFvVxj7fHSJ/EMVZ2t805BOR048YGwKzr1KsZP+UZ2JtWGq7zYevWexudoql+iCK6iVbu9g=
+	t=1723042932; cv=none; b=azKaqGAy0AqzsP7IRbzZG/6eTpFyzkJkJL7gf0zomjcm0+n5dUZqGnn1gAiTL0/HTyB+hd0t0Pdd0U4NLGfFoS/gUFuGzL7JsHa/SZqPeCEbGrDCp4reVlLOr+fgHQmnIncZtIaz02BOIR7vCH3gc6oNi6dFI8C7htyk2WYbT+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043229; c=relaxed/simple;
-	bh=NznqCjOiF7EBXQ8n2ZCtDS4Pf1rX9fBjfelnwhwGoxM=;
+	s=arc-20240116; t=1723042932; c=relaxed/simple;
+	bh=z2VIyNLf+HgwliHnHIYvVKMoUpGnQ/SOototcdDkWLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UgZiE258WAjS6QL8bVcvAIjmH3hRmtFa4HU+lyT4BgXy/RWxRkTJ9rVUbG8eiASDNG37Xl5n88GupoSMzCsg1jHo1qByWCGrhv0u0nLwkcNphH7hJ/HZBO0K/12/D3Utb5rfQhvZCJLJmZRGZNLmXdbhlg5MIygtGAZbvtizBo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnU937/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D27C32781;
-	Wed,  7 Aug 2024 15:07:09 +0000 (UTC)
+	 MIME-Version; b=RKSi3NafpKSrYEwaOe+l8O3mz75hXIV/zFaJJfAVpotOvoz9vYZW3BMWCkZjrf5JZmxB/2n3YQhj5L/TkRSknNqH5yn8Bo8RZu687ZQWTztRA3akR0WMZVCcTrymC4XkJJyvqkn5kTIzauRILhvFbnr3LKGULj6ERhnR4i1nMUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEmgcG1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EBDC32781;
+	Wed,  7 Aug 2024 15:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043229;
-	bh=NznqCjOiF7EBXQ8n2ZCtDS4Pf1rX9fBjfelnwhwGoxM=;
+	s=korg; t=1723042932;
+	bh=z2VIyNLf+HgwliHnHIYvVKMoUpGnQ/SOototcdDkWLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnU937/+r6ZgjxPUYlLi3AY2AtvKWgRJZbQ6WKWR1rhKrbP/ZumKwioV26A5oKNNV
-	 HTXN0/umTdSmUuK/NI++lJfucNeldBpN6zmZO++3m/MESLp4QO3UzQn0zyj5IcsJYp
-	 tnWfD7s1CGE2wfNgI+oBmkBqLs3dDRd+oZ2TYOWQ=
+	b=jEmgcG1BBHBiyYEKJCQ1dWH2G7vGHl0VxP2ZFmbGZSVYc8du6yoQGsfKlBbxjDZ+z
+	 9VqlTEiPApRV6RjH2z519CM8xBVgmdo4prYgUiR5FHUCH6RcJya3b1ehoB4iiwnWu1
+	 Fy5ZPeBV6n4LsJcNlvm8fxn3H0dHRynLwrkehH+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Granados <j.granados@samsung.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	syzbot+1b5e4e187cc586d05ea0@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/121] sysctl: treewide: drop unused argument ctl_table_root::set_ownership(table)
+Subject: [PATCH 6.10 028/123] sched: act_ct: take care of padding in struct zones_ht_key
 Date: Wed,  7 Aug 2024 16:59:07 +0200
-Message-ID: <20240807150019.868023928@linuxfoundation.org>
+Message-ID: <20240807150021.728618966@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,128 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 520713a93d550406dae14d49cdb8778d70cecdfd ]
+[ Upstream commit 2191a54f63225b548fd8346be3611c3219a24738 ]
 
-Remove the 'table' argument from set_ownership as it is never used. This
-change is a step towards putting "struct ctl_table" into .rodata and
-eventually having sysctl core only use "const struct ctl_table".
+Blamed commit increased lookup key size from 2 bytes to 16 bytes,
+because zones_ht_key got a struct net pointer.
 
-The patch was created with the following coccinelle script:
+Make sure rhashtable_lookup() is not using the padding bytes
+which are not initialized.
 
-  @@
-  identifier func, head, table, uid, gid;
-  @@
+ BUG: KMSAN: uninit-value in rht_ptr_rcu include/linux/rhashtable.h:376 [inline]
+ BUG: KMSAN: uninit-value in __rhashtable_lookup include/linux/rhashtable.h:607 [inline]
+ BUG: KMSAN: uninit-value in rhashtable_lookup include/linux/rhashtable.h:646 [inline]
+ BUG: KMSAN: uninit-value in rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
+ BUG: KMSAN: uninit-value in tcf_ct_flow_table_get+0x611/0x2260 net/sched/act_ct.c:329
+  rht_ptr_rcu include/linux/rhashtable.h:376 [inline]
+  __rhashtable_lookup include/linux/rhashtable.h:607 [inline]
+  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
+  rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
+  tcf_ct_flow_table_get+0x611/0x2260 net/sched/act_ct.c:329
+  tcf_ct_init+0xa67/0x2890 net/sched/act_ct.c:1408
+  tcf_action_init_1+0x6cc/0xb30 net/sched/act_api.c:1425
+  tcf_action_init+0x458/0xf00 net/sched/act_api.c:1488
+  tcf_action_add net/sched/act_api.c:2061 [inline]
+  tc_ctl_action+0x4be/0x19d0 net/sched/act_api.c:2118
+  rtnetlink_rcv_msg+0x12fc/0x1410 net/core/rtnetlink.c:6647
+  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2550
+  rtnetlink_rcv+0x34/0x40 net/core/rtnetlink.c:6665
+  netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1357
+  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1901
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  ____sys_sendmsg+0x877/0xb60 net/socket.c:2597
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2651
+  __sys_sendmsg net/socket.c:2680 [inline]
+  __do_sys_sendmsg net/socket.c:2689 [inline]
+  __se_sys_sendmsg net/socket.c:2687 [inline]
+  __x64_sys_sendmsg+0x307/0x4a0 net/socket.c:2687
+  x64_sys_call+0x2dd6/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:47
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-  void func(
-    struct ctl_table_header *head,
-  - struct ctl_table *table,
-    kuid_t *uid, kgid_t *gid)
-  { ... }
+Local variable key created at:
+  tcf_ct_flow_table_get+0x4a/0x2260 net/sched/act_ct.c:324
+  tcf_ct_init+0xa67/0x2890 net/sched/act_ct.c:1408
 
-No additional occurrences of 'set_ownership' were found after doing a
-tree-wide search.
-
-Reviewed-by: Joel Granados <j.granados@samsung.com>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Joel Granados <j.granados@samsung.com>
-Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
+Fixes: 88c67aeb1407 ("sched: act_ct: add netns into the key of tcf_ct_flow_table")
+Reported-by: syzbot+1b5e4e187cc586d05ea0@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/proc_sysctl.c  | 2 +-
- include/linux/sysctl.h | 1 -
- ipc/ipc_sysctl.c       | 3 +--
- ipc/mq_sysctl.c        | 3 +--
- net/sysctl_net.c       | 1 -
- 5 files changed, 3 insertions(+), 7 deletions(-)
+ net/sched/act_ct.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index 5b5cdc747cef3..cec67e6a6678f 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -481,7 +481,7 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
- 	}
- 
- 	if (root->set_ownership)
--		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
-+		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
- 	else {
- 		inode->i_uid = GLOBAL_ROOT_UID;
- 		inode->i_gid = GLOBAL_ROOT_GID;
-diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
-index 61b40ea81f4d3..698a71422a14b 100644
---- a/include/linux/sysctl.h
-+++ b/include/linux/sysctl.h
-@@ -205,7 +205,6 @@ struct ctl_table_root {
- 	struct ctl_table_set default_set;
- 	struct ctl_table_set *(*lookup)(struct ctl_table_root *root);
- 	void (*set_ownership)(struct ctl_table_header *head,
--			      struct ctl_table *table,
- 			      kuid_t *uid, kgid_t *gid);
- 	int (*permissions)(struct ctl_table_header *head, struct ctl_table *table);
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 6fa3cca87d346..9d451d77d54e2 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -44,6 +44,8 @@ static DEFINE_MUTEX(zones_mutex);
+ struct zones_ht_key {
+ 	struct net *net;
+ 	u16 zone;
++	/* Note : pad[] must be the last field. */
++	u8  pad[];
  };
-diff --git a/ipc/ipc_sysctl.c b/ipc/ipc_sysctl.c
-index 01c4a50d22b2d..b2f39a86f4734 100644
---- a/ipc/ipc_sysctl.c
-+++ b/ipc/ipc_sysctl.c
-@@ -192,7 +192,6 @@ static int set_is_seen(struct ctl_table_set *set)
- }
  
- static void ipc_set_ownership(struct ctl_table_header *head,
--			      struct ctl_table *table,
- 			      kuid_t *uid, kgid_t *gid)
- {
- 	struct ipc_namespace *ns =
-@@ -224,7 +223,7 @@ static int ipc_permissions(struct ctl_table_header *head, struct ctl_table *tabl
- 		kuid_t ns_root_uid;
- 		kgid_t ns_root_gid;
+ struct tcf_ct_flow_table {
+@@ -60,7 +62,7 @@ struct tcf_ct_flow_table {
+ static const struct rhashtable_params zones_params = {
+ 	.head_offset = offsetof(struct tcf_ct_flow_table, node),
+ 	.key_offset = offsetof(struct tcf_ct_flow_table, key),
+-	.key_len = sizeof_field(struct tcf_ct_flow_table, key),
++	.key_len = offsetof(struct zones_ht_key, pad),
+ 	.automatic_shrinking = true,
+ };
  
--		ipc_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
-+		ipc_set_ownership(head, &ns_root_uid, &ns_root_gid);
- 
- 		if (uid_eq(current_euid(), ns_root_uid))
- 			mode >>= 6;
-diff --git a/ipc/mq_sysctl.c b/ipc/mq_sysctl.c
-index 21fba3a6edaf7..6bb1c5397c69b 100644
---- a/ipc/mq_sysctl.c
-+++ b/ipc/mq_sysctl.c
-@@ -78,7 +78,6 @@ static int set_is_seen(struct ctl_table_set *set)
- }
- 
- static void mq_set_ownership(struct ctl_table_header *head,
--			     struct ctl_table *table,
- 			     kuid_t *uid, kgid_t *gid)
- {
- 	struct ipc_namespace *ns =
-@@ -97,7 +96,7 @@ static int mq_permissions(struct ctl_table_header *head, struct ctl_table *table
- 	kuid_t ns_root_uid;
- 	kgid_t ns_root_gid;
- 
--	mq_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
-+	mq_set_ownership(head, &ns_root_uid, &ns_root_gid);
- 
- 	if (uid_eq(current_euid(), ns_root_uid))
- 		mode >>= 6;
-diff --git a/net/sysctl_net.c b/net/sysctl_net.c
-index 051ed5f6fc937..a0a7a79991f9f 100644
---- a/net/sysctl_net.c
-+++ b/net/sysctl_net.c
-@@ -54,7 +54,6 @@ static int net_ctl_permissions(struct ctl_table_header *head,
- }
- 
- static void net_ctl_set_ownership(struct ctl_table_header *head,
--				  struct ctl_table *table,
- 				  kuid_t *uid, kgid_t *gid)
- {
- 	struct net *net = container_of(head->set, struct net, sysctls);
 -- 
 2.43.0
 
