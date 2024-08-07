@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-65878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EB494AC54
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A59E94AB8C
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 159BF1F23E1E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C4841C21B44
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F58382499;
-	Wed,  7 Aug 2024 15:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764C9128369;
+	Wed,  7 Aug 2024 15:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+8MwO1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhI+GxPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5AE7E0E9;
-	Wed,  7 Aug 2024 15:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3369685270;
+	Wed,  7 Aug 2024 15:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043648; cv=none; b=HHBZg5b7BNJGzYl+1x75vWsdn2qVwvBL9mFBg16IVE2xB3EMbNzVJI6nJIVEUxfQr43it3B4dj/W9AYXYGgfXbdA6Oy6XE9IC6bxUMCobNh0Nanm15ArL8QpxBb7aDU4AV5PjK7TU3CyPvC5I12thSdh5justFF3o160KiMnQQI=
+	t=1723043197; cv=none; b=GZAWSoXnBYfa+ikm+Y/X8og5rDv0rk0ffopN5zCcXx/RQTjR2pNYd+7UVXC1yg6KO/KfRA25cZgRjz0nb2X1L1FN4Lee+GcsqsZQR1hOuHUlX4QYvRa0BS5aD7Y0fMkFZuWSr6QwTqmpX+10ZA7fLnW2DkZLsg4ewbTFWH8lPVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043648; c=relaxed/simple;
-	bh=j5SugisAFESG7NvIbxjwiewBvNsWGffEU8v1vJqLkZo=;
+	s=arc-20240116; t=1723043197; c=relaxed/simple;
+	bh=Xoe6nLD57TYWN5Bx0P9bsVTeltsjQKYlTREMPAhU41I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijy4QIOOYZ6XcqyaNn3TcQDAr/gCvKFkthyC7n3rR6k0VcOxSmYqoOaY14jotMpt+INzzyLgYfzro7Q4s4qa5QuJMSiCWudfCwVXbL+GCtj5v4mNvWr9mZXF31i2b3RE1tS3RaJDH/CqDA9mz1apArSMwS0Us5sIMQvG4VLBITA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+8MwO1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB59C32781;
-	Wed,  7 Aug 2024 15:14:07 +0000 (UTC)
+	 MIME-Version; b=r0bGN6Lpvq9dAkL54ihMB+6bNSgNu2faRgISPYhWWjP/3fkmi7WrWA8ubzSwEHI6LufXh9u9+O2hO0Lwa84wpcakKur+tjToe1bn7OnsOSZgqZu8bCqZEuLMiIsCNw+hT0+UzUaWk/Q+26hCIOEqLNRatOc6+s0jNnxH9lL9QFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhI+GxPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3B0C32781;
+	Wed,  7 Aug 2024 15:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043647;
-	bh=j5SugisAFESG7NvIbxjwiewBvNsWGffEU8v1vJqLkZo=;
+	s=korg; t=1723043197;
+	bh=Xoe6nLD57TYWN5Bx0P9bsVTeltsjQKYlTREMPAhU41I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+8MwO1VuKK3w8ez/WHbAXSnrpNjXDjM2wEd/bFquBKYKStT/DeJMDLthcjsju4/t
-	 gVt8utMjcrhMpI19yIkNF/iPYJvw47J/rXXzSS+MqppYRIpxQ+MO5JOKSSP7eERfc7
-	 nNmsMI9CckPhBMa/H6HtPzrPiF2T3t6cCoQ2dxQI=
+	b=xhI+GxPoTfavqrj781Hj2pCpnX2duBDXLzZkGfr5d5zTAZvJpmCfHtgVIlAZGaD22
+	 5JF4057NYMzy4+AcdWK+vn34SjObWNMQv1RSLLEfhTawJF+o9gM2yTnnrqAbhPaazS
+	 Os5Y9/LOZ6pRzoarSXpFQYMYaw7qY1bmObyaUBcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/86] Bluetooth: hci_sync: Fix suspending with wrong filter policy
+	Olivier Langlois <olivier@trillion01.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 107/123] io_uring: keep multishot request NAPI timeout current
 Date: Wed,  7 Aug 2024 17:00:26 +0200
-Message-ID: <20240807150040.796643897@linuxfoundation.org>
+Message-ID: <20240807150024.316902125@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Olivier Langlois <olivier@trillion01.com>
 
-[ Upstream commit 96b82af36efaa1787946e021aa3dc5410c05beeb ]
+commit 2c762be5b798c443612c1bb9b011de4fdaebd1c5 upstream.
 
-When suspending the scan filter policy cannot be 0x00 (no acceptlist)
-since that means the host has to process every advertisement report
-waking up the system, so this attempts to check if hdev is marked as
-suspended and if the resulting filter policy would be 0x00 (no
-acceptlist) then skip passive scanning if thre no devices in the
-acceptlist otherwise reset the filter policy to 0x01 so the acceptlist
-is used since the devices programmed there can still wakeup be system.
+This refresh statement was originally present in the original patch:
+https://lore.kernel.org/netdev/20221121191437.996297-2-shr@devkernel.io/
 
-Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It has been removed with no explanation in v6:
+https://lore.kernel.org/netdev/20230201222254.744422-2-shr@devkernel.io/
+
+It is important to make the refresh for multishot requests, because if no
+new requests using the same NAPI device are added to the ring, the entry
+will become stale and be removed silently. The unsuspecting user will
+not know that their ring had busy polling for only 60 seconds before
+being pruned.
+
+Signed-off-by: Olivier Langlois <olivier@trillion01.com>
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+Fixes: 8d0c12a80cdeb ("io-uring: add napi busy poll support")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/0fe61a019ec61e5708cd117cb42ed0dab95e1617.1722294646.git.olivier@trillion01.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ io_uring/poll.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 57302021b7ebb..320fc1e6dff2a 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -2837,6 +2837,27 @@ static int hci_passive_scan_sync(struct hci_dev *hdev)
- 	 */
- 	filter_policy = hci_update_accept_list_sync(hdev);
+diff --git a/io_uring/poll.c b/io_uring/poll.c
+index 0a8e02944689..1f63b60e85e7 100644
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -347,6 +347,7 @@ static int io_poll_check_events(struct io_kiocb *req, struct io_tw_state *ts)
+ 		v &= IO_POLL_REF_MASK;
+ 	} while (atomic_sub_return(v, &req->poll_refs) & IO_POLL_REF_MASK);
  
-+	/* If suspended and filter_policy set to 0x00 (no acceptlist) then
-+	 * passive scanning cannot be started since that would require the host
-+	 * to be woken up to process the reports.
-+	 */
-+	if (hdev->suspended && !filter_policy) {
-+		/* Check if accept list is empty then there is no need to scan
-+		 * while suspended.
-+		 */
-+		if (list_empty(&hdev->le_accept_list))
-+			return 0;
-+
-+		/* If there are devices is the accept_list that means some
-+		 * devices could not be programmed which in non-suspended case
-+		 * means filter_policy needs to be set to 0x00 so the host needs
-+		 * to filter, but since this is treating suspended case we
-+		 * can ignore device needing host to filter to allow devices in
-+		 * the acceptlist to be able to wakeup the system.
-+		 */
-+		filter_policy = 0x01;
-+	}
-+
- 	/* When the controller is using random resolvable addresses and
- 	 * with that having LE privacy enabled, then controllers with
- 	 * Extended Scanner Filter Policies support can now enable support
++	io_napi_add(req);
+ 	return IOU_POLL_NO_ACTION;
+ }
+ 
 -- 
-2.43.0
+2.46.0
 
 
 
