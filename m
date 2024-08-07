@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-65792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB32994ABEB
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BE894AB77
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F70E1F26016
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EEC028352C
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB96823A9;
-	Wed,  7 Aug 2024 15:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3218212D1FA;
+	Wed,  7 Aug 2024 15:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyacMyr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkGiXW4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C4478C67;
-	Wed,  7 Aug 2024 15:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E612712CDBE;
+	Wed,  7 Aug 2024 15:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043421; cv=none; b=o/wHDdCScc8uRFHYZuvN0i0llaTVgyf5UjE62BeeMZCnE8Y9y7+JmTnXIPRtzBVu/fATdQ3Cm2hjV7CCALICh4pDg9+KeyFEP853Nc1qnEMeCBaeDDa+I7P8m/ZHp62t5uybGBbN2xsxQLnrT4re4x5TtTsG2dA8i0CH1jbl1yg=
+	t=1723043141; cv=none; b=rlRSt9RUTOw+HDj/JtE9762o1i3BKgJKXy5KzF0Eqjdbwt6hprJYWjUq2l3gSYCL2Lrk+v9Hd2Z7XArAfHIxzNuRLT10D+c6DFNHwpAHhZBunkWulrji/jMXhbg7O2nNymtQAdMJYPZm4bbXe3SwpLiCw5Gdhy74q2DOFlDtPvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043421; c=relaxed/simple;
-	bh=S2cX5JRe+BbGNFmfGlBXPbDtyy0nmZgxn9yz9M/lCpg=;
+	s=arc-20240116; t=1723043141; c=relaxed/simple;
+	bh=7PmBBi/Vr4n0ucY9QtrsjRWAcCnRixPT2CdvfUoUxQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwlvhdgens8Mkqh9ETi2fmGy+yN4LRvBXUz30ets8NdGfvybNA3lYzSLkF+n35N99pScDkUVPG6+V9c1CpneQFNecmxhsdEUQGTP3TIDHTnunZ+7hFc2EZzZ2SQjHGoFJgpVlwRAQv8al1rzGgym3Ux4b7lUCl+0MxH1nehqmrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyacMyr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04B4C32781;
-	Wed,  7 Aug 2024 15:10:20 +0000 (UTC)
+	 MIME-Version; b=jrPzmhvPFM4NyHwqDz85TA7rA0RhDCV0FWMPbFJg5E86Q9+Xi6DwrEp5rz56Ne/DRJdldudkzet2jjdnKTFmSd5rEELNbYsljfP0ncwVkvkEJ3+nKvYkx/sKpgKbtaioNyr7kXP/ZLfaYX1YN004+Ne4PU+u7oTTnTdpuhxSQg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkGiXW4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E40C32781;
+	Wed,  7 Aug 2024 15:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043421;
-	bh=S2cX5JRe+BbGNFmfGlBXPbDtyy0nmZgxn9yz9M/lCpg=;
+	s=korg; t=1723043140;
+	bh=7PmBBi/Vr4n0ucY9QtrsjRWAcCnRixPT2CdvfUoUxQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyacMyr8Gof/Sn4CKzty1hHpCh4cpsTbRRH5P0I4JuiZa7h776afgGGULYxsPNIPO
-	 lyZSYB5BWyAXXjvL0AmsFJOhcUxjsvvPGj+/YBk0A89a44bx6GnR7DOxgZ5vZ/LYdb
-	 prTBxYccNIhAU+GXbr3n29wnMG2nWl9SO1xGh2zA=
+	b=lkGiXW4VCDagqYkFvPt0OXNk59x8JIKPr2xOA+Nrf9zb8Pu3+NPS2Ctp1v342S6jw
+	 pcEBJDTy3P/te9XSYoXwGq3w0F5y3qf48hEjdSjdzmG76ydn+8Ntu4Rh2cPechqKSY
+	 eT4E7Ml7ah2ENxOBNtSfEtLw1rELXJxCoLATJyvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1b5e4e187cc586d05ea0@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Eric Lin <eric.lin@sifive.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Nikita Shubin <n.shubin@yadro.com>,
+	Inochi Amaoto <inochiama@outlook.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/121] sched: act_ct: take care of padding in struct zones_ht_key
+Subject: [PATCH 6.10 069/123] perf arch events: Fix duplicate RISC-V SBI firmware event name
 Date: Wed,  7 Aug 2024 16:59:48 +0200
-Message-ID: <20240807150021.245155615@linuxfoundation.org>
+Message-ID: <20240807150023.035274793@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +67,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Eric Lin <eric.lin@sifive.com>
 
-[ Upstream commit 2191a54f63225b548fd8346be3611c3219a24738 ]
+[ Upstream commit 63ba5b0fb4f54db256ec43b3062b2606b383055d ]
 
-Blamed commit increased lookup key size from 2 bytes to 16 bytes,
-because zones_ht_key got a struct net pointer.
+Currently, the RISC-V firmware JSON file has duplicate event name
+"FW_SFENCE_VMA_RECEIVED". According to the RISC-V SBI PMU extension[1],
+the event name should be "FW_SFENCE_VMA_ASID_SENT".
 
-Make sure rhashtable_lookup() is not using the padding bytes
-which are not initialized.
+Before this patch:
+$ perf list
 
- BUG: KMSAN: uninit-value in rht_ptr_rcu include/linux/rhashtable.h:376 [inline]
- BUG: KMSAN: uninit-value in __rhashtable_lookup include/linux/rhashtable.h:607 [inline]
- BUG: KMSAN: uninit-value in rhashtable_lookup include/linux/rhashtable.h:646 [inline]
- BUG: KMSAN: uninit-value in rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
- BUG: KMSAN: uninit-value in tcf_ct_flow_table_get+0x611/0x2260 net/sched/act_ct.c:329
-  rht_ptr_rcu include/linux/rhashtable.h:376 [inline]
-  __rhashtable_lookup include/linux/rhashtable.h:607 [inline]
-  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
-  rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
-  tcf_ct_flow_table_get+0x611/0x2260 net/sched/act_ct.c:329
-  tcf_ct_init+0xa67/0x2890 net/sched/act_ct.c:1408
-  tcf_action_init_1+0x6cc/0xb30 net/sched/act_api.c:1425
-  tcf_action_init+0x458/0xf00 net/sched/act_api.c:1488
-  tcf_action_add net/sched/act_api.c:2061 [inline]
-  tc_ctl_action+0x4be/0x19d0 net/sched/act_api.c:2118
-  rtnetlink_rcv_msg+0x12fc/0x1410 net/core/rtnetlink.c:6647
-  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2550
-  rtnetlink_rcv+0x34/0x40 net/core/rtnetlink.c:6665
-  netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
-  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1357
-  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1901
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  ____sys_sendmsg+0x877/0xb60 net/socket.c:2597
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2651
-  __sys_sendmsg net/socket.c:2680 [inline]
-  __do_sys_sendmsg net/socket.c:2689 [inline]
-  __se_sys_sendmsg net/socket.c:2687 [inline]
-  __x64_sys_sendmsg+0x307/0x4a0 net/socket.c:2687
-  x64_sys_call+0x2dd6/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:47
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+firmware:
+  fw_access_load
+       [Load access trap event. Unit: cpu]
+  fw_access_store
+       [Store access trap event. Unit: cpu]
+....
+ fw_set_timer
+       [Set timer event. Unit: cpu]
+  fw_sfence_vma_asid_received
+       [Received SFENCE.VMA with ASID request from other HART event. Unit: cpu]
+  fw_sfence_vma_received
+       [Sent SFENCE.VMA with ASID request to other HART event. Unit: cpu]
 
-Local variable key created at:
-  tcf_ct_flow_table_get+0x4a/0x2260 net/sched/act_ct.c:324
-  tcf_ct_init+0xa67/0x2890 net/sched/act_ct.c:1408
+After this patch:
+$ perf list
 
-Fixes: 88c67aeb1407 ("sched: act_ct: add netns into the key of tcf_ct_flow_table")
-Reported-by: syzbot+1b5e4e187cc586d05ea0@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+firmware:
+  fw_access_load
+       [Load access trap event. Unit: cpu]
+  fw_access_store
+       [Store access trap event. Unit: cpu]
+.....
+  fw_set_timer
+       [Set timer event. Unit: cpu]
+  fw_sfence_vma_asid_received
+       [Received SFENCE.VMA with ASID request from other HART event. Unit: cpu]
+  fw_sfence_vma_asid_sent
+       [Sent SFENCE.VMA with ASID request to other HART event. Unit: cpu]
+  fw_sfence_vma_received
+       [Received SFENCE.VMA request from other HART event. Unit: cpu]
+
+Link: https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc#event-firmware-events-type-15 [1]
+Fixes: 8f0dcb4e7364 ("perf arch events: riscv sbi firmware std event files")
+Fixes: c4f769d4093d ("perf vendor events riscv: add Sifive U74 JSON file")
+Fixes: acbf6de674ef ("perf vendor events riscv: Add StarFive Dubhe-80 JSON file")
+Fixes: 7340c6df49df ("perf vendor events riscv: add T-HEAD C9xx JSON file")
+Fixes: f5102e31c209 ("riscv: andes: Support specifying symbolic firmware and hardware raw event")
+Signed-off-by: Eric Lin <eric.lin@sifive.com>
+Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Nikita Shubin <n.shubin@yadro.com>
+Reviewed-by: Inochi Amaoto <inochiama@outlook.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20240719115018.27356-1-eric.lin@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_ct.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json       | 2 +-
+ tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json        | 2 +-
+ tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json       | 2 +-
+ .../perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json  | 2 +-
+ .../perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json  | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 3ac19516ed803..50d24e240e8fb 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -44,6 +44,8 @@ static DEFINE_MUTEX(zones_mutex);
- struct zones_ht_key {
- 	struct net *net;
- 	u16 zone;
-+	/* Note : pad[] must be the last field. */
-+	u8  pad[];
- };
- 
- struct tcf_ct_flow_table {
-@@ -60,7 +62,7 @@ struct tcf_ct_flow_table {
- static const struct rhashtable_params zones_params = {
- 	.head_offset = offsetof(struct tcf_ct_flow_table, node),
- 	.key_offset = offsetof(struct tcf_ct_flow_table, key),
--	.key_len = sizeof_field(struct tcf_ct_flow_table, key),
-+	.key_len = offsetof(struct zones_ht_key, pad),
- 	.automatic_shrinking = true,
- };
- 
+diff --git a/tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json b/tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json
+index 9b4a032186a7b..7149caec4f80e 100644
+--- a/tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json
++++ b/tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json
+@@ -36,7 +36,7 @@
+     "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
+   },
+   {
+-    "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
++    "ArchStdEvent": "FW_SFENCE_VMA_ASID_SENT"
+   },
+   {
+     "ArchStdEvent": "FW_SFENCE_VMA_ASID_RECEIVED"
+diff --git a/tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json b/tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json
+index a9939823b14b5..0c9b9a2d2958a 100644
+--- a/tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json
++++ b/tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json
+@@ -74,7 +74,7 @@
+   {
+     "PublicDescription": "Sent SFENCE.VMA with ASID request to other HART event",
+     "ConfigCode": "0x800000000000000c",
+-    "EventName": "FW_SFENCE_VMA_RECEIVED",
++    "EventName": "FW_SFENCE_VMA_ASID_SENT",
+     "BriefDescription": "Sent SFENCE.VMA with ASID request to other HART event"
+   },
+   {
+diff --git a/tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json b/tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json
+index 9b4a032186a7b..7149caec4f80e 100644
+--- a/tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json
++++ b/tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json
+@@ -36,7 +36,7 @@
+     "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
+   },
+   {
+-    "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
++    "ArchStdEvent": "FW_SFENCE_VMA_ASID_SENT"
+   },
+   {
+     "ArchStdEvent": "FW_SFENCE_VMA_ASID_RECEIVED"
+diff --git a/tools/perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json b/tools/perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json
+index 9b4a032186a7b..7149caec4f80e 100644
+--- a/tools/perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json
++++ b/tools/perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json
+@@ -36,7 +36,7 @@
+     "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
+   },
+   {
+-    "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
++    "ArchStdEvent": "FW_SFENCE_VMA_ASID_SENT"
+   },
+   {
+     "ArchStdEvent": "FW_SFENCE_VMA_ASID_RECEIVED"
+diff --git a/tools/perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json b/tools/perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json
+index 9b4a032186a7b..7149caec4f80e 100644
+--- a/tools/perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json
++++ b/tools/perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json
+@@ -36,7 +36,7 @@
+     "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
+   },
+   {
+-    "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
++    "ArchStdEvent": "FW_SFENCE_VMA_ASID_SENT"
+   },
+   {
+     "ArchStdEvent": "FW_SFENCE_VMA_ASID_RECEIVED"
 -- 
 2.43.0
 
