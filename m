@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAE794A9CF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8F894A9D1
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCF741F2B0F2
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:16:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10ED91F2B14C
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E50F2F3E;
-	Wed,  7 Aug 2024 14:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526082E419;
+	Wed,  7 Aug 2024 14:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ab5MenFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOUlHCeA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4CF2E419
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1244D21373
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723040202; cv=none; b=ZfNoi5V865vK5O5aPqc5kQ/QE6cW+tLMkfKRiV1vjDzD9MuL6QpAXyup5pvk6omk+RXPnt5sC8bZAetql1Ni/+H9tQviaGPt5jsTPrdBkIOexJsGkpr7yMp4XiEsFhvYTAxaO/v68C5G2dqJRkh4od4AsZUwMu2HsyggeoTzxfk=
+	t=1723040205; cv=none; b=Am+vmI9bjxfm9jvTB96s9S9hAfciABvbJ491p55I3Eijp2OI20aKg0dBIJhMBQLxL4Is5M4JtgX4361U4HRbUOHn4A8JzyeyLlnL8sYWaGEiadXjjTAU+wjyhno8gvFgH48GhFJxQira1ogY8c+fcgoeSKWoNF1Rk+84elVS/Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723040202; c=relaxed/simple;
-	bh=w4kpGvTfYox6H4XHXav7iK2nUmjcChxC36XxtKfZ1dU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GYyr/jnwOrjl8gECFKNKAjlFgptB4PynSoAG0nvWF4EBjBqevX1UsTqJVCxzWGo5k0jXKDBkdOKo50+A8MG8IArUo222WrO9Cdwkw3FBnsFK/5/dFtHrV3zYJELrfg6+1/vHT3EH3A7TPqs9oE+6AELY/srvwgb+3XhmqWqo2tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ab5MenFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389DBC32782;
-	Wed,  7 Aug 2024 14:16:41 +0000 (UTC)
+	s=arc-20240116; t=1723040205; c=relaxed/simple;
+	bh=RyexSNH/iGMv0HyIwZ7FUktC5Qm1hlpkbhS+9QINxYs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=G4qCcEgxBcu3Rz7O9O3VxnuZIyQySMAUL3ib12nuQdMSVtPTaEcIwCNlJJuEzvAexQrcJzL+Ozs/o/2EzzKFMzIOiSrmIJO+z+R5ni432jC8fElBZz2nchhSWE8BfNciNvQbYQm/zZpH47h04NockrKYSK7tK1l6cgPhVdbAxHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOUlHCeA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CF4C32781;
+	Wed,  7 Aug 2024 14:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723040201;
-	bh=w4kpGvTfYox6H4XHXav7iK2nUmjcChxC36XxtKfZ1dU=;
+	s=korg; t=1723040204;
+	bh=RyexSNH/iGMv0HyIwZ7FUktC5Qm1hlpkbhS+9QINxYs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Ab5MenFUt/dRWsYYkWMXvrS4sNV58eV0XCkXKlSDo8sV8n2N19DvT24qAH+w8HwMk
-	 A8dPAsvDPgXDlKLbFYJYInJKip9NScnFI8XN4NyT+U3sVVqrwVl7qmuSq8Hcc/egdV
-	 gsX/ecPSLmlNbQtsJcvAeD9rwtysxg10XyELDo+g=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: fix locking scope when flushing tlb" failed to apply to 6.10-stable tree
+	b=GOUlHCeAuDkgAmvRTlUwPbt4tQjbMvpDSG3/EbZ3DBdOdLLVYE7Ko+0FPgKspnGGv
+	 AjNPdrqMmdp7MGzvsMpKr/zKy4fxKPmlSFOGFjYZRqZtoo1nUSvnKW4zUOnXms3IVV
+	 r3/D3kJSmtAsiOnFu/SJ4NNo14ud2ZZU+6BxVJcc=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: fix locking scope when flushing tlb" failed to apply to 6.6-stable tree
 To: Yunxiang.Li@amd.com,alexander.deucher@amd.com,christian.koenig@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 07 Aug 2024 16:16:38 +0200
-Message-ID: <2024080738-tarmac-unproven-1f45@gregkh>
+Message-ID: <2024080738-fasting-raving-635a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,42 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9c33e5fd4fb63b793d9a92bf35d190630d9bada4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080738-tarmac-unproven-1f45@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080738-fasting-raving-635a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 9c33e5fd4fb6 ("drm/amdgpu: fix locking scope when flushing tlb")
+08abccc9a7a7 ("drm/amdgpu: further move TLB hw workarounds a layer up")
+e2e3788850b9 ("drm/amdgpu: rework lock handling for flush_tlb v2")
+3983c9fd2d8b ("drm/amdgpu: drop error return from flush_gpu_tlb_pasid")
+041a5743883d ("drm/amdgpu: fix and cleanup gmc_v11_0_flush_gpu_tlb_pasid")
+72cc99205c0b ("drm/amdgpu: cleanup gmc_v10_0_flush_gpu_tlb_pasid")
+e7b90e99fa8f ("drm/amdgpu: fix and cleanup gmc_v9_0_flush_gpu_tlb_pasid")
+0c525aa40649 ("drm/amdgpu: fix and cleanup gmc_v8_0_flush_gpu_tlb_pasid")
+fb4c52db6974 ("drm/amdgpu: fix and cleanup gmc_v7_0_flush_gpu_tlb_pasid")
+a70cb2176f7e ("drm/amdgpu: rework gmc_v10_0_flush_gpu_tlb v2")
+24a6eb92b7f6 ("drm/amdgpu: fix and cleanup gmc_v9_0_flush_gpu_tlb")
+4e8303cf2c4d ("drm/amdgpu: Use function for IP version check")
+6b7d211740da ("drm/amdgpu: Fix refclk reporting for SMU v13.0.6")
+1b8e56b99459 ("drm/amdgpu: Restrict bootloader wait to SMUv13.0.6")
+983ac45a06ae ("drm/amdgpu: update SET_HW_RESOURCES definition for UMSCH")
+822f7808291f ("drm/amdgpu/discovery: enable UMSCH 4.0 in IP discovery")
+3488c79beafa ("drm/amdgpu: add initial support for UMSCH")
+2da1b04a2096 ("drm/amdgpu: add UMSCH 4.0 api definition")
+3ee8fb7005ef ("drm/amdgpu: enable VPE for VPE 6.1.0")
+9d4346bdbc64 ("drm/amdgpu: add VPE 6.1.0 support")
 
 thanks,
 
