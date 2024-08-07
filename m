@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C41594AC69
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6CB94AC14
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD61C1C22AB5
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 483541F219A6
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DB28287E;
-	Wed,  7 Aug 2024 15:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967AB823A9;
+	Wed,  7 Aug 2024 15:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dF+0lUGR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIjpf96Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D467F7F5;
-	Wed,  7 Aug 2024 15:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CD57E0E9;
+	Wed,  7 Aug 2024 15:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043690; cv=none; b=sP/gZy0zYC7QVpdGx63FztCZ8ntFneoeCDP7yDybLFMVu7CEc4ZtDNi9aYsOGHN5h9LNQs1ZwrwkiSJwywHOY9dyRY9ZeVKW5WSCbFOhovVozuBIOtRcq7SNUwRFg8aTi3LTiVyFj8bPlwHGdPUW/N368FCCB6TnZK5SwD5iwmg=
+	t=1723043511; cv=none; b=iAZk5fDpR6pO1E24DP9Si2/fG1Mx8FM3jdswHffS42dARv+lT7PV6U/1cFJAoxULZbBFyn8jswkMZtrBsJsfYQ5UcEymfjOtyZ+lse7SUjsmxKAXTuvo9FHe74FvCv7VopxlaDyk+Y8FAEjKL/ZYmI9kS72dVnBmeIjwN5Rw658=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043690; c=relaxed/simple;
-	bh=vVUrIZaqBSd487uUjguB+a3sjH4WF8mVs1boFlfUk78=;
+	s=arc-20240116; t=1723043511; c=relaxed/simple;
+	bh=UnM1TkCtCd7V00N4PrlZiL8URm8Z9xW2aAWZAM6GtrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fv/gugUTBAWrHSfL48mFKBNOJMUpAlwEg6IIvJ1lwGYOVeMeBhdVcI8qRCwpNOoDb/y8PPTs7+kWRQSJqvBCkiguC+GNQSrf0vyshqbh8eXaTxinyvoi4fXeIL9n6c87S7gx++HXhvV4lrnnodyOKbJe1+UDx64XOS+fTHcb0G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dF+0lUGR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A742AC4AF0D;
-	Wed,  7 Aug 2024 15:14:49 +0000 (UTC)
+	 MIME-Version; b=fpXea3NzcKeeOReG/htRhyOv8fEQxQXuOBxk1nNJZvucgciNpUWB1pz7hzbIlX9kQjzzxDhElo2G01mngEQNm8Y1osAk5nRpSRBelxr40IkVOCpJEcfn6y+VB86yxojUDxbdQA3S+TeaDl+yVlfSQ4aqaxIZU2O06GQt8Ov2gv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIjpf96Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC933C32781;
+	Wed,  7 Aug 2024 15:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043690;
-	bh=vVUrIZaqBSd487uUjguB+a3sjH4WF8mVs1boFlfUk78=;
+	s=korg; t=1723043511;
+	bh=UnM1TkCtCd7V00N4PrlZiL8URm8Z9xW2aAWZAM6GtrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dF+0lUGRaZLqUq2zocuk061FnqLl5TvO7hhrziaqGnjP1iERIF6RarY4tZpqIHjs7
-	 bb+wLEK0v8fT9nSnqpy90eH3gQf0wq5A1NeLuQxwu524QhsZAQ7VjeIZJ4crfVJEEW
-	 R9SzNJXRrFg+omP+gLgwB4mDw3a46BpCpUxYydiU=
+	b=bIjpf96ZTvPDL+p4fr65izkVWazNlqBTFkatALj/ti71MHPoxAayqzt9kdIxqjkDM
+	 mNewBlbXrUWxaoJUXEe/aU6/cv2bbdFbJv0s26kwm7Na2AsfU+yYlopXfcn6KYWWuz
+	 NquGst6gay4aa1yXq09o95LIbvTMgJMHqoJFP2qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhe Qiao <qiaozhe@iscas.ac.cn>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 64/86] riscv/mm: Add handling for VM_FAULT_SIGSEGV in mm_fault_error()
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 111/121] mptcp: fix user-space PM announced address accounting
 Date: Wed,  7 Aug 2024 17:00:43 +0200
-Message-ID: <20240807150041.373511735@linuxfoundation.org>
+Message-ID: <20240807150023.032944460@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 0c710050c47d45eb77b28c271cddefc5c785cb40 ]
+commit 167b93258d1e2230ee3e8a97669b4db4cc9e90aa upstream.
 
-Handle VM_FAULT_SIGSEGV in the page fault path so that we correctly
-kill the process and we don't BUG() the kernel.
+Currently the per-connection announced address counter is never
+decreased. When the user-space PM is in use, this just affect
+the information exposed via diag/sockopt, but it could still foul
+the PM to wrong decision.
 
-Fixes: 07037db5d479 ("RISC-V: Paging and MMU")
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240731084547.85380-1-qiaozhe@iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing accounting for the user-space PM's sake.
+
+Fixes: 8b1c94da1e48 ("mptcp: only send RM_ADDR in nl_cmd_remove")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/fault.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ net/mptcp/pm_netlink.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
-index 274bc6dd839fa..05d7d36479648 100644
---- a/arch/riscv/mm/fault.c
-+++ b/arch/riscv/mm/fault.c
-@@ -60,26 +60,27 @@ static inline void no_context(struct pt_regs *regs, unsigned long addr)
- 
- static inline void mm_fault_error(struct pt_regs *regs, unsigned long addr, vm_fault_t fault)
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1565,16 +1565,25 @@ void mptcp_pm_remove_addrs(struct mptcp_
  {
-+	if (!user_mode(regs)) {
-+		no_context(regs, addr);
-+		return;
-+	}
-+
- 	if (fault & VM_FAULT_OOM) {
- 		/*
- 		 * We ran out of memory, call the OOM killer, and return the userspace
- 		 * (which will retry the fault, or kill us if we got oom-killed).
- 		 */
--		if (!user_mode(regs)) {
--			no_context(regs, addr);
--			return;
--		}
- 		pagefault_out_of_memory();
- 		return;
- 	} else if (fault & VM_FAULT_SIGBUS) {
- 		/* Kernel mode? Handle exceptions or die */
--		if (!user_mode(regs)) {
--			no_context(regs, addr);
--			return;
--		}
- 		do_trap(regs, SIGBUS, BUS_ADRERR, addr);
- 		return;
-+	} else if (fault & VM_FAULT_SIGSEGV) {
-+		do_trap(regs, SIGSEGV, SEGV_MAPERR, addr);
-+		return;
- 	}
-+
- 	BUG();
- }
+ 	struct mptcp_rm_list alist = { .nr = 0 };
+ 	struct mptcp_pm_addr_entry *entry;
++	int anno_nr = 0;
  
--- 
-2.43.0
-
+ 	list_for_each_entry(entry, rm_list, list) {
+-		if ((remove_anno_list_by_saddr(msk, &entry->addr) ||
+-		     lookup_subflow_by_saddr(&msk->conn_list, &entry->addr)) &&
+-		    alist.nr < MPTCP_RM_IDS_MAX)
+-			alist.ids[alist.nr++] = entry->addr.id;
++		if (alist.nr >= MPTCP_RM_IDS_MAX)
++			break;
++
++		/* only delete if either announced or matching a subflow */
++		if (remove_anno_list_by_saddr(msk, &entry->addr))
++			anno_nr++;
++		else if (!lookup_subflow_by_saddr(&msk->conn_list,
++						  &entry->addr))
++			continue;
++
++		alist.ids[alist.nr++] = entry->addr.id;
+ 	}
+ 
+ 	if (alist.nr) {
+ 		spin_lock_bh(&msk->pm.lock);
++		msk->pm.add_addr_signaled -= anno_nr;
+ 		mptcp_pm_remove_addr(msk, &alist);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
 
 
 
