@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C72B94AB78
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF0694ABEC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DD991C228AF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D04681C21C0A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EAA839F7;
-	Wed,  7 Aug 2024 15:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25877824BB;
+	Wed,  7 Aug 2024 15:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkGR/fzs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEIfCTDk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A3E78281;
-	Wed,  7 Aug 2024 15:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57B478C67;
+	Wed,  7 Aug 2024 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043143; cv=none; b=QAv0cbr2cMZT8S4qqr11aaAIGuEYW7XSw6pID1KtKJzTzbvYKb2cNPAWsVBVrCXw1pNbUh+oDEdEQe7V13yj0aMTh+7u2QPE2XjeaiXI4QOak8DV9SMlO9MzsnD+D31q1+sd1R6U8bZgTT+z+5MH4EL3Og4ykxzWMz/fzpW8nQM=
+	t=1723043423; cv=none; b=UYSUvPC8DwzAWjTF6J6HGXtA4s9/TjaShhS012Sf4UO3qSzMnZfGd+UA8O35xFZc2i5jw5Zp6GzcUevtiJKrDZNCihEUcqE4N8kghiJeVbtPMy9TRxJKEb49tU3TWqwhwQeWc4l2jeDWd97+4Gq/V2cRw+Mwwt7V6b1+u2WbaRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043143; c=relaxed/simple;
-	bh=gAvQBZ85BFTaftB4EeKiOzZM9T+g/rM2f6IY4rkumkg=;
+	s=arc-20240116; t=1723043423; c=relaxed/simple;
+	bh=8r8rGWLlIlSRPQYCE8K6ynn67ZBjpT/5P2B7X3LQ2qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4AMZWvTufFVxGp72NvRYvTxCkWFXoy3B3cs9L9Erpbm0co9eIN4t/9dIE5K7qz6TBI8NvjExrlI06Qo64hkLrbnBLb7I18b3DzBctMzezLzZrdMKBlFDuAeSj3pG0fpt/MSeelJeX08Dtof3OmenGmuTZmwRk7wsY7Aac50wLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkGR/fzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251F8C32781;
-	Wed,  7 Aug 2024 15:05:42 +0000 (UTC)
+	 MIME-Version; b=HFJNCPxBDn4U+yBxXyBDb8zsjpzLn+3nS3ud4iDjgYy9amA89Jk+0vzaH2YxJ501pzHR4WMbanMcHBfWkCyqBUScQJlayTDF8XktA3JBpPTnYrCcrpcsPMI8FF2E0FHlRT+TOvErPgXTQoQV3wsc0966fmYJ9CdD4GyUXCreAeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEIfCTDk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68381C32781;
+	Wed,  7 Aug 2024 15:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043143;
-	bh=gAvQBZ85BFTaftB4EeKiOzZM9T+g/rM2f6IY4rkumkg=;
+	s=korg; t=1723043423;
+	bh=8r8rGWLlIlSRPQYCE8K6ynn67ZBjpT/5P2B7X3LQ2qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VkGR/fzsCbWdENtaGmWEGXBGExnqkDO4LQnxsDRcvWfo5uhmqlfYCLH3MATcRlfer
-	 4VkFJeCPLu2jgpuY3PybRPdX7T1uJwL5ciTdHklMA3ha7j3iE66pXEw1PhFL4aKERT
-	 WCJatM5h7RKFy9hBObFWc/9cuLU82SDXgIFXuYuE=
+	b=pEIfCTDkfGyHdD7Kw6I0p2pkS6Eq2Ta+QwjqsLXlggPlcPdUHTfvAMiG83gfco0Wt
+	 3A+dn/aq4329kbAwBPUbiSUgkv2meLqVPKzOxuiNW5zVJayLYRC2TRVsvzxbv3Z0Zy
+	 rkgYRKtkQKxjohYIFM2aQ/ZbiydW2Qs2odL1Uku4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shifrin Dmitry <dmitry.shifrin@syntacore.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 070/123] perf: riscv: Fix selecting counters in legacy mode
+Subject: [PATCH 6.6 057/121] wifi: cfg80211: fix reporting failed MLO links status with cfg80211_connect_done
 Date: Wed,  7 Aug 2024 16:59:49 +0200
-Message-ID: <20240807150023.064763033@linuxfoundation.org>
+Message-ID: <20240807150021.279910114@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shifrin Dmitry <dmitry.shifrin@syntacore.com>
+From: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
 
-[ Upstream commit 941a8e9b7a86763ac52d5bf6ccc9986d37fde628 ]
+[ Upstream commit baeaabf970b9a90999f62ae27edf63f6cb86c023 ]
 
-It is required to check event type before checking event config.
-Events with the different types can have the same config.
-This check is missed for legacy mode code
+Individual MLO links connection status is not copied to
+EVENT_CONNECT_RESULT data while processing the connect response
+information in cfg80211_connect_done(). Due to this failed links
+are wrongly indicated with success status in EVENT_CONNECT_RESULT.
 
-For such perf usage:
-    sysctl -w kernel.perf_user_access=2
-    perf stat -e cycles,L1-dcache-loads --
-driver will try to force both events to CYCLE counter.
+To fix this, copy the individual MLO links status to the
+EVENT_CONNECT_RESULT data.
 
-This commit implements event type check before forcing
-events on the special counters.
-
-Signed-off-by: Shifrin Dmitry <dmitry.shifrin@syntacore.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Fixes: cc4c07c89aad ("drivers: perf: Implement perf event mmap support in the SBI backend")
-Link: https://lore.kernel.org/r/20240729125858.630653-1-dmitry.shifrin@syntacore.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 53ad07e9823b ("wifi: cfg80211: support reporting failed links")
+Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Link: https://patch.msgid.link/20240724125327.3495874-1-quic_vjakkam@quicinc.com
+[commit message editorial changes]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/riscv_pmu_sbi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/sme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
-index 4e842dcedfbaa..11c7c85047ed4 100644
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -412,7 +412,7 @@ static int pmu_sbi_ctr_get_idx(struct perf_event *event)
- 	 * but not in the user access mode as we want to use the other counters
- 	 * that support sampling/filtering.
- 	 */
--	if (hwc->flags & PERF_EVENT_FLAG_LEGACY) {
-+	if ((hwc->flags & PERF_EVENT_FLAG_LEGACY) && (event->attr.type == PERF_TYPE_HARDWARE)) {
- 		if (event->attr.config == PERF_COUNT_HW_CPU_CYCLES) {
- 			cflags |= SBI_PMU_CFG_FLAG_SKIP_MATCH;
- 			cmask = 1;
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 9bba233b5a6ec..72d78dbc55ffd 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -1057,6 +1057,7 @@ void cfg80211_connect_done(struct net_device *dev,
+ 			cfg80211_hold_bss(
+ 				bss_from_pub(params->links[link].bss));
+ 		ev->cr.links[link].bss = params->links[link].bss;
++		ev->cr.links[link].status = params->links[link].status;
+ 
+ 		if (params->links[link].addr) {
+ 			ev->cr.links[link].addr = next;
 -- 
 2.43.0
 
