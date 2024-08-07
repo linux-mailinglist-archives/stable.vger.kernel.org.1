@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-65628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C28B94AB27
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 802BB94ABAD
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB3B5283EC0
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:04:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E9052858E2
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB108839F7;
-	Wed,  7 Aug 2024 15:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10B581AB6;
+	Wed,  7 Aug 2024 15:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2bJ4cS2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+aU0d32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B613EA9A;
-	Wed,  7 Aug 2024 15:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3DE78281;
+	Wed,  7 Aug 2024 15:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042978; cv=none; b=u2jGTYtezGDrH952jqgHST6muQUVMhCd/YAMk3O8IsAQf7lSeE4ff8sCmNXyEwdiSdtbJOfUTRehYs5akvFac/OrRIwJS91mGbmkIuGkwZNr8bTl8tEAD3rWsNCbXqL1ICrgKpozzlo6IMiXTE0MQK5qJ3Cfbn0RWZLR5R8QMMY=
+	t=1723043279; cv=none; b=EU8yXcF3dV4Adc2vbJnEpkOoeg1C7Hb9wVWEE1tAyNTX3WElDbg9EC+gVx3cCbJqEGh+GltCp4iaYx+cDTSW7fcfnqM9UDgi3KCilhcjvRS9YNv0RbA8hNeYztz8YucBCK1wVx7djAirzh8ZXLInwOP63N4J+TNI3Y6a0JqExzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042978; c=relaxed/simple;
-	bh=neohmV7KOwZtWXH13iacsjblEzwGN4/ZEyIipieEYj0=;
+	s=arc-20240116; t=1723043279; c=relaxed/simple;
+	bh=jqTyrTvY7JxagwPhd6bUkBH5k5FeELMUaltIoJcXivI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQ/ft/77dn/A4+WmoWR+gQAWKmmMdI6NVKoxQc5No44HumTQ2KwU+YHIMEQ9VxkZqcBuMJIfTXFJtvu4R2J56yWjWze8v5U8xEr+/ruWc0jBwDcpCDfZaDXeS+tDexk8qVyYxOA5FVuOebsP9OZxFw+cfIb3Cv6KAHvhSlQ0XQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2bJ4cS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8756C32781;
-	Wed,  7 Aug 2024 15:02:57 +0000 (UTC)
+	 MIME-Version; b=BYT8YnHWHm8xVjtfTNpaDmI4X43idgnFaLYrnpiExHmRq87fc87QJEc+2oEzfUUhrBnmnz9VR0LhIl6cnEGb5qUL4MIYXg1cjAK6mWk5ok3hor4jSpYGHww6q9Qg1SR3fkHHjeSo186riH1SkOyBlqJtzeEUOOwu4M1unylTr9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+aU0d32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F134CC4AF0B;
+	Wed,  7 Aug 2024 15:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723042978;
-	bh=neohmV7KOwZtWXH13iacsjblEzwGN4/ZEyIipieEYj0=;
+	s=korg; t=1723043279;
+	bh=jqTyrTvY7JxagwPhd6bUkBH5k5FeELMUaltIoJcXivI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2bJ4cS2XIoKIilZDSg7lyThURRcK3QcVEpysz2TViolrSdKeJM+CzcPcnUr+cF8g
-	 2NAAslNPih19BGaiHQCzPIEwDU2tLM6KTVB7klzfRHR6U6q4wx+ZM/M/xmysE4yvoH
-	 hK2Ju9CXs5JyjL0cOKPYAfG2CLaxAFGqPoe1wLXg=
+	b=n+aU0d32PSlHU5xPGRiqIIGJhakVD7awPyzWKSxaaXygXlatEwxn9/OOyW3AnqZkP
+	 XuVYIPI8S/xvcIcjz8bztFVJq/FDdSBu95faiICdCl9FqkBaCzLrUblRKdaeUB5zQ1
+	 7jjQefCHHYaBn0ba+ZEysrkDLnjSLeNyF8S0wfMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.10 046/123] ice: improve updating ice_{t,r}x_ring::xsk_pool
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 033/121] video: Add helpers for decoding screen_info
 Date: Wed,  7 Aug 2024 16:59:25 +0200
-Message-ID: <20240807150022.329584722@linuxfoundation.org>
+Message-ID: <20240807150020.413273746@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,536 +62,357 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit ebc33a3f8d0aeddf19fd5827add24b82ae171829 ]
+[ Upstream commit 75fa9b7e375e35739663cde0252d31e586c6314a ]
 
-xsk_buff_pool pointers that ice ring structs hold are updated via
-ndo_bpf that is executed in process context while it can be read by
-remote CPU at the same time within NAPI poll. Use synchronize_net()
-after pointer update and {READ,WRITE}_ONCE() when working with mentioned
-pointer.
+The plain values as stored in struct screen_info need to be decoded
+before being used. Add helpers that decode the type of video output
+and the framebuffer I/O aperture.
 
-Fixes: 2d4238f55697 ("ice: Add support for AF_XDP")
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Old or non-x86 systems may not set the type of video directly, but
+only indicate the presence by storing 0x01 in orig_video_isVGA. The
+decoding logic in screen_info_video_type() takes this into account.
+It then follows similar code in vgacon's vgacon_startup() to detect
+the video type from the given values.
+
+A call to screen_info_resources() returns all known resources of the
+given screen_info. The resources' values have been taken from existing
+code in vgacon and vga16fb. These drivers can later be converted to
+use the new interfaces.
+
+v2:
+	* return ssize_t from screen_info_resources()
+	* don't call __screen_info_has_lfb() unnecessarily
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240212090736.11464-2-tzimmermann@suse.de
+Stable-dep-of: c2bc958b2b03 ("fbdev: vesafb: Detect VGA compatibility from screen info's VESA attributes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice.h      |  11 ++-
- drivers/net/ethernet/intel/ice/ice_base.c |   4 +-
- drivers/net/ethernet/intel/ice/ice_main.c |   2 +-
- drivers/net/ethernet/intel/ice/ice_txrx.c |   8 +-
- drivers/net/ethernet/intel/ice/ice_xsk.c  | 103 ++++++++++++++--------
- drivers/net/ethernet/intel/ice/ice_xsk.h  |  14 ++-
- 6 files changed, 87 insertions(+), 55 deletions(-)
+ drivers/firmware/Kconfig            |   1 +
+ drivers/video/Kconfig               |   4 +
+ drivers/video/Makefile              |   3 +
+ drivers/video/screen_info_generic.c | 146 ++++++++++++++++++++++++++++
+ include/linux/screen_info.h         | 100 +++++++++++++++++++
+ 5 files changed, 254 insertions(+)
+ create mode 100644 drivers/video/screen_info_generic.c
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 99a75a59078ef..caaa10157909e 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -765,18 +765,17 @@ static inline struct xsk_buff_pool *ice_get_xp_from_qid(struct ice_vsi *vsi,
- }
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index b59e3041fd627..f0e9f250669e2 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -229,6 +229,7 @@ config QCOM_SCM_DOWNLOAD_MODE_DEFAULT
+ config SYSFB
+ 	bool
+ 	select BOOT_VESA_SUPPORT
++	select SCREEN_INFO
  
- /**
-- * ice_xsk_pool - get XSK buffer pool bound to a ring
-+ * ice_rx_xsk_pool - assign XSK buff pool to Rx ring
-  * @ring: Rx ring to use
-  *
-- * Returns a pointer to xsk_buff_pool structure if there is a buffer pool
-- * present, NULL otherwise.
-+ * Sets XSK buff pool pointer on Rx ring.
-  */
--static inline struct xsk_buff_pool *ice_xsk_pool(struct ice_rx_ring *ring)
-+static inline void ice_rx_xsk_pool(struct ice_rx_ring *ring)
- {
- 	struct ice_vsi *vsi = ring->vsi;
- 	u16 qid = ring->q_index;
+ config SYSFB_SIMPLEFB
+ 	bool "Mark VGA/VBE/EFI FB as generic system framebuffer"
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index b694d7669d320..1eb755a94940a 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -11,6 +11,10 @@ config APERTURE_HELPERS
+ 	  Support tracking and hand-over of aperture ownership. Required
+ 	  by graphics drivers for firmware-provided framebuffers.
  
--	return ice_get_xp_from_qid(vsi, qid);
-+	WRITE_ONCE(ring->xsk_pool, ice_get_xp_from_qid(vsi, qid));
- }
++config SCREEN_INFO
++	bool
++	default n
++
+ config STI_CORE
+ 	bool
+ 	depends on PARISC
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 6bbc039508995..b929b664d52cd 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -1,12 +1,15 @@
+ # SPDX-License-Identifier: GPL-2.0
  
- /**
-@@ -801,7 +800,7 @@ static inline void ice_tx_xsk_pool(struct ice_vsi *vsi, u16 qid)
- 	if (!ring)
- 		return;
+ obj-$(CONFIG_APERTURE_HELPERS)    += aperture.o
++obj-$(CONFIG_SCREEN_INFO)         += screen_info.o
+ obj-$(CONFIG_STI_CORE)            += sticore.o
+ obj-$(CONFIG_VGASTATE)            += vgastate.o
+ obj-$(CONFIG_VIDEO_CMDLINE)       += cmdline.o
+ obj-$(CONFIG_VIDEO_NOMODESET)     += nomodeset.o
+ obj-$(CONFIG_HDMI)                += hdmi.o
  
--	ring->xsk_pool = ice_get_xp_from_qid(vsi, qid);
-+	WRITE_ONCE(ring->xsk_pool, ice_get_xp_from_qid(vsi, qid));
- }
++screen_info-y			  := screen_info_generic.o
++
+ obj-$(CONFIG_VT)		  += console/
+ obj-$(CONFIG_FB_STI)		  += console/
+ obj-$(CONFIG_LOGO)		  += logo/
+diff --git a/drivers/video/screen_info_generic.c b/drivers/video/screen_info_generic.c
+new file mode 100644
+index 0000000000000..64117c6367abb
+--- /dev/null
++++ b/drivers/video/screen_info_generic.c
+@@ -0,0 +1,146 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/export.h>
++#include <linux/ioport.h>
++#include <linux/screen_info.h>
++#include <linux/string.h>
++
++static void resource_init_named(struct resource *r,
++				resource_size_t start, resource_size_t size,
++				const char *name, unsigned int flags)
++{
++	memset(r, 0, sizeof(*r));
++
++	r->start = start;
++	r->end = start + size - 1;
++	r->name = name;
++	r->flags = flags;
++}
++
++static void resource_init_io_named(struct resource *r,
++				   resource_size_t start, resource_size_t size,
++				   const char *name)
++{
++	resource_init_named(r, start, size, name, IORESOURCE_IO);
++}
++
++static void resource_init_mem_named(struct resource *r,
++				   resource_size_t start, resource_size_t size,
++				   const char *name)
++{
++	resource_init_named(r, start, size, name, IORESOURCE_MEM);
++}
++
++static inline bool __screen_info_has_ega_gfx(unsigned int mode)
++{
++	switch (mode) {
++	case 0x0d:	/* 320x200-4 */
++	case 0x0e:	/* 640x200-4 */
++	case 0x0f:	/* 640x350-1 */
++	case 0x10:	/* 640x350-4 */
++		return true;
++	default:
++		return false;
++	}
++}
++
++static inline bool __screen_info_has_vga_gfx(unsigned int mode)
++{
++	switch (mode) {
++	case 0x10:	/* 640x480-1 */
++	case 0x12:	/* 640x480-4 */
++	case 0x13:	/* 320-200-8 */
++	case 0x6a:	/* 800x600-4 (VESA) */
++		return true;
++	default:
++		return __screen_info_has_ega_gfx(mode);
++	}
++}
++
++/**
++ * screen_info_resources() - Get resources from screen_info structure
++ * @si: the screen_info
++ * @r: pointer to an array of resource structures
++ * @num: number of elements in @r:
++ *
++ * Returns:
++ * The number of resources stored in @r on success, or a negative errno code otherwise.
++ *
++ * A call to screen_info_resources() returns the resources consumed by the
++ * screen_info's device or framebuffer. The result is stored in the caller-supplied
++ * array @r with up to @num elements. The function returns the number of
++ * initialized elements.
++ */
++ssize_t screen_info_resources(const struct screen_info *si, struct resource *r, size_t num)
++{
++	struct resource *pos = r;
++	unsigned int type = screen_info_video_type(si);
++	u64 base, size;
++
++	switch (type) {
++	case VIDEO_TYPE_MDA:
++		if (num > 0)
++			resource_init_io_named(pos++, 0x3b0, 12, "mda");
++		if (num > 1)
++			resource_init_io_named(pos++, 0x3bf, 0x01, "mda");
++		if (num > 2)
++			resource_init_mem_named(pos++, 0xb0000, 0x2000, "mda");
++		break;
++	case VIDEO_TYPE_CGA:
++		if (num > 0)
++			resource_init_io_named(pos++, 0x3d4, 0x02, "cga");
++		if (num > 1)
++			resource_init_mem_named(pos++, 0xb8000, 0x2000, "cga");
++		break;
++	case VIDEO_TYPE_EGAM:
++		if (num > 0)
++			resource_init_io_named(pos++, 0x3bf, 0x10, "ega");
++		if (num > 1)
++			resource_init_mem_named(pos++, 0xb0000, 0x8000, "ega");
++		break;
++	case VIDEO_TYPE_EGAC:
++		if (num > 0)
++			resource_init_io_named(pos++, 0x3c0, 0x20, "ega");
++		if (num > 1) {
++			if (__screen_info_has_ega_gfx(si->orig_video_mode))
++				resource_init_mem_named(pos++, 0xa0000, 0x10000, "ega");
++			else
++				resource_init_mem_named(pos++, 0xb8000, 0x8000, "ega");
++		}
++		break;
++	case VIDEO_TYPE_VGAC:
++		if (num > 0)
++			resource_init_io_named(pos++, 0x3c0, 0x20, "vga+");
++		if (num > 1) {
++			if (__screen_info_has_vga_gfx(si->orig_video_mode))
++				resource_init_mem_named(pos++, 0xa0000, 0x10000, "vga+");
++			else
++				resource_init_mem_named(pos++, 0xb8000, 0x8000, "vga+");
++		}
++		break;
++	case VIDEO_TYPE_VLFB:
++	case VIDEO_TYPE_EFI:
++		base = __screen_info_lfb_base(si);
++		if (!base)
++			break;
++		size = __screen_info_lfb_size(si, type);
++		if (!size)
++			break;
++		if (num > 0)
++			resource_init_mem_named(pos++, base, size, "lfb");
++		break;
++	case VIDEO_TYPE_PICA_S3:
++	case VIDEO_TYPE_MIPS_G364:
++	case VIDEO_TYPE_SGI:
++	case VIDEO_TYPE_TGAC:
++	case VIDEO_TYPE_SUN:
++	case VIDEO_TYPE_SUNPCI:
++	case VIDEO_TYPE_PMAC:
++	default:
++		/* not supported */
++		return -EINVAL;
++	}
++
++	return pos - r;
++}
++EXPORT_SYMBOL(screen_info_resources);
+diff --git a/include/linux/screen_info.h b/include/linux/screen_info.h
+index eab7081392d50..e7a02c5609d12 100644
+--- a/include/linux/screen_info.h
++++ b/include/linux/screen_info.h
+@@ -4,6 +4,106 @@
  
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
-index 5d396c1a77314..1facf179a96fd 100644
---- a/drivers/net/ethernet/intel/ice/ice_base.c
-+++ b/drivers/net/ethernet/intel/ice/ice_base.c
-@@ -536,7 +536,7 @@ static int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
- 				return err;
- 		}
+ #include <uapi/linux/screen_info.h>
  
--		ring->xsk_pool = ice_xsk_pool(ring);
-+		ice_rx_xsk_pool(ring);
- 		if (ring->xsk_pool) {
- 			xdp_rxq_info_unreg(&ring->xdp_rxq);
++/**
++ * SCREEN_INFO_MAX_RESOURCES - maximum number of resources per screen_info
++ */
++#define SCREEN_INFO_MAX_RESOURCES	3
++
++struct resource;
++
++static inline bool __screen_info_has_lfb(unsigned int type)
++{
++	return (type == VIDEO_TYPE_VLFB) || (type == VIDEO_TYPE_EFI);
++}
++
++static inline u64 __screen_info_lfb_base(const struct screen_info *si)
++{
++	u64 lfb_base = si->lfb_base;
++
++	if (si->capabilities & VIDEO_CAPABILITY_64BIT_BASE)
++		lfb_base |= (u64)si->ext_lfb_base << 32;
++
++	return lfb_base;
++}
++
++static inline u64 __screen_info_lfb_size(const struct screen_info *si, unsigned int type)
++{
++	u64 lfb_size = si->lfb_size;
++
++	if (type == VIDEO_TYPE_VLFB)
++		lfb_size <<= 16;
++	return lfb_size;
++}
++
++static inline unsigned int __screen_info_video_type(unsigned int type)
++{
++	switch (type) {
++	case VIDEO_TYPE_MDA:
++	case VIDEO_TYPE_CGA:
++	case VIDEO_TYPE_EGAM:
++	case VIDEO_TYPE_EGAC:
++	case VIDEO_TYPE_VGAC:
++	case VIDEO_TYPE_VLFB:
++	case VIDEO_TYPE_PICA_S3:
++	case VIDEO_TYPE_MIPS_G364:
++	case VIDEO_TYPE_SGI:
++	case VIDEO_TYPE_TGAC:
++	case VIDEO_TYPE_SUN:
++	case VIDEO_TYPE_SUNPCI:
++	case VIDEO_TYPE_PMAC:
++	case VIDEO_TYPE_EFI:
++		return type;
++	default:
++		return 0;
++	}
++}
++
++/**
++ * screen_info_video_type() - Decodes the video type from struct screen_info
++ * @si: an instance of struct screen_info
++ *
++ * Returns:
++ * A VIDEO_TYPE_ constant representing si's type of video display, or 0 otherwise.
++ */
++static inline unsigned int screen_info_video_type(const struct screen_info *si)
++{
++	unsigned int type;
++
++	// check if display output is on
++	if (!si->orig_video_isVGA)
++		return 0;
++
++	// check for a known VIDEO_TYPE_ constant
++	type = __screen_info_video_type(si->orig_video_isVGA);
++	if (type)
++		return si->orig_video_isVGA;
++
++	// check if text mode has been initialized
++	if (!si->orig_video_lines || !si->orig_video_cols)
++		return 0;
++
++	// 80x25 text, mono
++	if (si->orig_video_mode == 0x07) {
++		if ((si->orig_video_ega_bx & 0xff) != 0x10)
++			return VIDEO_TYPE_EGAM;
++		else
++			return VIDEO_TYPE_MDA;
++	}
++
++	// EGA/VGA, 16 colors
++	if ((si->orig_video_ega_bx & 0xff) != 0x10) {
++		if (si->orig_video_isVGA)
++			return VIDEO_TYPE_VGAC;
++		else
++			return VIDEO_TYPE_EGAC;
++	}
++
++	// the rest...
++	return VIDEO_TYPE_CGA;
++}
++
++ssize_t screen_info_resources(const struct screen_info *si, struct resource *r, size_t num);
++
+ extern struct screen_info screen_info;
  
-@@ -597,7 +597,7 @@ static int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
- 			return 0;
- 		}
- 
--		ok = ice_alloc_rx_bufs_zc(ring, num_bufs);
-+		ok = ice_alloc_rx_bufs_zc(ring, ring->xsk_pool, num_bufs);
- 		if (!ok) {
- 			u16 pf_q = ring->vsi->rxq_map[ring->q_index];
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 55a42aad92a51..9b075dd48889e 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -2949,7 +2949,7 @@ static void ice_vsi_rx_napi_schedule(struct ice_vsi *vsi)
- 	ice_for_each_rxq(vsi, i) {
- 		struct ice_rx_ring *rx_ring = vsi->rx_rings[i];
- 
--		if (rx_ring->xsk_pool)
-+		if (READ_ONCE(rx_ring->xsk_pool))
- 			napi_schedule(&rx_ring->q_vector->napi);
- 	}
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 8bb743f78fcb4..0f91e91674277 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -1521,10 +1521,11 @@ int ice_napi_poll(struct napi_struct *napi, int budget)
- 	 * budget and be more aggressive about cleaning up the Tx descriptors.
- 	 */
- 	ice_for_each_tx_ring(tx_ring, q_vector->tx) {
-+		struct xsk_buff_pool *xsk_pool = READ_ONCE(tx_ring->xsk_pool);
- 		bool wd;
- 
--		if (tx_ring->xsk_pool)
--			wd = ice_xmit_zc(tx_ring);
-+		if (xsk_pool)
-+			wd = ice_xmit_zc(tx_ring, xsk_pool);
- 		else if (ice_ring_is_xdp(tx_ring))
- 			wd = true;
- 		else
-@@ -1550,6 +1551,7 @@ int ice_napi_poll(struct napi_struct *napi, int budget)
- 		budget_per_ring = budget;
- 
- 	ice_for_each_rx_ring(rx_ring, q_vector->rx) {
-+		struct xsk_buff_pool *xsk_pool = READ_ONCE(rx_ring->xsk_pool);
- 		int cleaned;
- 
- 		/* A dedicated path for zero-copy allows making a single
-@@ -1557,7 +1559,7 @@ int ice_napi_poll(struct napi_struct *napi, int budget)
- 		 * ice_clean_rx_irq function and makes the codebase cleaner.
- 		 */
- 		cleaned = rx_ring->xsk_pool ?
--			  ice_clean_rx_irq_zc(rx_ring, budget_per_ring) :
-+			  ice_clean_rx_irq_zc(rx_ring, xsk_pool, budget_per_ring) :
- 			  ice_clean_rx_irq(rx_ring, budget_per_ring);
- 		work_done += cleaned;
- 		/* if we clean as many as budgeted, we must not be done */
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index 3fbe4cfadfbfa..ee084ad80a613 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -250,6 +250,8 @@ static int ice_qp_ena(struct ice_vsi *vsi, u16 q_idx)
- 	ice_qvec_toggle_napi(vsi, q_vector, true);
- 	ice_qvec_ena_irq(vsi, q_vector);
- 
-+	/* make sure NAPI sees updated ice_{t,x}_ring::xsk_pool */
-+	synchronize_net();
- 	ice_get_link_status(vsi->port_info, &link_up);
- 	if (link_up) {
- 		netif_tx_start_queue(netdev_get_tx_queue(vsi->netdev, q_idx));
-@@ -464,6 +466,7 @@ static u16 ice_fill_rx_descs(struct xsk_buff_pool *pool, struct xdp_buff **xdp,
- /**
-  * __ice_alloc_rx_bufs_zc - allocate a number of Rx buffers
-  * @rx_ring: Rx ring
-+ * @xsk_pool: XSK buffer pool to pick buffers to be filled by HW
-  * @count: The number of buffers to allocate
-  *
-  * Place the @count of descriptors onto Rx ring. Handle the ring wrap
-@@ -472,7 +475,8 @@ static u16 ice_fill_rx_descs(struct xsk_buff_pool *pool, struct xdp_buff **xdp,
-  *
-  * Returns true if all allocations were successful, false if any fail.
-  */
--static bool __ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring, u16 count)
-+static bool __ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring,
-+				   struct xsk_buff_pool *xsk_pool, u16 count)
- {
- 	u32 nb_buffs_extra = 0, nb_buffs = 0;
- 	union ice_32b_rx_flex_desc *rx_desc;
-@@ -484,8 +488,7 @@ static bool __ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring, u16 count)
- 	xdp = ice_xdp_buf(rx_ring, ntu);
- 
- 	if (ntu + count >= rx_ring->count) {
--		nb_buffs_extra = ice_fill_rx_descs(rx_ring->xsk_pool, xdp,
--						   rx_desc,
-+		nb_buffs_extra = ice_fill_rx_descs(xsk_pool, xdp, rx_desc,
- 						   rx_ring->count - ntu);
- 		if (nb_buffs_extra != rx_ring->count - ntu) {
- 			ntu += nb_buffs_extra;
-@@ -498,7 +501,7 @@ static bool __ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring, u16 count)
- 		ice_release_rx_desc(rx_ring, 0);
- 	}
- 
--	nb_buffs = ice_fill_rx_descs(rx_ring->xsk_pool, xdp, rx_desc, count);
-+	nb_buffs = ice_fill_rx_descs(xsk_pool, xdp, rx_desc, count);
- 
- 	ntu += nb_buffs;
- 	if (ntu == rx_ring->count)
-@@ -514,6 +517,7 @@ static bool __ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring, u16 count)
- /**
-  * ice_alloc_rx_bufs_zc - allocate a number of Rx buffers
-  * @rx_ring: Rx ring
-+ * @xsk_pool: XSK buffer pool to pick buffers to be filled by HW
-  * @count: The number of buffers to allocate
-  *
-  * Wrapper for internal allocation routine; figure out how many tail
-@@ -521,7 +525,8 @@ static bool __ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring, u16 count)
-  *
-  * Returns true if all calls to internal alloc routine succeeded
-  */
--bool ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring, u16 count)
-+bool ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring,
-+			  struct xsk_buff_pool *xsk_pool, u16 count)
- {
- 	u16 rx_thresh = ICE_RING_QUARTER(rx_ring);
- 	u16 leftover, i, tail_bumps;
-@@ -530,9 +535,9 @@ bool ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring, u16 count)
- 	leftover = count - (tail_bumps * rx_thresh);
- 
- 	for (i = 0; i < tail_bumps; i++)
--		if (!__ice_alloc_rx_bufs_zc(rx_ring, rx_thresh))
-+		if (!__ice_alloc_rx_bufs_zc(rx_ring, xsk_pool, rx_thresh))
- 			return false;
--	return __ice_alloc_rx_bufs_zc(rx_ring, leftover);
-+	return __ice_alloc_rx_bufs_zc(rx_ring, xsk_pool, leftover);
- }
- 
- /**
-@@ -601,8 +606,10 @@ ice_construct_skb_zc(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp)
- /**
-  * ice_clean_xdp_irq_zc - produce AF_XDP descriptors to CQ
-  * @xdp_ring: XDP Tx ring
-+ * @xsk_pool: AF_XDP buffer pool pointer
-  */
--static u32 ice_clean_xdp_irq_zc(struct ice_tx_ring *xdp_ring)
-+static u32 ice_clean_xdp_irq_zc(struct ice_tx_ring *xdp_ring,
-+				struct xsk_buff_pool *xsk_pool)
- {
- 	u16 ntc = xdp_ring->next_to_clean;
- 	struct ice_tx_desc *tx_desc;
-@@ -653,7 +660,7 @@ static u32 ice_clean_xdp_irq_zc(struct ice_tx_ring *xdp_ring)
- 	if (xdp_ring->next_to_clean >= cnt)
- 		xdp_ring->next_to_clean -= cnt;
- 	if (xsk_frames)
--		xsk_tx_completed(xdp_ring->xsk_pool, xsk_frames);
-+		xsk_tx_completed(xsk_pool, xsk_frames);
- 
- 	return completed_frames;
- }
-@@ -662,6 +669,7 @@ static u32 ice_clean_xdp_irq_zc(struct ice_tx_ring *xdp_ring)
-  * ice_xmit_xdp_tx_zc - AF_XDP ZC handler for XDP_TX
-  * @xdp: XDP buffer to xmit
-  * @xdp_ring: XDP ring to produce descriptor onto
-+ * @xsk_pool: AF_XDP buffer pool pointer
-  *
-  * note that this function works directly on xdp_buff, no need to convert
-  * it to xdp_frame. xdp_buff pointer is stored to ice_tx_buf so that cleaning
-@@ -671,7 +679,8 @@ static u32 ice_clean_xdp_irq_zc(struct ice_tx_ring *xdp_ring)
-  * was not enough space on XDP ring
-  */
- static int ice_xmit_xdp_tx_zc(struct xdp_buff *xdp,
--			      struct ice_tx_ring *xdp_ring)
-+			      struct ice_tx_ring *xdp_ring,
-+			      struct xsk_buff_pool *xsk_pool)
- {
- 	struct skb_shared_info *sinfo = NULL;
- 	u32 size = xdp->data_end - xdp->data;
-@@ -685,7 +694,7 @@ static int ice_xmit_xdp_tx_zc(struct xdp_buff *xdp,
- 
- 	free_space = ICE_DESC_UNUSED(xdp_ring);
- 	if (free_space < ICE_RING_QUARTER(xdp_ring))
--		free_space += ice_clean_xdp_irq_zc(xdp_ring);
-+		free_space += ice_clean_xdp_irq_zc(xdp_ring, xsk_pool);
- 
- 	if (unlikely(!free_space))
- 		goto busy;
-@@ -705,7 +714,7 @@ static int ice_xmit_xdp_tx_zc(struct xdp_buff *xdp,
- 		dma_addr_t dma;
- 
- 		dma = xsk_buff_xdp_get_dma(xdp);
--		xsk_buff_raw_dma_sync_for_device(xdp_ring->xsk_pool, dma, size);
-+		xsk_buff_raw_dma_sync_for_device(xsk_pool, dma, size);
- 
- 		tx_buf->xdp = xdp;
- 		tx_buf->type = ICE_TX_BUF_XSK_TX;
-@@ -747,12 +756,14 @@ static int ice_xmit_xdp_tx_zc(struct xdp_buff *xdp,
-  * @xdp: xdp_buff used as input to the XDP program
-  * @xdp_prog: XDP program to run
-  * @xdp_ring: ring to be used for XDP_TX action
-+ * @xsk_pool: AF_XDP buffer pool pointer
-  *
-  * Returns any of ICE_XDP_{PASS, CONSUMED, TX, REDIR}
-  */
- static int
- ice_run_xdp_zc(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
--	       struct bpf_prog *xdp_prog, struct ice_tx_ring *xdp_ring)
-+	       struct bpf_prog *xdp_prog, struct ice_tx_ring *xdp_ring,
-+	       struct xsk_buff_pool *xsk_pool)
- {
- 	int err, result = ICE_XDP_PASS;
- 	u32 act;
-@@ -763,7 +774,7 @@ ice_run_xdp_zc(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 		err = xdp_do_redirect(rx_ring->netdev, xdp, xdp_prog);
- 		if (!err)
- 			return ICE_XDP_REDIR;
--		if (xsk_uses_need_wakeup(rx_ring->xsk_pool) && err == -ENOBUFS)
-+		if (xsk_uses_need_wakeup(xsk_pool) && err == -ENOBUFS)
- 			result = ICE_XDP_EXIT;
- 		else
- 			result = ICE_XDP_CONSUMED;
-@@ -774,7 +785,7 @@ ice_run_xdp_zc(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 	case XDP_PASS:
- 		break;
- 	case XDP_TX:
--		result = ice_xmit_xdp_tx_zc(xdp, xdp_ring);
-+		result = ice_xmit_xdp_tx_zc(xdp, xdp_ring, xsk_pool);
- 		if (result == ICE_XDP_CONSUMED)
- 			goto out_failure;
- 		break;
-@@ -826,14 +837,16 @@ ice_add_xsk_frag(struct ice_rx_ring *rx_ring, struct xdp_buff *first,
- /**
-  * ice_clean_rx_irq_zc - consumes packets from the hardware ring
-  * @rx_ring: AF_XDP Rx ring
-+ * @xsk_pool: AF_XDP buffer pool pointer
-  * @budget: NAPI budget
-  *
-  * Returns number of processed packets on success, remaining budget on failure.
-  */
--int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring, int budget)
-+int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring,
-+			struct xsk_buff_pool *xsk_pool,
-+			int budget)
- {
- 	unsigned int total_rx_bytes = 0, total_rx_packets = 0;
--	struct xsk_buff_pool *xsk_pool = rx_ring->xsk_pool;
- 	u32 ntc = rx_ring->next_to_clean;
- 	u32 ntu = rx_ring->next_to_use;
- 	struct xdp_buff *first = NULL;
-@@ -896,7 +909,8 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring, int budget)
- 		if (ice_is_non_eop(rx_ring, rx_desc))
- 			continue;
- 
--		xdp_res = ice_run_xdp_zc(rx_ring, first, xdp_prog, xdp_ring);
-+		xdp_res = ice_run_xdp_zc(rx_ring, first, xdp_prog, xdp_ring,
-+					 xsk_pool);
- 		if (likely(xdp_res & (ICE_XDP_TX | ICE_XDP_REDIR))) {
- 			xdp_xmit |= xdp_res;
- 		} else if (xdp_res == ICE_XDP_EXIT) {
-@@ -945,7 +959,8 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring, int budget)
- 	rx_ring->next_to_clean = ntc;
- 	entries_to_alloc = ICE_RX_DESC_UNUSED(rx_ring);
- 	if (entries_to_alloc > ICE_RING_QUARTER(rx_ring))
--		failure |= !ice_alloc_rx_bufs_zc(rx_ring, entries_to_alloc);
-+		failure |= !ice_alloc_rx_bufs_zc(rx_ring, xsk_pool,
-+						 entries_to_alloc);
- 
- 	ice_finalize_xdp_rx(xdp_ring, xdp_xmit, 0);
- 	ice_update_rx_ring_stats(rx_ring, total_rx_packets, total_rx_bytes);
-@@ -968,17 +983,19 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring, int budget)
- /**
-  * ice_xmit_pkt - produce a single HW Tx descriptor out of AF_XDP descriptor
-  * @xdp_ring: XDP ring to produce the HW Tx descriptor on
-+ * @xsk_pool: XSK buffer pool to pick buffers to be consumed by HW
-  * @desc: AF_XDP descriptor to pull the DMA address and length from
-  * @total_bytes: bytes accumulator that will be used for stats update
-  */
--static void ice_xmit_pkt(struct ice_tx_ring *xdp_ring, struct xdp_desc *desc,
-+static void ice_xmit_pkt(struct ice_tx_ring *xdp_ring,
-+			 struct xsk_buff_pool *xsk_pool, struct xdp_desc *desc,
- 			 unsigned int *total_bytes)
- {
- 	struct ice_tx_desc *tx_desc;
- 	dma_addr_t dma;
- 
--	dma = xsk_buff_raw_get_dma(xdp_ring->xsk_pool, desc->addr);
--	xsk_buff_raw_dma_sync_for_device(xdp_ring->xsk_pool, dma, desc->len);
-+	dma = xsk_buff_raw_get_dma(xsk_pool, desc->addr);
-+	xsk_buff_raw_dma_sync_for_device(xsk_pool, dma, desc->len);
- 
- 	tx_desc = ICE_TX_DESC(xdp_ring, xdp_ring->next_to_use++);
- 	tx_desc->buf_addr = cpu_to_le64(dma);
-@@ -991,10 +1008,13 @@ static void ice_xmit_pkt(struct ice_tx_ring *xdp_ring, struct xdp_desc *desc,
- /**
-  * ice_xmit_pkt_batch - produce a batch of HW Tx descriptors out of AF_XDP descriptors
-  * @xdp_ring: XDP ring to produce the HW Tx descriptors on
-+ * @xsk_pool: XSK buffer pool to pick buffers to be consumed by HW
-  * @descs: AF_XDP descriptors to pull the DMA addresses and lengths from
-  * @total_bytes: bytes accumulator that will be used for stats update
-  */
--static void ice_xmit_pkt_batch(struct ice_tx_ring *xdp_ring, struct xdp_desc *descs,
-+static void ice_xmit_pkt_batch(struct ice_tx_ring *xdp_ring,
-+			       struct xsk_buff_pool *xsk_pool,
-+			       struct xdp_desc *descs,
- 			       unsigned int *total_bytes)
- {
- 	u16 ntu = xdp_ring->next_to_use;
-@@ -1004,8 +1024,8 @@ static void ice_xmit_pkt_batch(struct ice_tx_ring *xdp_ring, struct xdp_desc *de
- 	loop_unrolled_for(i = 0; i < PKTS_PER_BATCH; i++) {
- 		dma_addr_t dma;
- 
--		dma = xsk_buff_raw_get_dma(xdp_ring->xsk_pool, descs[i].addr);
--		xsk_buff_raw_dma_sync_for_device(xdp_ring->xsk_pool, dma, descs[i].len);
-+		dma = xsk_buff_raw_get_dma(xsk_pool, descs[i].addr);
-+		xsk_buff_raw_dma_sync_for_device(xsk_pool, dma, descs[i].len);
- 
- 		tx_desc = ICE_TX_DESC(xdp_ring, ntu++);
- 		tx_desc->buf_addr = cpu_to_le64(dma);
-@@ -1021,37 +1041,41 @@ static void ice_xmit_pkt_batch(struct ice_tx_ring *xdp_ring, struct xdp_desc *de
- /**
-  * ice_fill_tx_hw_ring - produce the number of Tx descriptors onto ring
-  * @xdp_ring: XDP ring to produce the HW Tx descriptors on
-+ * @xsk_pool: XSK buffer pool to pick buffers to be consumed by HW
-  * @descs: AF_XDP descriptors to pull the DMA addresses and lengths from
-  * @nb_pkts: count of packets to be send
-  * @total_bytes: bytes accumulator that will be used for stats update
-  */
--static void ice_fill_tx_hw_ring(struct ice_tx_ring *xdp_ring, struct xdp_desc *descs,
--				u32 nb_pkts, unsigned int *total_bytes)
-+static void ice_fill_tx_hw_ring(struct ice_tx_ring *xdp_ring,
-+				struct xsk_buff_pool *xsk_pool,
-+				struct xdp_desc *descs, u32 nb_pkts,
-+				unsigned int *total_bytes)
- {
- 	u32 batched, leftover, i;
- 
- 	batched = ALIGN_DOWN(nb_pkts, PKTS_PER_BATCH);
- 	leftover = nb_pkts & (PKTS_PER_BATCH - 1);
- 	for (i = 0; i < batched; i += PKTS_PER_BATCH)
--		ice_xmit_pkt_batch(xdp_ring, &descs[i], total_bytes);
-+		ice_xmit_pkt_batch(xdp_ring, xsk_pool, &descs[i], total_bytes);
- 	for (; i < batched + leftover; i++)
--		ice_xmit_pkt(xdp_ring, &descs[i], total_bytes);
-+		ice_xmit_pkt(xdp_ring, xsk_pool, &descs[i], total_bytes);
- }
- 
- /**
-  * ice_xmit_zc - take entries from XSK Tx ring and place them onto HW Tx ring
-  * @xdp_ring: XDP ring to produce the HW Tx descriptors on
-+ * @xsk_pool: AF_XDP buffer pool pointer
-  *
-  * Returns true if there is no more work that needs to be done, false otherwise
-  */
--bool ice_xmit_zc(struct ice_tx_ring *xdp_ring)
-+bool ice_xmit_zc(struct ice_tx_ring *xdp_ring, struct xsk_buff_pool *xsk_pool)
- {
--	struct xdp_desc *descs = xdp_ring->xsk_pool->tx_descs;
-+	struct xdp_desc *descs = xsk_pool->tx_descs;
- 	u32 nb_pkts, nb_processed = 0;
- 	unsigned int total_bytes = 0;
- 	int budget;
- 
--	ice_clean_xdp_irq_zc(xdp_ring);
-+	ice_clean_xdp_irq_zc(xdp_ring, xsk_pool);
- 
- 	if (!netif_carrier_ok(xdp_ring->vsi->netdev) ||
- 	    !netif_running(xdp_ring->vsi->netdev))
-@@ -1060,25 +1084,26 @@ bool ice_xmit_zc(struct ice_tx_ring *xdp_ring)
- 	budget = ICE_DESC_UNUSED(xdp_ring);
- 	budget = min_t(u16, budget, ICE_RING_QUARTER(xdp_ring));
- 
--	nb_pkts = xsk_tx_peek_release_desc_batch(xdp_ring->xsk_pool, budget);
-+	nb_pkts = xsk_tx_peek_release_desc_batch(xsk_pool, budget);
- 	if (!nb_pkts)
- 		return true;
- 
- 	if (xdp_ring->next_to_use + nb_pkts >= xdp_ring->count) {
- 		nb_processed = xdp_ring->count - xdp_ring->next_to_use;
--		ice_fill_tx_hw_ring(xdp_ring, descs, nb_processed, &total_bytes);
-+		ice_fill_tx_hw_ring(xdp_ring, xsk_pool, descs, nb_processed,
-+				    &total_bytes);
- 		xdp_ring->next_to_use = 0;
- 	}
- 
--	ice_fill_tx_hw_ring(xdp_ring, &descs[nb_processed], nb_pkts - nb_processed,
--			    &total_bytes);
-+	ice_fill_tx_hw_ring(xdp_ring, xsk_pool, &descs[nb_processed],
-+			    nb_pkts - nb_processed, &total_bytes);
- 
- 	ice_set_rs_bit(xdp_ring);
- 	ice_xdp_ring_update_tail(xdp_ring);
- 	ice_update_tx_ring_stats(xdp_ring, nb_pkts, total_bytes);
- 
--	if (xsk_uses_need_wakeup(xdp_ring->xsk_pool))
--		xsk_set_tx_need_wakeup(xdp_ring->xsk_pool);
-+	if (xsk_uses_need_wakeup(xsk_pool))
-+		xsk_set_tx_need_wakeup(xsk_pool);
- 
- 	return nb_pkts < budget;
- }
-@@ -1111,7 +1136,7 @@ ice_xsk_wakeup(struct net_device *netdev, u32 queue_id,
- 
- 	ring = vsi->rx_rings[queue_id]->xdp_ring;
- 
--	if (!ring->xsk_pool)
-+	if (!READ_ONCE(ring->xsk_pool))
- 		return -EINVAL;
- 
- 	/* The idea here is that if NAPI is running, mark a miss, so
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.h b/drivers/net/ethernet/intel/ice/ice_xsk.h
-index 6fa181f080ef1..45adeb513253a 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.h
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.h
-@@ -20,16 +20,20 @@ struct ice_vsi;
- #ifdef CONFIG_XDP_SOCKETS
- int ice_xsk_pool_setup(struct ice_vsi *vsi, struct xsk_buff_pool *pool,
- 		       u16 qid);
--int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring, int budget);
-+int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring,
-+			struct xsk_buff_pool *xsk_pool,
-+			int budget);
- int ice_xsk_wakeup(struct net_device *netdev, u32 queue_id, u32 flags);
--bool ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring, u16 count);
-+bool ice_alloc_rx_bufs_zc(struct ice_rx_ring *rx_ring,
-+			  struct xsk_buff_pool *xsk_pool, u16 count);
- bool ice_xsk_any_rx_ring_ena(struct ice_vsi *vsi);
- void ice_xsk_clean_rx_ring(struct ice_rx_ring *rx_ring);
- void ice_xsk_clean_xdp_ring(struct ice_tx_ring *xdp_ring);
--bool ice_xmit_zc(struct ice_tx_ring *xdp_ring);
-+bool ice_xmit_zc(struct ice_tx_ring *xdp_ring, struct xsk_buff_pool *xsk_pool);
- int ice_realloc_zc_buf(struct ice_vsi *vsi, bool zc);
- #else
--static inline bool ice_xmit_zc(struct ice_tx_ring __always_unused *xdp_ring)
-+static inline bool ice_xmit_zc(struct ice_tx_ring __always_unused *xdp_ring,
-+			       struct xsk_buff_pool __always_unused *xsk_pool)
- {
- 	return false;
- }
-@@ -44,6 +48,7 @@ ice_xsk_pool_setup(struct ice_vsi __always_unused *vsi,
- 
- static inline int
- ice_clean_rx_irq_zc(struct ice_rx_ring __always_unused *rx_ring,
-+		    struct xsk_buff_pool __always_unused *xsk_pool,
- 		    int __always_unused budget)
- {
- 	return 0;
-@@ -51,6 +56,7 @@ ice_clean_rx_irq_zc(struct ice_rx_ring __always_unused *rx_ring,
- 
- static inline bool
- ice_alloc_rx_bufs_zc(struct ice_rx_ring __always_unused *rx_ring,
-+		     struct xsk_buff_pool __always_unused *xsk_pool,
- 		     u16 __always_unused count)
- {
- 	return false;
+ #endif /* _SCREEN_INFO_H */
 -- 
 2.43.0
 
