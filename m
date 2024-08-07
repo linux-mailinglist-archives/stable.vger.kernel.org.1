@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-65686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA39094AB75
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F1894ABEA
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F3C284021
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78BA01C22583
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4198615A;
-	Wed,  7 Aug 2024 15:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F1F78C92;
+	Wed,  7 Aug 2024 15:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJIurKkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wv2RRuW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7CE82D66;
-	Wed,  7 Aug 2024 15:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8650D78C67;
+	Wed,  7 Aug 2024 15:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043135; cv=none; b=pmwYh5iGOzSoWcGr4sJ/ayBHM/VkvBWTS0es87JTPUDb7Gk1p2nn4UDqA6Xge7qL3/gKsSsQeD9vJsSk61gEdKVpp5ZeX7VQJvUl3nJaVR3Zyhgds2JOVKf5iOg8obJ8QAZkQFF9eED5cIIqpsEZg//z/bEj2SsAGUZOJpPJYLw=
+	t=1723043418; cv=none; b=mLXDoXNIczU/CEqb4oJiH09VubUs2smXgBtCV/MjWfrChcGDCw537ncDikRDtJgUZ4IWB6x+ZoACZ40Od95sc95QK6coUdOmxBEu1lSYKygly0c8TtuTVu2vHjItvHjFsb7tjB6voZbMvuflTZvE3opA40ZDYk2TY4EqTu1R5EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043135; c=relaxed/simple;
-	bh=x/HMPpBpsy/eTSkuRf25RK78XNQAhVsgBUpq0VyHLv0=;
+	s=arc-20240116; t=1723043418; c=relaxed/simple;
+	bh=ouSME/tbNZnVbFx3P4ldtnzoTdJL1ghkZgpEs4T+UpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ft2ymELXjo0EmNgO/YMZwqcwQ73ojVRiyofSAyNt2HKLLY+zX3rY/P+/5G6Nvu9Bni9jy78VpyD6ga2QsHPpLWy8Jco4QpnftwGyGPeMlQ2Q9slDKbxaIopNJBzrKH+IwJwAphwZlAwSZUqE18iWLY24/Df4FDVY1rIVcHckfEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJIurKkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE6BC32781;
-	Wed,  7 Aug 2024 15:05:35 +0000 (UTC)
+	 MIME-Version; b=Yp3dh0XRAp6uzL8TIQ8U/Goq1nyXD56KEADZLd5nHTUl+I1BpWuYpFuRXzzlAHhKGbXYeH1Z3WWjFaBJq0fgtkGpxE8+FlCZqWYm6Um1AegQKjAM34rFpa/pGja6831sm5heJK+ugVHVPCoCU+zCvC1kxKYq4bVJE79p9VUfhZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wv2RRuW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1475AC32781;
+	Wed,  7 Aug 2024 15:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043135;
-	bh=x/HMPpBpsy/eTSkuRf25RK78XNQAhVsgBUpq0VyHLv0=;
+	s=korg; t=1723043418;
+	bh=ouSME/tbNZnVbFx3P4ldtnzoTdJL1ghkZgpEs4T+UpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJIurKkXC9KGxM1/DCn646j56pYHRXolGNgyw2JlMl+ZiYDxTAjPjWtHSAmKKXSez
-	 ZKZ/irW9GB2iVRSwCPaOwPru8seHwDmjdcXinNQSP4QS2Zyz7FeKbTTDb90N6/H4wL
-	 bLJIPBNRBTprlySrLuWZ1Yjak/OMjQVpxfiCQ+3M=
+	b=wv2RRuW0vD4ij0rNpBf1RA3OUByqC9xEgz32eNJuz2VbccxJgAee4+d/nQhM4qe7k
+	 UqtGGTtsfM70rQNRCS6q+g1N2EAnjCF5zRP7bvIqbKl8+O5XSdon6sS3k9u6qcKVVJ
+	 OiM9x5dpehJ9cUOHifcO0qSe73YwAi033rw1RxIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jen Linkova <furry@google.com>,
-	Lorenzo Colitti <lorenzo@google.com>,
-	Patrick Rohr <prohr@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	=?UTF-8?q?YOSHIFUJI=20Hideaki=20/=20=E5=90=89=E8=97=A4=E8=8B=B1=E6=98=8E?= <yoshfuji@linux-ipv6.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 067/123] ipv6: fix ndisc_is_useropt() handling for PIO
-Date: Wed,  7 Aug 2024 16:59:46 +0200
-Message-ID: <20240807150022.963573788@linuxfoundation.org>
+Subject: [PATCH 6.6 055/121] drm/vmwgfx: Trigger a modeset when the screen moves
+Date: Wed,  7 Aug 2024 16:59:47 +0200
+Message-ID: <20240807150021.211369966@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Żenczykowski <maze@google.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit a46c68debf3be3a477a69ccbf0a1d050df841676 ]
+[ Upstream commit 75c3e8a26a35d4f3eee299b3cc7e465f166f4e2d ]
 
-The current logic only works if the PIO is between two
-other ND user options.  This fixes it so that the PIO
-can also be either before or after other ND user options
-(for example the first or last option in the RA).
+When multi-monitor is cycled the X,Y position of the Screen Target will
+likely change but the resolution will not. We need to trigger a modeset
+when this occurs in order to recreate the Screen Target with the correct
+X,Y position.
 
-side note: there's actually Android tests verifying
-a portion of the old broken behaviour, so:
-  https://android-review.googlesource.com/c/kernel/tests/+/3196704
-fixes those up.
+Fixes a bug where multiple displays are shown in a single scrollable
+host window rather than in 2+ windows on separate host displays.
 
-Cc: Jen Linkova <furry@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Cc: Patrick Rohr <prohr@google.com>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: YOSHIFUJI Hideaki / 吉藤英明 <yoshfuji@linux-ipv6.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Maciej Żenczykowski <maze@google.com>
-Fixes: 048c796beb6e ("ipv6: adjust ndisc_is_useropt() to also return true for PIO")
-Link: https://patch.msgid.link/20240730001748.147636-1-maze@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 426826933109 ("drm/vmwgfx: Filter modes which exceed graphics memory")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240624205951.23343-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ndisc.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c | 29 +++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index d914b23256ce6..0282d15725095 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -227,6 +227,7 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 		return NULL;
- 	memset(ndopts, 0, sizeof(*ndopts));
- 	while (opt_len) {
-+		bool unknown = false;
- 		int l;
- 		if (opt_len < sizeof(struct nd_opt_hdr))
- 			return NULL;
-@@ -262,22 +263,23 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 			break;
- #endif
- 		default:
--			if (ndisc_is_useropt(dev, nd_opt)) {
--				ndopts->nd_useropts_end = nd_opt;
--				if (!ndopts->nd_useropts)
--					ndopts->nd_useropts = nd_opt;
--			} else {
--				/*
--				 * Unknown options must be silently ignored,
--				 * to accommodate future extension to the
--				 * protocol.
--				 */
--				ND_PRINTK(2, notice,
--					  "%s: ignored unsupported option; type=%d, len=%d\n",
--					  __func__,
--					  nd_opt->nd_opt_type,
--					  nd_opt->nd_opt_len);
--			}
-+			unknown = true;
-+		}
-+		if (ndisc_is_useropt(dev, nd_opt)) {
-+			ndopts->nd_useropts_end = nd_opt;
-+			if (!ndopts->nd_useropts)
-+				ndopts->nd_useropts = nd_opt;
-+		} else if (unknown) {
-+			/*
-+			 * Unknown options must be silently ignored,
-+			 * to accommodate future extension to the
-+			 * protocol.
-+			 */
-+			ND_PRINTK(2, notice,
-+				  "%s: ignored unsupported option; type=%d, len=%d\n",
-+				  __func__,
-+				  nd_opt->nd_opt_type,
-+				  nd_opt->nd_opt_len);
- 		}
- next_opt:
- 		opt_len -= l;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+index 4ccab07faff08..cb03c589ab226 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+@@ -868,6 +868,32 @@ vmw_stdu_connector_mode_valid(struct drm_connector *connector,
+ 	return MODE_OK;
+ }
+ 
++/*
++ * Trigger a modeset if the X,Y position of the Screen Target changes.
++ * This is needed when multi-mon is cycled. The original Screen Target will have
++ * the same mode but its relative X,Y position in the topology will change.
++ */
++static int vmw_stdu_connector_atomic_check(struct drm_connector *conn,
++					   struct drm_atomic_state *state)
++{
++	struct drm_connector_state *conn_state;
++	struct vmw_screen_target_display_unit *du;
++	struct drm_crtc_state *new_crtc_state;
++
++	conn_state = drm_atomic_get_connector_state(state, conn);
++	du = vmw_connector_to_stdu(conn);
++
++	if (!conn_state->crtc)
++		return 0;
++
++	new_crtc_state = drm_atomic_get_new_crtc_state(state, conn_state->crtc);
++	if (du->base.gui_x != du->base.set_gui_x ||
++	    du->base.gui_y != du->base.set_gui_y)
++		new_crtc_state->mode_changed = true;
++
++	return 0;
++}
++
+ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
+ 	.dpms = vmw_du_connector_dpms,
+ 	.detect = vmw_du_connector_detect,
+@@ -882,7 +908,8 @@ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
+ static const struct
+ drm_connector_helper_funcs vmw_stdu_connector_helper_funcs = {
+ 	.get_modes = vmw_connector_get_modes,
+-	.mode_valid = vmw_stdu_connector_mode_valid
++	.mode_valid = vmw_stdu_connector_mode_valid,
++	.atomic_check = vmw_stdu_connector_atomic_check,
+ };
+ 
+ 
 -- 
 2.43.0
 
