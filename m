@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-65724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F22E94AB9B
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 500E594AAF3
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:01:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 610081C211C8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 816611C21B37
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666EB27448;
-	Wed,  7 Aug 2024 15:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF1880638;
+	Wed,  7 Aug 2024 15:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnIJXMmM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U76meely"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231353EA9A;
-	Wed,  7 Aug 2024 15:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC4923CE;
+	Wed,  7 Aug 2024 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043235; cv=none; b=RhQoDNRA3porCBYfs11VcjRBffdC4M7K3cmAwCcOu3jy0YHdCeTVCf59OBSVPpVFAoUGqF8x3vz0G+MJqQbwnogQt3QLjeiAnFG8keH9fgdUpXz4qSj9iwhDVPzxXs7MJo+QMy2F3x6AG4NaFrTXIgla7oA/ypoSqQpdgRH34r4=
+	t=1723042894; cv=none; b=dRnZbVHWe1a6335dLvTNn+L2KXYy7BFB1l0h+cCHlJymnOpdKefeMDMGA0qo0RqoG4unJBp9q71ZpHTm43IaplTBc0xe7v5zoKWDu4CdlXVs4BGFh1V9fz8BRzqNaLD1ddG7DN1drx+lE/cXSNIDfkU6fhBFPoD/pd0iAVHYgy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043235; c=relaxed/simple;
-	bh=tB2yq5Js/DKH/gHtvqeDgYSZ5eaWdQzNTOnFitxfvmc=;
+	s=arc-20240116; t=1723042894; c=relaxed/simple;
+	bh=0hE+lr604slyCXJbmh91xcpLSd2WYniTvAnZ0wVz7qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDPr9KKY743Fw+bqmoAu7yzhE26LXYJ4PnKSzN/V8SK23xEh6gHbIShFZQPHjdCzod2p7VR4wlMSJq4cv5vHCRLqxz3H+p3xLJOCpykWcMsxTx8y5VfYIJAv+2QenJsFYLDkdfm/E9Gt4bQA3wOZqRvVrZzPWL+4qOiOaUZ9sFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnIJXMmM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F62C32781;
-	Wed,  7 Aug 2024 15:07:14 +0000 (UTC)
+	 MIME-Version; b=iQpbq8taRRaOwUNa28gMR+HqjqUJX6DJSl0tCrw9enQC8eq3etc32dj78Klw925kXk+g6VhUp8cf9QGl5hvPoUSi7jJ0DZqfx8Mc1LjCSO3cw4Dh4fSYnVCBIL+JmB2k9Bt9C4Smpqo67FdJEE8DkjtUCG7208dxmJ+vXOa+q1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U76meely; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC8BC4AF0B;
+	Wed,  7 Aug 2024 15:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043235;
-	bh=tB2yq5Js/DKH/gHtvqeDgYSZ5eaWdQzNTOnFitxfvmc=;
+	s=korg; t=1723042893;
+	bh=0hE+lr604slyCXJbmh91xcpLSd2WYniTvAnZ0wVz7qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fnIJXMmMc+9MDsz+gnw9zDsnrlOwqnK21IDNiUHPr9wvtLzLeTDc/9IMApEMNxemZ
-	 0IrkyUuXsZ98bo5aS6lMRZmA+hyOBzXRdQmhcg1gXzFXoZRNbafq7fmxUf/xeYksTF
-	 RqO9RbsYQZPpWbxrK1acqT8+8qKxhUmPO0XTdfpc=
+	b=U76meelyhPUWwqLNT+No+V6Z7eEIn1PT5TMIKflzZuu6Zqk7J7mIA1cD3Bd3qKmGt
+	 pRJ2JqA0Q0elbKQtAznp2CQgwHfSkN1hycSO1vMj0EQt8uZH7pqEu0O7hjwW7kXmZ3
+	 QR/bPrQT3YYBTW+EELPdJQCkUq/NacY4YW5n5L+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Anderson <dianders@google.com>,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/121] arm64: dts: qcom: sc7180: Disable SuperSpeed instances in park mode
+Subject: [PATCH 6.10 015/123] MIPS: dts: loongson: Fix ls2k1000-rtc interrupt
 Date: Wed,  7 Aug 2024 16:58:54 +0200
-Message-ID: <20240807150019.487194587@linuxfoundation.org>
+Message-ID: <20240807150021.314515414@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 5b8baed4b88132c12010ce6ca1b56f00d122e376 ]
+[ Upstream commit f70fd92df7529e7283e02a6c3a2510075f13ba30 ]
 
-On SC7180, in host mode, it is observed that stressing out controller
-results in HC died error:
+The correct interrupt line for RTC is line 8 on liointc1.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
-
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instances in park mode for SC7180 to mitigate this issue.
-
-Reported-by: Doug Anderson <dianders@google.com>
+Fixes: e47084e116fc ("MIPS: Loongson64: DTS: Add RTC support to Loongson-2K1000")
 Cc: stable@vger.kernel.org
-Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240604060659.1449278-2-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index 18ef8fb5c8c7a..68b1c017a9fd5 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -2981,6 +2981,7 @@ usb_1_dwc3: usb@a600000 {
- 				iommus = <&apps_smmu 0x540 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				maximum-speed = "super-speed";
+diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+index eec8243be6499..cc7747c5f21f3 100644
+--- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
++++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+@@ -99,8 +99,8 @@ liointc1: interrupt-controller@1fe11440 {
+ 		rtc0: rtc@1fe07800 {
+ 			compatible = "loongson,ls2k1000-rtc";
+ 			reg = <0 0x1fe07800 0 0x78>;
+-			interrupt-parent = <&liointc0>;
+-			interrupts = <60 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-parent = <&liointc1>;
++			interrupts = <8 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
+ 
+ 		uart0: serial@1fe00000 {
 -- 
 2.43.0
 
