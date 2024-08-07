@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-65669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCFA94AB5F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B4994AC5E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 185D4281658
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03D751C223F0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7916E84A52;
-	Wed,  7 Aug 2024 15:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081F984DE4;
+	Wed,  7 Aug 2024 15:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJQqEc4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llwfUanY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D3082488;
-	Wed,  7 Aug 2024 15:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D0B374CC;
+	Wed,  7 Aug 2024 15:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043089; cv=none; b=ULwAFdSz7IpUvmcUQ1GJTDtZSahO0UIlxIPiTVaXpGaAmN11UIgpjvxALolquahZF5vVarUEOe0AHSsMEiXu2s8A7GsiFFH9Th6Sry8Xd2HjlYeoHkF3xI+OvPirRpUxc0hDoCEWDprf0Hts8nm1umtP91HAzpxjAdkGHJPLAe4=
+	t=1723043663; cv=none; b=pLgCvYPpd5UE0mSlwWMwyMolZ2aQZBQv2CtRE4H4qFavXvJ2tu45lBn5evFjtDWUovVrIiHRDC5/oxkXctDTY0dI7yA0j+NLUx0C4m297/zW9JxY0s4pa7raLqF0UvMZUM95ya87p7DGzCDtiMPNo9qitjqfm70zW0atS8j3kio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043089; c=relaxed/simple;
-	bh=03DDsG6GwyUbQQ+SpcrSLt9bGYRNBpeQG/Oi4AwlOBw=;
+	s=arc-20240116; t=1723043663; c=relaxed/simple;
+	bh=2GUvWUyB6PnWpYjiax5TfTtU56C6xBBObhuImBgt2lE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyYzjcC7YYOuCA01V75ypcefY9/K1tbg2EoDy/A7YDglR6NwQod5mzvuPwwwrceD1O6S9EYKy81U2WpDfcAnEacIiCEJ0Z+DxHhQ8CAyZZeSxzfZ8l/XYxqsd1C3OPlMobcwBghLMkENrxseznjKWItT+VSimyGPMb25ykkfUpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJQqEc4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B990DC32781;
-	Wed,  7 Aug 2024 15:04:48 +0000 (UTC)
+	 MIME-Version; b=mRsX2GzzQQ/hjUpQnA3lMRADfLwzXX5rrv13N3BT7wRKQ6psNsGmpWyU9ulO72RLf5hqbnIcHm0W1h3V8Urjq4qwPOCbISp05s6j5DlpMqbqJRQBYiQ61Qu7jvuzO5CviD2qo3SJL7S2B5dOaxYmkJhWY95myh/GNWj+dgWYaSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llwfUanY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7D9C32781;
+	Wed,  7 Aug 2024 15:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043089;
-	bh=03DDsG6GwyUbQQ+SpcrSLt9bGYRNBpeQG/Oi4AwlOBw=;
+	s=korg; t=1723043663;
+	bh=2GUvWUyB6PnWpYjiax5TfTtU56C6xBBObhuImBgt2lE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJQqEc4+7uqujjcb8qM31EsO60YxAE0D87DJ5JLdv9kYXGueNInAA39fIW7boen2/
-	 lFds7PFx+9OdTpkLwV6/16PshwknRQMyq0IGjFacAtITUvoHaB9q1DTnbq3H2PwjM4
-	 RmAs+g4Ib5odppDp9AW6SZyL0WlgHD2tqi8zeu90=
+	b=llwfUanYez75Z90B5K4bz5Oj7EFlQJnkig1NnFGNlffSWtBml5Ayfqu1m4j/fDww9
+	 yGEd7IHcyQbs5Qwm4oODlbT9bqnHjLYx8kvho+tXIe/5pK1P57GtCoCsAEgim1nOLi
+	 j1yuepEut7flupPhDEWkZbK5QrDLAXVB1MfuuN94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mavroudis Chatzilazaridis <mavchatz@protonmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 086/123] ALSA: hda/realtek: Add quirk for Acer Aspire E5-574G
+	Herve Codina <herve.codina@bootlin.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 26/86] irqdomain: Fixed unbalanced fwnode get and put
 Date: Wed,  7 Aug 2024 17:00:05 +0200
-Message-ID: <20240807150023.598382345@linuxfoundation.org>
+Message-ID: <20240807150040.097923691@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit 3c0b6f924e1259ade38587ea719b693f6f6f2f3e upstream.
+[ Upstream commit 6ce3e98184b625d2870991880bf9586ded7ea7f9 ]
 
-ALC255_FIXUP_ACER_LIMIT_INT_MIC_BOOST fixes combo jack detection and
-limits the internal microphone boost that causes clipping on this model.
+fwnode_handle_get(fwnode) is called when a domain is created with fwnode
+passed as a function parameter. fwnode_handle_put(domain->fwnode) is called
+when the domain is destroyed but during the creation a path exists that
+does not set domain->fwnode.
 
-Signed-off-by: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240728123601.144017-1-mavchatz@protonmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If this path is taken, the fwnode get will never be put.
+
+To avoid the unbalanced get and put, set domain->fwnode unconditionally.
+
+Fixes: d59f6617eef0 ("genirq: Allow fwnode to carry name information only")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240614173232.1184015-4-herve.codina@bootlin.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/irq/irqdomain.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9866,6 +9866,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1025, 0x079b, "Acer Aspire V5-573G", ALC282_FIXUP_ASPIRE_V5_PINS),
- 	SND_PCI_QUIRK(0x1025, 0x080d, "Acer Aspire V5-122P", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x0840, "Acer Aspire E1", ALC269VB_FIXUP_ASPIRE_E1_COEF),
-+	SND_PCI_QUIRK(0x1025, 0x100c, "Acer Aspire E5-574G", ALC255_FIXUP_ACER_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1025, 0x101c, "Acer Veriton N2510G", ALC269_FIXUP_LIFEBOOK),
- 	SND_PCI_QUIRK(0x1025, 0x102b, "Acer Aspire C24-860", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x1065, "Acer Aspire C20-820", ALC269VC_FIXUP_ACER_HEADSET_MIC),
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index e03baca901e76..b1ed088b23640 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -154,7 +154,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
+ 		switch (fwid->type) {
+ 		case IRQCHIP_FWNODE_NAMED:
+ 		case IRQCHIP_FWNODE_NAMED_ID:
+-			domain->fwnode = fwnode;
+ 			domain->name = kstrdup(fwid->name, GFP_KERNEL);
+ 			if (!domain->name) {
+ 				kfree(domain);
+@@ -163,7 +162,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
+ 			domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
+ 			break;
+ 		default:
+-			domain->fwnode = fwnode;
+ 			domain->name = fwid->name;
+ 			break;
+ 		}
+@@ -183,7 +181,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
+ 		}
+ 
+ 		domain->name = strreplace(name, '/', ':');
+-		domain->fwnode = fwnode;
+ 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
+ 	}
+ 
+@@ -199,8 +196,8 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
+ 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
+ 	}
+ 
+-	fwnode_handle_get(fwnode);
+-	fwnode_dev_initialized(fwnode, true);
++	domain->fwnode = fwnode_handle_get(fwnode);
++	fwnode_dev_initialized(domain->fwnode, true);
+ 
+ 	/* Fill structure */
+ 	INIT_RADIX_TREE(&domain->revmap_tree, GFP_KERNEL);
+-- 
+2.43.0
+
 
 
 
