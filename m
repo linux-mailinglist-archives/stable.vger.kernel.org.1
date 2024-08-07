@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-65853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5522E94AC35
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A55994AB7D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E90241F21044
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30741B22A1F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FB782499;
-	Wed,  7 Aug 2024 15:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98E012D1EA;
+	Wed,  7 Aug 2024 15:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONxb1LL6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyXbi9y7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906CA374CC;
-	Wed,  7 Aug 2024 15:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B7381AB1;
+	Wed,  7 Aug 2024 15:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043580; cv=none; b=VPOEyqBAMIru3yskZQws+80VpM6OS8y7gmRd6k7KqQf+HJmI3NG4PRmlfkPBhWtpi5JGzJBlG3vuXBGDPsye55FXplCWIm66uJ6oW/DdLOL3vEPo3HLcESN8dVmn9VwAf0ezv/4CPoO45gWfBu84LaFx+n14Zh5h0z/HElgxHHU=
+	t=1723043151; cv=none; b=d5e2Rrvmj6Y4mNXwNUrLDR7ENy88oe15LCb7hvD64cCaH1mhGRvGW6mXScCN/rT8Xo3L6EGQD1GOh45iTD7gXsUufDIc4Pj9bxK8xsTDyjIDiuasBWoiLh2LJbeEI1DRjTCeGa4Qns/gIxoY2XodqbpyrCtXvT8L+y53BKQswoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043580; c=relaxed/simple;
-	bh=g1lPv7QMFdbWU47NgCIoK1K/HxZXU1cxw5h2J6wecbU=;
+	s=arc-20240116; t=1723043151; c=relaxed/simple;
+	bh=Z0vOEVCmiVGsCWLiJWfs53H3ybiQeHZjNnVoD+GQh3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YbBY4xqTzwXYmMPRHXkz4Yvrl28rITg9Wdfxx23/1FQDdz9LRCcKKIjAPg5cIxuH8cSjNaaGXq99FGg0nFjL1nAmEJRpTqvOkRcAxyh0HjAWFr1lJfPDU4J0jKR2McIjdHvcp9Yc8k0p3wGR50URhTnLR7cbf4Cnf7xC8FB6MGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONxb1LL6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C87C4AF0D;
-	Wed,  7 Aug 2024 15:12:59 +0000 (UTC)
+	 MIME-Version; b=pYg5AkMcqxB623E0eHFYttjIZ/lnR61j0jir/iSY11wLs4AboK0w2b4ZAnctchbFn2HL6Cp7coch0Igf9NbqsPyeW5RftyswMAZKY9KLp2iSU2KctuCLwSg3dmj/lxYtFT5yay5Q48kvtSk7ipZDPvVxyjHXcpcWYrCmw9Pa61c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyXbi9y7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E87C32781;
+	Wed,  7 Aug 2024 15:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043580;
-	bh=g1lPv7QMFdbWU47NgCIoK1K/HxZXU1cxw5h2J6wecbU=;
+	s=korg; t=1723043151;
+	bh=Z0vOEVCmiVGsCWLiJWfs53H3ybiQeHZjNnVoD+GQh3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONxb1LL6t0Fk9F4+Gy1bAjSTcemvj8yr4ZOJTunOUydjIjptPFLxWqathpehOO4qt
-	 uI47H5vE5l+lxPDK9aJ+BLnGx9y7En19/E+nOp4W72MxXGELGzUtOZlLvvxa502rC4
-	 kCxYeoMwt70SvcNkNRG4C32jHJJoRjqtUmJ5NqsA=
+	b=hyXbi9y7doGPor4Y0edDMMoCPk3ewzIe/u74yl1UbmzooS9HE/evzsmNx1XTyRlU7
+	 sAvqz5OLz1lsCImMf771JJFwWQtky8UroeYaDcSKT24/zpUO2//NlMTjKe8oueK/vT
+	 PUoSCSTUVeDWmdYSVBkD+E9xJZhVduAIfQ8n7j7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 03/86] arm64: dts: qcom: ipq8074: Disable SS instance in Parkmode for USB
+Subject: [PATCH 6.10 063/123] net/mlx5e: Require mlx5 tc classifier action support for IPsec prio capability
 Date: Wed,  7 Aug 2024 16:59:42 +0200
-Message-ID: <20240807150039.361960963@linuxfoundation.org>
+Message-ID: <20240807150022.835765625@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit dc6ba95c6c4400a84cca5b419b34ae852a08cfb5 ]
+[ Upstream commit 06827e27fdcd197557be72b2229dbd362303794f ]
 
-For Gen-1 targets like IPQ8074, it is seen that stressing out the
-controller in host mode results in HC died error:
+Require mlx5 classifier action support when creating IPSec chains in
+offload path. MLX5_IPSEC_CAP_PRIO should only be set if CONFIG_MLX5_CLS_ACT
+is enabled. If CONFIG_MLX5_CLS_ACT=n and MLX5_IPSEC_CAP_PRIO is set,
+configuring IPsec offload will fail due to the mlxx5 ipsec chain rules
+failing to be created due to lack of classifier action support.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
-
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for IPQ8074 to mitigate this issue.
-
-Cc: stable@vger.kernel.org
-Fixes: 5e09bc51d07b ("arm64: dts: ipq8074: enable USB support")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-3-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: fa5aa2f89073 ("net/mlx5e: Use chains for IPsec policy priority offload")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-7-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq8074.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c   | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq8074.dtsi b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-index 3d8e5ba51ce0d..2f53c099634b5 100644
---- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-@@ -593,6 +593,7 @@ dwc_0: usb@8a00000 {
- 				interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
- 				phys = <&qusb_phy_0>, <&usb0_ssphy>;
- 				phy-names = "usb2-phy", "usb3-phy";
-+				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
- 				snps,dis_u2_susphy_quirk;
-@@ -635,6 +636,7 @@ dwc_1: usb@8c00000 {
- 				interrupts = <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>;
- 				phys = <&qusb_phy_1>, <&usb1_ssphy>;
- 				phy-names = "usb2-phy", "usb3-phy";
-+				snps,parkmode-disable-ss-quirk;
- 				snps,is-utmi-l1-suspend;
- 				snps,hird-threshold = /bits/ 8 <0x0>;
- 				snps,dis_u2_susphy_quirk;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+index 6e00afe4671b7..797db853de363 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+@@ -51,9 +51,10 @@ u32 mlx5_ipsec_device_caps(struct mlx5_core_dev *mdev)
+ 		    MLX5_CAP_FLOWTABLE_NIC_RX(mdev, decap))
+ 			caps |= MLX5_IPSEC_CAP_PACKET_OFFLOAD;
+ 
+-		if ((MLX5_CAP_FLOWTABLE_NIC_TX(mdev, ignore_flow_level) &&
+-		     MLX5_CAP_FLOWTABLE_NIC_RX(mdev, ignore_flow_level)) ||
+-		    MLX5_CAP_ESW_FLOWTABLE_FDB(mdev, ignore_flow_level))
++		if (IS_ENABLED(CONFIG_MLX5_CLS_ACT) &&
++		    ((MLX5_CAP_FLOWTABLE_NIC_TX(mdev, ignore_flow_level) &&
++		      MLX5_CAP_FLOWTABLE_NIC_RX(mdev, ignore_flow_level)) ||
++		     MLX5_CAP_ESW_FLOWTABLE_FDB(mdev, ignore_flow_level)))
+ 			caps |= MLX5_IPSEC_CAP_PRIO;
+ 
+ 		if (MLX5_CAP_FLOWTABLE_NIC_TX(mdev,
 -- 
 2.43.0
 
