@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-65679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84DF94AB6E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 695F394ABFF
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62AD6283A8C
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 253272851A7
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1C580BF8;
-	Wed,  7 Aug 2024 15:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE8982488;
+	Wed,  7 Aug 2024 15:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMlER4nA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhczJNiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6918287E;
-	Wed,  7 Aug 2024 15:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB008287E;
+	Wed,  7 Aug 2024 15:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043116; cv=none; b=Z5RclEU1E+k1L/jqHRWSSeWjLbcHSF8B6ETjrsa/ogZypDK9uTmXAs7TcZK6cH3il+nhldADjMaCMZLNP6zpa2B8uPdjvY9tXnpBI0GIAXLzLjvtnWlB/4ZmUOLjxG4qouYcSR52Xqc1/jWu+w1oRIZuArPl9XNDhDvaVE/htbI=
+	t=1723043461; cv=none; b=mEptzasDXoqNtxW422DDZGevaMohq0/2jdJ+TRl+d68r0MJFuTGXVyu5P9Ou35ubG+ZH3XQ+k2lJH3l+6TRH1GnbgYeJWrjJJ+eZDeBlRJKc3Phcg3dJcsdjCwhnIT0BazpCJ85ouWNDDOHe3JSdOYs5TZnlrZWXAiB0we+o1yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043116; c=relaxed/simple;
-	bh=6Wfut4nqNQHfSQnSLE8jJNrQhjSKJ9gpGhuUfDBhqYc=;
+	s=arc-20240116; t=1723043461; c=relaxed/simple;
+	bh=lAsxR8lkjcGWL4zD1grYYzXNRNvL705x+K8axm7TQTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=poxPjrO1nbek+aZ8P8RGR038D90Skt7GHWAkcD4sgQQERhO5uZaoQRDAOKPZtwop9KrqF2n1trk2GlSjL0MCc1xGyDfnmZFWAAo/+QnFFN3tLy7Uq/19Ue20RzgJW1Hl5u5Ky6ZpG8K9vNq8G0eagiN2vTZPgEvmdet26wY0O2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMlER4nA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02E7C4AF0E;
-	Wed,  7 Aug 2024 15:05:15 +0000 (UTC)
+	 MIME-Version; b=ktV2OnBxRIJxDyBYtkS45UIwzepf9HutjFB9tV0h/6MxjzZv4RokTibaqtpKfSbyYySEqsdNLjFXwDLRGoxtU7v5YqjV1lC141jaGf2HvQJgWATqF4Pga8KuQ/B+04FVMNxT0JCQ4WCVx/sEnfLkEfKtphtCqmA6pEdNDcokMgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhczJNiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AF9C32781;
+	Wed,  7 Aug 2024 15:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043116;
-	bh=6Wfut4nqNQHfSQnSLE8jJNrQhjSKJ9gpGhuUfDBhqYc=;
+	s=korg; t=1723043461;
+	bh=lAsxR8lkjcGWL4zD1grYYzXNRNvL705x+K8axm7TQTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMlER4nA9C4APKCrkNepRAQoC3FofhIU9GRg6+6VcpKw0pIv2CXxnfzNrfQDcVbGF
-	 9JlNBBq7Zy6iHD3K2i96bdW5/w43knFgr4C4+yBQUfFJtmDpK51vy7+Fs9NZzkNkbh
-	 iSo2fMqBd7nZ1e81J5dEdkh41voFo0ktm9huEsks=
+	b=JhczJNizWg4RVHSTY38Kl+6xzAsd/M+Qbr+cHW6P29QxtiGRNUHfQ81aJd/7k/MFY
+	 yNZRoGrWTyteiLXhcStIKImWQmukYLQ5L/vXm4+R5gsmmKMHWkgX5fe5T5zLpXyV7O
+	 kkrDoNH5HPSf0dFOJ5aIaX8dgHIqUnmgI+DJ+p8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.10 095/123] drm/amdgpu: fix contiguous handling for IB parsing v2
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 082/121] net/mlx5: Lag, dont use the hardcoded value of the first port
 Date: Wed,  7 Aug 2024 17:00:14 +0200
-Message-ID: <20240807150023.902606845@linuxfoundation.org>
+Message-ID: <20240807150022.096043401@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Mark Bloch <mbloch@nvidia.com>
 
-commit f3572db3c049b4d32bb5ba77ad5305616c44c7c1 upstream.
+[ Upstream commit 3fda84dc090390573cfbd0b1d70372663315de21 ]
 
-Otherwise we won't get correct access to the IB.
+The cited commit didn't change the body of the loop as it should.
+It shouldn't be using MLX5_LAG_P1.
 
-v2: keep setting AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS to avoid problems in
-    the VRAM backend.
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3501
-Fixes: e362b7c8f8c7 ("drm/amdgpu: Modify the contiguous flags behaviour")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Tested-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fbfb5f0342253d92c4e446588c428a9d90c3f610)
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7e978e7714d6 ("net/mlx5: Lag, use actual number of lag ports")
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -1763,7 +1763,7 @@ int amdgpu_cs_find_mapping(struct amdgpu
- 	struct ttm_operation_ctx ctx = { false, false };
- 	struct amdgpu_vm *vm = &fpriv->vm;
- 	struct amdgpu_bo_va_mapping *mapping;
--	int r;
-+	int i, r;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index dfc2ba6f780a2..18cf756bad8cc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -1512,7 +1512,7 @@ u8 mlx5_lag_get_slave_port(struct mlx5_core_dev *dev,
+ 		goto unlock;
  
- 	addr /= AMDGPU_GPU_PAGE_SIZE;
- 
-@@ -1778,13 +1778,13 @@ int amdgpu_cs_find_mapping(struct amdgpu
- 	if (dma_resv_locking_ctx((*bo)->tbo.base.resv) != &parser->exec.ticket)
- 		return -EINVAL;
- 
--	if (!((*bo)->flags & AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS)) {
--		(*bo)->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
--		amdgpu_bo_placement_from_domain(*bo, (*bo)->allowed_domains);
--		r = ttm_bo_validate(&(*bo)->tbo, &(*bo)->placement, &ctx);
--		if (r)
--			return r;
--	}
-+	(*bo)->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
-+	amdgpu_bo_placement_from_domain(*bo, (*bo)->allowed_domains);
-+	for (i = 0; i < (*bo)->placement.num_placement; i++)
-+		(*bo)->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
-+	r = ttm_bo_validate(&(*bo)->tbo, &(*bo)->placement, &ctx);
-+	if (r)
-+		return r;
- 
- 	return amdgpu_ttm_alloc_gart(&(*bo)->tbo);
- }
+ 	for (i = 0; i < ldev->ports; i++) {
+-		if (ldev->pf[MLX5_LAG_P1].netdev == slave) {
++		if (ldev->pf[i].netdev == slave) {
+ 			port = i;
+ 			break;
+ 		}
+-- 
+2.43.0
+
 
 
 
