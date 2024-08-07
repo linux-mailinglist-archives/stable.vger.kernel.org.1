@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A322A94AB76
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BF994AC3A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DEF1282609
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0C901C22318
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E403912CD88;
-	Wed,  7 Aug 2024 15:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2445684D0E;
+	Wed,  7 Aug 2024 15:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDWIuigg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVlm4Fg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19666FE16;
-	Wed,  7 Aug 2024 15:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E2C374CC;
+	Wed,  7 Aug 2024 15:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043138; cv=none; b=pE/yBa73WnFe5IjuNfdQaiRmK00vTJ5c0qKILu4/wxQpw3JJzBuWjD6suQDOZAtc/Y6usoXB0siDu+MehZGjKouDIrmr+IqPdl/07GC8A1uPmL8IFeJFMYeoW2eFZYSsnpIiq9SA6g83IGRiGX6lnsGe0cOvnuxbtJ4U2YKU0Ew=
+	t=1723043593; cv=none; b=XLMGJp8MZZJUI1wO8gsfubG06YBXVfLXk6LPf2CTItjAl0pqKCEukpAbUzQ5/JhS+xGxI19qlqPCaRiUJQLuhyxVAaZr5vTZB1yRE4AzDI6jgL3318CeeZ9047Yy0TIGtWrRvL/5/JF3v7FyklSjiyvXUyp7dG3dzPUOHQP8508=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043138; c=relaxed/simple;
-	bh=R7SFmPg1pULcvtkmtdWfdyyQLOA4txiZl2TOZHSVdF4=;
+	s=arc-20240116; t=1723043593; c=relaxed/simple;
+	bh=Q8Svk2/5U4dbbggSrezZjiNEGxAXLMsYggAObh3dvY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKecYBZ+iULiFX6Q1NioG1ozqXSs2em/AZ1spNnEi79k4FFtNfp4LN4xqa7NXD1eCz/hktb7gn+KPVY8P58GFb3oihYR9jVWGfBVfIrwi2W9DM5uxl02OinAZqiFqtQTwVY+kHPupUXBjcdDt1JTQWKeLwS1tjeR0H1w0mYFW3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDWIuigg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36BEC32781;
-	Wed,  7 Aug 2024 15:05:37 +0000 (UTC)
+	 MIME-Version; b=LBjuL/455qQFgoncy9knMLLQUPnxRf4aIu+WEhXVnWPH1FuE3zlLM1wBe665PWTCzclXo7+R2RaGm6TQrhGfwHFxjxGwGq4tJ4kB0Hyve1uiIImsnhNk3K62bzl1EevuwYUnVz5QfLzv+FVDnUiQJwteAIkE1JcO1U32j+ERa4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVlm4Fg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D4DC32781;
+	Wed,  7 Aug 2024 15:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043138;
-	bh=R7SFmPg1pULcvtkmtdWfdyyQLOA4txiZl2TOZHSVdF4=;
+	s=korg; t=1723043593;
+	bh=Q8Svk2/5U4dbbggSrezZjiNEGxAXLMsYggAObh3dvY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDWIuiggIWw25xXi2hdPBp63il3Dwr9qRu8J6IjG3OsmbXutd/4iJkLkIZSAXrFzZ
-	 Hxb30emzLepmZ3k6iPMgSk0JxBlH4HTa1jhrz0btAZU4/vRu7uNBx8nbnkk+HQ+v1/
-	 zbWqCHbGHm5JQQN3Y3VdewPffzZ9b4OJ00fasLqk=
+	b=BVlm4Fg0taMePwp3J7Ml2lPql+UbrQY1Jxc98YsaGa86MK2q9b4tTWNERPAaoN5kA
+	 yJIWleM4MOv1JRSZHU1N5AOCvnVKDUCJ6oZIrDLDgnPtF5ohlmXOxRmpJT/Z0awPHO
+	 ymCno90bz7bXwpLceqWjWxdzC4O4+te8R/7Ldm3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Maslowski <cyrevolt@gmail.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 068/123] riscv/purgatory: align riscv_kernel_entry
+Subject: [PATCH 6.1 08/86] ext4: make ext4_es_insert_extent() return void
 Date: Wed,  7 Aug 2024 16:59:47 +0200
-Message-ID: <20240807150023.002754942@linuxfoundation.org>
+Message-ID: <20240807150039.523957970@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Maslowski <cyrevolt@googlemail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit fb197c5d2fd24b9af3d4697d0cf778645846d6d5 ]
+[ Upstream commit 6c120399cde6b1b5cf65ce403765c579fb3d3e50 ]
 
-When alignment handling is delegated to the kernel, everything must be
-word-aligned in purgatory, since the trap handler is then set to the
-kexec one. Without the alignment, hitting the exception would
-ultimately crash. On other occasions, the kernel's handler would take
-care of exceptions.
-This has been tested on a JH7110 SoC with oreboot and its SBI delegating
-unaligned access exceptions and the kernel configured to handle them.
+Now ext4_es_insert_extent() never return error, so make it return void.
 
-Fixes: 736e30af583fb ("RISC-V: Add purgatory")
-Signed-off-by: Daniel Maslowski <cyrevolt@gmail.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240719170437.247457-1-cyrevolt@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-12-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/purgatory/entry.S | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/extents.c        |  5 +++--
+ fs/ext4/extents_status.c | 14 ++++++--------
+ fs/ext4/extents_status.h |  6 +++---
+ fs/ext4/inode.c          | 21 ++++++---------------
+ 4 files changed, 18 insertions(+), 28 deletions(-)
 
-diff --git a/arch/riscv/purgatory/entry.S b/arch/riscv/purgatory/entry.S
-index 5bcf3af903daa..0e6ca6d5ae4b4 100644
---- a/arch/riscv/purgatory/entry.S
-+++ b/arch/riscv/purgatory/entry.S
-@@ -7,6 +7,7 @@
-  * Author: Li Zhengyu (lizhengyu3@huawei.com)
-  *
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 67af684e44e6e..5cbe5ae5ad4a2 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3113,8 +3113,9 @@ static int ext4_zeroout_es(struct inode *inode, struct ext4_extent *ex)
+ 	if (ee_len == 0)
+ 		return 0;
+ 
+-	return ext4_es_insert_extent(inode, ee_block, ee_len, ee_pblock,
+-				     EXTENT_STATUS_WRITTEN);
++	ext4_es_insert_extent(inode, ee_block, ee_len, ee_pblock,
++			      EXTENT_STATUS_WRITTEN);
++	return 0;
+ }
+ 
+ /* FIXME!! we need to try to merge to left or right after zero-out  */
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 9766d3b21ca2e..592229027af72 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -847,12 +847,10 @@ static int __es_insert_extent(struct inode *inode, struct extent_status *newes,
+ /*
+  * ext4_es_insert_extent() adds information to an inode's extent
+  * status tree.
+- *
+- * Return 0 on success, error code on failure.
   */
-+#include <asm/asm.h>
- #include <linux/linkage.h>
+-int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+-			  ext4_lblk_t len, ext4_fsblk_t pblk,
+-			  unsigned int status)
++void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
++			   ext4_lblk_t len, ext4_fsblk_t pblk,
++			   unsigned int status)
+ {
+ 	struct extent_status newes;
+ 	ext4_lblk_t end = lblk + len - 1;
+@@ -864,13 +862,13 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	bool revise_pending = false;
  
- .text
-@@ -34,6 +35,7 @@ SYM_CODE_END(purgatory_start)
+ 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
+-		return 0;
++		return;
  
- .data
+ 	es_debug("add [%u/%u) %llu %x to extent status tree of inode %lu\n",
+ 		 lblk, len, pblk, status, inode->i_ino);
  
-+.align LGREG
- SYM_DATA(riscv_kernel_entry, .quad 0)
+ 	if (!len)
+-		return 0;
++		return;
  
- .end
+ 	BUG_ON(end < lblk);
+ 
+@@ -939,7 +937,7 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 		goto retry;
+ 
+ 	ext4_es_print_tree(inode);
+-	return 0;
++	return;
+ }
+ 
+ /*
+diff --git a/fs/ext4/extents_status.h b/fs/ext4/extents_status.h
+index 4ec30a7982605..481ec4381bee6 100644
+--- a/fs/ext4/extents_status.h
++++ b/fs/ext4/extents_status.h
+@@ -127,9 +127,9 @@ extern int __init ext4_init_es(void);
+ extern void ext4_exit_es(void);
+ extern void ext4_es_init_tree(struct ext4_es_tree *tree);
+ 
+-extern int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+-				 ext4_lblk_t len, ext4_fsblk_t pblk,
+-				 unsigned int status);
++extern void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
++				  ext4_lblk_t len, ext4_fsblk_t pblk,
++				  unsigned int status);
+ extern void ext4_es_cache_extent(struct inode *inode, ext4_lblk_t lblk,
+ 				 ext4_lblk_t len, ext4_fsblk_t pblk,
+ 				 unsigned int status);
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 2479508deab3b..6dc15ad45ac95 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -595,10 +595,8 @@ int ext4_map_blocks(handle_t *handle, struct inode *inode,
+ 		    ext4_es_scan_range(inode, &ext4_es_is_delayed, map->m_lblk,
+ 				       map->m_lblk + map->m_len - 1))
+ 			status |= EXTENT_STATUS_DELAYED;
+-		ret = ext4_es_insert_extent(inode, map->m_lblk,
+-					    map->m_len, map->m_pblk, status);
+-		if (ret < 0)
+-			retval = ret;
++		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
++				      map->m_pblk, status);
+ 	}
+ 	up_read((&EXT4_I(inode)->i_data_sem));
+ 
+@@ -707,12 +705,8 @@ int ext4_map_blocks(handle_t *handle, struct inode *inode,
+ 		    ext4_es_scan_range(inode, &ext4_es_is_delayed, map->m_lblk,
+ 				       map->m_lblk + map->m_len - 1))
+ 			status |= EXTENT_STATUS_DELAYED;
+-		ret = ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
+-					    map->m_pblk, status);
+-		if (ret < 0) {
+-			retval = ret;
+-			goto out_sem;
+-		}
++		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
++				      map->m_pblk, status);
+ 	}
+ 
+ out_sem:
+@@ -1812,7 +1806,6 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 		set_buffer_new(bh);
+ 		set_buffer_delay(bh);
+ 	} else if (retval > 0) {
+-		int ret;
+ 		unsigned int status;
+ 
+ 		if (unlikely(retval != map->m_len)) {
+@@ -1825,10 +1818,8 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 
+ 		status = map->m_flags & EXT4_MAP_UNWRITTEN ?
+ 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
+-		ret = ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
+-					    map->m_pblk, status);
+-		if (ret != 0)
+-			retval = ret;
++		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
++				      map->m_pblk, status);
+ 	}
+ 
+ out_unlock:
 -- 
 2.43.0
 
