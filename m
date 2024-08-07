@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-65690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EAC794AB79
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5902694AC26
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36ACC1F25F94
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7B771F212AE
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB7283CD5;
-	Wed,  7 Aug 2024 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D62181751;
+	Wed,  7 Aug 2024 15:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAlBK/SY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbI37+HZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876EA81AB1;
-	Wed,  7 Aug 2024 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1BE374CC;
+	Wed,  7 Aug 2024 15:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043146; cv=none; b=QBZAXYECqIcgQ/gCPDg5G4m33eqMNktAiRPMWoRgHbZLemjlLQ0EkWlpvlR2xugV/iJN0PVpY+Ov7bne6ZYg9E1lMLCMRt2Me4ItSb70SmchXvAeAt+y8HJLCre8Fs7NUT4ZjKhIv5PEvcIS/1O4LfIWNpD16INgoFtWdLwKwkc=
+	t=1723043549; cv=none; b=E3bJTMd1PgZvCZWYJ13SjJb6XEUbSQ7duJ2TGsJnGGrGvaRCmJ+Je6bkjcwqv15C9Xs7KL1Wc8JPMeb3SZd51yrLeEUaqYviBzivh+NKxDox0HCvUqDQw6V8fyCtxGwn2NPo497xG9Wq3MiskzHkhaUQhdH5z3TcUnSCftz+LNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043146; c=relaxed/simple;
-	bh=99fnrKr/ED1gaMfrx/qNtgchem7D3l8/sWjEEXQPeNk=;
+	s=arc-20240116; t=1723043549; c=relaxed/simple;
+	bh=2B4VLtpGQNkD/m4TuAwcO5C1TIeyQkmReXSKtOSceDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUndHfl4npA2cO84Z74ZrOokfvLoII/rllfeIwhX2Rg6+BMS0XduE3CS3DT0zx33jvs7L/x/NAG63MZr79jg54Q6brK3+6cF9CGmsMb98nlEQOD3sAC3wBex+3A3mZAEVhKOuFoHplvAn8TzscSKfdOKSjTdRwhxHqd227uOMtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAlBK/SY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF96C32781;
-	Wed,  7 Aug 2024 15:05:45 +0000 (UTC)
+	 MIME-Version; b=DxyRAnkm5om2ijOqbTMQdlQMnjX8qERkpOHp+jmJbUCeHK6px/UqgkdQWxe9azvMfYsUT9gBNGlpUSKOx+2XU3bC/NrDRW9Ck5JqwMb6IiOg4LkbfUhz+4u5JzWL8grZBdp+asoql6x5ir1S3du6bKWjy7Ai0Kp+4Ab0b1PM9cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbI37+HZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AEDC32781;
+	Wed,  7 Aug 2024 15:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043146;
-	bh=99fnrKr/ED1gaMfrx/qNtgchem7D3l8/sWjEEXQPeNk=;
+	s=korg; t=1723043548;
+	bh=2B4VLtpGQNkD/m4TuAwcO5C1TIeyQkmReXSKtOSceDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zAlBK/SY5gekUIzP/6yQT7+HfwXpERd9lWPDfWFI3pcnSxvScqQZau5vwJBbsYgIY
-	 ArUQ80Cb8mMHbp5iD7rIDDnAZ935OoWEBWwYVnzomOygFL94B9A6bdI+/3yYohdPt/
-	 gAlLGkJzruguSje+zax+W7nXUHOIPCmC8RbE/H6E=
+	b=FbI37+HZmZjYudQmwaOwjT1tfwT8RTnYxSObmB9U/aFChXd5CzeC0T9/wX9AQ7LwC
+	 Co4SqjUTLtmbMf61Ssg+eIJeY8t7thPAF9ymd5Z9mBrswh/KSlxJ4C9rYpwr3LiqX2
+	 41n7SiY+hVZSZun27fpSX63mpv2FOHZwElDnYz+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhe Qiao <qiaozhe@iscas.ac.cn>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 071/123] riscv/mm: Add handling for VM_FAULT_SIGSEGV in mm_fault_error()
+Subject: [PATCH 6.1 11/86] ext4: factor out a common helper to query extent map
 Date: Wed,  7 Aug 2024 16:59:50 +0200
-Message-ID: <20240807150023.099930927@linuxfoundation.org>
+Message-ID: <20240807150039.618081806@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 0c710050c47d45eb77b28c271cddefc5c785cb40 ]
+[ Upstream commit 8e4e5cdf2fdeb99445a468b6b6436ad79b9ecb30 ]
 
-Handle VM_FAULT_SIGSEGV in the page fault path so that we correctly
-kill the process and we don't BUG() the kernel.
+Factor out a new common helper ext4_map_query_blocks() from the
+ext4_da_map_blocks(), it query and return the extent map status on the
+inode's extent path, no logic changes.
 
-Fixes: 07037db5d479 ("RISC-V: Paging and MMU")
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240731084547.85380-1-qiaozhe@iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://patch.msgid.link/20240517124005.347221-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/fault.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ fs/ext4/inode.c | 57 +++++++++++++++++++++++++++----------------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
-diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
-index 5224f37338022..a9f2b4af8f3f1 100644
---- a/arch/riscv/mm/fault.c
-+++ b/arch/riscv/mm/fault.c
-@@ -61,26 +61,27 @@ static inline void no_context(struct pt_regs *regs, unsigned long addr)
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index d6f7525a796c0..a0c6a173c14d5 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -481,6 +481,35 @@ static void ext4_map_blocks_es_recheck(handle_t *handle,
+ }
+ #endif /* ES_AGGRESSIVE_TEST */
  
- static inline void mm_fault_error(struct pt_regs *regs, unsigned long addr, vm_fault_t fault)
- {
-+	if (!user_mode(regs)) {
-+		no_context(regs, addr);
-+		return;
++static int ext4_map_query_blocks(handle_t *handle, struct inode *inode,
++				 struct ext4_map_blocks *map)
++{
++	unsigned int status;
++	int retval;
++
++	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
++		retval = ext4_ext_map_blocks(handle, inode, map, 0);
++	else
++		retval = ext4_ind_map_blocks(handle, inode, map, 0);
++
++	if (retval <= 0)
++		return retval;
++
++	if (unlikely(retval != map->m_len)) {
++		ext4_warning(inode->i_sb,
++			     "ES len assertion failed for inode "
++			     "%lu: retval %d != map->m_len %d",
++			     inode->i_ino, retval, map->m_len);
++		WARN_ON(1);
 +	}
 +
- 	if (fault & VM_FAULT_OOM) {
- 		/*
- 		 * We ran out of memory, call the OOM killer, and return the userspace
- 		 * (which will retry the fault, or kill us if we got oom-killed).
- 		 */
--		if (!user_mode(regs)) {
--			no_context(regs, addr);
--			return;
--		}
- 		pagefault_out_of_memory();
- 		return;
- 	} else if (fault & (VM_FAULT_SIGBUS | VM_FAULT_HWPOISON | VM_FAULT_HWPOISON_LARGE)) {
- 		/* Kernel mode? Handle exceptions or die */
--		if (!user_mode(regs)) {
--			no_context(regs, addr);
--			return;
--		}
- 		do_trap(regs, SIGBUS, BUS_ADRERR, addr);
- 		return;
-+	} else if (fault & VM_FAULT_SIGSEGV) {
-+		do_trap(regs, SIGSEGV, SEGV_MAPERR, addr);
-+		return;
- 	}
++	status = map->m_flags & EXT4_MAP_UNWRITTEN ?
++			EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
++	ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
++			      map->m_pblk, status);
++	return retval;
++}
 +
- 	BUG();
- }
+ /*
+  * The ext4_map_blocks() function tries to look up the requested blocks,
+  * and returns if the blocks are already mapped.
+@@ -1779,33 +1808,11 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 	down_read(&EXT4_I(inode)->i_data_sem);
+ 	if (ext4_has_inline_data(inode))
+ 		retval = 0;
+-	else if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
+-		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
+ 	else
+-		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
+-	if (retval < 0) {
+-		up_read(&EXT4_I(inode)->i_data_sem);
+-		return retval;
+-	}
+-	if (retval > 0) {
+-		unsigned int status;
+-
+-		if (unlikely(retval != map->m_len)) {
+-			ext4_warning(inode->i_sb,
+-				     "ES len assertion failed for inode "
+-				     "%lu: retval %d != map->m_len %d",
+-				     inode->i_ino, retval, map->m_len);
+-			WARN_ON(1);
+-		}
+-
+-		status = map->m_flags & EXT4_MAP_UNWRITTEN ?
+-				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
+-		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
+-				      map->m_pblk, status);
+-		up_read(&EXT4_I(inode)->i_data_sem);
+-		return retval;
+-	}
++		retval = ext4_map_query_blocks(NULL, inode, map);
+ 	up_read(&EXT4_I(inode)->i_data_sem);
++	if (retval)
++		return retval;
  
+ add_delayed:
+ 	down_write(&EXT4_I(inode)->i_data_sem);
 -- 
 2.43.0
 
