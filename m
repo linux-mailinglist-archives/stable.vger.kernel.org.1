@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-65814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A7B94AC07
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D32694AC86
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 915222813D4
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43C43B22DD8
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4258482488;
-	Wed,  7 Aug 2024 15:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179E684A22;
+	Wed,  7 Aug 2024 15:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FaHeZU/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjLX3Xah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F3A81AB1;
-	Wed,  7 Aug 2024 15:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DDD52F62;
+	Wed,  7 Aug 2024 15:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043480; cv=none; b=S8hUO+dycn18kb0qtQJBOS89cx1XnREOkIJYz5xZWKMyHsBs0/VNZKqFwOR0JL62SrTPF+5mplf0dOD2tZ/rr4A0V7QRjSfYnwtufRLBXfZw2x/Pl9taPsRAMzaBTif+MkvRUib2l5CZ4TBxpzqdOfSS8Q307OSbyuwcgdjJ0+c=
+	t=1723043750; cv=none; b=J0FNQndywKQm73JIcxBaKkjYangqRolSZEuG6ksomPEmR9k7GVLXiRkkINbQ87xiFHCW3t4ODG8iMbOSZtRDDCLlwfe/PZpVV+o6avoLu1CGFvaWVdWoQ7a83Sm1RTd5vjlKXXabCy2upmIp+1ih5283j5sfRPEeX4F67uA89BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043480; c=relaxed/simple;
-	bh=juYEbEonY58n4Qy0yApilqXQH6cfD5nUoGvqWjBPsmA=;
+	s=arc-20240116; t=1723043750; c=relaxed/simple;
+	bh=846lUJ+rO/bDq47+6KdkTH0J9SQB8roi9vpy6lBdFLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNN5YmCLkP2NtS+tp46pKWR3+OLGo2Vv3jnwmhqKT6vMkbWiBGdGY2Kn6NVhrhJJQBJ3x7iTTJ+yEBHQ+7NvFODx/AddQNO8nvJ3K1SNrVCVM3yA8klcrF9uaeomymhnF+AdTfGzqpOWP8jeZT0DKLGYNtZFj1I1kTqCMdgYcBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FaHeZU/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B4CC32781;
-	Wed,  7 Aug 2024 15:11:19 +0000 (UTC)
+	 MIME-Version; b=B7XeDtsr8ubO7D7rx76lU1kKcI6/BA9Jn5taIKQkD/FurPE2Kor7jXoyz0DFbonTDSjX4kLE5PPeOtb5PMVUgTqixEG9K7YI574gIcrl7Fvx2wNLoGla+VOoIwnrWFpnr/sELVgf2DSNV0ctlHUfbndxCPoyCdO/8WJL0pJiL74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjLX3Xah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E2EC32781;
+	Wed,  7 Aug 2024 15:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043479;
-	bh=juYEbEonY58n4Qy0yApilqXQH6cfD5nUoGvqWjBPsmA=;
+	s=korg; t=1723043750;
+	bh=846lUJ+rO/bDq47+6KdkTH0J9SQB8roi9vpy6lBdFLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FaHeZU/8Sihw/9Z2D+LcRxYtUmANd6GBZj5ZgqwgE/jXoDZhZCnOM8dYggVg3xJer
-	 mwVHp3hmC92XUj6H0af7w4Gi4wJJ0QPAXbIsgap2ZGmSFDjmoVaFaTcVFwnJhXBHLJ
-	 EldL2vJNASIRHv0aYsQCqJ/vx7LzT9kuNr56GQpQ=
+	b=IjLX3XahrNuz4dpItRd/otBqVoN7HR6k0qwxaoHmM5YL9AyE6Aye71CqUSP06BY0W
+	 MB1ZAZlo2pQq1MeWkp21y9dqavPVF2n0v6qRtCZKfjsqI8Bd3hdMYieB2pG5CzwhbY
+	 qYGm34MvRKrSW+Gcxhvhosnb/+U2nBEa50C4L5Fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>
-Subject: [PATCH 6.6 106/121] drm/vmwgfx: Fix a deadlock in dma buf fence polling
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 59/86] netfilter: iptables: Fix potential null-ptr-deref in ip6table_nat_table_init().
 Date: Wed,  7 Aug 2024 17:00:38 +0200
-Message-ID: <20240807150022.866547640@linuxfoundation.org>
+Message-ID: <20240807150041.199776081@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit e58337100721f3cc0c7424a18730e4f39844934f upstream.
+[ Upstream commit c22921df777de5606f1047b1345b8d22ef1c0b34 ]
 
-Introduce a version of the fence ops that on release doesn't remove
-the fence from the pending list, and thus doesn't require a lock to
-fix poll->fence wait->fence unref deadlocks.
+ip6table_nat_table_init() accesses net->gen->ptr[ip6table_nat_net_ops.id],
+but the function is exposed to user space before the entry is allocated
+via register_pernet_subsys().
 
-vmwgfx overwrites the wait callback to iterate over the list of all
-fences and update their status, to do that it holds a lock to prevent
-the list modifcations from other threads. The fence destroy callback
-both deletes the fence and removes it from the list of pending
-fences, for which it holds a lock.
+Let's call register_pernet_subsys() before xt_register_template().
 
-dma buf polling cb unrefs a fence after it's been signaled: so the poll
-calls the wait, which signals the fences, which are being destroyed.
-The destruction tries to acquire the lock on the pending fences list
-which it can never get because it's held by the wait from which it
-was called.
-
-Old bug, but not a lot of userspace apps were using dma-buf polling
-interfaces. Fix those, in particular this fixes KDE stalls/deadlock.
-
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 2298e804e96e ("drm/vmwgfx: rework to new fence interface, v2")
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.2+
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240722184313.181318-2-zack.rusin@broadcom.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_fence.c |   17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ net/ipv6/netfilter/ip6table_nat.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-@@ -32,7 +32,6 @@
- #define VMW_FENCE_WRAP (1 << 31)
+diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
+index bf3cb3a13600c..52d597b16b658 100644
+--- a/net/ipv6/netfilter/ip6table_nat.c
++++ b/net/ipv6/netfilter/ip6table_nat.c
+@@ -147,23 +147,27 @@ static struct pernet_operations ip6table_nat_net_ops = {
  
- struct vmw_fence_manager {
--	int num_fence_objects;
- 	struct vmw_private *dev_priv;
- 	spinlock_t lock;
- 	struct list_head fence_list;
-@@ -124,13 +123,13 @@ static void vmw_fence_obj_destroy(struct
+ static int __init ip6table_nat_init(void)
  {
- 	struct vmw_fence_obj *fence =
- 		container_of(f, struct vmw_fence_obj, base);
--
- 	struct vmw_fence_manager *fman = fman_from_fence(fence);
+-	int ret = xt_register_template(&nf_nat_ipv6_table,
+-				       ip6table_nat_table_init);
++	int ret;
  
--	spin_lock(&fman->lock);
--	list_del_init(&fence->head);
--	--fman->num_fence_objects;
--	spin_unlock(&fman->lock);
-+	if (!list_empty(&fence->head)) {
-+		spin_lock(&fman->lock);
-+		list_del_init(&fence->head);
-+		spin_unlock(&fman->lock);
-+	}
- 	fence->destroy(fence);
++	/* net->gen->ptr[ip6table_nat_net_id] must be allocated
++	 * before calling ip6t_nat_register_lookups().
++	 */
++	ret = register_pernet_subsys(&ip6table_nat_net_ops);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&ip6table_nat_net_ops);
++	ret = xt_register_template(&nf_nat_ipv6_table,
++				   ip6table_nat_table_init);
+ 	if (ret)
+-		xt_unregister_template(&nf_nat_ipv6_table);
++		unregister_pernet_subsys(&ip6table_nat_net_ops);
+ 
+ 	return ret;
  }
  
-@@ -257,7 +256,6 @@ static const struct dma_fence_ops vmw_fe
- 	.release = vmw_fence_obj_destroy,
- };
- 
--
- /*
-  * Execute signal actions on fences recently signaled.
-  * This is done from a workqueue so we don't have to execute
-@@ -355,7 +353,6 @@ static int vmw_fence_obj_init(struct vmw
- 		goto out_unlock;
- 	}
- 	list_add_tail(&fence->head, &fman->fence_list);
--	++fman->num_fence_objects;
- 
- out_unlock:
- 	spin_unlock(&fman->lock);
-@@ -403,7 +400,7 @@ static bool vmw_fence_goal_new_locked(st
- 				      u32 passed_seqno)
+ static void __exit ip6table_nat_exit(void)
  {
- 	u32 goal_seqno;
--	struct vmw_fence_obj *fence;
-+	struct vmw_fence_obj *fence, *next_fence;
+-	unregister_pernet_subsys(&ip6table_nat_net_ops);
+ 	xt_unregister_template(&nf_nat_ipv6_table);
++	unregister_pernet_subsys(&ip6table_nat_net_ops);
+ }
  
- 	if (likely(!fman->seqno_valid))
- 		return false;
-@@ -413,7 +410,7 @@ static bool vmw_fence_goal_new_locked(st
- 		return false;
- 
- 	fman->seqno_valid = false;
--	list_for_each_entry(fence, &fman->fence_list, head) {
-+	list_for_each_entry_safe(fence, next_fence, &fman->fence_list, head) {
- 		if (!list_empty(&fence->seq_passed_actions)) {
- 			fman->seqno_valid = true;
- 			vmw_fence_goal_write(fman->dev_priv,
+ module_init(ip6table_nat_init);
+-- 
+2.43.0
+
 
 
 
