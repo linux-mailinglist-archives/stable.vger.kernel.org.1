@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA3E194AB31
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B6F794ABB8
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AF7F280E5A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:04:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A66D283682
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B0A85270;
-	Wed,  7 Aug 2024 15:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7161D8248C;
+	Wed,  7 Aug 2024 15:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uA7POpBR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0l7h6l1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ADE84A52;
-	Wed,  7 Aug 2024 15:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF4078281;
+	Wed,  7 Aug 2024 15:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043000; cv=none; b=CYCB10QKsRtTUBmXPU+/DMQCISi4dNHnqvCkPaHUkpsOM3eKfA0zyxAKTTob3r+5YWw+5S+vVlzBme1YQ2G7M00YZDfm1acDep5BCnZaR59DJbSXugQoHsM1TqGj7hG/FwTRrdvAxRWm2o+LbcpJOalNA8oCoQWS+a0Dl1zaYyw=
+	t=1723043301; cv=none; b=f/JQHROwePudsqSDyt3yb6lJ3ZF3obe95VX+rRchsT3qD1XA7cSrp+o+fxSvev+O2dEDEVA/HJgHgAjgixyT98MJpJpU8PYKxxxcMsrhkhCzhj78qBRAYbyzWXryp7PlgL6IRZLIZGqvxpoYg5UIaaK89/iwP05AsSb2ZdKEhsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043000; c=relaxed/simple;
-	bh=DpeRoJdUxfFsN+W7ELSotj9jTxPxqGwQc9o+ZEcJ+V8=;
+	s=arc-20240116; t=1723043301; c=relaxed/simple;
+	bh=OnkYzka1VVejeJ9Xe/b0Y1FEf9IDVXR5hH9Zub9q7jA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoKW+Kx2+FcBclBlmxW6ywWd9bs/z1cohcXMVKCs1FQHG+r1fdkKSzSMkz/UE8M3/dfBYqpJoI9xDrc70Yp3h36veXCajuNi29Xc7q7tmvUV67DNi2O7IYWBqDS/vIsuqpBVUtL0Qlsu4xE29N9tZkPQoi+vyt+6e2kOj33EUFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uA7POpBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64D9C32781;
-	Wed,  7 Aug 2024 15:03:19 +0000 (UTC)
+	 MIME-Version; b=OgUTsrS0OD8PJQGQDuMmR9wvguZy3Ze3M+w2g5TGMDiySCo9IJnWE62O6L3sXcQOoZVvUTSum4B/Q0qX5RhzchQDP6x1EXEIib+BFFT8ySoT3Q7iPEsKjC3ugJ+fyNR+0X6clriY9hbfDki2zHXncKSsgw38xI4YNJSEXRwV5Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0l7h6l1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57A4C32781;
+	Wed,  7 Aug 2024 15:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043000;
-	bh=DpeRoJdUxfFsN+W7ELSotj9jTxPxqGwQc9o+ZEcJ+V8=;
+	s=korg; t=1723043301;
+	bh=OnkYzka1VVejeJ9Xe/b0Y1FEf9IDVXR5hH9Zub9q7jA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uA7POpBRKmLNeff+FasakwIzlwi9pDc48B7P95eaOxQ3JD9klI6zHP9DqBeGB7KSD
-	 YaeZ+v6WeYX7/Pm7WPrBNPIl8OBtAwHw1V96KYNVFMSqI0JCeHrjmDa9mHl+baRNvV
-	 mY5G2PSbWFqsY2s3dH86tUq42iy+AYwNmqiXFtIE=
+	b=W0l7h6l1nIApFuGoVry5aHqctPKgAwgGdIxysyZLEat1YfELKYbaXoMwvn6w/fR47
+	 617YLeGsPZ+P03qs+2oVaZjC6pyFvxW2INi+FqMa+jl8yvAzJ4zbFj2T+5lReHpkUW
+	 DDsMG5+plMaZ8irXwkb+T9jtdjw4w7ZeV2Yv3OXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 053/123] s390/mm/ptdump: Fix handling of identity mapping area
+Subject: [PATCH 6.6 040/121] f2fs: fix to avoid use SSR allocate when do defragment
 Date: Wed,  7 Aug 2024 16:59:32 +0200
-Message-ID: <20240807150022.529474699@linuxfoundation.org>
+Message-ID: <20240807150020.723217992@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 373953444ce542db43535861fb8ebf3a1e05669c ]
+[ Upstream commit 21327a042dd94bc73181d7300e688699cb1f467e ]
 
-Since virtual and real addresses are not the same anymore the
-assumption that the kernel image is contained within the identity
-mapping is also not true anymore.
+SSR allocate mode will be used when doing file defragment
+if ATGC is working at the same time, that is because
+set_page_private_gcing may make CURSEG_ALL_DATA_ATGC segment
+type got in f2fs_allocate_data_block when defragment page
+is writeback, which may cause file fragmentation is worse.
 
-Fix this by adding two explicit areas and at the correct locations: one
-for the 8kb lowcore area, and one for the identity mapping.
+A file with 2 fragmentations is changed as following after defragment:
 
-Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+----------------file info-------------------
+sensorsdata :
+--------------------------------------------
+dev       [254:48]
+ino       [0x    3029 : 12329]
+mode      [0x    81b0 : 33200]
+nlink     [0x       1 : 1]
+uid       [0x    27e6 : 10214]
+gid       [0x    27e6 : 10214]
+size      [0x  242000 : 2367488]
+blksize   [0x    1000 : 4096]
+blocks    [0x    1210 : 4624]
+--------------------------------------------
+
+file_pos   start_blk     end_blk        blks
+       0    11361121    11361207          87
+  356352    11361215    11361216           2
+  364544    11361218    11361218           1
+  368640    11361220    11361221           2
+  376832    11361224    11361225           2
+  385024    11361227    11361238          12
+  434176    11361240    11361252          13
+  487424    11361254    11361254           1
+  491520    11361271    11361279           9
+  528384     3681794     3681795           2
+  536576     3681797     3681797           1
+  540672     3681799     3681799           1
+  544768     3681803     3681803           1
+  548864     3681805     3681805           1
+  552960     3681807     3681807           1
+  557056     3681809     3681809           1
+
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 8cb1f4080dd9 ("f2fs: assign CURSEG_ALL_DATA_ATGC if blkaddr is valid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/dump_pagetables.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ fs/f2fs/segment.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/mm/dump_pagetables.c b/arch/s390/mm/dump_pagetables.c
-index ffd07ed7b4af8..9d0805d6dc1b2 100644
---- a/arch/s390/mm/dump_pagetables.c
-+++ b/arch/s390/mm/dump_pagetables.c
-@@ -20,8 +20,8 @@ struct addr_marker {
- };
- 
- enum address_markers_idx {
--	IDENTITY_BEFORE_NR = 0,
--	IDENTITY_BEFORE_END_NR,
-+	LOWCORE_START_NR = 0,
-+	LOWCORE_END_NR,
- 	AMODE31_START_NR,
- 	AMODE31_END_NR,
- 	KERNEL_START_NR,
-@@ -30,8 +30,8 @@ enum address_markers_idx {
- 	KFENCE_START_NR,
- 	KFENCE_END_NR,
- #endif
--	IDENTITY_AFTER_NR,
--	IDENTITY_AFTER_END_NR,
-+	IDENTITY_START_NR,
-+	IDENTITY_END_NR,
- 	VMEMMAP_NR,
- 	VMEMMAP_END_NR,
- 	VMALLOC_NR,
-@@ -49,8 +49,10 @@ enum address_markers_idx {
- };
- 
- static struct addr_marker address_markers[] = {
--	[IDENTITY_BEFORE_NR]	= {0, "Identity Mapping Start"},
--	[IDENTITY_BEFORE_END_NR] = {(unsigned long)_stext, "Identity Mapping End"},
-+	[LOWCORE_START_NR]	= {0, "Lowcore Start"},
-+	[LOWCORE_END_NR]	= {0, "Lowcore End"},
-+	[IDENTITY_START_NR]	= {0, "Identity Mapping Start"},
-+	[IDENTITY_END_NR]	= {0, "Identity Mapping End"},
- 	[AMODE31_START_NR]	= {0, "Amode31 Area Start"},
- 	[AMODE31_END_NR]	= {0, "Amode31 Area End"},
- 	[KERNEL_START_NR]	= {(unsigned long)_stext, "Kernel Image Start"},
-@@ -59,8 +61,6 @@ static struct addr_marker address_markers[] = {
- 	[KFENCE_START_NR]	= {0, "KFence Pool Start"},
- 	[KFENCE_END_NR]		= {0, "KFence Pool End"},
- #endif
--	[IDENTITY_AFTER_NR]	= {(unsigned long)_end, "Identity Mapping Start"},
--	[IDENTITY_AFTER_END_NR]	= {0, "Identity Mapping End"},
- 	[VMEMMAP_NR]		= {0, "vmemmap Area Start"},
- 	[VMEMMAP_END_NR]	= {0, "vmemmap Area End"},
- 	[VMALLOC_NR]		= {0, "vmalloc Area Start"},
-@@ -290,7 +290,10 @@ static int pt_dump_init(void)
- 	 */
- 	max_addr = (S390_lowcore.kernel_asce.val & _REGION_ENTRY_TYPE_MASK) >> 2;
- 	max_addr = 1UL << (max_addr * 11 + 31);
--	address_markers[IDENTITY_AFTER_END_NR].start_address = ident_map_size;
-+	address_markers[LOWCORE_START_NR].start_address = 0;
-+	address_markers[LOWCORE_END_NR].start_address = sizeof(struct lowcore);
-+	address_markers[IDENTITY_START_NR].start_address = __identity_base;
-+	address_markers[IDENTITY_END_NR].start_address = __identity_base + ident_map_size;
- 	address_markers[AMODE31_START_NR].start_address = (unsigned long)__samode31;
- 	address_markers[AMODE31_END_NR].start_address = (unsigned long)__eamode31;
- 	address_markers[MODULES_NR].start_address = MODULES_VADDR;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 22080606b8769..6d6c47df36ec0 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -3350,7 +3350,8 @@ static int __get_segment_type_6(struct f2fs_io_info *fio)
+ 		if (page_private_gcing(fio->page)) {
+ 			if (fio->sbi->am.atgc_enabled &&
+ 				(fio->io_type == FS_DATA_IO) &&
+-				(fio->sbi->gc_mode != GC_URGENT_HIGH))
++				(fio->sbi->gc_mode != GC_URGENT_HIGH) &&
++				!is_inode_flag_set(inode, FI_OPU_WRITE))
+ 				return CURSEG_ALL_DATA_ATGC;
+ 			else
+ 				return CURSEG_COLD_DATA;
 -- 
 2.43.0
 
