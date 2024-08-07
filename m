@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-65665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D89194AB5B
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A981C94ABE6
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27F492833C2
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB19D1C21BAC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16BD84D12;
-	Wed,  7 Aug 2024 15:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F357C823DE;
+	Wed,  7 Aug 2024 15:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3DpYVv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5dMfomr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8170982499;
-	Wed,  7 Aug 2024 15:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F3178C67;
+	Wed,  7 Aug 2024 15:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043078; cv=none; b=TgNqazrMJZWrq0y9ckBbv4CZQo+kbZ0n3+xOUy4Kvo0G9dpd3CE2mz4gtZpSeNye5jPaaChstl3s2VM7GjbrtDqKNxlNLr+wAWizXKU/MJjf9aBS78DgFUSjt4ZH7RxPNJ47XPUplL6TUYoKlEo+wtEmAbkDbsgyzuqaeJwdDMs=
+	t=1723043407; cv=none; b=gloZdwtglzvuZEeDqWNGvtw1LsH20DwnI/Dl3fpWzTiZhgjhtqTHSqf+/1jH9qZqRcUykX7VitrVQL+g5M2WkYrW793HJcR2fnmqEU0Rgwce+2N3EYhZs21CUS4v/CeFa2Rh9wTqhmDX+QuV4hktfo9XQB6Jn57HruoKa2Q5VRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043078; c=relaxed/simple;
-	bh=8ajvqQV4C+wbq3F6jkDO6eupCgElEcXcazUPtAUHtz0=;
+	s=arc-20240116; t=1723043407; c=relaxed/simple;
+	bh=8tY4KUQEddpU/oxB4F6ywlvycT7nxFX2jwZRJpx7oD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6qFRSIjq7VWKmaXy29pkfwU99u26ZNeDXoKweq/X9GErejgTZ7+5l6jA3kjoPXjHMyajoViEmREbZMbhlzoajaaGV0P9WEIvMu9uB4QcqPIb3pJ3dpWha+WxAxzm2h3RH8iu4dA23xWb/Wu0RwTKILWxVXqW+p6U5YeLrdP4s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3DpYVv+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FFBC4AF0E;
-	Wed,  7 Aug 2024 15:04:37 +0000 (UTC)
+	 MIME-Version; b=k2HcampH+SPCIRHfKfg6mGNROzVQmEi224wAHhHwL4kaGbogpBUORWaAVwxRvQLNrskmEpSpmbIKcqj7G2qtkip0XKAPrVcXkbDqBHJi1iD4SWOmV86LpWL7BXnYp8Tc4YELfnqrRR7d8w7zPEur+RA2g5OIEGN/rrYudNMorFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5dMfomr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42894C32781;
+	Wed,  7 Aug 2024 15:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043078;
-	bh=8ajvqQV4C+wbq3F6jkDO6eupCgElEcXcazUPtAUHtz0=;
+	s=korg; t=1723043407;
+	bh=8tY4KUQEddpU/oxB4F6ywlvycT7nxFX2jwZRJpx7oD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3DpYVv+0SXjC8XmxN0B2fzHUkA76i7Y/9tnawmehDiNrrEBvUlQLr3IeMt0VkmOc
-	 dR1Zo2IvOWnW2pEqCeycgipuGM4Djeb91Kmt5rQALRam+wY5nQipfiDb/ToU6C5k0z
-	 WHqQZabFZm45BSPwyplsN+7nPj9f6BS5ZGCl0F+c=
+	b=a5dMfomrFnGff5fG0qVefzuxdImJYxywmfY8dVDJg+37kEWPX6+XsmTNVjOUY3VYH
+	 1JBU0deol2HdMB+sFp4Kj7dG5fZntyCeDZU6rwjxvswcID+EuB5RY0Fx3arV8k4G8c
+	 4QB+56C32cBurLabyYAC8RntBpqQP5bjEsBcY6NM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Casey Chen <cachen@purestorage.com>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	yzhong@purestorage.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 065/123] net/mlx5e: Add a check for the return value from mlx5_port_set_eth_ptys
+Subject: [PATCH 6.6 052/121] perf tool: fix dereferencing NULL al->maps
 Date: Wed,  7 Aug 2024 16:59:44 +0200
-Message-ID: <20240807150022.900860301@linuxfoundation.org>
+Message-ID: <20240807150021.110665555@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Casey Chen <cachen@purestorage.com>
 
-[ Upstream commit 3f8e82a020a5c22f9b791f4ac499b8e18007fbda ]
+[ Upstream commit 4c17736689ccfc44ec7dcc472577f25c34cf8724 ]
 
-Since the documentation for mlx5_toggle_port_link states that it should
-only be used after setting the port register, we add a check for the
-return value from mlx5_port_set_eth_ptys to ensure the register was
-successfully set before calling it.
+With 0dd5041c9a0e ("perf addr_location: Add init/exit/copy functions"),
+when cpumode is 3 (macro PERF_RECORD_MISC_HYPERVISOR),
+thread__find_map() could return with al->maps being NULL.
 
-Fixes: 667daedaecd1 ("net/mlx5e: Toggle link only after modifying port parameters")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-9-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The path below could add a callchain_cursor_node with NULL ms.maps.
+
+add_callchain_ip()
+  thread__find_symbol(.., &al)
+    thread__find_map(.., &al)   // al->maps becomes NULL
+  ms.maps = maps__get(al.maps)
+  callchain_cursor_append(..., &ms, ...)
+    node->ms.maps = maps__get(ms->maps)
+
+Then the path below would dereference NULL maps and get segfault.
+
+fill_callchain_info()
+  maps__machine(node->ms.maps);
+
+Fix it by checking if maps is NULL in fill_callchain_info().
+
+Fixes: 0dd5041c9a0e ("perf addr_location: Add init/exit/copy functions")
+Signed-off-by: Casey Chen <cachen@purestorage.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: yzhong@purestorage.com
+Link: https://lore.kernel.org/r/20240722211548.61455-1-cachen@purestorage.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/perf/util/callchain.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 3320f12ba2dbd..58eb96a688533 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -1409,7 +1409,12 @@ static int mlx5e_ethtool_set_link_ksettings(struct mlx5e_priv *priv,
- 	if (!an_changes && link_modes == eproto.admin)
- 		goto out;
+diff --git a/tools/perf/util/callchain.c b/tools/perf/util/callchain.c
+index aee937d14fbbf..09e6b4e1401c9 100644
+--- a/tools/perf/util/callchain.c
++++ b/tools/perf/util/callchain.c
+@@ -1126,7 +1126,7 @@ int hist_entry__append_callchain(struct hist_entry *he, struct perf_sample *samp
+ int fill_callchain_info(struct addr_location *al, struct callchain_cursor_node *node,
+ 			bool hide_unresolved)
+ {
+-	struct machine *machine = maps__machine(node->ms.maps);
++	struct machine *machine = node->ms.maps ? maps__machine(node->ms.maps) : NULL;
  
--	mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
-+	err = mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
-+	if (err) {
-+		netdev_err(priv->netdev, "%s: failed to set ptys reg: %d\n", __func__, err);
-+		goto out;
-+	}
-+
- 	mlx5_toggle_port_link(mdev);
- 
- out:
+ 	maps__put(al->maps);
+ 	al->maps = maps__get(node->ms.maps);
 -- 
 2.43.0
 
