@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-65645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4FC94AB3A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2ACC94AC23
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1361F258AC
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 650BA1F209AB
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474CA12C491;
-	Wed,  7 Aug 2024 15:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9701823A9;
+	Wed,  7 Aug 2024 15:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V489JeBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkYcN7lw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC39883CD9;
-	Wed,  7 Aug 2024 15:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75465374CC;
+	Wed,  7 Aug 2024 15:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043025; cv=none; b=bmYUxvVfMkGwN/T93plQyAasLwLDgfalpt/kmIYpUF7ATT7FF8F+5Hy4HZtsiEzgYRt0Ervd+nBLnVK06nTHwZpNkqTjN7vrZtFQufJ99iLUGZHYHPD14A9yIkrr395Mz5QR0VvK62kGUxU30qSKR1PeeyrZchbfsT1Ci10V11g=
+	t=1723043543; cv=none; b=n/oYA2eGg9JcScSTAIaiY+3034oOvyPE9zf8u8dobQ8plrD6NB4yZ6tKN5CeEvO7lCLhUwbjxsZvoXHYsA6MUlSx9nCVpSD8t3ANAFr8JbQLH7rYxoD0EjUU/avTWYCA+k/AMzT7OLlk4GHtZdGoNG/dqORNhJvi2gkLJNNZfyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043025; c=relaxed/simple;
-	bh=6gbVMu9lcGPZMyWYlDNiom+OxGZ/tq7cUZ1MgaecRUQ=;
+	s=arc-20240116; t=1723043543; c=relaxed/simple;
+	bh=YShQqegv1T4BR+5gpHIR0x1X87gRT8qbtJFtSefgNRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3I353D1BQJ/dVNHn1KYDPoDB68DgjhC+K0QHwVgfoJDz5T1Ep4pz4eDm/TMPGNiPDuO98jZ2DPlYWreXcdHf34AUzXwyUXRVXhQTARiC2tdSR/M/K/zru2zw+CPlH8/BtfPBgTceoRBJ8aluzjS+tIwKtLl0ZWSp/xh5VoMx6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V489JeBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C540C32781;
-	Wed,  7 Aug 2024 15:03:44 +0000 (UTC)
+	 MIME-Version; b=IklUJiDbtKkdVPeTvEh/ex1HI7Lqm6Oqtqk7JZNnSasqrTagK+jnfBsNjMBCIO9mHG63gAuo462AKAxx3ewpdeeyf0Uat7npe6hwIuyPh35xDwTpOhqU+ufGNUDqknU86HsRn+HTLF87m0gHlPhtr6pNEk7xEA/qt8m8JUSodQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkYcN7lw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0311FC32781;
+	Wed,  7 Aug 2024 15:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043024;
-	bh=6gbVMu9lcGPZMyWYlDNiom+OxGZ/tq7cUZ1MgaecRUQ=;
+	s=korg; t=1723043543;
+	bh=YShQqegv1T4BR+5gpHIR0x1X87gRT8qbtJFtSefgNRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V489JeBGmDC3I8w6Gic6nIv7JeqKdfyz3yMljS/LStFJcLDgVO5S9UZKbAlfDee9e
-	 +99S5bFLQ+vQNW5bi3Y7rTl54e/67Vs2d05aRDMfnkPLnYzra25UlT7KlrpoLwPt5H
-	 KJf06E8Pu65fJZ09lJg2zURZ0+u/7bU4ozJiKx2Q=
+	b=AkYcN7lw/NvB1fcUMRaJpiNNnrWOFgcLVNDuPcm4VknpI0tcprDjExEBsj7f10pbR
+	 U7bUxaOxvtXcIF5JBZpahZgeR6XubqlMKiNnG0eWl7ZitTdit4r78B4KlXKwbzh2+C
+	 Ci2aoFrh4U+Wphr+xs32gn2xlIZ8/fQmPBLvWmcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 061/123] net/mlx5: Lag, dont use the hardcoded value of the first port
+Subject: [PATCH 6.1 01/86] arm64: dts: qcom: msm8998: switch USB QMP PHY to new style of bindings
 Date: Wed,  7 Aug 2024 16:59:40 +0200
-Message-ID: <20240807150022.766524825@linuxfoundation.org>
+Message-ID: <20240807150039.293460467@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Bloch <mbloch@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 3fda84dc090390573cfbd0b1d70372663315de21 ]
+[ Upstream commit b7efebfeb2e8ad8187cdabba5f0212ba2e6c1069 ]
 
-The cited commit didn't change the body of the loop as it should.
-It shouldn't be using MLX5_LAG_P1.
+Change the USB QMP PHY to use newer style of QMP PHY bindings (single
+resource region, no per-PHY subnodes).
 
-Fixes: 7e978e7714d6 ("net/mlx5: Lag, use actual number of lag ports")
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230824211952.1397699-11-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 0046325ae520 ("arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 35 +++++++++++----------------
+ 1 file changed, 14 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index d0871c46b8c54..cf8045b926892 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -1538,7 +1538,7 @@ u8 mlx5_lag_get_slave_port(struct mlx5_core_dev *dev,
- 		goto unlock;
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 3d4941dc31d74..c19fb8ae2da2a 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -2029,7 +2029,7 @@ usb3_dwc3: usb@a800000 {
+ 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
+-				phys = <&qusb2phy>, <&usb1_ssphy>;
++				phys = <&qusb2phy>, <&usb3phy>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 				snps,has-lpm-erratum;
+ 				snps,hird-threshold = /bits/ 8 <0x10>;
+@@ -2038,33 +2038,26 @@ usb3_dwc3: usb@a800000 {
  
- 	for (i = 0; i < ldev->ports; i++) {
--		if (ldev->pf[MLX5_LAG_P1].netdev == slave) {
-+		if (ldev->pf[i].netdev == slave) {
- 			port = i;
- 			break;
- 		}
+ 		usb3phy: phy@c010000 {
+ 			compatible = "qcom,msm8998-qmp-usb3-phy";
+-			reg = <0x0c010000 0x18c>;
+-			status = "disabled";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			ranges;
++			reg = <0x0c010000 0x1000>;
+ 
+ 			clocks = <&gcc GCC_USB3_PHY_AUX_CLK>,
++				 <&gcc GCC_USB3_CLKREF_CLK>,
+ 				 <&gcc GCC_USB_PHY_CFG_AHB2PHY_CLK>,
+-				 <&gcc GCC_USB3_CLKREF_CLK>;
+-			clock-names = "aux", "cfg_ahb", "ref";
++				 <&gcc GCC_USB3_PHY_PIPE_CLK>;
++			clock-names = "aux",
++				      "ref",
++				      "cfg_ahb",
++				      "pipe";
++			clock-output-names = "usb3_phy_pipe_clk_src";
++			#clock-cells = <0>;
++			#phy-cells = <0>;
+ 
+ 			resets = <&gcc GCC_USB3_PHY_BCR>,
+ 				 <&gcc GCC_USB3PHY_PHY_BCR>;
+-			reset-names = "phy", "common";
++			reset-names = "phy",
++				      "phy_phy";
+ 
+-			usb1_ssphy: phy@c010200 {
+-				reg = <0xc010200 0x128>,
+-				      <0xc010400 0x200>,
+-				      <0xc010c00 0x20c>,
+-				      <0xc010600 0x128>,
+-				      <0xc010800 0x200>;
+-				#phy-cells = <0>;
+-				#clock-cells = <0>;
+-				clocks = <&gcc GCC_USB3_PHY_PIPE_CLK>;
+-				clock-names = "pipe0";
+-				clock-output-names = "usb3_phy_pipe_clk_src";
+-			};
++			status = "disabled";
+ 		};
+ 
+ 		qusb2phy: phy@c012000 {
 -- 
 2.43.0
 
