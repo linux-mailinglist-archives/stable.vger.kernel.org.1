@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-65697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F9294AB80
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9214F94AC03
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21D2F1C227E5
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2CD21C23546
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B5C84A4D;
-	Wed,  7 Aug 2024 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F50E82499;
+	Wed,  7 Aug 2024 15:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv70l6t0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRiZG77V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFA181AB6;
-	Wed,  7 Aug 2024 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4F9823C8;
+	Wed,  7 Aug 2024 15:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043165; cv=none; b=N2/l3odi6EJnnPXWYijCOh8vKMHUYJSzFefQGUPci9TVGYlcaIjFtUsIp52G8uCxuhfG/gkMKRBoGpSI/YASo80SC7jPnGjurljp6KwB33qk9xET5zIXyJLZcQ6DU/IXGNFl8AQNA4mxHCkvesNGq/gUJDP9L9AwL+n8Wotqh9A=
+	t=1723043471; cv=none; b=SEuWlGGEUKlhHSVQyBeurY7pcZipajVmmNHuCUQ9RhXmf8/rNFhWEQDZpqe5hRndBm0SgIpsLr7NXtKHGz5Ok4o0J3sFnAcF6YeAQWGMcLrEy2vYQs+XMIQvfJWXgPhDpLTNVMuWjXgIOYX8c250QwDq08CAUF86hSsC5vM/J7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043165; c=relaxed/simple;
-	bh=PDQDAiXjn8sMJ2zUX2PnnizrUw9A7SDYSSKpolXhA04=;
+	s=arc-20240116; t=1723043471; c=relaxed/simple;
+	bh=G06TGvjCcgZfW9AZUSfvmPfRZRF370kj/LbwOQOakMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y22Dh7FWjRuaMB0b19oLrDbzfoWG4P8ZibV4XsG0DNIM/hImRoyVbCpCj/TwI3xvw3CGeErEP5Q/IdHpJIoMR6+Q1Pq9ft/+LdUyimn1LRxtULBr9PgdIYd+nHxm/qHdU3GJ2OVBnQo4JNjOqWcoDqgQmkVh4LvCs6LSqXklS3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv70l6t0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C143C32781;
-	Wed,  7 Aug 2024 15:06:04 +0000 (UTC)
+	 MIME-Version; b=gNE/onkcnXrsymylfvqEUuDYcnDRV23XJbgF9jWKmMBkb9Y4LF3Pg6REkLklyXm0J8XUfWCDllpHziD4yMXH5LO02heuHrTodvaOXC1dcNVHVm5y+iFhuAWpzEp1DPnUVhpB6U6QT7st5P9l0s5AayxeRiQdx90RONz2KkpIDM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRiZG77V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444C6C32781;
+	Wed,  7 Aug 2024 15:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043165;
-	bh=PDQDAiXjn8sMJ2zUX2PnnizrUw9A7SDYSSKpolXhA04=;
+	s=korg; t=1723043471;
+	bh=G06TGvjCcgZfW9AZUSfvmPfRZRF370kj/LbwOQOakMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jv70l6t011sI7YkJRo9Let03RMGVTraG4WEKRMy9kMe0HFDKgKuSvxYmXtsJeMo16
-	 JmBXkrNguCgH9MxivewT5eBRRe1wVCU4FIvjTKiJV1GivYqyaJ22ifg5AnYe1DE5aN
-	 FLOildsDdLgjNjJXx48g+WA4fzcTTiB8+apWfc4U=
+	b=aRiZG77V3j5ObHp4Hln/kWqTozLkERXE8eFOgwXc2eJCllZjoqzorN+3SFlLSMGH9
+	 hUutVIyYUdI/6Lq6vfJ2aOE+inWIs8z7NEz6zBffmI4sIuKdxl6d/IilPhHVtrJ1nw
+	 HwNiT4IO/a1IcAuhrAtspCu0HOAYBTTvznGPneWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.10 115/123] mptcp: mib: count MPJ with backup flag
-Date: Wed,  7 Aug 2024 17:00:34 +0200
-Message-ID: <20240807150024.627611863@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 103/121] ALSA: seq: ump: Optimize conversions from SysEx to UMP
+Date: Wed,  7 Aug 2024 17:00:35 +0200
+Message-ID: <20240807150022.769510978@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +60,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 4dde0d72ccec500c60c798e036b852e013d6e124 upstream.
+commit 952b13c215234855d75ef4b5bb0138075e73677c upstream.
 
-Without such counters, it is difficult to easily debug issues with MPJ
-not having the backup flags on production servers.
+The current conversion from the legacy SysEx event to UMP SysEx packet
+in the sequencer core has a couple of issues:
 
-This is not strictly a fix, but it eases to validate the following
-patches without requiring to take packet traces, to query ongoing
-connections with Netlink with admin permissions, or to guess by looking
-at the behaviour of the packet scheduler. Also, the modification is self
-contained, isolated, well controlled, and the increments are done just
-after others, there from the beginning. It looks then safe, and helpful
-to backport this.
+* The first packet trims the SysEx start byte (0xf0), hence it
+  contains only 5 bytes instead of 6.  This isn't wrong, per
+  specification, but it's strange not to fill 6 bytes.
 
-Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+* When the SysEx end marker (0xf7) is placed at the first byte of the
+  next packet, it'll end up with an empty data just with the END
+  status.  It can be rather folded into the previous packet with the
+  END status.
+
+This patch tries to address those issues.  The first packet may have 6
+bytes even with the SysEx start, and an empty packet with the SysEx
+end marker is omitted.
+
+Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240726143455.3254-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/mib.c     |    2 ++
- net/mptcp/mib.h     |    2 ++
- net/mptcp/subflow.c |    6 ++++++
- 3 files changed, 10 insertions(+)
+ sound/core/seq/seq_ump_convert.c | 41 +++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
---- a/net/mptcp/mib.c
-+++ b/net/mptcp/mib.c
-@@ -19,7 +19,9 @@ static const struct snmp_mib mptcp_snmp_
- 	SNMP_MIB_ITEM("MPTCPRetrans", MPTCP_MIB_RETRANSSEGS),
- 	SNMP_MIB_ITEM("MPJoinNoTokenFound", MPTCP_MIB_JOINNOTOKEN),
- 	SNMP_MIB_ITEM("MPJoinSynRx", MPTCP_MIB_JOINSYNRX),
-+	SNMP_MIB_ITEM("MPJoinSynBackupRx", MPTCP_MIB_JOINSYNBACKUPRX),
- 	SNMP_MIB_ITEM("MPJoinSynAckRx", MPTCP_MIB_JOINSYNACKRX),
-+	SNMP_MIB_ITEM("MPJoinSynAckBackupRx", MPTCP_MIB_JOINSYNACKBACKUPRX),
- 	SNMP_MIB_ITEM("MPJoinSynAckHMacFailure", MPTCP_MIB_JOINSYNACKMAC),
- 	SNMP_MIB_ITEM("MPJoinAckRx", MPTCP_MIB_JOINACKRX),
- 	SNMP_MIB_ITEM("MPJoinAckHMacFailure", MPTCP_MIB_JOINACKMAC),
---- a/net/mptcp/mib.h
-+++ b/net/mptcp/mib.h
-@@ -14,7 +14,9 @@ enum linux_mptcp_mib_field {
- 	MPTCP_MIB_RETRANSSEGS,		/* Segments retransmitted at the MPTCP-level */
- 	MPTCP_MIB_JOINNOTOKEN,		/* Received MP_JOIN but the token was not found */
- 	MPTCP_MIB_JOINSYNRX,		/* Received a SYN + MP_JOIN */
-+	MPTCP_MIB_JOINSYNBACKUPRX,	/* Received a SYN + MP_JOIN + backup flag */
- 	MPTCP_MIB_JOINSYNACKRX,		/* Received a SYN/ACK + MP_JOIN */
-+	MPTCP_MIB_JOINSYNACKBACKUPRX,	/* Received a SYN/ACK + MP_JOIN + backup flag */
- 	MPTCP_MIB_JOINSYNACKMAC,	/* HMAC was wrong on SYN/ACK + MP_JOIN */
- 	MPTCP_MIB_JOINACKRX,		/* Received an ACK + MP_JOIN */
- 	MPTCP_MIB_JOINACKMAC,		/* HMAC was wrong on ACK + MP_JOIN */
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -168,6 +168,9 @@ static int subflow_check_req(struct requ
- 			return 0;
- 	} else if (opt_mp_join) {
- 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNRX);
+diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
+index e90b27a135e6..d9dacfbe4a9a 100644
+--- a/sound/core/seq/seq_ump_convert.c
++++ b/sound/core/seq/seq_ump_convert.c
+@@ -1192,44 +1192,53 @@ static int cvt_sysex_to_ump(struct snd_seq_client *dest,
+ {
+ 	struct snd_seq_ump_event ev_cvt;
+ 	unsigned char status;
+-	u8 buf[6], *xbuf;
++	u8 buf[8], *xbuf;
+ 	int offset = 0;
+ 	int len, err;
++	bool finished = false;
+ 
+ 	if (!snd_seq_ev_is_variable(event))
+ 		return 0;
+ 
+ 	setup_ump_event(&ev_cvt, event);
+-	for (;;) {
++	while (!finished) {
+ 		len = snd_seq_expand_var_event_at(event, sizeof(buf), buf, offset);
+ 		if (len <= 0)
+ 			break;
+-		if (WARN_ON(len > 6))
++		if (WARN_ON(len > sizeof(buf)))
+ 			break;
+-		offset += len;
 +
-+		if (mp_opt.backup)
-+			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNBACKUPRX);
+ 		xbuf = buf;
++		status = UMP_SYSEX_STATUS_CONTINUE;
++		/* truncate the sysex start-marker */
+ 		if (*xbuf == UMP_MIDI1_MSG_SYSEX_START) {
+ 			status = UMP_SYSEX_STATUS_START;
+-			xbuf++;
+ 			len--;
+-			if (len > 0 && xbuf[len - 1] == UMP_MIDI1_MSG_SYSEX_END) {
+-				status = UMP_SYSEX_STATUS_SINGLE;
+-				len--;
+-			}
+-		} else {
+-			if (xbuf[len - 1] == UMP_MIDI1_MSG_SYSEX_END) {
+-				status = UMP_SYSEX_STATUS_END;
+-				len--;
+-			} else {
+-				status = UMP_SYSEX_STATUS_CONTINUE;
+-			}
++			offset++;
++			xbuf++;
+ 		}
++
++		/* if the last of this packet or the 1st byte of the next packet
++		 * is the end-marker, finish the transfer with this packet
++		 */
++		if (len > 0 && len < 8 &&
++		    xbuf[len - 1] == UMP_MIDI1_MSG_SYSEX_END) {
++			if (status == UMP_SYSEX_STATUS_START)
++				status = UMP_SYSEX_STATUS_SINGLE;
++			else
++				status = UMP_SYSEX_STATUS_END;
++			len--;
++			finished = true;
++		}
++
++		len = min(len, 6);
+ 		fill_sysex7_ump(dest_port, ev_cvt.ump, status, xbuf, len);
+ 		err = __snd_seq_deliver_single_event(dest, dest_port,
+ 						     (struct snd_seq_event *)&ev_cvt,
+ 						     atomic, hop);
+ 		if (err < 0)
+ 			return err;
++		offset += len;
  	}
- 
- 	if (opt_mp_capable && listener->request_mptcp) {
-@@ -577,6 +580,9 @@ static void subflow_finish_connect(struc
- 		subflow->mp_join = 1;
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKRX);
- 
-+		if (subflow->backup)
-+			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKBACKUPRX);
-+
- 		if (subflow_use_different_dport(msk, sk)) {
- 			pr_debug("synack inet_dport=%d %d",
- 				 ntohs(inet_sk(sk)->inet_dport),
+ 	return 0;
+ }
+-- 
+2.46.0
+
 
 
 
