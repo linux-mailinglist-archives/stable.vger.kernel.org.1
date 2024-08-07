@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-65864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09BC94AC45
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE04E94ABF0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E57B1C212DC
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ABC81C223F0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6F184DE4;
-	Wed,  7 Aug 2024 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B1881751;
+	Wed,  7 Aug 2024 15:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6on57e7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCEkLrOd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDF7823DE;
-	Wed,  7 Aug 2024 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1607E78C67;
+	Wed,  7 Aug 2024 15:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043610; cv=none; b=SCM4uSV1NOIUboSTZdKHAL/z+D3zayvwYfrCjow9qWJ9Eph9J0P93+1wqlTUigAO+bhBy/E6p/6imQDvUWei+6aynJfmwumlgOHx3DLcirX+NLCZWwqVmQ2ONBWJQE7CIXYCa7oeBIM5NZGMMQMMwFv2vUorP14gtQlYWsqh1kU=
+	t=1723043432; cv=none; b=TYianfn9m1xu6mgefDQZCbN/L3NkCiN3pdkl+PHAap0yH7G8N7maRLL+paSTcEc8Thg03188BDlclxwRIzZ68+UeoPvaB9s3M2KCkGZfk4So4swPJTU+F6XbcJdjqyypnCprCxvaUjIj2DSWDqH1oT3Eh5SU069yBU0LxJ9jz5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043610; c=relaxed/simple;
-	bh=LyfqdU2N5GF/ZixgrRL5mebBQJCFfF1RWX9HY3HWXLU=;
+	s=arc-20240116; t=1723043432; c=relaxed/simple;
+	bh=hqIXT0j+g9yZnBpdjo74PF+UHJfwqPs/qbqj1reQ+w4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=maqh8MO1bvB80hNB0U6ieMD8oxtZcQftXH3oKnYpKAzNPSjco13Q3MgfqXoRIy1PdDH9+dmN4HXPc+gaR+v0s2X8Z3ZFBXrxWRKku5V/P9Q4L6TOpyKLFErUcTIS4Cg0jIg22OazN53E1vkPw5C6zsi0NieZXf1iVp4d3pLv4gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6on57e7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90363C4AF0F;
-	Wed,  7 Aug 2024 15:13:29 +0000 (UTC)
+	 MIME-Version; b=QrzdqkJgalYN/82LZ/+86VNWUBvjgT3H4hMCPCR/AX8gWabJ4lTbMnFKzpGPX1J0edOLvtdWPwm3t5jRS1ptLk4Q8ZOtGTt8vYpKiJqFnDls/xCj3qq6Uf0V8F9XRJCt154uoTIhH7RlWQtfbCPgSSz4USdbvBKV8Jtr+1PnsdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCEkLrOd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE09C32781;
+	Wed,  7 Aug 2024 15:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043609;
-	bh=LyfqdU2N5GF/ZixgrRL5mebBQJCFfF1RWX9HY3HWXLU=;
+	s=korg; t=1723043432;
+	bh=hqIXT0j+g9yZnBpdjo74PF+UHJfwqPs/qbqj1reQ+w4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6on57e7FCmaHF5sMbzEsoBdEpLWsZ0+ywnrCqC9zrsX88BMB7YtaJimy2hOMa3vc
-	 WCJaa3GDDvx3vF7F+UPGs+4u9BL4pe2o+3CxMJQVWMezv6JC8B6ojp+XUEsobKtJI1
-	 phVEitR1v1hSAowaR76u07FpXyC3nR5PLf9sqGNU=
+	b=eCEkLrOdOxAl+lu9UFjk1yUK7Gho9KmAMxOOPhOmJGATgqVboNZsxpYpB8JI37O3E
+	 qx9qODI0S7UzrzHf+0+PEy/dUyEvqvaVtOu4HzJp4bJY3yAGZ66T3WBdu2QctwgI2F
+	 D1LO4joWl2/rk32Q4iGBv3W0cCX4NtRiQNZZHDFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	WANG Xuerui <git@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Shay Drory <shayd@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 34/86] MIPS: Loongson64: DTS: Add RTC support to Loongson-2K1000
+Subject: [PATCH 6.6 081/121] net/mlx5: Fix error handling in irq_pool_request_irq
 Date: Wed,  7 Aug 2024 17:00:13 +0200
-Message-ID: <20240807150040.357339610@linuxfoundation.org>
+Message-ID: <20240807150022.065837115@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit e47084e116fccaa43644360d7c0b997979abce3e ]
+[ Upstream commit a4557b0b57c40871ff00da4f623cf79211e052f3 ]
 
-The module is now supported, enable it.
+In case mlx5_irq_alloc fails, the previously allocated index remains
+in the XArray, which could lead to inconsistencies.
 
-Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: WANG Xuerui <git@xen0n.name>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Stable-dep-of: dbb69b9d6234 ("MIPS: dts: loongson: Fix liointc IRQ polarity")
+Fix it by adding error handling that erases the allocated index
+from the XArray if mlx5_irq_alloc returns an error.
+
+Fixes: c36326d38d93 ("net/mlx5: Round-Robin EQs over IRQs")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-index 9089d1e4f3fee..c0be84a6e81fd 100644
---- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-+++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-@@ -96,6 +96,13 @@ liointc1: interrupt-controller@1fe11440 {
- 						<0x00000000>; /* int3 */
- 		};
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
+index 612e666ec2635..e2230c8f18152 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
+@@ -48,6 +48,7 @@ static struct mlx5_irq *
+ irq_pool_request_irq(struct mlx5_irq_pool *pool, struct irq_affinity_desc *af_desc)
+ {
+ 	struct irq_affinity_desc auto_desc = {};
++	struct mlx5_irq *irq;
+ 	u32 irq_index;
+ 	int err;
  
-+		rtc0: rtc@1fe07800 {
-+			compatible = "loongson,ls2k1000-rtc";
-+			reg = <0 0x1fe07800 0 0x78>;
-+			interrupt-parent = <&liointc0>;
-+			interrupts = <60 IRQ_TYPE_LEVEL_LOW>;
-+		};
-+
- 		uart0: serial@1fe00000 {
- 			compatible = "ns16550a";
- 			reg = <0 0x1fe00000 0 0x8>;
+@@ -64,9 +65,12 @@ irq_pool_request_irq(struct mlx5_irq_pool *pool, struct irq_affinity_desc *af_de
+ 		else
+ 			cpu_get(pool, cpumask_first(&af_desc->mask));
+ 	}
+-	return mlx5_irq_alloc(pool, irq_index,
+-			      cpumask_empty(&auto_desc.mask) ? af_desc : &auto_desc,
+-			      NULL);
++	irq = mlx5_irq_alloc(pool, irq_index,
++			     cpumask_empty(&auto_desc.mask) ? af_desc : &auto_desc,
++			     NULL);
++	if (IS_ERR(irq))
++		xa_erase(&pool->irqs, irq_index);
++	return irq;
+ }
+ 
+ /* Looking for the IRQ with the smallest refcount that fits req_mask.
 -- 
 2.43.0
 
