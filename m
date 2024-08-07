@@ -1,116 +1,192 @@
-Return-Path: <stable+bounces-65936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738BF94ADCB
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 18:12:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C18AD94AE40
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 18:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DE36281719
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:12:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 809912832B5
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912FE13B293;
-	Wed,  7 Aug 2024 16:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22F512F5B1;
+	Wed,  7 Aug 2024 16:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="MtPtEs18"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="CmbFhUFN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394D713B2A4
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 16:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB43278C90
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 16:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723047021; cv=none; b=hyB6OEOjhPVTIKZgYlno2zNaJDVxwsDYNysad8gA4NY1dy3r+gGcHHTR62fmnLcoTZa1OuOzQ7TwrxP7PtyzNIBSzo0x0t1TRxyuURBV4SpjPQamBJLhdRPCAOqLmNtAd4heVzIPiudJZmDrznSh9m6RSVUbpYBFUEtE2HCw31I=
+	t=1723048703; cv=none; b=IlHjH2RxV+GXfuzYDEvPkexj8J3UEYGQVGdPiUIKKzV5lR2DBHd8t3DZ5mUuAbInhKv22M5V1CnxPyAX8jYTETuVPKDMMcGkLkExzPQ9sIhVWGp1zxNbk8hsavjEv6G1+atolk2bKuFLbXENvnCfVvD9fIMFhJZBksCbNCwrm/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723047021; c=relaxed/simple;
-	bh=OgG5FkPyqJ3g8dMt/FWtdyTIWNMfZWJGRxcmdRefgqM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kAnQ6xVb4EIsKLREm+ZHUVXjWPBBZsl56bNVInSCYuKq1AA+HpKQv98Uc8pFFY9hIqT6Lak+3DWiydzgyrAKlpft4TV2tu8SG9HTJWJcwzC6GH7uCupJJkpIMv+6JMTNLrELy+yw5Gr6UAb1y3GxQZng+MahIfoEHDsG+KiEkes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=MtPtEs18; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ef2d96164aso20914961fa.3
-        for <stable@vger.kernel.org>; Wed, 07 Aug 2024 09:10:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1723047017; x=1723651817; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NUUtygdalO7bk/Z6bCE18XjlV3un6MN+ioDxIVvCt4c=;
-        b=MtPtEs18epatGtgPDzfY/pUra369AHPcA301BcCKJBROLkg4qA3NaLmB1KBeNstEKf
-         LCEaG7xudc2ZyiZDU8gwAltfMLgdpW8wfAzUyy0Dw0C5e5nGAbnbVAskEx4O5JyHZW40
-         zU4EJrbWxr/PZy50krKWuRs1QfZH3Ds341RlnKa1NdT3KlSFWla6iJMMkO2VLedVI+gF
-         qtXoV/ReHdeokJdWgjMiVWsIo5npnDMXKmaIy6dcVVeCtqa9zh0gH2w+TLux/dltnt6P
-         GDFi+yPhSdJxudF7LGlsuCBvm9T68ahfD6b77GergpkB9pjwW1gYPPnXW5MTWhRqqbzE
-         mjDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723047017; x=1723651817;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NUUtygdalO7bk/Z6bCE18XjlV3un6MN+ioDxIVvCt4c=;
-        b=Rm53HICDePP8szuGvUIt2m8WjAiOlUhO4xJVAmp6jWmL9RksflG5I+AZNHLDly+dOq
-         vZyMID/DyQDs7rK8NhHkPqJuz0S2PYxfGL927jYlEpPcN9AYkjeQ3MWSkBuUOv7mQlsy
-         /eZsRhlH0gQDHRqzOyA+wqzTif3Iu9GomvTxdzL8mQ5fhBB9EbLhnpMwhV1Le58Ahp0m
-         62yUCA/0sxsFK6GeVfA18t6iur2rSGcLba8I/cmdfx+7TNOW+1WLuGPgItiMZfTa4M67
-         YAfkbJq4MFTmkyrSiTDpfVNnfuGGUskMSnif3aOyU1JKeqq6/oEa1X/IDB8XpH7DX9Xd
-         3fvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvzuT9osUDuPUWYEaA8DG6TLqlWyIc2StMLvKue22i5zCFFTiJQwUkpxKJG6Q8/tuu3CIW731UrgM5lC8SP94NSWJJpoMK
-X-Gm-Message-State: AOJu0Yz4NXf+3TN11ZSNGplaEWdntT4f/JEEzFa3lDzND9GTm1J5FF/a
-	fk0RIGITAs2S2+WhpRiwXtP+OBIPWbyfzvn7zP0zkQd3al7+ceFvu+hQUE8gXSlUZrgxG+l3SkM
-	7wqyz5x87Dno7FV9cbgCAx2VGZNeAUMYD05Qov+GzeGrQ6vNZ
-X-Google-Smtp-Source: AGHT+IHEWInsCOqqEyAAKTFREMgwtNF2XkETEMY50w2xXFDRm1D0SyYaIKGDCa8Iiu3gcgY+VFTdUuay84RUe3n1sQI=
-X-Received: by 2002:a2e:8199:0:b0:2ef:2b05:2ab3 with SMTP id
- 38308e7fff4ca-2f15aa87000mr114819791fa.10.1723047017145; Wed, 07 Aug 2024
- 09:10:17 -0700 (PDT)
+	s=arc-20240116; t=1723048703; c=relaxed/simple;
+	bh=swXe+VWaAkni4Hx0T2da1vs9jbN54TFsI8Ydd4FkgFo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rg+LmVWjwaADdbFVOK783AtSEXzBn0JAb0+Hpd91FBKCbnklhk/rca6vZpIf039IDt0Wb+IpxwevOnQoM5Y5C5Pe+kVYo6A+DeUsSB/BevNP49IrfPLuVK2oThCg5UzJJTXjYvuWOG2zPvPWEtyZHYr/Gg0Df5VCIkcYxmJGO5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=CmbFhUFN; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1723048693;
+	bh=swXe+VWaAkni4Hx0T2da1vs9jbN54TFsI8Ydd4FkgFo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CmbFhUFNeIm0z+ciBCp4l8554iUhkUGfHEz7XYaAxc5jQl3Ruix7pGpezPAOSrpGO
+	 oE/pJD3Y+nIGcFsW2i8adcZPi4CYWj5xDG18yaMqoun8bM6WqqHjSYQ2vdZoDLdlNa
+	 J6gs6L67/fBaKxcdxZzYNHkzCxxT8D15+j1we7mc=
+Date: Wed, 7 Aug 2024 18:38:13 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Joel Granados <j.granados@samsung.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 015/121] sysctl: treewide: drop unused argument
+ ctl_table_root::set_ownership(table)
+Message-ID: <0352ae40-ba3e-4d27-84c6-19926a787c33@t-8ch.de>
+References: <20240807150019.412911622@linuxfoundation.org>
+ <20240807150019.868023928@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024080730-deafness-structure-9630@gregkh> <CAKisOQF_g-tU8BSEvR=Phsi7OFNZH0R7ehnnj8Qam-H6OzSAow@mail.gmail.com>
- <2024080723-hardly-trickily-025d@gregkh>
-In-Reply-To: <2024080723-hardly-trickily-025d@gregkh>
-From: Filipe Manana <fdmanana@suse.com>
-Date: Wed, 7 Aug 2024 17:10:06 +0100
-Message-ID: <CAKisOQHy=Z7cmsBX4AFEjto1MragFCaaU2KqQafoDQbiVVxqLw@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] btrfs: fix corruption after buffer fault
- in during direct IO" failed to apply to 6.10-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: dsterba@suse.com, hreitz@redhat.com, josef@toxicpanda.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240807150019.868023928@linuxfoundation.org>
 
-On Wed, Aug 7, 2024 at 3:17=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org>=
- wrote:
->
-> On Wed, Aug 07, 2024 at 03:14:03PM +0100, Filipe Manana wrote:
-> > On Wed, Aug 7, 2024 at 3:03=E2=80=AFPM <gregkh@linuxfoundation.org> wro=
-te:
-> > >
-> > >
-> > > The patch below does not apply to the 6.10-stable tree.
-> >
-> > Greg, this version applies at least to 6.10:
-> >
-> > https://gist.githubusercontent.com/fdmanana/96a6e4006a7fe7b22c4e014bc49=
-6c253/raw/f29ff056d65ae28025fc9637f9c5773457f4bb9d/dio-append-write-fix-6.1=
-0.patch
-> >
-> > Can you take it from there?
->
-> Nope.  Please send it in email form.
+Hi Greg,
 
-Ok, I've just sent it as an email (with you in cc), one for each
-affected stable release.
-Thanks.
+On 2024-08-07 16:59:07+0000, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
 
->
-> thanks,
->
-> greg k-h
+I don't think this has any value being backported to any version.
+
+> 
+> ------------------
+> 
+> From: Thomas Weißschuh <linux@weissschuh.net>
+> 
+> [ Upstream commit 520713a93d550406dae14d49cdb8778d70cecdfd ]
+> 
+> Remove the 'table' argument from set_ownership as it is never used. This
+> change is a step towards putting "struct ctl_table" into .rodata and
+> eventually having sysctl core only use "const struct ctl_table".
+> 
+> The patch was created with the following coccinelle script:
+> 
+>   @@
+>   identifier func, head, table, uid, gid;
+>   @@
+> 
+>   void func(
+>     struct ctl_table_header *head,
+>   - struct ctl_table *table,
+>     kuid_t *uid, kgid_t *gid)
+>   { ... }
+> 
+> No additional occurrences of 'set_ownership' were found after doing a
+> tree-wide search.
+> 
+> Reviewed-by: Joel Granados <j.granados@samsung.com>
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> Signed-off-by: Joel Granados <j.granados@samsung.com>
+> Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/proc/proc_sysctl.c  | 2 +-
+>  include/linux/sysctl.h | 1 -
+>  ipc/ipc_sysctl.c       | 3 +--
+>  ipc/mq_sysctl.c        | 3 +--
+>  net/sysctl_net.c       | 1 -
+>  5 files changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+> index 5b5cdc747cef3..cec67e6a6678f 100644
+> --- a/fs/proc/proc_sysctl.c
+> +++ b/fs/proc/proc_sysctl.c
+> @@ -481,7 +481,7 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+>  	}
+>  
+>  	if (root->set_ownership)
+> -		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
+> +		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
+>  	else {
+>  		inode->i_uid = GLOBAL_ROOT_UID;
+>  		inode->i_gid = GLOBAL_ROOT_GID;
+> diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
+> index 61b40ea81f4d3..698a71422a14b 100644
+> --- a/include/linux/sysctl.h
+> +++ b/include/linux/sysctl.h
+> @@ -205,7 +205,6 @@ struct ctl_table_root {
+>  	struct ctl_table_set default_set;
+>  	struct ctl_table_set *(*lookup)(struct ctl_table_root *root);
+>  	void (*set_ownership)(struct ctl_table_header *head,
+> -			      struct ctl_table *table,
+>  			      kuid_t *uid, kgid_t *gid);
+>  	int (*permissions)(struct ctl_table_header *head, struct ctl_table *table);
+>  };
+> diff --git a/ipc/ipc_sysctl.c b/ipc/ipc_sysctl.c
+> index 01c4a50d22b2d..b2f39a86f4734 100644
+> --- a/ipc/ipc_sysctl.c
+> +++ b/ipc/ipc_sysctl.c
+> @@ -192,7 +192,6 @@ static int set_is_seen(struct ctl_table_set *set)
+>  }
+>  
+>  static void ipc_set_ownership(struct ctl_table_header *head,
+> -			      struct ctl_table *table,
+>  			      kuid_t *uid, kgid_t *gid)
+>  {
+>  	struct ipc_namespace *ns =
+> @@ -224,7 +223,7 @@ static int ipc_permissions(struct ctl_table_header *head, struct ctl_table *tabl
+>  		kuid_t ns_root_uid;
+>  		kgid_t ns_root_gid;
+>  
+> -		ipc_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
+> +		ipc_set_ownership(head, &ns_root_uid, &ns_root_gid);
+>  
+>  		if (uid_eq(current_euid(), ns_root_uid))
+>  			mode >>= 6;
+> diff --git a/ipc/mq_sysctl.c b/ipc/mq_sysctl.c
+> index 21fba3a6edaf7..6bb1c5397c69b 100644
+> --- a/ipc/mq_sysctl.c
+> +++ b/ipc/mq_sysctl.c
+> @@ -78,7 +78,6 @@ static int set_is_seen(struct ctl_table_set *set)
+>  }
+>  
+>  static void mq_set_ownership(struct ctl_table_header *head,
+> -			     struct ctl_table *table,
+>  			     kuid_t *uid, kgid_t *gid)
+>  {
+>  	struct ipc_namespace *ns =
+> @@ -97,7 +96,7 @@ static int mq_permissions(struct ctl_table_header *head, struct ctl_table *table
+>  	kuid_t ns_root_uid;
+>  	kgid_t ns_root_gid;
+>  
+> -	mq_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
+> +	mq_set_ownership(head, &ns_root_uid, &ns_root_gid);
+>  
+>  	if (uid_eq(current_euid(), ns_root_uid))
+>  		mode >>= 6;
+> diff --git a/net/sysctl_net.c b/net/sysctl_net.c
+> index 051ed5f6fc937..a0a7a79991f9f 100644
+> --- a/net/sysctl_net.c
+> +++ b/net/sysctl_net.c
+> @@ -54,7 +54,6 @@ static int net_ctl_permissions(struct ctl_table_header *head,
+>  }
+>  
+>  static void net_ctl_set_ownership(struct ctl_table_header *head,
+> -				  struct ctl_table *table,
+>  				  kuid_t *uid, kgid_t *gid)
+>  {
+>  	struct net *net = container_of(head->set, struct net, sysctls);
+> -- 
+> 2.43.0
+> 
+> 
+> 
 
