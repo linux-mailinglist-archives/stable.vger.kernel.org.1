@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-65896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAA594AC6B
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1D894AC18
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DA441C22804
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEDDA1C209CC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B03E82C8E;
-	Wed,  7 Aug 2024 15:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EB0823C8;
+	Wed,  7 Aug 2024 15:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIXDslcU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvKiwY1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5869F23CE;
-	Wed,  7 Aug 2024 15:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59E381AB1;
+	Wed,  7 Aug 2024 15:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043695; cv=none; b=lBaqLAA9XUQI4FOj+YgWOaEZ54jVbadYHylWI8AkoC9/v5yG5PXVEeasdAzLVJAKrmNa26ELDbJdaUbjISVmgpxHQS0J18EZ5Am/OTNspiE3Z++Au/CVS2BWH2RLJlI0L14OywnlCpnm6kI+VTj82JQi/Q00BzJMEfxLkw12E4w=
+	t=1723043522; cv=none; b=Ny3o0teFWOm+9D7D5iQlwZc5nR2hJEEfMIq1l+T05ZWOAkl92obgNVVg3+88HDnLrWFgnLxMi4euw76jmvEurxo3PxX0D1eYhIIjL2FX0gckTn7hoRsLZdo1BEAr7HNhf4sHvp1T4ZRZjgHnQrEltvAmn6XFkb0xjIXx1G1iWGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043695; c=relaxed/simple;
-	bh=DLqntHXEq3r6Ao2rdw+qld6VmQMqRpDcXIuYkAhDknc=;
+	s=arc-20240116; t=1723043522; c=relaxed/simple;
+	bh=EK4euiygNhTgwEr1p9gatG6+lljNMMzjSl8UgdrBu+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/o7PFiVccx8DSj5XFNDRV6bitgRwxne64rp8uHUxRkDtqKZxummfYFgB531OtAcCQYUZnAlKg+KLrTm1R7MRk7x7gNCNhmMolnPQNqjFexbkGk08KuOOkEYPxKxZm8pziSWYF5XoP3ROlDD1RzCmzdUYfW7i0n4aLJDyAI5nm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIXDslcU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0805C32781;
-	Wed,  7 Aug 2024 15:14:54 +0000 (UTC)
+	 MIME-Version; b=BJ8jJgUXqKGbYHLEQlK1Q7e/Cq5uUyrcwUB1uI4vYFfhiPMkP27EFsdKO7/mRhp/lcnkS/an+xYwRubw95NdfZqfzF6xGIArEf0zGjtTxpqmKhL9JCCs4Xy6BwJ6C6fDojW3eJXkcNCIRtGNsscNxRpihuw+XtdOblbkpiEn7/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvKiwY1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2E9C32781;
+	Wed,  7 Aug 2024 15:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043695;
-	bh=DLqntHXEq3r6Ao2rdw+qld6VmQMqRpDcXIuYkAhDknc=;
+	s=korg; t=1723043521;
+	bh=EK4euiygNhTgwEr1p9gatG6+lljNMMzjSl8UgdrBu+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIXDslcUqF0UwWqhhBnEU6jiH/YVemLT5bsNE0atUSo0KXz07QQ9p3HYkACYvjh99
-	 s6BGZaK6O56lR3fs642hdQ84vMOx+gWFSICRoPJqT8uVEh9su2e+I9tZL2kq34RCgA
-	 2mk9k+B+I2GvbX5y4GxS1OhNvUu3b4O/H/ujYwMc=
+	b=UvKiwY1pLd0hZGhfMOBehBdmEs3jax5Xj6rKw48OZZ5EX8pXsqkEb6LNBpjy/aV6Y
+	 bPP2KBGyJ3PW9BJGzhC5823rEEbJZ9yHncVxwImx+A/e/u3UnRWBCB9SaVYY7tDV9g
+	 hzfQszqIU4BDxYX0B1XmmBfxAp5OrkeO5LzMlLoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.1 66/86] rust: SHADOW_CALL_STACK is incompatible with Rust
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 113/121] mptcp: fix NL PM announced address accounting
 Date: Wed,  7 Aug 2024 17:00:45 +0200
-Message-ID: <20240807150041.439389498@linuxfoundation.org>
+Message-ID: <20240807150023.107186509@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit f126745da81783fb1d082e67bf14c6795e489a88 upstream.
+commit 4b317e0eb287bd30a1b329513531157c25e8b692 upstream.
 
-When using the shadow call stack sanitizer, all code must be compiled
-with the -ffixed-x18 flag, but this flag is not currently being passed
-to Rust. This results in crashes that are extremely difficult to debug.
+Currently the per connection announced address counter is never
+decreased. As a consequence, after connection establishment, if
+the NL PM deletes an endpoint and adds a new/different one, no
+additional subflow is created for the new endpoint even if the
+current limits allow that.
 
-To ensure that nobody else has to go through the same debugging session
-that I had to, prevent configurations that enable both SHADOW_CALL_STACK
-and RUST.
+Address the issue properly updating the signaled address counter
+every time the NL PM removes such addresses.
 
-It is rather common for people to backport 724a75ac9542 ("arm64: rust:
-Enable Rust support for AArch64"), so I recommend applying this fix all
-the way back to 6.1.
-
-Cc: stable@vger.kernel.org # 6.1 and later
-Fixes: 724a75ac9542 ("arm64: rust: Enable Rust support for AArch64")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/r/20240729-shadow-call-stack-v4-1-2a664b082ea4@google.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/pm_netlink.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1924,6 +1924,7 @@ config RUST
- 	depends on !MODVERSIONS
- 	depends on !GCC_PLUGINS
- 	depends on !RANDSTRUCT
-+	depends on !SHADOW_CALL_STACK
- 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
- 	help
- 	  Enables Rust support in the kernel.
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1432,6 +1432,7 @@ static bool mptcp_pm_remove_anno_addr(st
+ 	ret = remove_anno_list_by_saddr(msk, addr);
+ 	if (ret || force) {
+ 		spin_lock_bh(&msk->pm.lock);
++		msk->pm.add_addr_signaled -= ret;
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
+@@ -1596,17 +1597,18 @@ void mptcp_pm_remove_addrs_and_subflows(
+ 	struct mptcp_pm_addr_entry *entry;
+ 
+ 	list_for_each_entry(entry, rm_list, list) {
+-		if (lookup_subflow_by_saddr(&msk->conn_list, &entry->addr) &&
+-		    slist.nr < MPTCP_RM_IDS_MAX)
++		if (slist.nr < MPTCP_RM_IDS_MAX &&
++		    lookup_subflow_by_saddr(&msk->conn_list, &entry->addr))
+ 			slist.ids[slist.nr++] = entry->addr.id;
+ 
+-		if (remove_anno_list_by_saddr(msk, &entry->addr) &&
+-		    alist.nr < MPTCP_RM_IDS_MAX)
++		if (alist.nr < MPTCP_RM_IDS_MAX &&
++		    remove_anno_list_by_saddr(msk, &entry->addr))
+ 			alist.ids[alist.nr++] = entry->addr.id;
+ 	}
+ 
+ 	if (alist.nr) {
+ 		spin_lock_bh(&msk->pm.lock);
++		msk->pm.add_addr_signaled -= alist.nr;
+ 		mptcp_pm_remove_addr(msk, &alist);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
 
 
 
