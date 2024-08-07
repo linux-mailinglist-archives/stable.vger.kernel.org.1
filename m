@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-65668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067F294AB5E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 210CE94AC5A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DE91C225DF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 521071C20B43
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D215984E0D;
-	Wed,  7 Aug 2024 15:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C65682C8E;
+	Wed,  7 Aug 2024 15:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRFnpyYn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AD+EIk4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED8984DF5;
-	Wed,  7 Aug 2024 15:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282587E0E9;
+	Wed,  7 Aug 2024 15:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043086; cv=none; b=PGS/00rc2J1zaX0DlcolTzeYPOcpeT3EiFIqiqxYoD2dNkZ/sgW7rDBHqfN1MPuPdZ7SeADeZFTZ+jK+546fcWl5GJvwQcfjZRulzO+6zdgNDM8uJUipuLcj4XwomyPmFgHJfyxHMX3LJIl/IBf8H3407q17U0au4nMgwa4tEg4=
+	t=1723043661; cv=none; b=de3eXFs99K0B9WDq6xKeDmzFFjUKEOK2eCJACHy8uVJpBhjqjs/iY3yj3h6MXCAJioVhIF59SqxgRRb9UOtOU2Z2nAGqw2xK2wys1zT4acYt4iS5lgsZgG/OOE8FtAKUKTcaG5EGhzQ8XBVomrS5ekzbaziunV8AdeYvTk0NfAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043086; c=relaxed/simple;
-	bh=geAGURdsP69peLfyLt457WvPmUGRdebuSPCS3O8rqZc=;
+	s=arc-20240116; t=1723043661; c=relaxed/simple;
+	bh=udfNYq/9jZtP1+7ofpnIPgdpYzZxZpEdugZrOorLB1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwQ4IF1TZaQvrQ6rhd/b2mgDIFidBmofJBauA6UPIfLckGZL4QLWHa3BlFict7WIIu6JD+Qnlydmd3Kgo9ekbFCYdgXnLXJ2fkWbM5IZyBACP3hzKR+BZXLBS2P6fb0slrc82rkRvBMZIjjn0hYDiCl5bFrwBASeQ8HeQPx9iJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRFnpyYn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEC8C32781;
-	Wed,  7 Aug 2024 15:04:45 +0000 (UTC)
+	 MIME-Version; b=KV+aqhQLPN4yQvjtN6ZRireTkgQl8MTFtbGdmopY6ccyJO9TFudI/xIcuRxq9R4CZis26dcekQ3UQWf5Kg9X2RcsVTyMzb6Qf69rwo/+vzE1zv2z6Gm/5/4lnLHNkxzz2WViTIvU8dMXvigJ4DdI+G51sjFIyx0ge8E/7niZgSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AD+EIk4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BAFC4AF0D;
+	Wed,  7 Aug 2024 15:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043086;
-	bh=geAGURdsP69peLfyLt457WvPmUGRdebuSPCS3O8rqZc=;
+	s=korg; t=1723043661;
+	bh=udfNYq/9jZtP1+7ofpnIPgdpYzZxZpEdugZrOorLB1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRFnpyYnEmoCOiIFUafPvDtoLxkNXbzl6/Y3smLkEdd1L6Nkna+y//w3Z0WNJjddg
-	 R2yFxjMojLNpBrILJNX3D5d/7W1PSJF+Kh6cmN5yuNdyeADq15wXeonhFPDp55TtJC
-	 6vfWGeQtj4bh67PHAMdR4K2fbA1EEnrZImi9UliA=
+	b=AD+EIk4c/55zxroGHYb8w3uwDCbS7tmDT1xmPIbr60Gmu1IB/Rr6y/ohWFcANLPG0
+	 YeYk+KQkxd3zVxaqOLV09iI9lnkfL9lrlvoXnupZpYZBECwGhIE6trYqJM0lK6IPta
+	 FqhkJKdVAfi/Jgxo1JcQvOkjcFAXCnNNnvYFejqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sylvain BERTRAND <sylvain.bertrand@legeek.net>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 085/123] ALSA: usb-audio: Correct surround channels in UAC1 channel map
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 25/86] irqdomain: Use return value of strreplace()
 Date: Wed,  7 Aug 2024 17:00:04 +0200
-Message-ID: <20240807150023.566101393@linuxfoundation.org>
+Message-ID: <20240807150040.064267100@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit b7b7e1ab7619deb3b299b5e5c619c3e6f183a12d upstream.
+[ Upstream commit 67a4e1a3bf7c68ed3fbefc4213648165d912cabb ]
 
-USB-audio driver puts SNDRV_CHMAP_SL and _SR as left and right
-surround channels for UAC1 channel map, respectively.  But they should
-have been SNDRV_CHMAP_RL and _RR; the current value *_SL and _SR are
-rather "side" channels, not "surround".  I guess I took those
-mistakenly when I read the spec mentioning "surround left".
+Since strreplace() returns the pointer to the string itself, use it
+directly.
 
-This patch corrects those entries to be the right channels.
-
-Suggested-by: Sylvain BERTRAND <sylvain.bertrand@legeek.net>
-Closes: https://lore.kernel.orgZ/qIyJD8lhd8hFhlC@freedom
-Fixes: 04324ccc75f9 ("ALSA: usb-audio: add channel map support")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240731142018.24750-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230628150251.17832-1-andriy.shevchenko@linux.intel.com
+Stable-dep-of: 6ce3e98184b6 ("irqdomain: Fixed unbalanced fwnode get and put")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/stream.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/irq/irqdomain.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -244,8 +244,8 @@ static struct snd_pcm_chmap_elem *conver
- 		SNDRV_CHMAP_FR,		/* right front */
- 		SNDRV_CHMAP_FC,		/* center front */
- 		SNDRV_CHMAP_LFE,	/* LFE */
--		SNDRV_CHMAP_SL,		/* left surround */
--		SNDRV_CHMAP_SR,		/* right surround */
-+		SNDRV_CHMAP_RL,		/* left surround */
-+		SNDRV_CHMAP_RR,		/* right surround */
- 		SNDRV_CHMAP_FLC,	/* left of center */
- 		SNDRV_CHMAP_FRC,	/* right of center */
- 		SNDRV_CHMAP_RC,		/* surround */
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 607c0c3d3f5e1..e03baca901e76 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -182,9 +182,7 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
+ 			return NULL;
+ 		}
+ 
+-		strreplace(name, '/', ':');
+-
+-		domain->name = name;
++		domain->name = strreplace(name, '/', ':');
+ 		domain->fwnode = fwnode;
+ 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
+ 	}
+-- 
+2.43.0
+
 
 
 
