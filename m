@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-65728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32BC494ABA0
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E197A94AAF9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A7CE1C218F4
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86897283ADC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6F18172A;
-	Wed,  7 Aug 2024 15:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE44811F1;
+	Wed,  7 Aug 2024 15:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzT/tImT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyFchj0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3EA7D3E4;
-	Wed,  7 Aug 2024 15:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BE53EA9A;
+	Wed,  7 Aug 2024 15:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043245; cv=none; b=kejM+jXQV08VInnlNATJeUgAwMyhhi2k71xzczFK47V9bVO5zXTB0MvAVcllpm1Qf4gLCFJLXxDjYzHZFSuKDL1vR3FbilViIyOFRpbA0VGm4oQadX0/J5ZFfRqll8QPwNpSzVNzRRHDMr3FPTmw4yzztfaStTCJQiogxeANsZ8=
+	t=1723042909; cv=none; b=E/oXmLu+64/6lOM7/VFzb6dL/O62Azxf7VT66CnXmrPYE/VCg3dp1dwsBGgapoq7TbFV8vUR+0NQULrI9H9hkKuWqqa/GUG/UDSGuz3NCLHlSB00lhj/+4HlM4KeAQ+epIT3ma+nTCCYEgUzUElJMn1jQ7l8EDuuwUphjO9dA5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043245; c=relaxed/simple;
-	bh=heTJfN2CNzgVyTkSI3MB73GhnZVpt186PVtLsCBa6SA=;
+	s=arc-20240116; t=1723042909; c=relaxed/simple;
+	bh=y+ucpysC0nwBLeT/p00XhA5kS10clnHfPdINKTQAFsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q4c6xjYQUPWtDaBoxzO9APld7dQcRtKxJyJR0iW9ulMot+alElyRLf0Om0NtF4pYiIxJpLp4rj432Hvms1Emj21TXLLnPmb3f8qWVkLB9+n/6xmqkgClYzhdGCgYesKYN5JyWAjn1yOTv3FeNCVaLMbPFm3OroVctlydfPE73Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzT/tImT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8BCC32781;
-	Wed,  7 Aug 2024 15:07:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BriKMPBRIIFuvAigAh5CS38+UT8i/POHjQmJQouxwnTIFDAvlTKv5CJ1RvQixv/8RA1bpPRtCeFuFonHljd5mLVPcQyUU1Xor9TjwRYMfrsv8zaCGWEVQ7SsQISXmwc+23b6esYxM5lLlGUDrMQA9lHGVD0PZL+Bj8hRtIZdv6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyFchj0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF7DC32781;
+	Wed,  7 Aug 2024 15:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043245;
-	bh=heTJfN2CNzgVyTkSI3MB73GhnZVpt186PVtLsCBa6SA=;
+	s=korg; t=1723042909;
+	bh=y+ucpysC0nwBLeT/p00XhA5kS10clnHfPdINKTQAFsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NzT/tImTXfXr0qndCxqxIMv1Ys5LMf2s+Q9Qp/TAOqCA9IpsTXNc5jxeS9/hE9o0L
-	 SrdpXZ0RulV299g9P7JOiEdXxVVW6l1iqQVqjfaBkcwNZa1FKlfELgHgmk8djsQBYA
-	 EFndoQ484ka4eMBRjoBLK3SEi0nX/iMqMGXu1cMg=
+	b=QyFchj0YreB6mZ8uFlTEKeSBu7XU2x6uvdpYJqf1jzdrM4vtRL73uZonxouSc+AjK
+	 ZvfFGlOCDvX7ZdzoUuTQ7RvToBiwAAxY8nhZLKfJWxacqMa7Rda5l2BFPP1dtNOhhh
+	 TaRyU3Swj4qHj/tHSYIIUxRW5EhbLT73OXeyZU4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/121] arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB
-Date: Wed,  7 Aug 2024 16:58:58 +0200
-Message-ID: <20240807150019.599447206@linuxfoundation.org>
+Subject: [PATCH 6.10 020/123] drm/gpuvm: fix missing dependency to DRM_EXEC
+Date: Wed,  7 Aug 2024 16:58:59 +0200
+Message-ID: <20240807150021.473582546@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Danilo Krummrich <dakr@redhat.com>
 
-[ Upstream commit 0046325ae52079b46da13a7f84dd7b2a6f7c38f8 ]
+[ Upstream commit eeb1f825b5dc68047a0556e5ae86d1467920db41 ]
 
-For Gen-1 targets like MSM8998, it is seen that stressing out the
-controller in host mode results in HC died error:
+In commit 50c1a36f594b ("drm/gpuvm: track/lock/validate external/evicted
+objects") we started using drm_exec, but did not select DRM_EXEC in the
+Kconfig for DRM_GPUVM, fix this.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
-
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for MSM8998 to mitigate this issue.
-
-Cc: stable@vger.kernel.org
-Fixes: 026dad8f5873 ("arm64: dts: qcom: msm8998: Add USB-related nodes")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-4-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 50c1a36f594b ("drm/gpuvm: track/lock/validate external/evicted objects")
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240715135158.133287-1-dakr@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 1 +
+ drivers/gpu/drm/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index d49764eeab9c9..7fcc15b6946ae 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -2159,6 +2159,7 @@ usb3_dwc3: usb@a800000 {
- 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&qusb2phy>, <&usb3phy>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				snps,has-lpm-erratum;
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 359b68adafc1b..79628ff837e6f 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -253,6 +253,7 @@ config DRM_EXEC
+ config DRM_GPUVM
+ 	tristate
+ 	depends on DRM
++	select DRM_EXEC
+ 	help
+ 	  GPU-VM representation providing helpers to manage a GPUs virtual
+ 	  address space
 -- 
 2.43.0
 
