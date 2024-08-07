@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-65642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB6D894AB37
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E5194ABC4
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77419281ADF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C852D1C21EF9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A610812C46F;
-	Wed,  7 Aug 2024 15:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D72F86131;
+	Wed,  7 Aug 2024 15:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxXP7GNR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBukI/zc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625F012BEBB;
-	Wed,  7 Aug 2024 15:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC0D85626;
+	Wed,  7 Aug 2024 15:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043016; cv=none; b=L1Omi3opaVRNwf0RIcT0ipOkEyCk7qI+fcbusTX9UQqq6DOpNEG332ajjA2YFlbrCGTBWmmRpLbxmtQ9npRYN4qHGhLJO7WoFMeYjXL6mEisyWlSgJpLOI5Phs/exKP8CAf3TYhPiuPKiCU/ONrCA38oukBdRSK/jREsEL4etyo=
+	t=1723043323; cv=none; b=I7cUn6IbOTiQ/iP3t3+xeOfyXCeEEqX//kg2KcqftjrUN2xgd6Nctm/1XwkrpIk6qXIvPVC98NwH4d8m5TU5d3RkmS6iBtZvT1Quc2jS9TwRqq9l4rvUbE7P/bcXYDnTz3oeoXqfOI0sJOaFXRuteIjhvw1py9G+tL0K3T+GpIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043016; c=relaxed/simple;
-	bh=U6RLW8k+X4nUJ7QE04dBt5jto/mnbnkabzHt/IYogio=;
+	s=arc-20240116; t=1723043323; c=relaxed/simple;
+	bh=7r4Qq48QP7JsTKDZctCTQY7xUtcYygCvvAuRvi2eGpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aAsKD3vPv5v6b1BiWBmh50jX9+JfSXbL9+t+XYVak6mNrWqP35BzTVZvXT+WqUu53xKBfdWzZlpF1JuQllKsd47iCl76wO/SzG7ZDszSrtrgOBl6qs6De9srCDvvlV1Gur7BgCjjL55fACD7bVxZDSaY5hiL693YSTiVjsNZjsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxXP7GNR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A55C4AF0F;
-	Wed,  7 Aug 2024 15:03:35 +0000 (UTC)
+	 MIME-Version; b=YwW4aYExvR63Z1ldsSbfZUl3ZJ+YrsYoEH+YXHWYrPYQqfrbqrr45gQbqFByQ/nZSkZ51sOqdCYV7O7weqSwNk5B1mIJEmt5GfHxk5y4jmayMKqF4DMgzisCORqdCvIjbpOpz27vl80f0VyQ2BJfBZAhGdmsW1hHJdCcdq426y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBukI/zc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33658C4AF0B;
+	Wed,  7 Aug 2024 15:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043016;
-	bh=U6RLW8k+X4nUJ7QE04dBt5jto/mnbnkabzHt/IYogio=;
+	s=korg; t=1723043322;
+	bh=7r4Qq48QP7JsTKDZctCTQY7xUtcYygCvvAuRvi2eGpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GxXP7GNRGbyTQLk3ldkxd4PPd4AnuZXU59t8ZQVZeMKWQYDAltN2ORsGnsqmRgdVG
-	 6tgtl3kcN9Cbs+Uc/2pUr5GMmgSFpe1tnAegq84kM6jdhyaCVEEEMKeYrc/idGdtp8
-	 CZIpb+dDUJZzs4cstiEQGBC+4QsWRlpJ1t0UiWgE=
+	b=GBukI/zcO7bVRk0to17YF3u1Cqub3DheoPDpjvhYWF48c2llXO0UvgVVHjEYSuMsG
+	 L7+cO7rDp+HPKHdh/b8RedYSaYBo1pQoI6esdUlNTZXnKiQbx5pKj5UM7IQxYPpwuT
+	 17p5MR1UqXjJZS3cKVM9/sdt4Llw4OxYPoJbzEaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 059/123] net/mlx5: Always drain health in shutdown callback
-Date: Wed,  7 Aug 2024 16:59:38 +0200
-Message-ID: <20240807150022.710787384@linuxfoundation.org>
+Subject: [PATCH 6.6 047/121] MIPS: Loongson64: DTS: Fix PCIe port nodes for ls7a
+Date: Wed,  7 Aug 2024 16:59:39 +0200
+Message-ID: <20240807150020.938036446@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +62,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 1b75da22ed1e6171e261bc9265370162553d5393 ]
+[ Upstream commit d89a415ff8d5e0aad4963f2d8ebb0f9e8110b7fa ]
 
-There is no point in recovery during device shutdown. if health
-work started need to wait for it to avoid races and NULL pointer
-access.
+Add various required properties to silent warnings:
 
-Hence, drain health WQ on shutdown callback.
+arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi:116.16-297.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
+arch/mips/boot/dts/loongson/loongson64_2core_2k1000.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
 
-Fixes: 1958fc2f0712 ("net/mlx5: SF, Add auxiliary device driver")
-Fixes: d2aa060d40fa ("net/mlx5: Cancel health poll before sending panic teardown command")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Stable-dep-of: dbb69b9d6234 ("MIPS: dts: loongson: Fix liointc IRQ polarity")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c          | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ .../boot/dts/loongson/loongson64-2k1000.dtsi  | 37 +++++++++++++++----
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 459a836a5d9c1..3e55a6c6a7c9b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -2140,7 +2140,6 @@ static int mlx5_try_fast_unload(struct mlx5_core_dev *dev)
- 	/* Panic tear down fw command will stop the PCI bus communication
- 	 * with the HCA, so the health poll is no longer needed.
- 	 */
--	mlx5_drain_health_wq(dev);
- 	mlx5_stop_health_poll(dev, false);
+diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+index c0be84a6e81fd..c1d3092fdd870 100644
+--- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
++++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+@@ -117,7 +117,6 @@ pci@1a000000 {
+ 			device_type = "pci";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+-			#interrupt-cells = <2>;
  
- 	ret = mlx5_cmd_fast_teardown_hca(dev);
-@@ -2175,6 +2174,7 @@ static void shutdown(struct pci_dev *pdev)
+ 			reg = <0 0x1a000000 0 0x02000000>,
+ 				<0xfe 0x00000000 0 0x20000000>;
+@@ -205,93 +204,117 @@ sata@8,0 {
+ 				interrupt-parent = <&liointc0>;
+ 			};
  
- 	mlx5_core_info(dev, "Shutdown was called\n");
- 	set_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state);
-+	mlx5_drain_health_wq(dev);
- 	err = mlx5_try_fast_unload(dev);
- 	if (err)
- 		mlx5_unload_one(dev, false);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-index b2986175d9afe..b706f1486504a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-@@ -112,6 +112,7 @@ static void mlx5_sf_dev_shutdown(struct auxiliary_device *adev)
- 	struct mlx5_core_dev *mdev = sf_dev->mdev;
+-			pci_bridge@9,0 {
++			pcie@9,0 {
+ 				compatible = "pci0014,7a19.0",
+ 						   "pci0014,7a19",
+ 						   "pciclass060400",
+ 						   "pciclass0604";
  
- 	set_bit(MLX5_BREAK_FW_WAIT, &mdev->intf_state);
-+	mlx5_drain_health_wq(mdev);
- 	mlx5_unload_one(mdev, false);
- }
+ 				reg = <0x4800 0x0 0x0 0x0 0x0>;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &liointc1 0 IRQ_TYPE_LEVEL_LOW>;
++				ranges;
+ 				external-facing;
+ 			};
+ 
+-			pci_bridge@a,0 {
++			pcie@a,0 {
+ 				compatible = "pci0014,7a09.0",
+ 						   "pci0014,7a09",
+ 						   "pciclass060400",
+ 						   "pciclass0604";
+ 
+ 				reg = <0x5000 0x0 0x0 0x0 0x0>;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &liointc1 1 IRQ_TYPE_LEVEL_LOW>;
++				ranges;
+ 				external-facing;
+ 			};
+ 
+-			pci_bridge@b,0 {
++			pcie@b,0 {
+ 				compatible = "pci0014,7a09.0",
+ 						   "pci0014,7a09",
+ 						   "pciclass060400",
+ 						   "pciclass0604";
+ 
+ 				reg = <0x5800 0x0 0x0 0x0 0x0>;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &liointc1 2 IRQ_TYPE_LEVEL_LOW>;
++				ranges;
+ 				external-facing;
+ 			};
+ 
+-			pci_bridge@c,0 {
++			pcie@c,0 {
+ 				compatible = "pci0014,7a09.0",
+ 						   "pci0014,7a09",
+ 						   "pciclass060400",
+ 						   "pciclass0604";
+ 
+ 				reg = <0x6000 0x0 0x0 0x0 0x0>;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &liointc1 3 IRQ_TYPE_LEVEL_LOW>;
++				ranges;
+ 				external-facing;
+ 			};
+ 
+-			pci_bridge@d,0 {
++			pcie@d,0 {
+ 				compatible = "pci0014,7a19.0",
+ 						   "pci0014,7a19",
+ 						   "pciclass060400",
+ 						   "pciclass0604";
+ 
+ 				reg = <0x6800 0x0 0x0 0x0 0x0>;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &liointc1 4 IRQ_TYPE_LEVEL_LOW>;
++				ranges;
+ 				external-facing;
+ 			};
+ 
+-			pci_bridge@e,0 {
++			pcie@e,0 {
+ 				compatible = "pci0014,7a09.0",
+ 						   "pci0014,7a09",
+ 						   "pciclass060400",
+ 						   "pciclass0604";
+ 
+ 				reg = <0x7000 0x0 0x0 0x0 0x0>;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &liointc1 5 IRQ_TYPE_LEVEL_LOW>;
++				ranges;
+ 				external-facing;
+ 			};
  
 -- 
 2.43.0
