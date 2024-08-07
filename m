@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-65800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6FE94ABF8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7757194AC53
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9821C22E35
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C6FE1F23CB7
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90388615A;
-	Wed,  7 Aug 2024 15:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9990F824BB;
+	Wed,  7 Aug 2024 15:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JJbkZbY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="At1q9EP1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70F78563E;
-	Wed,  7 Aug 2024 15:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CEC374CC;
+	Wed,  7 Aug 2024 15:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043442; cv=none; b=ul7+pKVkjRjYUbXLDcUpQiBV2jceu7Y0YsFzxgQq4z8huYlhNKfEVVBm7G8N7mSncjsvn1cQh3ufqNJdj5zez7VxwPabNmiDzb6iH4DCqHuYh7NR9BF4HUi9mif5V5q7gToTf2NvEnX89IJ8f00EJ+jd5oicA3du+zfLyOBSCIg=
+	t=1723043645; cv=none; b=d5ULSWYW25aL+tl+NcNVdX5xc4RTwax4aSngqNRXc3nDMHrIdbqiMKVoUq/rnrDCn76AWLyy5aZmlM2QByM2b4oCq++FP73K0gyb05F9LghLRXFiudSlFq05QeSfvuqWmIFJ/vaYRWM1Jqvq2RObjxRv1z4C1EYq3a99CTMbtVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043442; c=relaxed/simple;
-	bh=/pl9rpMCZEqZ+k2lohQX9cbasWdtDjadwcLjX4T3xws=;
+	s=arc-20240116; t=1723043645; c=relaxed/simple;
+	bh=RncT3SKwKqBRvGcx84b0/k76linahqHb4el4LPPbwb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNZg6ITRUo8OXeiURIy3Aky5SCN9KUpBiSrTGYxFu+E4tSGahl2Sk6NUqLlf6V5SleM6p+TuhomMVRPEM0+4iFuCYJd3fw/V69SMoItMlAbhpixrS+xHV5nBKrwYmdlaKsDoY7EnHuHpdBQTo9fbEP2kmAJRDji0HEP2WQw74yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JJbkZbY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BDCC4AF0F;
-	Wed,  7 Aug 2024 15:10:42 +0000 (UTC)
+	 MIME-Version; b=DntHHvRA+Ifczp3+XruJ6v4meqPcHSeuaT+P+jdJfEswTpvCkpaQZkZoJ/b+sb64j5DXgO4SRh0o4FxrDTK8bIMUTJ6BiwMUT6bYASgj2S7rwvGhAiA2ytoBuc+QOZt+Klf1inWFOjn/C737GmB8hKaubMQNBeT3qSdYM6i/dvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=At1q9EP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DB6C4AF0D;
+	Wed,  7 Aug 2024 15:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043442;
-	bh=/pl9rpMCZEqZ+k2lohQX9cbasWdtDjadwcLjX4T3xws=;
+	s=korg; t=1723043645;
+	bh=RncT3SKwKqBRvGcx84b0/k76linahqHb4el4LPPbwb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0JJbkZbYI9udCwt91KaHk8p4h8moDcDWzS4O48F0ovCRHdwqnoUV1KD79oCx3TsQq
-	 1K8RPmRTJc+lKu54hZiogwaiy2lFjP5kwcQYSZHxs6QLZ67xWDAoxtDQ4S7WCqiL9r
-	 voZTi8tlZQcm+oGTBMfcbBvdc09w4D/0KVIaZ2IM=
+	b=At1q9EP1Tw7XpTtNM9hi9Rqopoi8BzJHy0RGQgryCXT17QhkzpvYpJ5hBS4hYSI0V
+	 46lOcSntuws+aVU/djkW8BdyXCho8Mwy5OX12Z/ISp0XQtxK2pav+ttWpRmAeM4Yx2
+	 O7YIn2waQ7XEkAwb39MuxJJytRX4EISMWgDO9mRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	bo liu <bo.liu@senarytech.com>,
+	songxiebing <songxiebing@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/121] arm64: jump_label: Ensure patched jump_labels are visible to all CPUs
+Subject: [PATCH 6.1 46/86] ALSA: hda: conexant: Fix headset auto detect fail in the polling mode
 Date: Wed,  7 Aug 2024 17:00:25 +0200
-Message-ID: <20240807150022.440203811@linuxfoundation.org>
+Message-ID: <20240807150040.760718460@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,110 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: songxiebing <songxiebing@kylinos.cn>
 
-[ Upstream commit cfb00a35786414e7c0e6226b277d9f09657eae74 ]
+[ Upstream commit e60dc98122110594d0290845160f12916192fc6d ]
 
-Although the Arm architecture permits concurrent modification and
-execution of NOP and branch instructions, it still requires some
-synchronisation to ensure that other CPUs consistently execute the newly
-written instruction:
+The previous fix (7aeb25908648) only handles the unsol_event reporting
+during interrupts and does not include the polling mode used to set
+jackroll_ms, so now we are replacing it with
+snd_hda_jack_detect_enable_callback.
 
- >  When the modified instructions are observable, each PE that is
- >  executing the modified instructions must execute an ISB or perform a
- >  context synchronizing event to ensure execution of the modified
- >  instructions
-
-Prior to commit f6cc0c501649 ("arm64: Avoid calling stop_machine() when
-patching jump labels"), the arm64 jump_label patching machinery
-performed synchronisation using stop_machine() after each modification,
-however this was problematic when flipping static keys from atomic
-contexts (namely, the arm_arch_timer CPU hotplug startup notifier) and
-so we switched to the _nosync() patching routines to avoid "scheduling
-while atomic" BUG()s during boot.
-
-In hindsight, the analysis of the issue in f6cc0c501649 isn't quite
-right: it cites the use of IPIs in the default patching routines as the
-cause of the lockup, whereas stop_machine() does not rely on IPIs and
-the I-cache invalidation is performed using __flush_icache_range(),
-which elides the call to kick_all_cpus_sync(). In fact, the blocking
-wait for other CPUs is what triggers the BUG() and the problem remains
-even after f6cc0c501649, for example because we could block on the
-jump_label_mutex. Eventually, the arm_arch_timer driver was fixed to
-avoid the static key entirely in commit a862fc2254bd
-("clocksource/arm_arch_timer: Remove use of workaround static key").
-
-This all leaves the jump_label patching code in a funny situation on
-arm64 as we do not synchronise with other CPUs to reduce the likelihood
-of a bug which no longer exists. Consequently, toggling a static key on
-one CPU cannot be assumed to take effect on other CPUs, leading to
-potential issues, for example with missing preempt notifiers.
-
-Rather than revert f6cc0c501649 and go back to stop_machine() for each
-patch site, implement arch_jump_label_transform_apply() and kick all
-the other CPUs with an IPI at the end of patching.
-
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Fixes: f6cc0c501649 ("arm64: Avoid calling stop_machine() when patching jump labels")
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240731133601.3073-1-will@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 7aeb25908648 ("ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140")
+Co-developed-by: bo liu <bo.liu@senarytech.com>
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Signed-off-by: songxiebing <songxiebing@kylinos.cn>
+Link: https://patch.msgid.link/20240726100726.50824-1-soxiebing@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/jump_label.h |  1 +
- arch/arm64/kernel/jump_label.c      | 11 +++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_conexant.c | 54 ++++++----------------------------
+ 1 file changed, 9 insertions(+), 45 deletions(-)
 
-diff --git a/arch/arm64/include/asm/jump_label.h b/arch/arm64/include/asm/jump_label.h
-index 6aafbb7899916..4b99159150829 100644
---- a/arch/arm64/include/asm/jump_label.h
-+++ b/arch/arm64/include/asm/jump_label.h
-@@ -13,6 +13,7 @@
- #include <linux/types.h>
- #include <asm/insn.h>
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 17389a3801bd1..4472923ba694b 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -21,12 +21,6 @@
+ #include "hda_jack.h"
+ #include "hda_generic.h"
  
-+#define HAVE_JUMP_LABEL_BATCH
- #define JUMP_LABEL_NOP_SIZE		AARCH64_INSN_SIZE
+-enum {
+-	CX_HEADSET_NOPRESENT = 0,
+-	CX_HEADSET_PARTPRESENT,
+-	CX_HEADSET_ALLPRESENT,
+-};
+-
+ struct conexant_spec {
+ 	struct hda_gen_spec gen;
  
- static __always_inline bool arch_static_branch(struct static_key * const key,
-diff --git a/arch/arm64/kernel/jump_label.c b/arch/arm64/kernel/jump_label.c
-index faf88ec9c48e8..f63ea915d6ad2 100644
---- a/arch/arm64/kernel/jump_label.c
-+++ b/arch/arm64/kernel/jump_label.c
-@@ -7,11 +7,12 @@
-  */
- #include <linux/kernel.h>
- #include <linux/jump_label.h>
-+#include <linux/smp.h>
- #include <asm/insn.h>
- #include <asm/patching.h>
+@@ -48,7 +42,6 @@ struct conexant_spec {
+ 	unsigned int gpio_led;
+ 	unsigned int gpio_mute_led_mask;
+ 	unsigned int gpio_mic_led_mask;
+-	unsigned int headset_present_flag;
+ 	bool is_cx8070_sn6140;
+ };
  
--void arch_jump_label_transform(struct jump_entry *entry,
--			       enum jump_label_type type)
-+bool arch_jump_label_transform_queue(struct jump_entry *entry,
-+				     enum jump_label_type type)
+@@ -250,48 +243,19 @@ static void cx_process_headset_plugin(struct hda_codec *codec)
+ 	}
+ }
+ 
+-static void cx_update_headset_mic_vref(struct hda_codec *codec, unsigned int res)
++static void cx_update_headset_mic_vref(struct hda_codec *codec, struct hda_jack_callback *event)
  {
- 	void *addr = (void *)jump_entry_code(entry);
- 	u32 insn;
-@@ -25,4 +26,10 @@ void arch_jump_label_transform(struct jump_entry *entry,
+-	unsigned int phone_present, mic_persent, phone_tag, mic_tag;
+-	struct conexant_spec *spec = codec->spec;
++	unsigned int mic_present;
+ 
+ 	/* In cx8070 and sn6140, the node 16 can only be config to headphone or disabled,
+ 	 * the node 19 can only be config to microphone or disabled.
+ 	 * Check hp&mic tag to process headset pulgin&plugout.
+ 	 */
+-	phone_tag = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
+-	mic_tag = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
+-	if ((phone_tag & (res >> AC_UNSOL_RES_TAG_SHIFT)) ||
+-	    (mic_tag & (res >> AC_UNSOL_RES_TAG_SHIFT))) {
+-		phone_present = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_PIN_SENSE, 0x0);
+-		if (!(phone_present & AC_PINSENSE_PRESENCE)) {/* headphone plugout */
+-			spec->headset_present_flag = CX_HEADSET_NOPRESENT;
+-			snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
+-			return;
+-		}
+-		if (spec->headset_present_flag == CX_HEADSET_NOPRESENT) {
+-			spec->headset_present_flag = CX_HEADSET_PARTPRESENT;
+-		} else if (spec->headset_present_flag == CX_HEADSET_PARTPRESENT) {
+-			mic_persent = snd_hda_codec_read(codec, 0x19, 0,
+-							 AC_VERB_GET_PIN_SENSE, 0x0);
+-			/* headset is present */
+-			if ((phone_present & AC_PINSENSE_PRESENCE) &&
+-			    (mic_persent & AC_PINSENSE_PRESENCE)) {
+-				cx_process_headset_plugin(codec);
+-				spec->headset_present_flag = CX_HEADSET_ALLPRESENT;
+-			}
+-		}
+-	}
+-}
+-
+-static void cx_jack_unsol_event(struct hda_codec *codec, unsigned int res)
+-{
+-	struct conexant_spec *spec = codec->spec;
+-
+-	if (spec->is_cx8070_sn6140)
+-		cx_update_headset_mic_vref(codec, res);
+-
+-	snd_hda_jack_unsol_event(codec, res);
++	mic_present = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
++	if (!(mic_present & AC_PINSENSE_PRESENCE)) /* mic plugout */
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
++	else
++		cx_process_headset_plugin(codec);
+ }
+ 
+ static int cx_auto_suspend(struct hda_codec *codec)
+@@ -305,7 +269,7 @@ static const struct hda_codec_ops cx_auto_patch_ops = {
+ 	.build_pcms = snd_hda_gen_build_pcms,
+ 	.init = cx_auto_init,
+ 	.free = cx_auto_free,
+-	.unsol_event = cx_jack_unsol_event,
++	.unsol_event = snd_hda_jack_unsol_event,
+ 	.suspend = cx_auto_suspend,
+ 	.check_power_status = snd_hda_gen_check_power_status,
+ };
+@@ -1163,7 +1127,7 @@ static int patch_conexant_auto(struct hda_codec *codec)
+ 	case 0x14f11f86:
+ 	case 0x14f11f87:
+ 		spec->is_cx8070_sn6140 = true;
+-		spec->headset_present_flag = CX_HEADSET_NOPRESENT;
++		snd_hda_jack_detect_enable_callback(codec, 0x19, cx_update_headset_mic_vref);
+ 		break;
  	}
  
- 	aarch64_insn_patch_text_nosync(addr, insn);
-+	return true;
-+}
-+
-+void arch_jump_label_transform_apply(void)
-+{
-+	kick_all_cpus_sync();
- }
 -- 
 2.43.0
 
