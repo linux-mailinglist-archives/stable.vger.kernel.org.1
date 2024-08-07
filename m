@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-65610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C39294AB01
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:02:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70AC694AB99
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 311541F29565
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:02:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B6712812E8
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A079878B60;
-	Wed,  7 Aug 2024 15:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25C280638;
+	Wed,  7 Aug 2024 15:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAscgH5P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnU937/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4F023CE;
-	Wed,  7 Aug 2024 15:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B069678B4C;
+	Wed,  7 Aug 2024 15:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042929; cv=none; b=SwCXS6xgToUHdKey+oCYSkzjFiMjD3uoTpPElhlzxeSdI1NpHG1yowj1/ccerAIzKTrCv4kL96OEvnl2WWnoLSRyUv/8InzdSj3voBMG/1YkX4oSSEG3TACjvmwKrCqJvsSRH4ZXoji9QgfRnf0TYnMe8a26YuQPZj3g51zfQGQ=
+	t=1723043229; cv=none; b=eOWvhIy1GxiyLwLeG4D8UZOF+WHWzpTkA00Qxo2Dcribjt35a1+EfWcklivZtAjvnIMqehSEzlXxkMk/9gyeNvufR5tNh0PTGH90eFvVxj7fHSJ/EMVZ2t805BOR048YGwKzr1KsZP+UZ2JtWGq7zYevWexudoql+iCK6iVbu9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042929; c=relaxed/simple;
-	bh=2ZqsQDzuFTqByRYneP2KY+RM7q2g9Ay3qHIM8g3nJWU=;
+	s=arc-20240116; t=1723043229; c=relaxed/simple;
+	bh=NznqCjOiF7EBXQ8n2ZCtDS4Pf1rX9fBjfelnwhwGoxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cMy85HelENlbeaXGRnBr71HdefJEraKhShtYttPiMufV1xioQn4gP9zZpgSN3F5xCcFkJdl38GDcPS/F/of/eUo37BYswGNU89tGx2kv3hiuY/MyG82p811Xt/8b2aadP7rN3rcm728eh/V2hoa5MwEUNC0rwMisMSiBqFSKhKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAscgH5P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E49C32781;
-	Wed,  7 Aug 2024 15:02:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UgZiE258WAjS6QL8bVcvAIjmH3hRmtFa4HU+lyT4BgXy/RWxRkTJ9rVUbG8eiASDNG37Xl5n88GupoSMzCsg1jHo1qByWCGrhv0u0nLwkcNphH7hJ/HZBO0K/12/D3Utb5rfQhvZCJLJmZRGZNLmXdbhlg5MIygtGAZbvtizBo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnU937/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D27C32781;
+	Wed,  7 Aug 2024 15:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723042929;
-	bh=2ZqsQDzuFTqByRYneP2KY+RM7q2g9Ay3qHIM8g3nJWU=;
+	s=korg; t=1723043229;
+	bh=NznqCjOiF7EBXQ8n2ZCtDS4Pf1rX9fBjfelnwhwGoxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PAscgH5P8Q391zg47eeaEPCi7yg9f3XAApgjzRWhcepejUteRCJwyxEfqLkPv9ETH
-	 bRsxNj/0Ljb/S1EqIn+K/FuXAuSpDZgDMfB9tMlx3sziXuk2WWJUFqYJ7BxzWWc2FY
-	 Kj6H1rKruDpmnEUCcgtLh0uCP3aEy6hgNHwtiKdk=
+	b=pnU937/+r6ZgjxPUYlLi3AY2AtvKWgRJZbQ6WKWR1rhKrbP/ZumKwioV26A5oKNNV
+	 HTXN0/umTdSmUuK/NI++lJfucNeldBpN6zmZO++3m/MESLp4QO3UzQn0zyj5IcsJYp
+	 tnWfD7s1CGE2wfNgI+oBmkBqLs3dDRd+oZ2TYOWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Joel Granados <j.granados@samsung.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 027/123] drm/vmwgfx: Trigger a modeset when the screen moves
-Date: Wed,  7 Aug 2024 16:59:06 +0200
-Message-ID: <20240807150021.697119196@linuxfoundation.org>
+Subject: [PATCH 6.6 015/121] sysctl: treewide: drop unused argument ctl_table_root::set_ownership(table)
+Date: Wed,  7 Aug 2024 16:59:07 +0200
+Message-ID: <20240807150019.868023928@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +60,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 75c3e8a26a35d4f3eee299b3cc7e465f166f4e2d ]
+[ Upstream commit 520713a93d550406dae14d49cdb8778d70cecdfd ]
 
-When multi-monitor is cycled the X,Y position of the Screen Target will
-likely change but the resolution will not. We need to trigger a modeset
-when this occurs in order to recreate the Screen Target with the correct
-X,Y position.
+Remove the 'table' argument from set_ownership as it is never used. This
+change is a step towards putting "struct ctl_table" into .rodata and
+eventually having sysctl core only use "const struct ctl_table".
 
-Fixes a bug where multiple displays are shown in a single scrollable
-host window rather than in 2+ windows on separate host displays.
+The patch was created with the following coccinelle script:
 
-Fixes: 426826933109 ("drm/vmwgfx: Filter modes which exceed graphics memory")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240624205951.23343-1-ian.forbes@broadcom.com
+  @@
+  identifier func, head, table, uid, gid;
+  @@
+
+  void func(
+    struct ctl_table_header *head,
+  - struct ctl_table *table,
+    kuid_t *uid, kgid_t *gid)
+  { ... }
+
+No additional occurrences of 'set_ownership' were found after doing a
+tree-wide search.
+
+Reviewed-by: Joel Granados <j.granados@samsung.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Joel Granados <j.granados@samsung.com>
+Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c | 29 +++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ fs/proc/proc_sysctl.c  | 2 +-
+ include/linux/sysctl.h | 1 -
+ ipc/ipc_sysctl.c       | 3 +--
+ ipc/mq_sysctl.c        | 3 +--
+ net/sysctl_net.c       | 1 -
+ 5 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-index a04e0736318da..9becd71bc93bc 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-@@ -877,6 +877,32 @@ vmw_stdu_connector_mode_valid(struct drm_connector *connector,
- 	return MODE_OK;
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index 5b5cdc747cef3..cec67e6a6678f 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -481,7 +481,7 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 	}
+ 
+ 	if (root->set_ownership)
+-		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
++		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
+ 	else {
+ 		inode->i_uid = GLOBAL_ROOT_UID;
+ 		inode->i_gid = GLOBAL_ROOT_GID;
+diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
+index 61b40ea81f4d3..698a71422a14b 100644
+--- a/include/linux/sysctl.h
++++ b/include/linux/sysctl.h
+@@ -205,7 +205,6 @@ struct ctl_table_root {
+ 	struct ctl_table_set default_set;
+ 	struct ctl_table_set *(*lookup)(struct ctl_table_root *root);
+ 	void (*set_ownership)(struct ctl_table_header *head,
+-			      struct ctl_table *table,
+ 			      kuid_t *uid, kgid_t *gid);
+ 	int (*permissions)(struct ctl_table_header *head, struct ctl_table *table);
+ };
+diff --git a/ipc/ipc_sysctl.c b/ipc/ipc_sysctl.c
+index 01c4a50d22b2d..b2f39a86f4734 100644
+--- a/ipc/ipc_sysctl.c
++++ b/ipc/ipc_sysctl.c
+@@ -192,7 +192,6 @@ static int set_is_seen(struct ctl_table_set *set)
  }
  
-+/*
-+ * Trigger a modeset if the X,Y position of the Screen Target changes.
-+ * This is needed when multi-mon is cycled. The original Screen Target will have
-+ * the same mode but its relative X,Y position in the topology will change.
-+ */
-+static int vmw_stdu_connector_atomic_check(struct drm_connector *conn,
-+					   struct drm_atomic_state *state)
-+{
-+	struct drm_connector_state *conn_state;
-+	struct vmw_screen_target_display_unit *du;
-+	struct drm_crtc_state *new_crtc_state;
-+
-+	conn_state = drm_atomic_get_connector_state(state, conn);
-+	du = vmw_connector_to_stdu(conn);
-+
-+	if (!conn_state->crtc)
-+		return 0;
-+
-+	new_crtc_state = drm_atomic_get_new_crtc_state(state, conn_state->crtc);
-+	if (du->base.gui_x != du->base.set_gui_x ||
-+	    du->base.gui_y != du->base.set_gui_y)
-+		new_crtc_state->mode_changed = true;
-+
-+	return 0;
-+}
-+
- static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
- 	.dpms = vmw_du_connector_dpms,
- 	.detect = vmw_du_connector_detect,
-@@ -891,7 +917,8 @@ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
- static const struct
- drm_connector_helper_funcs vmw_stdu_connector_helper_funcs = {
- 	.get_modes = vmw_connector_get_modes,
--	.mode_valid = vmw_stdu_connector_mode_valid
-+	.mode_valid = vmw_stdu_connector_mode_valid,
-+	.atomic_check = vmw_stdu_connector_atomic_check,
- };
+ static void ipc_set_ownership(struct ctl_table_header *head,
+-			      struct ctl_table *table,
+ 			      kuid_t *uid, kgid_t *gid)
+ {
+ 	struct ipc_namespace *ns =
+@@ -224,7 +223,7 @@ static int ipc_permissions(struct ctl_table_header *head, struct ctl_table *tabl
+ 		kuid_t ns_root_uid;
+ 		kgid_t ns_root_gid;
  
+-		ipc_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
++		ipc_set_ownership(head, &ns_root_uid, &ns_root_gid);
  
+ 		if (uid_eq(current_euid(), ns_root_uid))
+ 			mode >>= 6;
+diff --git a/ipc/mq_sysctl.c b/ipc/mq_sysctl.c
+index 21fba3a6edaf7..6bb1c5397c69b 100644
+--- a/ipc/mq_sysctl.c
++++ b/ipc/mq_sysctl.c
+@@ -78,7 +78,6 @@ static int set_is_seen(struct ctl_table_set *set)
+ }
+ 
+ static void mq_set_ownership(struct ctl_table_header *head,
+-			     struct ctl_table *table,
+ 			     kuid_t *uid, kgid_t *gid)
+ {
+ 	struct ipc_namespace *ns =
+@@ -97,7 +96,7 @@ static int mq_permissions(struct ctl_table_header *head, struct ctl_table *table
+ 	kuid_t ns_root_uid;
+ 	kgid_t ns_root_gid;
+ 
+-	mq_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
++	mq_set_ownership(head, &ns_root_uid, &ns_root_gid);
+ 
+ 	if (uid_eq(current_euid(), ns_root_uid))
+ 		mode >>= 6;
+diff --git a/net/sysctl_net.c b/net/sysctl_net.c
+index 051ed5f6fc937..a0a7a79991f9f 100644
+--- a/net/sysctl_net.c
++++ b/net/sysctl_net.c
+@@ -54,7 +54,6 @@ static int net_ctl_permissions(struct ctl_table_header *head,
+ }
+ 
+ static void net_ctl_set_ownership(struct ctl_table_header *head,
+-				  struct ctl_table *table,
+ 				  kuid_t *uid, kgid_t *gid)
+ {
+ 	struct net *net = container_of(head->set, struct net, sysctls);
 -- 
 2.43.0
 
