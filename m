@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF4794A9BD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:16:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E3594A9BE
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC9081C22B60
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:16:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB820282EFF
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6ABE339B1;
-	Wed,  7 Aug 2024 14:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544F02AF10;
+	Wed,  7 Aug 2024 14:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH02tzv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLcib8e1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7682054BD8
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14ABF5FB8A
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723040133; cv=none; b=XnP6/BujCFCV2LSaIV33BVHDjU7in2AFSzqQaytXM49PK9YJ9ZdlWFxcrDg2dgNv0K0GNaM231TlBk3sljw+yA3IZcWveRdaTLf2/lPdDrMzsKj94wKnCk/ytSyMe7IuevEjfC5zfL0CqtlKMIysgoh40FrPaQE4+Cb5UDdgffM=
+	t=1723040136; cv=none; b=szR3CQpS0Bz9LnJ5/Bq0mLaC+OzkDbXR/jG4hMRCD4XNs3saaD6EmSOyElUOiUr0th62FOBEBDQLgrDLwBDIygdFM/W8NFKMlH1tQoZlHT2e06OWlBAWcHO0ftMuCX8mt2wsumegSykhIGVvAcUmIpES25wjFcEdgIrUqhERK7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723040133; c=relaxed/simple;
-	bh=Vd2iiigrx/fk9I5WIIk1Cy9j79kzTYslQNQKN7fSgg4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=n4g07GUTE2fNRn+jJRvgTqh6WZkjGhUBYUEhpivOpNRRmy635Z+yL0kI1JetpS1kwAeJITRXO5dSKrDqpvZcVlQevCQv35XV5kqm1R4XTL7mIC77zVXKaMYvvQo82bM5Q1fTgMq1EzeRlSarcp72CyWT3tJC2r+2ROXZLysZiWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH02tzv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977ECC32782;
-	Wed,  7 Aug 2024 14:15:32 +0000 (UTC)
+	s=arc-20240116; t=1723040136; c=relaxed/simple;
+	bh=PpQ5wfmirdJUmHm3/p0efhyb0z64qldtIukrpe8/b2Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mvOZWCMvFPRUrn54iO4Vu5zbnMI5jp/2W+sL6fRMfPmmAnFJYYbAphcEfTaYWtXp3iDo5IYnb6bOs9zbta0WwuNZlYzhqotoGRMbqf0S4jmZaeURkt28n3+q/uz8ZzyTle1KJ+2zD+X8dPJ2FVU9XhhLcVEANRuBjI+SbWsn2vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLcib8e1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413C9C32782;
+	Wed,  7 Aug 2024 14:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723040132;
-	bh=Vd2iiigrx/fk9I5WIIk1Cy9j79kzTYslQNQKN7fSgg4=;
+	s=korg; t=1723040135;
+	bh=PpQ5wfmirdJUmHm3/p0efhyb0z64qldtIukrpe8/b2Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wH02tzv5Bgo6DkR30vOyJWfwyiCADZkbxzBLigqu+eWk2fii2qLf68UCXvrlzAUss
-	 X8qSUe83z0+qefThYwaVjseH20kSeszw7/cWHjUfrtqhOof4WNJUk1UZERyKFNp24K
-	 UUglaccfocGBAdgJnJ16MJSe+2uE14cwF+vpc70k=
-Subject: FAILED: patch "[PATCH] mptcp: pm: fix backup support in signal endpoints" failed to apply to 6.1-stable tree
+	b=OLcib8e17AQQIWkqhCIfxVEJ0XnVVjpKiSCHaSUjxqvpux4NDC3qjL4o/Y/bp3Nnu
+	 3+bf5ntHyBtWbUNWx5ln6ZE0Nw9evRsRkDTDXGBJB2SEP3V2cLzFWXMo6ARktTTD6l
+	 skkV6ixStZJaWXpo30eZHV/EZVWjz+g19kTR8WgM=
+Subject: FAILED: patch "[PATCH] mptcp: pm: fix backup support in signal endpoints" failed to apply to 5.15-stable tree
 To: matttbe@kernel.org,martineau@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 07 Aug 2024 16:15:27 +0200
-Message-ID: <2024080727-stricken-overact-90c5@gregkh>
+Date: Wed, 07 Aug 2024 16:15:28 +0200
+Message-ID: <2024080728-steep-scallion-4de3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6834097fc38c5416701c793da94558cea49c0a1f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080727-stricken-overact-90c5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080728-steep-scallion-4de3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -80,6 +80,13 @@ aab4d8564947 ("net: mptcp: use policy generated by YAML spec")
 f40be0db0b76 ("mptcp: unify pm get_flags_and_ifindex_by_id")
 a963853fd465 ("mptcp: use net instead of sock_net")
 dfc8d0603033 ("mptcp: implement delayed seq generation for passive fastopen")
+d15697185404 ("mptcp: allow privileged operations from user namespaces")
+9c5d03d36251 ("genetlink: start to validate reserved header bytes")
+02739545951a ("net: Fix data-races around sysctl_[rw]mem(_offset)?.")
+892f396c8e68 ("mptcp: netlink: issue MP_PRIO signals from userspace PMs")
+a657430260e5 ("mptcp: Acquire the subflow socket lock before modifying MP_PRIO flags")
+c21b50d5912b ("mptcp: Avoid acquiring PM lock for subflow priority changes")
+6f664045c868 ("Merge tag 'mm-nonmm-stable-2022-05-26' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
 
 thanks,
 
