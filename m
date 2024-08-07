@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-65738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D8D94ABAB
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE27894AB25
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CE971F270AF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A8C4282126
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0332AF07;
-	Wed,  7 Aug 2024 15:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2A083CA0;
+	Wed,  7 Aug 2024 15:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ub9Za0C2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UePT74ev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8BF78C67;
-	Wed,  7 Aug 2024 15:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359FF80043;
+	Wed,  7 Aug 2024 15:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043274; cv=none; b=lnR9iFSafeC7nwWHfLoaIl65Grj1d0r3VWiCfp8l2zJayFWwzz43oi8OjQV1OIejke+E0pxVcUbX+N33rEjQ0Pl74b/n7XvSh+ljykXedjCOuG79BeZCs+iYwDxHEGj3c9Mf1BcpHr8ruKA/4fYgoWIEa1yCJq/Phl4Ek5cINcU=
+	t=1723042973; cv=none; b=KG+hLTiOtCjYBuLoH9MbCuiRFw3SX82bljyTW6wsScHC9iqvptQOBMwPalx7iZ7lKdLtDUUSQS1JqMzhy2oYpcC1Y/Wdit0v1H8GeTMrOIY89Sw3bJQ6wvI1R5LyODy9f2ArEO0BQW9hAKxGvBtG844o3uKYNz4aFBseqnnjX4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043274; c=relaxed/simple;
-	bh=vJNtOt9FQK9elqMtB9kax+Q4PRK/QRZsfIMQRLdOL1Q=;
+	s=arc-20240116; t=1723042973; c=relaxed/simple;
+	bh=NNLL6oVKBLpi2nkPRkZHemwM0iHSTlC0lf5Y5KREISI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZ74h6TpR5K0uhwsqMwCWndtQvAYAZ++MUcBXquUa53nx0Jh7JJYgKMlSY2sAnv7QZo7lKjJ8Lof/YXdfwqa5/Q+743NEdfihitUNaGI5AP7I2hhThZW3Yhy6k0m6/y5fzwRp7OxNwpb/0qWYL69DSGAjW0lIu0dduvqi4A53c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ub9Za0C2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67331C32781;
-	Wed,  7 Aug 2024 15:07:53 +0000 (UTC)
+	 MIME-Version; b=FDpDNN51n0pgIJwF9m03TEmdEk+gxSyqxzGLwBgzIFsfi/f592XHXAl8DV6KyC9fK+UQtSGWq+efoh49FwfHP1AfR1LC8k0f9mf7Pp1PrnQbwDypBIpNkSKmFPodBROuWOT/GzMMSC1I8Qu/UaqTv8QvRClR12CoW4SW8rl50/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UePT74ev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648AAC32781;
+	Wed,  7 Aug 2024 15:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043273;
-	bh=vJNtOt9FQK9elqMtB9kax+Q4PRK/QRZsfIMQRLdOL1Q=;
+	s=korg; t=1723042972;
+	bh=NNLL6oVKBLpi2nkPRkZHemwM0iHSTlC0lf5Y5KREISI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ub9Za0C2IlI+b8itjTwyKwRbsCt9WQnJjFsJcDYi08gPccLSsGV1eSDIvaHXR5vGc
-	 wRbK0Reta8dpQMOSYA1xY8CdLf6Vz5NG7F+TYpWacuvOQeKugsRJ1/JFB35+ZCRq03
-	 ebWeNtTWG8dtd61xwDPbKkqYSFfpUU3ZqZAS4AaQ=
+	b=UePT74evFlEWLIO/DKKzZ6HI69XEsI2cn91FHiPVdS7VG1OWXUwkURKya81uv1yoj
+	 AW5VREiHHr2IhHID8KgM6+86RC/tawB3DLLW2ZSU/jblw9yT9/T9BPgazsExI7g7TZ
+	 u34m0o69YssehAHFZSR3TyGUa5xuRRHq2alzfpiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <suijingfeng@loongson.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/121] PCI: Add pci_get_base_class() helper
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.10 044/123] ice: modify error handling when setting XSK pool in ndo_bpf
 Date: Wed,  7 Aug 2024 16:59:23 +0200
-Message-ID: <20240807150020.355125352@linuxfoundation.org>
+Message-ID: <20240807150022.262933475@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +64,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sui Jingfeng <suijingfeng@loongson.cn>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit d427da2323b093a65d8317783e76ab8fad2e2ef0 ]
+[ Upstream commit d5922717994911e8f0eab736f3ba0d968c158823 ]
 
-There is no function to get all PCI devices in a system by matching
-against the base class code only, ignoring the sub-class code and
-the programming interface.  Add pci_get_base_class() to suit the
-need.
+Don't bail out right when spotting an error within ice_qp_{dis,ena}()
+but rather track error and go through whole flow of disabling and
+enabling queue pair.
 
-For example, if a driver wants to process all PCI display devices in
-a system, it can do so like this:
-
-  pdev = NULL;
-  while ((pdev = pci_get_base_class(PCI_BASE_CLASS_DISPLAY, pdev))) {
-    do_something_for_pci_display_device(pdev);
-  }
-
-Link: https://lore.kernel.org/r/20230825062714.6325-2-sui.jingfeng@linux.dev
-Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
-[bhelgaas: reword commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: c2bc958b2b03 ("fbdev: vesafb: Detect VGA compatibility from screen info's VESA attributes")
+Fixes: 2d4238f55697 ("ice: Add support for AF_XDP")
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/search.c | 31 +++++++++++++++++++++++++++++++
- include/linux/pci.h  |  5 +++++
- 2 files changed, 36 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_xsk.c | 30 +++++++++++++-----------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/pci/search.c b/drivers/pci/search.c
-index b4c138a6ec025..53840634fbfc2 100644
---- a/drivers/pci/search.c
-+++ b/drivers/pci/search.c
-@@ -363,6 +363,37 @@ struct pci_dev *pci_get_class(unsigned int class, struct pci_dev *from)
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index ba50af9a59293..902096b000f5a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -162,6 +162,7 @@ static int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
+ 	struct ice_tx_ring *tx_ring;
+ 	struct ice_rx_ring *rx_ring;
+ 	int timeout = 50;
++	int fail = 0;
+ 	int err;
+ 
+ 	if (q_idx >= vsi->num_rxq || q_idx >= vsi->num_txq)
+@@ -186,8 +187,8 @@ static int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
+ 
+ 	ice_fill_txq_meta(vsi, tx_ring, &txq_meta);
+ 	err = ice_vsi_stop_tx_ring(vsi, ICE_NO_RESET, 0, tx_ring, &txq_meta);
+-	if (err)
+-		return err;
++	if (!fail)
++		fail = err;
+ 	if (ice_is_xdp_ena_vsi(vsi)) {
+ 		struct ice_tx_ring *xdp_ring = vsi->xdp_rings[q_idx];
+ 
+@@ -195,15 +196,15 @@ static int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
+ 		ice_fill_txq_meta(vsi, xdp_ring, &txq_meta);
+ 		err = ice_vsi_stop_tx_ring(vsi, ICE_NO_RESET, 0, xdp_ring,
+ 					   &txq_meta);
+-		if (err)
+-			return err;
++		if (!fail)
++			fail = err;
+ 	}
+ 
+ 	ice_vsi_ctrl_one_rx_ring(vsi, false, q_idx, false);
+ 	ice_qp_clean_rings(vsi, q_idx);
+ 	ice_qp_reset_stats(vsi, q_idx);
+ 
+-	return 0;
++	return fail;
  }
- EXPORT_SYMBOL(pci_get_class);
  
-+/**
-+ * pci_get_base_class - searching for a PCI device by matching against the base class code only
-+ * @class: search for a PCI device with this base class code
-+ * @from: Previous PCI device found in search, or %NULL for new search.
-+ *
-+ * Iterates through the list of known PCI devices. If a PCI device is found
-+ * with a matching base class code, the reference count to the device is
-+ * incremented. See pci_match_one_device() to figure out how does this works.
-+ * A new search is initiated by passing %NULL as the @from argument.
-+ * Otherwise if @from is not %NULL, searches continue from next device on the
-+ * global list. The reference count for @from is always decremented if it is
-+ * not %NULL.
-+ *
-+ * Returns:
-+ * A pointer to a matched PCI device, %NULL Otherwise.
-+ */
-+struct pci_dev *pci_get_base_class(unsigned int class, struct pci_dev *from)
-+{
-+	struct pci_device_id id = {
-+		.vendor = PCI_ANY_ID,
-+		.device = PCI_ANY_ID,
-+		.subvendor = PCI_ANY_ID,
-+		.subdevice = PCI_ANY_ID,
-+		.class_mask = 0xFF0000,
-+		.class = class << 16,
-+	};
-+
-+	return pci_get_dev_by_id(&id, from);
-+}
-+EXPORT_SYMBOL(pci_get_base_class);
-+
  /**
-  * pci_dev_present - Returns 1 if device matching the device list is present, 0 if not.
-  * @ids: A pointer to a null terminated list of struct pci_device_id structures
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index f141300116219..7b18a4b3efb0e 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1182,6 +1182,8 @@ struct pci_dev *pci_get_slot(struct pci_bus *bus, unsigned int devfn);
- struct pci_dev *pci_get_domain_bus_and_slot(int domain, unsigned int bus,
- 					    unsigned int devfn);
- struct pci_dev *pci_get_class(unsigned int class, struct pci_dev *from);
-+struct pci_dev *pci_get_base_class(unsigned int class, struct pci_dev *from);
-+
- int pci_dev_present(const struct pci_device_id *ids);
+@@ -216,32 +217,33 @@ static int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
+ static int ice_qp_ena(struct ice_vsi *vsi, u16 q_idx)
+ {
+ 	struct ice_q_vector *q_vector;
++	int fail = 0;
+ 	int err;
  
- int pci_bus_read_config_byte(struct pci_bus *bus, unsigned int devfn,
-@@ -1958,6 +1960,9 @@ static inline struct pci_dev *pci_get_class(unsigned int class,
- 					    struct pci_dev *from)
- { return NULL; }
+ 	err = ice_vsi_cfg_single_txq(vsi, vsi->tx_rings, q_idx);
+-	if (err)
+-		return err;
++	if (!fail)
++		fail = err;
  
-+static inline struct pci_dev *pci_get_base_class(unsigned int class,
-+						 struct pci_dev *from)
-+{ return NULL; }
+ 	if (ice_is_xdp_ena_vsi(vsi)) {
+ 		struct ice_tx_ring *xdp_ring = vsi->xdp_rings[q_idx];
  
- static inline int pci_dev_present(const struct pci_device_id *ids)
- { return 0; }
+ 		err = ice_vsi_cfg_single_txq(vsi, vsi->xdp_rings, q_idx);
+-		if (err)
+-			return err;
++		if (!fail)
++			fail = err;
+ 		ice_set_ring_xdp(xdp_ring);
+ 		ice_tx_xsk_pool(vsi, q_idx);
+ 	}
+ 
+ 	err = ice_vsi_cfg_single_rxq(vsi, q_idx);
+-	if (err)
+-		return err;
++	if (!fail)
++		fail = err;
+ 
+ 	q_vector = vsi->rx_rings[q_idx]->q_vector;
+ 	ice_qvec_cfg_msix(vsi, q_vector);
+ 
+ 	err = ice_vsi_ctrl_one_rx_ring(vsi, true, q_idx, true);
+-	if (err)
+-		return err;
++	if (!fail)
++		fail = err;
+ 
+ 	ice_qvec_toggle_napi(vsi, q_vector, true);
+ 	ice_qvec_ena_irq(vsi, q_vector);
+@@ -249,7 +251,7 @@ static int ice_qp_ena(struct ice_vsi *vsi, u16 q_idx)
+ 	netif_tx_start_queue(netdev_get_tx_queue(vsi->netdev, q_idx));
+ 	clear_bit(ICE_CFG_BUSY, vsi->state);
+ 
+-	return 0;
++	return fail;
+ }
+ 
+ /**
 -- 
 2.43.0
 
