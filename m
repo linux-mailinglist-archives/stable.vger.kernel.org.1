@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C71D94A9AE
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DFD94A9B0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40DE01F2A201
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:15:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072051F2A268
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DC154BD8;
-	Wed,  7 Aug 2024 14:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CDD78C89;
+	Wed,  7 Aug 2024 14:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOhMU9b1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQLbaHIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BF6339B1
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E2657CB1
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723040067; cv=none; b=gJOxzfmWgVOTyOBss4/vjX2KlvR/tqhF86wyeKCpTWsaNHGIglFJ6wMuX/jA64PrUgrHA2KE3o26j/abS95BO1c3rGhZs0or666fm9Rizgtckfzkthcq2WhywQIBxgkUUK7JjDDqcdnZvuQ3VC0MDX7Ujm59+dTT5Gx83g/HQ7A=
+	t=1723040074; cv=none; b=jBE1z7UB0wNE5/of+OT70boPtCrCJQRHS/qId0wubFsFvI67vKR933iae+RBXLbrahhU8D/61oa1j6wyaivOOiif5UnRE6AcG1FNIZ5IS/+sQZEArL/UE24NGMtjwIYioUTREpGGHNkjZZyHGtl9GDpub1gjzRWJWb0s5SDwIGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723040067; c=relaxed/simple;
-	bh=bMX/7uEVPC/22Mm5k/k8jebDApK9yb7u7BPuBd7Be8I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aqQunyESXkCVGMe8+P2CmG0D1fi7/EsH1O/hUpSErc/V9s0bQvQY7D0E4bOHxQU7xAVOjOL7FoDjFI8H2Zo/MRKMeKyEFRL+x5Y1lQFnQXs7w4n/1doolZnV71HNhm7wP3otsPBOctzV2z7znkfrXWVz2hXaHlxksFO39keC9OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOhMU9b1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DA5C32781;
-	Wed,  7 Aug 2024 14:14:24 +0000 (UTC)
+	s=arc-20240116; t=1723040074; c=relaxed/simple;
+	bh=QAK3iIdFRm+xwCgcXPf1e++qBXB/h5l20CKFSQ8sXoI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ESUhPPrlvez99w5KlVWxvT3kVtGMPJLyv9qimvCsXyi5PSB7QaM+Vrssabf7d8V2OTctsZ4IrCZJXFiVKNBogfcaUH/WTi+ghr7tdCdc3p0VROQAUzbIZvyoj1qMzrWo+MIOajjqxGMEa+saXoHbYYXiyftw5o7cSGbKnTMBuQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQLbaHIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA334C32781;
+	Wed,  7 Aug 2024 14:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723040065;
-	bh=bMX/7uEVPC/22Mm5k/k8jebDApK9yb7u7BPuBd7Be8I=;
+	s=korg; t=1723040074;
+	bh=QAK3iIdFRm+xwCgcXPf1e++qBXB/h5l20CKFSQ8sXoI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cOhMU9b1rM304a5jNb7G3bXZOsmfFmVV/RNjLIlDUUlgUN0TmDcYBHNnN3CvCtkf9
-	 9CXtExVgVECcGoazSxW1/4UVdp9NZiT2vHvSbp8zYItRrr+PChG7OX6v0bUjF9KsK/
-	 wEd/T+oW8DbiIArI/POjSCrBZYqZYFXiwe5NMy4M=
-Subject: FAILED: patch "[PATCH] mptcp: mib: count MPJ with backup flag" failed to apply to 6.1-stable tree
+	b=FQLbaHIxUv+jgNv3q/WKyipWCLQVXFe5blwvO/+6nEmyrTj1bvxgTxceR6Ydi7jyE
+	 zQ97TMbrV3Jeq5t5j+OL4/p0kXR2uhEzilK8YZ8K0DRUVydU9P+xnzt/QWRfi+/ApB
+	 ak6U/RNjSRnz0eKBJegvj/K+7Jw4NdYRTukoisYY=
+Subject: FAILED: patch "[PATCH] mptcp: mib: count MPJ with backup flag" failed to apply to 5.15-stable tree
 To: matttbe@kernel.org,martineau@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 07 Aug 2024 16:14:22 +0200
-Message-ID: <2024080722-survive-jacket-b862@gregkh>
+Message-ID: <2024080722-glorify-rarity-f9bb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4dde0d72ccec500c60c798e036b852e013d6e124
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080722-survive-jacket-b862@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080722-glorify-rarity-f9bb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 4dde0d72ccec ("mptcp: mib: count MPJ with backup flag")
 b3ea6b272d79 ("mptcp: consolidate initial ack seq generation")
+f3589be0c420 ("mptcp: never shrink offered window")
 
 thanks,
 
