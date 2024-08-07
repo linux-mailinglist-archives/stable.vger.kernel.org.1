@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-65838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D134F94AC22
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B26894AB89
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83AEF1F210A7
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBDA21C226E8
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18948823AF;
-	Wed,  7 Aug 2024 15:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8326227448;
+	Wed,  7 Aug 2024 15:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZ5TPiId"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1IRgc0Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3717F7F5;
-	Wed,  7 Aug 2024 15:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1A68563E;
+	Wed,  7 Aug 2024 15:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043540; cv=none; b=Wt5/HjwHP7LAZ6tGsJrwKmm0r7kBp9hkJ3NmeyZfhaMJHOio3OUDW9vMD5IikGmJO+i15kixypFaL9H4rdXB9AHmxPxNGDThBqetRemCKiJaec242QbH6+hGQ+oUbNAQMMufOX6CkGTy9EGWavS0yZnuVqKsRZcKjZEbrAd/e0c=
+	t=1723043189; cv=none; b=Ug7KLO968Cue+F/mBMjTSTUTWBzuAflrmKRc08LsL43srk69SFkNrYZLVvmgTK0DPdRq4OmSfnd1ymjGW1I3wH435XloL9aAHws0i36YGpAxl+47Z8V7YVCesh6ZeoPHb6rHjKy55xih6IvHNdRa+cL3naXjwhcoLK7+E3KSLp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043540; c=relaxed/simple;
-	bh=7okaDeJbe/27T9TAzPkoMr0kaZwNrONwcLXAxMwi8lo=;
+	s=arc-20240116; t=1723043189; c=relaxed/simple;
+	bh=tTuQvPYvD4taaKFnAEwxLVVcnuFvUg52RpoLjn6XEZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ig4oZOz9Vtp2LpmahYkJ7vjCktQnLCStkcSKYo2PgY/LinK5IL+wkJLcHbTSNngarl+XOkfHjP2sAWyGYUOop3MKiJwA14NBMY9QuRXKxZUe80QDB7uAMVhquvCEExutKBE6l/IrOhcQtEFgmCsVdHFyjlg0jKAfDr5KBodcgN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZ5TPiId; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F124C32781;
-	Wed,  7 Aug 2024 15:12:20 +0000 (UTC)
+	 MIME-Version; b=JU1vcFqKEncPFvtZmYPwNz8VuylORGlBWJZWQCBZfEwS99LF7+U6++EjOAWwSNQS1AmjUY17kt+fjlaCN+4FLhgD0asTYnx8eSp/Cqx27Jzw5r7oZGf0HgM73k/uVYT1u/360YH+1flHt6G9LbqzEiyyrm6aG5n7r16KWYXiiB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1IRgc0Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C075AC32781;
+	Wed,  7 Aug 2024 15:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043540;
-	bh=7okaDeJbe/27T9TAzPkoMr0kaZwNrONwcLXAxMwi8lo=;
+	s=korg; t=1723043189;
+	bh=tTuQvPYvD4taaKFnAEwxLVVcnuFvUg52RpoLjn6XEZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZ5TPiIdal64eBMtKLEAMA17zQ5zbgog4MBCqjVbGpLmbvgwjt33MpV+NwsaCHSvX
-	 5zFu0wiBqFRhpY665M/nWEMv5VkZYUwYkP2izJxa1Nqz864ufBLWfLA3KaqzL6v3LY
-	 q8M3fRh7DMB1aX4Sqnzx/zIa1up4Gsi7EmO/Mt38=
+	b=o1IRgc0ZoPO0SXsTNgVr/HXik7nJa64ue0gqVG8LxblUVaQfcUwKbRPMegb4/PpOO
+	 Nk8W291ZgRzNh0iGj1qy+j1i1zIDgCszi/S2K6OU7MSe5GzCq0J1bw3iLa3lR5VBm9
+	 n5Ke7kuc4Am/vr5wKXILlhn7deEo3LYsBPeouorM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>
-Subject: [PATCH 6.6 110/121] r8169: dont increment tx_dropped in case of NETDEV_TX_BUSY
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 123/123] selftests: mptcp: join: check backup support in signal endp
 Date: Wed,  7 Aug 2024 17:00:42 +0200
-Message-ID: <20240807150022.999876259@linuxfoundation.org>
+Message-ID: <20240807150024.940876249@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit d516b187a9cc2e842030dd005be2735db3e8f395 upstream.
+commit f833470c27832136d4416d8fc55d658082af0989 upstream.
 
-The skb isn't consumed in case of NETDEV_TX_BUSY, therefore don't
-increment the tx_dropped counter.
+Before the previous commit, 'signal' endpoints with the 'backup' flag
+were ignored when sending the MP_JOIN.
 
-Fixes: 188f4af04618 ("r8169: use NETDEV_TX_{BUSY/OK}")
+The MPTCP Join selftest has then been modified to validate this case:
+the "single address, backup" test, is now validating the MP_JOIN with a
+backup flag as it is what we expect it to do with such name. The
+previous version has been kept, but renamed to "single address, switch
+to backup" to avoid confusions.
+
+The "single address with port, backup" test is also now validating the
+MPJ with a backup flag, which makes more sense than checking the switch
+to backup with an MP_PRIO.
+
+The "mpc backup both sides" test is now validating that the backup flag
+is also set in MP_JOIN from and to the addresses used in the initial
+subflow, using the special ID 0.
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
 Cc: stable@vger.kernel.org
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/bbba9c48-8bac-4932-9aa1-d2ed63bc9433@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   34 +++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4256,7 +4256,8 @@ static netdev_tx_t rtl8169_start_xmit(st
- 	if (unlikely(!rtl_tx_slots_avail(tp))) {
- 		if (net_ratelimit())
- 			netdev_err(dev, "BUG! Tx Ring full when queue awake!\n");
--		goto err_stop_0;
-+		netif_stop_queue(dev);
-+		return NETDEV_TX_BUSY;
- 	}
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2641,6 +2641,19 @@ backup_tests()
+ 	if reset "single address, backup" &&
+ 	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 0 1
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
++		pm_nl_set_limits $ns2 1 1
++		sflags=nobackup speed=slow \
++			run_tests $ns1 $ns2 10.0.1.1
++		chk_join_nr 1 1 1
++		chk_add_nr 1 1
++		chk_prio_nr 1 0 0 1
++	fi
++
++	# single address, switch to backup
++	if reset "single address, switch to backup" &&
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
++		pm_nl_set_limits $ns1 0 1
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+ 		pm_nl_set_limits $ns2 1 1
+ 		sflags=backup speed=slow \
+@@ -2654,13 +2667,13 @@ backup_tests()
+ 	if reset "single address with port, backup" &&
+ 	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 0 1
+-		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal port 10100
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup port 10100
+ 		pm_nl_set_limits $ns2 1 1
+-		sflags=backup speed=slow \
++		sflags=nobackup speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 1 1 1
+ 		chk_add_nr 1 1
+-		chk_prio_nr 1 1 0 0
++		chk_prio_nr 1 0 0 1
+ 	fi
  
- 	opts[1] = rtl8169_tx_vlan_tag(skb);
-@@ -4312,11 +4313,6 @@ err_dma_0:
- 	dev_kfree_skb_any(skb);
- 	dev->stats.tx_dropped++;
- 	return NETDEV_TX_OK;
--
--err_stop_0:
--	netif_stop_queue(dev);
--	dev->stats.tx_dropped++;
--	return NETDEV_TX_BUSY;
- }
+ 	if reset "mpc backup" &&
+@@ -2674,12 +2687,21 @@ backup_tests()
  
- static unsigned int rtl_last_frag_len(struct sk_buff *skb)
+ 	if reset "mpc backup both sides" &&
+ 	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
+-		pm_nl_add_endpoint $ns1 10.0.1.1 flags subflow,backup
++		pm_nl_set_limits $ns1 0 2
++		pm_nl_set_limits $ns2 1 2
++		pm_nl_add_endpoint $ns1 10.0.1.1 flags signal,backup
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,backup
++
++		# 10.0.2.2 (non-backup) -> 10.0.1.1 (backup)
++		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
++		# 10.0.1.2 (backup) -> 10.0.2.1 (non-backup)
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
++		ip -net "$ns2" route add 10.0.2.1 via 10.0.1.1 dev ns2eth1 # force this path
++
+ 		speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+-		chk_join_nr 0 0 0
+-		chk_prio_nr 1 1 0 0
++		chk_join_nr 2 2 2
++		chk_prio_nr 1 1 1 1
+ 	fi
+ 
+ 	if reset "mpc switch to backup" &&
 
 
 
