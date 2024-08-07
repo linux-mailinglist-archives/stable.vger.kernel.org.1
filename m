@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-65776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0925194ABDB
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CA694AC37
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B52DD284067
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1F64284BFB
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88058839E4;
-	Wed,  7 Aug 2024 15:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAAA839E4;
+	Wed,  7 Aug 2024 15:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3DONJY7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DItz94cT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428598288C;
-	Wed,  7 Aug 2024 15:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5D77F7F5;
+	Wed,  7 Aug 2024 15:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043378; cv=none; b=MXUGZhEB437gZZii4Y7DPEWBJvRco63JTKe0Yg99BSh85sUmBauuTFCTaL0KoFGUz/mk8N2nD8qXazDtHg7PVdVgt4nbitV8Hq7TXY2/4beOwCTbLHBo2d3AgGdtKgmIdRl1fNe931vcTfN39aT4xGwgg5kn+7L2411EsggYa0I=
+	t=1723043586; cv=none; b=KwmlMt7SBxVQhbPETvxPsKzCMypp26/ULTWJhhjueQdvO+yZTSQZH4fMarXB5wXWqmHqgzxfCDO75q5eURvGfHsnSBgHwqRdop+L3xt9GhsgLkB/dgv28rljBaLZxK/ArjUaqTO/7JDc9k4qzcW1kklhqbS/p52Vz3SknC1KkT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043378; c=relaxed/simple;
-	bh=NSoQKd7Du21rep9WPaHGKk/iX9B7WcMF3ZW2MJnhhtg=;
+	s=arc-20240116; t=1723043586; c=relaxed/simple;
+	bh=UGxlVpYWLhWxNkVPmcYuagv/U7x23ZE/qTxLHRklWLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqqLAL2QXrhvXgiU+UnOkFMrd0X0rnj+KQ+y45wMsYnq857eir838XxzFgjARyUkqlKj/wOOxtdFwRCiE8ayx5N+3XTiG2FKLrqG5B/OqYLrCn1AD19jddGjEuo3VA4ATuXdn6dRjpU8qoWnQTbC8f6PehxSafwgymPrqNxcmG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3DONJY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DB1C32781;
-	Wed,  7 Aug 2024 15:09:37 +0000 (UTC)
+	 MIME-Version; b=mKXlw9gcqfNAERnF32uKkH5iSEQ/sTbfH7V+x5r7PJqQTnQ1+3AjCtRwFlhjzsQYPdFhwFODeMXMOk4LogKCSACKayFbkONR4YH8D5qH0lblZ3NlXEtxGDx36eM05shV9v+QSYtsKRqT2pBPDsopATtafcTDEMyhJzX2127ZfsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DItz94cT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D493C32781;
+	Wed,  7 Aug 2024 15:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043378;
-	bh=NSoQKd7Du21rep9WPaHGKk/iX9B7WcMF3ZW2MJnhhtg=;
+	s=korg; t=1723043585;
+	bh=UGxlVpYWLhWxNkVPmcYuagv/U7x23ZE/qTxLHRklWLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3DONJY7OtOqHx27S2AAmbj3/u9bqEJ900tbzJOaT3w/Stmz0O6hrDqAF4ZNefFiM
-	 16y5cvQdT+x1schkap70l/dTIhhK+Q4h8HIareO2p4IW+XBHjQ1Hr9rn76A4fiGnQr
-	 xzBYJpEnse6jGCPz/Tsza1xkgDnTenrQoKSNfzxs=
+	b=DItz94cTpOPGslWLfkTBSOMB+JU80N4ZSmRyRIJxhpLHhOU+suybsDAZS2FjZ5XoD
+	 k0Wte7yam64EDCuSHymMDJGLhEG5BpluCF1/deGLOWHccDfGVuxNW7citYJ3J0ilyP
+	 ySqjvaafcERjw2pHiLfNDCMR2BM+fsV8A6n5os7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurinko <petrvelicka@tuta.io>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Alexey Gladkov <legion@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Joel Granados <joel.granados@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/121] HID: amd_sfh: Move sensor discovery before HID device initialization
-Date: Wed,  7 Aug 2024 16:59:43 +0200
-Message-ID: <20240807150021.079252985@linuxfoundation.org>
+Subject: [PATCH 6.1 05/86] sysctl: allow to change limits for posix messages queues
+Date: Wed,  7 Aug 2024 16:59:44 +0200
+Message-ID: <20240807150039.428878191@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +69,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Alexey Gladkov <legion@kernel.org>
 
-[ Upstream commit 8031b001da700474c11d28629581480b12a0d8d4 ]
+[ Upstream commit f9436a5d0497f759330d07e1189565edd4456be8 ]
 
-Sensors discovery is independent of HID device initialization. If sensor
-discovery fails after HID initialization, then the HID device needs to be
-deinitialized. Therefore, sensors discovery should be moved before HID
-device initialization.
+All parameters of posix messages queues (queues_max/msg_max/msgsize_max)
+end up being limited by RLIMIT_MSGQUEUE.  The code in mqueue_get_inode is
+where that limiting happens.
 
-Fixes: 7bcfdab3f0c6 ("HID: amd_sfh: if no sensors are enabled, clean up")
-Tested-by: Aurinko <petrvelicka@tuta.io>
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Link: https://patch.msgid.link/20240718111616.3012155-1-Basavaraj.Natikar@amd.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+The RLIMIT_MSGQUEUE is bound to the user namespace and is counted
+hierarchically.
+
+We can allow root in the user namespace to modify the posix messages
+queues parameters.
+
+Link: https://lkml.kernel.org/r/6ad67f23d1459a4f4339f74aa73bac0ecf3995e1.1705333426.git.legion@kernel.org
+Signed-off-by: Alexey Gladkov <legion@kernel.org>
+Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
+Link: https://lkml.kernel.org/r/7eb21211c8622e91d226e63416b1b93c079f60ee.1663756794.git.legion@kernel.org
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Joel Granados <joel.granados@gmail.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Manfred Spraul <manfred@colorfullife.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/amd-sfh-hid/amd_sfh_client.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ ipc/mq_sysctl.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_client.c b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-index bdb578e0899f5..4b59687ff5d82 100644
---- a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-+++ b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-@@ -288,12 +288,22 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
- 		mp2_ops->start(privdata, info);
- 		cl_data->sensor_sts[i] = amd_sfh_wait_for_response
- 						(privdata, cl_data->sensor_idx[i], SENSOR_ENABLED);
+diff --git a/ipc/mq_sysctl.c b/ipc/mq_sysctl.c
+index fbf6a8b93a265..ce03930aced55 100644
+--- a/ipc/mq_sysctl.c
++++ b/ipc/mq_sysctl.c
+@@ -12,6 +12,7 @@
+ #include <linux/stat.h>
+ #include <linux/capability.h>
+ #include <linux/slab.h>
++#include <linux/cred.h>
+ 
+ static int msg_max_limit_min = MIN_MSGMAX;
+ static int msg_max_limit_max = HARD_MSGMAX;
+@@ -76,8 +77,43 @@ static int set_is_seen(struct ctl_table_set *set)
+ 	return &current->nsproxy->ipc_ns->mq_set == set;
+ }
+ 
++static void mq_set_ownership(struct ctl_table_header *head,
++			     struct ctl_table *table,
++			     kuid_t *uid, kgid_t *gid)
++{
++	struct ipc_namespace *ns =
++		container_of(head->set, struct ipc_namespace, mq_set);
 +
-+		if (cl_data->sensor_sts[i] == SENSOR_ENABLED)
-+			cl_data->is_any_sensor_enabled = true;
-+	}
++	kuid_t ns_root_uid = make_kuid(ns->user_ns, 0);
++	kgid_t ns_root_gid = make_kgid(ns->user_ns, 0);
 +
-+	if (!cl_data->is_any_sensor_enabled ||
-+	    (mp2_ops->discovery_status && mp2_ops->discovery_status(privdata) == 0)) {
-+		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n",
-+			 cl_data->is_any_sensor_enabled);
-+		rc = -EOPNOTSUPP;
-+		goto cleanup;
- 	}
++	*uid = uid_valid(ns_root_uid) ? ns_root_uid : GLOBAL_ROOT_UID;
++	*gid = gid_valid(ns_root_gid) ? ns_root_gid : GLOBAL_ROOT_GID;
++}
++
++static int mq_permissions(struct ctl_table_header *head, struct ctl_table *table)
++{
++	int mode = table->mode;
++	kuid_t ns_root_uid;
++	kgid_t ns_root_gid;
++
++	mq_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
++
++	if (uid_eq(current_euid(), ns_root_uid))
++		mode >>= 6;
++
++	else if (in_egroup_p(ns_root_gid))
++		mode >>= 3;
++
++	mode &= 7;
++
++	return (mode << 6) | (mode << 3) | mode;
++}
++
+ static struct ctl_table_root set_root = {
+ 	.lookup = set_lookup,
++	.permissions = mq_permissions,
++	.set_ownership = mq_set_ownership,
+ };
  
- 	for (i = 0; i < cl_data->num_hid_devices; i++) {
- 		cl_data->cur_hid_dev = i;
- 		if (cl_data->sensor_sts[i] == SENSOR_ENABLED) {
--			cl_data->is_any_sensor_enabled = true;
- 			rc = amdtp_hid_probe(i, cl_data);
- 			if (rc)
- 				goto cleanup;
-@@ -305,12 +315,6 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
- 			cl_data->sensor_sts[i]);
- 	}
- 
--	if (!cl_data->is_any_sensor_enabled ||
--	   (mp2_ops->discovery_status && mp2_ops->discovery_status(privdata) == 0)) {
--		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n", cl_data->is_any_sensor_enabled);
--		rc = -EOPNOTSUPP;
--		goto cleanup;
--	}
- 	schedule_delayed_work(&cl_data->work_buffer, msecs_to_jiffies(AMD_SFH_IDLE_LOOP));
- 	return 0;
- 
+ bool setup_mq_sysctls(struct ipc_namespace *ns)
 -- 
 2.43.0
 
