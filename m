@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-65901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A7494AC70
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:15:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C112D94AC20
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA331F25F7A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DCB7282698
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2371B79945;
-	Wed,  7 Aug 2024 15:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A2C7E0E9;
+	Wed,  7 Aug 2024 15:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIIxS5Ye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nc0/6Buz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DD233CD2;
-	Wed,  7 Aug 2024 15:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801CF374CC;
+	Wed,  7 Aug 2024 15:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043708; cv=none; b=OxdQjuoijwCjImcC0hcZ4AkgHPi5glnnNvJHWjy04o326oDwirHqm9Lrr09+7uc8YcHW/1ZvPYG5B/bB4GI32zBXNu6kJLES1CJ7E5QVrFAbpHNNrtLwaCKYLC5ODdN6GZKWryCuNQzHJptIdGgqEJmS2kGGCyGQF8+y6sGP1KY=
+	t=1723043535; cv=none; b=B4NyURB5N14kktZfLjIramcJhgIUgvG5x+xdGiS05nGMIxyXuk8K69jtpkrint/nXW6Zzs+fJls03E/0x/GKYQ241qMxY/xgCixm13yqCUIAzAfzCNS8a0J7EXEdgYD7EWWChZCm9yUV9mg2mvTVDkp5J1esXH48ftJh4nYLKjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043708; c=relaxed/simple;
-	bh=Q6799UIm14zGq/hzWryhyiReP1MEUdULRh5O2mPsdxc=;
+	s=arc-20240116; t=1723043535; c=relaxed/simple;
+	bh=n471YNAvsZZZz0Kay9mHMYt/rgXEYyFYrPug7oGcjW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gFz/xDMNDKbocWdlNQyHVftf6hZ/UzN2lfML2Z7C30+pKm7ZA1xzGvwDIo3R9na1nCFOyEq9g/jqFogUwyGHF3iqzURtg5ndSloWLFc6/Tmt7nY3hADu43s25Lu4NHhwMRkofmZjpwUBOwk6sC82/y892hRtUwdFV7zL2IH5Bgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIIxS5Ye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240B8C32781;
-	Wed,  7 Aug 2024 15:15:07 +0000 (UTC)
+	 MIME-Version; b=aeli7YzbAQ+MKXPlT4NUhc+cwSI7G/qsN/sQlK3X2CGalE03uLsSnNlaD6xNatc1igYYN6aRlZA9pgL+326ATkA+UT0/SFS7Y+slOJgFOI3MGo88Nm1Ny29d1X6Ve4QOPE3HjN8WAlWgUNvgiD9c9QU05yNc+ilaHw0IVg4rmVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nc0/6Buz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B13C32781;
+	Wed,  7 Aug 2024 15:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043708;
-	bh=Q6799UIm14zGq/hzWryhyiReP1MEUdULRh5O2mPsdxc=;
+	s=korg; t=1723043535;
+	bh=n471YNAvsZZZz0Kay9mHMYt/rgXEYyFYrPug7oGcjW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIIxS5YekHLcTqvVrHZqc9C8nzGFP2/i0kUlW/bylBwj3PeXxqLFgn33NB7fjRLrN
-	 RsZd8H9MTg5Y9fuoLJ1XK3QBHYw+VEkqQ4qyqKHF4qUJQPLv3svIqImOUhhTzXa73h
-	 JyQlVmxTbIZtQLkHcluImCQ+WYOlQRLrc8Vws1Xc=
+	b=nc0/6BuzLBR4a09KeOuHV/csQQo4DuXm5d3TN3Yf4NpADDHucAkah0elkA3J/6BWA
+	 B7fkO/Z+DcWlOmqJSrZ1QLqukMJx48KzcgY4L/BGZirsAz2l7RC6cExi75zfBe4frD
+	 TeqrRj8PqI0AtyuCVgztC3pqIBVdHD9QExvBCIk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
+	Liu Jing <liujing@cmss.chinamobile.com>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 71/86] mptcp: sched: check both directions for backup
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 118/121] selftests: mptcp: always close inputs FD if opened
 Date: Wed,  7 Aug 2024 17:00:50 +0200
-Message-ID: <20240807150041.609257479@linuxfoundation.org>
+Message-ID: <20240807150023.261941213@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Liu Jing <liujing@cmss.chinamobile.com>
 
-commit b6a66e521a2032f7fcba2af5a9bcbaeaa19b7ca3 upstream.
+commit 7c70bcc2a84cf925f655ea1ac4b8088062b144a3 upstream.
 
-The 'mptcp_subflow_context' structure has two items related to the
-backup flags:
+In main_loop_s function, when the open(cfg_input, O_RDONLY) function is
+run, the last fd is not closed if the "--cfg_repeat > 0" branch is not
+taken.
 
- - 'backup': the subflow has been marked as backup by the other peer
-
- - 'request_bkup': the backup flag has been set by the host
-
-Before this patch, the scheduler was only looking at the 'backup' flag.
-That can make sense in some cases, but it looks like that's not what we
-wanted for the general use, because either the path-manager was setting
-both of them when sending an MP_PRIO, or the receiver was duplicating
-the 'backup' flag in the subflow request.
-
-Note that the use of these two flags in the path-manager are going to be
-fixed in the next commits, but this change here is needed not to modify
-the behaviour.
-
-Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/mptcp.h |    2 +-
- net/mptcp/protocol.c         |   10 ++++++----
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/include/trace/events/mptcp.h
-+++ b/include/trace/events/mptcp.h
-@@ -34,7 +34,7 @@ TRACE_EVENT(mptcp_subflow_get_send,
- 		struct sock *ssk;
- 
- 		__entry->active = mptcp_subflow_active(subflow);
--		__entry->backup = subflow->backup;
-+		__entry->backup = subflow->backup || subflow->request_bkup;
- 
- 		if (subflow->tcp_sock && sk_fullsock(subflow->tcp_sock))
- 			__entry->free = sk_stream_memory_free(subflow->tcp_sock);
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1491,13 +1491,15 @@ static struct sock *mptcp_subflow_get_se
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -1115,11 +1115,11 @@ again:
+ 		return 1;
  	}
  
- 	mptcp_for_each_subflow(msk, subflow) {
-+		bool backup = subflow->backup || subflow->request_bkup;
+-	if (--cfg_repeat > 0) {
+-		if (cfg_input)
+-			close(fd);
++	if (cfg_input)
++		close(fd);
 +
- 		trace_mptcp_subflow_get_send(subflow);
- 		ssk =  mptcp_subflow_tcp_sock(subflow);
- 		if (!mptcp_subflow_active(subflow))
- 			continue;
++	if (--cfg_repeat > 0)
+ 		goto again;
+-	}
  
- 		tout = max(tout, mptcp_timeout_from_subflow(subflow));
--		nr_active += !subflow->backup;
-+		nr_active += !backup;
- 		pace = subflow->avg_pacing_rate;
- 		if (unlikely(!pace)) {
- 			/* init pacing rate from socket */
-@@ -1508,9 +1510,9 @@ static struct sock *mptcp_subflow_get_se
- 		}
- 
- 		linger_time = div_u64((u64)READ_ONCE(ssk->sk_wmem_queued) << 32, pace);
--		if (linger_time < send_info[subflow->backup].linger_time) {
--			send_info[subflow->backup].ssk = ssk;
--			send_info[subflow->backup].linger_time = linger_time;
-+		if (linger_time < send_info[backup].linger_time) {
-+			send_info[backup].ssk = ssk;
-+			send_info[backup].linger_time = linger_time;
- 		}
- 	}
- 	__mptcp_set_timeout(sk, tout);
+ 	return 0;
+ }
 
 
 
