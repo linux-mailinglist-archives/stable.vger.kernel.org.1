@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886B594A948
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:03:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977F894A94E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03BEC1F2A07D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:03:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D706288EFC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFC82AF10;
-	Wed,  7 Aug 2024 14:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C02929D06;
+	Wed,  7 Aug 2024 14:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9OOhEox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Buj8hpUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C047721373
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5897CB674
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723039375; cv=none; b=EFPV6QxhN9jbhNAxYGPgRnBQHmZiXtU5GBmutpbBBBKqiLvgI8/KTqjqrlQn45GIAGP7i4fialEyNeGYzHCuCXDRSBG3QpXgVyLd2pQVrsbsFEcn73O1g+FwQ5+/+zR5t8qnmbe5CC2w8aSJK+nuvIbtFeIgHHoQOurmo8bFgZA=
+	t=1723039414; cv=none; b=BAxqTis0XE3CBF4j4bbJbGTlIIe9vw5qeDQumHZuloML7Z48+wGc7QHOTiR16vRtNz2H4J5d0OER//tFJatTtpAdO7jd3SsGRnCZardWADrzf5s4/LuGbfvc0EuS8YhoqhM5qDW6diBOqMbua+iGu45FaTKfBMDLgfxmE/g79Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723039375; c=relaxed/simple;
-	bh=WKvYWbQKxa76oXrNkitkADuHz0uKRHJ8vLplt9U3fjw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KQRnHHPFeIgjrFWqSOendjEtr3w156d57o/3OBm7KPLaVQqFqi4oLIWyOju2KK0vIezTgHYFdnbYgKUUuAajUrsOgFcI/wf6XpYcrkaK2YUGvRJ/Icu5SHLgKxmdsQyJyp9k6oVs9HAuLt5HQzk9p9AYzJDUywd41KMo3FqJ0/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9OOhEox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C94C32781;
-	Wed,  7 Aug 2024 14:02:54 +0000 (UTC)
+	s=arc-20240116; t=1723039414; c=relaxed/simple;
+	bh=wfpWm0MZuYMuTbFgwqfa2eFIIiQl57H7iA1OlgR7yM4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XoctHJ8eAS4R5kUjfSgRxQOIAvS4jyF67zdrZTxnJa1RJka89COG3eWmy/mh7p127WJ98kTCspcE4e/TDReOWUMK7+aUK/42jdamTtxJtSemNLfK+HWFVhRdBkSor66BGSK6jweMa/aVFVVREmdIvh+JDA0ZxgwFOcRRxWEl1a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Buj8hpUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B40C32781;
+	Wed,  7 Aug 2024 14:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723039375;
-	bh=WKvYWbQKxa76oXrNkitkADuHz0uKRHJ8vLplt9U3fjw=;
+	s=korg; t=1723039413;
+	bh=wfpWm0MZuYMuTbFgwqfa2eFIIiQl57H7iA1OlgR7yM4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=z9OOhEoxPjV1NZ/TXJPgZ4ik9Rea5BLD8xVvd2iCIKd1WK7ZF5A0qf0jB0JiYs4Vx
-	 WjJQxj4umndkScweZzJ3C6ebnWprdK95/gLI8NhqqO0/eHYhsaeiBU23x1kXfFrtKk
-	 SLEmupmrO82lqqBxfokJSGdS80R1kaR+uYyJkaTk=
-Subject: FAILED: patch "[PATCH] btrfs: zoned: fix zone_unusable accounting on making block" failed to apply to 5.15-stable tree
-To: naohiro.aota@wdc.com,dsterba@suse.com,johannes.thumshirn@wdc.com,josef@toxicpanda.com
+	b=Buj8hpUtuCSldCkaem5k71BGb6CxchJ6/2I3S1AFFmUczVVl2tmphSe7OxBxhw7aO
+	 Zsw5kGQ80fTuQEr19VkYKf5boYFqtgr4gRVjSb3KZpuAfeLC9rwmoH7kgYbkEWFoFR
+	 RElFrUxz9xio3H5A3A+ecymohP8wIonY1Y4mpn7U=
+Subject: FAILED: patch "[PATCH] btrfs: fix corruption after buffer fault in during direct IO" failed to apply to 6.10-stable tree
+To: fdmanana@suse.com,dsterba@suse.com,hreitz@redhat.com,josef@toxicpanda.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 07 Aug 2024 16:02:51 +0200
-Message-ID: <2024080751-importer-postbox-eb90@gregkh>
+Date: Wed, 07 Aug 2024 16:03:30 +0200
+Message-ID: <2024080730-deafness-structure-9630@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,41 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8cd44dd1d17a23d5cc8c443c659ca57aa76e2fa5
+git cherry-pick -x 939b656bc8ab203fdbde26ccac22bcb7f0985be5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080751-importer-postbox-eb90@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080730-deafness-structure-9630@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-8cd44dd1d17a ("btrfs: zoned: fix zone_unusable accounting on making block group read-write again")
-9d4b0a129a0d ("btrfs: simplify arguments of btrfs_update_space_info and rename")
-6a921de58992 ("btrfs: zoned: introduce space_info->active_total_bytes")
-f6fca3917b4d ("btrfs: store chunk size in space-info struct")
-b8bea09a456f ("btrfs: add trace event for submitted RAID56 bio")
-c67c68eb57f1 ("btrfs: use integrated bitmaps for btrfs_raid_bio::dbitmap and finish_pbitmap")
-143823cf4d5a ("btrfs: fix typos in comments")
-385de0ef387d ("btrfs: use a normal workqueue for rmw_workers")
-a7b8e39c922b ("btrfs: raid56: enable subpage support for RAID56")
-3907ce293d68 ("btrfs: raid56: make alloc_rbio_essential_pages() subpage compatible")
-ac26df8b3b02 ("btrfs: raid56: remove btrfs_raid_bio::bio_pages array")
-07e4d3808047 ("btrfs: raid56: make __raid_recover_endio_io() subpage compatible")
-46900662d02f ("btrfs: raid56: make finish_parity_scrub() subpage compatible")
-3e77605d6a81 ("btrfs: raid56: make rbio_add_io_page() subpage compatible")
-00425dd976d3 ("btrfs: raid56: introduce btrfs_raid_bio::bio_sectors")
-eb3570607c8c ("btrfs: raid56: introduce btrfs_raid_bio::stripe_sectors")
-94efbe19b9f1 ("btrfs: raid56: introduce new cached members for btrfs_raid_bio")
-29b068382c6f ("btrfs: raid56: make btrfs_raid_bio more compact")
-843de58b3e31 ("btrfs: raid56: open code rbio_nr_pages()")
-cc353a8be2fd ("btrfs: reduce width for stripe_len from u64 to u32")
+939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
+9aa29a20b700 ("btrfs: move the direct IO code into its own file")
+04ef7631bfa5 ("btrfs: cleanup duplicated parameters related to btrfs_create_dio_extent()")
+9fec848b3a33 ("btrfs: cleanup duplicated parameters related to create_io_em()")
+e9ea31fb5c1f ("btrfs: cleanup duplicated parameters related to btrfs_alloc_ordered_extent")
+cdc627e65c7e ("btrfs: cleanup duplicated parameters related to can_nocow_file_extent_args")
+c77a8c61002e ("btrfs: remove extent_map::block_start member")
+e28b851ed9b2 ("btrfs: remove extent_map::block_len member")
+4aa7b5d1784f ("btrfs: remove extent_map::orig_start member")
+3f255ece2f1e ("btrfs: introduce extra sanity checks for extent maps")
+3d2ac9922465 ("btrfs: introduce new members for extent_map")
+87a6962f73b1 ("btrfs: export the expected file extent through can_nocow_extent()")
+e8fe524da027 ("btrfs: rename extent_map::orig_block_len to disk_num_bytes")
+8996f61ab9ff ("btrfs: move fiemap code into its own file")
+56b7169f691c ("btrfs: use a btrfs_inode local variable at btrfs_sync_file()")
+e641e323abb3 ("btrfs: pass a btrfs_inode to btrfs_wait_ordered_range()")
+cef2daba4268 ("btrfs: pass a btrfs_inode to btrfs_fdatawrite_range()")
+4e660ca3a98d ("btrfs: use a regular rb_root instead of cached rb_root for extent_map_tree")
+7f5830bc964d ("btrfs: rename rb_root member of extent_map_tree from map to root")
 
 thanks,
 
@@ -96,152 +95,257 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8cd44dd1d17a23d5cc8c443c659ca57aa76e2fa5 Mon Sep 17 00:00:00 2001
-From: Naohiro Aota <naohiro.aota@wdc.com>
-Date: Wed, 15 Feb 2023 09:18:02 +0900
-Subject: [PATCH] btrfs: zoned: fix zone_unusable accounting on making block
- group read-write again
+From 939b656bc8ab203fdbde26ccac22bcb7f0985be5 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Fri, 26 Jul 2024 11:12:52 +0100
+Subject: [PATCH] btrfs: fix corruption after buffer fault in during direct IO
+ append write
 
-When btrfs makes a block group read-only, it adds all free regions in the
-block group to space_info->bytes_readonly. That free space excludes
-reserved and pinned regions. OTOH, when btrfs makes the block group
-read-write again, it moves all the unused regions into the block group's
-zone_unusable. That unused region includes reserved and pinned regions.
-As a result, it counts too much zone_unusable bytes.
+During an append (O_APPEND write flag) direct IO write if the input buffer
+was not previously faulted in, we can corrupt the file in a way that the
+final size is unexpected and it includes an unexpected hole.
 
-Fortunately (or unfortunately), having erroneous zone_unusable does not
-affect the calculation of space_info->bytes_readonly, because free
-space (num_bytes in btrfs_dec_block_group_ro) calculation is done based on
-the erroneous zone_unusable and it reduces the num_bytes just to cancel the
-error.
+The problem happens like this:
 
-This behavior can be easily discovered by adding a WARN_ON to check e.g,
-"bg->pinned > 0" in btrfs_dec_block_group_ro(), and running fstests test
-case like btrfs/282.
+1) We have an empty file, with size 0, for example;
 
-Fix it by properly considering pinned and reserved in
-btrfs_dec_block_group_ro(). Also, add a WARN_ON and introduce
-btrfs_space_info_update_bytes_zone_unusable() to catch a similar mistake.
+2) We do an O_APPEND direct IO with a length of 4096 bytes and the input
+   buffer is not currently faulted in;
 
-Fixes: 169e0da91a21 ("btrfs: zoned: track unusable bytes for zones")
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+3) We enter btrfs_direct_write(), lock the inode and call
+   generic_write_checks(), which calls generic_write_checks_count(), and
+   that function sets the iocb position to 0 with the following code:
+
+	if (iocb->ki_flags & IOCB_APPEND)
+		iocb->ki_pos = i_size_read(inode);
+
+4) We call btrfs_dio_write() and enter into iomap, which will end up
+   calling btrfs_dio_iomap_begin() and that calls
+   btrfs_get_blocks_direct_write(), where we update the i_size of the
+   inode to 4096 bytes;
+
+5) After btrfs_dio_iomap_begin() returns, iomap will attempt to access
+   the page of the write input buffer (at iomap_dio_bio_iter(), with a
+   call to bio_iov_iter_get_pages()) and fail with -EFAULT, which gets
+   returned to btrfs at btrfs_direct_write() via btrfs_dio_write();
+
+6) At btrfs_direct_write() we get the -EFAULT error, unlock the inode,
+   fault in the write buffer and then goto to the label 'relock';
+
+7) We lock again the inode, do all the necessary checks again and call
+   again generic_write_checks(), which calls generic_write_checks_count()
+   again, and there we set the iocb's position to 4K, which is the current
+   i_size of the inode, with the following code pointed above:
+
+        if (iocb->ki_flags & IOCB_APPEND)
+                iocb->ki_pos = i_size_read(inode);
+
+8) Then we go again to btrfs_dio_write() and enter iomap and the write
+   succeeds, but it wrote to the file range [4K, 8K), leaving a hole in
+   the [0, 4K) range and an i_size of 8K, which goes against the
+   expectations of having the data written to the range [0, 4K) and get an
+   i_size of 4K.
+
+Fix this by not unlocking the inode before faulting in the input buffer,
+in case we get -EFAULT or an incomplete write, and not jumping to the
+'relock' label after faulting in the buffer - instead jump to a location
+immediately before calling iomap, skipping all the write checks and
+relocking. This solves this problem and it's fine even in case the input
+buffer is memory mapped to the same file range, since only holding the
+range locked in the inode's io tree can cause a deadlock, it's safe to
+keep the inode lock (VFS lock), as was fixed and described in commit
+51bd9563b678 ("btrfs: fix deadlock due to page faults during direct IO
+reads and writes").
+
+A sample reproducer provided by a reporter is the following:
+
+   $ cat test.c
+   #ifndef _GNU_SOURCE
+   #define _GNU_SOURCE
+   #endif
+
+   #include <fcntl.h>
+   #include <stdio.h>
+   #include <sys/mman.h>
+   #include <sys/stat.h>
+   #include <unistd.h>
+
+   int main(int argc, char *argv[])
+   {
+       if (argc < 2) {
+           fprintf(stderr, "Usage: %s <test file>\n", argv[0]);
+           return 1;
+       }
+
+       int fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC | O_DIRECT |
+                     O_APPEND, 0644);
+       if (fd < 0) {
+           perror("creating test file");
+           return 1;
+       }
+
+       char *buf = mmap(NULL, 4096, PROT_READ,
+                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+       ssize_t ret = write(fd, buf, 4096);
+       if (ret < 0) {
+           perror("pwritev2");
+           return 1;
+       }
+
+       struct stat stbuf;
+       ret = fstat(fd, &stbuf);
+       if (ret < 0) {
+           perror("stat");
+           return 1;
+       }
+
+       printf("size: %llu\n", (unsigned long long)stbuf.st_size);
+       return stbuf.st_size == 4096 ? 0 : 1;
+   }
+
+A test case for fstests will be sent soon.
+
+Reported-by: Hanna Czenczek <hreitz@redhat.com>
+Link: https://lore.kernel.org/linux-btrfs/0b841d46-12fe-4e64-9abb-871d8d0de271@redhat.com/
+Fixes: 8184620ae212 ("btrfs: fix lost file sync on direct IO write with nowait and dsync iocb")
+CC: stable@vger.kernel.org # 6.1+
+Tested-by: Hanna Czenczek <hreitz@redhat.com>
 Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 498442d0c216..2e49d978f504 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1223,8 +1223,8 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
- 	block_group->space_info->total_bytes -= block_group->length;
- 	block_group->space_info->bytes_readonly -=
- 		(block_group->length - block_group->zone_unusable);
--	block_group->space_info->bytes_zone_unusable -=
--		block_group->zone_unusable;
-+	btrfs_space_info_update_bytes_zone_unusable(fs_info, block_group->space_info,
-+						    -block_group->zone_unusable);
- 	block_group->space_info->disk_total -= block_group->length * factor;
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index c8568b1a61c4..75fa563e4cac 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -459,6 +459,7 @@ struct btrfs_file_private {
+ 	void *filldir_buf;
+ 	u64 last_index;
+ 	struct extent_state *llseek_cached_state;
++	bool fsync_skip_inode_lock;
+ };
  
- 	spin_unlock(&block_group->space_info->lock);
-@@ -1396,7 +1396,8 @@ static int inc_block_group_ro(struct btrfs_block_group *cache, int force)
- 		if (btrfs_is_zoned(cache->fs_info)) {
- 			/* Migrate zone_unusable bytes to readonly */
- 			sinfo->bytes_readonly += cache->zone_unusable;
--			sinfo->bytes_zone_unusable -= cache->zone_unusable;
-+			btrfs_space_info_update_bytes_zone_unusable(cache->fs_info, sinfo,
-+								    -cache->zone_unusable);
- 			cache->zone_unusable = 0;
- 		}
- 		cache->ro++;
-@@ -3056,9 +3057,11 @@ void btrfs_dec_block_group_ro(struct btrfs_block_group *cache)
- 		if (btrfs_is_zoned(cache->fs_info)) {
- 			/* Migrate zone_unusable bytes back */
- 			cache->zone_unusable =
--				(cache->alloc_offset - cache->used) +
-+				(cache->alloc_offset - cache->used - cache->pinned -
-+				 cache->reserved) +
- 				(cache->length - cache->zone_capacity);
--			sinfo->bytes_zone_unusable += cache->zone_unusable;
-+			btrfs_space_info_update_bytes_zone_unusable(cache->fs_info, sinfo,
-+								    cache->zone_unusable);
- 			sinfo->bytes_readonly -= cache->zone_unusable;
- 		}
- 		num_bytes = cache->length - cache->reserved -
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index d77498e7671c..ff9f0d41987e 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -2793,7 +2793,8 @@ static int unpin_extent_range(struct btrfs_fs_info *fs_info,
- 			readonly = true;
- 		} else if (btrfs_is_zoned(fs_info)) {
- 			/* Need reset before reusing in a zoned block group */
--			space_info->bytes_zone_unusable += len;
-+			btrfs_space_info_update_bytes_zone_unusable(fs_info, space_info,
-+								    len);
- 			readonly = true;
- 		}
- 		spin_unlock(&cache->lock);
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index 3f9b7507543a..f5996a43db24 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -2723,8 +2723,10 @@ static int __btrfs_add_free_space_zoned(struct btrfs_block_group *block_group,
- 	 * If the block group is read-only, we should account freed space into
- 	 * bytes_readonly.
+ static inline u32 BTRFS_LEAF_DATA_SIZE(const struct btrfs_fs_info *info)
+diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
+index f9fb2db6a1e4..67adbe9d294a 100644
+--- a/fs/btrfs/direct-io.c
++++ b/fs/btrfs/direct-io.c
+@@ -856,21 +856,37 @@ ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 	 * So here we disable page faults in the iov_iter and then retry if we
+ 	 * got -EFAULT, faulting in the pages before the retry.
  	 */
--	if (!block_group->ro)
-+	if (!block_group->ro) {
- 		block_group->zone_unusable += to_unusable;
-+		WARN_ON(block_group->zone_unusable > block_group->length);
++again:
+ 	from->nofault = true;
+ 	dio = btrfs_dio_write(iocb, from, written);
+ 	from->nofault = false;
+ 
+-	/*
+-	 * iomap_dio_complete() will call btrfs_sync_file() if we have a dsync
+-	 * iocb, and that needs to lock the inode. So unlock it before calling
+-	 * iomap_dio_complete() to avoid a deadlock.
+-	 */
+-	btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
+-
+-	if (IS_ERR_OR_NULL(dio))
++	if (IS_ERR_OR_NULL(dio)) {
+ 		ret = PTR_ERR_OR_ZERO(dio);
+-	else
++	} else {
++		struct btrfs_file_private stack_private = { 0 };
++		struct btrfs_file_private *private;
++		const bool have_private = (file->private_data != NULL);
++
++		if (!have_private)
++			file->private_data = &stack_private;
++
++		/*
++		 * If we have a synchronous write, we must make sure the fsync
++		 * triggered by the iomap_dio_complete() call below doesn't
++		 * deadlock on the inode lock - we are already holding it and we
++		 * can't call it after unlocking because we may need to complete
++		 * partial writes due to the input buffer (or parts of it) not
++		 * being already faulted in.
++		 */
++		private = file->private_data;
++		private->fsync_skip_inode_lock = true;
+ 		ret = iomap_dio_complete(dio);
++		private->fsync_skip_inode_lock = false;
++
++		if (!have_private)
++			file->private_data = NULL;
 +	}
- 	spin_unlock(&ctl->tree_lock);
- 	if (!used) {
- 		spin_lock(&block_group->lock);
-diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
-index c1d9d3664400..68e14fd48638 100644
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -316,7 +316,7 @@ void btrfs_add_bg_to_space_info(struct btrfs_fs_info *info,
- 	found->bytes_used += block_group->used;
- 	found->disk_used += block_group->used * factor;
- 	found->bytes_readonly += block_group->bytes_super;
--	found->bytes_zone_unusable += block_group->zone_unusable;
-+	btrfs_space_info_update_bytes_zone_unusable(info, found, block_group->zone_unusable);
- 	if (block_group->length > 0)
- 		found->full = 0;
- 	btrfs_try_granting_tickets(info, found);
-diff --git a/fs/btrfs/space-info.h b/fs/btrfs/space-info.h
-index 4db8a0267c16..88b44221ce97 100644
---- a/fs/btrfs/space-info.h
-+++ b/fs/btrfs/space-info.h
-@@ -249,6 +249,7 @@ btrfs_space_info_update_##name(struct btrfs_fs_info *fs_info,		\
  
- DECLARE_SPACE_INFO_UPDATE(bytes_may_use, "space_info");
- DECLARE_SPACE_INFO_UPDATE(bytes_pinned, "pinned");
-+DECLARE_SPACE_INFO_UPDATE(bytes_zone_unusable, "zone_unusable");
+ 	/* No increment (+=) because iomap returns a cumulative value. */
+ 	if (ret > 0)
+@@ -897,10 +913,12 @@ ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 		} else {
+ 			fault_in_iov_iter_readable(from, left);
+ 			prev_left = left;
+-			goto relock;
++			goto again;
+ 		}
+ 	}
  
- int btrfs_init_space_info(struct btrfs_fs_info *fs_info);
- void btrfs_add_bg_to_space_info(struct btrfs_fs_info *info,
-diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
-index eeb56975bee7..de55a555d95b 100644
---- a/include/trace/events/btrfs.h
-+++ b/include/trace/events/btrfs.h
-@@ -2383,6 +2383,14 @@ DEFINE_EVENT(btrfs__space_info_update, update_bytes_pinned,
- 	TP_ARGS(fs_info, sinfo, old, diff)
- );
- 
-+DEFINE_EVENT(btrfs__space_info_update, update_bytes_zone_unusable,
++	btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
 +
-+	TP_PROTO(const struct btrfs_fs_info *fs_info,
-+		 const struct btrfs_space_info *sinfo, u64 old, s64 diff),
-+
-+	TP_ARGS(fs_info, sinfo, old, diff)
-+);
-+
- DECLARE_EVENT_CLASS(btrfs_raid56_bio,
+ 	/*
+ 	 * If 'ret' is -ENOTBLK or we have not written all data, then it means
+ 	 * we must fallback to buffered IO.
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index 21381de906f6..9f10a9f23fcc 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -1603,6 +1603,7 @@ static inline bool skip_inode_logging(const struct btrfs_log_ctx *ctx)
+  */
+ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ {
++	struct btrfs_file_private *private = file->private_data;
+ 	struct dentry *dentry = file_dentry(file);
+ 	struct btrfs_inode *inode = BTRFS_I(d_inode(dentry));
+ 	struct btrfs_root *root = inode->root;
+@@ -1612,6 +1613,7 @@ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ 	int ret = 0, err;
+ 	u64 len;
+ 	bool full_sync;
++	const bool skip_ilock = (private ? private->fsync_skip_inode_lock : false);
  
- 	TP_PROTO(const struct btrfs_raid_bio *rbio,
+ 	trace_btrfs_sync_file(file, datasync);
+ 
+@@ -1639,7 +1641,10 @@ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ 	if (ret)
+ 		goto out;
+ 
+-	btrfs_inode_lock(inode, BTRFS_ILOCK_MMAP);
++	if (skip_ilock)
++		down_write(&inode->i_mmap_lock);
++	else
++		btrfs_inode_lock(inode, BTRFS_ILOCK_MMAP);
+ 
+ 	atomic_inc(&root->log_batch);
+ 
+@@ -1663,7 +1668,10 @@ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ 	 */
+ 	ret = start_ordered_ops(inode, start, end);
+ 	if (ret) {
+-		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
++		if (skip_ilock)
++			up_write(&inode->i_mmap_lock);
++		else
++			btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
+ 		goto out;
+ 	}
+ 
+@@ -1788,7 +1796,10 @@ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ 	 * file again, but that will end up using the synchronization
+ 	 * inside btrfs_sync_log to keep things safe.
+ 	 */
+-	btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
++	if (skip_ilock)
++		up_write(&inode->i_mmap_lock);
++	else
++		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
+ 
+ 	if (ret == BTRFS_NO_LOG_SYNC) {
+ 		ret = btrfs_end_transaction(trans);
 
 
