@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-65681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9339094AB70
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A4894AC0D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C40DE1C2265E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CBDF1F21042
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCF478C92;
-	Wed,  7 Aug 2024 15:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A56823C8;
+	Wed,  7 Aug 2024 15:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kI15simX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlXkqSYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF4883CD9;
-	Wed,  7 Aug 2024 15:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33787E0E9;
+	Wed,  7 Aug 2024 15:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043122; cv=none; b=hg7UquNyqIBXEqH4cIfdJUBzNRPk/esB35otGTnFX0jRuLlM5DlqCogfDAo0VWAKxf+C5N5ftQIG+gAER21HAFv9Fg10cRoH2O0L7UUOPjh7ZczEMUPk4h4sMseOmspUJScNzLq3DFQG9ByPIuokxp0Wktc5oaGv9Li+P9jCGWU=
+	t=1723043493; cv=none; b=a+SjNEpaDHWUt+/6yG/nQfvwNq8JiBT1BUC3muavvGwj3pDbBWx0EXpOTnUeTL3N880C1nMtg4p+SLOv/ya9vAdL/NYddFYSQso5lEGg3ktHccfFuz5bOAOR8e3h3DWZFj1lWavnwAlMVCV+ACujLrRf6ouiKouhD1pAf8cE1J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043122; c=relaxed/simple;
-	bh=0ZMDucG3wYAKmvd87Zf4qfIpTZCc+9mj99SDwu2t2MU=;
+	s=arc-20240116; t=1723043493; c=relaxed/simple;
+	bh=kwtVUqpqJSkY+/zcsSbeu7+dW72dTsMl4V1xYRMM+ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iiff1BGFJXLdumcSIssCzQElfGDGjnlZZtNP3bo8SjteE684uXxBCpnrZVsbAWEjhFWYue63ZiEMrGyF7J1XEIc308Xp19811fmuJFvWkvB6/8DDF6syNDVrit5djzS7aqNoclGBOPVgw7NmYS8VofMNXavG0xx1QSsY2Z6NOdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kI15simX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F13EC32781;
-	Wed,  7 Aug 2024 15:05:21 +0000 (UTC)
+	 MIME-Version; b=fGYlumOo7TtJb19CslY9zJRyjCxlRqJaZIOsksqkHHg4kvavdgO9i9xtPdt7TnXSW2OqGgBW8VAm838dfe/lT/a1oILNhDQ6zK6RVs8M0qFKosOY7Hi4vSyw5xQITcWfu/p5Aqm25yIvB/EM+NTI7YAvk2QC0r/Uyy2SBCSOoLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlXkqSYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7564CC32781;
+	Wed,  7 Aug 2024 15:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043122;
-	bh=0ZMDucG3wYAKmvd87Zf4qfIpTZCc+9mj99SDwu2t2MU=;
+	s=korg; t=1723043492;
+	bh=kwtVUqpqJSkY+/zcsSbeu7+dW72dTsMl4V1xYRMM+ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kI15simXG70bjp7eWxOoW3QkJCeSTfcmg53q5dE7wxx4ELEl1R5pyMZ0HOgbZo86d
-	 zB2dgp9BIjHt8N+botfrlBOMNQG3CgVK3Wwy3XpUzIhJpIKVhzmNRlSNDjIGIursKS
-	 AraVuhuGWrQTP3Txopu76w4IYd9DyKHJ78/Ca8eU=
+	b=WlXkqSYEapwC8fmatl/yWYP7HErH8qGjSae22T+YfG6EpRhSliOVCpQkFWEpEmlJa
+	 WQbIDJQrSI+F65X4UkScb0Io8Pg9+Jx6SanfgEOM6brEO5slUf4OOHNN+YRMs5rwf7
+	 kVJEUo1vvJ5snq6E+clO+yUTfQtCBUEYR7UzMOGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.10 097/123] drm/i915: Fix possible int overflow in skl_ddi_calculate_wrpll()
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 084/121] net/mlx5e: Require mlx5 tc classifier action support for IPsec prio capability
 Date: Wed,  7 Aug 2024 17:00:16 +0200
-Message-ID: <20240807150023.971084132@linuxfoundation.org>
+Message-ID: <20240807150022.158445858@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit 5b511572660190db1dc8ba412efd0be0d3781ab6 upstream.
+[ Upstream commit 06827e27fdcd197557be72b2229dbd362303794f ]
 
-On the off chance that clock value ends up being too high (by means
-of skl_ddi_calculate_wrpll() having been called with big enough
-value of crtc_state->port_clock * 1000), one possible consequence
-may be that the result will not be able to fit into signed int.
+Require mlx5 classifier action support when creating IPSec chains in
+offload path. MLX5_IPSEC_CAP_PRIO should only be set if CONFIG_MLX5_CLS_ACT
+is enabled. If CONFIG_MLX5_CLS_ACT=n and MLX5_IPSEC_CAP_PRIO is set,
+configuring IPsec offload will fail due to the mlxx5 ipsec chain rules
+failing to be created due to lack of classifier action support.
 
-Fix this issue by moving conversion of clock parameter from kHz to Hz
-into the body of skl_ddi_calculate_wrpll(), as well as casting the
-same parameter to u64 type while calculating the value for AFE clock.
-This both mitigates the overflow problem and avoids possible erroneous
-integer promotion mishaps.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 82d354370189 ("drm/i915/skl: Implementation of SKL DPLL programming")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240729174035.25727-1-n.zhandarovich@fintech.ru
-(cherry picked from commit 833cf12846aa19adf9b76bc79c40747726f3c0c1)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fa5aa2f89073 ("net/mlx5e: Use chains for IPsec policy priority offload")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-7-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dpll_mgr.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c   | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-+++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-@@ -1658,7 +1658,7 @@ static void skl_wrpll_params_populate(st
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+index ce29e31721208..de83567aae791 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+@@ -50,9 +50,10 @@ u32 mlx5_ipsec_device_caps(struct mlx5_core_dev *mdev)
+ 		    MLX5_CAP_FLOWTABLE_NIC_RX(mdev, decap))
+ 			caps |= MLX5_IPSEC_CAP_PACKET_OFFLOAD;
  
- static int
--skl_ddi_calculate_wrpll(int clock /* in Hz */,
-+skl_ddi_calculate_wrpll(int clock,
- 			int ref_clock,
- 			struct skl_wrpll_params *wrpll_params)
- {
-@@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in
- 	};
- 	unsigned int dco, d, i;
- 	unsigned int p0, p1, p2;
--	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
-+	u64 afe_clock = (u64)clock * 1000 * 5; /* AFE Clock is 5x Pixel clock, in Hz */
+-		if ((MLX5_CAP_FLOWTABLE_NIC_TX(mdev, ignore_flow_level) &&
+-		     MLX5_CAP_FLOWTABLE_NIC_RX(mdev, ignore_flow_level)) ||
+-		    MLX5_CAP_ESW_FLOWTABLE_FDB(mdev, ignore_flow_level))
++		if (IS_ENABLED(CONFIG_MLX5_CLS_ACT) &&
++		    ((MLX5_CAP_FLOWTABLE_NIC_TX(mdev, ignore_flow_level) &&
++		      MLX5_CAP_FLOWTABLE_NIC_RX(mdev, ignore_flow_level)) ||
++		     MLX5_CAP_ESW_FLOWTABLE_FDB(mdev, ignore_flow_level)))
+ 			caps |= MLX5_IPSEC_CAP_PRIO;
  
- 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
- 		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
-@@ -1808,7 +1808,7 @@ static int skl_ddi_hdmi_pll_dividers(str
- 	struct skl_wrpll_params wrpll_params = {};
- 	int ret;
- 
--	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
-+	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock,
- 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
- 	if (ret)
- 		return ret;
+ 		if (MLX5_CAP_FLOWTABLE_NIC_TX(mdev,
+-- 
+2.43.0
+
 
 
 
