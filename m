@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E91494ABE3
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CFC294AB62
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 587F8284827
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 048B11F25B79
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E805E823C8;
-	Wed,  7 Aug 2024 15:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7A584E1E;
+	Wed,  7 Aug 2024 15:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIWJetrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AttRWurd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79A278C67;
-	Wed,  7 Aug 2024 15:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B63F74055;
+	Wed,  7 Aug 2024 15:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043399; cv=none; b=Y1gjkAHt8tpwt1gga7aENuW0nhUZOyzugZ+2DRLMZRGmkUWhRCDKv9H9MXlRJFVNTpIWAh7sLj1tGDeKWN+Zc1V/yPrQUJoPIsx974VbJJVOvegzkO4/XvbhQmPwYOS4uJwRapp9uCO5j+ssgxkU4m1EDQMlVWEuPQXq3ZqQCa8=
+	t=1723043097; cv=none; b=uYbQKmsliJSMlfkwpYLueXrm1sz6JRHteysSUg7I3PMo/rl6a0qIkaPz9tJuxMd4fbe35CeWlIA3Qas87FBu7BhAtRr74lRyqXmqJK8SaHewOS1HMkjfBvg5XadcV4rV5g+872S7u6DmbHzipBiksei5yZi4u4QvB+D5yk7ImXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043399; c=relaxed/simple;
-	bh=D+MSMBvc+RlJslnCP4VgHh5x+3yDGgzfrpzirU/EDc4=;
+	s=arc-20240116; t=1723043097; c=relaxed/simple;
+	bh=aIdkQcXGifj+bPFiH6vvES74iJQgmgecopCB2ssYJ4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hq+TDQLi6KC93433EaOFwr69hk3VpPR7VCg6wiXHNuPiudLjeP+jpWnG0f2O5LIwIj0KsDpBgi0/sK5vFmIhoaD0Olrduv66TVdEXAwSDJlFSpSU17+7beCoIy/uwPBNtzEyyZPldVdNnXhVSO7kUwwboKYSRJpkwlPvrF4f7LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIWJetrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A55AC32781;
-	Wed,  7 Aug 2024 15:09:59 +0000 (UTC)
+	 MIME-Version; b=uuccZd6yNFTnEeBNvwx0hDzGm26/rGaaCmZsPslC74RFne9E6XGVxaEf1ELI3eilDfbC16Gp+IXzKW5IOcz/9oLN517/gi0M+O9ekbPoY2rmX9w8AyW9npgbxkA2ikvR5BxwfaF5PhUNQrnpSDK2Rn6JszjTrnDym5bFSVBnaa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AttRWurd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF68BC32781;
+	Wed,  7 Aug 2024 15:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043399;
-	bh=D+MSMBvc+RlJslnCP4VgHh5x+3yDGgzfrpzirU/EDc4=;
+	s=korg; t=1723043097;
+	bh=aIdkQcXGifj+bPFiH6vvES74iJQgmgecopCB2ssYJ4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zIWJetrz6C3kPixdw+EJQv7Zm0iE+Y/MivndyMAcnheU4bsR1e1aM2zR1iIAES22Y
-	 m4oIvN/7Qtf3C8+PqQTst1qbi1njQvhOmPziRJTwjxbOGqj589TTbGlZhCzfkFtaUZ
-	 cP35HSAB6CLx7CUxXgigQaAqozyfJSb6lhhcg+RI=
+	b=AttRWurdohUKw4s+97upR1LGB/qkx++iEKT87YW0COzcdG6dRgIr7UDExBzmfgY4I
+	 mu7SfK0cpwXegR8+ZJBIvLqpLwobGZ3WH2tIS26Os2P0n2vef8YvWxx968dc7Ky4Ep
+	 z3VzF2lGIW6lmsXXqW5g6EmO5r8sADV6sSp/Pxb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/121] net: phy: micrel: Fix the KSZ9131 MDI-X status issue
+	"edmund.raile" <edmund.raile@proton.me>,
+	Edmund Raile <edmund.raile@protonmail.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 089/123] Revert "ALSA: firewire-lib: operate for period elapse event in process context"
 Date: Wed,  7 Aug 2024 17:00:08 +0200
-Message-ID: <20240807150021.897920408@linuxfoundation.org>
+Message-ID: <20240807150023.688204394@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
+From: Edmund Raile <edmund.raile@protonmail.com>
 
-[ Upstream commit 84383b5ef4cd21b4a67de92afdc05a03b5247db9 ]
+commit 3dab73ab925a51ab05543b491bf17463a48ca323 upstream.
 
-The MDIX status is not accurately reflecting the current state after the link
-partner has manually altered its MDIX configuration while operating in forced
-mode.
+Commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event
+in process context") removed the process context workqueue from
+amdtp_domain_stream_pcm_pointer() and update_pcm_pointers() to remove
+its overhead.
 
-Access information about Auto mdix completion and pair selection from the
-KSZ9131's Auto/MDI/MDI-X status register
+With RME Fireface 800, this lead to a regression since
+Kernels 5.14.0, causing an AB/BA deadlock competition for the
+substream lock with eventual system freeze under ALSA operation:
 
-Fixes: b64e6a8794d9 ("net: phy: micrel: Add PHY Auto/MDI/MDI-X set driver for KSZ9131")
-Signed-off-by: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240725071125.13960-1-Raju.Lakkaraju@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+thread 0:
+    * (lock A) acquire substream lock by
+	snd_pcm_stream_lock_irq() in
+	snd_pcm_status64()
+    * (lock B) wait for tasklet to finish by calling
+    	tasklet_unlock_spin_wait() in
+	tasklet_disable_in_atomic() in
+	ohci_flush_iso_completions() of ohci.c
+
+thread 1:
+    * (lock B) enter tasklet
+    * (lock A) attempt to acquire substream lock,
+    	waiting for it to be released:
+	snd_pcm_stream_lock_irqsave() in
+    	snd_pcm_period_elapsed() in
+	update_pcm_pointers() in
+	process_ctx_payloads() in
+	process_rx_packets() of amdtp-stream.c
+
+? tasklet_unlock_spin_wait
+ </NMI>
+ <TASK>
+ohci_flush_iso_completions firewire_ohci
+amdtp_domain_stream_pcm_pointer snd_firewire_lib
+snd_pcm_update_hw_ptr0 snd_pcm
+snd_pcm_status64 snd_pcm
+
+? native_queued_spin_lock_slowpath
+ </NMI>
+ <IRQ>
+_raw_spin_lock_irqsave
+snd_pcm_period_elapsed snd_pcm
+process_rx_packets snd_firewire_lib
+irq_target_callback snd_firewire_lib
+handle_it_packet firewire_ohci
+context_tasklet firewire_ohci
+
+Restore the process context work queue to prevent deadlock
+AB/BA deadlock competition for ALSA substream lock of
+snd_pcm_stream_lock_irq() in snd_pcm_status64()
+and snd_pcm_stream_lock_irqsave() in snd_pcm_period_elapsed().
+
+revert commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period
+elapse event in process context")
+
+Replace inline description to prevent future deadlock.
+
+Cc: stable@vger.kernel.org
+Fixes: 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event in process context")
+Reported-by: edmund.raile <edmund.raile@proton.me>
+Closes: https://lore.kernel.org/r/kwryofzdmjvzkuw6j3clftsxmoolynljztxqwg76hzeo4simnl@jn3eo7pe642q/
+Signed-off-by: Edmund Raile <edmund.raile@protonmail.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20240730195318.869840-3-edmund.raile@protonmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c | 34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ sound/firewire/amdtp-stream.c |   23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 029c82f88ee38..9a0432145645f 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -1293,6 +1293,8 @@ static int ksz9131_config_init(struct phy_device *phydev)
- 	const struct device *dev_walker;
- 	int ret;
- 
-+	phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
-+
- 	dev_walker = &phydev->mdio.dev;
- 	do {
- 		of_node = dev_walker->of_node;
-@@ -1342,28 +1344,30 @@ static int ksz9131_config_init(struct phy_device *phydev)
- #define MII_KSZ9131_AUTO_MDIX		0x1C
- #define MII_KSZ9131_AUTO_MDI_SET	BIT(7)
- #define MII_KSZ9131_AUTO_MDIX_SWAP_OFF	BIT(6)
-+#define MII_KSZ9131_DIG_AXAN_STS	0x14
-+#define MII_KSZ9131_DIG_AXAN_STS_LINK_DET	BIT(14)
-+#define MII_KSZ9131_DIG_AXAN_STS_A_SELECT	BIT(12)
- 
- static int ksz9131_mdix_update(struct phy_device *phydev)
- {
- 	int ret;
- 
--	ret = phy_read(phydev, MII_KSZ9131_AUTO_MDIX);
--	if (ret < 0)
--		return ret;
--
--	if (ret & MII_KSZ9131_AUTO_MDIX_SWAP_OFF) {
--		if (ret & MII_KSZ9131_AUTO_MDI_SET)
--			phydev->mdix_ctrl = ETH_TP_MDI;
--		else
--			phydev->mdix_ctrl = ETH_TP_MDI_X;
-+	if (phydev->mdix_ctrl != ETH_TP_MDI_AUTO) {
-+		phydev->mdix = phydev->mdix_ctrl;
- 	} else {
--		phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
--	}
-+		ret = phy_read(phydev, MII_KSZ9131_DIG_AXAN_STS);
-+		if (ret < 0)
-+			return ret;
- 
--	if (ret & MII_KSZ9131_AUTO_MDI_SET)
--		phydev->mdix = ETH_TP_MDI;
--	else
--		phydev->mdix = ETH_TP_MDI_X;
-+		if (ret & MII_KSZ9131_DIG_AXAN_STS_LINK_DET) {
-+			if (ret & MII_KSZ9131_DIG_AXAN_STS_A_SELECT)
-+				phydev->mdix = ETH_TP_MDI;
-+			else
-+				phydev->mdix = ETH_TP_MDI_X;
-+		} else {
-+			phydev->mdix = ETH_TP_MDI_INVALID;
-+		}
-+	}
- 
- 	return 0;
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -615,16 +615,8 @@ static void update_pcm_pointers(struct a
+ 		// The program in user process should periodically check the status of intermediate
+ 		// buffer associated to PCM substream to process PCM frames in the buffer, instead
+ 		// of receiving notification of period elapsed by poll wait.
+-		if (!pcm->runtime->no_period_wakeup) {
+-			if (in_softirq()) {
+-				// In software IRQ context for 1394 OHCI.
+-				snd_pcm_period_elapsed(pcm);
+-			} else {
+-				// In process context of ALSA PCM application under acquired lock of
+-				// PCM substream.
+-				snd_pcm_period_elapsed_under_stream_lock(pcm);
+-			}
+-		}
++		if (!pcm->runtime->no_period_wakeup)
++			queue_work(system_highpri_wq, &s->period_work);
+ 	}
  }
--- 
-2.43.0
-
+ 
+@@ -1863,11 +1855,14 @@ unsigned long amdtp_domain_stream_pcm_po
+ {
+ 	struct amdtp_stream *irq_target = d->irq_target;
+ 
+-	// Process isochronous packets queued till recent isochronous cycle to handle PCM frames.
+ 	if (irq_target && amdtp_stream_running(irq_target)) {
+-		// In software IRQ context, the call causes dead-lock to disable the tasklet
+-		// synchronously.
+-		if (!in_softirq())
++		// use wq to prevent AB/BA deadlock competition for
++		// substream lock:
++		// fw_iso_context_flush_completions() acquires
++		// lock by ohci_flush_iso_completions(),
++		// amdtp-stream process_rx_packets() attempts to
++		// acquire same lock by snd_pcm_elapsed()
++		if (current_work() != &s->period_work)
+ 			fw_iso_context_flush_completions(irq_target->context);
+ 	}
+ 
 
 
 
