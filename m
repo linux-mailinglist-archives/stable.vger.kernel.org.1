@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE58894AB72
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C88C94AC4A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75513284755
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC593286B56
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF25912C549;
-	Wed,  7 Aug 2024 15:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485947F7F5;
+	Wed,  7 Aug 2024 15:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYM1APUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Idsa9uxk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B98D82D66;
-	Wed,  7 Aug 2024 15:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EA0824BB;
+	Wed,  7 Aug 2024 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043127; cv=none; b=kbGCPM7ZElJN6NK81Xllm0JUmtlUh+LM+FzPXJxFZyLWBttLoZW8XwBW+wQCaPx3xZeNyzSG2DWdVZaO5UU6UExGoEEDaj7fVuTYg7MZxRufdXLBn27aPs5n3GH2YjroGFTTr9L3bTledI+aG62SXRep1MvherxouAI8U7Pk6YY=
+	t=1723043624; cv=none; b=cdrKwzzpGstguWfjUZgr82w0HJIGNv4S9+OwI28edaqjAqULYYASzebL850TCSrS2p/2oU8U5SlB/EXzejdiRN421EYoRZ+3sGaZIBfwjKI2lY81vMrn0WwBiKo8MhAnzvpOTaW7Ped9CmGwgqiRiLI3QN293YlK9zsXC0ipHPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043127; c=relaxed/simple;
-	bh=Sy45+pfM2bmzFF/u4GI61eluvW8GsRZK0kjrKJ25jKo=;
+	s=arc-20240116; t=1723043624; c=relaxed/simple;
+	bh=OPBXGYK7HkKUUwC2ddfz4Z6eD50I2M3TMQbbInRshas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q+N6XqyLO46EkfpzVwCSVWYoIZ8FM5p6zy2o0p5JanKyKkMQBZZfU0K44iFnEjkylW3Jmdx3B4wU3OIrCGD8nzpydlnf2ZFXdua+ksrykQYQw6KusOrU/wpWouwysstfL/C0sDrg9FhOReL3JMnBmVGYEUrdTUNDN0mIMddRBII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYM1APUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9C4C32781;
-	Wed,  7 Aug 2024 15:05:26 +0000 (UTC)
+	 MIME-Version; b=BYPAM/fMb+vULeX7svbLPs2rplIOuI0wixRUzckGjaJrh6HU6TUOdk0Uf0z6AcUhvGl2LQgrcPJXJ9ZP9t6VduJ14wCrs6eCfa/fwr/XoNDAvOcnwzq8TCjz8WUVCEoQlbMZrWqcsGBlO+V8XRTb5i3BR1AaXnG2eFb58HStVTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Idsa9uxk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345E7C32781;
+	Wed,  7 Aug 2024 15:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043127;
-	bh=Sy45+pfM2bmzFF/u4GI61eluvW8GsRZK0kjrKJ25jKo=;
+	s=korg; t=1723043623;
+	bh=OPBXGYK7HkKUUwC2ddfz4Z6eD50I2M3TMQbbInRshas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eYM1APUcDizPPkHlB/G53WOu66KENHNL7BNf5VjHoZBWWUDOEUFdVYy/zvlHElMx9
-	 yVHx7r29V3ukGG021G4UDNDu97AXtrYzZDC5yoGIzn4wbqINRV5RYonJxArV3aN4S9
-	 8+TwOKiHFmuVwBjXIsvU1Pz7vPDZW9Q1HHwtiKmM=
+	b=Idsa9uxkusM3kgoIpsctHARw/+8flZLIESB6FI/2k6DX73aFI+hJp8dW5iRIURiFq
+	 T/D24L5A2mvE7yZmt6jlnlr5fUtICA/lYBJUdrlkJ8vtWa9/n5mejxqWgl3T7MhZkK
+	 OIboCjAxMwksmOEZ8Z6GyQ6Hxmv/gN52FbvMJ7RI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 6.10 099/123] drm/v3d: Fix potential memory leak in the timestamp extension
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 39/86] HID: amd_sfh: Split sensor and HID initialization
 Date: Wed,  7 Aug 2024 17:00:18 +0200
-Message-ID: <20240807150024.048100297@linuxfoundation.org>
+Message-ID: <20240807150040.529429170@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,222 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-commit 0e50fcc20bd87584840266e8004f9064a8985b4f upstream.
+[ Upstream commit 5ca505c6b0259606361d8f95b0811b783d4e78f7 ]
 
-If fetching of userspace memory fails during the main loop, all drm sync
-objs looked up until that point will be leaked because of the missing
-drm_syncobj_put.
+Sensors are enabled independently of HID device initialization. Sensor
+initialization should be kept separate in this case, while HID devices
+should be initialized according to the sensor state. Hence split sensor
+initialization and HID initialization into separate blocks.
 
-Fix it by exporting and using a common cleanup helper.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: 9ba0ff3e083f ("drm/v3d: Create a CPU job extension for the timestamp query job")
-Cc: Maíra Canal <mcanal@igalia.com>
-Cc: Iago Toral Quiroga <itoral@igalia.com>
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240711135340.84617-3-tursulin@igalia.com
-(cherry picked from commit 753ce4fea62182c77e1691ab4f9022008f25b62e)
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Stable-dep-of: 8031b001da70 ("HID: amd_sfh: Move sensor discovery before HID device initialization")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_drv.h    |  2 ++
- drivers/gpu/drm/v3d/v3d_sched.c  | 22 +++++++++++-----
- drivers/gpu/drm/v3d/v3d_submit.c | 43 ++++++++++++++++++++++----------
- 3 files changed, 48 insertions(+), 19 deletions(-)
+ drivers/hid/amd-sfh-hid/amd_sfh_client.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
-index a2c516fe6d79..c46eed35d26b 100644
---- a/drivers/gpu/drm/v3d/v3d_drv.h
-+++ b/drivers/gpu/drm/v3d/v3d_drv.h
-@@ -556,6 +556,8 @@ void v3d_mmu_insert_ptes(struct v3d_bo *bo);
- void v3d_mmu_remove_ptes(struct v3d_bo *bo);
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_client.c b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+index 34eb419b225ed..6e65379b10d53 100644
+--- a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+@@ -214,7 +214,7 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+ 	struct device *dev;
+ 	u32 feature_report_size;
+ 	u32 input_report_size;
+-	int rc, i, status;
++	int rc, i;
+ 	u8 cl_idx;
  
- /* v3d_sched.c */
-+void v3d_timestamp_query_info_free(struct v3d_timestamp_query_info *query_info,
-+				   unsigned int count);
- void v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue);
- int v3d_sched_init(struct v3d_dev *v3d);
- void v3d_sched_fini(struct v3d_dev *v3d);
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 7cd8c335cd9b..3da4fa49552b 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -73,18 +73,28 @@ v3d_sched_job_free(struct drm_sched_job *sched_job)
- 	v3d_job_cleanup(job);
- }
- 
-+void
-+v3d_timestamp_query_info_free(struct v3d_timestamp_query_info *query_info,
-+			      unsigned int count)
-+{
-+	if (query_info->queries) {
-+		unsigned int i;
-+
-+		for (i = 0; i < count; i++)
-+			drm_syncobj_put(query_info->queries[i].syncobj);
-+
-+		kvfree(query_info->queries);
+ 	req_list = &cl_data->req_list;
+@@ -285,12 +285,15 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+ 		if (rc)
+ 			goto cleanup;
+ 		mp2_ops->start(privdata, info);
+-		status = amd_sfh_wait_for_response
+-				(privdata, cl_data->sensor_idx[i], SENSOR_ENABLED);
+-		if (status == SENSOR_ENABLED) {
++		cl_data->sensor_sts[i] = amd_sfh_wait_for_response
++						(privdata, cl_data->sensor_idx[i], SENSOR_ENABLED);
 +	}
-+}
 +
- static void
- v3d_cpu_job_free(struct drm_sched_job *sched_job)
- {
- 	struct v3d_cpu_job *job = to_cpu_job(sched_job);
--	struct v3d_timestamp_query_info *timestamp_query = &job->timestamp_query;
- 	struct v3d_performance_query_info *performance_query = &job->performance_query;
- 
--	if (timestamp_query->queries) {
--		for (int i = 0; i < timestamp_query->count; i++)
--			drm_syncobj_put(timestamp_query->queries[i].syncobj);
--		kvfree(timestamp_query->queries);
--	}
-+	v3d_timestamp_query_info_free(&job->timestamp_query,
-+				      job->timestamp_query.count);
- 
- 	if (performance_query->queries) {
- 		for (int i = 0; i < performance_query->count; i++)
-diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-index 263fefc1d04f..121bf1314b80 100644
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -452,6 +452,8 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
- {
- 	u32 __user *offsets, *syncs;
- 	struct drm_v3d_timestamp_query timestamp;
-+	unsigned int i;
-+	int err;
- 
- 	if (!job) {
- 		DRM_DEBUG("CPU job extension was attached to a GPU job.\n");
-@@ -480,19 +482,19 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
- 	offsets = u64_to_user_ptr(timestamp.offsets);
- 	syncs = u64_to_user_ptr(timestamp.syncs);
- 
--	for (int i = 0; i < timestamp.count; i++) {
-+	for (i = 0; i < timestamp.count; i++) {
- 		u32 offset, sync;
- 
- 		if (copy_from_user(&offset, offsets++, sizeof(offset))) {
--			kvfree(job->timestamp_query.queries);
--			return -EFAULT;
-+			err = -EFAULT;
-+			goto error;
- 		}
- 
- 		job->timestamp_query.queries[i].offset = offset;
- 
- 		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
--			kvfree(job->timestamp_query.queries);
--			return -EFAULT;
-+			err = -EFAULT;
-+			goto error;
- 		}
- 
- 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-@@ -500,6 +502,10 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
- 	job->timestamp_query.count = timestamp.count;
- 
- 	return 0;
++	for (i = 0; i < cl_data->num_hid_devices; i++) {
++		cl_data->cur_hid_dev = i;
++		if (cl_data->sensor_sts[i] == SENSOR_ENABLED) {
+ 			cl_data->is_any_sensor_enabled = true;
+-			cl_data->sensor_sts[i] = SENSOR_ENABLED;
+-			rc = amdtp_hid_probe(cl_data->cur_hid_dev, cl_data);
++			rc = amdtp_hid_probe(i, cl_data);
+ 			if (rc)
+ 				goto cleanup;
+ 		} else {
+@@ -304,6 +307,7 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+ 			cl_data->sensor_idx[i], get_sensor_name(cl_data->sensor_idx[i]),
+ 			cl_data->sensor_sts[i]);
+ 	}
 +
-+error:
-+	v3d_timestamp_query_info_free(&job->timestamp_query, i);
-+	return err;
- }
- 
- static int
-@@ -509,6 +515,8 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
- {
- 	u32 __user *syncs;
- 	struct drm_v3d_reset_timestamp_query reset;
-+	unsigned int i;
-+	int err;
- 
- 	if (!job) {
- 		DRM_DEBUG("CPU job extension was attached to a GPU job.\n");
-@@ -533,14 +541,14 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
- 
- 	syncs = u64_to_user_ptr(reset.syncs);
- 
--	for (int i = 0; i < reset.count; i++) {
-+	for (i = 0; i < reset.count; i++) {
- 		u32 sync;
- 
- 		job->timestamp_query.queries[i].offset = reset.offset + 8 * i;
- 
- 		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
--			kvfree(job->timestamp_query.queries);
--			return -EFAULT;
-+			err = -EFAULT;
-+			goto error;
- 		}
- 
- 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-@@ -548,6 +556,10 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
- 	job->timestamp_query.count = reset.count;
- 
- 	return 0;
-+
-+error:
-+	v3d_timestamp_query_info_free(&job->timestamp_query, i);
-+	return err;
- }
- 
- /* Get data for the copy timestamp query results job submission. */
-@@ -558,7 +570,8 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
- {
- 	u32 __user *offsets, *syncs;
- 	struct drm_v3d_copy_timestamp_query copy;
--	int i;
-+	unsigned int i;
-+	int err;
- 
- 	if (!job) {
- 		DRM_DEBUG("CPU job extension was attached to a GPU job.\n");
-@@ -591,15 +604,15 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
- 		u32 offset, sync;
- 
- 		if (copy_from_user(&offset, offsets++, sizeof(offset))) {
--			kvfree(job->timestamp_query.queries);
--			return -EFAULT;
-+			err = -EFAULT;
-+			goto error;
- 		}
- 
- 		job->timestamp_query.queries[i].offset = offset;
- 
- 		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
--			kvfree(job->timestamp_query.queries);
--			return -EFAULT;
-+			err = -EFAULT;
-+			goto error;
- 		}
- 
- 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-@@ -613,6 +626,10 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
- 	job->copy.stride = copy.stride;
- 
- 	return 0;
-+
-+error:
-+	v3d_timestamp_query_info_free(&job->timestamp_query, i);
-+	return err;
- }
- 
- static int
+ 	if (!cl_data->is_any_sensor_enabled ||
+ 	   (mp2_ops->discovery_status && mp2_ops->discovery_status(privdata) == 0)) {
+ 		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n", cl_data->is_any_sensor_enabled);
 -- 
-2.46.0
+2.43.0
 
 
 
