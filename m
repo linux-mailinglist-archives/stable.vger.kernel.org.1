@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-65885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2C994AC5F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 717AB94AB60
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C399A283BFD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 279D41F20FBC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD84A84A2F;
-	Wed,  7 Aug 2024 15:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9A684E11;
+	Wed,  7 Aug 2024 15:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwSM3TVt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="an7oErN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6876B374CC;
-	Wed,  7 Aug 2024 15:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF1B82488;
+	Wed,  7 Aug 2024 15:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043666; cv=none; b=PgxZL8QDAZVG7UPpMwAkbpo/QS4PamierBwgjuOoWD5lvWdCYCnP59J3zUYsZ+xu9Bme48XXfh9xjl2WHe6ECZzktk3i1Gqrsb4BkANrHB561C2ECdhGp4ZadyA/Feze9U+CxlnRULgqadm759uY/jhCUurXlhVjkjvnnkv/1gE=
+	t=1723043091; cv=none; b=QX+Fv+2Q5cNBOM89y7/5mEc9WgcZ9XnoYougD56k1xgm1bs9koBOuvLwd+3qxw8xS0WvHucEtnbVEN0GwYSlRB1L8XsC7NtuxTo/HtlN6PvsT0I+3L4tdT6CN1LlprzQbgXCyAjUHGY7zUswB/q2RWvAB5Q7Q/nfWHZ8ZExexfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043666; c=relaxed/simple;
-	bh=PW5wO4VGH2iIjnaBdEIpNBk6mJ1z+vajlFevrWCrAvM=;
+	s=arc-20240116; t=1723043091; c=relaxed/simple;
+	bh=XzKIQ/LcCO2TChKj+rD4o48+mbY53w4kQ1/i6I3gjmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jp8G16BWLasy0W4nKCaZ31xwg7mBfabq32iPP637XMJYpUTvTlP1k7Kt4TGSLM63L4WOVwacPSVrXm2EhAtmHig1nCO/16wFdwMXhFYpRv3UuBIelZX+ngxJx9bxOIThb7L+7WCRgZRzmMo8/ac63NUZ0qKFXg4emUM713zskrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwSM3TVt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5FEFC4AF0E;
-	Wed,  7 Aug 2024 15:14:25 +0000 (UTC)
+	 MIME-Version; b=f4cKgHEwH/wcbyas0NxEnrKuQp4z16wLvV7jL64ICIFOYK118HGWo4x30rM+EUyC99dfQwWDAEjQq94JdogkmioAs1cD1NuNOP3P/ooukQNEsh2Fd8I7dQ+oD8/A+xBlx+XWYZevTZvHZKwU/y8E4EX5ErOanxK+V9sT1eqgeSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=an7oErN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61172C32781;
+	Wed,  7 Aug 2024 15:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043666;
-	bh=PW5wO4VGH2iIjnaBdEIpNBk6mJ1z+vajlFevrWCrAvM=;
+	s=korg; t=1723043091;
+	bh=XzKIQ/LcCO2TChKj+rD4o48+mbY53w4kQ1/i6I3gjmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwSM3TVtVUjhDlAlD2BAkscwYIs1mi9UdeSUekCSQr23+dHweXTQQw13/BFcKkHXW
-	 KFW/qCuURrnwL0Mm8PNPvwo7XEsZY2rn6Szhe6x5LBpdtWJ9ZFSGJGnZf7eMnIzlwW
-	 8IZZDpP6hyrLDNK2WNsQp6diJG32LrT3rgfnzK5M=
+	b=an7oErN4rx6ig+vZdqeaGexTyiPuilfqQFmOfYVdCSc2MWTDiv5/5KbVFD9taaCBw
+	 FwJYkprP64lbfmz+XDKaKr7a+UNZqPNX91HV49sOWnxOdE0Wjm7BkyNVUhiQv57mkp
+	 JPRJ7LIjQgd1uSQQPTpqQ0zYKNqI8q9gZFgp5aQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 27/86] drm/udl: Rename struct udl_drm_connector to struct udl_connector
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 087/123] ALSA: seq: ump: Optimize conversions from SysEx to UMP
 Date: Wed,  7 Aug 2024 17:00:06 +0200
-Message-ID: <20240807150040.133835254@linuxfoundation.org>
+Message-ID: <20240807150023.625430184@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +60,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 59a811faa74f4326fe2d48d2b334c0ee95922628 ]
+commit 952b13c215234855d75ef4b5bb0138075e73677c upstream.
 
-Remove the _drm_ infix from struct udl_drm_connector and introduce a
-macro for upcasting from struct drm_connector. No functional changes.
+The current conversion from the legacy SysEx event to UMP SysEx packet
+in the sequencer core has a couple of issues:
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20221006095355.23579-2-tzimmermann@suse.de
-Stable-dep-of: 5aed213c7c6c ("drm/udl: Remove DRM_CONNECTOR_POLL_HPD")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+* The first packet trims the SysEx start byte (0xf0), hence it
+  contains only 5 bytes instead of 6.  This isn't wrong, per
+  specification, but it's strange not to fill 6 bytes.
+
+* When the SysEx end marker (0xf7) is placed at the first byte of the
+  next packet, it'll end up with an empty data just with the END
+  status.  It can be rather folded into the previous packet with the
+  END status.
+
+This patch tries to address those issues.  The first packet may have 6
+bytes even with the SysEx start, and an empty packet with the SysEx
+end marker is omitted.
+
+Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240726143455.3254-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/udl/udl_connector.c | 19 +++++--------------
- drivers/gpu/drm/udl/udl_connector.h | 10 ++++++++--
- 2 files changed, 13 insertions(+), 16 deletions(-)
+ sound/core/seq/seq_ump_convert.c |   37 +++++++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/udl/udl_connector.c b/drivers/gpu/drm/udl/udl_connector.c
-index fade4c7adbf78..3c80686263848 100644
---- a/drivers/gpu/drm/udl/udl_connector.c
-+++ b/drivers/gpu/drm/udl/udl_connector.c
-@@ -46,10 +46,7 @@ static int udl_get_edid_block(void *data, u8 *buf, unsigned int block,
- 
- static int udl_get_modes(struct drm_connector *connector)
+--- a/sound/core/seq/seq_ump_convert.c
++++ b/sound/core/seq/seq_ump_convert.c
+@@ -1192,44 +1192,53 @@ static int cvt_sysex_to_ump(struct snd_s
  {
--	struct udl_drm_connector *udl_connector =
--					container_of(connector,
--					struct udl_drm_connector,
--					connector);
-+	struct udl_connector *udl_connector = to_udl_connector(connector);
+ 	struct snd_seq_ump_event ev_cvt;
+ 	unsigned char status;
+-	u8 buf[6], *xbuf;
++	u8 buf[8], *xbuf;
+ 	int offset = 0;
+ 	int len, err;
++	bool finished = false;
  
- 	drm_connector_update_edid_property(connector, udl_connector->edid);
- 	if (udl_connector->edid)
-@@ -74,10 +71,7 @@ static enum drm_connector_status
- udl_detect(struct drm_connector *connector, bool force)
- {
- 	struct udl_device *udl = to_udl(connector->dev);
--	struct udl_drm_connector *udl_connector =
--					container_of(connector,
--					struct udl_drm_connector,
--					connector);
-+	struct udl_connector *udl_connector = to_udl_connector(connector);
+ 	if (!snd_seq_ev_is_variable(event))
+ 		return 0;
  
- 	/* cleanup previous edid */
- 	if (udl_connector->edid != NULL) {
-@@ -94,10 +88,7 @@ udl_detect(struct drm_connector *connector, bool force)
- 
- static void udl_connector_destroy(struct drm_connector *connector)
- {
--	struct udl_drm_connector *udl_connector =
--					container_of(connector,
--					struct udl_drm_connector,
--					connector);
-+	struct udl_connector *udl_connector = to_udl_connector(connector);
- 
- 	drm_connector_cleanup(connector);
- 	kfree(udl_connector->edid);
-@@ -120,10 +111,10 @@ static const struct drm_connector_funcs udl_connector_funcs = {
- 
- struct drm_connector *udl_connector_init(struct drm_device *dev)
- {
--	struct udl_drm_connector *udl_connector;
-+	struct udl_connector *udl_connector;
- 	struct drm_connector *connector;
- 
--	udl_connector = kzalloc(sizeof(struct udl_drm_connector), GFP_KERNEL);
-+	udl_connector = kzalloc(sizeof(*udl_connector), GFP_KERNEL);
- 	if (!udl_connector)
- 		return ERR_PTR(-ENOMEM);
- 
-diff --git a/drivers/gpu/drm/udl/udl_connector.h b/drivers/gpu/drm/udl/udl_connector.h
-index 7f2d392df1737..74ad68fd3cc9f 100644
---- a/drivers/gpu/drm/udl/udl_connector.h
-+++ b/drivers/gpu/drm/udl/udl_connector.h
-@@ -1,15 +1,21 @@
- #ifndef __UDL_CONNECTOR_H__
- #define __UDL_CONNECTOR_H__
- 
--#include <drm/drm_crtc.h>
-+#include <linux/container_of.h>
+ 	setup_ump_event(&ev_cvt, event);
+-	for (;;) {
++	while (!finished) {
+ 		len = snd_seq_expand_var_event_at(event, sizeof(buf), buf, offset);
+ 		if (len <= 0)
+ 			break;
+-		if (WARN_ON(len > 6))
++		if (WARN_ON(len > sizeof(buf)))
+ 			break;
+-		offset += len;
 +
-+#include <drm/drm_connector.h>
- 
- struct edid;
- 
--struct udl_drm_connector {
-+struct udl_connector {
- 	struct drm_connector connector;
- 	/* last udl_detect edid */
- 	struct edid *edid;
- };
- 
-+static inline struct udl_connector *to_udl_connector(struct drm_connector *connector)
-+{
-+	return container_of(connector, struct udl_connector, connector);
-+}
- 
- #endif //__UDL_CONNECTOR_H__
--- 
-2.43.0
-
+ 		xbuf = buf;
++		status = UMP_SYSEX_STATUS_CONTINUE;
++		/* truncate the sysex start-marker */
+ 		if (*xbuf == UMP_MIDI1_MSG_SYSEX_START) {
+ 			status = UMP_SYSEX_STATUS_START;
+-			xbuf++;
+ 			len--;
+-			if (len > 0 && xbuf[len - 1] == UMP_MIDI1_MSG_SYSEX_END) {
++			offset++;
++			xbuf++;
++		}
++
++		/* if the last of this packet or the 1st byte of the next packet
++		 * is the end-marker, finish the transfer with this packet
++		 */
++		if (len > 0 && len < 8 &&
++		    xbuf[len - 1] == UMP_MIDI1_MSG_SYSEX_END) {
++			if (status == UMP_SYSEX_STATUS_START)
+ 				status = UMP_SYSEX_STATUS_SINGLE;
+-				len--;
+-			}
+-		} else {
+-			if (xbuf[len - 1] == UMP_MIDI1_MSG_SYSEX_END) {
++			else
+ 				status = UMP_SYSEX_STATUS_END;
+-				len--;
+-			} else {
+-				status = UMP_SYSEX_STATUS_CONTINUE;
+-			}
++			len--;
++			finished = true;
+ 		}
++
++		len = min(len, 6);
+ 		fill_sysex7_ump(dest_port, ev_cvt.ump, status, xbuf, len);
+ 		err = __snd_seq_deliver_single_event(dest, dest_port,
+ 						     (struct snd_seq_event *)&ev_cvt,
+ 						     atomic, hop);
+ 		if (err < 0)
+ 			return err;
++		offset += len;
+ 	}
+ 	return 0;
+ }
 
 
 
