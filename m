@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-65707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A3494AB8A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6FE94ABF8
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A82F41C223E1
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9821C22E35
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21279126F0A;
-	Wed,  7 Aug 2024 15:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90388615A;
+	Wed,  7 Aug 2024 15:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VH2YRi7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JJbkZbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B5985270;
-	Wed,  7 Aug 2024 15:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70F78563E;
+	Wed,  7 Aug 2024 15:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043191; cv=none; b=Zr7/roSYxz9kx99I7oyNBvx2iNbEENlmqJzQpISb/ebX8Nttj5N1TF43TANbTUS1QMF1HBnXA/rbW63D26DlaSX1SgqyvXPQPR9CPLF11W0cf8VMR0nwYbjnbeTf3UtDYAywebL8sA6Ka1TeEU8yMOhdTeMojjmj4ELJB0v5cKE=
+	t=1723043442; cv=none; b=ul7+pKVkjRjYUbXLDcUpQiBV2jceu7Y0YsFzxgQq4z8huYlhNKfEVVBm7G8N7mSncjsvn1cQh3ufqNJdj5zez7VxwPabNmiDzb6iH4DCqHuYh7NR9BF4HUi9mif5V5q7gToTf2NvEnX89IJ8f00EJ+jd5oicA3du+zfLyOBSCIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043191; c=relaxed/simple;
-	bh=cVdY1qIlcVQYI50A4SA83wnZ9V9nbMeOHg+cpaOfAMA=;
+	s=arc-20240116; t=1723043442; c=relaxed/simple;
+	bh=/pl9rpMCZEqZ+k2lohQX9cbasWdtDjadwcLjX4T3xws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMRsMaVaHgQ7h16TDLN57JPnCD1KVpe6OIBPYr6gBeiCKsZvkT9AQ1Y9VwSs8EsyUx/a4OzukaD1i7KPqnjUHDDysSgPjlYUlNlaTgSoOpVeVULJX91GPv5Vhs4+zmln27UxUZjuhSXg8Pb9X2jBUkUwGXZnAGEMACN3tq2OgRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VH2YRi7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E94C32781;
-	Wed,  7 Aug 2024 15:06:31 +0000 (UTC)
+	 MIME-Version; b=LNZg6ITRUo8OXeiURIy3Aky5SCN9KUpBiSrTGYxFu+E4tSGahl2Sk6NUqLlf6V5SleM6p+TuhomMVRPEM0+4iFuCYJd3fw/V69SMoItMlAbhpixrS+xHV5nBKrwYmdlaKsDoY7EnHuHpdBQTo9fbEP2kmAJRDji0HEP2WQw74yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JJbkZbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BDCC4AF0F;
+	Wed,  7 Aug 2024 15:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043191;
-	bh=cVdY1qIlcVQYI50A4SA83wnZ9V9nbMeOHg+cpaOfAMA=;
+	s=korg; t=1723043442;
+	bh=/pl9rpMCZEqZ+k2lohQX9cbasWdtDjadwcLjX4T3xws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VH2YRi7dQW1Mbs8NLKS/FRK6Zwo4KZE7kZ6KOpW1Gj8jHGfQZA+Lmd3ZP7Nq3nz0D
-	 7V2kOYoke9g7wGetahZyC5yw7BNHWMbA3K4emM7wABLTqX+hbE6Cj+Pz8+uAo5/wrx
-	 hq4muPZQqw/uUi/K6N6DNa1RzCInqJ+Wi30P7Ctg=
+	b=0JJbkZbYI9udCwt91KaHk8p4h8moDcDWzS4O48F0ovCRHdwqnoUV1KD79oCx3TsQq
+	 1K8RPmRTJc+lKu54hZiogwaiy2lFjP5kwcQYSZHxs6QLZ67xWDAoxtDQ4S7WCqiL9r
+	 voZTi8tlZQcm+oGTBMfcbBvdc09w4D/0KVIaZ2IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.10 105/123] wifi: ath12k: fix soft lockup on suspend
-Date: Wed,  7 Aug 2024 17:00:24 +0200
-Message-ID: <20240807150024.251423826@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 093/121] arm64: jump_label: Ensure patched jump_labels are visible to all CPUs
+Date: Wed,  7 Aug 2024 17:00:25 +0200
+Message-ID: <20240807150022.440203811@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Will Deacon <will@kernel.org>
 
-commit a47f3320bb4ba6714abe8dddb36399367b491358 upstream.
+[ Upstream commit cfb00a35786414e7c0e6226b277d9f09657eae74 ]
 
-The ext interrupts are enabled when the firmware has been started, but
-this may never happen, for example, if the board configuration file is
-missing.
+Although the Arm architecture permits concurrent modification and
+execution of NOP and branch instructions, it still requires some
+synchronisation to ensure that other CPUs consistently execute the newly
+written instruction:
 
-When the system is later suspended, the driver unconditionally tries to
-disable interrupts, which results in an irq disable imbalance and causes
-the driver to spin indefinitely in napi_synchronize().
+ >  When the modified instructions are observable, each PE that is
+ >  executing the modified instructions must execute an ISB or perform a
+ >  context synchronizing event to ensure execution of the modified
+ >  instructions
 
-Make sure that the interrupts have been enabled before attempting to
-disable them.
+Prior to commit f6cc0c501649 ("arm64: Avoid calling stop_machine() when
+patching jump labels"), the arm64 jump_label patching machinery
+performed synchronisation using stop_machine() after each modification,
+however this was problematic when flipping static keys from atomic
+contexts (namely, the arm_arch_timer CPU hotplug startup notifier) and
+so we switched to the _nosync() patching routines to avoid "scheduling
+while atomic" BUG()s during boot.
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org	# 6.3
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20240709073132.9168-1-johan+linaro@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In hindsight, the analysis of the issue in f6cc0c501649 isn't quite
+right: it cites the use of IPIs in the default patching routines as the
+cause of the lockup, whereas stop_machine() does not rely on IPIs and
+the I-cache invalidation is performed using __flush_icache_range(),
+which elides the call to kick_all_cpus_sync(). In fact, the blocking
+wait for other CPUs is what triggers the BUG() and the problem remains
+even after f6cc0c501649, for example because we could block on the
+jump_label_mutex. Eventually, the arm_arch_timer driver was fixed to
+avoid the static key entirely in commit a862fc2254bd
+("clocksource/arm_arch_timer: Remove use of workaround static key").
+
+This all leaves the jump_label patching code in a funny situation on
+arm64 as we do not synchronise with other CPUs to reduce the likelihood
+of a bug which no longer exists. Consequently, toggling a static key on
+one CPU cannot be assumed to take effect on other CPUs, leading to
+potential issues, for example with missing preempt notifiers.
+
+Rather than revert f6cc0c501649 and go back to stop_machine() for each
+patch site, implement arch_jump_label_transform_apply() and kick all
+the other CPUs with an IPI at the end of patching.
+
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Fixes: f6cc0c501649 ("arm64: Avoid calling stop_machine() when patching jump labels")
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240731133601.3073-1-will@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/jump_label.h |  1 +
+ arch/arm64/kernel/jump_label.c      | 11 +++++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -472,7 +472,8 @@ static void __ath12k_pci_ext_irq_disable
+diff --git a/arch/arm64/include/asm/jump_label.h b/arch/arm64/include/asm/jump_label.h
+index 6aafbb7899916..4b99159150829 100644
+--- a/arch/arm64/include/asm/jump_label.h
++++ b/arch/arm64/include/asm/jump_label.h
+@@ -13,6 +13,7 @@
+ #include <linux/types.h>
+ #include <asm/insn.h>
+ 
++#define HAVE_JUMP_LABEL_BATCH
+ #define JUMP_LABEL_NOP_SIZE		AARCH64_INSN_SIZE
+ 
+ static __always_inline bool arch_static_branch(struct static_key * const key,
+diff --git a/arch/arm64/kernel/jump_label.c b/arch/arm64/kernel/jump_label.c
+index faf88ec9c48e8..f63ea915d6ad2 100644
+--- a/arch/arm64/kernel/jump_label.c
++++ b/arch/arm64/kernel/jump_label.c
+@@ -7,11 +7,12 @@
+  */
+ #include <linux/kernel.h>
+ #include <linux/jump_label.h>
++#include <linux/smp.h>
+ #include <asm/insn.h>
+ #include <asm/patching.h>
+ 
+-void arch_jump_label_transform(struct jump_entry *entry,
+-			       enum jump_label_type type)
++bool arch_jump_label_transform_queue(struct jump_entry *entry,
++				     enum jump_label_type type)
  {
- 	int i;
+ 	void *addr = (void *)jump_entry_code(entry);
+ 	u32 insn;
+@@ -25,4 +26,10 @@ void arch_jump_label_transform(struct jump_entry *entry,
+ 	}
  
--	clear_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
-+	if (!test_and_clear_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags))
-+		return;
- 
- 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
- 		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 	aarch64_insn_patch_text_nosync(addr, insn);
++	return true;
++}
++
++void arch_jump_label_transform_apply(void)
++{
++	kick_all_cpus_sync();
+ }
+-- 
+2.43.0
+
 
 
 
