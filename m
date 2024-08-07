@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-65819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A4894AC0D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCAA94AB71
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CBDF1F21042
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4B51C228B9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A56823C8;
-	Wed,  7 Aug 2024 15:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F4412C522;
+	Wed,  7 Aug 2024 15:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlXkqSYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E34Axw40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33787E0E9;
-	Wed,  7 Aug 2024 15:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E6382D66;
+	Wed,  7 Aug 2024 15:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043493; cv=none; b=a+SjNEpaDHWUt+/6yG/nQfvwNq8JiBT1BUC3muavvGwj3pDbBWx0EXpOTnUeTL3N880C1nMtg4p+SLOv/ya9vAdL/NYddFYSQso5lEGg3ktHccfFuz5bOAOR8e3h3DWZFj1lWavnwAlMVCV+ACujLrRf6ouiKouhD1pAf8cE1J0=
+	t=1723043125; cv=none; b=gjZU9padD8f2KPpupr+uN2h6o5rLq4vGz90MxY8JyDOAyFery7j8j8qIqH2mWKF+lDPt7Z7oVL0Acy6QL6ESV1Sf68vkoywjCXVAZLymeK1j1g8XQkJiI79h3aIIVhLNJx0f72G9sDbDxNUc33PY7xCzIoWAxpUTeK/eA/PcDSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043493; c=relaxed/simple;
-	bh=kwtVUqpqJSkY+/zcsSbeu7+dW72dTsMl4V1xYRMM+ko=;
+	s=arc-20240116; t=1723043125; c=relaxed/simple;
+	bh=ihfaLr+S5BjVF9wzNa/lhvfeRt1HTluPjvkOKb8wGCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fGYlumOo7TtJb19CslY9zJRyjCxlRqJaZIOsksqkHHg4kvavdgO9i9xtPdt7TnXSW2OqGgBW8VAm838dfe/lT/a1oILNhDQ6zK6RVs8M0qFKosOY7Hi4vSyw5xQITcWfu/p5Aqm25yIvB/EM+NTI7YAvk2QC0r/Uyy2SBCSOoLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlXkqSYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7564CC32781;
-	Wed,  7 Aug 2024 15:11:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NsikQvPpwP+sMArFGq2O1ON0Eq6J4O9HeGiTWDP/ZjcAMIjvUex6CJENu+D2TBAsQ7xVlvCD5iYEEWZIlRLGkEKo0wxxIk7gq5tYoue+NUKF3VZlX7wsWyHCQMgPMrxMJGPQ8rW1+0HF1zTxFJ4JlDxd2Y3ESaKuYs0qaqvF2kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E34Axw40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC30C4AF0D;
+	Wed,  7 Aug 2024 15:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043492;
-	bh=kwtVUqpqJSkY+/zcsSbeu7+dW72dTsMl4V1xYRMM+ko=;
+	s=korg; t=1723043124;
+	bh=ihfaLr+S5BjVF9wzNa/lhvfeRt1HTluPjvkOKb8wGCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlXkqSYEapwC8fmatl/yWYP7HErH8qGjSae22T+YfG6EpRhSliOVCpQkFWEpEmlJa
-	 WQbIDJQrSI+F65X4UkScb0Io8Pg9+Jx6SanfgEOM6brEO5slUf4OOHNN+YRMs5rwf7
-	 kVJEUo1vvJ5snq6E+clO+yUTfQtCBUEYR7UzMOGo=
+	b=E34Axw4074qHLczocrpBxzJ3ojl+IkivFll0M0qGkVNXLqXMAzy4AlN7ZOUfmnIN0
+	 U0zmhgc3hXoYIRf78hBhPoLgGYAyb3i/HJMiQJ6Ez5U+otKeOJZKTyFFGkBSpprO5S
+	 coargHqgY8pnMdWCa0IUtOIm7SGnVdjXgzNbK/Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/121] net/mlx5e: Require mlx5 tc classifier action support for IPsec prio capability
-Date: Wed,  7 Aug 2024 17:00:16 +0200
-Message-ID: <20240807150022.158445858@linuxfoundation.org>
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 6.10 098/123] drm/v3d: Prevent out of bounds access in performance query extensions
+Date: Wed,  7 Aug 2024 17:00:17 +0200
+Message-ID: <20240807150024.010194126@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 06827e27fdcd197557be72b2229dbd362303794f ]
+commit 6ce9efd12ae81cf46bf44eb0348594558dfbb9d2 upstream.
 
-Require mlx5 classifier action support when creating IPSec chains in
-offload path. MLX5_IPSEC_CAP_PRIO should only be set if CONFIG_MLX5_CLS_ACT
-is enabled. If CONFIG_MLX5_CLS_ACT=n and MLX5_IPSEC_CAP_PRIO is set,
-configuring IPsec offload will fail due to the mlxx5 ipsec chain rules
-failing to be created due to lack of classifier action support.
+Check that the number of perfmons userspace is passing in the copy and
+reset extensions is not greater than the internal kernel storage where
+the ids will be copied into.
 
-Fixes: fa5aa2f89073 ("net/mlx5e: Use chains for IPsec policy priority offload")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: bae7cb5d6800 ("drm/v3d: Create a CPU job extension for the reset performance query job")
+Cc: Maíra Canal <mcanal@igalia.com>
+Cc: Iago Toral Quiroga <itoral@igalia.com>
+Cc: stable@vger.kernel.org # v6.8+
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240711135340.84617-2-tursulin@igalia.com
+(cherry picked from commit f32b5128d2c440368b5bf3a7a356823e235caabb)
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c   | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/v3d/v3d_submit.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-index ce29e31721208..de83567aae791 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-@@ -50,9 +50,10 @@ u32 mlx5_ipsec_device_caps(struct mlx5_core_dev *mdev)
- 		    MLX5_CAP_FLOWTABLE_NIC_RX(mdev, decap))
- 			caps |= MLX5_IPSEC_CAP_PACKET_OFFLOAD;
+--- a/drivers/gpu/drm/v3d/v3d_submit.c
++++ b/drivers/gpu/drm/v3d/v3d_submit.c
+@@ -637,6 +637,9 @@ v3d_get_cpu_reset_performance_params(str
+ 	if (copy_from_user(&reset, ext, sizeof(reset)))
+ 		return -EFAULT;
  
--		if ((MLX5_CAP_FLOWTABLE_NIC_TX(mdev, ignore_flow_level) &&
--		     MLX5_CAP_FLOWTABLE_NIC_RX(mdev, ignore_flow_level)) ||
--		    MLX5_CAP_ESW_FLOWTABLE_FDB(mdev, ignore_flow_level))
-+		if (IS_ENABLED(CONFIG_MLX5_CLS_ACT) &&
-+		    ((MLX5_CAP_FLOWTABLE_NIC_TX(mdev, ignore_flow_level) &&
-+		      MLX5_CAP_FLOWTABLE_NIC_RX(mdev, ignore_flow_level)) ||
-+		     MLX5_CAP_ESW_FLOWTABLE_FDB(mdev, ignore_flow_level)))
- 			caps |= MLX5_IPSEC_CAP_PRIO;
++	if (reset.nperfmons > V3D_MAX_PERFMONS)
++		return -EINVAL;
++
+ 	job->job_type = V3D_CPU_JOB_TYPE_RESET_PERFORMANCE_QUERY;
  
- 		if (MLX5_CAP_FLOWTABLE_NIC_TX(mdev,
--- 
-2.43.0
-
+ 	job->performance_query.queries = kvmalloc_array(reset.count,
+@@ -708,6 +711,9 @@ v3d_get_cpu_copy_performance_query_param
+ 	if (copy.pad)
+ 		return -EINVAL;
+ 
++	if (copy.nperfmons > V3D_MAX_PERFMONS)
++		return -EINVAL;
++
+ 	job->job_type = V3D_CPU_JOB_TYPE_COPY_PERFORMANCE_QUERY;
+ 
+ 	job->performance_query.queries = kvmalloc_array(copy.count,
 
 
 
