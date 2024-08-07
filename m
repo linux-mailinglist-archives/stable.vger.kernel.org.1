@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-65855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CA694AC37
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D89194AB5B
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1F64284BFB
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27F492833C2
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAAA839E4;
-	Wed,  7 Aug 2024 15:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16BD84D12;
+	Wed,  7 Aug 2024 15:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DItz94cT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3DpYVv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5D77F7F5;
-	Wed,  7 Aug 2024 15:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8170982499;
+	Wed,  7 Aug 2024 15:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043586; cv=none; b=KwmlMt7SBxVQhbPETvxPsKzCMypp26/ULTWJhhjueQdvO+yZTSQZH4fMarXB5wXWqmHqgzxfCDO75q5eURvGfHsnSBgHwqRdop+L3xt9GhsgLkB/dgv28rljBaLZxK/ArjUaqTO/7JDc9k4qzcW1kklhqbS/p52Vz3SknC1KkT8=
+	t=1723043078; cv=none; b=TgNqazrMJZWrq0y9ckBbv4CZQo+kbZ0n3+xOUy4Kvo0G9dpd3CE2mz4gtZpSeNye5jPaaChstl3s2VM7GjbrtDqKNxlNLr+wAWizXKU/MJjf9aBS78DgFUSjt4ZH7RxPNJ47XPUplL6TUYoKlEo+wtEmAbkDbsgyzuqaeJwdDMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043586; c=relaxed/simple;
-	bh=UGxlVpYWLhWxNkVPmcYuagv/U7x23ZE/qTxLHRklWLc=;
+	s=arc-20240116; t=1723043078; c=relaxed/simple;
+	bh=8ajvqQV4C+wbq3F6jkDO6eupCgElEcXcazUPtAUHtz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKXlw9gcqfNAERnF32uKkH5iSEQ/sTbfH7V+x5r7PJqQTnQ1+3AjCtRwFlhjzsQYPdFhwFODeMXMOk4LogKCSACKayFbkONR4YH8D5qH0lblZ3NlXEtxGDx36eM05shV9v+QSYtsKRqT2pBPDsopATtafcTDEMyhJzX2127ZfsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DItz94cT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D493C32781;
-	Wed,  7 Aug 2024 15:13:05 +0000 (UTC)
+	 MIME-Version; b=W6qFRSIjq7VWKmaXy29pkfwU99u26ZNeDXoKweq/X9GErejgTZ7+5l6jA3kjoPXjHMyajoViEmREbZMbhlzoajaaGV0P9WEIvMu9uB4QcqPIb3pJ3dpWha+WxAxzm2h3RH8iu4dA23xWb/Wu0RwTKILWxVXqW+p6U5YeLrdP4s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3DpYVv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FFBC4AF0E;
+	Wed,  7 Aug 2024 15:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043585;
-	bh=UGxlVpYWLhWxNkVPmcYuagv/U7x23ZE/qTxLHRklWLc=;
+	s=korg; t=1723043078;
+	bh=8ajvqQV4C+wbq3F6jkDO6eupCgElEcXcazUPtAUHtz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DItz94cTpOPGslWLfkTBSOMB+JU80N4ZSmRyRIJxhpLHhOU+suybsDAZS2FjZ5XoD
-	 k0Wte7yam64EDCuSHymMDJGLhEG5BpluCF1/deGLOWHccDfGVuxNW7citYJ3J0ilyP
-	 ySqjvaafcERjw2pHiLfNDCMR2BM+fsV8A6n5os7U=
+	b=a3DpYVv+0SXjC8XmxN0B2fzHUkA76i7Y/9tnawmehDiNrrEBvUlQLr3IeMt0VkmOc
+	 dR1Zo2IvOWnW2pEqCeycgipuGM4Djeb91Kmt5rQALRam+wY5nQipfiDb/ToU6C5k0z
+	 WHqQZabFZm45BSPwyplsN+7nPj9f6BS5ZGCl0F+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Gladkov <legion@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Joel Granados <joel.granados@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 05/86] sysctl: allow to change limits for posix messages queues
+Subject: [PATCH 6.10 065/123] net/mlx5e: Add a check for the return value from mlx5_port_set_eth_ptys
 Date: Wed,  7 Aug 2024 16:59:44 +0200
-Message-ID: <20240807150039.428878191@linuxfoundation.org>
+Message-ID: <20240807150022.900860301@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,97 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Gladkov <legion@kernel.org>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit f9436a5d0497f759330d07e1189565edd4456be8 ]
+[ Upstream commit 3f8e82a020a5c22f9b791f4ac499b8e18007fbda ]
 
-All parameters of posix messages queues (queues_max/msg_max/msgsize_max)
-end up being limited by RLIMIT_MSGQUEUE.  The code in mqueue_get_inode is
-where that limiting happens.
+Since the documentation for mlx5_toggle_port_link states that it should
+only be used after setting the port register, we add a check for the
+return value from mlx5_port_set_eth_ptys to ensure the register was
+successfully set before calling it.
 
-The RLIMIT_MSGQUEUE is bound to the user namespace and is counted
-hierarchically.
-
-We can allow root in the user namespace to modify the posix messages
-queues parameters.
-
-Link: https://lkml.kernel.org/r/6ad67f23d1459a4f4339f74aa73bac0ecf3995e1.1705333426.git.legion@kernel.org
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
-Link: https://lkml.kernel.org/r/7eb21211c8622e91d226e63416b1b93c079f60ee.1663756794.git.legion@kernel.org
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Joel Granados <joel.granados@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Manfred Spraul <manfred@colorfullife.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
+Fixes: 667daedaecd1 ("net/mlx5e: Toggle link only after modifying port parameters")
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-9-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- ipc/mq_sysctl.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/ipc/mq_sysctl.c b/ipc/mq_sysctl.c
-index fbf6a8b93a265..ce03930aced55 100644
---- a/ipc/mq_sysctl.c
-+++ b/ipc/mq_sysctl.c
-@@ -12,6 +12,7 @@
- #include <linux/stat.h>
- #include <linux/capability.h>
- #include <linux/slab.h>
-+#include <linux/cred.h>
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index 3320f12ba2dbd..58eb96a688533 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -1409,7 +1409,12 @@ static int mlx5e_ethtool_set_link_ksettings(struct mlx5e_priv *priv,
+ 	if (!an_changes && link_modes == eproto.admin)
+ 		goto out;
  
- static int msg_max_limit_min = MIN_MSGMAX;
- static int msg_max_limit_max = HARD_MSGMAX;
-@@ -76,8 +77,43 @@ static int set_is_seen(struct ctl_table_set *set)
- 	return &current->nsproxy->ipc_ns->mq_set == set;
- }
+-	mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
++	err = mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
++	if (err) {
++		netdev_err(priv->netdev, "%s: failed to set ptys reg: %d\n", __func__, err);
++		goto out;
++	}
++
+ 	mlx5_toggle_port_link(mdev);
  
-+static void mq_set_ownership(struct ctl_table_header *head,
-+			     struct ctl_table *table,
-+			     kuid_t *uid, kgid_t *gid)
-+{
-+	struct ipc_namespace *ns =
-+		container_of(head->set, struct ipc_namespace, mq_set);
-+
-+	kuid_t ns_root_uid = make_kuid(ns->user_ns, 0);
-+	kgid_t ns_root_gid = make_kgid(ns->user_ns, 0);
-+
-+	*uid = uid_valid(ns_root_uid) ? ns_root_uid : GLOBAL_ROOT_UID;
-+	*gid = gid_valid(ns_root_gid) ? ns_root_gid : GLOBAL_ROOT_GID;
-+}
-+
-+static int mq_permissions(struct ctl_table_header *head, struct ctl_table *table)
-+{
-+	int mode = table->mode;
-+	kuid_t ns_root_uid;
-+	kgid_t ns_root_gid;
-+
-+	mq_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
-+
-+	if (uid_eq(current_euid(), ns_root_uid))
-+		mode >>= 6;
-+
-+	else if (in_egroup_p(ns_root_gid))
-+		mode >>= 3;
-+
-+	mode &= 7;
-+
-+	return (mode << 6) | (mode << 3) | mode;
-+}
-+
- static struct ctl_table_root set_root = {
- 	.lookup = set_lookup,
-+	.permissions = mq_permissions,
-+	.set_ownership = mq_set_ownership,
- };
- 
- bool setup_mq_sysctls(struct ipc_namespace *ns)
+ out:
 -- 
 2.43.0
 
