@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A8494AB56
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0423F94AC2C
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 660971F25B6E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A95131F210DF
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A801013A869;
-	Wed,  7 Aug 2024 15:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07DE823AF;
+	Wed,  7 Aug 2024 15:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgNqvzgj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ex6rS2bT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6342F84A4E;
-	Wed,  7 Aug 2024 15:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9EF374CC;
+	Wed,  7 Aug 2024 15:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043062; cv=none; b=WLMlWL/0lgt8X/6+ORU52SiacWxGorM5jG2/CCJBHrPZnv2SdgPBtFwAd2dcdUL8v46/BKotVs1yFAWyLbsmH6p35UbTpgxgmFHvaHCCv1gj9fOJkeYfhD4WAll4yt81x/avEuvWSlfGAhcfIvQ4PCFTeQ2qwzwwGR6rNhXFIvg=
+	t=1723043564; cv=none; b=kcDJFwZW29Za0JGKopRZizFO5jYmupivqfB/bNSCntsL/hDmEB/lzboCGcazz776C0hKlTlVuM6aSWhY2bmuO+de5TLtxqUsc7OI9owpO3PdxcJVcUlqQC2yh5UwNvYSCy05UrLxCCxZt9MCz+nYed+513tZ1TeODGnNpSi41OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043062; c=relaxed/simple;
-	bh=JUharwETHCVC8tWLHRPhSeOKRFYOmEWbZowle9xPmkE=;
+	s=arc-20240116; t=1723043564; c=relaxed/simple;
+	bh=yPRRlz8nMY37XOoZCnBO6LOkshXELDrg6wAYqvBuSrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kw81C2GcwdJrLHaMSsrRv5OlhnjEWX6ETo6GOfRozsN67xzLI+sA98siaN+hEJMvy/NHlU5P4NXxXivavlBUyQJ1yn1TPf8JLYHqgLmEfraC5DMqtf67MZPtEBllcbjM544AP4Ey7rEHNe5QuuSiaUzGMXX6AUKUHGWIwYiHb7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgNqvzgj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BAFC4AF0D;
-	Wed,  7 Aug 2024 15:04:21 +0000 (UTC)
+	 MIME-Version; b=S897gM1KUm6uAvoEH4DzW8y9I/CezF426lf9AvMQdr9gbvKbtDKCOrxHxvMDB1Jvs7sDmQ7VpKiyWdKEoT3UMhUxr5XWggqvlnZ6Qmp4gRDGFdvfcUe+iyKb8zjvM+sPAxlnvMDJyZ/MfY0+gRsKKW/HoY9smFvelXvg5ZQYb9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ex6rS2bT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205EFC32781;
+	Wed,  7 Aug 2024 15:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043062;
-	bh=JUharwETHCVC8tWLHRPhSeOKRFYOmEWbZowle9xPmkE=;
+	s=korg; t=1723043564;
+	bh=yPRRlz8nMY37XOoZCnBO6LOkshXELDrg6wAYqvBuSrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PgNqvzgjXoVfs+dC8ZElq7HejYug4gS9AHxMveiXVe0K9XuC7wIBzaevIPykukp6J
-	 lAoBPWEX+8WF3MLbDwJ/JMGhFbcKacYXgMT6o7hufjoEaIImaeu8ObxyXg5pF6KlIu
-	 kTL2qY9XUq27gikmbbs88jIDqfg9Sk7WyS/pCYCM=
+	b=ex6rS2bTyRrTIlg94n/A4g7xtsV94P7QqP3NwUCS6tsGlRMUh8LNAWV2/+1FiNO4G
+	 HqXdHh44ss0aBwa0y1l1KsvcrKkU+c1Fi5ejoWLrvI00lY82VlmcsUl8GE/VzSmw6M
+	 D1T3bX4MR3GdKjpZmq5LVItJHVTM9JeBLL3KAagc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aristeu Rozanski <aris@redhat.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.10 077/123] s390/fpu: Re-add exception handling in load_fpu_state()
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 17/86] leds: trigger: Store brightness set by led_trigger_event()
 Date: Wed,  7 Aug 2024 16:59:56 +0200
-Message-ID: <20240807150023.290844648@linuxfoundation.org>
+Message-ID: <20240807150039.807319523@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 4734406c39238cbeafe66f0060084caa3247ff53 upstream.
+[ Upstream commit 822c91e72eac568ed8d83765634f00decb45666c ]
 
-With the recent rewrite of the fpu code exception handling for the
-lfpc instruction within load_fpu_state() was erroneously removed.
+If a simple trigger is assigned to a LED, then the LED may be off until
+the next led_trigger_event() call. This may be an issue for simple
+triggers with rare led_trigger_event() calls, e.g. power supply
+charging indicators (drivers/power/supply/power_supply_leds.c).
+Therefore persist the brightness value of the last led_trigger_event()
+call and use this value if the trigger is assigned to a LED.
+In addition add a getter for the trigger brightness value.
 
-Add it again to prevent that loading invalid floating point register
-values cause an unhandled specification exception.
-
-Fixes: 8c09871a950a ("s390/fpu: limit save and restore to used registers")
-Cc: stable@vger.kernel.org
-Reported-by: Aristeu Rozanski <aris@redhat.com>
-Tested-by: Aristeu Rozanski <aris@redhat.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/b1358b25-3f30-458d-8240-5705ae007a8a@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/fpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/led-triggers.c |  6 ++++--
+ include/linux/leds.h        | 15 +++++++++++++++
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/fpu.c b/arch/s390/kernel/fpu.c
-index fa90bbdc5ef9..6f2e87920288 100644
---- a/arch/s390/kernel/fpu.c
-+++ b/arch/s390/kernel/fpu.c
-@@ -113,7 +113,7 @@ void load_fpu_state(struct fpu *state, int flags)
- 	int mask;
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index dddfc301d3414..cdb446cb84af2 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -193,11 +193,11 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+ 		spin_unlock(&trig->leddev_list_lock);
+ 		led_cdev->trigger = trig;
  
- 	if (flags & KERNEL_FPC)
--		fpu_lfpc(&state->fpc);
-+		fpu_lfpc_safe(&state->fpc);
- 	if (!cpu_has_vx()) {
- 		if (flags & KERNEL_VXR_V0V7)
- 			load_fp_regs_vx(state->vxrs);
++		ret = 0;
+ 		if (trig->activate)
+ 			ret = trig->activate(led_cdev);
+ 		else
+-			ret = 0;
+-
++			led_set_brightness(led_cdev, trig->brightness);
+ 		if (ret)
+ 			goto err_activate;
+ 
+@@ -372,6 +372,8 @@ void led_trigger_event(struct led_trigger *trig,
+ 	if (!trig)
+ 		return;
+ 
++	trig->brightness = brightness;
++
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(led_cdev, &trig->led_cdevs, trig_list)
+ 		led_set_brightness(led_cdev, brightness);
+diff --git a/include/linux/leds.h b/include/linux/leds.h
+index 2bbff7519b731..79ab2dfd3c72f 100644
+--- a/include/linux/leds.h
++++ b/include/linux/leds.h
+@@ -356,6 +356,9 @@ struct led_trigger {
+ 	int		(*activate)(struct led_classdev *led_cdev);
+ 	void		(*deactivate)(struct led_classdev *led_cdev);
+ 
++	/* Brightness set by led_trigger_event */
++	enum led_brightness brightness;
++
+ 	/* LED-private triggers have this set */
+ 	struct led_hw_trigger_type *trigger_type;
+ 
+@@ -409,6 +412,12 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
+ 	return led_cdev->trigger_data;
+ }
+ 
++static inline enum led_brightness
++led_trigger_get_brightness(const struct led_trigger *trigger)
++{
++	return trigger ? trigger->brightness : LED_OFF;
++}
++
+ #define module_led_trigger(__led_trigger) \
+ 	module_driver(__led_trigger, led_trigger_register, \
+ 		      led_trigger_unregister)
+@@ -445,6 +454,12 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
+ 	return NULL;
+ }
+ 
++static inline enum led_brightness
++led_trigger_get_brightness(const struct led_trigger *trigger)
++{
++	return LED_OFF;
++}
++
+ #endif /* CONFIG_LEDS_TRIGGERS */
+ 
+ /* Trigger specific functions */
 -- 
-2.46.0
+2.43.0
 
 
 
