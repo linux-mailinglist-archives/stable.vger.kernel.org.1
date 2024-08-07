@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-65876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A982B94AC52
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A3494AB8A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA2DF1C21174
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A82F41C223E1
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368C582499;
-	Wed,  7 Aug 2024 15:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21279126F0A;
+	Wed,  7 Aug 2024 15:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQ9eoF+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VH2YRi7d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ED87E0E9;
-	Wed,  7 Aug 2024 15:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B5985270;
+	Wed,  7 Aug 2024 15:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043643; cv=none; b=KJCovvaaVHGs1hGJB0XAzHkeCYaJAV8TPPyl+kJSwsyvITxXCVWpVLPD+mXxxAOQcnYOe17nyCP26XyH6jxohmgVUXu4nqzH2wBCQAOqpSJj4ku4eoSleeJnfHQs3wy6kOgUjcP0gTR551nG3+SG+nTFfIP8PvQyFujjKE7KIYw=
+	t=1723043191; cv=none; b=Zr7/roSYxz9kx99I7oyNBvx2iNbEENlmqJzQpISb/ebX8Nttj5N1TF43TANbTUS1QMF1HBnXA/rbW63D26DlaSX1SgqyvXPQPR9CPLF11W0cf8VMR0nwYbjnbeTf3UtDYAywebL8sA6Ka1TeEU8yMOhdTeMojjmj4ELJB0v5cKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043643; c=relaxed/simple;
-	bh=GeKQ7qap2W8ZbXk/k9VXe3K6gPHFZUKTlE4kGdYrkr0=;
+	s=arc-20240116; t=1723043191; c=relaxed/simple;
+	bh=cVdY1qIlcVQYI50A4SA83wnZ9V9nbMeOHg+cpaOfAMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hxTpdYs6kX+wZ8PR1dJm7pfHgzpD2f08cNz+2nZDrT+jzCJhtIqwbO+8qkNfbxGjywMsJVKzQzTiIYNPSRsgJ68YE9twTf7cMglPGfFki+6EcieVFPY4EZ1o5THazLMjNB7epd6oUUQ6HoQqjVaOHKa+K48ro98UMl9OzeKJSPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQ9eoF+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8C0C32781;
-	Wed,  7 Aug 2024 15:14:02 +0000 (UTC)
+	 MIME-Version; b=YMRsMaVaHgQ7h16TDLN57JPnCD1KVpe6OIBPYr6gBeiCKsZvkT9AQ1Y9VwSs8EsyUx/a4OzukaD1i7KPqnjUHDDysSgPjlYUlNlaTgSoOpVeVULJX91GPv5Vhs4+zmln27UxUZjuhSXg8Pb9X2jBUkUwGXZnAGEMACN3tq2OgRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VH2YRi7d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E94C32781;
+	Wed,  7 Aug 2024 15:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043642;
-	bh=GeKQ7qap2W8ZbXk/k9VXe3K6gPHFZUKTlE4kGdYrkr0=;
+	s=korg; t=1723043191;
+	bh=cVdY1qIlcVQYI50A4SA83wnZ9V9nbMeOHg+cpaOfAMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQ9eoF+sJQ0adZsBtFJQ2YRt8IL04rJUwzwxAs4aARRCHxp9XnUJ1D9K6/QyyDI2C
-	 SOYGp2mUjlgY9/JxtqFPvwOwz7aeoQzZlcEYZ15HH0SeV0wGiQJ62ggcdg7r0WQrhh
-	 myanV5PA5zl1kXKLkbqNi+13j8xmxE4I3hJ/MYso=
+	b=VH2YRi7dQW1Mbs8NLKS/FRK6Zwo4KZE7kZ6KOpW1Gj8jHGfQZA+Lmd3ZP7Nq3nz0D
+	 7V2kOYoke9g7wGetahZyC5yw7BNHWMbA3K4emM7wABLTqX+hbE6Cj+Pz8+uAo5/wrx
+	 hq4muPZQqw/uUi/K6N6DNa1RzCInqJ+Wi30P7Ctg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 45/86] ALSA: hda: conexant: Reduce CONFIG_PM dependencies
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.10 105/123] wifi: ath12k: fix soft lockup on suspend
 Date: Wed,  7 Aug 2024 17:00:24 +0200
-Message-ID: <20240807150040.723894959@linuxfoundation.org>
+Message-ID: <20240807150024.251423826@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 29d57f6dc62485ee0752767debdfa2783d162beb ]
+commit a47f3320bb4ba6714abe8dddb36399367b491358 upstream.
 
-CONFIG_PM dependencies got reduced in HD-audio codec core driver, and
-now it's time to reduce in HD-audio conexant codec driver, too.
+The ext interrupts are enabled when the firmware has been started, but
+this may never happen, for example, if the board configuration file is
+missing.
 
-Simply drop CONFIG_PM ifdefs.
+When the system is later suspended, the driver unconditionally tries to
+disable interrupts, which results in an irq disable imbalance and causes
+the driver to spin indefinitely in napi_synchronize().
 
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240506161359.6960-8-tiwai@suse.de
-Stable-dep-of: e60dc9812211 ("ALSA: hda: conexant: Fix headset auto detect fail in the polling mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make sure that the interrupts have been enabled before attempting to
+disable them.
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org	# 6.3
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Link: https://patch.msgid.link/20240709073132.9168-1-johan+linaro@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/pci.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index e8209178d87bb..17389a3801bd1 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -294,13 +294,11 @@ static void cx_jack_unsol_event(struct hda_codec *codec, unsigned int res)
- 	snd_hda_jack_unsol_event(codec, res);
- }
- 
--#ifdef CONFIG_PM
- static int cx_auto_suspend(struct hda_codec *codec)
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -472,7 +472,8 @@ static void __ath12k_pci_ext_irq_disable
  {
- 	cx_auto_shutdown(codec);
- 	return 0;
- }
--#endif
+ 	int i;
  
- static const struct hda_codec_ops cx_auto_patch_ops = {
- 	.build_controls = snd_hda_gen_build_controls,
-@@ -308,10 +306,8 @@ static const struct hda_codec_ops cx_auto_patch_ops = {
- 	.init = cx_auto_init,
- 	.free = cx_auto_free,
- 	.unsol_event = cx_jack_unsol_event,
--#ifdef CONFIG_PM
- 	.suspend = cx_auto_suspend,
- 	.check_power_status = snd_hda_gen_check_power_status,
--#endif
- };
+-	clear_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
++	if (!test_and_clear_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags))
++		return;
  
- /*
--- 
-2.43.0
-
+ 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
+ 		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
 
 
 
