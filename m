@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-65660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2A294AB55
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9197E94ABD7
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A8181C22BE1
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 389771F25818
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501C584A4E;
-	Wed,  7 Aug 2024 15:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82C884A5E;
+	Wed,  7 Aug 2024 15:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIOmqa1w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMbs+EZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E05A78B4C;
-	Wed,  7 Aug 2024 15:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F8084A46;
+	Wed,  7 Aug 2024 15:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043065; cv=none; b=ngOiubMpS6F13rYQLkhVzJxuKBqRPi9Pd4bT0ePJtVV5ojbzCxTwemoqYgEMmmpospSCqn97Zr0coDjeMrgy0unAP+f9isramH7czyOeWliWg1DU/IEHfJmauYqPrdsbAJUv0zZKCmhZxDXCXIdC3XMJ8LyNkV4mEq6AlpgZbDI=
+	t=1723043367; cv=none; b=fAb61Uf+yRIeqNW5rH+H92xL6GEwETnwLlbRvxEA5vdHUUKhemzXZhQks3BCBIAejMCH7unQs7lSI4bNYIhZytPeO+205ZyuymyDMFWDALcKYi6Y0AEyOOoK9qpywHOi7a+8aukb/lmmr0zBSyAMWuU5Aca2FodzLbE1eFSpTDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043065; c=relaxed/simple;
-	bh=OQUiSnMWfFGiAqGpJxQK4eWndaHBcQlt4ugep2f5opk=;
+	s=arc-20240116; t=1723043367; c=relaxed/simple;
+	bh=gRjYnkFcSnwR0UkyQ4wDIL2xaXVxd+5Ii3qL3QRVIpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDdC6NqsZ1u07OCDHfTaK6qXtNfWC2zLOQJKAGX7vwXX2/dDpuwapqN17lbq9QH/idvye9J9oY5FokyznIUny8f9/SJheLE3FT7TD25Ob2eejdCY3hZl7KEnGeT2bHQYA4HaCJo1kp7IOfqJX7MGau9Uz+Aswm48ox0+7U8YkA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIOmqa1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93EE5C32781;
-	Wed,  7 Aug 2024 15:04:24 +0000 (UTC)
+	 MIME-Version; b=QEWtFxdj5xUZr2USXdcRVbLAJpquHRDhZ7s9w3xzh/GWRUilSxd50SXNEHOEnDC9OKcDHm/WV/dVF5a8UjkNzYV6JG57A3lEYBq95dZMOWBhleMSdci+q4BrIO13wzkuZg3wXleifwy+VzcSs0kTTpdpXL5Ksxu8JRbc5nztYvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMbs+EZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190AEC4AF0B;
+	Wed,  7 Aug 2024 15:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043064;
-	bh=OQUiSnMWfFGiAqGpJxQK4eWndaHBcQlt4ugep2f5opk=;
+	s=korg; t=1723043367;
+	bh=gRjYnkFcSnwR0UkyQ4wDIL2xaXVxd+5Ii3qL3QRVIpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIOmqa1wDAokLnRvUIrxIbQNATfDSiQ3DnxTAu436zrLLbk+bj5o0snjypnYXhU04
-	 nAABNp3SLmuiTu9pgwxSgShYrhgJLDaOvSGGk3kCTP9LpQBlW528Kac6RfZQCnZgV9
-	 OSKHT7yndjMxTwzMAyLNt8eS347qARgKNcGFrmHY=
+	b=MMbs+EZX2jiNsCHWKFtepwSTp2xaHfLYj9cYhVEL1nIJDX4KpXlo5yND1TG/+cy26
+	 nAIe1O1pyyqVxE6OAhv3rZ9DguQM8i0HQoJeEoUD9VQKFlrEct72FGIUrkgtv5HTfz
+	 pyir2/JiK+ZvMopqCeXzYkA+aR/9MHb0oDu/6BGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patryk Duda <patrykd@google.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.10 078/123] platform/chrome: cros_ec_proto: Lock device when updating MKBP version
+	Sean Tranchetti <quic_stranche@quicinc.com>,
+	Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 065/121] tcp: Adjust clamping window for applications specifying SO_RCVBUF
 Date: Wed,  7 Aug 2024 16:59:57 +0200
-Message-ID: <20240807150023.325296842@linuxfoundation.org>
+Message-ID: <20240807150021.534621717@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patryk Duda <patrykd@google.com>
+From: Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>
 
-commit df615907f1bf907260af01ccb904d0e9304b5278 upstream.
+[ Upstream commit 05f76b2d634e65ab34472802d9b142ea9e03f74e ]
 
-The cros_ec_get_host_command_version_mask() function requires that the
-caller must have ec_dev->lock mutex before calling it. This requirement
-was not met and as a result it was possible that two commands were sent
-to the device at the same time.
+tp->scaling_ratio is not updated based on skb->len/skb->truesize once
+SO_RCVBUF is set leading to the maximum window scaling to be 25% of
+rcvbuf after
+commit dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
+and 50% of rcvbuf after
+commit 697a6c8cec03 ("tcp: increase the default TCP scaling ratio").
+50% tries to emulate the behavior of older kernels using
+sysctl_tcp_adv_win_scale with default value.
 
-The problem was observed while using UART backend which doesn't use any
-additional locks, unlike SPI backend which locks the controller until
-response is received.
+Systems which were using a different values of sysctl_tcp_adv_win_scale
+in older kernels ended up seeing reduced download speeds in certain
+cases as covered in https://lists.openwall.net/netdev/2024/05/15/13
+While the sysctl scheme is no longer acceptable, the value of 50% is
+a bit conservative when the skb->len/skb->truesize ratio is later
+determined to be ~0.66.
 
-Fixes: f74c7557ed0d ("platform/chrome: cros_ec_proto: Update version on GET_NEXT_EVENT failure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Patryk Duda <patrykd@google.com>
-Link: https://lore.kernel.org/r/20240730104425.607083-1-patrykd@google.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Applications not specifying SO_RCVBUF update the window scaling and
+the receiver buffer every time data is copied to userspace. This
+computation is now used for applications setting SO_RCVBUF to update
+the maximum window scaling while ensuring that the receive buffer
+is within the application specified limit.
+
+Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
+Signed-off-by: Sean Tranchetti <quic_stranche@quicinc.com>
+Signed-off-by: Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_proto.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp_input.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/drivers/platform/chrome/cros_ec_proto.c
-+++ b/drivers/platform/chrome/cros_ec_proto.c
-@@ -805,9 +805,11 @@ int cros_ec_get_next_event(struct cros_e
- 	if (ret == -ENOPROTOOPT) {
- 		dev_dbg(ec_dev->dev,
- 			"GET_NEXT_EVENT returned invalid version error.\n");
-+		mutex_lock(&ec_dev->lock);
- 		ret = cros_ec_get_host_command_version_mask(ec_dev,
- 							EC_CMD_GET_NEXT_EVENT,
- 							&ver_mask);
-+		mutex_unlock(&ec_dev->lock);
- 		if (ret < 0 || ver_mask == 0)
- 			/*
- 			 * Do not change the MKBP supported version if we can't
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 13464e35d7565..d0364cff65c9f 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -748,8 +748,7 @@ void tcp_rcv_space_adjust(struct sock *sk)
+ 	 * <prev RTT . ><current RTT .. ><next RTT .... >
+ 	 */
+ 
+-	if (READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_moderate_rcvbuf) &&
+-	    !(sk->sk_userlocks & SOCK_RCVBUF_LOCK)) {
++	if (READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_moderate_rcvbuf)) {
+ 		u64 rcvwin, grow;
+ 		int rcvbuf;
+ 
+@@ -765,12 +764,22 @@ void tcp_rcv_space_adjust(struct sock *sk)
+ 
+ 		rcvbuf = min_t(u64, tcp_space_from_win(sk, rcvwin),
+ 			       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_rmem[2]));
+-		if (rcvbuf > sk->sk_rcvbuf) {
+-			WRITE_ONCE(sk->sk_rcvbuf, rcvbuf);
++		if (!(sk->sk_userlocks & SOCK_RCVBUF_LOCK)) {
++			if (rcvbuf > sk->sk_rcvbuf) {
++				WRITE_ONCE(sk->sk_rcvbuf, rcvbuf);
+ 
+-			/* Make the window clamp follow along.  */
+-			WRITE_ONCE(tp->window_clamp,
+-				   tcp_win_from_space(sk, rcvbuf));
++				/* Make the window clamp follow along.  */
++				WRITE_ONCE(tp->window_clamp,
++					   tcp_win_from_space(sk, rcvbuf));
++			}
++		} else {
++			/* Make the window clamp follow along while being bounded
++			 * by SO_RCVBUF.
++			 */
++			int clamp = tcp_win_from_space(sk, min(rcvbuf, sk->sk_rcvbuf));
++
++			if (clamp > tp->window_clamp)
++				WRITE_ONCE(tp->window_clamp, clamp);
+ 		}
+ 	}
+ 	tp->rcvq_space.space = copied;
+-- 
+2.43.0
+
 
 
 
