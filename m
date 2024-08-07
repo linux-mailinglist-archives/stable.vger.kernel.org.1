@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-65711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A8C94AB91
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE49994ABFA
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77DFEB22F1A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AC0D1F23C61
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85838172A;
-	Wed,  7 Aug 2024 15:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD55778C92;
+	Wed,  7 Aug 2024 15:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJD/KNem"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvuw3N/H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CCC85270;
-	Wed,  7 Aug 2024 15:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B31782499;
+	Wed,  7 Aug 2024 15:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043202; cv=none; b=BB2ud1wstqzLb0IAPIx+nOsPelfBIeeqCbRfWkVBnqYsvhcxjuUfIxOtKgTgjZgiTAGqm7DF2mJzDRFb6yUgCqUNn7vK84QcY2ww3GsSx0iuaLYjJngLQE288VwBGFMLaZXN5pxPMfkxijaCwnqXvodgzsL609OTTpl9MO1mh1o=
+	t=1723043450; cv=none; b=EZBMywZrJpvj9hO5CFC/9SdNN6J+e/vEcjEmrX2dK4ZqsZo3jOR2NDYf890LshHg6SO+4lAyCOlrpnYLsngu/tivhIBeu5jlqfRCOFveOMQkgEwx9SWCksLFB+Z69UlsDFLmjZmJvNHci46Wkrf+lCzOs1lVlpinwF8uHcQrwCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043202; c=relaxed/simple;
-	bh=HTIfLRwfMUWPF8QaG2u8VWLPtJtmaYc26Mzz/DzRNOw=;
+	s=arc-20240116; t=1723043450; c=relaxed/simple;
+	bh=gnQ1v4BZgI/rbQfESkf7O48mr7/ToOfa1+uerr60qNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BA+lEoaRQFPOkENfdEBGJZDFRH3ylGKGlAkRDQecljWS0BO4tvj4ww82HYIuZ/OvlWkFVxsXKxiaknmO5Ydb3Icg+0NNwKNAYD0Cav3WPK62M1Mg762T98jlZWq558tuhe3bnxegFdAoJOdLZZpHTbPP+v2fB7+tLBHN2qSHzA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJD/KNem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FD6C32781;
-	Wed,  7 Aug 2024 15:06:41 +0000 (UTC)
+	 MIME-Version; b=Q88toSASkztQtnc8SDjdPB/zqgczYeO4bVFm0kHr/rV9H6rHD1RIF6kyb4O0umZ9uNWXIV5OMBBMg0bO1k/ThUpl3GprOfQU5t3G0SjUwV5m5rdIoZ5FvyeEUDlr901FCBIHdQnFHBDYb5+pGMKShFBCrK6qX4Vyu9pCUytNONI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvuw3N/H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C617C4AF0E;
+	Wed,  7 Aug 2024 15:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043202;
-	bh=HTIfLRwfMUWPF8QaG2u8VWLPtJtmaYc26Mzz/DzRNOw=;
+	s=korg; t=1723043450;
+	bh=gnQ1v4BZgI/rbQfESkf7O48mr7/ToOfa1+uerr60qNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJD/KNemY3hyOO4M4xYETbBi4AE6tB8ZGe+KL1OQ8etKJQpA2L6aznBTfffHvNM4w
-	 EIh/Gj/ryONPYLPvJ/Vyd7fYGpLCsl3rqWlMYLcYdeoMsU3e1IvBEpKqMDeYqLafyZ
-	 yHubbt53hLt+Wtds34GilJuSmAcytuw1Gp5Ej1uw=
+	b=zvuw3N/HXCTFX4XsCi6XyeXc/aU6ZWzFQQJF726x5CkQ1t8s1SDnch7/PycmiEjod
+	 aL7ni1OciSBgd55SPsy33PU/MB3IBaTzcU8W9NL/DVhlks+nZwIyRZyMmYcI8fj5mc
+	 dzCl2PLUKr2jI0Y15RmEDPNFqGsxqhiVNFqLsP2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 109/123] net: wan: fsl_qmc_hdlc: Convert carrier_lock spinlock to a mutex
+	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
+	Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 096/121] HID: wacom: Modify pen IDs
 Date: Wed,  7 Aug 2024 17:00:28 +0200
-Message-ID: <20240807150024.388711323@linuxfoundation.org>
+Message-ID: <20240807150022.535396389@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
 
-commit c4d6a347ba7babdf9d90a0eb24048c266cae0532 upstream.
+commit f0d17d696dfce77c9abc830e4ac2d677890a2dad upstream.
 
-The carrier_lock spinlock protects the carrier detection. While it is
-held, framer_get_status() is called which in turn takes a mutex.
-This is not correct and can lead to a deadlock.
+The pen ID, 0x80842, was not the correct ID for wacom driver to
+treat. The ID was corrected to 0x8842.
+Also, 0x4200 was not the expected ID used on any Wacom device.
+Therefore, 0x4200 was removed.
 
-A run with PROVE_LOCKING enabled detected the issue:
-  [ BUG: Invalid wait context ]
-  ...
-  c204ddbc (&framer->mutex){+.+.}-{3:3}, at: framer_get_status+0x40/0x78
-  other info that might help us debug this:
-  context-{4:4}
-  2 locks held by ifconfig/146:
-  #0: c0926a38 (rtnl_mutex){+.+.}-{3:3}, at: devinet_ioctl+0x12c/0x664
-  #1: c2006a40 (&qmc_hdlc->carrier_lock){....}-{2:2}, at: qmc_hdlc_framer_set_carrier+0x30/0x98
-
-Avoid the spinlock usage and convert carrier_lock to a mutex.
-
-Fixes: 54762918ca85 ("net: wan: fsl_qmc_hdlc: Add framer support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240730063104.179553-1-herve.codina@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+Signed-off-by: Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>
+Fixes: bfdc750c4cb2 ("HID: wacom: add three styli to wacom_intuos_get_tool_type")
+Cc: stable@kernel.org #6.2
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Link: https://patch.msgid.link/20240709055729.17158-1-tatsunosuke.wacom@gmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wan/fsl_qmc_hdlc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hid/wacom_wac.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
-index c5e7ca793c43..64b4bfa6fea7 100644
---- a/drivers/net/wan/fsl_qmc_hdlc.c
-+++ b/drivers/net/wan/fsl_qmc_hdlc.c
-@@ -18,6 +18,7 @@
- #include <linux/hdlc.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-@@ -37,7 +38,7 @@ struct qmc_hdlc {
- 	struct qmc_chan *qmc_chan;
- 	struct net_device *netdev;
- 	struct framer *framer;
--	spinlock_t carrier_lock; /* Protect carrier detection */
-+	struct mutex carrier_lock; /* Protect carrier detection */
- 	struct notifier_block nb;
- 	bool is_crc32;
- 	spinlock_t tx_lock; /* Protect tx descriptors */
-@@ -60,7 +61,7 @@ static int qmc_hdlc_framer_set_carrier(struct qmc_hdlc *qmc_hdlc)
- 	if (!qmc_hdlc->framer)
- 		return 0;
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -714,13 +714,12 @@ static int wacom_intuos_get_tool_type(in
+ 	case 0x8e2: /* IntuosHT2 pen */
+ 	case 0x022:
+ 	case 0x200: /* Pro Pen 3 */
+-	case 0x04200: /* Pro Pen 3 */
+ 	case 0x10842: /* MobileStudio Pro Pro Pen slim */
+ 	case 0x14802: /* Intuos4/5 13HD/24HD Classic Pen */
+ 	case 0x16802: /* Cintiq 13HD Pro Pen */
+ 	case 0x18802: /* DTH2242 Pen */
+ 	case 0x10802: /* Intuos4/5 13HD/24HD General Pen */
+-	case 0x80842: /* Intuos Pro and Cintiq Pro 3D Pen */
++	case 0x8842: /* Intuos Pro and Cintiq Pro 3D Pen */
+ 		tool_type = BTN_TOOL_PEN;
+ 		break;
  
--	guard(spinlock_irqsave)(&qmc_hdlc->carrier_lock);
-+	guard(mutex)(&qmc_hdlc->carrier_lock);
- 
- 	ret = framer_get_status(qmc_hdlc->framer, &framer_status);
- 	if (ret) {
-@@ -706,7 +707,7 @@ static int qmc_hdlc_probe(struct platform_device *pdev)
- 
- 	qmc_hdlc->dev = dev;
- 	spin_lock_init(&qmc_hdlc->tx_lock);
--	spin_lock_init(&qmc_hdlc->carrier_lock);
-+	mutex_init(&qmc_hdlc->carrier_lock);
- 
- 	qmc_hdlc->qmc_chan = devm_qmc_chan_get_bychild(dev, dev->of_node);
- 	if (IS_ERR(qmc_hdlc->qmc_chan))
--- 
-2.46.0
-
 
 
 
