@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-65849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38DC94AC2E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9676F94AB57
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4C261C21067
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B8F3283526
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9CD823DE;
-	Wed,  7 Aug 2024 15:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F6184D0D;
+	Wed,  7 Aug 2024 15:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7oVKPe4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2MgH1tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF27374CC;
-	Wed,  7 Aug 2024 15:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B787978B4C;
+	Wed,  7 Aug 2024 15:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043570; cv=none; b=JevqxVtq8CdRBI91uGKbHjv2RdCILjtV7v1E9vy+Evczak9MvaUzbBpfFOkblz2lGGJQoDwOLU+n9KRVREMVz4GUCMeSaAw1V4gsfS4abOkARZjfdjxjWl3c2GmruMvdbkYQ1RAyWIwH2LKgYpzrKj4pii0D93CibTPjRwl8K5I=
+	t=1723043067; cv=none; b=u2vDuXXFB4t3C0SkgtLKvx4MlhGyRG4adRNsNQGtsnNc0G5qeQUaGj2m1vQEQtLE4dn1h3448xlWhqpmVlwGOD59Dx8e5zHLCQzfBIbHCu/AqL3EAB26E7pY+k+JsP7Bje/uz/68SdmNeloyyOqDDPIcr8vnR5/CygPGfdeqok4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043570; c=relaxed/simple;
-	bh=0KSWfif96MaBeF0f/3rChJ25QB3nLeRelYdvbCvIsRc=;
+	s=arc-20240116; t=1723043067; c=relaxed/simple;
+	bh=LJ/SIndGN9b9cNuyvMuNn0iIfdd0FgDF19wezs4ggKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pa3PFlZNe8/EjhiPYUxandU2bdv/Ths9ko02ad+C+K0Bf5gciUNJEKZCCzo1b6VMm2lgOYxLEIgwmq6CWF/0MGNwKsFvNBJCZzMtFPOwgXlA+Gq5Y6sqTfyegPNK6oc+A0Ibef2/lvHVdDCZUvqRSEqMyJ1ec7Z4gIkJ5pm2xT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7oVKPe4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F94C32781;
-	Wed,  7 Aug 2024 15:12:49 +0000 (UTC)
+	 MIME-Version; b=B4n4YhB7Az4NKfEYhfa0GOmceJJ5p6VhMk+SYuk65fAX52R3xL7AUB3lDge3jEX9ZlkQFPu4iTT/2J6+ezwKELiO7OfqrGAa5hp6eP5Ou08M3svLpYvAejFKgVBP1TN8zn89v+U55qLnbm16fnBK9+KtVptlHDTiWvgW6Y2pw5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2MgH1tk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451A9C4AF0B;
+	Wed,  7 Aug 2024 15:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043569;
-	bh=0KSWfif96MaBeF0f/3rChJ25QB3nLeRelYdvbCvIsRc=;
+	s=korg; t=1723043067;
+	bh=LJ/SIndGN9b9cNuyvMuNn0iIfdd0FgDF19wezs4ggKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7oVKPe42l5QvrxvYmvExaRv8pO3arWbhihmPz/JK/CscczP3eroVw7Lruj3oeBim
-	 h2X7bPE4yl7mOyChtroWFXUoVrA05lkVOOEhpywTlAE0yFLJo2ovLMGBOCX1TZlMU4
-	 CHmYLIdlpE4JOW3s7Z4/5/M+KMIP6SkZeITYpYPs=
+	b=G2MgH1tkSVSwBmvtWuJ/+RJHtAMImlU1qpUIN4ugBzh9pqoqwzUgRZuJoJhGx29/x
+	 3ZCFBQuSAe8souauvCzuwQvOyEKzEXt9+XNZxo91aQpomDmxE9c+HDGwwYSlp8N7nV
+	 qX5IIeFUP7ez0sPE1kOaXq+pEUOh0wZPxeooQ8iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dustin L. Howett" <dustin@howett.net>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 19/86] leds: triggers: Flush pending brightness before activating trigger
+	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
+	Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.10 079/123] HID: wacom: Modify pen IDs
 Date: Wed,  7 Aug 2024 16:59:58 +0200
-Message-ID: <20240807150039.874827418@linuxfoundation.org>
+Message-ID: <20240807150023.358741502@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
 
-[ Upstream commit ab477b766edd3bfb6321a6e3df4c790612613fae ]
+commit f0d17d696dfce77c9abc830e4ac2d677890a2dad upstream.
 
-The race fixed in timer_trig_activate() between a blocking
-set_brightness() call and trigger->activate() can affect any trigger.
-So move the call to flush_work() into led_trigger_set() where it can
-avoid the race for all triggers.
+The pen ID, 0x80842, was not the correct ID for wacom driver to
+treat. The ID was corrected to 0x8842.
+Also, 0x4200 was not the expected ID used on any Wacom device.
+Therefore, 0x4200 was removed.
 
-Fixes: 0db37915d912 ("leds: avoid races with workqueue")
-Fixes: 8c0f693c6eff ("leds: avoid flush_work in atomic context")
-Cc: stable@vger.kernel.org
-Tested-by: Dustin L. Howett <dustin@howett.net>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20240613-led-trigger-flush-v2-1-f4f970799d77@weissschuh.net
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+Signed-off-by: Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>
+Fixes: bfdc750c4cb2 ("HID: wacom: add three styli to wacom_intuos_get_tool_type")
+Cc: stable@kernel.org #6.2
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Link: https://patch.msgid.link/20240709055729.17158-1-tatsunosuke.wacom@gmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/led-triggers.c          | 6 ++++++
- drivers/leds/trigger/ledtrig-timer.c | 5 -----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/hid/wacom_wac.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-index fe7fb2e7149c5..3d3673c197e38 100644
---- a/drivers/leds/led-triggers.c
-+++ b/drivers/leds/led-triggers.c
-@@ -200,6 +200,12 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
- 		 */
- 		synchronize_rcu();
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -714,13 +714,12 @@ static int wacom_intuos_get_tool_type(in
+ 	case 0x8e2: /* IntuosHT2 pen */
+ 	case 0x022:
+ 	case 0x200: /* Pro Pen 3 */
+-	case 0x04200: /* Pro Pen 3 */
+ 	case 0x10842: /* MobileStudio Pro Pro Pen slim */
+ 	case 0x14802: /* Intuos4/5 13HD/24HD Classic Pen */
+ 	case 0x16802: /* Cintiq 13HD Pro Pen */
+ 	case 0x18802: /* DTH2242 Pen */
+ 	case 0x10802: /* Intuos4/5 13HD/24HD General Pen */
+-	case 0x80842: /* Intuos Pro and Cintiq Pro 3D Pen */
++	case 0x8842: /* Intuos Pro and Cintiq Pro 3D Pen */
+ 		tool_type = BTN_TOOL_PEN;
+ 		break;
  
-+		/*
-+		 * If "set brightness to 0" is pending in workqueue,
-+		 * we don't want that to be reordered after ->activate()
-+		 */
-+		flush_work(&led_cdev->set_brightness_work);
-+
- 		ret = 0;
- 		if (trig->activate)
- 			ret = trig->activate(led_cdev);
-diff --git a/drivers/leds/trigger/ledtrig-timer.c b/drivers/leds/trigger/ledtrig-timer.c
-index b4688d1d9d2b2..1d213c999d40a 100644
---- a/drivers/leds/trigger/ledtrig-timer.c
-+++ b/drivers/leds/trigger/ledtrig-timer.c
-@@ -110,11 +110,6 @@ static int timer_trig_activate(struct led_classdev *led_cdev)
- 		led_cdev->flags &= ~LED_INIT_DEFAULT_TRIGGER;
- 	}
- 
--	/*
--	 * If "set brightness to 0" is pending in workqueue, we don't
--	 * want that to be reordered after blink_set()
--	 */
--	flush_work(&led_cdev->set_brightness_work);
- 	led_blink_set(led_cdev, &led_cdev->blink_delay_on,
- 		      &led_cdev->blink_delay_off);
- 
--- 
-2.43.0
-
 
 
 
