@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7B794AC27
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0681E94AB7A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8E41C20E03
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36EBC1C20ECD
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94A2823A9;
-	Wed,  7 Aug 2024 15:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E1180043;
+	Wed,  7 Aug 2024 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCTaEsqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B87V/E5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97234374CC;
-	Wed,  7 Aug 2024 15:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E585B27448;
+	Wed,  7 Aug 2024 15:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043551; cv=none; b=WQjhJHqLc9cuuiyeT4wjNHchY9Oey/BrSW1dho3nIvlA+EBx/asYwKJlc1IxirFoJ0yMnjvvBHFcr3HKrfHYzIRZYLbkJ4U+vq9i2kRRST60iM1ztTviqtZ8Wlff1Xa4qOvXhhkS5UxHJc2qZB8GriUdELxVIkfYYwCsPPP5prg=
+	t=1723043149; cv=none; b=EWVJtmYGQTj5ZA9dBLw9ooSobLpNQdXeNXviKx/rwFvkKm5Bh7x13VZ29q8jp8HR2y9LPDqiyx6XXISjLQHmwKxX7y13J74tNbCWU7FROhQqY1ak+n+sdPjwLCXfMeX+M97jdV0BZ+9+igMCTHLs+amjxwvNHOoCApUqyxWjYM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043551; c=relaxed/simple;
-	bh=GV9iSqYddYI7Zlie/I9x3PspUPmhcPPItu69WacKW4A=;
+	s=arc-20240116; t=1723043149; c=relaxed/simple;
+	bh=v48d8U20Gnvo+Ftx7tUwXDgkkEfJ4v5NPe/vdvJ3qGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5lwzji0nhSF1PKCcVcYWXJWjaa9hzRUi1uJXD5Pqj2FlkAXRaFVpu3M1LocLPTPIJpUhFb/Xe3vriewA0jKl6Y1tC7KU8bYMGW4zWLHcbXo10IxWHx0pzcy+5aPALgw8GYiqszQD8+UoKGfYycUdlzfr96SOmWYJ+iAf4ImRC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCTaEsqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD08C32781;
-	Wed,  7 Aug 2024 15:12:30 +0000 (UTC)
+	 MIME-Version; b=Pj3uAgUcAILdk5f4pmAmBEAgaz9MCPcut17AmOeH8iQ1D6Y8Vpcpi7bfFnJHOAFU2dcY+smN0dAiFITxVOCA8gHKsP3NPTFjXv+G7d2LRvYva564iT18ituR4CrAFJC/Epa2BXmmOLiU8UBUMx3j67Nc8vJ3R//XS8afJPqfPmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B87V/E5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EB8C32781;
+	Wed,  7 Aug 2024 15:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043551;
-	bh=GV9iSqYddYI7Zlie/I9x3PspUPmhcPPItu69WacKW4A=;
+	s=korg; t=1723043148;
+	bh=v48d8U20Gnvo+Ftx7tUwXDgkkEfJ4v5NPe/vdvJ3qGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kCTaEsqhL4Q6nvVLlshVysiuBeJMLMB4RvexeGfVhnMePpF0lERlNd+pgKljePCYG
-	 SSHrjyIuoxEn4P91tv9wBNeXmhxTVvNPJgRPtCDarDVguvd/aCfs3HhWdUM1t8RZ6x
-	 92ZbHWKRMA+siQlClP2ZNDDuI69eoNR0ZtWmIRms=
+	b=B87V/E5lYquCCZXOlPwBB5FfWs7DmKaKgwTzYKbS0y3BdJ/hVORUmLBaXjTsvp1Mt
+	 GPn4Aa5GDqMtxpsZWd9SZVv6NfpViZfJAWKf+ahTgrrwe3AShoQkyrGO3TQ1ALzTC7
+	 LzKHFxzAtMLfy2hjfXoYPab67bVNDbZ6YLBZNzEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Nick Hu <nick.hu@sifive.com>,
+	Anup Patel <anup@brainfault.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 12/86] ext4: check the extent status again before inserting delalloc block
+Subject: [PATCH 6.10 072/123] RISC-V: Enable the IPI before workqueue_online_cpu()
 Date: Wed,  7 Aug 2024 16:59:51 +0200
-Message-ID: <20240807150039.649036789@linuxfoundation.org>
+Message-ID: <20240807150023.134133059@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Nick Hu <nick.hu@sifive.com>
 
-[ Upstream commit 0ea6560abb3bac1ffcfa4bf6b2c4d344fdc27b3c ]
+[ Upstream commit 3908ba2e0b2476e2ec13e15967bf6a37e449f2af ]
 
-ext4_da_map_blocks looks up for any extent entry in the extent status
-tree (w/o i_data_sem) and then the looks up for any ondisk extent
-mapping (with i_data_sem in read mode).
+Sometimes the hotplug cpu stalls at the arch_cpu_idle() for a while after
+workqueue_online_cpu(). When cpu stalls at the idle loop, the reschedule
+IPI is pending. However the enable bit is not enabled yet so the cpu stalls
+at WFI until watchdog timeout. Therefore enable the IPI before the
+workqueue_online_cpu() to fix the issue.
 
-If it finds a hole in the extent status tree or if it couldn't find any
-entry at all, it then takes the i_data_sem in write mode to add a da
-entry into the extent status tree. This can actually race with page
-mkwrite & fallocate path.
-
-Note that this is ok between
-1. ext4 buffered-write path v/s ext4_page_mkwrite(), because of the
-   folio lock
-2. ext4 buffered write path v/s ext4 fallocate because of the inode
-   lock.
-
-But this can race between ext4_page_mkwrite() & ext4 fallocate path
-
-ext4_page_mkwrite()             ext4_fallocate()
- block_page_mkwrite()
-  ext4_da_map_blocks()
-   //find hole in extent status tree
-                                 ext4_alloc_file_blocks()
-                                  ext4_map_blocks()
-                                   //allocate block and unwritten extent
-   ext4_insert_delayed_block()
-    ext4_da_reserve_space()
-     //reserve one more block
-    ext4_es_insert_delayed_block()
-     //drop unwritten extent and add delayed extent by mistake
-
-Then, the delalloc extent is wrong until writeback and the extra
-reserved block can't be released any more and it triggers below warning:
-
- EXT4-fs (pmem2): Inode 13 (00000000bbbd4d23): i_reserved_data_blocks(1) not cleared!
-
-Fix the problem by looking up extent status tree again while the
-i_data_sem is held in write mode. If it still can't find any entry, then
-we insert a new da entry into the extent status tree.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240517124005.347221-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 63c5484e7495 ("workqueue: Add multiple affinity scopes and interface to select them")
+Signed-off-by: Nick Hu <nick.hu@sifive.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20240717031714.1946036-1-nick.hu@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/riscv/kernel/sbi-ipi.c | 2 +-
+ include/linux/cpuhotplug.h  | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index a0c6a173c14d5..93a1c22048de6 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1772,6 +1772,7 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 		if (ext4_es_is_hole(&es))
- 			goto add_delayed;
+diff --git a/arch/riscv/kernel/sbi-ipi.c b/arch/riscv/kernel/sbi-ipi.c
+index 1026e22955ccc..0cc5559c08d8f 100644
+--- a/arch/riscv/kernel/sbi-ipi.c
++++ b/arch/riscv/kernel/sbi-ipi.c
+@@ -71,7 +71,7 @@ void __init sbi_ipi_init(void)
+ 	 * the masking/unmasking of virtual IPIs is done
+ 	 * via generic IPI-Mux
+ 	 */
+-	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
++	cpuhp_setup_state(CPUHP_AP_IRQ_RISCV_SBI_IPI_STARTING,
+ 			  "irqchip/sbi-ipi:starting",
+ 			  sbi_ipi_starting_cpu, NULL);
  
-+found:
- 		/*
- 		 * Delayed extent could be allocated by fallocate.
- 		 * So we need to check it.
-@@ -1816,6 +1817,26 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 
- add_delayed:
- 	down_write(&EXT4_I(inode)->i_data_sem);
-+	/*
-+	 * Page fault path (ext4_page_mkwrite does not take i_rwsem)
-+	 * and fallocate path (no folio lock) can race. Make sure we
-+	 * lookup the extent status tree here again while i_data_sem
-+	 * is held in write mode, before inserting a new da entry in
-+	 * the extent status tree.
-+	 */
-+	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
-+		if (!ext4_es_is_hole(&es)) {
-+			up_write(&EXT4_I(inode)->i_data_sem);
-+			goto found;
-+		}
-+	} else if (!ext4_has_inline_data(inode)) {
-+		retval = ext4_map_query_blocks(NULL, inode, map);
-+		if (retval) {
-+			up_write(&EXT4_I(inode)->i_data_sem);
-+			return retval;
-+		}
-+	}
-+
- 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
- 	up_write(&EXT4_I(inode)->i_data_sem);
- 	if (retval)
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index 7a5785f405b62..0a8fd4a3d04c9 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -147,6 +147,7 @@ enum cpuhp_state {
+ 	CPUHP_AP_IRQ_LOONGARCH_STARTING,
+ 	CPUHP_AP_IRQ_SIFIVE_PLIC_STARTING,
+ 	CPUHP_AP_IRQ_RISCV_IMSIC_STARTING,
++	CPUHP_AP_IRQ_RISCV_SBI_IPI_STARTING,
+ 	CPUHP_AP_ARM_MVEBU_COHERENCY,
+ 	CPUHP_AP_PERF_X86_AMD_UNCORE_STARTING,
+ 	CPUHP_AP_PERF_X86_STARTING,
 -- 
 2.43.0
 
