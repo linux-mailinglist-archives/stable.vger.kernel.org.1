@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FC294A95E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:05:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16FAE94A95F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C40EBB28CFE
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:05:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48B141C216EC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D5354BD8;
-	Wed,  7 Aug 2024 14:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC4954F87;
+	Wed,  7 Aug 2024 14:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+WzJ3Kw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CODPKAXw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87397442F
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC18B2AF16
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723039503; cv=none; b=kODPIv4OkaStPenUxHDg9Ap1sAHQhyf2YFwBumaKxrSbUK2ECg7lovPk1lemLg7mMzo81j6+9fAkZ1M8U46lQkvS2WQ6J5gPAf4fDV3rPQ848y4SXuS5iiGDptaahdNWf83ef53F6wFQBhvLleTPfnYBLvLNeMbjHeImjutMZdA=
+	t=1723039511; cv=none; b=c/B8nD/MGjZNooZyou2DKXS+uN+F/QAuGHkW6ZCVGoUInCPj7AX20CUCeejvZyoX8Ap0ZJAEi2VTZuUjfbPJBESgNwLb6e8wijHGjT75cRUfvQFcnHt4aixUVHvOXec/2yIPY+IrOuU23n6crWIBOod89/u8YmXgpvR19DqVlz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723039503; c=relaxed/simple;
-	bh=M6gzY1nm4qYqmdaLMNF4BnOdhkUigvNtpn5PTF4XT2E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sHguvsbDe8BZoEysSJn6VoO/Hp18pavxaDd+vM3pIt6d81Vm6sibU1UtEXnXkhWGcjMfMJ7uurozUBCpDTbYLTs4Fcq6lEhIlGnaexjyeCFcI2Hy+8eid3RsDGKcT+M8CJOZn2OpALBDTYWbrQUT0D7bFiLcg+4QW7SL4PgFDYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+WzJ3Kw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E024C32781;
-	Wed,  7 Aug 2024 14:05:01 +0000 (UTC)
+	s=arc-20240116; t=1723039511; c=relaxed/simple;
+	bh=ZQdY2GXkMvaT6hQTwXDbPJWtse9Esyu0Sv9ojKFF340=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JPVf2fWUgmTmVWD5DTY1CZL8198wG7GQopAoK44Yd7HGJIfxaqwgKr8rSvTroynFDZAZvfjC1HhVCC1AtxRDESN+PNNEv+PQgOwv+5iER/tqWnzNB9jIff5cK+yY6t8ELElCEDqpn9/j5xWrjXvfRmy0SMP0qHlSkbxWR2H10B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CODPKAXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98C7C4AF0B;
+	Wed,  7 Aug 2024 14:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723039502;
-	bh=M6gzY1nm4qYqmdaLMNF4BnOdhkUigvNtpn5PTF4XT2E=;
+	s=korg; t=1723039511;
+	bh=ZQdY2GXkMvaT6hQTwXDbPJWtse9Esyu0Sv9ojKFF340=;
 	h=Subject:To:Cc:From:Date:From;
-	b=q+WzJ3KwF2Mq6QkWU2CI5IHNjDuO3y0Xm+eNhAU+j4GaWmjcYgJyO7z9u+tkvUVuT
-	 DwAYgEl+xxRjg59TplgvZ2nT9cEMrwHDBaobdMV8HhWV0y9VVTZw33HmGQ53N3t/sn
-	 ADA52W91UnA4LpoAE7KiMAIzDHybC2rKfTzyHWWA=
-Subject: FAILED: patch "[PATCH] mptcp: sched: check both directions for backup" failed to apply to 5.15-stable tree
+	b=CODPKAXwfhoAUdymH6so/hga3JzYSfVoxlqN5Dv4+C7SfNVMUg0/b5c3LFhEgLm3e
+	 z/Dv5k9NzkXNmXVgFY1pn+WjvO9xgZ4aYyJSKCL6h5Phc50r8BGpMCgSOmk4QbuENI
+	 dCEX1YgP5Ua/nUJ3vCKNopYXXtLh0Vn9QzOv59Lo=
+Subject: FAILED: patch "[PATCH] mptcp: sched: check both directions for backup" failed to apply to 5.10-stable tree
 To: matttbe@kernel.org,martineau@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 07 Aug 2024 16:04:58 +0200
-Message-ID: <2024080758-deniable-naming-ddc9@gregkh>
+Date: Wed, 07 Aug 2024 16:04:59 +0200
+Message-ID: <2024080759-deploy-send-dfa5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,37 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x b6a66e521a2032f7fcba2af5a9bcbaeaa19b7ca3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080758-deniable-naming-ddc9@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080759-deploy-send-dfa5@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 b6a66e521a20 ("mptcp: sched: check both directions for backup")
 3ce0852c86b9 ("mptcp: enforce HoL-blocking estimation")
+ff5a0b421cb2 ("mptcp: faster active backup recovery")
+6da14d74e2bd ("mptcp: cleanup sysctl data and helpers")
+1e1d9d6f119c ("mptcp: handle pending data on closed subflow")
+71b7dec27f34 ("mptcp: less aggressive retransmission strategy")
+33d41c9cd74c ("mptcp: more accurate timeout")
+d2f77960e5b0 ("mptcp: add sysctl allow_join_initial_addr_port")
+8ce568ed06ce ("mptcp: drop tx skb cache")
+fc3c82eebf8e ("mptcp: add a new sysctl checksum_enabled")
+752e906732c6 ("mptcp: add csum_enabled in mptcp_sock")
+744ee14054c8 ("mptcp: restrict values of 'enabled' sysctl")
+804c72eeecd2 ("mptcp: support SYSCTL only if enabled")
+ae514983f2e4 ("mptcp: remove redundant initialization in pm_nl_init_net()")
+6876a18d3361 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
