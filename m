@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BE294A96F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:08:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A78694A97D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A67B11F226A9
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:08:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90272B291FA
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480D72BD0D;
-	Wed,  7 Aug 2024 14:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD34E2E419;
+	Wed,  7 Aug 2024 14:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndYnIguI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjjnMkop"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DA321373
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B83339B1
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723039717; cv=none; b=Zeln+I7n8fYAebyoRZV56UHOpwbZNRYgyOeFXEgdA9cp/oRz6OltaNhvZmQHwJGVC01adeXsGk8m+FbdS1D2TemosiSY2qkFEV3DYo9g+wK+o3f4QUQVMYaFFGc4z6l9Hq86PZ1VMP84iuWFXdWP+bVwIH2+eeYtZhjvmubYwhs=
+	t=1723039788; cv=none; b=jDEXvZk/ttx4TpRA9xr44b7so5Acu6Klv86KutFDmc29apKly6Hp0tUc1Jtgsdob3DnxVsAQ8+mqZnzp0VZI9V3iQMcjjXkkwGOnBK3j00EKNMljvr2yDS/7FkcQvM7xCoKNBQdp/X2xsDdMUkc/pHpiF8mZ05slhLgTTfjNcd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723039717; c=relaxed/simple;
-	bh=CnZhx3jxuCN9xfRUHEkNj841V34KXmbj9cHxY/kdaD0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kl0bGOv1bUlW+775MuOiFGMdAplvANUDYSgHUkpcsbH7QsrXlVghnBONR0mFPK96TyomloUXMnMprZWpRNer4E+DUyLOBGZ9dkykSFelhePdOmlyXkmUqXEAaDUydChuVfVfA/hltIQguZg5qo3Na9J+GHBp1jxIKYELco6LeuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndYnIguI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34704C32781;
-	Wed,  7 Aug 2024 14:08:36 +0000 (UTC)
+	s=arc-20240116; t=1723039788; c=relaxed/simple;
+	bh=yQiD9aro0OB+c5O0v0/slQ6PGAv17/ykgpgEX2TfpVw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PrNnasyG/9Awa3LdLiTphg8xRu+SSBiLAeReDQ8oPi3M7dCB/zPT+hL/ObKvpF2bdCnGhInIe4gGc6smIA038aPzb9jd3v+H9g1wCHDzUqSShG8AfSV/TbdJUizwTrc1inLg8h3Pl8UxSFPXHWV4ht7S6fZ91fuT+N6/EFWPX00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjjnMkop; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FBEC32781;
+	Wed,  7 Aug 2024 14:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723039716;
-	bh=CnZhx3jxuCN9xfRUHEkNj841V34KXmbj9cHxY/kdaD0=;
+	s=korg; t=1723039788;
+	bh=yQiD9aro0OB+c5O0v0/slQ6PGAv17/ykgpgEX2TfpVw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ndYnIguImvY7IgA6Jxcmr7+CjY8qFd99+qZgUfu662i689ruqJ6It5lmLN7k+DwkD
-	 huFXOQmH6yK3UzxJ9kkYE7ZRtnQHUjfj0GE587OD+TjSWoWFb6dcRanZ1ELrdkbEXA
-	 N6Y5ZzHLYWQ5oNsunPRxoWdvTocPzw5JInwIb76U=
-Subject: FAILED: patch "[PATCH] drm/i915: Fix possible int overflow in" failed to apply to 4.19-stable tree
-To: n.zhandarovich@fintech.ru,jani.nikula@intel.com,joonas.lahtinen@linux.intel.com
+	b=DjjnMkopV/wrP0kYB6xug+GhCspC/rwJHsp947EWShR1guYYSoOLUm/cJmHs6OQgW
+	 OpogJ4QQMfSgOHebpCmKO8euXjgIySBgxmzvLJdgN17Sq4z3ONcNdg0fkzHYfjSVHD
+	 BzvUr/OqoPHgwH9dleu7Ku83LFoKfiTFnto7onM4=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Attempt to avoid empty TUs when endpoint is" failed to apply to 6.10-stable tree
+To: michael.strauss@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 07 Aug 2024 16:08:27 +0200
-Message-ID: <2024080727-kiln-uniquely-fb19@gregkh>
+Date: Wed, 07 Aug 2024 16:09:44 +0200
+Message-ID: <2024080744-managing-spotted-b0f4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,29 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5b511572660190db1dc8ba412efd0be0d3781ab6
+git cherry-pick -x 37256027b45fe48d1cd23954db90d1c53401e29a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080727-kiln-uniquely-fb19@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080744-managing-spotted-b0f4@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-5b5115726601 ("drm/i915: Fix possible int overflow in skl_ddi_calculate_wrpll()")
-4d6e86fbecbb ("drm/i915: Introduce some local PLL state variables")
-25591b66d0a4 ("drm/i915: s/dev_priv/i915/ in the shared_dpll code")
-51d3e6292719 ("drm/i915: Introduce for_each_shared_dpll()")
-99e5a010e815 ("drm/i915: Decouple I915_NUM_PLLS from PLL IDs")
-027c57017795 ("drm/i915: Stop requiring PLL index == PLL ID")
-461f35f01446 ("Merge tag 'drm-next-2023-08-30' of git://anongit.freedesktop.org/drm/drm")
+37256027b45f ("drm/amd/display: Attempt to avoid empty TUs when endpoint is DPIA")
+532a0d2ad292 ("drm/amd/display: Revert "dc: Keep VBios pixel rate div setting util next mode set"")
+47745acc5e8d ("drm/amd/display: Add trigger FIFO resync path for DCN35")
+4d4d3ff16db2 ("drm/amd/display: Keep VBios pixel rate div setting util next mode set")
 
 thanks,
 
@@ -83,65 +80,135 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5b511572660190db1dc8ba412efd0be0d3781ab6 Mon Sep 17 00:00:00 2001
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Date: Mon, 29 Jul 2024 10:40:35 -0700
-Subject: [PATCH] drm/i915: Fix possible int overflow in
- skl_ddi_calculate_wrpll()
+From 37256027b45fe48d1cd23954db90d1c53401e29a Mon Sep 17 00:00:00 2001
+From: Michael Strauss <michael.strauss@amd.com>
+Date: Tue, 7 May 2024 12:03:15 -0400
+Subject: [PATCH] drm/amd/display: Attempt to avoid empty TUs when endpoint is
+ DPIA
 
-On the off chance that clock value ends up being too high (by means
-of skl_ddi_calculate_wrpll() having been called with big enough
-value of crtc_state->port_clock * 1000), one possible consequence
-may be that the result will not be able to fit into signed int.
+[WHY]
+Empty SST TUs are illegal to transmit over a USB4 DP tunnel.
+Current policy is to configure stream encoder to pack 2 pixels per pclk
+even when ODM combine is not in use, allowing seamless dynamic ODM
+reconfiguration. However, in extreme edge cases where average pixel
+count per TU is less than 2, this can lead to unexpected empty TU
+generation during compliance testing. For example, VIC 1 with a 1xHBR3
+link configuration will average 1.98 pix/TU.
 
-Fix this issue by moving conversion of clock parameter from kHz to Hz
-into the body of skl_ddi_calculate_wrpll(), as well as casting the
-same parameter to u64 type while calculating the value for AFE clock.
-This both mitigates the overflow problem and avoids possible erroneous
-integer promotion mishaps.
+[HOW]
+Calculate average pixel count per TU, and block 2 pixels per clock if
+endpoint is a DPIA tunnel and pixel clock is low enough that we will
+never require 2:1 ODM combine.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+Cc: stable@vger.kernel.org # 6.6+
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Michael Strauss <michael.strauss@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-Fixes: 82d354370189 ("drm/i915/skl: Implementation of SKL DPLL programming")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240729174035.25727-1-n.zhandarovich@fintech.ru
-(cherry picked from commit 833cf12846aa19adf9b76bc79c40747726f3c0c1)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-
-diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-index 90998b037349..292d163036b1 100644
---- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-+++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-@@ -1658,7 +1658,7 @@ static void skl_wrpll_params_populate(struct skl_wrpll_params *params,
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+index 4f87316e1318..0602921399cd 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -1529,3 +1529,75 @@ void dcn35_set_long_vblank(struct pipe_ctx **pipe_ctx,
+ 		}
+ 	}
  }
++
++static bool should_avoid_empty_tu(struct pipe_ctx *pipe_ctx)
++{
++	/* Calculate average pixel count per TU, return false if under ~2.00 to
++	 * avoid empty TUs. This is only required for DPIA tunneling as empty TUs
++	 * are legal to generate for native DP links. Assume TU size 64 as there
++	 * is currently no scenario where it's reprogrammed from HW default.
++	 * MTPs have no such limitation, so this does not affect MST use cases.
++	 */
++	unsigned int pix_clk_mhz;
++	unsigned int symclk_mhz;
++	unsigned int avg_pix_per_tu_x1000;
++	unsigned int tu_size_bytes = 64;
++	struct dc_crtc_timing *timing = &pipe_ctx->stream->timing;
++	struct dc_link_settings *link_settings = &pipe_ctx->link_config.dp_link_settings;
++	const struct dc *dc = pipe_ctx->stream->link->dc;
++
++	if (pipe_ctx->stream->link->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
++		return false;
++
++	// Not necessary for MST configurations
++	if (pipe_ctx->stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST)
++		return false;
++
++	pix_clk_mhz = timing->pix_clk_100hz / 10000;
++
++	// If this is true, can't block due to dynamic ODM
++	if (pix_clk_mhz > dc->clk_mgr->bw_params->clk_table.entries[0].dispclk_mhz)
++		return false;
++
++	switch (link_settings->link_rate) {
++	case LINK_RATE_LOW:
++		symclk_mhz = 162;
++		break;
++	case LINK_RATE_HIGH:
++		symclk_mhz = 270;
++		break;
++	case LINK_RATE_HIGH2:
++		symclk_mhz = 540;
++		break;
++	case LINK_RATE_HIGH3:
++		symclk_mhz = 810;
++		break;
++	default:
++		// We shouldn't be tunneling any other rates, something is wrong
++		ASSERT(0);
++		return false;
++	}
++
++	avg_pix_per_tu_x1000 = (1000 * pix_clk_mhz * tu_size_bytes)
++		/ (symclk_mhz * link_settings->lane_count);
++
++	// Add small empirically-decided margin to account for potential jitter
++	return (avg_pix_per_tu_x1000 < 2020);
++}
++
++bool dcn35_is_dp_dig_pixel_rate_div_policy(struct pipe_ctx *pipe_ctx)
++{
++	struct dc *dc = pipe_ctx->stream->ctx->dc;
++
++	if (!is_h_timing_divisible_by_2(pipe_ctx->stream))
++		return false;
++
++	if (should_avoid_empty_tu(pipe_ctx))
++		return false;
++
++	if (dc_is_dp_signal(pipe_ctx->stream->signal) && !dc->link_srv->dp_is_128b_132b_signal(pipe_ctx) &&
++		dc->debug.enable_dp_dig_pixel_rate_div_policy)
++		return true;
++
++	return false;
++}
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h
+index bc05beba5f2c..e27b3609020f 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h
+@@ -97,4 +97,6 @@ void dcn35_set_static_screen_control(struct pipe_ctx **pipe_ctx,
+ void dcn35_set_long_vblank(struct pipe_ctx **pipe_ctx,
+ 		int num_pipes, uint32_t v_total_min, uint32_t v_total_max);
  
- static int
--skl_ddi_calculate_wrpll(int clock /* in Hz */,
-+skl_ddi_calculate_wrpll(int clock,
- 			int ref_clock,
- 			struct skl_wrpll_params *wrpll_params)
- {
-@@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
- 	};
- 	unsigned int dco, d, i;
- 	unsigned int p0, p1, p2;
--	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
-+	u64 afe_clock = (u64)clock * 1000 * 5; /* AFE Clock is 5x Pixel clock, in Hz */
- 
- 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
- 		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
-@@ -1808,7 +1808,7 @@ static int skl_ddi_hdmi_pll_dividers(struct intel_crtc_state *crtc_state)
- 	struct skl_wrpll_params wrpll_params = {};
- 	int ret;
- 
--	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
-+	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock,
- 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
- 	if (ret)
- 		return ret;
++bool dcn35_is_dp_dig_pixel_rate_div_policy(struct pipe_ctx *pipe_ctx);
++
+ #endif /* __DC_HWSS_DCN35_H__ */
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
+index 30e6a6398839..428912f37129 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
+@@ -161,7 +161,7 @@ static const struct hwseq_private_funcs dcn35_private_funcs = {
+ 	.setup_hpo_hw_control = dcn35_setup_hpo_hw_control,
+ 	.calculate_dccg_k1_k2_values = dcn32_calculate_dccg_k1_k2_values,
+ 	.resync_fifo_dccg_dio = dcn314_resync_fifo_dccg_dio,
+-	.is_dp_dig_pixel_rate_div_policy = dcn32_is_dp_dig_pixel_rate_div_policy,
++	.is_dp_dig_pixel_rate_div_policy = dcn35_is_dp_dig_pixel_rate_div_policy,
+ 	.dsc_pg_control = dcn35_dsc_pg_control,
+ 	.dsc_pg_status = dcn32_dsc_pg_status,
+ 	.enable_plane = dcn35_enable_plane,
 
 
