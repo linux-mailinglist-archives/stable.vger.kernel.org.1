@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-65868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1140694AC49
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA8394AC0E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41FF91C22157
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A4AC281D34
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F1482C8E;
-	Wed,  7 Aug 2024 15:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D285582499;
+	Wed,  7 Aug 2024 15:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iynGaEqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfFnWbV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053F082499;
-	Wed,  7 Aug 2024 15:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9174A823A9;
+	Wed,  7 Aug 2024 15:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043621; cv=none; b=NPaSLAndTr/me1iQlmX+LX/l680OsCYD9hZHn50pJZCqk4nEHKhRUikL3eiaOg6iIpigESFRYKCinFn4fo6a/a+mhpWTCl36l+8VCd0bdn1dsyj1Jdz75Wy1N5T/bN5RC0DJVSwiI96QOf4GoIFLA0cmtOs6HjvixTSQq6qZt18=
+	t=1723043495; cv=none; b=Pjx0HOEdzIF1mhxXyyU8YYbflpEgjmnIzBwlYkHtzbDfN6gwp8IRoR5tt6ois+RZIKSnVuGF13iS897LIzjy2v5Ny0/g0wVyRbodTodw7OdqHF/7p7LYj3PqIRqyOmKZ2+J4H0OyLPFpizgtCWmrmbQDi0Kd1yNU/JMjHLxARtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043621; c=relaxed/simple;
-	bh=Svfokq+rrJghC83j1sVymGbbi73pkeg5bQhwdUbPEQ8=;
+	s=arc-20240116; t=1723043495; c=relaxed/simple;
+	bh=QQMmiod5Qj82muUCv+WgqkDYlSVhjscPOTrtycngbzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JV2obnVaPNLw2McN4JMUg4kG+Ofh6BnLf2/HfqGmhideO+ETzApaIq8RcG44ti+2IUk9RH2cUR7fCQckfCLmr1OeQ9XQKwVDzYwEXhnwstunzyXzEipqG6WqwbylCZ53lwmiqy15MQilchgmCwjfYrECPuNejGuqyjhX7YfLAD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iynGaEqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD7CC32781;
-	Wed,  7 Aug 2024 15:13:40 +0000 (UTC)
+	 MIME-Version; b=kGDwtdfBYsj6hiTBuW2l+1lHCJ6NZzCfUKJXC4KsWD2EwW953HLRDirxKLCd/By1EhP3DGYb23k949VuFnJDASb745/xKwUHeU0X+Y2cUfJKFFIr2EC82D6DxYJCXmVwB5f7Ke78Q8IIDLq5EXw43ObO+uPOi6GEQMSiGeWCGAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfFnWbV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F4EC32781;
+	Wed,  7 Aug 2024 15:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043620;
-	bh=Svfokq+rrJghC83j1sVymGbbi73pkeg5bQhwdUbPEQ8=;
+	s=korg; t=1723043495;
+	bh=QQMmiod5Qj82muUCv+WgqkDYlSVhjscPOTrtycngbzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iynGaEqCvYSFEkRSf4baEd85v/y0UuddjnZX7EqDEaylskODmVxTl7GL94G5f37zj
-	 1JEpu99qNMCxDBsKtlIZvd/8iqXFzfA6zhcy+x33Dli5rZVusmtMSiV+aZwyqrT23l
-	 KdkVixB2JOAe/w0ox2V5ITsTVS5OkdCNm9WolH/k=
+	b=ZfFnWbV1cMvLGIhnkQcqFGnOrRORa04XaJ7UM/TyBYm9MmkeIgtKa50WoYULqGsu+
+	 DJlwlevg3ahk6D9tWee/qETU2OQf6Oo7XvZ7ba5V0tTF3jfVVOzJmFtmRblrcRyYAn
+	 RnJWoyfKqleOYrldgbMN0tvhczL+iqZk2ZLjtFdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Jiri Kosina <jkosina@suse.cz>,
+	Chris Mi <cmi@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 38/86] HID: amd_sfh: Remove duplicate cleanup
+Subject: [PATCH 6.6 085/121] net/mlx5e: Fix CT entry update leaks of modify header context
 Date: Wed,  7 Aug 2024 17:00:17 +0200
-Message-ID: <20240807150040.490068613@linuxfoundation.org>
+Message-ID: <20240807150022.191941836@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Chris Mi <cmi@nvidia.com>
 
-[ Upstream commit e295709054d59e35be44794dd125efee528ccceb ]
+[ Upstream commit 025f2b85a5e5a46df14ecf162c3c80a957a36d0b ]
 
-A number of duplicate cleanups are performed that are not necessary. As a
-result, remove duplicate cleanups and use common cleanup.
+The cited commit allocates a new modify header to replace the old
+one when updating CT entry. But if failed to allocate a new one, eg.
+exceed the max number firmware can support, modify header will be
+an error pointer that will trigger a panic when deallocating it. And
+the old modify header point is copied to old attr. When the old
+attr is freed, the old modify header is lost.
 
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Stable-dep-of: 8031b001da70 ("HID: amd_sfh: Move sensor discovery before HID device initialization")
+Fix it by restoring the old attr to attr when failed to allocate a
+new modify header context. So when the CT entry is freed, the right
+modify header context will be freed. And the panic of accessing
+error pointer is also fixed.
+
+Fixes: 94ceffb48eac ("net/mlx5e: Implement CT entry update")
+Signed-off-by: Chris Mi <cmi@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-8-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/amd-sfh-hid/amd_sfh_client.c | 27 ++++--------------------
- 1 file changed, 4 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_client.c b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-index c751d12f5df89..34eb419b225ed 100644
---- a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-+++ b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-@@ -291,18 +291,8 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
- 			cl_data->is_any_sensor_enabled = true;
- 			cl_data->sensor_sts[i] = SENSOR_ENABLED;
- 			rc = amdtp_hid_probe(cl_data->cur_hid_dev, cl_data);
--			if (rc) {
--				mp2_ops->stop(privdata, cl_data->sensor_idx[i]);
--				status = amd_sfh_wait_for_response
--					(privdata, cl_data->sensor_idx[i], SENSOR_DISABLED);
--				if (status != SENSOR_ENABLED)
--					cl_data->sensor_sts[i] = SENSOR_DISABLED;
--				dev_dbg(dev, "sid 0x%x (%s) status 0x%x\n",
--					cl_data->sensor_idx[i],
--					get_sensor_name(cl_data->sensor_idx[i]),
--					cl_data->sensor_sts[i]);
-+			if (rc)
- 				goto cleanup;
--			}
- 		} else {
- 			cl_data->sensor_sts[i] = SENSOR_DISABLED;
- 			dev_dbg(dev, "sid 0x%x (%s) status 0x%x\n",
-@@ -316,25 +306,16 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
- 	}
- 	if (!cl_data->is_any_sensor_enabled ||
- 	   (mp2_ops->discovery_status && mp2_ops->discovery_status(privdata) == 0)) {
--		amd_sfh_hid_client_deinit(privdata);
--		for (i = 0; i < cl_data->num_hid_devices; i++) {
--			devm_kfree(dev, cl_data->feature_report[i]);
--			devm_kfree(dev, in_data->input_report[i]);
--			devm_kfree(dev, cl_data->report_descr[i]);
--		}
- 		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n", cl_data->is_any_sensor_enabled);
--		return -EOPNOTSUPP;
-+		rc = -EOPNOTSUPP;
-+		goto cleanup;
- 	}
- 	schedule_delayed_work(&cl_data->work_buffer, msecs_to_jiffies(AMD_SFH_IDLE_LOOP));
- 	return 0;
- 
- cleanup:
-+	amd_sfh_hid_client_deinit(privdata);
- 	for (i = 0; i < cl_data->num_hid_devices; i++) {
--		if (in_data->sensor_virt_addr[i]) {
--			dma_free_coherent(&privdata->pdev->dev, 8 * sizeof(int),
--					  in_data->sensor_virt_addr[i],
--					  cl_data->sensor_dma_addr[i]);
--		}
- 		devm_kfree(dev, cl_data->feature_report[i]);
- 		devm_kfree(dev, in_data->input_report[i]);
- 		devm_kfree(dev, cl_data->report_descr[i]);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+index fadfa8b50bebe..8c4e3ecef5901 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+@@ -920,6 +920,7 @@ mlx5_tc_ct_entry_replace_rule(struct mlx5_tc_ct_priv *ct_priv,
+ 	mlx5_tc_ct_entry_destroy_mod_hdr(ct_priv, zone_rule->attr, mh);
+ 	mlx5_put_label_mapping(ct_priv, attr->ct_attr.ct_labels_id);
+ err_mod_hdr:
++	*attr = *old_attr;
+ 	kfree(old_attr);
+ err_attr:
+ 	kvfree(spec);
 -- 
 2.43.0
 
