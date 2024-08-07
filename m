@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-65673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0692E94AB63
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CAD94AC62
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375491C2179D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6E4A1F255BF
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C47D85626;
-	Wed,  7 Aug 2024 15:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF2484A27;
+	Wed,  7 Aug 2024 15:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJf4k7ud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfszmJ+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE48C3EA9A;
-	Wed,  7 Aug 2024 15:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD6A3A1C4;
+	Wed,  7 Aug 2024 15:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043099; cv=none; b=SkSaJFFl3w+N/at+iAXlcnd2W0Q75SqNwvmkuO3GbMg9LKXp2+RFWYx8MTmre/PnMXDLqa1YxqM5GlRyGrmnToSwJqaGT22XP0+eCBnJtfLoXgCT7MXLiWnl7xXo/1mybbuZd3cebPnEWgcYTkeWAWtf7PtmWvQ8I9CMGSqQj/c=
+	t=1723043674; cv=none; b=K8KC7tzZCuBQA2OXBVi+4KnXSOVGp+ihwZyhZtM2iR/vURv20qPbPphczi41Yt36vjrO80Gf64URGIdXNzwlMgakO9bnhB0RfSfbpLjSfFn3AKbpke4rU+Ap4w7WAv0oiXrt/6pLnye8pOcJdEAbDPulLHxnmstzNWy6plM4tPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043099; c=relaxed/simple;
-	bh=cCH3rqr5R9qD9eq4gUI+jisyPwAVAz7XVun+67Tr598=;
+	s=arc-20240116; t=1723043674; c=relaxed/simple;
+	bh=c1atkGh9+dKIbRa73Sz3iCabppyCJtHOoHxQD8dU+DI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LN041Gf86g1x07DgVenBURoO8rJFn+veEemjJsAHJIpm9zNR1q4s2t84DM9QtAhaos0u+g5eDrqIXDwHBnPPnX1ivASMy+9BPX3omB3aoi0mxzlFH83shsubWWVlkuwsnuDiQSZ1uzzzzKw6/cVH3m7a7+HSSJChA5YUUHuHCFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJf4k7ud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F08C4AF0B;
-	Wed,  7 Aug 2024 15:04:59 +0000 (UTC)
+	 MIME-Version; b=AZE3UpXsZEHJFa9Hck7LvDQyw6ZdCmqjULSz0loDjrLp7uM1LkaEnTo/ZjolWX9kyr5DmSO/vXVOO/JQOqWlwLdvdvJbvbQBI5tRsi1pGY7dzkkii8DCNLkPW18aXCEZkvhZ8YAx4xBfiDhL9AG85+ukUyFJa5dG3CE7hkRWq9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfszmJ+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD91CC32781;
+	Wed,  7 Aug 2024 15:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043099;
-	bh=cCH3rqr5R9qD9eq4gUI+jisyPwAVAz7XVun+67Tr598=;
+	s=korg; t=1723043674;
+	bh=c1atkGh9+dKIbRa73Sz3iCabppyCJtHOoHxQD8dU+DI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJf4k7udv1e8700hI8Ib6YMHXiCXim7CxWgloOWxziVyUh1r9OJKVseZJWFl15W5Y
-	 loZ1+XdoD660QVC3jlkXf0oHvWPi5Agzt3rVGmkihVUoaYU97vhJlyzjvtCsl3CHCT
-	 eo6Kd52QLY5BzCsKCs7Oz4ET9egGbG+cmsGNBXOc=
+	b=OfszmJ+iItdDry4rcBROUriDrWC9f9SRImODZL/2aGmZbnwVLF68rXGKttq9iq750
+	 uB97tNk0WmHSpr572+NJEcnSqITSGa2a1nUi36hEIMqaqdb5JJdbZ+g0hpnTcsg9Xm
+	 hTvZQ2D33bhMEmBVwU30JSdaFNh5Y2ATOc5kQ/Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Blazej Kucman <blazej.kucman@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.10 090/123] PCI: pciehp: Retain Power Indicator bits for userspace indicators
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 30/86] drm/udl: Various improvements to the connector
 Date: Wed,  7 Aug 2024 17:00:09 +0200
-Message-ID: <20240807150023.724114434@linuxfoundation.org>
+Message-ID: <20240807150040.233363955@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Blazej Kucman <blazej.kucman@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 5560a612c20d3daacbf5da7913deefa5c31742f4 upstream.
+[ Upstream commit 43858eb41e0dde6e48565c13cdabac95b5d9df90 ]
 
-The sysfs "attention" file normally controls the Slot Control Attention
-Indicator with 0 (off), 1 (on), 2 (blink) settings.
+Add style fixes, better error handling and reporting, and minor
+clean-up changes to the connector code before moving the code to
+the rest of the modesetting pipeline.
 
-576243b3f9ea ("PCI: pciehp: Allow exclusive userspace control of
-indicators") added pciehp_set_raw_indicator_status() to allow userspace to
-directly control all four bits in both the Attention Indicator and the
-Power Indicator fields via the "attention" file.
-
-This is used on Intel VMD bridges so utilities like "ledmon" can use sysfs
-"attention" to control up to 16 indicators for NVMe device RAID status.
-
-abaaac4845a0 ("PCI: hotplug: Use FIELD_GET/PREP()") broke this by masking
-the sysfs data with PCI_EXP_SLTCTL_AIC, which discards the upper two bits
-intended for the Power Indicator Control field (PCI_EXP_SLTCTL_PIC).
-
-For NVMe devices behind an Intel VMD, ledmon settings that use the
-PCI_EXP_SLTCTL_PIC bits, i.e., ATTENTION_REBUILD (0x5), ATTENTION_LOCATE
-(0x7), ATTENTION_FAILURE (0xD), ATTENTION_OFF (0xF), no longer worked
-correctly.
-
-Mask with PCI_EXP_SLTCTL_AIC | PCI_EXP_SLTCTL_PIC to retain both the
-Attention Indicator and the Power Indicator bits.
-
-Fixes: abaaac4845a0 ("PCI: hotplug: Use FIELD_GET/PREP()")
-Link: https://lore.kernel.org/r/20240722141440.7210-1-blazej.kucman@intel.com
-Signed-off-by: Blazej Kucman <blazej.kucman@intel.com>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org	# v6.7+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20221006095355.23579-5-tzimmermann@suse.de
+Stable-dep-of: 5aed213c7c6c ("drm/udl: Remove DRM_CONNECTOR_POLL_HPD")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pciehp_hpc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/udl/udl_connector.c | 64 ++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
-index 061f01f60db4..736ad8baa2a5 100644
---- a/drivers/pci/hotplug/pciehp_hpc.c
-+++ b/drivers/pci/hotplug/pciehp_hpc.c
-@@ -485,7 +485,9 @@ int pciehp_set_raw_indicator_status(struct hotplug_slot *hotplug_slot,
- 	struct pci_dev *pdev = ctrl_dev(ctrl);
+diff --git a/drivers/gpu/drm/udl/udl_connector.c b/drivers/gpu/drm/udl/udl_connector.c
+index cb3d6820eaf93..538b47ffa67fa 100644
+--- a/drivers/gpu/drm/udl/udl_connector.c
++++ b/drivers/gpu/drm/udl/udl_connector.c
+@@ -15,56 +15,64 @@
+ #include "udl_connector.h"
+ #include "udl_drv.h"
  
- 	pci_config_pm_runtime_get(pdev);
--	pcie_write_cmd_nowait(ctrl, FIELD_PREP(PCI_EXP_SLTCTL_AIC, status),
+-static int udl_get_edid_block(void *data, u8 *buf, unsigned int block,
+-			       size_t len)
++static int udl_get_edid_block(void *data, u8 *buf, unsigned int block, size_t len)
+ {
+-	int ret, i;
+-	u8 *read_buff;
+ 	struct udl_device *udl = data;
++	struct drm_device *dev = &udl->drm;
+ 	struct usb_device *udev = udl_to_usb_device(udl);
++	u8 *read_buff;
++	int ret;
++	size_t i;
+ 
+ 	read_buff = kmalloc(2, GFP_KERNEL);
+ 	if (!read_buff)
+-		return -1;
++		return -ENOMEM;
+ 
+ 	for (i = 0; i < len; i++) {
+ 		int bval = (i + block * EDID_LENGTH) << 8;
 +
-+	/* Attention and Power Indicator Control bits are supported */
-+	pcie_write_cmd_nowait(ctrl, FIELD_PREP(PCI_EXP_SLTCTL_AIC | PCI_EXP_SLTCTL_PIC, status),
- 			      PCI_EXP_SLTCTL_AIC | PCI_EXP_SLTCTL_PIC);
- 	pci_config_pm_runtime_put(pdev);
+ 		ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
+ 				      0x02, (0x80 | (0x02 << 5)), bval,
+ 				      0xA1, read_buff, 2, USB_CTRL_GET_TIMEOUT);
+-		if (ret < 1) {
+-			DRM_ERROR("Read EDID byte %d failed err %x\n", i, ret);
+-			kfree(read_buff);
+-			return -1;
++		if (ret < 0) {
++			drm_err(dev, "Read EDID byte %zu failed err %x\n", i, ret);
++			goto err_kfree;
++		} else if (ret < 1) {
++			ret = -EIO;
++			drm_err(dev, "Read EDID byte %zu failed\n", i);
++			goto err_kfree;
+ 		}
++
+ 		buf[i] = read_buff[1];
+ 	}
+ 
+ 	kfree(read_buff);
++
  	return 0;
++
++err_kfree:
++	kfree(read_buff);
++	return ret;
+ }
+ 
+-static int udl_get_modes(struct drm_connector *connector)
++static int udl_connector_helper_get_modes(struct drm_connector *connector)
+ {
+ 	struct udl_connector *udl_connector = to_udl_connector(connector);
+ 
+ 	drm_connector_update_edid_property(connector, udl_connector->edid);
+ 	if (udl_connector->edid)
+ 		return drm_add_edid_modes(connector, udl_connector->edid);
++
+ 	return 0;
+ }
+ 
+-static enum drm_connector_status
+-udl_detect(struct drm_connector *connector, bool force)
++static enum drm_connector_status udl_connector_detect(struct drm_connector *connector, bool force)
+ {
+ 	struct udl_device *udl = to_udl(connector->dev);
+ 	struct udl_connector *udl_connector = to_udl_connector(connector);
+ 
+-	/* cleanup previous edid */
+-	if (udl_connector->edid != NULL) {
+-		kfree(udl_connector->edid);
+-		udl_connector->edid = NULL;
+-	}
++	/* cleanup previous EDID */
++	kfree(udl_connector->edid);
+ 
+ 	udl_connector->edid = drm_do_get_edid(connector, udl_get_edid_block, udl);
+ 	if (!udl_connector->edid)
+@@ -79,38 +87,46 @@ static void udl_connector_destroy(struct drm_connector *connector)
+ 
+ 	drm_connector_cleanup(connector);
+ 	kfree(udl_connector->edid);
+-	kfree(connector);
++	kfree(udl_connector);
+ }
+ 
+ static const struct drm_connector_helper_funcs udl_connector_helper_funcs = {
+-	.get_modes = udl_get_modes,
++	.get_modes = udl_connector_helper_get_modes,
+ };
+ 
+ static const struct drm_connector_funcs udl_connector_funcs = {
+ 	.reset = drm_atomic_helper_connector_reset,
+-	.detect = udl_detect,
++	.detect = udl_connector_detect,
+ 	.fill_modes = drm_helper_probe_single_connector_modes,
+ 	.destroy = udl_connector_destroy,
+ 	.atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
+-	.atomic_destroy_state   = drm_atomic_helper_connector_destroy_state,
++	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
+ };
+ 
+ struct drm_connector *udl_connector_init(struct drm_device *dev)
+ {
+ 	struct udl_connector *udl_connector;
+ 	struct drm_connector *connector;
++	int ret;
+ 
+ 	udl_connector = kzalloc(sizeof(*udl_connector), GFP_KERNEL);
+ 	if (!udl_connector)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	connector = &udl_connector->connector;
+-	drm_connector_init(dev, connector, &udl_connector_funcs,
+-			   DRM_MODE_CONNECTOR_VGA);
++	ret = drm_connector_init(dev, connector, &udl_connector_funcs, DRM_MODE_CONNECTOR_VGA);
++	if (ret)
++		goto err_kfree;
++
+ 	drm_connector_helper_add(connector, &udl_connector_helper_funcs);
+ 
+ 	connector->polled = DRM_CONNECTOR_POLL_HPD |
+-		DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
++			    DRM_CONNECTOR_POLL_CONNECT |
++			    DRM_CONNECTOR_POLL_DISCONNECT;
+ 
+ 	return connector;
++
++err_kfree:
++	kfree(udl_connector);
++	return ERR_PTR(ret);
+ }
 -- 
-2.46.0
+2.43.0
 
 
 
