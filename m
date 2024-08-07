@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-65867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4664194AC48
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9339094AB70
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0145B285248
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C40DE1C2265E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCB984A5E;
-	Wed,  7 Aug 2024 15:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCF478C92;
+	Wed,  7 Aug 2024 15:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1s9ZwGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kI15simX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8778F823AF;
-	Wed,  7 Aug 2024 15:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF4883CD9;
+	Wed,  7 Aug 2024 15:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043618; cv=none; b=omu5GNGirfp2cua8Es0QFYiloYx/wEBI1BQrWCGxBuZe8Q69syYX93fgS+34cAFFF5q3UVETx4Pbw8T2oHkhQyogSA7yKchsM4RMh/4pYrfg4YEAshmdokAroNM93UYSi/ypEyBzpqDfBz1axzgp3eGaT+46VyYcczOz3VZ2STA=
+	t=1723043122; cv=none; b=hg7UquNyqIBXEqH4cIfdJUBzNRPk/esB35otGTnFX0jRuLlM5DlqCogfDAo0VWAKxf+C5N5ftQIG+gAER21HAFv9Fg10cRoH2O0L7UUOPjh7ZczEMUPk4h4sMseOmspUJScNzLq3DFQG9ByPIuokxp0Wktc5oaGv9Li+P9jCGWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043618; c=relaxed/simple;
-	bh=G7OZXzs8sEiOGUX6xNdkwvkWfR40kgnNX+yilyw0v9I=;
+	s=arc-20240116; t=1723043122; c=relaxed/simple;
+	bh=0ZMDucG3wYAKmvd87Zf4qfIpTZCc+9mj99SDwu2t2MU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejJhcdNB1Vv1zmSKVQSodBma2wZfcv90x3kw0kNiydv7Adc02a9TyAOnSX12/o7pzs+bGSZwfdHozAmBxETJ5Wd3oJ3k2ES0UpWuydHWhJa51u7TVn9JFWqvq5AAiSdyD4OEKd+a1CfMHeIAb7CCFl4cwYprNK/WSQRtEEiJmM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1s9ZwGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D59C32781;
-	Wed,  7 Aug 2024 15:13:37 +0000 (UTC)
+	 MIME-Version; b=iiff1BGFJXLdumcSIssCzQElfGDGjnlZZtNP3bo8SjteE684uXxBCpnrZVsbAWEjhFWYue63ZiEMrGyF7J1XEIc308Xp19811fmuJFvWkvB6/8DDF6syNDVrit5djzS7aqNoclGBOPVgw7NmYS8VofMNXavG0xx1QSsY2Z6NOdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kI15simX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F13EC32781;
+	Wed,  7 Aug 2024 15:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043618;
-	bh=G7OZXzs8sEiOGUX6xNdkwvkWfR40kgnNX+yilyw0v9I=;
+	s=korg; t=1723043122;
+	bh=0ZMDucG3wYAKmvd87Zf4qfIpTZCc+9mj99SDwu2t2MU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1s9ZwGuefa3IqyFV5IV3V1Qe8z76RHxpy0+YIZqSyuQZ5d8C0Q2ZNEGed37b9yeD
-	 xxSQsnvVFUaISLrmIhvTaKvFx8CG/1ah5TTes6rVvfX2UApvIBmHjlT7sLmm7nYGtl
-	 L62tCHVjU2jNg5jlKCAFLciPpkRRypLGEjS9bfcc=
+	b=kI15simXG70bjp7eWxOoW3QkJCeSTfcmg53q5dE7wxx4ELEl1R5pyMZ0HOgbZo86d
+	 zB2dgp9BIjHt8N+botfrlBOMNQG3CgVK3Wwy3XpUzIhJpIKVhzmNRlSNDjIGIursKS
+	 AraVuhuGWrQTP3Txopu76w4IYd9DyKHJ78/Ca8eU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 37/86] MIPS: dts: loongson: Fix ls2k1000-rtc interrupt
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.10 097/123] drm/i915: Fix possible int overflow in skl_ddi_calculate_wrpll()
 Date: Wed,  7 Aug 2024 17:00:16 +0200
-Message-ID: <20240807150040.451901921@linuxfoundation.org>
+Message-ID: <20240807150023.971084132@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit f70fd92df7529e7283e02a6c3a2510075f13ba30 ]
+commit 5b511572660190db1dc8ba412efd0be0d3781ab6 upstream.
 
-The correct interrupt line for RTC is line 8 on liointc1.
+On the off chance that clock value ends up being too high (by means
+of skl_ddi_calculate_wrpll() having been called with big enough
+value of crtc_state->port_clock * 1000), one possible consequence
+may be that the result will not be able to fit into signed int.
 
-Fixes: e47084e116fc ("MIPS: Loongson64: DTS: Add RTC support to Loongson-2K1000")
+Fix this issue by moving conversion of clock parameter from kHz to Hz
+into the body of skl_ddi_calculate_wrpll(), as well as casting the
+same parameter to u64 type while calculating the value for AFE clock.
+This both mitigates the overflow problem and avoids possible erroneous
+integer promotion mishaps.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 82d354370189 ("drm/i915/skl: Implementation of SKL DPLL programming")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240729174035.25727-1-n.zhandarovich@fintech.ru
+(cherry picked from commit 833cf12846aa19adf9b76bc79c40747726f3c0c1)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dpll_mgr.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-index eec8243be6499..cc7747c5f21f3 100644
---- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-+++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-@@ -99,8 +99,8 @@ liointc1: interrupt-controller@1fe11440 {
- 		rtc0: rtc@1fe07800 {
- 			compatible = "loongson,ls2k1000-rtc";
- 			reg = <0 0x1fe07800 0 0x78>;
--			interrupt-parent = <&liointc0>;
--			interrupts = <60 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-parent = <&liointc1>;
-+			interrupts = <8 IRQ_TYPE_LEVEL_HIGH>;
- 		};
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -1658,7 +1658,7 @@ static void skl_wrpll_params_populate(st
+ }
  
- 		uart0: serial@1fe00000 {
--- 
-2.43.0
-
+ static int
+-skl_ddi_calculate_wrpll(int clock /* in Hz */,
++skl_ddi_calculate_wrpll(int clock,
+ 			int ref_clock,
+ 			struct skl_wrpll_params *wrpll_params)
+ {
+@@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in
+ 	};
+ 	unsigned int dco, d, i;
+ 	unsigned int p0, p1, p2;
+-	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
++	u64 afe_clock = (u64)clock * 1000 * 5; /* AFE Clock is 5x Pixel clock, in Hz */
+ 
+ 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
+ 		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
+@@ -1808,7 +1808,7 @@ static int skl_ddi_hdmi_pll_dividers(str
+ 	struct skl_wrpll_params wrpll_params = {};
+ 	int ret;
+ 
+-	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
++	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock,
+ 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
+ 	if (ret)
+ 		return ret;
 
 
 
