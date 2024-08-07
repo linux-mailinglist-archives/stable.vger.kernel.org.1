@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA2494ABC9
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5695494AB40
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5902C1F25B01
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8795C1C22434
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40DD80BF8;
-	Wed,  7 Aug 2024 15:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C132412CDBA;
+	Wed,  7 Aug 2024 15:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iFYMV/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFovs5J5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716182AF07;
-	Wed,  7 Aug 2024 15:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5616212C81F;
+	Wed,  7 Aug 2024 15:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043336; cv=none; b=Qryt/Eki5Phxt6N7vJS/oxcFSf2csFIucKZRIAQXFHG3gWo8zuD8U5osGBTxGyAiCcVcue0jch5N6mpKdvOHf6VZvVNsGdGkrbnVr0uGkAJU6SJ2F5YbfhDXaQAuxXppkFHkX36XDfMjkFUCnzgzhAN9BzBz2nclX7QSEfJ9lH8=
+	t=1723043038; cv=none; b=g4gqjejuOwJdM+qLFp+/RoPp6ZTOypfCWf9y3BCC7CpuWg0ldQ0rjGvsdGzHmLdKAh7B1d3/zoM1nqX6BcbL/V7Zyd4V3dTIML6U1R2w9kFW3E9oWumbc0cPMb8w89qbGth9lfYJMw632ABGxigrexfuRJLH1Nb2LCaI6JM2jFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043336; c=relaxed/simple;
-	bh=ULQR64GHZFYVUyN69PjoDXC+syyjvEijkql0tnxQXJc=;
+	s=arc-20240116; t=1723043038; c=relaxed/simple;
+	bh=eJy6Fo+ddtW4ZjLeaZIVmPTin1B7TVGEMEXA2ym9eeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2Vf7RQbrXmdIH+r/AzfhYll3OuJ8dG4iSzuV4Qt+kZiq4ysywbF/x/Uz/mQ/ThC32T3/Rcmuav1ntgKphImzMzMPbhXjQHI9OY4B+IiBD1dAj3UybbosLeCWkGKKlU8xuD1mj4cQxBK5C4POiLe1pRK8A5q/5R1P42Bv6+1Dso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iFYMV/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D69C32781;
-	Wed,  7 Aug 2024 15:08:55 +0000 (UTC)
+	 MIME-Version; b=OamaDB7l/qs/DehUDByM23LnJM0+OJSseGVEpD+2VGx/GuQS9m0MTHSn+eZrTq9/zKt8h+WOJwv1v9X8JNaQRAEpHxDn6yauD0nIqmDk4eRd1H3VSplOaKlKDydlqJTAh9ub7BdpPMM6SaTDomyJuOMoTYpuub1kiQntWsRSTu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFovs5J5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66D6C32781;
+	Wed,  7 Aug 2024 15:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043336;
-	bh=ULQR64GHZFYVUyN69PjoDXC+syyjvEijkql0tnxQXJc=;
+	s=korg; t=1723043038;
+	bh=eJy6Fo+ddtW4ZjLeaZIVmPTin1B7TVGEMEXA2ym9eeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0iFYMV/3PFgsulmIF4j6UMmJwabeZyMSK/BIuzG/DolrJ2eVsHggIHeEN4GXOnA8Y
-	 pzTpnFw19K92POeMz3XGEINUvdZ2cDzxpxYfzNsKtVmYhcGgTKcK+H6aBGtoPXPse/
-	 rzDzbCvjYq7JzXqj+oajMSg7GScamzzRwCQtn9bE=
+	b=wFovs5J5YerssKiMNsKkqb6O0Jzd19eIysj5bqDGR51nAAWFGA/bbPq60HOZYKhQE
+	 7J1ElE8AC6+/0gmJokqwCBTEgXjRjkiFwYfjwC5Jv1tT1TF7RwB46LlcZqwU4kljiy
+	 eG5HVU/qUSgpoaj+kC3AE6wgXscAfQUc+lRwCYYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Lee Jones <lee@kernel.org>,
+	Andy Chiu <andy.chiu@sifive.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/121] leds: trigger: Store brightness set by led_trigger_event()
-Date: Wed,  7 Aug 2024 16:59:16 +0200
-Message-ID: <20240807150020.133032468@linuxfoundation.org>
+Subject: [PATCH 6.10 038/123] net: axienet: start napi before enabling Rx/Tx
+Date: Wed,  7 Aug 2024 16:59:17 +0200
+Message-ID: <20240807150022.070047144@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Andy Chiu <andy.chiu@sifive.com>
 
-[ Upstream commit 822c91e72eac568ed8d83765634f00decb45666c ]
+[ Upstream commit 799a829507506924add8a7620493adc1c3cfda30 ]
 
-If a simple trigger is assigned to a LED, then the LED may be off until
-the next led_trigger_event() call. This may be an issue for simple
-triggers with rare led_trigger_event() calls, e.g. power supply
-charging indicators (drivers/power/supply/power_supply_leds.c).
-Therefore persist the brightness value of the last led_trigger_event()
-call and use this value if the trigger is assigned to a LED.
-In addition add a getter for the trigger brightness value.
+softirq may get lost if an Rx interrupt comes before we call
+napi_enable. Move napi_enable in front of axienet_setoptions(), which
+turns on the device, to address the issue.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/b1358b25-3f30-458d-8240-5705ae007a8a@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
+Link: https://lists.gnu.org/archive/html/qemu-devel/2024-07/msg06160.html
+Fixes: cc37610caaf8 ("net: axienet: implement NAPI and GRO receive")
+Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-triggers.c |  6 ++++--
- include/linux/leds.h        | 15 +++++++++++++++
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-index 081acf1f345b3..38f7896f374f6 100644
---- a/drivers/leds/led-triggers.c
-+++ b/drivers/leds/led-triggers.c
-@@ -194,11 +194,11 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
- 		spin_unlock(&trig->leddev_list_lock);
- 		led_cdev->trigger = trig;
- 
-+		ret = 0;
- 		if (trig->activate)
- 			ret = trig->activate(led_cdev);
- 		else
--			ret = 0;
--
-+			led_set_brightness(led_cdev, trig->brightness);
- 		if (ret)
- 			goto err_activate;
- 
-@@ -373,6 +373,8 @@ void led_trigger_event(struct led_trigger *trig,
- 	if (!trig)
- 		return;
- 
-+	trig->brightness = brightness;
-+
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(led_cdev, &trig->led_cdevs, trig_list)
- 		led_set_brightness(led_cdev, brightness);
-diff --git a/include/linux/leds.h b/include/linux/leds.h
-index 6a4973feecd65..d3056bc6f0a1a 100644
---- a/include/linux/leds.h
-+++ b/include/linux/leds.h
-@@ -474,6 +474,9 @@ struct led_trigger {
- 	int		(*activate)(struct led_classdev *led_cdev);
- 	void		(*deactivate)(struct led_classdev *led_cdev);
- 
-+	/* Brightness set by led_trigger_event */
-+	enum led_brightness brightness;
-+
- 	/* LED-private triggers have this set */
- 	struct led_hw_trigger_type *trigger_type;
- 
-@@ -527,6 +530,12 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
- 	return led_cdev->trigger_data;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index c29809cd92015..fa510f4e26008 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -2219,9 +2219,9 @@ static void axienet_dma_err_handler(struct work_struct *work)
+ 			   ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
+ 	axienet_set_mac_address(ndev, NULL);
+ 	axienet_set_multicast_list(ndev);
+-	axienet_setoptions(ndev, lp->options);
+ 	napi_enable(&lp->napi_rx);
+ 	napi_enable(&lp->napi_tx);
++	axienet_setoptions(ndev, lp->options);
  }
  
-+static inline enum led_brightness
-+led_trigger_get_brightness(const struct led_trigger *trigger)
-+{
-+	return trigger ? trigger->brightness : LED_OFF;
-+}
-+
- #define module_led_trigger(__led_trigger) \
- 	module_driver(__led_trigger, led_trigger_register, \
- 		      led_trigger_unregister)
-@@ -563,6 +572,12 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
- 	return NULL;
- }
- 
-+static inline enum led_brightness
-+led_trigger_get_brightness(const struct led_trigger *trigger)
-+{
-+	return LED_OFF;
-+}
-+
- #endif /* CONFIG_LEDS_TRIGGERS */
- 
- /* Trigger specific enum */
+ /**
 -- 
 2.43.0
 
