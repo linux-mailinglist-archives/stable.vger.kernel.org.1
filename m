@@ -1,143 +1,112 @@
-Return-Path: <stable+bounces-65929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610DD94AD1F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:42:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6236D94AD9C
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 18:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84D351C2180E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:42:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 015E61F212E2
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BF712F398;
-	Wed,  7 Aug 2024 15:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C28813664E;
+	Wed,  7 Aug 2024 16:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b="PvQIOcNq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+Q5NgXp"
 X-Original-To: stable@vger.kernel.org
-Received: from devico.uberspace.de (devico.uberspace.de [185.26.156.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A9B12F38B
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 15:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.26.156.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C94E84D0F
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 16:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723045293; cv=none; b=jt44MX/rffm3HFz5YEiOhcK/MsSzFt2xfKu39YyiPJYLAnapFtqkzg2Rzw60OWfjwsiDIrStfmUzeNZh9HeayXbRikIUtAkUeCM11D2ZljytVJIDnw0xMmSFxm3Uu3LUooYlRT+ux38pH2arin+/AjXB8RlUhJTYDGB2INQ8oDc=
+	t=1723046648; cv=none; b=KPs1BEtZrTarJi+jAek9mdtaFx2RGtF7n/YuHUlIQqtLccj5BFOiDcNeaW9IRVR9PaNsmpDZGWi6DaDJyWw5z32JAUWEthMds9oHuQ5aLQfGwq2wi8E1/fkFH28SiATQqS+Bd7JUY5EG8bdbHgTrFV0HBCr08axnefTXwQBTH8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723045293; c=relaxed/simple;
-	bh=Dm1h2rVViWETRpyaAucj7ynN3gHM14g/8UZq8htTnjk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=psMgDJ58jWRJQ0/8Tfo7AgZvE8de0QmmrTpS1SwqpF0a2yG/AVXeBr63p73Rls6ggXUe0vHHWcb2mPMMSJQt8T84zyhj8louf7UANX5v5mW6ju5bff8IR7e2dNyNpycEyOXyL4nwPw3D5vmtDmjeOYYlU1jg3KMZIvufNePGRGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lausen.nl; spf=pass smtp.mailfrom=lausen.nl; dkim=fail (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b=PvQIOcNq reason="key not found in DNS"; arc=none smtp.client-ip=185.26.156.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lausen.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lausen.nl
-Received: (qmail 8920 invoked by uid 990); 7 Aug 2024 15:41:21 -0000
-Authentication-Results: devico.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
-	by devico.uberspace.de (Haraka/3.0.1) with ESMTPSA; Wed, 07 Aug 2024 17:41:21 +0200
-Message-ID: <f0d1da69-d52a-484e-8255-b9639c358a71@lausen.nl>
-Date: Wed, 7 Aug 2024 11:41:18 -0400
+	s=arc-20240116; t=1723046648; c=relaxed/simple;
+	bh=E2enmt31UZhVAWEGkBMRSyUhCB0FwtsK1zpFNz/jAJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KlB+Idff5x9vs/wyo6/I2aOrdTSvsS0DKSPBPZRMiFw7HrH1EvFiQfCCxNx22F9j2e1HkI+mcj16hwTyXlVIodygHE9I2nb7jZRNXaL+vNDtkT1f374tvuKmFjUCBlSlc0M6+uv8IIhIXZtq6UkNix5PLBqcn0DZtqrmXMGjiXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+Q5NgXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB255C32781;
+	Wed,  7 Aug 2024 16:04:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723046647;
+	bh=E2enmt31UZhVAWEGkBMRSyUhCB0FwtsK1zpFNz/jAJc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Y+Q5NgXpImcWSfk+ngPEVwhqgkfMc7KqYa3d772Bc9PtCY8HUD0RSSdWX1HJQBsl3
+	 y3uag/rZpZ4NOMOWEeO4VDC/EVlzBvZnUbbQ3uOk5HPxY9a2V23h5FfIFJbNRVsxcG
+	 aMuc9Vcrj00QU/+FouLPwJw1Li1uKi3z6W1FZUdefQCQ0fyesqUTV7k8L2xqZ4DUnp
+	 NhTfEkupodS+R254QPBOcsbzcKUAapx0pGhSUBBzhkGHhGmABsbM0lGv9tyamxwYh0
+	 lSdRoBCQeMvpEJTf0o067n9ginkrfbzr/uWbEn76GqNhqAmQEwbStJu7VSNUTiYemX
+	 UP75MV4KibRog==
+From: Danilo Krummrich <dakr@kernel.org>
+To: stable@vger.kernel.org
+Cc: Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6.y] nouveau: set placement to original placement on uvmm validate.
+Date: Wed,  7 Aug 2024 18:03:42 +0200
+Message-ID: <20240807160341.2476-2-dakr@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024080722-overlying-unmasking-3eb7@gregkh>
+References: <2024080722-overlying-unmasking-3eb7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] drm/msm/dpu1: don't choke on disabling the
- writeback connector
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org
-References: <20240802-dpu-fix-wb-v2-0-7eac9eb8e895@linaro.org>
- <20240802-dpu-fix-wb-v2-1-7eac9eb8e895@linaro.org>
- <57cdac1a-1c4d-4299-8fde-92ae054fc6c0@lausen.nl>
- <61D52432-DD30-4C43-BD5E-1CC9F84DF5B9@linaro.org>
-Content-Language: en-US
-From: Leonard Lausen <leonard@lausen.nl>
-Autocrypt: addr=leonard@lausen.nl; keydata=
- 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 Sw==
-In-Reply-To: <61D52432-DD30-4C43-BD5E-1CC9F84DF5B9@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Bar: --
-X-Rspamd-Report: BAYES_HAM(-2.860288) XM_UA_NO_VERSION(0.01) MIME_GOOD(-0.1)
-X-Rspamd-Score: -2.950288
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=lausen.nl; s=uberspace;
-	h=from:to:cc:subject:date;
-	bh=Dm1h2rVViWETRpyaAucj7ynN3gHM14g/8UZq8htTnjk=;
-	b=PvQIOcNqVdWPNZufM7HSSmdNoDCElvZIrnkDtbf6OoLs6Sg3CN90hOU8uKJb3jDwTl+6ak6W0G
-	OXFAciVX5Lp4vBSmkAy+ECZBmPPaXf4ZXC3zvBxvUnoCVRVbSsMAoMP9HWrHHoAFHdO4J/gXs64Z
-	xBJCCPD+U5oXyiQ72WcnSraLEC4J1/vQMaEBP6MTYGoUObde4HPfSsrGZXJG3R3Q5TBkUTAwJ/mv
-	3Q02ycC6IF1PW3AR+gAAcoCaVddUaWctw7EG+AXsUcNAXRSeOhDpKzhi6HLzAxqvOdASMLem+KLb
-	U+tOKH3cIsAbZPZX6a5QB8NNs6g03uIYtFvgikOUO825Ov35Vg0XJ8OwAaVos7LgqnbJe4lybJSh
-	HQQT4Iy7x3SQXm3fCgO5foCrl4XXiJkyLiRZfny6zwqEWtCkZW2VOazMWOJ0boLskJV7cSK4DkGD
-	y7zu6mNBAaCQE+XiQSLpBGXcKRIvi6YbpgBsGJBCScbRWx7GaRhSQ/8vyeGR9V56hmJOTF8kd3dO
-	wk0c0+nxnT6qvPfuO7eUVUy+pWahBsyLpWAB6fLP7UoRjlhXEwkqyLM/n1MT8cU3cy843wptWb3B
-	0uL7LdAjK8SBEjzHFOXwqBFU9Ly8Lii9gY6KJhsncYcCb/Ih2nt8AXksHdxmG4BLehB1erYjYvu/
-	g=
+Content-Transfer-Encoding: 8bit
 
-On 8/7/24 06:44, Dmitry Baryshkov wrote:> Could you please clarify, I was under the impression that currently whole suspend/resume is broken, so it's more than a dmesg message.
+From: Dave Airlie <airlied@redhat.com>
 
-71174f362d67 specifically, or v6.9 more broadly regress in that we get "[dpu
-error]connector not connected 3" and "[drm:drm_mode_config_helper_resume]
-*ERROR* Failed to resume (-22)" if suspending and resuming the system while
-external display is connected over USB-C DP. Suspend and resume itself
-still works, and the external display also works after the resume, albeit
-perhaps with a small delay due to the dpu error. This is also mentioned in
-the issue description of https://gitlab.freedesktop.org/drm/msm/-/issues/57.
-So while suspend/resume isn't fully broken, the error is still unexpected and
-I thus bisected and identified 71174f362d67 as the first commit to trigger it.
-While your patch avoids the dpu/drm error, it triggers issue with the CRTC state,
-breaking the CRTC functionality after resume.
+When a buffer is evicted for memory pressure or TTM evict all,
+the placement is set to the eviction domain, this means the
+buffer never gets revalidated on the next exec to the correct domain.
 
-Might we be facing a race condition here, which is accidentally exposed by
-71174f362d67 but requires a separate fix?
+I think this should be fine to use the initial domain from the
+object creation, as least with VM_BIND this won't change after
+init so this should be the correct answer.
+
+Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
+Cc: Danilo Krummrich <dakr@redhat.com>
+Cc: <stable@vger.kernel.org> # v6.6
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240515025542.2156774-1-airlied@gmail.com
+(cherry picked from commit 9c685f61722d30a22d55bb8a48f7a48bb2e19bcc)
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ drivers/gpu/drm/nouveau/nouveau_uvmm.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/nouveau/nouveau_uvmm.c b/drivers/gpu/drm/nouveau/nouveau_uvmm.c
+index 2bbcdc649e86..3d41e590d471 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_uvmm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_uvmm.c
+@@ -1320,6 +1320,7 @@ nouveau_uvmm_bind_job_submit(struct nouveau_job *job)
+ 
+ 		drm_gpuva_for_each_op(va_op, op->ops) {
+ 			struct drm_gem_object *obj = op_gem_obj(va_op);
++			struct nouveau_bo *nvbo;
+ 
+ 			if (unlikely(!obj))
+ 				continue;
+@@ -1330,8 +1331,9 @@ nouveau_uvmm_bind_job_submit(struct nouveau_job *job)
+ 			if (unlikely(va_op->op == DRM_GPUVA_OP_UNMAP))
+ 				continue;
+ 
+-			ret = nouveau_bo_validate(nouveau_gem_object(obj),
+-						  true, false);
++			nvbo = nouveau_gem_object(obj);
++			nouveau_bo_placement_set(nvbo, nvbo->valid_domains, 0);
++			ret = nouveau_bo_validate(nvbo, true, false);
+ 			if (ret) {
+ 				op = list_last_op(&bind_job->ops);
+ 				goto unwind;
+-- 
+2.45.2
+
 
