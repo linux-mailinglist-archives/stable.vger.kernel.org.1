@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-65895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F7D94AC6A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4799A94AC17
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6489B284B95
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E74241F21049
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156468287E;
-	Wed,  7 Aug 2024 15:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F15D7E0E9;
+	Wed,  7 Aug 2024 15:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LftqhgMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXKrXMYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C533181751;
-	Wed,  7 Aug 2024 15:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4D081AB1;
+	Wed,  7 Aug 2024 15:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043692; cv=none; b=fPDa6C5jKDspo6VN8xnciej+lRWBEO7CPH42CtJ5Z3bjcY4sE5TUFOofTKSWG6jsSnEoBIktqZd2HkoD0XBKxTlx+wx2LqWn0Hog16eFt2TXl9+kdq8M2/SG9g3NxDSuPsEAJTbNM52KmSfS/x2BxCQYNTX3i+DIdCgXuBKeMo0=
+	t=1723043519; cv=none; b=Nzd4mEUbqDTwsCblpyVlIRM5B+bVrWhQNUJvt6BOdRXVHO3g91aRG9rfMdjb0P8OCYdOQ6wI6ZFkNY15YrpXRcKpiFz3fam+oRWaxpr9QzqSDo9pCZG1rv98HhAD1EwBA6QZESUn8VQlqdfvdPzAO92IUzL8aXXERyL7u9lwhEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043692; c=relaxed/simple;
-	bh=sm74PosOQh1f97LZWeceBQ/1GFcG0sYd16+rZPiUk+8=;
+	s=arc-20240116; t=1723043519; c=relaxed/simple;
+	bh=ds4MJd1k03xhlCLAaRDQTIIk+166bIdly2xcdor2QsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jEHDdu9ozJhvv5ZbPUELikb7i0pBga5v8CWf/XU95mTHuPSTWP2jKlucxWGKijKu21XYq3txFBt1tyWjCizqVTngALQqm4lFgYvq62sA3WrvQ69exY9885Vad5efREt+0eYuGX22eMm6eateacLyNpe0r5+qEslWcdyV5Mjk1bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LftqhgMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D926C32781;
-	Wed,  7 Aug 2024 15:14:52 +0000 (UTC)
+	 MIME-Version; b=SrvQ5iVeolo2Az6Daml3NlS5URTJubmUkTiZXEkBJbVkVzAreSTww9Z8O6E0K/jPBf2b1Um5DMxm1k0gUaFgJDAwjbtbQUkftZAhvMzKhuLYsiDCJ7sl+Rcndiq9qWu2LY+xKNbDWYMkb6CcLnHL2EWq3aEc0KpsT+DY//ksNto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXKrXMYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE314C32781;
+	Wed,  7 Aug 2024 15:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043692;
-	bh=sm74PosOQh1f97LZWeceBQ/1GFcG0sYd16+rZPiUk+8=;
+	s=korg; t=1723043519;
+	bh=ds4MJd1k03xhlCLAaRDQTIIk+166bIdly2xcdor2QsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LftqhgMk9ilweMDwttlG+OWwUDMIFjXg62SBaV3dOO3fjolXUBFfDkNyJn3ex5Vq1
-	 l0c0nFTFWBs2SvlN9+jwZB/LbGgmLq+Mo1R+q0aW3fUnSRP/2D434so4lKoHU+4aMc
-	 9Mk0G2sOhDiM2peoNf2mVqdH4a4MCKfL8vw2c22g=
+	b=pXKrXMYgDL1/xdEW6ZM9rI5zZeVibIsTcLMrLQLYiv9EdneD2A66cMbtDuR171Llw
+	 FjdPrWTbQDtNV1qfQZFUQbLEy8pV74+iy0KBSuiObxg0gdX8cayt+VMbz8gLPVDiBs
+	 Lp5etA+sOorew+LXVkkcuJdpW2bkZADQ6O1EWB0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 65/86] arm64: jump_label: Ensure patched jump_labels are visible to all CPUs
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 112/121] mptcp: distinguish rcv vs sent backup flag in requests
 Date: Wed,  7 Aug 2024 17:00:44 +0200
-Message-ID: <20240807150041.404671627@linuxfoundation.org>
+Message-ID: <20240807150023.068922624@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,113 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit cfb00a35786414e7c0e6226b277d9f09657eae74 ]
+commit efd340bf3d7779a3a8ec954d8ec0fb8a10f24982 upstream.
 
-Although the Arm architecture permits concurrent modification and
-execution of NOP and branch instructions, it still requires some
-synchronisation to ensure that other CPUs consistently execute the newly
-written instruction:
+When sending an MP_JOIN + SYN + ACK, it is possible to mark the subflow
+as 'backup' by setting the flag with the same name. Before this patch,
+the backup was set if the other peer set it in its MP_JOIN + SYN
+request.
 
- >  When the modified instructions are observable, each PE that is
- >  executing the modified instructions must execute an ISB or perform a
- >  context synchronizing event to ensure execution of the modified
- >  instructions
+It is not correct: the backup flag should be set in the MPJ+SYN+ACK only
+if the host asks for it, and not mirroring what was done by the other
+peer. It is then required to have a dedicated bit for each direction,
+similar to what is done in the subflow context.
 
-Prior to commit f6cc0c501649 ("arm64: Avoid calling stop_machine() when
-patching jump labels"), the arm64 jump_label patching machinery
-performed synchronisation using stop_machine() after each modification,
-however this was problematic when flipping static keys from atomic
-contexts (namely, the arm_arch_timer CPU hotplug startup notifier) and
-so we switched to the _nosync() patching routines to avoid "scheduling
-while atomic" BUG()s during boot.
-
-In hindsight, the analysis of the issue in f6cc0c501649 isn't quite
-right: it cites the use of IPIs in the default patching routines as the
-cause of the lockup, whereas stop_machine() does not rely on IPIs and
-the I-cache invalidation is performed using __flush_icache_range(),
-which elides the call to kick_all_cpus_sync(). In fact, the blocking
-wait for other CPUs is what triggers the BUG() and the problem remains
-even after f6cc0c501649, for example because we could block on the
-jump_label_mutex. Eventually, the arm_arch_timer driver was fixed to
-avoid the static key entirely in commit a862fc2254bd
-("clocksource/arm_arch_timer: Remove use of workaround static key").
-
-This all leaves the jump_label patching code in a funny situation on
-arm64 as we do not synchronise with other CPUs to reduce the likelihood
-of a bug which no longer exists. Consequently, toggling a static key on
-one CPU cannot be assumed to take effect on other CPUs, leading to
-potential issues, for example with missing preempt notifiers.
-
-Rather than revert f6cc0c501649 and go back to stop_machine() for each
-patch site, implement arch_jump_label_transform_apply() and kick all
-the other CPUs with an IPI at the end of patching.
-
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Fixes: f6cc0c501649 ("arm64: Avoid calling stop_machine() when patching jump labels")
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240731133601.3073-1-will@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/jump_label.h |  1 +
- arch/arm64/kernel/jump_label.c      | 11 +++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ net/mptcp/options.c  |    2 +-
+ net/mptcp/protocol.h |    1 +
+ net/mptcp/subflow.c  |    1 +
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/jump_label.h b/arch/arm64/include/asm/jump_label.h
-index b5bd3c38a01b2..e714d7770999e 100644
---- a/arch/arm64/include/asm/jump_label.h
-+++ b/arch/arm64/include/asm/jump_label.h
-@@ -13,6 +13,7 @@
- #include <linux/types.h>
- #include <asm/insn.h>
- 
-+#define HAVE_JUMP_LABEL_BATCH
- #define JUMP_LABEL_NOP_SIZE		AARCH64_INSN_SIZE
- 
- static __always_inline bool arch_static_branch(struct static_key *key,
-diff --git a/arch/arm64/kernel/jump_label.c b/arch/arm64/kernel/jump_label.c
-index faf88ec9c48e8..f63ea915d6ad2 100644
---- a/arch/arm64/kernel/jump_label.c
-+++ b/arch/arm64/kernel/jump_label.c
-@@ -7,11 +7,12 @@
-  */
- #include <linux/kernel.h>
- #include <linux/jump_label.h>
-+#include <linux/smp.h>
- #include <asm/insn.h>
- #include <asm/patching.h>
- 
--void arch_jump_label_transform(struct jump_entry *entry,
--			       enum jump_label_type type)
-+bool arch_jump_label_transform_queue(struct jump_entry *entry,
-+				     enum jump_label_type type)
- {
- 	void *addr = (void *)jump_entry_code(entry);
- 	u32 insn;
-@@ -25,4 +26,10 @@ void arch_jump_label_transform(struct jump_entry *entry,
- 	}
- 
- 	aarch64_insn_patch_text_nosync(addr, insn);
-+	return true;
-+}
-+
-+void arch_jump_label_transform_apply(void)
-+{
-+	kick_all_cpus_sync();
- }
--- 
-2.43.0
-
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -909,7 +909,7 @@ bool mptcp_synack_options(const struct r
+ 		return true;
+ 	} else if (subflow_req->mp_join) {
+ 		opts->suboptions = OPTION_MPTCP_MPJ_SYNACK;
+-		opts->backup = subflow_req->backup;
++		opts->backup = subflow_req->request_bkup;
+ 		opts->join_id = subflow_req->local_id;
+ 		opts->thmac = subflow_req->thmac;
+ 		opts->nonce = subflow_req->local_nonce;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -419,6 +419,7 @@ struct mptcp_subflow_request_sock {
+ 	u16	mp_capable : 1,
+ 		mp_join : 1,
+ 		backup : 1,
++		request_bkup : 1,
+ 		csum_reqd : 1,
+ 		allow_join_id0 : 1;
+ 	u8	local_id;
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1976,6 +1976,7 @@ static void subflow_ulp_clone(const stru
+ 		new_ctx->fully_established = 1;
+ 		new_ctx->remote_key_valid = 1;
+ 		new_ctx->backup = subflow_req->backup;
++		new_ctx->request_bkup = subflow_req->request_bkup;
+ 		WRITE_ONCE(new_ctx->remote_id, subflow_req->remote_id);
+ 		new_ctx->token = subflow_req->token;
+ 		new_ctx->thmac = subflow_req->thmac;
 
 
 
