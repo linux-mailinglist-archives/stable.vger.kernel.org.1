@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BE794AB8D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5F494AC55
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F871F237F2
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C2DF1C21515
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FFA12A14C;
-	Wed,  7 Aug 2024 15:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D505381751;
+	Wed,  7 Aug 2024 15:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ashngIiz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rJVLC+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E7A126F2A;
-	Wed,  7 Aug 2024 15:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F597374CC;
+	Wed,  7 Aug 2024 15:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043199; cv=none; b=qAwHZfMGtB6brni7PQEjMdTOosVyI5bIWbdN87xzMMdwj0SmOpFJIX7IJmzuVMfXPMBdOW/UR18bEub1yaV2l0/urvaVZVg4tqLnb/zih/XbPDkC0m/8ltlbVHX+V5iAuPNXumtDz94A79+mRq+IWute86Rmh9aTOxQI0kVi/Ck=
+	t=1723043650; cv=none; b=u1zK8/BU711FoijwnNpnKB0l1otdG7vfKeZXEEYLrn0T2gRuimegrCDdi/2WZh/yvExUikVhtyPy7fLDi0Gvn8BYXGNlAxqedywuzD+239EP7ZEo9To+fuegok4AiRX8eav4eWEk9FRJZDWqVX7ZyUylAL9/bDAoqGFzE+fOUgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043199; c=relaxed/simple;
-	bh=BvyHLi3e1BHIdXBpbAbbpRIxHXe69V9LJKmxTp6iD8U=;
+	s=arc-20240116; t=1723043650; c=relaxed/simple;
+	bh=F7OpvfJQPrbGIvuc5aiPbMz/6WUGgZlEdpE5lBh+vO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPeerWWWPsnRB8DZpYyx/3+74MkLjmhizfg0Rua1ms/pNe1b1VfcSOi1CuiD078FuOUt3R+YJ2D6OpU2ewd2R/X/DcsRRdMjBBgelAHdman3XfGQavnrvlLZO4oW3yIKF3YDSr/k6tQ+zVk8XUxlXYkhLUkmqzt5OO3GgbzZTBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ashngIiz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A23C32781;
-	Wed,  7 Aug 2024 15:06:39 +0000 (UTC)
+	 MIME-Version; b=Y1zSbBBEFCj/mPHRNOyVWJXTOjXkqLWKliJU0PUVpMutAQF9EAGXT9p4rFw71MpExKOKpOQEH81c4tZzTu2OeurDDxN7YtC9PflHa6411uy7bdD4txyzZ05AuDr6mG/jBydKI2wr70JEP091I0QSwosCW2oiKE9LPVMwFRX8GjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rJVLC+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21211C32781;
+	Wed,  7 Aug 2024 15:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043199;
-	bh=BvyHLi3e1BHIdXBpbAbbpRIxHXe69V9LJKmxTp6iD8U=;
+	s=korg; t=1723043650;
+	bh=F7OpvfJQPrbGIvuc5aiPbMz/6WUGgZlEdpE5lBh+vO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ashngIizoj+GZydGIvw3G2lwdxK963HiYwS+5UFBSvS77St+k1mOFNXZhEiCERXHR
-	 14bJk/opKRCz7gPvX+4uZ8OrREqF8E0KgfEsDoo/sytxGNeBvmtBM9mZ1Em7f71xM3
-	 /XUPDo/ze5JRgKPPaU8ybrInir9xFqBG+u8Hd058=
+	b=2rJVLC+e66bCHRRnho0UcNyCL/yrtBTuraPtWwbh9V5dgesZ4j3JLMUb8NwhSvUXU
+	 ctE9VIA/6qR5AFt5wzTYOf/Yy2Z6a+Vltfif2LznE9b+L7M0/xoc3C+Fj7DeDn+QgN
+	 L1i3ZtPH2HRphH6aORjX5mNI9uFBcLZfDAav66+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.10 108/123] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
+	Andy Chiu <andy.chiu@sifive.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 48/86] net: axienet: start napi before enabling Rx/Tx
 Date: Wed,  7 Aug 2024 17:00:27 +0200
-Message-ID: <20240807150024.354058314@linuxfoundation.org>
+Message-ID: <20240807150040.825802611@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Andy Chiu <andy.chiu@sifive.com>
 
-commit 08f3a5c38087d1569e982a121aad1e6acbf145ce upstream.
+[ Upstream commit 799a829507506924add8a7620493adc1c3cfda30 ]
 
-It could lead to error happen because the variable res is not updated if
-the call to sr_share_read_word returns an error. In this particular case
-error code was returned and res stayed uninitialized. Same issue also
-applies to sr_read_reg.
+softirq may get lost if an Rx interrupt comes before we call
+napi_enable. Move napi_enable in front of axienet_setoptions(), which
+turns on the device, to address the issue.
 
-This can be avoided by checking the return value of sr_share_read_word
-and sr_read_reg, and propagating the error if the read operation failed.
-
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Link: https://lists.gnu.org/archive/html/qemu-devel/2024-07/msg06160.html
+Fixes: cc37610caaf8 ("net: axienet: implement NAPI and GRO receive")
+Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/sr9700.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -179,6 +179,7 @@ static int sr_mdio_read(struct net_devic
- 	struct usbnet *dev = netdev_priv(netdev);
- 	__le16 res;
- 	int rc = 0;
-+	int err;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 5ea9dc251dd9a..ff777735be66b 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -1825,9 +1825,9 @@ static void axienet_dma_err_handler(struct work_struct *work)
+ 			   ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
+ 	axienet_set_mac_address(ndev, NULL);
+ 	axienet_set_multicast_list(ndev);
+-	axienet_setoptions(ndev, lp->options);
+ 	napi_enable(&lp->napi_rx);
+ 	napi_enable(&lp->napi_tx);
++	axienet_setoptions(ndev, lp->options);
+ }
  
- 	if (phy_id) {
- 		netdev_dbg(netdev, "Only internal phy supported\n");
-@@ -189,11 +190,17 @@ static int sr_mdio_read(struct net_devic
- 	if (loc == MII_BMSR) {
- 		u8 value;
- 
--		sr_read_reg(dev, SR_NSR, &value);
-+		err = sr_read_reg(dev, SR_NSR, &value);
-+		if (err < 0)
-+			return err;
-+
- 		if (value & NSR_LINKST)
- 			rc = 1;
- 	}
--	sr_share_read_word(dev, 1, loc, &res);
-+	err = sr_share_read_word(dev, 1, loc, &res);
-+	if (err < 0)
-+		return err;
-+
- 	if (rc == 1)
- 		res = le16_to_cpu(res) | BMSR_LSTATUS;
- 	else
+ /**
+-- 
+2.43.0
+
 
 
 
