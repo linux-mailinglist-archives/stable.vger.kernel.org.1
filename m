@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-65801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC74B94ABFB
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EB494AC54
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5C9AB2219E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 159BF1F23E1E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F80D839E4;
-	Wed,  7 Aug 2024 15:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F58382499;
+	Wed,  7 Aug 2024 15:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNaUxgRx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+8MwO1V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E26C78C92;
-	Wed,  7 Aug 2024 15:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5AE7E0E9;
+	Wed,  7 Aug 2024 15:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043445; cv=none; b=ATSIkAi6C+CZ7/l+rSLtdkYP+Xq07+BXMdL2xiL6NQbwBkKoPXRMY0ynxk9wupISjjqvnwF0USu/epfjNwy/WpyFH/O9VsfiHVZFuGb3OB929pwBjbqit48SglHyJZFzf4xnWo/B7QQpSQqARDYDWnVY+aMu9jAVXq9xii+N5UI=
+	t=1723043648; cv=none; b=HHBZg5b7BNJGzYl+1x75vWsdn2qVwvBL9mFBg16IVE2xB3EMbNzVJI6nJIVEUxfQr43it3B4dj/W9AYXYGgfXbdA6Oy6XE9IC6bxUMCobNh0Nanm15ArL8QpxBb7aDU4AV5PjK7TU3CyPvC5I12thSdh5justFF3o160KiMnQQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043445; c=relaxed/simple;
-	bh=02sk7rTobK4Ey+1Bd1dFup8q2kA4Gme4RTXupcNLpZE=;
+	s=arc-20240116; t=1723043648; c=relaxed/simple;
+	bh=j5SugisAFESG7NvIbxjwiewBvNsWGffEU8v1vJqLkZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4MGy49exxfMs9PSiztWBnHakD5yV8AIyKUXrWwsnLiG4NqCYRsVbwGFhJxz210A6+QzH6pQ0OcriS4O8bnYExklO7ZAIz6u4m9GgImgThqzlIlJuLC2dzhrgSSpOOIShb09U81TVARwRi6pVIXleUYaHYFymIY2ZB3D/nFLz/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNaUxgRx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FC3C32781;
-	Wed,  7 Aug 2024 15:10:44 +0000 (UTC)
+	 MIME-Version; b=ijy4QIOOYZ6XcqyaNn3TcQDAr/gCvKFkthyC7n3rR6k0VcOxSmYqoOaY14jotMpt+INzzyLgYfzro7Q4s4qa5QuJMSiCWudfCwVXbL+GCtj5v4mNvWr9mZXF31i2b3RE1tS3RaJDH/CqDA9mz1apArSMwS0Us5sIMQvG4VLBITA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+8MwO1V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB59C32781;
+	Wed,  7 Aug 2024 15:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043445;
-	bh=02sk7rTobK4Ey+1Bd1dFup8q2kA4Gme4RTXupcNLpZE=;
+	s=korg; t=1723043647;
+	bh=j5SugisAFESG7NvIbxjwiewBvNsWGffEU8v1vJqLkZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNaUxgRxB0FjK2M59fF+KOSioFApm/er+0wf5neceQ0ccE7NI42hTf+oXHj4xttRE
-	 gHjx9RYGfN/lRJkkV7cWdkTH7ZoyOU0nG0XMsLYLu/C4NcEtgjeRmV1OOuQpMLf8wY
-	 rJdL7nYOnVqilv0aeGmudt3CqUoOZUE5q9yEihW4=
+	b=S+8MwO1VuKK3w8ez/WHbAXSnrpNjXDjM2wEd/bFquBKYKStT/DeJMDLthcjsju4/t
+	 gVt8utMjcrhMpI19yIkNF/iPYJvw47J/rXXzSS+MqppYRIpxQ+MO5JOKSSP7eERfc7
+	 nNmsMI9CckPhBMa/H6HtPzrPiF2T3t6cCoQ2dxQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 094/121] rust: SHADOW_CALL_STACK is incompatible with Rust
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 47/86] Bluetooth: hci_sync: Fix suspending with wrong filter policy
 Date: Wed,  7 Aug 2024 17:00:26 +0200
-Message-ID: <20240807150022.468097291@linuxfoundation.org>
+Message-ID: <20240807150040.796643897@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit f126745da81783fb1d082e67bf14c6795e489a88 upstream.
+[ Upstream commit 96b82af36efaa1787946e021aa3dc5410c05beeb ]
 
-When using the shadow call stack sanitizer, all code must be compiled
-with the -ffixed-x18 flag, but this flag is not currently being passed
-to Rust. This results in crashes that are extremely difficult to debug.
+When suspending the scan filter policy cannot be 0x00 (no acceptlist)
+since that means the host has to process every advertisement report
+waking up the system, so this attempts to check if hdev is marked as
+suspended and if the resulting filter policy would be 0x00 (no
+acceptlist) then skip passive scanning if thre no devices in the
+acceptlist otherwise reset the filter policy to 0x01 so the acceptlist
+is used since the devices programmed there can still wakeup be system.
 
-To ensure that nobody else has to go through the same debugging session
-that I had to, prevent configurations that enable both SHADOW_CALL_STACK
-and RUST.
-
-It is rather common for people to backport 724a75ac9542 ("arm64: rust:
-Enable Rust support for AArch64"), so I recommend applying this fix all
-the way back to 6.1.
-
-Cc: stable@vger.kernel.org # 6.1 and later
-Fixes: 724a75ac9542 ("arm64: rust: Enable Rust support for AArch64")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/r/20240729-shadow-call-stack-v4-1-2a664b082ea4@google.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/hci_sync.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1898,6 +1898,7 @@ config RUST
- 	depends on !MODVERSIONS
- 	depends on !GCC_PLUGINS
- 	depends on !RANDSTRUCT
-+	depends on !SHADOW_CALL_STACK
- 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
- 	help
- 	  Enables Rust support in the kernel.
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 57302021b7ebb..320fc1e6dff2a 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2837,6 +2837,27 @@ static int hci_passive_scan_sync(struct hci_dev *hdev)
+ 	 */
+ 	filter_policy = hci_update_accept_list_sync(hdev);
+ 
++	/* If suspended and filter_policy set to 0x00 (no acceptlist) then
++	 * passive scanning cannot be started since that would require the host
++	 * to be woken up to process the reports.
++	 */
++	if (hdev->suspended && !filter_policy) {
++		/* Check if accept list is empty then there is no need to scan
++		 * while suspended.
++		 */
++		if (list_empty(&hdev->le_accept_list))
++			return 0;
++
++		/* If there are devices is the accept_list that means some
++		 * devices could not be programmed which in non-suspended case
++		 * means filter_policy needs to be set to 0x00 so the host needs
++		 * to filter, but since this is treating suspended case we
++		 * can ignore device needing host to filter to allow devices in
++		 * the acceptlist to be able to wakeup the system.
++		 */
++		filter_policy = 0x01;
++	}
++
+ 	/* When the controller is using random resolvable addresses and
+ 	 * with that having LE privacy enabled, then controllers with
+ 	 * Extended Scanner Filter Policies support can now enable support
+-- 
+2.43.0
+
 
 
 
