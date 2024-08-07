@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6AE794AC56
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8772A94AB8E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 791261C211C8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7DE51C21B92
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A9E82499;
-	Wed,  7 Aug 2024 15:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B247078291;
+	Wed,  7 Aug 2024 15:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhfgkW2f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cd5uL9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF0C374CC;
-	Wed,  7 Aug 2024 15:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC297D3E4;
+	Wed,  7 Aug 2024 15:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043653; cv=none; b=RjlbK6i1VT/NLsG3ynSmWhsTfpjp2GX+gq/R5C16OvvX629RjJ6mTlCQk107CtZZ/iwu1f2cN5KraqVbuJmYKmqa8FK80sBA0InbIMCGlBSCPQGCHsy867rlw4IxihhW1Yk2uslzM6I+/fI7qxFlZ3tSEjDGUg1SB1l5LuVkIQw=
+	t=1723043205; cv=none; b=bUPC7sFwCPU0pQ7eTksjzNbyQGBrjZgevZo78haLcFaS1lU0zAldqEniWPZR8seKHoliobHAcIq6Tg5+lyHcEq0rhwNvSuXrITRgFxMaxGHvU7g6lm4JwjRCpzQZDRK04J2ABdR+5qhh27KYcftDIc2/UTQCF84ps8sX2COgANQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043653; c=relaxed/simple;
-	bh=s1HFp56bQChysUG9yaQnLqwI6V7qwCIuabG5qWVBslc=;
+	s=arc-20240116; t=1723043205; c=relaxed/simple;
+	bh=q+tLKqN6a5RMQuktnkRSC6mUO5lGbfcLixXPW/UW1is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfmhvWc0sLtdkCtke3+ZigsiAsIRIl+RVp6/YPw92ArFYY7E1FdExkYApr/dvQlkjaYb5v0d2AohsXdizLAYL+RaYJ/O0KGfC+p3jr4QhVGAyl0AGEX1YGG4TTj4Rl8EDngl0lmFO3XKPh4xzH+2IQC5QKSWgOcLZOYVcMiGH38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhfgkW2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B751CC32781;
-	Wed,  7 Aug 2024 15:14:12 +0000 (UTC)
+	 MIME-Version; b=T+UH9t6a9FPXUpzJowDrQjmPG4VWT9G3Boe4VSmDkoZ5SsJXGjVmouCI5grgIB7v5RePApmHlgfw4WQdXhqPZwf1Kht+Os+f/sI6O3TrEjtMzyDzn0DP/rnA5wwzdoCREFQI5ulL1s+wPFK71VQT69oXgbLVw74KK4ZoiChSl5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cd5uL9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56B7C32781;
+	Wed,  7 Aug 2024 15:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043653;
-	bh=s1HFp56bQChysUG9yaQnLqwI6V7qwCIuabG5qWVBslc=;
+	s=korg; t=1723043205;
+	bh=q+tLKqN6a5RMQuktnkRSC6mUO5lGbfcLixXPW/UW1is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VhfgkW2fVGRfIEjpiWBafdqZ+6FxZem+OUHCfydOf+0vyL8LBAsGsMjupRHquDNFi
-	 kSzahm2V3hoVZ3A52IIollVPxuxgq8+eSp/dFQi/d2pVplp7VYry55hEOFsXi4BuKr
-	 8uGSxMs/Hx0XtIT5xoqE+aSd9PXpvzb32XjvGJwU=
+	b=0cd5uL9RXxhS78WnpalB3fRVag3dZwgpJbhwBM6Y7nkIrzhbXizFFzyNCejbL2aSP
+	 GnQz5Q63Xdp3wAx1+66OOPkTGryx+YVtVMorUUisAySK3ERSPHNrNL69MavbqOAKIn
+	 jLYY+mZs732R69vzFNPSE56bFEbLhsVDWCaIm0tI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 49/86] rtnetlink: Dont ignore IFLA_TARGET_NETNSID when ifname is specified in rtnl_dellink().
-Date: Wed,  7 Aug 2024 17:00:28 +0200
-Message-ID: <20240807150040.861687087@linuxfoundation.org>
+	Herve Codina <herve.codina@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 110/123] net: wan: fsl_qmc_hdlc: Discard received CRC
+Date: Wed,  7 Aug 2024 17:00:29 +0200
+Message-ID: <20240807150024.427982423@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 9415d375d8520e0ed55f0c0b058928da9a5b5b3d ]
+commit e549360069b4a57e111b8222fc072f3c7c1688ab upstream.
 
-The cited commit accidentally replaced tgt_net with net in rtnl_dellink().
+Received frame from QMC contains the CRC.
+Upper layers don't need this CRC and tcpdump mentioned trailing junk
+data due to this CRC presence.
 
-As a result, IFLA_TARGET_NETNSID is ignored if the interface is specified
-with IFLA_IFNAME or IFLA_ALT_IFNAME.
+As some other HDLC driver, simply discard this CRC.
 
-Let's pass tgt_net to rtnl_dev_get().
-
-Fixes: cc6090e985d7 ("net: rtnetlink: introduce helper to get net_device instance by ifname")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d0f2258e79fd ("net: wan: Add support for QMC HDLC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240730063133.179598-1-herve.codina@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wan/fsl_qmc_hdlc.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 1163226c025c1..be663a7382ce9 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3178,7 +3178,7 @@ static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (ifm->ifi_index > 0)
- 		dev = __dev_get_by_index(tgt_net, ifm->ifi_index);
- 	else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
--		dev = rtnl_dev_get(net, tb);
-+		dev = rtnl_dev_get(tgt_net, tb);
- 	else if (tb[IFLA_GROUP])
- 		err = rtnl_group_dellink(tgt_net, nla_get_u32(tb[IFLA_GROUP]));
- 	else
+diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
+index 64b4bfa6fea7..8fcfbde31a1c 100644
+--- a/drivers/net/wan/fsl_qmc_hdlc.c
++++ b/drivers/net/wan/fsl_qmc_hdlc.c
+@@ -250,6 +250,7 @@ static void qmc_hcld_recv_complete(void *context, size_t length, unsigned int fl
+ 	struct qmc_hdlc_desc *desc = context;
+ 	struct net_device *netdev;
+ 	struct qmc_hdlc *qmc_hdlc;
++	size_t crc_size;
+ 	int ret;
+ 
+ 	netdev = desc->netdev;
+@@ -268,15 +269,26 @@ static void qmc_hcld_recv_complete(void *context, size_t length, unsigned int fl
+ 		if (flags & QMC_RX_FLAG_HDLC_CRC) /* CRC error */
+ 			netdev->stats.rx_crc_errors++;
+ 		kfree_skb(desc->skb);
+-	} else {
+-		netdev->stats.rx_packets++;
+-		netdev->stats.rx_bytes += length;
+-
+-		skb_put(desc->skb, length);
+-		desc->skb->protocol = hdlc_type_trans(desc->skb, netdev);
+-		netif_rx(desc->skb);
++		goto re_queue;
+ 	}
+ 
++	/* Discard the CRC */
++	crc_size = qmc_hdlc->is_crc32 ? 4 : 2;
++	if (length < crc_size) {
++		netdev->stats.rx_length_errors++;
++		kfree_skb(desc->skb);
++		goto re_queue;
++	}
++	length -= crc_size;
++
++	netdev->stats.rx_packets++;
++	netdev->stats.rx_bytes += length;
++
++	skb_put(desc->skb, length);
++	desc->skb->protocol = hdlc_type_trans(desc->skb, netdev);
++	netif_rx(desc->skb);
++
++re_queue:
+ 	/* Re-queue a transfer using the same descriptor */
+ 	ret = qmc_hdlc_recv_queue(qmc_hdlc, desc, desc->dma_size);
+ 	if (ret) {
 -- 
-2.43.0
+2.46.0
 
 
 
