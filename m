@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD05A94ABBD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7405694AB36
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 127E5B2375E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A43B11C220B6
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D7C81ACB;
-	Wed,  7 Aug 2024 15:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B1812C46D;
+	Wed,  7 Aug 2024 15:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYTIcLyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/DkZMS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B5827448;
-	Wed,  7 Aug 2024 15:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935FC78291;
+	Wed,  7 Aug 2024 15:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043311; cv=none; b=mYpDc5VqXxg2NjyXCp0rn+rAjVfQazrTayC90l5ymkJ73tUgkJnnOYo2NBTm5XkagOtuTOsdvl55dAn5Gt2KhUxcHZ1iUXjG/uMic4zu7OkzwKQT1t1EoLtGCx5OQWrUieJ7rMRrBy3Nkx6n44uhWhcX0yWKfJ1VbO2IMLxy8G0=
+	t=1723043013; cv=none; b=GTEhrGnZI7gr967dQzp2zT508Su1aEeQ6U15h9goLhqZloqEQxbd2SyhTTtYkTpgUhRnCnkbBz9nq2a5XfKuU8dfv+n+/ecRO6NsBBq639oOuYlnMc98DMTNiqs6DuNZuFd7Cy5buhsXYwHHn9koFk+mj+3MNwG7UKaR0pZU7Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043311; c=relaxed/simple;
-	bh=66IyaSNJh2y3VVoxaAFI+JDNFbk0hf+k1GSIu+ZEzkU=;
+	s=arc-20240116; t=1723043013; c=relaxed/simple;
+	bh=B3L4VzQqIcRzY902+byoKxRv95HvvH37xzx3l/B8Z7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHnaTO0SW8ds+2KQu1ViQ3FwbEVkH0WzE5vPCdoVh9iZ0sRbXNNFsjr+3es9tqNFqzhEtVuFA7n6768DLWbUnjR/QGusssB9JKKDr9ayUFohy5B/A8SAsnch577x5eEkS7691UWtva0xoWYhEUAPupxrALVI4xP64K9DrzH5igg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYTIcLyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CA8C32781;
-	Wed,  7 Aug 2024 15:08:31 +0000 (UTC)
+	 MIME-Version; b=ChaYJV8zut3A44ciPDZMNPkcubtyBx5edFEMMMX4nryUOYP87CAzF7Ge01uL52TdMpK266pk925tT1VusC7SUHuDCsU+Y1WU2oWJVsNqgMQNY5ow5S7CS+FQykhnR7YgKzjaZaIbykP1N6rP/IX9fSS1Lu7f/HVn1xk/7vgCeHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/DkZMS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDD4C4AF0E;
+	Wed,  7 Aug 2024 15:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043311;
-	bh=66IyaSNJh2y3VVoxaAFI+JDNFbk0hf+k1GSIu+ZEzkU=;
+	s=korg; t=1723043013;
+	bh=B3L4VzQqIcRzY902+byoKxRv95HvvH37xzx3l/B8Z7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYTIcLyHqhbD37DSoxfjpnQf9KMhWeFJRS55gvW30gQgA6DSDJdbdgy8kU6/X6npe
-	 omlRJB7WGbvZZhdQa7KPryhLsT9Dd7sctlM3oBHN3m/lzaT05BhkjEhmkiIfZZqF4j
-	 QCKfrU/qx2jqB9b/bh+KO6VpwWWhJ/WzT05C0B+E=
+	b=J/DkZMS849L9vOt24POB2/ra2qwxYOkCpQ7xKBGgqSd8BWXM5g/SgL7oK2HGLR+5x
+	 m7J8SqKz8elk1KkAzkuVG7Jm54EPSOKdzigYBlaQgCI6v4AzG1yMNXz5EYQwepeEwz
+	 yt9ZhpB6+J9I/Bf0Lnt/zsUxO1jGnVXykh8VYaSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Zou <joy.zou@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/121] dmaengine: fsl-edma: clean up unused "fsl,imx8qm-adma" compatible string
-Date: Wed,  7 Aug 2024 16:59:36 +0200
-Message-ID: <20240807150020.843290508@linuxfoundation.org>
+Subject: [PATCH 6.10 058/123] netfilter: iptables: Fix potential null-ptr-deref in ip6table_nat_table_init().
+Date: Wed,  7 Aug 2024 16:59:37 +0200
+Message-ID: <20240807150022.683383644@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Zou <joy.zou@nxp.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 77584368a0f3d9eba112c3df69f1df7f282dbfe9 ]
+[ Upstream commit c22921df777de5606f1047b1345b8d22ef1c0b34 ]
 
-The eDMA hardware issue only exist imx8QM A0. A0 never mass production.
-So remove the workaround safely.
+ip6table_nat_table_init() accesses net->gen->ptr[ip6table_nat_net_ops.id],
+but the function is exposed to user space before the entry is allocated
+via register_pernet_subsys().
 
-Signed-off-by: Joy Zou <joy.zou@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240424064508.1886764-2-joy.zou@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 8ddad5589970 ("dmaengine: fsl-edma: change the memory access from local into remote mode in i.MX 8QM")
+Let's call register_pernet_subsys() before xt_register_template().
+
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-edma-common.c | 16 ++++------------
- drivers/dma/fsl-edma-common.h |  2 --
- drivers/dma/fsl-edma-main.c   |  8 --------
- 3 files changed, 4 insertions(+), 22 deletions(-)
+ net/ipv6/netfilter/ip6table_nat.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-index 12e605a756cad..a1ac404977fd8 100644
---- a/drivers/dma/fsl-edma-common.c
-+++ b/drivers/dma/fsl-edma-common.c
-@@ -75,18 +75,10 @@ static void fsl_edma3_enable_request(struct fsl_edma_chan *fsl_chan)
+diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
+index 52cf104e34788..e119d4f090cc8 100644
+--- a/net/ipv6/netfilter/ip6table_nat.c
++++ b/net/ipv6/netfilter/ip6table_nat.c
+@@ -147,23 +147,27 @@ static struct pernet_operations ip6table_nat_net_ops = {
  
- 	flags = fsl_edma_drvflags(fsl_chan);
- 	val = edma_readl_chreg(fsl_chan, ch_sbr);
--	/* Remote/local swapped wrongly on iMX8 QM Audio edma */
--	if (flags & FSL_EDMA_DRV_QUIRK_SWAPPED) {
--		if (!fsl_chan->is_rxchan)
--			val |= EDMA_V3_CH_SBR_RD;
--		else
--			val |= EDMA_V3_CH_SBR_WR;
--	} else {
--		if (fsl_chan->is_rxchan)
--			val |= EDMA_V3_CH_SBR_RD;
--		else
--			val |= EDMA_V3_CH_SBR_WR;
--	}
-+	if (fsl_chan->is_rxchan)
-+		val |= EDMA_V3_CH_SBR_RD;
-+	else
-+		val |= EDMA_V3_CH_SBR_WR;
+ static int __init ip6table_nat_init(void)
+ {
+-	int ret = xt_register_template(&nf_nat_ipv6_table,
+-				       ip6table_nat_table_init);
++	int ret;
  
- 	if (fsl_chan->is_remote)
- 		val &= ~(EDMA_V3_CH_SBR_RD | EDMA_V3_CH_SBR_WR);
-diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
-index b567da379fc33..20e29a42fcd8d 100644
---- a/drivers/dma/fsl-edma-common.h
-+++ b/drivers/dma/fsl-edma-common.h
-@@ -178,8 +178,6 @@ struct fsl_edma_desc {
- #define FSL_EDMA_DRV_HAS_PD		BIT(5)
- #define FSL_EDMA_DRV_HAS_CHCLK		BIT(6)
- #define FSL_EDMA_DRV_HAS_CHMUX		BIT(7)
--/* imx8 QM audio edma remote local swapped */
--#define FSL_EDMA_DRV_QUIRK_SWAPPED	BIT(8)
- /* control and status register is in tcd address space, edma3 reg layout */
- #define FSL_EDMA_DRV_SPLIT_REG		BIT(9)
- #define FSL_EDMA_DRV_BUS_8BYTE		BIT(10)
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 4a3edba315887..c96b893d2ac35 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -346,13 +346,6 @@ static struct fsl_edma_drvdata imx8qm_data = {
- 	.setup_irq = fsl_edma3_irq_init,
- };
++	/* net->gen->ptr[ip6table_nat_net_id] must be allocated
++	 * before calling ip6t_nat_register_lookups().
++	 */
++	ret = register_pernet_subsys(&ip6table_nat_net_ops);
+ 	if (ret < 0)
+ 		return ret;
  
--static struct fsl_edma_drvdata imx8qm_audio_data = {
--	.flags = FSL_EDMA_DRV_QUIRK_SWAPPED | FSL_EDMA_DRV_HAS_PD | FSL_EDMA_DRV_EDMA3,
--	.chreg_space_sz = 0x10000,
--	.chreg_off = 0x10000,
--	.setup_irq = fsl_edma3_irq_init,
--};
--
- static struct fsl_edma_drvdata imx8ulp_data = {
- 	.flags = FSL_EDMA_DRV_HAS_CHMUX | FSL_EDMA_DRV_HAS_CHCLK | FSL_EDMA_DRV_HAS_DMACLK |
- 		 FSL_EDMA_DRV_EDMA3,
-@@ -384,7 +377,6 @@ static const struct of_device_id fsl_edma_dt_ids[] = {
- 	{ .compatible = "fsl,ls1028a-edma", .data = &ls1028a_data},
- 	{ .compatible = "fsl,imx7ulp-edma", .data = &imx7ulp_data},
- 	{ .compatible = "fsl,imx8qm-edma", .data = &imx8qm_data},
--	{ .compatible = "fsl,imx8qm-adma", .data = &imx8qm_audio_data},
- 	{ .compatible = "fsl,imx8ulp-edma", .data = &imx8ulp_data},
- 	{ .compatible = "fsl,imx93-edma3", .data = &imx93_data3},
- 	{ .compatible = "fsl,imx93-edma4", .data = &imx93_data4},
+-	ret = register_pernet_subsys(&ip6table_nat_net_ops);
++	ret = xt_register_template(&nf_nat_ipv6_table,
++				   ip6table_nat_table_init);
+ 	if (ret)
+-		xt_unregister_template(&nf_nat_ipv6_table);
++		unregister_pernet_subsys(&ip6table_nat_net_ops);
+ 
+ 	return ret;
+ }
+ 
+ static void __exit ip6table_nat_exit(void)
+ {
+-	unregister_pernet_subsys(&ip6table_nat_net_ops);
+ 	xt_unregister_template(&nf_nat_ipv6_table);
++	unregister_pernet_subsys(&ip6table_nat_net_ops);
+ }
+ 
+ module_init(ip6table_nat_init);
 -- 
 2.43.0
 
