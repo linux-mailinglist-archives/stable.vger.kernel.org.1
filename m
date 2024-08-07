@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-65918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453EA94AC80
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:15:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735CF94AB88
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75F961C20A10
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5E78B22C5A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA38C79949;
-	Wed,  7 Aug 2024 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAD384DF1;
+	Wed,  7 Aug 2024 15:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+dN+NyN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hb9WWqHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F872374CC;
-	Wed,  7 Aug 2024 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9A527448;
+	Wed,  7 Aug 2024 15:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043753; cv=none; b=SZY47OuXmkqKNTWWQ/+H3al8i8fc65H0IR/NmM4VIfO0UnARaT8dvdgE+XSJKfA5+5OM0/tLjwSAMp813IBsLWN7R89y+LT0YuNho5knDsgkR2b6QMdjDVT/bTj1ww/c+/8zj708WaHnwqA3cUgYyqUJ5kh6FugnrJuJ3GOVm6c=
+	t=1723043181; cv=none; b=eim9yHKdxY8DCW2uaKbbM5a08H77I5+9gcg77Jxf/Cf1NEzTczBfOUsS8H1q2Ev7XzIFssit3NWJhjUnCyfUY0++f3us4Xs9nwHy9TMoloav8h2mUq08ofu5UNhoQXk2mzsTZUOwsGp0Az1pF230/ZJ5qtdFKNMhEyiP7H2hUko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043753; c=relaxed/simple;
-	bh=/zDMgqT515O7LnOR/PwwYt8sB0gX3yq0EjXFUIaUOWw=;
+	s=arc-20240116; t=1723043181; c=relaxed/simple;
+	bh=dDaGTUse/JAnW/AY1wBqG2xcjIOv/RvT61LjZDUF0Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ah4fSgP15J0NX6pzyxbR/VWWzgUHrFyGqMg0aPN6npBzanTtU0lY02nbNGgrvcCmiwG7wIJHEDzD4drzijQEWVBTuRFvZXy575xu1IO7x27E3AnFnhPi/ovpY28jf7wpOE3V3JEFLYLzjjFQRiN3tTWjRAIU3TK5LCMx3rMQn8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+dN+NyN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00298C32781;
-	Wed,  7 Aug 2024 15:15:52 +0000 (UTC)
+	 MIME-Version; b=nNycqYB3djY+rCHg+sDohPujbEoVYvYS1Ee8yyjiY6JV+9UD1fkEavn7q18zYssVtGL3tu9ESYODxuyUIfnvgaPpOkUzVkpxQ3stFetvSENEkqON8LNbIJ6rV8oVm53c/G0MBVwoLsE3cwqsMqqHxro3R3VsqMHoqoEWNpgyXMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hb9WWqHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96ADC32781;
+	Wed,  7 Aug 2024 15:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043753;
-	bh=/zDMgqT515O7LnOR/PwwYt8sB0gX3yq0EjXFUIaUOWw=;
+	s=korg; t=1723043181;
+	bh=dDaGTUse/JAnW/AY1wBqG2xcjIOv/RvT61LjZDUF0Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+dN+NyNug1qU/EqdSpZFJnq9cAdm1Qq0aSEJEPBpxmX6K6j659JXxfvuN3pv1QLu
-	 f5MztOHLDeOb+pzlksU8gWlfaB99eAueiaYsdSFy+JBQ/dxt014DFDJlSswsmm1wsf
-	 GDaWpPEve8klvx9sv2NXObRkBrm2mVhfGydFiQ6o=
+	b=hb9WWqHMkGOpjmPyVsQspyaSQPoQDX704t4R4cY+elYdwIaiRhDRCX8uxP7+44AeJ
+	 xM49dy8qc2/HfkOljYAyPqaSbcYn8ZgnQbMrOK0jD/2Zkx1mIW0yo2BLCXX02ADytk
+	 C3i3hWJ7aQ5KTrqOiH2Lm5jQ7skyOnOnd9LZxFY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 60/86] net/mlx5: Lag, dont use the hardcoded value of the first port
-Date: Wed,  7 Aug 2024 17:00:39 +0200
-Message-ID: <20240807150041.228789385@linuxfoundation.org>
+	Liu Jing <liujing@cmss.chinamobile.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.10 121/123] selftests: mptcp: always close inputs FD if opened
+Date: Wed,  7 Aug 2024 17:00:40 +0200
+Message-ID: <20240807150024.858592654@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Bloch <mbloch@nvidia.com>
+From: Liu Jing <liujing@cmss.chinamobile.com>
 
-[ Upstream commit 3fda84dc090390573cfbd0b1d70372663315de21 ]
+commit 7c70bcc2a84cf925f655ea1ac4b8088062b144a3 upstream.
 
-The cited commit didn't change the body of the loop as it should.
-It shouldn't be using MLX5_LAG_P1.
+In main_loop_s function, when the open(cfg_input, O_RDONLY) function is
+run, the last fd is not closed if the "--cfg_repeat > 0" branch is not
+taken.
 
-Fixes: 7e978e7714d6 ("net/mlx5: Lag, use actual number of lag ports")
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index a283d8ae466b6..4b4d761081115 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -1483,7 +1483,7 @@ u8 mlx5_lag_get_slave_port(struct mlx5_core_dev *dev,
- 		goto unlock;
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -1115,11 +1115,11 @@ again:
+ 		return 1;
+ 	}
  
- 	for (i = 0; i < ldev->ports; i++) {
--		if (ldev->pf[MLX5_LAG_P1].netdev == slave) {
-+		if (ldev->pf[i].netdev == slave) {
- 			port = i;
- 			break;
- 		}
--- 
-2.43.0
-
+-	if (--cfg_repeat > 0) {
+-		if (cfg_input)
+-			close(fd);
++	if (cfg_input)
++		close(fd);
++
++	if (--cfg_repeat > 0)
+ 		goto again;
+-	}
+ 
+ 	return 0;
+ }
 
 
 
