@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-65703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735CF94AB88
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046C494AC09
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5E78B22C5A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1CE8281059
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAD384DF1;
-	Wed,  7 Aug 2024 15:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C677823C8;
+	Wed,  7 Aug 2024 15:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hb9WWqHM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvuDQdYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9A527448;
-	Wed,  7 Aug 2024 15:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BBB7E0E9;
+	Wed,  7 Aug 2024 15:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043181; cv=none; b=eim9yHKdxY8DCW2uaKbbM5a08H77I5+9gcg77Jxf/Cf1NEzTczBfOUsS8H1q2Ev7XzIFssit3NWJhjUnCyfUY0++f3us4Xs9nwHy9TMoloav8h2mUq08ofu5UNhoQXk2mzsTZUOwsGp0Az1pF230/ZJ5qtdFKNMhEyiP7H2hUko=
+	t=1723043485; cv=none; b=TPUdq7S4HmlcCe7ArI2lPqk0rAPvucR0p1UGRef82ulyquwgr0mKEUL/IvKUFSFNatDurbE+d+PSn3I0nCsjAGtdS8fh+VUdAs97NK52j+BpjQ4yN8e+R7hLWB7Moi1YWUZNqhsqv7rKrFXqMjH7RW0js/1ORp29cz+Ryehs3MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043181; c=relaxed/simple;
-	bh=dDaGTUse/JAnW/AY1wBqG2xcjIOv/RvT61LjZDUF0Bc=;
+	s=arc-20240116; t=1723043485; c=relaxed/simple;
+	bh=IOQGIDyx18UN0ZYEd8SGeQ+vGyuFCABe1lYcy9fd/7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNycqYB3djY+rCHg+sDohPujbEoVYvYS1Ee8yyjiY6JV+9UD1fkEavn7q18zYssVtGL3tu9ESYODxuyUIfnvgaPpOkUzVkpxQ3stFetvSENEkqON8LNbIJ6rV8oVm53c/G0MBVwoLsE3cwqsMqqHxro3R3VsqMHoqoEWNpgyXMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hb9WWqHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96ADC32781;
-	Wed,  7 Aug 2024 15:06:20 +0000 (UTC)
+	 MIME-Version; b=KyxXknB6CdHhkdYw2P6zFAAKays5uYKqA3TaV7+nXC+qiHvZq357W0W2sOAIAOT1AGKxLUaxerxxf56prIf9vEuyD1tdx5cPZk8bjekYzhrIEqoM4FvGgol8kVhRCysAMvq1lYnUeu/xJIrihgRipHOZRAUFItijk14lNlVbh9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvuDQdYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DB2C32781;
+	Wed,  7 Aug 2024 15:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043181;
-	bh=dDaGTUse/JAnW/AY1wBqG2xcjIOv/RvT61LjZDUF0Bc=;
+	s=korg; t=1723043484;
+	bh=IOQGIDyx18UN0ZYEd8SGeQ+vGyuFCABe1lYcy9fd/7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hb9WWqHMkGOpjmPyVsQspyaSQPoQDX704t4R4cY+elYdwIaiRhDRCX8uxP7+44AeJ
-	 xM49dy8qc2/HfkOljYAyPqaSbcYn8ZgnQbMrOK0jD/2Zkx1mIW0yo2BLCXX02ADytk
-	 C3i3hWJ7aQ5KTrqOiH2Lm5jQ7skyOnOnd9LZxFY4=
+	b=DvuDQdYmcLAer/QjmIgNTyWTpWaMKGeV28raIImD5zRS7/6ZXGRONs9WYsB5xe+Tl
+	 34ks85qa/0SGJ8bIjQcUlcb1j+HbE6QJysDsj+K4ND9oBaeJpVrWPC7YiPHozTvTKF
+	 OMI9KRuZShxvT8O2wERWD4Fvo68Krm3EpCWghapw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Jing <liujing@cmss.chinamobile.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.10 121/123] selftests: mptcp: always close inputs FD if opened
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.6 108/121] drm/i915: Fix possible int overflow in skl_ddi_calculate_wrpll()
 Date: Wed,  7 Aug 2024 17:00:40 +0200
-Message-ID: <20240807150024.858592654@linuxfoundation.org>
+Message-ID: <20240807150022.930371897@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jing <liujing@cmss.chinamobile.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 7c70bcc2a84cf925f655ea1ac4b8088062b144a3 upstream.
+commit 5b511572660190db1dc8ba412efd0be0d3781ab6 upstream.
 
-In main_loop_s function, when the open(cfg_input, O_RDONLY) function is
-run, the last fd is not closed if the "--cfg_repeat > 0" branch is not
-taken.
+On the off chance that clock value ends up being too high (by means
+of skl_ddi_calculate_wrpll() having been called with big enough
+value of crtc_state->port_clock * 1000), one possible consequence
+may be that the result will not be able to fit into signed int.
 
-Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
+Fix this issue by moving conversion of clock parameter from kHz to Hz
+into the body of skl_ddi_calculate_wrpll(), as well as casting the
+same parameter to u64 type while calculating the value for AFE clock.
+This both mitigates the overflow problem and avoids possible erroneous
+integer promotion mishaps.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 82d354370189 ("drm/i915/skl: Implementation of SKL DPLL programming")
 Cc: stable@vger.kernel.org
-Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240729174035.25727-1-n.zhandarovich@fintech.ru
+(cherry picked from commit 833cf12846aa19adf9b76bc79c40747726f3c0c1)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dpll_mgr.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1115,11 +1115,11 @@ again:
- 		return 1;
- 	}
- 
--	if (--cfg_repeat > 0) {
--		if (cfg_input)
--			close(fd);
-+	if (cfg_input)
-+		close(fd);
-+
-+	if (--cfg_repeat > 0)
- 		goto again;
--	}
- 
- 	return 0;
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -1556,7 +1556,7 @@ static void skl_wrpll_params_populate(st
  }
+ 
+ static int
+-skl_ddi_calculate_wrpll(int clock /* in Hz */,
++skl_ddi_calculate_wrpll(int clock,
+ 			int ref_clock,
+ 			struct skl_wrpll_params *wrpll_params)
+ {
+@@ -1581,7 +1581,7 @@ skl_ddi_calculate_wrpll(int clock /* in
+ 	};
+ 	unsigned int dco, d, i;
+ 	unsigned int p0, p1, p2;
+-	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
++	u64 afe_clock = (u64)clock * 1000 * 5; /* AFE Clock is 5x Pixel clock, in Hz */
+ 
+ 	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
+ 		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
+@@ -1713,7 +1713,7 @@ static int skl_ddi_hdmi_pll_dividers(str
+ 
+ 	ctrl1 |= DPLL_CTRL1_HDMI_MODE(0);
+ 
+-	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
++	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock,
+ 				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
+ 	if (ret)
+ 		return ret;
 
 
 
