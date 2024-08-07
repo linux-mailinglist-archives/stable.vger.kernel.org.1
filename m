@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-65803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE49994ABFA
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6AE794AC56
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AC0D1F23C61
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 791261C211C8
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD55778C92;
-	Wed,  7 Aug 2024 15:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A9E82499;
+	Wed,  7 Aug 2024 15:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvuw3N/H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhfgkW2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B31782499;
-	Wed,  7 Aug 2024 15:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF0C374CC;
+	Wed,  7 Aug 2024 15:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043450; cv=none; b=EZBMywZrJpvj9hO5CFC/9SdNN6J+e/vEcjEmrX2dK4ZqsZo3jOR2NDYf890LshHg6SO+4lAyCOlrpnYLsngu/tivhIBeu5jlqfRCOFveOMQkgEwx9SWCksLFB+Z69UlsDFLmjZmJvNHci46Wkrf+lCzOs1lVlpinwF8uHcQrwCM=
+	t=1723043653; cv=none; b=RjlbK6i1VT/NLsG3ynSmWhsTfpjp2GX+gq/R5C16OvvX629RjJ6mTlCQk107CtZZ/iwu1f2cN5KraqVbuJmYKmqa8FK80sBA0InbIMCGlBSCPQGCHsy867rlw4IxihhW1Yk2uslzM6I+/fI7qxFlZ3tSEjDGUg1SB1l5LuVkIQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043450; c=relaxed/simple;
-	bh=gnQ1v4BZgI/rbQfESkf7O48mr7/ToOfa1+uerr60qNI=;
+	s=arc-20240116; t=1723043653; c=relaxed/simple;
+	bh=s1HFp56bQChysUG9yaQnLqwI6V7qwCIuabG5qWVBslc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q88toSASkztQtnc8SDjdPB/zqgczYeO4bVFm0kHr/rV9H6rHD1RIF6kyb4O0umZ9uNWXIV5OMBBMg0bO1k/ThUpl3GprOfQU5t3G0SjUwV5m5rdIoZ5FvyeEUDlr901FCBIHdQnFHBDYb5+pGMKShFBCrK6qX4Vyu9pCUytNONI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvuw3N/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C617C4AF0E;
-	Wed,  7 Aug 2024 15:10:50 +0000 (UTC)
+	 MIME-Version; b=ZfmhvWc0sLtdkCtke3+ZigsiAsIRIl+RVp6/YPw92ArFYY7E1FdExkYApr/dvQlkjaYb5v0d2AohsXdizLAYL+RaYJ/O0KGfC+p3jr4QhVGAyl0AGEX1YGG4TTj4Rl8EDngl0lmFO3XKPh4xzH+2IQC5QKSWgOcLZOYVcMiGH38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhfgkW2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B751CC32781;
+	Wed,  7 Aug 2024 15:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043450;
-	bh=gnQ1v4BZgI/rbQfESkf7O48mr7/ToOfa1+uerr60qNI=;
+	s=korg; t=1723043653;
+	bh=s1HFp56bQChysUG9yaQnLqwI6V7qwCIuabG5qWVBslc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zvuw3N/HXCTFX4XsCi6XyeXc/aU6ZWzFQQJF726x5CkQ1t8s1SDnch7/PycmiEjod
-	 aL7ni1OciSBgd55SPsy33PU/MB3IBaTzcU8W9NL/DVhlks+nZwIyRZyMmYcI8fj5mc
-	 dzCl2PLUKr2jI0Y15RmEDPNFqGsxqhiVNFqLsP2E=
+	b=VhfgkW2fVGRfIEjpiWBafdqZ+6FxZem+OUHCfydOf+0vyL8LBAsGsMjupRHquDNFi
+	 kSzahm2V3hoVZ3A52IIollVPxuxgq8+eSp/dFQi/d2pVplp7VYry55hEOFsXi4BuKr
+	 8uGSxMs/Hx0XtIT5xoqE+aSd9PXpvzb32XjvGJwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
-	Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 096/121] HID: wacom: Modify pen IDs
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 49/86] rtnetlink: Dont ignore IFLA_TARGET_NETNSID when ifname is specified in rtnl_dellink().
 Date: Wed,  7 Aug 2024 17:00:28 +0200
-Message-ID: <20240807150022.535396389@linuxfoundation.org>
+Message-ID: <20240807150040.861687087@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit f0d17d696dfce77c9abc830e4ac2d677890a2dad upstream.
+[ Upstream commit 9415d375d8520e0ed55f0c0b058928da9a5b5b3d ]
 
-The pen ID, 0x80842, was not the correct ID for wacom driver to
-treat. The ID was corrected to 0x8842.
-Also, 0x4200 was not the expected ID used on any Wacom device.
-Therefore, 0x4200 was removed.
+The cited commit accidentally replaced tgt_net with net in rtnl_dellink().
 
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>
-Fixes: bfdc750c4cb2 ("HID: wacom: add three styli to wacom_intuos_get_tool_type")
-Cc: stable@kernel.org #6.2
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Link: https://patch.msgid.link/20240709055729.17158-1-tatsunosuke.wacom@gmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a result, IFLA_TARGET_NETNSID is ignored if the interface is specified
+with IFLA_IFNAME or IFLA_ALT_IFNAME.
+
+Let's pass tgt_net to rtnl_dev_get().
+
+Fixes: cc6090e985d7 ("net: rtnetlink: introduce helper to get net_device instance by ifname")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/core/rtnetlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -714,13 +714,12 @@ static int wacom_intuos_get_tool_type(in
- 	case 0x8e2: /* IntuosHT2 pen */
- 	case 0x022:
- 	case 0x200: /* Pro Pen 3 */
--	case 0x04200: /* Pro Pen 3 */
- 	case 0x10842: /* MobileStudio Pro Pro Pen slim */
- 	case 0x14802: /* Intuos4/5 13HD/24HD Classic Pen */
- 	case 0x16802: /* Cintiq 13HD Pro Pen */
- 	case 0x18802: /* DTH2242 Pen */
- 	case 0x10802: /* Intuos4/5 13HD/24HD General Pen */
--	case 0x80842: /* Intuos Pro and Cintiq Pro 3D Pen */
-+	case 0x8842: /* Intuos Pro and Cintiq Pro 3D Pen */
- 		tool_type = BTN_TOOL_PEN;
- 		break;
- 
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 1163226c025c1..be663a7382ce9 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3178,7 +3178,7 @@ static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (ifm->ifi_index > 0)
+ 		dev = __dev_get_by_index(tgt_net, ifm->ifi_index);
+ 	else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
+-		dev = rtnl_dev_get(net, tb);
++		dev = rtnl_dev_get(tgt_net, tb);
+ 	else if (tb[IFLA_GROUP])
+ 		err = rtnl_group_dellink(tgt_net, nla_get_u32(tb[IFLA_GROUP]));
+ 	else
+-- 
+2.43.0
+
 
 
 
