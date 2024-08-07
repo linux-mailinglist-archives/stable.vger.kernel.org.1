@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6D094AB92
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD74894AAF2
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C732283D3D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D68A1F295AD
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F7D85654;
-	Wed,  7 Aug 2024 15:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11C678291;
+	Wed,  7 Aug 2024 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgV67NGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmqIG6yw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7691678C92;
-	Wed,  7 Aug 2024 15:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0D823CE;
+	Wed,  7 Aug 2024 15:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043213; cv=none; b=oxSoNkV/cMZ1Uq8v/T0F+Q7lMnz7aJd9DM5l20l62w05JAn1oVSPmM6clasv9IsvTImy3l4rfc5klk4lCF3gA2aYiUn1gghlZITWBuD1d+fUsHS5ySCO7q/b59DI38RyJT58qheJu/8HQmEuwPUuEzr05fCNoqm0u3cjNMvwzh8=
+	t=1723042893; cv=none; b=jTpx7g9DHWeNyECBdog2MMX63nzYpHVpxx9fch75o40rmX9p7nV2kJwAJakw63Z5q1IzUk5bn5jjv6Tmo0FnRFhlD0szSLirhUuF0+DwvEwHve21suxz9W+krsPDNlmu1jt2w7tod/tWYKNM6OSlcqvBwwxHylsQKZtTFFyHAKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043213; c=relaxed/simple;
-	bh=AE9rVQ/zptiewmTLlozotQRTwK57eWRKR5cLnoH+F5M=;
+	s=arc-20240116; t=1723042893; c=relaxed/simple;
+	bh=RJ29aUHMneUaEAH8g2YfSCwBtwyySl+zh4/GpfJh9qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpvpbwlUnh4lZhTDeawIIob34Jpf21VeAw3NLeIFZopKTpEyP6sOWiST4l9CDsUh4dtH2nOVSdUVdxjEgA7+PeYgsxNL40RspScn0wtg2IhoL2CGLcuX+icOERjGtrat4XVHX/cVU//pZbX2HXjxNcCkqgnio4gP1jWQiXrWgKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgV67NGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51D6C32781;
-	Wed,  7 Aug 2024 15:06:52 +0000 (UTC)
+	 MIME-Version; b=KUHForLwQWV+9We+qhzn5dLi9v5M/8tpFrAODyyWGA/xPmMCNwonYcnFgDI0hMJZvduelbb2HdyNnXL3i2Yz24lRmi1Kh/3KZpXSJwjIXVykGp6kIPbg9sIn2YZRJ00i6gkgx62/eZoCH5BBXci9RMEJLPVuydSp+ickwrDFc4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmqIG6yw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9F9C32781;
+	Wed,  7 Aug 2024 15:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043213;
-	bh=AE9rVQ/zptiewmTLlozotQRTwK57eWRKR5cLnoH+F5M=;
+	s=korg; t=1723042891;
+	bh=RJ29aUHMneUaEAH8g2YfSCwBtwyySl+zh4/GpfJh9qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgV67NGfzicn7isXBqH7NqODPsozDbDZliZF3AYmebD45XRUjaab3BB3Uw8QBc63w
-	 OcwBef1L0Iai94Upy8AKeRn2lWh6rgH7Lg7TOdRcDxYSWvtpZOPQZOeK+tOZtmPO6Z
-	 36US5ZDAlkRFqxH+YCwRhTDsSMIhmcDOVBTUj4RI=
+	b=qmqIG6yw22A0ZEJCdd7WEl1Or99fXCjTvN+omGHa5qQtk5DVonFG85OB5Ee4vsJzd
+	 dYRfLAgru1un01+Lh2hLsxwRpM+JngAPCRbS9NIKRfKKJbEXePemaLkmUlJA0rvwqn
+	 eyg3AsLC8dBvEEexp4W49T5monAirDhEW2AnA3lA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/121] arm64: dts: qcom: sc7180: switch USB+DP QMP PHY to new style of bindings
+Subject: [PATCH 6.10 014/123] MIPS: dts: loongson: Fix liointc IRQ polarity
 Date: Wed,  7 Aug 2024 16:58:53 +0200
-Message-ID: <20240807150019.451266187@linuxfoundation.org>
+Message-ID: <20240807150021.279906422@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +62,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit ebb840b00b7f9fc15153b37a7d9ec5b47a5308c1 ]
+[ Upstream commit dbb69b9d6234aad23b3ecd33e5bc8a8ae1485b7d ]
 
-Change the USB QMP PHY to use newer style of QMP PHY bindings (single
-resource region, no per-PHY subnodes).
+All internal liointc interrupts are high level triggered.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230711120916.4165894-6-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 5b8baed4b881 ("arm64: dts: qcom: sc7180: Disable SuperSpeed instances in park mode")
+Fixes: b1a792601f26 ("MIPS: Loongson64: DeviceTree for Loongson-2K1000")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi | 57 ++++++++++------------------
- 1 file changed, 19 insertions(+), 38 deletions(-)
+ .../boot/dts/loongson/loongson64-2k1000.dtsi  | 42 +++++++++----------
+ 1 file changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index f7c528ecb224b..18ef8fb5c8c7a 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -15,6 +15,7 @@
- #include <dt-bindings/interconnect/qcom,osm-l3.h>
- #include <dt-bindings/interconnect/qcom,sc7180.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include <dt-bindings/phy/phy-qcom-qmp.h>
- #include <dt-bindings/phy/phy-qcom-qusb2.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
- #include <dt-bindings/reset/qcom,sdm845-aoss.h>
-@@ -2795,49 +2796,28 @@ usb_1_hsphy: phy@88e3000 {
- 			nvmem-cells = <&qusb2p_hstx_trim>;
+diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+index c1d3092fdd870..eec8243be6499 100644
+--- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
++++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+@@ -100,7 +100,7 @@ rtc0: rtc@1fe07800 {
+ 			compatible = "loongson,ls2k1000-rtc";
+ 			reg = <0 0x1fe07800 0 0x78>;
+ 			interrupt-parent = <&liointc0>;
+-			interrupts = <60 IRQ_TYPE_LEVEL_LOW>;
++			interrupts = <60 IRQ_TYPE_LEVEL_HIGH>;
  		};
  
--		usb_1_qmpphy: phy-wrapper@88e9000 {
-+		usb_1_qmpphy: phy@88e8000 {
- 			compatible = "qcom,sc7180-qmp-usb3-dp-phy";
--			reg = <0 0x088e9000 0 0x18c>,
--			      <0 0x088e8000 0 0x3c>,
--			      <0 0x088ea000 0 0x18c>;
-+			reg = <0 0x088e8000 0 0x3000>;
- 			status = "disabled";
--			#address-cells = <2>;
--			#size-cells = <2>;
--			ranges;
- 
- 			clocks = <&gcc GCC_USB3_PRIM_PHY_AUX_CLK>,
--				 <&gcc GCC_USB_PHY_CFG_AHB2PHY_CLK>,
- 				 <&gcc GCC_USB3_PRIM_CLKREF_CLK>,
--				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>;
--			clock-names = "aux", "cfg_ahb", "ref", "com_aux";
-+				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>,
-+				 <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>,
-+				 <&gcc GCC_USB_PHY_CFG_AHB2PHY_CLK>;
-+			clock-names = "aux",
-+				      "ref",
-+				      "com_aux",
-+				      "usb3_pipe",
-+				      "cfg_ahb";
- 
- 			resets = <&gcc GCC_USB3_PHY_PRIM_BCR>,
- 				 <&gcc GCC_USB3_DP_PHY_PRIM_BCR>;
- 			reset-names = "phy", "common";
- 
--			usb_1_ssphy: usb3-phy@88e9200 {
--				reg = <0 0x088e9200 0 0x128>,
--				      <0 0x088e9400 0 0x200>,
--				      <0 0x088e9c00 0 0x218>,
--				      <0 0x088e9600 0 0x128>,
--				      <0 0x088e9800 0 0x200>,
--				      <0 0x088e9a00 0 0x18>;
--				#clock-cells = <0>;
--				#phy-cells = <0>;
--				clocks = <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>;
--				clock-names = "pipe0";
--				clock-output-names = "usb3_phy_pipe_clk_src";
--			};
--
--			dp_phy: dp-phy@88ea200 {
--				reg = <0 0x088ea200 0 0x200>,
--				      <0 0x088ea400 0 0x200>,
--				      <0 0x088eaa00 0 0x200>,
--				      <0 0x088ea600 0 0x200>,
--				      <0 0x088ea800 0 0x200>;
--				#clock-cells = <1>;
--				#phy-cells = <0>;
--			};
-+			#clock-cells = <1>;
-+			#phy-cells = <1>;
+ 		uart0: serial@1fe00000 {
+@@ -108,7 +108,7 @@ uart0: serial@1fe00000 {
+ 			reg = <0 0x1fe00000 0 0x8>;
+ 			clock-frequency = <125000000>;
+ 			interrupt-parent = <&liointc0>;
+-			interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++			interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+ 			no-loopback-test;
  		};
  
- 		pmu@90b6300 {
-@@ -3001,7 +2981,7 @@ usb_1_dwc3: usb@a600000 {
- 				iommus = <&apps_smmu 0x540 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
--				phys = <&usb_1_hsphy>, <&usb_1_ssphy>;
-+				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				maximum-speed = "super-speed";
+@@ -131,8 +131,8 @@ gmac@3,0 {
+ 						   "pciclass0c03";
+ 
+ 				reg = <0x1800 0x0 0x0 0x0 0x0>;
+-				interrupts = <12 IRQ_TYPE_LEVEL_LOW>,
+-					     <13 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
++					     <13 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-names = "macirq", "eth_lpi";
+ 				interrupt-parent = <&liointc0>;
+ 				phy-mode = "rgmii-id";
+@@ -155,8 +155,8 @@ gmac@3,1 {
+ 						   "loongson, pci-gmac";
+ 
+ 				reg = <0x1900 0x0 0x0 0x0 0x0>;
+-				interrupts = <14 IRQ_TYPE_LEVEL_LOW>,
+-					     <15 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <14 IRQ_TYPE_LEVEL_HIGH>,
++					     <15 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-names = "macirq", "eth_lpi";
+ 				interrupt-parent = <&liointc0>;
+ 				phy-mode = "rgmii-id";
+@@ -178,7 +178,7 @@ ehci@4,1 {
+ 						   "pciclass0c03";
+ 
+ 				reg = <0x2100 0x0 0x0 0x0 0x0>;
+-				interrupts = <18 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <18 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
  			};
-@@ -3307,8 +3287,9 @@ mdss_dp: displayport-controller@ae90000 {
- 					      "ctrl_link_iface", "stream_pixel";
- 				assigned-clocks = <&dispcc DISP_CC_MDSS_DP_LINK_CLK_SRC>,
- 						  <&dispcc DISP_CC_MDSS_DP_PIXEL_CLK_SRC>;
--				assigned-clock-parents = <&dp_phy 0>, <&dp_phy 1>;
--				phys = <&dp_phy>;
-+				assigned-clock-parents = <&usb_1_qmpphy QMP_USB43DP_DP_LINK_CLK>,
-+							 <&usb_1_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>;
-+				phys = <&usb_1_qmpphy QMP_USB43DP_DP_PHY>;
- 				phy-names = "dp";
  
- 				operating-points-v2 = <&dp_opp_table>;
-@@ -3365,8 +3346,8 @@ dispcc: clock-controller@af00000 {
- 				 <&gcc GCC_DISP_GPLL0_CLK_SRC>,
- 				 <&mdss_dsi0_phy 0>,
- 				 <&mdss_dsi0_phy 1>,
--				 <&dp_phy 0>,
--				 <&dp_phy 1>;
-+				 <&usb_1_qmpphy QMP_USB43DP_DP_LINK_CLK>,
-+				 <&usb_1_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>;
- 			clock-names = "bi_tcxo",
- 				      "gcc_disp_gpll0_clk_src",
- 				      "dsi0_phy_pll_out_byteclk",
+@@ -189,7 +189,7 @@ ohci@4,2 {
+ 						   "pciclass0c03";
+ 
+ 				reg = <0x2200 0x0 0x0 0x0 0x0>;
+-				interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 			};
+ 
+@@ -200,7 +200,7 @@ sata@8,0 {
+ 						   "pciclass0106";
+ 
+ 				reg = <0x4000 0x0 0x0 0x0 0x0>;
+-				interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc0>;
+ 			};
+ 
+@@ -215,10 +215,10 @@ pcie@9,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 0 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 0 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -234,10 +234,10 @@ pcie@a,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <1 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 1 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 1 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -253,10 +253,10 @@ pcie@b,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <2 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 2 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 2 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -272,10 +272,10 @@ pcie@c,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <3 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 3 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 3 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -291,10 +291,10 @@ pcie@d,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 4 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 4 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -310,10 +310,10 @@ pcie@e,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <5 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 5 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 5 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
 -- 
 2.43.0
 
