@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977F894A94E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:03:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0016094A94F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D706288EFC
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:03:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CC041F237CD
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C02929D06;
-	Wed,  7 Aug 2024 14:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFB722301;
+	Wed,  7 Aug 2024 14:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Buj8hpUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uslXk+Un"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5897CB674
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AFF2BB0D
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723039414; cv=none; b=BAxqTis0XE3CBF4j4bbJbGTlIIe9vw5qeDQumHZuloML7Z48+wGc7QHOTiR16vRtNz2H4J5d0OER//tFJatTtpAdO7jd3SsGRnCZardWADrzf5s4/LuGbfvc0EuS8YhoqhM5qDW6diBOqMbua+iGu45FaTKfBMDLgfxmE/g79Ck=
+	t=1723039418; cv=none; b=ejqA8at5I2shYvBpsMckaU/nSWJ3qiQK1qetlSdhm+Jt6pBUsEqju2q+jQKtMp44L5IKC1t3hBxiQL65wkn9/ZU0fAnWG8hrwDsQ11foRy8tIhXZ0NmgiX4iYveFODekhJ4nmuhOpFka0xjEuLvXjpTvRxWhmXV2j4dJ7OHMtOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723039414; c=relaxed/simple;
-	bh=wfpWm0MZuYMuTbFgwqfa2eFIIiQl57H7iA1OlgR7yM4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XoctHJ8eAS4R5kUjfSgRxQOIAvS4jyF67zdrZTxnJa1RJka89COG3eWmy/mh7p127WJ98kTCspcE4e/TDReOWUMK7+aUK/42jdamTtxJtSemNLfK+HWFVhRdBkSor66BGSK6jweMa/aVFVVREmdIvh+JDA0ZxgwFOcRRxWEl1a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Buj8hpUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B40C32781;
-	Wed,  7 Aug 2024 14:03:33 +0000 (UTC)
+	s=arc-20240116; t=1723039418; c=relaxed/simple;
+	bh=iytpeCfW433u5v19XBXntXf2Tofd1bJM/XevRrQgzLk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O5s9jE8rt3FraqvGGPoT7GXEGQGRmv3xgV8+gFfdEeT8oP+/eZ6CpZajvJLMBrwWXWhdBbGAhy9tAc488KMu+g8E0xfkBtXmhhspFh7u+E9ZAVrK9Yqe7JlA+XqyRs0036QkAlJZ1Qz32g2ZYbvovIuM6NWcSiQ+xwy3tzybDRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uslXk+Un; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42A5C32781;
+	Wed,  7 Aug 2024 14:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723039413;
-	bh=wfpWm0MZuYMuTbFgwqfa2eFIIiQl57H7iA1OlgR7yM4=;
+	s=korg; t=1723039418;
+	bh=iytpeCfW433u5v19XBXntXf2Tofd1bJM/XevRrQgzLk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Buj8hpUtuCSldCkaem5k71BGb6CxchJ6/2I3S1AFFmUczVVl2tmphSe7OxBxhw7aO
-	 Zsw5kGQ80fTuQEr19VkYKf5boYFqtgr4gRVjSb3KZpuAfeLC9rwmoH7kgYbkEWFoFR
-	 RElFrUxz9xio3H5A3A+ecymohP8wIonY1Y4mpn7U=
-Subject: FAILED: patch "[PATCH] btrfs: fix corruption after buffer fault in during direct IO" failed to apply to 6.10-stable tree
+	b=uslXk+UndJtCAblPlZoRi2NsFkg2eDcm4uUcZcLWkdzqnubA2t7pC5fNLc3GXvGRn
+	 Pjx9UpUCOZVo67HeDe2IaWgtAzRFn1lA9fFCvejSett1l91Z/tJqSYd1yuxI9Fj9FY
+	 4N00lcC96Bf5R7Z1JKa/6CJ9gkZsOc0rO3ouohck=
+Subject: FAILED: patch "[PATCH] btrfs: fix corruption after buffer fault in during direct IO" failed to apply to 6.6-stable tree
 To: fdmanana@suse.com,dsterba@suse.com,hreitz@redhat.com,josef@toxicpanda.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 07 Aug 2024 16:03:30 +0200
-Message-ID: <2024080730-deafness-structure-9630@gregkh>
+Date: Wed, 07 Aug 2024 16:03:32 +0200
+Message-ID: <2024080732-spiffy-crestless-0307@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 939b656bc8ab203fdbde26ccac22bcb7f0985be5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080730-deafness-structure-9630@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080732-spiffy-crestless-0307@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -88,6 +88,7 @@ e641e323abb3 ("btrfs: pass a btrfs_inode to btrfs_wait_ordered_range()")
 cef2daba4268 ("btrfs: pass a btrfs_inode to btrfs_fdatawrite_range()")
 4e660ca3a98d ("btrfs: use a regular rb_root instead of cached rb_root for extent_map_tree")
 7f5830bc964d ("btrfs: rename rb_root member of extent_map_tree from map to root")
+f13e01b89daf ("btrfs: ensure fast fsync waits for ordered extents after a write failure")
 
 thanks,
 
