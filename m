@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-65839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2ACC94AC23
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DAE794AC2F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 650BA1F209AB
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E41B1C2086B
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9701823A9;
-	Wed,  7 Aug 2024 15:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D528288C;
+	Wed,  7 Aug 2024 15:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkYcN7lw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdTBsz5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75465374CC;
-	Wed,  7 Aug 2024 15:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD5C374CC;
+	Wed,  7 Aug 2024 15:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043543; cv=none; b=n/oYA2eGg9JcScSTAIaiY+3034oOvyPE9zf8u8dobQ8plrD6NB4yZ6tKN5CeEvO7lCLhUwbjxsZvoXHYsA6MUlSx9nCVpSD8t3ANAFr8JbQLH7rYxoD0EjUU/avTWYCA+k/AMzT7OLlk4GHtZdGoNG/dqORNhJvi2gkLJNNZfyc=
+	t=1723043572; cv=none; b=Xu66gtxLnSvf83cg9SiAbIqV3Sk5HmFwJK/s9zbuObtMUS0MJA6WqgzZSdpy8DIU1O3yOmGaN/mhRCe8N3T/Oah5I7Vr/odeM4QD4z0awR3tfREV1AaPol21gJZHt2Vqv/0/Pg+mtl7nqZLmKL99SyNQgP/va/U4fnd1jZuL9ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043543; c=relaxed/simple;
-	bh=YShQqegv1T4BR+5gpHIR0x1X87gRT8qbtJFtSefgNRw=;
+	s=arc-20240116; t=1723043572; c=relaxed/simple;
+	bh=jAb3dHpw6rZgjh0x3tvfS80p2qsknEjhIHbhKDiScSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IklUJiDbtKkdVPeTvEh/ex1HI7Lqm6Oqtqk7JZNnSasqrTagK+jnfBsNjMBCIO9mHG63gAuo462AKAxx3ewpdeeyf0Uat7npe6hwIuyPh35xDwTpOhqU+ufGNUDqknU86HsRn+HTLF87m0gHlPhtr6pNEk7xEA/qt8m8JUSodQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkYcN7lw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0311FC32781;
-	Wed,  7 Aug 2024 15:12:22 +0000 (UTC)
+	 MIME-Version; b=e/cGZMH/JAdYduLZVdIxeIvxtTYNtOCfAf60Th0HBU1lB3/vvNCoXFNdXVsAblGfZoj0tUZS3eiPRU35/YL4K/V5zLWlIXrfZvART+/an1YZpH+THLnqiZihheq6JLGOlkWPTFc64M6MViSSU5urdO/N1fHdrCSayPciYfaEkEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdTBsz5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5FBC32781;
+	Wed,  7 Aug 2024 15:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043543;
-	bh=YShQqegv1T4BR+5gpHIR0x1X87gRT8qbtJFtSefgNRw=;
+	s=korg; t=1723043572;
+	bh=jAb3dHpw6rZgjh0x3tvfS80p2qsknEjhIHbhKDiScSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AkYcN7lw/NvB1fcUMRaJpiNNnrWOFgcLVNDuPcm4VknpI0tcprDjExEBsj7f10pbR
-	 U7bUxaOxvtXcIF5JBZpahZgeR6XubqlMKiNnG0eWl7ZitTdit4r78B4KlXKwbzh2+C
-	 Ci2aoFrh4U+Wphr+xs32gn2xlIZ8/fQmPBLvWmcw=
+	b=rdTBsz5rh01i5Y2ApJBJ0tQ9pZ+NAW9wPg3wg+m3nV23DmKzMZ6Ic8s1XbpxzcRpj
+	 aSBMsQtRZj5ipwtmtOVYtEgRyzdDjfMiua2lZ9FfLe0lLK6OZSv8bPtRUDS4rQt5Al
+	 RX3BhKjM6kod2byfWwc4SImG/Sm+nxKxblDqb20w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 01/86] arm64: dts: qcom: msm8998: switch USB QMP PHY to new style of bindings
-Date: Wed,  7 Aug 2024 16:59:40 +0200
-Message-ID: <20240807150039.293460467@linuxfoundation.org>
+Subject: [PATCH 6.1 02/86] arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB
+Date: Wed,  7 Aug 2024 16:59:41 +0200
+Message-ID: <20240807150039.327066722@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
 References: <20240807150039.247123516@linuxfoundation.org>
@@ -66,82 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit b7efebfeb2e8ad8187cdabba5f0212ba2e6c1069 ]
+[ Upstream commit 0046325ae52079b46da13a7f84dd7b2a6f7c38f8 ]
 
-Change the USB QMP PHY to use newer style of QMP PHY bindings (single
-resource region, no per-PHY subnodes).
+For Gen-1 targets like MSM8998, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230824211952.1397699-11-dmitry.baryshkov@linaro.org
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
+
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for MSM8998 to mitigate this issue.
+
+Cc: stable@vger.kernel.org
+Fixes: 026dad8f5873 ("arm64: dts: qcom: msm8998: Add USB-related nodes")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-4-quic_kriskura@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 0046325ae520 ("arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 35 +++++++++++----------------
- 1 file changed, 14 insertions(+), 21 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index 3d4941dc31d74..c19fb8ae2da2a 100644
+index c19fb8ae2da2a..4de9ff045ff52 100644
 --- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
 +++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -2029,7 +2029,7 @@ usb3_dwc3: usb@a800000 {
+@@ -2029,6 +2029,7 @@ usb3_dwc3: usb@a800000 {
  				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
  				snps,dis_u2_susphy_quirk;
  				snps,dis_enblslpm_quirk;
--				phys = <&qusb2phy>, <&usb1_ssphy>;
-+				phys = <&qusb2phy>, <&usb3phy>;
++				snps,parkmode-disable-ss-quirk;
+ 				phys = <&qusb2phy>, <&usb3phy>;
  				phy-names = "usb2-phy", "usb3-phy";
  				snps,has-lpm-erratum;
- 				snps,hird-threshold = /bits/ 8 <0x10>;
-@@ -2038,33 +2038,26 @@ usb3_dwc3: usb@a800000 {
- 
- 		usb3phy: phy@c010000 {
- 			compatible = "qcom,msm8998-qmp-usb3-phy";
--			reg = <0x0c010000 0x18c>;
--			status = "disabled";
--			#address-cells = <1>;
--			#size-cells = <1>;
--			ranges;
-+			reg = <0x0c010000 0x1000>;
- 
- 			clocks = <&gcc GCC_USB3_PHY_AUX_CLK>,
-+				 <&gcc GCC_USB3_CLKREF_CLK>,
- 				 <&gcc GCC_USB_PHY_CFG_AHB2PHY_CLK>,
--				 <&gcc GCC_USB3_CLKREF_CLK>;
--			clock-names = "aux", "cfg_ahb", "ref";
-+				 <&gcc GCC_USB3_PHY_PIPE_CLK>;
-+			clock-names = "aux",
-+				      "ref",
-+				      "cfg_ahb",
-+				      "pipe";
-+			clock-output-names = "usb3_phy_pipe_clk_src";
-+			#clock-cells = <0>;
-+			#phy-cells = <0>;
- 
- 			resets = <&gcc GCC_USB3_PHY_BCR>,
- 				 <&gcc GCC_USB3PHY_PHY_BCR>;
--			reset-names = "phy", "common";
-+			reset-names = "phy",
-+				      "phy_phy";
- 
--			usb1_ssphy: phy@c010200 {
--				reg = <0xc010200 0x128>,
--				      <0xc010400 0x200>,
--				      <0xc010c00 0x20c>,
--				      <0xc010600 0x128>,
--				      <0xc010800 0x200>;
--				#phy-cells = <0>;
--				#clock-cells = <0>;
--				clocks = <&gcc GCC_USB3_PHY_PIPE_CLK>;
--				clock-names = "pipe0";
--				clock-output-names = "usb3_phy_pipe_clk_src";
--			};
-+			status = "disabled";
- 		};
- 
- 		qusb2phy: phy@c012000 {
 -- 
 2.43.0
 
