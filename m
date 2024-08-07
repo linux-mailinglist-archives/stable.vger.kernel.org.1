@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-65757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8769694ABC5
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4FC94AB3A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA0DC1C226B8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1361F258AC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9709F85626;
-	Wed,  7 Aug 2024 15:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474CA12C491;
+	Wed,  7 Aug 2024 15:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+tog37A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V489JeBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A9981AB6;
-	Wed,  7 Aug 2024 15:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC39883CD9;
+	Wed,  7 Aug 2024 15:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043325; cv=none; b=CcXdsF4URwbk3pbWMxpQHSS4A07H+iFJm3g3+yQM5u7yudMgQhaU7MIkXW7s7UlqqZ59I6Yu0RkbwRDlyb8er7tginRfkC20mE7Bcjo+TffJOAPFanQgulopdmdv3abwDlvv9VHC3bzFJhn0lXgXkeOgdBUJsqaQi1P036ZK0xw=
+	t=1723043025; cv=none; b=bmYUxvVfMkGwN/T93plQyAasLwLDgfalpt/kmIYpUF7ATT7FF8F+5Hy4HZtsiEzgYRt0Ervd+nBLnVK06nTHwZpNkqTjN7vrZtFQufJ99iLUGZHYHPD14A9yIkrr395Mz5QR0VvK62kGUxU30qSKR1PeeyrZchbfsT1Ci10V11g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043325; c=relaxed/simple;
-	bh=KKQ/q0YWVdsYLVfgL73yCzFw26k4tal1NStdJG4xgJ4=;
+	s=arc-20240116; t=1723043025; c=relaxed/simple;
+	bh=6gbVMu9lcGPZMyWYlDNiom+OxGZ/tq7cUZ1MgaecRUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LCE4gZ6D/DrrVUYxvdQT6l3johlipxunzbOOd8XohFEs4aS6sOQZMwezp3QjMEq+ahsEvTr1g14Yw44S3fx4aoTv9hW+sZuKfNpLDVvXZjCt3SAdSDBBMcJPohVNmMGNGRHNvJIbD3T9FXz5pzXi4j9xbV5wx1QxXFziaBrzdwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+tog37A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9921C32781;
-	Wed,  7 Aug 2024 15:08:44 +0000 (UTC)
+	 MIME-Version; b=O3I353D1BQJ/dVNHn1KYDPoDB68DgjhC+K0QHwVgfoJDz5T1Ep4pz4eDm/TMPGNiPDuO98jZ2DPlYWreXcdHf34AUzXwyUXRVXhQTARiC2tdSR/M/K/zru2zw+CPlH8/BtfPBgTceoRBJ8aluzjS+tIwKtLl0ZWSp/xh5VoMx6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V489JeBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C540C32781;
+	Wed,  7 Aug 2024 15:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043325;
-	bh=KKQ/q0YWVdsYLVfgL73yCzFw26k4tal1NStdJG4xgJ4=;
+	s=korg; t=1723043024;
+	bh=6gbVMu9lcGPZMyWYlDNiom+OxGZ/tq7cUZ1MgaecRUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+tog37AyGcys3cRmOx5uIwAmju8F9G0LdDR5MP7X3BqDRF4Se63LEi0LKoA8JhNM
-	 YxpUsa6kvxlcQ5hqnDR22+HLBuNf0Df1xBz68cpKvQTX9N5HeUfokd6+Hp7g01SaeB
-	 PphPc7Oz/gfhfHCj6Cb1HfPKdaUpDWdQ2LEdeQ+A=
+	b=V489JeBGmDC3I8w6Gic6nIv7JeqKdfyz3yMljS/LStFJcLDgVO5S9UZKbAlfDee9e
+	 +99S5bFLQ+vQNW5bi3Y7rTl54e/67Vs2d05aRDMfnkPLnYzra25UlT7KlrpoLwPt5H
+	 KJf06E8Pu65fJZ09lJg2zURZ0+u/7bU4ozJiKx2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/121] MIPS: dts: loongson: Fix liointc IRQ polarity
+Subject: [PATCH 6.10 061/123] net/mlx5: Lag, dont use the hardcoded value of the first port
 Date: Wed,  7 Aug 2024 16:59:40 +0200
-Message-ID: <20240807150020.978631361@linuxfoundation.org>
+Message-ID: <20240807150022.766524825@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,174 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Mark Bloch <mbloch@nvidia.com>
 
-[ Upstream commit dbb69b9d6234aad23b3ecd33e5bc8a8ae1485b7d ]
+[ Upstream commit 3fda84dc090390573cfbd0b1d70372663315de21 ]
 
-All internal liointc interrupts are high level triggered.
+The cited commit didn't change the body of the loop as it should.
+It shouldn't be using MLX5_LAG_P1.
 
-Fixes: b1a792601f26 ("MIPS: Loongson64: DeviceTree for Loongson-2K1000")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 7e978e7714d6 ("net/mlx5: Lag, use actual number of lag ports")
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/loongson/loongson64-2k1000.dtsi  | 42 +++++++++----------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-index c1d3092fdd870..eec8243be6499 100644
---- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-+++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-@@ -100,7 +100,7 @@ rtc0: rtc@1fe07800 {
- 			compatible = "loongson,ls2k1000-rtc";
- 			reg = <0 0x1fe07800 0 0x78>;
- 			interrupt-parent = <&liointc0>;
--			interrupts = <60 IRQ_TYPE_LEVEL_LOW>;
-+			interrupts = <60 IRQ_TYPE_LEVEL_HIGH>;
- 		};
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index d0871c46b8c54..cf8045b926892 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -1538,7 +1538,7 @@ u8 mlx5_lag_get_slave_port(struct mlx5_core_dev *dev,
+ 		goto unlock;
  
- 		uart0: serial@1fe00000 {
-@@ -108,7 +108,7 @@ uart0: serial@1fe00000 {
- 			reg = <0 0x1fe00000 0 0x8>;
- 			clock-frequency = <125000000>;
- 			interrupt-parent = <&liointc0>;
--			interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
-+			interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
- 			no-loopback-test;
- 		};
- 
-@@ -131,8 +131,8 @@ gmac@3,0 {
- 						   "pciclass0c03";
- 
- 				reg = <0x1800 0x0 0x0 0x0 0x0>;
--				interrupts = <12 IRQ_TYPE_LEVEL_LOW>,
--					     <13 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
-+					     <13 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "macirq", "eth_lpi";
- 				interrupt-parent = <&liointc0>;
- 				phy-mode = "rgmii-id";
-@@ -155,8 +155,8 @@ gmac@3,1 {
- 						   "loongson, pci-gmac";
- 
- 				reg = <0x1900 0x0 0x0 0x0 0x0>;
--				interrupts = <14 IRQ_TYPE_LEVEL_LOW>,
--					     <15 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <14 IRQ_TYPE_LEVEL_HIGH>,
-+					     <15 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "macirq", "eth_lpi";
- 				interrupt-parent = <&liointc0>;
- 				phy-mode = "rgmii-id";
-@@ -178,7 +178,7 @@ ehci@4,1 {
- 						   "pciclass0c03";
- 
- 				reg = <0x2100 0x0 0x0 0x0 0x0>;
--				interrupts = <18 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <18 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&liointc1>;
- 			};
- 
-@@ -189,7 +189,7 @@ ohci@4,2 {
- 						   "pciclass0c03";
- 
- 				reg = <0x2200 0x0 0x0 0x0 0x0>;
--				interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&liointc1>;
- 			};
- 
-@@ -200,7 +200,7 @@ sata@8,0 {
- 						   "pciclass0106";
- 
- 				reg = <0x4000 0x0 0x0 0x0 0x0>;
--				interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&liointc0>;
- 			};
- 
-@@ -215,10 +215,10 @@ pcie@9,0 {
- 				#size-cells = <2>;
- 				device_type = "pci";
- 				#interrupt-cells = <1>;
--				interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
--				interrupt-map = <0 0 0 0 &liointc1 0 IRQ_TYPE_LEVEL_LOW>;
-+				interrupt-map = <0 0 0 0 &liointc1 0 IRQ_TYPE_LEVEL_HIGH>;
- 				ranges;
- 				external-facing;
- 			};
-@@ -234,10 +234,10 @@ pcie@a,0 {
- 				#size-cells = <2>;
- 				device_type = "pci";
- 				#interrupt-cells = <1>;
--				interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <1 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
--				interrupt-map = <0 0 0 0 &liointc1 1 IRQ_TYPE_LEVEL_LOW>;
-+				interrupt-map = <0 0 0 0 &liointc1 1 IRQ_TYPE_LEVEL_HIGH>;
- 				ranges;
- 				external-facing;
- 			};
-@@ -253,10 +253,10 @@ pcie@b,0 {
- 				#size-cells = <2>;
- 				device_type = "pci";
- 				#interrupt-cells = <1>;
--				interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <2 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
--				interrupt-map = <0 0 0 0 &liointc1 2 IRQ_TYPE_LEVEL_LOW>;
-+				interrupt-map = <0 0 0 0 &liointc1 2 IRQ_TYPE_LEVEL_HIGH>;
- 				ranges;
- 				external-facing;
- 			};
-@@ -272,10 +272,10 @@ pcie@c,0 {
- 				#size-cells = <2>;
- 				device_type = "pci";
- 				#interrupt-cells = <1>;
--				interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <3 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
--				interrupt-map = <0 0 0 0 &liointc1 3 IRQ_TYPE_LEVEL_LOW>;
-+				interrupt-map = <0 0 0 0 &liointc1 3 IRQ_TYPE_LEVEL_HIGH>;
- 				ranges;
- 				external-facing;
- 			};
-@@ -291,10 +291,10 @@ pcie@d,0 {
- 				#size-cells = <2>;
- 				device_type = "pci";
- 				#interrupt-cells = <1>;
--				interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
--				interrupt-map = <0 0 0 0 &liointc1 4 IRQ_TYPE_LEVEL_LOW>;
-+				interrupt-map = <0 0 0 0 &liointc1 4 IRQ_TYPE_LEVEL_HIGH>;
- 				ranges;
- 				external-facing;
- 			};
-@@ -310,10 +310,10 @@ pcie@e,0 {
- 				#size-cells = <2>;
- 				device_type = "pci";
- 				#interrupt-cells = <1>;
--				interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
-+				interrupts = <5 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&liointc1>;
- 				interrupt-map-mask = <0 0 0 0>;
--				interrupt-map = <0 0 0 0 &liointc1 5 IRQ_TYPE_LEVEL_LOW>;
-+				interrupt-map = <0 0 0 0 &liointc1 5 IRQ_TYPE_LEVEL_HIGH>;
- 				ranges;
- 				external-facing;
- 			};
+ 	for (i = 0; i < ldev->ports; i++) {
+-		if (ldev->pf[MLX5_LAG_P1].netdev == slave) {
++		if (ldev->pf[i].netdev == slave) {
+ 			port = i;
+ 			break;
+ 		}
 -- 
 2.43.0
 
