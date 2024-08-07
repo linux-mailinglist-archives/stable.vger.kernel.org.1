@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-65747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCA994ABB7
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3E194AB31
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEB811C20FBD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AF7F280E5A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46F5823AF;
-	Wed,  7 Aug 2024 15:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B0A85270;
+	Wed,  7 Aug 2024 15:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMJvEF+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uA7POpBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8332284A2F;
-	Wed,  7 Aug 2024 15:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ADE84A52;
+	Wed,  7 Aug 2024 15:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043298; cv=none; b=H4L42cvsCvt0RJusLASfCnGikZ+7dgvL0ajaQ6+WMQGBUMiJq+M8SCHyXEcKqlslvfklgJzDriBoC6Hv1/ivwJ1uUyiR6NIJviV+uVNC+hvDm5OeI80Hu0EqcDwQt5VAWzZBcTGB4OuCiSvKlGlDL3Hjgq1zoG7L01l8ZRif9pU=
+	t=1723043000; cv=none; b=CYCB10QKsRtTUBmXPU+/DMQCISi4dNHnqvCkPaHUkpsOM3eKfA0zyxAKTTob3r+5YWw+5S+vVlzBme1YQ2G7M00YZDfm1acDep5BCnZaR59DJbSXugQoHsM1TqGj7hG/FwTRrdvAxRWm2o+LbcpJOalNA8oCoQWS+a0Dl1zaYyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043298; c=relaxed/simple;
-	bh=WazWV7rKnaqt2C8pPF4K9kNk7XxTsgLnykVix/veTdI=;
+	s=arc-20240116; t=1723043000; c=relaxed/simple;
+	bh=DpeRoJdUxfFsN+W7ELSotj9jTxPxqGwQc9o+ZEcJ+V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDWBf9B037GSa01womiOSbqvcx/YIEBzxzruEagm4LuD8gvsPms17z9WuOK1YC3onUFeOGNCGOQWaHC7FfStiupWiEMhKGQsWcBQKWMg5xubPpnUdaXRgFKuYCdcXzApH6hKTtcSfea9MzEKTeMXLcjSm2/P6yAYSJs+i7guMJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMJvEF+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14901C32781;
-	Wed,  7 Aug 2024 15:08:17 +0000 (UTC)
+	 MIME-Version; b=AoKW+Kx2+FcBclBlmxW6ywWd9bs/z1cohcXMVKCs1FQHG+r1fdkKSzSMkz/UE8M3/dfBYqpJoI9xDrc70Yp3h36veXCajuNi29Xc7q7tmvUV67DNi2O7IYWBqDS/vIsuqpBVUtL0Qlsu4xE29N9tZkPQoi+vyt+6e2kOj33EUFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uA7POpBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64D9C32781;
+	Wed,  7 Aug 2024 15:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043298;
-	bh=WazWV7rKnaqt2C8pPF4K9kNk7XxTsgLnykVix/veTdI=;
+	s=korg; t=1723043000;
+	bh=DpeRoJdUxfFsN+W7ELSotj9jTxPxqGwQc9o+ZEcJ+V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMJvEF+Q4mU7sVaDZucOt/F0P+XPd15jLav83u2qNMX2vbVoynPfwR59uRNef/Tb6
-	 gRkuW2I7vk59i2PTaBuJUFzm3/uWUTY4WNc332H2maoGIjHU/7v2V3+1WbO2m6eVbq
-	 7rfk4YfvgGGmBmML6+dz9pGzE2uRQKHUl4vvtaIM=
+	b=uA7POpBRKmLNeff+FasakwIzlwi9pDc48B7P95eaOxQ3JD9klI6zHP9DqBeGB7KSD
+	 YaeZ+v6WeYX7/Pm7WPrBNPIl8OBtAwHw1V96KYNVFMSqI0JCeHrjmDa9mHl+baRNvV
+	 mY5G2PSbWFqsY2s3dH86tUq42iy+AYwNmqiXFtIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Yao Xingtao <yaoxt.fnst@fujitsu.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/121] mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
-Date: Wed,  7 Aug 2024 16:59:31 +0200
-Message-ID: <20240807150020.692698885@linuxfoundation.org>
+Subject: [PATCH 6.10 053/123] s390/mm/ptdump: Fix handling of identity mapping area
+Date: Wed,  7 Aug 2024 16:59:32 +0200
+Message-ID: <20240807150022.529474699@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 66eca1021a42856d6af2a9802c99e160278aed91 ]
+[ Upstream commit 373953444ce542db43535861fb8ebf3a1e05669c ]
 
-It's expected that no page should be left in pcp_list after calling
-zone_pcp_disable() in offline_pages().  Previously, it's observed that
-offline_pages() gets stuck [1] due to some pages remaining in pcp_list.
+Since virtual and real addresses are not the same anymore the
+assumption that the kernel image is contained within the identity
+mapping is also not true anymore.
 
-Cause:
-There is a race condition between drain_pages_zone() and __rmqueue_pcplist()
-involving the pcp->count variable. See below scenario:
+Fix this by adding two explicit areas and at the correct locations: one
+for the 8kb lowcore area, and one for the identity mapping.
 
-         CPU0                              CPU1
-    ----------------                    ---------------
-                                      spin_lock(&pcp->lock);
-                                      __rmqueue_pcplist() {
-zone_pcp_disable() {
-                                        /* list is empty */
-                                        if (list_empty(list)) {
-                                          /* add pages to pcp_list */
-                                          alloced = rmqueue_bulk()
-  mutex_lock(&pcp_batch_high_lock)
-  ...
-  __drain_all_pages() {
-    drain_pages_zone() {
-      /* read pcp->count, it's 0 here */
-      count = READ_ONCE(pcp->count)
-      /* 0 means nothing to drain */
-                                          /* update pcp->count */
-                                          pcp->count += alloced << order;
-      ...
-                                      ...
-                                      spin_unlock(&pcp->lock);
-
-In this case, after calling zone_pcp_disable() though, there are still some
-pages in pcp_list. And these pages in pcp_list are neither movable nor
-isolated, offline_pages() gets stuck as a result.
-
-Solution:
-Expand the scope of the pcp->lock to also protect pcp->count in
-drain_pages_zone(), to ensure no pages are left in the pcp list after
-zone_pcp_disable()
-
-[1] https://lore.kernel.org/linux-mm/6a07125f-e720-404c-b2f9-e55f3f166e85@fujitsu.com/
-
-Link: https://lkml.kernel.org/r/20240723064428.1179519-1-lizhijian@fujitsu.com
-Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reported-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ arch/s390/mm/dump_pagetables.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2c40cf4f1eb2d..39bdbfb5313fb 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2186,16 +2186,20 @@ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
- static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- {
- 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
--	int count = READ_ONCE(pcp->count);
--
--	while (count) {
--		int to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
--		count -= to_drain;
-+	int count;
+diff --git a/arch/s390/mm/dump_pagetables.c b/arch/s390/mm/dump_pagetables.c
+index ffd07ed7b4af8..9d0805d6dc1b2 100644
+--- a/arch/s390/mm/dump_pagetables.c
++++ b/arch/s390/mm/dump_pagetables.c
+@@ -20,8 +20,8 @@ struct addr_marker {
+ };
  
-+	do {
- 		spin_lock(&pcp->lock);
--		free_pcppages_bulk(zone, to_drain, pcp, 0);
-+		count = pcp->count;
-+		if (count) {
-+			int to_drain = min(count,
-+				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
-+
-+			free_pcppages_bulk(zone, to_drain, pcp, 0);
-+			count -= to_drain;
-+		}
- 		spin_unlock(&pcp->lock);
--	}
-+	} while (count);
- }
+ enum address_markers_idx {
+-	IDENTITY_BEFORE_NR = 0,
+-	IDENTITY_BEFORE_END_NR,
++	LOWCORE_START_NR = 0,
++	LOWCORE_END_NR,
+ 	AMODE31_START_NR,
+ 	AMODE31_END_NR,
+ 	KERNEL_START_NR,
+@@ -30,8 +30,8 @@ enum address_markers_idx {
+ 	KFENCE_START_NR,
+ 	KFENCE_END_NR,
+ #endif
+-	IDENTITY_AFTER_NR,
+-	IDENTITY_AFTER_END_NR,
++	IDENTITY_START_NR,
++	IDENTITY_END_NR,
+ 	VMEMMAP_NR,
+ 	VMEMMAP_END_NR,
+ 	VMALLOC_NR,
+@@ -49,8 +49,10 @@ enum address_markers_idx {
+ };
  
- /*
+ static struct addr_marker address_markers[] = {
+-	[IDENTITY_BEFORE_NR]	= {0, "Identity Mapping Start"},
+-	[IDENTITY_BEFORE_END_NR] = {(unsigned long)_stext, "Identity Mapping End"},
++	[LOWCORE_START_NR]	= {0, "Lowcore Start"},
++	[LOWCORE_END_NR]	= {0, "Lowcore End"},
++	[IDENTITY_START_NR]	= {0, "Identity Mapping Start"},
++	[IDENTITY_END_NR]	= {0, "Identity Mapping End"},
+ 	[AMODE31_START_NR]	= {0, "Amode31 Area Start"},
+ 	[AMODE31_END_NR]	= {0, "Amode31 Area End"},
+ 	[KERNEL_START_NR]	= {(unsigned long)_stext, "Kernel Image Start"},
+@@ -59,8 +61,6 @@ static struct addr_marker address_markers[] = {
+ 	[KFENCE_START_NR]	= {0, "KFence Pool Start"},
+ 	[KFENCE_END_NR]		= {0, "KFence Pool End"},
+ #endif
+-	[IDENTITY_AFTER_NR]	= {(unsigned long)_end, "Identity Mapping Start"},
+-	[IDENTITY_AFTER_END_NR]	= {0, "Identity Mapping End"},
+ 	[VMEMMAP_NR]		= {0, "vmemmap Area Start"},
+ 	[VMEMMAP_END_NR]	= {0, "vmemmap Area End"},
+ 	[VMALLOC_NR]		= {0, "vmalloc Area Start"},
+@@ -290,7 +290,10 @@ static int pt_dump_init(void)
+ 	 */
+ 	max_addr = (S390_lowcore.kernel_asce.val & _REGION_ENTRY_TYPE_MASK) >> 2;
+ 	max_addr = 1UL << (max_addr * 11 + 31);
+-	address_markers[IDENTITY_AFTER_END_NR].start_address = ident_map_size;
++	address_markers[LOWCORE_START_NR].start_address = 0;
++	address_markers[LOWCORE_END_NR].start_address = sizeof(struct lowcore);
++	address_markers[IDENTITY_START_NR].start_address = __identity_base;
++	address_markers[IDENTITY_END_NR].start_address = __identity_base + ident_map_size;
+ 	address_markers[AMODE31_START_NR].start_address = (unsigned long)__samode31;
+ 	address_markers[AMODE31_END_NR].start_address = (unsigned long)__eamode31;
+ 	address_markers[MODULES_NR].start_address = MODULES_VADDR;
 -- 
 2.43.0
 
