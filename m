@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394BC94AC06
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A0B94AB83
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CC341C22AE5
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11BDB1C221A6
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E16823DE;
-	Wed,  7 Aug 2024 15:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AE584A52;
+	Wed,  7 Aug 2024 15:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mkke48Sd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAH6qIPz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6145A81AB1;
-	Wed,  7 Aug 2024 15:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D1E3EA9A;
+	Wed,  7 Aug 2024 15:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043477; cv=none; b=iMWS7M9QXziwUmr/tuEkR0oJZBOyuAKuDNnQhL6fm1kg8vu4c+G9XfQWZBsnHg3BmCvMGGfvpx71znTlhzKGB0PkGd+D2JSu8ACL5/xFcW+JniNPhr5aZJBvTaGrcBWu56ts/E33x+o0Qf+3KKhHeCQLHIWXoDmOAAYayA/HNWE=
+	t=1723043173; cv=none; b=mPIhS3O77OSsLLjr8TRNSHnYOzj+7Jpb3aUNvVwW/4vFTA4WVvaK+RcLFIPCQe+JSbUCXGJlxbfq0R6m0WV2S2dEIWrIcIUAZ5oWXMdxvisJTxJheeFUTHG4yB7WSUj7c7+LWqSRwL+BkiayAS8mKKIL00PUbxipdyCIeTLX3eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043477; c=relaxed/simple;
-	bh=8ULmwBtjZY+0MF4ieMPtifXj22Is+e/3HId8t5uj0aE=;
+	s=arc-20240116; t=1723043173; c=relaxed/simple;
+	bh=k6Iv+lysf35BOlYFFZ2rUZ5x86/3G5xZNsGCe2fa/K8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4HZUTpwLH2vB4WTVQQInugLEVn2YbyCtM6rlB2FvShmEiQCxJ4lJEbNuUrDObz5z5rY93yVYsosUnlzIyVOpq7wifvJIxCTQ3eme1OkwXonKo/DHnwJCHwb5P92Xw7yVSfqcwOwtLxIcB5aPJxne4eebaz2vtzGzOtM94skE8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mkke48Sd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8599C32781;
-	Wed,  7 Aug 2024 15:11:16 +0000 (UTC)
+	 MIME-Version; b=invHY36EPBLMDMTRT+wh3kUV6fqpO3Qc2qQiirmvsCX896qyXWJuBCA4nDLKNlZJxwbM+lkYRSzYvJclzyu948/yYyXHT8vIB4XxhL+JaFvQUb9XS+xLWUUzpxkTTcJsShd9GsOiQqGgQWQBoUgtDqdqdv9ZcdP0U6BltttCRig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAH6qIPz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8B3C32781;
+	Wed,  7 Aug 2024 15:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043477;
-	bh=8ULmwBtjZY+0MF4ieMPtifXj22Is+e/3HId8t5uj0aE=;
+	s=korg; t=1723043173;
+	bh=k6Iv+lysf35BOlYFFZ2rUZ5x86/3G5xZNsGCe2fa/K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mkke48SdpLSNF02jnBzFxJ/VOJb8HqZ1/0RnfDP1PULonmWbWXXGaHzi2ddQsK4dl
-	 ItqMltGR21ahqj8YEDkA6Tgqe4jkxDOLjRWLnIu2ZKk4q/Uu9oKMI014KP3yGvKdg/
-	 JFMQIccucQVvJW4q043XRIdHMSbvLiRB3aVq1mJQ=
+	b=nAH6qIPzwXfe1BKo8Tk0wu4GnzweCyjNHB8ph5GIehc4h9uASsLVahbf3DO7/Xajx
+	 20qa/17xD+RcSlJRB4QHUJa/eUmXFjE2kCRDg1k/VNKF4sZqUv4HRCXe33BUaaq91r
+	 TVSNuPMHHdi51n8MbAVvAQh6mfDrvfAD5EZFZkUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"edmund.raile" <edmund.raile@proton.me>,
-	Edmund Raile <edmund.raile@protonmail.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 105/121] Revert "ALSA: firewire-lib: operate for period elapse event in process context"
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 118/123] mptcp: pm: only set request_bkup flag when sending MP_PRIO
 Date: Wed,  7 Aug 2024 17:00:37 +0200
-Message-ID: <20240807150022.836287493@linuxfoundation.org>
+Message-ID: <20240807150024.740280159@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edmund Raile <edmund.raile@protonmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 3dab73ab925a51ab05543b491bf17463a48ca323 upstream.
+commit 4258b94831bb7ff28ab80e3c8d94db37db930728 upstream.
 
-Commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event
-in process context") removed the process context workqueue from
-amdtp_domain_stream_pcm_pointer() and update_pcm_pointers() to remove
-its overhead.
+The 'backup' flag from mptcp_subflow_context structure is supposed to be
+set only when the other peer flagged a subflow as backup, not the
+opposite.
 
-With RME Fireface 800, this lead to a regression since
-Kernels 5.14.0, causing an AB/BA deadlock competition for the
-substream lock with eventual system freeze under ALSA operation:
-
-thread 0:
-    * (lock A) acquire substream lock by
-	snd_pcm_stream_lock_irq() in
-	snd_pcm_status64()
-    * (lock B) wait for tasklet to finish by calling
-    	tasklet_unlock_spin_wait() in
-	tasklet_disable_in_atomic() in
-	ohci_flush_iso_completions() of ohci.c
-
-thread 1:
-    * (lock B) enter tasklet
-    * (lock A) attempt to acquire substream lock,
-    	waiting for it to be released:
-	snd_pcm_stream_lock_irqsave() in
-    	snd_pcm_period_elapsed() in
-	update_pcm_pointers() in
-	process_ctx_payloads() in
-	process_rx_packets() of amdtp-stream.c
-
-? tasklet_unlock_spin_wait
- </NMI>
- <TASK>
-ohci_flush_iso_completions firewire_ohci
-amdtp_domain_stream_pcm_pointer snd_firewire_lib
-snd_pcm_update_hw_ptr0 snd_pcm
-snd_pcm_status64 snd_pcm
-
-? native_queued_spin_lock_slowpath
- </NMI>
- <IRQ>
-_raw_spin_lock_irqsave
-snd_pcm_period_elapsed snd_pcm
-process_rx_packets snd_firewire_lib
-irq_target_callback snd_firewire_lib
-handle_it_packet firewire_ohci
-context_tasklet firewire_ohci
-
-Restore the process context work queue to prevent deadlock
-AB/BA deadlock competition for ALSA substream lock of
-snd_pcm_stream_lock_irq() in snd_pcm_status64()
-and snd_pcm_stream_lock_irqsave() in snd_pcm_period_elapsed().
-
-revert commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period
-elapse event in process context")
-
-Replace inline description to prevent future deadlock.
-
+Fixes: 067065422fcd ("mptcp: add the outgoing MP_PRIO support")
 Cc: stable@vger.kernel.org
-Fixes: 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event in process context")
-Reported-by: edmund.raile <edmund.raile@proton.me>
-Closes: https://lore.kernel.org/r/kwryofzdmjvzkuw6j3clftsxmoolynljztxqwg76hzeo4simnl@jn3eo7pe642q/
-Signed-off-by: Edmund Raile <edmund.raile@protonmail.com>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20240730195318.869840-3-edmund.raile@protonmail.com
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/amdtp-stream.c |   23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ net/mptcp/pm_netlink.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -615,16 +615,8 @@ static void update_pcm_pointers(struct a
- 		// The program in user process should periodically check the status of intermediate
- 		// buffer associated to PCM substream to process PCM frames in the buffer, instead
- 		// of receiving notification of period elapsed by poll wait.
--		if (!pcm->runtime->no_period_wakeup) {
--			if (in_softirq()) {
--				// In software IRQ context for 1394 OHCI.
--				snd_pcm_period_elapsed(pcm);
--			} else {
--				// In process context of ALSA PCM application under acquired lock of
--				// PCM substream.
--				snd_pcm_period_elapsed_under_stream_lock(pcm);
--			}
--		}
-+		if (!pcm->runtime->no_period_wakeup)
-+			queue_work(system_highpri_wq, &s->period_work);
- 	}
- }
- 
-@@ -1866,11 +1858,14 @@ unsigned long amdtp_domain_stream_pcm_po
- {
- 	struct amdtp_stream *irq_target = d->irq_target;
- 
--	// Process isochronous packets queued till recent isochronous cycle to handle PCM frames.
- 	if (irq_target && amdtp_stream_running(irq_target)) {
--		// In software IRQ context, the call causes dead-lock to disable the tasklet
--		// synchronously.
--		if (!in_softirq())
-+		// use wq to prevent AB/BA deadlock competition for
-+		// substream lock:
-+		// fw_iso_context_flush_completions() acquires
-+		// lock by ohci_flush_iso_completions(),
-+		// amdtp-stream process_rx_packets() attempts to
-+		// acquire same lock by snd_pcm_elapsed()
-+		if (current_work() != &s->period_work)
- 			fw_iso_context_flush_completions(irq_target->context);
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -471,7 +471,6 @@ static void __mptcp_pm_send_ack(struct m
+ 	slow = lock_sock_fast(ssk);
+ 	if (prio) {
+ 		subflow->send_mp_prio = 1;
+-		subflow->backup = backup;
+ 		subflow->request_bkup = backup;
  	}
  
 
