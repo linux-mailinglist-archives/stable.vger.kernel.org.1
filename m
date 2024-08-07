@@ -1,127 +1,228 @@
-Return-Path: <stable+bounces-65515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C203B949E58
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 05:40:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B256B949E61
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 05:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C9242867C4
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 03:40:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5CF11C22910
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 03:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3151917F9;
-	Wed,  7 Aug 2024 03:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942571917FB;
+	Wed,  7 Aug 2024 03:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HmWfwpV9"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lSaRHh7B"
 X-Original-To: stable@vger.kernel.org
 Received: from fhigh7-smtp.messagingengine.com (fhigh7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350E41917D9;
-	Wed,  7 Aug 2024 03:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF42433BB;
+	Wed,  7 Aug 2024 03:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723001983; cv=none; b=eX1QaRfxVwMPSNtEevHL3/zKtj9WRLuLCg8Yqc/BSaV1TFBGEar6BDC6nEn3t+68nAXTLzyToVKtrwNtn4JMeODLEfuXDPuOqQ01N3IEZoOZJBtv3yK5QbZPUZlA62KY+vBA0FOnoP+h7ie2pBOYRyYvlGho53IRVfdG2VYnvrU=
+	t=1723002009; cv=none; b=LRL4oBreRL9r9FhuCw/iEQPpLysUm5ue19HEbnnKm9hEBgY5vMpn6fqazqcTq2akCCHzh1eP63pBZd07KzBR08JL31q0WPPzoyfQ9QyS1Mk81RlaPwXhDLQP5P5X1o78oW64CfuMHgbRSt7xnRBgrHr2nHm7MZ9sy3K6SKx2JkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723001983; c=relaxed/simple;
-	bh=1NxX7c+Lb7XXNquDdjuXVF38sWOSuvYblH0nBf18lXM=;
-	h=Message-Id:From:Subject:Date:To:Cc; b=eb468PqBEXzcvE5AGIJ9QwEPdIxJJC0sbzu3bBaNPElkibtklYJPBZ2Rx9lIqCbWRDDY8AlUZCpelDMdfmeI3MfYS5h4vKhjZuM8lmeC5Ug162mTwK0137QAqPBDgJKffKw7vX+8GVHtmCUWuPfwHufFtRVfOWatGQEtiv2bJjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HmWfwpV9; arc=none smtp.client-ip=103.168.172.158
+	s=arc-20240116; t=1723002009; c=relaxed/simple;
+	bh=AXUWhKyvnpGSl3g2EVmbeoop8XEjCIpvMlkLO6xEdqY=;
+	h=To:Cc:Message-Id:In-Reply-To:References:From:Subject:Date; b=ASCYlQNKBbnGdgKCd9MFSCsfsoicl1RBE0wegO9lLAYWAfS7OF+p5aaUH9Rt79/IKJzmKWjNAXdOXiguxyY0HVN0g/jniipRyJFW8qa/WMy92/lY9SlNDQRxA9+tVBBe/U6gaREZuFdspZxcRznqXwqiFbNeVE3UxrtQGOk41fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lSaRHh7B; arc=none smtp.client-ip=103.168.172.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 223891151AEB;
-	Tue,  6 Aug 2024 23:39:39 -0400 (EDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 259121151AFA;
+	Tue,  6 Aug 2024 23:40:06 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Tue, 06 Aug 2024 23:39:39 -0400
+  by compute5.internal (MEProxy); Tue, 06 Aug 2024 23:40:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm3; t=1723001979; x=1723088379; bh=KEDR2ogHBsfT3
-	PrrVmvq6bSI0RjEiMuZh0Nx5OFgiPU=; b=HmWfwpV96JR3OzkAeLpeBGSdQ6Sq9
-	gy/IwV3wVx6K2vBL/ohg97Oan1+yIUWGo+x0ekX8x/6TlZFb6RAS3WHX7mlmUMty
-	rmSxQup0Ukoef2A38SJDeozBzHJe5O6fxGtZLB0DETOeCayXW/I1MY59Q15Nt7+e
-	eQ0BUuthSWKsTg3/cOVRYF6QOylxPgiC5gR6eGnljz9R4oBuUVnYxJrMOn+ktNpD
-	ENP7WqUIIvO8DAWQwi9jDi1CVcDBN978zJ9cKIALBsmb819O0Zv0WRarf8Nw7Xjs
-	QxyhB5FoTAbYJbhDKsVOPGspGY3gf8OMilQACRysq9vP5HIaMecvR0s0A==
-X-ME-Sender: <xms:euyyZq5G2GzgPuBN3SXi4CT50comvh5Vf-ebbwUkezI3_ktDXvqbww>
-    <xme:euyyZj6I9PvLIWeNUWZ-CXUwziX418i7tOOWopUWv2-qLBVSZBLwPShe7uHioj4JD
-    OW7VWldL0ezHkxAWTU>
-X-ME-Received: <xmr:euyyZpcODk7ZqkCm_-i8iYqyX-HAjJAflsWUAOrAlim7TAEhsojitNW0sQpPmIb1iVfiKpUDfeTT3mts7lyqoQv-lUlzJZhPdyI>
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723002006; x=
+	1723088406; bh=HQaI5PS6HseqDLWuvlRrlpLlgcbdPON3VBx4p6bEVds=; b=l
+	SaRHh7BE+5o/OzMot9MBCtbNXRELunYkXbZuBVTEd56lo4Hqq3qr9v34ECopcyVL
+	srDq45stX1nknwr7czQAx1EohTW23vHeFCkfUgsyY/kEhXOOrIltbZz+P7MdZ0TS
+	v6HslN1hu0sodhz2dxLe3G6cfCJn9ok5zIWxzCbiOy1FLnyrejnc6Aj5l94pW+NM
+	lixo6Zz8fUtAELAR7mhxBPY9MVjea5txjmRi54ip5AqhsbtYHYmcB5McbKEnj/Hj
+	s57FEV6W29kGs2HGrv+YqICr6qQTs/hcB3XB3A/x2k9F0Yt1rH2C/AyD1W/lwTzZ
+	9gQdTalKjPvnNgmdMNqrQ==
+X-ME-Sender: <xms:luyyZoqxb4yU2BgMKPKlaPdAf39OZGIyI6ymM_y6ugQjSIK3K2_OGQ>
+    <xme:luyyZuqvPsStPx96D-xMXBTGXcoKXTYCaRmBtUQqMkmQB5mx-752-9r9On0EaFW4Q
+    5byNMCqlBDzThkc4Ww>
+X-ME-Received: <xmr:luyyZtN61e_8J353a9uycmpwxNVtggaLqwPr_qdo58AvR0cXO4_mOtiqoADEP9YX-TH7Ll10qqCLzcrJTD6To2Nj3m4U7Z__nYU>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeelgdejiecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkhffufffvveestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgrihhn
-    uceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvghrnh
-    epheffudekteffudetvdffffehgedtteekkeefvefgieethfevvddtlefhuddutedtnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthhgrih
-    hnsehlihhnuhigqdhmieekkhdrohhrghdpnhgspghrtghpthhtoheptd
-X-ME-Proxy: <xmx:euyyZnJML4fHulYcq4ZeNN3K77mfS5QI6C7-lhhHzoJQ7H7ainOSCw>
-    <xmx:euyyZuK8LZ-kY8dY0frEKxD5_yr-Jmfl1WnC0RlhXMdrXlimYsZfEA>
-    <xmx:euyyZowUa3snNNpy-W4xvBDfzXjHNbj6Y06-_S2UjGF0r_H1ViMrJw>
-    <xmx:euyyZiIZu4yNm-3F1_nnQQzQEY97s8o28PqdMpkH1sOcrI32tCCdjA>
-    <xmx:e-yyZt_KyWE6nivn06JOoUN-sLJpNi98diMeSpuZHRgiYxBZ9ddk5GDg>
+    fjughrpefvvefkjghfhffuffestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgr
+    ihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepvefggfdthffhfeevuedugfdtuefgfeettdevkeeigefgudelteeggeeuheegffff
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthh
+    grihhnsehlihhnuhigqdhmieekkhdrohhrghdpnhgspghrtghpthhtoheptd
+X-ME-Proxy: <xmx:luyyZv5JpmPZ2kzHnJl9Nm4fli-NXyYbPQoJ5rU-hRglyBYDGTBLuQ>
+    <xmx:luyyZn55s4pS7BAB7KHJgXuepmSuP5-3X_dnRGdD9n_ofKpIYVmUKw>
+    <xmx:luyyZviKoBIc9TMl1S0XbPBDeGDOVH_0sMyh9eHTofV349Fx0ADvEA>
+    <xmx:luyyZh6Nc8qhVWHr6xdET_DAJ-L25tXOtxnasCHS5z0BFyip4N2C3A>
+    <xmx:luyyZhu-dI-_HmEVcsskWiHZta6xRGoJTT8buCnj0KCUR93OdPRGjAJz>
 Feedback-ID: i58a146ae:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 Aug 2024 23:39:35 -0400 (EDT)
-Message-Id: <cover.1723001788.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH 00/11] NCR5380: Bug fixes and other improvements
-Date: Wed, 07 Aug 2024 13:36:28 +1000
+ 6 Aug 2024 23:40:03 -0400 (EDT)
 To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
     "Martin K. Petersen" <martin.petersen@oracle.com>
 Cc: Hannes Reinecke <hare@suse.com>,
-    linux-kernel@vger.kernel.org,
-    linux-scsi@vger.kernel.org,
-    Ondrej Zary <linux@zary.sk>,
     Michael Schmitz <schmitzmic@gmail.com>,
+    Ondrej Zary <linux@zary.sk>,
+    Stan Johnson <userm57@yahoo.com>,
     stable@vger.kernel.org,
-    Stan Johnson <userm57@yahoo.com>
+    linux-scsi@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Message-Id: <cc38df687ace2c4ffc375a683b2502fc476b600d.1723001788.git.fthain@linux-m68k.org>
+In-Reply-To: <cover.1723001788.git.fthain@linux-m68k.org>
+References: <cover.1723001788.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH 03/11] scsi: mac_scsi: Disallow bus errors during PDMA send
+Date: Wed, 07 Aug 2024 13:36:28 +1000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-This series begins with some work on the mac_scsi driver to improve
-compatibility with SCSI2SD v5 devices. Better error handling is needed
-there because the PDMA hardware does not tolerate the write latency spikes
-which SD cards can produce.
+SD cards can produce write latency spikes on the order of a hundred
+milliseconds. If the target firmware does not hide that latency during
+DATA IN and OUT phases it can cause the PDMA circuitry to raise a
+processor bus fault which in turn leads to an unreliable byte count
+and a DMA overrun.
 
-A bug is fixed in the 5380 core driver so that scatter/gather can be
-enabled in mac_scsi.
+The Last Byte Sent flag is used to detect the overrun but this mechanism
+is unreliable on some systems. Instead, set a DID_ERROR result whenever
+there is a bus fault during a PDMA send, unless the cause was a phase
+mismatch.
 
-Several patches at the end of this series improve robustness and correctness
-in the core driver.
+Cc: stable@vger.kernel.org # 5.15+
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Fixes: 7c1f3e3447a1 ("scsi: mac_scsi: Treat Last Byte Sent time-out as failure")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+---
+ drivers/scsi/mac_scsi.c | 44 ++++++++++++++++++-----------------------
+ 1 file changed, 19 insertions(+), 25 deletions(-)
 
-This series has been tested on a variety of mac_scsi hosts. A variety of
-SCSI targets was also tested, including Quantum HDD, Fujitsu HDD, Iomega FDD,
-Ricoh CD-RW, Matsushita CD-ROM, SCSI2SD and BlueSCSI.
-
-
-Finn Thain (11):
-  scsi: mac_scsi: Revise printk(KERN_DEBUG ...) messages
-  scsi: mac_scsi: Refactor polling loop
-  scsi: mac_scsi: Disallow bus errors during PDMA send
-  scsi: NCR5380: Check for phase match during PDMA fixup
-  scsi: mac_scsi: Enable scatter/gather by default
-  scsi: NCR5380: Initialize buffer for MSG IN and STATUS transfers
-  scsi: NCR5380: Handle BSY signal loss during information transfer
-    phases
-  scsi: NCR5380: Drop redundant member from struct NCR5380_cmd
-  scsi: NCR5380: Remove redundant result calculation from
-    NCR5380_transfer_pio()
-  scsi: NCR5380: Remove obsolete comment
-  scsi: NCR5380: Clean up indentation
-
- drivers/scsi/NCR5380.c   | 233 +++++++++++++++++++--------------------
- drivers/scsi/NCR5380.h   |  20 ++--
- drivers/scsi/mac_scsi.c  | 170 ++++++++++++++--------------
- drivers/scsi/sun3_scsi.c |   2 +-
- 4 files changed, 215 insertions(+), 210 deletions(-)
-
+diff --git a/drivers/scsi/mac_scsi.c b/drivers/scsi/mac_scsi.c
+index 39814c841113..2e9fad1e3069 100644
+--- a/drivers/scsi/mac_scsi.c
++++ b/drivers/scsi/mac_scsi.c
+@@ -102,11 +102,15 @@ __setup("mac5380=", mac_scsi_setup);
+  * Linux SCSI drivers lack knowledge of the timing behaviour of SCSI targets
+  * so bus errors are unavoidable.
+  *
+- * If a MOVE.B instruction faults, we assume that zero bytes were transferred
+- * and simply retry. That assumption probably depends on target behaviour but
+- * seems to hold up okay. The NOP provides synchronization: without it the
+- * fault can sometimes occur after the program counter has moved past the
+- * offending instruction. Post-increment addressing can't be used.
++ * If a MOVE.B instruction faults during a receive operation, we assume the
++ * target sent nothing and try again. That assumption probably depends on
++ * target firmware but it seems to hold up okay. If a fault happens during a
++ * send operation, the target may or may not have seen /ACK and got the byte.
++ * It's uncertain so the whole SCSI command gets retried.
++ *
++ * The NOP is needed for synchronization because the fault address in the
++ * exception stack frame may or may not be the instruction that actually
++ * caused the bus error. Post-increment addressing can't be used.
+  */
+ 
+ #define MOVE_BYTE(operands) \
+@@ -243,22 +247,21 @@ static inline int mac_pdma_send(unsigned char *start, void __iomem *io, int n)
+ 	if (n >= 1) {
+ 		MOVE_BYTE("%0@,%3@");
+ 		if (result)
+-			goto out;
++			return -1;
+ 	}
+ 	if (n >= 1 && ((unsigned long)addr & 1)) {
+ 		MOVE_BYTE("%0@,%3@");
+ 		if (result)
+-			goto out;
++			return -2;
+ 	}
+ 	while (n >= 32)
+ 		MOVE_16_WORDS("%0@+,%3@");
+ 	while (n >= 2)
+ 		MOVE_WORD("%0@+,%3@");
+ 	if (result)
+-		return start - addr; /* Negated to indicate uncertain length */
++		return start - addr - 1; /* Negated to indicate uncertain length */
+ 	if (n == 1)
+ 		MOVE_BYTE("%0@,%3@");
+-out:
+ 	return addr - start;
+ }
+ 
+@@ -307,7 +310,6 @@ static inline int macscsi_pread(struct NCR5380_hostdata *hostdata,
+ {
+ 	u8 __iomem *s = hostdata->pdma_io + (INPUT_DATA_REG << 4);
+ 	unsigned char *d = dst;
+-	int result = 0;
+ 
+ 	hostdata->pdma_residual = len;
+ 
+@@ -343,11 +345,12 @@ static inline int macscsi_pread(struct NCR5380_hostdata *hostdata,
+ 		if (bytes == 0)
+ 			continue;
+ 
+-		result = -1;
++		if (macscsi_wait_for_drq(hostdata) <= 0)
++			set_host_byte(hostdata->connected, DID_ERROR);
+ 		break;
+ 	}
+ 
+-	return result;
++	return 0;
+ }
+ 
+ static inline int macscsi_pwrite(struct NCR5380_hostdata *hostdata,
+@@ -355,7 +358,6 @@ static inline int macscsi_pwrite(struct NCR5380_hostdata *hostdata,
+ {
+ 	unsigned char *s = src;
+ 	u8 __iomem *d = hostdata->pdma_io + (OUTPUT_DATA_REG << 4);
+-	int result = 0;
+ 
+ 	hostdata->pdma_residual = len;
+ 
+@@ -377,17 +379,8 @@ static inline int macscsi_pwrite(struct NCR5380_hostdata *hostdata,
+ 			hostdata->pdma_residual -= bytes;
+ 		}
+ 
+-		if (hostdata->pdma_residual == 0) {
+-			if (NCR5380_poll_politely(hostdata, TARGET_COMMAND_REG,
+-			                          TCR_LAST_BYTE_SENT,
+-			                          TCR_LAST_BYTE_SENT,
+-			                          0) < 0) {
+-				scmd_printk(KERN_ERR, hostdata->connected,
+-				            "%s: Last Byte Sent timeout\n", __func__);
+-				result = -1;
+-			}
++		if (hostdata->pdma_residual == 0)
+ 			break;
+-		}
+ 
+ 		if (bytes > 0)
+ 			continue;
+@@ -400,11 +393,12 @@ static inline int macscsi_pwrite(struct NCR5380_hostdata *hostdata,
+ 		if (bytes == 0)
+ 			continue;
+ 
+-		result = -1;
++		if (macscsi_wait_for_drq(hostdata) <= 0)
++			set_host_byte(hostdata->connected, DID_ERROR);
+ 		break;
+ 	}
+ 
+-	return result;
++	return 0;
+ }
+ 
+ static int macscsi_dma_xfer_len(struct NCR5380_hostdata *hostdata,
 -- 
 2.39.5
 
