@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-65811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9214F94AC03
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285EC94AB81
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2CD21C23546
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D64EC281BCC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F50E82499;
-	Wed,  7 Aug 2024 15:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07744824BB;
+	Wed,  7 Aug 2024 15:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRiZG77V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJkIkReS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4F9823C8;
-	Wed,  7 Aug 2024 15:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3BD27448;
+	Wed,  7 Aug 2024 15:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043471; cv=none; b=SEuWlGGEUKlhHSVQyBeurY7pcZipajVmmNHuCUQ9RhXmf8/rNFhWEQDZpqe5hRndBm0SgIpsLr7NXtKHGz5Ok4o0J3sFnAcF6YeAQWGMcLrEy2vYQs+XMIQvfJWXgPhDpLTNVMuWjXgIOYX8c250QwDq08CAUF86hSsC5vM/J7M=
+	t=1723043167; cv=none; b=NuUm8QQtLd+JzV/zyXq/cLfRlLWpqCRCVbT1YeYaUrwY2qOfkOhrNlJVdQwxcMLAikb83deseKg98G9VHbK7V6rp7pwOX6hkazVCsXcDhTIjinUjaYidSd6obY4eeRZW7QY7TDnrP5pyHZGRMgMAwUxFggM2TIn/Kog9h6S8e40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043471; c=relaxed/simple;
-	bh=G06TGvjCcgZfW9AZUSfvmPfRZRF370kj/LbwOQOakMs=;
+	s=arc-20240116; t=1723043167; c=relaxed/simple;
+	bh=uF6yMg1s17fMjKnVzaQ+GKLOnOUA8B/qElaxIbkfZeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNE/onkcnXrsymylfvqEUuDYcnDRV23XJbgF9jWKmMBkb9Y4LF3Pg6REkLklyXm0J8XUfWCDllpHziD4yMXH5LO02heuHrTodvaOXC1dcNVHVm5y+iFhuAWpzEp1DPnUVhpB6U6QT7st5P9l0s5AayxeRiQdx90RONz2KkpIDM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRiZG77V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444C6C32781;
-	Wed,  7 Aug 2024 15:11:11 +0000 (UTC)
+	 MIME-Version; b=BtL4Y0l9b70RB1Y831NhInZlnYM40yHqHe4ruHEZth6GuLfblWWxT/Hcrt31LnSGwGa3v02pCqjDOw+KFd9j9TGoSo1zdaa2uK1MJlo9RbcoAiyi9Dxj+MeGseLD9tBe35Obbkzo+B32nrwBU8Z0c083QQqJaCNspxpnl7HcPoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJkIkReS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B843C32781;
+	Wed,  7 Aug 2024 15:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043471;
-	bh=G06TGvjCcgZfW9AZUSfvmPfRZRF370kj/LbwOQOakMs=;
+	s=korg; t=1723043167;
+	bh=uF6yMg1s17fMjKnVzaQ+GKLOnOUA8B/qElaxIbkfZeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRiZG77V3j5ObHp4Hln/kWqTozLkERXE8eFOgwXc2eJCllZjoqzorN+3SFlLSMGH9
-	 hUutVIyYUdI/6Lq6vfJ2aOE+inWIs8z7NEz6zBffmI4sIuKdxl6d/IilPhHVtrJ1nw
-	 HwNiT4IO/a1IcAuhrAtspCu0HOAYBTTvznGPneWk=
+	b=YJkIkReS5wswsS7kYqt7j5W+SLk9s5VU2TdIKjDczzSIBHs+DT4aGUj4e/anD5eFU
+	 dxOUdWvUuaiC0rzbs6MPNbOjtcv8aCMhGxZJSvxd8dQOmkJF4DMglf+umqmPZnfqPS
+	 H1wfOB4+/VrS7FuXDu6SZ4OLa1kL4XPHIU4MmHpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 103/121] ALSA: seq: ump: Optimize conversions from SysEx to UMP
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.10 116/123] mptcp: fix bad RCVPRUNED mib accounting
 Date: Wed,  7 Aug 2024 17:00:35 +0200
-Message-ID: <20240807150022.769510978@linuxfoundation.org>
+Message-ID: <20240807150024.667333273@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,116 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 952b13c215234855d75ef4b5bb0138075e73677c upstream.
+commit 0a567c2a10033bf04ed618368d179bce6977984b upstream.
 
-The current conversion from the legacy SysEx event to UMP SysEx packet
-in the sequencer core has a couple of issues:
+Since its introduction, the mentioned MIB accounted for the wrong
+event: wake-up being skipped as not-needed on some edge condition
+instead of incoming skb being dropped after landing in the (subflow)
+receive queue.
 
-* The first packet trims the SysEx start byte (0xf0), hence it
-  contains only 5 bytes instead of 6.  This isn't wrong, per
-  specification, but it's strange not to fill 6 bytes.
+Move the increment in the correct location.
 
-* When the SysEx end marker (0xf7) is placed at the first byte of the
-  next packet, it'll end up with an empty data just with the END
-  status.  It can be rather folded into the previous packet with the
-  END status.
-
-This patch tries to address those issues.  The first packet may have 6
-bytes even with the SysEx start, and an empty packet with the SysEx
-end marker is omitted.
-
-Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240726143455.3254-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: ce599c516386 ("mptcp: properly account bulk freed memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/seq/seq_ump_convert.c | 41 +++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 16 deletions(-)
+ net/mptcp/protocol.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index e90b27a135e6..d9dacfbe4a9a 100644
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -1192,44 +1192,53 @@ static int cvt_sysex_to_ump(struct snd_seq_client *dest,
- {
- 	struct snd_seq_ump_event ev_cvt;
- 	unsigned char status;
--	u8 buf[6], *xbuf;
-+	u8 buf[8], *xbuf;
- 	int offset = 0;
- 	int len, err;
-+	bool finished = false;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -350,8 +350,10 @@ static bool __mptcp_move_skb(struct mptc
+ 	skb_orphan(skb);
  
- 	if (!snd_seq_ev_is_variable(event))
- 		return 0;
+ 	/* try to fetch required memory from subflow */
+-	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize))
++	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize)) {
++		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
+ 		goto drop;
++	}
  
- 	setup_ump_event(&ev_cvt, event);
--	for (;;) {
-+	while (!finished) {
- 		len = snd_seq_expand_var_event_at(event, sizeof(buf), buf, offset);
- 		if (len <= 0)
- 			break;
--		if (WARN_ON(len > 6))
-+		if (WARN_ON(len > sizeof(buf)))
- 			break;
--		offset += len;
-+
- 		xbuf = buf;
-+		status = UMP_SYSEX_STATUS_CONTINUE;
-+		/* truncate the sysex start-marker */
- 		if (*xbuf == UMP_MIDI1_MSG_SYSEX_START) {
- 			status = UMP_SYSEX_STATUS_START;
--			xbuf++;
- 			len--;
--			if (len > 0 && xbuf[len - 1] == UMP_MIDI1_MSG_SYSEX_END) {
--				status = UMP_SYSEX_STATUS_SINGLE;
--				len--;
--			}
--		} else {
--			if (xbuf[len - 1] == UMP_MIDI1_MSG_SYSEX_END) {
--				status = UMP_SYSEX_STATUS_END;
--				len--;
--			} else {
--				status = UMP_SYSEX_STATUS_CONTINUE;
--			}
-+			offset++;
-+			xbuf++;
- 		}
-+
-+		/* if the last of this packet or the 1st byte of the next packet
-+		 * is the end-marker, finish the transfer with this packet
-+		 */
-+		if (len > 0 && len < 8 &&
-+		    xbuf[len - 1] == UMP_MIDI1_MSG_SYSEX_END) {
-+			if (status == UMP_SYSEX_STATUS_START)
-+				status = UMP_SYSEX_STATUS_SINGLE;
-+			else
-+				status = UMP_SYSEX_STATUS_END;
-+			len--;
-+			finished = true;
-+		}
-+
-+		len = min(len, 6);
- 		fill_sysex7_ump(dest_port, ev_cvt.ump, status, xbuf, len);
- 		err = __snd_seq_deliver_single_event(dest, dest_port,
- 						     (struct snd_seq_event *)&ev_cvt,
- 						     atomic, hop);
- 		if (err < 0)
- 			return err;
-+		offset += len;
- 	}
- 	return 0;
- }
--- 
-2.46.0
-
+ 	has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
+ 
+@@ -844,10 +846,8 @@ void mptcp_data_ready(struct sock *sk, s
+ 		sk_rbuf = ssk_rbuf;
+ 
+ 	/* over limit? can't append more skbs to msk, Also, no need to wake-up*/
+-	if (__mptcp_rmem(sk) > sk_rbuf) {
+-		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
++	if (__mptcp_rmem(sk) > sk_rbuf)
+ 		return;
+-	}
+ 
+ 	/* Wake-up the reader only for in-sequence data */
+ 	mptcp_data_lock(sk);
 
 
 
