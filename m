@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-65733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4901B94ABA6
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B214F94AB44
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793C61C220B6
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C3F3281353
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35AE84A4D;
-	Wed,  7 Aug 2024 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEC412CD88;
+	Wed,  7 Aug 2024 15:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klgfkp+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sajgPGdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B038D84A27;
-	Wed,  7 Aug 2024 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2945E78C67;
+	Wed,  7 Aug 2024 15:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043259; cv=none; b=BFdRh5KwBXBHjrFT+6YePEdEMfWv2fCWqrMi7kV72mDZZLLm74iK9luAw/dVLRkHhe7wVxaOimLArfplYHd/jwou1i4jv5gO7SEl2XAwvMyjOToiTzRR8EjflBsgqG+k8sRf1KeeAUprPeXVsLt2ft8tl4ViBhkjPDHESiHcjRY=
+	t=1723043046; cv=none; b=W3mjHuUnVFyLZDtD2unfLwx5oQb+sjnhGZQ6wrXhR3uJ1qctN9yyBls/nUywJIR8R5XD5XAjGg8E1/ijLbS0z/gjWwwJVdCFtsjRa+NIB7R+bdN/6lvPufFq0BS8WkYvKXX82W1vaMZy75ji6vAA+VA4cSpje3p4PcQ0nQ4C+Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043259; c=relaxed/simple;
-	bh=2BWpkG1OsDcZcBy3Isk8MUKfdWqbcdU2VEo7bTLpPgc=;
+	s=arc-20240116; t=1723043046; c=relaxed/simple;
+	bh=GP5IrzgnkPeHkzIdpajioRii/D/EvwAjkjxpQRJd24s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/0UnRhl4UibsoxrK8PKoWsmT/P2IJt9mivWLblSMUZOUbHodVbf0jlLp/6uZkslJgHAnSzEHpQehVhixO3ldVwnq4wvbx075kQQ16mWmVwSE6NL09VrPUeHFX0bu5XWgTP1G49EXHEZYGXQE2pD6IAQLiozD/7LaFqWRjLYSfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klgfkp+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A758DC32781;
-	Wed,  7 Aug 2024 15:07:38 +0000 (UTC)
+	 MIME-Version; b=rXqk3gi/ss+HFQmHo5H+PHBxpz+V0IiSEXUNq5V5V+L7ozKjYIPHAfHgveObn3BYIELFC2OdObYOLAM9ODvKL4SDrYUAybGQ/xo+3zDuwxXZn94AjYzPRcnTH88vuNV2vdBEy1gq9fuWal0QblMA3dzjjuk1+xk8aKmDs6WPVHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sajgPGdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD0FC32781;
+	Wed,  7 Aug 2024 15:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043259;
-	bh=2BWpkG1OsDcZcBy3Isk8MUKfdWqbcdU2VEo7bTLpPgc=;
+	s=korg; t=1723043046;
+	bh=GP5IrzgnkPeHkzIdpajioRii/D/EvwAjkjxpQRJd24s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=klgfkp+i7fEK/RQnOYBHliHBCAcqa5baUEiTvdfexYsK62tRqaAiQtCCRObJNv0dZ
-	 bmZygst/1aobxrcaskEt6rBm+xiaVykhebvsJ6XCc1c73es6fTfIvSjgT8O7iWcrUt
-	 Pc/GB414tLy2clfaeicZja24HbWOO4udRWsAcbv4=
+	b=sajgPGdvy1T0U2GiwTGvTi5nI4D0MSQ7mqjLN4Lp5q/w1EIG/v1UKK26BzhfHLX/S
+	 GAmZREvnmC/fXVwBn8OPg6Xh1FxIowEUuB5ilYssqJn+HYbZV9TUleDXg960j+lcVG
+	 r9IDlWPuViz+9ITfqmFnMO8PGWyEIeG99T7Uu7LY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Russell Senior <russell@personaltelco.net>,
+	Mark Mentovai <mark@mentovai.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/121] ext4: convert to exclusive lock while inserting delalloc extents
+Subject: [PATCH 6.10 031/123] net: phy: realtek: add support for RTL8366S Gigabit PHY
 Date: Wed,  7 Aug 2024 16:59:10 +0200
-Message-ID: <20240807150019.949699165@linuxfoundation.org>
+Message-ID: <20240807150021.833081295@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Mark Mentovai <mark@mentovai.com>
 
-[ Upstream commit acf795dc161f3cf481db20f05db4250714e375e5 ]
+[ Upstream commit 225990c487c1023e7b3aa89beb6a68011fbc0461 ]
 
-ext4_da_map_blocks() only hold i_data_sem in shared mode and i_rwsem
-when inserting delalloc extents, it could be raced by another querying
-path of ext4_map_blocks() without i_rwsem, .e.g buffered read path.
-Suppose we buffered read a file containing just a hole, and without any
-cached extents tree, then it is raced by another delayed buffered write
-to the same area or the near area belongs to the same hole, and the new
-delalloc extent could be overwritten to a hole extent.
+The PHY built in to the Realtek RTL8366S switch controller was
+previously supported by genphy_driver. This PHY does not implement MMD
+operations. Since commit 9b01c885be36 ("net: phy: c22: migrate to
+genphy_c45_write_eee_adv()"), MMD register reads have been made during
+phy_probe to determine EEE support. For genphy_driver, these reads are
+transformed into 802.3 annex 22D clause 45-over-clause 22
+mmd_phy_indirect operations that perform MII register writes to
+MII_MMD_CTRL and MII_MMD_DATA. This overwrites those two MII registers,
+which on this PHY are reserved and have another function, rendering the
+PHY unusable while so configured.
 
- pread()                           pwrite()
-  filemap_read_folio()
-   ext4_mpage_readpages()
-    ext4_map_blocks()
-     down_read(i_data_sem)
-     ext4_ext_determine_hole()
-     //find hole
-     ext4_ext_put_gap_in_cache()
-      ext4_es_find_extent_range()
-      //no delalloc extent
-                                    ext4_da_map_blocks()
-                                     down_read(i_data_sem)
-                                     ext4_insert_delayed_block()
-                                     //insert delalloc extent
-      ext4_es_insert_extent()
-      //overwrite delalloc extent to hole
+Proper support for this PHY is restored by providing a phy_driver that
+declares MMD operations as unsupported by using the helper functions
+provided for that purpose, while remaining otherwise identical to
+genphy_driver.
 
-This race could lead to inconsistent delalloc extents tree and
-incorrect reserved space counter. Fix this by converting to hold
-i_data_sem in exclusive mode when adding a new delalloc extent in
-ext4_da_map_blocks().
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Suggested-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240127015825.1608160-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
+Fixes: 9b01c885be36 ("net: phy: c22: migrate to genphy_c45_write_eee_adv()")
+Reported-by: Russell Senior <russell@personaltelco.net>
+Closes: https://github.com/openwrt/openwrt/issues/15981
+Link: https://github.com/openwrt/openwrt/issues/15739
+Signed-off-by: Mark Mentovai <mark@mentovai.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/net/phy/realtek.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index b8eab9cf36b98..c8a1db2164dfb 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1705,10 +1705,8 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 
- 	/* Lookup extent status tree firstly */
- 	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
--		if (ext4_es_is_hole(&es)) {
--			down_read(&EXT4_I(inode)->i_data_sem);
-+		if (ext4_es_is_hole(&es))
- 			goto add_delayed;
--		}
- 
- 		/*
- 		 * Delayed extent could be allocated by fallocate.
-@@ -1750,8 +1748,10 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
- 	else
- 		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
--	if (retval < 0)
--		goto out_unlock;
-+	if (retval < 0) {
-+		up_read(&EXT4_I(inode)->i_data_sem);
-+		return retval;
-+	}
- 	if (retval > 0) {
- 		unsigned int status;
- 
-@@ -1767,24 +1767,21 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
- 		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
- 				      map->m_pblk, status);
--		goto out_unlock;
-+		up_read(&EXT4_I(inode)->i_data_sem);
-+		return retval;
- 	}
-+	up_read(&EXT4_I(inode)->i_data_sem);
- 
- add_delayed:
--	/*
--	 * XXX: __block_prepare_write() unmaps passed block,
--	 * is it OK?
--	 */
-+	down_write(&EXT4_I(inode)->i_data_sem);
- 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
-+	up_write(&EXT4_I(inode)->i_data_sem);
- 	if (retval)
--		goto out_unlock;
-+		return retval;
- 
- 	map_bh(bh, inode->i_sb, invalid_block);
- 	set_buffer_new(bh);
- 	set_buffer_delay(bh);
--
--out_unlock:
--	up_read((&EXT4_I(inode)->i_data_sem));
- 	return retval;
- }
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index 7ab41f95dae5f..ffa07c3f04c26 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -1351,6 +1351,13 @@ static struct phy_driver realtek_drvs[] = {
+ 		.handle_interrupt = genphy_handle_interrupt_no_ack,
+ 		.suspend	= genphy_suspend,
+ 		.resume		= genphy_resume,
++	}, {
++		PHY_ID_MATCH_EXACT(0x001cc960),
++		.name		= "RTL8366S Gigabit Ethernet",
++		.suspend	= genphy_suspend,
++		.resume		= genphy_resume,
++		.read_mmd	= genphy_read_mmd_unsupported,
++		.write_mmd	= genphy_write_mmd_unsupported,
+ 	},
+ };
  
 -- 
 2.43.0
