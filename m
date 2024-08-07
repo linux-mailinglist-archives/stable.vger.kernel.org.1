@@ -1,155 +1,236 @@
-Return-Path: <stable+bounces-65950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA0794AFFD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 20:49:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FBE94AFF9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 20:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74F2FB21415
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 18:49:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25888B20DEE
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 18:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6087785654;
-	Wed,  7 Aug 2024 18:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68566F067;
+	Wed,  7 Aug 2024 18:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="k8/eayfk"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mUlfFaDI"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2087.outbound.protection.outlook.com [40.107.244.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAF3B646;
-	Wed,  7 Aug 2024 18:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723056555; cv=none; b=gOLr0V1MF9aFbaepYyzRyTmPQdjC5y1tQ0AgiDpyAhg3dbpjDAclDazBt95km8R3bVCoM0qVn0dCkKv3qpnYx5RkKoPJH3/T1A4XBdq8nBebTsPWZTIZN8ao4LD3N6jEgYU9NO3270SiXV93aJNTH7hZQ6X54tivEusd8wvsFlI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723056555; c=relaxed/simple;
-	bh=9HOAv6VuH3cb5sD8DD5RBRP8nLdpXZgvCihMX0QS4DM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AFJG6xk32wuM4uqz4t4ANtmDzf4me/lI556nEXszHEQXVxM3C/9o4eX8EijrKqDjUK8Nb1b3HBubQKtpiDKEG3xVKI2YNEiJD8y9k/8QPJ7bOjD2lbIO1/EOF0Zjav2mXM3n1qXW/7DhXuduX7oDqFC2wYMG5PN7J+G3gn+V5sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=k8/eayfk; arc=none smtp.client-ip=212.227.126.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1723056545; x=1723661345; i=christian@heusel.eu;
-	bh=9HOAv6VuH3cb5sD8DD5RBRP8nLdpXZgvCihMX0QS4DM=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=k8/eayfkJhk2hB/oQXlP6TRiecPMy0khBq/tUm8IJ+6o9ewgrQMBzWM8CF5lGmax
-	 XV2CUEfzwIv+CzbOzYlttjBZfVsmU8bCuqy7BvKg5cEXq/0Urd89CkG//7934KiE6
-	 aCGxtaI5RgG11EYGSkc+D/NINW8o0yZWJN0XUbNvLNre6M1QD4oTmo4a3eJp7p0Wh
-	 XL4yKMJI7GGq0lFwcjkLgndd1do2dvTY5/Kr9wfYN3VZ+KFTPgRtLyhearxogoCnw
-	 FQ4A7awErRiCFepijzyYFzihyTvn/Is9i7dDshcP6pOStAuMJ4xV5FNdiq3YDILNm
-	 61UJL8U8UpQUMBQFsQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([80.187.64.180]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MQdtO-1spYj73gFa-00LuZZ; Wed, 07 Aug 2024 20:34:52 +0200
-Date: Wed, 7 Aug 2024 20:34:48 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: avladu@cloudbasesolutions.com, willemdebruijn.kernel@gmail.com, 
-	alexander.duyck@gmail.com, arefev@swemel.ru, davem@davemloft.net, edumazet@google.com, 
-	jasowang@redhat.com, kuba@kernel.org, mst@redhat.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, stable@vger.kernel.org, willemb@google.com
-Subject: Re: [PATCH net] net: drop bad gso csum_start and offset in
- virtio_net_hdr
-Message-ID: <146d2c9f-f2c3-4891-ac48-a3e50c863530@heusel.eu>
-References: <20240726023359.879166-1-willemdebruijn.kernel@gmail.com>
- <20240805212829.527616-1-avladu@cloudbasesolutions.com>
- <2024080703-unafraid-chastise-acf0@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B341D13F426;
+	Wed,  7 Aug 2024 18:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723056467; cv=fail; b=gNFwsKwtuYEycN8ILCkDXW66dBIlt28D7W+PPTmkwwTvVVJyZIhV95RSSmpNZPFdDjL0UtIfi3saUUVOZWjqAYDV+F2aic/4pe9bcDz3s9KsoqMIaPceBYwTrzVQ93TnyyAD5LRlvLyLpQHhqYxAV4Q7D4DDq4oMJ6H/xWLve+Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723056467; c=relaxed/simple;
+	bh=eDwZvb9LUeGfCBaMvOLCvdsIk5cS5//skrYQVxLJQU4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=s8VNQvP1KRj324Am9ndFpRoIBu5h/fpXFPcZd3RLEscOS9Fo/ia6md+Vo4aQPEgteWDeduwAMqPQiWd9V4PG5L2WDvNk++zJ+TbSC9MvzZZJXAhTc2Pv3OfSy4aL2ufhgh5CFemS8uylwC7R4cF2b/RudTNJSuFdQsFfBndcWiI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mUlfFaDI; arc=fail smtp.client-ip=40.107.244.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FppmKo6FNPXJu9WfVKkdXAG+iuoo+ctmB5dYlfG++b2Jhuq/heGYDBguJZmrCSaeIs77IkYnkIJNh85VVPcLR6WdkUWaPdB4Gc5amDbkVhz91DYh0o83YYpqM6mQ8LwxO092aJDv3jHIDy6OcYYkE0LsVHG1noB9xBnfxvZlE/n9E3iuBR4W3pjHkmCS6V5zUSQOm2HN44N2ih+jilBA442lID7cW6cPXbIBztgicdwNyd0IZ9QUoanoNz9oQHnvzUlkgolXNiRZZcJM1kV/hGxM9aFiASKE89qbd5raAAUxj15RAmZl97u2RkPVLiT/ZeL05XqRHoYZ8AyLlY7Yhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QgSRUJpFPCThw1qBMK75xzgd6AwVOF73GtHFFcbZjig=;
+ b=V8cukK+Hh3dOHDTXHrkPhkbQssolINkN+oZWLGPu1s0frzHiEQ8VC82K4L0d627IBjySQAQd1GOdVufgltAUajX1lv8brog79+RLYg/hm5ZaVLlVO1hvTXdEf3XflDhkVO02tsOPSR2cRLJ0eoeHyTpfH/spLMDBRM2Un65wTjd55UDwoVDkz815fEEIEKrynxjls98l14EhFWoTCJH4XNdJ81wTSvOY8NHoJvvHO/DFNX5hJKXBpyXq3G7CHi++KAYovb1RNVi3X35UH3euXLUgjv7v40DGv4VQibnyXGsZUYoj+JU9RslqqSE+pe8tecTFIB2gu2/Yzxnw/IRrKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QgSRUJpFPCThw1qBMK75xzgd6AwVOF73GtHFFcbZjig=;
+ b=mUlfFaDId7Vsm1JZphFqgX1Mt9ZNJJMPLtFI2hkc9XlumAeDtGAct4Z3Crfc1/OP2qPkyHz/ojg/Wb9RgWFI+I/0Mjv+VpNmJJBnQIt9ymh1nmTWLQc+nYLkqPPsPSrT/S4vMP2Ec62e2LM/5o+ZNlVdJ3e0z4Gy0Rpn/+AKbbViSFTTL1Pr1pvAaTIQgoWaa+IaNFbB4UQIunNdIVrc4SEyxdFPBaIuDQjEJiXOPVRKy1BDf419Px4Q6MMQRS9aiHmlkHj9uM6MKZz8uKspMfgj4qcspQbQG4rntkfRPu8S4ABK3SNfdXeZoN8L7O3Dg05kmmQpkNIQL5W5RNDgJg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CYXPR12MB9320.namprd12.prod.outlook.com (2603:10b6:930:e6::9)
+ by PH7PR12MB7209.namprd12.prod.outlook.com (2603:10b6:510:204::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.23; Wed, 7 Aug
+ 2024 18:47:42 +0000
+Received: from CYXPR12MB9320.namprd12.prod.outlook.com
+ ([fe80::9347:9720:e1df:bb5f]) by CYXPR12MB9320.namprd12.prod.outlook.com
+ ([fe80::9347:9720:e1df:bb5f%3]) with mapi id 15.20.7828.023; Wed, 7 Aug 2024
+ 18:47:42 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	linux-kernel@vger.kernel.org,
+	Zi Yan <ziy@nvidia.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] mm/numa: no task_numa_fault() call if page table is changed
+Date: Wed,  7 Aug 2024 14:47:29 -0400
+Message-ID: <20240807184730.1266736-1-ziy@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BN6PR17CA0050.namprd17.prod.outlook.com
+ (2603:10b6:405:75::39) To CYXPR12MB9320.namprd12.prod.outlook.com
+ (2603:10b6:930:e6::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="kikuexp3eyipzu4s"
-Content-Disposition: inline
-In-Reply-To: <2024080703-unafraid-chastise-acf0@gregkh>
-X-Provags-ID: V03:K1:3LzPpijhS8I8kEe8NEk9gccv7iZuiRPAyJkndIEjAZJM/5fWul0
- PyO3yXrBl6EkaAeoc2B3VQH+afnpRolfk+sFY2S2W8NwzYsePtG4Y1nwrLh8NAXsdvLu77V
- jbosQXowocJPa1IykyEECnbYYn/NZx4dtMhQIeDpdbYPZFZNSofuDWZ8usHKM2vFdi0xqGK
- 9//d/ZHFF4BOH9ZzTBUWA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:JuDVVyQwiE8=;+Jbf3OtI3ORHgTy0F6Fr0EoCroZ
- RHsNnHBJHyA9SZ3lUUv7/iaEU687LVjDNb3M6+L3J/k2hg7kPK0de2pLJIaSwDktJlyTesc9P
- 0Pf7dk4B2897kaJcUlRdog6P5YT7NiY7YjVEvNLoJ4Fbki+oDXoYolxg+pQVLHKdqm92NaQcK
- h7j4X87g54SoH7t0LsUv9RodQL6Sc+4nYwWLMI/8vF7hWMijTCiykiYKCoEiu0eV4RjvSAt4t
- 700RJq2cWdBL39xoY3JzILuqe7svpLKbxOa/iceNgA8JgvPhYmoQbJAJ1pzFHHeNQQMYWASD3
- wJVFDJQlHGuQraVEpi6VT8owSsnXCJ+rsqz75xQCGoGBOuo69a1uEBc3xBKCNnYSzmQbgrMU5
- mS7/tkz2PZ7mYyI8dGieIC/zYIuAqzRb4KOv+69eIxHMqyhBLzp69N0lsfSo+J6qfFNx6MOhS
- 4+cvqljPRlqq8fem3+6u5yMzVNVEf+1cn1BFvti94ZSzaGykG9yT3X91LsgI6rQKecqj3x6Dq
- 5vcsEKIaRHz3z4OcRU4YeAWq9O+TnCjdgKYuhYn1mwL95HVDljwkuvAGYl4zlBV5iRdvPXHuZ
- xIKTF5bq0FgXBk2pv3wEl7duiMKfbjyz4cH2ExNdrqDweZPdPjoH32Hex1hw7v4q+FGSRDcE7
- 6yYMY9Isz3W4ZLAXbfD4zo66/hFSZUxIEUVSM+ES5H5HxMex8ankmxzh7rNJPsxnuh/vJZbJx
- g98fOA4J5FdB/rHhwGIBsdWsuNFUHJNLg==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CYXPR12MB9320:EE_|PH7PR12MB7209:EE_
+X-MS-Office365-Filtering-Correlation-Id: 09826eae-a083-440c-c684-08dcb7116b13
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?z3uAOY7YNl9MhU+YBpXgwnu6z4LLLj76uXUtkp5EFi/HTZlVoa0tg04XQgOH?=
+ =?us-ascii?Q?BpZukFlUh5wdByzm8LSlDyso+mJBSeakg7GbHBKqvNXBFWlYKTL72CGA6Gev?=
+ =?us-ascii?Q?0l9MG7fe6NxDFF/+JyKVcMZIVSVEjb6t16sc+xZeEFwXpEdHYArXWy3zZQXv?=
+ =?us-ascii?Q?qaliU1xUXNOsYYPm/wbXLehmE31rk9ARO9+PcNxJsSINj73bo1cjjZlgNBs0?=
+ =?us-ascii?Q?z8eGV54W8+bDkJ2+hHBttasJla//g/Y1Xo2W3p5ATQqZ3idG3n7+EitfUr4N?=
+ =?us-ascii?Q?Iyn2PlFyMfgCUiGIxoprHWHuLswOWyJhMr1vTpaKluZf1ZOprvTITZ59rAro?=
+ =?us-ascii?Q?kgL00r1KGfg05NnQ0oehrBNwWooh9hNUZJXt9dKmz2zz3HT0AHXAsW+x0cK7?=
+ =?us-ascii?Q?vMHDR4+JXTkhxGmMTDLIPE6R+dPREwG0cg/U9mwnb/LVRPLDvPMeNs9WhIcK?=
+ =?us-ascii?Q?K1cF0t4Vojk+6T9Wt39Cst1lF9SlOKvJLfkdDufmXhKLB+a4zgE3XDlRgqcY?=
+ =?us-ascii?Q?6lzhSkj6nDa4uIj37v4GEEOAV/SWKrUNKeyQA1Y4UGYAJI36pW2yAeTRlzEv?=
+ =?us-ascii?Q?UoZhN0szlOa5uRDeU4m3M550o2TswfNLr7hJIKMAMHIL6oXO8RfSpPMB4+gn?=
+ =?us-ascii?Q?B4HNz3MPdQoEannoxfnc7VklNxieTSHl59yp0E3CqT+SqHOS9cn+vgpvv8zm?=
+ =?us-ascii?Q?yZnMTvKxtv3yiWPamDWJhe3WfQv8v2huFUAkriBTVSbFakpPGftTXHWdMqP2?=
+ =?us-ascii?Q?grUpEL+lB74bIWStyqoiM3w1IVGnRhY0qA1NBospcG5P6LEXbTro41E4hJ37?=
+ =?us-ascii?Q?CQavmkj5gralHs/I/CMMMyWSBR+c9bKn31q8fcAC3lH5Z/Uq1Ahl4PhcHFiV?=
+ =?us-ascii?Q?4tsO/Uaeqrtv9AxZ7dC6O9upE6+Jzxmb99rEl0+Fo9LhBx92pOkmvqhf7WNz?=
+ =?us-ascii?Q?GjQ5PlPWetj0Bw8ogOfjVYgbwXBwQ0XqSGsUXaSFjjOSY7OqZzBYhc2bBzdI?=
+ =?us-ascii?Q?yEjjNU9W2ycqggtBhAIWIl9Fk3I0oOJfkSBNHzieTkoGtqVIO7ssnaJYiSiB?=
+ =?us-ascii?Q?trnZHSu7qgzi0tkxdEnyveJGrw8d9XeCZEOYses1OFf4avaVp7zWychbhbL0?=
+ =?us-ascii?Q?tLS96sglQEX8XzBUPq7kMscREJRNFnkQ1/kYXfdZmYRmZf6rKuDxdvKqCWoM?=
+ =?us-ascii?Q?IsorFMUhHIrpmN36OLiVyJpJZVCGhq/aowD5zjSUyfIFvrnDOZg4IeCK89BB?=
+ =?us-ascii?Q?PNc9EcW+Mq3oh6vSJVE7rCglVt8XPs92K60KhgTg99BTeFuZBnxgcxNK5Cno?=
+ =?us-ascii?Q?23lg3G/vGRYnWEEILDp1sK4WpiHCxPyR2S50wJ53YyJZZVY+uAQIvvNtGBxH?=
+ =?us-ascii?Q?Wg7N01o=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYXPR12MB9320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?83R386iDKFJz8zkYpraWX7FgDcuFatkjQWGYQHicBrgMOi35diBXEEJ6hyWm?=
+ =?us-ascii?Q?/4QAKQQJGEMc65HVWFYeeTEjopeFbJiasxh/2SAOIatEwYPEhmzdka3QT5rj?=
+ =?us-ascii?Q?6gwGjPdNQfM1hJL618Hd1JEuKboTGtl01NSVCdU5kQaho6QJDRypbdAlq+z7?=
+ =?us-ascii?Q?LzjCIBbm1RgsP815u6e7+KKjnkZWMu7Nbh1xS36MWpgrVkLh6OpfrfTSMIeN?=
+ =?us-ascii?Q?e2f2ee5zUHUoxD9dOfSxQdlTq9jnGNJsK0HNdyI+S3eQfEFkA5z1UnlfsHk4?=
+ =?us-ascii?Q?Pif8HYYQCcroLo7ChGy59taxs8NiKbBNoaDeSywayk3t+y2UQ6WSnc2umTID?=
+ =?us-ascii?Q?dU2FIl/hS/bAo5Fdfx7whgvK1SwLxa0uv2bZCiMYNWCNSR8gjOxGe+ltgPi6?=
+ =?us-ascii?Q?n+Zf+SywkITE+zvQuG8gi79I4axl9cGLGVrYZmVxJPPZZChUOdTGVAPcQv9q?=
+ =?us-ascii?Q?AkLhKIleYjiOmsl/nNYUetO95AAJjchm1MYmJ1UYPCx6VEcXTqG5Xucw3eIs?=
+ =?us-ascii?Q?ziy8z2Ekzw6IZBqUYtj59iIBT8u56BvX1QfQgwtSC0wE2u0CdyJFbude1cYY?=
+ =?us-ascii?Q?fC0B+lad491YWYSo98tJOQxZOAvBgnIOWVH4sY+EmL9Niyme1yqfbKrP9AM6?=
+ =?us-ascii?Q?Lnik3HVJyVTpHpaptRUhV56fvEF++ZI3Hq4mfqxdZLICq9u50+vFDD21HvRA?=
+ =?us-ascii?Q?yZ7EzeJ7gbcDexsPYeLNHvC1gYc4PPCcuYRYFGUEgq0V6L9fJIRffNg+VkMB?=
+ =?us-ascii?Q?zuPZoMX/slVyV7kAimU5hA3J2zWnqRnFdIL1RMkT9So2bVt3S+qpKtQ7SBk3?=
+ =?us-ascii?Q?fQar4W7lI1TASaiUxSg1nzM0pR66iHJEqDG4kAZxUMQZRf7jmaa2vpoBCtcT?=
+ =?us-ascii?Q?xlT0UiX2vDYtIkgK/v5izieWTF7PD0Q0pT6ws4wLlWyLUTCM7FdI7OdJnhkw?=
+ =?us-ascii?Q?4wYf+tLiXkMqcNYNPwyuVtp5vKrW0X0TZB+tsMXC31WkQOxj2taV/NYxejhY?=
+ =?us-ascii?Q?iTEVEUFnbZMOBw/u8rKDJ8S/9JGregGv7IJJIxc/gB/BiLpvCqvy/ZX2T30c?=
+ =?us-ascii?Q?jH33ueVGMX/tFImD6uYgWxgkqc5q2Q464TRQPhJ2H7iziEaIgxacD7h+YhXX?=
+ =?us-ascii?Q?wcK0ZsUSc52V47fYv3Ik3vqpYupsfelsu605WFEL4obuIUcHoEYTEm7Xw6N0?=
+ =?us-ascii?Q?kCJuApH5aWy8OlKOR2JbUEO/wVi6PFnA/Z81oOHQ2XBbqGF/V8W+nQfirF8b?=
+ =?us-ascii?Q?Leht+1ea0ZofaAbHU7KjVTsRQKfVVjNNuWwVDpBAtM6f+yCopNBvREQ+m3dg?=
+ =?us-ascii?Q?YPnEd9a/5jwizcCaWQfq737QQTjfxnpQuOVcvpDunMGaMEChgLRuSdsWZo/K?=
+ =?us-ascii?Q?xVCqNlNQM6mBqx5YXE/xk2FPBL2G3HZH24TUKzjZBgiAKJL08caItpEzaoJ+?=
+ =?us-ascii?Q?xbOKASqZ9xRJlKhSpk9UPeRJTRfxCgVj0tcGEzjlgWCo95ELfA8mz0tlLAPv?=
+ =?us-ascii?Q?o+MVUAbgEprYQbtxRtCZjOYfD54DdPS0OWyWFRaKmuqrRAbwWbYLyT0/iM69?=
+ =?us-ascii?Q?sv5xn8xgBfi2RI36LH0=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 09826eae-a083-440c-c684-08dcb7116b13
+X-MS-Exchange-CrossTenant-AuthSource: CYXPR12MB9320.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 18:47:41.9872
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6ZGNerOvgz/kOwhPH8dAZIVDHTBqmBrtvoxib95vj7ivmE/vg+u0oTROoZVaqgBJ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7209
 
+When handling a numa page fault, task_numa_fault() should be called by a
+process that restores the page table of the faulted folio to avoid
+duplicated stats counting. Commit b99a342d4f11 ("NUMA balancing: reduce
+TLB flush via delaying mapping on hint page fault") restructured
+do_numa_page() and do_huge_pmd_numa_page() and did not avoid
+task_numa_fault() call in the second page table check after a numa
+migration failure. Fix it by making all !pte_same()/!pmd_same() return
+immediately.
 
---kikuexp3eyipzu4s
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This issue can cause task_numa_fault() being called more than necessary
+and lead to unexpected numa balancing results (It is hard to tell whether
+the issue will cause positive or negative performance impact due to
+duplicated numa fault counting).
 
-On 24/08/07 04:12PM, Greg KH wrote:
-> On Mon, Aug 05, 2024 at 09:28:29PM +0000, avladu@cloudbasesolutions.com w=
-rote:
-> > Hello,
-> >=20
-> > This patch needs to be backported to the stable 6.1.x and 6.64.x branch=
-es, as the initial patch https://github.com/torvalds/linux/commit/e269d79c7=
-d35aa3808b1f3c1737d63dab504ddc8 was backported a few days ago: https://git.=
-kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/include/linux/v=
-irtio_net.h?h=3D3Dv6.1.103&id=3D3D5b1997487a3f3373b0f580c8a20b56c1b64b0775
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit=
-/include/linux/virtio_net.h?h=3D3Dv6.6.44&id=3D3D90d41ebe0cd4635f6410471efc=
-1dd71b33e894cf
->=20
-> Please provide a working backport, the change does not properly
-> cherry-pick.
->=20
-> greg k-h
+Reported-by: "Huang, Ying" <ying.huang@intel.com>
+Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
+Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+---
+ mm/huge_memory.c | 5 +++--
+ mm/memory.c      | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-Hey Greg, hey Sasha,
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 0024266dea0a..a3c018f2b554 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1734,10 +1734,11 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 		goto out_map;
+ 	}
+ 
+-out:
++count_fault:
+ 	if (nid != NUMA_NO_NODE)
+ 		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
+ 
++out:
+ 	return 0;
+ 
+ out_map:
+@@ -1749,7 +1750,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, pmd);
+ 	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+ 	spin_unlock(vmf->ptl);
+-	goto out;
++	goto count_fault;
+ }
+ 
+ /*
+diff --git a/mm/memory.c b/mm/memory.c
+index 67496dc5064f..503d493263df 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5536,9 +5536,10 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+ 		goto out_map;
+ 	}
+ 
+-out:
++count_fault:
+ 	if (nid != NUMA_NO_NODE)
+ 		task_numa_fault(last_cpupid, nid, nr_pages, flags);
++out:
+ 	return 0;
+ out_map:
+ 	/*
+@@ -5552,7 +5553,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+ 		numa_rebuild_single_mapping(vmf, vma, vmf->address, vmf->pte,
+ 					    writable);
+ 	pte_unmap_unlock(vmf->pte, vmf->ptl);
+-	goto out;
++	goto count_fault;
+ }
+ 
+ static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
+-- 
+2.43.0
 
-this patch also needs backporting to the 6.6.y and 6.10.y series as the
-buggy commit was backported to to all three series.
-
-I have tested against my local trees and it seems to apply cleanly on
-top of 6.6 and 6.10, yet if it helps I can also send out patches for
-stable versions of those, so we can have the fix for two out of three
-series while we wait for the backported version for 6.1.
-
-I also saw that the patch didn't make it to 6.10.4rc1 and is not in
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tre=
-e/queue-6.10
-
-Cheers,
-Chris
-
---kikuexp3eyipzu4s
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmazvkcACgkQwEfU8yi1
-JYX2zQ//XKpc/W6V90uniwder3rjoXwILdn1u3qa4oyycptpaC02xy0l1r/wZLn7
-8Y7DKxTDAlXo2jHjBnifXmxsif0wmQZ09N2SW7rJAlGzpdsb3GZx0Yit/Nc81eiF
-jOf2JqcI/zYay7+g1wO+iqINEaNDcJtTqfpA7cWTL1yY4KUN630w53v8I34Yxb93
-8rJF4B/6/UJ8uYm4UhCz3vyYhRRRlvB9xl/GFgTaIgKY1VmMWeDKoHIw6Z1q4mRD
-EtebOhTtohAZj2RPSsNjMa1SWZ1NVhRy9oX0ILml94mFf7TGQ1JK9AdGsvCtgIxM
-afbpY9iaKYKlcvG+tcLg/ZlJZ/+shSgtpp+3wx1D/fieFFYomLyVzyavVYbpmGI4
-9p/jGANpa1KjImCNIeocTIyRxA0wc07pmO1ICfOPYBIUSgC1jqOZuMwjksw3JK0J
-fnAXZyP3t0L/ngWY0X1VnyAgyqInAaWmV1m2OX9lKNh9dmGasswc+kTJ8XlBiXGR
-MmDiAD6OfbulrWI0Pa6cJ85S0sKgReiNWOzPlBNTfJgXVwidvRzNhu4Vv8ffCp0u
-edjcAigRt0ExNSbscYA5w79CbylgYOsnZPnMZB4GgkzDXz6SaPfTe7s1l2WrtQQf
-w6QbMf0FH6Nfq3A/X17zB8H/+dmdOQ78CH9GfORyluZrVBN2/mo=
-=jXKu
------END PGP SIGNATURE-----
-
---kikuexp3eyipzu4s--
 
