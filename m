@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285EC94AB81
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0967A94AC7D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D64EC281BCC
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE1B9284241
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07744824BB;
-	Wed,  7 Aug 2024 15:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BF584D12;
+	Wed,  7 Aug 2024 15:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJkIkReS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnwRsNFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3BD27448;
-	Wed,  7 Aug 2024 15:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99A1374CC;
+	Wed,  7 Aug 2024 15:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043167; cv=none; b=NuUm8QQtLd+JzV/zyXq/cLfRlLWpqCRCVbT1YeYaUrwY2qOfkOhrNlJVdQwxcMLAikb83deseKg98G9VHbK7V6rp7pwOX6hkazVCsXcDhTIjinUjaYidSd6obY4eeRZW7QY7TDnrP5pyHZGRMgMAwUxFggM2TIn/Kog9h6S8e40=
+	t=1723043742; cv=none; b=C6mJrZDvySROuZiYCl6rh8nC/uH2zS1V3Z973OO7wtcop4LukxKhj1EDmeLBIecZAPuu5RPZwLDzCvhZjNq3KqMpQnhxHA6frSyOx4ENR+SqOCxWBJUk8U+/etCMNH53msws2RAQcdGcOxa7TQNFE2Euh77b4uCt9c94u6lycGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043167; c=relaxed/simple;
-	bh=uF6yMg1s17fMjKnVzaQ+GKLOnOUA8B/qElaxIbkfZeI=;
+	s=arc-20240116; t=1723043742; c=relaxed/simple;
+	bh=sExPP2+NBi0HH9wseB9WdhhA9vHtcpw2LDL8oPPVXsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BtL4Y0l9b70RB1Y831NhInZlnYM40yHqHe4ruHEZth6GuLfblWWxT/Hcrt31LnSGwGa3v02pCqjDOw+KFd9j9TGoSo1zdaa2uK1MJlo9RbcoAiyi9Dxj+MeGseLD9tBe35Obbkzo+B32nrwBU8Z0c083QQqJaCNspxpnl7HcPoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJkIkReS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B843C32781;
-	Wed,  7 Aug 2024 15:06:07 +0000 (UTC)
+	 MIME-Version; b=BMTq+KW+c2G+qGdA5ZFCaBD5Sz41i/CorsD3V15OOTXNXolAVrYWrQTunv2jjU91ElDo5hqhzYjsOmvpLUypFNHzKYkxuj/YAuHssnFQU4jDv3W+ePQcW0AHdSt/+vJxSxQ4hKMcoasSBdHIDHZl1Zvn4pYzJMk8HZMc7EKdGEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnwRsNFl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A036C32781;
+	Wed,  7 Aug 2024 15:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043167;
-	bh=uF6yMg1s17fMjKnVzaQ+GKLOnOUA8B/qElaxIbkfZeI=;
+	s=korg; t=1723043742;
+	bh=sExPP2+NBi0HH9wseB9WdhhA9vHtcpw2LDL8oPPVXsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YJkIkReS5wswsS7kYqt7j5W+SLk9s5VU2TdIKjDczzSIBHs+DT4aGUj4e/anD5eFU
-	 dxOUdWvUuaiC0rzbs6MPNbOjtcv8aCMhGxZJSvxd8dQOmkJF4DMglf+umqmPZnfqPS
-	 H1wfOB4+/VrS7FuXDu6SZ4OLa1kL4XPHIU4MmHpo=
+	b=RnwRsNFlpGt4PXjzkkgpKNadK0WWYZ1XxJtXbMyKr+GbsR29TP/cIcIpwAiqum0Nq
+	 fLa1wZl2p83OcWAdheNY398GMXmKtXNgEr9qQuSaKmF9roXaRDfxSNwVMvo3rVgMsa
+	 F0/GLvxPBluLegFYjyAINgt3SLnwDSorcwOlFN+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.10 116/123] mptcp: fix bad RCVPRUNED mib accounting
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 56/86] net: mvpp2: Dont re-use loop iterator
 Date: Wed,  7 Aug 2024 17:00:35 +0200
-Message-ID: <20240807150024.667333273@linuxfoundation.org>
+Message-ID: <20240807150041.088171141@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 0a567c2a10033bf04ed618368d179bce6977984b upstream.
+[ Upstream commit 0aa3ca956c46d849775eae1816cef8fe4bc8b50e ]
 
-Since its introduction, the mentioned MIB accounted for the wrong
-event: wake-up being skipped as not-needed on some edge condition
-instead of incoming skb being dropped after landing in the (subflow)
-receive queue.
+This function has a nested loop.  The problem is that both the inside
+and outside loop use the same variable as an iterator.  I found this
+via static analysis so I'm not sure the impact.  It could be that it
+loops forever or, more likely, the loop exits early.
 
-Move the increment in the correct location.
-
-Fixes: ce599c516386 ("mptcp: properly account bulk freed memory")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/eaa8f403-7779-4d81-973d-a9ecddc0bf6f@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -350,8 +350,10 @@ static bool __mptcp_move_skb(struct mptc
- 	skb_orphan(skb);
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 2f80ee84c7ece..bbcdab562513f 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -953,13 +953,13 @@ static void mvpp2_bm_pool_update_fc(struct mvpp2_port *port,
+ static void mvpp2_bm_pool_update_priv_fc(struct mvpp2 *priv, bool en)
+ {
+ 	struct mvpp2_port *port;
+-	int i;
++	int i, j;
  
- 	/* try to fetch required memory from subflow */
--	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize))
-+	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize)) {
-+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
- 		goto drop;
-+	}
- 
- 	has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
- 
-@@ -844,10 +846,8 @@ void mptcp_data_ready(struct sock *sk, s
- 		sk_rbuf = ssk_rbuf;
- 
- 	/* over limit? can't append more skbs to msk, Also, no need to wake-up*/
--	if (__mptcp_rmem(sk) > sk_rbuf) {
--		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
-+	if (__mptcp_rmem(sk) > sk_rbuf)
- 		return;
--	}
- 
- 	/* Wake-up the reader only for in-sequence data */
- 	mptcp_data_lock(sk);
+ 	for (i = 0; i < priv->port_count; i++) {
+ 		port = priv->port_list[i];
+ 		if (port->priv->percpu_pools) {
+-			for (i = 0; i < port->nrxqs; i++)
+-				mvpp2_bm_pool_update_fc(port, &port->priv->bm_pools[i],
++			for (j = 0; j < port->nrxqs; j++)
++				mvpp2_bm_pool_update_fc(port, &port->priv->bm_pools[j],
+ 							port->tx_fc & en);
+ 		} else {
+ 			mvpp2_bm_pool_update_fc(port, port->pool_long, port->tx_fc & en);
+-- 
+2.43.0
+
 
 
 
