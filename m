@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-65620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B3594AB13
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:02:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2741C94AAED
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3660C1C21A2B
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:02:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C60971F29631
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F3380BF8;
-	Wed,  7 Aug 2024 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC46C7603A;
+	Wed,  7 Aug 2024 15:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4ngXY5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x32jh1K9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BA66F2F7;
-	Wed,  7 Aug 2024 15:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A979923CE;
+	Wed,  7 Aug 2024 15:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042956; cv=none; b=baGFNCKvWTOl28NFKIRNuxWdZer2jzhjBzsBsfgcY2v69t3Jp5vxNVZoe73FMbi5SLZCDcnhDycZHouCmvle/7wuGF/BXnu0GV74S/FiKMdAZwlCVtrHoyUOJzNESX1BbYOlAwZaH3IjugKFE6+vDe1z5YtXfdkpttZfRErerr8=
+	t=1723042880; cv=none; b=hJfknqn9G4nASJYf1JJJK0d+t4VFKjoRf1rJpMmclMbECx3zlZgc+ZK01Iog1lNC/+eMHiRiStSbDWK4V9HvDzV8m6gEhkm90Run3J0591haMi9Il6QMvJCUJ9X7VRAJ3fepbEwDxuScUXDP+PgY1S8U5q6IP7utpBO0Os7403g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042956; c=relaxed/simple;
-	bh=bwvQ+4+O/hHt60vT0/Yx+GmjlpRMyZPfEjDaMxUSbvw=;
+	s=arc-20240116; t=1723042880; c=relaxed/simple;
+	bh=rv8l++BqyePrThnuzhglHTtBlme03FANyq16wu5djUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjemO1Bd8oDLtnayxLTcAdQaPO9QSMHDTg22Vffm5lPKZNFMDqm040k4HtiPEo95Hgr3UbYxgLWYHIAOzk+X2Nm7y+9x4v1jk9mdeSovb/KIkEYcvmDF8j3JvwpcNOj8gMrIf013vqxy0t6c7sRXNWvkOP2aIW3UlzWAn93+F4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4ngXY5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57FCAC32781;
-	Wed,  7 Aug 2024 15:02:36 +0000 (UTC)
+	 MIME-Version; b=Wvhu9Bblupo008oXwJrvFgJxCgvZGGBWxzMJgACbRf1NXgdA1Jr4ToEXuY+xQ3/zleMQlljDK8v3yqu3Ohm2qJSmKGu/VSL8IikygmXdrikH94TYiFUI05J0EIsnF4Rd3EefeLz+WEQWMELlhy+ZLr2LCTGY7hIq6eyDkuwkAyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x32jh1K9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AFEC32781;
+	Wed,  7 Aug 2024 15:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723042956;
-	bh=bwvQ+4+O/hHt60vT0/Yx+GmjlpRMyZPfEjDaMxUSbvw=;
+	s=korg; t=1723042880;
+	bh=rv8l++BqyePrThnuzhglHTtBlme03FANyq16wu5djUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w4ngXY5i/9PJ8ufKYxoBSE15RbIZZWoQtGxVA5/r/kxjNR5Q7/qvVJtMNcb+VjPon
-	 7I4UCvD6nNEdotgKOx2xbKysj9XdL0k/IUDdxFIt0gzqV4sFtSkOqLuLr/kQmfCnDH
-	 5a0PeMcgLV0oSc8fM/UHjYgzTcLXnphx9WEQz69M=
+	b=x32jh1K9JPztudDT4OUJYXBlulU9ifp8+L7411lflyNtVU0vjYkLLzAn2Tiyugif3
+	 zjz3U0zPUSOHqpByiAV5mmoZbrzhU38e4KmUpgYbD/FEGWxqMAYcHdJCaMKeNDH8IH
+	 7x9bZEL637NQ4NRJRzXRWs6/ru+o8bdcpG6iDlEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Will McVicker <willmcvicker@google.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 009/123] f2fs: assign CURSEG_ALL_DATA_ATGC if blkaddr is valid
-Date: Wed,  7 Aug 2024 16:58:48 +0200
-Message-ID: <20240807150021.117423000@linuxfoundation.org>
+Subject: [PATCH 6.10 010/123] perf: imx_perf: fix counter start and config sequence
+Date: Wed,  7 Aug 2024 16:58:49 +0200
+Message-ID: <20240807150021.152170628@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
 References: <20240807150020.790615758@linuxfoundation.org>
@@ -67,57 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 8cb1f4080dd91c6e6b01dbea013a3f42341cb6a1 ]
+[ Upstream commit ac9aa295f7a89d38656739628796f086f0b160e2 ]
 
-mkdir /mnt/test/comp
-f2fs_io setflags compression /mnt/test/comp
-dd if=/dev/zero of=/mnt/test/comp/testfile bs=16k count=1
-truncate --size 13 /mnt/test/comp/testfile
+In current driver, the counter will start firstly and then be configured.
+This sequence is not correct for AXI filter events since the correct
+AXI_MASK and AXI_ID are not set yet. Then the results may be inaccurate.
 
-In the above scenario, we can get a BUG_ON.
- kernel BUG at fs/f2fs/segment.c:3589!
- Call Trace:
-  do_write_page+0x78/0x390 [f2fs]
-  f2fs_outplace_write_data+0x62/0xb0 [f2fs]
-  f2fs_do_write_data_page+0x275/0x740 [f2fs]
-  f2fs_write_single_data_page+0x1dc/0x8f0 [f2fs]
-  f2fs_write_multi_pages+0x1e5/0xae0 [f2fs]
-  f2fs_write_cache_pages+0xab1/0xc60 [f2fs]
-  f2fs_write_data_pages+0x2d8/0x330 [f2fs]
-  do_writepages+0xcf/0x270
-  __writeback_single_inode+0x44/0x350
-  writeback_sb_inodes+0x242/0x530
-  __writeback_inodes_wb+0x54/0xf0
-  wb_writeback+0x192/0x310
-  wb_workfn+0x30d/0x400
-
-The reason is we gave CURSEG_ALL_DATA_ATGC to COMPR_ADDR where the
-page was set the gcing flag by set_cluster_dirty().
-
-Cc: stable@vger.kernel.org
-Fixes: 4961acdd65c9 ("f2fs: fix to tag gcing flag on page during block migration")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 55691f99d417 ("drivers/perf: imx_ddr: Add support for NXP i.MX9 SoC DDRC PMU driver")
+cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240529080358.703784-5-xu.yang_2@nxp.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/perf/fsl_imx9_ddr_perf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 92331f8dbe4e3..601825785226d 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -3484,6 +3484,7 @@ static int __get_segment_type_6(struct f2fs_io_info *fio)
- 			if (fio->sbi->am.atgc_enabled &&
- 				(fio->io_type == FS_DATA_IO) &&
- 				(fio->sbi->gc_mode != GC_URGENT_HIGH) &&
-+				__is_valid_data_blkaddr(fio->old_blkaddr) &&
- 				!is_inode_flag_set(inode, FI_OPU_WRITE))
- 				return CURSEG_ALL_DATA_ATGC;
- 			else
+diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
+index 72c2d3074cded..98af97750a6e3 100644
+--- a/drivers/perf/fsl_imx9_ddr_perf.c
++++ b/drivers/perf/fsl_imx9_ddr_perf.c
+@@ -476,12 +476,12 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
+ 	hwc->idx = counter;
+ 	hwc->state |= PERF_HES_STOPPED;
+ 
+-	if (flags & PERF_EF_START)
+-		ddr_perf_event_start(event, flags);
+-
+ 	/* read trans, write trans, read beat */
+ 	ddr_perf_monitor_config(pmu, cfg, cfg1, cfg2);
+ 
++	if (flags & PERF_EF_START)
++		ddr_perf_event_start(event, flags);
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
