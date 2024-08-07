@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72E194AB87
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C30BE94AC0B
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DD571F23BBF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002441C236E4
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC41B85283;
-	Wed,  7 Aug 2024 15:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF559823DE;
+	Wed,  7 Aug 2024 15:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvpuxVa4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyMIhM//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A94527448;
-	Wed,  7 Aug 2024 15:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC7781AB1;
+	Wed,  7 Aug 2024 15:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043186; cv=none; b=nmokU9l/sv4gG3ODm9l1u8K+BYxt5UplK1ePu/EyXs+1cj9JwHAD69CckIDBWb8c6jKS8gup6fzOFvBaDxrm7QbH6x0q+mUBVXOTY90EfLakT0jYPvpVulZMNSN45S1q/+R0+QmYohlxIHBngRWGqKZbyGL8jVOY4nCmruMVQI4=
+	t=1723043487; cv=none; b=JZHQnecaKOfAydsenBUHdTqu361kW3zI/QRXwIIP6u3ywF1iu7eo/x/0EzaiOiePl/pJBktkJAaezi3JrnbLlCQjVwDe7C+/BkjffpSVQw2FaCZh/epIECJuP8ZJS9ZvWbPIz67zxxVpXbdIC8WuG6bpHwcJUZUjZfh7UQACnOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043186; c=relaxed/simple;
-	bh=ynAsDqhnCN9QeUuKNfLeseN98fhq9nploUXn3ZXVr3E=;
+	s=arc-20240116; t=1723043487; c=relaxed/simple;
+	bh=Ypl/Vzh7mRUFfI8iPxgpcxPizKxWm2e2svpw1rt3+Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTYpWQxrNThlFuwuz+SaKaSN73xhrDMmOMoynS6ARQvgBLUc8O5Jg7wEGIoHMooWs7feNM1sGSYLaOHH6eJbhrRRFpM9Hhc2vcCsR49bGxSNwAp2+PXPcZzXQpYN8l6qZIfSFc+ohHknfpsjWZ3dwwGfY18WnYjf8AAyhQ+E6So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvpuxVa4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23643C32781;
-	Wed,  7 Aug 2024 15:06:25 +0000 (UTC)
+	 MIME-Version; b=u9jWAxlpMwmHFKYOFTH+Fga+WIgZwku1lJWGLKJq5cU6bqy0cMM3azhTCljuynPJhrpNPnYKZDHKmQ4y0q66b3YNu4VcNRM9yghWKluptU0zDlMbbMaN7/rakhkoR74vsyeH+J5oXTtNmm53++J6NRyG1GDxKYW6eMN6ZT9DZ4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyMIhM//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D270C32781;
+	Wed,  7 Aug 2024 15:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043186;
-	bh=ynAsDqhnCN9QeUuKNfLeseN98fhq9nploUXn3ZXVr3E=;
+	s=korg; t=1723043487;
+	bh=Ypl/Vzh7mRUFfI8iPxgpcxPizKxWm2e2svpw1rt3+Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UvpuxVa4dBD4l5LO+ViLpktuavrHyC5iVNgsoXt2bN2w1hNTd6v41xG5oQEJasEri
-	 AQfrHRqKNIqCQMI/yWSiKBke4CsBMMBuqmgcC3+kiEmmm6XFEBDFByTEwenDeLXkTi
-	 tYPw7grLyNRkNUZk5ixSXJkAfpkWg74A6xLGfn24=
+	b=fyMIhM//AlV0Y0rn4H3U4xubgCGJWh1zkwH6Qj8h2vt+1EHWxFSq/ddpa8Q8RvRd8
+	 1qLNo3bV0DDpv/l0ROL1GX1GMlaFU+1ROM+1/1lqNiDkp4FdqqGM0afvgiLSZFUmuW
+	 UvcAxh94drSxT/5npdspiMpkMgQubM87+Xbkbr7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.10 122/123] selftests: mptcp: join: validate backup in MPJ
+	Ma Ke <make24@iscas.ac.cn>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 109/121] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
 Date: Wed,  7 Aug 2024 17:00:41 +0200
-Message-ID: <20240807150024.901248416@linuxfoundation.org>
+Message-ID: <20240807150022.963991274@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,168 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 935ff5bb8a1cfcdf8e60c8f5c794d0bbbc234437 upstream.
+commit 08f3a5c38087d1569e982a121aad1e6acbf145ce upstream.
 
-A peer can notify the other one that a subflow has to be treated as
-"backup" by two different ways: either by sending a dedicated MP_PRIO
-notification, or by setting the backup flag in the MP_JOIN handshake.
+It could lead to error happen because the variable res is not updated if
+the call to sr_share_read_word returns an error. In this particular case
+error code was returned and res stayed uninitialized. Same issue also
+applies to sr_read_reg.
 
-The selftests were previously monitoring the former, but not the latter.
-This is what is now done here by looking at these new MIB counters when
-validating the 'backup' cases:
+This can be avoided by checking the return value of sr_share_read_word
+and sr_read_reg, and propagating the error if the read operation failed.
 
-  MPTcpExtMPJoinSynBackupRx
-  MPTcpExtMPJoinSynAckBackupRx
+Found by code review.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it will help to validate a new fix for an issue introduced by this
-commit ID.
-
-Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   42 ++++++++++++++++++------
- 1 file changed, 32 insertions(+), 10 deletions(-)
+ drivers/net/usb/sr9700.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -1634,6 +1634,8 @@ chk_prio_nr()
- {
- 	local mp_prio_nr_tx=$1
- 	local mp_prio_nr_rx=$2
-+	local mpj_syn=$3
-+	local mpj_syn_ack=$4
- 	local count
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -179,6 +179,7 @@ static int sr_mdio_read(struct net_devic
+ 	struct usbnet *dev = netdev_priv(netdev);
+ 	__le16 res;
+ 	int rc = 0;
++	int err;
  
- 	print_check "ptx"
-@@ -1655,6 +1657,26 @@ chk_prio_nr()
+ 	if (phy_id) {
+ 		netdev_dbg(netdev, "Only internal phy supported\n");
+@@ -189,11 +190,17 @@ static int sr_mdio_read(struct net_devic
+ 	if (loc == MII_BMSR) {
+ 		u8 value;
+ 
+-		sr_read_reg(dev, SR_NSR, &value);
++		err = sr_read_reg(dev, SR_NSR, &value);
++		if (err < 0)
++			return err;
++
+ 		if (value & NSR_LINKST)
+ 			rc = 1;
+ 	}
+-	sr_share_read_word(dev, 1, loc, &res);
++	err = sr_share_read_word(dev, 1, loc, &res);
++	if (err < 0)
++		return err;
++
+ 	if (rc == 1)
+ 		res = le16_to_cpu(res) | BMSR_LSTATUS;
  	else
- 		print_ok
- 	fi
-+
-+	print_check "syn backup"
-+	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPJoinSynBackupRx")
-+	if [ -z "$count" ]; then
-+		print_skip
-+	elif [ "$count" != "$mpj_syn" ]; then
-+		fail_test "got $count JOIN[s] syn with Backup expected $mpj_syn"
-+	else
-+		print_ok
-+	fi
-+
-+	print_check "synack backup"
-+	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtMPJoinSynAckBackupRx")
-+	if [ -z "$count" ]; then
-+		print_skip
-+	elif [ "$count" != "$mpj_syn_ack" ]; then
-+		fail_test "got $count JOIN[s] synack with Backup expected $mpj_syn_ack"
-+	else
-+		print_ok
-+	fi
- }
- 
- chk_subflow_nr()
-@@ -2612,7 +2634,7 @@ backup_tests()
- 		sflags=nobackup speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
--		chk_prio_nr 0 1
-+		chk_prio_nr 0 1 1 0
- 	fi
- 
- 	# single address, backup
-@@ -2625,7 +2647,7 @@ backup_tests()
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
--		chk_prio_nr 1 1
-+		chk_prio_nr 1 1 0 0
- 	fi
- 
- 	# single address with port, backup
-@@ -2638,7 +2660,7 @@ backup_tests()
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
--		chk_prio_nr 1 1
-+		chk_prio_nr 1 1 0 0
- 	fi
- 
- 	if reset "mpc backup" &&
-@@ -2647,7 +2669,7 @@ backup_tests()
- 		speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 0 0 0
--		chk_prio_nr 0 1
-+		chk_prio_nr 0 1 0 0
- 	fi
- 
- 	if reset "mpc backup both sides" &&
-@@ -2657,7 +2679,7 @@ backup_tests()
- 		speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 0 0 0
--		chk_prio_nr 1 1
-+		chk_prio_nr 1 1 0 0
- 	fi
- 
- 	if reset "mpc switch to backup" &&
-@@ -2666,7 +2688,7 @@ backup_tests()
- 		sflags=backup speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 0 0 0
--		chk_prio_nr 0 1
-+		chk_prio_nr 0 1 0 0
- 	fi
- 
- 	if reset "mpc switch to backup both sides" &&
-@@ -2676,7 +2698,7 @@ backup_tests()
- 		sflags=backup speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 0 0 0
--		chk_prio_nr 1 1
-+		chk_prio_nr 1 1 0 0
- 	fi
- }
- 
-@@ -3053,7 +3075,7 @@ fullmesh_tests()
- 		addr_nr_ns2=1 sflags=backup,fullmesh speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 2 2 2
--		chk_prio_nr 0 1
-+		chk_prio_nr 0 1 1 0
- 		chk_rm_nr 0 1
- 	fi
- 
-@@ -3066,7 +3088,7 @@ fullmesh_tests()
- 		sflags=nobackup,nofullmesh speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 2 2 2
--		chk_prio_nr 0 1
-+		chk_prio_nr 0 1 1 0
- 		chk_rm_nr 0 1
- 	fi
- }
-@@ -3318,7 +3340,7 @@ userspace_tests()
- 		sflags=backup speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 0
--		chk_prio_nr 0 0
-+		chk_prio_nr 0 0 0 0
- 	fi
- 
- 	# userspace pm type prevents rm_addr
 
 
 
