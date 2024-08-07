@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-65713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABA294AB8F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA05994ABFE
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 725DA1F26182
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D05A1F24D9B
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60772126F2A;
-	Wed,  7 Aug 2024 15:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB2E84A5E;
+	Wed,  7 Aug 2024 15:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSdpLLMj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgGkS2gl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB7982488;
-	Wed,  7 Aug 2024 15:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D01823A9;
+	Wed,  7 Aug 2024 15:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043208; cv=none; b=Ol+NRDewsP8v9/xGgQ9la/0b4bL2iHdueP2+XyV/hNKdVJu/iduW9A7G6P9Lsi4AWOS24QP99i2RYM241wMhJXsAcnNYGug9GHhDJjQruei2CnuhMtH1CXuoWDcYy4eOmOtBqEMjkzAt9ShmM2NJDLl09hjL7UZi62wTErzwmOw=
+	t=1723043458; cv=none; b=lmv1Ztafb2DPHfN9PnY6ux4aFeNT6db4s6aTsvaQfQvUlMeCo3d7j1ba9zqJoxvrMXJS2Q2jqdAOjsJStqcunXoONwfWjJPsxqwNUlLlC6KxMIA0nFXRAtcfbkbY4Yt1RPp5iJaz1b5PlXBhHmMdHypR837tHGK0OFxmA58OV4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043208; c=relaxed/simple;
-	bh=Tg7385+GFBkwL6ZhnxfFt5W1j2xrtSfL2SlNit6v67A=;
+	s=arc-20240116; t=1723043458; c=relaxed/simple;
+	bh=FrkFCZH1Y4/nMmK42RH999nGllSNp8Zj6CumgJZrtlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StUb3Cp1GPzELLs1eEijROtK5DHFXH90El9OMCbwv5IyYW8HJ7b4k5lDHWy9A52HzNRqViGY1FiZqS4niFudItGBCM9GRzGrQLhwhKFVFQRUQdzDIHwj4EnI3Zj3v4I4BbQbCfVG9OnwDt+1UP3jZ3T6FQh9AdYfaynYplBbAnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSdpLLMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CABBC32781;
-	Wed,  7 Aug 2024 15:06:47 +0000 (UTC)
+	 MIME-Version; b=TKwAJsw01AplIHNKWZV70yLOLZF3Pqpglua/mEt8ckwUHOtaQGZHRGJw3qoTG3B5NxGCiJN36e4CemixyhGA7whf4b4mWRk6i/RMYw3WMChJTTFguvFUTjEFr5SkAtkzEdL7g3kfAjCwzZHPfUK8XZhfUBJ/ygG+9TTpEkYl2SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgGkS2gl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B989C32781;
+	Wed,  7 Aug 2024 15:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043207;
-	bh=Tg7385+GFBkwL6ZhnxfFt5W1j2xrtSfL2SlNit6v67A=;
+	s=korg; t=1723043458;
+	bh=FrkFCZH1Y4/nMmK42RH999nGllSNp8Zj6CumgJZrtlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSdpLLMjXJbVLlqZaP3+ftGTjw40PYXOgYeMjrwbCfY2yy4j3hUnw6IOl1w2+Clmp
-	 Z4tANPCh9DiAUh3eeoEHjtdnGii54yyyMpqmbeCJ6WzDM46jSrQ3m495jNhgqYZF7A
-	 phaat4hu8xbeaSZobxxDkPvdZViJEm1TW1qY3VMo=
+	b=TgGkS2glcGhG9M3DkWuaRiFYM8czg/AFvRH/gyPQ/KNYAstU+UtY36q78myXA+aQd
+	 DbcNSVUUgKOHVjaQHnM9PTVibkrHyoH9MoGPi7Qric0eUGDG1/wXbuamBtRxO9/yKD
+	 UbGbyzQVMTejdnE5JUwYrU52xCNk1L8Ubcc2pS6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>
-Subject: [PATCH 6.10 111/123] r8169: dont increment tx_dropped in case of NETDEV_TX_BUSY
-Date: Wed,  7 Aug 2024 17:00:30 +0200
-Message-ID: <20240807150024.462926913@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.6 099/121] protect the fetch of ->fd[fd] in do_dup2() from mispredictions
+Date: Wed,  7 Aug 2024 17:00:31 +0200
+Message-ID: <20240807150022.635978319@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit d516b187a9cc2e842030dd005be2735db3e8f395 upstream.
+commit 8aa37bde1a7b645816cda8b80df4753ecf172bf1 upstream.
 
-The skb isn't consumed in case of NETDEV_TX_BUSY, therefore don't
-increment the tx_dropped counter.
+both callers have verified that fd is not greater than ->max_fds;
+however, misprediction might end up with
+        tofree = fdt->fd[fd];
+being speculatively executed.  That's wrong for the same reasons
+why it's wrong in close_fd()/file_close_fd_locked(); the same
+solution applies - array_index_nospec(fd, fdt->max_fds) could differ
+from fd only in case of speculative execution on mispredicted path.
 
-Fixes: 188f4af04618 ("r8169: use NETDEV_TX_{BUSY/OK}")
 Cc: stable@vger.kernel.org
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/bbba9c48-8bac-4932-9aa1-d2ed63bc9433@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ fs/file.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4347,7 +4347,8 @@ static netdev_tx_t rtl8169_start_xmit(st
- 	if (unlikely(!rtl_tx_slots_avail(tp))) {
- 		if (net_ratelimit())
- 			netdev_err(dev, "BUG! Tx Ring full when queue awake!\n");
--		goto err_stop_0;
-+		netif_stop_queue(dev);
-+		return NETDEV_TX_BUSY;
- 	}
- 
- 	opts[1] = rtl8169_tx_vlan_tag(skb);
-@@ -4403,11 +4404,6 @@ err_dma_0:
- 	dev_kfree_skb_any(skb);
- 	dev->stats.tx_dropped++;
- 	return NETDEV_TX_OK;
--
--err_stop_0:
--	netif_stop_queue(dev);
--	dev->stats.tx_dropped++;
--	return NETDEV_TX_BUSY;
- }
- 
- static unsigned int rtl_last_frag_len(struct sk_buff *skb)
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1124,6 +1124,7 @@ __releases(&files->file_lock)
+ 	 * tables and this condition does not arise without those.
+ 	 */
+ 	fdt = files_fdtable(files);
++	fd = array_index_nospec(fd, fdt->max_fds);
+ 	tofree = fdt->fd[fd];
+ 	if (!tofree && fd_is_open(fd, fdt))
+ 		goto Ebusy;
 
 
 
