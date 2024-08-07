@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-65825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE4E94AC13
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3835194AC44
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9B4628099A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0FAA2866A0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1316F823DE;
-	Wed,  7 Aug 2024 15:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C976D8289E;
+	Wed,  7 Aug 2024 15:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOmXCsrr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPnqVhOB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9397E0E9;
-	Wed,  7 Aug 2024 15:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8553084A2F;
+	Wed,  7 Aug 2024 15:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043508; cv=none; b=eDUnxqTMtHILF0GuqwKQ+oc5IH58HvypZpIaeZoWlr2nEfAUMhum8L8tQFOol3t1AQwzuiBKoJ6XP/HC3tsNj5hEoLXkY3OPLnP6YQl3mtPFOE4vW/VYgCHZ5udN6R9gd/TJcb1uqbJTYIgDMB4eNJolm6BdnNa+H9Bt1ulHND8=
+	t=1723043607; cv=none; b=dpKeVMM1Z66MaaPa/l3FysyrispwTLDqBjuzyZFt9ZALOqqvZ5AkDXH9um1y24BX5hGkCmgT017lUfmGVR2QE8p1YhAD5DZEHWYPqm/GjYLeuVgq02pv4T/LI1C3cELvRiUd2FUrx1Ji2USvCp4qN3aAZcCXq+y/AyscpNl2eJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043508; c=relaxed/simple;
-	bh=QPz77ffPB0iuXmtgH3RgYTMCYxn4cKEo1aiSC3vYEw4=;
+	s=arc-20240116; t=1723043607; c=relaxed/simple;
+	bh=Mi9Xj0stGKMYv51VHapX6jkAwVXHmksPVsRdqAEc+Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qLZE+/qbSiEG6On5nwhHFXlFBvUp64U9yigRjxwNieViKiAD9bDbpTzde4/mxaFYn5B8h/4aBX90/UAzEHYmIZlMEgBOByel4cAx319RkLoDewFNt0vqWMofxCrIDHbW4hViQUIXF+gpXni1XTVewiTuYQRIs2XzyMOcRGytPNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOmXCsrr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F24C32781;
-	Wed,  7 Aug 2024 15:11:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oYxT6tWH0xigD9OllPVhQJJ2MJnbKEZt6GZ9OmfG0arP2bYB96+nL6W+T+rIQD4K2tBkKhLkAWgXRj2gM+P7XizXNEKma1AU3ppBLm6KwFwNZasBGFNzNRp8/4zyC7VQrZVOJ9IgwgzFdGN5N21dMS+H1HqAK9u5HOjdjoWlWtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPnqVhOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39A1C32781;
+	Wed,  7 Aug 2024 15:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043508;
-	bh=QPz77ffPB0iuXmtgH3RgYTMCYxn4cKEo1aiSC3vYEw4=;
+	s=korg; t=1723043607;
+	bh=Mi9Xj0stGKMYv51VHapX6jkAwVXHmksPVsRdqAEc+Po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOmXCsrrXnkRi0FopjPVbDRzRP811vKulqhZ9fLLQDUK3dz6Yx1PwhMpAP+4Jzp4g
-	 xSVtL2LAT0nTHyS4rPLFgayNNAV83a4MVL56McMcPq6Za933edbo21z1hzqS9CXDVd
-	 tftGpdmmGGRUToaXI4UxtEL7RbPMt0GohQBMRgb4=
+	b=bPnqVhOBrTb3YKg1kM0DmiGJs8im+7eZroZjrqClhHDBVEIWXDKzDcIDJ4kratbhT
+	 7jPIeH1tMDrdG0FH5EU1vS27OBRub04oKDbG0iPYtdwJVRoTlFYbSLilkZjBqwLEHN
+	 yKExelBzBBkn7I1EHsdiSfSaknUrLi1XANe4jvQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/121] net/mlx5: Always drain health in shutdown callback
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>,
+	Gareth Yu <gareth.yu@intel.com>
+Subject: [PATCH 6.1 33/86] drm/i915/dp: Dont switch the LTTPR mode on an active link
 Date: Wed,  7 Aug 2024 17:00:12 +0200
-Message-ID: <20240807150022.035927116@linuxfoundation.org>
+Message-ID: <20240807150040.328581578@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 1b75da22ed1e6171e261bc9265370162553d5393 ]
+[ Upstream commit 509580fad7323b6a5da27e8365cd488f3b57210e ]
 
-There is no point in recovery during device shutdown. if health
-work started need to wait for it to avoid races and NULL pointer
-access.
+Switching to transparent mode leads to a loss of link synchronization,
+so prevent doing this on an active link. This happened at least on an
+Intel N100 system / DELL UD22 dock, the LTTPR residing either on the
+host or the dock. To fix the issue, keep the current mode on an active
+link, adjusting the LTTPR count accordingly (resetting it to 0 in
+transparent mode).
 
-Hence, drain health WQ on shutdown callback.
+v2: Adjust code comment during link training about reiniting the LTTPRs.
+   (Ville)
 
-Fixes: 1958fc2f0712 ("net/mlx5: SF, Add auxiliary device driver")
-Fixes: d2aa060d40fa ("net/mlx5: Cancel health poll before sending panic teardown command")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7b2a4ab8b0ef ("drm/i915: Switch to LTTPR transparent mode link training")
+Reported-and-tested-by: Gareth Yu <gareth.yu@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10902
+Cc: <stable@vger.kernel.org> # v5.15+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240708190029.271247-3-imre.deak@intel.com
+(cherry picked from commit 211ad49cf8ccfdc798a719b4d1e000d0a8a9e588)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c          | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ .../drm/i915/display/intel_dp_link_training.c | 54 ++++++++++++++++---
+ 1 file changed, 48 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 2237b3d01e0e5..11f11248feb8b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -2130,7 +2130,6 @@ static int mlx5_try_fast_unload(struct mlx5_core_dev *dev)
- 	/* Panic tear down fw command will stop the PCI bus communication
- 	 * with the HCA, so the health poll is no longer needed.
- 	 */
--	mlx5_drain_health_wq(dev);
- 	mlx5_stop_health_poll(dev, false);
- 
- 	ret = mlx5_cmd_fast_teardown_hca(dev);
-@@ -2165,6 +2164,7 @@ static void shutdown(struct pci_dev *pdev)
- 
- 	mlx5_core_info(dev, "Shutdown was called\n");
- 	set_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state);
-+	mlx5_drain_health_wq(dev);
- 	err = mlx5_try_fast_unload(dev);
- 	if (err)
- 		mlx5_unload_one(dev, false);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-index 30218f37d5285..2028acbe85ca2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-@@ -90,6 +90,7 @@ static void mlx5_sf_dev_shutdown(struct auxiliary_device *adev)
- 	struct mlx5_core_dev *mdev = sf_dev->mdev;
- 
- 	set_bit(MLX5_BREAK_FW_WAIT, &mdev->intf_state);
-+	mlx5_drain_health_wq(mdev);
- 	mlx5_unload_one(mdev, false);
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_link_training.c b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
+index 3d3efcf02011e..1d9e4534287bb 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
+@@ -103,12 +103,26 @@ intel_dp_set_lttpr_transparent_mode(struct intel_dp *intel_dp, bool enable)
+ 	return drm_dp_dpcd_write(&intel_dp->aux, DP_PHY_REPEATER_MODE, &val, 1) == 1;
  }
+ 
+-static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
++static bool intel_dp_lttpr_transparent_mode_enabled(struct intel_dp *intel_dp)
++{
++	return intel_dp->lttpr_common_caps[DP_PHY_REPEATER_MODE -
++					   DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV] ==
++		DP_PHY_REPEATER_MODE_TRANSPARENT;
++}
++
++/*
++ * Read the LTTPR common capabilities and switch the LTTPR PHYs to
++ * non-transparent mode if this is supported. Preserve the
++ * transparent/non-transparent mode on an active link.
++ *
++ * Return the number of detected LTTPRs in non-transparent mode or 0 if the
++ * LTTPRs are in transparent mode or the detection failed.
++ */
++static int intel_dp_init_lttpr_phys(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
+ {
+ 	struct intel_encoder *encoder = &dp_to_dig_port(intel_dp)->base;
+ 	struct drm_i915_private *i915 = to_i915(encoder->base.dev);
+ 	int lttpr_count;
+-	int i;
+ 
+ 	if (!intel_dp_read_lttpr_common_caps(intel_dp, dpcd))
+ 		return 0;
+@@ -122,6 +136,19 @@ static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEI
+ 	if (lttpr_count == 0)
+ 		return 0;
+ 
++	/*
++	 * Don't change the mode on an active link, to prevent a loss of link
++	 * synchronization. See DP Standard v2.0 3.6.7. about the LTTPR
++	 * resetting its internal state when the mode is changed from
++	 * non-transparent to transparent.
++	 */
++	if (intel_dp->link_trained) {
++		if (lttpr_count < 0 || intel_dp_lttpr_transparent_mode_enabled(intel_dp))
++			goto out_reset_lttpr_count;
++
++		return lttpr_count;
++	}
++
+ 	/*
+ 	 * See DP Standard v2.0 3.6.6.1. about the explicit disabling of
+ 	 * non-transparent mode and the disable->enable non-transparent mode
+@@ -143,11 +170,25 @@ static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEI
+ 			    encoder->base.base.id, encoder->base.name);
+ 
+ 		intel_dp_set_lttpr_transparent_mode(intel_dp, true);
+-		intel_dp_reset_lttpr_count(intel_dp);
+ 
+-		return 0;
++		goto out_reset_lttpr_count;
+ 	}
+ 
++	return lttpr_count;
++
++out_reset_lttpr_count:
++	intel_dp_reset_lttpr_count(intel_dp);
++
++	return 0;
++}
++
++static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
++{
++	int lttpr_count;
++	int i;
++
++	lttpr_count = intel_dp_init_lttpr_phys(intel_dp, dpcd);
++
+ 	for (i = 0; i < lttpr_count; i++)
+ 		intel_dp_read_lttpr_phy_caps(intel_dp, dpcd, DP_PHY_LTTPR(i));
+ 
+@@ -1435,8 +1476,9 @@ void intel_dp_start_link_train(struct intel_dp *intel_dp,
+ {
+ 	bool passed;
+ 	/*
+-	 * TODO: Reiniting LTTPRs here won't be needed once proper connector
+-	 * HW state readout is added.
++	 * Reinit the LTTPRs here to ensure that they are switched to
++	 * non-transparent mode. During an earlier LTTPR detection this
++	 * could've been prevented by an active link.
+ 	 */
+ 	int lttpr_count = intel_dp_init_lttpr_and_dprx_caps(intel_dp);
  
 -- 
 2.43.0
