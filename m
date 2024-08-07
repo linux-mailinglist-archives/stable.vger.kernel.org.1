@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-65802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720EB94ABF9
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BE794AB8D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A27F21C229A9
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F871F237F2
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FF484A3E;
-	Wed,  7 Aug 2024 15:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FFA12A14C;
+	Wed,  7 Aug 2024 15:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bsuv4Z3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ashngIiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0133A78C92;
-	Wed,  7 Aug 2024 15:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E7A126F2A;
+	Wed,  7 Aug 2024 15:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043448; cv=none; b=d4Luke91mcbCpiFt1myPtiyv69C/tz3W1HMMJp4NKLvuUI8Qmv8n+EdBpr36FN3CbJKjLJFikEjEFzNK/0dZR3PU2x5jIQJPoaMtgeVkRlGQH4ORRx3dvR2vUt8vsBNiTFOqqzrLVacxbuDvdtfvt5eMHfej8tItK9OvHRLoM/g=
+	t=1723043199; cv=none; b=qAwHZfMGtB6brni7PQEjMdTOosVyI5bIWbdN87xzMMdwj0SmOpFJIX7IJmzuVMfXPMBdOW/UR18bEub1yaV2l0/urvaVZVg4tqLnb/zih/XbPDkC0m/8ltlbVHX+V5iAuPNXumtDz94A79+mRq+IWute86Rmh9aTOxQI0kVi/Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043448; c=relaxed/simple;
-	bh=1NsnYChWPz9cRW19nEMOpl5/wENPO3Mn2JfTaqMjBUk=;
+	s=arc-20240116; t=1723043199; c=relaxed/simple;
+	bh=BvyHLi3e1BHIdXBpbAbbpRIxHXe69V9LJKmxTp6iD8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tO6lCsBw3Jtw89+HABmi/BsdXjui3AgUIEoJmotUh/O3wD69B8mQBPG7YueYCoPU6cuvXe7ur9xi6ecermIxlpV+GKHeqPHTHpAQUChOzDVwIsW9xo9o6kKaXA5BwB4j8UUNPG7kM3xLgZspjWsY+M5ZhDIcnLOncs6rYkvOtWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bsuv4Z3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84796C4AF0B;
-	Wed,  7 Aug 2024 15:10:47 +0000 (UTC)
+	 MIME-Version; b=BPeerWWWPsnRB8DZpYyx/3+74MkLjmhizfg0Rua1ms/pNe1b1VfcSOi1CuiD078FuOUt3R+YJ2D6OpU2ewd2R/X/DcsRRdMjBBgelAHdman3XfGQavnrvlLZO4oW3yIKF3YDSr/k6tQ+zVk8XUxlXYkhLUkmqzt5OO3GgbzZTBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ashngIiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A23C32781;
+	Wed,  7 Aug 2024 15:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043447;
-	bh=1NsnYChWPz9cRW19nEMOpl5/wENPO3Mn2JfTaqMjBUk=;
+	s=korg; t=1723043199;
+	bh=BvyHLi3e1BHIdXBpbAbbpRIxHXe69V9LJKmxTp6iD8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bsuv4Z3v7/Hp2ULr9oH1UBZpKRMRLYEo47o+skc+jPLZEfKxA16Ke/2V2+SGnocqf
-	 ebcghAZQulNG6gvqlylWiAiQ2xEuUMefPvnKZYQc8IOcVWAp/OHQU2RTDvLXtySA5K
-	 EgNWrVMs3YL61MjTEAeV7jY7v2zye4+r6h9/h0Vc=
+	b=ashngIizoj+GZydGIvw3G2lwdxK963HiYwS+5UFBSvS77St+k1mOFNXZhEiCERXHR
+	 14bJk/opKRCz7gPvX+4uZ8OrREqF8E0KgfEsDoo/sytxGNeBvmtBM9mZ1Em7f71xM3
+	 /XUPDo/ze5JRgKPPaU8ybrInir9xFqBG+u8Hd058=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patryk Duda <patrykd@google.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.6 095/121] platform/chrome: cros_ec_proto: Lock device when updating MKBP version
+	Ma Ke <make24@iscas.ac.cn>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.10 108/123] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
 Date: Wed,  7 Aug 2024 17:00:27 +0200
-Message-ID: <20240807150022.501806782@linuxfoundation.org>
+Message-ID: <20240807150024.354058314@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patryk Duda <patrykd@google.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit df615907f1bf907260af01ccb904d0e9304b5278 upstream.
+commit 08f3a5c38087d1569e982a121aad1e6acbf145ce upstream.
 
-The cros_ec_get_host_command_version_mask() function requires that the
-caller must have ec_dev->lock mutex before calling it. This requirement
-was not met and as a result it was possible that two commands were sent
-to the device at the same time.
+It could lead to error happen because the variable res is not updated if
+the call to sr_share_read_word returns an error. In this particular case
+error code was returned and res stayed uninitialized. Same issue also
+applies to sr_read_reg.
 
-The problem was observed while using UART backend which doesn't use any
-additional locks, unlike SPI backend which locks the controller until
-response is received.
+This can be avoided by checking the return value of sr_share_read_word
+and sr_read_reg, and propagating the error if the read operation failed.
 
-Fixes: f74c7557ed0d ("platform/chrome: cros_ec_proto: Update version on GET_NEXT_EVENT failure")
+Found by code review.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Patryk Duda <patrykd@google.com>
-Link: https://lore.kernel.org/r/20240730104425.607083-1-patrykd@google.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec_proto.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/sr9700.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/chrome/cros_ec_proto.c
-+++ b/drivers/platform/chrome/cros_ec_proto.c
-@@ -805,9 +805,11 @@ int cros_ec_get_next_event(struct cros_e
- 	if (ret == -ENOPROTOOPT) {
- 		dev_dbg(ec_dev->dev,
- 			"GET_NEXT_EVENT returned invalid version error.\n");
-+		mutex_lock(&ec_dev->lock);
- 		ret = cros_ec_get_host_command_version_mask(ec_dev,
- 							EC_CMD_GET_NEXT_EVENT,
- 							&ver_mask);
-+		mutex_unlock(&ec_dev->lock);
- 		if (ret < 0 || ver_mask == 0)
- 			/*
- 			 * Do not change the MKBP supported version if we can't
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -179,6 +179,7 @@ static int sr_mdio_read(struct net_devic
+ 	struct usbnet *dev = netdev_priv(netdev);
+ 	__le16 res;
+ 	int rc = 0;
++	int err;
+ 
+ 	if (phy_id) {
+ 		netdev_dbg(netdev, "Only internal phy supported\n");
+@@ -189,11 +190,17 @@ static int sr_mdio_read(struct net_devic
+ 	if (loc == MII_BMSR) {
+ 		u8 value;
+ 
+-		sr_read_reg(dev, SR_NSR, &value);
++		err = sr_read_reg(dev, SR_NSR, &value);
++		if (err < 0)
++			return err;
++
+ 		if (value & NSR_LINKST)
+ 			rc = 1;
+ 	}
+-	sr_share_read_word(dev, 1, loc, &res);
++	err = sr_share_read_word(dev, 1, loc, &res);
++	if (err < 0)
++		return err;
++
+ 	if (rc == 1)
+ 		res = le16_to_cpu(res) | BMSR_LSTATUS;
+ 	else
 
 
 
