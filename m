@@ -1,74 +1,133 @@
-Return-Path: <stable+bounces-65953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C643694B028
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 20:58:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1403994B02B
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 21:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5197EB244A7
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 18:58:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90F8AB24BFA
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 18:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21011422AD;
-	Wed,  7 Aug 2024 18:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A661422AD;
+	Wed,  7 Aug 2024 18:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BPSzXr8r"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="I+ftJSnA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6815785654;
-	Wed,  7 Aug 2024 18:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF36685654;
+	Wed,  7 Aug 2024 18:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723057106; cv=none; b=s4t/6UjjDbNAvnWuIT25Tf1qar2+//72dgyZl8BWw3EY/HgEjlq24nkYZSvxcWcjHrfNdKGG49fzvap75BW779wnaIpOPXD2BPW/gJY2CH8mkzxKr9agoCS5fvwBb2ywLqu4OA52sfHR2Grlk61DZqbO6f7PTY1fgm6tL8q5vuk=
+	t=1723057194; cv=none; b=igQ83p5V3kAS7HPFcllK5c+NU2OVjmPXuZzDBU9/iRE14c5mt8WvNaJx+eKQudtIG0bLV0D3OwRqYWcPRb02bs7a6IVw3ZV89Xh4ZeJe4ndOpQR6dFrAemi65kfEMvTMBXKVpDTzEQQjFDP283Ds2A4DyRBRn07Y1AiXaEnKOxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723057106; c=relaxed/simple;
-	bh=eAz2kJmjkg5Ihm2BfZUadha9dC8QFeceZ7oEvyeeCgc=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=eXCuW7hgYLs7Uc1jSqpnOZAaq/8igQ2IdleU3EbmGIs2hS+rf+xKkj2a181HwzWE0a8ELwmE6y9rF0tNrXbe0NY26FN+zrrI5j9sarE5v8RiR1k80USXJGnqLAVBCrUsdI6GA3QyNm94y3JMkT2ZdUGXdSiHEmgzdrDscYY/leI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BPSzXr8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C169C32781;
-	Wed,  7 Aug 2024 18:58:25 +0000 (UTC)
+	s=arc-20240116; t=1723057194; c=relaxed/simple;
+	bh=fAxNTGnqn0QbNJUBVQ083vMBsP4H/tDRb9V6Pogxw6A=;
+	h=Date:To:From:Subject:Message-Id; b=VI9gayM2T7DZSzZYe5StHPFUruSei/zxuh5sZ8W35HgIjSDar8Mwq0Ryaw6OLl/071h0/FLx0vstgZMWYWAuGu1A6qQ/G+pDJLXN4Tuby6as30obvUgxeqmP52hi7xUjaKmp+fS75+oB5Q5uYEjOIi0qE9bC09eNXeV/hZFMEeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=I+ftJSnA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5F0C32781;
+	Wed,  7 Aug 2024 18:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1723057106;
-	bh=eAz2kJmjkg5Ihm2BfZUadha9dC8QFeceZ7oEvyeeCgc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BPSzXr8r3k7v5vgPZM4yz6cINL04KhJrT0cqIc2BS/oHYuz5mJ3hlJkxe2veu77js
-	 tsRqUCbSF/25iPY3PXbe8EQrH/1VcBfc6ttE5PLv2sWd4AQAzwvEMrlsk9UZDuuXyW
-	 lAsi7z+X5SZKRJnuo/OSNQGUWTsqCzCjh3KMXaSM=
-Date: Wed, 7 Aug 2024 11:58:24 -0700
+	s=korg; t=1723057194;
+	bh=fAxNTGnqn0QbNJUBVQ083vMBsP4H/tDRb9V6Pogxw6A=;
+	h=Date:To:From:Subject:From;
+	b=I+ftJSnAAD+SYKbBLCBK17J9EKetYqcHRcirp3yo4JU7D8gvZ86efgnHCtMcXDLPk
+	 fVjwarFnp2CRWofWC5HcGg147Bsl9vF/SOXy3HtOg6th8f1RgmunkT0FpTF1fQ9PMf
+	 oWHTTxQfvW6MHjOBrPzkPva5QkeprZcVk0AIDyXk=
+Date: Wed, 07 Aug 2024 11:59:52 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,Liam.Howlett@oracle.com,kees@kernel.org,jeffxu@chromium.org,pedro.falcato@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Pedro Falcato <pedro.falcato@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Jeff Xu <jeffxu@chromium.org>, Kees Cook
- <kees@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mseal: Fix is_madv_discard()
-Message-Id: <20240807115824.f5c29702dda952abd709351d@linux-foundation.org>
-In-Reply-To: <20240807173336.2523757-2-pedro.falcato@gmail.com>
-References: <20240807173336.2523757-1-pedro.falcato@gmail.com>
-	<20240807173336.2523757-2-pedro.falcato@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: + mseal-fix-is_madv_discard.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240807185954.1F5F0C32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed,  7 Aug 2024 18:33:35 +0100 Pedro Falcato <pedro.falcato@gmail.com> wrote:
 
-> is_madv_discard did its check wrong. MADV_ flags are not bitwise,
-> they're normal sequential numbers. So, for instance:
-> 	behavior & (/* ... */ | MADV_REMOVE)
-> 
-> tagged both MADV_REMOVE and MADV_RANDOM (bit 0 set) as
-> discard operations. This is obviously incorrect, so use
-> a switch statement instead.
+The patch titled
+     Subject: mseal: fix is_madv_discard()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mseal-fix-is_madv_discard.patch
 
-Please describe the userspace-visible runtime effects of this bug?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mseal-fix-is_madv_discard.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Pedro Falcato <pedro.falcato@gmail.com>
+Subject: mseal: fix is_madv_discard()
+Date: Wed, 7 Aug 2024 18:33:35 +0100
+
+is_madv_discard did its check wrong. MADV_ flags are not bitwise,
+they're normal sequential numbers. So, for instance:
+	behavior & (/* ... */ | MADV_REMOVE)
+
+tagged both MADV_REMOVE and MADV_RANDOM (bit 0 set) as
+discard operations. This is obviously incorrect, so use
+a switch statement instead.
+
+Link: https://lkml.kernel.org/r/20240807173336.2523757-1-pedro.falcato@gmail.com
+Link: https://lkml.kernel.org/r/20240807173336.2523757-2-pedro.falcato@gmail.com
+Fixes: 8be7258aad44 ("mseal: add mseal syscall")
+Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
+Cc: Jeff Xu <jeffxu@chromium.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mseal.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+--- a/mm/mseal.c~mseal-fix-is_madv_discard
++++ a/mm/mseal.c
+@@ -40,9 +40,17 @@ static bool can_modify_vma(struct vm_are
+ 
+ static bool is_madv_discard(int behavior)
+ {
+-	return	behavior &
+-		(MADV_FREE | MADV_DONTNEED | MADV_DONTNEED_LOCKED |
+-		 MADV_REMOVE | MADV_DONTFORK | MADV_WIPEONFORK);
++	switch (behavior) {
++	case MADV_FREE:
++	case MADV_DONTNEED:
++	case MADV_DONTNEED_LOCKED:
++	case MADV_REMOVE:
++	case MADV_DONTFORK:
++	case MADV_WIPEONFORK:
++		return true;
++	}
++
++	return false;
+ }
+ 
+ static bool is_ro_anon(struct vm_area_struct *vma)
+_
+
+Patches currently in -mm which might be from pedro.falcato@gmail.com are
+
+mseal-fix-is_madv_discard.patch
+selftests-mm-add-mseal-test-for-no-discard-madvise.patch
+
 
