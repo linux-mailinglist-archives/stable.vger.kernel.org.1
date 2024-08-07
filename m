@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-65717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC1A94AB94
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7981794AAFE
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BBED1C21B37
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95BECB22E5E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21715823AF;
-	Wed,  7 Aug 2024 15:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D0E7E0E9;
+	Wed,  7 Aug 2024 15:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZSqqICt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7jm5l87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37BD78C92;
-	Wed,  7 Aug 2024 15:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A5623CE;
+	Wed,  7 Aug 2024 15:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043218; cv=none; b=lVIPu1yFStfAYIhgr203OM+Io9XgAMsC9lbiFMOhyd0csQUOU9z+7Pqgur8X1b+diqvvZmoATHspyY5izALzPu1aNwa5EoZMh4n+P+48+v+jCrIL2SRIET+ke3VcVthY0kQv089B36RliZMeMlKARaYG4guqgioZETm8htIdNEs=
+	t=1723042920; cv=none; b=kIWjdndVJEr5g/jiwz6lUsfFIHjkyGYiYwo54RusCt47bue0FONolXvm1ygsTqZS8V79tFu1Nji6NZcG/D/a+nBU1ehlJ/5igxDynbtGhM19ywj/VBVLd+yA57ZxT4gc99apxOCnImkb1Q9FrhJPPiT9HKp0EtDWC8z6mIZiQtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043218; c=relaxed/simple;
-	bh=rjky8C4GM6KDXiLn6/leNevRCDmP8o3cenFLcyDhcgQ=;
+	s=arc-20240116; t=1723042920; c=relaxed/simple;
+	bh=vdAhi7xH1E9+O+rpZ1qPOB4Tz/CxnOCdgr4v+OOMDHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pEQBnncPzmr6xiVm3s0eACmcecBBWM0HrNyuZV/I6CchiiPiSEfQItmUVeYi+kb54EhxjsbmKWsqjrpEDxepzXIDK4124/tiTZENKi7rwudsO6iz/nURdMruqv5J+amvyLMu+VniJZfnwN8tAd4EMMIy+uswwvtG3ZwjOkfddG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZSqqICt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACECC32781;
-	Wed,  7 Aug 2024 15:06:58 +0000 (UTC)
+	 MIME-Version; b=pd80uRshJnfqIjDoG0oT3PPPlTLnTwnIr3m7OU2htUkF8GOQtigrEfmD+d3T8NK1vjAW69PTymrBC/g1Vz8QiECMj2/JT7EmWGQ9nEz0uHoecOA7Kr38NNvqTGewVPPkAiBXN+u/bHY+IWCcLeVEcPLV9SMGLLuebenZR4ouaaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7jm5l87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176BFC4AF0D;
+	Wed,  7 Aug 2024 15:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043218;
-	bh=rjky8C4GM6KDXiLn6/leNevRCDmP8o3cenFLcyDhcgQ=;
+	s=korg; t=1723042920;
+	bh=vdAhi7xH1E9+O+rpZ1qPOB4Tz/CxnOCdgr4v+OOMDHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZSqqICtsoxPt6YBK4PTQJsoDY2uNhzzfXCq6on8xBXTKu/Wz9hLdMB3qDlmco1Fw
-	 xESNXsju6GL+UkTnUHzL+4keF+nWaM+I7xqpUGqcLPNH/wXuL26WjEBu9sR6JTOPg5
-	 Vm+37O3uK1LRlGKiiaWYuHKQX3kFUO3TSWpFi0Jk=
+	b=R7jm5l87ox/bXrIYJRtIMWI9Fux1BoXiReFho+TuU3ou+OwCUSYGjQF4EowLealxP
+	 KUrWIQSv8bB9BLeKnEyKYo34rOj2JjYIkSioraLgP4az5gP5o/0jX/oDJ5CJJVhaF9
+	 qXpY7SkbpUEANpdCuqptS0SLsJCAFeXZsOMWRWsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/121] thermal: bcm2835: Convert to platform remove callback returning void
+Subject: [PATCH 6.10 024/123] bnxt_en: Fix RSS logic in __bnxt_reserve_rings()
 Date: Wed,  7 Aug 2024 16:59:03 +0200
-Message-ID: <20240807150019.742020612@linuxfoundation.org>
+Message-ID: <20240807150021.599850494@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-[ Upstream commit f29ecd3748a28d0b52512afc81b3c13fd4a00c9b ]
+[ Upstream commit 98ba1d931f611e8f8f519c0405fa0a1a76554bfa ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+In __bnxt_reserve_rings(), the existing code unconditionally sets the
+default RSS indirection table to default if netif_is_rxfh_configured()
+returns false.  This used to be correct before we added RSS contexts
+support.  For example, if the user is changing the number of ethtool
+channels, we will enter this path to reserve the new number of rings.
+We will then set the RSS indirection table to default to cover the new
+number of rings if netif_is_rxfh_configured() is false.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+Now, with RSS contexts support, if the user has added or deleted RSS
+contexts, we may now enter this path to reserve the new number of VNICs.
+However, netif_is_rxfh_configured() will not return the correct state if
+we are still in the middle of set_rxfh().  So the existing code may
+set the indirection table of the default RSS context to default by
+mistake.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Fix it to check if the reservation of the RX rings is changing.  Only
+check netif_is_rxfh_configured() if it is changing.  RX rings will not
+change in the middle of set_rxfh() and this will fix the issue.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: e90c369cc2ff ("thermal/drivers/broadcom: Fix race between removal and clock disable")
+Fixes: b3d0083caf9a ("bnxt_en: Support RSS contexts in ethtool .{get|set}_rxfh()")
+Reported-and-tested-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/20240625010210.2002310-1-kuba@kernel.org
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20240724222106.147744-1-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/broadcom/bcm2835_thermal.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thermal/broadcom/bcm2835_thermal.c b/drivers/thermal/broadcom/bcm2835_thermal.c
-index 3acc9288b3105..5c1cebe075801 100644
---- a/drivers/thermal/broadcom/bcm2835_thermal.c
-+++ b/drivers/thermal/broadcom/bcm2835_thermal.c
-@@ -282,19 +282,17 @@ static int bcm2835_thermal_probe(struct platform_device *pdev)
- 	return err;
- }
- 
--static int bcm2835_thermal_remove(struct platform_device *pdev)
-+static void bcm2835_thermal_remove(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 43952689bfb0c..23627c973e40f 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -7491,8 +7491,8 @@ static int bnxt_get_avail_msix(struct bnxt *bp, int num);
+ static int __bnxt_reserve_rings(struct bnxt *bp)
  {
- 	struct bcm2835_thermal_data *data = platform_get_drvdata(pdev);
+ 	struct bnxt_hw_rings hwr = {0};
++	int rx_rings, old_rx_rings, rc;
+ 	int cp = bp->cp_nr_rings;
+-	int rx_rings, rc;
+ 	int ulp_msix = 0;
+ 	bool sh = false;
+ 	int tx_cp;
+@@ -7526,6 +7526,7 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
+ 	hwr.grp = bp->rx_nr_rings;
+ 	hwr.rss_ctx = bnxt_get_total_rss_ctxs(bp, &hwr);
+ 	hwr.stat = bnxt_get_func_stat_ctxs(bp);
++	old_rx_rings = bp->hw_resc.resv_rx_rings;
  
- 	debugfs_remove_recursive(data->debugfsdir);
- 	clk_disable_unprepare(data->clk);
--
--	return 0;
- }
+ 	rc = bnxt_hwrm_reserve_rings(bp, &hwr);
+ 	if (rc)
+@@ -7580,7 +7581,8 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
+ 	if (!bnxt_rings_ok(bp, &hwr))
+ 		return -ENOMEM;
  
- static struct platform_driver bcm2835_thermal_driver = {
- 	.probe = bcm2835_thermal_probe,
--	.remove = bcm2835_thermal_remove,
-+	.remove_new = bcm2835_thermal_remove,
- 	.driver = {
- 		.name = "bcm2835_thermal",
- 		.of_match_table = bcm2835_thermal_of_match_table,
+-	if (!netif_is_rxfh_configured(bp->dev))
++	if (old_rx_rings != bp->hw_resc.resv_rx_rings &&
++	    !netif_is_rxfh_configured(bp->dev))
+ 		bnxt_set_dflt_rss_indir_tbl(bp, NULL);
+ 
+ 	if (!bnxt_ulp_registered(bp->edev) && BNXT_NEW_RM(bp)) {
 -- 
 2.43.0
 
