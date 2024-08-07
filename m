@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-65744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5B294ABB1
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C6894AB2E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:04:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97BA61F21286
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2AA283245
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB5378C67;
-	Wed,  7 Aug 2024 15:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2D913790B;
+	Wed,  7 Aug 2024 15:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7Mx5jdN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBJXu+7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3D97E0E9;
-	Wed,  7 Aug 2024 15:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3F684DF8;
+	Wed,  7 Aug 2024 15:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043290; cv=none; b=dvPomswt6J50Ub8sBgwV4gexLU0c/hZcoMBsMihHjt4vbmms6GRF7/pJrzdQlGB61znccIo6EGbuAkZ1YxsaIQ4KEYHtPAvPAuJhc0pD3aPojACE7BXAjbPWa1IDIpOtKXh4FYsMDRkckHMyyoIQjUHlH+wfB5V7xrCsIBJEfms=
+	t=1723042991; cv=none; b=D4oOB1WiEBRao58jZeIagIx9V/lEU31pOIYnZ/BB+rmy6XA1FtC7k55M59uDQbXZCpOawfcVHCb1y/Kt8CfIC1ag9HrqBLsRVUnHCUVWVPwTL7t5rIrjQ0xxm6lnWLXXg7eRovpAom5mnzjyYwCXch+uCfoAyIs9RRt5TlJD3Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043290; c=relaxed/simple;
-	bh=nEJ58drDWpegHwaC2GbP1B3WvmIaP9avFSLuDceazAI=;
+	s=arc-20240116; t=1723042991; c=relaxed/simple;
+	bh=2TDuwAuZ9v2ieMit6fwpwUaHrdwFdQRb/4l2r9KEQ/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfWV28YGqickyxreeQvNfGySGbkUn0TOUejmwC/F37EGm/ddKWbatuemfy9AinQ5JDZRXx36kY+7rMCgQFzV6yUQAwwroON3kxuodsJ+KC5+9QEZnEXGVWmg6AtxK3PcqS8dAS1mULvXqlzsv+noz4ZwO0ARhAUPa8KtlJ08a0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7Mx5jdN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11296C32781;
-	Wed,  7 Aug 2024 15:08:09 +0000 (UTC)
+	 MIME-Version; b=Wl+Rr3rC6ZaaWyPdFBOpcYp/IiXiEH5RDO5Uf4qbOtQMJe3k+3X1k09YJnc5pq5F/k0dBlcLlX2nFC0Q+WrwtR3tbiFn/mz+jeWMFm7VzaQpDkvyuFj46+mguLr45cc1ar72nb9fWrGx1BzfC9i/oSo9NHYHEauF21LbY9LoZG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBJXu+7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691ECC32781;
+	Wed,  7 Aug 2024 15:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043290;
-	bh=nEJ58drDWpegHwaC2GbP1B3WvmIaP9avFSLuDceazAI=;
+	s=korg; t=1723042991;
+	bh=2TDuwAuZ9v2ieMit6fwpwUaHrdwFdQRb/4l2r9KEQ/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7Mx5jdNo1uka7Twp9S4Xr7gXx5HwyGdkLTOnkw6qJTJHLtME07IWldfIIBJqnfyo
-	 JFBTxP9V/lC7fLs0aYXymlECVe6L9FcSatPOjG/6D4CqU74K+Czsfgivu2TCfFzPPu
-	 2vM2Ah+wLRICeSv+9RmCcIVHRIUmdPe2SysfEybs=
+	b=dBJXu+7Fmgqml7hDFT6sePfcFS3aJjEyTcJHTSYwQrKKqYkIM7zbAVRs0Wcd9yjKw
+	 t0H0LFWgIs1GRZ6llQ0BkbKlXg8zKLbNT7fyQP++I64iyrr3oy76LPNZ9RaTi4VB3U
+	 pK+nqpi3mHXlDDlAGqCR2S4tj/RjlmPVk1w36ezs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/121] ext4: factor out a common helper to query extent map
-Date: Wed,  7 Aug 2024 16:59:11 +0200
-Message-ID: <20240807150019.984350441@linuxfoundation.org>
+Subject: [PATCH 6.10 033/123] Bluetooth: btintel: Fail setup on error
+Date: Wed,  7 Aug 2024 16:59:12 +0200
+Message-ID: <20240807150021.899008624@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Kiran K <kiran.k@intel.com>
 
-[ Upstream commit 8e4e5cdf2fdeb99445a468b6b6436ad79b9ecb30 ]
+[ Upstream commit e22a3a9d4134d7e6351a2998771522e74bcc58da ]
 
-Factor out a new common helper ext4_map_query_blocks() from the
-ext4_da_map_blocks(), it query and return the extent map status on the
-inode's extent path, no logic changes.
+Do not attempt to send any hci command to controller if *setup* function
+fails.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://patch.msgid.link/20240517124005.347221-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
+Fixes: af395330abed ("Bluetooth: btintel: Add Intel devcoredump support")
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 57 +++++++++++++++++++++++++++----------------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
+ drivers/bluetooth/btintel.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index c8a1db2164dfb..b8b2f731f1d0e 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -453,6 +453,35 @@ static void ext4_map_blocks_es_recheck(handle_t *handle,
- }
- #endif /* ES_AGGRESSIVE_TEST */
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index 7ecc67deecb09..93900c37349c1 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -3012,6 +3012,9 @@ static int btintel_setup_combined(struct hci_dev *hdev)
+ 		btintel_set_dsm_reset_method(hdev, &ver_tlv);
  
-+static int ext4_map_query_blocks(handle_t *handle, struct inode *inode,
-+				 struct ext4_map_blocks *map)
-+{
-+	unsigned int status;
-+	int retval;
+ 		err = btintel_bootloader_setup_tlv(hdev, &ver_tlv);
++		if (err)
++			goto exit_error;
 +
-+	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		retval = ext4_ext_map_blocks(handle, inode, map, 0);
-+	else
-+		retval = ext4_ind_map_blocks(handle, inode, map, 0);
-+
-+	if (retval <= 0)
-+		return retval;
-+
-+	if (unlikely(retval != map->m_len)) {
-+		ext4_warning(inode->i_sb,
-+			     "ES len assertion failed for inode "
-+			     "%lu: retval %d != map->m_len %d",
-+			     inode->i_ino, retval, map->m_len);
-+		WARN_ON(1);
-+	}
-+
-+	status = map->m_flags & EXT4_MAP_UNWRITTEN ?
-+			EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
-+	ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
-+			      map->m_pblk, status);
-+	return retval;
-+}
-+
- /*
-  * The ext4_map_blocks() function tries to look up the requested blocks,
-  * and returns if the blocks are already mapped.
-@@ -1744,33 +1773,11 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 	down_read(&EXT4_I(inode)->i_data_sem);
- 	if (ext4_has_inline_data(inode))
- 		retval = 0;
--	else if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
--		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
- 	else
--		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
--	if (retval < 0) {
--		up_read(&EXT4_I(inode)->i_data_sem);
--		return retval;
--	}
--	if (retval > 0) {
--		unsigned int status;
--
--		if (unlikely(retval != map->m_len)) {
--			ext4_warning(inode->i_sb,
--				     "ES len assertion failed for inode "
--				     "%lu: retval %d != map->m_len %d",
--				     inode->i_ino, retval, map->m_len);
--			WARN_ON(1);
--		}
--
--		status = map->m_flags & EXT4_MAP_UNWRITTEN ?
--				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
--		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
--				      map->m_pblk, status);
--		up_read(&EXT4_I(inode)->i_data_sem);
--		return retval;
--	}
-+		retval = ext4_map_query_blocks(NULL, inode, map);
- 	up_read(&EXT4_I(inode)->i_data_sem);
-+	if (retval)
-+		return retval;
- 
- add_delayed:
- 	down_write(&EXT4_I(inode)->i_data_sem);
+ 		btintel_register_devcoredump_support(hdev);
+ 		btintel_print_fseq_info(hdev);
+ 		break;
 -- 
 2.43.0
 
