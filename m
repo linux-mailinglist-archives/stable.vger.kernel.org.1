@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC72194AC12
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2DD94AC4F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B0C1C21704
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 174E51C21EF9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8B8823A9;
-	Wed,  7 Aug 2024 15:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E106D824BB;
+	Wed,  7 Aug 2024 15:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vgj7GC71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjsxGmz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E3E7E0E9;
-	Wed,  7 Aug 2024 15:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D463374CC;
+	Wed,  7 Aug 2024 15:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043506; cv=none; b=pYGEdT94WyqA7A9rpREZP/ArWBWUBa2wK1oZxPEosv1UcxXW/xpRP4lTw/GGjzXqy3haaN5AaXtHFSkzWg4MWE7H5xDJ6JtD3BSUPTimg1pfm0wo9QzTyWkXrDKzeHKyiDeAgdzLMz3ESyIxCAfwqvPBptTfO6ZvlFYUaeUh+tM=
+	t=1723043634; cv=none; b=IK+kc7LMWNjaIbeDeCr50yxLqacAub0eCcltJ0vf0T7WVRIaxcQoE/SlVO+FqqBeIoeJ5kO7dzywMKsEbtvL8VrmC9N97octQ5esosqgY3znR6dmVROBQ9qGbpKoOIwdzBVcnT514jIEBFI+3+rgLM3AkFBdtkfRuD9iVZFAlz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043506; c=relaxed/simple;
-	bh=axM/TX5HSrjXuD7QGp2rMMTzB9HMm9e8ZQ+LY4T/SFk=;
+	s=arc-20240116; t=1723043634; c=relaxed/simple;
+	bh=JHBS1DKQYKwAtikqptGETy5KtRb/9LTgZgoNaSKyLvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pfCnNsS4b/kdc3z3WT+uPJnC5UPob9uWgxIWSfwouG4+sL+6pZgSRP2hi3mphgT2OSjRs1CPTLaMJp41qciIndC+MpI5rPG+ULRGonlI00mMRRcBH7htRIcOInJ3W21OiZW3eLatQ/JF1DQECW9iXLbXedB5Jwiza8tAQz5txK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vgj7GC71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE78C32781;
-	Wed,  7 Aug 2024 15:11:45 +0000 (UTC)
+	 MIME-Version; b=jzkswK8CO/kJ4OHg5wQsUAARhVF8saWXDca+NIc4Bm/l4j8TaA7xeqKy/kzM+qiVFwqKOg2rnZBixO7ga/gE1nIov56jzINXTNpHtrupX3RbLLm92IkY2L85Hg692XgwTdzC/unTeesqTn0L/Jd5W7UfBKr/2278X7WaNjZ3+DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjsxGmz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFEDC32781;
+	Wed,  7 Aug 2024 15:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043506;
-	bh=axM/TX5HSrjXuD7QGp2rMMTzB9HMm9e8ZQ+LY4T/SFk=;
+	s=korg; t=1723043634;
+	bh=JHBS1DKQYKwAtikqptGETy5KtRb/9LTgZgoNaSKyLvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vgj7GC71MEez7cxMyFoDX1ydlxj4+Flib5vFylrxAm6yiH+hj13Y2PnuzyLJj8+4U
-	 V1wRIdqUv1X4yrJLkml3uytQpOaeg8k3mMcMlzm9Lz1ruHH2VHTIDZreUnOayyt/vS
-	 2yIYBoani4hUNTN8Me1l55Napzf9N55D5qbI6DFc=
+	b=VjsxGmz+URCr9lgn2EOWD8q613UfqKdHO3md9qFZOs+Qpsp14fL514QluK2itUP2/
+	 1bAaSYCOlIW+1ihLk5WCevcKer86kWuEEl9vcjFiApPInUVZRsxoAtALNeboCIJxE/
+	 8aU/h2JKi9dGTc/cNEhaS1es7g8yh9eZDIso+3kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Doug Brown <doug@schmorgal.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/121] riscv: remove unused functions in traps_misaligned.c
+Subject: [PATCH 6.1 42/86] drm/vmwgfx: Fix overlay when using Screen Targets
 Date: Wed,  7 Aug 2024 17:00:21 +0200
-Message-ID: <20240807150022.317079443@linuxfoundation.org>
+Message-ID: <20240807150040.625329208@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit f19c3b4239f5bfb69aacbaf75d4277c095e7aa7d ]
+[ Upstream commit cb372a505a994cb39aa75acfb8b3bcf94787cf94 ]
 
-Replace macros by the only two function calls that are done from this
-file, store_u8() and load_u8().
+This code was never updated to support Screen Targets.
+Fixes a bug where Xv playback displays a green screen instead of actual
+video contents when 3D acceleration is disabled in the guest.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Link: https://lore.kernel.org/r/20231004151405.521596-2-cleger@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: fb197c5d2fd2 ("riscv/purgatory: align riscv_kernel_entry")
+Fixes: c8261a961ece ("vmwgfx: Major KMS refactoring / cleanup in preparation of screen targets")
+Reported-by: Doug Brown <doug@schmorgal.com>
+Closes: https://lore.kernel.org/all/bd9cb3c7-90e8-435d-bc28-0e38fee58977@schmorgal.com
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Tested-by: Doug Brown <doug@schmorgal.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240719163627.20888-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps_misaligned.c | 46 +++++-----------------------
- 1 file changed, 7 insertions(+), 39 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index 5348d842c7453..e867fe465164e 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -151,51 +151,19 @@
- #define PRECISION_S 0
- #define PRECISION_D 1
- 
--#define DECLARE_UNPRIVILEGED_LOAD_FUNCTION(type, insn)			\
--static inline type load_##type(const type *addr)			\
--{									\
--	type val;							\
--	asm (#insn " %0, %1"						\
--	: "=&r" (val) : "m" (*addr));					\
--	return val;							\
--}
-+static inline u8 load_u8(const u8 *addr)
-+{
-+	u8 val;
- 
--#define DECLARE_UNPRIVILEGED_STORE_FUNCTION(type, insn)			\
--static inline void store_##type(type *addr, type val)			\
--{									\
--	asm volatile (#insn " %0, %1\n"					\
--	: : "r" (val), "m" (*addr));					\
--}
-+	asm volatile("lbu %0, %1" : "=&r" (val) : "m" (*addr));
- 
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u8, lbu)
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u16, lhu)
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(s8, lb)
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(s16, lh)
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(s32, lw)
--DECLARE_UNPRIVILEGED_STORE_FUNCTION(u8, sb)
--DECLARE_UNPRIVILEGED_STORE_FUNCTION(u16, sh)
--DECLARE_UNPRIVILEGED_STORE_FUNCTION(u32, sw)
--#if defined(CONFIG_64BIT)
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u32, lwu)
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u64, ld)
--DECLARE_UNPRIVILEGED_STORE_FUNCTION(u64, sd)
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(ulong, ld)
--#else
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u32, lw)
--DECLARE_UNPRIVILEGED_LOAD_FUNCTION(ulong, lw)
--
--static inline u64 load_u64(const u64 *addr)
--{
--	return load_u32((u32 *)addr)
--		+ ((u64)load_u32((u32 *)addr + 1) << 32);
-+	return val;
- }
- 
--static inline void store_u64(u64 *addr, u64 val)
-+static inline void store_u8(u8 *addr, u8 val)
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+index abc354ead4e8b..5dcddcb59a6f7 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+@@ -98,7 +98,7 @@ static int vmw_overlay_send_put(struct vmw_private *dev_priv,
  {
--	store_u32((u32 *)addr, val);
--	store_u32((u32 *)addr + 1, val >> 32);
-+	asm volatile ("sb %0, %1\n" : : "r" (val), "m" (*addr));
- }
--#endif
+ 	struct vmw_escape_video_flush *flush;
+ 	size_t fifo_size;
+-	bool have_so = (dev_priv->active_display_unit == vmw_du_screen_object);
++	bool have_so = (dev_priv->active_display_unit != vmw_du_legacy);
+ 	int i, num_items;
+ 	SVGAGuestPtr ptr;
  
- static inline ulong get_insn(ulong mepc)
- {
 -- 
 2.43.0
 
