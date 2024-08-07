@@ -1,241 +1,171 @@
-Return-Path: <stable+bounces-65528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148E294A27F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 10:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0628894A495
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 11:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD1742813DD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 08:15:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF7F82818A4
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 09:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024B71C7B94;
-	Wed,  7 Aug 2024 08:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C151D0DDC;
+	Wed,  7 Aug 2024 09:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="nBZZfm1l"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PAwZRDXD"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE2D1C462C;
-	Wed,  7 Aug 2024 08:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6D81AE87B;
+	Wed,  7 Aug 2024 09:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723018531; cv=none; b=udqYITkh2U87bC1zEIgjKIe7Xdf2cXYsLl4OdRcwrm3CCW6u3PGLQgHnoyAdyupc6IDn61xWDjr53J9WIn0P8arX37DPfOoxy6aWTSROy9w0We7YzBblzf4uibfWe4hNp1KnmwuYk8GvtpgOTzvOS4Ln5Z7tjkhw0xVkpHEUaWo=
+	t=1723023685; cv=none; b=Xq5GSUVDeyVqhwbBlyc5BhvhLkKaLWJmJkF6575TnZ+lyUrMCIxdna8g3NzJIrBmp7ZrVpO4NtYwUGHqjGdjocdBDpWa02Zn1U3aPiSAx8mmt+7RYXdIMtdnCSkoUZhuY9RYDraiqlgw30EPDCL3VzUe43Kv5D035WYTMk+P/tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723018531; c=relaxed/simple;
-	bh=3HLdx6Qq52bAig9I2YiswJ7XZVgwdbcq5D3gxl27GIg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZIljhEHtyAtrGVNPU/6iU+koFzeeqXKKZCXefPIfid4UkagrZdewLYqoh8nLPE9kYjvbuLhPOysLyutmNWCMYBbH2N+QOMQKMCWXuuFfUXI6ByhlTM7l0cJQTyLppGa9sxTywMlqBriV2YxoEFu5iCoPGnnytSa3gIGVGf91oKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=nBZZfm1l; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=zWyab3dKHon1ao5B2EKivYVWOxCs/6+X0YTUXB+UsrA=; t=1723018529;
-	x=1723450529; b=nBZZfm1l/ZWt3KUXY7a0v+hT9UvIyJ8iY1f+RTMY3ABiV6UEWvejYLkywKY1r
-	+a9eDDCtgeN4UFWi0pM/n7lOp8gKZR2Q7vPGCZB6hXAuyDE4p00995Tzn0T5+H/eKrsWp5kwamRI0
-	CcPmCsRnMOJCn7/DtWS3oMVtN3upeQ77njKxeU/B09A89EcwB/jN0BDkpuH0M9VYb4HAqoPZ6rluk
-	M8dlKQeXJ54C1SgVb+yy7pPliJAgOUefiuCrCqMgO5h31pbtlJHQj6jiTwCyrlG+k5KMu+HQ3Easw
-	2Ga1r7P4fcF9E+JAooejvUoT72xR8ASkgXGkCBIneacBUChpRg==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sbbpN-000766-Ja; Wed, 07 Aug 2024 10:15:25 +0200
-Message-ID: <a79fa3cc-73ef-4546-b110-1f448480e3e6@leemhuis.info>
-Date: Wed, 7 Aug 2024 10:15:23 +0200
+	s=arc-20240116; t=1723023685; c=relaxed/simple;
+	bh=13PfPwaqWfV0SZIb5VZIEOqUcw2cc8yCIcW5grujzAM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bHS0uBIZMhtf/Xv4Dnb/8QJ4Epp6i03HcbMTepaKed469WdHaQXF5plwRS5PzYKeTwAkCu4NehU1yPEdcZZWfebJAjHNGAWtJjIvvp+7kl9K5TYG4rcafUN9uJwKuO3Z8w+w+ukYrP5Hf/9JN/sSP2Cd/pPTAU+Ic7Chkuc4mj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PAwZRDXD; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 477873DK002852;
+	Wed, 7 Aug 2024 09:41:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	w4f2akm3PLX0q66J2hNtvC4aFfjKnQkbdbfkY2Cic3c=; b=PAwZRDXDOHCNFTqL
+	n4O/eJeVuo+T9X9kpuNsgYokm6eHqHESzKBJs8Wum4wRHjbKz3qzLVmPmA4kkC/V
+	W/5hfaOQJiZI83hBmdDCIGue0YPBAUZzplWzVrqR8kEH4vkUoZO0xjbqeE+5sLxc
+	/DY3rS6YTd8rnngym1cvkmVxp2p4HMndyF7fNTSdvjy598vS42+XQhqcHN9DZ7pL
+	uRAY5wsqduTmR6QhN46DqAPhMHxNucGEiPhX1Tx8BhJimVqixeyzFNZg5S6RqEUM
+	Ssom/ODBrSRTfO4cwSacAbSWJw4AINFElWP33D8CGqoOo2dzrFTT4G8c0AHDu7d1
+	QXrK0g==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40sdu9a4cq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Aug 2024 09:41:19 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 4779fI28008697
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 7 Aug 2024 09:41:18 GMT
+Received: from [10.218.35.239] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 7 Aug 2024
+ 02:41:16 -0700
+Message-ID: <ec99fcdc-9404-8cd9-6a30-95e4f5c1edcd@quicinc.com>
+Date: Wed, 7 Aug 2024 15:11:13 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [STABLE REGRESSION] Possible missing backport of x86_match_cpu()
- change in v6.1.96
-To: Thomas Lindroth <thomas.lindroth@gmail.com>
-Cc: stable@vger.kernel.org, tony.luck@intel.com,
- Greg KH <gregkh@linuxfoundation.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, LKML <linux-kernel@vger.kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <eb709d67-2a8d-412f-905d-f3777d897bfa@gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-In-Reply-To: <eb709d67-2a8d-412f-905d-f3777d897bfa@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1723018529;aa70abe7;
-X-HE-SMSGID: 1sbbpN-000766-Ja
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH] usb: dwc3: Fix latency of DSTS while receiving wakeup
+ event
+Content-Language: en-US
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240730124742.561408-1-quic_prashk@quicinc.com>
+ <20240806235142.cem5f635wmds4bt4@synopsys.com>
+From: Prashanth K <quic_prashk@quicinc.com>
+In-Reply-To: <20240806235142.cem5f635wmds4bt4@synopsys.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: jcU0xN1rCS7mNrX7N5CpaDDZyLpmtpsw
+X-Proofpoint-GUID: jcU0xN1rCS7mNrX7N5CpaDDZyLpmtpsw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-07_06,2024-08-06_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
+ clxscore=1015 phishscore=0 spamscore=0 bulkscore=0 mlxscore=0
+ impostorscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2408070067
 
-[CCing the x86 folks, Greg, and the regressions list]
 
-Hi, Thorsten here, the Linux kernel's regression tracker.
 
-On 30.07.24 18:41, Thomas Lindroth wrote:
-> I upgraded from kernel 6.1.94 to 6.1.99 on one of my machines and
-> noticed that
-> the dmesg line "Incomplete global flushes, disabling PCID" had
-> disappeared from
-> the log.
+On 07-08-24 05:21 am, Thinh Nguyen wrote:
+> Hi,
+> 
+> On Tue, Jul 30, 2024, Prashanth K wrote:
+>> When operating in High-Speed, it is observed that DSTS[USBLNKST] doesn't
+>> update link state immediately after receiving the wakeup interrupt. Since
+>> wakeup event handler calls the resume callbacks, there is a chance that
+>> function drivers can perform an ep queue. Which in turn tries to perform
+>> remote wakeup from send_gadget_ep_cmd(), this happens because DSTS[[21:18]
+>> wasn't updated to U0 yet. It is observed that the latency of DSTS can be
+>> in order of milli-seconds. Hence update the dwc->link_state from evtinfo,
+>> and use this variable to prevent calling remote wakup unnecessarily.
+>>
+>> Fixes: ecba9bc9946b ("usb: dwc3: gadget: Check for L1/L2/U3 for Start Transfer")
+> 
+> This commit ID is corrupted. Please check.
+> 
+Will fix it, was supposed to be 63c4c320ccf7, thanks for pointing out.
 
-Thomas, thx for the report. FWIW, mainline developers like the x86 folks
-or Tony are free to focus on mainline and leave stable/longterm series
-to other people -- some nevertheless help out regularly or occasionally.
-So with a bit of luck this mail will make one of them care enough to
-provide a 6.1 version of what you afaics called the "existing fix" in
-mainline (2eda374e883ad2 ("x86/mm: Switch to new Intel CPU model
-defines") [v6.10-rc1]) that seems to be missing in 6.1.y. But if not I
-suspect it might be up to you to prepare and submit a 6.1.y variant of
-that fix, as you seem to care and are able to test the patch.
+> While operating in usb2 speed, if the device is in low power link state
+> (L1/L2), CMDACT may not complete and time out. The programming guide
+> suggested to initiate remote wakeup to bring the device to ON state,
+> allowing the command to go through. However, clearing the
 
-Ciao, Thorsten
+Yea true, we need ensure that the linkstate is not in L1/L2/U3 for 
+HS/SS. But since we are relying on DSTS for this, we may issue 
+remote-wakeup to host even when not needed. During host initiated wakeup 
+scenario, we get a wakeup interrupt which calls function driver resume 
+calls. If function driver queues something, then startxfer has to be 
+issued, but DSTS was still showing U3 instead of U0. When checked with 
+our design team, they mentioned the latency in DSTS is expected since 
+and latency would be in msec order from Resume to U0. Can you please 
+confirm this once, I simply added a polling mechanism in wakeup handler.
 
-> That message comes from commit c26b9e193172f48cd0ccc64285337106fb8aa804,
-> which
-> disables PCID support on some broken hardware in arch/x86/mm/init.c:
-> 
-> #define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,     \
->                              .family  = 6,                     \
->                              .model = _model,                  \
->                            }
-> /*
->  * INVLPG may not properly flush Global entries
->  * on these CPUs when PCIDs are enabled.
->  */
-> static const struct x86_cpu_id invlpg_miss_ids[] = {
->        INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
->        INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
->        INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
->        INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
->        INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
->        INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
->        {}
-> 
-> ...
-> 
-> if (x86_match_cpu(invlpg_miss_ids)) {
->         pr_info("Incomplete global flushes, disabling PCID");
->         setup_clear_cpu_cap(X86_FEATURE_PCID);
->         return;
-> }
-> 
-> arch/x86/mm/init.c, which has that code, hasn't changed in 6.1.94 ->
-> 6.1.99.
-> However I found a commit changing how x86_match_cpu() behaves in 6.1.96:
-> 
-> commit 8ab1361b2eae44077fef4adea16228d44ffb860c
-> Author: Tony Luck <tony.luck@intel.com>
-> Date:   Mon May 20 15:45:33 2024 -0700
-> 
->     x86/cpu: Fix x86_match_cpu() to match just X86_VENDOR_INTEL
-> 
-> I suspect this broke the PCID disabling code in arch/x86/mm/init.c.
-> The commit message says:
-> 
-> "Add a new flags field to struct x86_cpu_id that has a bit set to
-> indicate that
-> this entry in the array is valid. Update X86_MATCH*() macros to set that
-> bit.
-> Change the end-marker check in x86_match_cpu() to just check the flags
-> field
-> for this bit."
-> 
-> But the PCID disabling code in 6.1.99 does not make use of the
-> X86_MATCH*() macros; instead, it defines a new INTEL_MATCH() macro
-> without the
-> X86_CPU_ID_FLAG_ENTRY_VALID flag.
-> 
-> I looked in upstream git and found an existing fix:
-> commit 2eda374e883ad297bd9fe575a16c1dc850346075
-> Author: Tony Luck <tony.luck@intel.com>
-> Date:   Wed Apr 24 11:15:18 2024 -0700
-> 
->     x86/mm: Switch to new Intel CPU model defines
-> 
->     New CPU #defines encode vendor and family as well as model.
-> 
->     [ dhansen: vertically align 0's in invlpg_miss_ids[] ]
-> 
->     Signed-off-by: Tony Luck <tony.luck@intel.com>
->     Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
->     Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
->     Link:
-> https://lore.kernel.org/all/20240424181518.41946-1-tony.luck%40intel.com
-> 
-> diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-> index 679893ea5e68..6b43b6480354 100644
-> --- a/arch/x86/mm/init.c
-> +++ b/arch/x86/mm/init.c
-> @@ -261,21 +261,17 @@ static void __init probe_page_size_mask(void)
->         }
->  }
->  
-> -#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,     \
-> -                             .family  = 6,                     \
-> -                             .model = _model,                  \
-> -                           }
->  /*
->   * INVLPG may not properly flush Global entries
->   * on these CPUs when PCIDs are enabled.
->   */
->  static const struct x86_cpu_id invlpg_miss_ids[] = {
-> -       INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
-> -       INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
-> -       INTEL_MATCH(INTEL_FAM6_ATOM_GRACEMONT ),
-> -       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
-> -       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
-> -       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-> +       X86_MATCH_VFM(INTEL_ALDERLAKE,      0),
-> +       X86_MATCH_VFM(INTEL_ALDERLAKE_L,    0),
-> +       X86_MATCH_VFM(INTEL_ATOM_GRACEMONT, 0),
-> +       X86_MATCH_VFM(INTEL_RAPTORLAKE,     0),
-> +       X86_MATCH_VFM(INTEL_RAPTORLAKE_P,   0),
-> +       X86_MATCH_VFM(INTEL_RAPTORLAKE_S,   0),
->         {}
->  };
-> 
-> The fix removed the custom INTEL_MATCH macro and uses the X86_MATCH*()
-> macros
-> with X86_CPU_ID_FLAG_ENTRY_VALID. This fixed commit was never backported
-> to 6.1,
-> so it looks like a stable series regression due to a missing backport.
-> 
-> If I apply the fix patch on 6.1.99, the PCID disabling code activates
-> again.
-> I had to change all the INTEL_* definitions to the old definitions to
-> make it
-> build:
-> 
->  static const struct x86_cpu_id invlpg_miss_ids[] = {
-> -       INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
-> -       INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
-> -       INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
-> -       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
-> -       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
-> -       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-> +       X86_MATCH_VFM(INTEL_FAM6_ALDERLAKE,    0),
-> +       X86_MATCH_VFM(INTEL_FAM6_ALDERLAKE_L,  0),
-> +       X86_MATCH_VFM(INTEL_FAM6_ALDERLAKE_N,  0),
-> +       X86_MATCH_VFM(INTEL_FAM6_RAPTORLAKE,   0),
-> +       X86_MATCH_VFM(INTEL_FAM6_RAPTORLAKE_P, 0),
-> +       X86_MATCH_VFM(INTEL_FAM6_RAPTORLAKE_S, 0),
->         {}
->  };
-> 
-> I only looked at the code in arch/x86/mm/init.c, so there may be other
-> uses of
-> x86_match_cpu() in the kernel that are also broken in 6.1.99.
-> This email is meant as a bug report, not a pull request. Someone else
-> should
-> confirm the problem and submit the appropriate fix.
+@@ -4175,6 +4177,14 @@ static void dwc3_gadget_wakeup_interrupt(struct 
+dwc3 *dwc, unsigned int evtinfo)
+          * TODO take core out of low power mode when that's
+          * implemented.
+          */
++       while (retries++ < 20000) {
++               reg = dwc3_readl(dwc->regs, DWC3_DSTS);
++               /* in HS, means ON */
++               if (DWC3_DSTS_USBLNKST(reg) == DWC3_LINK_STATE_U0)
++                       break;
++               udelay(2);
++       }
++       pr_info("DWC3 Wakeup: %d", retries);
 
-P.S.:
+And turns out, retries 1500 to 15000 (worst case), which can range from 
+3ms to 30ms. By this time, control can reach startXfer, where it tries 
+to perform remote-wakeup even if host just resumed the gadget.
 
-#regzbot ^introduced 8ab1361b2eae44
-#regzbot title x86:  Possible missing backport of x86_match_cpu() change
-#regzbot ignore-activity
+For SS case, this retries count was consistently 1, it was passing in 
+first try itself. But unfortunately doesn't behave the same way in HS.
+
+> GUSB2PHYCFG.suspendusb2 turns on the signal required to complete a
+> command within 50us. This happens within the timeout required for an
+> endpoint command. As a result, there's no need to perform remote wakeup.
+> 
+> For usb3 speed, if it's in U3, the gadget is in suspend anyway. There
+> will be no ep_queue to trigger the Start Transfer command.
+> 
+> You can just remove the whole Start Transfer check for remote wakeup
+> completely.
+> 
+Sorry, i didnt understand your suggestion. The startxfer check is needed 
+as per databook, but we also need to handle the latency seen in DSTS 
+when operating in HS.
+
+Thanks,
+Prashanth K
 
