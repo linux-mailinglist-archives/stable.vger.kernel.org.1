@@ -1,131 +1,143 @@
-Return-Path: <stable+bounces-65928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D6294ACF3
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 610DD94AD1F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B63A1C210BD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:33:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84D351C2180E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E2685931;
-	Wed,  7 Aug 2024 15:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BF712F398;
+	Wed,  7 Aug 2024 15:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N2KgxLJi";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kOk8Qt28"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b="PvQIOcNq"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from devico.uberspace.de (devico.uberspace.de [185.26.156.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A0082499;
-	Wed,  7 Aug 2024 15:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A9B12F38B
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 15:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.26.156.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723044769; cv=none; b=MF5027OdcX7+gv/PiXAeCuV+Omc36IILlA+FdRpy5iAvUBGfs0P4ni8KzRMe223nogXQULqQ4RfXOsrvFGuWBVXLRQdgWUQ8Jr5xWIcuQxsAzQPm5cVdOYV3cYgJUcBNwQ/M3uX5fbrpttJ3FRhA2Upad1/y5HqhQRXCrjBpA4I=
+	t=1723045293; cv=none; b=jt44MX/rffm3HFz5YEiOhcK/MsSzFt2xfKu39YyiPJYLAnapFtqkzg2Rzw60OWfjwsiDIrStfmUzeNZh9HeayXbRikIUtAkUeCM11D2ZljytVJIDnw0xMmSFxm3Uu3LUooYlRT+ux38pH2arin+/AjXB8RlUhJTYDGB2INQ8oDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723044769; c=relaxed/simple;
-	bh=5Mj8SXHMcEKQVrYr8pZWaXF311MX5ewWkbhfV5N07nE=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LC7dvoFhEkt/2Bs97h+1JRN+TDA4dK6T7XdV5xiu6zrMbQyiH+0oHlBp0GeJkbudGjY/A9hkMnDRGtOm38AzeTIN0O/xYoudVwUYaZX6J2N2f0exDbRBl4tnilSuu3pu4MN8UmgxTKZyY50INCkH0pLyi5DgHRRBn08aPTXnNQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N2KgxLJi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kOk8Qt28; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 07 Aug 2024 15:32:46 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1723044766;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vGlL1b2Cl+k2Fq0XtZmXv+Zg2zYI+3nb3hAswDvKywM=;
-	b=N2KgxLJiqXPW/qwJg85PKx7j0giggXEBM2b5wl08TlAHAAx2GNeXjsDXHXi3mDHAHIVWmI
-	5OrLrg2IPDaFSApmi9Smz/+AzHlHdEU+tFHv28pC8EkIm5eK1OqwiczHezSEOU9mJppfkc
-	G/IQlzuq9IX2ykHsD2WtQ80et6ed076ZdgfEh+kog0zrd7EUBLZmokFrA00NdzGUCKPdGV
-	39jee13aclGl4+mnQeEiPP6LJvkiEvU1WdJIDwWwFsc5PE7+k3nXiCaU8uk6tTtxkNZNqN
-	l2xJge2r1Zt/LjjeImPb3XUZbgfQ04BA+9pSJFgJ8S1jPYV48AxeSWmaQqm+Cg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1723044766;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vGlL1b2Cl+k2Fq0XtZmXv+Zg2zYI+3nb3hAswDvKywM=;
-	b=kOk8Qt286kOomsoFhUmTEI1QiF+sA5KQEE67GVmv0PQbo2UXXiazbSL24SUZWmURxPR/6u
-	ovAGVUuchFQtWgCQ==
-From: "tip-bot2 for Shay Drory" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/irqdesc: Honor caller provided affinity in
- alloc_desc()
-Cc: Shay Drory <shayd@nvidia.com>, Thomas Gleixner <tglx@linutronix.de>,
-  <stable@vger.kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org,
- maz@kernel.org
-In-Reply-To: <20240806072044.837827-1-shayd@nvidia.com>
-References: <20240806072044.837827-1-shayd@nvidia.com>
+	s=arc-20240116; t=1723045293; c=relaxed/simple;
+	bh=Dm1h2rVViWETRpyaAucj7ynN3gHM14g/8UZq8htTnjk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=psMgDJ58jWRJQ0/8Tfo7AgZvE8de0QmmrTpS1SwqpF0a2yG/AVXeBr63p73Rls6ggXUe0vHHWcb2mPMMSJQt8T84zyhj8louf7UANX5v5mW6ju5bff8IR7e2dNyNpycEyOXyL4nwPw3D5vmtDmjeOYYlU1jg3KMZIvufNePGRGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lausen.nl; spf=pass smtp.mailfrom=lausen.nl; dkim=fail (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b=PvQIOcNq reason="key not found in DNS"; arc=none smtp.client-ip=185.26.156.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lausen.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lausen.nl
+Received: (qmail 8920 invoked by uid 990); 7 Aug 2024 15:41:21 -0000
+Authentication-Results: devico.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+	by devico.uberspace.de (Haraka/3.0.1) with ESMTPSA; Wed, 07 Aug 2024 17:41:21 +0200
+Message-ID: <f0d1da69-d52a-484e-8255-b9639c358a71@lausen.nl>
+Date: Wed, 7 Aug 2024 11:41:18 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172304476610.2215.2042942398040144931.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] drm/msm/dpu1: don't choke on disabling the
+ writeback connector
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org
+References: <20240802-dpu-fix-wb-v2-0-7eac9eb8e895@linaro.org>
+ <20240802-dpu-fix-wb-v2-1-7eac9eb8e895@linaro.org>
+ <57cdac1a-1c4d-4299-8fde-92ae054fc6c0@lausen.nl>
+ <61D52432-DD30-4C43-BD5E-1CC9F84DF5B9@linaro.org>
+Content-Language: en-US
+From: Leonard Lausen <leonard@lausen.nl>
+Autocrypt: addr=leonard@lausen.nl; keydata=
+ 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 Sw==
+In-Reply-To: <61D52432-DD30-4C43-BD5E-1CC9F84DF5B9@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Bar: --
+X-Rspamd-Report: BAYES_HAM(-2.860288) XM_UA_NO_VERSION(0.01) MIME_GOOD(-0.1)
+X-Rspamd-Score: -2.950288
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=lausen.nl; s=uberspace;
+	h=from:to:cc:subject:date;
+	bh=Dm1h2rVViWETRpyaAucj7ynN3gHM14g/8UZq8htTnjk=;
+	b=PvQIOcNqVdWPNZufM7HSSmdNoDCElvZIrnkDtbf6OoLs6Sg3CN90hOU8uKJb3jDwTl+6ak6W0G
+	OXFAciVX5Lp4vBSmkAy+ECZBmPPaXf4ZXC3zvBxvUnoCVRVbSsMAoMP9HWrHHoAFHdO4J/gXs64Z
+	xBJCCPD+U5oXyiQ72WcnSraLEC4J1/vQMaEBP6MTYGoUObde4HPfSsrGZXJG3R3Q5TBkUTAwJ/mv
+	3Q02ycC6IF1PW3AR+gAAcoCaVddUaWctw7EG+AXsUcNAXRSeOhDpKzhi6HLzAxqvOdASMLem+KLb
+	U+tOKH3cIsAbZPZX6a5QB8NNs6g03uIYtFvgikOUO825Ov35Vg0XJ8OwAaVos7LgqnbJe4lybJSh
+	HQQT4Iy7x3SQXm3fCgO5foCrl4XXiJkyLiRZfny6zwqEWtCkZW2VOazMWOJ0boLskJV7cSK4DkGD
+	y7zu6mNBAaCQE+XiQSLpBGXcKRIvi6YbpgBsGJBCScbRWx7GaRhSQ/8vyeGR9V56hmJOTF8kd3dO
+	wk0c0+nxnT6qvPfuO7eUVUy+pWahBsyLpWAB6fLP7UoRjlhXEwkqyLM/n1MT8cU3cy843wptWb3B
+	0uL7LdAjK8SBEjzHFOXwqBFU9Ly8Lii9gY6KJhsncYcCb/Ih2nt8AXksHdxmG4BLehB1erYjYvu/
+	g=
 
-The following commit has been merged into the irq/urgent branch of tip:
+On 8/7/24 06:44, Dmitry Baryshkov wrote:> Could you please clarify, I was under the impression that currently whole suspend/resume is broken, so it's more than a dmesg message.
 
-Commit-ID:     edbbaae42a56f9a2b39c52ef2504dfb3fb0a7858
-Gitweb:        https://git.kernel.org/tip/edbbaae42a56f9a2b39c52ef2504dfb3fb0a7858
-Author:        Shay Drory <shayd@nvidia.com>
-AuthorDate:    Tue, 06 Aug 2024 10:20:44 +03:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 07 Aug 2024 17:27:00 +02:00
+71174f362d67 specifically, or v6.9 more broadly regress in that we get "[dpu
+error]connector not connected 3" and "[drm:drm_mode_config_helper_resume]
+*ERROR* Failed to resume (-22)" if suspending and resuming the system while
+external display is connected over USB-C DP. Suspend and resume itself
+still works, and the external display also works after the resume, albeit
+perhaps with a small delay due to the dpu error. This is also mentioned in
+the issue description of https://gitlab.freedesktop.org/drm/msm/-/issues/57.
+So while suspend/resume isn't fully broken, the error is still unexpected and
+I thus bisected and identified 71174f362d67 as the first commit to trigger it.
+While your patch avoids the dpu/drm error, it triggers issue with the CRTC state,
+breaking the CRTC functionality after resume.
 
-genirq/irqdesc: Honor caller provided affinity in alloc_desc()
-
-Currently, whenever a caller is providing an affinity hint for an
-interrupt, the allocation code uses it to calculate the node and copies the
-cpumask into irq_desc::affinity.
-
-If the affinity for the interrupt is not marked 'managed' then the startup
-of the interrupt ignores irq_desc::affinity and uses the system default
-affinity mask.
-
-Prevent this by setting the IRQD_AFFINITY_SET flag for the interrupt in the
-allocator, which causes irq_setup_affinity() to use irq_desc::affinity on
-interrupt startup if the mask contains an online CPU.
-
-[ tglx: Massaged changelog ]
-
-Fixes: 45ddcecbfa94 ("genirq: Use affinity hint in irqdesc allocation")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/all/20240806072044.837827-1-shayd@nvidia.com
-
----
- kernel/irq/irqdesc.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 07e99c9..1dee88b 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -530,6 +530,7 @@ static int alloc_descs(unsigned int start, unsigned int cnt, int node,
- 				flags = IRQD_AFFINITY_MANAGED |
- 					IRQD_MANAGED_SHUTDOWN;
- 			}
-+			flags |= IRQD_AFFINITY_SET;
- 			mask = &affinity->mask;
- 			node = cpu_to_node(cpumask_first(mask));
- 			affinity++;
+Might we be facing a race condition here, which is accidentally exposed by
+71174f362d67 but requires a separate fix?
 
