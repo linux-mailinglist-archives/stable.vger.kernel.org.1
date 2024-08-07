@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-65599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886A394AAF6
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:01:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5620594AB9E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B17D4B22BFD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:01:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0BF51F2642E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E8A78B4C;
-	Wed,  7 Aug 2024 15:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A8B86252;
+	Wed,  7 Aug 2024 15:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Du9DnMMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+wqG+/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321BA23CE;
-	Wed,  7 Aug 2024 15:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7592585283;
+	Wed,  7 Aug 2024 15:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042899; cv=none; b=IsYegWN0e14JQjT4N5wsfsAHUZjnFjQJNfy9rN5C72RTddm6RkBBxM66qEEC6WEC174rLhV3+VEN+ApD7iUUzvdxPFzz/NMeh/nSkwjTIf/96wpBeyKChj6DHrWVtPv22/9isS9ESibqitZkCjIBQsAxqwFGG1SknvT/8mgHUh0=
+	t=1723043240; cv=none; b=L4rQDywMWYcLyOQO3vA+3FZUGfhGO7IO0JmEuJ2qTWgHRZCiggI8AbB+3Jn0pXCZ12A7JgG+LcMc5Y4QcR26dYYht5WsQppvdFo6lULVgG6OqzRRZs+BkmTzE1iiEqkaRVVroFkEevAottoGfNATy87su1mH7NCUVrnqFC/lnDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042899; c=relaxed/simple;
-	bh=jauIStteZciu4lpsq+K9VqY4qb98gEvzTVw0JXLVVS8=;
+	s=arc-20240116; t=1723043240; c=relaxed/simple;
+	bh=/0Lyhze7JnFfSfh0mw7/a92YKASoyxlQppj+T/q/FMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfkGRLME8bxz9vkIEalcclg3a8plefZuthXzYXh14TrAG+cC73XAudmO1mXR9hVZhFIjqYVV2PYc7REbMROc35OJQt0gIexYnxkvhvZLKzpOvvM9nUxDC5jUU/xmnsmFQNkqN1QFiCHNacSjcCTBgNOouAV2wlInYL6emjg8gZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Du9DnMMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE980C32781;
-	Wed,  7 Aug 2024 15:01:38 +0000 (UTC)
+	 MIME-Version; b=mWapmEFtrWqAyuAFBBpWzTu9mESMKs5JfB2U3cS5MRN1rWNbwSaEcgdLaNgsmB38f/LuO856R1of9gQIOzU0uZGiiSWBYRXh6NiJNwJymUD1fzkoUasQdJG98NG3E+OjWXQ3wZeWSI61basZ0ByYGJzcSfic36khkX9XX4dlNtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+wqG+/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DBAC4AF0B;
+	Wed,  7 Aug 2024 15:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723042899;
-	bh=jauIStteZciu4lpsq+K9VqY4qb98gEvzTVw0JXLVVS8=;
+	s=korg; t=1723043240;
+	bh=/0Lyhze7JnFfSfh0mw7/a92YKASoyxlQppj+T/q/FMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Du9DnMMoyzl7AARcdTEP07WxsO9A1FBMBYUkVgF1M1vF/FrZu3vQSpeaR53mBXhwQ
-	 GR88dj6Fi7p91/nDWiuR9nSx85tJ2UOtSNDJS0L1Iro0vDPZKNLoQT2ecHont68jRi
-	 jlEiuFscjtQKj7r49Vu0V+vbWETruFppDtu+uxdI=
+	b=P+wqG+/PkjZL0PjkgQ8VVQumsHA0MA8MmR/cANeyOgYuMHOWSPi0qg1I4IXo3nRad
+	 rE9FTe8sibM6xlMTFe9yjfVbaK7ehaPDuwpgQ5yryMxmPdk8cJCYpmyJMoU/BEtkJ1
+	 PTGjm76ur9QxyuYpuVOsYERZYy3GXHb7qHvMj40Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Doug Anderson <dianders@google.com>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 017/123] ARM: 9408/1: mm: CFI: Fix some erroneous reset prototypes
+Subject: [PATCH 6.6 004/121] arm64: dts: qcom: sc7280: Disable SuperSpeed instances in park mode
 Date: Wed,  7 Aug 2024 16:58:56 +0200
-Message-ID: <20240807150021.377866004@linuxfoundation.org>
+Message-ID: <20240807150019.540249619@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 657a292d679ae3a6c733ab0e939e24ae44b20faf ]
+[ Upstream commit 3d930f1750ce30a6c36dbc71f8ff7e20322b94d7 ]
 
-I somehow got a few cpu_nn_reset() signatures wrong in my
-patch. Fix it up.
+On SC7280, in host mode, it is observed that stressing out controller
+results in HC died error:
 
-Closes: https://lore.kernel.org/oe-kbuild-all/202406260432.6WGV2jCk-lkp@intel.com/
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-Fixes: 393999fa9627 ("ARM: 9389/2: mm: Define prototypes for all per-processor calls")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instances in park mode for SC7280 to mitigate this issue.
+
+Reported-by: Doug Anderson <dianders@google.com>
+Cc: stable@vger.kernel.org
+Fixes: bb9efa59c665 ("arm64: dts: qcom: sc7280: Add USB related nodes")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240604060659.1449278-3-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/proc.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mm/proc.c b/arch/arm/mm/proc.c
-index bdbbf65d1b366..2027845efefb6 100644
---- a/arch/arm/mm/proc.c
-+++ b/arch/arm/mm/proc.c
-@@ -17,7 +17,7 @@ void cpu_arm7tdmi_proc_init(void);
- __ADDRESSABLE(cpu_arm7tdmi_proc_init);
- void cpu_arm7tdmi_proc_fin(void);
- __ADDRESSABLE(cpu_arm7tdmi_proc_fin);
--void cpu_arm7tdmi_reset(void);
-+void cpu_arm7tdmi_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_arm7tdmi_reset);
- int cpu_arm7tdmi_do_idle(void);
- __ADDRESSABLE(cpu_arm7tdmi_do_idle);
-@@ -32,7 +32,7 @@ void cpu_arm720_proc_init(void);
- __ADDRESSABLE(cpu_arm720_proc_init);
- void cpu_arm720_proc_fin(void);
- __ADDRESSABLE(cpu_arm720_proc_fin);
--void cpu_arm720_reset(void);
-+void cpu_arm720_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_arm720_reset);
- int cpu_arm720_do_idle(void);
- __ADDRESSABLE(cpu_arm720_do_idle);
-@@ -49,7 +49,7 @@ void cpu_arm740_proc_init(void);
- __ADDRESSABLE(cpu_arm740_proc_init);
- void cpu_arm740_proc_fin(void);
- __ADDRESSABLE(cpu_arm740_proc_fin);
--void cpu_arm740_reset(void);
-+void cpu_arm740_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_arm740_reset);
- int cpu_arm740_do_idle(void);
- __ADDRESSABLE(cpu_arm740_do_idle);
-@@ -64,7 +64,7 @@ void cpu_arm9tdmi_proc_init(void);
- __ADDRESSABLE(cpu_arm9tdmi_proc_init);
- void cpu_arm9tdmi_proc_fin(void);
- __ADDRESSABLE(cpu_arm9tdmi_proc_fin);
--void cpu_arm9tdmi_reset(void);
-+void cpu_arm9tdmi_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_arm9tdmi_reset);
- int cpu_arm9tdmi_do_idle(void);
- __ADDRESSABLE(cpu_arm9tdmi_do_idle);
-@@ -79,7 +79,7 @@ void cpu_arm920_proc_init(void);
- __ADDRESSABLE(cpu_arm920_proc_init);
- void cpu_arm920_proc_fin(void);
- __ADDRESSABLE(cpu_arm920_proc_fin);
--void cpu_arm920_reset(void);
-+void cpu_arm920_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_arm920_reset);
- int cpu_arm920_do_idle(void);
- __ADDRESSABLE(cpu_arm920_do_idle);
-@@ -102,7 +102,7 @@ void cpu_arm922_proc_init(void);
- __ADDRESSABLE(cpu_arm922_proc_init);
- void cpu_arm922_proc_fin(void);
- __ADDRESSABLE(cpu_arm922_proc_fin);
--void cpu_arm922_reset(void);
-+void cpu_arm922_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_arm922_reset);
- int cpu_arm922_do_idle(void);
- __ADDRESSABLE(cpu_arm922_do_idle);
-@@ -119,7 +119,7 @@ void cpu_arm925_proc_init(void);
- __ADDRESSABLE(cpu_arm925_proc_init);
- void cpu_arm925_proc_fin(void);
- __ADDRESSABLE(cpu_arm925_proc_fin);
--void cpu_arm925_reset(void);
-+void cpu_arm925_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_arm925_reset);
- int cpu_arm925_do_idle(void);
- __ADDRESSABLE(cpu_arm925_do_idle);
-@@ -159,7 +159,7 @@ void cpu_arm940_proc_init(void);
- __ADDRESSABLE(cpu_arm940_proc_init);
- void cpu_arm940_proc_fin(void);
- __ADDRESSABLE(cpu_arm940_proc_fin);
--void cpu_arm940_reset(void);
-+void cpu_arm940_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_arm940_reset);
- int cpu_arm940_do_idle(void);
- __ADDRESSABLE(cpu_arm940_do_idle);
-@@ -174,7 +174,7 @@ void cpu_arm946_proc_init(void);
- __ADDRESSABLE(cpu_arm946_proc_init);
- void cpu_arm946_proc_fin(void);
- __ADDRESSABLE(cpu_arm946_proc_fin);
--void cpu_arm946_reset(void);
-+void cpu_arm946_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_arm946_reset);
- int cpu_arm946_do_idle(void);
- __ADDRESSABLE(cpu_arm946_do_idle);
-@@ -429,7 +429,7 @@ void cpu_v7_proc_init(void);
- __ADDRESSABLE(cpu_v7_proc_init);
- void cpu_v7_proc_fin(void);
- __ADDRESSABLE(cpu_v7_proc_fin);
--void cpu_v7_reset(void);
-+void cpu_v7_reset(unsigned long addr, bool hvc);
- __ADDRESSABLE(cpu_v7_reset);
- int cpu_v7_do_idle(void);
- __ADDRESSABLE(cpu_v7_do_idle);
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index dd1d9d10c6615..149c7962f2cbb 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -3680,6 +3680,7 @@ usb_1_dwc3: usb@a600000 {
+ 				iommus = <&apps_smmu 0xe0 0x0>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
++				snps,parkmode-disable-ss-quirk;
+ 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 				maximum-speed = "super-speed";
 -- 
 2.43.0
 
