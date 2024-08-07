@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C6894AB2E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:04:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9138F94ABC0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2AA283245
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:04:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F3521C21C13
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2D913790B;
-	Wed,  7 Aug 2024 15:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417FB839E4;
+	Wed,  7 Aug 2024 15:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBJXu+7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCfptUYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3F684DF8;
-	Wed,  7 Aug 2024 15:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23E980BF8;
+	Wed,  7 Aug 2024 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042991; cv=none; b=D4oOB1WiEBRao58jZeIagIx9V/lEU31pOIYnZ/BB+rmy6XA1FtC7k55M59uDQbXZCpOawfcVHCb1y/Kt8CfIC1ag9HrqBLsRVUnHCUVWVPwTL7t5rIrjQ0xxm6lnWLXXg7eRovpAom5mnzjyYwCXch+uCfoAyIs9RRt5TlJD3Rc=
+	t=1723043320; cv=none; b=TB8OpOn/b06Rts8g+M/11IHKiYwGpo06HO7x2GSSwPJ8W6sAezWeWgkzOPpZ9QtB9wcsegr5K7SVNAulo0yk1utRJXXU+Ot/PtE8E9T9ISwp1TKgxngg9t4osc+4vP9TNV/FvxUAGbk3IDFBU0YMyrTgX8bCPu+XufvWq1lzqEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042991; c=relaxed/simple;
-	bh=2TDuwAuZ9v2ieMit6fwpwUaHrdwFdQRb/4l2r9KEQ/E=;
+	s=arc-20240116; t=1723043320; c=relaxed/simple;
+	bh=6wlUB9OwwChZiK1SSdZwPIfOnvycNg67iKrw/tIrH74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wl+Rr3rC6ZaaWyPdFBOpcYp/IiXiEH5RDO5Uf4qbOtQMJe3k+3X1k09YJnc5pq5F/k0dBlcLlX2nFC0Q+WrwtR3tbiFn/mz+jeWMFm7VzaQpDkvyuFj46+mguLr45cc1ar72nb9fWrGx1BzfC9i/oSo9NHYHEauF21LbY9LoZG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBJXu+7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691ECC32781;
-	Wed,  7 Aug 2024 15:03:11 +0000 (UTC)
+	 MIME-Version; b=LXmYQ5yX543V6NHTCREuEnVUHKvN+eFaaUhi5SOWgzsLvwPHpb/DJfBMKVUxKnpIdLI5jvp53Ki7QR0dRbARszVZNa1QdYXieuPaja/+1dleCZRE2BG10mcwRtEaGm2jaZP9BRlXiZg2wK/c7Z2cBo2T6dQT1fM8XcG3QZjc62s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCfptUYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D71C4AF0D;
+	Wed,  7 Aug 2024 15:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723042991;
-	bh=2TDuwAuZ9v2ieMit6fwpwUaHrdwFdQRb/4l2r9KEQ/E=;
+	s=korg; t=1723043319;
+	bh=6wlUB9OwwChZiK1SSdZwPIfOnvycNg67iKrw/tIrH74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBJXu+7Fmgqml7hDFT6sePfcFS3aJjEyTcJHTSYwQrKKqYkIM7zbAVRs0Wcd9yjKw
-	 t0H0LFWgIs1GRZ6llQ0BkbKlXg8zKLbNT7fyQP++I64iyrr3oy76LPNZ9RaTi4VB3U
-	 pK+nqpi3mHXlDDlAGqCR2S4tj/RjlmPVk1w36ezs=
+	b=NCfptUYzbxo5owICQDM2gTJr9+j1IMdtneTYuOv9SnAq7SwhxGkT8shuiV9mwl82E
+	 G+H2/wyIXKjhYRZvTCseSR0dNdfCbb4FJyX26854PoeV/XruqFwcssInOvpVhYUeTw
+	 XwBYptWZhxY6EyZxmMzUzHa75vghizs+LFgnIxUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 033/123] Bluetooth: btintel: Fail setup on error
+Subject: [PATCH 6.6 020/121] ext4: check the extent status again before inserting delalloc block
 Date: Wed,  7 Aug 2024 16:59:12 +0200
-Message-ID: <20240807150021.899008624@linuxfoundation.org>
+Message-ID: <20240807150020.017770397@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit e22a3a9d4134d7e6351a2998771522e74bcc58da ]
+[ Upstream commit 0ea6560abb3bac1ffcfa4bf6b2c4d344fdc27b3c ]
 
-Do not attempt to send any hci command to controller if *setup* function
-fails.
+ext4_da_map_blocks looks up for any extent entry in the extent status
+tree (w/o i_data_sem) and then the looks up for any ondisk extent
+mapping (with i_data_sem in read mode).
 
-Fixes: af395330abed ("Bluetooth: btintel: Add Intel devcoredump support")
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+If it finds a hole in the extent status tree or if it couldn't find any
+entry at all, it then takes the i_data_sem in write mode to add a da
+entry into the extent status tree. This can actually race with page
+mkwrite & fallocate path.
+
+Note that this is ok between
+1. ext4 buffered-write path v/s ext4_page_mkwrite(), because of the
+   folio lock
+2. ext4 buffered write path v/s ext4 fallocate because of the inode
+   lock.
+
+But this can race between ext4_page_mkwrite() & ext4 fallocate path
+
+ext4_page_mkwrite()             ext4_fallocate()
+ block_page_mkwrite()
+  ext4_da_map_blocks()
+   //find hole in extent status tree
+                                 ext4_alloc_file_blocks()
+                                  ext4_map_blocks()
+                                   //allocate block and unwritten extent
+   ext4_insert_delayed_block()
+    ext4_da_reserve_space()
+     //reserve one more block
+    ext4_es_insert_delayed_block()
+     //drop unwritten extent and add delayed extent by mistake
+
+Then, the delalloc extent is wrong until writeback and the extra
+reserved block can't be released any more and it triggers below warning:
+
+ EXT4-fs (pmem2): Inode 13 (00000000bbbd4d23): i_reserved_data_blocks(1) not cleared!
+
+Fix the problem by looking up extent status tree again while the
+i_data_sem is held in write mode. If it still can't find any entry, then
+we insert a new da entry into the extent status tree.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240517124005.347221-3-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/inode.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-index 7ecc67deecb09..93900c37349c1 100644
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -3012,6 +3012,9 @@ static int btintel_setup_combined(struct hci_dev *hdev)
- 		btintel_set_dsm_reset_method(hdev, &ver_tlv);
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index b8b2f731f1d0e..cef119a2476bb 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1737,6 +1737,7 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 		if (ext4_es_is_hole(&es))
+ 			goto add_delayed;
  
- 		err = btintel_bootloader_setup_tlv(hdev, &ver_tlv);
-+		if (err)
-+			goto exit_error;
++found:
+ 		/*
+ 		 * Delayed extent could be allocated by fallocate.
+ 		 * So we need to check it.
+@@ -1781,6 +1782,26 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 
+ add_delayed:
+ 	down_write(&EXT4_I(inode)->i_data_sem);
++	/*
++	 * Page fault path (ext4_page_mkwrite does not take i_rwsem)
++	 * and fallocate path (no folio lock) can race. Make sure we
++	 * lookup the extent status tree here again while i_data_sem
++	 * is held in write mode, before inserting a new da entry in
++	 * the extent status tree.
++	 */
++	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
++		if (!ext4_es_is_hole(&es)) {
++			up_write(&EXT4_I(inode)->i_data_sem);
++			goto found;
++		}
++	} else if (!ext4_has_inline_data(inode)) {
++		retval = ext4_map_query_blocks(NULL, inode, map);
++		if (retval) {
++			up_write(&EXT4_I(inode)->i_data_sem);
++			return retval;
++		}
++	}
 +
- 		btintel_register_devcoredump_support(hdev);
- 		btintel_print_fseq_info(hdev);
- 		break;
+ 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
+ 	up_write(&EXT4_I(inode)->i_data_sem);
+ 	if (retval)
 -- 
 2.43.0
 
