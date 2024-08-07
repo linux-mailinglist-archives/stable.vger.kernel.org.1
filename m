@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A1794ABB0
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E40F994AB2C
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:04:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2EF91C21341
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 213A91C219E0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103CE78C92;
-	Wed,  7 Aug 2024 15:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90CC135A63;
+	Wed,  7 Aug 2024 15:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYNMh/zS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okf/wKPf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D8727448;
-	Wed,  7 Aug 2024 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C0F84A5E;
+	Wed,  7 Aug 2024 15:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043287; cv=none; b=R91kqPDZOZwkP7U6e/8/wyzAo35ak02MOzk5ul8+lnnz4+oBeQfUXVzbfdy1eFuJCX3CHsn+64G7JZXHWMEFXuxTb2AntyZun/Ysx9iQ5s+xxCC1MvwfBTHBkWiLwUEdd6siNShCyh45ocrhENEcPWzvqPlyy2Lfo14VAH4pnjw=
+	t=1723042986; cv=none; b=Qhn067S44B7kKzrowYH8hhBlVuYLiNH44WGAYU25X2ZamAj+pA21tRdUdx3gryf1fuqogUPkr5EVTBGvR0MeH/vAcutA6BGoUAPwxak2Z/nwtUvwayRZhesLO4nDNWVlFYriACn8fbiYlRJbZuVRZtSsVeg0/VcIzn9+4t6+Sgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043287; c=relaxed/simple;
-	bh=z1BDHlVSOqdnrDiIVNavIKomsbybbSU/LNhotR2GMdo=;
+	s=arc-20240116; t=1723042986; c=relaxed/simple;
+	bh=GZQgtVphLO7DfurYadOGu7113U4T7Viy57fyljQP7Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZgBxrc9XQ7tOQes22QWx1Hff9d1VIci+pVTCWA6Wj+dX0R8WcTN2wrMMLJ7gbJkKwp7n75PwHpjohLE7JIWyJ/XXBuheI7Jf2JMI6whuIW6Wk0EkHGjjqWluWuEZhKsRGRTHaLXyHHgroRFroarUDLNKET1d1OF6nK/V9ju29A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYNMh/zS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C521C32781;
-	Wed,  7 Aug 2024 15:08:07 +0000 (UTC)
+	 MIME-Version; b=gwFPmWtuFJKNlo/twzyI9o093EuQ29h2pzeiVa6r8PMhkBvTeVQNY3AGyhaTES4BtoSM4AP6PQ1YIRmu4BKOrb6b+j7eA75V520rfRLRS/c3QT/ACIWA/2h2UglUsJYHYjZSRRwU3njLwP36K73pwZQA00bqtiZKa/KuZXIMpK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okf/wKPf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD67C32781;
+	Wed,  7 Aug 2024 15:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043287;
-	bh=z1BDHlVSOqdnrDiIVNavIKomsbybbSU/LNhotR2GMdo=;
+	s=korg; t=1723042986;
+	bh=GZQgtVphLO7DfurYadOGu7113U4T7Viy57fyljQP7Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYNMh/zScIypPVOyx4X2ImtFV4G4+jlJWvAysaNM+c7t9LoOYyVPnZr7CXIOcax2w
-	 AbvOV0eTuUBX0uGbwZa7LcGx6OIjJZPxNRuSh1P+Jci4GKuLN8Po75T1zjnIpla+cC
-	 /6Ai6EPdb6eHWyVZ4OBsE22OFmKJBlkFuuMsGG7k=
+	b=okf/wKPfB9MpC9fnEMtwu5VHYknpi1qqmLtC/Pjw2aEy6z9hq5STMU8YjugwpY7E5
+	 G2V1PldXCbh5y/JGf9In2ysnpQ0KxazKXMxDSURY/mf9jUXVbMpNUMZJK9Q4K3Piky
+	 MRLRaWZnZDM23wwYFFgLtNz+ZhXJ0nF07YPjEQuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Helge Deller <deller@gmx.de>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/121] fbdev: vesafb: Detect VGA compatibility from screen infos VESA attributes
+Subject: [PATCH 6.10 049/123] net/iucv: fix use after free in iucv_sock_close()
 Date: Wed,  7 Aug 2024 16:59:28 +0200
-Message-ID: <20240807150020.530453644@linuxfoundation.org>
+Message-ID: <20240807150022.415089823@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-[ Upstream commit c2bc958b2b03e361f14df99983bc64a39a7323a3 ]
+[ Upstream commit f558120cd709682b739207b48cf7479fd9568431 ]
 
-Test the vesa_attributes field in struct screen_info for compatibility
-with VGA hardware. Vesafb currently tests bit 1 in screen_info's
-capabilities field which indicates a 64-bit lfb address and is
-unrelated to VGA compatibility.
+iucv_sever_path() is called from process context and from bh context.
+iucv->path is used as indicator whether somebody else is taking care of
+severing the path (or it is already removed / never existed).
+This needs to be done with atomic compare and swap, otherwise there is a
+small window where iucv_sock_close() will try to work with a path that has
+already been severed and freed by iucv_callback_connrej() called by
+iucv_tasklet_fn().
 
-Section 4.4 of the Vesa VBE 2.0 specifications defines that bit 5 in
-the mode's attributes field signals VGA compatibility. The mode is
-compatible with VGA hardware if the bit is clear. In that case, the
-driver can access VGA state of the VBE's underlying hardware. The
-vesafb driver uses this feature to program the color LUT in palette
-modes. Without, colors might be incorrect.
+Example:
+[452744.123844] Call Trace:
+[452744.123845] ([<0000001e87f03880>] 0x1e87f03880)
+[452744.123966]  [<00000000d593001e>] iucv_path_sever+0x96/0x138
+[452744.124330]  [<000003ff801ddbca>] iucv_sever_path+0xc2/0xd0 [af_iucv]
+[452744.124336]  [<000003ff801e01b6>] iucv_sock_close+0xa6/0x310 [af_iucv]
+[452744.124341]  [<000003ff801e08cc>] iucv_sock_release+0x3c/0xd0 [af_iucv]
+[452744.124345]  [<00000000d574794e>] __sock_release+0x5e/0xe8
+[452744.124815]  [<00000000d5747a0c>] sock_close+0x34/0x48
+[452744.124820]  [<00000000d5421642>] __fput+0xba/0x268
+[452744.124826]  [<00000000d51b382c>] task_work_run+0xbc/0xf0
+[452744.124832]  [<00000000d5145710>] do_notify_resume+0x88/0x90
+[452744.124841]  [<00000000d5978096>] system_call+0xe2/0x2c8
+[452744.125319] Last Breaking-Event-Address:
+[452744.125321]  [<00000000d5930018>] iucv_path_sever+0x90/0x138
+[452744.125324]
+[452744.125325] Kernel panic - not syncing: Fatal exception in interrupt
 
-The problem got introduced in commit 89ec4c238e7a ("[PATCH] vesafb: Fix
-incorrect logo colors in x86_64"). It incorrectly stores the mode
-attributes in the screen_info's capabilities field and updates vesafb
-accordingly. Later, commit 5e8ddcbe8692 ("Video mode probing support for
-the new x86 setup code") fixed the screen_info, but did not update vesafb.
-Color output still tends to work, because bit 1 in capabilities is
-usually 0.
+Note that bh_lock_sock() is not serializing the tasklet context against
+process context, because the check for sock_owned_by_user() and
+corresponding handling is missing.
 
-Besides fixing the bug in vesafb, this commit introduces a helper that
-reads the correct bit from screen_info.
+Ideas for a future clean-up patch:
+A) Correct usage of bh_lock_sock() in tasklet context, as described in
+Link: https://lore.kernel.org/netdev/1280155406.2899.407.camel@edumazet-laptop/
+Re-enqueue, if needed. This may require adding return values to the
+tasklet functions and thus changes to all users of iucv.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 5e8ddcbe8692 ("Video mode probing support for the new x86 setup code")
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Cc: <stable@vger.kernel.org> # v2.6.23+
-Signed-off-by: Helge Deller <deller@gmx.de>
+B) Change iucv tasklet into worker and use only lock_sock() in af_iucv.
+
+Fixes: 7d316b945352 ("af_iucv: remove IUCV-pathes completely")
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://patch.msgid.link/20240729122818.947756-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/vesafb.c |  2 +-
- include/linux/screen_info.h  | 10 ++++++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ net/iucv/af_iucv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
-index ea89accbec385..a21581b40256c 100644
---- a/drivers/video/fbdev/vesafb.c
-+++ b/drivers/video/fbdev/vesafb.c
-@@ -259,7 +259,7 @@ static int vesafb_probe(struct platform_device *dev)
- 	if (si->orig_video_isVGA != VIDEO_TYPE_VLFB)
- 		return -ENODEV;
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index c3b0b610b0aa3..c00323fa9eb66 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -335,8 +335,8 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
+ 	struct iucv_sock *iucv = iucv_sk(sk);
+ 	struct iucv_path *path = iucv->path;
  
--	vga_compat = (si->capabilities & 2) ? 0 : 1;
-+	vga_compat = !__screen_info_vbe_mode_nonvga(si);
- 	vesafb_fix.smem_start = si->lfb_base;
- 	vesafb_defined.bits_per_pixel = si->lfb_depth;
- 	if (15 == vesafb_defined.bits_per_pixel)
-diff --git a/include/linux/screen_info.h b/include/linux/screen_info.h
-index 75303c126285a..6a4a3cec4638b 100644
---- a/include/linux/screen_info.h
-+++ b/include/linux/screen_info.h
-@@ -49,6 +49,16 @@ static inline u64 __screen_info_lfb_size(const struct screen_info *si, unsigned
- 	return lfb_size;
- }
- 
-+static inline bool __screen_info_vbe_mode_nonvga(const struct screen_info *si)
-+{
-+	/*
-+	 * VESA modes typically run on VGA hardware. Set bit 5 signals that this
-+	 * is not the case. Drivers can then not make use of VGA resources. See
-+	 * Sec 4.4 of the VBE 2.0 spec.
-+	 */
-+	return si->vesa_attributes & BIT(5);
-+}
-+
- static inline unsigned int __screen_info_video_type(unsigned int type)
- {
- 	switch (type) {
+-	if (iucv->path) {
+-		iucv->path = NULL;
++	/* Whoever resets the path pointer, must sever and free it. */
++	if (xchg(&iucv->path, NULL)) {
+ 		if (with_user_data) {
+ 			low_nmcpy(user_data, iucv->src_name);
+ 			high_nmcpy(user_data, iucv->dst_name);
 -- 
 2.43.0
 
