@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-65601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23FA94AAF7
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:01:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BC494ABA0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88C921F29592
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:01:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A7CE1C218F4
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFA478291;
-	Wed,  7 Aug 2024 15:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6F18172A;
+	Wed,  7 Aug 2024 15:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEgm4k/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzT/tImT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB81823CE;
-	Wed,  7 Aug 2024 15:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3EA7D3E4;
+	Wed,  7 Aug 2024 15:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042904; cv=none; b=Ce1fGrm9nFb7UhgNSG5kIWIhJkHfvo/D1la9NkBkuFrB2UE0pPYjQ/vDhxUkzmBOsB8+pCyIM+VplvG7yXfQuygaCVFkg/gq/xSySVffAPXpVMvkD3GqXM0gFjLevIGk8VjAT5YWp1CEp3M/HkrJsGUEonm1qzfzxkkifiyBQDg=
+	t=1723043245; cv=none; b=kejM+jXQV08VInnlNATJeUgAwMyhhi2k71xzczFK47V9bVO5zXTB0MvAVcllpm1Qf4gLCFJLXxDjYzHZFSuKDL1vR3FbilViIyOFRpbA0VGm4oQadX0/J5ZFfRqll8QPwNpSzVNzRRHDMr3FPTmw4yzztfaStTCJQiogxeANsZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042904; c=relaxed/simple;
-	bh=a+J/kI3WB7Jyscp9u8lxWa2CXmiYs0iITC10kYq0j6I=;
+	s=arc-20240116; t=1723043245; c=relaxed/simple;
+	bh=heTJfN2CNzgVyTkSI3MB73GhnZVpt186PVtLsCBa6SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSaSFCeSHQARGactN49GrrvV0gEK2M97fitoR3+AW4xa6GMRZCtF9/9YGgC1J0CNksawzhMyhcoTrXxBTie70uX6jJClt3/IJk5PuIZT+JUOuSNO1dcJYCVKPp169xmxLrt8FOV1dZrcVxdzUK3rOWVlSg5vDihaRSSBhAgTPfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEgm4k/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCFBC32781;
-	Wed,  7 Aug 2024 15:01:43 +0000 (UTC)
+	 MIME-Version; b=q4c6xjYQUPWtDaBoxzO9APld7dQcRtKxJyJR0iW9ulMot+alElyRLf0Om0NtF4pYiIxJpLp4rj432Hvms1Emj21TXLLnPmb3f8qWVkLB9+n/6xmqkgClYzhdGCgYesKYN5JyWAjn1yOTv3FeNCVaLMbPFm3OroVctlydfPE73Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzT/tImT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8BCC32781;
+	Wed,  7 Aug 2024 15:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723042904;
-	bh=a+J/kI3WB7Jyscp9u8lxWa2CXmiYs0iITC10kYq0j6I=;
+	s=korg; t=1723043245;
+	bh=heTJfN2CNzgVyTkSI3MB73GhnZVpt186PVtLsCBa6SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEgm4k/GP0ZRqQBTf3lOSm09fQ+6I4WTqcQIQOkRsmVctp1+CX/PZtrBKZVhIkjYV
-	 gky3Bs9K9aQhmonFuDNudGgcvOCs0axmBCLu4M8kb04k5xjJoxsWuIWB06gVaczIg3
-	 XpKG9huJRNKnMzDugIE66bBFiytT1LBYSsCTcqSI=
+	b=NzT/tImTXfXr0qndCxqxIMv1Ys5LMf2s+Q9Qp/TAOqCA9IpsTXNc5jxeS9/hE9o0L
+	 SrdpXZ0RulV299g9P7JOiEdXxVVW6l1iqQVqjfaBkcwNZa1FKlfELgHgmk8djsQBYA
+	 EFndoQ484ka4eMBRjoBLK3SEi0nX/iMqMGXu1cMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Casey Chen <cachen@purestorage.com>,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	yzhong@purestorage.com,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 019/123] perf tool: fix dereferencing NULL al->maps
+Subject: [PATCH 6.6 006/121] arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB
 Date: Wed,  7 Aug 2024 16:58:58 +0200
-Message-ID: <20240807150021.441970732@linuxfoundation.org>
+Message-ID: <20240807150019.599447206@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Casey Chen <cachen@purestorage.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 4c17736689ccfc44ec7dcc472577f25c34cf8724 ]
+[ Upstream commit 0046325ae52079b46da13a7f84dd7b2a6f7c38f8 ]
 
-With 0dd5041c9a0e ("perf addr_location: Add init/exit/copy functions"),
-when cpumode is 3 (macro PERF_RECORD_MISC_HYPERVISOR),
-thread__find_map() could return with al->maps being NULL.
+For Gen-1 targets like MSM8998, it is seen that stressing out the
+controller in host mode results in HC died error:
 
-The path below could add a callchain_cursor_node with NULL ms.maps.
+ xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+ xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+ xhci-hcd.12.auto: HC died; cleaning up
 
-add_callchain_ip()
-  thread__find_symbol(.., &al)
-    thread__find_map(.., &al)   // al->maps becomes NULL
-  ms.maps = maps__get(al.maps)
-  callchain_cursor_append(..., &ms, ...)
-    node->ms.maps = maps__get(ms->maps)
+And at this instant only restarting the host mode fixes it. Disable
+SuperSpeed instance in park mode for MSM8998 to mitigate this issue.
 
-Then the path below would dereference NULL maps and get segfault.
-
-fill_callchain_info()
-  maps__machine(node->ms.maps);
-
-Fix it by checking if maps is NULL in fill_callchain_info().
-
-Fixes: 0dd5041c9a0e ("perf addr_location: Add init/exit/copy functions")
-Signed-off-by: Casey Chen <cachen@purestorage.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: yzhong@purestorage.com
-Link: https://lore.kernel.org/r/20240722211548.61455-1-cachen@purestorage.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 026dad8f5873 ("arm64: dts: qcom: msm8998: Add USB-related nodes")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240704152848.3380602-4-quic_kriskura@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/callchain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/callchain.c b/tools/perf/util/callchain.c
-index 1730b852a9474..6d075648d2ccf 100644
---- a/tools/perf/util/callchain.c
-+++ b/tools/perf/util/callchain.c
-@@ -1141,7 +1141,7 @@ int hist_entry__append_callchain(struct hist_entry *he, struct perf_sample *samp
- int fill_callchain_info(struct addr_location *al, struct callchain_cursor_node *node,
- 			bool hide_unresolved)
- {
--	struct machine *machine = maps__machine(node->ms.maps);
-+	struct machine *machine = node->ms.maps ? maps__machine(node->ms.maps) : NULL;
- 
- 	maps__put(al->maps);
- 	al->maps = maps__get(node->ms.maps);
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index d49764eeab9c9..7fcc15b6946ae 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -2159,6 +2159,7 @@ usb3_dwc3: usb@a800000 {
+ 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
++				snps,parkmode-disable-ss-quirk;
+ 				phys = <&qusb2phy>, <&usb3phy>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 				snps,has-lpm-erratum;
 -- 
 2.43.0
 
