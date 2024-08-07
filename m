@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-65709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A59E94AB8C
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 720EB94ABF9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C4841C21B44
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A27F21C229A9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764C9128369;
-	Wed,  7 Aug 2024 15:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FF484A3E;
+	Wed,  7 Aug 2024 15:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhI+GxPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bsuv4Z3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3369685270;
-	Wed,  7 Aug 2024 15:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0133A78C92;
+	Wed,  7 Aug 2024 15:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043197; cv=none; b=GZAWSoXnBYfa+ikm+Y/X8og5rDv0rk0ffopN5zCcXx/RQTjR2pNYd+7UVXC1yg6KO/KfRA25cZgRjz0nb2X1L1FN4Lee+GcsqsZQR1hOuHUlX4QYvRa0BS5aD7Y0fMkFZuWSr6QwTqmpX+10ZA7fLnW2DkZLsg4ewbTFWH8lPVQ=
+	t=1723043448; cv=none; b=d4Luke91mcbCpiFt1myPtiyv69C/tz3W1HMMJp4NKLvuUI8Qmv8n+EdBpr36FN3CbJKjLJFikEjEFzNK/0dZR3PU2x5jIQJPoaMtgeVkRlGQH4ORRx3dvR2vUt8vsBNiTFOqqzrLVacxbuDvdtfvt5eMHfej8tItK9OvHRLoM/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043197; c=relaxed/simple;
-	bh=Xoe6nLD57TYWN5Bx0P9bsVTeltsjQKYlTREMPAhU41I=;
+	s=arc-20240116; t=1723043448; c=relaxed/simple;
+	bh=1NsnYChWPz9cRW19nEMOpl5/wENPO3Mn2JfTaqMjBUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0bGN6Lpvq9dAkL54ihMB+6bNSgNu2faRgISPYhWWjP/3fkmi7WrWA8ubzSwEHI6LufXh9u9+O2hO0Lwa84wpcakKur+tjToe1bn7OnsOSZgqZu8bCqZEuLMiIsCNw+hT0+UzUaWk/Q+26hCIOEqLNRatOc6+s0jNnxH9lL9QFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhI+GxPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3B0C32781;
-	Wed,  7 Aug 2024 15:06:36 +0000 (UTC)
+	 MIME-Version; b=tO6lCsBw3Jtw89+HABmi/BsdXjui3AgUIEoJmotUh/O3wD69B8mQBPG7YueYCoPU6cuvXe7ur9xi6ecermIxlpV+GKHeqPHTHpAQUChOzDVwIsW9xo9o6kKaXA5BwB4j8UUNPG7kM3xLgZspjWsY+M5ZhDIcnLOncs6rYkvOtWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bsuv4Z3v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84796C4AF0B;
+	Wed,  7 Aug 2024 15:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043197;
-	bh=Xoe6nLD57TYWN5Bx0P9bsVTeltsjQKYlTREMPAhU41I=;
+	s=korg; t=1723043447;
+	bh=1NsnYChWPz9cRW19nEMOpl5/wENPO3Mn2JfTaqMjBUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhI+GxPoTfavqrj781Hj2pCpnX2duBDXLzZkGfr5d5zTAZvJpmCfHtgVIlAZGaD22
-	 5JF4057NYMzy4+AcdWK+vn34SjObWNMQv1RSLLEfhTawJF+o9gM2yTnnrqAbhPaazS
-	 Os5Y9/LOZ6pRzoarSXpFQYMYaw7qY1bmObyaUBcY=
+	b=Bsuv4Z3v7/Hp2ULr9oH1UBZpKRMRLYEo47o+skc+jPLZEfKxA16Ke/2V2+SGnocqf
+	 ebcghAZQulNG6gvqlylWiAiQ2xEuUMefPvnKZYQc8IOcVWAp/OHQU2RTDvLXtySA5K
+	 EgNWrVMs3YL61MjTEAeV7jY7v2zye4+r6h9/h0Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Langlois <olivier@trillion01.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 107/123] io_uring: keep multishot request NAPI timeout current
-Date: Wed,  7 Aug 2024 17:00:26 +0200
-Message-ID: <20240807150024.316902125@linuxfoundation.org>
+	Patryk Duda <patrykd@google.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 6.6 095/121] platform/chrome: cros_ec_proto: Lock device when updating MKBP version
+Date: Wed,  7 Aug 2024 17:00:27 +0200
+Message-ID: <20240807150022.501806782@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Langlois <olivier@trillion01.com>
+From: Patryk Duda <patrykd@google.com>
 
-commit 2c762be5b798c443612c1bb9b011de4fdaebd1c5 upstream.
+commit df615907f1bf907260af01ccb904d0e9304b5278 upstream.
 
-This refresh statement was originally present in the original patch:
-https://lore.kernel.org/netdev/20221121191437.996297-2-shr@devkernel.io/
+The cros_ec_get_host_command_version_mask() function requires that the
+caller must have ec_dev->lock mutex before calling it. This requirement
+was not met and as a result it was possible that two commands were sent
+to the device at the same time.
 
-It has been removed with no explanation in v6:
-https://lore.kernel.org/netdev/20230201222254.744422-2-shr@devkernel.io/
+The problem was observed while using UART backend which doesn't use any
+additional locks, unlike SPI backend which locks the controller until
+response is received.
 
-It is important to make the refresh for multishot requests, because if no
-new requests using the same NAPI device are added to the ring, the entry
-will become stale and be removed silently. The unsuspecting user will
-not know that their ring had busy polling for only 60 seconds before
-being pruned.
-
-Signed-off-by: Olivier Langlois <olivier@trillion01.com>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Fixes: 8d0c12a80cdeb ("io-uring: add napi busy poll support")
+Fixes: f74c7557ed0d ("platform/chrome: cros_ec_proto: Update version on GET_NEXT_EVENT failure")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/0fe61a019ec61e5708cd117cb42ed0dab95e1617.1722294646.git.olivier@trillion01.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Patryk Duda <patrykd@google.com>
+Link: https://lore.kernel.org/r/20240730104425.607083-1-patrykd@google.com
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/poll.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/chrome/cros_ec_proto.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/io_uring/poll.c b/io_uring/poll.c
-index 0a8e02944689..1f63b60e85e7 100644
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -347,6 +347,7 @@ static int io_poll_check_events(struct io_kiocb *req, struct io_tw_state *ts)
- 		v &= IO_POLL_REF_MASK;
- 	} while (atomic_sub_return(v, &req->poll_refs) & IO_POLL_REF_MASK);
- 
-+	io_napi_add(req);
- 	return IOU_POLL_NO_ACTION;
- }
- 
--- 
-2.46.0
-
+--- a/drivers/platform/chrome/cros_ec_proto.c
++++ b/drivers/platform/chrome/cros_ec_proto.c
+@@ -805,9 +805,11 @@ int cros_ec_get_next_event(struct cros_e
+ 	if (ret == -ENOPROTOOPT) {
+ 		dev_dbg(ec_dev->dev,
+ 			"GET_NEXT_EVENT returned invalid version error.\n");
++		mutex_lock(&ec_dev->lock);
+ 		ret = cros_ec_get_host_command_version_mask(ec_dev,
+ 							EC_CMD_GET_NEXT_EVENT,
+ 							&ver_mask);
++		mutex_unlock(&ec_dev->lock);
+ 		if (ret < 0 || ver_mask == 0)
+ 			/*
+ 			 * Do not change the MKBP supported version if we can't
 
 
 
