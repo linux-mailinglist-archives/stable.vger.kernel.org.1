@@ -1,373 +1,282 @@
-Return-Path: <stable+bounces-65521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AABF949ED7
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 06:33:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE6894A022
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 08:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EE581C21567
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 04:33:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D5E1280A66
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 06:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6363618FC9C;
-	Wed,  7 Aug 2024 04:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8789F1BDAB6;
+	Wed,  7 Aug 2024 06:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CWr/+l6J"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="St3nPy8p";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="QRVbNbRj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3096629CEC
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 04:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723005209; cv=none; b=BSoVzwIT6NWbW34aoMPYvS7OaBVugrwjyjrzhPthkuQCcwy4BMaRyB7TU/hBuXQsJmlXXySb+eFhsCyD5S0B6jmBPRqYozMnxbwAuLdmYbGHxvqyDT94QXr5tGr7bytghUU6Y0dD0gbha6Y00UPgs9NYk1530huZjmVofM8yxxM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723005209; c=relaxed/simple;
-	bh=2aMk1wCg0XtUavuN5wtGtXS3GBcoTm6iQL2je9pQ8uM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UA+ilkqUI7TJhmK9dn0pet1TqaSrqlqIhLmWcqDH60xkrBCtBEXsxbdGbl52c/7rBemAWlHUgwwr2LUE5qazxyO6rxy9neN7BFsiUaMbo9arn0DghRqeP6mjKYfSDEkO6HPk+G4cSuqNVAzw6JjAhGf87TD6/mgvZhuhh5bArR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CWr/+l6J; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5a28b61b880so26238a12.1
-        for <stable@vger.kernel.org>; Tue, 06 Aug 2024 21:33:26 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC9D1BC9F4;
+	Wed,  7 Aug 2024 06:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723012953; cv=fail; b=TP2ZyptEolm4WaqNfiMRUKg6fSJ+N9O/5fIqQ9qm/9A7WhT5fgjwpoHha9mmNVt8qZ4PK0ex9lo8ZsVnd9GPRaLT/qMjNRtMP72dW6cxIaLbvfdGmFpTxdVZ5t4ZRqeTrE1mvIEfE8f42RJHPG4pjC9l5Mb3BiE6fXUPVPu4PGE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723012953; c=relaxed/simple;
+	bh=rj3bf7FEgvadgMwX4rnY41wAXhpPFN0zHNF8JsRJJLg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:Content-Type:
+	 MIME-Version; b=tJjluk4ZknnVox7CEFqIEuUKNViQnScX/gacW7vgvu32p7D8gEuAp5y1HxDfD5uHiwPiMY52UT9zSfe06vnISlugoi2O1eIV7cQ4uP99ZVCKRFDKBHml4TCTRlFHVdKWuIB18k/8JEVq1aBkgwMFSu+LJFtw4hjqvmOkX1WoMPI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=St3nPy8p; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=QRVbNbRj; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4776BZTG023477;
+	Wed, 7 Aug 2024 06:42:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	from:to:cc:subject:date:message-id:in-reply-to:content-type
+	:mime-version; s=corp-2023-11-20; bh=A4MboREmlkevyiwi1o47vtjPZ8f
+	SHzkn4B3YXLxAqpo=; b=St3nPy8pS/4kXWu9EH4JJjYVxTIbMs2qAerNYsptVvG
+	VONsV29E22rPXpyoZfZF1yaMSYJ6E0TyXYCkv8qRFq5dw6bQz78PW+Ci/duM4kS0
+	rIEUM3Z6XQzS2TqK38LYfOqzqv1fjcEI39qKPh0oe5JaiJc4qECw7QuvwQBVJzWn
+	xT0zTdyjh0es9EGqU3JK6qWYezi6+MWBtsviMeXCewrpEFOKIUZPBbEMayBTXgIb
+	0VATrXfXen6v0yE+FLeK2SQbJr43MAyhcwUej8puLPzHoUxzQ4SctUFCG7DQtvNd
+	oC3oXSAP/eS+0BLz0v8hYwO7pKv7RHr2XIBr92zYaAg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40saye6vw2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 07 Aug 2024 06:42:18 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 4774Lq2e018391;
+	Wed, 7 Aug 2024 06:42:17 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2048.outbound.protection.outlook.com [104.47.55.48])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 40sb09mjqf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 07 Aug 2024 06:42:17 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ViBZJuReUIGQMY3D+wK4WWV2yVr+wVPydy5DpWs6EMhP4NJw/g/FO1PlSac08d/wPt1XEMiQ0zA2jF43784952beo+6O3GDOveCDr4B+NPHgvtIHyA5EbJL3FcLRfFA1/sO2aXmiL8JoHHfvFjjG1IJ/u81vHsRm/a+KbXi74XZHvalruQEiLFwb9ZGa7KbtLsC5gR6w8TzBL228Z8AgZkNuyusFKopJF6ItTtucz+kK3Qrwzgb5WSqXbF32EMHpvlNpBUwZXEPnacbhw9C6WxzQjWIiddvcebsGNn8ieCt2/TvOReZNhjNzEFHsZzNVC2AG+bZkjUUYXLfxP8v1dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A4MboREmlkevyiwi1o47vtjPZ8fSHzkn4B3YXLxAqpo=;
+ b=uSjYomr83zjPvrflOycXb+XAXVMB1bxffuYFL6xfkSjpmPCsyJeZZXvkqpmxjocOO5REv7akciaEIzEnIR+qqObo+QApGedGpE13ePiWpIowLqA6qDgM0G9ozLB+l5MLh9rZW9roUmOYBmkZiwAKhPgi9Z4uPQpqgVYdTVZwwoAxQUV3OVwh7pTmio/3p2qP5eD84mHlMcd+1gZHpvEC68ldqmdOmmypXD9Ga0Sfj5WLGdAom90D3erF3mp2/snb6FZREIttJJjZ1lItj+SCB169k6asq15QHwI7BagLrDTuS/NCGF4pznBX0StuBrFdde62wfA2welphKDF+uWKnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723005205; x=1723610005; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PchbWzNoWQ3x0Bdyu00GRTjqAVg+Qi0U7ExdbFMkY4k=;
-        b=CWr/+l6JGl1EOlSxOXl5RpfwUR+UpBjFgJdPYiDoM77i9RFbSfn9+S08mhAraJT9pF
-         j6MBIcvC7mtvDGnBqzqRE1McV9gPaWpPXktjOjscgct/+DW31V6YtBiU4TX8IwDGZhp/
-         IKw2CkDgkOZSQVYj0B+1khb+Hrwfyy72mYDRCH4lkfSCrJnWCDoGUrG7hu06ueFHYGjg
-         B+ugVK8Eb1D30Gpwq5DHdVb8PxrEnsH1FVHpupumLEicMrw36wyaESNGTCpV5pRGa9E1
-         BEImmU9xd85yI7aTrWDAD8elGZ7PXGMaHNR02Os+WOOTjLF/wTqSYY+T5jtfI8SICJkA
-         9XeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723005205; x=1723610005;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PchbWzNoWQ3x0Bdyu00GRTjqAVg+Qi0U7ExdbFMkY4k=;
-        b=W6cWjUUr4286dvZVIFs6p4fntXmVLh7+DgFxyvzZXkIT8NZzUBh8f+hQKW/EwzTQzF
-         dQL6iHxMAZ20jWcYr5xFWad8BJKz2OmK21d9dyrcuijd9QerXD1/6l6IYJifRzHtj1R7
-         fq1iZ3Dtupf2KnLIyK4Dsvb0v6pKX4FmXVJvGwMW6wax4CpxtwPm+0htjEyoNndddV2i
-         NSe224IyyrOcw86EGcjk2GEAkXoi4TRGgj7lWR8+1JQ+tcAXFYE/4XGhZ3h4LL6gokAy
-         mJeYTRFL3/pWg/kvOK/KHZ+OG0umE4rC4DXUuZKhb0zX5DY1ykuNCUmpDiRS0yn/FH1W
-         66ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXw0x68SaVB/YH4Qvy1k4itCkbmeLTHbbj8sDvh3hYgD4dvl1AE6v5jRDvQKYB+7Yq8Sx7B11E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yww/8AA+7QvZLrjUnccp/cQWALesQYGiWyQBXZX3cthN86UjE2e
-	QX6wIcV3dGBLCINtbPsdGZ2EHr/ySC/KXB6ruj+TWrLvVaFBM3d5fAn2innBMQB4ulbPchF3ZN4
-	UGvW0XtDUD2Lvvu/blt0eEpoOu8xPSIjwZUtT
-X-Google-Smtp-Source: AGHT+IERqcKVmfgf12AYaclzjRwXVBCyQhVDHFDvFf4sHaR9upjrrxmbdLsqhdnHKPsK7lj9VRQjWgYV6v490ma/ZVA=
-X-Received: by 2002:a05:6402:35d4:b0:5aa:19b1:ffc7 with SMTP id
- 4fb4d7f45d1cf-5bba2837dccmr114205a12.2.1723005205095; Tue, 06 Aug 2024
- 21:33:25 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A4MboREmlkevyiwi1o47vtjPZ8fSHzkn4B3YXLxAqpo=;
+ b=QRVbNbRjSBVBwD+G0g0rsJxaTSiitaVVK0x50MggXpA56GQ1p8L2G7FjqM0rBBIpl3+K9lz62ZikozwaQf4L6CXHSpJD+McTUIVQ6vgWCMeKBPx9erzZEsUf/nn6zdt8Vlh51n4DSRwTPq5EbxB6iIGywxxEBrm742c6qfZkGXI=
+Received: from PH0PR10MB5563.namprd10.prod.outlook.com (2603:10b6:510:f2::13)
+ by BLAPR10MB5123.namprd10.prod.outlook.com (2603:10b6:208:333::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Wed, 7 Aug
+ 2024 06:42:14 +0000
+Received: from PH0PR10MB5563.namprd10.prod.outlook.com
+ ([fe80::1917:9c45:4a41:240]) by PH0PR10MB5563.namprd10.prod.outlook.com
+ ([fe80::1917:9c45:4a41:240%5]) with mapi id 15.20.7828.023; Wed, 7 Aug 2024
+ 06:42:14 +0000
+From: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "pablo@netfilter.org"
+	<pablo@netfilter.org>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: CVE-2024-39503: netfilter: ipset: Fix race between namespace
+ cleanup and gc in the list:set type
+Thread-Topic: CVE-2024-39503: netfilter: ipset: Fix race between namespace
+ cleanup and gc in the list:set type
+Thread-Index: AQHa6JTwmTFiBQCbo0es+aNWmXIFLA==
+Date: Wed, 7 Aug 2024 06:42:14 +0000
+Message-ID: <c44971f608d7d1d2733757112ef6fca87b004d17.camel@oracle.com>
+In-Reply-To: <2024071204-CVE-2024-39503-e604@gregkh>
+Accept-Language: en-US, en-IN
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR10MB5563:EE_|BLAPR10MB5123:EE_
+x-ms-office365-filtering-correlation-id: 37e2e6de-3d4a-431e-cf8e-08dcb6ac12ec
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?TjlHQlYvbU1KdlZQZ3NUWUs0TWEwNSsxRlNPdGZhcUg0MExOMnJ2QThEeVVh?=
+ =?utf-8?B?bFV5UkRKdjc4TmVzd2lhWGo1Ulk2VTQvWnMrRXBSbHl5SGV6a2ppQTZCaERP?=
+ =?utf-8?B?SHBWT2M4VnFrRUdXL01Xc0xzQkJsQkNFNnhoa0JlSHpaTXVYZDhDbVBIZG92?=
+ =?utf-8?B?T2hORUlKVitERnFyZUF6dW1RbmdlSHg1blpWYjFDSDF0bGFTVzRpOVV0YVhL?=
+ =?utf-8?B?Y01oOGkzQmNjdUs5dUJMeEhMRDFzdGNLbGI1aFV5dVdnRzEwOGpNSVo5eGds?=
+ =?utf-8?B?THh1RFhKb2dIRUpYcWFELzZta1pHdUhHSk1yKzNzeHhjK25iWUFJa2tmYy9u?=
+ =?utf-8?B?dzNZTXA1Z3ArZURTWkEwR3pVMFg0M1lPZk9TQk5JY2NOZXpDZHlLQkF6U3Zy?=
+ =?utf-8?B?L09rcmlMVmRWVVhzNTQ1L3hJZ3ZRL1ZIcVB4eENKcThSZ3kvNTBmeERyYjVQ?=
+ =?utf-8?B?blpLRVU2ckxldXhDNTlDVDVNNEYrOHNuM1YwMk9hZ2xyc1BERVdMODB6Y2Va?=
+ =?utf-8?B?eEk3WWRqWEhONWJodW11UXNTU3Jlem9LbnJGWXUzR3JublNVaGxpajNlTERk?=
+ =?utf-8?B?Z3A1bXp6dHl2RTd3RHNtUU90QS9yMVpuaUxMcGhrcUpuUTBmdjJqZ1FsdVJI?=
+ =?utf-8?B?bkptSUFLeU9JYXNlWlgyeEdodG5RRDdqOC8vdGFIRk1iRnFHWUQvRUJSUU42?=
+ =?utf-8?B?SFdOMWhmS2R0eFI1R2JEc2RUVzlCQXJ3WkVGa21OVVJmcGcxLzhrVGhYY3ph?=
+ =?utf-8?B?SWg4dVB4TFBXR0Y5ak1aN3JIWXFTRXJ1b3prdlB1UlJpaElaYzJBRnBLUnUw?=
+ =?utf-8?B?TkVNUVNuUlZhbXdnVktmeTYzU0tDRXlMNjd4YW9XOU5YYmZta0ZYOU9SbGt2?=
+ =?utf-8?B?NVBLblZzLy9BblgyZVFyTjB5UmsydFNvTnNUa2JteHZmUDVLOU5lSHdVdzZp?=
+ =?utf-8?B?RTdUbktvK2JIU2xBcmh1aFdEa1FZMmgzR0lEZ0tHZUY3cHcxZjV1QlIrTjV0?=
+ =?utf-8?B?YmpndUhWVVBQNHpPSG5SNXovZDBIV2FOazBxQVBERFNwSDBVRDhUanpmRzF3?=
+ =?utf-8?B?N1dZSzhFTW81UTF3MVZNUVdQUTg1VzZ0aDdvTTdwZzVlM1dFOUJCTVk4TWIv?=
+ =?utf-8?B?cU16LzRVM0Nyd0Q0dTFYNm83c1lFZnFnMVJpK0x3U2xQM0pFZ2pXZW5KUWVh?=
+ =?utf-8?B?TXpacEJRNEtCeDRRK25ZaGlBa0dha3hMSFpUM2c0K0pEU1RLd2RiMndDSDc3?=
+ =?utf-8?B?K1JlQUMrYWxnYnl0TVZVcnd3Q3UwcUhEYkxQVEo3cmxVRTMxdTgvcHpGclNS?=
+ =?utf-8?B?QUl2SlltcDErVGR3STljV202dHVLUTBENDM2VW5GWnpLNVZiajJVLzlSSktm?=
+ =?utf-8?B?bEI1blhIcmduWVZUakdrb05EY3FLZVJwaEtBY2VqVCtkMnRDczU1S1NhNk9O?=
+ =?utf-8?B?dXVROHBtSkJUYm5CcWlhMFNrZkw0VTJSRFllNG8vWHV0U1dXY3RMWVNGNVli?=
+ =?utf-8?B?UXJwQnMyZklDa1NaUCs2N2hkeVl1ODhUVnpneTFjc1pqQmZpSG0rZXFtZjZX?=
+ =?utf-8?B?SWhSOU1OcG9HbndCL2pQRlhrS0tmdDlxZWt6R0pob2RVazZxbWR3eE4vNWhB?=
+ =?utf-8?B?bmx0VWMyQnZsZGw3T3BxUnMxT2w3cUJnbXBwdmwvK1ZCUGtXNTZtOWtPSFJ4?=
+ =?utf-8?B?NlQ0ellRY1NMbWRnc0RReENuQVlENFhobis2TXU4cVpUSHJSNWtGRy9qRlBq?=
+ =?utf-8?B?Z3cwZlh6c2F3NUdZakdCUFlKNmZobTN0TXczd2dJY1VPWmcxVXdmNzNFZkVR?=
+ =?utf-8?B?ekZpUUNCemsrTzVUa2xkM0RRVXM2VE0vS2U4bmxybEhMMms0Q2RKRm91S0VU?=
+ =?utf-8?B?M2RpMWV0a0xnNG9KVTlTTUc0VnVNR25vUHJScWRwNDJtR3c9PQ==?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5563.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?YWN0WTUzNnRIMmVCb3YvMTh0VEFtbW5rM0g0SFRnYk5PandiOFcya1ptNnRs?=
+ =?utf-8?B?OUpnalEwdllqSXJneXlMRkRUM1FJTWVRVXpQaWI2VVJOU1d5S0RZNWFlQS9F?=
+ =?utf-8?B?Yk8wUWF5QVVkMXhBSEY5UGViT3ZnWVhCd0paNzBGamJFSkRWbWJjczhqTlJK?=
+ =?utf-8?B?T3hRRVUwQ2VzdW8vazNCMnhrQWlsSVF5eldaVkN1aUgvOHBzeS9jWjRHMG1S?=
+ =?utf-8?B?cmF0T0FRS1dPL0lkY3ZEdTRUNzcwRmpjV2ZhNGVUUTBpWjhJeFBEcFhZMHRC?=
+ =?utf-8?B?T1A3ekQrQUU1aG1HV3ROQXhBQWF6VkNpZStnRHBXRW9CcExYbmRDNTFEdmJN?=
+ =?utf-8?B?UEpVbmpFdjlSa1F6U1QxS2VwaE9LUGRVYkt5UFY0MWRvemRvMExGZmh3cmo0?=
+ =?utf-8?B?NHdCN3JuK24vcTFrbU1mQm9oaTNSYzJLK3NZWTcvb0Yyall6Wk5kMkpnY3Ru?=
+ =?utf-8?B?a05VL3o4ZytqQS82SXpwZVZXWXpTRlNhaVhRc3VUMmI5QlhZeHZEd0o5RlJH?=
+ =?utf-8?B?MEtvT0w1ZWNWNXMrMkZ5d3FYZ1FHOHZxOU4xelYyNWJnY3EvaHVLU1FXcHNJ?=
+ =?utf-8?B?eUNPbEVQem9waTFSYlA3OEYzK2Z5QkRuZy9qb21rK1o0UmhzSUkwcDJSUjk2?=
+ =?utf-8?B?YTF6MC9KckVkajR5dFlIMDNHTW4xcEZhWmlCN3RZb1Y1ZTUwdnFmS3VleDRK?=
+ =?utf-8?B?MUJPL082a2F6QXlObldzaXhERGVOWGl3M1hiMEtaa1EyQVNla1JqWmdlZnZt?=
+ =?utf-8?B?dUNNWFBmV1QrNWthVXhmUmNNcW1QUWw2QVZJL1NNVDY0c3BpZU9NcnZyb3hU?=
+ =?utf-8?B?emwxR05Ec3Y1bGtjSzJyWlVJOGdnMjhTOG5ZcDkrRmJjamE1VmZ3bjlDclpv?=
+ =?utf-8?B?SWhzWFQ3ZzJ5dWhYS3djZ0cyZ0RHckdMOGdsTktTb2NLQzY1R0VRK0RjVU9x?=
+ =?utf-8?B?QXNkMkpTOXJpR1haK2ZCMFVYRm5weGMwQUNRdmVmb0N1N1J1dEYzenk2WnVN?=
+ =?utf-8?B?bC9ESXJQQUkxUjMwTHo2RTBKTWVPekVETkE4b3Arb0JNUzliellzOGlXWjdy?=
+ =?utf-8?B?RTlUQTBCc3Nlc2NNRkN6N1NEQnFUeTRKOHp5SHRJVHRFbEtlOHprZFplUm41?=
+ =?utf-8?B?Vk51RHVoVFRLdkJ6UGQ3VGw2S0NOeThjUnF4Sk9hczkwYk9JTlVidGxZUWpF?=
+ =?utf-8?B?dkM5MmE1bWttZndYVTEvenROalBvNnRCK1JWRnZ3YXdnRUtjVDBzWGcxWkhi?=
+ =?utf-8?B?NG54QWU2SjhmLzdUWHJ0NUVXZnAvaFBtR3R1c1dDWG54M0dzWTNsZ05qdTB5?=
+ =?utf-8?B?VlN6OG9FT1daQ0xTL292cm5rMmRZVkF1OVZ6QlhLZ2lZZ0JDeGI4bWlQTGJm?=
+ =?utf-8?B?STBVS0J3MUZMSWxBSVpJdGVHZXJmVm9WK1dYaTFEV2Q0VTdVaUl3NmVjb20r?=
+ =?utf-8?B?Q2d3alphVEtpaTg0QmNlOW5mVmNBTUpCRUp1WllJeFFZd0tQNVFiZFh0Vnl4?=
+ =?utf-8?B?LzFmTXFQUWMrNUlmMUlPRWZ4SHpabjVqQjJIY3ZiNU1PbjdHRXNUNEkzTXVm?=
+ =?utf-8?B?Q1pkRW1FMHdkamlmalVtK0o5YmM4MHZOazJkaHJLN0pNSURpNzlJdi92Vm9o?=
+ =?utf-8?B?OXNkVmh1SFFoMyt3eEVWQjltc2MwVXVUaHpYdFdER1RzWU9mWVlxdXRsMHd3?=
+ =?utf-8?B?NVJsVUsvUFJvaDNFTzI5K2RFbXpFcmlEcmV2YkJKeWpNNmRIQk00MFZVb0Fj?=
+ =?utf-8?B?L0VFZjNNaDhWYnQyQVJiV2RPZ0wxZXlJam5HbWo2TWgyZEI4eUg0R1RpRlJZ?=
+ =?utf-8?B?NDhxblFhWFNsY3BsbnZZdXBxRjN5UFBJbGNDODlFdXBkMTV2bmlEVGhJbFl0?=
+ =?utf-8?B?elhob1RTWEJQRERxeDY5UVdIRWJWaEh0eXNIc25XQWRCRFJudjBaZjRKSWw1?=
+ =?utf-8?B?enh2bDA5Vm0vcC9YdTlKaGVwbjNYM2ZSU1Y0d0tBQVFIUld1a2pXZUhSWU9l?=
+ =?utf-8?B?Rlp0SDdKTEJSejMwZk8xck01U2NaUVlJRDN1YzAyQlp4Uml5MmpPZjlhaFBi?=
+ =?utf-8?B?QnF2cnc2RGVXTTNLUTRHN1pNQ0dyRTMvZ0k4QTNNSi9OUFEvR3V1Uzg4R2JX?=
+ =?utf-8?B?ZkVldnVGcUV3UHIvUGQvNWNYMHJJYVhoNkRHSDZzU0dhV2FhZGtnSmhuQ0ls?=
+ =?utf-8?Q?cmlSR14bJrWmfutyd2KwJR3RkSJBiOD8vEbkfWQogBTj?=
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-WwP/g0ZkmQqtmw6t9MoF"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240804084612.2561230-1-kyletso@google.com> <20240806232836.52rkn7u3g5uiotn3@synopsys.com>
-In-Reply-To: <20240806232836.52rkn7u3g5uiotn3@synopsys.com>
-From: Kyle Tso <kyletso@google.com>
-Date: Wed, 7 Aug 2024 12:33:08 +0800
-Message-ID: <CAGZ6i=1v6+Jt3Jecd3euNnumVK781U9DQvRz7cHWnxi8Ga6W=g@mail.gmail.com>
-Subject: Re: [PATCH v3] usb: dwc3: Runtime get and put usb power_supply handle
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "raychi@google.com" <raychi@google.com>, 
-	"badhri@google.com" <badhri@google.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, "royluo@google.com" <royluo@google.com>, 
-	"bvanassche@acm.org" <bvanassche@acm.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	p0MZhsgQNjTITjHPtO5Qj629sxs+aa1KmfwJIstHAPFiob7GGZrF3JuW3T/ohMntutzX9FYQewLPruOW6kii3poQmqRUJnWxk77Ybf+UiiScq84fUtDDBAysuEOeuB9e0IBHD88B1Hu1LRHRAZDv06/JYx+vIzkryb8n+fyWOFBJy68zARVjrRx5SmHOgJCPUVQyqFKmRJ8LHrgleuyrlHfA930FvE1vinVetfQ/WKkC+7O1/mYHj5QCzQL0hyXX0lx7RoL0CD9/60sTm+psq+at/9vajPqsV9mtEQk4i5OO44dJKM8NFc4SEuhYlTFABkCxqVjFq/UttGKj+BsOJq3KDqubwpctT1ddJZkTQaVoZiqJL61F1aH4iMggC8Ez0laVwht72DwgUZxUyp2LfIxgLm9wtQIngEGeoOBuqgRFANrwag/e8Id+6jp6wB6s9AgvXqJS4CxvpdqCpBbJD12/LbzSonINA4eqx0yt8AokSCH6p+6JvUaoJKEdU9XV0AdwcdspxigvlmIvwb0Q2NQXzOxwfgpkGwDTYEJfPzcFrJThUuM6C+H6rmC5sbKoUY6nvwkVkj5he03qM2ov1ARjO0BMrCnB8Uhjaz8asxk=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5563.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37e2e6de-3d4a-431e-cf8e-08dcb6ac12ec
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Aug 2024 06:42:14.7771
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: FnlDt7la1eu4z+0peixEKx+FMbivEMEQxazi9SxwADqIX1YtTELladRZ1g/S2PWcBqZF4VngxjIpUHJpVAsoiyiqpOQI5XqIkakSucuhFws=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB5123
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-07_03,2024-08-06_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 adultscore=0
+ mlxscore=0 phishscore=0 bulkscore=0 mlxlogscore=844 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
+ definitions=main-2408070044
+X-Proofpoint-ORIG-GUID: Iv-e23195qSGbBwX44BaLCbclK1AcCpG
+X-Proofpoint-GUID: Iv-e23195qSGbBwX44BaLCbclK1AcCpG
+
+--=-WwP/g0ZkmQqtmw6t9MoF
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 7, 2024 at 7:29=E2=80=AFAM Thinh Nguyen <Thinh.Nguyen@synopsys.=
-com> wrote:
->
-> On Sun, Aug 04, 2024, Kyle Tso wrote:
-> > It is possible that the usb power_supply is registered after the probe
->
-> Should we defer the dwc3 probe until the power_supply is registered
-> then?
->
+On Fri, 12 Jul 2024 14:21:09 +0200, Greg Kroah-Hartman wrote:
+> In the Linux kernel, the following vulnerability has been resolved:
+>=20
+> netfilter: ipset: Fix race between namespace cleanup and gc in the list:s=
+et type
+>=20
+> Lion Ackermann reported that there is a race condition between namespace =
+cleanup
+> in ipset and the garbage collection of the list:set type. The namespace
+> cleanup can destroy the list:set type of sets while the gc of the set typ=
+e is
+> waiting to run in rcu cleanup. The latter uses data from the destroyed se=
+t which
+> thus leads use after free. The patch contains the following parts:
+>=20
+> - When destroying all sets, first remove the garbage collectors, then wai=
+t
+>   if needed and then destroy the sets.
+> - Fix the badly ordered "wait then remove gc" for the destroy a single se=
+t
+>   case.
+> - Fix the missing rcu locking in the list:set type in the userspace test
+>   case.
+> - Use proper RCU list handlings in the list:set type.
+>=20
+> The patch depends on c1193d9bbbd3 (netfilter: ipset: Add list flush to ca=
+ncel_gc).
 
-We can do that, but getting the power_supply reference just before
-using the power_supply APIs is safer because we don't risk waiting for
-the registration of the usb power_supply. If vbus_draw is being called
-but the usb power_supply is still not ready, just let it fail without
-doing anything (only print the error logs). The usb gadget function
-still works. And once the usb power_supply is ready, the vbus_draw
-will be fine in following usb state changes.
+This commit does not exist in stable kernels. Please backport it.
 
-Moreover, all drivers using power_supply_get_by_name in the source
-tree adopt this way. IMO it should be okay.
+	netfilter: ipset: Add list flush to cancel_gc
+=09
+	Flushing list in cancel_gc drops references to other lists right away,
+	without waiting for RCU to destroy list. Fixes race when referenced
+	ipsets can't be destroyed while referring list is scheduled for destroy.
 
-> > of dwc3. In this case, trying to get the usb power_supply during the
-> > probe will fail and there is no chance to try again. Also the usb
-> > power_supply might be unregistered at anytime so that the handle of it
->
-> This is problematic... If the power_supply is unregistered, the device
-> is no longer usable.
->
-> > in dwc3 would become invalid. To fix this, get the handle right before
-> > calling to power_supply functions and put it afterward.
->
-> Shouldn't the life-cycle of the dwc3 match with the power_supply? How
-> can we maintain function without the proper power_supply?
->
-> BR,
-> Thinh
->
+Since this is missing, the CVE fix potentially introduced new races as
+it makes use of RCU.
 
-usb power_supply is controlled by "another" driver which can be
-unloaded without notifying other drivers using it (such as dwc3).
-Unless there is a notification mechanism for the (un)registration of
-the power_supply class, getting/putting the reference right
-before/after calling the power_supply api is the best we can do for
-now.
+Thanks,
+Siddh
 
-Kyle
+--=-WwP/g0ZkmQqtmw6t9MoF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCgAdFiEEQ4+7hHLv3y1dvdaRBwq/MEwk8ioFAmazFyUACgkQBwq/MEwk
+8irRvQ//VaRfC/JJYPeIDLVcD1RagFmQ+PaRtlhB5z6uHA73c99urb0idM/Bg558
+CA2AjnF+iV9EBSRIII3iq6huPq8E85AoUi0bYyQApnGM8Q+51ZzfT4AXcjXaSkfX
+iH55Ly/vtTa8y2YGSY7y6ZhymBIy0B1vSOGWBLEBiaIuEjCBBrzSZALFocEeqsbB
+dZI9FvZlBlOtyLVPNDCydZ6dPfjY215D+imfmrTiuiNBEjVF3kKCxZpwTxxPyYZA
+agggd/wyb7OQKy4sFzJnWYJ0oNzdL4YhxVNE/mD0le+YlSp3VQBdsYuyo6IBhOoP
+QIxNOWKmRioICy0qay+R82NO0n4mumsReaZH2VGDWGBKrBeISyMIHz61MqQcBbBy
+EPChDt0gtKUmUYuyYyaJkvFza7KHpzXqPdoweSRS9Z1ew14iQKqoi+Ddltkac+VW
+4vNTsYkQpncfxBSQAsqplix+ELdNHDMidXsTItUmAka1YBsRXNie26OmOJVNHaYI
+ycC8wYxCwWoxcs9JHs8ooH7qynbR6D2gN83nTP5rm5Cg6DOesXd0GhojMIpxanil
+MMCPbOcgdoKDeIwQkN7e8mjWnLppOtt9bU6bPTgTifhxO5/8s6od5umEJkZ7HJtH
+ZKuuGL4+B+Fi6vRxwmCBpoVJqItruYWaqWykX0d8/bhD88pfnc0=
+=Pge3
+-----END PGP SIGNATURE-----
 
-
-> >
-> > dwc3_gadet_vbus_draw might be in interrupt context. Create a kthread
-> > worker beforehand and use it to process the "might-sleep"
-> > power_supply_put ASAP after the property set.
-> >
-> > Fixes: 6f0764b5adea ("usb: dwc3: add a power supply for current control=
-")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Kyle Tso <kyletso@google.com>
-> > ---
-> > v2 -> v3:
-> > - Only move power_supply_put to a work. Still call _get_by_name and
-> >   _set_property in dwc3_gadget_vbus_draw.
-> > - Create a kthread_worker to handle the work
-> >
-> > v1 -> v2:
-> > - move power_supply_put out of interrupt context
-> >
-> >  drivers/usb/dwc3/core.c   | 29 ++++++++++++----------------
-> >  drivers/usb/dwc3/core.h   |  6 ++++--
-> >  drivers/usb/dwc3/gadget.c | 40 +++++++++++++++++++++++++++++++++++----
-> >  3 files changed, 52 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-> > index 734de2a8bd21..82c8376330d7 100644
-> > --- a/drivers/usb/dwc3/core.c
-> > +++ b/drivers/usb/dwc3/core.c
-> > @@ -1631,8 +1631,6 @@ static void dwc3_get_properties(struct dwc3 *dwc)
-> >       u8                      tx_thr_num_pkt_prd =3D 0;
-> >       u8                      tx_max_burst_prd =3D 0;
-> >       u8                      tx_fifo_resize_max_num;
-> > -     const char              *usb_psy_name;
-> > -     int                     ret;
-> >
-> >       /* default to highest possible threshold */
-> >       lpm_nyet_threshold =3D 0xf;
-> > @@ -1667,12 +1665,7 @@ static void dwc3_get_properties(struct dwc3 *dwc=
-)
-> >
-> >       dwc->sys_wakeup =3D device_may_wakeup(dwc->sysdev);
-> >
-> > -     ret =3D device_property_read_string(dev, "usb-psy-name", &usb_psy=
-_name);
-> > -     if (ret >=3D 0) {
-> > -             dwc->usb_psy =3D power_supply_get_by_name(usb_psy_name);
-> > -             if (!dwc->usb_psy)
-> > -                     dev_err(dev, "couldn't get usb power supply\n");
-> > -     }
-> > +     device_property_read_string(dev, "usb-psy-name", &dwc->usb_psy_na=
-me);
-> >
-> >       dwc->has_lpm_erratum =3D device_property_read_bool(dev,
-> >                               "snps,has-lpm-erratum");
-> > @@ -2132,19 +2125,24 @@ static int dwc3_probe(struct platform_device *p=
-dev)
-> >
-> >       dwc3_get_software_properties(dwc);
-> >
-> > +     dwc->worker =3D kthread_create_worker(0, "dwc3-worker");
-> > +     if (IS_ERR(dwc->worker))
-> > +             return PTR_ERR(dwc->worker);
-> > +     sched_set_fifo(dwc->worker->task);
-> > +
-> >       dwc->reset =3D devm_reset_control_array_get_optional_shared(dev);
-> >       if (IS_ERR(dwc->reset)) {
-> >               ret =3D PTR_ERR(dwc->reset);
-> > -             goto err_put_psy;
-> > +             goto err_destroy_worker;
-> >       }
-> >
-> >       ret =3D dwc3_get_clocks(dwc);
-> >       if (ret)
-> > -             goto err_put_psy;
-> > +             goto err_destroy_worker;
-> >
-> >       ret =3D reset_control_deassert(dwc->reset);
-> >       if (ret)
-> > -             goto err_put_psy;
-> > +             goto err_destroy_worker;
-> >
-> >       ret =3D dwc3_clk_enable(dwc);
-> >       if (ret)
-> > @@ -2245,9 +2243,8 @@ static int dwc3_probe(struct platform_device *pde=
-v)
-> >       dwc3_clk_disable(dwc);
-> >  err_assert_reset:
-> >       reset_control_assert(dwc->reset);
-> > -err_put_psy:
-> > -     if (dwc->usb_psy)
-> > -             power_supply_put(dwc->usb_psy);
-> > +err_destroy_worker:
-> > +     kthread_destroy_worker(dwc->worker);
-> >
-> >       return ret;
-> >  }
-> > @@ -2258,6 +2255,7 @@ static void dwc3_remove(struct platform_device *p=
-dev)
-> >
-> >       pm_runtime_get_sync(&pdev->dev);
-> >
-> > +     kthread_destroy_worker(dwc->worker);
-> >       dwc3_core_exit_mode(dwc);
-> >       dwc3_debugfs_exit(dwc);
-> >
-> > @@ -2276,9 +2274,6 @@ static void dwc3_remove(struct platform_device *p=
-dev)
-> >       pm_runtime_set_suspended(&pdev->dev);
-> >
-> >       dwc3_free_event_buffers(dwc);
-> > -
-> > -     if (dwc->usb_psy)
-> > -             power_supply_put(dwc->usb_psy);
-> >  }
-> >
-> >  #ifdef CONFIG_PM
-> > diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-> > index 1e561fd8b86e..3fc58204db6e 100644
-> > --- a/drivers/usb/dwc3/core.h
-> > +++ b/drivers/usb/dwc3/core.h
-> > @@ -993,6 +993,7 @@ struct dwc3_scratchpad_array {
-> >  /**
-> >   * struct dwc3 - representation of our controller
-> >   * @drd_work: workqueue used for role swapping
-> > + * @worker: dedicated kthread worker
-> >   * @ep0_trb: trb which is used for the ctrl_req
-> >   * @bounce: address of bounce buffer
-> >   * @setup_buf: used while precessing STD USB requests
-> > @@ -1045,7 +1046,7 @@ struct dwc3_scratchpad_array {
-> >   * @role_sw: usb_role_switch handle
-> >   * @role_switch_default_mode: default operation mode of controller whi=
-le
-> >   *                   usb role is USB_ROLE_NONE.
-> > - * @usb_psy: pointer to power supply interface.
-> > + * @usb_psy_name: name of the usb power supply interface
-> >   * @usb2_phy: pointer to USB2 PHY
-> >   * @usb3_phy: pointer to USB3 PHY
-> >   * @usb2_generic_phy: pointer to array of USB2 PHYs
-> > @@ -1163,6 +1164,7 @@ struct dwc3_scratchpad_array {
-> >   */
-> >  struct dwc3 {
-> >       struct work_struct      drd_work;
-> > +     struct kthread_worker   *worker;
-> >       struct dwc3_trb         *ep0_trb;
-> >       void                    *bounce;
-> >       u8                      *setup_buf;
-> > @@ -1223,7 +1225,7 @@ struct dwc3 {
-> >       struct usb_role_switch  *role_sw;
-> >       enum usb_dr_mode        role_switch_default_mode;
-> >
-> > -     struct power_supply     *usb_psy;
-> > +     const char              *usb_psy_name;
-> >
-> >       u32                     fladj;
-> >       u32                     ref_clk_per;
-> > diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-> > index 89fc690fdf34..1ff583281eff 100644
-> > --- a/drivers/usb/dwc3/gadget.c
-> > +++ b/drivers/usb/dwc3/gadget.c
-> > @@ -30,6 +30,11 @@
-> >  #define DWC3_ALIGN_FRAME(d, n)       (((d)->frame_number + ((d)->inter=
-val * (n))) \
-> >                                       & ~((d)->interval - 1))
-> >
-> > +struct dwc3_psy_put {
-> > +     struct kthread_work work;
-> > +     struct power_supply *psy;
-> > +};
-> > +
-> >  /**
-> >   * dwc3_gadget_set_test_mode - enables usb2 test modes
-> >   * @dwc: pointer to our context structure
-> > @@ -3047,22 +3052,49 @@ static void dwc3_gadget_set_ssp_rate(struct usb=
-_gadget *g,
-> >       spin_unlock_irqrestore(&dwc->lock, flags);
-> >  }
-> >
-> > +static void dwc3_gadget_psy_put(struct kthread_work *work)
-> > +{
-> > +     struct dwc3_psy_put     *psy_put =3D container_of(work, struct dw=
-c3_psy_put, work);
-> > +
-> > +     power_supply_put(psy_put->psy);
-> > +     kfree(psy_put);
-> > +}
-> > +
-> >  static int dwc3_gadget_vbus_draw(struct usb_gadget *g, unsigned int mA=
-)
-> >  {
-> > -     struct dwc3             *dwc =3D gadget_to_dwc(g);
-> > +     struct dwc3                     *dwc =3D gadget_to_dwc(g);
-> > +     struct power_supply             *usb_psy;
-> >       union power_supply_propval      val =3D {0};
-> > +     struct dwc3_psy_put             *psy_put;
-> >       int                             ret;
-> >
-> >       if (dwc->usb2_phy)
-> >               return usb_phy_set_power(dwc->usb2_phy, mA);
-> >
-> > -     if (!dwc->usb_psy)
-> > +     if (!dwc->usb_psy_name)
-> >               return -EOPNOTSUPP;
-> >
-> > +     usb_psy =3D power_supply_get_by_name(dwc->usb_psy_name);
-> > +     if (!usb_psy) {
-> > +             dev_err(dwc->dev, "couldn't get usb power supply\n");
-> > +             return -ENODEV;
-> > +     }
-> > +
-> >       val.intval =3D 1000 * mA;
-> > -     ret =3D power_supply_set_property(dwc->usb_psy, POWER_SUPPLY_PROP=
-_INPUT_CURRENT_LIMIT, &val);
-> > +     ret =3D power_supply_set_property(usb_psy, POWER_SUPPLY_PROP_INPU=
-T_CURRENT_LIMIT, &val);
-> > +     if (ret < 0) {
-> > +             dev_err(dwc->dev, "failed to set power supply property\n"=
-);
-> > +             return ret;
-> > +     }
-> >
-> > -     return ret;
-> > +     psy_put =3D kzalloc(sizeof(*psy_put), GFP_ATOMIC);
-> > +     if (!psy_put)
-> > +             return -ENOMEM;
-> > +     kthread_init_work(&psy_put->work, dwc3_gadget_psy_put);
-> > +     psy_put->psy =3D usb_psy;
-> > +     kthread_queue_work(dwc->worker, &psy_put->work);
-> > +
-> > +     return 0;
-> >  }
-> >
-> >  /**
-> > --
-> > 2.46.0.rc2.264.g509ed76dc8-goog
-> >
+--=-WwP/g0ZkmQqtmw6t9MoF--
 
