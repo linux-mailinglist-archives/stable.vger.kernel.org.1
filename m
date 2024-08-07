@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D215494ABD1
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 262D094AC29
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D65D282493
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C334A1F212EE
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24486823DE;
-	Wed,  7 Aug 2024 15:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AEF823A9;
+	Wed,  7 Aug 2024 15:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fj2vh76l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yK+sFJL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51FF2AF07;
-	Wed,  7 Aug 2024 15:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937ED374CC;
+	Wed,  7 Aug 2024 15:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043352; cv=none; b=ED3LSK6xpM+5uys58/KwLNMqoo/BK8gUm275S69jfKtku4zNJeJELxilPKNOy22PDGqPOs7d7/oGbiNyDF5ipAqZwFoTJXGIIFzZ3YXTlt9MRgWWlKvBOQllV/+VpH+q00kOHCOAhai8T5dJRD0SsIQ2RLiwTTLeJLz53lohqhA=
+	t=1723043556; cv=none; b=rKRZgXhJFuFRqe//aiid5aOc2tnKM3mUv8tg7eotR9FL1ZLEN5MZQGOIOhgeGP0LoCVjctoxqiDFAQtl+C8DxQwgcSPp6HEx/D6Vm21Bf7rnoM5l0cANKJ3AwQartTYMmtEgaLbHXZ+soE6PhzA+2EpCtUZRBE4FlwB8fz9lUDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043352; c=relaxed/simple;
-	bh=z6A1wYVkwi7jdm19MNOUzoRvFkW8f5K5HOz8L2Jdnkk=;
+	s=arc-20240116; t=1723043556; c=relaxed/simple;
+	bh=Im2eOhP1EyDjF6ibj5IkMf797K3/q4Z8+fR4NvCG2ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFZrgAGMw8tp3f0sixN1031TZm8JYzGK3eCv40Rt1KnR3Uw1MAakW6o4O57B7dPTzDMausjQsRI7aj5lLVFafM+ZD/4hBzqY9+FQWk9EG7sMCE+Fs7gDPIvfgycUcjjJ199jbxWFy4uXbep1r9dyf9b2i59PaeKGhjheuKwj5yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fj2vh76l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6476EC32781;
-	Wed,  7 Aug 2024 15:09:12 +0000 (UTC)
+	 MIME-Version; b=f46i1K72WVq62CCZoJZHH20jdRfPK6ZaBAscPR22QXbJwBsgtxVW/J1c/BfDv3wCgJ0lzFELaTlWt4oz6VGrL1Cw8nZDZvBK4PXTuUtwRDQPYjOWSK6/d2/jiP2FsxGbKy/NUu/486yL28HkB3kfIao0AGnOdXaaTvgHqxJBmFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK+sFJL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFC0C32781;
+	Wed,  7 Aug 2024 15:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043352;
-	bh=z6A1wYVkwi7jdm19MNOUzoRvFkW8f5K5HOz8L2Jdnkk=;
+	s=korg; t=1723043556;
+	bh=Im2eOhP1EyDjF6ibj5IkMf797K3/q4Z8+fR4NvCG2ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fj2vh76lkWipqr1l08EFbPp75V1bvF7NGeHrOlHVHXzsfgh+xoDh4CzvV72qAhaKT
-	 cAGqEJDoL4fVbf6ZZQSWFw+VZeilyeihLpLu+efaAL/M15uipWMI9iutnyFLuCKqqr
-	 pkvAgJQUadzE4gg5a+M7UyuaNS5WVBqeLTAiw9Kw=
+	b=yK+sFJL+YvYlzWcgg1HnLot5Ggw6PUjJfKfRcwAHnSpPfeB82okhuVEUMetIHVYSM
+	 jqqqrRrbk3OViYZdB86IMvmhwZ1lXfu0vA3AHyQPowIgmOckdPkJBj1XkRw+jUTvqg
+	 5aqdS66H0V+JkbUFQHuKFiUcY8uaZfZZrxkZ/T48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bo liu <bo.liu@senarytech.com>,
-	songxiebing <songxiebing@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/121] ALSA: hda: conexant: Fix headset auto detect fail in the polling mode
-Date: Wed,  7 Aug 2024 16:59:52 +0200
-Message-ID: <20240807150021.374675820@linuxfoundation.org>
+Subject: [PATCH 6.1 14/86] cpufreq: qcom-nvmem: Simplify driver data allocation
+Date: Wed,  7 Aug 2024 16:59:53 +0200
+Message-ID: <20240807150039.709751835@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +63,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: songxiebing <songxiebing@kylinos.cn>
+From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 
-[ Upstream commit e60dc98122110594d0290845160f12916192fc6d ]
+[ Upstream commit 2a5d46c3ad6b0e62d2b04356ad999d504fb564e0 ]
 
-The previous fix (7aeb25908648) only handles the unsol_event reporting
-during interrupts and does not include the polling mode used to set
-jackroll_ms, so now we are replacing it with
-snd_hda_jack_detect_enable_callback.
+Simplify the allocation and cleanup of driver data by using devm
+together with a flexible array. Prepare for adding additional per-CPU
+data by defining a struct qcom_cpufreq_drv_cpu instead of storing the
+opp_tokens directly.
 
-Fixes: 7aeb25908648 ("ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140")
-Co-developed-by: bo liu <bo.liu@senarytech.com>
-Signed-off-by: bo liu <bo.liu@senarytech.com>
-Signed-off-by: songxiebing <songxiebing@kylinos.cn>
-Link: https://patch.msgid.link/20240726100726.50824-1-soxiebing@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: d01c84b97f19 ("cpufreq: qcom-nvmem: fix memory leaks in probe error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 54 ++++++----------------------------
- 1 file changed, 9 insertions(+), 45 deletions(-)
+ drivers/cpufreq/qcom-cpufreq-nvmem.c | 49 ++++++++++------------------
+ 1 file changed, 18 insertions(+), 31 deletions(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index 17389a3801bd1..4472923ba694b 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -21,12 +21,6 @@
- #include "hda_jack.h"
- #include "hda_generic.h"
- 
--enum {
--	CX_HEADSET_NOPRESENT = 0,
--	CX_HEADSET_PARTPRESENT,
--	CX_HEADSET_ALLPRESENT,
--};
--
- struct conexant_spec {
- 	struct hda_gen_spec gen;
- 
-@@ -48,7 +42,6 @@ struct conexant_spec {
- 	unsigned int gpio_led;
- 	unsigned int gpio_mute_led_mask;
- 	unsigned int gpio_mic_led_mask;
--	unsigned int headset_present_flag;
- 	bool is_cx8070_sn6140;
+diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+index 91634b84baa87..983991c0afd5c 100644
+--- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
++++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+@@ -53,10 +53,14 @@ struct qcom_cpufreq_match_data {
+ 	const char **genpd_names;
  };
  
-@@ -250,48 +243,19 @@ static void cx_process_headset_plugin(struct hda_codec *codec)
++struct qcom_cpufreq_drv_cpu {
++	int opp_token;
++};
++
+ struct qcom_cpufreq_drv {
+-	int *opp_tokens;
+ 	u32 versions;
+ 	const struct qcom_cpufreq_match_data *data;
++	struct qcom_cpufreq_drv_cpu cpus[];
+ };
+ 
+ static struct platform_device *cpufreq_dt_pdev, *cpufreq_pdev;
+@@ -284,42 +288,32 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
+ 		return -ENOENT;
  	}
- }
  
--static void cx_update_headset_mic_vref(struct hda_codec *codec, unsigned int res)
-+static void cx_update_headset_mic_vref(struct hda_codec *codec, struct hda_jack_callback *event)
- {
--	unsigned int phone_present, mic_persent, phone_tag, mic_tag;
--	struct conexant_spec *spec = codec->spec;
-+	unsigned int mic_present;
+-	drv = kzalloc(sizeof(*drv), GFP_KERNEL);
++	drv = devm_kzalloc(&pdev->dev, struct_size(drv, cpus, num_possible_cpus()),
++		           GFP_KERNEL);
+ 	if (!drv)
+ 		return -ENOMEM;
  
- 	/* In cx8070 and sn6140, the node 16 can only be config to headphone or disabled,
- 	 * the node 19 can only be config to microphone or disabled.
- 	 * Check hp&mic tag to process headset pulgin&plugout.
- 	 */
--	phone_tag = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
--	mic_tag = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
--	if ((phone_tag & (res >> AC_UNSOL_RES_TAG_SHIFT)) ||
--	    (mic_tag & (res >> AC_UNSOL_RES_TAG_SHIFT))) {
--		phone_present = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_PIN_SENSE, 0x0);
--		if (!(phone_present & AC_PINSENSE_PRESENCE)) {/* headphone plugout */
--			spec->headset_present_flag = CX_HEADSET_NOPRESENT;
--			snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
--			return;
--		}
--		if (spec->headset_present_flag == CX_HEADSET_NOPRESENT) {
--			spec->headset_present_flag = CX_HEADSET_PARTPRESENT;
--		} else if (spec->headset_present_flag == CX_HEADSET_PARTPRESENT) {
--			mic_persent = snd_hda_codec_read(codec, 0x19, 0,
--							 AC_VERB_GET_PIN_SENSE, 0x0);
--			/* headset is present */
--			if ((phone_present & AC_PINSENSE_PRESENCE) &&
--			    (mic_persent & AC_PINSENSE_PRESENCE)) {
--				cx_process_headset_plugin(codec);
--				spec->headset_present_flag = CX_HEADSET_ALLPRESENT;
--			}
--		}
+ 	match = pdev->dev.platform_data;
+ 	drv->data = match->data;
+-	if (!drv->data) {
+-		ret = -ENODEV;
+-		goto free_drv;
 -	}
--}
++	if (!drv->data)
++		return -ENODEV;
+ 
+ 	if (drv->data->get_version) {
+ 		speedbin_nvmem = of_nvmem_cell_get(np, NULL);
+-		if (IS_ERR(speedbin_nvmem)) {
+-			ret = dev_err_probe(cpu_dev, PTR_ERR(speedbin_nvmem),
+-					    "Could not get nvmem cell\n");
+-			goto free_drv;
+-		}
++		if (IS_ERR(speedbin_nvmem))
++			return dev_err_probe(cpu_dev, PTR_ERR(speedbin_nvmem),
++					     "Could not get nvmem cell\n");
+ 
+ 		ret = drv->data->get_version(cpu_dev,
+ 							speedbin_nvmem, &pvs_name, drv);
+ 		if (ret) {
+ 			nvmem_cell_put(speedbin_nvmem);
+-			goto free_drv;
++			return ret;
+ 		}
+ 		nvmem_cell_put(speedbin_nvmem);
+ 	}
+ 	of_node_put(np);
+ 
+-	drv->opp_tokens = kcalloc(num_possible_cpus(), sizeof(*drv->opp_tokens),
+-				  GFP_KERNEL);
+-	if (!drv->opp_tokens) {
+-		ret = -ENOMEM;
+-		goto free_drv;
+-	}
 -
--static void cx_jack_unsol_event(struct hda_codec *codec, unsigned int res)
--{
--	struct conexant_spec *spec = codec->spec;
+ 	for_each_possible_cpu(cpu) {
+ 		struct dev_pm_opp_config config = {
+ 			.supported_hw = NULL,
+@@ -345,9 +339,9 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
+ 		}
+ 
+ 		if (config.supported_hw || config.genpd_names) {
+-			drv->opp_tokens[cpu] = dev_pm_opp_set_config(cpu_dev, &config);
+-			if (drv->opp_tokens[cpu] < 0) {
+-				ret = drv->opp_tokens[cpu];
++			drv->cpus[cpu].opp_token = dev_pm_opp_set_config(cpu_dev, &config);
++			if (drv->cpus[cpu].opp_token < 0) {
++				ret = drv->cpus[cpu].opp_token;
+ 				dev_err(cpu_dev, "Failed to set OPP config\n");
+ 				goto free_opp;
+ 			}
+@@ -366,11 +360,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
+ 
+ free_opp:
+ 	for_each_possible_cpu(cpu)
+-		dev_pm_opp_clear_config(drv->opp_tokens[cpu]);
+-	kfree(drv->opp_tokens);
+-free_drv:
+-	kfree(drv);
 -
--	if (spec->is_cx8070_sn6140)
--		cx_update_headset_mic_vref(codec, res);
--
--	snd_hda_jack_unsol_event(codec, res);
-+	mic_present = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
-+	if (!(mic_present & AC_PINSENSE_PRESENCE)) /* mic plugout */
-+		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
-+	else
-+		cx_process_headset_plugin(codec);
++		dev_pm_opp_clear_config(drv->cpus[cpu].opp_token);
+ 	return ret;
  }
  
- static int cx_auto_suspend(struct hda_codec *codec)
-@@ -305,7 +269,7 @@ static const struct hda_codec_ops cx_auto_patch_ops = {
- 	.build_pcms = snd_hda_gen_build_pcms,
- 	.init = cx_auto_init,
- 	.free = cx_auto_free,
--	.unsol_event = cx_jack_unsol_event,
-+	.unsol_event = snd_hda_jack_unsol_event,
- 	.suspend = cx_auto_suspend,
- 	.check_power_status = snd_hda_gen_check_power_status,
- };
-@@ -1163,7 +1127,7 @@ static int patch_conexant_auto(struct hda_codec *codec)
- 	case 0x14f11f86:
- 	case 0x14f11f87:
- 		spec->is_cx8070_sn6140 = true;
--		spec->headset_present_flag = CX_HEADSET_NOPRESENT;
-+		snd_hda_jack_detect_enable_callback(codec, 0x19, cx_update_headset_mic_vref);
- 		break;
- 	}
+@@ -382,10 +372,7 @@ static void qcom_cpufreq_remove(struct platform_device *pdev)
+ 	platform_device_unregister(cpufreq_dt_pdev);
  
+ 	for_each_possible_cpu(cpu)
+-		dev_pm_opp_clear_config(drv->opp_tokens[cpu]);
+-
+-	kfree(drv->opp_tokens);
+-	kfree(drv);
++		dev_pm_opp_clear_config(drv->cpus[cpu].opp_token);
+ }
+ 
+ static struct platform_driver qcom_cpufreq_driver = {
 -- 
 2.43.0
 
