@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-65889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FEF94AC63
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0470294AB64
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803B21F253CB
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35F631C221A6
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B7A824BB;
-	Wed,  7 Aug 2024 15:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04FC3EA9A;
+	Wed,  7 Aug 2024 15:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iBYDKNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ob5smw8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43997F7F5;
-	Wed,  7 Aug 2024 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2B682488;
+	Wed,  7 Aug 2024 15:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043677; cv=none; b=WKbm16BBY4wRZsiMRALu53NqvGLUQ/ZylcLB7oncqMuPssmWKnSl3o8+kC3pX3sZkn1eMWKeLvexpasycCfybbZVvpUWFyR3ouS70DxbLvHPUY83nwRk1ASJ4+i8mqsDTklwcaaWBFkvkJDO38bIGqk5/4R84fYANvgTGn1NPWI=
+	t=1723043102; cv=none; b=Q+dPH8eHtpJD4x8MOl2POshDKMEhzBVUdDWdcDnx/3JaXklqDwOYcQ7cz2J5LU3n+dm4Rtv7Dc5RI+8lPIfrydYWB8eUb/Q37JCHPzuUHM3faksVzSPeggskzGInRcx2/Knv4S4DCR1Az6/ae+7EEc4DeT97FhK9UKfiio2Aygs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043677; c=relaxed/simple;
-	bh=IXfqJYruQXZZHt5fEry3XMQn/BKYSH7aahegucauQqI=;
+	s=arc-20240116; t=1723043102; c=relaxed/simple;
+	bh=BMcSijsLP0jk/TtgzzCKceCpcwID6OdAJ5vQGhvHF1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOitE7KYyXgEcMvTmHQCI3aZ+zVWF9A3j38FvzxXjecAARTeAATpSCo1OY0TMR/DJnv1SRKypvn6n52Btw7E6JKRZGu9e1Kz+Ujqs1psuZuyii+35bTOHArqv0UOZCXSGfwV1dlPUhXe44GSthcLMCRzI0r5dFqn8rfaQigeu2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iBYDKNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760BEC4AF0D;
-	Wed,  7 Aug 2024 15:14:36 +0000 (UTC)
+	 MIME-Version; b=YrtDtJ4mGsgvZorhJIOLy1xA6aJZZNWwg2+2Bfkgj7OwFq7W6vwXZOg+wMHdhI1karpT2N/1p0gl02RldeHs3cWikmkflaHh0xuDvPd0K/x6iqDldPxoIl4LB7+IjZ1gFRYxadpR6IpQhKpZHWnMJQM9+WJGdQU15m4DhTp7D9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ob5smw8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6C9C4AF0D;
+	Wed,  7 Aug 2024 15:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043676;
-	bh=IXfqJYruQXZZHt5fEry3XMQn/BKYSH7aahegucauQqI=;
+	s=korg; t=1723043102;
+	bh=BMcSijsLP0jk/TtgzzCKceCpcwID6OdAJ5vQGhvHF1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1iBYDKNVmCOtlcSTI+H8gX3KcE9iw6Yh14eLdVHgkuf6TLTWoWHNsx/xqBf3rj2lS
-	 pnjtGCRzMKWDHLsdauZosFrFCexwHpuBDxERGbKFjJtF4bqB95yj/Bi4/AH2QZOGPI
-	 OcJ+nUy8JouTkjZfxhRlyKyBOAoO5oroSWvw2uYs=
+	b=ob5smw8JS+OascpWdNUbsIxDR/9rJmKnZCvnKzlbxE8GDb4eESVNaOct8HmeCLQfL
+	 7Ocz5PQ8ACsmV2/HGBuTp4MwU1AksnkAtbqh8fSV74/LLMGCxbkrwe0l+xEnaQFfjp
+	 nSJ5iJkz2tYC/0ucsJTnMEJoKLk78idJZU4nRmBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 31/86] drm/udl: Move connector to modesetting code
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>
+Subject: [PATCH 6.10 091/123] drm/vmwgfx: Fix a deadlock in dma buf fence polling
 Date: Wed,  7 Aug 2024 17:00:10 +0200
-Message-ID: <20240807150040.264845348@linuxfoundation.org>
+Message-ID: <20240807150023.759050099@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,377 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit 0862cfd3e22f3f936927f2f7381c2519ba034c6e ]
+commit e58337100721f3cc0c7424a18730e4f39844934f upstream.
 
-Move the connector next to the rest of the modesetting code. No
-functional changes.
+Introduce a version of the fence ops that on release doesn't remove
+the fence from the pending list, and thus doesn't require a lock to
+fix poll->fence wait->fence unref deadlocks.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20221006095355.23579-6-tzimmermann@suse.de
-Stable-dep-of: 5aed213c7c6c ("drm/udl: Remove DRM_CONNECTOR_POLL_HPD")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+vmwgfx overwrites the wait callback to iterate over the list of all
+fences and update their status, to do that it holds a lock to prevent
+the list modifcations from other threads. The fence destroy callback
+both deletes the fence and removes it from the list of pending
+fences, for which it holds a lock.
+
+dma buf polling cb unrefs a fence after it's been signaled: so the poll
+calls the wait, which signals the fences, which are being destroyed.
+The destruction tries to acquire the lock on the pending fences list
+which it can never get because it's held by the wait from which it
+was called.
+
+Old bug, but not a lot of userspace apps were using dma-buf polling
+interfaces. Fix those, in particular this fixes KDE stalls/deadlock.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 2298e804e96e ("drm/vmwgfx: rework to new fence interface, v2")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.2+
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240722184313.181318-2-zack.rusin@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/udl/Makefile        |   2 +-
- drivers/gpu/drm/udl/udl_connector.c | 132 ----------------------------
- drivers/gpu/drm/udl/udl_connector.h |  21 -----
- drivers/gpu/drm/udl/udl_drv.h       |  11 +++
- drivers/gpu/drm/udl/udl_modeset.c   | 122 +++++++++++++++++++++++++
- 5 files changed, 134 insertions(+), 154 deletions(-)
- delete mode 100644 drivers/gpu/drm/udl/udl_connector.c
- delete mode 100644 drivers/gpu/drm/udl/udl_connector.h
+ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c |   17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/udl/Makefile b/drivers/gpu/drm/udl/Makefile
-index 24d61f61d7db2..3f6db179455d1 100644
---- a/drivers/gpu/drm/udl/Makefile
-+++ b/drivers/gpu/drm/udl/Makefile
-@@ -1,4 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
--udl-y := udl_drv.o udl_modeset.o udl_connector.o udl_main.o udl_transfer.o
-+udl-y := udl_drv.o udl_modeset.o udl_main.o udl_transfer.o
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+@@ -32,7 +32,6 @@
+ #define VMW_FENCE_WRAP (1 << 31)
  
- obj-$(CONFIG_DRM_UDL) := udl.o
-diff --git a/drivers/gpu/drm/udl/udl_connector.c b/drivers/gpu/drm/udl/udl_connector.c
-deleted file mode 100644
-index 538b47ffa67fa..0000000000000
---- a/drivers/gpu/drm/udl/udl_connector.c
-+++ /dev/null
-@@ -1,132 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) 2012 Red Hat
-- * based in parts on udlfb.c:
-- * Copyright (C) 2009 Roberto De Ioris <roberto@unbit.it>
-- * Copyright (C) 2009 Jaya Kumar <jayakumar.lkml@gmail.com>
-- * Copyright (C) 2009 Bernie Thompson <bernie@plugable.com>
-- */
+ struct vmw_fence_manager {
+-	int num_fence_objects;
+ 	struct vmw_private *dev_priv;
+ 	spinlock_t lock;
+ 	struct list_head fence_list;
+@@ -124,13 +123,13 @@ static void vmw_fence_obj_destroy(struct
+ {
+ 	struct vmw_fence_obj *fence =
+ 		container_of(f, struct vmw_fence_obj, base);
 -
--#include <drm/drm_atomic_state_helper.h>
--#include <drm/drm_edid.h>
--#include <drm/drm_crtc_helper.h>
--#include <drm/drm_probe_helper.h>
--
--#include "udl_connector.h"
--#include "udl_drv.h"
--
--static int udl_get_edid_block(void *data, u8 *buf, unsigned int block, size_t len)
--{
--	struct udl_device *udl = data;
--	struct drm_device *dev = &udl->drm;
--	struct usb_device *udev = udl_to_usb_device(udl);
--	u8 *read_buff;
--	int ret;
--	size_t i;
--
--	read_buff = kmalloc(2, GFP_KERNEL);
--	if (!read_buff)
--		return -ENOMEM;
--
--	for (i = 0; i < len; i++) {
--		int bval = (i + block * EDID_LENGTH) << 8;
--
--		ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
--				      0x02, (0x80 | (0x02 << 5)), bval,
--				      0xA1, read_buff, 2, USB_CTRL_GET_TIMEOUT);
--		if (ret < 0) {
--			drm_err(dev, "Read EDID byte %zu failed err %x\n", i, ret);
--			goto err_kfree;
--		} else if (ret < 1) {
--			ret = -EIO;
--			drm_err(dev, "Read EDID byte %zu failed\n", i);
--			goto err_kfree;
--		}
--
--		buf[i] = read_buff[1];
--	}
--
--	kfree(read_buff);
--
--	return 0;
--
--err_kfree:
--	kfree(read_buff);
--	return ret;
--}
--
--static int udl_connector_helper_get_modes(struct drm_connector *connector)
--{
--	struct udl_connector *udl_connector = to_udl_connector(connector);
--
--	drm_connector_update_edid_property(connector, udl_connector->edid);
--	if (udl_connector->edid)
--		return drm_add_edid_modes(connector, udl_connector->edid);
--
--	return 0;
--}
--
--static enum drm_connector_status udl_connector_detect(struct drm_connector *connector, bool force)
--{
--	struct udl_device *udl = to_udl(connector->dev);
--	struct udl_connector *udl_connector = to_udl_connector(connector);
--
--	/* cleanup previous EDID */
--	kfree(udl_connector->edid);
--
--	udl_connector->edid = drm_do_get_edid(connector, udl_get_edid_block, udl);
--	if (!udl_connector->edid)
--		return connector_status_disconnected;
--
--	return connector_status_connected;
--}
--
--static void udl_connector_destroy(struct drm_connector *connector)
--{
--	struct udl_connector *udl_connector = to_udl_connector(connector);
--
--	drm_connector_cleanup(connector);
--	kfree(udl_connector->edid);
--	kfree(udl_connector);
--}
--
--static const struct drm_connector_helper_funcs udl_connector_helper_funcs = {
--	.get_modes = udl_connector_helper_get_modes,
--};
--
--static const struct drm_connector_funcs udl_connector_funcs = {
--	.reset = drm_atomic_helper_connector_reset,
--	.detect = udl_connector_detect,
--	.fill_modes = drm_helper_probe_single_connector_modes,
--	.destroy = udl_connector_destroy,
--	.atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
--	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
--};
--
--struct drm_connector *udl_connector_init(struct drm_device *dev)
--{
--	struct udl_connector *udl_connector;
--	struct drm_connector *connector;
--	int ret;
--
--	udl_connector = kzalloc(sizeof(*udl_connector), GFP_KERNEL);
--	if (!udl_connector)
--		return ERR_PTR(-ENOMEM);
--
--	connector = &udl_connector->connector;
--	ret = drm_connector_init(dev, connector, &udl_connector_funcs, DRM_MODE_CONNECTOR_VGA);
--	if (ret)
--		goto err_kfree;
--
--	drm_connector_helper_add(connector, &udl_connector_helper_funcs);
--
--	connector->polled = DRM_CONNECTOR_POLL_HPD |
--			    DRM_CONNECTOR_POLL_CONNECT |
--			    DRM_CONNECTOR_POLL_DISCONNECT;
--
--	return connector;
--
--err_kfree:
--	kfree(udl_connector);
--	return ERR_PTR(ret);
--}
-diff --git a/drivers/gpu/drm/udl/udl_connector.h b/drivers/gpu/drm/udl/udl_connector.h
-deleted file mode 100644
-index 74ad68fd3cc9f..0000000000000
---- a/drivers/gpu/drm/udl/udl_connector.h
-+++ /dev/null
-@@ -1,21 +0,0 @@
--#ifndef __UDL_CONNECTOR_H__
--#define __UDL_CONNECTOR_H__
--
--#include <linux/container_of.h>
--
--#include <drm/drm_connector.h>
--
--struct edid;
--
--struct udl_connector {
--	struct drm_connector connector;
--	/* last udl_detect edid */
--	struct edid *edid;
--};
--
--static inline struct udl_connector *to_udl_connector(struct drm_connector *connector)
--{
--	return container_of(connector, struct udl_connector, connector);
--}
--
--#endif //__UDL_CONNECTOR_H__
-diff --git a/drivers/gpu/drm/udl/udl_drv.h b/drivers/gpu/drm/udl/udl_drv.h
-index b4cc7cc568c74..d7a3d495f2e7e 100644
---- a/drivers/gpu/drm/udl/udl_drv.h
-+++ b/drivers/gpu/drm/udl/udl_drv.h
-@@ -46,6 +46,17 @@ struct urb_list {
- 	size_t size;
- };
+ 	struct vmw_fence_manager *fman = fman_from_fence(fence);
  
-+struct udl_connector {
-+	struct drm_connector connector;
-+	/* last udl_detect edid */
-+	struct edid *edid;
-+};
-+
-+static inline struct udl_connector *to_udl_connector(struct drm_connector *connector)
-+{
-+	return container_of(connector, struct udl_connector, connector);
-+}
-+
- struct udl_device {
- 	struct drm_device drm;
- 	struct device *dev;
-diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl/udl_modeset.c
-index c7adc29a53a18..93e7554e83fa3 100644
---- a/drivers/gpu/drm/udl/udl_modeset.c
-+++ b/drivers/gpu/drm/udl/udl_modeset.c
-@@ -11,11 +11,13 @@
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_crtc_helper.h>
- #include <drm/drm_damage_helper.h>
-+#include <drm/drm_edid.h>
- #include <drm/drm_fourcc.h>
- #include <drm/drm_gem_atomic_helper.h>
- #include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_gem_shmem_helper.h>
- #include <drm/drm_modeset_helper_vtables.h>
-+#include <drm/drm_probe_helper.h>
- #include <drm/drm_vblank.h>
- 
- #include "udl_drv.h"
-@@ -403,6 +405,126 @@ static const struct drm_simple_display_pipe_funcs udl_simple_display_pipe_funcs
- 	DRM_GEM_SIMPLE_DISPLAY_PIPE_SHADOW_PLANE_FUNCS,
- };
- 
-+/*
-+ * Connector
-+ */
-+
-+static int udl_connector_helper_get_modes(struct drm_connector *connector)
-+{
-+	struct udl_connector *udl_connector = to_udl_connector(connector);
-+
-+	drm_connector_update_edid_property(connector, udl_connector->edid);
-+	if (udl_connector->edid)
-+		return drm_add_edid_modes(connector, udl_connector->edid);
-+
-+	return 0;
-+}
-+
-+static const struct drm_connector_helper_funcs udl_connector_helper_funcs = {
-+	.get_modes = udl_connector_helper_get_modes,
-+};
-+
-+static int udl_get_edid_block(void *data, u8 *buf, unsigned int block, size_t len)
-+{
-+	struct udl_device *udl = data;
-+	struct drm_device *dev = &udl->drm;
-+	struct usb_device *udev = udl_to_usb_device(udl);
-+	u8 *read_buff;
-+	int ret;
-+	size_t i;
-+
-+	read_buff = kmalloc(2, GFP_KERNEL);
-+	if (!read_buff)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < len; i++) {
-+		int bval = (i + block * EDID_LENGTH) << 8;
-+
-+		ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
-+				      0x02, (0x80 | (0x02 << 5)), bval,
-+				      0xA1, read_buff, 2, USB_CTRL_GET_TIMEOUT);
-+		if (ret < 0) {
-+			drm_err(dev, "Read EDID byte %zu failed err %x\n", i, ret);
-+			goto err_kfree;
-+		} else if (ret < 1) {
-+			ret = -EIO;
-+			drm_err(dev, "Read EDID byte %zu failed\n", i);
-+			goto err_kfree;
-+		}
-+
-+		buf[i] = read_buff[1];
+-	spin_lock(&fman->lock);
+-	list_del_init(&fence->head);
+-	--fman->num_fence_objects;
+-	spin_unlock(&fman->lock);
++	if (!list_empty(&fence->head)) {
++		spin_lock(&fman->lock);
++		list_del_init(&fence->head);
++		spin_unlock(&fman->lock);
 +	}
-+
-+	kfree(read_buff);
-+
-+	return 0;
-+
-+err_kfree:
-+	kfree(read_buff);
-+	return ret;
-+}
-+
-+static enum drm_connector_status udl_connector_detect(struct drm_connector *connector, bool force)
-+{
-+	struct udl_device *udl = to_udl(connector->dev);
-+	struct udl_connector *udl_connector = to_udl_connector(connector);
-+
-+	/* cleanup previous EDID */
-+	kfree(udl_connector->edid);
-+
-+	udl_connector->edid = drm_do_get_edid(connector, udl_get_edid_block, udl);
-+	if (!udl_connector->edid)
-+		return connector_status_disconnected;
-+
-+	return connector_status_connected;
-+}
-+
-+static void udl_connector_destroy(struct drm_connector *connector)
-+{
-+	struct udl_connector *udl_connector = to_udl_connector(connector);
-+
-+	drm_connector_cleanup(connector);
-+	kfree(udl_connector->edid);
-+	kfree(udl_connector);
-+}
-+
-+static const struct drm_connector_funcs udl_connector_funcs = {
-+	.reset = drm_atomic_helper_connector_reset,
-+	.detect = udl_connector_detect,
-+	.fill_modes = drm_helper_probe_single_connector_modes,
-+	.destroy = udl_connector_destroy,
-+	.atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
-+	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
-+};
-+
-+struct drm_connector *udl_connector_init(struct drm_device *dev)
-+{
-+	struct udl_connector *udl_connector;
-+	struct drm_connector *connector;
-+	int ret;
-+
-+	udl_connector = kzalloc(sizeof(*udl_connector), GFP_KERNEL);
-+	if (!udl_connector)
-+		return ERR_PTR(-ENOMEM);
-+
-+	connector = &udl_connector->connector;
-+	ret = drm_connector_init(dev, connector, &udl_connector_funcs, DRM_MODE_CONNECTOR_VGA);
-+	if (ret)
-+		goto err_kfree;
-+
-+	drm_connector_helper_add(connector, &udl_connector_helper_funcs);
-+
-+	connector->polled = DRM_CONNECTOR_POLL_HPD |
-+			    DRM_CONNECTOR_POLL_CONNECT |
-+			    DRM_CONNECTOR_POLL_DISCONNECT;
-+
-+	return connector;
-+
-+err_kfree:
-+	kfree(udl_connector);
-+	return ERR_PTR(ret);
-+}
-+
+ 	fence->destroy(fence);
+ }
+ 
+@@ -257,7 +256,6 @@ static const struct dma_fence_ops vmw_fe
+ 	.release = vmw_fence_obj_destroy,
+ };
+ 
+-
  /*
-  * Modesetting
-  */
--- 
-2.43.0
-
+  * Execute signal actions on fences recently signaled.
+  * This is done from a workqueue so we don't have to execute
+@@ -355,7 +353,6 @@ static int vmw_fence_obj_init(struct vmw
+ 		goto out_unlock;
+ 	}
+ 	list_add_tail(&fence->head, &fman->fence_list);
+-	++fman->num_fence_objects;
+ 
+ out_unlock:
+ 	spin_unlock(&fman->lock);
+@@ -403,7 +400,7 @@ static bool vmw_fence_goal_new_locked(st
+ 				      u32 passed_seqno)
+ {
+ 	u32 goal_seqno;
+-	struct vmw_fence_obj *fence;
++	struct vmw_fence_obj *fence, *next_fence;
+ 
+ 	if (likely(!fman->seqno_valid))
+ 		return false;
+@@ -413,7 +410,7 @@ static bool vmw_fence_goal_new_locked(st
+ 		return false;
+ 
+ 	fman->seqno_valid = false;
+-	list_for_each_entry(fence, &fman->fence_list, head) {
++	list_for_each_entry_safe(fence, next_fence, &fman->fence_list, head) {
+ 		if (!list_empty(&fence->seq_passed_actions)) {
+ 			fman->seqno_valid = true;
+ 			vmw_fence_goal_write(fman->dev_priv,
 
 
 
