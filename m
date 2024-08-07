@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4568C94AC4C
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AF994AB74
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E205A1F22FAC
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BF01284C04
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D146B81751;
-	Wed,  7 Aug 2024 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA8683CD9;
+	Wed,  7 Aug 2024 15:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gr7fVpNa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QynBbuPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D449823DE;
-	Wed,  7 Aug 2024 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCC5839E4;
+	Wed,  7 Aug 2024 15:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043629; cv=none; b=Cr1tWWBQ2iV1sj965EydA84RpYM9MWpFq2k3AD5dKNrowB+eWfczTnei6eKpxvP+Im64AuvH3QV9nmX1mZxq7Ti2PfsnZMZcSsX4ydBDk3Vm0osdhGsVueJ/0ImxuWdF2oIbBB/UKtU5DNpo5kWqsNHhyNRPSsrRD1gthQMgHAY=
+	t=1723043133; cv=none; b=nNKQhIF4e7wOLYOTtLciGCbSxQX4hDCoIxg61lxVcv98XrZcQzm2d4a5qNnwCYxwgT7fCi1/mH9IbpLRK3L6wGXQtJVy9u8d6kbECjslIrqT2C+4nilW/nuOyJTRegeA5VvoxAeS0ZAhS56pYBG3SwVDhdP18RKVTO08lakqC+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043629; c=relaxed/simple;
-	bh=llLU+/L3iYJOF3rL3B6LRaVC4Emh8Bcxj3PhPgyIvmQ=;
+	s=arc-20240116; t=1723043133; c=relaxed/simple;
+	bh=vNW1feAjwrsbBzwk3Q4OJruaBqsqfqyYcZZNspG/NHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hCADu3PiSHe2epSpbeHPWcWjqb7weKLUwXqel9ti8CndJ1qyZWAXqpE2FCDGeurTfXZ/fBDiuUL5zOcBP5HspjarqhOHwXuQ6ZrxR2a5q/O0aec9wjJe8XdYTZ6wp+bx/QdUgjrvPtZwYVdiZ/zAShYF3RzwuU1yuEjcrxBL+Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gr7fVpNa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BE2C32781;
-	Wed,  7 Aug 2024 15:13:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qcJJhSlirZG3et2pdfwFzT8QKGJZn/eN8af7p6T/9bXtFoPB3c9lUrO+nI44Bp1G/8oChxnEl0ow2qmzXx1fhLbjyMcHQN8HGUbiuGTsBY8busEtYBRPf79DA6KEOLIoAyQ3Hx1FOxv/vzW72//5yaFmUPYKCDOt3BXH+rZTEVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QynBbuPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CC4C4AF0D;
+	Wed,  7 Aug 2024 15:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043629;
-	bh=llLU+/L3iYJOF3rL3B6LRaVC4Emh8Bcxj3PhPgyIvmQ=;
+	s=korg; t=1723043132;
+	bh=vNW1feAjwrsbBzwk3Q4OJruaBqsqfqyYcZZNspG/NHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gr7fVpNa0Z/crvKIVjHCln1/+fowkHm87cwETb0e+3T2QsPwhtwltX8E1XDCUWeET
-	 g5FKxsWp73q8Zs97s30xLYjGs7u1nQ/+m6nnLNyC6znyVzu6Lg4o0+DvMCqHlXKxlc
-	 4NeEXsBzgNxoRzBwmnOOH4r4NjCTeS7XQSbrTVUM=
+	b=QynBbuPbnZaiQM4pL0QNKJqiXRWM+3FiZp2xXcD5Ub1fVypEd8r7D81/YV9EEfbWl
+	 CeDvELzdEAYZ7lrbgtM7SR/++thiEDC/9Hfgac+Ccs5qP9rvHO3FzD9zp5bNJyPuHN
+	 9Iq27YN1+JCVrSk4hEjPzzEOy9HvwInwhjmNtU10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/86] drm/nouveau: prime: fix refcount underflow
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 6.10 101/123] drm/v3d: Validate passed in drm syncobj handles in the timestamp extension
 Date: Wed,  7 Aug 2024 17:00:20 +0200
-Message-ID: <20240807150040.596666593@linuxfoundation.org>
+Message-ID: <20240807150024.120662503@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +64,74 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit a9bf3efc33f1fbf88787a277f7349459283c9b95 ]
+commit 023d22e8bb0cdd6900382ad1ed06df3b6c2ea791 upstream.
 
-Calling nouveau_bo_ref() on a nouveau_bo without initializing it (and
-hence the backing ttm_bo) leads to a refcount underflow.
+If userspace provides an unknown or invalid handle anywhere in the handle
+array the rest of the driver will not handle that well.
 
-Instead of calling nouveau_bo_ref() in the unwind path of
-drm_gem_object_init(), clean things up manually.
+Fix it by checking handle was looked up successfully or otherwise fail the
+extension by jumping into the existing unwind.
 
-Fixes: ab9ccb96a6e6 ("drm/nouveau: use prime helpers")
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240718165959.3983-2-dakr@kernel.org
-(cherry picked from commit 1b93f3e89d03cfc576636e195466a0d728ad8de5)
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: 9ba0ff3e083f ("drm/v3d: Create a CPU job extension for the timestamp query job")
+Cc: Maíra Canal <mcanal@igalia.com>
+Cc: Iago Toral Quiroga <itoral@igalia.com>
+Cc: stable@vger.kernel.org # v6.8+
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240711135340.84617-5-tursulin@igalia.com
+(cherry picked from commit 8d1276d1b8f738c3afe1457d4dff5cc66fc848a3)
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_prime.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_submit.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_prime.c b/drivers/gpu/drm/nouveau/nouveau_prime.c
-index 9608121e49b7e..8340d55aaa987 100644
---- a/drivers/gpu/drm/nouveau/nouveau_prime.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_prime.c
-@@ -63,7 +63,8 @@ struct drm_gem_object *nouveau_gem_prime_import_sg_table(struct drm_device *dev,
- 	 * to the caller, instead of a normal nouveau_bo ttm reference. */
- 	ret = drm_gem_object_init(dev, &nvbo->bo.base, size);
- 	if (ret) {
--		nouveau_bo_ref(NULL, &nvbo);
-+		drm_gem_object_release(&nvbo->bo.base);
-+		kfree(nvbo);
- 		obj = ERR_PTR(-ENOMEM);
- 		goto unlock;
+diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
+index 50be4e8a7512..9a3e32075ebe 100644
+--- a/drivers/gpu/drm/v3d/v3d_submit.c
++++ b/drivers/gpu/drm/v3d/v3d_submit.c
+@@ -498,6 +498,10 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
+ 		}
+ 
+ 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
++		if (!job->timestamp_query.queries[i].syncobj) {
++			err = -ENOENT;
++			goto error;
++		}
  	}
+ 	job->timestamp_query.count = timestamp.count;
+ 
+@@ -552,6 +556,10 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
+ 		}
+ 
+ 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
++		if (!job->timestamp_query.queries[i].syncobj) {
++			err = -ENOENT;
++			goto error;
++		}
+ 	}
+ 	job->timestamp_query.count = reset.count;
+ 
+@@ -616,6 +624,10 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
+ 		}
+ 
+ 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
++		if (!job->timestamp_query.queries[i].syncobj) {
++			err = -ENOENT;
++			goto error;
++		}
+ 	}
+ 	job->timestamp_query.count = copy.count;
+ 
 -- 
-2.43.0
+2.46.0
 
 
 
