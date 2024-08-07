@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-65760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C2D94ABC8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E005094AB3E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E2F11F238E4
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606651F26F96
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1542D839E4;
-	Wed,  7 Aug 2024 15:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0480412C522;
+	Wed,  7 Aug 2024 15:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1hZTQzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgqSqHMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C695678281;
-	Wed,  7 Aug 2024 15:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AA2374CC;
+	Wed,  7 Aug 2024 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043333; cv=none; b=FdRvO/g0UqGEHMLUAZykdRWwvgif0hz90SEo2q69EriFUsDJ/VeFm8TOuiz7Q7b75jL5mcha78G29ftsdDQmCTK/AnnoTtVa4CJMZx7ZrTdvYQkK/vqrYP0Up8HU8+ZFm3YgO7trSRvOQpTT6fFy1VT5Z01zvbmJhtoCOg04i0E=
+	t=1723043032; cv=none; b=oxUknQd9jBKrnehFL+bonQ2KcgeDDRMNaV/lcUneCebm8xIskSAuxRftauGeO66lxgWDSahNpY3g18f+dJvgbP8ctSXtI9lcqTJO0NhGsKPwbVnOuUr0DX3YQdb0M9BjZeA9Iwt+WICLRI0t9vJgiRsJMH0ip5eA+XqKHhIdWTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043333; c=relaxed/simple;
-	bh=VbXEu9ghFo6MPRSCRfq5V+QmZGcNoqHq+BaG24UJ2D4=;
+	s=arc-20240116; t=1723043032; c=relaxed/simple;
+	bh=+pg1wMAWhiVDhbc5IehSKfKwrpbWtezqqGCYGc/N8Oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1yFeirp99i19ELxPZzpQ1ZvJbGHVGAmmxIzJzxuJ5U/g/dZOZKJMYSmSCQbXkR0tAVKy3o2Zn4D/vaeT2RAsGoUd+RcaTxvFVMTcwtOyg22QXUOPg6LsKQA3289FNSB3s5jx81kyDqc+HFSLJZpaI7GffVGpDyg1k32Sd4n+CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1hZTQzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B01C32781;
-	Wed,  7 Aug 2024 15:08:53 +0000 (UTC)
+	 MIME-Version; b=Z97rxbtOkOltn7dpjLwn5TiD9584Nyv8Ra5epDv3zhU3W2oTF7hf5Yo1G4G8e35VXXw8NTdAywCinIX52kNBg/2fgXPM61tksPwNwe9+eEAMN2F10934S8mF7slZwYrmgy3mQDg5K2yQgMl+i1251ZW8e7V5Ej1p4QaB3tmE64I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgqSqHMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A1CC32781;
+	Wed,  7 Aug 2024 15:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043333;
-	bh=VbXEu9ghFo6MPRSCRfq5V+QmZGcNoqHq+BaG24UJ2D4=;
+	s=korg; t=1723043032;
+	bh=+pg1wMAWhiVDhbc5IehSKfKwrpbWtezqqGCYGc/N8Oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1hZTQzcL+lixboSt9MkPDTV9WQdOPmfYFytaxuk5H8/IsnERTnBCHsbNKCPzlxNB
-	 NAiEr4lHAn5fGx+/06Zc8ldkagDzTfQmp0oZgA8fuL/WBolPsdCljd5EV1gwXqPLIv
-	 vo383kkHtQsR253KBjU0x+6QD8RQFchBDl8HtrzY=
+	b=GgqSqHMZTS1OT4abc7xgLeWhG0ft3nYixveZ65D75hxEdch/gfhQA3aQFvuZY4Jd3
+	 kN51YVw2M3NfxN8WvbV0LxdlpGRXD7SzDFjRF09eIg5S0qhXwD3z7EVxTM618qmERi
+	 GJqk+HqQ5wuHBzg/6ujowaMO1CqaqysApxrohyts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/121] leds: trigger: Remove unused function led_trigger_rename_static()
+Subject: [PATCH 6.10 036/123] ethtool: fix setting key and resetting indir at once
 Date: Wed,  7 Aug 2024 16:59:15 +0200
-Message-ID: <20240807150020.108605948@linuxfoundation.org>
+Message-ID: <20240807150021.998214044@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit c82a1662d4548c454de5343b88f69b9fc82266b3 ]
+[ Upstream commit 7195f0ef7f5b8c678cf28de7c9b619cb908b482c ]
 
-This function was added with a8df7b1ab70b ("leds: add led_trigger_rename
-function") 11 yrs ago, but it has no users. So remove it.
+The indirection table and the key follow struct ethtool_rxfh
+in user memory.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/d90f30be-f661-4db7-b0b5-d09d07a78a68@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
+To reset the indirection table user space calls SET_RXFH with
+table of size 0 (OTOH to say "no change" it should use -1 / ~0).
+The logic for calculating the offset where they key sits is
+incorrect in this case, as kernel would still offset by the full
+table length, while for the reset there is no indir table and
+key is immediately after the struct.
+
+  $ ethtool -X eth0 default hkey 01:02:03...
+  $ ethtool -x eth0
+  [...]
+  RSS hash key:
+00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
+  [...]
+
+Fixes: 3de0b592394d ("ethtool: Support for configurable RSS hash key")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-triggers.c | 13 -------------
- include/linux/leds.h        | 17 -----------------
- 2 files changed, 30 deletions(-)
+ net/ethtool/ioctl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-index 4f5829b726a75..081acf1f345b3 100644
---- a/drivers/leds/led-triggers.c
-+++ b/drivers/leds/led-triggers.c
-@@ -269,19 +269,6 @@ void led_trigger_set_default(struct led_classdev *led_cdev)
- }
- EXPORT_SYMBOL_GPL(led_trigger_set_default);
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 223dcd25d88a2..fcc3dbef8b503 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -1277,11 +1277,11 @@ static noinline_for_stack int ethtool_set_rxfh(struct net_device *dev,
+ 	u32 rss_cfg_offset = offsetof(struct ethtool_rxfh, rss_config[0]);
+ 	const struct ethtool_ops *ops = dev->ethtool_ops;
+ 	u32 dev_indir_size = 0, dev_key_size = 0, i;
++	u32 user_indir_len = 0, indir_bytes = 0;
+ 	struct ethtool_rxfh_param rxfh_dev = {};
+ 	struct netlink_ext_ack *extack = NULL;
+ 	struct ethtool_rxnfc rx_rings;
+ 	struct ethtool_rxfh rxfh;
+-	u32 indir_bytes = 0;
+ 	u8 *rss_config;
+ 	int ret;
  
--void led_trigger_rename_static(const char *name, struct led_trigger *trig)
--{
--	/* new name must be on a temporary string to prevent races */
--	BUG_ON(name == trig->name);
--
--	down_write(&triggers_list_lock);
--	/* this assumes that trig->name was originaly allocated to
--	 * non constant storage */
--	strcpy((char *)trig->name, name);
--	up_write(&triggers_list_lock);
--}
--EXPORT_SYMBOL_GPL(led_trigger_rename_static);
--
- /* LED Trigger Interface */
- 
- int led_trigger_register(struct led_trigger *trig)
-diff --git a/include/linux/leds.h b/include/linux/leds.h
-index aa16dc2a8230f..6a4973feecd65 100644
---- a/include/linux/leds.h
-+++ b/include/linux/leds.h
-@@ -527,23 +527,6 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
- 	return led_cdev->trigger_data;
- }
- 
--/**
-- * led_trigger_rename_static - rename a trigger
-- * @name: the new trigger name
-- * @trig: the LED trigger to rename
-- *
-- * Change a LED trigger name by copying the string passed in
-- * name into current trigger name, which MUST be large
-- * enough for the new string.
-- *
-- * Note that name must NOT point to the same string used
-- * during LED registration, as that could lead to races.
-- *
-- * This is meant to be used on triggers with statically
-- * allocated name.
-- */
--void led_trigger_rename_static(const char *name, struct led_trigger *trig);
--
- #define module_led_trigger(__led_trigger) \
- 	module_driver(__led_trigger, led_trigger_register, \
- 		      led_trigger_unregister)
+@@ -1342,6 +1342,7 @@ static noinline_for_stack int ethtool_set_rxfh(struct net_device *dev,
+ 	 */
+ 	if (rxfh.indir_size &&
+ 	    rxfh.indir_size != ETH_RXFH_INDIR_NO_CHANGE) {
++		user_indir_len = indir_bytes;
+ 		rxfh_dev.indir = (u32 *)rss_config;
+ 		rxfh_dev.indir_size = dev_indir_size;
+ 		ret = ethtool_copy_validate_indir(rxfh_dev.indir,
+@@ -1368,7 +1369,7 @@ static noinline_for_stack int ethtool_set_rxfh(struct net_device *dev,
+ 		rxfh_dev.key_size = dev_key_size;
+ 		rxfh_dev.key = rss_config + indir_bytes;
+ 		if (copy_from_user(rxfh_dev.key,
+-				   useraddr + rss_cfg_offset + indir_bytes,
++				   useraddr + rss_cfg_offset + user_indir_len,
+ 				   rxfh.key_size)) {
+ 			ret = -EFAULT;
+ 			goto out;
 -- 
 2.43.0
 
