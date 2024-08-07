@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-65694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4571D94AB7C
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E2E94AC66
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12691F25121
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B16DD1F25930
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4163884A5B;
-	Wed,  7 Aug 2024 15:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA4E84A50;
+	Wed,  7 Aug 2024 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lm7kCSIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zghC3Al"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F376F84A35;
-	Wed,  7 Aug 2024 15:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392237F7F5;
+	Wed,  7 Aug 2024 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043157; cv=none; b=IcepbJDbpu2cy11TZl0ACX6z6/7shHycaCKFaYTp3mpavL4yHBXMnmXCBY58lpqn9tGCLTuu6z8VkZtlG7Bk5gpDFRHeexYF8TI9iK0DEwsIdp+w+1CX4Cf2B1ppMd7OI1zDt/b9hlMNT9FRK7+ICzbISHCTh+7j12J+eux29Vw=
+	t=1723043682; cv=none; b=Lqn1NZha6DGJwaydsK927LWOG5NEicWJDgKFIbrMX1OEQMDSSsyz3ClDKkhmNk8pNMyNp0ZAVCTMmA0nv0tfm2t0gwkMITd2cL3TCJuOB+Y0FCu3DlmkUjtbnuz0fNZNmI5lqWtX0fIU8fUCsZoXJ+UOyocuHWtkUqcnwTUuV7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043157; c=relaxed/simple;
-	bh=zhcvfSVizD3uRsx77CXFGxWR6BG2ukbyitvKpnWWHX8=;
+	s=arc-20240116; t=1723043682; c=relaxed/simple;
+	bh=3A37AaYHZuFodeGTBbSdZPbqBeVAkTqMB28B4lPYsOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+xcMRO6Zj+VaALNdmyOBXMGdufizezUkUWt2NYHpMVMAdwMvezRafugIWIkO8AQva8xpSzK8VdMxnUs7rhf1PtjzADG6yyhkoJQRpU4AAVhHKrSIysSxhaudqc6eoDfAWSKC0tvSqGn/0evDBL3HBSE4U0OmEsrvEP/L4wxi0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lm7kCSIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FCBC32781;
-	Wed,  7 Aug 2024 15:05:56 +0000 (UTC)
+	 MIME-Version; b=Vc4kX6tC+OErgicbTHJ2Iobv3w8Y20rf6oJUVOwhad7uBO5vgxepV2TPNIbh1zh0qLz8PQqQ3j+1YYFLqivoi1ajyCTP9LrIJojwAG42HV5JM5EG2hO5QJ2UvW8is6a8stJdkdeEK0pKwJg2Frxae9LtcZzhEmrETzDd8e9nQL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zghC3Al; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF580C32781;
+	Wed,  7 Aug 2024 15:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043156;
-	bh=zhcvfSVizD3uRsx77CXFGxWR6BG2ukbyitvKpnWWHX8=;
+	s=korg; t=1723043682;
+	bh=3A37AaYHZuFodeGTBbSdZPbqBeVAkTqMB28B4lPYsOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lm7kCSIJu+mutGN9jS1kB4LR0C0LwGDsIQY5SIpGA8upWFpcra4atOnC1Fs8i2hzn
-	 ZuYcQ+hm3WP2isUU8wmxA37z5IGXPQPam5r4kLnx4XXFriHllD9VHxBY6kbJnypXL0
-	 qr6v4DL+raoGHJgNFYl9/5WDHDDOQV5LCXAAybQs=
+	b=0zghC3AlnBdLedUZRC3mduG12af9Yqr+sXpNjKVjiCcuUssyTVpOV5y2zlDxVr9Ou
+	 TjpmeNt3fRdqzFVh7r/tBAncH4SoJmFUnOv/vUed7U5u0vFTN3uGWIz16rSV7Kg5fU
+	 1AlavZjv+KRqO32gguFo2dqywl7iruGFK7FNotUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.10 112/123] mptcp: fix user-space PM announced address accounting
-Date: Wed,  7 Aug 2024 17:00:31 +0200
-Message-ID: <20240807150024.495539592@linuxfoundation.org>
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.1 53/86] ice: add missing WRITE_ONCE when clearing ice_rx_ring::xdp_prog
+Date: Wed,  7 Aug 2024 17:00:32 +0200
+Message-ID: <20240807150040.992892355@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-commit 167b93258d1e2230ee3e8a97669b4db4cc9e90aa upstream.
+[ Upstream commit 6044ca26210ba72b3dcc649fae1cbedd9e6ab018 ]
 
-Currently the per-connection announced address counter is never
-decreased. When the user-space PM is in use, this just affect
-the information exposed via diag/sockopt, but it could still foul
-the PM to wrong decision.
+It is read by data path and modified from process context on remote cpu
+so it is needed to use WRITE_ONCE to clear the pointer.
 
-Add the missing accounting for the user-space PM's sake.
-
-Fixes: 8b1c94da1e48 ("mptcp: only send RM_ADDR in nl_cmd_remove")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1534,16 +1534,25 @@ void mptcp_pm_remove_addrs(struct mptcp_
- {
- 	struct mptcp_rm_list alist = { .nr = 0 };
- 	struct mptcp_pm_addr_entry *entry;
-+	int anno_nr = 0;
- 
- 	list_for_each_entry(entry, rm_list, list) {
--		if ((remove_anno_list_by_saddr(msk, &entry->addr) ||
--		     lookup_subflow_by_saddr(&msk->conn_list, &entry->addr)) &&
--		    alist.nr < MPTCP_RM_IDS_MAX)
--			alist.ids[alist.nr++] = entry->addr.id;
-+		if (alist.nr >= MPTCP_RM_IDS_MAX)
-+			break;
-+
-+		/* only delete if either announced or matching a subflow */
-+		if (remove_anno_list_by_saddr(msk, &entry->addr))
-+			anno_nr++;
-+		else if (!lookup_subflow_by_saddr(&msk->conn_list,
-+						  &entry->addr))
-+			continue;
-+
-+		alist.ids[alist.nr++] = entry->addr.id;
- 	}
- 
- 	if (alist.nr) {
- 		spin_lock_bh(&msk->pm.lock);
-+		msk->pm.add_addr_signaled -= anno_nr;
- 		mptcp_pm_remove_addr(msk, &alist);
- 		spin_unlock_bh(&msk->pm.lock);
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index dbe80e5053a82..bd62781191b3d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -454,7 +454,7 @@ void ice_free_rx_ring(struct ice_rx_ring *rx_ring)
+ 	if (rx_ring->vsi->type == ICE_VSI_PF)
+ 		if (xdp_rxq_info_is_reg(&rx_ring->xdp_rxq))
+ 			xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
+-	rx_ring->xdp_prog = NULL;
++	WRITE_ONCE(rx_ring->xdp_prog, NULL);
+ 	if (rx_ring->xsk_pool) {
+ 		kfree(rx_ring->xdp_buf);
+ 		rx_ring->xdp_buf = NULL;
+-- 
+2.43.0
+
 
 
 
