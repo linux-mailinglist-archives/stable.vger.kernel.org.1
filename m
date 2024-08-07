@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8772A94AB8E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFA094ABFC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7DE51C21B92
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6578D1F22070
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B247078291;
-	Wed,  7 Aug 2024 15:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BE1823AF;
+	Wed,  7 Aug 2024 15:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cd5uL9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3m9jfEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC297D3E4;
-	Wed,  7 Aug 2024 15:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4056581751;
+	Wed,  7 Aug 2024 15:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043205; cv=none; b=bUPC7sFwCPU0pQ7eTksjzNbyQGBrjZgevZo78haLcFaS1lU0zAldqEniWPZR8seKHoliobHAcIq6Tg5+lyHcEq0rhwNvSuXrITRgFxMaxGHvU7g6lm4JwjRCpzQZDRK04J2ABdR+5qhh27KYcftDIc2/UTQCF84ps8sX2COgANQ=
+	t=1723043453; cv=none; b=KJk9jgQGaQSHymyBXJssf8o52M2i4eZ52VarFtzIQ3p5v/8td7Gz768OLICRzUPI82IaaCTABKznIi7OgBbShAkhkNA3HSFCr9Tes5S4bgF09mMnVvDYifRnd59/GM4DhrY9PcdrPF2B6x7kmwmhHzXJpjnE4xOyqtsIS0l4rvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043205; c=relaxed/simple;
-	bh=q+tLKqN6a5RMQuktnkRSC6mUO5lGbfcLixXPW/UW1is=;
+	s=arc-20240116; t=1723043453; c=relaxed/simple;
+	bh=om8Pkij2CjO7QJlYBM1IsC5uMSACSdLDkiG/p1QeBV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+UH9t6a9FPXUpzJowDrQjmPG4VWT9G3Boe4VSmDkoZ5SsJXGjVmouCI5grgIB7v5RePApmHlgfw4WQdXhqPZwf1Kht+Os+f/sI6O3TrEjtMzyDzn0DP/rnA5wwzdoCREFQI5ulL1s+wPFK71VQT69oXgbLVw74KK4ZoiChSl5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cd5uL9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56B7C32781;
-	Wed,  7 Aug 2024 15:06:44 +0000 (UTC)
+	 MIME-Version; b=gynUWDQ7XAuezgdEIRrPUL3MZmyeku5p1tP9BNCRrh86TL6EkUwl0NNxIl9RwU6T2Nt+PUXA+tn3YKQ5yE65PHsZepLBf3dCCXpLLAYLIR8N6AbJNLgiw7+KajPjFE6Md+/+X9F0cmnWJcncSqz3X2y/6CrtQGY3YSns9qlmO7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3m9jfEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FD5C32781;
+	Wed,  7 Aug 2024 15:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043205;
-	bh=q+tLKqN6a5RMQuktnkRSC6mUO5lGbfcLixXPW/UW1is=;
+	s=korg; t=1723043453;
+	bh=om8Pkij2CjO7QJlYBM1IsC5uMSACSdLDkiG/p1QeBV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0cd5uL9RXxhS78WnpalB3fRVag3dZwgpJbhwBM6Y7nkIrzhbXizFFzyNCejbL2aSP
-	 GnQz5Q63Xdp3wAx1+66OOPkTGryx+YVtVMorUUisAySK3ERSPHNrNL69MavbqOAKIn
-	 jLYY+mZs732R69vzFNPSE56bFEbLhsVDWCaIm0tI=
+	b=Y3m9jfEyYw9oVj32aIp+wBwKXntJv5Vw9Gdm44Q9pv6+wpWxcjrkU3Yx8FsC3HcZL
+	 BTdF8vcqGrrR7HcHksaVjILTCG3HURqn3653WTSp1juQunZs6ZRXMcBKwuFbZVCG7K
+	 jDudunbPiRdwOtVf65hoRjXuVMrEnEQw4N1IiW1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 110/123] net: wan: fsl_qmc_hdlc: Discard received CRC
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 097/121] btrfs: zoned: fix zone_unusable accounting on making block group read-write again
 Date: Wed,  7 Aug 2024 17:00:29 +0200
-Message-ID: <20240807150024.427982423@linuxfoundation.org>
+Message-ID: <20240807150022.576335004@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-commit e549360069b4a57e111b8222fc072f3c7c1688ab upstream.
+commit 8cd44dd1d17a23d5cc8c443c659ca57aa76e2fa5 upstream.
 
-Received frame from QMC contains the CRC.
-Upper layers don't need this CRC and tcpdump mentioned trailing junk
-data due to this CRC presence.
+When btrfs makes a block group read-only, it adds all free regions in the
+block group to space_info->bytes_readonly. That free space excludes
+reserved and pinned regions. OTOH, when btrfs makes the block group
+read-write again, it moves all the unused regions into the block group's
+zone_unusable. That unused region includes reserved and pinned regions.
+As a result, it counts too much zone_unusable bytes.
 
-As some other HDLC driver, simply discard this CRC.
+Fortunately (or unfortunately), having erroneous zone_unusable does not
+affect the calculation of space_info->bytes_readonly, because free
+space (num_bytes in btrfs_dec_block_group_ro) calculation is done based on
+the erroneous zone_unusable and it reduces the num_bytes just to cancel the
+error.
 
-Fixes: d0f2258e79fd ("net: wan: Add support for QMC HDLC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240730063133.179598-1-herve.codina@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This behavior can be easily discovered by adding a WARN_ON to check e.g,
+"bg->pinned > 0" in btrfs_dec_block_group_ro(), and running fstests test
+case like btrfs/282.
+
+Fix it by properly considering pinned and reserved in
+btrfs_dec_block_group_ro(). Also, add a WARN_ON and introduce
+btrfs_space_info_update_bytes_zone_unusable() to catch a similar mistake.
+
+Fixes: 169e0da91a21 ("btrfs: zoned: track unusable bytes for zones")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wan/fsl_qmc_hdlc.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ fs/btrfs/block-group.c       |   13 ++++++++-----
+ fs/btrfs/extent-tree.c       |    3 ++-
+ fs/btrfs/free-space-cache.c  |    4 +++-
+ fs/btrfs/space-info.c        |    2 +-
+ fs/btrfs/space-info.h        |    1 +
+ include/trace/events/btrfs.h |    8 ++++++++
+ 6 files changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
-index 64b4bfa6fea7..8fcfbde31a1c 100644
---- a/drivers/net/wan/fsl_qmc_hdlc.c
-+++ b/drivers/net/wan/fsl_qmc_hdlc.c
-@@ -250,6 +250,7 @@ static void qmc_hcld_recv_complete(void *context, size_t length, unsigned int fl
- 	struct qmc_hdlc_desc *desc = context;
- 	struct net_device *netdev;
- 	struct qmc_hdlc *qmc_hdlc;
-+	size_t crc_size;
- 	int ret;
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1214,8 +1214,8 @@ int btrfs_remove_block_group(struct btrf
+ 	block_group->space_info->total_bytes -= block_group->length;
+ 	block_group->space_info->bytes_readonly -=
+ 		(block_group->length - block_group->zone_unusable);
+-	block_group->space_info->bytes_zone_unusable -=
+-		block_group->zone_unusable;
++	btrfs_space_info_update_bytes_zone_unusable(fs_info, block_group->space_info,
++						    -block_group->zone_unusable);
+ 	block_group->space_info->disk_total -= block_group->length * factor;
  
- 	netdev = desc->netdev;
-@@ -268,15 +269,26 @@ static void qmc_hcld_recv_complete(void *context, size_t length, unsigned int fl
- 		if (flags & QMC_RX_FLAG_HDLC_CRC) /* CRC error */
- 			netdev->stats.rx_crc_errors++;
- 		kfree_skb(desc->skb);
--	} else {
--		netdev->stats.rx_packets++;
--		netdev->stats.rx_bytes += length;
--
--		skb_put(desc->skb, length);
--		desc->skb->protocol = hdlc_type_trans(desc->skb, netdev);
--		netif_rx(desc->skb);
-+		goto re_queue;
- 	}
- 
-+	/* Discard the CRC */
-+	crc_size = qmc_hdlc->is_crc32 ? 4 : 2;
-+	if (length < crc_size) {
-+		netdev->stats.rx_length_errors++;
-+		kfree_skb(desc->skb);
-+		goto re_queue;
+ 	spin_unlock(&block_group->space_info->lock);
+@@ -1399,7 +1399,8 @@ static int inc_block_group_ro(struct btr
+ 		if (btrfs_is_zoned(cache->fs_info)) {
+ 			/* Migrate zone_unusable bytes to readonly */
+ 			sinfo->bytes_readonly += cache->zone_unusable;
+-			sinfo->bytes_zone_unusable -= cache->zone_unusable;
++			btrfs_space_info_update_bytes_zone_unusable(cache->fs_info, sinfo,
++								    -cache->zone_unusable);
+ 			cache->zone_unusable = 0;
+ 		}
+ 		cache->ro++;
+@@ -3023,9 +3024,11 @@ void btrfs_dec_block_group_ro(struct btr
+ 		if (btrfs_is_zoned(cache->fs_info)) {
+ 			/* Migrate zone_unusable bytes back */
+ 			cache->zone_unusable =
+-				(cache->alloc_offset - cache->used) +
++				(cache->alloc_offset - cache->used - cache->pinned -
++				 cache->reserved) +
+ 				(cache->length - cache->zone_capacity);
+-			sinfo->bytes_zone_unusable += cache->zone_unusable;
++			btrfs_space_info_update_bytes_zone_unusable(cache->fs_info, sinfo,
++								    cache->zone_unusable);
+ 			sinfo->bytes_readonly -= cache->zone_unusable;
+ 		}
+ 		num_bytes = cache->length - cache->reserved -
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -2749,7 +2749,8 @@ static int unpin_extent_range(struct btr
+ 			readonly = true;
+ 		} else if (btrfs_is_zoned(fs_info)) {
+ 			/* Need reset before reusing in a zoned block group */
+-			space_info->bytes_zone_unusable += len;
++			btrfs_space_info_update_bytes_zone_unusable(fs_info, space_info,
++								    len);
+ 			readonly = true;
+ 		}
+ 		spin_unlock(&cache->lock);
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -2721,8 +2721,10 @@ static int __btrfs_add_free_space_zoned(
+ 	 * If the block group is read-only, we should account freed space into
+ 	 * bytes_readonly.
+ 	 */
+-	if (!block_group->ro)
++	if (!block_group->ro) {
+ 		block_group->zone_unusable += to_unusable;
++		WARN_ON(block_group->zone_unusable > block_group->length);
 +	}
-+	length -= crc_size;
+ 	spin_unlock(&ctl->tree_lock);
+ 	if (!used) {
+ 		spin_lock(&block_group->lock);
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -312,7 +312,7 @@ void btrfs_add_bg_to_space_info(struct b
+ 	found->bytes_used += block_group->used;
+ 	found->disk_used += block_group->used * factor;
+ 	found->bytes_readonly += block_group->bytes_super;
+-	found->bytes_zone_unusable += block_group->zone_unusable;
++	btrfs_space_info_update_bytes_zone_unusable(info, found, block_group->zone_unusable);
+ 	if (block_group->length > 0)
+ 		found->full = 0;
+ 	btrfs_try_granting_tickets(info, found);
+--- a/fs/btrfs/space-info.h
++++ b/fs/btrfs/space-info.h
+@@ -197,6 +197,7 @@ btrfs_space_info_update_##name(struct bt
+ 
+ DECLARE_SPACE_INFO_UPDATE(bytes_may_use, "space_info");
+ DECLARE_SPACE_INFO_UPDATE(bytes_pinned, "pinned");
++DECLARE_SPACE_INFO_UPDATE(bytes_zone_unusable, "zone_unusable");
+ 
+ int btrfs_init_space_info(struct btrfs_fs_info *fs_info);
+ void btrfs_add_bg_to_space_info(struct btrfs_fs_info *info,
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -2430,6 +2430,14 @@ DEFINE_EVENT(btrfs__space_info_update, u
+ 	TP_ARGS(fs_info, sinfo, old, diff)
+ );
+ 
++DEFINE_EVENT(btrfs__space_info_update, update_bytes_zone_unusable,
 +
-+	netdev->stats.rx_packets++;
-+	netdev->stats.rx_bytes += length;
++	TP_PROTO(const struct btrfs_fs_info *fs_info,
++		 const struct btrfs_space_info *sinfo, u64 old, s64 diff),
 +
-+	skb_put(desc->skb, length);
-+	desc->skb->protocol = hdlc_type_trans(desc->skb, netdev);
-+	netif_rx(desc->skb);
++	TP_ARGS(fs_info, sinfo, old, diff)
++);
 +
-+re_queue:
- 	/* Re-queue a transfer using the same descriptor */
- 	ret = qmc_hdlc_recv_queue(qmc_hdlc, desc, desc->dma_size);
- 	if (ret) {
--- 
-2.46.0
-
+ DECLARE_EVENT_CLASS(btrfs_raid56_bio,
+ 
+ 	TP_PROTO(const struct btrfs_raid_bio *rbio,
 
 
 
