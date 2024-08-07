@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-65609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7C194AB00
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6213394AB97
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF1B8282EFF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:02:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EDAC280A91
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6867E0E9;
-	Wed,  7 Aug 2024 15:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB6484A27;
+	Wed,  7 Aug 2024 15:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qswRUuN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZKPw8yg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A844723CE;
-	Wed,  7 Aug 2024 15:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CAD823A9;
+	Wed,  7 Aug 2024 15:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042926; cv=none; b=B/vuUBwVWvIaD13VYrOySKJKAYPM+x0hrEuRRa9UuHH78yFC/ErWlYZVlxLhzGMcsWx7GvxHOmJyTgngCwa8Z9pEUzC5e2raJ32jvyCLpB/UqYs371j45SBWPb5Tmj/cvIQHS42IfgUhbfTtsULyUU1514OG3gtVWpEObcdO2BY=
+	t=1723043224; cv=none; b=P5+Z1zmz9uCk2evf3EGZyMUz22zz0vmy9sC/oQerCRKwK8ysv31mTjn0b7HMMORKeeh1GQB+ulQvJYesPYvHwfKT9xNnTVS3H7avhLsxbKvowF9JUNvyW9xzDAHxIF6u/DD04trctes55D1yH0AHPy44uy3KO69WyePh3m0jaMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042926; c=relaxed/simple;
-	bh=ldz1amlNmF4b3lz0Ro4+awzmu/2D5x7gtAu37PrxjtU=;
+	s=arc-20240116; t=1723043224; c=relaxed/simple;
+	bh=QoUOJlb+uHnzku92O9QD+nZXJ9KQ/oaNLXqkJM43W6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eKxxDhXGRf0sCd6euDn2rj07URJcmHfpqDaoryaas0oyfQEUVthleTFix7WEMBOIbELPM3177WbLhOJ38IuM0vZfnPyJmVUbkWWrP5lDLXguIznXeokyOURIug148cp8sNvljFF0X9rFQnGkRWXkjDIhWK0xt7j0grmOjRkukpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qswRUuN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380B4C4AF0B;
-	Wed,  7 Aug 2024 15:02:06 +0000 (UTC)
+	 MIME-Version; b=fSdcxhz+6NBwSrRKLzpnRgYJC/nL+csyOAtcDjuLEE8h+c3+N/Zj56eaCNhL16sDGXiV1Prl01tfLM2Ak4LxqQKIoYojb0WLbA1TJXfFOoSylwcrWQAmnnwXa1YLTGTOc8bbK5c/hXzfmNPB+6+AvtiSwzRHkkaK54AqeQ+IhYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZKPw8yg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A3FC32781;
+	Wed,  7 Aug 2024 15:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723042926;
-	bh=ldz1amlNmF4b3lz0Ro4+awzmu/2D5x7gtAu37PrxjtU=;
+	s=korg; t=1723043223;
+	bh=QoUOJlb+uHnzku92O9QD+nZXJ9KQ/oaNLXqkJM43W6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qswRUuN/AsOtmc6CjXOeEJKjApD+sH6xXtpOsCgxTigOBiZwMxiYREbfRV9TDX1OL
-	 UaDjbbGNPYh7RUD+8nFNaa3w+cb7IVjwhDpcrKUedrWOC9zAzTA2ajeEVejTBHPL5q
-	 Yy3EtGg/HgSLTwFtlG8ENISmsw5wn+7FrNq+YQZk=
+	b=WZKPw8ygB951yS+L32LqrPr/knzp/zjTKkYN932sQa4bCFGkSc++qtwA3xM3MPj5c
+	 4VAZpLfjqfiEGU0P+R/zI1M5KNq0Je9HdVQ8QBO/jh2j0KriEuTd3Y7b0HF2kPGuer
+	 zo5HcMOkStLd3dVFZAzkr/UAf2bsSuv7Y/7Nk9Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexey Gladkov <legion@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Joel Granados <joel.granados@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 026/123] ethtool: rss: echo the context number back
+Subject: [PATCH 6.6 013/121] sysctl: allow change system v ipc sysctls inside ipc namespace
 Date: Wed,  7 Aug 2024 16:59:05 +0200
-Message-ID: <20240807150021.661582647@linuxfoundation.org>
+Message-ID: <20240807150019.807652669@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +69,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Alexey Gladkov <legion@kernel.org>
 
-[ Upstream commit f96aae91b0d260f682e630e092ef70a05a718a43 ]
+[ Upstream commit 50ec499b9a43e46200c9f7b7d723ab2e4af540b3 ]
 
-The response to a GET request in Netlink should fully identify
-the queried object. RSS_GET accepts context id as an input,
-so it must echo that attribute back to the response.
+Patch series "Allow to change ipc/mq sysctls inside ipc namespace", v3.
 
-After (assuming context 1 has been created):
+Right now ipc and mq limits count as per ipc namespace, but only real root
+can change them.  By default, the current values of these limits are such
+that it can only be reduced.  Since only root can change the values, it is
+impossible to reduce these limits in the rootless container.
 
-  $ ./cli.py --spec netlink/specs/ethtool.yaml \
-             --do rss-get \
-	     --json '{"header": {"dev-index": 2}, "context": 1}'
-  {'context': 1,
-   'header': {'dev-index': 2, 'dev-name': 'eth0'},
-  [...]
+We can allow limit changes within ipc namespace because mq parameters are
+limited by RLIMIT_MSGQUEUE and ipc parameters are not limited to anything
+other than cgroups.
 
-Fixes: 7112a04664bf ("ethtool: add netlink based get rss support")
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20240724234249.2621109-3-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch (of 3):
+
+Rootless containers are not allowed to modify kernel IPC parameters.
+
+All default limits are set to such high values that in fact there are no
+limits at all.  All limits are not inherited and are initialized to
+default values when a new ipc_namespace is created.
+
+For new ipc_namespace:
+
+size_t       ipc_ns.shm_ctlmax = SHMMAX; // (ULONG_MAX - (1UL << 24))
+size_t       ipc_ns.shm_ctlall = SHMALL; // (ULONG_MAX - (1UL << 24))
+int          ipc_ns.shm_ctlmni = IPCMNI; // (1 << 15)
+int          ipc_ns.shm_rmid_forced = 0;
+unsigned int ipc_ns.msg_ctlmax = MSGMAX; // 8192
+unsigned int ipc_ns.msg_ctlmni = MSGMNI; // 32000
+unsigned int ipc_ns.msg_ctlmnb = MSGMNB; // 16384
+
+The shm_tot (total amount of shared pages) has also ceased to be global,
+it is located in ipc_namespace and is not inherited from anywhere.
+
+In such conditions, it cannot be said that these limits limit anything.
+The real limiter for them is cgroups.
+
+If we allow rootless containers to change these parameters, then it can
+only be reduced.
+
+Link: https://lkml.kernel.org/r/cover.1705333426.git.legion@kernel.org
+Link: https://lkml.kernel.org/r/d2f4603305cbfed58a24755aa61d027314b73a45.1705333426.git.legion@kernel.org
+Signed-off-by: Alexey Gladkov <legion@kernel.org>
+Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
+Link: https://lkml.kernel.org/r/e2d84d3ec0172cfff759e6065da84ce0cc2736f8.1663756794.git.legion@kernel.org
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Joel Granados <joel.granados@gmail.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Manfred Spraul <manfred@colorfullife.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/ethtool.yaml     | 1 +
- Documentation/networking/ethtool-netlink.rst | 1 +
- net/ethtool/rss.c                            | 8 +++++++-
- 3 files changed, 9 insertions(+), 1 deletion(-)
+ ipc/ipc_sysctl.c | 37 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-index 3632c1c891e94..238145c31835e 100644
---- a/Documentation/netlink/specs/ethtool.yaml
-+++ b/Documentation/netlink/specs/ethtool.yaml
-@@ -1638,6 +1638,7 @@ operations:
-         reply:
-           attributes:
-             - header
-+            - context
-             - hfunc
-             - indir
-             - hkey
-diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-index 160bfb0ae8bae..0d8c487be3993 100644
---- a/Documentation/networking/ethtool-netlink.rst
-+++ b/Documentation/networking/ethtool-netlink.rst
-@@ -1800,6 +1800,7 @@ Kernel response contents:
+diff --git a/ipc/ipc_sysctl.c b/ipc/ipc_sysctl.c
+index 8c62e443f78b3..01c4a50d22b2d 100644
+--- a/ipc/ipc_sysctl.c
++++ b/ipc/ipc_sysctl.c
+@@ -14,6 +14,7 @@
+ #include <linux/ipc_namespace.h>
+ #include <linux/msg.h>
+ #include <linux/slab.h>
++#include <linux/cred.h>
+ #include "util.h"
  
- =====================================  ======  ==========================
-   ``ETHTOOL_A_RSS_HEADER``             nested  reply header
-+  ``ETHTOOL_A_RSS_CONTEXT``            u32     context number
-   ``ETHTOOL_A_RSS_HFUNC``              u32     RSS hash func
-   ``ETHTOOL_A_RSS_INDIR``              binary  Indir table bytes
-   ``ETHTOOL_A_RSS_HKEY``               binary  Hash key bytes
-diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
-index 71679137eff21..5c4c4505ab9a4 100644
---- a/net/ethtool/rss.c
-+++ b/net/ethtool/rss.c
-@@ -111,7 +111,8 @@ rss_reply_size(const struct ethnl_req_info *req_base,
- 	const struct rss_reply_data *data = RSS_REPDATA(reply_base);
- 	int len;
+ static int proc_ipc_dointvec_minmax_orphans(struct ctl_table *table, int write,
+@@ -190,25 +191,57 @@ static int set_is_seen(struct ctl_table_set *set)
+ 	return &current->nsproxy->ipc_ns->ipc_set == set;
+ }
  
--	len = nla_total_size(sizeof(u32)) +	/* _RSS_HFUNC */
-+	len = nla_total_size(sizeof(u32)) +	/* _RSS_CONTEXT */
-+	      nla_total_size(sizeof(u32)) +	/* _RSS_HFUNC */
- 	      nla_total_size(sizeof(u32)) +	/* _RSS_INPUT_XFRM */
- 	      nla_total_size(sizeof(u32) * data->indir_size) + /* _RSS_INDIR */
- 	      nla_total_size(data->hkey_size);	/* _RSS_HKEY */
-@@ -124,6 +125,11 @@ rss_fill_reply(struct sk_buff *skb, const struct ethnl_req_info *req_base,
- 	       const struct ethnl_reply_data *reply_base)
- {
- 	const struct rss_reply_data *data = RSS_REPDATA(reply_base);
-+	struct rss_req_info *request = RSS_REQINFO(req_base);
++static void ipc_set_ownership(struct ctl_table_header *head,
++			      struct ctl_table *table,
++			      kuid_t *uid, kgid_t *gid)
++{
++	struct ipc_namespace *ns =
++		container_of(head->set, struct ipc_namespace, ipc_set);
 +
-+	if (request->rss_context &&
-+	    nla_put_u32(skb, ETHTOOL_A_RSS_CONTEXT, request->rss_context))
-+		return -EMSGSIZE;
++	kuid_t ns_root_uid = make_kuid(ns->user_ns, 0);
++	kgid_t ns_root_gid = make_kgid(ns->user_ns, 0);
++
++	*uid = uid_valid(ns_root_uid) ? ns_root_uid : GLOBAL_ROOT_UID;
++	*gid = gid_valid(ns_root_gid) ? ns_root_gid : GLOBAL_ROOT_GID;
++}
++
+ static int ipc_permissions(struct ctl_table_header *head, struct ctl_table *table)
+ {
+ 	int mode = table->mode;
  
- 	if ((data->hfunc &&
- 	     nla_put_u32(skb, ETHTOOL_A_RSS_HFUNC, data->hfunc)) ||
+ #ifdef CONFIG_CHECKPOINT_RESTORE
+-	struct ipc_namespace *ns = current->nsproxy->ipc_ns;
++	struct ipc_namespace *ns =
++		container_of(head->set, struct ipc_namespace, ipc_set);
+ 
+ 	if (((table->data == &ns->ids[IPC_SEM_IDS].next_id) ||
+ 	     (table->data == &ns->ids[IPC_MSG_IDS].next_id) ||
+ 	     (table->data == &ns->ids[IPC_SHM_IDS].next_id)) &&
+ 	    checkpoint_restore_ns_capable(ns->user_ns))
+ 		mode = 0666;
++	else
+ #endif
+-	return mode;
++	{
++		kuid_t ns_root_uid;
++		kgid_t ns_root_gid;
++
++		ipc_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
++
++		if (uid_eq(current_euid(), ns_root_uid))
++			mode >>= 6;
++
++		else if (in_egroup_p(ns_root_gid))
++			mode >>= 3;
++	}
++
++	mode &= 7;
++
++	return (mode << 6) | (mode << 3) | mode;
+ }
+ 
+ static struct ctl_table_root set_root = {
+ 	.lookup = set_lookup,
+ 	.permissions = ipc_permissions,
++	.set_ownership = ipc_set_ownership,
+ };
+ 
+ bool setup_ipc_sysctls(struct ipc_namespace *ns)
 -- 
 2.43.0
 
