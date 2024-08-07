@@ -1,267 +1,134 @@
-Return-Path: <stable+bounces-65517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5533D949E5F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 05:40:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FDE949EAE
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 05:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1076B24E26
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 03:40:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC265B220F3
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 03:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6149F191491;
-	Wed,  7 Aug 2024 03:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PyHWaTgZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC18433BB;
+	Wed,  7 Aug 2024 03:55:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh7-smtp.messagingengine.com (fhigh7-smtp.messagingengine.com [103.168.172.158])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65273190694;
-	Wed,  7 Aug 2024 03:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DE6224DC
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 03:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723002000; cv=none; b=lrdFbB/be6LyiJ9fdV8Csi3eEM1fJvWEKRX7xCFjwF6AcqaTUbOA+bVKp9b4v413lYgBtd+rdsWFcqxKjpvYZLlIbpB6/ldUT531MZfxTlZjWPy6qUuvpZgcFpJL9IyuZZzfrzbKMDpf52gE18LqQv08GbMCttHRD7JK9QOV7HM=
+	t=1723002909; cv=none; b=rWc6t1SlczFg8s42UbKQQvZygQsizXflHAn5WsR7qxBJ+C8cewIcGwGl0ivHF5544plWefqWTybxfI18zRbStuEaen+ixSRX/4zDzaj91mTh3W7awsw7M3JHaBqq0HbmXEN/uMqn0nBxNFsiM/05M7l6es7RULwlKn8vnutXmfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723002000; c=relaxed/simple;
-	bh=zmQ7FLn937aqNLXWbETQcKd+1lShqmdyDK+Kj437yz4=;
-	h=To:Cc:Message-Id:In-Reply-To:References:From:Subject:Date; b=EZYp/UNtfoDjwTYJ5pIJ0Cyfn1JL+qkmAriATHMZe0zcmzrCtK3ive3vM39tEeVb9VsFctp3i/9g4MKEXEr9kvBo3JoeT/dGYZam1daX2VJIDICelD0mXFGxnhc9A0w0BJNE+j8YqFn7TCJPSqC/oty9suYcFZl9H/y8zvqjSGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PyHWaTgZ; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 60C781151AEF;
-	Tue,  6 Aug 2024 23:39:57 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Tue, 06 Aug 2024 23:39:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723001997; x=
-	1723088397; bh=HiFYafSvcnXA44ixp6a1R6FngnT8UiO0RXK9ZEi00Nc=; b=P
-	yHWaTgZf2mtVP8j2uuH7qIgMNJFOwo21SEo6Q7Qha5+mw7tkfEKQewdK9GFhW8r4
-	8GUwhIryMkfmKsJlPOrguDBmDtyGNtE1FW48KQLQtEB5WmHUn3s++HCUsS9EHWWE
-	kOZ/AlJpng5NBl7NMS1f4sbn2L4ayr+3irdkHR5Dz6aJRM8wAm4vid3gQGHnKPx/
-	msfMF4PCQGhxCaaT3HBgGhSnS6+eECss+ILgubxLLEWSxbbbeoP0/TZFHm5ONSVK
-	vCJZ3y63sGfA/lSD/a6v4vHTD/Qt7mxjWYWphDQCVM4zW12TG/eYycjkQsfEtoA3
-	V+TI8m9TeTOz9bEny/q4w==
-X-ME-Sender: <xms:jeyyZrP2XnKKvqlfCLsXj6YPYZl0wIVWYTHxkvZyrxy10-gh5Cqi4A>
-    <xme:jeyyZl_4DfNEG6pJ0yfqfU0JZ1JPn-0V_jYUj33dbbf0YmLcsPb4J90sqyqaQBlRx
-    JYbMeumtYTf-gKxcaY>
-X-ME-Received: <xmr:jeyyZqRyDFvj8-kUCQTX8GkuSJQ2ztgUIBSOnoWN2DM8Z-TcI6MI1LlWgrp0qVCsk5EoE0sJLJ9tT0YMFgGlf5PEngCJxM810z8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeelgdejiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefvvefkjghfhffuffestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgr
-    ihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepvefggfdthffhfeevuedugfdtuefgfeettdevkeeigefgudelteeggeeuheegffff
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthh
-    grihhnsehlihhnuhigqdhmieekkhdrohhrghdpnhgspghrtghpthhtoheptd
-X-ME-Proxy: <xmx:jeyyZvuTXx-rCeq4kzFR90zoWuqt27LBH45xnR7ioRjZI9RGhQu7dA>
-    <xmx:jeyyZjdITYynYnX9IujcF89wyomncuw67u_2IS1DSNfeNTKWOi_V2w>
-    <xmx:jeyyZr3FY_HwXNlp3ncmySUy15rZaoZ9IPJOnpW6isQDk0JyBRlcRQ>
-    <xmx:jeyyZv-Q_A1OWtz6xTObUrwv3RoFVX3qQDU8bGJaTUYDzNUIx5FBmg>
-    <xmx:jeyyZixMDeHq9Z0hCYsgHPL6W68J5m8ph8GGOWzmk0sNgqWSfdToVely>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 Aug 2024 23:39:54 -0400 (EDT)
-To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-    "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Hannes Reinecke <hare@suse.com>,
-    Michael Schmitz <schmitzmic@gmail.com>,
-    Ondrej Zary <linux@zary.sk>,
-    Stan Johnson <userm57@yahoo.com>,
-    stable@vger.kernel.org,
-    linux-scsi@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Message-Id: <6a5ffabb4290c0d138c6d285fda8fa3902e926f0.1723001788.git.fthain@linux-m68k.org>
-In-Reply-To: <cover.1723001788.git.fthain@linux-m68k.org>
-References: <cover.1723001788.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH 02/11] scsi: mac_scsi: Refactor polling loop
-Date: Wed, 07 Aug 2024 13:36:28 +1000
+	s=arc-20240116; t=1723002909; c=relaxed/simple;
+	bh=PXo/1KYlDOEd1H/mpvd1ujdzbExp2ca6PVkOcxESBqY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BLGLwHtBJWsL10h3rMjEiaLwyEXLgmykWtWWaxVvGKqhsWNGe4uQIe1HOg1THvmsNaIcoJP1nRWERT9CPxi7ke4atNoGwVbr56RVnW+RXAQXkJHRvf68v1a4ySKjupYMhsdRf7YCZanNEM+SW/Nq/zX5PkHFcWBTTftr56BtThc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Wdx5f4ZNvz2Clkj;
+	Wed,  7 Aug 2024 11:50:14 +0800 (CST)
+Received: from kwepemd200019.china.huawei.com (unknown [7.221.188.193])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3E98F180044;
+	Wed,  7 Aug 2024 11:54:57 +0800 (CST)
+Received: from huawei.com (10.173.127.72) by kwepemd200019.china.huawei.com
+ (7.221.188.193) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 7 Aug
+ 2024 11:54:56 +0800
+From: Miaohe Lin <linmiaohe@huawei.com>
+To: <stable@vger.kernel.org>
+CC: Miaohe Lin <linmiaohe@huawei.com>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9.y] mm/hugetlb: fix potential race in __update_and_free_hugetlb_folio()
+Date: Wed, 7 Aug 2024 11:49:49 +0800
+Message-ID: <20240807034949.1407040-1-linmiaohe@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <2024071558-unbundle-resize-a6d4@gregkh>
+References: <2024071558-unbundle-resize-a6d4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemd200019.china.huawei.com (7.221.188.193)
 
-Before the error handling can be revised, some preparation is needed.
-Refactor the polling loop with a new function, macscsi_wait_for_drq().
-This function will gain more call sites in the next patch.
+There is a potential race between __update_and_free_hugetlb_folio() and
+try_memory_failure_hugetlb():
 
-Cc: stable@vger.kernel.org # 5.15+
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+ CPU1					CPU2
+ __update_and_free_hugetlb_folio	try_memory_failure_hugetlb
+					 folio_test_hugetlb
+					  -- It's still hugetlb folio.
+  folio_clear_hugetlb_hwpoison
+  					  spin_lock_irq(&hugetlb_lock);
+					   __get_huge_page_for_hwpoison
+					    folio_set_hugetlb_hwpoison
+					  spin_unlock_irq(&hugetlb_lock);
+  spin_lock_irq(&hugetlb_lock);
+  __folio_clear_hugetlb(folio);
+   -- Hugetlb flag is cleared but too late.
+  spin_unlock_irq(&hugetlb_lock);
+
+When the above race occurs, raw error page info will be leaked.  Even
+worse, raw error pages won't have hwpoisoned flag set and hit
+pcplists/buddy.  Fix this issue by deferring
+folio_clear_hugetlb_hwpoison() until __folio_clear_hugetlb() is done.  So
+all raw error pages will have hwpoisoned flag set.
+
+Link: https://lkml.kernel.org/r/20240708025127.107713-1-linmiaohe@huawei.com
+Fixes: 32c877191e02 ("hugetlb: do not clear hugetlb dtor until allocating vmemmap")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 5596d9e8b553dacb0ac34bcf873cbbfb16c3ba3e)
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
 ---
-This is not really a bug fix, but has been sent to @stable because it is a
-prerequisite for the bug fixes which follow.
----
- drivers/scsi/mac_scsi.c | 80 +++++++++++++++++++++--------------------
- 1 file changed, 42 insertions(+), 38 deletions(-)
+ mm/hugetlb.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/mac_scsi.c b/drivers/scsi/mac_scsi.c
-index 5ae8f4a1e9ca..39814c841113 100644
---- a/drivers/scsi/mac_scsi.c
-+++ b/drivers/scsi/mac_scsi.c
-@@ -208,8 +208,6 @@ __setup("mac5380=", mac_scsi_setup);
- 		".previous                     \n" \
- 		: "+a" (addr), "+r" (n), "+r" (result) : "a" (io))
- 
--#define MAC_PDMA_DELAY		32
--
- static inline int mac_pdma_recv(void __iomem *io, unsigned char *start, int n)
- {
- 	unsigned char *addr = start;
-@@ -274,6 +272,36 @@ static inline void write_ctrl_reg(struct NCR5380_hostdata *hostdata, u32 value)
- 	out_be32(hostdata->io + (CTRL_REG << 4), value);
- }
- 
-+static inline int macscsi_wait_for_drq(struct NCR5380_hostdata *hostdata)
-+{
-+	unsigned int n = 1; /* effectively multiplies NCR5380_REG_POLL_TIME */
-+	unsigned char basr;
-+
-+again:
-+	basr = NCR5380_read(BUS_AND_STATUS_REG);
-+
-+	if (!(basr & BASR_PHASE_MATCH))
-+		return 1;
-+
-+	if (basr & BASR_IRQ)
-+		return -1;
-+
-+	if (basr & BASR_DRQ)
-+		return 0;
-+
-+	if (n-- == 0) {
-+		NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
-+		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
-+			 "%s: DRQ timeout\n", __func__);
-+		return -1;
-+	}
-+
-+	NCR5380_poll_politely2(hostdata,
-+			       BUS_AND_STATUS_REG, BASR_DRQ, BASR_DRQ,
-+			       BUS_AND_STATUS_REG, BASR_PHASE_MATCH, 0, 0);
-+	goto again;
-+}
-+
- static inline int macscsi_pread(struct NCR5380_hostdata *hostdata,
-                                 unsigned char *dst, int len)
- {
-@@ -283,9 +311,7 @@ static inline int macscsi_pread(struct NCR5380_hostdata *hostdata,
- 
- 	hostdata->pdma_residual = len;
- 
--	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
--	                              BASR_DRQ | BASR_PHASE_MATCH,
--	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
-+	while (macscsi_wait_for_drq(hostdata) == 0) {
- 		int bytes, chunk_bytes;
- 
- 		if (macintosh_config->ident == MAC_MODEL_IIFX)
-@@ -295,19 +321,16 @@ static inline int macscsi_pread(struct NCR5380_hostdata *hostdata,
- 		chunk_bytes = min(hostdata->pdma_residual, 512);
- 		bytes = mac_pdma_recv(s, d, chunk_bytes);
- 
-+		if (macintosh_config->ident == MAC_MODEL_IIFX)
-+			write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
-+
- 		if (bytes > 0) {
- 			d += bytes;
- 			hostdata->pdma_residual -= bytes;
- 		}
- 
- 		if (hostdata->pdma_residual == 0)
--			goto out;
--
--		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
--			goto out;
--
--		if (bytes == 0)
--			udelay(MAC_PDMA_DELAY);
-+			break;
- 
- 		if (bytes > 0)
- 			continue;
-@@ -321,16 +344,9 @@ static inline int macscsi_pread(struct NCR5380_hostdata *hostdata,
- 			continue;
- 
- 		result = -1;
--		goto out;
-+		break;
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index c445e6fd8579..0cefa9f82c47 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1770,13 +1770,6 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
+ 		return;
  	}
  
--	scmd_printk(KERN_ERR, hostdata->connected,
--	            "%s: phase mismatch or !DRQ\n", __func__);
--	NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
--	result = -1;
--out:
--	if (macintosh_config->ident == MAC_MODEL_IIFX)
--		write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
- 	return result;
- }
- 
-@@ -343,9 +359,7 @@ static inline int macscsi_pwrite(struct NCR5380_hostdata *hostdata,
- 
- 	hostdata->pdma_residual = len;
- 
--	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
--	                              BASR_DRQ | BASR_PHASE_MATCH,
--	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
-+	while (macscsi_wait_for_drq(hostdata) == 0) {
- 		int bytes, chunk_bytes;
- 
- 		if (macintosh_config->ident == MAC_MODEL_IIFX)
-@@ -355,6 +369,9 @@ static inline int macscsi_pwrite(struct NCR5380_hostdata *hostdata,
- 		chunk_bytes = min(hostdata->pdma_residual, 512);
- 		bytes = mac_pdma_send(s, d, chunk_bytes);
- 
-+		if (macintosh_config->ident == MAC_MODEL_IIFX)
-+			write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
-+
- 		if (bytes > 0) {
- 			s += bytes;
- 			hostdata->pdma_residual -= bytes;
-@@ -369,15 +386,9 @@ static inline int macscsi_pwrite(struct NCR5380_hostdata *hostdata,
- 				            "%s: Last Byte Sent timeout\n", __func__);
- 				result = -1;
- 			}
--			goto out;
-+			break;
- 		}
- 
--		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
--			goto out;
+-	/*
+-	 * Move PageHWPoison flag from head page to the raw error pages,
+-	 * which makes any healthy subpages reusable.
+-	 */
+-	if (unlikely(folio_test_hwpoison(folio)))
+-		folio_clear_hugetlb_hwpoison(folio);
 -
--		if (bytes == 0)
--			udelay(MAC_PDMA_DELAY);
--
- 		if (bytes > 0)
- 			continue;
- 
-@@ -390,16 +401,9 @@ static inline int macscsi_pwrite(struct NCR5380_hostdata *hostdata,
- 			continue;
- 
- 		result = -1;
--		goto out;
-+		break;
+ 	/*
+ 	 * If vmemmap pages were allocated above, then we need to clear the
+ 	 * hugetlb destructor under the hugetlb lock.
+@@ -1787,6 +1780,13 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
+ 		spin_unlock_irq(&hugetlb_lock);
  	}
  
--	scmd_printk(KERN_ERR, hostdata->connected,
--	            "%s: phase mismatch or !DRQ\n", __func__);
--	NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
--	result = -1;
--out:
--	if (macintosh_config->ident == MAC_MODEL_IIFX)
--		write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
- 	return result;
- }
- 
++	/*
++	 * Move PageHWPoison flag from head page to the raw error pages,
++	 * which makes any healthy subpages reusable.
++	 */
++	if (unlikely(folio_test_hwpoison(folio)))
++		folio_clear_hugetlb_hwpoison(folio);
++
+ 	/*
+ 	 * Non-gigantic pages demoted from CMA allocated gigantic pages
+ 	 * need to be given back to CMA in free_gigantic_folio.
 -- 
-2.39.5
+2.33.0
 
 
