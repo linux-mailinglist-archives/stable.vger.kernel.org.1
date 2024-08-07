@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-65676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA8794AB6B
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE60194AC38
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D123928473F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE301C22613
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E6913B286;
-	Wed,  7 Aug 2024 15:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D7C84A40;
+	Wed,  7 Aug 2024 15:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onTWSLo7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNohIeZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C4D13B290;
-	Wed,  7 Aug 2024 15:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CBD374CC;
+	Wed,  7 Aug 2024 15:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043108; cv=none; b=I7umzAOjElakg5kCew82D9XRk9Uj1Z+yhkoaeMNfjy0NgCW0XV+qJZlclcChOmJJHeISVPJj/wFHQX1rw8444dfRqR2PIBxTbfw73GV66lzZ0bgXq48pLKzEvNG1faD23sM8cMYolzBH1lSar31eZN5FckDSawTs0sOD9Yu2ifY=
+	t=1723043588; cv=none; b=U/6e90YpFCK8ril3CNfaZTxBv0y2JBaaGfe1qsik4pebz8v5WlKU8EwguZjVW08E8xP42fnpNDfSLVi2zx1X4Oy+BLzd7XselOvINJarqO3DsRRj0K6ZNZhNO9aMkgyXyUZaqxLlkt6molcaq1XbJYkPzJowu83NrSUFqSFNs1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043108; c=relaxed/simple;
-	bh=uEu0Nu0uLxmnJ6ELGkcbZw2B9/r5qy3Gb3czkBxaxvA=;
+	s=arc-20240116; t=1723043588; c=relaxed/simple;
+	bh=ajnQ/yXCIYCBLp+Hu6iLcP2r578qYIhNG2MlvRB0HUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHmk4qaF05jR76KfkxUK3juHuNBhvmlexsGJdMPdls8SCkMrA6kX9PhxjI9RDxJTMSXzUkVL16B76wOL5mU/jAeH15N6IpH11SLgHKbYpJd338OfeCzeX21xSZRX1gzGOsgdK2I//3aQFwFm9G5LnFR6B9PjjF128MrU1kr5kGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onTWSLo7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29D7C4AF0D;
-	Wed,  7 Aug 2024 15:05:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nVZWCo4SenIIfvggQoqcUTIF1CPwObmbV7aa2ycpCNgwinyoJ54uCOTlnxMET14djOnTIizoEq2iRE6e2YCYLvHOmVc/AmjhUlFK9+XfiCIzDusUh5k+kzXrK8ZFKmoSIcUWgtzBySiIRohdZkWrgmpEqxUDYKbM/JtHAHHr9to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNohIeZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B5FC32781;
+	Wed,  7 Aug 2024 15:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043108;
-	bh=uEu0Nu0uLxmnJ6ELGkcbZw2B9/r5qy3Gb3czkBxaxvA=;
+	s=korg; t=1723043588;
+	bh=ajnQ/yXCIYCBLp+Hu6iLcP2r578qYIhNG2MlvRB0HUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onTWSLo7gGQotYO3LHtUcn1r+LI6aaxNT1+Y2UgWtcbisAP4OR+HBP2otqFBbHrjD
-	 eOfmbvZmkGd+Tt7wU+8vscLrBKHNIO3vXsWD457TkUZr71i9YPL9pT/ttNo4Yifa1Z
-	 RycBAtMctERPI6D4087IxueA1Tzn1DpcekB6fDxk=
+	b=fNohIeZQBa6dsoegP3SFsDUVJagM8BIj7+YRMsyZztFX6My4g/uUA2BoSdJPAP3g3
+	 awnsxwVWapb72AfoJWAifR8das9afBQsxah4fQVVqskcMdmqW/V4cRpauoyk+3yPuf
+	 iDm9jrXGBnkGnAhpbgbS3iQdYC/oMitR10a6jjZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Joel Granados <j.granados@samsung.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 066/123] igc: Fix double reset adapter triggered from a single taprio cmd
+Subject: [PATCH 6.1 06/86] sysctl: treewide: drop unused argument ctl_table_root::set_ownership(table)
 Date: Wed,  7 Aug 2024 16:59:45 +0200
-Message-ID: <20240807150022.934240884@linuxfoundation.org>
+Message-ID: <20240807150039.462314088@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +60,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit b9e7fc0aeda79031a101610b2fcb12bf031056e9 ]
+[ Upstream commit 520713a93d550406dae14d49cdb8778d70cecdfd ]
 
-Following the implementation of "igc: Add TransmissionOverrun counter"
-patch, when a taprio command is triggered by user, igc processes two
-commands: TAPRIO_CMD_REPLACE followed by TAPRIO_CMD_STATS. However, both
-commands unconditionally pass through igc_tsn_offload_apply() which
-evaluates and triggers reset adapter. The double reset causes issues in
-the calculation of adapter->qbv_count in igc.
+Remove the 'table' argument from set_ownership as it is never used. This
+change is a step towards putting "struct ctl_table" into .rodata and
+eventually having sysctl core only use "const struct ctl_table".
 
-TAPRIO_CMD_REPLACE command is expected to reset the adapter since it
-activates qbv. It's unexpected for TAPRIO_CMD_STATS to do the same
-because it doesn't configure any driver-specific TSN settings. So, the
-evaluation in igc_tsn_offload_apply() isn't needed for TAPRIO_CMD_STATS.
+The patch was created with the following coccinelle script:
 
-To address this, commands parsing are relocated to
-igc_tsn_enable_qbv_scheduling(). Commands that don't require an adapter
-reset will exit after processing, thus avoiding igc_tsn_offload_apply().
+  @@
+  identifier func, head, table, uid, gid;
+  @@
 
-Fixes: d3750076d464 ("igc: Add TransmissionOverrun counter")
-Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20240730173304.865479-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  void func(
+    struct ctl_table_header *head,
+  - struct ctl_table *table,
+    kuid_t *uid, kgid_t *gid)
+  { ... }
+
+No additional occurrences of 'set_ownership' were found after doing a
+tree-wide search.
+
+Reviewed-by: Joel Granados <j.granados@samsung.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Joel Granados <j.granados@samsung.com>
+Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 33 ++++++++++++-----------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ fs/proc/proc_sysctl.c  | 2 +-
+ include/linux/sysctl.h | 1 -
+ ipc/ipc_sysctl.c       | 3 +--
+ ipc/mq_sysctl.c        | 3 +--
+ net/sysctl_net.c       | 1 -
+ 5 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 87b655b839c1c..33069880c86c0 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6310,21 +6310,6 @@ static int igc_save_qbv_schedule(struct igc_adapter *adapter,
- 	size_t n;
- 	int i;
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index 4a4c04a3b1a0a..c468cc0f6d69b 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -484,7 +484,7 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 	}
  
--	switch (qopt->cmd) {
--	case TAPRIO_CMD_REPLACE:
--		break;
--	case TAPRIO_CMD_DESTROY:
--		return igc_tsn_clear_schedule(adapter);
--	case TAPRIO_CMD_STATS:
--		igc_taprio_stats(adapter->netdev, &qopt->stats);
--		return 0;
--	case TAPRIO_CMD_QUEUE_STATS:
--		igc_taprio_queue_stats(adapter->netdev, &qopt->queue_stats);
--		return 0;
--	default:
--		return -EOPNOTSUPP;
--	}
--
- 	if (qopt->base_time < 0)
- 		return -ERANGE;
+ 	if (root->set_ownership)
+-		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
++		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
+ 	else {
+ 		inode->i_uid = GLOBAL_ROOT_UID;
+ 		inode->i_gid = GLOBAL_ROOT_GID;
+diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
+index a207c7ed41bd2..9f24feb94b24d 100644
+--- a/include/linux/sysctl.h
++++ b/include/linux/sysctl.h
+@@ -185,7 +185,6 @@ struct ctl_table_root {
+ 	struct ctl_table_set default_set;
+ 	struct ctl_table_set *(*lookup)(struct ctl_table_root *root);
+ 	void (*set_ownership)(struct ctl_table_header *head,
+-			      struct ctl_table *table,
+ 			      kuid_t *uid, kgid_t *gid);
+ 	int (*permissions)(struct ctl_table_header *head, struct ctl_table *table);
+ };
+diff --git a/ipc/ipc_sysctl.c b/ipc/ipc_sysctl.c
+index 29c1d3ae2a5c8..d7ca2bdae9e82 100644
+--- a/ipc/ipc_sysctl.c
++++ b/ipc/ipc_sysctl.c
+@@ -192,7 +192,6 @@ static int set_is_seen(struct ctl_table_set *set)
+ }
  
-@@ -6433,7 +6418,23 @@ static int igc_tsn_enable_qbv_scheduling(struct igc_adapter *adapter,
- 	if (hw->mac.type != igc_i225)
- 		return -EOPNOTSUPP;
+ static void ipc_set_ownership(struct ctl_table_header *head,
+-			      struct ctl_table *table,
+ 			      kuid_t *uid, kgid_t *gid)
+ {
+ 	struct ipc_namespace *ns =
+@@ -224,7 +223,7 @@ static int ipc_permissions(struct ctl_table_header *head, struct ctl_table *tabl
+ 		kuid_t ns_root_uid;
+ 		kgid_t ns_root_gid;
  
--	err = igc_save_qbv_schedule(adapter, qopt);
-+	switch (qopt->cmd) {
-+	case TAPRIO_CMD_REPLACE:
-+		err = igc_save_qbv_schedule(adapter, qopt);
-+		break;
-+	case TAPRIO_CMD_DESTROY:
-+		err = igc_tsn_clear_schedule(adapter);
-+		break;
-+	case TAPRIO_CMD_STATS:
-+		igc_taprio_stats(adapter->netdev, &qopt->stats);
-+		return 0;
-+	case TAPRIO_CMD_QUEUE_STATS:
-+		igc_taprio_queue_stats(adapter->netdev, &qopt->queue_stats);
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (err)
- 		return err;
+-		ipc_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
++		ipc_set_ownership(head, &ns_root_uid, &ns_root_gid);
  
+ 		if (uid_eq(current_euid(), ns_root_uid))
+ 			mode >>= 6;
+diff --git a/ipc/mq_sysctl.c b/ipc/mq_sysctl.c
+index ce03930aced55..c960691fc24d9 100644
+--- a/ipc/mq_sysctl.c
++++ b/ipc/mq_sysctl.c
+@@ -78,7 +78,6 @@ static int set_is_seen(struct ctl_table_set *set)
+ }
+ 
+ static void mq_set_ownership(struct ctl_table_header *head,
+-			     struct ctl_table *table,
+ 			     kuid_t *uid, kgid_t *gid)
+ {
+ 	struct ipc_namespace *ns =
+@@ -97,7 +96,7 @@ static int mq_permissions(struct ctl_table_header *head, struct ctl_table *table
+ 	kuid_t ns_root_uid;
+ 	kgid_t ns_root_gid;
+ 
+-	mq_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
++	mq_set_ownership(head, &ns_root_uid, &ns_root_gid);
+ 
+ 	if (uid_eq(current_euid(), ns_root_uid))
+ 		mode >>= 6;
+diff --git a/net/sysctl_net.c b/net/sysctl_net.c
+index 4b45ed631eb8b..2edb8040eb6c7 100644
+--- a/net/sysctl_net.c
++++ b/net/sysctl_net.c
+@@ -54,7 +54,6 @@ static int net_ctl_permissions(struct ctl_table_header *head,
+ }
+ 
+ static void net_ctl_set_ownership(struct ctl_table_header *head,
+-				  struct ctl_table *table,
+ 				  kuid_t *uid, kgid_t *gid)
+ {
+ 	struct net *net = container_of(head->set, struct net, sysctls);
 -- 
 2.43.0
 
