@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-65821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66FC394AC0F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE58894AB72
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF821F231CF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75513284755
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8029B823C8;
-	Wed,  7 Aug 2024 15:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF25912C549;
+	Wed,  7 Aug 2024 15:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7RKm+Z2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYM1APUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3695C7E0E9;
-	Wed,  7 Aug 2024 15:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B98D82D66;
+	Wed,  7 Aug 2024 15:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043498; cv=none; b=R+2maQSTcGWuxYhr1wV9Tph0NEatyaToSSpFv6RJP9Wf4Z3YP/X73ffE2ANX1DdFjpRPIRtHD+pwqypLiUOjHvU/wEdlVWLq78K7bQuFy+6MrHhgQFPCU3RPjfWZkccxifnh5cehs/FeCezGTPIsTfJcnb/kaijyZmbZbclM+/M=
+	t=1723043127; cv=none; b=kbGCPM7ZElJN6NK81Xllm0JUmtlUh+LM+FzPXJxFZyLWBttLoZW8XwBW+wQCaPx3xZeNyzSG2DWdVZaO5UU6UExGoEEDaj7fVuTYg7MZxRufdXLBn27aPs5n3GH2YjroGFTTr9L3bTledI+aG62SXRep1MvherxouAI8U7Pk6YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043498; c=relaxed/simple;
-	bh=fBmFskg6+kgzNIsvKJkutrTuTloNA/gTAazdZzTet34=;
+	s=arc-20240116; t=1723043127; c=relaxed/simple;
+	bh=Sy45+pfM2bmzFF/u4GI61eluvW8GsRZK0kjrKJ25jKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1PxHRpDe/hsL1PlR4F5IQC6cuU1P8q94pdFmJ9JWa76Tj7u1VYVbARibApIYbFNHuq7m36docA0aGinm7F3yOs7ts2IbqHBZGSN5fzjRIi520b2E4gHEmwidQSnPxTkMf3kEK8OL5m57USQkjfwzFba8djCQNgv1eb42hYXXLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7RKm+Z2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CCCC32781;
-	Wed,  7 Aug 2024 15:11:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q+N6XqyLO46EkfpzVwCSVWYoIZ8FM5p6zy2o0p5JanKyKkMQBZZfU0K44iFnEjkylW3Jmdx3B4wU3OIrCGD8nzpydlnf2ZFXdua+ksrykQYQw6KusOrU/wpWouwysstfL/C0sDrg9FhOReL3JMnBmVGYEUrdTUNDN0mIMddRBII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYM1APUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9C4C32781;
+	Wed,  7 Aug 2024 15:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043498;
-	bh=fBmFskg6+kgzNIsvKJkutrTuTloNA/gTAazdZzTet34=;
+	s=korg; t=1723043127;
+	bh=Sy45+pfM2bmzFF/u4GI61eluvW8GsRZK0kjrKJ25jKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k7RKm+Z26tNMzJq0pOR8B/5kkqZyzXknenq8ZUAByx6B5bsgHntBNUm0lQ5+OEhVB
-	 a2SGcf8zOUSagnAdCynC00MKJZv2mfMgNDWn0QnsH5zuMHM6xKEODEXF/V53ZknyTT
-	 VQwim1Y8r3MalxrD4OWDlmVc/dNpa5cQh/5ytwBE=
+	b=eYM1APUcDizPPkHlB/G53WOu66KENHNL7BNf5VjHoZBWWUDOEUFdVYy/zvlHElMx9
+	 yVHx7r29V3ukGG021G4UDNDu97AXtrYzZDC5yoGIzn4wbqINRV5RYonJxArV3aN4S9
+	 8+TwOKiHFmuVwBjXIsvU1Pz7vPDZW9Q1HHwtiKmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/121] net/mlx5e: Add a check for the return value from mlx5_port_set_eth_ptys
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 6.10 099/123] drm/v3d: Fix potential memory leak in the timestamp extension
 Date: Wed,  7 Aug 2024 17:00:18 +0200
-Message-ID: <20240807150022.222350288@linuxfoundation.org>
+Message-ID: <20240807150024.048100297@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,222 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 3f8e82a020a5c22f9b791f4ac499b8e18007fbda ]
+commit 0e50fcc20bd87584840266e8004f9064a8985b4f upstream.
 
-Since the documentation for mlx5_toggle_port_link states that it should
-only be used after setting the port register, we add a check for the
-return value from mlx5_port_set_eth_ptys to ensure the register was
-successfully set before calling it.
+If fetching of userspace memory fails during the main loop, all drm sync
+objs looked up until that point will be leaked because of the missing
+drm_syncobj_put.
 
-Fixes: 667daedaecd1 ("net/mlx5e: Toggle link only after modifying port parameters")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-9-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by exporting and using a common cleanup helper.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: 9ba0ff3e083f ("drm/v3d: Create a CPU job extension for the timestamp query job")
+Cc: Maíra Canal <mcanal@igalia.com>
+Cc: Iago Toral Quiroga <itoral@igalia.com>
+Cc: stable@vger.kernel.org # v6.8+
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240711135340.84617-3-tursulin@igalia.com
+(cherry picked from commit 753ce4fea62182c77e1691ab4f9022008f25b62e)
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_drv.h    |  2 ++
+ drivers/gpu/drm/v3d/v3d_sched.c  | 22 +++++++++++-----
+ drivers/gpu/drm/v3d/v3d_submit.c | 43 ++++++++++++++++++++++----------
+ 3 files changed, 48 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 38263d5c98b34..50db127e6371b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -1223,7 +1223,12 @@ int mlx5e_ethtool_set_link_ksettings(struct mlx5e_priv *priv,
- 	if (!an_changes && link_modes == eproto.admin)
- 		goto out;
+diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
+index a2c516fe6d79..c46eed35d26b 100644
+--- a/drivers/gpu/drm/v3d/v3d_drv.h
++++ b/drivers/gpu/drm/v3d/v3d_drv.h
+@@ -556,6 +556,8 @@ void v3d_mmu_insert_ptes(struct v3d_bo *bo);
+ void v3d_mmu_remove_ptes(struct v3d_bo *bo);
  
--	mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
-+	err = mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
-+	if (err) {
-+		netdev_err(priv->netdev, "%s: failed to set ptys reg: %d\n", __func__, err);
-+		goto out;
-+	}
+ /* v3d_sched.c */
++void v3d_timestamp_query_info_free(struct v3d_timestamp_query_info *query_info,
++				   unsigned int count);
+ void v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue);
+ int v3d_sched_init(struct v3d_dev *v3d);
+ void v3d_sched_fini(struct v3d_dev *v3d);
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index 7cd8c335cd9b..3da4fa49552b 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -73,18 +73,28 @@ v3d_sched_job_free(struct drm_sched_job *sched_job)
+ 	v3d_job_cleanup(job);
+ }
+ 
++void
++v3d_timestamp_query_info_free(struct v3d_timestamp_query_info *query_info,
++			      unsigned int count)
++{
++	if (query_info->queries) {
++		unsigned int i;
 +
- 	mlx5_toggle_port_link(mdev);
++		for (i = 0; i < count; i++)
++			drm_syncobj_put(query_info->queries[i].syncobj);
++
++		kvfree(query_info->queries);
++	}
++}
++
+ static void
+ v3d_cpu_job_free(struct drm_sched_job *sched_job)
+ {
+ 	struct v3d_cpu_job *job = to_cpu_job(sched_job);
+-	struct v3d_timestamp_query_info *timestamp_query = &job->timestamp_query;
+ 	struct v3d_performance_query_info *performance_query = &job->performance_query;
  
- out:
+-	if (timestamp_query->queries) {
+-		for (int i = 0; i < timestamp_query->count; i++)
+-			drm_syncobj_put(timestamp_query->queries[i].syncobj);
+-		kvfree(timestamp_query->queries);
+-	}
++	v3d_timestamp_query_info_free(&job->timestamp_query,
++				      job->timestamp_query.count);
+ 
+ 	if (performance_query->queries) {
+ 		for (int i = 0; i < performance_query->count; i++)
+diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
+index 263fefc1d04f..121bf1314b80 100644
+--- a/drivers/gpu/drm/v3d/v3d_submit.c
++++ b/drivers/gpu/drm/v3d/v3d_submit.c
+@@ -452,6 +452,8 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
+ {
+ 	u32 __user *offsets, *syncs;
+ 	struct drm_v3d_timestamp_query timestamp;
++	unsigned int i;
++	int err;
+ 
+ 	if (!job) {
+ 		DRM_DEBUG("CPU job extension was attached to a GPU job.\n");
+@@ -480,19 +482,19 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
+ 	offsets = u64_to_user_ptr(timestamp.offsets);
+ 	syncs = u64_to_user_ptr(timestamp.syncs);
+ 
+-	for (int i = 0; i < timestamp.count; i++) {
++	for (i = 0; i < timestamp.count; i++) {
+ 		u32 offset, sync;
+ 
+ 		if (copy_from_user(&offset, offsets++, sizeof(offset))) {
+-			kvfree(job->timestamp_query.queries);
+-			return -EFAULT;
++			err = -EFAULT;
++			goto error;
+ 		}
+ 
+ 		job->timestamp_query.queries[i].offset = offset;
+ 
+ 		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
+-			kvfree(job->timestamp_query.queries);
+-			return -EFAULT;
++			err = -EFAULT;
++			goto error;
+ 		}
+ 
+ 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
+@@ -500,6 +502,10 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
+ 	job->timestamp_query.count = timestamp.count;
+ 
+ 	return 0;
++
++error:
++	v3d_timestamp_query_info_free(&job->timestamp_query, i);
++	return err;
+ }
+ 
+ static int
+@@ -509,6 +515,8 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
+ {
+ 	u32 __user *syncs;
+ 	struct drm_v3d_reset_timestamp_query reset;
++	unsigned int i;
++	int err;
+ 
+ 	if (!job) {
+ 		DRM_DEBUG("CPU job extension was attached to a GPU job.\n");
+@@ -533,14 +541,14 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
+ 
+ 	syncs = u64_to_user_ptr(reset.syncs);
+ 
+-	for (int i = 0; i < reset.count; i++) {
++	for (i = 0; i < reset.count; i++) {
+ 		u32 sync;
+ 
+ 		job->timestamp_query.queries[i].offset = reset.offset + 8 * i;
+ 
+ 		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
+-			kvfree(job->timestamp_query.queries);
+-			return -EFAULT;
++			err = -EFAULT;
++			goto error;
+ 		}
+ 
+ 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
+@@ -548,6 +556,10 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
+ 	job->timestamp_query.count = reset.count;
+ 
+ 	return 0;
++
++error:
++	v3d_timestamp_query_info_free(&job->timestamp_query, i);
++	return err;
+ }
+ 
+ /* Get data for the copy timestamp query results job submission. */
+@@ -558,7 +570,8 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
+ {
+ 	u32 __user *offsets, *syncs;
+ 	struct drm_v3d_copy_timestamp_query copy;
+-	int i;
++	unsigned int i;
++	int err;
+ 
+ 	if (!job) {
+ 		DRM_DEBUG("CPU job extension was attached to a GPU job.\n");
+@@ -591,15 +604,15 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
+ 		u32 offset, sync;
+ 
+ 		if (copy_from_user(&offset, offsets++, sizeof(offset))) {
+-			kvfree(job->timestamp_query.queries);
+-			return -EFAULT;
++			err = -EFAULT;
++			goto error;
+ 		}
+ 
+ 		job->timestamp_query.queries[i].offset = offset;
+ 
+ 		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
+-			kvfree(job->timestamp_query.queries);
+-			return -EFAULT;
++			err = -EFAULT;
++			goto error;
+ 		}
+ 
+ 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
+@@ -613,6 +626,10 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
+ 	job->copy.stride = copy.stride;
+ 
+ 	return 0;
++
++error:
++	v3d_timestamp_query_info_free(&job->timestamp_query, i);
++	return err;
+ }
+ 
+ static int
 -- 
-2.43.0
+2.46.0
 
 
 
