@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-65902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6666694AC71
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:15:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9955B94AC7C
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2223B285CA2
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5481D28324F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B13384A27;
-	Wed,  7 Aug 2024 15:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF9684A52;
+	Wed,  7 Aug 2024 15:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiYUlrgJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFNqsTh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F6179949;
-	Wed,  7 Aug 2024 15:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D4D374CC;
+	Wed,  7 Aug 2024 15:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043711; cv=none; b=BNQ9IvKrV0kf7JGgDYasc0QzjBkdIlWT9Y2rbangOXTBCq6lnz8Lci2XRO1jG+NmtRAT3vCuongafWbcPhoIYjKA0I7+ktkZH4wn85d7/igATTfvXOFyiDh/jj4yKVvXDBOgwkoboZZ2ZgwzME612FFVUVCZ3vuLArvt+lmI+bg=
+	t=1723043740; cv=none; b=LwP2l5Xk1xNeB+gqHAuX5eejx2NX+3lb16yig6KMnigAuOyHjApmb2+SXPA7muo0zfeYja+QK5aee9nZRmAqD6EihjXk2KoCPgj9Atx0czAezEA/Od8vy/IFaEoY9cMbKl+tlh8Rs8Sm1fIR5mFYbH5gyEZThx9Sql6XkXWCQvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043711; c=relaxed/simple;
-	bh=wkvAvXw0m2LvzSJ9+/YCAAjLy89rVnpZwlusssX/vNg=;
+	s=arc-20240116; t=1723043740; c=relaxed/simple;
+	bh=ETb6/VMCFLuMN4Z2o1+9kYr0afLZrGIJ2Jmc8v6IYVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMw4jS88NXE/W1Bij9tBiwkoqUmKGFz3FpWDaqwkgx8x8cJPxdFJ+tvWUns6fAhOr2ikj19JSbQDWdppSQHR4rgBjAX8KAXPkC8FNta0mYaSZfHWizOMp9XOwJgH+LYinWCFQaGrYK3mQT6LNUfjH+u2Rp5ejlw6tto0sfU2Lo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiYUlrgJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD978C32781;
-	Wed,  7 Aug 2024 15:15:10 +0000 (UTC)
+	 MIME-Version; b=R2OuIU88M9Ed2izKcZCK9NGavZ3f7uHHkFXoIgp0DZWdOw94Ns2PLk3pXCj0cMeAVs07Er2WCnnVNBxKN9iwKOvn/B3Re2aW0ys7LoXupUHCQSE0ZRDruA58lHg73Kk6ma8OH0KqUcm0a+fUC9J0R+ibYuLmF6ThkiQoluBt0+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFNqsTh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB816C32781;
+	Wed,  7 Aug 2024 15:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043711;
-	bh=wkvAvXw0m2LvzSJ9+/YCAAjLy89rVnpZwlusssX/vNg=;
+	s=korg; t=1723043740;
+	bh=ETb6/VMCFLuMN4Z2o1+9kYr0afLZrGIJ2Jmc8v6IYVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiYUlrgJjf8c45jswIJiAECmRviuYVLqeRHiSTWAktVVYpRHnXCbd2S371am9i6ve
-	 xIOhRrD8REee9ZzUlOCo0P/doHy7DNSPQHC3ZXTwzs1OkSY05e3hxw+ZNoLcoN3FzI
-	 TniEc1TptLv2+1sh8hmB1+DG5kaD3PQ81zvdNVSw=
+	b=iFNqsTh7uqLP0LjnHfY5rvF6jvGlLQm1iOrt88DHmjSJxWQVCvSoxL3tVDnZ75y3C
+	 OeZXXcASMog8aKmieEUPmLC+UnbKlncvhMG6nFyQsrfyKHT6zx9c6VDFMfK/mgfGHi
+	 HCKTVNOLA+BFpLeWqubu2oTHSASAXgm1Y/OR/FpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 54/86] net/iucv: fix use after free in iucv_sock_close()
-Date: Wed,  7 Aug 2024 17:00:33 +0200
-Message-ID: <20240807150041.024423470@linuxfoundation.org>
+Subject: [PATCH 6.1 55/86] drm/i915/hdcp: Fix HDCP2_STREAM_STATUS macro
+Date: Wed,  7 Aug 2024 17:00:34 +0200
+Message-ID: <20240807150041.053490558@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
 References: <20240807150039.247123516@linuxfoundation.org>
@@ -67,73 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Suraj Kandpal <suraj.kandpal@intel.com>
 
-[ Upstream commit f558120cd709682b739207b48cf7479fd9568431 ]
+[ Upstream commit 555069117390a5d581863bc797fb546bb4417c31 ]
 
-iucv_sever_path() is called from process context and from bh context.
-iucv->path is used as indicator whether somebody else is taking care of
-severing the path (or it is already removed / never existed).
-This needs to be done with atomic compare and swap, otherwise there is a
-small window where iucv_sock_close() will try to work with a path that has
-already been severed and freed by iucv_callback_connrej() called by
-iucv_tasklet_fn().
+Fix HDCP2_STREAM_STATUS macro, it called pipe instead of port never
+threw a compile error as no one used it.
 
-Example:
-[452744.123844] Call Trace:
-[452744.123845] ([<0000001e87f03880>] 0x1e87f03880)
-[452744.123966]  [<00000000d593001e>] iucv_path_sever+0x96/0x138
-[452744.124330]  [<000003ff801ddbca>] iucv_sever_path+0xc2/0xd0 [af_iucv]
-[452744.124336]  [<000003ff801e01b6>] iucv_sock_close+0xa6/0x310 [af_iucv]
-[452744.124341]  [<000003ff801e08cc>] iucv_sock_release+0x3c/0xd0 [af_iucv]
-[452744.124345]  [<00000000d574794e>] __sock_release+0x5e/0xe8
-[452744.124815]  [<00000000d5747a0c>] sock_close+0x34/0x48
-[452744.124820]  [<00000000d5421642>] __fput+0xba/0x268
-[452744.124826]  [<00000000d51b382c>] task_work_run+0xbc/0xf0
-[452744.124832]  [<00000000d5145710>] do_notify_resume+0x88/0x90
-[452744.124841]  [<00000000d5978096>] system_call+0xe2/0x2c8
-[452744.125319] Last Breaking-Event-Address:
-[452744.125321]  [<00000000d5930018>] iucv_path_sever+0x90/0x138
-[452744.125324]
-[452744.125325] Kernel panic - not syncing: Fatal exception in interrupt
+--v2
+-Add Fixes [Jani]
 
-Note that bh_lock_sock() is not serializing the tasklet context against
-process context, because the check for sock_owned_by_user() and
-corresponding handling is missing.
-
-Ideas for a future clean-up patch:
-A) Correct usage of bh_lock_sock() in tasklet context, as described in
-Link: https://lore.kernel.org/netdev/1280155406.2899.407.camel@edumazet-laptop/
-Re-enqueue, if needed. This may require adding return values to the
-tasklet functions and thus changes to all users of iucv.
-
-B) Change iucv tasklet into worker and use only lock_sock() in af_iucv.
-
-Fixes: 7d316b945352 ("af_iucv: remove IUCV-pathes completely")
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://patch.msgid.link/20240729122818.947756-1-wintera@linux.ibm.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d631b984cc90 ("drm/i915/hdcp: Add HDCP 2.2 stream register")
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240730035505.3759899-1-suraj.kandpal@intel.com
+(cherry picked from commit 73d7cd542bbd0a7c6881ea0df5255f190a1e7236)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/iucv/af_iucv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_hdcp_regs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-index 498a0c35b7bb2..815b1df0b2d19 100644
---- a/net/iucv/af_iucv.c
-+++ b/net/iucv/af_iucv.c
-@@ -335,8 +335,8 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
- 	struct iucv_sock *iucv = iucv_sk(sk);
- 	struct iucv_path *path = iucv->path;
+diff --git a/drivers/gpu/drm/i915/display/intel_hdcp_regs.h b/drivers/gpu/drm/i915/display/intel_hdcp_regs.h
+index 2a3733e8966c1..2702cc8c88d8d 100644
+--- a/drivers/gpu/drm/i915/display/intel_hdcp_regs.h
++++ b/drivers/gpu/drm/i915/display/intel_hdcp_regs.h
+@@ -249,7 +249,7 @@
+ #define HDCP2_STREAM_STATUS(dev_priv, trans, port) \
+ 					(GRAPHICS_VER(dev_priv) >= 12 ? \
+ 					 TRANS_HDCP2_STREAM_STATUS(trans) : \
+-					 PIPE_HDCP2_STREAM_STATUS(pipe))
++					 PIPE_HDCP2_STREAM_STATUS(port))
  
--	if (iucv->path) {
--		iucv->path = NULL;
-+	/* Whoever resets the path pointer, must sever and free it. */
-+	if (xchg(&iucv->path, NULL)) {
- 		if (with_user_data) {
- 			low_nmcpy(user_data, iucv->src_name);
- 			high_nmcpy(user_data, iucv->dst_name);
+ #define _PORTA_HDCP2_AUTH_STREAM		0x66F00
+ #define _PORTB_HDCP2_AUTH_STREAM		0x66F04
 -- 
 2.43.0
 
