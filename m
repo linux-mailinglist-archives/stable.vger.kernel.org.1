@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AADA94AB9A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C618794AB03
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4349F1F258A9
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 026751C21847
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D77823C8;
-	Wed,  7 Aug 2024 15:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FE13EA9A;
+	Wed,  7 Aug 2024 15:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJq02viY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzpgJstO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6031578B4C;
-	Wed,  7 Aug 2024 15:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47FE6FE16;
+	Wed,  7 Aug 2024 15:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043232; cv=none; b=b+KJAfvFhQK2CLW3p3pOmnL2PI5ZtbLL4781EWzOK11I4cJKNpwlXS7lw5VhldkKHbHMCubZ3/F6Ku8hAPaZSF2QmReG7KO/UYyDTwpB06xGu6vl/IAD90+C2briB3g55/vECaaPsa/msCwWGxB3Ai4xEGdG/H1/HsQzDBvWPLY=
+	t=1723042935; cv=none; b=pPXtOLdjdKgTj+HrpeoFof4tFd9vff1IjM3QXxNLs5+TLUOq3DFo/Ijfxy8D6vU6tVmeKAXrzfcal0o7HnZkQ4FzlQ7Wru8FPlwc+dILXaogM3Bmm8r1U/ENzSfNhRK6C9b7mvld8Hak27Z+/zjHH5FGLON2wXgUC+deRNDOnyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043232; c=relaxed/simple;
-	bh=PTbuYNMdoEm4M8JqLheB/O4oQym8LbCASUL8yD8Xu8o=;
+	s=arc-20240116; t=1723042935; c=relaxed/simple;
+	bh=mJhLVy/37Ku5g4STZ5v5GXEjqGJZLpWrb1jCewMJmX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FJrhw7UHloTxU9gimEwiNUzVabfxzvR0JSm3EEU2okEwgWk9dUfcYE/bditYO4cqamsBud9Oc7t1nOiby5byhcJuftCftz/Q5yfMoH8V22JEX7mXwm5WoKVEo02L3ml5HAi3pgdiKlpjSH57GxNYEXjwXDvTY7+IT3INkNolFrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJq02viY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6742C32781;
-	Wed,  7 Aug 2024 15:07:11 +0000 (UTC)
+	 MIME-Version; b=CkSmcoEK8Y5D89An40ON6nNy+KtjFvKTxpAoq2yTE33OZej9RpG9FOv2IWy9rS1aZtjC8mSY82YZ2DS+BQhlLphPI/eCfm14Bfsorzn6OWHPVkL4vt/nsRTMdvDt3HC/XjYmU5YuqG3EK56ih0QyJL+EcWPeL0yEK+ks6QAGy0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzpgJstO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F4CC32781;
+	Wed,  7 Aug 2024 15:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043232;
-	bh=PTbuYNMdoEm4M8JqLheB/O4oQym8LbCASUL8yD8Xu8o=;
+	s=korg; t=1723042934;
+	bh=mJhLVy/37Ku5g4STZ5v5GXEjqGJZLpWrb1jCewMJmX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yJq02viYO525EB9gX3/meBJhZN16Gw0OxCcD/EGOsgTsj/zN1ZCjJDgqA1cha6loR
-	 4k7IJPcupVFwN0mtq7xX6LY6hQWSI1vICPPb6FL0cUDWQ2UKAm/pPfL16xv4D7yR9s
-	 nrUyn+IHjN7Gm1sF1mXslq1gUDpjYhtbZA424uH8=
+	b=qzpgJstOkj7a3F9kpwJuT1YlmY5WCESfBq/BnpiQw2ADhSyVzHpa0pOHK+Rl1ccPS
+	 Smp6rzSHMlumascVL8+1KetWgwdAIHjn7kDWp2CYQAhd6Mx7u8lhTpiE90Y+9sBbqt
+	 dqQA1FTlnYg3P+zAFL6DwYev8sSH1tzp/cJiyn8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Joel Granados <j.granados@samsung.com>,
+	Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/121] sysctl: always initialize i_uid/i_gid
+Subject: [PATCH 6.10 029/123] wifi: cfg80211: fix reporting failed MLO links status with cfg80211_connect_done
 Date: Wed,  7 Aug 2024 16:59:08 +0200
-Message-ID: <20240807150019.894308282@linuxfoundation.org>
+Message-ID: <20240807150021.763193794@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
 
-[ Upstream commit 98ca62ba9e2be5863c7d069f84f7166b45a5b2f4 ]
+[ Upstream commit baeaabf970b9a90999f62ae27edf63f6cb86c023 ]
 
-Always initialize i_uid/i_gid inside the sysfs core so set_ownership()
-can safely skip setting them.
+Individual MLO links connection status is not copied to
+EVENT_CONNECT_RESULT data while processing the connect response
+information in cfg80211_connect_done(). Due to this failed links
+are wrongly indicated with success status in EVENT_CONNECT_RESULT.
 
-Commit 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of
-i_uid/i_gid on /proc/sys inodes.") added defaults for i_uid/i_gid when
-set_ownership() was not implemented. It also missed adjusting
-net_ctl_set_ownership() to use the same default values in case the
-computation of a better value failed.
+To fix this, copy the individual MLO links status to the
+EVENT_CONNECT_RESULT data.
 
-Fixes: 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of i_uid/i_gid on /proc/sys inodes.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Joel Granados <j.granados@samsung.com>
+Fixes: 53ad07e9823b ("wifi: cfg80211: support reporting failed links")
+Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Link: https://patch.msgid.link/20240724125327.3495874-1-quic_vjakkam@quicinc.com
+[commit message editorial changes]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/proc_sysctl.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/wireless/sme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index cec67e6a6678f..071a71eb1a2d4 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -480,12 +480,10 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
- 			make_empty_dir_inode(inode);
- 	}
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index a8ad55f11133b..1cfe673bc52f3 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -1045,6 +1045,7 @@ void cfg80211_connect_done(struct net_device *dev,
+ 			cfg80211_hold_bss(
+ 				bss_from_pub(params->links[link].bss));
+ 		ev->cr.links[link].bss = params->links[link].bss;
++		ev->cr.links[link].status = params->links[link].status;
  
-+	inode->i_uid = GLOBAL_ROOT_UID;
-+	inode->i_gid = GLOBAL_ROOT_GID;
- 	if (root->set_ownership)
- 		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
--	else {
--		inode->i_uid = GLOBAL_ROOT_UID;
--		inode->i_gid = GLOBAL_ROOT_GID;
--	}
- 
- 	return inode;
- }
+ 		if (params->links[link].addr) {
+ 			ev->cr.links[link].addr = next;
 -- 
 2.43.0
 
