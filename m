@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-65854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F66B94AC36
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0925194ABDB
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0F111F2161E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B52DD284067
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8134E84A27;
-	Wed,  7 Aug 2024 15:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88058839E4;
+	Wed,  7 Aug 2024 15:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVlvHFJi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3DONJY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D70982C8E;
-	Wed,  7 Aug 2024 15:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428598288C;
+	Wed,  7 Aug 2024 15:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043583; cv=none; b=UZVzCKzd1RNe5StZury3t0CczvuVJEWt4CDejc2IAjnE9tCmpKsIEThDzaHHeqy4mKZXA92TR4CZrh71K1gYOcU4+GwA6IvJ0HHgd2YYWeq1kyMQFMcieSSL6lhOrv5fgYOgBOxkYrbi2kayE/VBlAvmVhse6DXGzy+vSGFSWj0=
+	t=1723043378; cv=none; b=MXUGZhEB437gZZii4Y7DPEWBJvRco63JTKe0Yg99BSh85sUmBauuTFCTaL0KoFGUz/mk8N2nD8qXazDtHg7PVdVgt4nbitV8Hq7TXY2/4beOwCTbLHBo2d3AgGdtKgmIdRl1fNe931vcTfN39aT4xGwgg5kn+7L2411EsggYa0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043583; c=relaxed/simple;
-	bh=JXbAkbGDK8BfpX6Biw0/HSBX4mUR4bhrkjpjD/f5E+c=;
+	s=arc-20240116; t=1723043378; c=relaxed/simple;
+	bh=NSoQKd7Du21rep9WPaHGKk/iX9B7WcMF3ZW2MJnhhtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ky4jk62OAZdQyRuc+h9kVP/33COJO+BafwulFlaAZuFWCtF7BKLOg5EnwqmUMTDK+kGRw4UJuN0Alc0xCgfoj4Le6BEVGZzDvRb4A6E4xAwIwKaJhz3DDBW1n4D6yYVNp2LLvLTsVn4/IkO9IdWeP/MXaPR8APGT+n/eDhmPcms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVlvHFJi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B65EC32781;
-	Wed,  7 Aug 2024 15:13:02 +0000 (UTC)
+	 MIME-Version; b=nqqLAL2QXrhvXgiU+UnOkFMrd0X0rnj+KQ+y45wMsYnq857eir838XxzFgjARyUkqlKj/wOOxtdFwRCiE8ayx5N+3XTiG2FKLrqG5B/OqYLrCn1AD19jddGjEuo3VA4ATuXdn6dRjpU8qoWnQTbC8f6PehxSafwgymPrqNxcmG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3DONJY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DB1C32781;
+	Wed,  7 Aug 2024 15:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043583;
-	bh=JXbAkbGDK8BfpX6Biw0/HSBX4mUR4bhrkjpjD/f5E+c=;
+	s=korg; t=1723043378;
+	bh=NSoQKd7Du21rep9WPaHGKk/iX9B7WcMF3ZW2MJnhhtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVlvHFJisuYLSXAUeQr/9j5vG2dNf2DBvwPXcFCM7almvwAST/5gANJSFKepneGg+
-	 /Ylqvn0RjeiM/NST/UqKNOEzIUd6R9VYSFXsU6YIT6ZrJha0UIonaZj/Ng75wLkYCI
-	 zhzcahMf3Gt6oLL2xkmNPzzYp5YKbnxylSDktkUQ=
+	b=R3DONJY7OtOqHx27S2AAmbj3/u9bqEJ900tbzJOaT3w/Stmz0O6hrDqAF4ZNefFiM
+	 16y5cvQdT+x1schkap70l/dTIhhK+Q4h8HIareO2p4IW+XBHjQ1Hr9rn76A4fiGnQr
+	 xzBYJpEnse6jGCPz/Tsza1xkgDnTenrQoKSNfzxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Gladkov <legion@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Joel Granados <joel.granados@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Aurinko <petrvelicka@tuta.io>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 04/86] sysctl: allow change system v ipc sysctls inside ipc namespace
+Subject: [PATCH 6.6 051/121] HID: amd_sfh: Move sensor discovery before HID device initialization
 Date: Wed,  7 Aug 2024 16:59:43 +0200
-Message-ID: <20240807150039.393129140@linuxfoundation.org>
+Message-ID: <20240807150021.079252985@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,142 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Gladkov <legion@kernel.org>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 50ec499b9a43e46200c9f7b7d723ab2e4af540b3 ]
+[ Upstream commit 8031b001da700474c11d28629581480b12a0d8d4 ]
 
-Patch series "Allow to change ipc/mq sysctls inside ipc namespace", v3.
+Sensors discovery is independent of HID device initialization. If sensor
+discovery fails after HID initialization, then the HID device needs to be
+deinitialized. Therefore, sensors discovery should be moved before HID
+device initialization.
 
-Right now ipc and mq limits count as per ipc namespace, but only real root
-can change them.  By default, the current values of these limits are such
-that it can only be reduced.  Since only root can change the values, it is
-impossible to reduce these limits in the rootless container.
-
-We can allow limit changes within ipc namespace because mq parameters are
-limited by RLIMIT_MSGQUEUE and ipc parameters are not limited to anything
-other than cgroups.
-
-This patch (of 3):
-
-Rootless containers are not allowed to modify kernel IPC parameters.
-
-All default limits are set to such high values that in fact there are no
-limits at all.  All limits are not inherited and are initialized to
-default values when a new ipc_namespace is created.
-
-For new ipc_namespace:
-
-size_t       ipc_ns.shm_ctlmax = SHMMAX; // (ULONG_MAX - (1UL << 24))
-size_t       ipc_ns.shm_ctlall = SHMALL; // (ULONG_MAX - (1UL << 24))
-int          ipc_ns.shm_ctlmni = IPCMNI; // (1 << 15)
-int          ipc_ns.shm_rmid_forced = 0;
-unsigned int ipc_ns.msg_ctlmax = MSGMAX; // 8192
-unsigned int ipc_ns.msg_ctlmni = MSGMNI; // 32000
-unsigned int ipc_ns.msg_ctlmnb = MSGMNB; // 16384
-
-The shm_tot (total amount of shared pages) has also ceased to be global,
-it is located in ipc_namespace and is not inherited from anywhere.
-
-In such conditions, it cannot be said that these limits limit anything.
-The real limiter for them is cgroups.
-
-If we allow rootless containers to change these parameters, then it can
-only be reduced.
-
-Link: https://lkml.kernel.org/r/cover.1705333426.git.legion@kernel.org
-Link: https://lkml.kernel.org/r/d2f4603305cbfed58a24755aa61d027314b73a45.1705333426.git.legion@kernel.org
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
-Link: https://lkml.kernel.org/r/e2d84d3ec0172cfff759e6065da84ce0cc2736f8.1663756794.git.legion@kernel.org
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Joel Granados <joel.granados@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Manfred Spraul <manfred@colorfullife.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
+Fixes: 7bcfdab3f0c6 ("HID: amd_sfh: if no sensors are enabled, clean up")
+Tested-by: Aurinko <petrvelicka@tuta.io>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Link: https://patch.msgid.link/20240718111616.3012155-1-Basavaraj.Natikar@amd.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- ipc/ipc_sysctl.c | 37 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
+ drivers/hid/amd-sfh-hid/amd_sfh_client.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/ipc/ipc_sysctl.c b/ipc/ipc_sysctl.c
-index ef313ecfb53a1..29c1d3ae2a5c8 100644
---- a/ipc/ipc_sysctl.c
-+++ b/ipc/ipc_sysctl.c
-@@ -14,6 +14,7 @@
- #include <linux/ipc_namespace.h>
- #include <linux/msg.h>
- #include <linux/slab.h>
-+#include <linux/cred.h>
- #include "util.h"
- 
- static int proc_ipc_dointvec_minmax_orphans(struct ctl_table *table, int write,
-@@ -190,25 +191,57 @@ static int set_is_seen(struct ctl_table_set *set)
- 	return &current->nsproxy->ipc_ns->ipc_set == set;
- }
- 
-+static void ipc_set_ownership(struct ctl_table_header *head,
-+			      struct ctl_table *table,
-+			      kuid_t *uid, kgid_t *gid)
-+{
-+	struct ipc_namespace *ns =
-+		container_of(head->set, struct ipc_namespace, ipc_set);
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_client.c b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+index bdb578e0899f5..4b59687ff5d82 100644
+--- a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+@@ -288,12 +288,22 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+ 		mp2_ops->start(privdata, info);
+ 		cl_data->sensor_sts[i] = amd_sfh_wait_for_response
+ 						(privdata, cl_data->sensor_idx[i], SENSOR_ENABLED);
 +
-+	kuid_t ns_root_uid = make_kuid(ns->user_ns, 0);
-+	kgid_t ns_root_gid = make_kgid(ns->user_ns, 0);
-+
-+	*uid = uid_valid(ns_root_uid) ? ns_root_uid : GLOBAL_ROOT_UID;
-+	*gid = gid_valid(ns_root_gid) ? ns_root_gid : GLOBAL_ROOT_GID;
-+}
-+
- static int ipc_permissions(struct ctl_table_header *head, struct ctl_table *table)
- {
- 	int mode = table->mode;
- 
- #ifdef CONFIG_CHECKPOINT_RESTORE
--	struct ipc_namespace *ns = current->nsproxy->ipc_ns;
-+	struct ipc_namespace *ns =
-+		container_of(head->set, struct ipc_namespace, ipc_set);
- 
- 	if (((table->data == &ns->ids[IPC_SEM_IDS].next_id) ||
- 	     (table->data == &ns->ids[IPC_MSG_IDS].next_id) ||
- 	     (table->data == &ns->ids[IPC_SHM_IDS].next_id)) &&
- 	    checkpoint_restore_ns_capable(ns->user_ns))
- 		mode = 0666;
-+	else
- #endif
--	return mode;
-+	{
-+		kuid_t ns_root_uid;
-+		kgid_t ns_root_gid;
-+
-+		ipc_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
-+
-+		if (uid_eq(current_euid(), ns_root_uid))
-+			mode >>= 6;
-+
-+		else if (in_egroup_p(ns_root_gid))
-+			mode >>= 3;
++		if (cl_data->sensor_sts[i] == SENSOR_ENABLED)
++			cl_data->is_any_sensor_enabled = true;
 +	}
 +
-+	mode &= 7;
-+
-+	return (mode << 6) | (mode << 3) | mode;
- }
++	if (!cl_data->is_any_sensor_enabled ||
++	    (mp2_ops->discovery_status && mp2_ops->discovery_status(privdata) == 0)) {
++		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n",
++			 cl_data->is_any_sensor_enabled);
++		rc = -EOPNOTSUPP;
++		goto cleanup;
+ 	}
  
- static struct ctl_table_root set_root = {
- 	.lookup = set_lookup,
- 	.permissions = ipc_permissions,
-+	.set_ownership = ipc_set_ownership,
- };
+ 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+ 		cl_data->cur_hid_dev = i;
+ 		if (cl_data->sensor_sts[i] == SENSOR_ENABLED) {
+-			cl_data->is_any_sensor_enabled = true;
+ 			rc = amdtp_hid_probe(i, cl_data);
+ 			if (rc)
+ 				goto cleanup;
+@@ -305,12 +315,6 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+ 			cl_data->sensor_sts[i]);
+ 	}
  
- bool setup_ipc_sysctls(struct ipc_namespace *ns)
+-	if (!cl_data->is_any_sensor_enabled ||
+-	   (mp2_ops->discovery_status && mp2_ops->discovery_status(privdata) == 0)) {
+-		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n", cl_data->is_any_sensor_enabled);
+-		rc = -EOPNOTSUPP;
+-		goto cleanup;
+-	}
+ 	schedule_delayed_work(&cl_data->work_buffer, msecs_to_jiffies(AMD_SFH_IDLE_LOOP));
+ 	return 0;
+ 
 -- 
 2.43.0
 
