@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-65859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EC194AC3B
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB32994ABEB
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94FC283E6D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F70E1F26016
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED1F8287E;
-	Wed,  7 Aug 2024 15:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB96823A9;
+	Wed,  7 Aug 2024 15:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2bsJlxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyacMyr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA9C7F7F5;
-	Wed,  7 Aug 2024 15:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C4478C67;
+	Wed,  7 Aug 2024 15:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043596; cv=none; b=Egc691bZ3ICo0eyeLa0VQwNXml5VHZq6Z6DCEOYFsNb+ceNbMW3LRG0Dy6cOVkVNT58oE6esrA655RnXbkIQUaAtbImovR4K6zylGoyPNuXv/XZMAPjoMwdfLSfSvDqCGRFqLfpjkVrlg4SORHbX8ZUXF2NZDT2HIZnezN85ROw=
+	t=1723043421; cv=none; b=o/wHDdCScc8uRFHYZuvN0i0llaTVgyf5UjE62BeeMZCnE8Y9y7+JmTnXIPRtzBVu/fATdQ3Cm2hjV7CCALICh4pDg9+KeyFEP853Nc1qnEMeCBaeDDa+I7P8m/ZHp62t5uybGBbN2xsxQLnrT4re4x5TtTsG2dA8i0CH1jbl1yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043596; c=relaxed/simple;
-	bh=JirU1vjXyVHaqvMdSZIh5pRVOIJu7uKlsNklQqxYAJo=;
+	s=arc-20240116; t=1723043421; c=relaxed/simple;
+	bh=S2cX5JRe+BbGNFmfGlBXPbDtyy0nmZgxn9yz9M/lCpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8rRuAJt8CKAcNpSPBBMrpESHcal18Twxw5/2Fr0Gjbd8vcBrIcC0JMmgbLNmSi4Co/rIJ+syqvyDAw4urqer2a/oY5acRfFpqgye8/bSuCGnN0A4aFWAzMQupUOtZm4ewMnCdwVVDCtc7KyS/XrNtt37zgPWYec2ebm8aNnTl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2bsJlxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1C4C32781;
-	Wed,  7 Aug 2024 15:13:15 +0000 (UTC)
+	 MIME-Version; b=hwlvhdgens8Mkqh9ETi2fmGy+yN4LRvBXUz30ets8NdGfvybNA3lYzSLkF+n35N99pScDkUVPG6+V9c1CpneQFNecmxhsdEUQGTP3TIDHTnunZ+7hFc2EZzZ2SQjHGoFJgpVlwRAQv8al1rzGgym3Ux4b7lUCl+0MxH1nehqmrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyacMyr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04B4C32781;
+	Wed,  7 Aug 2024 15:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043596;
-	bh=JirU1vjXyVHaqvMdSZIh5pRVOIJu7uKlsNklQqxYAJo=;
+	s=korg; t=1723043421;
+	bh=S2cX5JRe+BbGNFmfGlBXPbDtyy0nmZgxn9yz9M/lCpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2bsJlxlyJbn0UKssMzXaFYAzXP6B2ELkSl6OcoF8/wlf7qHGcd/gw3mqIbFNKJ8k
-	 rRDqpuKcszu37RbvyT/UMXhyuNSDSxHx/hkjIYG0SoWyTLErhzmk7N1nn9G2fMCF4y
-	 37nIFNJv0+E2hjh1NuFRPjzJ9yUPCL84mM1G2wIQ=
+	b=pyacMyr8Gof/Sn4CKzty1hHpCh4cpsTbRRH5P0I4JuiZa7h776afgGGULYxsPNIPO
+	 lyZSYB5BWyAXXjvL0AmsFJOhcUxjsvvPGj+/YBk0A89a44bx6GnR7DOxgZ5vZ/LYdb
+	 prTBxYccNIhAU+GXbr3n29wnMG2nWl9SO1xGh2zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	syzbot+1b5e4e187cc586d05ea0@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 09/86] ext4: refactor ext4_da_map_blocks()
+Subject: [PATCH 6.6 056/121] sched: act_ct: take care of padding in struct zones_ht_key
 Date: Wed,  7 Aug 2024 16:59:48 +0200
-Message-ID: <20240807150039.558612212@linuxfoundation.org>
+Message-ID: <20240807150021.245155615@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +65,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3fcc2b887a1ba4c1f45319cd8c54daa263ecbc36 ]
+[ Upstream commit 2191a54f63225b548fd8346be3611c3219a24738 ]
 
-Refactor and cleanup ext4_da_map_blocks(), reduce some unnecessary
-parameters and branches, no logic changes.
+Blamed commit increased lookup key size from 2 bytes to 16 bytes,
+because zones_ht_key got a struct net pointer.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240127015825.1608160-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
+Make sure rhashtable_lookup() is not using the padding bytes
+which are not initialized.
+
+ BUG: KMSAN: uninit-value in rht_ptr_rcu include/linux/rhashtable.h:376 [inline]
+ BUG: KMSAN: uninit-value in __rhashtable_lookup include/linux/rhashtable.h:607 [inline]
+ BUG: KMSAN: uninit-value in rhashtable_lookup include/linux/rhashtable.h:646 [inline]
+ BUG: KMSAN: uninit-value in rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
+ BUG: KMSAN: uninit-value in tcf_ct_flow_table_get+0x611/0x2260 net/sched/act_ct.c:329
+  rht_ptr_rcu include/linux/rhashtable.h:376 [inline]
+  __rhashtable_lookup include/linux/rhashtable.h:607 [inline]
+  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
+  rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
+  tcf_ct_flow_table_get+0x611/0x2260 net/sched/act_ct.c:329
+  tcf_ct_init+0xa67/0x2890 net/sched/act_ct.c:1408
+  tcf_action_init_1+0x6cc/0xb30 net/sched/act_api.c:1425
+  tcf_action_init+0x458/0xf00 net/sched/act_api.c:1488
+  tcf_action_add net/sched/act_api.c:2061 [inline]
+  tc_ctl_action+0x4be/0x19d0 net/sched/act_api.c:2118
+  rtnetlink_rcv_msg+0x12fc/0x1410 net/core/rtnetlink.c:6647
+  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2550
+  rtnetlink_rcv+0x34/0x40 net/core/rtnetlink.c:6665
+  netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1357
+  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1901
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  ____sys_sendmsg+0x877/0xb60 net/socket.c:2597
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2651
+  __sys_sendmsg net/socket.c:2680 [inline]
+  __do_sys_sendmsg net/socket.c:2689 [inline]
+  __se_sys_sendmsg net/socket.c:2687 [inline]
+  __x64_sys_sendmsg+0x307/0x4a0 net/socket.c:2687
+  x64_sys_call+0x2dd6/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:47
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Local variable key created at:
+  tcf_ct_flow_table_get+0x4a/0x2260 net/sched/act_ct.c:324
+  tcf_ct_init+0xa67/0x2890 net/sched/act_ct.c:1408
+
+Fixes: 88c67aeb1407 ("sched: act_ct: add netns into the key of tcf_ct_flow_table")
+Reported-by: syzbot+1b5e4e187cc586d05ea0@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 39 +++++++++++++++++----------------------
- 1 file changed, 17 insertions(+), 22 deletions(-)
+ net/sched/act_ct.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 6dc15ad45ac95..eab9aefe96ce6 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1741,7 +1741,6 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 	/* Lookup extent status tree firstly */
- 	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
- 		if (ext4_es_is_hole(&es)) {
--			retval = 0;
- 			down_read(&EXT4_I(inode)->i_data_sem);
- 			goto add_delayed;
- 		}
-@@ -1786,26 +1785,9 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
- 	else
- 		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
--
--add_delayed:
--	if (retval == 0) {
--		int ret;
--
--		/*
--		 * XXX: __block_prepare_write() unmaps passed block,
--		 * is it OK?
--		 */
--
--		ret = ext4_insert_delayed_block(inode, map->m_lblk);
--		if (ret != 0) {
--			retval = ret;
--			goto out_unlock;
--		}
--
--		map_bh(bh, inode->i_sb, invalid_block);
--		set_buffer_new(bh);
--		set_buffer_delay(bh);
--	} else if (retval > 0) {
-+	if (retval < 0)
-+		goto out_unlock;
-+	if (retval > 0) {
- 		unsigned int status;
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 3ac19516ed803..50d24e240e8fb 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -44,6 +44,8 @@ static DEFINE_MUTEX(zones_mutex);
+ struct zones_ht_key {
+ 	struct net *net;
+ 	u16 zone;
++	/* Note : pad[] must be the last field. */
++	u8  pad[];
+ };
  
- 		if (unlikely(retval != map->m_len)) {
-@@ -1820,11 +1802,24 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
- 		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
- 				      map->m_pblk, status);
-+		goto out_unlock;
- 	}
- 
-+add_delayed:
-+	/*
-+	 * XXX: __block_prepare_write() unmaps passed block,
-+	 * is it OK?
-+	 */
-+	retval = ext4_insert_delayed_block(inode, map->m_lblk);
-+	if (retval)
-+		goto out_unlock;
-+
-+	map_bh(bh, inode->i_sb, invalid_block);
-+	set_buffer_new(bh);
-+	set_buffer_delay(bh);
-+
- out_unlock:
- 	up_read((&EXT4_I(inode)->i_data_sem));
--
- 	return retval;
- }
+ struct tcf_ct_flow_table {
+@@ -60,7 +62,7 @@ struct tcf_ct_flow_table {
+ static const struct rhashtable_params zones_params = {
+ 	.head_offset = offsetof(struct tcf_ct_flow_table, node),
+ 	.key_offset = offsetof(struct tcf_ct_flow_table, key),
+-	.key_len = sizeof_field(struct tcf_ct_flow_table, key),
++	.key_len = offsetof(struct zones_ht_key, pad),
+ 	.automatic_shrinking = true,
+ };
  
 -- 
 2.43.0
