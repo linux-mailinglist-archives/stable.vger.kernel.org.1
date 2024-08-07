@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-65822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7BC94AC10
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4568C94AC4C
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 849622816F9
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E205A1F22FAC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9D7823DE;
-	Wed,  7 Aug 2024 15:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D146B81751;
+	Wed,  7 Aug 2024 15:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxHw6KDM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gr7fVpNa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD46A7E0E9;
-	Wed,  7 Aug 2024 15:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D449823DE;
+	Wed,  7 Aug 2024 15:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043500; cv=none; b=lHn9WV76SmYKZMj3jSkzZQMOCrX+BjJg3aUcoviahXEdbFhAkkH4DwA/Atq9Gw38oMN6CCwO8z+T0ywQI7ZX+GjWutcj8KmflfnCxAGbLYTXWvg5udi/frvvqBglxVJKsRDtk81+AFcvifWOS+4nc999Hm2BkKSxVkRJGLcQsro=
+	t=1723043629; cv=none; b=Cr1tWWBQ2iV1sj965EydA84RpYM9MWpFq2k3AD5dKNrowB+eWfczTnei6eKpxvP+Im64AuvH3QV9nmX1mZxq7Ti2PfsnZMZcSsX4ydBDk3Vm0osdhGsVueJ/0ImxuWdF2oIbBB/UKtU5DNpo5kWqsNHhyNRPSsrRD1gthQMgHAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043500; c=relaxed/simple;
-	bh=koRhZITgrr98ZcHOBP/5sf/t1YLE7gqucTgkRufJ4C4=;
+	s=arc-20240116; t=1723043629; c=relaxed/simple;
+	bh=llLU+/L3iYJOF3rL3B6LRaVC4Emh8Bcxj3PhPgyIvmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=argtC0VnNkpiRhGQyOGoSkIHm47FrftuR4DYBkvN50HiNjzdLV+nPW5yH7ujHU5QH97yI0B5zJEd29hb4IzX/8P2XkG/pXvd3XLOa6gUn5BopDNnBBh8cISSL4FtyY2lFuX785vCTZb8yRwNcC+ln8ZulGoNqzR0H3OO+OyNQR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxHw6KDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC1EC32781;
-	Wed,  7 Aug 2024 15:11:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hCADu3PiSHe2epSpbeHPWcWjqb7weKLUwXqel9ti8CndJ1qyZWAXqpE2FCDGeurTfXZ/fBDiuUL5zOcBP5HspjarqhOHwXuQ6ZrxR2a5q/O0aec9wjJe8XdYTZ6wp+bx/QdUgjrvPtZwYVdiZ/zAShYF3RzwuU1yuEjcrxBL+Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gr7fVpNa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BE2C32781;
+	Wed,  7 Aug 2024 15:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043500;
-	bh=koRhZITgrr98ZcHOBP/5sf/t1YLE7gqucTgkRufJ4C4=;
+	s=korg; t=1723043629;
+	bh=llLU+/L3iYJOF3rL3B6LRaVC4Emh8Bcxj3PhPgyIvmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxHw6KDMELLAXZM0tftZj3eYCuDdzEbdmzVSz43KjSib+VwZ9qacKwPR79b5UcacB
-	 PQolPjUWTOQntg/D/S3j4eeU2vZSFHOBZARlFMbDR6aS2Q8wYYLGghKECCujh284OR
-	 1WBV1iYu85gxsfZ9riKJHIHTsYOjD45i/lmTHxjA=
+	b=Gr7fVpNa0Z/crvKIVjHCln1/+fowkHm87cwETb0e+3T2QsPwhtwltX8E1XDCUWeET
+	 g5FKxsWp73q8Zs97s30xLYjGs7u1nQ/+m6nnLNyC6znyVzu6Lg4o0+DvMCqHlXKxlc
+	 4NeEXsBzgNxoRzBwmnOOH4r4NjCTeS7XQSbrTVUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/121] igc: Fix double reset adapter triggered from a single taprio cmd
-Date: Wed,  7 Aug 2024 17:00:19 +0200
-Message-ID: <20240807150022.253359874@linuxfoundation.org>
+Subject: [PATCH 6.1 41/86] drm/nouveau: prime: fix refcount underflow
+Date: Wed,  7 Aug 2024 17:00:20 +0200
+Message-ID: <20240807150040.596666593@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit b9e7fc0aeda79031a101610b2fcb12bf031056e9 ]
+[ Upstream commit a9bf3efc33f1fbf88787a277f7349459283c9b95 ]
 
-Following the implementation of "igc: Add TransmissionOverrun counter"
-patch, when a taprio command is triggered by user, igc processes two
-commands: TAPRIO_CMD_REPLACE followed by TAPRIO_CMD_STATS. However, both
-commands unconditionally pass through igc_tsn_offload_apply() which
-evaluates and triggers reset adapter. The double reset causes issues in
-the calculation of adapter->qbv_count in igc.
+Calling nouveau_bo_ref() on a nouveau_bo without initializing it (and
+hence the backing ttm_bo) leads to a refcount underflow.
 
-TAPRIO_CMD_REPLACE command is expected to reset the adapter since it
-activates qbv. It's unexpected for TAPRIO_CMD_STATS to do the same
-because it doesn't configure any driver-specific TSN settings. So, the
-evaluation in igc_tsn_offload_apply() isn't needed for TAPRIO_CMD_STATS.
+Instead of calling nouveau_bo_ref() in the unwind path of
+drm_gem_object_init(), clean things up manually.
 
-To address this, commands parsing are relocated to
-igc_tsn_enable_qbv_scheduling(). Commands that don't require an adapter
-reset will exit after processing, thus avoiding igc_tsn_offload_apply().
-
-Fixes: d3750076d464 ("igc: Add TransmissionOverrun counter")
-Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20240730173304.865479-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ab9ccb96a6e6 ("drm/nouveau: use prime helpers")
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240718165959.3983-2-dakr@kernel.org
+(cherry picked from commit 1b93f3e89d03cfc576636e195466a0d728ad8de5)
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 33 ++++++++++++-----------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_prime.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index e83700ad7e622..d80bbcdeb93ed 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6208,21 +6208,6 @@ static int igc_save_qbv_schedule(struct igc_adapter *adapter,
- 	size_t n;
- 	int i;
- 
--	switch (qopt->cmd) {
--	case TAPRIO_CMD_REPLACE:
--		break;
--	case TAPRIO_CMD_DESTROY:
--		return igc_tsn_clear_schedule(adapter);
--	case TAPRIO_CMD_STATS:
--		igc_taprio_stats(adapter->netdev, &qopt->stats);
--		return 0;
--	case TAPRIO_CMD_QUEUE_STATS:
--		igc_taprio_queue_stats(adapter->netdev, &qopt->queue_stats);
--		return 0;
--	default:
--		return -EOPNOTSUPP;
--	}
--
- 	if (qopt->base_time < 0)
- 		return -ERANGE;
- 
-@@ -6331,7 +6316,23 @@ static int igc_tsn_enable_qbv_scheduling(struct igc_adapter *adapter,
- 	if (hw->mac.type != igc_i225)
- 		return -EOPNOTSUPP;
- 
--	err = igc_save_qbv_schedule(adapter, qopt);
-+	switch (qopt->cmd) {
-+	case TAPRIO_CMD_REPLACE:
-+		err = igc_save_qbv_schedule(adapter, qopt);
-+		break;
-+	case TAPRIO_CMD_DESTROY:
-+		err = igc_tsn_clear_schedule(adapter);
-+		break;
-+	case TAPRIO_CMD_STATS:
-+		igc_taprio_stats(adapter->netdev, &qopt->stats);
-+		return 0;
-+	case TAPRIO_CMD_QUEUE_STATS:
-+		igc_taprio_queue_stats(adapter->netdev, &qopt->queue_stats);
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (err)
- 		return err;
- 
+diff --git a/drivers/gpu/drm/nouveau/nouveau_prime.c b/drivers/gpu/drm/nouveau/nouveau_prime.c
+index 9608121e49b7e..8340d55aaa987 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_prime.c
++++ b/drivers/gpu/drm/nouveau/nouveau_prime.c
+@@ -63,7 +63,8 @@ struct drm_gem_object *nouveau_gem_prime_import_sg_table(struct drm_device *dev,
+ 	 * to the caller, instead of a normal nouveau_bo ttm reference. */
+ 	ret = drm_gem_object_init(dev, &nvbo->bo.base, size);
+ 	if (ret) {
+-		nouveau_bo_ref(NULL, &nvbo);
++		drm_gem_object_release(&nvbo->bo.base);
++		kfree(nvbo);
+ 		obj = ERR_PTR(-ENOMEM);
+ 		goto unlock;
+ 	}
 -- 
 2.43.0
 
