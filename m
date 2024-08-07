@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-65649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8DF94AB3F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA2494ABC9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49AEC280DE8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5902C1F25B01
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD20012BF25;
-	Wed,  7 Aug 2024 15:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40DD80BF8;
+	Wed,  7 Aug 2024 15:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frxYaC9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iFYMV/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7905A6FE16;
-	Wed,  7 Aug 2024 15:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716182AF07;
+	Wed,  7 Aug 2024 15:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043035; cv=none; b=cs8nhzak9V7iCtVFyGeg0SirQDLMMlci7bVcEJhIFMJRymDdzhGn0vUhxBOXWrh5LZuEH/B9Ak513HF5wYKv2Ebwoeb1mWJyiZxMEreAi0muxRKvknsqs/RLGiebQ9Nbfs8JkpU1jgfKGrN9/jeIx2/gpYgP4DqMNrcM2VUZ2PU=
+	t=1723043336; cv=none; b=Qryt/Eki5Phxt6N7vJS/oxcFSf2csFIucKZRIAQXFHG3gWo8zuD8U5osGBTxGyAiCcVcue0jch5N6mpKdvOHf6VZvVNsGdGkrbnVr0uGkAJU6SJ2F5YbfhDXaQAuxXppkFHkX36XDfMjkFUCnzgzhAN9BzBz2nclX7QSEfJ9lH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043035; c=relaxed/simple;
-	bh=e73y6voutiKMcQHgLi+JoHw8GP09yKouQb6C1hhZ7t0=;
+	s=arc-20240116; t=1723043336; c=relaxed/simple;
+	bh=ULQR64GHZFYVUyN69PjoDXC+syyjvEijkql0tnxQXJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3fE80gf32q/Y8FWCBn9SYC8j5KKb9ALs7xWk148U9x5LFxmNFQ22p9HfURDDNKMfNNiOcMp16ltIrEcOtP2ovjiUen14KNfumZS77hIKqOA1heS5FDEnWCOcSwmuxjGbGvPtCy3HLQHXiKRKyYusd1eTVxoR96+0uFcMlo0rCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frxYaC9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E1BC32781;
-	Wed,  7 Aug 2024 15:03:54 +0000 (UTC)
+	 MIME-Version; b=C2Vf7RQbrXmdIH+r/AzfhYll3OuJ8dG4iSzuV4Qt+kZiq4ysywbF/x/Uz/mQ/ThC32T3/Rcmuav1ntgKphImzMzMPbhXjQHI9OY4B+IiBD1dAj3UybbosLeCWkGKKlU8xuD1mj4cQxBK5C4POiLe1pRK8A5q/5R1P42Bv6+1Dso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iFYMV/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D69C32781;
+	Wed,  7 Aug 2024 15:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043035;
-	bh=e73y6voutiKMcQHgLi+JoHw8GP09yKouQb6C1hhZ7t0=;
+	s=korg; t=1723043336;
+	bh=ULQR64GHZFYVUyN69PjoDXC+syyjvEijkql0tnxQXJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frxYaC9JEQ+3NxN6dM5jbGr/fKLKi3PVVTljFwv/UPT2DQsDJNcRQ9BoOGARRD6Ue
-	 T7eOxhftXCKdTQhJsMHHhIDQ56UVxc+OIQ0idVFqNh5DuDpJ0jMNNB7JfymxrMSuyz
-	 XhEhOcc4anYURuKzc626QJ1vUslot0qJMDK02uzw=
+	b=0iFYMV/3PFgsulmIF4j6UMmJwabeZyMSK/BIuzG/DolrJ2eVsHggIHeEN4GXOnA8Y
+	 pzTpnFw19K92POeMz3XGEINUvdZ2cDzxpxYfzNsKtVmYhcGgTKcK+H6aBGtoPXPse/
+	 rzDzbCvjYq7JzXqj+oajMSg7GScamzzRwCQtn9bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Tranchetti <quic_stranche@quicinc.com>,
-	Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 037/123] tcp: Adjust clamping window for applications specifying SO_RCVBUF
+Subject: [PATCH 6.6 024/121] leds: trigger: Store brightness set by led_trigger_event()
 Date: Wed,  7 Aug 2024 16:59:16 +0200
-Message-ID: <20240807150022.032951310@linuxfoundation.org>
+Message-ID: <20240807150020.133032468@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 05f76b2d634e65ab34472802d9b142ea9e03f74e ]
+[ Upstream commit 822c91e72eac568ed8d83765634f00decb45666c ]
 
-tp->scaling_ratio is not updated based on skb->len/skb->truesize once
-SO_RCVBUF is set leading to the maximum window scaling to be 25% of
-rcvbuf after
-commit dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
-and 50% of rcvbuf after
-commit 697a6c8cec03 ("tcp: increase the default TCP scaling ratio").
-50% tries to emulate the behavior of older kernels using
-sysctl_tcp_adv_win_scale with default value.
+If a simple trigger is assigned to a LED, then the LED may be off until
+the next led_trigger_event() call. This may be an issue for simple
+triggers with rare led_trigger_event() calls, e.g. power supply
+charging indicators (drivers/power/supply/power_supply_leds.c).
+Therefore persist the brightness value of the last led_trigger_event()
+call and use this value if the trigger is assigned to a LED.
+In addition add a getter for the trigger brightness value.
 
-Systems which were using a different values of sysctl_tcp_adv_win_scale
-in older kernels ended up seeing reduced download speeds in certain
-cases as covered in https://lists.openwall.net/netdev/2024/05/15/13
-While the sysctl scheme is no longer acceptable, the value of 50% is
-a bit conservative when the skb->len/skb->truesize ratio is later
-determined to be ~0.66.
-
-Applications not specifying SO_RCVBUF update the window scaling and
-the receiver buffer every time data is copied to userspace. This
-computation is now used for applications setting SO_RCVBUF to update
-the maximum window scaling while ensuring that the receive buffer
-is within the application specified limit.
-
-Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
-Signed-off-by: Sean Tranchetti <quic_stranche@quicinc.com>
-Signed-off-by: Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/b1358b25-3f30-458d-8240-5705ae007a8a@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ drivers/leds/led-triggers.c |  6 ++++--
+ include/linux/leds.h        | 15 +++++++++++++++
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 570e87ad9a56e..ecd521108559f 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -754,8 +754,7 @@ void tcp_rcv_space_adjust(struct sock *sk)
- 	 * <prev RTT . ><current RTT .. ><next RTT .... >
- 	 */
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index 081acf1f345b3..38f7896f374f6 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -194,11 +194,11 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+ 		spin_unlock(&trig->leddev_list_lock);
+ 		led_cdev->trigger = trig;
  
--	if (READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_moderate_rcvbuf) &&
--	    !(sk->sk_userlocks & SOCK_RCVBUF_LOCK)) {
-+	if (READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_moderate_rcvbuf)) {
- 		u64 rcvwin, grow;
- 		int rcvbuf;
++		ret = 0;
+ 		if (trig->activate)
+ 			ret = trig->activate(led_cdev);
+ 		else
+-			ret = 0;
+-
++			led_set_brightness(led_cdev, trig->brightness);
+ 		if (ret)
+ 			goto err_activate;
  
-@@ -771,12 +770,22 @@ void tcp_rcv_space_adjust(struct sock *sk)
+@@ -373,6 +373,8 @@ void led_trigger_event(struct led_trigger *trig,
+ 	if (!trig)
+ 		return;
  
- 		rcvbuf = min_t(u64, tcp_space_from_win(sk, rcvwin),
- 			       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_rmem[2]));
--		if (rcvbuf > sk->sk_rcvbuf) {
--			WRITE_ONCE(sk->sk_rcvbuf, rcvbuf);
-+		if (!(sk->sk_userlocks & SOCK_RCVBUF_LOCK)) {
-+			if (rcvbuf > sk->sk_rcvbuf) {
-+				WRITE_ONCE(sk->sk_rcvbuf, rcvbuf);
- 
--			/* Make the window clamp follow along.  */
--			WRITE_ONCE(tp->window_clamp,
--				   tcp_win_from_space(sk, rcvbuf));
-+				/* Make the window clamp follow along.  */
-+				WRITE_ONCE(tp->window_clamp,
-+					   tcp_win_from_space(sk, rcvbuf));
-+			}
-+		} else {
-+			/* Make the window clamp follow along while being bounded
-+			 * by SO_RCVBUF.
-+			 */
-+			int clamp = tcp_win_from_space(sk, min(rcvbuf, sk->sk_rcvbuf));
++	trig->brightness = brightness;
 +
-+			if (clamp > tp->window_clamp)
-+				WRITE_ONCE(tp->window_clamp, clamp);
- 		}
- 	}
- 	tp->rcvq_space.space = copied;
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(led_cdev, &trig->led_cdevs, trig_list)
+ 		led_set_brightness(led_cdev, brightness);
+diff --git a/include/linux/leds.h b/include/linux/leds.h
+index 6a4973feecd65..d3056bc6f0a1a 100644
+--- a/include/linux/leds.h
++++ b/include/linux/leds.h
+@@ -474,6 +474,9 @@ struct led_trigger {
+ 	int		(*activate)(struct led_classdev *led_cdev);
+ 	void		(*deactivate)(struct led_classdev *led_cdev);
+ 
++	/* Brightness set by led_trigger_event */
++	enum led_brightness brightness;
++
+ 	/* LED-private triggers have this set */
+ 	struct led_hw_trigger_type *trigger_type;
+ 
+@@ -527,6 +530,12 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
+ 	return led_cdev->trigger_data;
+ }
+ 
++static inline enum led_brightness
++led_trigger_get_brightness(const struct led_trigger *trigger)
++{
++	return trigger ? trigger->brightness : LED_OFF;
++}
++
+ #define module_led_trigger(__led_trigger) \
+ 	module_driver(__led_trigger, led_trigger_register, \
+ 		      led_trigger_unregister)
+@@ -563,6 +572,12 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
+ 	return NULL;
+ }
+ 
++static inline enum led_brightness
++led_trigger_get_brightness(const struct led_trigger *trigger)
++{
++	return LED_OFF;
++}
++
+ #endif /* CONFIG_LEDS_TRIGGERS */
+ 
+ /* Trigger specific enum */
 -- 
 2.43.0
 
