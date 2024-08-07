@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-65754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22E294ABBE
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6D894AB37
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C8A32837EF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77419281ADF
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB3A27448;
-	Wed,  7 Aug 2024 15:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A610812C46F;
+	Wed,  7 Aug 2024 15:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3N+C/uW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxXP7GNR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E232AF07;
-	Wed,  7 Aug 2024 15:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625F012BEBB;
+	Wed,  7 Aug 2024 15:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043317; cv=none; b=B/zMMhi+YzNWWH2MNlKOKn2Whx8P0BZiMqUXi0LHQrxhDX2axRzcarScg+Gfm1u7/06+Ecmu7ZkbPBCfxd1L8xaCbGfjbji3jRHc9PrWqVw8S/4ivRHBf/K0A5gI1OguNCnkOG9mTQgFU9JFJ94bX275OYTkpIzMxpxYX3TEgdg=
+	t=1723043016; cv=none; b=L1Omi3opaVRNwf0RIcT0ipOkEyCk7qI+fcbusTX9UQqq6DOpNEG332ajjA2YFlbrCGTBWmmRpLbxmtQ9npRYN4qHGhLJO7WoFMeYjXL6mEisyWlSgJpLOI5Phs/exKP8CAf3TYhPiuPKiCU/ONrCA38oukBdRSK/jREsEL4etyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043317; c=relaxed/simple;
-	bh=wP7rlVbUQemhRIsy3NjnaynGocFbptrb1a4W9Ipgt4Y=;
+	s=arc-20240116; t=1723043016; c=relaxed/simple;
+	bh=U6RLW8k+X4nUJ7QE04dBt5jto/mnbnkabzHt/IYogio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZsWj63+vndgmGku0KIJG30RSksEjjLr4J/EArAyzE7Rw/hUqiLWm8o/AUtfIfMCqkTWmfJiy0pVCflUdk9Pns8tEj4OFn7r3Lb7oB1D+p4IFRXqt/RvI49ZD63RttuBKemeFLGtKwO96c6bXKpmrtLldwV49DDiJVeinHuPF8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3N+C/uW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C76C32781;
-	Wed,  7 Aug 2024 15:08:36 +0000 (UTC)
+	 MIME-Version; b=aAsKD3vPv5v6b1BiWBmh50jX9+JfSXbL9+t+XYVak6mNrWqP35BzTVZvXT+WqUu53xKBfdWzZlpF1JuQllKsd47iCl76wO/SzG7ZDszSrtrgOBl6qs6De9srCDvvlV1Gur7BgCjjL55fACD7bVxZDSaY5hiL693YSTiVjsNZjsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxXP7GNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A55C4AF0F;
+	Wed,  7 Aug 2024 15:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043317;
-	bh=wP7rlVbUQemhRIsy3NjnaynGocFbptrb1a4W9Ipgt4Y=;
+	s=korg; t=1723043016;
+	bh=U6RLW8k+X4nUJ7QE04dBt5jto/mnbnkabzHt/IYogio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3N+C/uWReSE+tD3MfP7ZTUkbr4CnwdPlkueiE3Oe4JlmVu1/hpy3/XAVt66A4ao5
-	 M77XEDuGMSEeTsuUEk7mhuXkwV291RNnbzLqNGEYCnx+GyosX/gzCvqQrP7+mkPc2Y
-	 fXMKiOESbyb14H5R4GcrglB+YYbQCDksplNSL58E=
+	b=GxXP7GNRGbyTQLk3ldkxd4PPd4AnuZXU59t8ZQVZeMKWQYDAltN2ORsGnsqmRgdVG
+	 6tgtl3kcN9Cbs+Uc/2pUr5GMmgSFpe1tnAegq84kM6jdhyaCVEEEMKeYrc/idGdtp8
+	 CZIpb+dDUJZzs4cstiEQGBC+4QsWRlpJ1t0UiWgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Will Deacon <will@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/121] perf: imx_perf: fix counter start and config sequence
+Subject: [PATCH 6.10 059/123] net/mlx5: Always drain health in shutdown callback
 Date: Wed,  7 Aug 2024 16:59:38 +0200
-Message-ID: <20240807150020.901845183@linuxfoundation.org>
+Message-ID: <20240807150022.710787384@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit ac9aa295f7a89d38656739628796f086f0b160e2 ]
+[ Upstream commit 1b75da22ed1e6171e261bc9265370162553d5393 ]
 
-In current driver, the counter will start firstly and then be configured.
-This sequence is not correct for AXI filter events since the correct
-AXI_MASK and AXI_ID are not set yet. Then the results may be inaccurate.
+There is no point in recovery during device shutdown. if health
+work started need to wait for it to avoid races and NULL pointer
+access.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Fixes: 55691f99d417 ("drivers/perf: imx_ddr: Add support for NXP i.MX9 SoC DDRC PMU driver")
-cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20240529080358.703784-5-xu.yang_2@nxp.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Hence, drain health WQ on shutdown callback.
+
+Fixes: 1958fc2f0712 ("net/mlx5: SF, Add auxiliary device driver")
+Fixes: d2aa060d40fa ("net/mlx5: Cancel health poll before sending panic teardown command")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/fsl_imx9_ddr_perf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c          | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
-index 5cf770a1bc312..4f6eade522024 100644
---- a/drivers/perf/fsl_imx9_ddr_perf.c
-+++ b/drivers/perf/fsl_imx9_ddr_perf.c
-@@ -476,12 +476,12 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
- 	hwc->idx = counter;
- 	hwc->state |= PERF_HES_STOPPED;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 459a836a5d9c1..3e55a6c6a7c9b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -2140,7 +2140,6 @@ static int mlx5_try_fast_unload(struct mlx5_core_dev *dev)
+ 	/* Panic tear down fw command will stop the PCI bus communication
+ 	 * with the HCA, so the health poll is no longer needed.
+ 	 */
+-	mlx5_drain_health_wq(dev);
+ 	mlx5_stop_health_poll(dev, false);
  
--	if (flags & PERF_EF_START)
--		ddr_perf_event_start(event, flags);
--
- 	/* read trans, write trans, read beat */
- 	ddr_perf_monitor_config(pmu, cfg, cfg1, cfg2);
+ 	ret = mlx5_cmd_fast_teardown_hca(dev);
+@@ -2175,6 +2174,7 @@ static void shutdown(struct pci_dev *pdev)
  
-+	if (flags & PERF_EF_START)
-+		ddr_perf_event_start(event, flags);
-+
- 	return 0;
+ 	mlx5_core_info(dev, "Shutdown was called\n");
+ 	set_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state);
++	mlx5_drain_health_wq(dev);
+ 	err = mlx5_try_fast_unload(dev);
+ 	if (err)
+ 		mlx5_unload_one(dev, false);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+index b2986175d9afe..b706f1486504a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+@@ -112,6 +112,7 @@ static void mlx5_sf_dev_shutdown(struct auxiliary_device *adev)
+ 	struct mlx5_core_dev *mdev = sf_dev->mdev;
+ 
+ 	set_bit(MLX5_BREAK_FW_WAIT, &mdev->intf_state);
++	mlx5_drain_health_wq(mdev);
+ 	mlx5_unload_one(mdev, false);
  }
  
 -- 
