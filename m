@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3627A94AAFA
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEC094ABA3
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65B831C215F1
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:01:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C6BD1C20D25
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92A878B4C;
-	Wed,  7 Aug 2024 15:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E347E0E9;
+	Wed,  7 Aug 2024 15:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iz62jEM3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5uzmmsQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662F33EA9A;
-	Wed,  7 Aug 2024 15:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B936127448;
+	Wed,  7 Aug 2024 15:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042912; cv=none; b=Swe3Mrx4V5SWdUgS7aXcDCF8q0157W7Bs4IBMs83vbaC5SL7wh3T4usiezo/Dg1gt7+KIg06wImbTrkTivsdhKeiKBmxpnuJ3ue0FgtoKo3WnpTWQm4YGkeBUp5j7EPFHZUYECx/Ij8RDI8SUq1qFpc1FdOcBcsy9DFbAI0KUDY=
+	t=1723043253; cv=none; b=nc/JfSeUdYCCzpTZYZBX4t8DoM+QeBxJ9zW6emeKmlgyykbf9782IriwV94ho/IwC2v9MTZbel7UX3KuAEk2TYdVueaNYZFWJNPt7Ms/BoBhPMNzGAECMZeDP25egk1zzaCqN4w0NOVhwbrLyPhpbTWqLyljykG11mzjQGWHCoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042912; c=relaxed/simple;
-	bh=yz66p5R+fdpPph2b7QjHxLxOTQRzYe4mCSvu4JQXN9Q=;
+	s=arc-20240116; t=1723043253; c=relaxed/simple;
+	bh=/xQGm62Ip5xqEurWxYOAFPhZm+3+brqyN6TK7xYu48U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UpYDVq9o4rQL8aAuop3ZIbAOEkCTLeIn6ce9hH4A5wktkeUdx7fDhzi9pK8SZJSx9H3N6JjGBCh3C+4wGdNdODfTuTlC3XHGYKg80wSBSumnq8Y4SHJwkW1R3FggPYPOiCUg9qdidaBi3d3OvOY6i2MvgLVJWc3gSGFy9bq5/5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iz62jEM3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD86C32781;
-	Wed,  7 Aug 2024 15:01:51 +0000 (UTC)
+	 MIME-Version; b=BEY4T94DKRk9BcwDPrXQN2RxJWyerL+PBH+sjnK7s3fp9NcCgLkQVqsWFyB2SaiVGNomwPIiBAVZWif2UTSSrPG1605Z1dSyCfGGzGaPPyzkyre3OJp2xqy0wKGcuFbTfV2VNKa/kQ64uUleFL0S/cKcOi6GlivUQ2YOEvxmDpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5uzmmsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2ECC32781;
+	Wed,  7 Aug 2024 15:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723042912;
-	bh=yz66p5R+fdpPph2b7QjHxLxOTQRzYe4mCSvu4JQXN9Q=;
+	s=korg; t=1723043253;
+	bh=/xQGm62Ip5xqEurWxYOAFPhZm+3+brqyN6TK7xYu48U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iz62jEM32pqRy4WHV90cu9i5ao4X/mGRnJbwowKEWq7H+GsuFlGJSBG2AEzy+raRm
-	 xUOWCSIdL0CYklqLUFPeuHQuizxM6UN1k1gXoqsB2ZZQJVRipt0JP5gUwMxHRlIfmy
-	 l6uXk87WjRTl7uYjLxUVO4BMBv8gktRAMJk+U7Fc=
+	b=s5uzmmsQFCraMSTnedBPlbZTRya5MvCZzJyppfCwejpJSHyGnNa6q9ZDuQlljXFVf
+	 kB/ggsxdLKJoImy08D02NnhcqB11NrZPwFpdsJ7qwUgUCopHnO6rZ/opbde8dyMHps
+	 2eugCWQuuBLCUXoDZvfIwynHjWt1KKLLIgyfMjCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 021/123] drm/nouveau: prime: fix refcount underflow
-Date: Wed,  7 Aug 2024 16:59:00 +0200
-Message-ID: <20240807150021.505473679@linuxfoundation.org>
+Subject: [PATCH 6.6 009/121] arm64: dts: qcom: sdm845: switch USB QMP PHY to new style of bindings
+Date: Wed,  7 Aug 2024 16:59:01 +0200
+Message-ID: <20240807150019.687148587@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a9bf3efc33f1fbf88787a277f7349459283c9b95 ]
+[ Upstream commit ca5ca568d7388b38039c8d658735fc539352b1db ]
 
-Calling nouveau_bo_ref() on a nouveau_bo without initializing it (and
-hence the backing ttm_bo) leads to a refcount underflow.
+Change the USB QMP PHY to use newer style of QMP PHY bindings (single
+resource region, no per-PHY subnodes).
 
-Instead of calling nouveau_bo_ref() in the unwind path of
-drm_gem_object_init(), clean things up manually.
-
-Fixes: ab9ccb96a6e6 ("drm/nouveau: use prime helpers")
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240718165959.3983-2-dakr@kernel.org
-(cherry picked from commit 1b93f3e89d03cfc576636e195466a0d728ad8de5)
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230824211952.1397699-12-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: cf4d6d54eadb ("arm64: dts: qcom: sdm845: Disable SS instance in Parkmode for USB")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_prime.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 39 ++++++++++++----------------
+ 1 file changed, 17 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_prime.c b/drivers/gpu/drm/nouveau/nouveau_prime.c
-index b58ab595faf82..cd95446d68511 100644
---- a/drivers/gpu/drm/nouveau/nouveau_prime.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_prime.c
-@@ -64,7 +64,8 @@ struct drm_gem_object *nouveau_gem_prime_import_sg_table(struct drm_device *dev,
- 	 * to the caller, instead of a normal nouveau_bo ttm reference. */
- 	ret = drm_gem_object_init(dev, &nvbo->bo.base, size);
- 	if (ret) {
--		nouveau_bo_ref(NULL, &nvbo);
-+		drm_gem_object_release(&nvbo->bo.base);
-+		kfree(nvbo);
- 		obj = ERR_PTR(-ENOMEM);
- 		goto unlock;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 494eac409ee9f..abffd0ad6e90c 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4010,33 +4010,28 @@ usb_1_qmpphy: phy@88e8000 {
+ 
+ 		usb_2_qmpphy: phy@88eb000 {
+ 			compatible = "qcom,sdm845-qmp-usb3-uni-phy";
+-			reg = <0 0x088eb000 0 0x18c>;
+-			status = "disabled";
+-			#address-cells = <2>;
+-			#size-cells = <2>;
+-			ranges;
++			reg = <0 0x088eb000 0 0x1000>;
+ 
+ 			clocks = <&gcc GCC_USB3_SEC_PHY_AUX_CLK>,
+ 				 <&gcc GCC_USB_PHY_CFG_AHB2PHY_CLK>,
+ 				 <&gcc GCC_USB3_SEC_CLKREF_CLK>,
+-				 <&gcc GCC_USB3_SEC_PHY_COM_AUX_CLK>;
+-			clock-names = "aux", "cfg_ahb", "ref", "com_aux";
++				 <&gcc GCC_USB3_SEC_PHY_COM_AUX_CLK>,
++				 <&gcc GCC_USB3_SEC_PHY_PIPE_CLK>;
++			clock-names = "aux",
++				      "cfg_ahb",
++				      "ref",
++				      "com_aux",
++				      "pipe";
++			clock-output-names = "usb3_uni_phy_pipe_clk_src";
++			#clock-cells = <0>;
++			#phy-cells = <0>;
+ 
+-			resets = <&gcc GCC_USB3PHY_PHY_SEC_BCR>,
+-				 <&gcc GCC_USB3_PHY_SEC_BCR>;
+-			reset-names = "phy", "common";
++			resets = <&gcc GCC_USB3_PHY_SEC_BCR>,
++				 <&gcc GCC_USB3PHY_PHY_SEC_BCR>;
++			reset-names = "phy",
++				      "phy_phy";
+ 
+-			usb_2_ssphy: phy@88eb200 {
+-				reg = <0 0x088eb200 0 0x128>,
+-				      <0 0x088eb400 0 0x1fc>,
+-				      <0 0x088eb800 0 0x218>,
+-				      <0 0x088eb600 0 0x70>;
+-				#clock-cells = <0>;
+-				#phy-cells = <0>;
+-				clocks = <&gcc GCC_USB3_SEC_PHY_PIPE_CLK>;
+-				clock-names = "pipe0";
+-				clock-output-names = "usb3_uni_phy_pipe_clk_src";
+-			};
++			status = "disabled";
+ 		};
+ 
+ 		usb_1: usb@a6f8800 {
+@@ -4136,7 +4131,7 @@ usb_2_dwc3: usb@a800000 {
+ 				iommus = <&apps_smmu 0x760 0>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
+-				phys = <&usb_2_hsphy>, <&usb_2_ssphy>;
++				phys = <&usb_2_hsphy>, <&usb_2_qmpphy>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 			};
+ 		};
 -- 
 2.43.0
 
