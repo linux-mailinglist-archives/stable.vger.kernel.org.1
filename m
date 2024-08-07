@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-65678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DD994AB6D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F09BC94AC45
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CE271F245E1
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E57B1C212DC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD637D3E4;
-	Wed,  7 Aug 2024 15:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6F184DE4;
+	Wed,  7 Aug 2024 15:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxu7k2Sz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6on57e7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F818289E;
-	Wed,  7 Aug 2024 15:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDF7823DE;
+	Wed,  7 Aug 2024 15:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043113; cv=none; b=u1/z3zOV39sTmRHPkaY4cvEDJJ4MVQKf6je3o9J221nuJxTsn9iOGVSny+pgaq0Shry+gkdFLa8cGxvu2Hd8EnRpA6MfLQEH/C9a5X+gjvGuBXGrpwE+zrlAYQd6ljbdbvL9NDRzYsfA/zwnQfjcKVRoUISfPZpqbPZr/V2zV6A=
+	t=1723043610; cv=none; b=SCM4uSV1NOIUboSTZdKHAL/z+D3zayvwYfrCjow9qWJ9Eph9J0P93+1wqlTUigAO+bhBy/E6p/6imQDvUWei+6aynJfmwumlgOHx3DLcirX+NLCZWwqVmQ2ONBWJQE7CIXYCa7oeBIM5NZGMMQMMwFv2vUorP14gtQlYWsqh1kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043113; c=relaxed/simple;
-	bh=QTE33PFHVpBvJ9sQy/voY3iMwTiKCECkn0humdTieGE=;
+	s=arc-20240116; t=1723043610; c=relaxed/simple;
+	bh=LyfqdU2N5GF/ZixgrRL5mebBQJCFfF1RWX9HY3HWXLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oeAhfGYGaqfCnzLoxyLfHv1dhPYyrY+zvDj/rFoBaylzoFAKRSGCvvMWtlD+rMS+3hplKzgVZsvh3IF1CT+9rQmXXLQkCtX18Mw9U7Ce7r0MGm6XjhoCXKDLSV6aFglG4xZiRPstF9UFRX+/lgwSo+bZ/M8CJ3lopWfdmFGdJTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxu7k2Sz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353F5C32781;
-	Wed,  7 Aug 2024 15:05:13 +0000 (UTC)
+	 MIME-Version; b=maqh8MO1bvB80hNB0U6ieMD8oxtZcQftXH3oKnYpKAzNPSjco13Q3MgfqXoRIy1PdDH9+dmN4HXPc+gaR+v0s2X8Z3ZFBXrxWRKku5V/P9Q4L6TOpyKLFErUcTIS4Cg0jIg22OazN53E1vkPw5C6zsi0NieZXf1iVp4d3pLv4gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6on57e7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90363C4AF0F;
+	Wed,  7 Aug 2024 15:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043113;
-	bh=QTE33PFHVpBvJ9sQy/voY3iMwTiKCECkn0humdTieGE=;
+	s=korg; t=1723043609;
+	bh=LyfqdU2N5GF/ZixgrRL5mebBQJCFfF1RWX9HY3HWXLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxu7k2SzfFyTRTojNTGEZJhDN67pez+CRjM03JPfFkabIRwKogXjfneFnun44fIIA
-	 foVuIN7gc+ydkC6cn2JcH2+PllaLZZzSERHrFj4TIq/6OK25XU/zkRxQDkP+xeCWg+
-	 gkUsuY9+ap85C+2RMvCitIVVAHIidT+OyNTfl7lg=
+	b=Z6on57e7FCmaHF5sMbzEsoBdEpLWsZ0+ywnrCqC9zrsX88BMB7YtaJimy2hOMa3vc
+	 WCJaa3GDDvx3vF7F+UPGs+4u9BL4pe2o+3CxMJQVWMezv6JC8B6ojp+XUEsobKtJI1
+	 phVEitR1v1hSAowaR76u07FpXyC3nR5PLf9sqGNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cary Garrett <cogarre@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org,
-	Jammy Huang <jammy_huang@aspeedtech.com>
-Subject: [PATCH 6.10 094/123] drm/ast: Fix black screen after resume
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	WANG Xuerui <git@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 34/86] MIPS: Loongson64: DTS: Add RTC support to Loongson-2K1000
 Date: Wed,  7 Aug 2024 17:00:13 +0200
-Message-ID: <20240807150023.869690975@linuxfoundation.org>
+Message-ID: <20240807150040.357339610@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jammy Huang <jammy_huang@aspeedtech.com>
+From: Binbin Zhou <zhoubinbin@loongson.cn>
 
-commit 12c35c5582acb0fd8f7713ffa75f450766022ff1 upstream.
+[ Upstream commit e47084e116fccaa43644360d7c0b997979abce3e ]
 
-Suspend will disable pcie device. Thus, resume should do full hw
-initialization again.
-Add some APIs to ast_drm_thaw() before ast_post_gpu() to fix the issue.
+The module is now supported, enable it.
 
-v2:
-- fix function-call arguments
-
-Fixes: 5b71707dd13c ("drm/ast: Enable and unlock device access early during init")
-Reported-by: Cary Garrett <cogarre@gmail.com>
-Closes: https://lore.kernel.org/dri-devel/8ce1e1cc351153a890b65e62fed93b54ccd43f6a.camel@gmail.com/
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.6+
-Signed-off-by: Jammy Huang <jammy_huang@aspeedtech.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240718030352.654155-1-jammy_huang@aspeedtech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Signed-off-by: WANG Xuerui <git@xen0n.name>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Stable-dep-of: dbb69b9d6234 ("MIPS: dts: loongson: Fix liointc IRQ polarity")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ast/ast_drv.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/ast/ast_drv.c
-+++ b/drivers/gpu/drm/ast/ast_drv.c
-@@ -391,6 +391,11 @@ static int ast_drm_freeze(struct drm_dev
+diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+index 9089d1e4f3fee..c0be84a6e81fd 100644
+--- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
++++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+@@ -96,6 +96,13 @@ liointc1: interrupt-controller@1fe11440 {
+ 						<0x00000000>; /* int3 */
+ 		};
  
- static int ast_drm_thaw(struct drm_device *dev)
- {
-+	struct ast_device *ast = to_ast_device(dev);
++		rtc0: rtc@1fe07800 {
++			compatible = "loongson,ls2k1000-rtc";
++			reg = <0 0x1fe07800 0 0x78>;
++			interrupt-parent = <&liointc0>;
++			interrupts = <60 IRQ_TYPE_LEVEL_LOW>;
++		};
 +
-+	ast_enable_vga(ast->ioregs);
-+	ast_open_key(ast->ioregs);
-+	ast_enable_mmio(dev->dev, ast->ioregs);
- 	ast_post_gpu(dev);
- 
- 	return drm_mode_config_helper_resume(dev);
+ 		uart0: serial@1fe00000 {
+ 			compatible = "ns16550a";
+ 			reg = <0 0x1fe00000 0 0x8>;
+-- 
+2.43.0
+
 
 
 
