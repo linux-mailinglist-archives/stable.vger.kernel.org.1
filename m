@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB41B94AC4D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6679D94AB5D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 079881C2293B
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22AC128201F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF0284A40;
-	Wed,  7 Aug 2024 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A35484DF8;
+	Wed,  7 Aug 2024 15:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8EvmGyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BR//72kv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC16823DE;
-	Wed,  7 Aug 2024 15:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D8E82488;
+	Wed,  7 Aug 2024 15:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043632; cv=none; b=OMYGYAe63oP0B9h0zmY/jGifwCUzhXU6q2wOJgQlhmVRCZ10K3m0sEhMjL0avyr55VVweWM8by+DviTF0htYJcrNyfQrvHJmlG8brliWvHPxODjp2ld3WecwuZ9faXuiOo3YQP1wGQMCTG/WSK2pg6yx0ErKqCybC1kyPna6Wyw=
+	t=1723043083; cv=none; b=aIt12/Y12aFLH0i+OXIY2nIJN8tG2RGQpe2/Wqux9MX5b/MlAg16GwRflbTPn6bFuurkvoaDZHN+5f/qhbqMn4lpZmrALuk6+HTAI7wklSHEHOeIwxpfE2vvx9Tdpozc139sVvgonqqeAt3GfRymkjrAMbqq5r8Wb1vcCcDhdlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043632; c=relaxed/simple;
-	bh=rfCWkAUMYCLGnDnkALadpdQVsFbxR7ROFC40CMDGgVI=;
+	s=arc-20240116; t=1723043083; c=relaxed/simple;
+	bh=0RGwj5veqT0h7y0PbhUhIp3973nlwLKwo64q3YJ8uJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCwASI/noKSo4uNctYWi/852fU1uGqdJaFV2HLn1zdRNsVl3eUbvSzP1l5jXgwq62hv3r7/g+XfG5b417HkTZRpMMNe0q11/sqeQ4yOkzssCpKjwKCPhvmU0sE0JIaqWlXvrFBBOMH7wO6EBxQzrEyicdq1mG9JVarbfW5jXr9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8EvmGyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E962C32781;
-	Wed,  7 Aug 2024 15:13:51 +0000 (UTC)
+	 MIME-Version; b=a0dvqiIyMrzR2y0LX4C1+pLvDC22Fq2dH6V9Yg9h7qGBOpFUVCiLQzoI0WSvBJHHu3SbO36pOrtD7hZHDY4ySgEjUjxZQdMwt95EwrtMF05O6NGVBQRYhtDwb+k3Rh+fIUBCdGOUbginx6MqES0rymKXwOlgSrbi35YDObY+GSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BR//72kv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EEDC32781;
+	Wed,  7 Aug 2024 15:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043631;
-	bh=rfCWkAUMYCLGnDnkALadpdQVsFbxR7ROFC40CMDGgVI=;
+	s=korg; t=1723043083;
+	bh=0RGwj5veqT0h7y0PbhUhIp3973nlwLKwo64q3YJ8uJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T8EvmGyr/JpS8S4TkH8PMAnzReFOjwHJOkHTacnEN7DxKbs42SL1Hy2ruSu4k0/XM
-	 eUIqU2kJFu+sAyMttB5uLtVX1MwwWTlM6rWTgKsgZuK8NzLvoA+Rz3M35RMAu6+6+P
-	 W4LR2oxpg35cE+GWsuemoFsh15mnKmykz+qu0y+0=
+	b=BR//72kvQdn59ykZajqUXjdf1fQb1ytjovfOAMkytHGIIkPcUAv/Sn3SpElyWWrC6
+	 jXehzKJGAMeYPWVGwFplrvyy1Psfd0m4A641uLOqk2Kn4fPBNVj+XXn0llmFDJn4jZ
+	 OhW6c2YopIWYCbOIFisd01NE/1kZXehWoVA5roLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Will McVicker <willmcvicker@google.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/86] f2fs: assign CURSEG_ALL_DATA_ATGC if blkaddr is valid
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 084/123] mptcp: sched: check both directions for backup
 Date: Wed,  7 Aug 2024 17:00:03 +0200
-Message-ID: <20240807150040.036225807@linuxfoundation.org>
+Message-ID: <20240807150023.533605157@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 8cb1f4080dd91c6e6b01dbea013a3f42341cb6a1 ]
+commit b6a66e521a2032f7fcba2af5a9bcbaeaa19b7ca3 upstream.
 
-mkdir /mnt/test/comp
-f2fs_io setflags compression /mnt/test/comp
-dd if=/dev/zero of=/mnt/test/comp/testfile bs=16k count=1
-truncate --size 13 /mnt/test/comp/testfile
+The 'mptcp_subflow_context' structure has two items related to the
+backup flags:
 
-In the above scenario, we can get a BUG_ON.
- kernel BUG at fs/f2fs/segment.c:3589!
- Call Trace:
-  do_write_page+0x78/0x390 [f2fs]
-  f2fs_outplace_write_data+0x62/0xb0 [f2fs]
-  f2fs_do_write_data_page+0x275/0x740 [f2fs]
-  f2fs_write_single_data_page+0x1dc/0x8f0 [f2fs]
-  f2fs_write_multi_pages+0x1e5/0xae0 [f2fs]
-  f2fs_write_cache_pages+0xab1/0xc60 [f2fs]
-  f2fs_write_data_pages+0x2d8/0x330 [f2fs]
-  do_writepages+0xcf/0x270
-  __writeback_single_inode+0x44/0x350
-  writeback_sb_inodes+0x242/0x530
-  __writeback_inodes_wb+0x54/0xf0
-  wb_writeback+0x192/0x310
-  wb_workfn+0x30d/0x400
+ - 'backup': the subflow has been marked as backup by the other peer
 
-The reason is we gave CURSEG_ALL_DATA_ATGC to COMPR_ADDR where the
-page was set the gcing flag by set_cluster_dirty().
+ - 'request_bkup': the backup flag has been set by the host
 
+Before this patch, the scheduler was only looking at the 'backup' flag.
+That can make sense in some cases, but it looks like that's not what we
+wanted for the general use, because either the path-manager was setting
+both of them when sending an MP_PRIO, or the receiver was duplicating
+the 'backup' flag in the subflow request.
+
+Note that the use of these two flags in the path-manager are going to be
+fixed in the next commits, but this change here is needed not to modify
+the behaviour.
+
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
 Cc: stable@vger.kernel.org
-Fixes: 4961acdd65c9 ("f2fs: fix to tag gcing flag on page during block migration")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/trace/events/mptcp.h |    2 +-
+ net/mptcp/protocol.c         |   10 ++++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 99391ee4c28c4..1264a350d4d75 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -3186,6 +3186,7 @@ static int __get_segment_type_6(struct f2fs_io_info *fio)
- 			if (fio->sbi->am.atgc_enabled &&
- 				(fio->io_type == FS_DATA_IO) &&
- 				(fio->sbi->gc_mode != GC_URGENT_HIGH) &&
-+				__is_valid_data_blkaddr(fio->old_blkaddr) &&
- 				!is_inode_flag_set(inode, FI_OPU_WRITE))
- 				return CURSEG_ALL_DATA_ATGC;
- 			else
--- 
-2.43.0
-
+--- a/include/trace/events/mptcp.h
++++ b/include/trace/events/mptcp.h
+@@ -34,7 +34,7 @@ TRACE_EVENT(mptcp_subflow_get_send,
+ 		struct sock *ssk;
+ 
+ 		__entry->active = mptcp_subflow_active(subflow);
+-		__entry->backup = subflow->backup;
++		__entry->backup = subflow->backup || subflow->request_bkup;
+ 
+ 		if (subflow->tcp_sock && sk_fullsock(subflow->tcp_sock))
+ 			__entry->free = sk_stream_memory_free(subflow->tcp_sock);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1422,13 +1422,15 @@ struct sock *mptcp_subflow_get_send(stru
+ 	}
+ 
+ 	mptcp_for_each_subflow(msk, subflow) {
++		bool backup = subflow->backup || subflow->request_bkup;
++
+ 		trace_mptcp_subflow_get_send(subflow);
+ 		ssk =  mptcp_subflow_tcp_sock(subflow);
+ 		if (!mptcp_subflow_active(subflow))
+ 			continue;
+ 
+ 		tout = max(tout, mptcp_timeout_from_subflow(subflow));
+-		nr_active += !subflow->backup;
++		nr_active += !backup;
+ 		pace = subflow->avg_pacing_rate;
+ 		if (unlikely(!pace)) {
+ 			/* init pacing rate from socket */
+@@ -1439,9 +1441,9 @@ struct sock *mptcp_subflow_get_send(stru
+ 		}
+ 
+ 		linger_time = div_u64((u64)READ_ONCE(ssk->sk_wmem_queued) << 32, pace);
+-		if (linger_time < send_info[subflow->backup].linger_time) {
+-			send_info[subflow->backup].ssk = ssk;
+-			send_info[subflow->backup].linger_time = linger_time;
++		if (linger_time < send_info[backup].linger_time) {
++			send_info[backup].ssk = ssk;
++			send_info[backup].linger_time = linger_time;
+ 		}
+ 	}
+ 	__mptcp_set_timeout(sk, tout);
 
 
 
