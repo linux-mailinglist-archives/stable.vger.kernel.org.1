@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-65693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C23794AB7B
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0402894ABF1
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DA3C1C21B6F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0EC91F21D7F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D144084A46;
-	Wed,  7 Aug 2024 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCDA823C8;
+	Wed,  7 Aug 2024 15:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvYv8zEr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNn5XKEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE2327448;
-	Wed,  7 Aug 2024 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE1678C67;
+	Wed,  7 Aug 2024 15:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043154; cv=none; b=GYoReIaPxQf2eJIc4BN8vgOC80BM/bndx8ccaCEdfD4aaKEg4iWSr3Mwz2A6FWLKXaIQhWS81gTarL4OwSmlM0eMDGXzaDJVViaLq686GxjsC8/ygOZAhbi0+b8uE7/IL+1I0OQspyp2JghlNunGX19pEQsTzPSnVz+oL7cIPxg=
+	t=1723043434; cv=none; b=LLXe85p61stEToCCDrjC0iscXLhyQyqaadAsXXrBzBLtgDYlj8RNoGh6h/TBLZ+aS8FQSdyUNlrj8msOfly8Xgo+x0y0WxlD8n65VVf0A3AtvKtu7qY3fQ3RZjfNXKZeGNM8cIpYJo8+rtjH0nq4p4Zz8cZEaHHFCLjOUg6iukg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043154; c=relaxed/simple;
-	bh=h8orQiMV6mDuCqTtXumy141t/Nbaw99yNQnz7Kj8m/c=;
+	s=arc-20240116; t=1723043434; c=relaxed/simple;
+	bh=I7v91elygarNu2YDFFsFySXnOwGKwzTNVu39cxU6tZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sx3e7ZGFvsRjQseEpYb2qaQkKHvQzUHCKXCnztYlUTjcBhN9jDQ2hzER0gs4iGOPAFNLtxx/pq6/2ugVOdJM1pWpYv4kY0mvrzqtlsKdQZnR2W5rRmcjvuh4OI4b04aQRarksa/V6NV8f97A4YvN5OnobxJZcdpAGngIPLDw+Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvYv8zEr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06B0C4AF0D;
-	Wed,  7 Aug 2024 15:05:53 +0000 (UTC)
+	 MIME-Version; b=JXNiQU6VvpCoWTWK1xMqu4W/F8J2z20Ti8IzIR/X3mSj/rLV0ZaCvxpjDNDRRHSh7vETaLRaPsvx6DdhsHQ6rIePOAR6he8p8MPKaMi+U9gS8c6qmSXOY855cGwWaWlQTr0TxUbKgh37yL2atv/JoMnWo7bD9sOCFqKVXqXFSM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNn5XKEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA1DC32781;
+	Wed,  7 Aug 2024 15:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043154;
-	bh=h8orQiMV6mDuCqTtXumy141t/Nbaw99yNQnz7Kj8m/c=;
+	s=korg; t=1723043434;
+	bh=I7v91elygarNu2YDFFsFySXnOwGKwzTNVu39cxU6tZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvYv8zErjPOrhd/pG3o+MBTcj94A23H0VzeG3vsCVfToijKUed5gM77QL/HZDgw7f
-	 UUED1ek6otUBLcGph7dUxt4zoEuNjEy2W+9js/BwLXZ52UOfkkrTShAU5FVgB+IAdu
-	 N1ijO2z1hgajLFOt0r704ygZU0YSwzijDyzcMgaE=
+	b=fNn5XKEEMZdSrP/n1enjXD3Q4afmS+CqU/YjlnOkVi+RJrWFIXNw0plGOj4ixXdEp
+	 db+7tFSFxFaw+VsRqfnoOffsROtxpFyngdcFJZaw6rHOYDoFl7diEJfO6S5Jp67Rit
+	 iVxL+HAR8RXgDptChBdd5L3hy5qrjuGHPi6q/188=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.10 103/123] Bluetooth: hci_event: Fix setting DISCOVERY_FINDING for passive scanning
+	Shifrin Dmitry <dmitry.shifrin@syntacore.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 090/121] perf: riscv: Fix selecting counters in legacy mode
 Date: Wed,  7 Aug 2024 17:00:22 +0200
-Message-ID: <20240807150024.192046207@linuxfoundation.org>
+Message-ID: <20240807150022.353532607@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Shifrin Dmitry <dmitry.shifrin@syntacore.com>
 
-commit df3d6a3e01fd82cb74b6bb309f7be71e728a3448 upstream.
+[ Upstream commit 941a8e9b7a86763ac52d5bf6ccc9986d37fde628 ]
 
-DISCOVERY_FINDING shall only be set for active scanning as passive
-scanning is not meant to generate MGMT Device Found events causing
-discovering state to go out of sync since userspace would believe it
-is discovering when in fact it is just passive scanning.
+It is required to check event type before checking event config.
+Events with the different types can have the same config.
+This check is missed for legacy mode code
 
-Cc: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219088
-Fixes: 2e2515c1ba38 ("Bluetooth: hci_event: Set DISCOVERY_FINDING on SCAN_ENABLED")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For such perf usage:
+    sysctl -w kernel.perf_user_access=2
+    perf stat -e cycles,L1-dcache-loads --
+driver will try to force both events to CYCLE counter.
+
+This commit implements event type check before forcing
+events on the special counters.
+
+Signed-off-by: Shifrin Dmitry <dmitry.shifrin@syntacore.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Fixes: cc4c07c89aad ("drivers: perf: Implement perf event mmap support in the SBI backend")
+Link: https://lore.kernel.org/r/20240729125858.630653-1-dmitry.shifrin@syntacore.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c  |    7 -------
- net/bluetooth/hci_event.c |    5 +++--
- 2 files changed, 3 insertions(+), 9 deletions(-)
+ drivers/perf/riscv_pmu_sbi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -120,13 +120,6 @@ void hci_discovery_set_state(struct hci_
- 	case DISCOVERY_STARTING:
- 		break;
- 	case DISCOVERY_FINDING:
--		/* If discovery was not started then it was initiated by the
--		 * MGMT interface so no MGMT event shall be generated either
--		 */
--		if (old_state != DISCOVERY_STARTING) {
--			hdev->discovery.state = old_state;
--			return;
--		}
- 		mgmt_discovering(hdev, 1);
- 		break;
- 	case DISCOVERY_RESOLVING:
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -1722,9 +1722,10 @@ static void le_set_scan_enable_complete(
- 	switch (enable) {
- 	case LE_SCAN_ENABLE:
- 		hci_dev_set_flag(hdev, HCI_LE_SCAN);
--		if (hdev->le_scan_type == LE_SCAN_ACTIVE)
-+		if (hdev->le_scan_type == LE_SCAN_ACTIVE) {
- 			clear_pending_adv_report(hdev);
--		hci_discovery_set_state(hdev, DISCOVERY_FINDING);
-+			hci_discovery_set_state(hdev, DISCOVERY_FINDING);
-+		}
- 		break;
- 
- 	case LE_SCAN_DISABLE:
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index ae16ecb15f2d9..901da688ea3f8 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -355,7 +355,7 @@ static int pmu_sbi_ctr_get_idx(struct perf_event *event)
+ 	 * but not in the user access mode as we want to use the other counters
+ 	 * that support sampling/filtering.
+ 	 */
+-	if (hwc->flags & PERF_EVENT_FLAG_LEGACY) {
++	if ((hwc->flags & PERF_EVENT_FLAG_LEGACY) && (event->attr.type == PERF_TYPE_HARDWARE)) {
+ 		if (event->attr.config == PERF_COUNT_HW_CPU_CYCLES) {
+ 			cflags |= SBI_PMU_CFG_FLAG_SKIP_MATCH;
+ 			cmask = 1;
+-- 
+2.43.0
+
 
 
 
