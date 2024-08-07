@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-65809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBF194AC00
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9EF094AB7F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD59A1C233EA
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2685E1C229BA
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE4B823C8;
-	Wed,  7 Aug 2024 15:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C98684A2F;
+	Wed,  7 Aug 2024 15:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPTYwGni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGD7zfGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698E778C92;
-	Wed,  7 Aug 2024 15:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A74E27448;
+	Wed,  7 Aug 2024 15:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043466; cv=none; b=rnFZr5W1UEHJWomXwLYhE+PGRpjwxkJU3d0jkwWU8j0bfnatNWSbpmnC7i/sWMOlG/hS8mqs5JXPUyEabJiqw63xxWi7iuE+fhK+fPoP7k1UlEy7bcK8XKMczBnAP/KjcOo4FxUGA562Wck/ei23dmqtiDdypwg6m/IYfq9Bnt8=
+	t=1723043162; cv=none; b=SRDEt0q7ihRCrqMpGMlY1pAQd5fB3MXVM26nqV+XsDgI9TcqvoDaCgm4F/gAqRMXvtKRgxAe/2aMrZJx2WcQiCm6evzfmH22JawZ368sXcGMQmFkYV7uu6yQcoOoZqy1/YmSGSUSy9r/dCk1VRxha8JjkLVIVJbysm/5iSCDGZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043466; c=relaxed/simple;
-	bh=BIMMsJNtxxqmGLpesXfEvcsNqnfDFnV23sMUNrTm7BI=;
+	s=arc-20240116; t=1723043162; c=relaxed/simple;
+	bh=F2Rdhv22yw+EAKaSrzlv8mQu3KbY+NWCC4aMdmn4bS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNaQjxThcqtwiC7GWu6fV5HXL63IEGoL30ZLVdegGlUFwfgFDGhdAII80ysivDYlUYLWGL8R1WezXa1xN1XcdoQgJlyxnZ9Q/8aQx1AC7BqssvLgSgBc1Ogdo/j1Ek4ZFkiN798k+znJrVZ+DcubSXH18jx7J99KAIMZoCUumsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPTYwGni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA4CC32781;
-	Wed,  7 Aug 2024 15:11:05 +0000 (UTC)
+	 MIME-Version; b=ozdkbA/NuERL/eQQvEEoHUJ76X3A0caiYsMLALZemtHmAhwxWDcL2IF6u8gJGzXemvnFF0ffctAn+JFcZ8gdsuVx7Ye9JsDwNiJvq7wlJovoHxT66e2FBgNz4DaXiXkIjVW1cRgxquAcBohRq3rhKhDtmCnJlrs2+Qvjm7jzVtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGD7zfGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA45C32781;
+	Wed,  7 Aug 2024 15:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043466;
-	bh=BIMMsJNtxxqmGLpesXfEvcsNqnfDFnV23sMUNrTm7BI=;
+	s=korg; t=1723043162;
+	bh=F2Rdhv22yw+EAKaSrzlv8mQu3KbY+NWCC4aMdmn4bS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JPTYwGniCTnWiBQlgUuH7cmhIl5pPkRkh28wQ0xc2Rt4akuAgDFCenFQsHYDAaGne
-	 82e+4uwyFl873lvhe0S3LA2jK8mzdMiONGkkoorAtRlVOsWm1Y4gC4vWr48DEJ1NyT
-	 Sc842iEJxfIXf1Ck0SypA9ziEw0hl6/jX9yedsWo=
+	b=jGD7zfGjotDTlP7wVIlt9fWLPQ4+E/grD9W8aHkn7DI8qpzfqO0eKy97l9+EdP/OL
+	 0KL9IsnTA9afCs1bL0qjSQLdR97nSKljgAj+XlUjiHjGdHwZofHF9YacRMDV13Pd1B
+	 cCPtTmekM4XFxl+ZL3SfTfqa6IIKkiVeNe7sNwn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sylvain BERTRAND <sylvain.bertrand@legeek.net>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 101/121] ALSA: usb-audio: Correct surround channels in UAC1 channel map
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.10 114/123] mptcp: fix NL PM announced address accounting
 Date: Wed,  7 Aug 2024 17:00:33 +0200
-Message-ID: <20240807150022.698539324@linuxfoundation.org>
+Message-ID: <20240807150024.560812670@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit b7b7e1ab7619deb3b299b5e5c619c3e6f183a12d upstream.
+commit 4b317e0eb287bd30a1b329513531157c25e8b692 upstream.
 
-USB-audio driver puts SNDRV_CHMAP_SL and _SR as left and right
-surround channels for UAC1 channel map, respectively.  But they should
-have been SNDRV_CHMAP_RL and _RR; the current value *_SL and _SR are
-rather "side" channels, not "surround".  I guess I took those
-mistakenly when I read the spec mentioning "surround left".
+Currently the per connection announced address counter is never
+decreased. As a consequence, after connection establishment, if
+the NL PM deletes an endpoint and adds a new/different one, no
+additional subflow is created for the new endpoint even if the
+current limits allow that.
 
-This patch corrects those entries to be the right channels.
+Address the issue properly updating the signaled address counter
+every time the NL PM removes such addresses.
 
-Suggested-by: Sylvain BERTRAND <sylvain.bertrand@legeek.net>
-Closes: https://lore.kernel.orgZ/qIyJD8lhd8hFhlC@freedom
-Fixes: 04324ccc75f9 ("ALSA: usb-audio: add channel map support")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240731142018.24750-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mptcp/pm_netlink.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -244,8 +244,8 @@ static struct snd_pcm_chmap_elem *conver
- 		SNDRV_CHMAP_FR,		/* right front */
- 		SNDRV_CHMAP_FC,		/* center front */
- 		SNDRV_CHMAP_LFE,	/* LFE */
--		SNDRV_CHMAP_SL,		/* left surround */
--		SNDRV_CHMAP_SR,		/* right surround */
-+		SNDRV_CHMAP_RL,		/* left surround */
-+		SNDRV_CHMAP_RR,		/* right surround */
- 		SNDRV_CHMAP_FLC,	/* left of center */
- 		SNDRV_CHMAP_FRC,	/* right of center */
- 		SNDRV_CHMAP_RC,		/* surround */
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1401,6 +1401,7 @@ static bool mptcp_pm_remove_anno_addr(st
+ 	ret = remove_anno_list_by_saddr(msk, addr);
+ 	if (ret || force) {
+ 		spin_lock_bh(&msk->pm.lock);
++		msk->pm.add_addr_signaled -= ret;
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
+@@ -1565,17 +1566,18 @@ static void mptcp_pm_remove_addrs_and_su
+ 	struct mptcp_pm_addr_entry *entry;
+ 
+ 	list_for_each_entry(entry, rm_list, list) {
+-		if (lookup_subflow_by_saddr(&msk->conn_list, &entry->addr) &&
+-		    slist.nr < MPTCP_RM_IDS_MAX)
++		if (slist.nr < MPTCP_RM_IDS_MAX &&
++		    lookup_subflow_by_saddr(&msk->conn_list, &entry->addr))
+ 			slist.ids[slist.nr++] = entry->addr.id;
+ 
+-		if (remove_anno_list_by_saddr(msk, &entry->addr) &&
+-		    alist.nr < MPTCP_RM_IDS_MAX)
++		if (alist.nr < MPTCP_RM_IDS_MAX &&
++		    remove_anno_list_by_saddr(msk, &entry->addr))
+ 			alist.ids[alist.nr++] = entry->addr.id;
+ 	}
+ 
+ 	if (alist.nr) {
+ 		spin_lock_bh(&msk->pm.lock);
++		msk->pm.add_addr_signaled -= alist.nr;
+ 		mptcp_pm_remove_addr(msk, &alist);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
 
 
 
