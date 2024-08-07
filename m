@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-65817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30BE94AC0B
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D28794AC67
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002441C236E4
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD5081C2277D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF559823DE;
-	Wed,  7 Aug 2024 15:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2872E84A5E;
+	Wed,  7 Aug 2024 15:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyMIhM//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxItA+QC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC7781AB1;
-	Wed,  7 Aug 2024 15:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5437F7F5;
+	Wed,  7 Aug 2024 15:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043487; cv=none; b=JZHQnecaKOfAydsenBUHdTqu361kW3zI/QRXwIIP6u3ywF1iu7eo/x/0EzaiOiePl/pJBktkJAaezi3JrnbLlCQjVwDe7C+/BkjffpSVQw2FaCZh/epIECJuP8ZJS9ZvWbPIz67zxxVpXbdIC8WuG6bpHwcJUZUjZfh7UQACnOw=
+	t=1723043684; cv=none; b=SUIdCeT0hVbdvLXLPpSo5OLI8OKIAZEmJ6PsEj42H6ODfjYucMJ5WQH0ATiVUGMk83s/ErVUY7YGwkH+fgvRQTfb7FuQ3wDpvvrI7abiCdrLdhSgAK5eQmlrbPYj7QbqMho/d291f2ee/5n9hui8dKgyXdfUNOaCBEwZWaSDau8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043487; c=relaxed/simple;
-	bh=Ypl/Vzh7mRUFfI8iPxgpcxPizKxWm2e2svpw1rt3+Pg=;
+	s=arc-20240116; t=1723043684; c=relaxed/simple;
+	bh=/33FugNLN2sP3BgQiBF3dU7OLYzMpQaDA5Fg1rBW+rE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9jWAxlpMwmHFKYOFTH+Fga+WIgZwku1lJWGLKJq5cU6bqy0cMM3azhTCljuynPJhrpNPnYKZDHKmQ4y0q66b3YNu4VcNRM9yghWKluptU0zDlMbbMaN7/rakhkoR74vsyeH+J5oXTtNmm53++J6NRyG1GDxKYW6eMN6ZT9DZ4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyMIhM//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D270C32781;
-	Wed,  7 Aug 2024 15:11:27 +0000 (UTC)
+	 MIME-Version; b=KyiA/qCFmRniRLoXUH32yAPKRDjN4J18ylebvxsUhaNk9eLrc+4gAsx+hyfDTNplYXOmtCp0oZCquWH8sGOcGd1cBFt7mYrqDKPegU7q0jqPuMFdE52bjnQio0oWepEw90bYUit8u9MXSLpsKAtflB9y254hEkt+7/dhpnWmQqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxItA+QC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62166C32781;
+	Wed,  7 Aug 2024 15:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043487;
-	bh=Ypl/Vzh7mRUFfI8iPxgpcxPizKxWm2e2svpw1rt3+Pg=;
+	s=korg; t=1723043684;
+	bh=/33FugNLN2sP3BgQiBF3dU7OLYzMpQaDA5Fg1rBW+rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyMIhM//AlV0Y0rn4H3U4xubgCGJWh1zkwH6Qj8h2vt+1EHWxFSq/ddpa8Q8RvRd8
-	 1qLNo3bV0DDpv/l0ROL1GX1GMlaFU+1ROM+1/1lqNiDkp4FdqqGM0afvgiLSZFUmuW
-	 UvcAxh94drSxT/5npdspiMpkMgQubM87+Xbkbr7Q=
+	b=CxItA+QCFHmaIz/Evl2gQDZ9p3VcfKm84ilUB9daLrqr7Arm+BtDsp0iV82HLjssa
+	 TGcRGZ+8zL1H7hjBw+mlsiRz8Ev+ac5c9wAmW52e99MgH5z/3rknoc+HwJp4wVdY7r
+	 S5gvtoJpeIACgoSnDlU6gblxO2cVafAuFDX7Ts6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 109/121] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 62/86] net/mlx5e: Add a check for the return value from mlx5_port_set_eth_ptys
 Date: Wed,  7 Aug 2024 17:00:41 +0200
-Message-ID: <20240807150022.963991274@linuxfoundation.org>
+Message-ID: <20240807150041.301192814@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-commit 08f3a5c38087d1569e982a121aad1e6acbf145ce upstream.
+[ Upstream commit 3f8e82a020a5c22f9b791f4ac499b8e18007fbda ]
 
-It could lead to error happen because the variable res is not updated if
-the call to sr_share_read_word returns an error. In this particular case
-error code was returned and res stayed uninitialized. Same issue also
-applies to sr_read_reg.
+Since the documentation for mlx5_toggle_port_link states that it should
+only be used after setting the port register, we add a check for the
+return value from mlx5_port_set_eth_ptys to ensure the register was
+successfully set before calling it.
 
-This can be avoided by checking the return value of sr_share_read_word
-and sr_read_reg, and propagating the error if the read operation failed.
-
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 667daedaecd1 ("net/mlx5e: Toggle link only after modifying port parameters")
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-9-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/sr9700.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -179,6 +179,7 @@ static int sr_mdio_read(struct net_devic
- 	struct usbnet *dev = netdev_priv(netdev);
- 	__le16 res;
- 	int rc = 0;
-+	int err;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index ceeb23f478e15..3ee61987266c4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -1223,7 +1223,12 @@ int mlx5e_ethtool_set_link_ksettings(struct mlx5e_priv *priv,
+ 	if (!an_changes && link_modes == eproto.admin)
+ 		goto out;
  
- 	if (phy_id) {
- 		netdev_dbg(netdev, "Only internal phy supported\n");
-@@ -189,11 +190,17 @@ static int sr_mdio_read(struct net_devic
- 	if (loc == MII_BMSR) {
- 		u8 value;
+-	mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
++	err = mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
++	if (err) {
++		netdev_err(priv->netdev, "%s: failed to set ptys reg: %d\n", __func__, err);
++		goto out;
++	}
++
+ 	mlx5_toggle_port_link(mdev);
  
--		sr_read_reg(dev, SR_NSR, &value);
-+		err = sr_read_reg(dev, SR_NSR, &value);
-+		if (err < 0)
-+			return err;
-+
- 		if (value & NSR_LINKST)
- 			rc = 1;
- 	}
--	sr_share_read_word(dev, 1, loc, &res);
-+	err = sr_share_read_word(dev, 1, loc, &res);
-+	if (err < 0)
-+		return err;
-+
- 	if (rc == 1)
- 		res = le16_to_cpu(res) | BMSR_LSTATUS;
- 	else
+ out:
+-- 
+2.43.0
+
 
 
 
