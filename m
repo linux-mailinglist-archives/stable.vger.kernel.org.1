@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75FC194AB9F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D25E894AAF5
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:01:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FBEF283D9C
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C058282D78
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656AA84E14;
-	Wed,  7 Aug 2024 15:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2680B78C67;
+	Wed,  7 Aug 2024 15:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NbnC9oT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSIF25zR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FE47D3E4;
-	Wed,  7 Aug 2024 15:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D664B3EA9A;
+	Wed,  7 Aug 2024 15:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043243; cv=none; b=OQFZHh+4JTF5IGG+0ZgD99GsCa+HxW8hQunVSeyrc69Eqi+eFNDWBPAl2ohzof+zAK0tVm+SlbZGiyJD5e5b6WsMq/0MqoG+cR0S2R1/tj+m0caxAiwafjOrnA7ktKdHJOdLhxFeNwP9h1mhQ7G1i2xuWn/ghjNm8Bgfh1uaIq0=
+	t=1723042901; cv=none; b=hLzspfrsTS9CkZSVpKqYhBATpKruuPefak+yOzZJtmA6X6sBrPzRy7yLKnV75qy+Ru6qge3e39n6kkO4qMth0e/P3YEgwCyUpLXrvIVpnxR/WfvOcyGQbywHJA0GP3VnKkns1b4nSeqOV+BGHsCWa8zKJqXt9iZLGnDS19B8p0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043243; c=relaxed/simple;
-	bh=FGS2jDdJeaffXskHlaG4kg6p1T6YF9uCMZqE9UYEqi0=;
+	s=arc-20240116; t=1723042901; c=relaxed/simple;
+	bh=MD4k+ef0I7vrq6SMjERLZREP6zZQkymbyRo267X4udI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SgAloURCPAG4giJt8naifU62G9xqAkWui/L6kBs5YW4x4BuYODTyra/u2TTKYuFZ+Mq50KJ4+G4l2WhMy2Skb6A9XJrOKrwoY/kjxQ+roNQHl+hxGPIrdvn41yPuVHZCp1hxQIeGnNFdrKuIrp1woqA1LgQY73dCgOTf92Ea5T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NbnC9oT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA931C32781;
-	Wed,  7 Aug 2024 15:07:22 +0000 (UTC)
+	 MIME-Version; b=RZaNN8kQZDqDU0QRm/9drHAdK+IuEBnfJ3h3ebfCwd8y707yuSpWeUZicVqMGRV4MqRQ9wH493gqgRIkAfr4/UUpKzfkKoYQWYPdNWsbnKXl58I3IuZjus9Oe+h3R7uqpQvvR3OkqZoaV9KjxDNwkxOVPHreOcWse3i/R/VCYtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSIF25zR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDA9C4AF0B;
+	Wed,  7 Aug 2024 15:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043243;
-	bh=FGS2jDdJeaffXskHlaG4kg6p1T6YF9uCMZqE9UYEqi0=;
+	s=korg; t=1723042901;
+	bh=MD4k+ef0I7vrq6SMjERLZREP6zZQkymbyRo267X4udI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NbnC9oTbf135Yuu9qHBYp7gbAO7joUsPkCf+G0yAaOv7Ydo/zjRFpUEqVvuKeL3l
-	 iB7jJQAS+cfyTsGnSFdIn6aRzgA7PNKSdYbOxcNZMB/fPxwqoVofxUU2ghGhsQLWxi
-	 i2/EJcMTGb0RaR+5vSb/Tij5GoaCRl1S9hZiSTaM=
+	b=gSIF25zRBusQJ084U35yaPke/QIu6Z1zwUrEmlkjQ7XVtjUU3R1i+z0RZ2THpz8ip
+	 cX7HZUiNNANghCq1/LW4MOO2arYT0oTXOUBNMRUEpAnxKyiLSU/Mbg5VRdc7smBHm8
+	 uQ85Vihi/7/lw5RdgcTeC2KMJuYfuoH/0Ew2vUpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Aurinko <petrvelicka@tuta.io>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/121] arm64: dts: qcom: msm8998: switch USB QMP PHY to new style of bindings
+Subject: [PATCH 6.10 018/123] HID: amd_sfh: Move sensor discovery before HID device initialization
 Date: Wed,  7 Aug 2024 16:58:57 +0200
-Message-ID: <20240807150019.568871978@linuxfoundation.org>
+Message-ID: <20240807150021.406940403@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit b7efebfeb2e8ad8187cdabba5f0212ba2e6c1069 ]
+[ Upstream commit 8031b001da700474c11d28629581480b12a0d8d4 ]
 
-Change the USB QMP PHY to use newer style of QMP PHY bindings (single
-resource region, no per-PHY subnodes).
+Sensors discovery is independent of HID device initialization. If sensor
+discovery fails after HID initialization, then the HID device needs to be
+deinitialized. Therefore, sensors discovery should be moved before HID
+device initialization.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230824211952.1397699-11-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 0046325ae520 ("arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB")
+Fixes: 7bcfdab3f0c6 ("HID: amd_sfh: if no sensors are enabled, clean up")
+Tested-by: Aurinko <petrvelicka@tuta.io>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Link: https://patch.msgid.link/20240718111616.3012155-1-Basavaraj.Natikar@amd.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 35 +++++++++++----------------
- 1 file changed, 14 insertions(+), 21 deletions(-)
+ drivers/hid/amd-sfh-hid/amd_sfh_client.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index 9c072ce197358..d49764eeab9c9 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -2159,7 +2159,7 @@ usb3_dwc3: usb@a800000 {
- 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
--				phys = <&qusb2phy>, <&usb1_ssphy>;
-+				phys = <&qusb2phy>, <&usb3phy>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				snps,has-lpm-erratum;
- 				snps,hird-threshold = /bits/ 8 <0x10>;
-@@ -2168,33 +2168,26 @@ usb3_dwc3: usb@a800000 {
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_client.c b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+index bdb578e0899f5..4b59687ff5d82 100644
+--- a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+@@ -288,12 +288,22 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+ 		mp2_ops->start(privdata, info);
+ 		cl_data->sensor_sts[i] = amd_sfh_wait_for_response
+ 						(privdata, cl_data->sensor_idx[i], SENSOR_ENABLED);
++
++		if (cl_data->sensor_sts[i] == SENSOR_ENABLED)
++			cl_data->is_any_sensor_enabled = true;
++	}
++
++	if (!cl_data->is_any_sensor_enabled ||
++	    (mp2_ops->discovery_status && mp2_ops->discovery_status(privdata) == 0)) {
++		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n",
++			 cl_data->is_any_sensor_enabled);
++		rc = -EOPNOTSUPP;
++		goto cleanup;
+ 	}
  
- 		usb3phy: phy@c010000 {
- 			compatible = "qcom,msm8998-qmp-usb3-phy";
--			reg = <0x0c010000 0x18c>;
--			status = "disabled";
--			#address-cells = <1>;
--			#size-cells = <1>;
--			ranges;
-+			reg = <0x0c010000 0x1000>;
+ 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+ 		cl_data->cur_hid_dev = i;
+ 		if (cl_data->sensor_sts[i] == SENSOR_ENABLED) {
+-			cl_data->is_any_sensor_enabled = true;
+ 			rc = amdtp_hid_probe(i, cl_data);
+ 			if (rc)
+ 				goto cleanup;
+@@ -305,12 +315,6 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+ 			cl_data->sensor_sts[i]);
+ 	}
  
- 			clocks = <&gcc GCC_USB3_PHY_AUX_CLK>,
-+				 <&gcc GCC_USB3_CLKREF_CLK>,
- 				 <&gcc GCC_USB_PHY_CFG_AHB2PHY_CLK>,
--				 <&gcc GCC_USB3_CLKREF_CLK>;
--			clock-names = "aux", "cfg_ahb", "ref";
-+				 <&gcc GCC_USB3_PHY_PIPE_CLK>;
-+			clock-names = "aux",
-+				      "ref",
-+				      "cfg_ahb",
-+				      "pipe";
-+			clock-output-names = "usb3_phy_pipe_clk_src";
-+			#clock-cells = <0>;
-+			#phy-cells = <0>;
+-	if (!cl_data->is_any_sensor_enabled ||
+-	   (mp2_ops->discovery_status && mp2_ops->discovery_status(privdata) == 0)) {
+-		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n", cl_data->is_any_sensor_enabled);
+-		rc = -EOPNOTSUPP;
+-		goto cleanup;
+-	}
+ 	schedule_delayed_work(&cl_data->work_buffer, msecs_to_jiffies(AMD_SFH_IDLE_LOOP));
+ 	return 0;
  
- 			resets = <&gcc GCC_USB3_PHY_BCR>,
- 				 <&gcc GCC_USB3PHY_PHY_BCR>;
--			reset-names = "phy", "common";
-+			reset-names = "phy",
-+				      "phy_phy";
- 
--			usb1_ssphy: phy@c010200 {
--				reg = <0xc010200 0x128>,
--				      <0xc010400 0x200>,
--				      <0xc010c00 0x20c>,
--				      <0xc010600 0x128>,
--				      <0xc010800 0x200>;
--				#phy-cells = <0>;
--				#clock-cells = <0>;
--				clocks = <&gcc GCC_USB3_PHY_PIPE_CLK>;
--				clock-names = "pipe0";
--				clock-output-names = "usb3_phy_pipe_clk_src";
--			};
-+			status = "disabled";
- 		};
- 
- 		qusb2phy: phy@c012000 {
 -- 
 2.43.0
 
