@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FF594AB93
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F2694AAFC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:02:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539CA1F25F39
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0301D1F294E4
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF5D83CD9;
-	Wed,  7 Aug 2024 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F46378B4C;
+	Wed,  7 Aug 2024 15:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQvRomy5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7jP85AV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCFB2AF07;
-	Wed,  7 Aug 2024 15:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC0B23CE;
+	Wed,  7 Aug 2024 15:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043215; cv=none; b=UcMHD3jXpknZ4KSXzhT6ow/hArl5kMzlkbHg7YH/KRktQCm9hC83whWfHsxTCAsIPLqvurQ9w/MOrQEVbUb8gjtpQs5fL/D/YWdo6Td6g5uWT0R0bQx6aBuTrejPJF9Ev9kiEwabhfblqaRqvY9hyGWPGXql1kNWZWrI2LoDYuk=
+	t=1723042917; cv=none; b=KD5GSdgDscoiWqqnEOie4yOqlX4+wpiYZMLN/EnEu9rxFz8E88YTLGSQHu3ooNWXWj7UZG/tuIGQAxvWvCt1xrSSDmsfpzkwcUSDNxhRJ0hoTxs00deENNtjl3Jsbo4V0dmSWWqqpi/buJWiTzydR8F4i8fSiiRw0/rRLOj+DRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043215; c=relaxed/simple;
-	bh=KTp/RGNo+sdoMW3rthzRitZpfT61VuDbIW2/NH927z8=;
+	s=arc-20240116; t=1723042917; c=relaxed/simple;
+	bh=E5UewqydhDUFM39TXeft+KkI7u1X2NVFLiv56g1lLe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PN0ixKseDETZGGFOVMSVqgynmmSSJTT1OJ7blBPJgQRGNL+d00ylJ5/NLgMR0+l6i8odyF+yskMEr8Q2VpT44IOjRq3hSikDXIR630G6eaOK4H1z0lntvJMmcLn4S/IocUIBsnHoCHKC1Q/zYnAMdYq+SbIY/7Nmx0b7iHiru08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQvRomy5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0DAC32781;
-	Wed,  7 Aug 2024 15:06:55 +0000 (UTC)
+	 MIME-Version; b=p+opCPCOCCkh4mHVqqvPCrjRBhoX0He+ErSk6TDJ+BbZGz4pK/EBt7higCliyabgW8QQun9crv5rfnByV46xChO0V4l7yJQrwmCQN+o3CNSJcJu5NXekJtTKsMjI2NTEaZsVzqiyMz/s/KKQ182byA7DayqySKylAFFbHznMADU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7jP85AV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9F6C32781;
+	Wed,  7 Aug 2024 15:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043215;
-	bh=KTp/RGNo+sdoMW3rthzRitZpfT61VuDbIW2/NH927z8=;
+	s=korg; t=1723042917;
+	bh=E5UewqydhDUFM39TXeft+KkI7u1X2NVFLiv56g1lLe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQvRomy5TSBT4uCmvFYxuLDmlxc5J/Gj6hzPoCaSFONMHC8B+qazq8AqXR3uXX1lw
-	 7Kaz/u7DuuOYKHrq4luj09dgi3tw8SoaHSitFzfBzuiY3u/j5ak4QfopFucJX4adT8
-	 0pFoCf0/NYL7W0MbIVIVsJsVQlJqPtlaA93przJ4=
+	b=Y7jP85AVxbTRS4AhKfHxPoQssFGoXjo5mUA4MCXjtdxK7usioOZlqJYZzOLdW/xQb
+	 W7IumltTezutl2sub2P7/MHpNTqp/0Zo+xiO0G79lYqyM1sKUzIqdPrFXcZodGJIy/
+	 Lgv7ItPNwL6PQst4C6ulemfm/fHv47X9FHHBGWpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Doug Brown <doug@schmorgal.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/121] arm64: dts: qcom: sdm845: Disable SS instance in Parkmode for USB
+Subject: [PATCH 6.10 023/123] drm/vmwgfx: Fix overlay when using Screen Targets
 Date: Wed,  7 Aug 2024 16:59:02 +0200
-Message-ID: <20240807150019.718055978@linuxfoundation.org>
+Message-ID: <20240807150021.570299664@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit cf4d6d54eadb60d2ee4d31c9d92299f5e8dcb55c ]
+[ Upstream commit cb372a505a994cb39aa75acfb8b3bcf94787cf94 ]
 
-For Gen-1 targets like SDM845, it is seen that stressing out the
-controller in host mode results in HC died error:
+This code was never updated to support Screen Targets.
+Fixes a bug where Xv playback displays a green screen instead of actual
+video contents when 3D acceleration is disabled in the guest.
 
- xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
- xhci-hcd.12.auto: xHCI host controller not responding, assume dead
- xhci-hcd.12.auto: HC died; cleaning up
-
-And at this instant only restarting the host mode fixes it. Disable
-SuperSpeed instance in park mode for SDM845 to mitigate this issue.
-
-Cc: stable@vger.kernel.org
-Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240704152848.3380602-9-quic_kriskura@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: c8261a961ece ("vmwgfx: Major KMS refactoring / cleanup in preparation of screen targets")
+Reported-by: Doug Brown <doug@schmorgal.com>
+Closes: https://lore.kernel.org/all/bd9cb3c7-90e8-435d-bc28-0e38fee58977@schmorgal.com
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Tested-by: Doug Brown <doug@schmorgal.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240719163627.20888-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index abffd0ad6e90c..dcdc8a0cd1819 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4080,6 +4080,7 @@ usb_1_dwc3: usb@a600000 {
- 				iommus = <&apps_smmu 0x740 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
-@@ -4131,6 +4132,7 @@ usb_2_dwc3: usb@a800000 {
- 				iommus = <&apps_smmu 0x760 0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
-+				snps,parkmode-disable-ss-quirk;
- 				phys = <&usb_2_hsphy>, <&usb_2_qmpphy>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+index c45b4724e4141..e20f64b67b266 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+@@ -92,7 +92,7 @@ static int vmw_overlay_send_put(struct vmw_private *dev_priv,
+ {
+ 	struct vmw_escape_video_flush *flush;
+ 	size_t fifo_size;
+-	bool have_so = (dev_priv->active_display_unit == vmw_du_screen_object);
++	bool have_so = (dev_priv->active_display_unit != vmw_du_legacy);
+ 	int i, num_items;
+ 	SVGAGuestPtr ptr;
+ 
 -- 
 2.43.0
 
