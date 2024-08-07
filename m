@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2138A94AC25
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C72B94AB78
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF0021F210A7
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DD991C228AF
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580FF823AF;
-	Wed,  7 Aug 2024 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EAA839F7;
+	Wed,  7 Aug 2024 15:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyLiZgpu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkGR/fzs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1381E81751;
-	Wed,  7 Aug 2024 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A3E78281;
+	Wed,  7 Aug 2024 15:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043546; cv=none; b=lUF2ks2CV+/hx45CcJgi772rvmA/ZL/n4im+2/GQJMIHp33jYXh1zwVKu5mRq9XwklQL+dUCh/TRPvUb1CRU4Myv+fYA+FkhqN9EJpSsuCwTsAbV8C9AX0u4fhaNN4K2KW7SMN3elQ25FOEHwhaaFoFrdTQ1pgkh5p9lZq8gFCU=
+	t=1723043143; cv=none; b=QAv0cbr2cMZT8S4qqr11aaAIGuEYW7XSw6pID1KtKJzTzbvYKb2cNPAWsVBVrCXw1pNbUh+oDEdEQe7V13yj0aMTh+7u2QPE2XjeaiXI4QOak8DV9SMlO9MzsnD+D31q1+sd1R6U8bZgTT+z+5MH4EL3Og4ykxzWMz/fzpW8nQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043546; c=relaxed/simple;
-	bh=gNq9oV1FFmMi0KApP1XdENPJKhnOYBp3+vsvY2aPQzM=;
+	s=arc-20240116; t=1723043143; c=relaxed/simple;
+	bh=gAvQBZ85BFTaftB4EeKiOzZM9T+g/rM2f6IY4rkumkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbrKS84UPsps7sbvJDt6E/cEoNAeNe1rQO8Gut40y1BcEnWnRpxCzJesDcLKV3JYcu98XL14oBXGkijbwuw5nhKZpsCZtxPOecKhaGk8F4nmuiF9ee11UyP2e6FR6oDlfxqHAwlctmPk9entj8/3+QzRvlwGzCb7lJytkgRjp2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyLiZgpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B704C32781;
-	Wed,  7 Aug 2024 15:12:25 +0000 (UTC)
+	 MIME-Version; b=f4AMZWvTufFVxGp72NvRYvTxCkWFXoy3B3cs9L9Erpbm0co9eIN4t/9dIE5K7qz6TBI8NvjExrlI06Qo64hkLrbnBLb7I18b3DzBctMzezLzZrdMKBlFDuAeSj3pG0fpt/MSeelJeX08Dtof3OmenGmuTZmwRk7wsY7Aac50wLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkGR/fzs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251F8C32781;
+	Wed,  7 Aug 2024 15:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043546;
-	bh=gNq9oV1FFmMi0KApP1XdENPJKhnOYBp3+vsvY2aPQzM=;
+	s=korg; t=1723043143;
+	bh=gAvQBZ85BFTaftB4EeKiOzZM9T+g/rM2f6IY4rkumkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lyLiZgpusPX6h46sRE5wmzS94AKRZfwblpbCeeVE3E/ObNC5xssmQ8qaHgO4i8Sna
-	 OF1y7j+KjwAVZb7Cvw6ZFqKcjw/p2eHC3CPdjRq4wrmOiISAkwGIfL93sRZa1Hht7+
-	 AbkJvCGG7BUtReLXU5rI934H7YiGFi9rUL501l58=
+	b=VkGR/fzsCbWdENtaGmWEGXBGExnqkDO4LQnxsDRcvWfo5uhmqlfYCLH3MATcRlfer
+	 4VkFJeCPLu2jgpuY3PybRPdX7T1uJwL5ciTdHklMA3ha7j3iE66pXEw1PhFL4aKERT
+	 WCJatM5h7RKFy9hBObFWc/9cuLU82SDXgIFXuYuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Shifrin Dmitry <dmitry.shifrin@syntacore.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/86] ext4: convert to exclusive lock while inserting delalloc extents
+Subject: [PATCH 6.10 070/123] perf: riscv: Fix selecting counters in legacy mode
 Date: Wed,  7 Aug 2024 16:59:49 +0200
-Message-ID: <20240807150039.589135241@linuxfoundation.org>
+Message-ID: <20240807150023.064763033@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Shifrin Dmitry <dmitry.shifrin@syntacore.com>
 
-[ Upstream commit acf795dc161f3cf481db20f05db4250714e375e5 ]
+[ Upstream commit 941a8e9b7a86763ac52d5bf6ccc9986d37fde628 ]
 
-ext4_da_map_blocks() only hold i_data_sem in shared mode and i_rwsem
-when inserting delalloc extents, it could be raced by another querying
-path of ext4_map_blocks() without i_rwsem, .e.g buffered read path.
-Suppose we buffered read a file containing just a hole, and without any
-cached extents tree, then it is raced by another delayed buffered write
-to the same area or the near area belongs to the same hole, and the new
-delalloc extent could be overwritten to a hole extent.
+It is required to check event type before checking event config.
+Events with the different types can have the same config.
+This check is missed for legacy mode code
 
- pread()                           pwrite()
-  filemap_read_folio()
-   ext4_mpage_readpages()
-    ext4_map_blocks()
-     down_read(i_data_sem)
-     ext4_ext_determine_hole()
-     //find hole
-     ext4_ext_put_gap_in_cache()
-      ext4_es_find_extent_range()
-      //no delalloc extent
-                                    ext4_da_map_blocks()
-                                     down_read(i_data_sem)
-                                     ext4_insert_delayed_block()
-                                     //insert delalloc extent
-      ext4_es_insert_extent()
-      //overwrite delalloc extent to hole
+For such perf usage:
+    sysctl -w kernel.perf_user_access=2
+    perf stat -e cycles,L1-dcache-loads --
+driver will try to force both events to CYCLE counter.
 
-This race could lead to inconsistent delalloc extents tree and
-incorrect reserved space counter. Fix this by converting to hold
-i_data_sem in exclusive mode when adding a new delalloc extent in
-ext4_da_map_blocks().
+This commit implements event type check before forcing
+events on the special counters.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Suggested-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240127015825.1608160-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
+Signed-off-by: Shifrin Dmitry <dmitry.shifrin@syntacore.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Fixes: cc4c07c89aad ("drivers: perf: Implement perf event mmap support in the SBI backend")
+Link: https://lore.kernel.org/r/20240729125858.630653-1-dmitry.shifrin@syntacore.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/perf/riscv_pmu_sbi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index eab9aefe96ce6..d6f7525a796c0 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1740,10 +1740,8 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 
- 	/* Lookup extent status tree firstly */
- 	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
--		if (ext4_es_is_hole(&es)) {
--			down_read(&EXT4_I(inode)->i_data_sem);
-+		if (ext4_es_is_hole(&es))
- 			goto add_delayed;
--		}
- 
- 		/*
- 		 * Delayed extent could be allocated by fallocate.
-@@ -1785,8 +1783,10 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
- 	else
- 		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
--	if (retval < 0)
--		goto out_unlock;
-+	if (retval < 0) {
-+		up_read(&EXT4_I(inode)->i_data_sem);
-+		return retval;
-+	}
- 	if (retval > 0) {
- 		unsigned int status;
- 
-@@ -1802,24 +1802,21 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
- 		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
- 				      map->m_pblk, status);
--		goto out_unlock;
-+		up_read(&EXT4_I(inode)->i_data_sem);
-+		return retval;
- 	}
-+	up_read(&EXT4_I(inode)->i_data_sem);
- 
- add_delayed:
--	/*
--	 * XXX: __block_prepare_write() unmaps passed block,
--	 * is it OK?
--	 */
-+	down_write(&EXT4_I(inode)->i_data_sem);
- 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
-+	up_write(&EXT4_I(inode)->i_data_sem);
- 	if (retval)
--		goto out_unlock;
-+		return retval;
- 
- 	map_bh(bh, inode->i_sb, invalid_block);
- 	set_buffer_new(bh);
- 	set_buffer_delay(bh);
--
--out_unlock:
--	up_read((&EXT4_I(inode)->i_data_sem));
- 	return retval;
- }
- 
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index 4e842dcedfbaa..11c7c85047ed4 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -412,7 +412,7 @@ static int pmu_sbi_ctr_get_idx(struct perf_event *event)
+ 	 * but not in the user access mode as we want to use the other counters
+ 	 * that support sampling/filtering.
+ 	 */
+-	if (hwc->flags & PERF_EVENT_FLAG_LEGACY) {
++	if ((hwc->flags & PERF_EVENT_FLAG_LEGACY) && (event->attr.type == PERF_TYPE_HARDWARE)) {
+ 		if (event->attr.config == PERF_COUNT_HW_CPU_CYCLES) {
+ 			cflags |= SBI_PMU_CFG_FLAG_SKIP_MATCH;
+ 			cmask = 1;
 -- 
 2.43.0
 
