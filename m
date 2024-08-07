@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-65903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8052A94AC72
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:15:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25B694AC21
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B16B51C2112D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DD2D282010
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA8881741;
-	Wed,  7 Aug 2024 15:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622A782499;
+	Wed,  7 Aug 2024 15:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGBrxGPA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgMMRcVv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23FF52F62;
-	Wed,  7 Aug 2024 15:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC65374CC;
+	Wed,  7 Aug 2024 15:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043713; cv=none; b=Pfp7iC54N77gJ/VD/5T1Nqx7OeYyBx+ALeTCwi3nbhi/dDtLAEpaDVEsPDW1tOdc2d7Xwa9AeIAlN7NBcIsanwoc8DrpwwuZ8bVXL8j/q1ZZA0nh08dg00jRQysNYVqP1aoY730bp3CnJOrdZbiwuRtmRikJjN30fWuQccYTiUs=
+	t=1723043538; cv=none; b=MHNOe1CbKHEcEC1bBc3v/MrfAZibYQYJJ+ENgKYPLV++slZaxtf+EZDMW5+Is9M+Htm3QxhbMcoATnH1w9ia7CVCPjkrp8UpgTyC4fmc5T3laJsT0ggD3kmVH4+6UkdlNiZgSPTN34MWlr0+i3qINGnDm6hkTwSCiROKQRJ/c08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043713; c=relaxed/simple;
-	bh=Wr0Rh+AycZhSOmzMhoy6+OctnJCRYzaLOexGPPDgP34=;
+	s=arc-20240116; t=1723043538; c=relaxed/simple;
+	bh=bA86UCrD9T6syJXXQ/23me+d1wfCvJfwrb2CdvilG/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPMB5sxdwX2KXiBscLR3VLTjd1Tzg5meTcrpzhHdA4T8jXUVhboAp9Ew/Y0zZ7Vvy2lsWs1+fw9dfa5WHzcS+ajjp1oh2yGCSNOjueN7UlZV4QZsEnNCBaPQNXfwQbLE6z1lP2diyDTzT5pB/n614GZcOJkD4oR10Wp8iX9s62U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGBrxGPA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59961C32781;
-	Wed,  7 Aug 2024 15:15:13 +0000 (UTC)
+	 MIME-Version; b=Sh0kVBUPgRdscBPyG86OwHA2LKUSB/HyT7owed0Trn2rIm6CYMZpqughbwEE0wF2nt1qa4Lyj3H01wfdmEjC++88LNIU7wZqimh17EtF2C//jFmB6QVzpm0l3KtN+1Dp1GzUCCSuk3y2cnni5h+iY9UCjg2gbyEr1sqJRLkY0FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgMMRcVv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A187EC4AF0B;
+	Wed,  7 Aug 2024 15:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043713;
-	bh=Wr0Rh+AycZhSOmzMhoy6+OctnJCRYzaLOexGPPDgP34=;
+	s=korg; t=1723043538;
+	bh=bA86UCrD9T6syJXXQ/23me+d1wfCvJfwrb2CdvilG/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGBrxGPA+c8j0bsA16vGFBoSvbgO6L4VUfWPriSJp/K5sYsKugCAaPZrMMrqSBaxO
-	 XUSuwEWM7DmpL+54enEoyQPaeuGFWykrJ2ZstrwKNAbBp7VBvpnEsYqtNtwIDqkbVt
-	 CgRD/UjTUl+ywFSQjjnGAbp+NJ3dExiU+qQIl64Y=
+	b=BgMMRcVv1AL8JEzRRsaFmJ0s2EwC2QjnxWMTOAAfZfQP45LOh4hrH9C6u2TkqU3mm
+	 ap2CY9BywcaD1Gkt3yXOGTDjHsGhypSKVIN1rJgK5XTq464JONwY7r360nKEQgjyRE
+	 +fBbWcURja4vhFC45cc2kHSsRg0RzmsZG9sojgsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sylvain BERTRAND <sylvain.bertrand@legeek.net>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 72/86] ALSA: usb-audio: Correct surround channels in UAC1 channel map
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 119/121] selftests: mptcp: join: validate backup in MPJ
 Date: Wed,  7 Aug 2024 17:00:51 +0200
-Message-ID: <20240807150041.649209214@linuxfoundation.org>
+Message-ID: <20240807150023.295888628@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit b7b7e1ab7619deb3b299b5e5c619c3e6f183a12d upstream.
+commit 935ff5bb8a1cfcdf8e60c8f5c794d0bbbc234437 upstream.
 
-USB-audio driver puts SNDRV_CHMAP_SL and _SR as left and right
-surround channels for UAC1 channel map, respectively.  But they should
-have been SNDRV_CHMAP_RL and _RR; the current value *_SL and _SR are
-rather "side" channels, not "surround".  I guess I took those
-mistakenly when I read the spec mentioning "surround left".
+A peer can notify the other one that a subflow has to be treated as
+"backup" by two different ways: either by sending a dedicated MP_PRIO
+notification, or by setting the backup flag in the MP_JOIN handshake.
 
-This patch corrects those entries to be the right channels.
+The selftests were previously monitoring the former, but not the latter.
+This is what is now done here by looking at these new MIB counters when
+validating the 'backup' cases:
 
-Suggested-by: Sylvain BERTRAND <sylvain.bertrand@legeek.net>
-Closes: https://lore.kernel.orgZ/qIyJD8lhd8hFhlC@freedom
-Fixes: 04324ccc75f9 ("ALSA: usb-audio: add channel map support")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240731142018.24750-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  MPTcpExtMPJoinSynBackupRx
+  MPTcpExtMPJoinSynAckBackupRx
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it will help to validate a new fix for an issue introduced by this
+commit ID.
+
+Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   42 ++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 10 deletions(-)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -244,8 +244,8 @@ static struct snd_pcm_chmap_elem *conver
- 		SNDRV_CHMAP_FR,		/* right front */
- 		SNDRV_CHMAP_FC,		/* center front */
- 		SNDRV_CHMAP_LFE,	/* LFE */
--		SNDRV_CHMAP_SL,		/* left surround */
--		SNDRV_CHMAP_SR,		/* right surround */
-+		SNDRV_CHMAP_RL,		/* left surround */
-+		SNDRV_CHMAP_RR,		/* right surround */
- 		SNDRV_CHMAP_FLC,	/* left of center */
- 		SNDRV_CHMAP_FRC,	/* right of center */
- 		SNDRV_CHMAP_RC,		/* surround */
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -1778,6 +1778,8 @@ chk_prio_nr()
+ {
+ 	local mp_prio_nr_tx=$1
+ 	local mp_prio_nr_rx=$2
++	local mpj_syn=$3
++	local mpj_syn_ack=$4
+ 	local count
+ 
+ 	print_check "ptx"
+@@ -1799,6 +1801,26 @@ chk_prio_nr()
+ 	else
+ 		print_ok
+ 	fi
++
++	print_check "syn backup"
++	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPJoinSynBackupRx")
++	if [ -z "$count" ]; then
++		print_skip
++	elif [ "$count" != "$mpj_syn" ]; then
++		fail_test "got $count JOIN[s] syn with Backup expected $mpj_syn"
++	else
++		print_ok
++	fi
++
++	print_check "synack backup"
++	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtMPJoinSynAckBackupRx")
++	if [ -z "$count" ]; then
++		print_skip
++	elif [ "$count" != "$mpj_syn_ack" ]; then
++		fail_test "got $count JOIN[s] synack with Backup expected $mpj_syn_ack"
++	else
++		print_ok
++	fi
+ }
+ 
+ chk_subflow_nr()
+@@ -2751,7 +2773,7 @@ backup_tests()
+ 		sflags=nobackup speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 1 1 1
+-		chk_prio_nr 0 1
++		chk_prio_nr 0 1 1 0
+ 	fi
+ 
+ 	# single address, backup
+@@ -2764,7 +2786,7 @@ backup_tests()
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 1 1 1
+ 		chk_add_nr 1 1
+-		chk_prio_nr 1 1
++		chk_prio_nr 1 1 0 0
+ 	fi
+ 
+ 	# single address with port, backup
+@@ -2777,7 +2799,7 @@ backup_tests()
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 1 1 1
+ 		chk_add_nr 1 1
+-		chk_prio_nr 1 1
++		chk_prio_nr 1 1 0 0
+ 	fi
+ 
+ 	if reset "mpc backup" &&
+@@ -2786,7 +2808,7 @@ backup_tests()
+ 		speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 0 0 0
+-		chk_prio_nr 0 1
++		chk_prio_nr 0 1 0 0
+ 	fi
+ 
+ 	if reset "mpc backup both sides" &&
+@@ -2796,7 +2818,7 @@ backup_tests()
+ 		speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 0 0 0
+-		chk_prio_nr 1 1
++		chk_prio_nr 1 1 0 0
+ 	fi
+ 
+ 	if reset "mpc switch to backup" &&
+@@ -2805,7 +2827,7 @@ backup_tests()
+ 		sflags=backup speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 0 0 0
+-		chk_prio_nr 0 1
++		chk_prio_nr 0 1 0 0
+ 	fi
+ 
+ 	if reset "mpc switch to backup both sides" &&
+@@ -2815,7 +2837,7 @@ backup_tests()
+ 		sflags=backup speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 0 0 0
+-		chk_prio_nr 1 1
++		chk_prio_nr 1 1 0 0
+ 	fi
+ }
+ 
+@@ -3215,7 +3237,7 @@ fullmesh_tests()
+ 		addr_nr_ns2=1 sflags=backup,fullmesh speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 2 2 2
+-		chk_prio_nr 0 1
++		chk_prio_nr 0 1 1 0
+ 		chk_rm_nr 0 1
+ 	fi
+ 
+@@ -3228,7 +3250,7 @@ fullmesh_tests()
+ 		sflags=nobackup,nofullmesh speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 2 2 2
+-		chk_prio_nr 0 1
++		chk_prio_nr 0 1 1 0
+ 		chk_rm_nr 0 1
+ 	fi
+ }
+@@ -3407,7 +3429,7 @@ userspace_tests()
+ 		sflags=backup speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 1 1 0
+-		chk_prio_nr 0 0
++		chk_prio_nr 0 0 0 0
+ 	fi
+ 
+ 	# userspace pm type prevents rm_addr
 
 
 
