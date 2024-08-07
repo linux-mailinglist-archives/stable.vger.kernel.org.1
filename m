@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-65829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4799A94AC17
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAA594AC6B
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E74241F21049
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DA441C22804
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F15D7E0E9;
-	Wed,  7 Aug 2024 15:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B03E82C8E;
+	Wed,  7 Aug 2024 15:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXKrXMYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIXDslcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4D081AB1;
-	Wed,  7 Aug 2024 15:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5869F23CE;
+	Wed,  7 Aug 2024 15:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043519; cv=none; b=Nzd4mEUbqDTwsCblpyVlIRM5B+bVrWhQNUJvt6BOdRXVHO3g91aRG9rfMdjb0P8OCYdOQ6wI6ZFkNY15YrpXRcKpiFz3fam+oRWaxpr9QzqSDo9pCZG1rv98HhAD1EwBA6QZESUn8VQlqdfvdPzAO92IUzL8aXXERyL7u9lwhEA=
+	t=1723043695; cv=none; b=lBaqLAA9XUQI4FOj+YgWOaEZ54jVbadYHylWI8AkoC9/v5yG5PXVEeasdAzLVJAKrmNa26ELDbJdaUbjISVmgpxHQS0J18EZ5Am/OTNspiE3Z++Au/CVS2BWH2RLJlI0L14OywnlCpnm6kI+VTj82JQi/Q00BzJMEfxLkw12E4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043519; c=relaxed/simple;
-	bh=ds4MJd1k03xhlCLAaRDQTIIk+166bIdly2xcdor2QsQ=;
+	s=arc-20240116; t=1723043695; c=relaxed/simple;
+	bh=DLqntHXEq3r6Ao2rdw+qld6VmQMqRpDcXIuYkAhDknc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrvQ5iVeolo2Az6Daml3NlS5URTJubmUkTiZXEkBJbVkVzAreSTww9Z8O6E0K/jPBf2b1Um5DMxm1k0gUaFgJDAwjbtbQUkftZAhvMzKhuLYsiDCJ7sl+Rcndiq9qWu2LY+xKNbDWYMkb6CcLnHL2EWq3aEc0KpsT+DY//ksNto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXKrXMYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE314C32781;
-	Wed,  7 Aug 2024 15:11:58 +0000 (UTC)
+	 MIME-Version; b=l/o7PFiVccx8DSj5XFNDRV6bitgRwxne64rp8uHUxRkDtqKZxummfYFgB531OtAcCQYUZnAlKg+KLrTm1R7MRk7x7gNCNhmMolnPQNqjFexbkGk08KuOOkEYPxKxZm8pziSWYF5XoP3ROlDD1RzCmzdUYfW7i0n4aLJDyAI5nm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIXDslcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0805C32781;
+	Wed,  7 Aug 2024 15:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043519;
-	bh=ds4MJd1k03xhlCLAaRDQTIIk+166bIdly2xcdor2QsQ=;
+	s=korg; t=1723043695;
+	bh=DLqntHXEq3r6Ao2rdw+qld6VmQMqRpDcXIuYkAhDknc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXKrXMYgDL1/xdEW6ZM9rI5zZeVibIsTcLMrLQLYiv9EdneD2A66cMbtDuR171Llw
-	 FjdPrWTbQDtNV1qfQZFUQbLEy8pV74+iy0KBSuiObxg0gdX8cayt+VMbz8gLPVDiBs
-	 Lp5etA+sOorew+LXVkkcuJdpW2bkZADQ6O1EWB0s=
+	b=AIXDslcUqF0UwWqhhBnEU6jiH/YVemLT5bsNE0atUSo0KXz07QQ9p3HYkACYvjh99
+	 s6BGZaK6O56lR3fs642hdQ84vMOx+gWFSICRoPJqT8uVEh9su2e+I9tZL2kq34RCgA
+	 2mk9k+B+I2GvbX5y4GxS1OhNvUu3b4O/H/ujYwMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 112/121] mptcp: distinguish rcv vs sent backup flag in requests
-Date: Wed,  7 Aug 2024 17:00:44 +0200
-Message-ID: <20240807150023.068922624@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.1 66/86] rust: SHADOW_CALL_STACK is incompatible with Rust
+Date: Wed,  7 Aug 2024 17:00:45 +0200
+Message-ID: <20240807150041.439389498@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
 
-commit efd340bf3d7779a3a8ec954d8ec0fb8a10f24982 upstream.
+commit f126745da81783fb1d082e67bf14c6795e489a88 upstream.
 
-When sending an MP_JOIN + SYN + ACK, it is possible to mark the subflow
-as 'backup' by setting the flag with the same name. Before this patch,
-the backup was set if the other peer set it in its MP_JOIN + SYN
-request.
+When using the shadow call stack sanitizer, all code must be compiled
+with the -ffixed-x18 flag, but this flag is not currently being passed
+to Rust. This results in crashes that are extremely difficult to debug.
 
-It is not correct: the backup flag should be set in the MPJ+SYN+ACK only
-if the host asks for it, and not mirroring what was done by the other
-peer. It is then required to have a dedicated bit for each direction,
-similar to what is done in the subflow context.
+To ensure that nobody else has to go through the same debugging session
+that I had to, prevent configurations that enable both SHADOW_CALL_STACK
+and RUST.
 
-Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+It is rather common for people to backport 724a75ac9542 ("arm64: rust:
+Enable Rust support for AArch64"), so I recommend applying this fix all
+the way back to 6.1.
+
+Cc: stable@vger.kernel.org # 6.1 and later
+Fixes: 724a75ac9542 ("arm64: rust: Enable Rust support for AArch64")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/r/20240729-shadow-call-stack-v4-1-2a664b082ea4@google.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c  |    2 +-
- net/mptcp/protocol.h |    1 +
- net/mptcp/subflow.c  |    1 +
- 3 files changed, 3 insertions(+), 1 deletion(-)
+ init/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -909,7 +909,7 @@ bool mptcp_synack_options(const struct r
- 		return true;
- 	} else if (subflow_req->mp_join) {
- 		opts->suboptions = OPTION_MPTCP_MPJ_SYNACK;
--		opts->backup = subflow_req->backup;
-+		opts->backup = subflow_req->request_bkup;
- 		opts->join_id = subflow_req->local_id;
- 		opts->thmac = subflow_req->thmac;
- 		opts->nonce = subflow_req->local_nonce;
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -419,6 +419,7 @@ struct mptcp_subflow_request_sock {
- 	u16	mp_capable : 1,
- 		mp_join : 1,
- 		backup : 1,
-+		request_bkup : 1,
- 		csum_reqd : 1,
- 		allow_join_id0 : 1;
- 	u8	local_id;
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1976,6 +1976,7 @@ static void subflow_ulp_clone(const stru
- 		new_ctx->fully_established = 1;
- 		new_ctx->remote_key_valid = 1;
- 		new_ctx->backup = subflow_req->backup;
-+		new_ctx->request_bkup = subflow_req->request_bkup;
- 		WRITE_ONCE(new_ctx->remote_id, subflow_req->remote_id);
- 		new_ctx->token = subflow_req->token;
- 		new_ctx->thmac = subflow_req->thmac;
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1924,6 +1924,7 @@ config RUST
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
++	depends on !SHADOW_CALL_STACK
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+ 	help
+ 	  Enables Rust support in the kernel.
 
 
 
