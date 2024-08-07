@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B26894AB89
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C41594AC69
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBDA21C226E8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD61C1C22AB5
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8326227448;
-	Wed,  7 Aug 2024 15:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DB28287E;
+	Wed,  7 Aug 2024 15:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1IRgc0Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dF+0lUGR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1A68563E;
-	Wed,  7 Aug 2024 15:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D467F7F5;
+	Wed,  7 Aug 2024 15:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043189; cv=none; b=Ug7KLO968Cue+F/mBMjTSTUTWBzuAflrmKRc08LsL43srk69SFkNrYZLVvmgTK0DPdRq4OmSfnd1ymjGW1I3wH435XloL9aAHws0i36YGpAxl+47Z8V7YVCesh6ZeoPHb6rHjKy55xih6IvHNdRa+cL3naXjwhcoLK7+E3KSLp4=
+	t=1723043690; cv=none; b=sP/gZy0zYC7QVpdGx63FztCZ8ntFneoeCDP7yDybLFMVu7CEc4ZtDNi9aYsOGHN5h9LNQs1ZwrwkiSJwywHOY9dyRY9ZeVKW5WSCbFOhovVozuBIOtRcq7SNUwRFg8aTi3LTiVyFj8bPlwHGdPUW/N368FCCB6TnZK5SwD5iwmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043189; c=relaxed/simple;
-	bh=tTuQvPYvD4taaKFnAEwxLVVcnuFvUg52RpoLjn6XEZM=;
+	s=arc-20240116; t=1723043690; c=relaxed/simple;
+	bh=vVUrIZaqBSd487uUjguB+a3sjH4WF8mVs1boFlfUk78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JU1vcFqKEncPFvtZmYPwNz8VuylORGlBWJZWQCBZfEwS99LF7+U6++EjOAWwSNQS1AmjUY17kt+fjlaCN+4FLhgD0asTYnx8eSp/Cqx27Jzw5r7oZGf0HgM73k/uVYT1u/360YH+1flHt6G9LbqzEiyyrm6aG5n7r16KWYXiiB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1IRgc0Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C075AC32781;
-	Wed,  7 Aug 2024 15:06:28 +0000 (UTC)
+	 MIME-Version; b=fv/gugUTBAWrHSfL48mFKBNOJMUpAlwEg6IIvJ1lwGYOVeMeBhdVcI8qRCwpNOoDb/y8PPTs7+kWRQSJqvBCkiguC+GNQSrf0vyshqbh8eXaTxinyvoi4fXeIL9n6c87S7gx++HXhvV4lrnnodyOKbJe1+UDx64XOS+fTHcb0G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dF+0lUGR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A742AC4AF0D;
+	Wed,  7 Aug 2024 15:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043189;
-	bh=tTuQvPYvD4taaKFnAEwxLVVcnuFvUg52RpoLjn6XEZM=;
+	s=korg; t=1723043690;
+	bh=vVUrIZaqBSd487uUjguB+a3sjH4WF8mVs1boFlfUk78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1IRgc0ZoPO0SXsTNgVr/HXik7nJa64ue0gqVG8LxblUVaQfcUwKbRPMegb4/PpOO
-	 Nk8W291ZgRzNh0iGj1qy+j1i1zIDgCszi/S2K6OU7MSe5GzCq0J1bw3iLa3lR5VBm9
-	 n5Ke7kuc4Am/vr5wKXILlhn7deEo3LYsBPeouorM=
+	b=dF+0lUGRaZLqUq2zocuk061FnqLl5TvO7hhrziaqGnjP1iERIF6RarY4tZpqIHjs7
+	 bb+wLEK0v8fT9nSnqpy90eH3gQf0wq5A1NeLuQxwu524QhsZAQ7VjeIZJ4crfVJEEW
+	 R9SzNJXRrFg+omP+gLgwB4mDw3a46BpCpUxYydiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.10 123/123] selftests: mptcp: join: check backup support in signal endp
-Date: Wed,  7 Aug 2024 17:00:42 +0200
-Message-ID: <20240807150024.940876249@linuxfoundation.org>
+	Zhe Qiao <qiaozhe@iscas.ac.cn>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 64/86] riscv/mm: Add handling for VM_FAULT_SIGSEGV in mm_fault_error()
+Date: Wed,  7 Aug 2024 17:00:43 +0200
+Message-ID: <20240807150041.373511735@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
-commit f833470c27832136d4416d8fc55d658082af0989 upstream.
+[ Upstream commit 0c710050c47d45eb77b28c271cddefc5c785cb40 ]
 
-Before the previous commit, 'signal' endpoints with the 'backup' flag
-were ignored when sending the MP_JOIN.
+Handle VM_FAULT_SIGSEGV in the page fault path so that we correctly
+kill the process and we don't BUG() the kernel.
 
-The MPTCP Join selftest has then been modified to validate this case:
-the "single address, backup" test, is now validating the MP_JOIN with a
-backup flag as it is what we expect it to do with such name. The
-previous version has been kept, but renamed to "single address, switch
-to backup" to avoid confusions.
-
-The "single address with port, backup" test is also now validating the
-MPJ with a backup flag, which makes more sense than checking the switch
-to backup with an MP_PRIO.
-
-The "mpc backup both sides" test is now validating that the backup flag
-is also set in MP_JOIN from and to the addresses used in the initial
-subflow, using the special ID 0.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07037db5d479 ("RISC-V: Paging and MMU")
+Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240731084547.85380-1-qiaozhe@iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   34 +++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ arch/riscv/mm/fault.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2641,6 +2641,19 @@ backup_tests()
- 	if reset "single address, backup" &&
- 	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 1
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
-+		pm_nl_set_limits $ns2 1 1
-+		sflags=nobackup speed=slow \
-+			run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 1 1 1
-+		chk_add_nr 1 1
-+		chk_prio_nr 1 0 0 1
-+	fi
-+
-+	# single address, switch to backup
-+	if reset "single address, switch to backup" &&
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		pm_nl_set_limits $ns1 0 1
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
- 		pm_nl_set_limits $ns2 1 1
- 		sflags=backup speed=slow \
-@@ -2654,13 +2667,13 @@ backup_tests()
- 	if reset "single address with port, backup" &&
- 	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 1
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal port 10100
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup port 10100
- 		pm_nl_set_limits $ns2 1 1
--		sflags=backup speed=slow \
-+		sflags=nobackup speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
--		chk_prio_nr 1 1 0 0
-+		chk_prio_nr 1 0 0 1
- 	fi
+diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
+index 274bc6dd839fa..05d7d36479648 100644
+--- a/arch/riscv/mm/fault.c
++++ b/arch/riscv/mm/fault.c
+@@ -60,26 +60,27 @@ static inline void no_context(struct pt_regs *regs, unsigned long addr)
  
- 	if reset "mpc backup" &&
-@@ -2674,12 +2687,21 @@ backup_tests()
- 
- 	if reset "mpc backup both sides" &&
- 	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
--		pm_nl_add_endpoint $ns1 10.0.1.1 flags subflow,backup
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 1 2
-+		pm_nl_add_endpoint $ns1 10.0.1.1 flags signal,backup
- 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,backup
+ static inline void mm_fault_error(struct pt_regs *regs, unsigned long addr, vm_fault_t fault)
+ {
++	if (!user_mode(regs)) {
++		no_context(regs, addr);
++		return;
++	}
 +
-+		# 10.0.2.2 (non-backup) -> 10.0.1.1 (backup)
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
-+		# 10.0.1.2 (backup) -> 10.0.2.1 (non-backup)
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		ip -net "$ns2" route add 10.0.2.1 via 10.0.1.1 dev ns2eth1 # force this path
+ 	if (fault & VM_FAULT_OOM) {
+ 		/*
+ 		 * We ran out of memory, call the OOM killer, and return the userspace
+ 		 * (which will retry the fault, or kill us if we got oom-killed).
+ 		 */
+-		if (!user_mode(regs)) {
+-			no_context(regs, addr);
+-			return;
+-		}
+ 		pagefault_out_of_memory();
+ 		return;
+ 	} else if (fault & VM_FAULT_SIGBUS) {
+ 		/* Kernel mode? Handle exceptions or die */
+-		if (!user_mode(regs)) {
+-			no_context(regs, addr);
+-			return;
+-		}
+ 		do_trap(regs, SIGBUS, BUS_ADRERR, addr);
+ 		return;
++	} else if (fault & VM_FAULT_SIGSEGV) {
++		do_trap(regs, SIGSEGV, SEGV_MAPERR, addr);
++		return;
+ 	}
 +
- 		speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
--		chk_join_nr 0 0 0
--		chk_prio_nr 1 1 0 0
-+		chk_join_nr 2 2 2
-+		chk_prio_nr 1 1 1 1
- 	fi
+ 	BUG();
+ }
  
- 	if reset "mpc switch to backup" &&
+-- 
+2.43.0
+
 
 
 
