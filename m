@@ -1,192 +1,269 @@
-Return-Path: <stable+bounces-65940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0FB94AEC1
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 19:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A9F94AED0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 19:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69CB6B219D6
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:20:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C23E5B29902
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7166513C66F;
-	Wed,  7 Aug 2024 17:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C6113CA9C;
+	Wed,  7 Aug 2024 17:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Lrl96Sr6"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="lGEqKG9g"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6B66BB4B;
-	Wed,  7 Aug 2024 17:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02047829C;
+	Wed,  7 Aug 2024 17:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723051201; cv=none; b=fNUl4IgrR9GlgFuxxdGLnJoTJjuUbZ6iP9iUeDqWvqtKPIYhykk7imsBN+vhAqaXqm/PTre8s0lTfoiWb+WqbQHLyIn3sJX9f5VKDqVomDnv0WOv8LpmiprPErKL7Pa6N935StneFsrcIGKIKFzYOu2+ojoS1DbgwFHL2RPSg1g=
+	t=1723051415; cv=none; b=UP86OJqjxLQvEFb1Ub2bRZB7ncLsluBVXIvxrDVoQy1JI7sQpLw4moMtJfJ2mGUHLDy1xkFLesq9fGLbQ92K1dV2Qe5/WA/p7gCXwscgOb/m1MYEchGzOscGr9676yQJQSfO/tKedy/6RcF3KtZnYDlQEV41ctLmHBhrDA6lxz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723051201; c=relaxed/simple;
-	bh=o/BGnLtpTKjPL5WS/ZzCIYzntgi9WJKyiTLSnHISQOE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZPNIA3+dVAwoWndNhAOPC3wLKv6a4t980syxL4zZ3YTGrH9/lNip6yTsl0mStCx9tWZcP1tsGih+zgoGQxksKdHilA7GC6msKvealNW2BqkMQrp3lI1Udvom8xyOE8PApmc6ajzcUNZM24Ucir3VEGvQp2t2BazftQJ24ov/vCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Lrl96Sr6; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47783A5O015915;
-	Wed, 7 Aug 2024 17:19:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	xg18hhOiid4XVBz8qbRkIMBM8P++Q4+59FV7Xg8OAno=; b=Lrl96Sr6eyaVbyuB
-	m8dKVm7N3QQwEN4HlF5TeIHqldZhWePNc9DkUzYWebrDM83BPeQBxI2HsgVzNfDN
-	0gJQ6Wr5qgJMRYmFenHoL7uvEnGK/kguG2PHvW+qxk86v9PSxWy2xetwoLUE4A7V
-	8CH2fiQVn/J74xlshCM/Vb47Pj0rqxgcuGzCzoHFMe7hDe/pjbF5lrcvxF6sIOyZ
-	Xj/rr1qDjfrqRIBLXP89sAcSm9suu81OAwZmLuR3o6ctTu7Gyd9JEjkGRFEysVhr
-	RPckrCddV+8zc7wSJYZEDONWi4C2rkE8ZA6q6uNDBh89McpUoTi5CYpH2rAUATEX
-	RxtL0Q==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40sc4ybdbx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Aug 2024 17:19:52 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 477HJpVX019316
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 7 Aug 2024 17:19:51 GMT
-Received: from [10.216.8.236] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 7 Aug 2024
- 10:19:46 -0700
-Message-ID: <b7fd3fac-77e4-7aad-e97a-c210aeb53773@quicinc.com>
-Date: Wed, 7 Aug 2024 22:49:42 +0530
+	s=arc-20240116; t=1723051415; c=relaxed/simple;
+	bh=DeHERJlAyVaAM7mD5mBWKnAuOj19JGCsB8/0dA8JQIs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=iXsYNq+4IKDGBSNHXgr6OBD+OWwLlyFAZjqpkH+fqmz2mrzSEPuJH32WxsjdrWN2EXrmCNzvHpDdZv9lAS4mu0cmhiou0+P9oI2MlU+Ue0HMuwzp32Ey5h/Wajg3yR69Knm00Nqe/XDxS5Lag9kTb2LE0LXiJHA+VL8hK886RBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=lGEqKG9g; arc=none smtp.client-ip=212.227.17.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1723051392; x=1723656192; i=christian@heusel.eu;
+	bh=nsT5DPVZKkmpZvH2h/IqV+PYUy007MA2rcGXRfKet7o=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:
+	 MIME-Version:Content-Type:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=lGEqKG9gHAPutaeUlow/V/51fwngpV5VXxDJwtjV+S/OaV57MX/iQ/VfBn8INNxL
+	 BKv0buAEsNbmkZOS9V4sGxaVeYckS2TekiJoJEwOn2RjawHt9jxMGxu2klr+9mtVH
+	 dZZyQH22NBQEKlhDI9WQWi5yek4gvVOxJk2F28KPR8ThLHosE4kTVzGtXUPlAIrBK
+	 nadtoSkDPM5jTyGlqsApyHZEaKdjlfeXACRoE0qdlYjSKWBwxKBWcpYnXoBO3Yop4
+	 9N9yCGfXHn/r4hsEcyaboi9W9Aw0UD/yXkQmfvehw3D55uExFzLcowSj1u90ymtY+
+	 CL47Bi7RlniRWh5OdQ==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([80.187.64.180]) by mrelayeu.kundenserver.de
+ (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1M1INQ-1sdOH40B7i-006v2B; Wed, 07 Aug 2024 19:23:12 +0200
+Date: Wed, 7 Aug 2024 19:23:10 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Igor Pylypiv <ipylypiv@google.com>, 
+	Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, linux-ide@vger.kernel.org
+Cc: Hannes Reinecke <hare@suse.de>, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [REGRESSION][BISECTED][STABLE] hdparm errors since 28ab9769117c
+Message-ID: <0bf3f2f0-0fc6-4ba5-a420-c0874ef82d64@heusel.eu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/2] dmaengine: dw-edma: Fix unmasking STOP and ABORT
- interrupts for HDMA
-Content-Language: en-US
-To: Serge Semin <fancer.lancer@gmail.com>
-CC: <manivannan.sadhasivam@linaro.org>, <vkoul@kernel.org>,
-        <quic_shazhuss@quicinc.com>, <quic_nitegupt@quicinc.com>,
-        <quic_ramkri@quicinc.com>, <quic_nayiluri@quicinc.com>,
-        <quic_krichai@quicinc.com>, <quic_vbadigan@quicinc.com>,
-        <stable@vger.kernel.org>, Cai Huoqing <cai.huoqing@linux.dev>,
-        <dmaengine@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <1721740773-23181-1-git-send-email-quic_msarkar@quicinc.com>
- <1721740773-23181-2-git-send-email-quic_msarkar@quicinc.com>
- <dnvoktjxx2m5oy2m5ocrgyd4veypnjbjnth364hl32ou4gm3t2@tjxrsowsabgr>
- <6faa27be-54eb-ca00-f2a8-de3eb6fa7547@quicinc.com>
- <by7uqtmnx4jjxigbm3lrpp2b3eqcrq3byqrrmexmkkigtjxdir@o7ahdlhpgzjl>
-From: Mrinmay Sarkar <quic_msarkar@quicinc.com>
-In-Reply-To: <by7uqtmnx4jjxigbm3lrpp2b3eqcrq3byqrrmexmkkigtjxdir@o7ahdlhpgzjl>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: SAZr4PwLc_b0JFSxYUc4Cz5ldxAYUT-S
-X-Proofpoint-GUID: SAZr4PwLc_b0JFSxYUc4Cz5ldxAYUT-S
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-07_11,2024-08-07_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
- spamscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 mlxlogscore=756 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408070119
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="lq4zqbwcozebnqgu"
+Content-Disposition: inline
+X-Provags-ID: V03:K1:re/u57c9LiiKnOyxy/v/YoI96ZGo5b3UusYKY4512VsUbItP0ZV
+ bE4dvipEOOfmGpVNc8QBsHKy5QTyB83NR2EHdIkhEAJ0Vlb9fYnAWmjJ97KkHw+LRGxRWM/
+ BvZE9CKF3ZblB5bu91CIBMRXlPQ9KWnRU0zH70XA37W0PQWVO8tRuGc1K5H6LOmglNBrtMc
+ XbTYbHxNueeEujOf4hsSw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Sgj5yfUsPnI=;oWv0C/OeJkqW7tOPGUStrVRIg+/
+ clEXJBTWpkSj1ib9dZnlcTP4wji5U9D1fjiMd/u6iBiUwMbKvxgO0vuL+ESDLvk3XUo9h1eDI
+ YwEIwMie+mDMQEpOjxUfdPnd6gV4GD8NFKyQ7b3cidAQZYB/hZsOuQ9AKdzmPNk8JywiXwH0k
+ yK9GBjVC/KKJEMVtFWEi3m5lu0M0NscHfoBrL1TGgJ+4SDJfkaNLvM1q6AdUSLTwghIKe3U5B
+ 8gqhtH9LE3P4b1Q+0uMj1ENYFyQI15dMAqRlCLTokkbhYfyL42iDda4K/dFmf8XZ7ZUNuzaHN
+ Bct0LxO8XGKt0CwT0ZdmL3fwWZujNTOHWx+ycyS8GyyUzTiXVweZIrq2BNffUwm4jnyu0k7on
+ QK8w6vCzo4ARHnWpc8Z169WhDdTjeFKXy6Zj38iicPs5IzKkQXWnq5BqZwSkGZXyQoZ/sAmqT
+ a6Vd5vKV8FQGy848gqiJ+Hy1FBzsF60hKE0+DB2ia+dEMbAerPBSXuA/SPw1R9Yy9zXBcEcPI
+ irt4ca9BD5u/XH7rPg8yi8WJi5ft1B8EBqr1xtb9Jja6m8C+6NkirRLe2KwIe45RiKukwTfWh
+ Pfw3BQcg4Xn4dzruJ7iBtwNhODQmf5Itr9cD+9hTwXD59eOTlJ/Mr7Yv3FtFTDGuWPfkdcaOr
+ vfiodr7hgCO4l2cv7KJFnuTattUVv6WGp9x8ovs3yRjLRNTrXoSZF1K68tWe079CD/o2AwpA+
+ +gjyqb1zadWqWsmHaAAftOFhjgW0pODlg==
 
 
-On 8/7/2024 4:26 AM, Serge Semin wrote:
-> On Mon, Aug 05, 2024 at 07:30:14PM +0530, Mrinmay Sarkar wrote:
->> On 8/2/2024 5:12 AM, Serge Semin wrote:
->>> On Tue, Jul 23, 2024 at 06:49:31PM +0530, Mrinmay Sarkar wrote:
->>>> The current logic is enabling both STOP_INT_MASK and ABORT_INT_MASK
->>>> bit. This is apparently masking those particular interrupts rather than
->>>> unmasking the same. If the interrupts are masked, they would never get
->>>> triggered.
->>>>
->>>> So fix the issue by unmasking the STOP and ABORT interrupts properly.
->>>>
->>>> Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
->>>> cc: stable@vger.kernel.org
->>>> Signed-off-by: Mrinmay Sarkar <quic_msarkar@quicinc.com>
->>>> ---
->>>>    drivers/dma/dw-edma/dw-hdma-v0-core.c | 9 +++++----
->>>>    1 file changed, 5 insertions(+), 4 deletions(-)
->>>>
->>>> diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
->>>> index 10e8f07..fa89b3a 100644
->>>> --- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
->>>> +++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
->>>> @@ -247,10 +247,11 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
->>>>    	if (first) {
->>>>    		/* Enable engine */
->>>>    		SET_CH_32(dw, chan->dir, chan->id, ch_en, BIT(0));
->>>> -		/* Interrupt enable&unmask - done, abort */
->>>> -		tmp = GET_CH_32(dw, chan->dir, chan->id, int_setup) |
->>>> -		      HDMA_V0_STOP_INT_MASK | HDMA_V0_ABORT_INT_MASK |
->>>> -		      HDMA_V0_LOCAL_STOP_INT_EN | HDMA_V0_LOCAL_ABORT_INT_EN;
->>> Just curious, if all the interrupts were actually masked, how has this
->>> been even working?.. In other words if it affected both local and
->>> remote interrupts, then the HDMA driver has never actually worked,
->>> right?
->> Agreed, it should not work as interrupts were masked.
->>
->> But as we are enabling LIE/RIE bits (LWIE/RWIE) that eventually enabling
->> watermark
->> interrupt in HDMA case and somehow on device I could see interrupt was
->> generating with watermark and stop bit set and it was working.
->> Since we were not clearing watermark interrupt, it was also causing storm of
->> interrupt.
-> Is it possible that the HDMA_V0_STOP_INT_MASK and
-> HDMA_V0_ABORT_INT_MASK masks affect the local IRQs only? If so than
-> that shall explain why for instance Kory hasn't met the problem.
->
-> Based on the "Interrupts and Error Handling" figures of the DW EDMA
-> databook the DMA_READ_INT_MASK_OFF/DMA_WRITE_INT_MASK_OFF CSRs mask of
-> the IRQ delivered via the edma_int[] wire. Meanwhile the IMWr TLPs
-> generation depend on the RIE/LLRAIE flags state only.
-Ideally HDMA_V0_STOP_INT_MASK and HDMA_V0_ABORT_INT_MASK masks affect
-both local and remote IRQs.
+--lq4zqbwcozebnqgu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-As per DW HDMA "Interrupts and Error Handling" figure 
-HDMA_INT_SETUP_OFF_[WR|
-RD] mask of the IRQ delivered via the edma_int[] wire.
-And IMWr TLPs generation depend on 3 flags i.e HDMA_INT_SETUP_OFF_[WR|
-RD].RSIE flag for stop IMWr, RWIE flag for watermark IMWr and 
-HDMA_INT_SETUP_OFF_[WR|R
-D].RAIE flag for abort IMWr generation.
+Hello Igor, hello Niklas,
 
-Thanks,
-Mrinmay
->>>> +		/* Interrupt unmask - STOP, ABORT */
->>>> +		tmp = GET_CH_32(dw, chan->dir, chan->id, int_setup) &
->>>> +		      ~HDMA_V0_STOP_INT_MASK & ~HDMA_V0_ABORT_INT_MASK;
->>> Please convert this to:
->>> +		/* Interrupt unmask - stop, abort */
->>> +		tmp = GET_CH_32(dw, chan->dir, chan->id, int_setup);
->>> +		tmp &= ~(HDMA_V0_STOP_INT_MASK | HDMA_V0_ABORT_INT_MASK);
->>>
->>> -Serge(y)
->> Sure. Will do
-> Thanks.
->
-> -Serge(y)
->
->> Thanks,
->> Mrinmay
->>
->>>> +		/* Interrupt enable - STOP, ABORT */
->>>> +		tmp |= HDMA_V0_LOCAL_STOP_INT_EN | HDMA_V0_LOCAL_ABORT_INT_EN;
->>>>    		if (!(dw->chip->flags & DW_EDMA_CHIP_LOCAL))
->>>>    			tmp |= HDMA_V0_REMOTE_STOP_INT_EN | HDMA_V0_REMOTE_ABORT_INT_EN;
->>>>    		SET_CH_32(dw, chan->dir, chan->id, int_setup, tmp);
->>>> -- 
->>>> 2.7.4
->>>>
+on my NAS I am encountering the following issue since v6.6.44 (LTS),
+when executing the hdparm command for my WD-WCC7K4NLX884 drives to get
+the active or standby state:
+
+    $ hdparm -C /dev/sda
+    /dev/sda:
+    SG_IO: bad/missing sense data, sb[]:  f0 00 01 00 50 40 ff 0a 00 00 78 =
+00 00 1d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+     drive state is:  unknown
+
+
+While the expected output is the following:
+
+    $ hdparm -C /dev/sda
+    /dev/sda:
+     drive state is:  active/idle
+
+I did a bisection within the stable series and found the following
+commit to be the first bad one:
+
+    28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for CK_COND=3D1 =
+and no error")
+
+According to kernel.dance the same commit was also backported to the
+v6.10.3 and v6.1.103 stable kernels and I could not find any commit or
+pending patch with a "Fixes:" tag for the offending commit.
+
+So far I have not been able to test with the mainline kernel as this is
+a remote device which I couldn't rescue in case of a boot failure. Also
+just for transparency it does have the out of tree ZFS module loaded,
+but AFAIU this shouldn't be an issue here, as the commit seems clearly
+related to the error. If needed I can test with an untainted mainline
+kernel on Friday when I'm near the device.
+
+I have attached the output of hdparm -I below and would be happy to
+provide further debug information or test patches.
+
+Cheers,
+Christian
+
+---
+
+#regzbot introduced: 28ab9769117c
+#regzbot title: ata: libata-scsi: Sense data errors breaking hdparm with WD=
+ drives
+
+---
+
+$ pacman -Q hdparm
+hdparm 9.65-2
+
+$ hdparm -I /dev/sda
+
+/dev/sda:
+
+ATA device, with non-removable media
+	Model Number:       WDC WD40EFRX-68N32N0
+	Serial Number:      WD-WCC7K4NLX884
+	Firmware Revision:  82.00A82
+	Transport:          Serial, SATA 1.0a, SATA II Extensions, SATA Rev 2.5, S=
+ATA Rev 2.6, SATA Rev 3.0
+Standards:
+	Used: unknown (minor revision code 0x006d)=20
+	Supported: 10 9 8 7 6 5=20
+	Likely used: 10
+Configuration:
+	Logical		max	current
+	cylinders	16383	0
+	heads		16	0
+	sectors/track	63	0
+	--
+	LBA    user addressable sectors:   268435455
+	LBA48  user addressable sectors:  7814037168
+	Logical  Sector size:                   512 bytes
+	Physical Sector size:                  4096 bytes
+	Logical Sector-0 offset:                  0 bytes
+	device size with M =3D 1024*1024:     3815447 MBytes
+	device size with M =3D 1000*1000:     4000787 MBytes (4000 GB)
+	cache/buffer size  =3D unknown
+	Form Factor: 3.5 inch
+	Nominal Media Rotation Rate: 5400
+Capabilities:
+	LBA, IORDY(can be disabled)
+	Queue depth: 32
+	Standby timer values: spec'd by Standard, with device specific minimum
+	R/W multiple sector transfer: Max =3D 16	Current =3D 16
+	DMA: mdma0 mdma1 mdma2 udma0 udma1 udma2 udma3 udma4 udma5 *udma6=20
+	     Cycle time: min=3D120ns recommended=3D120ns
+	PIO: pio0 pio1 pio2 pio3 pio4=20
+	     Cycle time: no flow control=3D120ns  IORDY flow control=3D120ns
+Commands/features:
+	Enabled	Supported:
+	   *	SMART feature set
+	    	Security Mode feature set
+	   *	Power Management feature set
+	   *	Write cache
+	   *	Look-ahead
+	   *	Host Protected Area feature set
+	   *	WRITE_BUFFER command
+	   *	READ_BUFFER command
+	   *	NOP cmd
+	   *	DOWNLOAD_MICROCODE
+	    	Power-Up In Standby feature set
+	   *	SET_FEATURES required to spinup after power up
+	    	SET_MAX security extension
+	   *	48-bit Address feature set
+	   *	Device Configuration Overlay feature set
+	   *	Mandatory FLUSH_CACHE
+	   *	FLUSH_CACHE_EXT
+	   *	SMART error logging
+	   *	SMART self-test
+	   *	General Purpose Logging feature set
+	   *	64-bit World wide name
+	   *	IDLE_IMMEDIATE with UNLOAD
+	   *	WRITE_UNCORRECTABLE_EXT command
+	   *	{READ,WRITE}_DMA_EXT_GPL commands
+	   *	Segmented DOWNLOAD_MICROCODE
+	   *	Gen1 signaling speed (1.5Gb/s)
+	   *	Gen2 signaling speed (3.0Gb/s)
+	   *	Gen3 signaling speed (6.0Gb/s)
+	   *	Native Command Queueing (NCQ)
+	   *	Host-initiated interface power management
+	   *	Phy event counters
+	   *	Idle-Unload when NCQ is active
+	   *	NCQ priority information
+	   *	READ_LOG_DMA_EXT equivalent to READ_LOG_EXT
+	   *	DMA Setup Auto-Activate optimization
+	   *	Device-initiated interface power management
+	   *	Software settings preservation
+	   *	SMART Command Transport (SCT) feature set
+	   *	SCT Write Same (AC2)
+	   *	SCT Error Recovery Control (AC3)
+	   *	SCT Features Control (AC4)
+	   *	SCT Data Tables (AC5)
+	    	unknown 206[12] (vendor specific)
+	    	unknown 206[13] (vendor specific)
+	   *	DOWNLOAD MICROCODE DMA command
+	   *	WRITE BUFFER DMA command
+	   *	READ BUFFER DMA command
+Security:=20
+	Master password revision code =3D 65534
+		supported
+	not	enabled
+	not	locked
+		frozen
+	not	expired: security count
+		supported: enhanced erase
+	504min for SECURITY ERASE UNIT. 504min for ENHANCED SECURITY ERASE UNIT.
+Logical Unit WWN Device Identifier: 50014ee2647735a1
+	NAA		: 5
+	IEEE OUI	: 0014ee
+	Unique ID	: 2647735a1
+Checksum: correct
+
+--lq4zqbwcozebnqgu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmazrX4ACgkQwEfU8yi1
+JYWKRBAAuWTcdMItCNZaRa8QUD3EXBVDf23VX0879nToFEt5rbGnBXEH/SCvhhJ5
+uiM59L6kCsOFMhqFruuCglkKooxrR30aHMNRBj2F4UMYXBvrfgAoI1aWp4EgE+WC
+mBC5w87QzOHoVh9edDinqSmuu8upFB5Fl6xSrIpg8+Sk8Nx5gL3Lj3nzPD4NLF9W
+rgMxX7OQEWMyEN9IFvVQd/IfOdt3JFTo7RZTxmvFK8j9b3m8LXxGDqJzcUHS5ytE
+aXFtcoiQxE3NXkU11p9rHvjDeSVsF4SakJ+a6HX+pGMCQhauvydW2ap9cIhhFPww
+I/7TdHa1cZit3FMDVsSI8aAnO8L5FsPCL806Q3uqqpp+UePVH1YXcIT6HCudiyEI
+s8qgTsQlscaDHTpjZG71dHMRZxod4IZ9XL/fYvD0RD/566/Pf65Aks0/O44ahcH6
+Y6opytCJ3hlgtocu3hMSqGF0vrwITSB0nVxJANixYjxhLMQTChVxien2znoD6uqx
+A3eIU6x6s1DqyFJZLdn6B76XqwVPgLSGvshHNET4mEpMmEcvF4YymAmhT871rcAP
+f2rOtfEBU1sp7Tr3C2uWU19oOES2JPyRGVlPoFofcZE1PAdaJozWZwzMnzy34lYb
+qUA2JNqkGVbBDPIytlwjtIXiwcnh7yulkSSxn+PgQcmGFHhU/uk=
+=Lqj2
+-----END PGP SIGNATURE-----
+
+--lq4zqbwcozebnqgu--
 
