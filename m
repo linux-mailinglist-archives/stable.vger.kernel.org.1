@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-65898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8974B94AC6D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:15:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5473F94AC1A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9B8A1C20DCF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E0E4281C70
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B8A82C8E;
-	Wed,  7 Aug 2024 15:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8BE82C8E;
+	Wed,  7 Aug 2024 15:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoVJZWzD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyaKBqjX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C4B3A1C4;
-	Wed,  7 Aug 2024 15:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C2C8287E;
+	Wed,  7 Aug 2024 15:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043700; cv=none; b=J/Job3ivsWNV2633cREx0OgeeB2YMzJ7k2dq/Sn58vIRrIcb9Bt5iUOIG5IqlgzvjR80KkdmCK2KgloMgCVPTzGl6Mhoh0/ryExUHltcfktBynlV8UbJtk7PUqyYKkjql7uoiQH92TeS8ytHFhu9bY666gs423cMFyUcAKtseSU=
+	t=1723043527; cv=none; b=srfAsXoTnK+r5tevHFNh16l+tWtMucZwJA4GW+aDv3+u/gUHfN6SaTDhXCUczUj545JQTvcxSv0Xtv0raTWQ7p6x2kquBt9gulsdhHOjVegS7+9XLSIRRHNvYjIPSX+lpYDN44kDEET219MdL2ZI194rUYoWYxzG41aF2ZuqIr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043700; c=relaxed/simple;
-	bh=u0+93+csj2Rd1yLTQVZdjItaXxT+9ukMDO6MBA/tU+Q=;
+	s=arc-20240116; t=1723043527; c=relaxed/simple;
+	bh=iVChbdw4nnHko+fVKrebE0EM5JkOvmMFNbcYZOsOzNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ddjyzR5vgpamqYgQsi+0UFeAxNeLDwSmZzypNb88qHGzH+8OhGR0WR+grecQ7W1vhD+3jHNvPlCYMFfGg/LTQX+l1pumcyerxGc39ndFMstLrJmo2PLJtN7JJ86/oedEzsNacsNiZ4ivh5NYbS+AKk3tzqWj8zT1T4xbC+cbvjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoVJZWzD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32244C32781;
-	Wed,  7 Aug 2024 15:15:00 +0000 (UTC)
+	 MIME-Version; b=Z0PDaCZdd2wnj779dmVDUM+mLKioiRbpprWaKcRWSZXdXJObeZEDnRfVA+nQL01StJ+TDwXRay1/IA1L6nr8U9SQo+gnSt9uR4dYwO1h08pkkj2dQITCburU7x2gS+zGNYYH6EbitiEZovorZ2YSmD2tp5Q0yAyyl/71Q3XjrXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyaKBqjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA42C32781;
+	Wed,  7 Aug 2024 15:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043700;
-	bh=u0+93+csj2Rd1yLTQVZdjItaXxT+9ukMDO6MBA/tU+Q=;
+	s=korg; t=1723043527;
+	bh=iVChbdw4nnHko+fVKrebE0EM5JkOvmMFNbcYZOsOzNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UoVJZWzDyIIOgHCr1CI3QRYLh8x1y6jCqxnp5Hzx6QG8+ROQ12stJEkkavjDeoJiz
-	 trlQggtAk2wBGUwxflxaWrftlJxJbr2VZDgrvaKu9RtfbwvZG/sIMtICfiqNr0cC0W
-	 DEXj43tNASNlWSEjIg8YhHFqQ/GmLcCj5lTQc/I4=
+	b=VyaKBqjXnx5xVobMY1zRDovTzqcplWac1GC6+FmAHZNUbo2O2fht+js2fIzvR24lb
+	 9/9MYe+Jn2IwISlgnLHfx5P/4D88dOkdOnoMMJQNo5q4yyEXQxGH/KQuPEz71GCmwG
+	 UxjRlG3BQsaEGWVD6fokVh89XZEF39/FRzidICfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
-	Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.1 68/86] HID: wacom: Modify pen IDs
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.6 115/121] mptcp: fix bad RCVPRUNED mib accounting
 Date: Wed,  7 Aug 2024 17:00:47 +0200
-Message-ID: <20240807150041.507068748@linuxfoundation.org>
+Message-ID: <20240807150023.163401966@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit f0d17d696dfce77c9abc830e4ac2d677890a2dad upstream.
+commit 0a567c2a10033bf04ed618368d179bce6977984b upstream.
 
-The pen ID, 0x80842, was not the correct ID for wacom driver to
-treat. The ID was corrected to 0x8842.
-Also, 0x4200 was not the expected ID used on any Wacom device.
-Therefore, 0x4200 was removed.
+Since its introduction, the mentioned MIB accounted for the wrong
+event: wake-up being skipped as not-needed on some edge condition
+instead of incoming skb being dropped after landing in the (subflow)
+receive queue.
 
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>
-Fixes: bfdc750c4cb2 ("HID: wacom: add three styli to wacom_intuos_get_tool_type")
-Cc: stable@kernel.org #6.2
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Link: https://patch.msgid.link/20240709055729.17158-1-tatsunosuke.wacom@gmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Move the increment in the correct location.
+
+Fixes: ce599c516386 ("mptcp: properly account bulk freed memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mptcp/protocol.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -709,13 +709,12 @@ static int wacom_intuos_get_tool_type(in
- 	case 0x8e2: /* IntuosHT2 pen */
- 	case 0x022:
- 	case 0x200: /* Pro Pen 3 */
--	case 0x04200: /* Pro Pen 3 */
- 	case 0x10842: /* MobileStudio Pro Pro Pen slim */
- 	case 0x14802: /* Intuos4/5 13HD/24HD Classic Pen */
- 	case 0x16802: /* Cintiq 13HD Pro Pen */
- 	case 0x18802: /* DTH2242 Pen */
- 	case 0x10802: /* Intuos4/5 13HD/24HD General Pen */
--	case 0x80842: /* Intuos Pro and Cintiq Pro 3D Pen */
-+	case 0x8842: /* Intuos Pro and Cintiq Pro 3D Pen */
- 		tool_type = BTN_TOOL_PEN;
- 		break;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -352,8 +352,10 @@ static bool __mptcp_move_skb(struct mptc
+ 	skb_orphan(skb);
  
+ 	/* try to fetch required memory from subflow */
+-	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize))
++	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize)) {
++		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
+ 		goto drop;
++	}
+ 
+ 	has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
+ 
+@@ -842,10 +844,8 @@ void mptcp_data_ready(struct sock *sk, s
+ 		sk_rbuf = ssk_rbuf;
+ 
+ 	/* over limit? can't append more skbs to msk, Also, no need to wake-up*/
+-	if (__mptcp_rmem(sk) > sk_rbuf) {
+-		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
++	if (__mptcp_rmem(sk) > sk_rbuf)
+ 		return;
+-	}
+ 
+ 	/* Wake-up the reader only for in-sequence data */
+ 	mptcp_data_lock(sk);
 
 
 
