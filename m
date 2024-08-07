@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-65805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80E794ABFD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3156B94AC59
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570A71F24AD0
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6282F1C211C8
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30758823DE;
-	Wed,  7 Aug 2024 15:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65E3823DE;
+	Wed,  7 Aug 2024 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHrVWrzw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogCcYAAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FAF81751;
-	Wed,  7 Aug 2024 15:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7F582C8E;
+	Wed,  7 Aug 2024 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043456; cv=none; b=shtFLDQPVnTUEr6Of3NbI49m1u4LwhGV9euiPRLkYN210hMP1T4PvJCe9gLCE4rEQ84hrmiTgSYjf1IBPQH1F/UZr+VGvx9Y8v05VtS9Z16HLkamQw8jTWXEf2rHnhzho2u3aiGPratrJjnHnub4rTXoLs7UhfDNx3r+0CTinik=
+	t=1723043658; cv=none; b=JiWvp5EE2S6AoJw0A4s2iDR7FDJ0LBgIOrynH1dz2+aVsChHrtKqFDLA6emmIgvgwwHu8Zc5kVeSeDHmfbPqls83jLyHGcnIKFNzymZ7eehLYcDw+TXGfD1copq3bspijsdIdhALr3F0iS+NCZB6hpxy6UISZ9yLCNC7h23eGpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043456; c=relaxed/simple;
-	bh=D4rmtA902DIbPR0PvGneWkcNPXK21tNDzLnOqdAq7nc=;
+	s=arc-20240116; t=1723043658; c=relaxed/simple;
+	bh=u9ihcOTuNqVKtSFnhw1C7NMVnEDAPkh1j3bXqWvRG00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSuxtJSu/ubK4dRcHaVaG56LzrYm3/hBqSpIZU/+GLDsZzsWxC9UHxgxExJH8PBgyk0mbTfuM083wXsomDXo0JIA2l+uDuxQOmNh7DuRbCxiCCoNRuDp7Wjk2XNLa576r6ZKjHTLCv7C+6FAfUazS/TLyB0awpSSs09qY8qaXMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHrVWrzw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74664C32781;
-	Wed,  7 Aug 2024 15:10:55 +0000 (UTC)
+	 MIME-Version; b=secAhLztpe1ZEvmcH2hH1N+/lGgfyjBHoPZr9EioxmkIXccyh5MGdDDN6zsvcviCxKB7Vgr2d2QJdMo/8LeyZkjosC15cG7WekgUYGNxxJHoB1CaNtxFLd/0EsTzq7b96TBmrk1Y5wPyvLyj+StK5up0wQq7kJ45KtK7wsMPOmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogCcYAAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DA1C32781;
+	Wed,  7 Aug 2024 15:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043455;
-	bh=D4rmtA902DIbPR0PvGneWkcNPXK21tNDzLnOqdAq7nc=;
+	s=korg; t=1723043658;
+	bh=u9ihcOTuNqVKtSFnhw1C7NMVnEDAPkh1j3bXqWvRG00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHrVWrzwcOHTFKdP7Oq9Nd6aFXIZl9qMp/F8xz1Q6YjxwC77iJl57Wc1rOWAIGc7s
-	 pv/R4rtOOHWGD8EG5OfJqmwpZidNchcyQoVLOiRVnUSoeRqooZ6ibs/a6Q9dAstNrj
-	 Qhk1zfXuOSqG4gHHki9uF51mj7o649bl7Zz7a3uA=
+	b=ogCcYAAvSZ9M4G4obEtc7tI+8F+WyWzHc4PlM5o2y4hTfW4zdPqZ8RORi617VjBMN
+	 z6p56F5upC+0FxM9tmHVra0zRhBcu2GCEHS1NqK7YthCiWSSNHDr58ZtHKJbOX9qsb
+	 36aLEZ8iRSNZRRbOPugrRGYKaNEizvTx8cZg/XLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 098/121] btrfs: do not subtract delalloc from avail bytes
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.1 51/86] ice: dont busy wait for Rx queue disable in ice_qp_dis()
 Date: Wed,  7 Aug 2024 17:00:30 +0200
-Message-ID: <20240807150022.608295479@linuxfoundation.org>
+Message-ID: <20240807150040.932575330@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-commit d89c285d28491d8f10534c262ac9e6bdcbe1b4d2 upstream.
+[ Upstream commit 1ff72a2f67791cd4ddad19ed830445f57b30e992 ]
 
-The block group's avail bytes printed when dumping a space info subtract
-the delalloc_bytes. However, as shown in btrfs_add_reserved_bytes() and
-btrfs_free_reserved_bytes(), it is added or subtracted along with
-"reserved" for the delalloc case, which means the "delalloc_bytes" is a
-part of the "reserved" bytes. So, excluding it to calculate the avail space
-counts delalloc_bytes twice, which can lead to an invalid result.
+When ice driver is spammed with multiple xdpsock instances and flow
+control is enabled, there are cases when Rx queue gets stuck and unable
+to reflect the disable state in QRX_CTRL register. Similar issue has
+previously been addressed in commit 13a6233b033f ("ice: Add support to
+enable/disable all Rx queues before waiting").
 
-Fixes: e50b122b832b ("btrfs: print available space for a block group when dumping a space info")
-CC: stable@vger.kernel.org # 6.6+
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To workaround this, let us simply not wait for a disabled state as later
+patch will make sure that regardless of the encountered error in the
+process of disabling a queue pair, the Rx queue will be enabled.
+
+Fixes: 2d4238f55697 ("ice: Add support for AF_XDP")
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/space-info.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_xsk.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -524,8 +524,7 @@ again:
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index 61e4730bba59e..ebc017dd245f1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -191,10 +191,8 @@ static int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
+ 		if (err)
+ 			return err;
+ 	}
+-	err = ice_vsi_ctrl_one_rx_ring(vsi, false, q_idx, true);
+-	if (err)
+-		return err;
  
- 		spin_lock(&cache->lock);
- 		avail = cache->length - cache->used - cache->pinned -
--			cache->reserved - cache->delalloc_bytes -
--			cache->bytes_super - cache->zone_unusable;
-+			cache->reserved - cache->bytes_super - cache->zone_unusable;
- 		btrfs_info(fs_info,
- "block group %llu has %llu bytes, %llu used %llu pinned %llu reserved %llu delalloc %llu super %llu zone_unusable (%llu bytes available) %s",
- 			   cache->start, cache->length, cache->used, cache->pinned,
++	ice_vsi_ctrl_one_rx_ring(vsi, false, q_idx, false);
+ 	ice_qp_clean_rings(vsi, q_idx);
+ 	ice_qp_reset_stats(vsi, q_idx);
+ 
+-- 
+2.43.0
+
 
 
 
