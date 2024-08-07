@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A1794ABD4
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6475994AB53
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 332D31C21A66
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B2AA281713
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDDE80BF8;
-	Wed,  7 Aug 2024 15:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FA813A868;
+	Wed,  7 Aug 2024 15:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyOusG5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzjQXXVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F2227448;
-	Wed,  7 Aug 2024 15:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F8113A26B;
+	Wed,  7 Aug 2024 15:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043362; cv=none; b=QcuCTtCySn772eHogq1kTbcTthULIHWbVAG1Xno5x9qtOzbr0Bpb4fHs6hw7TRCXQ989Fqeol95V0R+JZAQjfqP0r6cM2BMvcPIqjHQXGk3IK3au+AWZuzpoNRvLkFbLxiB2kajyTNQTigfNL3yz5ij/f6GhVv/1XdYhIVzK9u8=
+	t=1723043059; cv=none; b=bZX4e1fuqY72VsLMltsiPqprpwBtRsAKETdREDV4FSZ2J9JrquIREa7M7ogMslmbs2goqjwR7Rhgxm0cSSYqUspHbwOoVYcfFWsDQnzbFwRQfjEgJVWuhycaF8EWaDf2BUl9oCApvnl0apC07JCE1piHvVjRwAuaBNP4Bev+HzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043362; c=relaxed/simple;
-	bh=dIJ3XKvk9KMhqkduAefcnW4Wges1uprK9nKAvEv6YDM=;
+	s=arc-20240116; t=1723043059; c=relaxed/simple;
+	bh=qLJsCgBtmBAseG5Bcg/NkgCS6rPMj3ANaZZUpqV4XI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0uIoV33xRKncCmo/ivZR3YkTN/3JS5bAtL1PXUfs+o+Dl2Y8//y+9b6JIGUgo8smKKOFWfbXQNj8qDTZVTj3aNxCPAdnBbPRNxLkOSVirAQCimRSlOXgNZPNgORKy/RYdoGTze6/yfjDnFsTpdA1Yx7zF6agtEW2+iUiopp63k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyOusG5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA5FC4AF0D;
-	Wed,  7 Aug 2024 15:09:21 +0000 (UTC)
+	 MIME-Version; b=u54y2HxEmdrq4WlZdrfVbUs6hkbjq0OyzwzW4Twr+iIs0tidQPNm5eSUaU7X1BOdhUIrmbeq3fXoYv4yregsQ3ZeddsgGiUPt2/4wCG7WPVVWp6YDu3fe7vNMXHTx+PwFPr7qGBtpFgR7PIxjCtZvRO1LMT28pstWC3353ls1m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzjQXXVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306C7C4AF0B;
+	Wed,  7 Aug 2024 15:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043362;
-	bh=dIJ3XKvk9KMhqkduAefcnW4Wges1uprK9nKAvEv6YDM=;
+	s=korg; t=1723043059;
+	bh=qLJsCgBtmBAseG5Bcg/NkgCS6rPMj3ANaZZUpqV4XI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyOusG5qEKIgnTuqCHtW9pudVTe5ViuxI79WB919utdtWeVYAuoyLKzo9wiQS/k1d
-	 6I6ZX2ZMkOB3d1Oi0tzyAK22W6gSJ9FmNF2gQYgHiQXTqwK6pu5bIJaPZDtwcDrGCr
-	 rTvpgL1YK+5x4nkVIByRcBnWrDQjQs2uZGG7AjiA=
+	b=hzjQXXVehphkLj6Tr9EvJh7YrqNGlx1G2QmLd4Dnl+7bxMPmbPaWqVrmSHbrM0Ku0
+	 May7RRn24z1kNUQShjdttmHHjBZVasZEeEUd2O5vhWDCl9dY9quFu/0ioJapFoLwdf
+	 iW+ocfDu7FPGw0/chhn18mW1Z/eEQJjIg7lH8yds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/121] mptcp: give rcvlowat some love
+	Xiubo Li <xiubli@redhat.com>,
+	Venky Shankar <vshankar@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.10 076/123] ceph: force sending a cap update msg back to MDS for revoke op
 Date: Wed,  7 Aug 2024 16:59:55 +0200
-Message-ID: <20240807150021.472831688@linuxfoundation.org>
+Message-ID: <20240807150023.264684986@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,278 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 5684ab1a0effbfeb706f47d85785f653005b97b1 ]
+commit 31634d7597d8c57894b6c98eeefc9e58cf842993 upstream.
 
-The MPTCP protocol allow setting sk_rcvlowat, but the value there
-is currently ignored.
+If a client sends out a cap update dropping caps with the prior 'seq'
+just before an incoming cap revoke request, then the client may drop
+the revoke because it believes it's already released the requested
+capabilities.
 
-Additionally, the default subflows sk_rcvlowat basically disables per
-subflow delayed ack: the MPTCP protocol move the incoming data from the
-subflows into the msk socket as soon as the TCP stacks invokes the subflow
-data_ready callback. Later, when __tcp_ack_snd_check() takes action,
-the subflow-level copied_seq matches rcv_nxt, and that mandate for an
-immediate ack.
+This causes the MDS to wait indefinitely for the client to respond
+to the revoke. It's therefore always a good idea to ack the cap
+revoke request with the bumped up 'seq'.
 
-Let the mptcp receive path be aware of such threshold, explicitly tracking
-the amount of data available to be ready and checking vs sk_rcvlowat in
-mptcp_poll() and before waking-up readers.
+Currently if the cap->issued equals to the newcaps the check_caps()
+will do nothing, we should force flush the caps.
 
-Additionally implement the set_rcvlowat() callback, to properly handle
-the rcvbuf auto-tuning on sk_rcvlowat changes.
-
-Finally to properly handle delayed ack, force the subflow level threshold
-to 0 and instead explicitly ask for an immediate ack when the msk level th
-is not reached.
-
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231023-send-net-next-20231023-2-v1-5-9dc60939d371@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 05f76b2d634e ("tcp: Adjust clamping window for applications specifying SO_RCVBUF")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61782
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Venky Shankar <vshankar@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c | 24 +++++++++++-------------
- net/mptcp/protocol.h | 20 ++++++++++++++++++++
- net/mptcp/sockopt.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
- net/mptcp/subflow.c  | 12 ++++++++++--
- 4 files changed, 83 insertions(+), 15 deletions(-)
+ fs/ceph/caps.c  |   35 ++++++++++++++++++++++++-----------
+ fs/ceph/super.h |    7 ++++---
+ 2 files changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index fbf2b26760731..d2edd02a137bd 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -849,9 +849,8 @@ void mptcp_data_ready(struct sock *sk, struct sock *ssk)
- 
- 	/* Wake-up the reader only for in-sequence data */
- 	mptcp_data_lock(sk);
--	if (move_skbs_to_msk(msk, ssk))
-+	if (move_skbs_to_msk(msk, ssk) && mptcp_epollin_ready(sk))
- 		sk->sk_data_ready(sk);
--
- 	mptcp_data_unlock(sk);
- }
- 
-@@ -1918,6 +1917,7 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
- 			if (!(flags & MSG_PEEK)) {
- 				MPTCP_SKB_CB(skb)->offset += count;
- 				MPTCP_SKB_CB(skb)->map_seq += count;
-+				msk->bytes_consumed += count;
- 			}
- 			break;
- 		}
-@@ -1928,6 +1928,7 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
- 			WRITE_ONCE(msk->rmem_released, msk->rmem_released + skb->truesize);
- 			__skb_unlink(skb, &msk->receive_queue);
- 			__kfree_skb(skb);
-+			msk->bytes_consumed += count;
- 		}
- 
- 		if (copied >= len)
-@@ -2752,6 +2753,7 @@ static void __mptcp_init_sock(struct sock *sk)
- 	msk->rmem_fwd_alloc = 0;
- 	WRITE_ONCE(msk->rmem_released, 0);
- 	msk->timer_ival = TCP_RTO_MIN;
-+	msk->scaling_ratio = TCP_DEFAULT_SCALING_RATIO;
- 
- 	WRITE_ONCE(msk->first, NULL);
- 	inet_csk(sk)->icsk_sync_mss = mptcp_sync_mss;
-@@ -2984,16 +2986,9 @@ void __mptcp_unaccepted_force_close(struct sock *sk)
- 	__mptcp_destroy_sock(sk);
- }
- 
--static __poll_t mptcp_check_readable(struct mptcp_sock *msk)
-+static __poll_t mptcp_check_readable(struct sock *sk)
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -2016,6 +2016,8 @@ bool __ceph_should_report_size(struct ce
+  *  CHECK_CAPS_AUTHONLY - we should only check the auth cap
+  *  CHECK_CAPS_FLUSH - we should flush any dirty caps immediately, without
+  *    further delay.
++ *  CHECK_CAPS_FLUSH_FORCE - we should flush any caps immediately, without
++ *    further delay.
+  */
+ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
  {
--	/* Concurrent splices from sk_receive_queue into receive_queue will
--	 * always show at least one non-empty queue when checked in this order.
--	 */
--	if (skb_queue_empty_lockless(&((struct sock *)msk)->sk_receive_queue) &&
--	    skb_queue_empty_lockless(&msk->receive_queue))
--		return 0;
--
--	return EPOLLIN | EPOLLRDNORM;
-+	return mptcp_epollin_ready(sk) ? EPOLLIN | EPOLLRDNORM : 0;
- }
- 
- static void mptcp_check_listen_stop(struct sock *sk)
-@@ -3031,7 +3026,7 @@ bool __mptcp_close(struct sock *sk, long timeout)
- 		goto cleanup;
+@@ -2097,7 +2099,7 @@ retry:
  	}
  
--	if (mptcp_check_readable(msk) || timeout < 0) {
-+	if (mptcp_data_avail(msk) || timeout < 0) {
- 		/* If the msk has read data, or the caller explicitly ask it,
- 		 * do the MPTCP equivalent of TCP reset, aka MPTCP fastclose
- 		 */
-@@ -3157,6 +3152,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
- 	msk->snd_data_fin_enable = false;
- 	msk->rcv_fastclose = false;
- 	msk->use_64bit_ack = false;
-+	msk->bytes_consumed = 0;
- 	WRITE_ONCE(msk->csum_enabled, mptcp_is_checksum_enabled(sock_net(sk)));
- 	mptcp_pm_data_reset(msk);
- 	mptcp_ca_reset(sk);
-@@ -3983,7 +3979,7 @@ static __poll_t mptcp_poll(struct file *file, struct socket *sock,
- 		mask |= EPOLLIN | EPOLLRDNORM | EPOLLRDHUP;
+ 	doutc(cl, "%p %llx.%llx file_want %s used %s dirty %s "
+-	      "flushing %s issued %s revoking %s retain %s %s%s%s\n",
++	      "flushing %s issued %s revoking %s retain %s %s%s%s%s\n",
+ 	     inode, ceph_vinop(inode), ceph_cap_string(file_wanted),
+ 	     ceph_cap_string(used), ceph_cap_string(ci->i_dirty_caps),
+ 	     ceph_cap_string(ci->i_flushing_caps),
+@@ -2105,7 +2107,8 @@ retry:
+ 	     ceph_cap_string(retain),
+ 	     (flags & CHECK_CAPS_AUTHONLY) ? " AUTHONLY" : "",
+ 	     (flags & CHECK_CAPS_FLUSH) ? " FLUSH" : "",
+-	     (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "");
++	     (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "",
++	     (flags & CHECK_CAPS_FLUSH_FORCE) ? " FLUSH_FORCE" : "");
  
- 	if (state != TCP_SYN_SENT && state != TCP_SYN_RECV) {
--		mask |= mptcp_check_readable(msk);
-+		mask |= mptcp_check_readable(sk);
- 		if (shutdown & SEND_SHUTDOWN)
- 			mask |= EPOLLOUT | EPOLLWRNORM;
+ 	/*
+ 	 * If we no longer need to hold onto old our caps, and we may
+@@ -2180,6 +2183,11 @@ retry:
+ 				queue_writeback = true;
+ 		}
+ 
++		if (flags & CHECK_CAPS_FLUSH_FORCE) {
++			doutc(cl, "force to flush caps\n");
++			goto ack;
++		}
++
+ 		if (cap == ci->i_auth_cap &&
+ 		    (cap->issued & CEPH_CAP_FILE_WR)) {
+ 			/* request larger max_size from MDS? */
+@@ -3504,6 +3512,8 @@ static void handle_cap_grant(struct inod
+ 	bool queue_invalidate = false;
+ 	bool deleted_inode = false;
+ 	bool fill_inline = false;
++	bool revoke_wait = false;
++	int flags = 0;
+ 
+ 	/*
+ 	 * If there is at least one crypto block then we'll trust
+@@ -3699,16 +3709,18 @@ static void handle_cap_grant(struct inod
+ 		      ceph_cap_string(cap->issued), ceph_cap_string(newcaps),
+ 		      ceph_cap_string(revoking));
+ 		if (S_ISREG(inode->i_mode) &&
+-		    (revoking & used & CEPH_CAP_FILE_BUFFER))
++		    (revoking & used & CEPH_CAP_FILE_BUFFER)) {
+ 			writeback = true;  /* initiate writeback; will delay ack */
+-		else if (queue_invalidate &&
++			revoke_wait = true;
++		} else if (queue_invalidate &&
+ 			 revoking == CEPH_CAP_FILE_CACHE &&
+-			 (newcaps & CEPH_CAP_FILE_LAZYIO) == 0)
+-			; /* do nothing yet, invalidation will be queued */
+-		else if (cap == ci->i_auth_cap)
++			 (newcaps & CEPH_CAP_FILE_LAZYIO) == 0) {
++			revoke_wait = true; /* do nothing yet, invalidation will be queued */
++		} else if (cap == ci->i_auth_cap) {
+ 			check_caps = 1; /* check auth cap only */
+-		else
++		} else {
+ 			check_caps = 2; /* check all caps */
++		}
+ 		/* If there is new caps, try to wake up the waiters */
+ 		if (~cap->issued & newcaps)
+ 			wake = true;
+@@ -3735,8 +3747,9 @@ static void handle_cap_grant(struct inod
+ 	BUG_ON(cap->issued & ~cap->implemented);
+ 
+ 	/* don't let check_caps skip sending a response to MDS for revoke msgs */
+-	if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
++	if (!revoke_wait && le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
+ 		cap->mds_wanted = 0;
++		flags |= CHECK_CAPS_FLUSH_FORCE;
+ 		if (cap == ci->i_auth_cap)
+ 			check_caps = 1; /* check auth cap only */
  		else
-@@ -4021,6 +4017,7 @@ static const struct proto_ops mptcp_stream_ops = {
- 	.sendmsg	   = inet_sendmsg,
- 	.recvmsg	   = inet_recvmsg,
- 	.mmap		   = sock_no_mmap,
-+	.set_rcvlowat	   = mptcp_set_rcvlowat,
+@@ -3792,9 +3805,9 @@ static void handle_cap_grant(struct inod
+ 
+ 	mutex_unlock(&session->s_mutex);
+ 	if (check_caps == 1)
+-		ceph_check_caps(ci, CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
++		ceph_check_caps(ci, flags | CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
+ 	else if (check_caps == 2)
+-		ceph_check_caps(ci, CHECK_CAPS_NOINVAL);
++		ceph_check_caps(ci, flags | CHECK_CAPS_NOINVAL);
+ }
+ 
+ /*
+--- a/fs/ceph/super.h
++++ b/fs/ceph/super.h
+@@ -200,9 +200,10 @@ struct ceph_cap {
+ 	struct list_head caps_item;
  };
  
- static struct inet_protosw mptcp_protosw = {
-@@ -4122,6 +4119,7 @@ static const struct proto_ops mptcp_v6_stream_ops = {
- #ifdef CONFIG_COMPAT
- 	.compat_ioctl	   = inet6_compat_ioctl,
- #endif
-+	.set_rcvlowat	   = mptcp_set_rcvlowat,
- };
+-#define CHECK_CAPS_AUTHONLY   1  /* only check auth cap */
+-#define CHECK_CAPS_FLUSH      2  /* flush any dirty caps */
+-#define CHECK_CAPS_NOINVAL    4  /* don't invalidate pagecache */
++#define CHECK_CAPS_AUTHONLY     1  /* only check auth cap */
++#define CHECK_CAPS_FLUSH        2  /* flush any dirty caps */
++#define CHECK_CAPS_NOINVAL      4  /* don't invalidate pagecache */
++#define CHECK_CAPS_FLUSH_FORCE  8  /* force flush any caps */
  
- static struct proto mptcp_v6_prot;
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 93ba48f4ae386..305f4ed954b4b 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -268,6 +268,7 @@ struct mptcp_sock {
- 	atomic64_t	rcv_wnd_sent;
- 	u64		rcv_data_fin_seq;
- 	u64		bytes_retrans;
-+	u64		bytes_consumed;
- 	int		rmem_fwd_alloc;
- 	int		snd_burst;
- 	int		old_wspace;
-@@ -674,6 +675,24 @@ struct sock *mptcp_subflow_get_retrans(struct mptcp_sock *msk);
- int mptcp_sched_get_send(struct mptcp_sock *msk);
- int mptcp_sched_get_retrans(struct mptcp_sock *msk);
- 
-+static inline u64 mptcp_data_avail(const struct mptcp_sock *msk)
-+{
-+	return READ_ONCE(msk->bytes_received) - READ_ONCE(msk->bytes_consumed);
-+}
-+
-+static inline bool mptcp_epollin_ready(const struct sock *sk)
-+{
-+	/* mptcp doesn't have to deal with small skbs in the receive queue,
-+	 * at it can always coalesce them
-+	 */
-+	return (mptcp_data_avail(mptcp_sk(sk)) >= sk->sk_rcvlowat) ||
-+	       (mem_cgroup_sockets_enabled && sk->sk_memcg &&
-+		mem_cgroup_under_socket_pressure(sk->sk_memcg)) ||
-+	       READ_ONCE(tcp_memory_pressure);
-+}
-+
-+int mptcp_set_rcvlowat(struct sock *sk, int val);
-+
- static inline bool __tcp_can_send(const struct sock *ssk)
- {
- 	/* only send if our side has not closed yet */
-@@ -748,6 +767,7 @@ static inline bool mptcp_is_fully_established(struct sock *sk)
- 	return inet_sk_state_load(sk) == TCP_ESTABLISHED &&
- 	       READ_ONCE(mptcp_sk(sk)->fully_established);
- }
-+
- void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk);
- void mptcp_data_ready(struct sock *sk, struct sock *ssk);
- bool mptcp_finish_join(struct sock *sk);
-diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-index cc04b5e29dd35..6e254f10b41e6 100644
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1521,9 +1521,51 @@ void mptcp_sockopt_sync_locked(struct mptcp_sock *msk, struct sock *ssk)
- 
- 	msk_owned_by_me(msk);
- 
-+	ssk->sk_rcvlowat = 0;
-+
- 	if (READ_ONCE(subflow->setsockopt_seq) != msk->setsockopt_seq) {
- 		sync_socket_options(msk, ssk);
- 
- 		subflow->setsockopt_seq = msk->setsockopt_seq;
- 	}
- }
-+
-+/* unfortunately this is different enough from the tcp version so
-+ * that we can't factor it out
-+ */
-+int mptcp_set_rcvlowat(struct sock *sk, int val)
-+{
-+	struct mptcp_subflow_context *subflow;
-+	int space, cap;
-+
-+	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
-+		cap = sk->sk_rcvbuf >> 1;
-+	else
-+		cap = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_rmem[2]) >> 1;
-+	val = min(val, cap);
-+	WRITE_ONCE(sk->sk_rcvlowat, val ? : 1);
-+
-+	/* Check if we need to signal EPOLLIN right now */
-+	if (mptcp_epollin_ready(sk))
-+		sk->sk_data_ready(sk);
-+
-+	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
-+		return 0;
-+
-+	space = __tcp_space_from_win(mptcp_sk(sk)->scaling_ratio, val);
-+	if (space <= sk->sk_rcvbuf)
-+		return 0;
-+
-+	/* propagate the rcvbuf changes to all the subflows */
-+	WRITE_ONCE(sk->sk_rcvbuf, space);
-+	mptcp_for_each_subflow(mptcp_sk(sk), subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		bool slow;
-+
-+		slow = lock_sock_fast(ssk);
-+		WRITE_ONCE(ssk->sk_rcvbuf, space);
-+		tcp_sk(ssk)->window_clamp = val;
-+		unlock_sock_fast(ssk, slow);
-+	}
-+	return 0;
-+}
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 23ee96c6abcbf..090bd05a78642 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1432,10 +1432,18 @@ static void subflow_data_ready(struct sock *sk)
- 	WARN_ON_ONCE(!__mptcp_check_fallback(msk) && !subflow->mp_capable &&
- 		     !subflow->mp_join && !(state & TCPF_CLOSE));
- 
--	if (mptcp_subflow_data_available(sk))
-+	if (mptcp_subflow_data_available(sk)) {
- 		mptcp_data_ready(parent, sk);
--	else if (unlikely(sk->sk_err))
-+
-+		/* subflow-level lowat test are not relevant.
-+		 * respect the msk-level threshold eventually mandating an immediate ack
-+		 */
-+		if (mptcp_data_avail(msk) < parent->sk_rcvlowat &&
-+		    (tcp_sk(sk)->rcv_nxt - tcp_sk(sk)->rcv_wup) > inet_csk(sk)->icsk_ack.rcv_mss)
-+			inet_csk(sk)->icsk_ack.pending |= ICSK_ACK_NOW;
-+	} else if (unlikely(sk->sk_err)) {
- 		subflow_error_report(sk);
-+	}
- }
- 
- static void subflow_write_space(struct sock *ssk)
--- 
-2.43.0
-
+ struct ceph_cap_flush {
+ 	u64 tid;
 
 
 
