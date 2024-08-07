@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-65725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C9C94AB9C
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886A394AAF6
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5153A1C21972
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B17D4B22BFD
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C1B83CD5;
-	Wed,  7 Aug 2024 15:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E8A78B4C;
+	Wed,  7 Aug 2024 15:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PWzbWwr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Du9DnMMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C2A3EA9A;
-	Wed,  7 Aug 2024 15:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321BA23CE;
+	Wed,  7 Aug 2024 15:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043237; cv=none; b=a4vCKgyxVFBFr8MBpFCpnvcQ79e2E/LiptpHBKlBux9JtbWLpWtVmvqM2x4jXGYg38kvYhtqMSN6pTgd8+N0baAJk3dz1Q5Mh3E88wsgmdUWighjd2R+omb31cf6RG8M1jeCvY3kptIUAKO1xfUnD07kHWd9mN7hovjosdFWY/w=
+	t=1723042899; cv=none; b=IsYegWN0e14JQjT4N5wsfsAHUZjnFjQJNfy9rN5C72RTddm6RkBBxM66qEEC6WEC174rLhV3+VEN+ApD7iUUzvdxPFzz/NMeh/nSkwjTIf/96wpBeyKChj6DHrWVtPv22/9isS9ESibqitZkCjIBQsAxqwFGG1SknvT/8mgHUh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043237; c=relaxed/simple;
-	bh=bgahXXd4hItnkwlDPTRKc08ppwl38mbPqY2skDCQULk=;
+	s=arc-20240116; t=1723042899; c=relaxed/simple;
+	bh=jauIStteZciu4lpsq+K9VqY4qb98gEvzTVw0JXLVVS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9wT1RfZRtL3ZYQzNSf6UnVFheMu9cpcn2Jmzsi5ssBbdUUYPPR91g0K+bCCheViaMYYc6IAkLwUwziIhIGFm2yGOYS525gcnwd36nl5hSUpVJjnm+pAOLEMfz3Pz9PYT5HNGB72LAOKoTu31jRMadPSgnqI4s+4Kv9XvFKMnDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PWzbWwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5887DC32781;
-	Wed,  7 Aug 2024 15:07:17 +0000 (UTC)
+	 MIME-Version; b=ZfkGRLME8bxz9vkIEalcclg3a8plefZuthXzYXh14TrAG+cC73XAudmO1mXR9hVZhFIjqYVV2PYc7REbMROc35OJQt0gIexYnxkvhvZLKzpOvvM9nUxDC5jUU/xmnsmFQNkqN1QFiCHNacSjcCTBgNOouAV2wlInYL6emjg8gZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Du9DnMMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE980C32781;
+	Wed,  7 Aug 2024 15:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043237;
-	bh=bgahXXd4hItnkwlDPTRKc08ppwl38mbPqY2skDCQULk=;
+	s=korg; t=1723042899;
+	bh=jauIStteZciu4lpsq+K9VqY4qb98gEvzTVw0JXLVVS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0PWzbWwrcwO8SiGBOn9UVImLTnXvFggTNxHaQGWlGTf68c8Kq94/pRHKHqwoLnhpx
-	 plRl0So7gX92t5Dz1o0AqXhBTTNfjcWHFefK+VfWcO+9FqxiGd5b0OIXwFoKOTistE
-	 FvoF6wnpxcZerQ3c0b0vJDyMLb8mQT2WhRfaW6xQ=
+	b=Du9DnMMoyzl7AARcdTEP07WxsO9A1FBMBYUkVgF1M1vF/FrZu3vQSpeaR53mBXhwQ
+	 GR88dj6Fi7p91/nDWiuR9nSx85tJ2UOtSNDJS0L1Iro0vDPZKNLoQT2ecHont68jRi
+	 jlEiuFscjtQKj7r49Vu0V+vbWETruFppDtu+uxdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/121] arm64: dts: qcom: sc7280: switch USB+DP QMP PHY to new style of bindings
-Date: Wed,  7 Aug 2024 16:58:55 +0200
-Message-ID: <20240807150019.516398966@linuxfoundation.org>
+Subject: [PATCH 6.10 017/123] ARM: 9408/1: mm: CFI: Fix some erroneous reset prototypes
+Date: Wed,  7 Aug 2024 16:58:56 +0200
+Message-ID: <20240807150021.377866004@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +65,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 36888ed83f998c3335272f9e353eaf6d109e2429 ]
+[ Upstream commit 657a292d679ae3a6c733ab0e939e24ae44b20faf ]
 
-Change the USB QMP PHY to use newer style of QMP PHY bindings (single
-resource region, no per-PHY subnodes).
+I somehow got a few cpu_nn_reset() signatures wrong in my
+patch. Fix it up.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230711120916.4165894-8-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 3d930f1750ce ("arm64: dts: qcom: sc7280: Disable SuperSpeed instances in park mode")
+Closes: https://lore.kernel.org/oe-kbuild-all/202406260432.6WGV2jCk-lkp@intel.com/
+
+Fixes: 393999fa9627 ("ARM: 9389/2: mm: Define prototypes for all per-processor calls")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 59 +++++++++-------------------
- 1 file changed, 19 insertions(+), 40 deletions(-)
+ arch/arm/mm/proc.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index b75de7caaa7e5..dd1d9d10c6615 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -18,6 +18,7 @@
- #include <dt-bindings/interconnect/qcom,sc7280.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/mailbox/qcom-ipcc.h>
-+#include <dt-bindings/phy/phy-qcom-qmp.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
- #include <dt-bindings/reset/qcom,sdm845-aoss.h>
- #include <dt-bindings/reset/qcom,sdm845-pdc.h>
-@@ -858,7 +859,7 @@ gcc: clock-controller@100000 {
- 				 <&rpmhcc RPMH_CXO_CLK_A>, <&sleep_clk>,
- 				 <0>, <&pcie1_lane>,
- 				 <0>, <0>, <0>,
--				 <&usb_1_ssphy>;
-+				 <&usb_1_qmpphy QMP_USB43DP_USB3_PIPE_CLK>;
- 			clock-names = "bi_tcxo", "bi_tcxo_ao", "sleep_clk",
- 				      "pcie_0_pipe_clk", "pcie_1_pipe_clk",
- 				      "ufs_phy_rx_symbol_0_clk", "ufs_phy_rx_symbol_1_clk",
-@@ -3351,49 +3352,26 @@ usb_2_hsphy: phy@88e4000 {
- 			resets = <&gcc GCC_QUSB2PHY_SEC_BCR>;
- 		};
- 
--		usb_1_qmpphy: phy-wrapper@88e9000 {
--			compatible = "qcom,sc7280-qmp-usb3-dp-phy",
--				     "qcom,sm8250-qmp-usb3-dp-phy";
--			reg = <0 0x088e9000 0 0x200>,
--			      <0 0x088e8000 0 0x40>,
--			      <0 0x088ea000 0 0x200>;
-+		usb_1_qmpphy: phy@88e8000 {
-+			compatible = "qcom,sc7280-qmp-usb3-dp-phy";
-+			reg = <0 0x088e8000 0 0x3000>;
- 			status = "disabled";
--			#address-cells = <2>;
--			#size-cells = <2>;
--			ranges;
- 
- 			clocks = <&gcc GCC_USB3_PRIM_PHY_AUX_CLK>,
- 				 <&rpmhcc RPMH_CXO_CLK>,
--				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>;
--			clock-names = "aux", "ref_clk_src", "com_aux";
-+				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>,
-+				 <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>;
-+			clock-names = "aux",
-+				      "ref",
-+				      "com_aux",
-+				      "usb3_pipe";
- 
- 			resets = <&gcc GCC_USB3_DP_PHY_PRIM_BCR>,
- 				 <&gcc GCC_USB3_PHY_PRIM_BCR>;
- 			reset-names = "phy", "common";
- 
--			usb_1_ssphy: usb3-phy@88e9200 {
--				reg = <0 0x088e9200 0 0x200>,
--				      <0 0x088e9400 0 0x200>,
--				      <0 0x088e9c00 0 0x400>,
--				      <0 0x088e9600 0 0x200>,
--				      <0 0x088e9800 0 0x200>,
--				      <0 0x088e9a00 0 0x100>;
--				#clock-cells = <0>;
--				#phy-cells = <0>;
--				clocks = <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>;
--				clock-names = "pipe0";
--				clock-output-names = "usb3_phy_pipe_clk_src";
--			};
--
--			dp_phy: dp-phy@88ea200 {
--				reg = <0 0x088ea200 0 0x200>,
--				      <0 0x088ea400 0 0x200>,
--				      <0 0x088eaa00 0 0x200>,
--				      <0 0x088ea600 0 0x200>,
--				      <0 0x088ea800 0 0x200>;
--				#phy-cells = <0>;
--				#clock-cells = <1>;
--			};
-+			#clock-cells = <1>;
-+			#phy-cells = <1>;
- 		};
- 
- 		usb_2: usb@8cf8800 {
-@@ -3702,7 +3680,7 @@ usb_1_dwc3: usb@a600000 {
- 				iommus = <&apps_smmu 0xe0 0x0>;
- 				snps,dis_u2_susphy_quirk;
- 				snps,dis_enblslpm_quirk;
--				phys = <&usb_1_hsphy>, <&usb_1_ssphy>;
-+				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 				maximum-speed = "super-speed";
- 			};
-@@ -3807,8 +3785,8 @@ dispcc: clock-controller@af00000 {
- 				 <&gcc GCC_DISP_GPLL0_CLK_SRC>,
- 				 <&mdss_dsi_phy 0>,
- 				 <&mdss_dsi_phy 1>,
--				 <&dp_phy 0>,
--				 <&dp_phy 1>,
-+				 <&usb_1_qmpphy QMP_USB43DP_DP_LINK_CLK>,
-+				 <&usb_1_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>,
- 				 <&mdss_edp_phy 0>,
- 				 <&mdss_edp_phy 1>;
- 			clock-names = "bi_tcxo",
-@@ -4144,8 +4122,9 @@ mdss_dp: displayport-controller@ae90000 {
- 						"stream_pixel";
- 				assigned-clocks = <&dispcc DISP_CC_MDSS_DP_LINK_CLK_SRC>,
- 						  <&dispcc DISP_CC_MDSS_DP_PIXEL_CLK_SRC>;
--				assigned-clock-parents = <&dp_phy 0>, <&dp_phy 1>;
--				phys = <&dp_phy>;
-+				assigned-clock-parents = <&usb_1_qmpphy QMP_USB43DP_DP_LINK_CLK>,
-+							 <&usb_1_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>;
-+				phys = <&usb_1_qmpphy QMP_USB43DP_DP_PHY>;
- 				phy-names = "dp";
- 
- 				operating-points-v2 = <&dp_opp_table>;
+diff --git a/arch/arm/mm/proc.c b/arch/arm/mm/proc.c
+index bdbbf65d1b366..2027845efefb6 100644
+--- a/arch/arm/mm/proc.c
++++ b/arch/arm/mm/proc.c
+@@ -17,7 +17,7 @@ void cpu_arm7tdmi_proc_init(void);
+ __ADDRESSABLE(cpu_arm7tdmi_proc_init);
+ void cpu_arm7tdmi_proc_fin(void);
+ __ADDRESSABLE(cpu_arm7tdmi_proc_fin);
+-void cpu_arm7tdmi_reset(void);
++void cpu_arm7tdmi_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_arm7tdmi_reset);
+ int cpu_arm7tdmi_do_idle(void);
+ __ADDRESSABLE(cpu_arm7tdmi_do_idle);
+@@ -32,7 +32,7 @@ void cpu_arm720_proc_init(void);
+ __ADDRESSABLE(cpu_arm720_proc_init);
+ void cpu_arm720_proc_fin(void);
+ __ADDRESSABLE(cpu_arm720_proc_fin);
+-void cpu_arm720_reset(void);
++void cpu_arm720_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_arm720_reset);
+ int cpu_arm720_do_idle(void);
+ __ADDRESSABLE(cpu_arm720_do_idle);
+@@ -49,7 +49,7 @@ void cpu_arm740_proc_init(void);
+ __ADDRESSABLE(cpu_arm740_proc_init);
+ void cpu_arm740_proc_fin(void);
+ __ADDRESSABLE(cpu_arm740_proc_fin);
+-void cpu_arm740_reset(void);
++void cpu_arm740_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_arm740_reset);
+ int cpu_arm740_do_idle(void);
+ __ADDRESSABLE(cpu_arm740_do_idle);
+@@ -64,7 +64,7 @@ void cpu_arm9tdmi_proc_init(void);
+ __ADDRESSABLE(cpu_arm9tdmi_proc_init);
+ void cpu_arm9tdmi_proc_fin(void);
+ __ADDRESSABLE(cpu_arm9tdmi_proc_fin);
+-void cpu_arm9tdmi_reset(void);
++void cpu_arm9tdmi_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_arm9tdmi_reset);
+ int cpu_arm9tdmi_do_idle(void);
+ __ADDRESSABLE(cpu_arm9tdmi_do_idle);
+@@ -79,7 +79,7 @@ void cpu_arm920_proc_init(void);
+ __ADDRESSABLE(cpu_arm920_proc_init);
+ void cpu_arm920_proc_fin(void);
+ __ADDRESSABLE(cpu_arm920_proc_fin);
+-void cpu_arm920_reset(void);
++void cpu_arm920_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_arm920_reset);
+ int cpu_arm920_do_idle(void);
+ __ADDRESSABLE(cpu_arm920_do_idle);
+@@ -102,7 +102,7 @@ void cpu_arm922_proc_init(void);
+ __ADDRESSABLE(cpu_arm922_proc_init);
+ void cpu_arm922_proc_fin(void);
+ __ADDRESSABLE(cpu_arm922_proc_fin);
+-void cpu_arm922_reset(void);
++void cpu_arm922_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_arm922_reset);
+ int cpu_arm922_do_idle(void);
+ __ADDRESSABLE(cpu_arm922_do_idle);
+@@ -119,7 +119,7 @@ void cpu_arm925_proc_init(void);
+ __ADDRESSABLE(cpu_arm925_proc_init);
+ void cpu_arm925_proc_fin(void);
+ __ADDRESSABLE(cpu_arm925_proc_fin);
+-void cpu_arm925_reset(void);
++void cpu_arm925_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_arm925_reset);
+ int cpu_arm925_do_idle(void);
+ __ADDRESSABLE(cpu_arm925_do_idle);
+@@ -159,7 +159,7 @@ void cpu_arm940_proc_init(void);
+ __ADDRESSABLE(cpu_arm940_proc_init);
+ void cpu_arm940_proc_fin(void);
+ __ADDRESSABLE(cpu_arm940_proc_fin);
+-void cpu_arm940_reset(void);
++void cpu_arm940_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_arm940_reset);
+ int cpu_arm940_do_idle(void);
+ __ADDRESSABLE(cpu_arm940_do_idle);
+@@ -174,7 +174,7 @@ void cpu_arm946_proc_init(void);
+ __ADDRESSABLE(cpu_arm946_proc_init);
+ void cpu_arm946_proc_fin(void);
+ __ADDRESSABLE(cpu_arm946_proc_fin);
+-void cpu_arm946_reset(void);
++void cpu_arm946_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_arm946_reset);
+ int cpu_arm946_do_idle(void);
+ __ADDRESSABLE(cpu_arm946_do_idle);
+@@ -429,7 +429,7 @@ void cpu_v7_proc_init(void);
+ __ADDRESSABLE(cpu_v7_proc_init);
+ void cpu_v7_proc_fin(void);
+ __ADDRESSABLE(cpu_v7_proc_fin);
+-void cpu_v7_reset(void);
++void cpu_v7_reset(unsigned long addr, bool hvc);
+ __ADDRESSABLE(cpu_v7_reset);
+ int cpu_v7_do_idle(void);
+ __ADDRESSABLE(cpu_v7_do_idle);
 -- 
 2.43.0
 
