@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-65882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3156B94AC59
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BABA294AB8F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6282F1C211C8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 725DA1F26182
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65E3823DE;
-	Wed,  7 Aug 2024 15:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60772126F2A;
+	Wed,  7 Aug 2024 15:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogCcYAAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSdpLLMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7F582C8E;
-	Wed,  7 Aug 2024 15:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB7982488;
+	Wed,  7 Aug 2024 15:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043658; cv=none; b=JiWvp5EE2S6AoJw0A4s2iDR7FDJ0LBgIOrynH1dz2+aVsChHrtKqFDLA6emmIgvgwwHu8Zc5kVeSeDHmfbPqls83jLyHGcnIKFNzymZ7eehLYcDw+TXGfD1copq3bspijsdIdhALr3F0iS+NCZB6hpxy6UISZ9yLCNC7h23eGpA=
+	t=1723043208; cv=none; b=Ol+NRDewsP8v9/xGgQ9la/0b4bL2iHdueP2+XyV/hNKdVJu/iduW9A7G6P9Lsi4AWOS24QP99i2RYM241wMhJXsAcnNYGug9GHhDJjQruei2CnuhMtH1CXuoWDcYy4eOmOtBqEMjkzAt9ShmM2NJDLl09hjL7UZi62wTErzwmOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043658; c=relaxed/simple;
-	bh=u9ihcOTuNqVKtSFnhw1C7NMVnEDAPkh1j3bXqWvRG00=;
+	s=arc-20240116; t=1723043208; c=relaxed/simple;
+	bh=Tg7385+GFBkwL6ZhnxfFt5W1j2xrtSfL2SlNit6v67A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=secAhLztpe1ZEvmcH2hH1N+/lGgfyjBHoPZr9EioxmkIXccyh5MGdDDN6zsvcviCxKB7Vgr2d2QJdMo/8LeyZkjosC15cG7WekgUYGNxxJHoB1CaNtxFLd/0EsTzq7b96TBmrk1Y5wPyvLyj+StK5up0wQq7kJ45KtK7wsMPOmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogCcYAAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DA1C32781;
-	Wed,  7 Aug 2024 15:14:17 +0000 (UTC)
+	 MIME-Version; b=StUb3Cp1GPzELLs1eEijROtK5DHFXH90El9OMCbwv5IyYW8HJ7b4k5lDHWy9A52HzNRqViGY1FiZqS4niFudItGBCM9GRzGrQLhwhKFVFQRUQdzDIHwj4EnI3Zj3v4I4BbQbCfVG9OnwDt+1UP3jZ3T6FQh9AdYfaynYplBbAnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSdpLLMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CABBC32781;
+	Wed,  7 Aug 2024 15:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043658;
-	bh=u9ihcOTuNqVKtSFnhw1C7NMVnEDAPkh1j3bXqWvRG00=;
+	s=korg; t=1723043207;
+	bh=Tg7385+GFBkwL6ZhnxfFt5W1j2xrtSfL2SlNit6v67A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogCcYAAvSZ9M4G4obEtc7tI+8F+WyWzHc4PlM5o2y4hTfW4zdPqZ8RORi617VjBMN
-	 z6p56F5upC+0FxM9tmHVra0zRhBcu2GCEHS1NqK7YthCiWSSNHDr58ZtHKJbOX9qsb
-	 36aLEZ8iRSNZRRbOPugrRGYKaNEizvTx8cZg/XLY=
+	b=LSdpLLMjXJbVLlqZaP3+ftGTjw40PYXOgYeMjrwbCfY2yy4j3hUnw6IOl1w2+Clmp
+	 Z4tANPCh9DiAUh3eeoEHjtdnGii54yyyMpqmbeCJ6WzDM46jSrQ3m495jNhgqYZF7A
+	 phaat4hu8xbeaSZobxxDkPvdZViJEm1TW1qY3VMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.1 51/86] ice: dont busy wait for Rx queue disable in ice_qp_dis()
+	Jakub Kicinski <kuba@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>
+Subject: [PATCH 6.10 111/123] r8169: dont increment tx_dropped in case of NETDEV_TX_BUSY
 Date: Wed,  7 Aug 2024 17:00:30 +0200
-Message-ID: <20240807150040.932575330@linuxfoundation.org>
+Message-ID: <20240807150024.462926913@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 1ff72a2f67791cd4ddad19ed830445f57b30e992 ]
+commit d516b187a9cc2e842030dd005be2735db3e8f395 upstream.
 
-When ice driver is spammed with multiple xdpsock instances and flow
-control is enabled, there are cases when Rx queue gets stuck and unable
-to reflect the disable state in QRX_CTRL register. Similar issue has
-previously been addressed in commit 13a6233b033f ("ice: Add support to
-enable/disable all Rx queues before waiting").
+The skb isn't consumed in case of NETDEV_TX_BUSY, therefore don't
+increment the tx_dropped counter.
 
-To workaround this, let us simply not wait for a disabled state as later
-patch will make sure that regardless of the encountered error in the
-process of disabling a queue pair, the Rx queue will be enabled.
-
-Fixes: 2d4238f55697 ("ice: Add support for AF_XDP")
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 188f4af04618 ("r8169: use NETDEV_TX_{BUSY/OK}")
+Cc: stable@vger.kernel.org
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/bbba9c48-8bac-4932-9aa1-d2ed63bc9433@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_xsk.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index 61e4730bba59e..ebc017dd245f1 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -191,10 +191,8 @@ static int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
- 		if (err)
- 			return err;
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4347,7 +4347,8 @@ static netdev_tx_t rtl8169_start_xmit(st
+ 	if (unlikely(!rtl_tx_slots_avail(tp))) {
+ 		if (net_ratelimit())
+ 			netdev_err(dev, "BUG! Tx Ring full when queue awake!\n");
+-		goto err_stop_0;
++		netif_stop_queue(dev);
++		return NETDEV_TX_BUSY;
  	}
--	err = ice_vsi_ctrl_one_rx_ring(vsi, false, q_idx, true);
--	if (err)
--		return err;
  
-+	ice_vsi_ctrl_one_rx_ring(vsi, false, q_idx, false);
- 	ice_qp_clean_rings(vsi, q_idx);
- 	ice_qp_reset_stats(vsi, q_idx);
+ 	opts[1] = rtl8169_tx_vlan_tag(skb);
+@@ -4403,11 +4404,6 @@ err_dma_0:
+ 	dev_kfree_skb_any(skb);
+ 	dev->stats.tx_dropped++;
+ 	return NETDEV_TX_OK;
+-
+-err_stop_0:
+-	netif_stop_queue(dev);
+-	dev->stats.tx_dropped++;
+-	return NETDEV_TX_BUSY;
+ }
  
--- 
-2.43.0
-
+ static unsigned int rtl_last_frag_len(struct sk_buff *skb)
 
 
 
