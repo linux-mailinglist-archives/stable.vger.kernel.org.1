@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-65890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000C494AC65
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEC894ABDC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FBB31F252C2
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA4B1F25EA8
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC0584A46;
-	Wed,  7 Aug 2024 15:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DB684A3E;
+	Wed,  7 Aug 2024 15:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/ZlE1oa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qo3xLSVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C44B82C8E;
-	Wed,  7 Aug 2024 15:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C59823AF;
+	Wed,  7 Aug 2024 15:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043679; cv=none; b=INBMav7Q63ig5zkSlLaSDO//rLFOJLzPjGd4vH+ph3GmNhILlLbEg8+fpgIoZogvH5qdcG+zAnwwa12YphpFf1XyQ8zJoBax2pekcMF1DXbwMvKNocIli9/90wLytiU/HJcVE07oGQKUhLO2danGmq8SoXJJyiFNk9hPJvB2Ivs=
+	t=1723043381; cv=none; b=uwbiFuNSPcXahunMZX2PBGuYhZ4191WJFxBCj4FeJXI8bR5l/NsO5SLtmWKh5s5fx9vHRZk65F4jhxRe+8qlkET0t+bRfiGf0GQj7yrhP08o0DkwszmIXYomGu/5NyNJKdwfB/byg2DFz43ipRvOjuQawaWDzGw7EzfH0czdNUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043679; c=relaxed/simple;
-	bh=bhH9NL/qy4k0wNB0sxyxcU6lm78frZOHzoM2+81Twg0=;
+	s=arc-20240116; t=1723043381; c=relaxed/simple;
+	bh=5eiBrpFLgWzl2iZQYbyl17ytfj9FWmFFm3LALaTf8CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/UQtJ50G/K7UEEKNg3OL0i0cJCCKKM4TEoTnF11w/xq/AKMWW9q8MpAtDjBtOaBYSn8f5TXH2kxbXlMbGq5pBQxsMhmximJ6uCAjCW2nVFan1ulbZCQwaulxTC8mDXv20uxLtTNgPHk/3/0W7lAkCNHJmKJljPHbVXlT7HmR1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/ZlE1oa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6CEC32781;
-	Wed,  7 Aug 2024 15:14:38 +0000 (UTC)
+	 MIME-Version; b=dAtCvseuH/wbOGkYGN2L9yTVMGB8JwCIqJc9zLFp6FWE+TklTYMgHQQ/QuKE3y0jpP9E1JxiMYrBDNe3QChNz9J+HDS9oBaCicGDzeZy+LW5wMVpA5kW6zAOgBbeb+3snADQ7i6Tni5XQK9tpovmXk1oABJcL6ziI8OAuvm9bQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qo3xLSVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720EFC32781;
+	Wed,  7 Aug 2024 15:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043679;
-	bh=bhH9NL/qy4k0wNB0sxyxcU6lm78frZOHzoM2+81Twg0=;
+	s=korg; t=1723043380;
+	bh=5eiBrpFLgWzl2iZQYbyl17ytfj9FWmFFm3LALaTf8CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/ZlE1oaZy9JwTgv2AmMmrgVZ0KXRkqpguBYsOFnbcdakFGEGo3xT0g+CcQlxtYOy
-	 /4uWgY4w/owfkPVd9flI3E1hrs/8o7edC7tBBBkYwzvGcGuO6kg2lnddbTK0+9pJYN
-	 v9L4vlbwOBcj3cwf+IjmM3Hrk/+pBekBc4xOJJDU=
+	b=qo3xLSVfToEx9uihyo+yKzwe9szKUB71sH2RM3SozaZFsBxDKjOVaOFYg4K1PQoy4
+	 DHWV+Y6YhWjDD+B4nK8GRyM2TKhpuwO4nPJk3yGk5Ul3kRVVDG0uDcsn+5OcDkTxAK
+	 K6kO2husPW8VZSVuUsIYEVlZ5q3FfJtSGE95IE/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Yao Xingtao <yaoxt.fnst@fujitsu.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 22/86] mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.6 069/121] ice: respect netif readiness in AF_XDP ZC related ndos
 Date: Wed,  7 Aug 2024 17:00:01 +0200
-Message-ID: <20240807150039.969311524@linuxfoundation.org>
+Message-ID: <20240807150021.659059539@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Michal Kubiak <michal.kubiak@intel.com>
 
-[ Upstream commit 66eca1021a42856d6af2a9802c99e160278aed91 ]
+[ Upstream commit ec145a18687fec8dd97eeb4f30057fa4debef577 ]
 
-It's expected that no page should be left in pcp_list after calling
-zone_pcp_disable() in offline_pages().  Previously, it's observed that
-offline_pages() gets stuck [1] due to some pages remaining in pcp_list.
+Address a scenario in which XSK ZC Tx produces descriptors to XDP Tx
+ring when link is either not yet fully initialized or process of
+stopping the netdev has already started. To avoid this, add checks
+against carrier readiness in ice_xsk_wakeup() and in ice_xmit_zc().
+One could argue that bailing out early in ice_xsk_wakeup() would be
+sufficient but given the fact that we produce Tx descriptors on behalf
+of NAPI that is triggered for Rx traffic, the latter is also needed.
 
-Cause:
-There is a race condition between drain_pages_zone() and __rmqueue_pcplist()
-involving the pcp->count variable. See below scenario:
+Bringing link up is an asynchronous event executed within
+ice_service_task so even though interface has been brought up there is
+still a time frame where link is not yet ok.
 
-         CPU0                              CPU1
-    ----------------                    ---------------
-                                      spin_lock(&pcp->lock);
-                                      __rmqueue_pcplist() {
-zone_pcp_disable() {
-                                        /* list is empty */
-                                        if (list_empty(list)) {
-                                          /* add pages to pcp_list */
-                                          alloced = rmqueue_bulk()
-  mutex_lock(&pcp_batch_high_lock)
-  ...
-  __drain_all_pages() {
-    drain_pages_zone() {
-      /* read pcp->count, it's 0 here */
-      count = READ_ONCE(pcp->count)
-      /* 0 means nothing to drain */
-                                          /* update pcp->count */
-                                          pcp->count += alloced << order;
-      ...
-                                      ...
-                                      spin_unlock(&pcp->lock);
+Without this patch, when AF_XDP ZC Tx is used simultaneously with stack
+Tx, Tx timeouts occur after going through link flap (admin brings
+interface down then up again). HW seem to be unable to transmit
+descriptor to the wire after HW tail register bump which in turn causes
+bit __QUEUE_STATE_STACK_XOFF to be set forever as
+netdev_tx_completed_queue() sees no cleaned bytes on the input.
 
-In this case, after calling zone_pcp_disable() though, there are still some
-pages in pcp_list. And these pages in pcp_list are neither movable nor
-isolated, offline_pages() gets stuck as a result.
-
-Solution:
-Expand the scope of the pcp->lock to also protect pcp->count in
-drain_pages_zone(), to ensure no pages are left in the pcp list after
-zone_pcp_disable()
-
-[1] https://lore.kernel.org/linux-mm/6a07125f-e720-404c-b2f9-e55f3f166e85@fujitsu.com/
-
-Link: https://lkml.kernel.org/r/20240723064428.1179519-1-lizhijian@fujitsu.com
-Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reported-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 126cdfe1007a ("ice: xsk: Improve AF_XDP ZC Tx and use batching API")
+Fixes: 2d4238f55697 ("ice: Add support for AF_XDP")
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_xsk.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 4029d13636ece..a905b850d31c4 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3177,16 +3177,20 @@ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
- static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- {
- 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
--	int count = READ_ONCE(pcp->count);
--
--	while (count) {
--		int to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
--		count -= to_drain;
-+	int count;
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index f53566cb6bfbd..248cb02958acd 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -1068,6 +1068,10 @@ bool ice_xmit_zc(struct ice_tx_ring *xdp_ring)
  
-+	do {
- 		spin_lock(&pcp->lock);
--		free_pcppages_bulk(zone, to_drain, pcp, 0);
-+		count = pcp->count;
-+		if (count) {
-+			int to_drain = min(count,
-+				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
+ 	ice_clean_xdp_irq_zc(xdp_ring);
+ 
++	if (!netif_carrier_ok(xdp_ring->vsi->netdev) ||
++	    !netif_running(xdp_ring->vsi->netdev))
++		return true;
 +
-+			free_pcppages_bulk(zone, to_drain, pcp, 0);
-+			count -= to_drain;
-+		}
- 		spin_unlock(&pcp->lock);
--	}
-+	} while (count);
- }
+ 	budget = ICE_DESC_UNUSED(xdp_ring);
+ 	budget = min_t(u16, budget, ICE_RING_QUARTER(xdp_ring));
  
- /*
+@@ -1111,7 +1115,7 @@ ice_xsk_wakeup(struct net_device *netdev, u32 queue_id,
+ 	struct ice_vsi *vsi = np->vsi;
+ 	struct ice_tx_ring *ring;
+ 
+-	if (test_bit(ICE_VSI_DOWN, vsi->state))
++	if (test_bit(ICE_VSI_DOWN, vsi->state) || !netif_carrier_ok(netdev))
+ 		return -ENETDOWN;
+ 
+ 	if (!ice_is_xdp_ena_vsi(vsi))
 -- 
 2.43.0
 
