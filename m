@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE60194AC38
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF2994ABE9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE301C22613
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD0BE1C223F0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D7C84A40;
-	Wed,  7 Aug 2024 15:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7F6823C8;
+	Wed,  7 Aug 2024 15:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNohIeZQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kk78cSN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CBD374CC;
-	Wed,  7 Aug 2024 15:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE722823AF;
+	Wed,  7 Aug 2024 15:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043588; cv=none; b=U/6e90YpFCK8ril3CNfaZTxBv0y2JBaaGfe1qsik4pebz8v5WlKU8EwguZjVW08E8xP42fnpNDfSLVi2zx1X4Oy+BLzd7XselOvINJarqO3DsRRj0K6ZNZhNO9aMkgyXyUZaqxLlkt6molcaq1XbJYkPzJowu83NrSUFqSFNs1k=
+	t=1723043415; cv=none; b=uNHc3xVlm4iV3U9Vtprp6VeNyF/8UOlKqKOZ8sv4figsS7VLJl1SywMHFaANJojQ+FnXGP5Tmg5N5HrSi+4iEyxUAyq5cUH5ibopaR0lxAsX4whwR2+a0AY0jXi/qYybhAhUHmYscn/vOnBO+FXni0zSCF6g4STvzJ82gy5cWSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043588; c=relaxed/simple;
-	bh=ajnQ/yXCIYCBLp+Hu6iLcP2r578qYIhNG2MlvRB0HUQ=;
+	s=arc-20240116; t=1723043415; c=relaxed/simple;
+	bh=H1Tm5BPT/ZK5ThrX6iS/9Hrk3QgSZsPBT0ZdVv8/5Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nVZWCo4SenIIfvggQoqcUTIF1CPwObmbV7aa2ycpCNgwinyoJ54uCOTlnxMET14djOnTIizoEq2iRE6e2YCYLvHOmVc/AmjhUlFK9+XfiCIzDusUh5k+kzXrK8ZFKmoSIcUWgtzBySiIRohdZkWrgmpEqxUDYKbM/JtHAHHr9to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNohIeZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B5FC32781;
-	Wed,  7 Aug 2024 15:13:07 +0000 (UTC)
+	 MIME-Version; b=Jq0imgb/qZeQ2CeB8hT4PXp3GC+xSshPjJAWsLPwL4HoBm0LDnwGl4J7Yy26EVFqhUdNHJ8cYG8TOmq7VDerJlWE8nKCjRGSy1dkl6y49mRFuBRFQXLFJsd1GDAuz0Vt0V11YXpqLo7VBOdWr7eDEU1CUxySwRmCn92PhfDHVJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kk78cSN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7EEC32781;
+	Wed,  7 Aug 2024 15:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043588;
-	bh=ajnQ/yXCIYCBLp+Hu6iLcP2r578qYIhNG2MlvRB0HUQ=;
+	s=korg; t=1723043415;
+	bh=H1Tm5BPT/ZK5ThrX6iS/9Hrk3QgSZsPBT0ZdVv8/5Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNohIeZQBa6dsoegP3SFsDUVJagM8BIj7+YRMsyZztFX6My4g/uUA2BoSdJPAP3g3
-	 awnsxwVWapb72AfoJWAifR8das9afBQsxah4fQVVqskcMdmqW/V4cRpauoyk+3yPuf
-	 iDm9jrXGBnkGnAhpbgbS3iQdYC/oMitR10a6jjZk=
+	b=2kk78cSNY/Cn1UilCzs3+I7jNYOR0qqrftGJDrtaVgbDDR/9aOSjaYlarNkAIbUwj
+	 frk+dyCllKEwAn1FEvffZl1p5q3WDmnKLA+B//g/wvsctcij8tcCjKI+jY+5qdCOIB
+	 zZeZ6GS7CMIESB5M5Zm1IBHTDZ39NZAHg87b/Gjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Granados <j.granados@samsung.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Doug Brown <doug@schmorgal.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/86] sysctl: treewide: drop unused argument ctl_table_root::set_ownership(table)
-Date: Wed,  7 Aug 2024 16:59:45 +0200
-Message-ID: <20240807150039.462314088@linuxfoundation.org>
+Subject: [PATCH 6.6 054/121] drm/vmwgfx: Fix overlay when using Screen Targets
+Date: Wed,  7 Aug 2024 16:59:46 +0200
+Message-ID: <20240807150021.178318563@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,128 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 520713a93d550406dae14d49cdb8778d70cecdfd ]
+[ Upstream commit cb372a505a994cb39aa75acfb8b3bcf94787cf94 ]
 
-Remove the 'table' argument from set_ownership as it is never used. This
-change is a step towards putting "struct ctl_table" into .rodata and
-eventually having sysctl core only use "const struct ctl_table".
+This code was never updated to support Screen Targets.
+Fixes a bug where Xv playback displays a green screen instead of actual
+video contents when 3D acceleration is disabled in the guest.
 
-The patch was created with the following coccinelle script:
-
-  @@
-  identifier func, head, table, uid, gid;
-  @@
-
-  void func(
-    struct ctl_table_header *head,
-  - struct ctl_table *table,
-    kuid_t *uid, kgid_t *gid)
-  { ... }
-
-No additional occurrences of 'set_ownership' were found after doing a
-tree-wide search.
-
-Reviewed-by: Joel Granados <j.granados@samsung.com>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Joel Granados <j.granados@samsung.com>
-Stable-dep-of: 98ca62ba9e2b ("sysctl: always initialize i_uid/i_gid")
+Fixes: c8261a961ece ("vmwgfx: Major KMS refactoring / cleanup in preparation of screen targets")
+Reported-by: Doug Brown <doug@schmorgal.com>
+Closes: https://lore.kernel.org/all/bd9cb3c7-90e8-435d-bc28-0e38fee58977@schmorgal.com
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Tested-by: Doug Brown <doug@schmorgal.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240719163627.20888-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/proc_sysctl.c  | 2 +-
- include/linux/sysctl.h | 1 -
- ipc/ipc_sysctl.c       | 3 +--
- ipc/mq_sysctl.c        | 3 +--
- net/sysctl_net.c       | 1 -
- 5 files changed, 3 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index 4a4c04a3b1a0a..c468cc0f6d69b 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -484,7 +484,7 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
- 	}
- 
- 	if (root->set_ownership)
--		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
-+		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
- 	else {
- 		inode->i_uid = GLOBAL_ROOT_UID;
- 		inode->i_gid = GLOBAL_ROOT_GID;
-diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
-index a207c7ed41bd2..9f24feb94b24d 100644
---- a/include/linux/sysctl.h
-+++ b/include/linux/sysctl.h
-@@ -185,7 +185,6 @@ struct ctl_table_root {
- 	struct ctl_table_set default_set;
- 	struct ctl_table_set *(*lookup)(struct ctl_table_root *root);
- 	void (*set_ownership)(struct ctl_table_header *head,
--			      struct ctl_table *table,
- 			      kuid_t *uid, kgid_t *gid);
- 	int (*permissions)(struct ctl_table_header *head, struct ctl_table *table);
- };
-diff --git a/ipc/ipc_sysctl.c b/ipc/ipc_sysctl.c
-index 29c1d3ae2a5c8..d7ca2bdae9e82 100644
---- a/ipc/ipc_sysctl.c
-+++ b/ipc/ipc_sysctl.c
-@@ -192,7 +192,6 @@ static int set_is_seen(struct ctl_table_set *set)
- }
- 
- static void ipc_set_ownership(struct ctl_table_header *head,
--			      struct ctl_table *table,
- 			      kuid_t *uid, kgid_t *gid)
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+index c45b4724e4141..e20f64b67b266 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+@@ -92,7 +92,7 @@ static int vmw_overlay_send_put(struct vmw_private *dev_priv,
  {
- 	struct ipc_namespace *ns =
-@@ -224,7 +223,7 @@ static int ipc_permissions(struct ctl_table_header *head, struct ctl_table *tabl
- 		kuid_t ns_root_uid;
- 		kgid_t ns_root_gid;
+ 	struct vmw_escape_video_flush *flush;
+ 	size_t fifo_size;
+-	bool have_so = (dev_priv->active_display_unit == vmw_du_screen_object);
++	bool have_so = (dev_priv->active_display_unit != vmw_du_legacy);
+ 	int i, num_items;
+ 	SVGAGuestPtr ptr;
  
--		ipc_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
-+		ipc_set_ownership(head, &ns_root_uid, &ns_root_gid);
- 
- 		if (uid_eq(current_euid(), ns_root_uid))
- 			mode >>= 6;
-diff --git a/ipc/mq_sysctl.c b/ipc/mq_sysctl.c
-index ce03930aced55..c960691fc24d9 100644
---- a/ipc/mq_sysctl.c
-+++ b/ipc/mq_sysctl.c
-@@ -78,7 +78,6 @@ static int set_is_seen(struct ctl_table_set *set)
- }
- 
- static void mq_set_ownership(struct ctl_table_header *head,
--			     struct ctl_table *table,
- 			     kuid_t *uid, kgid_t *gid)
- {
- 	struct ipc_namespace *ns =
-@@ -97,7 +96,7 @@ static int mq_permissions(struct ctl_table_header *head, struct ctl_table *table
- 	kuid_t ns_root_uid;
- 	kgid_t ns_root_gid;
- 
--	mq_set_ownership(head, table, &ns_root_uid, &ns_root_gid);
-+	mq_set_ownership(head, &ns_root_uid, &ns_root_gid);
- 
- 	if (uid_eq(current_euid(), ns_root_uid))
- 		mode >>= 6;
-diff --git a/net/sysctl_net.c b/net/sysctl_net.c
-index 4b45ed631eb8b..2edb8040eb6c7 100644
---- a/net/sysctl_net.c
-+++ b/net/sysctl_net.c
-@@ -54,7 +54,6 @@ static int net_ctl_permissions(struct ctl_table_header *head,
- }
- 
- static void net_ctl_set_ownership(struct ctl_table_header *head,
--				  struct ctl_table *table,
- 				  kuid_t *uid, kgid_t *gid)
- {
- 	struct net *net = container_of(head->set, struct net, sysctls);
 -- 
 2.43.0
 
