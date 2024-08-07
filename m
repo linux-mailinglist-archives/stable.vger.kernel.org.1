@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-65663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4250694AB59
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 000C494AC65
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 739461C22CED
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FBB31F252C2
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8C584D29;
-	Wed,  7 Aug 2024 15:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC0584A46;
+	Wed,  7 Aug 2024 15:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yUueT70"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/ZlE1oa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290C484D12;
-	Wed,  7 Aug 2024 15:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C44B82C8E;
+	Wed,  7 Aug 2024 15:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043073; cv=none; b=DuoDzHRrHfMxSqOryaT15/f1A/h1mHVDj6OA/Mv1rl5GOW/+qd5D5PYTUoXW77CXfWu1E7X/2+fLO0MRdXrvqJfTwBFbnbgpo7eSRMuW5wzE1TCXHeq4YnYIRvjwGVPFP6Z6HcTblsecFvW1NVjqV8Q5DzHQGc64UYdX1h32cZ4=
+	t=1723043679; cv=none; b=INBMav7Q63ig5zkSlLaSDO//rLFOJLzPjGd4vH+ph3GmNhILlLbEg8+fpgIoZogvH5qdcG+zAnwwa12YphpFf1XyQ8zJoBax2pekcMF1DXbwMvKNocIli9/90wLytiU/HJcVE07oGQKUhLO2danGmq8SoXJJyiFNk9hPJvB2Ivs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043073; c=relaxed/simple;
-	bh=jPXTh2OPZsWZhk0dul3jfBXG5yuBhQCAH5QjtQsF3iI=;
+	s=arc-20240116; t=1723043679; c=relaxed/simple;
+	bh=bhH9NL/qy4k0wNB0sxyxcU6lm78frZOHzoM2+81Twg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EGosjy7dt7yEin20lwGE/vsIbu3aw362JbFEEitmi4gSaG5ipG3lpf2+yD7IZszf4HpUPq+Gjwc7yXQNFIF7fKjikVwydof8PLzaMFcdY0FG93Ba1D3zn7GqSKZDO8VosiEvTlITlRU48vjspG5+jy3pOvlUgb/3fH8vdHPCvCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yUueT70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD2FC4AF0B;
-	Wed,  7 Aug 2024 15:04:32 +0000 (UTC)
+	 MIME-Version; b=G/UQtJ50G/K7UEEKNg3OL0i0cJCCKKM4TEoTnF11w/xq/AKMWW9q8MpAtDjBtOaBYSn8f5TXH2kxbXlMbGq5pBQxsMhmximJ6uCAjCW2nVFan1ulbZCQwaulxTC8mDXv20uxLtTNgPHk/3/0W7lAkCNHJmKJljPHbVXlT7HmR1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/ZlE1oa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6CEC32781;
+	Wed,  7 Aug 2024 15:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043073;
-	bh=jPXTh2OPZsWZhk0dul3jfBXG5yuBhQCAH5QjtQsF3iI=;
+	s=korg; t=1723043679;
+	bh=bhH9NL/qy4k0wNB0sxyxcU6lm78frZOHzoM2+81Twg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yUueT70yGAuzaZNjBqGYsRSk27cuYG6TbG13j/+zrP7DF1g4+w/SgJqZbPcLJSXG
-	 HHvZzZSaVCAK/25P9ACgcnoKaQj6vNbD81ZZTrD7Fqi1MnX4AFuGZprGorN8EOihwz
-	 5JxaTTHExdJWXfF9lwBswsMbVg2K7Wsd/xf8RzBI=
+	b=v/ZlE1oaZy9JwTgv2AmMmrgVZ0KXRkqpguBYsOFnbcdakFGEGo3xT0g+CcQlxtYOy
+	 /4uWgY4w/owfkPVd9flI3E1hrs/8o7edC7tBBBkYwzvGcGuO6kg2lnddbTK0+9pJYN
+	 v9L4vlbwOBcj3cwf+IjmM3Hrk/+pBekBc4xOJJDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.10 081/123] btrfs: do not subtract delalloc from avail bytes
-Date: Wed,  7 Aug 2024 17:00:00 +0200
-Message-ID: <20240807150023.428003766@linuxfoundation.org>
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Yao Xingtao <yaoxt.fnst@fujitsu.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 22/86] mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
+Date: Wed,  7 Aug 2024 17:00:01 +0200
+Message-ID: <20240807150039.969311524@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-commit d89c285d28491d8f10534c262ac9e6bdcbe1b4d2 upstream.
+[ Upstream commit 66eca1021a42856d6af2a9802c99e160278aed91 ]
 
-The block group's avail bytes printed when dumping a space info subtract
-the delalloc_bytes. However, as shown in btrfs_add_reserved_bytes() and
-btrfs_free_reserved_bytes(), it is added or subtracted along with
-"reserved" for the delalloc case, which means the "delalloc_bytes" is a
-part of the "reserved" bytes. So, excluding it to calculate the avail space
-counts delalloc_bytes twice, which can lead to an invalid result.
+It's expected that no page should be left in pcp_list after calling
+zone_pcp_disable() in offline_pages().  Previously, it's observed that
+offline_pages() gets stuck [1] due to some pages remaining in pcp_list.
 
-Fixes: e50b122b832b ("btrfs: print available space for a block group when dumping a space info")
-CC: stable@vger.kernel.org # 6.6+
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cause:
+There is a race condition between drain_pages_zone() and __rmqueue_pcplist()
+involving the pcp->count variable. See below scenario:
+
+         CPU0                              CPU1
+    ----------------                    ---------------
+                                      spin_lock(&pcp->lock);
+                                      __rmqueue_pcplist() {
+zone_pcp_disable() {
+                                        /* list is empty */
+                                        if (list_empty(list)) {
+                                          /* add pages to pcp_list */
+                                          alloced = rmqueue_bulk()
+  mutex_lock(&pcp_batch_high_lock)
+  ...
+  __drain_all_pages() {
+    drain_pages_zone() {
+      /* read pcp->count, it's 0 here */
+      count = READ_ONCE(pcp->count)
+      /* 0 means nothing to drain */
+                                          /* update pcp->count */
+                                          pcp->count += alloced << order;
+      ...
+                                      ...
+                                      spin_unlock(&pcp->lock);
+
+In this case, after calling zone_pcp_disable() though, there are still some
+pages in pcp_list. And these pages in pcp_list are neither movable nor
+isolated, offline_pages() gets stuck as a result.
+
+Solution:
+Expand the scope of the pcp->lock to also protect pcp->count in
+drain_pages_zone(), to ensure no pages are left in the pcp list after
+zone_pcp_disable()
+
+[1] https://lore.kernel.org/linux-mm/6a07125f-e720-404c-b2f9-e55f3f166e85@fujitsu.com/
+
+Link: https://lkml.kernel.org/r/20240723064428.1179519-1-lizhijian@fujitsu.com
+Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reported-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/space-info.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/page_alloc.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -573,8 +573,7 @@ again:
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 4029d13636ece..a905b850d31c4 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3177,16 +3177,20 @@ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
+ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ {
+ 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
+-	int count = READ_ONCE(pcp->count);
+-
+-	while (count) {
+-		int to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
+-		count -= to_drain;
++	int count;
  
- 		spin_lock(&cache->lock);
- 		avail = cache->length - cache->used - cache->pinned -
--			cache->reserved - cache->delalloc_bytes -
--			cache->bytes_super - cache->zone_unusable;
-+			cache->reserved - cache->bytes_super - cache->zone_unusable;
- 		btrfs_info(fs_info,
- "block group %llu has %llu bytes, %llu used %llu pinned %llu reserved %llu delalloc %llu super %llu zone_unusable (%llu bytes available) %s",
- 			   cache->start, cache->length, cache->used, cache->pinned,
++	do {
+ 		spin_lock(&pcp->lock);
+-		free_pcppages_bulk(zone, to_drain, pcp, 0);
++		count = pcp->count;
++		if (count) {
++			int to_drain = min(count,
++				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
++
++			free_pcppages_bulk(zone, to_drain, pcp, 0);
++			count -= to_drain;
++		}
+ 		spin_unlock(&pcp->lock);
+-	}
++	} while (count);
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
