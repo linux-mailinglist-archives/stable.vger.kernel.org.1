@@ -1,49 +1,57 @@
-Return-Path: <stable+bounces-65989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456F894B5C9
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 06:14:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 586CC94B5EA
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 06:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6BDE1F22FA7
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 04:14:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 874E51C21C68
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 04:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCE884A51;
-	Thu,  8 Aug 2024 04:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A92C84047;
+	Thu,  8 Aug 2024 04:29:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB78B9479;
-	Thu,  8 Aug 2024 04:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12359479;
+	Thu,  8 Aug 2024 04:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723090462; cv=none; b=K6WuXRP2aHuTnOEXD/rR7UkLbalowcswpo1DcekU8sK+3xyfk67Q6FrX3/XsxAA2DgFiyfxK7AzvcSJmSsmkdFA6Ck8yEQWKEGswv1A0jzdLnSynw3Mm+720yvyJ2Oa5s3iihwHPm9KUrqHSZLBbxVIs9jZYcrKTBES3WRtLnj8=
+	t=1723091367; cv=none; b=GRS6xyadray8WDvBTo8rwSO9TFnaFxeBdOG6Ym69NUw4xE+VgUIZEbfXREsQ2DPa62F+OjwMJXRUHx3GA9BEFwGK4dDPzGuazvoQvTVpmXgnabWMc4aHx+7w0S5EB1nPP3C1VBobQYv5dQRBvpM6T5M9pdL3DuspxTblrUdQbXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723090462; c=relaxed/simple;
-	bh=glhbN7dVT4zQpN3na6hmnR2DxrICAvbg2AdlboJlrmM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qADS/PTHZEK8xogboMFHC7O/NIonjZpbL6Rh5SErd0yh1l3WGivQZyh1wpLBklx+iBwZOxRcX87Be5+7KgW/0pmlixT6aCqPmXB5JnRBwp9rJ/ylkzaGRFU73qA3wWokEnD2rNCyF9qs5oqxM9tzm9THPzuCrOSKQqOwj361DHs=
+	s=arc-20240116; t=1723091367; c=relaxed/simple;
+	bh=z0h5RZUv4Ugp2MrhgSqmn8OTk4rVenDC+5+77ckWmRA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=esHqhRG8DXDh1CKlEtONQ5vFF/s9mnPlhj4MXGzUEHRBut5I1RF+6M8MBYo5VsdVgwvZAHFaN6mHi6N8MG04G9+dV81D1lP7ie0u+Y1JkgnJZQJI5qTWkPvMdp68/bj/EGl9Hlo1X+kCi7mxrZKktGWnLSsJ8nX1b4Q9SVvoa8M=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAAXqxkERrRm_cNdBA--.22343S2;
-	Thu, 08 Aug 2024 12:14:04 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAA3PfmLSbRmyYNeBA--.65294S2;
+	Thu, 08 Aug 2024 12:29:03 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: tony@atomide.com,
-	haojian.zhuang@linaro.org,
-	linus.walleij@linaro.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
+To: ulf.hansson@linaro.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	geert+renesas@glider.be,
+	arnd@arndb.de,
+	peng.fan@nxp.com,
+	make24@iscas.ac.cn,
+	u.kleine-koenig@pengutronix.de,
+	marex@denx.de,
+	benjamin.gaignard@collabora.com
+Cc: linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] pinctrl: single: fix potential NULL dereference in pcs_get_function()
-Date: Thu,  8 Aug 2024 12:13:55 +0800
-Message-Id: <20240808041355.2766009-1-make24@iscas.ac.cn>
+Subject: [PATCH] soc: imx: imx8m-blk-ctrl: Fix NULL pointer dereference
+Date: Thu,  8 Aug 2024 12:28:58 +0800
+Message-Id: <20240808042858.2768309-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -52,51 +60,55 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAXqxkERrRm_cNdBA--.22343S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrury8WFW5Xr4DZF4fCFW8tFb_yoWDZFg_CF
-	WxXryxJryUGF4DXw17K3yrZFy0ka1UZFW0vr4vg34akryUAw4q93ykG390kwn7Gr4fGrZa
-	yFy5Zr93J347AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb38FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
-	Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWI
-	evJa73UjIFyTuYvjfUOmhFUUUUU
+X-CM-TRANSID:rQCowAA3PfmLSbRmyYNeBA--.65294S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CrWrJryDGF48AFyDAF48tFb_yoW8Gr47pF
+	4DXFyYyrWIkr12yF1jgF1jva45Xa42kw17Gwn5Gas3X3y5JFyqka4fWw1v9r15AFWxXa4Y
+	ya12yr15C3WruFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20x
+	vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
+	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIx
+	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAI
+	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
+	IEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRNAwsUUUUU=
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-pinmux_generic_get_function() can return NULL and the pointer 'function'
-was dereferenced without checking against NULL. Add checking of pointer
-'function' in pcs_get_function().
+Check bc->bus_power_dev = dev_pm_domain_attach_by_name() return value using
+IS_ERR_OR_NULL() instead of plain IS_ERR(), and fail if bc->bus_power_dev 
+is either error or NULL.
+
+In case a power domain attached by dev_pm_domain_attach_by_name() is not
+described in DT, dev_pm_domain_attach_by_name() returns NULL, which is
+then used, which leads to NULL pointer dereference.
 
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
+Fixes: 1a1da28544fd ("soc: imx: imx8m-blk-ctrl: Defer probe if 'bus' genpd is not yet ready")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/pinctrl/pinctrl-single.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 4c6bfabb6bd7..4da3c3f422b6 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -345,6 +345,8 @@ static int pcs_get_function(struct pinctrl_dev *pctldev, unsigned pin,
- 		return -ENOTSUPP;
- 	fselector = setting->func;
- 	function = pinmux_generic_get_function(pctldev, fselector);
-+	if (!function)
-+		return -EINVAL;
- 	*func = function->data;
- 	if (!(*func)) {
- 		dev_err(pcs->dev, "%s could not find function%i\n",
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index ca942d7929c2..d46fb5387148 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -212,7 +212,7 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	bc->bus_power_dev = dev_pm_domain_attach_by_name(dev, "bus");
+-	if (IS_ERR(bc->bus_power_dev)) {
++	if (IS_ERR_OR_NULL(bc->bus_power_dev)) {
+ 		if (PTR_ERR(bc->bus_power_dev) == -ENODEV)
+ 			return dev_err_probe(dev, -EPROBE_DEFER,
+ 					     "failed to attach power domain \"bus\"\n");
 -- 
 2.25.1
 
