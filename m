@@ -1,180 +1,169 @@
-Return-Path: <stable+bounces-66055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE28F94BFBA
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 16:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5A294C023
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 16:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EC341F21E8D
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 14:37:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B7421F2A337
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 14:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB7D18E038;
-	Thu,  8 Aug 2024 14:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF7518FC6B;
+	Thu,  8 Aug 2024 14:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="Z6Z1AO3x"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D511EA90;
-	Thu,  8 Aug 2024 14:37:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FBA18EFEB
+	for <stable@vger.kernel.org>; Thu,  8 Aug 2024 14:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723127828; cv=none; b=RmD0vgfFiOGTACGU9ZuXcrRKqomcXBzHraYfkrTWqw3wjybxaMCTmo5bk5Z8ahhXy4NjAe4+9f6xWbZ1hjPDUucImLiVboZrY8g8OECgXyWRAKhpb87kUkUJpMKcCeb8I3Rb7oRaDmFFmQcrHvNPpbXUxYa0zkzUV2qVZh6sJxw=
+	t=1723128216; cv=none; b=nNIXYklNZwkDUbs4rMXXVmRcWbDlL4PKVMAsyhYQaKxiV5iSfq8DFq4rL+lRhe3acWMvwEUomqed+vCtfcma4cZY1txSmVv+CVOtfYCUQl+3Olpum1l0J8mRjqbz5OH7wdEu7GFfzQ4Prb7XrfjueyHACFssC8eG/ZAsV/XOlvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723127828; c=relaxed/simple;
-	bh=JDnTYJb1g+gaWVx0QrFOokMjCAaSEvr2P3mNa85rsJI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=r5N82EO674X8pJfjQckkoFO4TJgqsxvZ744eBx9BHjdhm+A9/Mcv/Do8CU8hTu1xYupsKxOajsQh7R26669ppc9PehfiYntplIy06BkPtwdHWxjxDpEcZ2KGDzRGhV9Kt+bxR480JMQP42FmMyJ80DkOYFLhxyiFwCC3QjdLB7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WfqN51cPDzpTCr;
-	Thu,  8 Aug 2024 22:35:49 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1CAE2180AE5;
-	Thu,  8 Aug 2024 22:37:01 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 8 Aug 2024 22:37:00 +0800
-Message-ID: <b0b94a65-51f1-459e-879f-696baba85399@huawei.com>
-Date: Thu, 8 Aug 2024 22:36:59 +0800
+	s=arc-20240116; t=1723128216; c=relaxed/simple;
+	bh=gxUG3otazyRmWtgtSd/bddgJMTeONC2VbsWENIfBB5Q=;
+	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=tNWzx1cXvMCx8WCS8zh8SFhbhbVEdlVYAxF+cC7mtV6bzW6IDbNDMKt1G5S08GuOJUyvlDiHXY/Jf5TeGVuTNBMKiNvBmCnAlkAdgUO4noD8cv2nYBbSWf8Cz3umi0oSg4iEap42upkfvir4AjFqfveLVKYYHZCZi84vsfAxbLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=Z6Z1AO3x; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6003a.ext.cloudfilter.net ([10.0.30.151])
+	by cmsmtp with ESMTPS
+	id bz3qstG4uvH7lc4MSsYqCi; Thu, 08 Aug 2024 14:43:28 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id c4MRsCEvBV2ivc4MSsjX93; Thu, 08 Aug 2024 14:43:28 +0000
+X-Authority-Analysis: v=2.4 cv=OLns3jaB c=1 sm=1 tr=0 ts=66b4d990
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=yoJbH4e0A30A:10 a=VwQbUJbxAAAA:8 a=nePSiPpqfSlj2YhcidoA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+ a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
+	Date:Message-ID:References:Cc:To:From:Subject:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=YvH0f9/zTah/x6FI6Uo6PpueB5FzaxCQ/9Pzsx8uzqY=; b=Z6Z1AO3xIs+UBYjZcLsI8+4lNa
+	rPmwnp13qZfnhIyn2pN+rC6E9AV+D+FNbxt138rAft+yrmJs/XvlXIZsBBQ6nlIkmKHLdBTsG70JO
+	BUABhh7sJqGQ/y7lz9S2ElSOknGgWMrozsoqpIPkrN3ulrCsg07xpKCiGI4dtUY/RtyE0Eo5GNSf/
+	Nb5fOgVbP3Ckvp7lF8kA324SjiHjXcBi1gefAg4WgoJwu7B4/jvEEOeaS5evfWoQWcF9PDEH+f9G6
+	AwhZFyHl17280XsG4N+bGIvqgVj4GVwan95jYcGgDsnLzZiEn4GJSwywX2bLzPdItoKOZgTV5XdcA
+	pQCA+zrQ==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:33482 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sc4MN-000NZn-02;
+	Thu, 08 Aug 2024 08:43:23 -0600
+Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc2 review
+From: Ron Economos <re@w6rz.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240808091131.014292134@linuxfoundation.org>
+ <96b86f9b-c516-9742-5e33-e5cbfbed10b3@w6rz.net>
+Message-ID: <c4b1489f-42b8-8c16-f487-93b0dd8cd8c4@w6rz.net>
+Date: Thu, 8 Aug 2024 07:43:17 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/numa: no task_numa_fault() call if page table is
- changed
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@redhat.com>, Andrew
- Morton <akpm@linux-foundation.org>
-CC: Baolin Wang <baolin.wang@linux.alibaba.com>, <linux-mm@kvack.org>, "Huang,
- Ying" <ying.huang@intel.com>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-References: <20240807184730.1266736-1-ziy@nvidia.com>
- <956553dc-587c-4a43-9877-7e8844f27f95@linux.alibaba.com>
- <1881267a-723d-4ba0-96d0-d863ae9345a4@redhat.com>
- <09AC6DFA-E50A-478D-A608-6EF08D8137E9@nvidia.com>
- <052552f4-5a8d-4799-8f02-177585a1c8dd@redhat.com>
- <8890DD6A-126A-406D-8AB9-97CF5A1F4DA4@nvidia.com>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <8890DD6A-126A-406D-8AB9-97CF5A1F4DA4@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+In-Reply-To: <96b86f9b-c516-9742-5e33-e5cbfbed10b3@w6rz.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sc4MN-000NZn-02
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:33482
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfA7zdmi2xKjeTE5ziu+wQEQFJh59z7ygl/gzm14SE/YUPSnlWBIVNQab/wRShIhGPvnCapg7ulkBRqfxo2xlu/H0KY/CH+oMdqv8+LoMa9Q/S4B4Qyn5
+ sKDdZFnjmlrpvtxuWCgWDuoruCtw8wC217UvYJYVV88eHdwRoqVt5eNBbZOd7L0xwKEHkvpa5uFdnw==
 
-
-
-On 2024/8/8 22:21, Zi Yan wrote:
-> On 8 Aug 2024, at 10:14, David Hildenbrand wrote:
-> 
->> On 08.08.24 16:13, Zi Yan wrote:
->>> On 8 Aug 2024, at 4:22, David Hildenbrand wrote:
->>>
->>>> On 08.08.24 05:19, Baolin Wang wrote:
->>>>>
->>>>>
-...
->>>> Agreed, maybe we should simply handle that right away and replace the "goto out;" users by "return 0;".
->>>>
->>>> Then, just copy the 3 LOC.
->>>>
->>>> For mm/memory.c that would be:
->>>>
->>>> diff --git a/mm/memory.c b/mm/memory.c
->>>> index 67496dc5064f..410ba50ca746 100644
->>>> --- a/mm/memory.c
->>>> +++ b/mm/memory.c
->>>> @@ -5461,7 +5461,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
->>>>            if (unlikely(!pte_same(old_pte, vmf->orig_pte))) {
->>>>                   pte_unmap_unlock(vmf->pte, vmf->ptl);
->>>> -               goto out;
->>>> +               return 0;
->>>>           }
->>>>            pte = pte_modify(old_pte, vma->vm_page_prot);
->>>> @@ -5528,15 +5528,14 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
->>>>                   vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
->>>>                                                  vmf->address, &vmf->ptl);
->>>>                   if (unlikely(!vmf->pte))
->>>> -                       goto out;
->>>> +                       return 0;
->>>>                   if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
->>>>                           pte_unmap_unlock(vmf->pte, vmf->ptl);
->>>> -                       goto out;
->>>> +                       return 0;
->>>>                   }
->>>>                   goto out_map;
->>>>           }
->>>>    -out:
->>>>           if (nid != NUMA_NO_NODE)
->>>>                   task_numa_fault(last_cpupid, nid, nr_pages, flags);
->>>>           return 0;
-
-Maybe drop this part too,
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 410ba50ca746..07343c1469e0 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5523,6 +5523,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
-         if (!migrate_misplaced_folio(folio, vma, target_nid)) {
-                 nid = target_nid;
-                 flags |= TNF_MIGRATED;
-+               goto out;
-         } else {
-                 flags |= TNF_MIGRATE_FAIL;
-                 vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-@@ -5533,12 +5534,8 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
-                         pte_unmap_unlock(vmf->pte, vmf->ptl);
-                         return 0;
-                 }
--               goto out_map;
-         }
-
--       if (nid != NUMA_NO_NODE)
--               task_numa_fault(last_cpupid, nid, nr_pages, flags);
--       return 0;
-  out_map:
-         /*
-          * Make it present again, depending on how arch implements
-@@ -5551,6 +5548,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
-                 numa_rebuild_single_mapping(vmf, vma, vmf->address, 
-vmf->pte,
-                                             writable);
-         pte_unmap_unlock(vmf->pte, vmf->ptl);
-+out:
-         if (nid != NUMA_NO_NODE)
-                 task_numa_fault(last_cpupid, nid, nr_pages, flags);
-         return 0;
-
-
->>>> @@ -5552,7 +5551,9 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
->>>>                   numa_rebuild_single_mapping(vmf, vma, vmf->address, vmf->pte,
->>>>                                               writable);
->>>>           pte_unmap_unlock(vmf->pte, vmf->ptl);
->>>> -       goto out;
->>>> +       if (nid != NUMA_NO_NODE)
->>>> +               task_numa_fault(last_cpupid, nid, nr_pages, flags);
->>>> +       return 0;
->>>>    }
->>>
->>> Looks good to me. Thanks.
->>>
->>> Hi Andrew,
->>>
->>> Should I resend this for an easy back porting? Or you want to fold David’s
->>> changes in directly?
+On 8/8/24 4:55 AM, Ron Economos wrote:
+> On 8/8/24 2:11 AM, Greg Kroah-Hartman wrote:
+>> This is the start of the stable review cycle for the 6.1.104 release.
+>> There are 86 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
 >>
->> Note that I didn't touch huge_memory.c. So maybe just send a fixup on top?
-> 
-> Got it. The fixup is attached.
-> 
-> Best Regards,
-> Yan, Zi
+>> Responses should be made by Sat, 10 Aug 2024 09:11:02 +0000.
+>> Anything received after that time might be too late.
+>>
+>> The whole patch series can be found in one patch at:
+>>     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.104-rc2.gz 
+>>
+>> or in the git tree and branch at:
+>>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git 
+>> linux-6.1.y
+>> and the diffstat can be found below.
+>>
+>> thanks,
+>>
+>> greg k-h
+>>
+> I'm seeing a build failure.
+>
+> sound/pci/hda/patch_conexant.c:273:10: error: ‘const struct 
+> hda_codec_ops’ has no member named ‘suspend’
+>   273 |         .suspend = cx_auto_suspend,
+>       |          ^~~~~~~
+> sound/pci/hda/patch_conexant.c:273:20: error: initialization of ‘void 
+> (*)(struct hda_codec *, hda_nid_t,  unsigned int)’ {aka ‘void 
+> (*)(struct hda_codec *, short unsigned int,  unsigned int)’} from 
+> incompatible pointer type ‘int (*)(struct hda_codec *)’ 
+> [-Werror=incompatible-pointer-types]
+>   273 |         .suspend = cx_auto_suspend,
+>       |                    ^~~~~~~~~~~~~~~
+> sound/pci/hda/patch_conexant.c:273:20: note: (near initialization for 
+> ‘cx_auto_patch_ops.set_power_state’)
+> sound/pci/hda/patch_conexant.c:274:10: error: ‘const struct 
+> hda_codec_ops’ has no member named ‘check_power_status’; did you mean 
+> ‘set_power_state’?
+>   274 |         .check_power_status = snd_hda_gen_check_power_status,
+>       |          ^~~~~~~~~~~~~~~~~~
+>       |          set_power_state
+> sound/pci/hda/patch_conexant.c:274:31: error: 
+> ‘snd_hda_gen_check_power_status’ undeclared here (not in a function); 
+> did you mean ‘snd_hda_check_power_state’?
+>   274 |         .check_power_status = snd_hda_gen_check_power_status,
+>       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>       |                               snd_hda_check_power_state
+>
+> This is triggered because my config does not include CONFIG_PM. But 
+> the error is caused by upstream patch 
+> 9e993b3d722fb452e274e1f8694d8940db183323 "ALSA: hda: codec: Reduce 
+> CONFIG_PM dependencies" being missing. This patch removes the #ifdef 
+> CONFIG_PM in the hda_codec_ops structure. So if CONFIG_PM is not set, 
+> some structure members are missing and the the build fails.
+>
+>
+Same failure occurs in 6.6.45-rc1 if CONFIG_PM is not set.
+
 
