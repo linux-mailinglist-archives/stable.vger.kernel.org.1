@@ -1,179 +1,98 @@
-Return-Path: <stable+bounces-66091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1C494C6EC
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 00:18:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596D694C6F2
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 00:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2727B210EB
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 22:18:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA24C1F228D5
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 22:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A20415D5BB;
-	Thu,  8 Aug 2024 22:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E8B15ECCE;
+	Thu,  8 Aug 2024 22:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ERDU5KTE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YFq0YFlY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D495215B149
-	for <stable@vger.kernel.org>; Thu,  8 Aug 2024 22:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA0515A85E;
+	Thu,  8 Aug 2024 22:24:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723155519; cv=none; b=QM/tQZFqpQjcWxS87LevA8pOcYaVBXTxOGfbtS/P8iEfwVE16EEzVY3b+k+Q5Q3OL0Qm6beUbSOS/g8E8fKkl2XJ/DR/8qHpWmgtYalz8z7sHRKy9lG+UICUPP++NSrF2+o8+2dpPaZ83O2oVWFfjyvCXwzEON6sp2TTfgAvDGE=
+	t=1723155862; cv=none; b=m0PwP1kEp1LGsjCNFMDbLwC6fWGBaJV2Tnlh55X/hk3A/sPDOBl6zDpG9EeEw5ShJnw5nNf+8FAEZj299AzW1LXg3oWKBq7yzoHhb8DHgNBj+GzI57a4NMqK29bU2J+yZnndYr8sg0DnuShWCRBE5RQzUb2+M00PBHr5f5VttPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723155519; c=relaxed/simple;
-	bh=g2fz3LHYtQdEh6BMOZKUax+X5tIaOuUHF5RVi3RQXOM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nnW+wQlLkacM9gvy7imVvLCFC7CC94j+CasUX7DAXl2WYavD3rMQDI62OojMo+Umqyd97SM4ZJQDixsQ7wSSsQgUDPtQV4KdJTIkiiqbyD4jYrpOIZlBkKanPkj0UdIw+z8RxCCD0UbnOyxib2V60OXDZmvcfOplX775XxTINdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ERDU5KTE; arc=none smtp.client-ip=209.85.161.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5d5af7ae388so1235470eaf.0
-        for <stable@vger.kernel.org>; Thu, 08 Aug 2024 15:18:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1723155516; x=1723760316; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vmPhqf0HgZuuKA5pp1AA1x5CtuO9Z4jjg/RjWI5ogE8=;
-        b=ERDU5KTERfpbuFFBRpL4PPK0yDSxs0MAHu7nUTxFXghQpLvaQUDBzOx/rZYHJhJkkv
-         rj2Wsn/tkC5WteH9UqSatt7hzDoB69AVrq32Bg5vqWin4IfFkPGdO8uKRsl2ludkceQd
-         KvSn08L3QnkzhBzR58zFB3MdN7CeOzaUP9vWc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723155516; x=1723760316;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vmPhqf0HgZuuKA5pp1AA1x5CtuO9Z4jjg/RjWI5ogE8=;
-        b=E9Kx9kvZTVD636UMQ/WX3ZKVC0qQI7kotEpQfIIdtQ9esXWwfGfF1nBjDP4UoSBorz
-         F8Inbw/9Q26z3TyC4HRJkqqR0FmZLGLTkbt/WChLX0DyqbPbHvdlxcTdArZtJBq5zOJm
-         6PqqFq5353fB3dwPgIW1YMRSyjF/faLIQyJ/Rei7g930vCch0w6a2cR8WIYl7l0sFUQg
-         geblQ6erjwEuq4/tMOY33BMfUTldGFmy+M+4wBL3ii7kQ5GCGZwqnVubK27vhMG69hel
-         9iSkl7UP2hlu95wj/+N9C/QVXZ4LNKlPfzjv5AOrnN3TgJiu1jmpPIpT+02rSqvuraGh
-         4j3A==
-X-Forwarded-Encrypted: i=1; AJvYcCW761GoPgFj56QGlyHN/X2yoapds3Vk77umP+djpuRtBNGH/hneLt4pUJ05wjzGFP3J2YnXlSaNGJhrW2bQeMwZm35PRwvW
-X-Gm-Message-State: AOJu0Yy5UfAQ8Krt3ywX+l8PD7KUwFWUonOxnG5qYY4cFtAGw9cX8eje
-	Y+7j3R3TR/Ng8jHn3J/kZgXNd0YRtke/EERKxAlLtOIYPqjdiJxtL7BbNsWMRqEHrcAF92xKp3y
-	/VYilL0/kiKdlVdVQofUVYZwtqfP1tFhOYhk9
-X-Google-Smtp-Source: AGHT+IFSXb3SPSimp+dHWUKEV5b2WKyupadPDR4lKPd3awPu9sJJeMjHbJgJq4sO0dFWeAhHyA9m+D1SDv4ikPboY5s=
-X-Received: by 2002:a05:6871:5821:b0:268:a1e0:79db with SMTP id
- 586e51a60fabf-2692d342b92mr1408801fac.14.1723155515884; Thu, 08 Aug 2024
- 15:18:35 -0700 (PDT)
+	s=arc-20240116; t=1723155862; c=relaxed/simple;
+	bh=oGeQ/IZ/BAX6uaFiQyDJ4OD/I2YS3n5wIX4qZL0U+fk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B4kkFd00xn8o66Vk/vj95yyPhA1lPK3L4Sjr4SDoPdoQMiXxQwpd3RD2tDpwKrLNJ5x7LqZyCWMDCaRdzxUfMG/Pmiy39mw+5QWvM2V6hX9BJhwVYYEmA3pWUWOT7SKllxEeEE7Y8RpRi33Ve3kUwMV+66QEHwsRUzAUSsBGHNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YFq0YFlY; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723155860; x=1754691860;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=oGeQ/IZ/BAX6uaFiQyDJ4OD/I2YS3n5wIX4qZL0U+fk=;
+  b=YFq0YFlYtyxssLasHeZL21pSofO8md4bm0IN+8mm+byNmbljBooK58D3
+   VaLjViGpc2h2mmZXdOYRWlKTh1jT/Kc+l+O88hOIBhoNax+tGkjDMAlHf
+   cE5J6UlDIZUKhchqYWNo+3VFCjbEgTozK/mP+vUi9uWPw1hkA1SF5nFn7
+   dNXuFjN6WHw1RDadRTaX3ubuZTM7ZRDJl/P+5h/lzxI/4Pc63lRFT+Vll
+   wJQAbzyF3Wr2Zh6sjc2l8a3EbopCFvduDOzmWN81Fxw2MxiguJ8smQ9c1
+   sQdjcivbLkCAYRr2EUif0n5yqGRyhvnGWqbC5WbV1ToLvGWvQL7hEPn3i
+   w==;
+X-CSE-ConnectionGUID: FuqyU3ZjRWWQTM2sxct39w==
+X-CSE-MsgGUID: 5gRQ/puqSL2h9pqdpVnn2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21172134"
+X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
+   d="scan'208";a="21172134"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 15:24:19 -0700
+X-CSE-ConnectionGUID: xA9RCXOqQ96yXN8YSIP2aQ==
+X-CSE-MsgGUID: xJKSzS0BQNqlJdF/zHcszw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
+   d="scan'208";a="80601317"
+Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 15:24:19 -0700
+Date: Thu, 8 Aug 2024 15:24:17 -0700
+From: Andi Kleen <ak@linux.intel.com>
+To: Andrii Nakryiko <andrii@kernel.org>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
+	adobriyan@gmail.com, shakeel.butt@linux.dev, hannes@cmpxchg.org,
+	osandov@osandov.com, song@kernel.org, jannh@google.com,
+	linux-fsdevel@vger.kernel.org, willy@infradead.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 bpf-next 01/10] lib/buildid: harden build ID parsing
+ logic
+Message-ID: <ZrVFkWQU5qpP2yUh@tassilo>
+References: <20240807234029.456316-1-andrii@kernel.org>
+ <20240807234029.456316-2-andrii@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240807185954.1F5F0C32781@smtp.kernel.org>
-In-Reply-To: <20240807185954.1F5F0C32781@smtp.kernel.org>
-From: Jeff Xu <jeffxu@chromium.org>
-Date: Thu, 8 Aug 2024 15:18:24 -0700
-Message-ID: <CABi2SkU+A0dhwkGMPKuHvKaLH=kEcRRemo+tYxa9amuiYZxCEQ@mail.gmail.com>
-Subject: Re: + mseal-fix-is_madv_discard.patch added to mm-hotfixes-unstable branch
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: mm-commits@vger.kernel.org, stable@vger.kernel.org, shuah@kernel.org, 
-	Liam.Howlett@oracle.com, kees@kernel.org, pedro.falcato@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240807234029.456316-2-andrii@kernel.org>
 
-On Wed, Aug 7, 2024 at 11:59=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
->
-> The patch titled
->      Subject: mseal: fix is_madv_discard()
-> has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
->      mseal-fix-is_madv_discard.patch
->
-> This patch will shortly appear at
->      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree=
-/patches/mseal-fix-is_madv_discard.patch
->
-> This patch will later appear in the mm-hotfixes-unstable branch at
->     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->
-> Before you just go and hit "reply", please:
->    a) Consider who else should be cc'ed
->    b) Prefer to cc a suitable mailing list as well
->    c) Ideally: find the original patch on the mailing list and do a
->       reply-to-all to that, adding suitable additional cc's
->
-> *** Remember to use Documentation/process/submit-checklist.rst when testi=
-ng your code ***
->
-> The -mm tree is included into linux-next via the mm-everything
-> branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> and is updated there every 2-3 working days
->
-> ------------------------------------------------------
-> From: Pedro Falcato <pedro.falcato@gmail.com>
-> Subject: mseal: fix is_madv_discard()
-> Date: Wed, 7 Aug 2024 18:33:35 +0100
->
-> is_madv_discard did its check wrong. MADV_ flags are not bitwise,
-> they're normal sequential numbers. So, for instance:
->         behavior & (/* ... */ | MADV_REMOVE)
->
-> tagged both MADV_REMOVE and MADV_RANDOM (bit 0 set) as
-> discard operations. This is obviously incorrect, so use
-> a switch statement instead.
->
-> Link: https://lkml.kernel.org/r/20240807173336.2523757-1-pedro.falcato@gm=
-ail.com
-> Link: https://lkml.kernel.org/r/20240807173336.2523757-2-pedro.falcato@gm=
-ail.com
-> Fixes: 8be7258aad44 ("mseal: add mseal syscall")
-> Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
-> Cc: Jeff Xu <jeffxu@chromium.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Shuah Khan <shuah@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    Tested-by: Jeff Xu <jeffxu@chromium.org>
-    Reviewed-by: Jeff Xu <jeffxu@chromium.org>
+> +		name_sz = READ_ONCE(nhdr->n_namesz);
+> +		desc_sz = READ_ONCE(nhdr->n_descsz);
+> +		new_offs = note_offs + sizeof(Elf32_Nhdr) + ALIGN(name_sz, 4) + ALIGN(desc_sz, 4);
 
-In case needed.
-Thanks
--Jeff
+Don't you need to check the name_sz and desc_sz overflows separately?
 
-> ---
->
->  mm/mseal.c |   14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
->
-> --- a/mm/mseal.c~mseal-fix-is_madv_discard
-> +++ a/mm/mseal.c
-> @@ -40,9 +40,17 @@ static bool can_modify_vma(struct vm_are
->
->  static bool is_madv_discard(int behavior)
->  {
-> -       return  behavior &
-> -               (MADV_FREE | MADV_DONTNEED | MADV_DONTNEED_LOCKED |
-> -                MADV_REMOVE | MADV_DONTFORK | MADV_WIPEONFORK);
-> +       switch (behavior) {
-> +       case MADV_FREE:
-> +       case MADV_DONTNEED:
-> +       case MADV_DONTNEED_LOCKED:
-> +       case MADV_REMOVE:
-> +       case MADV_DONTFORK:
-> +       case MADV_WIPEONFORK:
-> +               return true;
-> +       }
-> +
-> +       return false;
->  }
->
->  static bool is_ro_anon(struct vm_area_struct *vma)
-> _
->
-> Patches currently in -mm which might be from pedro.falcato@gmail.com are
->
-> mseal-fix-is_madv_discard.patch
-> selftests-mm-add-mseal-test-for-no-discard-madvise.patch
->
+Otherwise name_sz could be ~0 and desc_sz small (or reversed) and the check
+below wouldn't trigger, but still bad things could happen.
+
+
+> +		if (new_offs <= note_offs /* overflow */ || new_offs > note_size)
+> +			break;
+
+-Andi
 
