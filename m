@@ -1,117 +1,94 @@
-Return-Path: <stable+bounces-66079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748FE94C372
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 19:16:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2567E94C55E
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 21:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA83F283525
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 17:16:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D00221F2767A
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 19:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D66190477;
-	Thu,  8 Aug 2024 17:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="BkRSzsC3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405561552EB;
+	Thu,  8 Aug 2024 19:35:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E57137776;
-	Thu,  8 Aug 2024 17:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A50144D27
+	for <stable@vger.kernel.org>; Thu,  8 Aug 2024 19:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723137398; cv=none; b=GLt3vLhzgoN104PaRjgQI4YwMdLd0btITf7iyu4HJIIn4VpdiubUdT0WvmgCV17ZQTFdccNyQMR4zdqF8B7GXnn8NSSux6lTlZzKTUbJs7U1rSSHzcZFJ8i+blqffhTMMAj5cR+2P4DMpj9vYvyYeM/UIkDBwnu4ScXH7Vc0wvk=
+	t=1723145728; cv=none; b=Z9DWstnpFaOQ2bS6RRbiU+5lC7EXOGtfxp5kJjjyeNdG3FrYwcRk6EoiqQ/Z+MOFDjtQoae0VFITK5HVyuJ63jm3xMVRhUDFDOfDNqaKFN7WgngKTAYW0nU6Cv8AklfmRjfSPm46BjQgNW5nFQiIo9EZfLBOUxulaZySCaDsgc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723137398; c=relaxed/simple;
-	bh=YCEks2jSYE+Y+beWjU9A08zC4ZKnR2oVQuBWf9QRUP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nF/gXAXMh9Z4h8uCxwPpRG31G3QbxMGP2qLx3re7KMA/F+ZgcKtjjU31i4Bv/phh5dpc5XZQwZuA/H63Gw1vMELgoCnRt/NDiRQ/NWiPF+MMbSDNTslcBY4IdXeB2ZaVhe9k4FrahYjYgQ995nx5CU9/j/rs2mVbM98kYZ6R/yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=BkRSzsC3; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4Wftxc1BMyzlgVnF;
-	Thu,  8 Aug 2024 17:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1723137391; x=1725729392; bh=5z/+6d3TBHzOihEc5ritmsUc
-	TMc3HUf7Lt4I6AXLv3s=; b=BkRSzsC3cp/phSg9k67c1unrgu9Eq93H/A1dtoHD
-	xMOXI8XXRcSqG6pXMjPty3huhvIu1uJ5HQSLK7pjPh3bN+LO7APeT9pCo8Eaoegf
-	MVI4SfIIc52Zl+LVbyyK1vV2X23Av5Q1GyqvNb9hMS5aRhR88hOy4lBCObDt55Q2
-	l4Xrpwat0+14A4H0FODlgVrYSuZ7YXTgASMJCzUSxGgHtm6Sh0FngCMc0TehXsta
-	Yk5K3E5u8D6MSQtLv/N1+niDv0hyMkIEGHkN203sfPEHMvbdJ3MH1+oW+5TPeTCf
-	cNbbsdA7qhKqQkhaOJPJJJSBik9rtp7DpcYXTv4ICkl/Mg==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id WfVJzHCZUj_l; Thu,  8 Aug 2024 17:16:31 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4WftxR2LMLzlgTGW;
-	Thu,  8 Aug 2024 17:16:27 +0000 (UTC)
-Message-ID: <1ab182e1-775e-4f44-85f2-6262530c99b9@acm.org>
-Date: Thu, 8 Aug 2024 10:16:25 -0700
+	s=arc-20240116; t=1723145728; c=relaxed/simple;
+	bh=iYqM+WNsd0qP3VQanTa53sZkW7HHHtbN4fJbspbI6dg=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=SgWAHMC5LZsr2KYMk3lW4swwb0psRDQfIg2bGDtMpli9tGTkfOeiYcsbg90B0wCiTMiCtTnwmyea1CFEAQ+tFH+4SsA5aCiH7mTxK4xiudizwBJ95s/WHOikglBO5s9FHc7ihUn37yxtASb4F0Ozp+RZR2+pTw1shET9ZV0KXK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from mchehab by linuxtv.org with local (Exim 4.96)
+	(envelope-from <mchehab@linuxtv.org>)
+	id 1sc8uy-0003cH-2B;
+	Thu, 08 Aug 2024 19:35:24 +0000
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Date: Thu, 08 Aug 2024 13:23:21 +0000
+Subject: [git:media_stage/master] media: uapi/linux/cec.h: cec_msg_set_reply_to: zero flags
+To: linuxtv-commits@linuxtv.org
+Cc: stable@vger.kernel.org, Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1sc8uy-0003cH-2B@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scsi: ufs: Add missing check for alloc_ordered_workqueue
-To: Ma Ke <make24@iscas.ac.cn>, alim.akhtar@samsung.com, avri.altman@wdc.com,
- James.Bottomley@HansenPartnership.com, martin.petersen@oracle.com,
- peter.wang@mediatek.com, manivannan.sadhasivam@linaro.org,
- ahalaney@redhat.com, beanhuo@micron.com, subhashj@codeaurora.org,
- quic_asutoshd@quicinc.com, vviswana@codeaurora.org, quic_cang@quicinc.com
-Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240808055400.2784028-1-make24@iscas.ac.cn>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240808055400.2784028-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 8/7/24 10:54 PM, Ma Ke wrote:
-> As it may return NULL pointer and cause NULL pointer dereference. Add check
-> for the return value of alloc_ordered_workqueue.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 10e5e37581fc ("scsi: ufs: Add clock ungating to a separate workqueue")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->   drivers/ufs/core/ufshcd.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-> index 5e3c67e96956..41842f2cd454 100644
-> --- a/drivers/ufs/core/ufshcd.c
-> +++ b/drivers/ufs/core/ufshcd.c
-> @@ -2139,6 +2139,8 @@ static void ufshcd_init_clk_gating(struct ufs_hba *hba)
->   		 hba->host->host_no);
->   	hba->clk_gating.clk_gating_workq = alloc_ordered_workqueue(wq_name,
->   					WQ_MEM_RECLAIM | WQ_HIGHPRI);
-> +	if (!hba->clk_gating.clk_gating_workq)
-> +		return;
->   
->   	ufshcd_init_clk_gating_sysfs(hba);
+This is an automatic generated email to let you know that the following patch were queued:
 
-This patch doesn't solve anything since hba->clk_gating.clk_gating_workq
-is not used in ufshcd_init_clk_gating() after that workqueue has been
-created. Additionally, this patch doesn't prevent that the UFS driver
-will attempt to queue work on hba->clk_gating.clk_gating_workq if
-allocation of that workqueue fails. If it would be possible to vote on
-Linux kernel patches, my vote would be -2.
+Subject: media: uapi/linux/cec.h: cec_msg_set_reply_to: zero flags
+Author:  Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date:    Wed Aug 7 09:22:10 2024 +0200
 
-Bart.
+The cec_msg_set_reply_to() helper function never zeroed the
+struct cec_msg flags field, this can cause unexpected behavior
+if flags was uninitialized to begin with.
 
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 0dbacebede1e ("[media] cec: move the CEC framework out of staging and to media")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
+ include/uapi/linux/cec.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+---
+
+diff --git a/include/uapi/linux/cec.h b/include/uapi/linux/cec.h
+index 894fffc66f2c..b2af1dddd4d7 100644
+--- a/include/uapi/linux/cec.h
++++ b/include/uapi/linux/cec.h
+@@ -132,6 +132,8 @@ static inline void cec_msg_init(struct cec_msg *msg,
+  * Set the msg destination to the orig initiator and the msg initiator to the
+  * orig destination. Note that msg and orig may be the same pointer, in which
+  * case the change is done in place.
++ *
++ * It also zeroes the reply, timeout and flags fields.
+  */
+ static inline void cec_msg_set_reply_to(struct cec_msg *msg,
+ 					struct cec_msg *orig)
+@@ -139,7 +141,9 @@ static inline void cec_msg_set_reply_to(struct cec_msg *msg,
+ 	/* The destination becomes the initiator and vice versa */
+ 	msg->msg[0] = (cec_msg_destination(orig) << 4) |
+ 		      cec_msg_initiator(orig);
+-	msg->reply = msg->timeout = 0;
++	msg->reply = 0;
++	msg->timeout = 0;
++	msg->flags = 0;
+ }
+ 
+ /**
 
