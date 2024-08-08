@@ -1,127 +1,150 @@
-Return-Path: <stable+bounces-65986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B919594B4C6
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 03:48:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E5594B566
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 05:19:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36CF5283BDA
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 01:48:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32EB41C21A2B
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 03:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD54BE65;
-	Thu,  8 Aug 2024 01:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EFD2CCC2;
+	Thu,  8 Aug 2024 03:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Oo8MyIGW"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="F0rHUfO2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCF6B672
-	for <stable@vger.kernel.org>; Thu,  8 Aug 2024 01:48:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC4926AF7;
+	Thu,  8 Aug 2024 03:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723081713; cv=none; b=ZYAlTHZXoS1bAe6vc2AVTm29cgDpwytqKnNbsNYICSjFoTE95/EKoW42gxheELVOwV7lpi/+jcD3sf9xcgbT9H3p3V8G8EHtlIOCd5itc376H/QJaZRCOeL9jASdJzhBxGYb/wM4evmRIEURK4ppaoD41ycid0oCP5oTLNauKN0=
+	t=1723087192; cv=none; b=MTCp45M8QE/m22Y8/gvKwGQt7pHuRlZuEyIl75vzEmPR8XgG7QbvzdgUdK5/a5W9c86YUp9x286EfFqkG0GNPzBU0TaC9ZGTkCy6r66K3X+K7VstzKYlJ3FP+xFSyY/hjjeQvV3zYdf1CZ6L4f8BffwADk+COhRPjZFOwApHZKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723081713; c=relaxed/simple;
-	bh=Olz8+B8JExXtrS6yDdKY4FVncYtOGs9iB4C9qeHIJJM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SSnVkBY8BoQSTRkQIob0j55ippl+FfHvosXsuxc8Nkt6zzo/rQg2a1ILJBVkNiFAQfj9+Fx2srptLW71DyaH/07yZetyRVoWYh91cFpwRw2hHmaRQwWQJaGqUWo8yggGyxeaHQ1XZ0HA2BwVpHTjS9Hrr7SivLkGQov17uni+tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Oo8MyIGW; arc=none smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3db111a08c3so46874b6e.2
-        for <stable@vger.kernel.org>; Wed, 07 Aug 2024 18:48:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1723081711; x=1723686511; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kEsA/NppsdV/3COw8KfaFKbZSK5vL24oUW1cM/bymMg=;
-        b=Oo8MyIGWTFXIqQHxBa7X+caSv1t4Jrtdve83Qy6kZuLNGtTX9HWmm0bX8vHUwBlYmj
-         +jG6WDKTWOMeQGEZTx41fy0B5nzTpXn3o+Kok4bGQhV16IZIED6+ea9RrrAWz1Yr2tQ/
-         W2oYfAjQM0O63OXeTZLZWF24MYh8bboedaR0P+A1vU5cV9FryKIsHPP2qwHbjPOTdEZ8
-         jAu3VJmV3DUG37O604YpuncTYjyzzIbMILlVOYgTKYLbvs3MRwKAsnRgwjUxhGNypLgd
-         ys79EkZTmkW2L1wt6KwKOMuzITFVt0Asu6yFNAiJszhbZYi1eSsMCqMIoPMmpR1HhD3d
-         cH0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723081711; x=1723686511;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kEsA/NppsdV/3COw8KfaFKbZSK5vL24oUW1cM/bymMg=;
-        b=QkvCGmcbeJ83rdEyt35/Rs8fC2bd01SjQX5rcSA5PHIbeuUNvmZcuUcwKTfIQwTeio
-         4Dy01d06u2CW7dKJ35MiFtcJ+0Z85fNFdiNc4eLWOMU0tYu+mmkyvAg0JUXNtmPaH69g
-         kS5qnHeTMA7n6wsPQazwpOoIvwk9XtiNns/LrHAFT1jRrWot1yY0Y/HrAsj9y4R0z2/Y
-         qsTeAcmBLO5M7L1OOewGt7q/1NSL9OUW6sXANfdg4AkDG/6pC8NEPGVRN5qOjMeHgRIe
-         JY7tV4CAZ3B9tfarnFjyaYWxNaIZYFLbCQizxmSnhyy7+nIzCMoOZdI3PZDIEJAFXFU6
-         d/tQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXFWrLuJ8dEdbZEKT1OVxfE1v+BFSBaoNGA28uDqMFx6TlcEQvxlp1ps8b+mwzuwWvGy+9RwiZnqnobjmPPmwDCfE90NHsg
-X-Gm-Message-State: AOJu0Yx6J1ZKYUAKqu/7JhgsxqQ4KWXPkV2Zts98jHeGUHQ3VWNO4SbL
-	lxDuUWWTH5Tax4ziXlRfmENvZFYgsaQLAPuDIsKiEm3cJvZ7NTKLybf4O5nEs9p0NfJFUlAulG2
-	g
-X-Google-Smtp-Source: AGHT+IGw6CzHlEF3KWib4NI1xrULkrIxi9F/79yXLk6ouOiEL0cJSpes0zwqcCwz3YxbRtUO00ebuA==
-X-Received: by 2002:a05:6870:568e:b0:268:2075:a41d with SMTP id 586e51a60fabf-2692b7a4561mr280377fac.6.1723081710693;
-        Wed, 07 Aug 2024 18:48:30 -0700 (PDT)
-Received: from localhost.localdomain ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-710cb20a104sm150771b3a.21.2024.08.07.18.48.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 18:48:29 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: io-uring@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/3] io_uring/net: don't pick multiple buffers for non-bundle send
-Date: Wed,  7 Aug 2024 19:47:29 -0600
-Message-ID: <20240808014823.272751-4-axboe@kernel.dk>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240808014823.272751-1-axboe@kernel.dk>
-References: <20240808014823.272751-1-axboe@kernel.dk>
+	s=arc-20240116; t=1723087192; c=relaxed/simple;
+	bh=87CxHOKq0kNJehvIMkR7RL19dZosGYXI/PahHRyFwJ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L6iMre8GKZ2n2C6XJZNtHizJ0cVzakm8v7gCFwjKc1Nz+Mjy+UFzJjoyaqLQa26xl9fNIp22FQ3BFIprtfkNjghHBVgfijnpKlL+PwUkCkOPsbVE/EyGNudlpeyhMaZz0fYFEq3EzRciZ60S2FLdS6F/AU915OYxzUfROWBfozQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=F0rHUfO2; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1723087180; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=0rkHMmEUTOaBgGZOGrto0UZr62DAOrQ41ZYJAPw9h/E=;
+	b=F0rHUfO2XjZ9YbdHovDUUrDPy3y90nRoC3qBva24VH2q6CGgZRTJdgsyH0/LgSSGZMr+88CNsC84jTW8VdGsCHLSdTXH/NEZPa8steYXPfdyjaqavjD47/DpK90hJ9oEMuQlMxkCpU5hA3YxSvGu+0t4cczPsyGZG5hKiJkzgYk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033068173054;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0WCKrVau_1723087178;
+Received: from 30.97.56.61(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WCKrVau_1723087178)
+          by smtp.aliyun-inc.com;
+          Thu, 08 Aug 2024 11:19:39 +0800
+Message-ID: <956553dc-587c-4a43-9877-7e8844f27f95@linux.alibaba.com>
+Date: Thu, 8 Aug 2024 11:19:37 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/numa: no task_numa_fault() call if page table is
+ changed
+To: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, "Huang, Ying" <ying.huang@intel.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240807184730.1266736-1-ziy@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20240807184730.1266736-1-ziy@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-If a send is issued marked with IOSQE_BUFFER_SELECT for selecting a
-buffer, unless it's a bundle, it should not select multiple buffers.
 
-Cc: stable@vger.kernel.org
-Fixes: a05d1f625c7a ("io_uring/net: support bundles for send")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
----
- io_uring/net.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 050bea5e7256..d08abcca89cc 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -601,17 +601,18 @@ int io_send(struct io_kiocb *req, unsigned int issue_flags)
- 			.iovs = &kmsg->fast_iov,
- 			.max_len = INT_MAX,
- 			.nr_iovs = 1,
--			.mode = KBUF_MODE_EXPAND,
- 		};
- 
- 		if (kmsg->free_iov) {
- 			arg.nr_iovs = kmsg->free_iov_nr;
- 			arg.iovs = kmsg->free_iov;
--			arg.mode |= KBUF_MODE_FREE;
-+			arg.mode = KBUF_MODE_FREE;
- 		}
- 
- 		if (!(sr->flags & IORING_RECVSEND_BUNDLE))
- 			arg.nr_iovs = 1;
-+		else
-+			arg.mode |= KBUF_MODE_EXPAND;
- 
- 		ret = io_buffers_select(req, &arg, issue_flags);
- 		if (unlikely(ret < 0))
--- 
-2.43.0
+On 2024/8/8 02:47, Zi Yan wrote:
+> When handling a numa page fault, task_numa_fault() should be called by a
+> process that restores the page table of the faulted folio to avoid
+> duplicated stats counting. Commit b99a342d4f11 ("NUMA balancing: reduce
+> TLB flush via delaying mapping on hint page fault") restructured
+> do_numa_page() and do_huge_pmd_numa_page() and did not avoid
+> task_numa_fault() call in the second page table check after a numa
+> migration failure. Fix it by making all !pte_same()/!pmd_same() return
+> immediately.
+> 
+> This issue can cause task_numa_fault() being called more than necessary
+> and lead to unexpected numa balancing results (It is hard to tell whether
+> the issue will cause positive or negative performance impact due to
+> duplicated numa fault counting).
+> 
+> Reported-by: "Huang, Ying" <ying.huang@intel.com>
+> Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
+> Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 
+The fix looks reasonable to me. Feel free to add:
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+
+(Nit: These goto labels are a bit confusing and might need some cleanup 
+in the future.)
+
+> ---
+>   mm/huge_memory.c | 5 +++--
+>   mm/memory.c      | 5 +++--
+>   2 files changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 0024266dea0a..a3c018f2b554 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1734,10 +1734,11 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+>   		goto out_map;
+>   	}
+>   
+> -out:
+> +count_fault:
+>   	if (nid != NUMA_NO_NODE)
+>   		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
+>   
+> +out:
+>   	return 0;
+>   
+>   out_map:
+> @@ -1749,7 +1750,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+>   	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, pmd);
+>   	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+>   	spin_unlock(vmf->ptl);
+> -	goto out;
+> +	goto count_fault;
+>   }
+>   
+>   /*
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 67496dc5064f..503d493263df 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5536,9 +5536,10 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+>   		goto out_map;
+>   	}
+>   
+> -out:
+> +count_fault:
+>   	if (nid != NUMA_NO_NODE)
+>   		task_numa_fault(last_cpupid, nid, nr_pages, flags);
+> +out:
+>   	return 0;
+>   out_map:
+>   	/*
+> @@ -5552,7 +5553,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+>   		numa_rebuild_single_mapping(vmf, vma, vmf->address, vmf->pte,
+>   					    writable);
+>   	pte_unmap_unlock(vmf->pte, vmf->ptl);
+> -	goto out;
+> +	goto count_fault;
+>   }
+>   
+>   static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
 
