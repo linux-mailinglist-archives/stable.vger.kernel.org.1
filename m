@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-66005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D273294B7D6
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 09:28:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 085B994B7EF
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 09:34:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EF671C223E8
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 07:28:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BDE61C20B8B
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 07:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BEB2AE91;
-	Thu,  8 Aug 2024 07:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="obuFWtQm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C1813BACC;
+	Thu,  8 Aug 2024 07:34:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FF97464;
-	Thu,  8 Aug 2024 07:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EF52F23;
+	Thu,  8 Aug 2024 07:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723102084; cv=none; b=TYH5abx0U8Uy0gtCsGouIEjz2/rk+i5EV2F+x7ICb8c1xeYV9P1CXd2G3nTqBD8ZCwVQH2HtPo41NjhnHs8UHMPiU6uArqoakPIWWk3bhaIBKJY+43P9yZ89n89BguwmQcqQntGaaqqUm9N6pH5CygYwJrPOoCqvn3bEuzfS3ug=
+	t=1723102478; cv=none; b=C+Q5rdfTXNfNl5WTfz28Vnf/VeoycBm/f89REoReFOMi1YIl+FM9vnKKFkkGfePMFjdytPC9Nez2Rg2MNJKSpVcAd3ixcFu0A3Ij/0uaXLxoBCxFQJThQA00r7o656B48xSzX0cxH3bpypWAsL7h19439H9x9lrT9aen/V7x+k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723102084; c=relaxed/simple;
-	bh=iKFF9cuoPKYMCCFAiUSWMPfk4pgo+XWQPV1zsB3QMyo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=PDFjoSmcZdKFijsLJShWHqlD5TrD2FeoGpgYcHkQrZGNpw/gv+IrDn/TX7zTWe/21STx2SdWXBiRLqGAkaDYxf8bNVwdz/ZM6prxvlPOR6P5PZz0NVhqL4DCJ0BPLLq287//L5HbmOCk8zAtM/7jU+BF/HLWIJGAc81wihA8hFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=obuFWtQm; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 477HLYC8007155;
-	Thu, 8 Aug 2024 07:27:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	05dLjMhMWKbkdONJ2XhA0SRRF3OQ7tGCFSjCCChUPFg=; b=obuFWtQmsB2WLnw3
-	KyPcSbvPAuBk/zYPETbOi9UPML+wR1lWPGCQOWau8wiEuJ7cBg7gMWeAPL7tlrsr
-	XQBdFElEhLxM7lEXUCzKD4rz8P756lWgYuqDKTHHDBHus+H0No7TJ7bHVPGNHjLi
-	lo2tkHBdSJlM8sAkn7u4AUVq8Kj08n4CLBhbCewcxkPbk0W/V2egzHLWvmCieWwj
-	FJyQJQbB+MGwr6p/Wl0y+cJ9yX9aTl271+f7cQrlLXL+Dsc0cLM1UO4yji/W6r8v
-	Ixcr3e8iHtg4nP4Ufpv0lU+YNTEVkgfNdKc6nsUTTPGa9X8DKrPmaBFH2iOeRd+o
-	/XDQLA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40scx6w5r7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Aug 2024 07:27:34 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 4787RXvf028619
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 8 Aug 2024 07:27:33 GMT
-Received: from [10.217.216.152] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 8 Aug 2024
- 00:27:29 -0700
-Message-ID: <b4c58fbd-6d9c-4c1b-a21d-7650a6c4270a@quicinc.com>
-Date: Thu, 8 Aug 2024 12:57:26 +0530
+	s=arc-20240116; t=1723102478; c=relaxed/simple;
+	bh=j9ovGLKLRbVUHzGl3j99h9JATtcDt806a7C51Xn2VgA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LhWYtmT1P1ek6okbBLqNyB+QJTYUTk1PJ+OK3Vl5GwNvc+E9fV1kMABr+l7FNLSKeMbd32Hq6/to3nHuwwfghbonfIPH2Nw5NjuogylJHuEB/LfdHv0BLl+3gBhJG/UoLV5B50FRYLNRMbvcHTQol4s6AOCWEw/S0BebHbStEA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5a10bb7bcd0so773493a12.3;
+        Thu, 08 Aug 2024 00:34:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723102475; x=1723707275;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LANE1F4E7M4VxmxKZ4CBz1EcLRFw15dRl39LaLAGgJI=;
+        b=O5blTkVSyLAq++pba6iQBVeoitQ8BjLhjDqAymZXCnTtPtIJ16J5uLwCN/ahvDFqcI
+         EXEC1XWcNK1FGaQdfFYp5stXvOzIpAeqlzsLR8kiAGZ+8ELF4DfigJQumpIgUTjSp+Ju
+         G9qjngknvWWYaLIaOL+/fDPf5iXhPzBQc8naIDp/uc8Q5l8i98QPkrftxBZB/V9ORnI+
+         z6rTYQ0kEn73E09gsACGX1uXW0nOsbfYKRf0ibaCSBgo/qlET30XYjFl6u/m4xGnJgnC
+         GbRKnO9ValrmuCLAC6If5UUnccB/BDcMoDh2PCidAAqUt2YqZJ/KM4lpTkqayU3BABGF
+         XfyA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+PzmwMSZkkCSwcb+HsLtlDTbkn4u+oXSCfovrvNVbBk//tb09TdV4VjTTFP4SRSU+nbRfa7jMI+L0bGtVQKC/1Pzi3OwbI0yqsVIroPFf3wG05j9B5O3D61Ui0wTyNL3NzF2Khvt3AdoCUoVW6jgEQWaZfyv8N11TkvGtZ4QjrLJ3
+X-Gm-Message-State: AOJu0YyMRyfJjfHeFm8mL07G6aeaAplKY0zEvjMFS4bNKF7pzSTI5WsB
+	BNtC7bdxtnLNAt3cjlOYDZJYplnn2pDxb8npCjuIIZWOl75fC4zb
+X-Google-Smtp-Source: AGHT+IHqpxgFNQLtYa1M+xts7q1ockNFi4t26CIhEU96NCeb5gqqCtpZD+0AqTR0NPuUYQhCFlQawA==
+X-Received: by 2002:a05:6402:d05:b0:5b9:df62:15cd with SMTP id 4fb4d7f45d1cf-5bbb240fcd4mr846488a12.32.1723102475131;
+        Thu, 08 Aug 2024 00:34:35 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bbb2d34eb0sm358292a12.68.2024.08.08.00.34.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Aug 2024 00:34:34 -0700 (PDT)
+Message-ID: <c4c01c01-e926-49fb-8704-90a69662254d@kernel.org>
+Date: Thu, 8 Aug 2024 09:34:33 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,78 +63,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clk: qcom: clk-rpmh: Fix overflow in BCM vote
-To: Imran Shaik <quic_imrashai@quicinc.com>,
-        Bjorn Andersson
-	<andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        "Stephen
- Boyd" <sboyd@kernel.org>,
-        David Dai <daidavid1@codeaurora.org>
-CC: <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Ajit Pandey <quic_ajipan@quicinc.com>,
-        Jagadeesh Kona <quic_jkona@quicinc.com>,
-        Satya Priya Kakitapalli
-	<quic_skakitap@quicinc.com>,
-        Mike Tipton <quic_mdtipton@quicinc.com>, <stable@vger.kernel.org>
-References: <20240808-clk-rpmh-bcm-vote-fix-v1-1-109bd1d76189@quicinc.com>
+Subject: Re: [PATCH 03/13] serial: don't use uninitialized value in
+ uart_poll_init()
+To: Doug Anderson <dianders@chromium.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-serial <linux-serial@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+References: <20240805102046.307511-1-jirislaby@kernel.org>
+ <20240805102046.307511-4-jirislaby@kernel.org>
+ <84af065c-b1a1-dc84-4c28-4596c3803fd2@linux.intel.com>
+ <CAD=FV=WeekuQXzjk90K8jn=Evn8dMaT1RyctbT7gwEZYYgA9Aw@mail.gmail.com>
 Content-Language: en-US
-From: Taniya Das <quic_tdas@quicinc.com>
-In-Reply-To: <20240808-clk-rpmh-bcm-vote-fix-v1-1-109bd1d76189@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
+ rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
+ rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
+ i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
+ wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
+ ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
+ cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
+ 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
+ w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
+ YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
+ IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
+ BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
+ eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
+ 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
+ XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
+ l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
+ UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
+ gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
+ oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
+ o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
+ Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
+ wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
+ t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
+ YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
+ DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
+ f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
+ 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
+ 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
+ /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
+ 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
+ 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
+ 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
+ wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
+ 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
+ jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
+ wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
+ wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
+ W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
+ f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
+ DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
+ S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
+In-Reply-To: <CAD=FV=WeekuQXzjk90K8jn=Evn8dMaT1RyctbT7gwEZYYgA9Aw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: i4trENvTsXmF50C2CTfhtJZ0yy4-T06-
-X-Proofpoint-GUID: i4trENvTsXmF50C2CTfhtJZ0yy4-T06-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-08_07,2024-08-07_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 bulkscore=0 clxscore=1011 suspectscore=0 phishscore=0
- spamscore=0 adultscore=0 lowpriorityscore=0 mlxscore=0 priorityscore=1501
- mlxlogscore=989 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408080052
 
-
-
-On 8/8/2024 12:35 PM, Imran Shaik wrote:
-> From: Mike Tipton <quic_mdtipton@quicinc.com>
+On 05. 08. 24, 17:46, Doug Anderson wrote:
+>>> @@ -2717,10 +2716,10 @@ static int uart_poll_init(struct tty_driver *driver, int line, char *options)
+>>>                ret = uart_set_options(port, NULL, baud, parity, bits, flow);
+>>>                console_list_unlock();
+>>>        }
+>>> -out:
+>>> +
+>>>        if (ret)
+>>>                uart_change_pm(state, pm_state);
+>>> -     mutex_unlock(&tport->mutex);
+>>> +
+>>>        return ret;
+>>>   }
+>>
+>> This too needs #include.
 > 
-> Valid frequencies may result in BCM votes that exceed the max HW value.
-> Set vote ceiling to BCM_TCS_CMD_VOTE_MASK to ensure the votes aren't
-> truncated, which can result in lower frequencies than desired.
+> Why? I see in "mutex.h" (which is already included by serial_core.c):
 > 
-> Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
-> Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
-> ---
->   drivers/clk/qcom/clk-rpmh.c | 3 +++
->   1 file changed, 3 insertions(+)
+> DEFINE_GUARD(mutex, struct mutex *, mutex_lock(_T), mutex_unlock(_T))
 > 
-> diff --git a/drivers/clk/qcom/clk-rpmh.c b/drivers/clk/qcom/clk-rpmh.c
-> index bb82abeed88f..233ccd365a37 100644
-> --- a/drivers/clk/qcom/clk-rpmh.c
-> +++ b/drivers/clk/qcom/clk-rpmh.c
-> @@ -263,6 +263,9 @@ static int clk_rpmh_bcm_send_cmd(struct clk_rpmh *c, bool enable)
->   		cmd_state = 0;
->   	}
->   
-> +	if (cmd_state > BCM_TCS_CMD_VOTE_MASK)
-> +		cmd_state = BCM_TCS_CMD_VOTE_MASK;
-> +
->   	if (c->last_sent_aggr_state != cmd_state) {
->   		cmd.addr = c->res_addr;
->   		cmd.data = BCM_TCS_CMD(1, enable, 0, cmd_state);
-> 
+> ...so we're using the mutex guard and including the header file that
+> defines the mutex guard. Seems like it's all legit to me.
 
+The patches got merged. But I can post a fix on top, of course. But, 
+what is the consensus here -- include or not to include? I assume 
+mutex.h includes cleanup.h already due to the above guard definition.
 
-Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
-
+thanks,
 -- 
-Thanks & Regards,
-Taniya Das.
+js
+suse labs
+
 
