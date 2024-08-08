@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-65979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A0894B4B4
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 03:42:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24BD94B4B5
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 03:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25B3AB20D39
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 01:42:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C6381F22DB1
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 01:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9E8524C;
-	Thu,  8 Aug 2024 01:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EB8BA2D;
+	Thu,  8 Aug 2024 01:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WQ9OYsQQ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RKUEKAHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6798B33E1;
-	Thu,  8 Aug 2024 01:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26289473;
+	Thu,  8 Aug 2024 01:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723081324; cv=none; b=VYT0C6FIglKhJt6Y0zFKe36sVljHcpPCSTUYtceTG2w4CqJzKU13i94gcfUjVjHi2fpAiKLuqLszSOydvLvtvGZ5B2fY1hQJ+bjfVSMysZC0FCiPBFtbUO9e3QZDmyzQXzdHEqT3s6QTRimSXk7udkwegT0a5q7/QVvrv3yfU6Y=
+	t=1723081326; cv=none; b=Qj+47oiVq2sG+ZTQgrXqNPh2xBn+o8s5jSnPv/r6vl+V9VluGZPPyEKtv+W7EWptEGW+e4OqyiHvGHaqUEhH4Zv/RBB89HuoVKOX0TH6FgqwG6CViBiQ2P4Nn5oo3FuaWW3cMj8wXndwZ4HTteFlCIQGCQGb3ybQBJ0/fXdizwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723081324; c=relaxed/simple;
-	bh=AlzzMu/R+8v9a5/h8+kCQiSDvZz8wmWIdddxp0jZLM0=;
-	h=Date:To:From:Subject:Message-Id; b=eW9coB4OyxdeKuvlSJQprFMJC6ePiC3fet2BZ19F13UPi1z2ZAMdtyZ2TWBfpSC+dau4yYAlgtxRSlCbjplv+KD0jcgW1QfLTO7BhmRTmKJZptBFDtvAgHQSNcWN0GtijZkMUKJl4RsYYa2e2rlloiUPlz57pMCi0FuC0INHvVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WQ9OYsQQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C7AC32781;
-	Thu,  8 Aug 2024 01:42:03 +0000 (UTC)
+	s=arc-20240116; t=1723081326; c=relaxed/simple;
+	bh=Gj8vMxY8eI2uXfyC7yecHkSU/Z4pFWxfGjlbSJ76K6U=;
+	h=Date:To:From:Subject:Message-Id; b=DrfAka00lUg6hBk4ZYnmlaGjMx57/oygSMKsAXxPcgPrnxMX8w523IxFTEy8Bims0Z6euwga74pvibjdHlZ8V3+AxSEa/uxGC2NIiLlnXaf/niOlgCVbR7JtKZFizWmUoSLHRfX0R62kBj/UKKtLZ0a9xALzfP5xFRdlcV8oDbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RKUEKAHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3716FC32781;
+	Thu,  8 Aug 2024 01:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1723081323;
-	bh=AlzzMu/R+8v9a5/h8+kCQiSDvZz8wmWIdddxp0jZLM0=;
+	s=korg; t=1723081326;
+	bh=Gj8vMxY8eI2uXfyC7yecHkSU/Z4pFWxfGjlbSJ76K6U=;
 	h=Date:To:From:Subject:From;
-	b=WQ9OYsQQy02YzVi0l2QE5BJUPYGNWv2ExAmc9rE1FQbsJT2zGgjsEb9I49k5/eWcE
-	 sKwdkz6Doe/HYkAfWhOTtuPgliNEwofdumSOy6xgnIIaM4ViaJ4E5vaU7JNcLmtDG+
-	 Che2ZglLHWcl711Un/H5h7tYFT+kgVHYXItWr+sA=
-Date: Wed, 07 Aug 2024 18:42:03 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,paul.walmsley@sifive.com,palmer@dabbelt.com,broonie@kernel.org,aou@eecs.berkeley.edu,npache@redhat.com,akpm@linux-foundation.org
+	b=RKUEKAHMT2Nm3141mZCc7lxUAVEDhA+3kS0DFq24V50bVlemhUNHOgXXqQVMCVs/Z
+	 Y+jzOFkO5UTFuPXuR2aTmeHxnYchUEKMkEw1TQUEd415JxPAnjHCZxC+fpM0mYBndA
+	 V0JMl38B9Oc3xLTTd11i1GztxirVqZm8YS+gcg5c=
+Date: Wed, 07 Aug 2024 18:42:05 -0700
+To: mm-commits@vger.kernel.org,sylv@sylv.io,stern@rowland.harvard.edu,stable@vger.kernel.org,nogikh@google.com,gregkh@linuxfoundation.org,glider@google.com,elver@google.com,dvyukov@google.com,andreyknvl@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] selftests-mm-add-s390-to-arch-check.patch removed from -mm tree
-Message-Id: <20240808014203.C9C7AC32781@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] kcov-properly-check-for-softirq-context.patch removed from -mm tree
+Message-Id: <20240808014206.3716FC32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,58 +50,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: selftests: mm: add s390 to ARCH check
+     Subject: kcov: properly check for softirq context
 has been removed from the -mm tree.  Its filename was
-     selftests-mm-add-s390-to-arch-check.patch
+     kcov-properly-check-for-softirq-context.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Nico Pache <npache@redhat.com>
-Subject: selftests: mm: add s390 to ARCH check
-Date: Wed, 24 Jul 2024 15:35:17 -0600
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Subject: kcov: properly check for softirq context
+Date: Mon, 29 Jul 2024 04:21:58 +0200
 
-commit 0518dbe97fe6 ("selftests/mm: fix cross compilation with LLVM")
-changed the env variable for the architecture from MACHINE to ARCH.
+When collecting coverage from softirqs, KCOV uses in_serving_softirq() to
+check whether the code is running in the softirq context.  Unfortunately,
+in_serving_softirq() is > 0 even when the code is running in the hardirq
+or NMI context for hardirqs and NMIs that happened during a softirq.
 
-This is preventing 3 required TEST_GEN_FILES from being included when
-cross compiling s390x and errors when trying to run the test suite.  This
-is due to the ARCH variable already being set and the arch folder name
-being s390.
+As a result, if a softirq handler contains a remote coverage collection
+section and a hardirq with another remote coverage collection section
+happens during handling the softirq, KCOV incorrectly detects a nested
+softirq coverate collection section and prints a WARNING, as reported by
+syzbot.
 
-Add "s390" to the filtered list to cover this case and have the 3 files
-included in the build.
+This issue was exposed by commit a7f3813e589f ("usb: gadget: dummy_hcd:
+Switch to hrtimer transfer scheduler"), which switched dummy_hcd to using
+hrtimer and made the timer's callback be executed in the hardirq context.
 
-Link: https://lkml.kernel.org/r/20240724213517.23918-1-npache@redhat.com
-Fixes: 0518dbe97fe6 ("selftests/mm: fix cross compilation with LLVM")
-Signed-off-by: Nico Pache <npache@redhat.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Shuah Khan <shuah@kernel.org>
+Change the related checks in KCOV to account for this behavior of
+in_serving_softirq() and make KCOV ignore remote coverage collection
+sections in the hardirq and NMI contexts.
+
+This prevents the WARNING printed by syzbot but does not fix the inability
+of KCOV to collect coverage from the __usb_hcd_giveback_urb when dummy_hcd
+is in use (caused by a7f3813e589f); a separate patch is required for that.
+
+Link: https://lkml.kernel.org/r/20240729022158.92059-1-andrey.konovalov@linux.dev
+Fixes: 5ff3b30ab57d ("kcov: collect coverage from interrupts")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Reported-by: syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2388cdaeb6b10f0c13ac
+Acked-by: Marco Elver <elver@google.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Aleksandr Nogikh <nogikh@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Marcello Sylvester Bauer <sylv@sylv.io>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/kcov.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/mm/Makefile~selftests-mm-add-s390-to-arch-check
-+++ a/tools/testing/selftests/mm/Makefile
-@@ -110,7 +110,7 @@ endif
+--- a/kernel/kcov.c~kcov-properly-check-for-softirq-context
++++ a/kernel/kcov.c
+@@ -161,6 +161,15 @@ static void kcov_remote_area_put(struct
+ 	kmsan_unpoison_memory(&area->list, sizeof(area->list));
+ }
  
- endif
++/*
++ * Unlike in_serving_softirq(), this function returns false when called during
++ * a hardirq or an NMI that happened in the softirq context.
++ */
++static inline bool in_softirq_really(void)
++{
++	return in_serving_softirq() && !in_hardirq() && !in_nmi();
++}
++
+ static notrace bool check_kcov_mode(enum kcov_mode needed_mode, struct task_struct *t)
+ {
+ 	unsigned int mode;
+@@ -170,7 +179,7 @@ static notrace bool check_kcov_mode(enum
+ 	 * so we ignore code executed in interrupts, unless we are in a remote
+ 	 * coverage collection section in a softirq.
+ 	 */
+-	if (!in_task() && !(in_serving_softirq() && t->kcov_softirq))
++	if (!in_task() && !(in_softirq_really() && t->kcov_softirq))
+ 		return false;
+ 	mode = READ_ONCE(t->kcov_mode);
+ 	/*
+@@ -849,7 +858,7 @@ void kcov_remote_start(u64 handle)
  
--ifneq (,$(filter $(ARCH),arm64 ia64 mips64 parisc64 powerpc riscv64 s390x sparc64 x86_64))
-+ifneq (,$(filter $(ARCH),arm64 ia64 mips64 parisc64 powerpc riscv64 s390x sparc64 x86_64 s390))
- TEST_GEN_FILES += va_high_addr_switch
- TEST_GEN_FILES += virtual_address_range
- TEST_GEN_FILES += write_to_hugetlbfs
+ 	if (WARN_ON(!kcov_check_handle(handle, true, true, true)))
+ 		return;
+-	if (!in_task() && !in_serving_softirq())
++	if (!in_task() && !in_softirq_really())
+ 		return;
+ 
+ 	local_lock_irqsave(&kcov_percpu_data.lock, flags);
+@@ -991,7 +1000,7 @@ void kcov_remote_stop(void)
+ 	int sequence;
+ 	unsigned long flags;
+ 
+-	if (!in_task() && !in_serving_softirq())
++	if (!in_task() && !in_softirq_really())
+ 		return;
+ 
+ 	local_lock_irqsave(&kcov_percpu_data.lock, flags);
 _
 
-Patches currently in -mm which might be from npache@redhat.com are
+Patches currently in -mm which might be from andreyknvl@gmail.com are
 
+kcov-dont-instrument-lib-find_bitc.patch
 
 
