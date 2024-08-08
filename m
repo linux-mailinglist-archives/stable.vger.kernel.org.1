@@ -1,151 +1,195 @@
-Return-Path: <stable+bounces-66064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C4D94C172
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 17:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E5394C17F
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 17:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D40D0280EF1
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 15:32:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFC292893C3
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 15:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A37218B489;
-	Thu,  8 Aug 2024 15:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E15818F2D6;
+	Thu,  8 Aug 2024 15:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pk1TN/Qg"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="BvUXctlE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11020114.outbound.protection.outlook.com [52.101.85.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1923118D646;
-	Thu,  8 Aug 2024 15:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723131032; cv=none; b=VvuirXptasOQdo6Ab8asicBeiLgptrD4blIoSpOJByVEv7+rKJgW2+yOm5N7L4AFlHdI8Rbkv5tXQQq1qhC8xcRsmcG4ppIdIZBU0gzfUFv0+l8nY1+v5WN/GMioDeaTO3gzmeJE9xESzSOJu+7ys1wowiqjUb1l+xe/3r9FeZY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723131032; c=relaxed/simple;
-	bh=kmXJDsR5uzRQKmmr3H+BHdZCShdjvKClhktPf7MnBy4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhPrOWGzkFgShXFoF/pl5PQnOO2kkkI4GyUKT5f83W21p/QStp8inifVtVoEpN5DabFeAnAYriEAgBLpXYN0UCjuNOxz8K/S8slZIfezoCAmrKvQ8VKO6vqG14UP2s6scWEpIEWWBZW1IjT/D7Ks8e7AH9yrQvOM7TaMLKnAJl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pk1TN/Qg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A898C32782;
-	Thu,  8 Aug 2024 15:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723131031;
-	bh=kmXJDsR5uzRQKmmr3H+BHdZCShdjvKClhktPf7MnBy4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pk1TN/QgH5On6IKyH5FE04ISowZc82XrpaDpGK/v81wTPLGZ1JujchR/V1VdbdZBC
-	 i9cXv06mX5nbzJgqjFyGX9sYJaAuL/A5TetraRpZQMRhT9Vb6uA4j7XGGlRcSNmmNv
-	 6G6CCx2RChK87RGPciRvpGBzCQgqoRZPNoRrvrXDJchCYLTeN3ipSAMs6U1h5fElHR
-	 N40akhRIirICzkP1rgP0BGlAeYpj2kTxnGxBCkbjotMgAlAnFUnQgq3NbYWOFJ5HMv
-	 5S3kZdG2L/ybP2QrLKGu2RUCpRYrR95N2sdJQHtHVO4RvwVBa1/ZwxOv7ZaMb3Di4x
-	 I1gVauiN/3HdA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1.y] mptcp: mib: count MPJ with backup flag
-Date: Thu,  8 Aug 2024 17:30:05 +0200
-Message-ID: <20240808153004.2308809-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024080722-survive-jacket-b862@gregkh>
-References: <2024080722-survive-jacket-b862@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D5B18B489;
+	Thu,  8 Aug 2024 15:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.114
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723131223; cv=fail; b=XmDPk48yIWITODhJrG571zh7kHT2u1jsDZMQD7rH1sLTU+pz0ir6Qkvg9oDCSg8WCIRBLi7QwICbQ5XanXT1gDkeH0g9hDRHli22QASzuRT6ReKgyOAAAjUnXNLL6bjsnsasDRNggYZ8uY7UwARu3i43B8e5A1PpaaWviDCAtlU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723131223; c=relaxed/simple;
+	bh=wIpvJak6ZVj3hHDEzcEBtT8dMN09ugMpGOArBr/uwdE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=OqmDJgLMG6SRlB/Y9UmJJGricUgUdCPcGh7Z7PZv0VMS6sCSIE1sa2tDVV0InvIbD/pC0PKosgZRoLOjERvlcK+Opx6/612IifAAwqZKUBowDZcOyfcuSgKiUkrFhoypB7I7Hf5spbt2aTsPlPtIzIuWNHQ0/mmbisMTQTc9UKM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=BvUXctlE; arc=fail smtp.client-ip=52.101.85.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n04nRATfAEira0o+sZ+A2DLIYbtKCm9BDN0TOMyzfDjjoQmPWRupNXqH5fr31gVZaZNvr/ObJsIoYeB2EEPYqwvbAT4xOc4Rj3a5Lk/XMJ3+jrDPwhceVmRK+n4YQ6Oc0c0m8dKgkjaAbRNA1VNpgTX9+DHJgAwRWU9aRRrp1vaX7j5jC7Ce+JxUi4lmrPzxbrZONrVTQ0UlT5tfDYpKp8oBeyCXT/oXY/zkuXAff7WgMkUZwNRn5qv54AeERTNE2G0sVGBOV/oLfGGmEDDhTLabzUQtc548sfsEpcWWtg4AE7qCWg9ml8yoBUWGXz9VkVk7FLIHJ0A/80VY505IXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=24oFRjwuRRpNyHExnSDV9xUxqGPclR7fD+O4dt26Wjw=;
+ b=DiBSlUeQR/5w+xFl+OeMlR/CMjc43H2Ek1wyT7AuhxBieKr9ruaF+MAfswEzFHO61swrXhO17i5vF14HECIgXZDzgwwWga8rO1cyzN8tRsf31f7W9r8QJsiRJHju4O8nKUt11GIcx6bkF1WVcZ+3vdSK0Mpt7+6lFfnoU6Nu0Pi+AcSGrwNFogjLVgqR3olktokMJCCYk/vbw0+adxGRcP+qMhSKqykVqxTWT35wqRAP25hjprvtccyt9juRO39M6z8ovFYJPjlQ3tWE6WW31vEvPzX/443zUC03Xsip8wTQOrt2V1FuPHw/Z/4gHpzizO/2vfxHneRn4QgQcjVzDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=24oFRjwuRRpNyHExnSDV9xUxqGPclR7fD+O4dt26Wjw=;
+ b=BvUXctlEzX5g1c2GndVopnUEQZLqgXYjnUIoKnW6a9hLovUC++rQ/lU1o6EmMXIcV90XYbOi9GAJl9n3WZPgDKc1Dnq8kwMMARM4qrAQdG63UAQEeuCMCQOvqLoszNebJraHg6yrvlrVOoN66sBQMd/ykOQWi9wgRmhu4UcCivw=
+Received: from DM4PR21MB3536.namprd21.prod.outlook.com (2603:10b6:8:a4::5) by
+ CY5PR21MB3614.namprd21.prod.outlook.com (2603:10b6:930:d::18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7875.9; Thu, 8 Aug 2024 15:33:38 +0000
+Received: from DM4PR21MB3536.namprd21.prod.outlook.com
+ ([fe80::d1ee:5aa2:44d0:dee3]) by DM4PR21MB3536.namprd21.prod.outlook.com
+ ([fe80::d1ee:5aa2:44d0:dee3%4]) with mapi id 15.20.7875.007; Thu, 8 Aug 2024
+ 15:33:37 +0000
+From: Long Li <longli@microsoft.com>
+To: Shradha Gupta <shradhagupta@linux.microsoft.com>
+CC: KY Srinivasan <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Konstantin Taranov <kotaranov@microsoft.com>, Souradeep
+ Chakrabarti <schakrabarti@linux.microsoft.com>, Erick Archer
+	<erick.archer@outlook.com>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-rdma@vger.kernel.org"
+	<linux-rdma@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH v2 net] net: mana: Fix doorbell out of order violation and
+ avoid unnecessary doorbell rings
+Thread-Topic: [PATCH v2 net] net: mana: Fix doorbell out of order violation
+ and avoid unnecessary doorbell rings
+Thread-Index: AQHa6R/zQgAE3/VEwkaNHXMnN1gZdbIdMhgAgABL3IA=
+Date: Thu, 8 Aug 2024 15:33:37 +0000
+Message-ID:
+ <DM4PR21MB3536C9A8DE6A2C19C5C15C1CCEB92@DM4PR21MB3536.namprd21.prod.outlook.com>
+References: <1723072626-32221-1-git-send-email-longli@linuxonhyperv.com>
+ <20240808110026.GA25550@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+In-Reply-To:
+ <20240808110026.GA25550@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=0e67d904-4d50-43cd-b910-691a080d6b08;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-08-08T15:31:56Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR21MB3536:EE_|CY5PR21MB3614:EE_
+x-ms-office365-filtering-correlation-id: ddc35df9-c065-46a1-3514-08dcb7bf78fc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?fwaPgw/wZJSbaKATYBqYXHCG81X4PeSYXFDOnIZNW/6kuMhTY4PRNp/ccjiG?=
+ =?us-ascii?Q?uHu8cLcYvFoF3XdIGLq0mxAgscgvTpTGliv9e3XAJY+21yNPY+SxjsTiMc8g?=
+ =?us-ascii?Q?M1VzKI59o33B49nPSAf+VW1DgutZkeCrKgUCBdOFOcckUeRCYClBy/8F6PNE?=
+ =?us-ascii?Q?RBwAVO2XJCP05e+b+ZJaOu9bBQn3oZX3U/gMJrvnkyF2TGee0eEkid7Z1wLh?=
+ =?us-ascii?Q?Ao6WjgcE9Z8/pBjWaY3IDk2UrPabVr5DfC+KVSofNGMmc6l2uyPAc5cRGMA3?=
+ =?us-ascii?Q?c4AFRU+yukQcak1fTh2iaZBc+Nuq7SaGY+Xw+dQCjqwIEe+S7L+bZUYlkLLf?=
+ =?us-ascii?Q?7v5aC6MOJ6n/KUbpAIQjmmOBgEp1UWdfpxMRtyEPZAi5uJlnJvMaEJP/9MY5?=
+ =?us-ascii?Q?ysKxRNQ0R0dcvr3VEjZTK4nO+gDleUHKU+zRqQijYjNw2zImBNDQBFyZpiio?=
+ =?us-ascii?Q?E30jYzBUG+A1K+bXBty1A1DSL5ZJous1ewc5Nc84JYbCzKQcb4QOx3LqvjeL?=
+ =?us-ascii?Q?P6vh9/eH2n0veHcl/lV1t9KpXCepXfgD/R8wNDHGa5vzhzkJZGrlqcin7YPV?=
+ =?us-ascii?Q?zWy0owoC39XkY10BtFKYLf6XMzszRWg/pRMJnQWBKU1IxTMA3yXdo70dvUdu?=
+ =?us-ascii?Q?dAsE/OYbYwywj4eopRHwLE5hrWaDISndrFdn3Aj1Em+BYyrLAskVyOOORSqd?=
+ =?us-ascii?Q?EuYj4ug5l6YBrO2F9Gsc4QOr1OYVqSYvPdiN5C8cKu/FJ6ZVL00trrfVa47m?=
+ =?us-ascii?Q?C0dy9TTri+47MnL5gpzNFzioOUzwc4RjYlppewcJJDGoKyjKFQ/FD7AxfjcJ?=
+ =?us-ascii?Q?OjXpJAG5jtBijkAjZfslc2DQwOZHNAJKh0zPAq8GlWqroPG/9hwiHLhsWGKF?=
+ =?us-ascii?Q?km4Xmcmu6mNdma6Iqjy7wQ8PfUzpneJlSpSbXr1NQsGwhDoI04jxql4P+nvo?=
+ =?us-ascii?Q?9f8HbMabyVPXWXKba74VTd30pcoe4Gq1JxmbGEeAlhYpFHK/d7BfwmuHkF7m?=
+ =?us-ascii?Q?g9TBrAMCuoUtmH8Gqelc2opixILfWH0rWIXOrEwN+zxnK5zK6/mWfXTx8/hV?=
+ =?us-ascii?Q?AgkhEVCaL607Esyx6rvcOLtiN8n7VTiTAjSOmMkM7wm9FH4N4aEIcqk48B6c?=
+ =?us-ascii?Q?/LNLRplhsXUz9MlOCD3rkqi9FwF0mNtbQYzI6LeMiih3T3KqCSbnbhEqKIop?=
+ =?us-ascii?Q?pf1tB1X4MdhruK4ZZIrOFlA7GltRPsjhyna1UvX3C9LSTu4h8RRBfG3chMxy?=
+ =?us-ascii?Q?fZ9EKumjVlP4xnr9I3NFazSYjPYf6k8obXaHI5qcJT7jxaiQXZevjyr9a64c?=
+ =?us-ascii?Q?9KNFKFFwEPwrTfYW/lpNppyTD/CWlIWAbtwRC2Rxqe0UWzrUC8XDKehtkxq+?=
+ =?us-ascii?Q?FiApK2WwAFOtxM2sPzuVANVP5oIEjrmXY6ncpdtq6ih3+Mg6Kg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR21MB3536.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?J+HDDruG/5e46yz3rgWSQWAnbWt/uoQD5pslHHXhN+EWTzwHaSMpA/KYl22Q?=
+ =?us-ascii?Q?yxi+ItNWc1o+GLJnGcNwG0LhQmuamLG9hpyGKd9BHrvWlmt4CPQxe8INKzZc?=
+ =?us-ascii?Q?23B+9ymcBwgsWWZ7D/x0lvCFKohjPtmob2QDVcJ0ZkXndbblRiOe5CwLm8GX?=
+ =?us-ascii?Q?B6gmfQvcmpUf2lI3Q3hosAQ0HF/UJ3+DS+XeT6aQ728m9zAkTyGaxhjRm0f0?=
+ =?us-ascii?Q?2ADoCKZ2g/agsuoYYL/0TLmqjEIiaK5T5rpjB62pm/smqKJCejIuUE14tHfQ?=
+ =?us-ascii?Q?+msGxXTtllSUPchvN1JK6YR0f6fvajvQQ5tionGtKPFG/l1WxqimrXsvmmj5?=
+ =?us-ascii?Q?v4qA2o0PXAiLCYr8/SuWy6IkPXcnLPVMBPQZ/RlgETyS22N+vTw6i+hbudbR?=
+ =?us-ascii?Q?gzFJMuk5C5yxAs2iihvr9UgpyS7EWMvQxqrLuJgrDAv8LjUcMmLSvcK2iH9E?=
+ =?us-ascii?Q?rOdlcYIRwd9tlWsryclyNhy6h4erx+CMl5DpOpHdy50YxpEmItaW8bZ/HtjQ?=
+ =?us-ascii?Q?LUZGSkN/vTb/G055x55y+fQuq7hFhfLEtNLSP3mes08RIU8lR7ahRKBUp60i?=
+ =?us-ascii?Q?8oLmkhi+mjPKkMfCNGEeGB1S09VBBYLCtwJE1KaE4KmTvDNJo0Q1dVJtJvVS?=
+ =?us-ascii?Q?ljMmhN86SPRAndN+/c4Ym1FmvGZwJbtqzzrsqH16duOrmCmfEEF1j+iiyEbp?=
+ =?us-ascii?Q?UsRDsGSqh90nMA1XxU9B9q4bAoo0cjB4/1Fbgt3L1B/94zWOYciyhj4Ai9VS?=
+ =?us-ascii?Q?8MJxbVOuuM1zGi6u+HxXMdj4VvPrZ1bKuWcKTwV6RINYIsfeGtjaS2nfJlYU?=
+ =?us-ascii?Q?Fwgdp64nnCHlhjhKuTDWTbOV486iqPx7dqkM+g8z8KAA4+iBDDWS1E+4Jx6F?=
+ =?us-ascii?Q?PvTYTBi0sgxhbAPWwJ+PfhmP1rqRaTK0womwVlcoazISzZzhZv78sQ+1fELk?=
+ =?us-ascii?Q?BiUk3Zv5LMXdxvfMSFyITgcr72YMnsJl0cl3P0AOSx1EpJqWBsj63DAJEPw4?=
+ =?us-ascii?Q?l7XRXzRqhYDe4jBayrxZAtwGzb9uktHV6qaYHIlF9z9/x3+6FV4np5HpiCsa?=
+ =?us-ascii?Q?OG+mn/WqJefLy4i2eymT02h9ckuEyTccEee1HBxNMPDucgaNCan8rmKGg8H4?=
+ =?us-ascii?Q?kMk7aZ/VI4/2UMJ2DFIIaeo6B6duFmuSRwBDANxHJTcMT+b3TnL/+6KOZiiV?=
+ =?us-ascii?Q?QkT/uR3/hBSNHNlkG746zMXorVewioaR9RTe7mxYjpMCPwZEIWrMco3BAMA8?=
+ =?us-ascii?Q?xVnyWhrxKjrVA+7JB6Wf0zVzI5NWX9J85OgDxeLq/EICPrP3tKibH+Xi8w8a?=
+ =?us-ascii?Q?r8WrQv6Ulzm/1mWAXUWEaKPvHPDeO6p54miqDxEHGpj/X/LZJREnfT6CQ0fo?=
+ =?us-ascii?Q?B0bjAU2afoVMk/w2OAwGOuiaMwxmIFKjbCOYGSii3bbZjFj3MXPfx16lXagb?=
+ =?us-ascii?Q?SWVGLj0TWwyBtnzZW8spvUmRZ0ZAC7wz9VtheAvQjIr5ZOXazF0kmqC+y3np?=
+ =?us-ascii?Q?lcgi3aaGEJvSZnI210HyJN47los6v0otiTobna35nVNSlLU89+CbsD07VCuk?=
+ =?us-ascii?Q?JpmVuGE83WASjiuxPErZlGvMzl2cJBy7RIzHo8s5?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3776; i=matttbe@kernel.org; h=from:subject; bh=kmXJDsR5uzRQKmmr3H+BHdZCShdjvKClhktPf7MnBy4=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmtOR8AdYjaLfka2qkZizaJJ85XSPtYTfCrT5fj UUIX+rQOPmJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZrTkfAAKCRD2t4JPQmmg cyXUEACwGbkKEmD/lDMDOxmlq8Ku0geNSz1jbXCjsL0yRS5l8HKkGQHl8/WsnS45S/YQ3971MKv jtNBiL0gbNtV5LY97YI9OFi8jqJqXwnljvAWcVMp2R//fqTqrdR4SNT67AHpPUK/0BYD1FHMRuQ dbI2d8Jx1+eAuFbEfr0GYM1KHyJZa7G0/toQW+STE7ZPpGRedYVnUNMUuiFDNXvhlk3OWwhZhZ/ 4SnzcXXJtyd6Ist86HVbYjOQ7AJrlJVzRc8CATRs5ZtOtjlLBckTVIr63h/kj5wpb2MgLs8/PxT CY7cwICZQ9iNWz/Rz79z437oBRXeRWzfl0ih7BYTj2rhJoloiIXyrwiXaSMr0HLrGTsOomLpkP6 eT114V6BNBUT4KuFD+t0H7InBvweY6AaOqzHZHe85qHOpJXKQuoY3nk/WyM4VLuXtFeR6cFCfoz BlGuJ33Pb4s1ovuqZGhm5I+p4ut//2q1F1Hk1sxR+YRgjx9wsBpYrLHpIxuc2T5BJn84Cte8JBx i4abOiJtLA45dtd7V3XpkuArLfHCgfVlBOTliq+wre9aySp2kRhawvVrG8VS35JaPr8i+kb+/s6 rsh8itVveF5w+eebjcivRVogWLv4h/4GlAvaZnCXdqkwqTW+FlJd2ZlX1FfTKFH0ymtTYOgqGOR QuEbyJlKBqxeE8A==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR21MB3536.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ddc35df9-c065-46a1-3514-08dcb7bf78fc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Aug 2024 15:33:37.5685
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5vQ2fSeyXcpR7j4BcozZ6sCHeigy65k+UWLKi+WCrVV+InlX4WCJBQXylDtA8DchP0o2sHL4Z5EREVU5rj2LmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR21MB3614
 
-commit 4dde0d72ccec500c60c798e036b852e013d6e124 upstream.
+> > +	if (w < cq->budget) {
+> > +		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
+> > +		cq->work_done_since_doorbell =3D 0;
+> > +		napi_complete_done(&cq->napi, w);
+> > +	} else if (cq->work_done_since_doorbell >
+> > +		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
+>=20
+> should we define a macro for 4? may be 'CQ_WRAPAROUND_LIMIT'
 
-Without such counters, it is difficult to easily debug issues with MPJ
-not having the backup flags on production servers.
+I prefer to leaving the code as is. This is the only place it's used, and t=
+here is a comment explaining why this value is chosen.
 
-This is not strictly a fix, but it eases to validate the following
-patches without requiring to take packet traces, to query ongoing
-connections with Netlink with admin permissions, or to guess by looking
-at the behaviour of the packet scheduler. Also, the modification is self
-contained, isolated, well controlled, and the increments are done just
-after others, there from the beginning. It looks then safe, and helpful
-to backport this.
-
-Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in subflow.c because the context has changed in
-  commit b3ea6b272d79 ("mptcp: consolidate initial ack seq generation")
-  which is not in this version. This commit is unrelated to this
-  modification. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/mib.c     | 2 ++
- net/mptcp/mib.h     | 2 ++
- net/mptcp/subflow.c | 6 ++++++
- 3 files changed, 10 insertions(+)
-
-diff --git a/net/mptcp/mib.c b/net/mptcp/mib.c
-index 0dac2863c6e1..1f3161a38b9d 100644
---- a/net/mptcp/mib.c
-+++ b/net/mptcp/mib.c
-@@ -19,7 +19,9 @@ static const struct snmp_mib mptcp_snmp_list[] = {
- 	SNMP_MIB_ITEM("MPTCPRetrans", MPTCP_MIB_RETRANSSEGS),
- 	SNMP_MIB_ITEM("MPJoinNoTokenFound", MPTCP_MIB_JOINNOTOKEN),
- 	SNMP_MIB_ITEM("MPJoinSynRx", MPTCP_MIB_JOINSYNRX),
-+	SNMP_MIB_ITEM("MPJoinSynBackupRx", MPTCP_MIB_JOINSYNBACKUPRX),
- 	SNMP_MIB_ITEM("MPJoinSynAckRx", MPTCP_MIB_JOINSYNACKRX),
-+	SNMP_MIB_ITEM("MPJoinSynAckBackupRx", MPTCP_MIB_JOINSYNACKBACKUPRX),
- 	SNMP_MIB_ITEM("MPJoinSynAckHMacFailure", MPTCP_MIB_JOINSYNACKMAC),
- 	SNMP_MIB_ITEM("MPJoinAckRx", MPTCP_MIB_JOINACKRX),
- 	SNMP_MIB_ITEM("MPJoinAckHMacFailure", MPTCP_MIB_JOINACKMAC),
-diff --git a/net/mptcp/mib.h b/net/mptcp/mib.h
-index 2be3596374f4..a7b94f5c5d27 100644
---- a/net/mptcp/mib.h
-+++ b/net/mptcp/mib.h
-@@ -12,7 +12,9 @@ enum linux_mptcp_mib_field {
- 	MPTCP_MIB_RETRANSSEGS,		/* Segments retransmitted at the MPTCP-level */
- 	MPTCP_MIB_JOINNOTOKEN,		/* Received MP_JOIN but the token was not found */
- 	MPTCP_MIB_JOINSYNRX,		/* Received a SYN + MP_JOIN */
-+	MPTCP_MIB_JOINSYNBACKUPRX,	/* Received a SYN + MP_JOIN + backup flag */
- 	MPTCP_MIB_JOINSYNACKRX,		/* Received a SYN/ACK + MP_JOIN */
-+	MPTCP_MIB_JOINSYNACKBACKUPRX,	/* Received a SYN/ACK + MP_JOIN + backup flag */
- 	MPTCP_MIB_JOINSYNACKMAC,	/* HMAC was wrong on SYN/ACK + MP_JOIN */
- 	MPTCP_MIB_JOINACKRX,		/* Received an ACK + MP_JOIN */
- 	MPTCP_MIB_JOINACKMAC,		/* HMAC was wrong on ACK + MP_JOIN */
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 96bdd4119578..b8cb65bd9be8 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -165,6 +165,9 @@ static int subflow_check_req(struct request_sock *req,
- 			return 0;
- 	} else if (opt_mp_join) {
- 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNRX);
-+
-+		if (mp_opt.backup)
-+			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNBACKUPRX);
- 	}
- 
- 	if (opt_mp_capable && listener->request_mptcp) {
-@@ -469,6 +472,9 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 		subflow->mp_join = 1;
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKRX);
- 
-+		if (subflow->backup)
-+			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKBACKUPRX);
-+
- 		if (subflow_use_different_dport(mptcp_sk(parent), sk)) {
- 			pr_debug("synack inet_dport=%d %d",
- 				 ntohs(inet_sk(sk)->inet_dport),
--- 
-2.45.2
-
+>=20
+> > +		/* MANA hardware requires at least one doorbell ring every 8
+> > +		 * wraparounds of CQ even if there is no need to arm the CQ.
+> > +		 * This driver rings the doorbell as soon as we have exceeded
+> > +		 * 4 wraparounds.
+> > +		 */
+> > +		mana_gd_ring_cq(gdma_queue, 0);
+> > +		cq->work_done_since_doorbell =3D 0;
+> > 2.17.1
 
