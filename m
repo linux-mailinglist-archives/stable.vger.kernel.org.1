@@ -1,167 +1,93 @@
-Return-Path: <stable+bounces-66083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D128C94C567
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 21:42:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9850694C569
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 21:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 788741F23347
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 19:42:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 546E128587D
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 19:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC47A155A59;
-	Thu,  8 Aug 2024 19:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57FE155CBF;
+	Thu,  8 Aug 2024 19:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pZPVQA27"
 X-Original-To: stable@vger.kernel.org
-Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3908615572F
-	for <stable@vger.kernel.org>; Thu,  8 Aug 2024 19:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827B384A2F;
+	Thu,  8 Aug 2024 19:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723146134; cv=none; b=DnTwxALNxFM32jDbcyA+I2A/WFgwluUzpljypE66VlSbCJAq7umpEThRdYdTG+P4g9ZdmX8JA4jwAIkrtaHywYt7kVkdmnTAp96l5bAq487f9l8peG/ACqpbPZZRYXhOUGEaupVXxhZGcZvGDlW1qEyhWLa2mXzN5jBkKwPALSc=
+	t=1723146183; cv=none; b=dTc5NeNkcSoVF+2TZXEeW13znAeECWdlgv0cdUB25brJA7nJlOXQgp5NTKRAF8PygxxVV74kiN+gPzQhn7fqhq13kzI44IMnZ7inJG8eJ0fTAFEtRlVKIrSsDP6NsXAD81yQ18Zl4zl1XWpp+p+sPuEFabJW50jDRgkDFO0zP/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723146134; c=relaxed/simple;
-	bh=KDw8CT6xodJzHz0eF8ANHtSBdptXiQK0j6MN2UKrMRo=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=EBAO2cYYsTf+Ltfpg8/cQl+9JDQ0FU4cY81h4SyrJ1V52l6QCTBjVaEWzynqpeq13hr/3FAdmAxLbxCLZ2wJNEIuja5jPcRXtYPA3jgrteb7ByXSuE51EVNkx4v9QWvBYmIPH2d+JcAZcGeTFL0zfBQ3Q9qHg9IdVOX+rpM2Vfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
-Received: from mchehab by linuxtv.org with local (Exim 4.96)
-	(envelope-from <mchehab@linuxtv.org>)
-	id 1sc91Y-0004An-2b;
-	Thu, 08 Aug 2024 19:42:12 +0000
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Date: Thu, 08 Aug 2024 19:40:34 +0000
-Subject: [git:media_stage/fixes] media: Revert "media: dvb-usb: Fix unexpected infinite loop in dvb_usb_read_remote_control()"
-To: linuxtv-commits@linuxtv.org
-Cc: stable@vger.kernel.org, Sean Young <sean@mess.org>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1sc91Y-0004An-2b@linuxtv.org>
+	s=arc-20240116; t=1723146183; c=relaxed/simple;
+	bh=9kBylOwsE2XpqPwZpP7UXxRgnK2QCC3mH5zU/bOhA/8=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=rVIXVGAOs/eY3zNy1D4YOgmC91qnOxfoBfozE81gBUfxL3o/dVHXSx6rt9CjPMUvdlU3CQOHEwFptRwEiQSVfaXJ/CAuGyuEpI7YL0UJ/rlQgRYNrLuFq1fBKxKVGgWhfj+v3IrMg168ppNmDKTZoCL5UB38CO+c6xSE/CtHgLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pZPVQA27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84DDC32782;
+	Thu,  8 Aug 2024 19:43:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723146183;
+	bh=9kBylOwsE2XpqPwZpP7UXxRgnK2QCC3mH5zU/bOhA/8=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=pZPVQA27VDNEzHvMGARIHNp8+XE0tf7oYIqC4lgEYl0MZwQtOuvmA66RFi9+0+Z2m
+	 Dxg9PyukCu/cWm1BjI+XUsS+70iRmwQKp8jMdBZbtBEEoIiIx8Ydsn169kRdag4D4R
+	 eKo7Gvc4ao4zE2Q5jVlILriuqI2n7w+0lz9TB1QOi6SregXTrzkdBWj0NJxPIoybcP
+	 ZQYbCUwc2/Ewzbadnj38bu3spDZTwRlUAktQ4oreQ96R+iSrU8vFjPxRaMsIKU4dlV
+	 HJljFaJ8WPMkV3C/DxWBx2o4PaV7KFx2hx1QxsUxgIGczyS1pkZC60/+A2c5K2gOGp
+	 bRQbRJmStJ8QA==
+Message-ID: <a7607f45e26c79f13b846fd0d8284bcf.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240808-clk-rpmh-bcm-vote-fix-v1-1-109bd1d76189@quicinc.com>
+References: <20240808-clk-rpmh-bcm-vote-fix-v1-1-109bd1d76189@quicinc.com>
+Subject: Re: [PATCH] clk: qcom: clk-rpmh: Fix overflow in BCM vote
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, Ajit Pandey <quic_ajipan@quicinc.com>, Imran Shaik <quic_imrashai@quicinc.com>, Taniya Das <quic_tdas@quicinc.com>, Jagadeesh Kona <quic_jkona@quicinc.com>, Satya Priya Kakitapalli <quic_skakitap@quicinc.com>, Mike Tipton <quic_mdtipton@quicinc.com>, stable@vger.kernel.org
+To: Bjorn Andersson <andersson@kernel.org>, David Dai <daidavid1@codeaurora.org>, Imran Shaik <quic_imrashai@quicinc.com>, Michael Turquette <mturquette@baylibre.com>
+Date: Thu, 08 Aug 2024 12:43:00 -0700
+User-Agent: alot/0.10
 
-This is an automatic generated email to let you know that the following patch were queued:
+Quoting Imran Shaik (2024-08-08 00:05:02)
+> From: Mike Tipton <quic_mdtipton@quicinc.com>
+>=20
+> Valid frequencies may result in BCM votes that exceed the max HW value.
+> Set vote ceiling to BCM_TCS_CMD_VOTE_MASK to ensure the votes aren't
+> truncated, which can result in lower frequencies than desired.
+>=20
+> Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+> Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
+> ---
+>  drivers/clk/qcom/clk-rpmh.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>=20
+> diff --git a/drivers/clk/qcom/clk-rpmh.c b/drivers/clk/qcom/clk-rpmh.c
+> index bb82abeed88f..233ccd365a37 100644
+> --- a/drivers/clk/qcom/clk-rpmh.c
+> +++ b/drivers/clk/qcom/clk-rpmh.c
+> @@ -263,6 +263,9 @@ static int clk_rpmh_bcm_send_cmd(struct clk_rpmh *c, =
+bool enable)
+>                 cmd_state =3D 0;
+>         }
+> =20
+> +       if (cmd_state > BCM_TCS_CMD_VOTE_MASK)
+> +               cmd_state =3D BCM_TCS_CMD_VOTE_MASK;
+> +
 
-Subject: media: Revert "media: dvb-usb: Fix unexpected infinite loop in dvb_usb_read_remote_control()"
-Author:  Sean Young <sean@mess.org>
-Date:    Thu Aug 8 10:35:19 2024 +0200
+This is
 
-This reverts commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c.
-
-This breaks the TeVii s480 dual DVB-S2 S660. The device has a bulk in
-endpoint but no corresponding out endpoint, so the device does not pass
-the "has both receive and send bulk endpoint" test.
-
-Seemingly this device does not use dvb_usb_generic_rw() so I have tried
-removing the generic_bulk_ctrl_endpoint entry, but this resulted in
-different problems.
-
-As we have no explanation yet, revert.
-
-$ dmesg | grep -i -e dvb -e dw21 -e usb\ 4
-[    0.999122] usb 1-1: new high-speed USB device number 2 using ehci-pci
-[    1.023123] usb 4-1: new high-speed USB device number 2 using ehci-pci
-[    1.130247] usb 1-1: New USB device found, idVendor=9022, idProduct=d482,
-+bcdDevice= 0.01
-[    1.130257] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
-[    1.152323] usb 4-1: New USB device found, idVendor=9022, idProduct=d481,
-+bcdDevice= 0.01
-[    1.152329] usb 4-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
-[    6.701033] dvb-usb: found a 'TeVii S480.2 USB' in cold state, will try to
-+load a firmware
-[    6.701178] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    6.701179] dw2102: start downloading DW210X firmware
-[    6.703715] dvb-usb: found a 'Microsoft Xbox One Digital TV Tuner' in cold
-+state, will try to load a firmware
-[    6.703974] dvb-usb: downloading firmware from file 'dvb-usb-dib0700-1.20.fw'
-[    6.756432] usb 1-1: USB disconnect, device number 2
-[    6.862119] dvb-usb: found a 'TeVii S480.2 USB' in warm state.
-[    6.862194] dvb-usb: TeVii S480.2 USB error while loading driver (-22)
-[    6.862209] dvb-usb: found a 'TeVii S480.1 USB' in cold state, will try to
-+load a firmware
-[    6.862244] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    6.862245] dw2102: start downloading DW210X firmware
-[    6.914811] usb 4-1: USB disconnect, device number 2
-[    7.014131] dvb-usb: found a 'TeVii S480.1 USB' in warm state.
-[    7.014487] dvb-usb: TeVii S480.1 USB error while loading driver (-22)
-[    7.014538] usbcore: registered new interface driver dw2102
-
-Closes: https://lore.kernel.org/stable/20240801165146.38991f60@mir/
-
-Fixes: 2052138b7da5 ("media: dvb-usb: Fix unexpected infinite loop in dvb_usb_read_remote_control()")
-Reported-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
- drivers/media/usb/dvb-usb/dvb-usb-init.c | 35 ++++----------------------------
- 1 file changed, 4 insertions(+), 31 deletions(-)
-
----
-
-diff --git a/drivers/media/usb/dvb-usb/dvb-usb-init.c b/drivers/media/usb/dvb-usb/dvb-usb-init.c
-index 22d83ac18eb7..fbf58012becd 100644
---- a/drivers/media/usb/dvb-usb/dvb-usb-init.c
-+++ b/drivers/media/usb/dvb-usb/dvb-usb-init.c
-@@ -23,40 +23,11 @@ static int dvb_usb_force_pid_filter_usage;
- module_param_named(force_pid_filter_usage, dvb_usb_force_pid_filter_usage, int, 0444);
- MODULE_PARM_DESC(force_pid_filter_usage, "force all dvb-usb-devices to use a PID filter, if any (default: 0).");
- 
--static int dvb_usb_check_bulk_endpoint(struct dvb_usb_device *d, u8 endpoint)
--{
--	if (endpoint) {
--		int ret;
--
--		ret = usb_pipe_type_check(d->udev, usb_sndbulkpipe(d->udev, endpoint));
--		if (ret)
--			return ret;
--		ret = usb_pipe_type_check(d->udev, usb_rcvbulkpipe(d->udev, endpoint));
--		if (ret)
--			return ret;
--	}
--	return 0;
--}
--
--static void dvb_usb_clear_halt(struct dvb_usb_device *d, u8 endpoint)
--{
--	if (endpoint) {
--		usb_clear_halt(d->udev, usb_sndbulkpipe(d->udev, endpoint));
--		usb_clear_halt(d->udev, usb_rcvbulkpipe(d->udev, endpoint));
--	}
--}
--
- static int dvb_usb_adapter_init(struct dvb_usb_device *d, short *adapter_nrs)
- {
- 	struct dvb_usb_adapter *adap;
- 	int ret, n, o;
- 
--	ret = dvb_usb_check_bulk_endpoint(d, d->props.generic_bulk_ctrl_endpoint);
--	if (ret)
--		return ret;
--	ret = dvb_usb_check_bulk_endpoint(d, d->props.generic_bulk_ctrl_endpoint_response);
--	if (ret)
--		return ret;
- 	for (n = 0; n < d->props.num_adapters; n++) {
- 		adap = &d->adapter[n];
- 		adap->dev = d;
-@@ -132,8 +103,10 @@ static int dvb_usb_adapter_init(struct dvb_usb_device *d, short *adapter_nrs)
- 	 * when reloading the driver w/o replugging the device
- 	 * sometimes a timeout occurs, this helps
- 	 */
--	dvb_usb_clear_halt(d, d->props.generic_bulk_ctrl_endpoint);
--	dvb_usb_clear_halt(d, d->props.generic_bulk_ctrl_endpoint_response);
-+	if (d->props.generic_bulk_ctrl_endpoint != 0) {
-+		usb_clear_halt(d->udev, usb_sndbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
-+		usb_clear_halt(d->udev, usb_rcvbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
-+	}
- 
- 	return 0;
- 
+	cmd_state =3D min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
 
