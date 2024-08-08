@@ -1,83 +1,129 @@
-Return-Path: <stable+bounces-65976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBD594B45B
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 02:59:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B962F94B498
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 03:22:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8F161C21570
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 00:59:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E0E2831BE
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 01:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A4420ED;
-	Thu,  8 Aug 2024 00:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFDD6AA7;
+	Thu,  8 Aug 2024 01:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1wqw3MW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iF8h/1aL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCB820E6;
-	Thu,  8 Aug 2024 00:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903B53D6B;
+	Thu,  8 Aug 2024 01:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723078766; cv=none; b=Y4QkH/X9V2IOofJ0TFp0BNbgU0YRsMaQpZG+Pw5dMNnnvlimBh0VjyGB5IBCYTyJmmzynSe+ewHNiu57+NTFjeQfDY1a46yulhi2KFb7Npwxz5OVBbm7bR1R0bWz6XMg05BmVLbSIJB322N57N13sGl1jOIOmS9Eh6AY50yf5QI=
+	t=1723080134; cv=none; b=HmPW9mmjZFNn4STDO7dYcbE00yW7IAWpak5RSfm6HQMJRln+VTzXCVnQEhYIysjP9l3ETf3efyOFR0by+AGfqIvTSMscU3D4QL599EQ1CIK74sEc0qCLlCa1qqgyzu23l50YFFrWxkoX4F1PRXrtugfUC0uUXaK6rfeDLRLadx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723078766; c=relaxed/simple;
-	bh=IvJYIBE3hjcBepXyYa5KPKw5I13hnxhgH0Nqj0N0pSo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jx6w9l6ICE/wldtCXn7I+7pf5uvDYNGOrOiUkBdriPLuzUdXKWtObJb25h1aXQgGTNQK9I0TrCz8MTH1u6UgPieCY6NROHzIHDa+/hTgDIrsdGpnS4a6BOAkgCgBEvt/nKZrQr2zR19UjE1CubI1aGq/sg+02ygKrOiMuMNbm+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1wqw3MW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17182C32781;
-	Thu,  8 Aug 2024 00:59:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723078766;
-	bh=IvJYIBE3hjcBepXyYa5KPKw5I13hnxhgH0Nqj0N0pSo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O1wqw3MWxce4y0N9F/vXM5IiHBxaugOvUdrISTvX2o8cp4J3TLRuqs4bcDEA5Y/DC
-	 AIxD8YH2MBvLNzh2omDH8MYWjmO4gSPdgoqeiMbXxVOA2ftuy6v1LGXfHKbC2ticIl
-	 /LQ4fCq+PB2XqLPGAYv0cF/x0EnauyxnaA/tO8gyYGGOrSC1PfSH5T7BMJCcX9r0zn
-	 +KuNoi+7a0pGa9K6kj0IXTNHcb5IA9Ija2XB7ZVYJTh5DTNJ/b/dWQniwJJwTKK3FJ
-	 DtmAEZFymqgLaZO+sZkbX5FIVY9gmFifrZ2EEdB3OuWBzMtSAJEi739mb6GF+TrlrI
-	 8Hagh7WAQ5ZBA==
-Date: Wed, 7 Aug 2024 20:59:24 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Yang Shi <yang@os.amperecomputing.com>
-Cc: gregkh@linuxfoundation.org, yangge1116@126.com, hch@infradead.org,
-	david@redhat.com, peterx@redhat.com, akpm@linux-foundation.org,
-	linux-mm@kvack.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [v6.6-stable PATCH] mm: gup: stop abusing try_grab_folio
-Message-ID: <ZrQYbLGWVf9zOT1p@sashalap>
-References: <20240806193037.1826490-1-yang@os.amperecomputing.com>
+	s=arc-20240116; t=1723080134; c=relaxed/simple;
+	bh=Q9iG8XcqmMx33JQUTjEOFH7E6Sv0L21shlHay8t5HZ0=;
+	h=Date:To:From:Subject:Message-Id; b=LMtSFV5XO0DIRL+z/SUfX4cdDSyCIcjdX4nDXWf1Aeepk6kiVT8wYHl/X3f/g5xEJb3uF+p++zR2BIIvXFrVqpR4Z5/y+lUFE2rQczfys2UEy2kneXI6tM0z/WkK0ywnyB+Sx4u5AKGxbzMb9D61xgPxwFTODlVXyNIXqmU5Td4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=iF8h/1aL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCB6C32781;
+	Thu,  8 Aug 2024 01:22:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1723080134;
+	bh=Q9iG8XcqmMx33JQUTjEOFH7E6Sv0L21shlHay8t5HZ0=;
+	h=Date:To:From:Subject:From;
+	b=iF8h/1aLtwpmXKTjMstaGDWyQi1AWkVkMG1lvw4IWKEGH4+F8yqx2a7RG4PuIifmU
+	 RaBWuEzKEa4QkCNqrf29dfzFrX0bXDJxfReD8dx/UrhYSYvjwMMb/l1hLTEoOE4QNs
+	 XQuOEUpjoxU7W+Jg7Ula7mi1TcRrUKbF6nT58370=
+Date: Wed, 07 Aug 2024 18:22:13 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,shakeel.butt@linux.dev,nphamcs@gmail.com,hannes@cmpxchg.org,songmuchun@bytedance.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [folded-merged] mm-list_lru-fix-uaf-for-memory-cgroup-v2.patch removed from -mm tree
+Message-Id: <20240808012214.0CCB6C32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20240806193037.1826490-1-yang@os.amperecomputing.com>
 
-On Tue, Aug 06, 2024 at 12:30:36PM -0700, Yang Shi wrote:
->commit f442fa6141379a20b48ae3efabee827a3d260787 upstream
->
->A kernel warning was reported when pinning folio in CMA memory when
->launching SEV virtual machine.  The splat looks like:
 
-[snip]
+The quilt patch titled
+     Subject: mm-list_lru-fix-uaf-for-memory-cgroup-v2
+has been removed from the -mm tree.  Its filename was
+     mm-list_lru-fix-uaf-for-memory-cgroup-v2.patch
 
-This doesn't compile on 6.6...
+This patch was dropped because it was folded into mm-list_lru-fix-uaf-for-memory-cgroup.patch
 
-mm/huge_memory.c: In function 'follow_devmap_pud':
-mm/huge_memory.c:1213:8: error: implicit declaration of function 'try_grab_page'; did you mean 'try_get_page'? [-Werror=implicit-function-declaration]
-  1213 |  ret = try_grab_page(page, flags);
-       |        ^~~~~~~~~~~~~
-       |        try_get_page
+------------------------------------------------------
+From: Muchun Song <songmuchun@bytedance.com>
+Subject: mm-list_lru-fix-uaf-for-memory-cgroup-v2
+Date: Thu, 1 Aug 2024 10:46:03 +0800
 
--- 
-Thanks,
-Sasha
+only grab rcu lock when necessary, per Vlastimil
+
+Link: https://lkml.kernel.org/r/20240801024603.1865-1-songmuchun@bytedance.com
+Fixes: 0a97c01cd20b ("list_lru: allow explicit memcg and NUMA node selection")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/list_lru.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
+
+--- a/mm/list_lru.c~mm-list_lru-fix-uaf-for-memory-cgroup-v2
++++ a/mm/list_lru.c
+@@ -112,12 +112,14 @@ bool list_lru_add_obj(struct list_lru *l
+ {
+ 	bool ret;
+ 	int nid = page_to_nid(virt_to_page(item));
+-	struct mem_cgroup *memcg;
+ 
+-	rcu_read_lock();
+-	memcg = list_lru_memcg_aware(lru) ? mem_cgroup_from_slab_obj(item) : NULL;
+-	ret = list_lru_add(lru, item, nid, memcg);
+-	rcu_read_unlock();
++	if (list_lru_memcg_aware(lru)) {
++		rcu_read_lock();
++		ret = list_lru_add(lru, item, nid, mem_cgroup_from_slab_obj(item));
++		rcu_read_unlock();
++	} else {
++		ret = list_lru_add(lru, item, nid, NULL);
++	}
+ 
+ 	return ret;
+ }
+@@ -148,12 +150,14 @@ bool list_lru_del_obj(struct list_lru *l
+ {
+ 	bool ret;
+ 	int nid = page_to_nid(virt_to_page(item));
+-	struct mem_cgroup *memcg;
+ 
+-	rcu_read_lock();
+-	memcg = list_lru_memcg_aware(lru) ? mem_cgroup_from_slab_obj(item) : NULL;
+-	ret = list_lru_del(lru, item, nid, memcg);
+-	rcu_read_unlock();
++	if (list_lru_memcg_aware(lru)) {
++		rcu_read_lock();
++		ret = list_lru_del(lru, item, nid, mem_cgroup_from_slab_obj(item));
++		rcu_read_unlock();
++	} else {
++		ret = list_lru_del(lru, item, nid, NULL);
++	}
+ 
+ 	return ret;
+ }
+_
+
+Patches currently in -mm which might be from songmuchun@bytedance.com are
+
+mm-list_lru-fix-uaf-for-memory-cgroup.patch
+mm-kmem-remove-mem_cgroup_from_obj.patch
+
 
