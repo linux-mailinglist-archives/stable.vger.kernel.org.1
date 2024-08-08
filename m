@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-66051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA05B94BF8D
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 16:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4A194BF94
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 16:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0668E1C25CAF
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 14:21:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ED9A1C25047
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 14:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0456118EFF0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF5E18FC67;
 	Thu,  8 Aug 2024 14:21:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E8518EFD0;
-	Thu,  8 Aug 2024 14:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA4018F2F2;
+	Thu,  8 Aug 2024 14:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723126883; cv=none; b=RGwjXX3IfOWsd64Noy/bqwyxu6pa19WZKS9VePP6uHaavsMeMgDoiDY+IUvHO+1oTpjoLRM5gTgkL7Y/iajUikSuTEHgk/ZzWrnLmRgiCgWW/kgtdyUBOc5h7bIePdwjx+VhJiq9j/FC/dSVTPmmNZZvF0d8huzk5mVFEg9kKdk=
+	t=1723126884; cv=none; b=P6ToOYA3J05n+q11gdZqKxOCu6VAxdn6QLXb83yQdRnAkjZeCnR1bO1ClFaRLsFWZc/RareamHwinw6WT3AL7rhq7Ox0Vxd2N5oek9zi0eGh/qBK5Af4flOjVfZ6MZ5/iLW0pDegctUSKtv8SQS4jAUt2Uu03mXbWIOvirYq/Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723126883; c=relaxed/simple;
-	bh=6CF9RCJDSG9WwrjbP/VpGfJzbbGCBQl6aRvx0RgXNkA=;
+	s=arc-20240116; t=1723126884; c=relaxed/simple;
+	bh=YnLXBCQgc5nXKwHYksLbyzNMHZCBdWVLHQJRVNXb+dA=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=MtkL5OXLW5N3Kt2F2Deucd9v3uOirBjzQ7fx7khZ4gGpzqe/8umLCWHQ+VbtC6JTCdNJNfwACje7S16CMjT7T/pmUhz6XV01mmk5gp8eOocgK/atcdZp1aXEmd2VednMbK5GweZOsa4floByGorDyVEDBMAusCTTHkV80bos94o=
+	 Content-Type; b=AI1chjYlDrOgDhmBEq2WQosz2pLaEKadQCZas35IZh2xMBio3sB1668a6blnLDpT84GYZRhu50Qmr4yfbF3Yt9n7bBbgHtWxQ60T/AYfykZqUkH2pNZ5w+sd8fDV6kJYVuQoirKG7Xgj/JzA7gvBe/QSGvMZGNytrEAXsE0sK6Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CE3C4AF10;
-	Thu,  8 Aug 2024 14:21:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 228D8C4AF11;
+	Thu,  8 Aug 2024 14:21:24 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.98)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1sc416-00000000BSz-2rFy;
-	Thu, 08 Aug 2024 10:21:24 -0400
-Message-ID: <20240808142124.542872106@goodmis.org>
+	id 1sc417-00000000BU0-01Js;
+	Thu, 08 Aug 2024 10:21:25 -0400
+Message-ID: <20240808142124.863050374@goodmis.org>
 User-Agent: quilt/0.68
-Date: Thu, 08 Aug 2024 10:20:44 -0400
+Date: Thu, 08 Aug 2024 10:20:46 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -43,9 +43,12 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org,
- Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
- Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-Subject: [for-linus][PATCH 7/9] tracing: Fix overflow in get_free_elt()
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ Ilkka =?utf-8?b?TmF1bGFww6TDpA==?= <digirigawa@gmail.com>,
+ Mathias Krause <minipli@grsecurity.net>,
+ Brad Spengler <spender@grsecurity.net>,
+ Al Viro <viro@zeniv.linux.org.uk>
+Subject: [for-linus][PATCH 9/9] tracefs: Use generic inode RCU for synchronizing freeing
 References: <20240808142037.495820579@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,65 +58,242 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-"tracing_map->next_elt" in get_free_elt() is at risk of overflowing.
+With structure layout randomization enabled for 'struct inode' we need to
+avoid overlapping any of the RCU-used / initialized-only-once members,
+e.g. i_lru or i_sb_list to not corrupt related list traversals when making
+use of the rcu_head.
 
-Once it overflows, new elements can still be inserted into the tracing_map
-even though the maximum number of elements (`max_elts`) has been reached.
-Continuing to insert elements after the overflow could result in the
-tracing_map containing "tracing_map->max_size" elements, leaving no empty
-entries.
-If any attempt is made to insert an element into a full tracing_map using
-`__tracing_map_insert()`, it will cause an infinite loop with preemption
-disabled, leading to a CPU hang problem.
+For an unlucky structure layout of 'struct inode' we may end up with the
+following splat when running the ftrace selftests:
 
-Fix this by preventing any further increments to "tracing_map->next_elt"
-once it reaches "tracing_map->max_elt".
+[<...>] list_del corruption, ffff888103ee2cb0->next (tracefs_inode_cache+0x0/0x4e0 [slab object]) is NULL (prev is tracefs_inode_cache+0x78/0x4e0 [slab object])
+[<...>] ------------[ cut here ]------------
+[<...>] kernel BUG at lib/list_debug.c:54!
+[<...>] invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+[<...>] CPU: 3 PID: 2550 Comm: mount Tainted: G                 N  6.8.12-grsec+ #122 ed2f536ca62f28b087b90e3cc906a8d25b3ddc65
+[<...>] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
+[<...>] RIP: 0010:[<ffffffff84656018>] __list_del_entry_valid_or_report+0x138/0x3e0
+[<...>] Code: 48 b8 99 fb 65 f2 ff ff ff ff e9 03 5c d9 fc cc 48 b8 99 fb 65 f2 ff ff ff ff e9 33 5a d9 fc cc 48 b8 99 fb 65 f2 ff ff ff ff <0f> 0b 4c 89 e9 48 89 ea 48 89 ee 48 c7 c7 60 8f dd 89 31 c0 e8 2f
+[<...>] RSP: 0018:fffffe80416afaf0 EFLAGS: 00010283
+[<...>] RAX: 0000000000000098 RBX: ffff888103ee2cb0 RCX: 0000000000000000
+[<...>] RDX: ffffffff84655fe8 RSI: ffffffff89dd8b60 RDI: 0000000000000001
+[<...>] RBP: ffff888103ee2cb0 R08: 0000000000000001 R09: fffffbd0082d5f25
+[<...>] R10: fffffe80416af92f R11: 0000000000000001 R12: fdf99c16731d9b6d
+[<...>] R13: 0000000000000000 R14: ffff88819ad4b8b8 R15: 0000000000000000
+[<...>] RBX: tracefs_inode_cache+0x0/0x4e0 [slab object]
+[<...>] RDX: __list_del_entry_valid_or_report+0x108/0x3e0
+[<...>] RSI: __func__.47+0x4340/0x4400
+[<...>] RBP: tracefs_inode_cache+0x0/0x4e0 [slab object]
+[<...>] RSP: process kstack fffffe80416afaf0+0x7af0/0x8000 [mount 2550 2550]
+[<...>] R09: kasan shadow of process kstack fffffe80416af928+0x7928/0x8000 [mount 2550 2550]
+[<...>] R10: process kstack fffffe80416af92f+0x792f/0x8000 [mount 2550 2550]
+[<...>] R14: tracefs_inode_cache+0x78/0x4e0 [slab object]
+[<...>] FS:  00006dcb380c1840(0000) GS:ffff8881e0600000(0000) knlGS:0000000000000000
+[<...>] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[<...>] CR2: 000076ab72b30e84 CR3: 000000000b088004 CR4: 0000000000360ef0 shadow CR4: 0000000000360ef0
+[<...>] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[<...>] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[<...>] ASID: 0003
+[<...>] Stack:
+[<...>]  ffffffff818a2315 00000000f5c856ee ffffffff896f1840 ffff888103ee2cb0
+[<...>]  ffff88812b6b9750 0000000079d714b6 fffffbfff1e9280b ffffffff8f49405f
+[<...>]  0000000000000001 0000000000000000 ffff888104457280 ffffffff8248b392
+[<...>] Call Trace:
+[<...>]  <TASK>
+[<...>]  [<ffffffff818a2315>] ? lock_release+0x175/0x380 fffffe80416afaf0
+[<...>]  [<ffffffff8248b392>] list_lru_del+0x152/0x740 fffffe80416afb48
+[<...>]  [<ffffffff8248ba93>] list_lru_del_obj+0x113/0x280 fffffe80416afb88
+[<...>]  [<ffffffff8940fd19>] ? _atomic_dec_and_lock+0x119/0x200 fffffe80416afb90
+[<...>]  [<ffffffff8295b244>] iput_final+0x1c4/0x9a0 fffffe80416afbb8
+[<...>]  [<ffffffff8293a52b>] dentry_unlink_inode+0x44b/0xaa0 fffffe80416afbf8
+[<...>]  [<ffffffff8293fefc>] __dentry_kill+0x23c/0xf00 fffffe80416afc40
+[<...>]  [<ffffffff8953a85f>] ? __this_cpu_preempt_check+0x1f/0xa0 fffffe80416afc48
+[<...>]  [<ffffffff82949ce5>] ? shrink_dentry_list+0x1c5/0x760 fffffe80416afc70
+[<...>]  [<ffffffff82949b71>] ? shrink_dentry_list+0x51/0x760 fffffe80416afc78
+[<...>]  [<ffffffff82949da8>] shrink_dentry_list+0x288/0x760 fffffe80416afc80
+[<...>]  [<ffffffff8294ae75>] shrink_dcache_sb+0x155/0x420 fffffe80416afcc8
+[<...>]  [<ffffffff8953a7c3>] ? debug_smp_processor_id+0x23/0xa0 fffffe80416afce0
+[<...>]  [<ffffffff8294ad20>] ? do_one_tree+0x140/0x140 fffffe80416afcf8
+[<...>]  [<ffffffff82997349>] ? do_remount+0x329/0xa00 fffffe80416afd18
+[<...>]  [<ffffffff83ebf7a1>] ? security_sb_remount+0x81/0x1c0 fffffe80416afd38
+[<...>]  [<ffffffff82892096>] reconfigure_super+0x856/0x14e0 fffffe80416afd70
+[<...>]  [<ffffffff815d1327>] ? ns_capable_common+0xe7/0x2a0 fffffe80416afd90
+[<...>]  [<ffffffff82997436>] do_remount+0x416/0xa00 fffffe80416afdd0
+[<...>]  [<ffffffff829b2ba4>] path_mount+0x5c4/0x900 fffffe80416afe28
+[<...>]  [<ffffffff829b25e0>] ? finish_automount+0x13a0/0x13a0 fffffe80416afe60
+[<...>]  [<ffffffff82903812>] ? user_path_at_empty+0xb2/0x140 fffffe80416afe88
+[<...>]  [<ffffffff829b2ff5>] do_mount+0x115/0x1c0 fffffe80416afeb8
+[<...>]  [<ffffffff829b2ee0>] ? path_mount+0x900/0x900 fffffe80416afed8
+[<...>]  [<ffffffff8272461c>] ? __kasan_check_write+0x1c/0xa0 fffffe80416afee0
+[<...>]  [<ffffffff829b31cf>] __do_sys_mount+0x12f/0x280 fffffe80416aff30
+[<...>]  [<ffffffff829b36cd>] __x64_sys_mount+0xcd/0x2e0 fffffe80416aff70
+[<...>]  [<ffffffff819f8818>] ? syscall_trace_enter+0x218/0x380 fffffe80416aff88
+[<...>]  [<ffffffff8111655e>] x64_sys_call+0x5d5e/0x6720 fffffe80416affa8
+[<...>]  [<ffffffff8952756d>] do_syscall_64+0xcd/0x3c0 fffffe80416affb8
+[<...>]  [<ffffffff8100119b>] entry_SYSCALL_64_safe_stack+0x4c/0x87 fffffe80416affe8
+[<...>]  </TASK>
+[<...>]  <PTREGS>
+[<...>] RIP: 0033:[<00006dcb382ff66a>] vm_area_struct[mount 2550 2550 file 6dcb38225000-6dcb3837e000 22 55(read|exec|mayread|mayexec)]+0x0/0xb8 [userland map]
+[<...>] Code: 48 8b 0d 29 18 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d f6 17 0d 00 f7 d8 64 89 01 48
+[<...>] RSP: 002b:0000763d68192558 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+[<...>] RAX: ffffffffffffffda RBX: 00006dcb38433264 RCX: 00006dcb382ff66a
+[<...>] RDX: 000017c3e0d11210 RSI: 000017c3e0d1a5a0 RDI: 000017c3e0d1ae70
+[<...>] RBP: 000017c3e0d10fb0 R08: 000017c3e0d11260 R09: 00006dcb383d1be0
+[<...>] R10: 000000000020002e R11: 0000000000000246 R12: 0000000000000000
+[<...>] R13: 000017c3e0d1ae70 R14: 000017c3e0d11210 R15: 000017c3e0d10fb0
+[<...>] RBX: vm_area_struct[mount 2550 2550 file 6dcb38433000-6dcb38434000 5b 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>] RCX: vm_area_struct[mount 2550 2550 file 6dcb38225000-6dcb3837e000 22 55(read|exec|mayread|mayexec)]+0x0/0xb8 [userland map]
+[<...>] RDX: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>] RSI: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>] RDI: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>] RBP: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>] RSP: vm_area_struct[mount 2550 2550 anon 763d68173000-763d68195000 7ffffffdd 100133(read|write|mayread|maywrite|growsdown|account)]+0x0/0xb8 [userland map]
+[<...>] R08: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>] R09: vm_area_struct[mount 2550 2550 file 6dcb383d1000-6dcb383d3000 1cd 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>] R13: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>] R14: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>] R15: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
+[<...>]  </PTREGS>
+[<...>] Modules linked in:
+[<...>] ---[ end trace 0000000000000000 ]---
+
+The list debug message as well as RBX's symbolic value point out that the
+object in question was allocated from 'tracefs_inode_cache' and that the
+list's '->next' member is at offset 0. Dumping the layout of the relevant
+parts of 'struct tracefs_inode' gives the following:
+
+  struct tracefs_inode {
+    union {
+      struct inode {
+        struct list_head {
+          struct list_head * next;                    /*     0     8 */
+          struct list_head * prev;                    /*     8     8 */
+        } i_lru;
+        [...]
+      } vfs_inode;
+      struct callback_head {
+        void (*func)(struct callback_head *);         /*     0     8 */
+        struct callback_head * next;                  /*     8     8 */
+      } rcu;
+    };
+    [...]
+  };
+
+Above shows that 'vfs_inode.i_lru' overlaps with 'rcu' which will
+destroy the 'i_lru' list as soon as the 'rcu' member gets used, e.g. in
+call_rcu() or later when calling the RCU callback. This will disturb
+concurrent list traversals as well as object reuse which assumes these
+list heads will keep their integrity.
+
+For reproduction, the following diff manually overlays 'i_lru' with
+'rcu' as, otherwise, one would require some good portion of luck for
+gambling an unlucky RANDSTRUCT seed:
+
+  --- a/include/linux/fs.h
+  +++ b/include/linux/fs.h
+  @@ -629,6 +629,7 @@ struct inode {
+   	umode_t			i_mode;
+   	unsigned short		i_opflags;
+   	kuid_t			i_uid;
+  +	struct list_head	i_lru;		/* inode LRU list */
+   	kgid_t			i_gid;
+   	unsigned int		i_flags;
+
+  @@ -690,7 +691,6 @@ struct inode {
+   	u16			i_wb_frn_avg_time;
+   	u16			i_wb_frn_history;
+   #endif
+  -	struct list_head	i_lru;		/* inode LRU list */
+   	struct list_head	i_sb_list;
+   	struct list_head	i_wb_list;	/* backing dev writeback list */
+   	union {
+
+The tracefs inode does not need to supply its own RCU delayed destruction
+of its inode. The inode code itself offers both a "destroy_inode()"
+callback that gets called when the last reference of the inode is
+released, and the "free_inode()" which is called after a RCU
+synchronization period from the "destroy_inode()".
+
+The tracefs code can unlink the inode from its list in the destroy_inode()
+callback, and the simply free it from the free_inode() callback. This
+should provide the same protection.
+
+Link: https://lore.kernel.org/all/20240807115143.45927-3-minipli@grsecurity.net/
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Fixes: 08d43a5fa063e ("tracing: Add lock-free tracing_map")
-Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Link: https://lore.kernel.org/20240805055922.6277-1-Tze-nan.Wu@mediatek.com
-Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: Ilkka =?utf-8?b?TmF1bGFww6TDpA==?= <digirigawa@gmail.com>
+Link: https://lore.kernel.org/20240807185402.61410544@gandalf.local.home
+Fixes: baa23a8d4360 ("tracefs: Reset permissions on remount if permissions are options")
+Reported-by: Mathias Krause <minipli@grsecurity.net>
+Reported-by: Brad Spengler <spender@grsecurity.net>
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/tracing_map.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/tracefs/inode.c    | 10 ++++------
+ fs/tracefs/internal.h |  5 +----
+ 2 files changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/trace/tracing_map.c b/kernel/trace/tracing_map.c
-index a4dcf0f24352..3a56e7c8aa4f 100644
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -454,7 +454,7 @@ static struct tracing_map_elt *get_free_elt(struct tracing_map *map)
- 	struct tracing_map_elt *elt = NULL;
- 	int idx;
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index 21a7e51fc3c1..1748dff58c3b 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -53,15 +53,14 @@ static struct inode *tracefs_alloc_inode(struct super_block *sb)
+ 	return &ti->vfs_inode;
+ }
  
--	idx = atomic_inc_return(&map->next_elt);
-+	idx = atomic_fetch_add_unless(&map->next_elt, 1, map->max_elts);
- 	if (idx < map->max_elts) {
- 		elt = *(TRACING_MAP_ELT(map->elts, idx));
- 		if (map->ops && map->ops->elt_init)
-@@ -699,7 +699,7 @@ void tracing_map_clear(struct tracing_map *map)
+-static void tracefs_free_inode_rcu(struct rcu_head *rcu)
++static void tracefs_free_inode(struct inode *inode)
  {
- 	unsigned int i;
+-	struct tracefs_inode *ti;
++	struct tracefs_inode *ti = get_tracefs(inode);
  
--	atomic_set(&map->next_elt, -1);
-+	atomic_set(&map->next_elt, 0);
- 	atomic64_set(&map->hits, 0);
- 	atomic64_set(&map->drops, 0);
+-	ti = container_of(rcu, struct tracefs_inode, rcu);
+ 	kmem_cache_free(tracefs_inode_cachep, ti);
+ }
  
-@@ -783,7 +783,7 @@ struct tracing_map *tracing_map_create(unsigned int map_bits,
+-static void tracefs_free_inode(struct inode *inode)
++static void tracefs_destroy_inode(struct inode *inode)
+ {
+ 	struct tracefs_inode *ti = get_tracefs(inode);
+ 	unsigned long flags;
+@@ -69,8 +68,6 @@ static void tracefs_free_inode(struct inode *inode)
+ 	spin_lock_irqsave(&tracefs_inode_lock, flags);
+ 	list_del_rcu(&ti->list);
+ 	spin_unlock_irqrestore(&tracefs_inode_lock, flags);
+-
+-	call_rcu(&ti->rcu, tracefs_free_inode_rcu);
+ }
  
- 	map->map_bits = map_bits;
- 	map->max_elts = (1 << map_bits);
--	atomic_set(&map->next_elt, -1);
-+	atomic_set(&map->next_elt, 0);
+ static ssize_t default_read_file(struct file *file, char __user *buf,
+@@ -437,6 +434,7 @@ static int tracefs_drop_inode(struct inode *inode)
+ static const struct super_operations tracefs_super_operations = {
+ 	.alloc_inode    = tracefs_alloc_inode,
+ 	.free_inode     = tracefs_free_inode,
++	.destroy_inode  = tracefs_destroy_inode,
+ 	.drop_inode     = tracefs_drop_inode,
+ 	.statfs		= simple_statfs,
+ 	.show_options	= tracefs_show_options,
+diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
+index f704d8348357..d83c2a25f288 100644
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -10,10 +10,7 @@ enum {
+ };
  
- 	map->map_size = (1 << (map_bits + 1));
- 	map->ops = ops;
+ struct tracefs_inode {
+-	union {
+-		struct inode            vfs_inode;
+-		struct rcu_head		rcu;
+-	};
++	struct inode            vfs_inode;
+ 	/* The below gets initialized with memset_after(ti, 0, vfs_inode) */
+ 	struct list_head	list;
+ 	unsigned long           flags;
 -- 
 2.43.0
 
