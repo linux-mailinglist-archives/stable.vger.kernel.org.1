@@ -1,111 +1,131 @@
-Return-Path: <stable+bounces-66018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5087894BA29
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 11:56:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB8D94BA3D
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 11:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 090ED1F21C46
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 09:56:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EDF0B22450
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 09:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F601891D6;
-	Thu,  8 Aug 2024 09:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AE41891DA;
+	Thu,  8 Aug 2024 09:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7GXQ7NE"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="hzMS0+Po"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AB778274;
-	Thu,  8 Aug 2024 09:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F00189F27;
+	Thu,  8 Aug 2024 09:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723110962; cv=none; b=JLPoJM5FqMpqP63ke8omiUIYIFjVYyDBLjmQae0BC38m1YxI+KbFjgAuwKaRTRjelyCBoQMzma6niL8f4obWBJ+5qs8ieBpZHBNBIJwdw0oNbJTEVN1pZ0xu//g9AEnGRzhlSUCkN7yUptnUPaXYhKMM7pTuKEw0Q3mpBENURUo=
+	t=1723111063; cv=none; b=XwhgZLzqadRnOcTdl+1nlaweS4IsUhhhuTtmHb7KkLxvmvvS2/bwQb6m8x1u3SXCunsCeOsjjjRmaMRIrcu48dUdlUT2ogOOEV763Jv8Q9zibjh3ZmKvRGOOqCnnq36/ApWi0HFFuyjshvXBaUDtwCef7BL4QbBeLv62aJwVfd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723110962; c=relaxed/simple;
-	bh=E7DJ9k78FBrNHKcRO9Tl8MONF7YiMg7kqswA/XFPfRs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nTmeIGeaBEialjgOOOVhhh8vWhDnfrpq+5kHG8E3Tb3hiIlv/J1QABO6jvh5DfWOVq6izNZxBCqd2zN9235Ul3gd+12s5sGdhXZpnw2aduSbRLSQqXNRei+xyDKtNZ0Pia/9vWU4G7vQm/x8jU8KLhLld52VmE4ECW6twqXfzTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7GXQ7NE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6ABDC32782;
-	Thu,  8 Aug 2024 09:56:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723110960;
-	bh=E7DJ9k78FBrNHKcRO9Tl8MONF7YiMg7kqswA/XFPfRs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=p7GXQ7NEFOtPdVaW/5WxZxOoNjnIy/G+FRf0X99lveWyE6Vr3C1r3ab/IWwsdlUxA
-	 Gqi1ELpL1P3ZWHctEWJ1xmXFDKPYDp/V6W4at9XD7BnEQ5GpUVQFvrUNOmnCXQMJV6
-	 T9MxamSC6jqJAKxeZsjuKChQMD5qb0sB/zc/RayHNsmgwrn+qN79Wiby9lB20bFH6u
-	 giAH2EpO+KEygsfI554n8uPtT/v21879TMwqnjIUB2pV5K8CCMFdPNtezpOfszp6Ss
-	 BkgbORd/WR53alUIXCJ/wnwuAkm3ohqqEgUKjgTvRvnkojHrSrbS6RF0kJ8ZvIOlhc
-	 Iwx4149kZIjkw==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a7d26c2297eso89259066b.2;
-        Thu, 08 Aug 2024 02:56:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV2yiK9vh+QnjFJLhhgJlKpOzEsRElV/1ZXA4oEgvkZtSjjss2ur8JhwOS9ZvO2kuvFv3AHyZ/Q73AXdQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdaIXwilzwTtr3aIxuTugQi+zR006cvi90OAH95t0lo7UHVlhr
-	qjW0fHqbDan8kS7V4b0hc677nIIBzl5rAnw6MTre8GvKeUtT1yZ6Av8KUu8wVoQeMgcKcUAH4FQ
-	FKfEQV5DI99eV47SkgK4lJZ0BCMs=
-X-Google-Smtp-Source: AGHT+IHY9g2W5TpN4HoCll0fuIKgpSKdGV1pU2q+tKF69eHsPJQeIk7zADy9mD41otFKK2V1C8uKBnYT1V4A+qi4dWk=
-X-Received: by 2002:a17:907:1b1a:b0:a7a:97ca:3056 with SMTP id
- a640c23a62f3a-a8090c7fe9dmr109991266b.16.1723110959441; Thu, 08 Aug 2024
- 02:55:59 -0700 (PDT)
+	s=arc-20240116; t=1723111063; c=relaxed/simple;
+	bh=PJnCvnMxQWr1Hholvoj+/7PmhJRxQiWO0mmMLKpl7YA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LWluDR/YT14jj7LUlEnaENt1bbNR/C0Y7PoxLDQgw5SC/A8yxnNIUY+GctusgCeFVXiE+I/EU9nxj1PuHmflhUlR79Ciwpg2JJxsNJAhTo5GGLGxrYBvV9HooNDxjmfJZzC8RhF+Gf5BFos5Ll31JlnJl7/s3VlzEPuYXmzRCXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=hzMS0+Po; arc=none smtp.client-ip=212.227.17.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1723111012; x=1723715812; i=christian@heusel.eu;
+	bh=jnbqVylQD3ln/GE4BVfRbY3YErNp/kxmg38Tn4SB50A=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=hzMS0+PoPgiMFWeOSmoJcJCqlD5fWjFeRx8tnyrHEC4s2jPb0onBUXKUw1vxOrtL
+	 yG3nblAonhIzzhUmxOOy9oFMY2nkroymPk6NKfZUpTkvdacTKBjt43Xi8Z0pipu4p
+	 qnQ2PyNCWwImHC4LEpT78lTKyZL4JXZgHOajqaDf0tJZvZ6KgZiWw0cAL72+bH0sv
+	 HzmlQKbcUYQKRCf6pmlZS+zKatDNnoZHUP8gHhISmIYaiMmNgdqfqCtpYZpIZuujD
+	 /V1rlMBChku/soTKcBjIybgF3gWxbDipGKlFcE3mEok/72kY94GGvLH/I2FBcIM89
+	 4G3dElOO6Py02aJI/g==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([78.42.228.106]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MdeKd-1s2wFh2tub-00dguW; Thu, 08 Aug 2024 11:56:52 +0200
+Date: Thu, 8 Aug 2024 11:56:50 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.10 000/123] 6.10.4-rc1 review
+Message-ID: <e97286fd-ffd3-4715-bb89-ae3448fc7f53@heusel.eu>
+References: <20240807150020.790615758@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1723044389.git.fdmanana@suse.com> <d17ff87e1c8302c6ef287e81888c1334f014039e.1723044389.git.fdmanana@suse.com>
- <20240808075340.FEF5.409509F4@e16-tech.com>
-In-Reply-To: <20240808075340.FEF5.409509F4@e16-tech.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Thu, 8 Aug 2024 10:55:22 +0100
-X-Gmail-Original-Message-ID: <CAL3q7H4TwKUyhTdigA7x90KCW=oO_cpRn4bWxGaTMBJ_ZTXJEg@mail.gmail.com>
-Message-ID: <CAL3q7H4TwKUyhTdigA7x90KCW=oO_cpRn4bWxGaTMBJ_ZTXJEg@mail.gmail.com>
-Subject: Re: [PATCH for 6.6 stable] btrfs: fix corruption after buffer fault
- in during direct IO append write
-To: Wang Yugui <wangyugui@e16-tech.com>
-Cc: stable@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	gregkh@linuxfoundation.org, Filipe Manana <fdmanana@suse.com>, 
-	Hanna Czenczek <hreitz@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="vjtvkwhvjtmvcprn"
+Content-Disposition: inline
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+X-Provags-ID: V03:K1:9RN1xbysnH6iNbaWOagph8BkOrdboQM2j+/jLZ9S1rozElCozV/
+ TKOJVMvVuCezEJSwSwdh+9X4qbYpkmN7ywjaWyEApnBr5IY+De8zNAPsxM5n80BwgVjV9YO
+ n/2bxAUUTIs8yJ+uTgkFUov5GX1wbcrpCpFCVX9/Ez7+FTBqAZR7pQ9nV4u20m4Dk7YEQ1n
+ SK4LNsLBb1vDgX3gAFjmw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:G9jXmkjSmQI=;iR5g4wMyi5O+zOS3dS0yum30eMi
+ P8fnnlYBRI3Xv24DxuNd6yvwGsnnfUTJD6wOf+VOKh99ys0ocJekBOmdd6nHdk1SXa2OjVqWM
+ SmoT3RdQAXtZNm97CCb/fB7XaYHOyHB9L6EYDfkWVlF9EkqbFMWl0eSkCFO5ss2s1UTyZ2uXQ
+ JOuvJf41B3uILmfKi2//IAh9MX5AAHEAnh7GmSF0RI6C98l0y7NVZsxRneRo1ofzUvLRIb/PV
+ 8E+QBDPvP+FqOSkLYQaOHRAqQkRsSJVjOw+oSqxtGQHaVuFnsAjQ8Q/NGwa9L26nv82i4xGrF
+ QlTdsF3LfXvVbkY10oHeDaqZ31hW05S4edY3gmRqzFrPjiM1V1Ln27bwB2KPE0RLjGdpEvuMc
+ wBrJXFDzcpt/ZPltCgpApR0uaEXXjWeaou/n3mM2R0HWuqW2UvJAecUJiIgRUa3LG45h8UI/O
+ XTTbyGe9SQ46YYg5cZ3YtT8GrQaG78BmoXUn/w7/YNYcLxUxrRdw0oLlDYiOwZ7V+cplAa28w
+ ypAvp0WVvBKdcFxcT2DqYu1a+dmi5j8ruGSRQrRZULrGv6A24aa5bDvv0idNpoysjB3ZvDWd/
+ mddLUMZ7uGzn1/M01r0pC7WLzZ918C1fMaLDsMDPeFzigPmBSFUflTP1taOcJvvIzAV1QrUZy
+ XwYCFGOTZe9BRnkOwPrYPfN/dZtDjGs5bvWFfAN8qRu5NgpnRY6z2GD4uH+eFHSibLgf5+I20
+ Rg0JJSQQoZmxnoH6bazpCcwjDhfzornRg==
 
-On Thu, Aug 8, 2024 at 1:55=E2=80=AFAM Wang Yugui <wangyugui@e16-tech.com> =
-wrote:
->
-> Hi,
->
-> > From: Filipe Manana <fdmanana@suse.com>
-> >
-> > commit 939b656bc8ab203fdbde26ccac22bcb7f0985be5 upstream.
-> >
-> > During an append (O_APPEND write flag) direct IO write if the input buf=
-fer
-> > was not previously faulted in, we can corrupt the file in a way that th=
-e
-> > final size is unexpected and it includes an unexpected hole.
->
-> Could we apply the patch
->         70f1e5b6db56ae99ede369d25d5996fa50d7bb74
->         btrfs: rename err to ret in btrfs_direct_write()
-> to 6.6 stable, and then rebase this patch?
 
-Why?
+--vjtvkwhvjtmvcprn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Generally we don't backport cleanups and refactorings, only bug fixes.
-Adding that patch wouldn't make the backport easier, that is, we still
-couldn't pick the commit from Linus' master branch without any
-changes,
-because at least the commit would fail to apply due to the move of the
-direct IO code into a new file, and possibly other changes too.
+On 24/08/07 04:58PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.4 release.
+> There are 123 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 09 Aug 2024 14:59:54 +0000.
+> Anything received after that time might be too late.
+>
 
->
-> Best Regards
-> Wang Yugui (wangyugui@e16-tech.com)
-> 2024/08/08
->
->
+Tested-by: Christian Heusel <christian@heusel.eu>
+
+Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU
+
+--vjtvkwhvjtmvcprn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAma0lmIACgkQwEfU8yi1
+JYWJ6hAAxfGFlDZL4TFI84Kdr9w7+5jE7GbaMqVCnJf5Arvi+OW8whYQvhG878Xq
+9CBY7NcI2yzHt++wHzGE3ZjUiTTHnuLBncsNy5w7Q6JJYCwSCfmmhEIhFa7UsPHa
+tt6jyb+y1IF40KUrJycGp4yXXjDEH+HEr599WpT/KwTOVapDe7BVEil3r7o+2f7A
+WpkQn8kLFTbD8CqMcmQ5SKV5BmR3iOt6jtYpY9g0SrzgKXavS7dMdlWEFFBf+CLb
+u6wLRtIuMbIC7SDFvhC2YW3xELxvawpJzka6jI2w5j88KVNpDqkf8VIiIcMnQ/UV
+2I9z53zd8awQMRdFyOfAgNlW1qRhJ/5ursJBg2m1CHFhkFDT74fVGhVYcs27ROze
+Gc3zTT6evpcUWsUW8Ee4AvmYVhz3QglN6i8dk4UI25dTDxNTyFxplz2yoA0H3XkH
+1hzJTjTEclBnaXwhPPNJKecCz+ECGIQp3NUILRO8LMFTdbkjolYaTvLkxaSi/tBv
+x4RfLnq3QORu/dbBIqCW+wzhrRsSRzwbeGdxo4Nc1upgQ521bHCMN9sOWlCS0wl3
+j5fCTHy3Ka/+0twzZ3hIRI0K83ZpboPnwsH6TT8buSHXOeeWZ12cv2gpP3Qkck41
+brkJii1D4oZ5mxz7jdo/tbvRQJFDfjcLjWc6gq5lO/p0AjdY9LY=
+=lufV
+-----END PGP SIGNATURE-----
+
+--vjtvkwhvjtmvcprn--
 
