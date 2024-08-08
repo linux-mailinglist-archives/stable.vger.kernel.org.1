@@ -1,98 +1,142 @@
-Return-Path: <stable+bounces-66004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E8D94B787
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 09:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D273294B7D6
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 09:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 015581C2135A
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 07:19:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EF671C223E8
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 07:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D007188CD3;
-	Thu,  8 Aug 2024 07:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BEB2AE91;
+	Thu,  8 Aug 2024 07:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FsHyLPLe"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="obuFWtQm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2151A186294;
-	Thu,  8 Aug 2024 07:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FF97464;
+	Thu,  8 Aug 2024 07:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723101219; cv=none; b=b1ve1okvM9vzeUL3jGqsDPWdBSOwwj8msqbCo+ABCV6fjNDzqlpneMETA8SDCKygpNz9hDk5BgByBH1uPx6cdZLf301Kwava80mi8fvenaTdUof5e+DMMeiCULo967/WQgP9DDkUPU8BvtLfhzFhNC9TWmCESSbhLEaxXHLEokg=
+	t=1723102084; cv=none; b=TYH5abx0U8Uy0gtCsGouIEjz2/rk+i5EV2F+x7ICb8c1xeYV9P1CXd2G3nTqBD8ZCwVQH2HtPo41NjhnHs8UHMPiU6uArqoakPIWWk3bhaIBKJY+43P9yZ89n89BguwmQcqQntGaaqqUm9N6pH5CygYwJrPOoCqvn3bEuzfS3ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723101219; c=relaxed/simple;
-	bh=0g9XRgxfeMZc9/uVHfto4j4RtP6dqmPPmizw0m2bd6g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mmj8ETtRBXRtNDhuTQ54dvMf7TAlD/6dSNSO8yzZjV+ZdtWcyGVZT4cuTAeyOortdSZv2OsYMF6afq+Bhrv1v6earOliE9YrZ5lQ7o3tSAsrl2num2hKaVrHH3nBa5Lw94M3mtIrK/hDMwP7/k72/7nHoI6Q9Xpx8Wdhw2anSuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FsHyLPLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D572FC4AF09;
-	Thu,  8 Aug 2024 07:13:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723101218;
-	bh=0g9XRgxfeMZc9/uVHfto4j4RtP6dqmPPmizw0m2bd6g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsHyLPLefdQdvQC+jQGRnXZVwnSjt7F3ggBBoZL/I0bL6nAjbVdkePPxZv+aHPTeF
-	 WiywH3KMXzzxx/upp6GV14gSZ8JeW66TVawsFgZS0b1bAIGsaKdAe01jnCNKUx3Q2R
-	 uydw63ZfXUrkzhFR7Zvk9qIl9+oYHx41Psd4Nb2Di9438tvjQtLePmZOxuym6niaPI
-	 NGcL67xBk0hKa2hue4EAiE1lCKEDxlwePef+t7D9evgmFd2KPVby0xVOEw3iWcfsDt
-	 yrvHlFsMiApjDeagf6EdReWd5f7IuuBQYBOaMsOkLU8Xmk4X+nzA9YXG277WHy5JOd
-	 e+qK7vu5psi+Q==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Joe Damato <jdamato@fastly.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	netdev@vger.kernel.org,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	stable@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH net] eventpoll: Annotate data-race of busy_poll_usecs
-Date: Thu,  8 Aug 2024 09:13:26 +0200
-Message-ID: <20240808-geteert-skala-44fb9303360b@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240806123301.167557-1-jdamato@fastly.com>
-References: <20240806123301.167557-1-jdamato@fastly.com>
+	s=arc-20240116; t=1723102084; c=relaxed/simple;
+	bh=iKFF9cuoPKYMCCFAiUSWMPfk4pgo+XWQPV1zsB3QMyo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=PDFjoSmcZdKFijsLJShWHqlD5TrD2FeoGpgYcHkQrZGNpw/gv+IrDn/TX7zTWe/21STx2SdWXBiRLqGAkaDYxf8bNVwdz/ZM6prxvlPOR6P5PZz0NVhqL4DCJ0BPLLq287//L5HbmOCk8zAtM/7jU+BF/HLWIJGAc81wihA8hFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=obuFWtQm; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 477HLYC8007155;
+	Thu, 8 Aug 2024 07:27:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	05dLjMhMWKbkdONJ2XhA0SRRF3OQ7tGCFSjCCChUPFg=; b=obuFWtQmsB2WLnw3
+	KyPcSbvPAuBk/zYPETbOi9UPML+wR1lWPGCQOWau8wiEuJ7cBg7gMWeAPL7tlrsr
+	XQBdFElEhLxM7lEXUCzKD4rz8P756lWgYuqDKTHHDBHus+H0No7TJ7bHVPGNHjLi
+	lo2tkHBdSJlM8sAkn7u4AUVq8Kj08n4CLBhbCewcxkPbk0W/V2egzHLWvmCieWwj
+	FJyQJQbB+MGwr6p/Wl0y+cJ9yX9aTl271+f7cQrlLXL+Dsc0cLM1UO4yji/W6r8v
+	Ixcr3e8iHtg4nP4Ufpv0lU+YNTEVkgfNdKc6nsUTTPGa9X8DKrPmaBFH2iOeRd+o
+	/XDQLA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40scx6w5r7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Aug 2024 07:27:34 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 4787RXvf028619
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 8 Aug 2024 07:27:33 GMT
+Received: from [10.217.216.152] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 8 Aug 2024
+ 00:27:29 -0700
+Message-ID: <b4c58fbd-6d9c-4c1b-a21d-7650a6c4270a@quicinc.com>
+Date: Thu, 8 Aug 2024 12:57:26 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=981; i=brauner@kernel.org; h=from:subject:message-id; bh=0g9XRgxfeMZc9/uVHfto4j4RtP6dqmPPmizw0m2bd6g=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaRtKZCcru3wjZH7y1Tr4lcXYtY4z7+z+9E80/z5CgeOb 9ylNonhe0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBE5ixg+F+ScbQ3kHVFkbb0 4iNbX5QEufRwPrpmNLXIYMbWcK2PK60Z/ld6l/85uiprkdKjvJDvJdy3rJ63cJXq2AmZnoxSCSj /zwEA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clk: qcom: clk-rpmh: Fix overflow in BCM vote
+To: Imran Shaik <quic_imrashai@quicinc.com>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        "Stephen
+ Boyd" <sboyd@kernel.org>,
+        David Dai <daidavid1@codeaurora.org>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Ajit Pandey <quic_ajipan@quicinc.com>,
+        Jagadeesh Kona <quic_jkona@quicinc.com>,
+        Satya Priya Kakitapalli
+	<quic_skakitap@quicinc.com>,
+        Mike Tipton <quic_mdtipton@quicinc.com>, <stable@vger.kernel.org>
+References: <20240808-clk-rpmh-bcm-vote-fix-v1-1-109bd1d76189@quicinc.com>
+Content-Language: en-US
+From: Taniya Das <quic_tdas@quicinc.com>
+In-Reply-To: <20240808-clk-rpmh-bcm-vote-fix-v1-1-109bd1d76189@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: i4trENvTsXmF50C2CTfhtJZ0yy4-T06-
+X-Proofpoint-GUID: i4trENvTsXmF50C2CTfhtJZ0yy4-T06-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-08_07,2024-08-07_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 bulkscore=0 clxscore=1011 suspectscore=0 phishscore=0
+ spamscore=0 adultscore=0 lowpriorityscore=0 mlxscore=0 priorityscore=1501
+ mlxlogscore=989 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408080052
 
-On Tue, 06 Aug 2024 12:33:01 +0000, Joe Damato wrote:
-> A struct eventpoll's busy_poll_usecs field can be modified via a user
-> ioctl at any time. All reads of this field should be annotated with
-> READ_ONCE.
+
+
+On 8/8/2024 12:35 PM, Imran Shaik wrote:
+> From: Mike Tipton <quic_mdtipton@quicinc.com>
 > 
+> Valid frequencies may result in BCM votes that exceed the max HW value.
+> Set vote ceiling to BCM_TCS_CMD_VOTE_MASK to ensure the votes aren't
+> truncated, which can result in lower frequencies than desired.
+> 
+> Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+> Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
+> ---
+>   drivers/clk/qcom/clk-rpmh.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/clk/qcom/clk-rpmh.c b/drivers/clk/qcom/clk-rpmh.c
+> index bb82abeed88f..233ccd365a37 100644
+> --- a/drivers/clk/qcom/clk-rpmh.c
+> +++ b/drivers/clk/qcom/clk-rpmh.c
+> @@ -263,6 +263,9 @@ static int clk_rpmh_bcm_send_cmd(struct clk_rpmh *c, bool enable)
+>   		cmd_state = 0;
+>   	}
+>   
+> +	if (cmd_state > BCM_TCS_CMD_VOTE_MASK)
+> +		cmd_state = BCM_TCS_CMD_VOTE_MASK;
+> +
+>   	if (c->last_sent_aggr_state != cmd_state) {
+>   		cmd.addr = c->res_addr;
+>   		cmd.data = BCM_TCS_CMD(1, enable, 0, cmd_state);
 > 
 
-Applied to the vfs.misc branch of the vfs/vfs.git tree.
-Patches in the vfs.misc branch should appear in linux-next soon.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.misc
-
-[1/1] eventpoll: Annotate data-race of busy_poll_usecs
-      https://git.kernel.org/vfs/vfs/c/b4988e3bd1f0
+-- 
+Thanks & Regards,
+Taniya Das.
 
