@@ -1,158 +1,139 @@
-Return-Path: <stable+bounces-66000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05B994B6F4
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 08:54:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5FA94B70C
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 09:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31A281F22095
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 06:54:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A04E72830CA
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 07:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5965187878;
-	Thu,  8 Aug 2024 06:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD555187FF0;
+	Thu,  8 Aug 2024 07:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="IaTeITjV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="bJu69KUW"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QiVmDixD"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh8-smtp.messagingengine.com (fhigh8-smtp.messagingengine.com [103.168.172.159])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024FF5228;
-	Thu,  8 Aug 2024 06:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E570C7464;
+	Thu,  8 Aug 2024 07:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723100040; cv=none; b=eliywxH2Wq1VDw1Fj/99TtfiUVsMa/JnoQQcbItv297vL4EbxV1+ZRJ9SJQzhZ4LRPrUIXqETcEG7FJPV0cyMfrXdenIlUvF6IV62AwfWp3f19/74IGw/oI6YC1888zbVd81o51LyKH+K23ciTEUomS4mO48pD+XY0Q4mdjtNQk=
+	t=1723100752; cv=none; b=XBxwdYAEaqAhEKa6iPIRukYbXGqADX6dkxPsNF/qf0de2XlhVgMVBXNdCop7AQEPfksXBCPX1bYelAWSeLm8mnN6jTrxf33dkAA3dpVY6pZPmTV8pxx2ZW9kg65WTijnI4wVEVBT4TXgLBgxwiEfKbrbnvbT91jMphMQMZqO4p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723100040; c=relaxed/simple;
-	bh=tciyC43LBPP6ReuR8JiV299C77gEYtlCSfoeVbeoRFU=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=bqmU7rgFJXdPU0pNQWpFZuJZD+vnfl5s7zvemlDSRiszwwHC23zpjgkrVuFqpzlxwyEBth+9EqUT8rro8ZulvIibQJgme9oq8F2qB8UTbIfXc3onZ1cK1m7ufikjmf+g2VdkOZJuSR5LWO9mkTMTTteIcVzUdNcCgJNOWRakmss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=IaTeITjV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=bJu69KUW; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 14AF81151BBE;
-	Thu,  8 Aug 2024 02:53:57 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute4.internal (MEProxy); Thu, 08 Aug 2024 02:53:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1723100037;
-	 x=1723186437; bh=/FT6YYLHJ8Rtqq3tE6sAPdg9+du2pO5FFAdLqh/r+OM=; b=
-	IaTeITjVZ921QuAZEF+s1PYOzQ1zGlIu1R0JdMG1xAzqZ00bzRMBsKhR4Ktxn1Q8
-	UzXe4ugUHBoDtMlgmUZkc79v3SehUTk2cOt4y5kGttCGG6OI4A+xTiEqF7pw7xPh
-	dndDXKAS8gnY9t6t/pq/RqyIDwzP7ohHTvenoIunMbUdLENPWIjt7Adx1wSaExX8
-	yuThMtbs8ty+PFR6HmV51EQST2bJJz8ra8/7CVdNXlS57ynmNuXWp86cbN5RT1+q
-	TV738KTZRB/N/OgaOLECspJJ9yZKVLBWek3Iwu6i2Zrm9NLl7NHX7jcLaMyrkcKQ
-	Xv7D8LYK6cQJZEV2xXHoyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723100037; x=
-	1723186437; bh=/FT6YYLHJ8Rtqq3tE6sAPdg9+du2pO5FFAdLqh/r+OM=; b=b
-	Ju69KUWZWfseoEuZCvTltgQXAxi/THXdDPVvxWpq9ZLWiLXfAXNMmZYt11lZwq6q
-	u9QFALVyl81oqXV9vyxzlbcuH6x/mvoCgoa1w9WaZUwsKfBxObxm4groFhm3rsTd
-	ixjBU42nuDXtev6rd2ThkOccpDAGrZmC88XAgnJh3YEZ2/kxXMtucuZdKe4rd2yL
-	LPUb/8I/FcrxYZieesN9kjjqa6K5z8QWfWqNk3h5heyxSO6/OsNqbZD8UmFRX58j
-	Qmv/ufVr6rxV1uUB7l71nYfa/MhEEXTlDGrR8+qeRirLZ2N+6S58pRymG9YsfNgw
-	I+3iU3T/JW9c9jlMvmH+g==
-X-ME-Sender: <xms:hGu0ZpQp4Xkw26iJWp9zgJRTwcy_-WkJGY4tC5RL-oNDycnZlaT2Qw>
-    <xme:hGu0ZizInySN6l-eD8VA_uIvQI12pbAj6zxDJX-ESYZ4vLgOLq4Jz1FWOXHBc9Uwe
-    Kw8nueAp1bK40ReNB0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrledugdduudefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
-    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudej
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsvghnjhgrmhhinhdrghgrihhgnh
-    grrhgusegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohepmhgrrhgvgiesuggvnhig
-    rdguvgdprhgtphhtthhopehgvggvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpd
-    hrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgr
-    khgvvdegsehishgtrghsrdgrtgdrtghnpdhrtghpthhtohepshhhrgifnhhguhhosehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehulhhfrdhhrghnshhsohhnsehlihhnrghrohdr
-    ohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrih
-    hnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhig
-    rdguvghv
-X-ME-Proxy: <xmx:hGu0Zu0a0M0qb-BPXikGrAVD0SHfsz9kcGVblxSL9MWJ8JL6GQ0T8g>
-    <xmx:hGu0ZhDRKzd5zBaKK1-X7b_-ImWfJYklm8Nzl9SEyX_AtS9LE5MCKg>
-    <xmx:hGu0ZigogLKKqK1AtfuTlbZtqo3Oja_d5TAZjKiibEjxfDH8HNuqgQ>
-    <xmx:hGu0Zlqla1oZzi-Zi8sczt26ZrMJ-qiWjZzsLoP6zoLzoPvd_E2wjA>
-    <xmx:hWu0ZpSEuk8TKyoNXpowJM-vV9D5nvQ19SyhwlxSEfEUKqha79J5QjwJ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id B8C25B6008D; Thu,  8 Aug 2024 02:53:56 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1723100752; c=relaxed/simple;
+	bh=EzFiZKxPsEQuaNjgeAbYCXjKPTN375hUD2GmtOEBwQQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=lCij4oZ28ZLCC5HIVWpb0CPPdP6+pYlHlEkcVmSqFxQelFkpkwz/u540nq+yRSIPELvcc6LgkEyHkMagdKc5aXIU9w/IhRpxMh9iToJonxqexKbR3nGr57GjAFdcEqlj0Tzxu5i9vNwRZjK8xB7cRBsz9Geew4vJAe2Vxcojgls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QiVmDixD; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 477JU4Ef015806;
+	Thu, 8 Aug 2024 07:05:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=Bdfq9xJH01fnZJ8StpOQr+
+	JBpQkW/Z8nW3PQkAdZnGA=; b=QiVmDixDAK3Vtkz/+gUxDGAmgX7QCvjgCHQxbW
+	1xyt8uP7wXdlwLELfxBZk7qgzuK2y4oOzRwin/9pjJvx8Om0AkNGNEu0cZ2ndJ4Z
+	cC47WsBmXBQuNrNBypAw3i9drGtQcL9xHyb8Tw/e32d/jCAUfNf4VtBE2EcYFTM/
+	cgSTKZr0lSwCh012R0c6q70+GNZnwE5FMu5RPdqJ2vj7F/YgUKCMbq8BVckMhgS9
+	iWwwIpSfmspZ5TkNxdIpsZWXQcehN1FToApJ8bUjdsompRGBwZqMoNvSaODM+dn4
+	LXnvzhObC6GHou64PAm2/5gWOOf6D1AyR88yWHDJYi6UjVQQ==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40sc4ycvcj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Aug 2024 07:05:15 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 47875Dwh026314
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 8 Aug 2024 07:05:13 GMT
+Received: from hu-imrashai-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 8 Aug 2024 00:05:09 -0700
+From: Imran Shaik <quic_imrashai@quicinc.com>
+Date: Thu, 8 Aug 2024 12:35:02 +0530
+Subject: [PATCH] clk: qcom: clk-rpmh: Fix overflow in BCM vote
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 08 Aug 2024 08:53:35 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Marco Felsch" <m.felsch@pengutronix.de>, "Ma Ke" <make24@iscas.ac.cn>
-Cc: "Ulf Hansson" <ulf.hansson@linaro.org>, "Shawn Guo" <shawnguo@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Peng Fan" <peng.fan@nxp.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- "Marek Vasut" <marex@denx.de>,
- "Benjamin Gaignard" <benjamin.gaignard@collabora.com>, imx@lists.linux.dev,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org
-Message-Id: <1b04b8b3-44ca-427f-a5c9-d765ec30ec33@app.fastmail.com>
-In-Reply-To: <20240808061245.szz5lq6hx2qwi2ja@pengutronix.de>
-References: <20240808042858.2768309-1-make24@iscas.ac.cn>
- <20240808061245.szz5lq6hx2qwi2ja@pengutronix.de>
-Subject: Re: [PATCH] soc: imx: imx8m-blk-ctrl: Fix NULL pointer dereference
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-ID: <20240808-clk-rpmh-bcm-vote-fix-v1-1-109bd1d76189@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAB1utGYC/x2MywqAIBAAfyX23IKZB+tXokNuWy090ZAg/Pek4
+ wzMvBDYCwdoixc8RwlyHhmqsgBahmNmlDEzaKWNssoibSv6a1/Q0Y7xvBkneZBqY1hXNTXOQW4
+ vz1n/365P6QP4cHkSZwAAAA==
+To: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette
+	<mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, David Dai
+	<daidavid1@codeaurora.org>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Ajit Pandey <quic_ajipan@quicinc.com>,
+        "Imran
+ Shaik" <quic_imrashai@quicinc.com>,
+        Taniya Das <quic_tdas@quicinc.com>,
+        Jagadeesh Kona <quic_jkona@quicinc.com>,
+        Satya Priya Kakitapalli
+	<quic_skakitap@quicinc.com>,
+        Mike Tipton <quic_mdtipton@quicinc.com>, <stable@vger.kernel.org>
+X-Mailer: b4 0.14.1
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Zjc-zyJ8TjWMw63AUym1j8hqzkValrC9
+X-Proofpoint-GUID: Zjc-zyJ8TjWMw63AUym1j8hqzkValrC9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-08_07,2024-08-07_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
+ spamscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0
+ suspectscore=0 mlxscore=0 malwarescore=0 mlxlogscore=882 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408080049
 
-On Thu, Aug 8, 2024, at 08:12, Marco Felsch wrote:
->
-> On 24-08-08, Ma Ke wrote:
->> Check bc->bus_power_dev = dev_pm_domain_attach_by_name() return value using
->> IS_ERR_OR_NULL() instead of plain IS_ERR(), and fail if bc->bus_power_dev 
->> is either error or NULL.
->> 
->> In case a power domain attached by dev_pm_domain_attach_by_name() is not
->> described in DT, dev_pm_domain_attach_by_name() returns NULL, which is
->> then used, which leads to NULL pointer dereference.
->
-> Argh.. there are other users of this API getting this wrong too. This
-> make me wonder why dev_pm_domain_attach_by_name() return NULL instead of
-> the error code returned by of_property_match_string().
->
-> IMHO to fix once and for all users we should fix the return code of
-> dev_pm_domain_attach_by_name().
+From: Mike Tipton <quic_mdtipton@quicinc.com>
 
-Agreed, in general any use of IS_ERR_OR_NULL() indicates that there
-is a bad API that should be fixed instead, and this is probably the
-case for genpd_dev_pm_attach_by_id().
+Valid frequencies may result in BCM votes that exceed the max HW value.
+Set vote ceiling to BCM_TCS_CMD_VOTE_MASK to ensure the votes aren't
+truncated, which can result in lower frequencies than desired.
 
-One common use that is widely accepted is returning NULL when
-a subsystem is completely disabled. In this case an IS_ERR()
-check returns false on a NULL pointer and the returned structure
-should be opaque so callers are unable to dereference that
-NULL pointer.
+Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
+---
+ drivers/clk/qcom/clk-rpmh.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-genpd_dev_pm_attach_by_{id,name}() is documented to also return
-a NULL pointer when no PM domain is needed, but they return
-a normal 'struct device' that can easily be used in an unsafe
-way after checking for IS_ERR().
+diff --git a/drivers/clk/qcom/clk-rpmh.c b/drivers/clk/qcom/clk-rpmh.c
+index bb82abeed88f..233ccd365a37 100644
+--- a/drivers/clk/qcom/clk-rpmh.c
++++ b/drivers/clk/qcom/clk-rpmh.c
+@@ -263,6 +263,9 @@ static int clk_rpmh_bcm_send_cmd(struct clk_rpmh *c, bool enable)
+ 		cmd_state = 0;
+ 	}
+ 
++	if (cmd_state > BCM_TCS_CMD_VOTE_MASK)
++		cmd_state = BCM_TCS_CMD_VOTE_MASK;
++
+ 	if (c->last_sent_aggr_state != cmd_state) {
+ 		cmd.addr = c->res_addr;
+ 		cmd.data = BCM_TCS_CMD(1, enable, 0, cmd_state);
 
-Fortunately it seems that there are only a few callers at the
-moment, so coming up with a safer interface is still possible.
+---
+base-commit: 222a3380f92b8791d4eeedf7cd750513ff428adf
+change-id: 20240808-clk-rpmh-bcm-vote-fix-c344e213c9bb
 
-       Arnd
+Best regards,
+-- 
+Imran Shaik <quic_imrashai@quicinc.com>
+
 
