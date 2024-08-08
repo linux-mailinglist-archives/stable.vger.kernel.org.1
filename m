@@ -1,100 +1,162 @@
-Return-Path: <stable+bounces-66029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED12094BC83
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 13:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D49E694BC9E
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 13:55:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AD331C221DC
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 11:51:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDFA81C2200D
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 11:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA9618B469;
-	Thu,  8 Aug 2024 11:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B13F18C321;
+	Thu,  8 Aug 2024 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a4SyW0WA"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="FNSo6y73"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C2518A6A1
-	for <stable@vger.kernel.org>; Thu,  8 Aug 2024 11:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21B118C33E
+	for <stable@vger.kernel.org>; Thu,  8 Aug 2024 11:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723117887; cv=none; b=EJyP5IZDgqgt7OFMM8Ekq4lxQXXQUjseCqtA+sgFBVsT1vptSOwa32MspsEcvIPJc1KvzbDtx42X/1pX3eoDcoDfQMgLhvBQJIJpkvQ0Mzf2b+uOEpLWIWlLOjk2Ayoo8kQXA55Z0TBNi+FRJKy1uvUXEMKYTHA/Q6ZFkpWL2/c=
+	t=1723118142; cv=none; b=G9nkUFLh3SkYr/sQcQD6ICJIypqTuZqVI3sd/YrVp7E7JJCi2omjvRDCahbRBEsiorjsdXTpcDhK7pFXYHDWe5s/mEf9FHMMis8MtVYvQJbqTf2zylhhYwGZIXz+Ryyn1uMDsFxI9MTLMR8AfPmje6fmlf0brSoMHEKC/RXbU/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723117887; c=relaxed/simple;
-	bh=dmYkPnzispasMulAOj+Zz/tjlu7fEuGaXS08SwlP+UY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Fu7Nptj62mZGw1Uv28hi5TNdR5zJlH1GsYPMnDNq4QE0tFETWUfhkkJZG3JZCMR5uWrYn7ZwOdHfP/PtGufnPVu+Y9NWKXNrw27JfNGOvujk2ByM9qLVZWtW0UCBSDfGSxdmtRzH3bFiE0Cth3rU6H+znizH5Llc2LJmWI/NuEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a4SyW0WA; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723117885; x=1754653885;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=dmYkPnzispasMulAOj+Zz/tjlu7fEuGaXS08SwlP+UY=;
-  b=a4SyW0WAL4fWtJiTm5tVwvUjqjEnRp8DGQXOraIUQ4ub8s2qmpOatLI1
-   mDP7olGjf9yn9BBd3eHiVv5JJ2SSBMLVSMtO2cds3/99wzPpn3OXAOEVa
-   K6Tcjhhg9rJSIuigsL2wiBCAkgUXFzHEa/UEKXI64GO/DBoQqneT91T8V
-   ObvvBRZAJE9ZVd3YzHNqcVk6sxZyAomHwbVY9nt4Zz6daf2H/X2nRiLcq
-   zdkt9R03N3ed5XoXGgWgRHKYRhhEwK/cY/WQwHGHvQ/rZEt8Kp5TCNUrH
-   DmcENrXA8OwTJ1KcrWD8PL/xhbDDsGwhk8Sir2a2r4fWDQMvW0yFEOzTr
-   w==;
-X-CSE-ConnectionGUID: xfBzDz0aQMihml3CNIZGTg==
-X-CSE-MsgGUID: aWNmh3rHSvuhJAWi7xPFlg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="38693642"
-X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
-   d="scan'208";a="38693642"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 04:51:15 -0700
-X-CSE-ConnectionGUID: DqmpC3O9RTy6BQlXYPJXTQ==
-X-CSE-MsgGUID: Kr9AezGmT/SmEGpw/sJKgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
-   d="scan'208";a="62145642"
-Received: from unknown (HELO b6bf6c95bbab) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 08 Aug 2024 04:51:11 -0700
-Received: from kbuild by b6bf6c95bbab with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sc1fg-00069Y-1z;
-	Thu, 08 Aug 2024 11:51:08 +0000
-Date: Thu, 8 Aug 2024 19:50:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Howells <dhowells@redhat.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] netfs: Fix handling of USE_PGPRIV2 and WRITE_TO_CACHE
- flags
-Message-ID: <ZrSw9xfiAfioByuc@51a50089044d>
+	s=arc-20240116; t=1723118142; c=relaxed/simple;
+	bh=maJUu45KZlX7FeMIpGorIoOQMDIfA3yf1EfQUBBVNCw=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=r/M9Znev4Yn+eIuXKrGXMH7rdI9u0ETCNKKfM8HVc7vJ3SLpcPTHLu2zhJktkxm1heB1ir43tUyF+nHlS72wgAFaW5SVL1ZGUAli4VQYoIyXWUR6YEPwZGEIeN2106oUMnZVp+xVRlZYEFJ4E041kTiD90FE1MP/WOKe8UPPFE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=FNSo6y73; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
+	by cmsmtp with ESMTPS
+	id c06lszxZjg2lzc1k2sTbX5; Thu, 08 Aug 2024 11:55:38 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id c1k1sK0AWcHN5c1k2sFI8g; Thu, 08 Aug 2024 11:55:38 +0000
+X-Authority-Analysis: v=2.4 cv=W64+VwWk c=1 sm=1 tr=0 ts=66b4b23a
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=yoJbH4e0A30A:10 a=VwQbUJbxAAAA:8 a=1GQxe75yrw9fIeUcjpcA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+ a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
+	Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=ZcW3HDl9lOrDODASspPnNrMUFSlpL6DN7JxGWATxdsM=; b=FNSo6y73QOcH0KRxzTpHWAfuDE
+	XjDpnN2zCFcXZXQh/ih/nF6xDYJP/gsJA4bxE9chfT5tIgr7NstxcXSmvDKq2W+GUzZqPcBxbr0hG
+	dYNLBX/OJ6ALdcMTsuqlXJtXAxzpWzoqc7m+rHlHhgyJOP2Q6ifZJYciXEuUNKRMEL5wsAuUW0OWk
+	O1fyLSOFTo+R5cx8Hfmhjcw9TIQ6da2Xl526dYEMYCK4+un29enuIXILA0G5YdHj7Se6705Ad/Qcr
+	TpSeeqggYFqY63oDV5wTt+ltuup5NIBRrR9jrFgYm7fqROfPAs1fhfwv0GC/wbBjtlckKfe5uHy7Z
+	HzlI9T4g==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:33410 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sc1jx-003iMd-15;
+	Thu, 08 Aug 2024 05:55:33 -0600
+Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240808091131.014292134@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <96b86f9b-c516-9742-5e33-e5cbfbed10b3@w6rz.net>
+Date: Thu, 8 Aug 2024 04:55:27 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1068323.1723117607@warthog.procyon.org.uk>
+In-Reply-To: <20240808091131.014292134@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sc1jx-003iMd-15
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:33410
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfMFDBKjOLrEnd8/D2Rg2x9n34n1qinA1SADbof1nF4UF+cQ2GmM3mmUFmtrF2owFJFaMMux/kdbRbZD/IegFY8FYL9BMN08a04bFbR0agoeTFVam990f
+ RCjaU8uAQOuWNujZeONP+/jMm4l53zPnrZp450ysCCnyOOU6xbVOYS50z3yFfNZQIVVjjwB5nJ0xkA==
 
-Hi,
+On 8/8/24 2:11 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.104 release.
+> There are 86 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 10 Aug 2024 09:11:02 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.104-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
+I'm seeing a build failure.
 
-Thanks for your patch.
+sound/pci/hda/patch_conexant.c:273:10: error: ‘const struct 
+hda_codec_ops’ has no member named ‘suspend’
+   273 |         .suspend = cx_auto_suspend,
+       |          ^~~~~~~
+sound/pci/hda/patch_conexant.c:273:20: error: initialization of ‘void 
+(*)(struct hda_codec *, hda_nid_t,  unsigned int)’ {aka ‘void (*)(struct 
+hda_codec *, short unsigned int,  unsigned int)’} from incompatible 
+pointer type ‘int (*)(struct hda_codec *)’ 
+[-Werror=incompatible-pointer-types]
+   273 |         .suspend = cx_auto_suspend,
+       |                    ^~~~~~~~~~~~~~~
+sound/pci/hda/patch_conexant.c:273:20: note: (near initialization for 
+‘cx_auto_patch_ops.set_power_state’)
+sound/pci/hda/patch_conexant.c:274:10: error: ‘const struct 
+hda_codec_ops’ has no member named ‘check_power_status’; did you mean 
+‘set_power_state’?
+   274 |         .check_power_status = snd_hda_gen_check_power_status,
+       |          ^~~~~~~~~~~~~~~~~~
+       |          set_power_state
+sound/pci/hda/patch_conexant.c:274:31: error: 
+‘snd_hda_gen_check_power_status’ undeclared here (not in a function); 
+did you mean ‘snd_hda_check_power_state’?
+   274 |         .check_power_status = snd_hda_gen_check_power_status,
+       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       |                               snd_hda_check_power_state
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2] netfs: Fix handling of USE_PGPRIV2 and WRITE_TO_CACHE flags
-Link: https://lore.kernel.org/stable/1068323.1723117607%40warthog.procyon.org.uk
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+This is triggered because my config does not include CONFIG_PM. But the 
+error is caused by upstream patch 
+9e993b3d722fb452e274e1f8694d8940db183323 "ALSA: hda: codec: Reduce 
+CONFIG_PM dependencies" being missing. This patch removes the #ifdef 
+CONFIG_PM in the hda_codec_ops structure. So if CONFIG_PM is not set, 
+some structure members are missing and the the build fails.
 
 
