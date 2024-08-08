@@ -1,146 +1,113 @@
-Return-Path: <stable+bounces-66097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C20C94C721
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 00:57:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B671694C725
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 01:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC2B8285B65
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 22:57:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E79D91C21C6A
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 23:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9907215C124;
-	Thu,  8 Aug 2024 22:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A5C156257;
+	Thu,  8 Aug 2024 23:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mod9nZDW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RugLjLca"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4491815A87B;
-	Thu,  8 Aug 2024 22:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EDA156220;
+	Thu,  8 Aug 2024 23:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723157821; cv=none; b=ORD2JhOa0EgrFJeGUYUGfypM9CCWPXkRP9YTWYYy50RETv5Aj2n06FPlYLUVc9mYIuJkl4VL9DSCYyPPGgmhDUPQrhjT+wVbw/SyGS9h8YV1glUbsX1pnWAQKm679bnVhB4+z+lgzAoP2Xem5BHU5CiNqeKvoT5kRXCeFZfvYMU=
+	t=1723158053; cv=none; b=jlLb9V4l1k2uKTr+hZdZFXLjUfloumlC2L/M/qGKWfiktwIkMCBphewWc6WzphffbFvfuMK4Wnz/v0KPmDW4nmhJ9ktZdV6G4KvJT5dF2b+LVTKveKF77X1++tsf2y3pgQTLfdZUuN3xAxHbbk2vFd5JM0UH6Ba/JC7Dv1wN0cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723157821; c=relaxed/simple;
-	bh=3xVH7kdp21fwBWu5i57L4nDRGH+wwhISXOyckFXh65g=;
-	h=Date:To:From:Subject:Message-Id; b=sMpimHldMmpRyVW7w7AdAYYyYYJ0rTJ8CQ7RudJJ8wBrBPLdZEq42IKdXmSSzHtB+Bb6N9i8J3vzMTY6DcCohBAX7sI50pXWpvxIleWPmNEFR6vXKftw1wAGyczROPCP5/8NxdZgKIohJR8YlpuoxTiaYSihKghKRAt5j62jYAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mod9nZDW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD21C32782;
-	Thu,  8 Aug 2024 22:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1723157820;
-	bh=3xVH7kdp21fwBWu5i57L4nDRGH+wwhISXOyckFXh65g=;
-	h=Date:To:From:Subject:From;
-	b=mod9nZDWT6qa3OOFuk/qu86I6fEIhxG2ecHwzfjOThQdMqyYWqMpYQxqCa6rZ4FxU
-	 j6J77vqKxUnLs6eA0U4NNgA041oGZNKuj0CGbulCRWsFGgNjem0//kO7wrCaOVXgVV
-	 BTOcLVpyYHIUXXEJeJDw8/s3kRnUNgi1f+f2GsXg=
-Date: Thu, 08 Aug 2024 15:57:00 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-fix-state-management-in-error-path-of-log-writing-function.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240808225700.ACD21C32782@smtp.kernel.org>
+	s=arc-20240116; t=1723158053; c=relaxed/simple;
+	bh=HDwdkZfKg669WzeK8RdP0XkDkLGs2IT1MuZVSIU56Zw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VyItlKiojLWOg/wb8irBkeDUpg8tIOy6p+0ojISBUB3TmeNNHQete9L5YNj4X/cHY01qf2KJZIFI3zeGBKnsE4mynuay3pJ+uVDOvadABqNkD7I+LkxD5Zvt6P0vWaaN3ZqtNO3pyhlZa6AvPPIu4C+VNm0T6qUQbMholDdHYcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RugLjLca; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-4f6ac477ff4so880931e0c.3;
+        Thu, 08 Aug 2024 16:00:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723158051; x=1723762851; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dlGNe+kQiQq+j1tPjYRl+U7qon1kCBS85kse1myrA0o=;
+        b=RugLjLca1Wajt+UhAiB7siQcKRzafYrK3Mtvc0KVmtjuIem00pKSY/bthnZWyEbpJk
+         VekIZ7OJArbyt6BfWWd733gvIZD253ygMWDXbAvUgNNoEw//iRWFBVI1CaTxOTq5TuIT
+         cSWhhpRl49rGGdW0QX11LOyCpnQlWTEg0gw6oG+sieHwexqTZDnaYbfw5ogWVb7fTG4G
+         YcKAfFnqBGHn5iVYhgNxrGyDSBlCenQn73znfuFD0LnuNSWkxDgMrnTmMwvEVaa+BgOY
+         NMHlgtOf0kfVxNWakf07eUeqrWuEp4zaAhUot07cbPmOwGBcb9/OC9jTkmX92/u4b5qa
+         UaYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723158051; x=1723762851;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dlGNe+kQiQq+j1tPjYRl+U7qon1kCBS85kse1myrA0o=;
+        b=XLyw93OpemLzdC487jt9UNCcRzsFWfTz6yGTQ2l7V1K3lascGoPIGvsmypliSUZGJ8
+         5hjrIrmpjy7OiYFJhiLDq6+XcOjaeM0lNVdeFM05y39uQ/v79c8UdYPvr8gMGVdQgU7Z
+         ld/0M6sCQZLSp2t3kvEiPP6elnjAtW7cbXliVb9s7+P+dfjr2PaxufrVexDp4Twj8vvF
+         Ej395Bjcbmew7TVTn+RTbDIn120Gt2Aqj8r1b2Px+mW5OrCOdNg8P5G8aB7Ow5jGfmH3
+         yNLZ2O+FMK2Ay7Er9vGCW9dMiKUBSMBqnSD+T1YVC7pp6MttyONmOdwrGVTUVlSteg+K
+         zzcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVr3bN0gu+s/inS8wwjdTPqTF6A8MKtGGQNazs2QsdqdO5b3pinTiaCG/NLI+kGeptqP/89p2yEAC6LAt7PVsgdUi/caFk/igsfQBfp
+X-Gm-Message-State: AOJu0Yw5tc+Nu1r8kfYbm4J6at6BMIedwDXAs+g1wF7PiqyZ9bGabVLZ
+	wSvIakGuI1u2xhP6yrvMQoawq+vy4b0aU6MPgH+PsPl5bG3wv+hieh88Erfie6X09QX4PVoSNyE
+	ka5BDoZOFBpBehqB9TLDy61bIrP8=
+X-Google-Smtp-Source: AGHT+IHaXz0XGhbgdMz6ZETiBjPaaWJ6Y6jGZviOb118NgDdF5UhbWcuWjSTpTp0tnBE0o2xV3kNYHYP3zL/M6bomrk=
+X-Received: by 2002:a05:6122:459f:b0:4eb:5cb9:f219 with SMTP id
+ 71dfb90a1353d-4f90217049dmr4594541e0c.0.1723158051328; Thu, 08 Aug 2024
+ 16:00:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Thu, 8 Aug 2024 16:00:40 -0700
+Message-ID: <CAOMdWSLk8jU2Ea6EpjX8bQo37xJU8pp46TTmejOG0Cc=SMW82g@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/121] 6.6.45-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+> This is the start of the stable review cycle for the 6.6.45 release.
+> There are 121 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 09 Aug 2024 14:59:53 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.45-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-The patch titled
-     Subject: nilfs2: fix state management in error path of log writing function
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-fix-state-management-in-error-path-of-log-writing-function.patch
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-state-management-in-error-path-of-log-writing-function.patch
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix state management in error path of log writing function
-Date: Thu, 8 Aug 2024 08:07:42 +0900
-
-After commit a694291a6211 ("nilfs2: separate wait function from
-nilfs_segctor_write") was applied, the log writing function
-nilfs_segctor_do_construct() was able to issue I/O requests continuously
-even if user data blocks were split into multiple logs across segments,
-but two potential flaws were introduced in its error handling.
-
-First, if nilfs_segctor_begin_construction() fails while creating the
-second or subsequent logs, the log writing function returns without
-calling nilfs_segctor_abort_construction(), so the writeback flag set on
-pages/folios will remain uncleared.  This causes page cache operations to
-hang waiting for the writeback flag.  For example,
-truncate_inode_pages_final(), which is called via nilfs_evict_inode() when
-an inode is evicted from memory, will hang.
-
-Second, the NILFS_I_COLLECTED flag set on normal inodes remain uncleared. 
-As a result, if the next log write involves checkpoint creation, that's
-fine, but if a partial log write is performed that does not, inodes with
-NILFS_I_COLLECTED set are erroneously removed from the "sc_dirty_files"
-list, and their data and b-tree blocks may not be written to the device,
-corrupting the block mapping.
-
-Fix these issues by correcting the jump destination of the error branch in
-nilfs_segctor_do_construct() and the condition for calling
-nilfs_redirty_inodes(), which clears the NILFS_I_COLLECTED flag.
-
-Link: https://lkml.kernel.org/r/20240807230742.11151-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Fixes: a694291a6211 ("nilfs2: separate wait function from nilfs_segctor_write")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/segment.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
---- a/fs/nilfs2/segment.c~nilfs2-fix-state-management-in-error-path-of-log-writing-function
-+++ a/fs/nilfs2/segment.c
-@@ -2056,7 +2056,7 @@ static int nilfs_segctor_do_construct(st
- 
- 		err = nilfs_segctor_begin_construction(sci, nilfs);
- 		if (unlikely(err))
--			goto out;
-+			goto failed;
- 
- 		/* Update time stamp */
- 		sci->sc_seg_ctime = ktime_get_real_seconds();
-@@ -2120,10 +2120,9 @@ static int nilfs_segctor_do_construct(st
- 	return err;
- 
-  failed_to_write:
--	if (sci->sc_stage.flags & NILFS_CF_IFILE_STARTED)
--		nilfs_redirty_inodes(&sci->sc_dirty_files);
--
-  failed:
-+	if (mode == SC_LSEG_SR && nilfs_sc_cstage_get(sci) >= NILFS_ST_IFILE)
-+		nilfs_redirty_inodes(&sci->sc_dirty_files);
- 	if (nilfs_doing_gc())
- 		nilfs_redirty_inodes(&sci->sc_gc_inodes);
- 	nilfs_segctor_abort_construction(sci, nilfs, err);
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-nilfs2-fix-state-management-in-error-path-of-log-writing-function.patch
-
+Thanks.
 
