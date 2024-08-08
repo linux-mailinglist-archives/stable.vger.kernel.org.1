@@ -1,301 +1,453 @@
-Return-Path: <stable+bounces-66053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4A194BF94
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 16:22:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3961C94BF9C
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 16:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ED9A1C25047
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 14:22:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7FE4289574
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 14:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF5E18FC67;
-	Thu,  8 Aug 2024 14:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2231418E740;
+	Thu,  8 Aug 2024 14:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LuwEzyWP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2080.outbound.protection.outlook.com [40.107.243.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA4018F2F2;
-	Thu,  8 Aug 2024 14:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723126884; cv=none; b=P6ToOYA3J05n+q11gdZqKxOCu6VAxdn6QLXb83yQdRnAkjZeCnR1bO1ClFaRLsFWZc/RareamHwinw6WT3AL7rhq7Ox0Vxd2N5oek9zi0eGh/qBK5Af4flOjVfZ6MZ5/iLW0pDegctUSKtv8SQS4jAUt2Uu03mXbWIOvirYq/Ag=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723126884; c=relaxed/simple;
-	bh=YnLXBCQgc5nXKwHYksLbyzNMHZCBdWVLHQJRVNXb+dA=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=AI1chjYlDrOgDhmBEq2WQosz2pLaEKadQCZas35IZh2xMBio3sB1668a6blnLDpT84GYZRhu50Qmr4yfbF3Yt9n7bBbgHtWxQ60T/AYfykZqUkH2pNZ5w+sd8fDV6kJYVuQoirKG7Xgj/JzA7gvBe/QSGvMZGNytrEAXsE0sK6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 228D8C4AF11;
-	Thu,  8 Aug 2024 14:21:24 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1sc417-00000000BU0-01Js;
-	Thu, 08 Aug 2024 10:21:25 -0400
-Message-ID: <20240808142124.863050374@goodmis.org>
-User-Agent: quilt/0.68
-Date: Thu, 08 Aug 2024 10:20:46 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Ajay Kaher <ajay.kaher@broadcom.com>,
- Ilkka =?utf-8?b?TmF1bGFww6TDpA==?= <digirigawa@gmail.com>,
- Mathias Krause <minipli@grsecurity.net>,
- Brad Spengler <spender@grsecurity.net>,
- Al Viro <viro@zeniv.linux.org.uk>
-Subject: [for-linus][PATCH 9/9] tracefs: Use generic inode RCU for synchronizing freeing
-References: <20240808142037.495820579@goodmis.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077F12770E;
+	Thu,  8 Aug 2024 14:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723126905; cv=fail; b=H8K+uZCazSy154dUEGn/b9UaTgfNjqmcZ9leoFkogWiC9/EHkdZBp5NWhYfoHaZBppR49+X+l7lFr5x7+wmpvfUgtjrntO4UBIfU2lVsF/fNDk+Hdb1FzydN2uCpvb3lFnRMgvue+PtK9C1Bb9kIxFTo9IiWlF0P57QuGf2V/Tc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723126905; c=relaxed/simple;
+	bh=8JclNzV+320YwS2Nw2AM2Sgbk7sIN5bKxA5inC44aMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qVJHtWUBRSORM6+iVvfzpP8EsJLINzMFMiIxtj+pdX7Q30JlRU/HGy+nPpLNnKDlrhqVaU/v1F5VNgbSvvS3EKYoR8DIbYYn14h6Ft0Txr7882Wh8r4grFzres/abf1QL3EIBcmFiAjkHVORIjj6h5SC9lTHA4B5QS2NTu9eAFs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LuwEzyWP; arc=fail smtp.client-ip=40.107.243.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gA6FYIY6Qz8jJal6mNbvlyO0OZCRDfUTqsSi0bMY3uNHdNnHj5NPBJTHsjgdAAexIjRQuOPSjjnOFeVptA0yWILG8qMtYcgQ9Dp0REqT8WXyzxBpskKNRw4tnHPwDg0souGOr4o9Lfx3cywRiEWC3oWJQaQpUQquCeDQZ2upVwKOhgR5eua/3xPj5PaYH9JYbtJSyk504djNF/xQ2ntjlFwEm0p5zemeia83/3q9PmcOZEyd44c5fh0QvNPUV5dej6Ptxrqe6yoJ+hiuxl/GftoVbZFbIEh9AjkyZ/IL0kZBADmhFgoJMpjACGAlh98/BP5jfFN0oe7kf2nNUomWBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b0vau1mjaqX/M0iZF0cvJUgMSzWpqIFmar0ObLlJP88=;
+ b=sVA9CzCMLfu2tm4MZuA1iQzW6rSPCh/F8RiIte3RT92gADsP4TWfQ89zA6seyp0v/4wetVU43LvCcisTI+9Igtt/00bsll5i7TkHslzZ2adLgl5p2BrwWBtUbt30XN2q5yiqTo5Rf0Sf5J0Bhcm9gS+cJ22SGKrAdUBt03sPxewmDTpEN9DY3tXFxPpj8aKMep4vVd3eJs0f7sTKbFewQA+VhT4zO/Z7ieFy20sDaeXuieGdw9JwntW0GiX7K68JSwR+51L71TNTp3Rc6P65WZchR8QpYTAs6iH9OVAHvIBqL3S97wFf1DUBGLkovVucE4jerBjjXksnqqvJWZpP/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b0vau1mjaqX/M0iZF0cvJUgMSzWpqIFmar0ObLlJP88=;
+ b=LuwEzyWP1IZAwuYhkRT6pMrlM0aiT8KUswD/Qrdj17POw8tdVndS+yHkgy/aefdqGc4v78qgJxdoWoPqO3TQEeZQISTO+G36bSpU3zf5+XnIQubOAk1e0vaw4DL+ZDAx7iwhaZ5qbuVZ9ffBpCfvjBm/NZ129zQ4ZNg8yfhe/391/qm0NZEofR1MgB1LFSInpwko+04tpS1ozghPKvrcnaCluJpZkDC8xbr0QF9WR/YhKXrHGXsc7P9aiAAVX55Ut6BXuZBFCeF/xhqbb1oAFuXpd4h5ilKb7ZuEyhHHapvJUS6a7eYNGAHuFPWALsu/Le0oGxiuDQyRdRjT1uJ+/g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CYXPR12MB9320.namprd12.prod.outlook.com (2603:10b6:930:e6::9)
+ by PH7PR12MB5654.namprd12.prod.outlook.com (2603:10b6:510:137::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.33; Thu, 8 Aug
+ 2024 14:21:39 +0000
+Received: from CYXPR12MB9320.namprd12.prod.outlook.com
+ ([fe80::9347:9720:e1df:bb5f]) by CYXPR12MB9320.namprd12.prod.outlook.com
+ ([fe80::9347:9720:e1df:bb5f%3]) with mapi id 15.20.7828.023; Thu, 8 Aug 2024
+ 14:21:39 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+ "Huang, Ying" <ying.huang@intel.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/numa: no task_numa_fault() call if page table is
+ changed
+Date: Thu, 08 Aug 2024 10:21:36 -0400
+X-Mailer: MailMate (1.14r6052)
+Message-ID: <8890DD6A-126A-406D-8AB9-97CF5A1F4DA4@nvidia.com>
+In-Reply-To: <052552f4-5a8d-4799-8f02-177585a1c8dd@redhat.com>
+References: <20240807184730.1266736-1-ziy@nvidia.com>
+ <956553dc-587c-4a43-9877-7e8844f27f95@linux.alibaba.com>
+ <1881267a-723d-4ba0-96d0-d863ae9345a4@redhat.com>
+ <09AC6DFA-E50A-478D-A608-6EF08D8137E9@nvidia.com>
+ <052552f4-5a8d-4799-8f02-177585a1c8dd@redhat.com>
+Content-Type: multipart/signed;
+ boundary="=_MailMate_0EA17B2F-7900-4ED0-803B-8A33F87EA02A_=";
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+X-ClientProxiedBy: BN9PR03CA0459.namprd03.prod.outlook.com
+ (2603:10b6:408:139::14) To CYXPR12MB9320.namprd12.prod.outlook.com
+ (2603:10b6:930:e6::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CYXPR12MB9320:EE_|PH7PR12MB5654:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e140b39-1cd3-4735-1eb2-08dcb7b56b3c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Sm5yWFJWK2xQcmx2Z0s5UktvbVFaa2lVRjIvWlRDM3VwVmRiTmJnN1BsTmJ6?=
+ =?utf-8?B?NnFranNhZkgxOUJubkd2ZmFUZzU2ZjJRY0NPUU0zUS8xclhKN2tqSXdHYTRn?=
+ =?utf-8?B?LzErbGlxK2lNM1YxZ1dLV3NQOW5vdzV4UUtSMWo4MFkxa3JoRUxQQ2JaakRj?=
+ =?utf-8?B?K1lmdnlCL2hITzhUdFdqN1FsY2h2ZHcrQnR0eWNDaXJXZmRKbVY3ZHBOZVhC?=
+ =?utf-8?B?NnNQMVJrN0J4QzNXM2N2SWJrQkR1bHJIUjNEYkpZZmduM2Y0WVVRakE2UlBs?=
+ =?utf-8?B?bzR4cXMzNHhQT25WalFOQzdEKy8raFpudWM5cnVDTWg1dVVNQXprS0E3MlZV?=
+ =?utf-8?B?N3p3Vi95U2hUYlhSdjdIQ2lNQzJLem0xVlFWdDJneVN1aXVPUEZXNWwyZXdq?=
+ =?utf-8?B?dWZmTkpyQ0dLQ0xoN0lWSys0Y1ByUDNSaHhWdURlc01BbmdlNHpLcmJHSmI0?=
+ =?utf-8?B?OGRQNHZNRllJSVF1azdlUW9BSld4Nm5KeWZNcWg2dGc0b3VVM25tVWJ5bE5D?=
+ =?utf-8?B?TlVLOWx5ZnV4clphSTBRaU9PQnphRTF1R1pzUk5IdWNyaENhZ01mRWY5T3Nz?=
+ =?utf-8?B?VDVpemdvK1o0bHB3SDBGeVB0RVNaY1A2NVFGOWVxbytvMi9OR1JHa09GcDdj?=
+ =?utf-8?B?V2dWc0NmdnJ2QWMvWGZpRE9ZK3M1VitzZHN2a3B4UmVLUTlObm1NRHZFU1B2?=
+ =?utf-8?B?YzlSQkI4MkxTaHQrTzFTaHcraHlGMEVsaE9pNFFLZEFGTTludHFYdXQvd1VN?=
+ =?utf-8?B?NVljQ2c2L21SYU9UcnBFWEZVTzJoZVFTbUN6ZHZwYTBUa3JIamlKT1ZFVG5m?=
+ =?utf-8?B?NFp5MW9xU2ZGNkhvYnY2cFN1RTZKOERNSlFFcE5HbFNNUjNiNDVoUmgvOGxH?=
+ =?utf-8?B?OERoT2ZjOHV4ME5aandhOGRiRzBBUWdJZkJidzNoUnF5eHJiRG1uRTVrMk9u?=
+ =?utf-8?B?dUdDOGZENVdXZ205aGVzYkUybTZCMEtidHlYdllqK21MeXNMU0xJZ2pReHVN?=
+ =?utf-8?B?SUNPd2oyOFdCaURIdlprVmpveGxHVXFsRjZtbkt4Mk4rVWFUN1hLWGtabjlu?=
+ =?utf-8?B?NWtXTEw5VXM2dGtiakt0RGRUMzNBRHZNYWxmdGw1SkxWUXIyNS9xRkxXODI2?=
+ =?utf-8?B?d1FoeGxxRlhKMlJhME9CRzVIcWhtUDFkbTZzYmQxTzJGQkVFUVFXbXVhRnVj?=
+ =?utf-8?B?ZE9UdnN0WDc4d2dpNDBldmNwSkZOZHVGN0lzQ3JtT21kd1R0VVJxeHl4UmhM?=
+ =?utf-8?B?ditDYTBMWVQvQnY1NTYvREtEMjRVeXd3RnF6TGt4dng5emRjYlpqVFhtRXJx?=
+ =?utf-8?B?REdvc3c0N2J6b29kWHBOU1FDOUVsR0FWNU13WHdEbFdDVzZGVmhoNEFDRkhD?=
+ =?utf-8?B?Qm5YbXhRMDNOdHZJREp6R3daWm9kV25vSGFDMStXdnZKb0EvVS9SMnhQTHBH?=
+ =?utf-8?B?UUNpRE4vaXlubmFtdWlTZEYxSStmQWNIb1ZhOEYxZGRrUERXSjFkV09ZQWUy?=
+ =?utf-8?B?Wjh3bWFRNGxCeGp4MkIvdXphbGZkL3g1Sm1od1hlZE02K3kxY1J0bkt2WXpS?=
+ =?utf-8?B?L0NFN2RRTWhpbWdhVGtabVdLUUIyUExhVEV1ZTAvTEQ4MTRJcWF4VTFTL1VY?=
+ =?utf-8?B?S1N2RzkwVkhZbkhDai9uVDJpVUxrQWtQcVA4M1JiVHJGT2o4OE5Ma3ZtR0Ix?=
+ =?utf-8?B?M01lVC9YYjRDTE9aeGJCV2tsUVcvdkN6UTNNb0VobFd6UkY5T1V2d1EzVVVn?=
+ =?utf-8?B?MEEwZWNKWU0wRkZDVE4xZFJlNXd2QU5qcW93WGgvdkc2SnBGek9jSlZGVnNK?=
+ =?utf-8?B?VXhUQ2lQN25XT2JuRkltdz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYXPR12MB9320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N3lWVWhzVnpQUnFGMFYwV25kQVJsbHFHWUpOTlRmV3FQUlFJY05wNTdTZEpy?=
+ =?utf-8?B?STBvSjJaaUh2bFI3QnE3RU8rczhFb0tNL2dYaituU1lNdTNQakFIK3NuZGxz?=
+ =?utf-8?B?L2JvTlBNSFBHR2E0dFNiSWRMV2pSVkhkK3dkbm1HQTQwTzd4d1dQcnFWNnFw?=
+ =?utf-8?B?Sld3cmNnVnd2T1p3Y3ZoeGM3dFdUV3ZFZWdPMExvdnd6ZWIrVkVCblhEVnZi?=
+ =?utf-8?B?WERPQ3JkYzZ2c0gzTWllSVg0RDU2cEVsaVpKYjVmMW11a0hoRWh1VXFXdXdX?=
+ =?utf-8?B?SGhZUFV2NEh3azVIcEtudk8wZzM0SjU2SDBYV2g0UWFiUUxLU0Q2TWw0dkNk?=
+ =?utf-8?B?OHBiVFNJZ2VJcWpKZ1k2RlZTYnNhVXg2N1N5bG9QU3dHZ0pacGpqTjRCYlZX?=
+ =?utf-8?B?cEVzRWdUSHhhWW11VzAvZEtLdnp5RlFpUHQ5RU12YWVyRW8wNFZtK1Bwem9r?=
+ =?utf-8?B?TXRpSThod0hmT0NpdXZUZnZ3M0NJNTg5bGp0SUE0czBuQlkyclRBczhKRXhL?=
+ =?utf-8?B?dlRTZjYrTzcweVpKSnEvWnkzVEZndkIyOGdQeExtbkFUckMzb3ZxemxBSDBG?=
+ =?utf-8?B?NFE2ZkREZzZqK0xPZVh1NzBqRDRudy8xcW5hNFNpUWhCbU1XQ3hyQWR5dThS?=
+ =?utf-8?B?WGlCdlpZRTJIM0p1ZzhMYStYU0cxN3VBR0VXYTdjNTZOVURTL0YvVG1aL25l?=
+ =?utf-8?B?TUxsMmFBNStVZWNTaGNmVG9ZazV5dmtOZnYxRFRrMnlnTzJZam9aMExxbU9z?=
+ =?utf-8?B?SzZVbmh5U3hBWHByR1pBZTNHay94Z0d3V1dVYUl1MXA4N3Z4MEs4MnhrcmF1?=
+ =?utf-8?B?RVRBek0zQjEvVGdoSEwzSWVoaFdnSmRqZ0Y1ejNJTnd3dlN1RmdSVEdraW9z?=
+ =?utf-8?B?WFN5NlQ0Vm1rWktLbXV1YzRPTnQ0NEp4anpiVDhOc2dVYmRyY1dINURrOWk5?=
+ =?utf-8?B?K0lqdWRXVUZLR3diUXR6YjZXa2dsZTEvOUhJbjZSZjdRMzFnbUdMS1M0UnI5?=
+ =?utf-8?B?T0l2Mmw4OFIySGZhZno4YXd2ZU1WWU1UYy93M1MxZHJFV0pma1ErSzFvYzk2?=
+ =?utf-8?B?QXc2SGxEejMycGFldFhaNFh1RTIzL1lkaDhsOFV2dGw1Q1B4T3dYMjhPSklS?=
+ =?utf-8?B?VjY4SDhjaG45NEp4M0xidVk2NnJsVGl1YmovVkR5bDdSSjBQVE5EUFBjV1Rj?=
+ =?utf-8?B?cE1lenJWOHVXODM2aUVrSDBGR3F3aVIrdEZ4RDNaUVpGZW9pYndUdWwvMXg3?=
+ =?utf-8?B?bnVRMHU4QXZpT1h4TVJSZEFjSXJJcFdBUWdiVEs5SGFRYzRDWm5wckpXN1RU?=
+ =?utf-8?B?ZkRtTmNVMEZzaDdxdWlqTENqWUV0dC9Oby93NitiZ1orTWVVRmFDbVY4WDJN?=
+ =?utf-8?B?MDlBMU1iNEZtZFA0b0U3c3VmY3YvNFBkZGdGdmlRRjdxMVZVb0ZrMTFKN1NZ?=
+ =?utf-8?B?Qnkrd3UwaHJFdFR3Zk5RZHpIUWcvclE1S1VPQ2hYVVJlMFlLL1grdDVZd2w5?=
+ =?utf-8?B?WjQ2dmpKN29UY204LzZTN01ZV3VMRWdkSTd4STJaczlFSWNBbFA5bnJwREN0?=
+ =?utf-8?B?Q3RFaTZLYk10R0pPM1pkYVJNTUJxK05HdjRxdTRYbmVZUm9LQ205ZDdueFls?=
+ =?utf-8?B?cWJCbGpkdG40cm00NmhJcGVCYkZhN2NwV3VaMUxmOVQ4N2xYQkpTMGMyQzli?=
+ =?utf-8?B?WnJaMlBEVENqaEcrZG9lemRVN3pXVEwvMUhndWhzL1VzVkZFUGNFZVduNmVO?=
+ =?utf-8?B?ZTgvaCtobXZQNTlmei8rNHRNRnMxQXNPY3IvRWpBOTN6bzM0bDN6YjYzSUR4?=
+ =?utf-8?B?Y040c1c2R0ExSWVBRTlNUXJ4ckJ3dFVZOVh1ejlhRXNkWnBLaG5LcjRHamg1?=
+ =?utf-8?B?aUZTK0ZTUElnalFZd25xbkFQZllISkE0UnRmckF5U2prbUhLNnJVTnowM1VL?=
+ =?utf-8?B?S0R1ai9SZ25BM1VrNTYzVFRWQ2pzUnZkQzE5c3RkU1djZW4weXhrUnVQc3FB?=
+ =?utf-8?B?YUxUUThuTjlGcHFuSU1DY3R2Nkt5a2EvNi9tYS9Ed2piMUF5QVk5L3J1YUYz?=
+ =?utf-8?B?cWxoRTB0RnoxNXk2YTB3eTAvcDAzZklnNXZRY2pKRCs0UHBraVFHNGU3dk1t?=
+ =?utf-8?Q?gDCnkkw23x73nOU3/maDUEH00?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e140b39-1cd3-4735-1eb2-08dcb7b56b3c
+X-MS-Exchange-CrossTenant-AuthSource: CYXPR12MB9320.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2024 14:21:39.7215
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +QLHZ80nfi0G6PaFgXAdafA6IIPNcrSYXgRCimQj48Iwnxc2LA0OTy1R7J4SSHOP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5654
+
+--=_MailMate_0EA17B2F-7900-4ED0-803B-8A33F87EA02A_=
+Content-Type: multipart/mixed;
+ boundary="=_MailMate_F46D6761-64E2-4125-B759-50F83487BA76_="
+
+
+--=_MailMate_F46D6761-64E2-4125-B759-50F83487BA76_=
 Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Steven Rostedt <rostedt@goodmis.org>
+On 8 Aug 2024, at 10:14, David Hildenbrand wrote:
 
-With structure layout randomization enabled for 'struct inode' we need to
-avoid overlapping any of the RCU-used / initialized-only-once members,
-e.g. i_lru or i_sb_list to not corrupt related list traversals when making
-use of the rcu_head.
+> On 08.08.24 16:13, Zi Yan wrote:
+>> On 8 Aug 2024, at 4:22, David Hildenbrand wrote:
+>>
+>>> On 08.08.24 05:19, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 2024/8/8 02:47, Zi Yan wrote:
+>>>>> When handling a numa page fault, task_numa_fault() should be called=
+ by a
+>>>>> process that restores the page table of the faulted folio to avoid
+>>>>> duplicated stats counting. Commit b99a342d4f11 ("NUMA balancing: re=
+duce
+>>>>> TLB flush via delaying mapping on hint page fault") restructured
+>>>>> do_numa_page() and do_huge_pmd_numa_page() and did not avoid
+>>>>> task_numa_fault() call in the second page table check after a numa
+>>>>> migration failure. Fix it by making all !pte_same()/!pmd_same() ret=
+urn
+>>>>> immediately.
+>>>>>
+>>>>> This issue can cause task_numa_fault() being called more than neces=
+sary
+>>>>> and lead to unexpected numa balancing results (It is hard to tell w=
+hether
+>>>>> the issue will cause positive or negative performance impact due to=
 
-For an unlucky structure layout of 'struct inode' we may end up with the
-following splat when running the ftrace selftests:
+>>>>> duplicated numa fault counting).
+>>>>>
+>>>>> Reported-by: "Huang, Ying" <ying.huang@intel.com>
+>>>>> Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-des=
+k2.ccr.corp.intel.com/
+>>>>> Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying=
+ mapping on hint page fault")
+>>>>> Cc: <stable@vger.kernel.org>
+>>>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>>>
+>>>> The fix looks reasonable to me. Feel free to add:
+>>>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>
+>>>> (Nit: These goto labels are a bit confusing and might need some clea=
+nup
+>>>> in the future.)
+>>>
+>>> Agreed, maybe we should simply handle that right away and replace the=
+ "goto out;" users by "return 0;".
+>>>
+>>> Then, just copy the 3 LOC.
+>>>
+>>> For mm/memory.c that would be:
+>>>
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 67496dc5064f..410ba50ca746 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -5461,7 +5461,7 @@ static vm_fault_t do_numa_page(struct vm_fault =
+*vmf)
+>>>           if (unlikely(!pte_same(old_pte, vmf->orig_pte))) {
+>>>                  pte_unmap_unlock(vmf->pte, vmf->ptl);
+>>> -               goto out;
+>>> +               return 0;
+>>>          }
+>>>           pte =3D pte_modify(old_pte, vma->vm_page_prot);
+>>> @@ -5528,15 +5528,14 @@ static vm_fault_t do_numa_page(struct vm_faul=
+t *vmf)
+>>>                  vmf->pte =3D pte_offset_map_lock(vma->vm_mm, vmf->pm=
+d,
+>>>                                                 vmf->address, &vmf->p=
+tl);
+>>>                  if (unlikely(!vmf->pte))
+>>> -                       goto out;
+>>> +                       return 0;
+>>>                  if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig=
+_pte))) {
+>>>                          pte_unmap_unlock(vmf->pte, vmf->ptl);
+>>> -                       goto out;
+>>> +                       return 0;
+>>>                  }
+>>>                  goto out_map;
+>>>          }
+>>>   -out:
+>>>          if (nid !=3D NUMA_NO_NODE)
+>>>                  task_numa_fault(last_cpupid, nid, nr_pages, flags);
+>>>          return 0;
+>>> @@ -5552,7 +5551,9 @@ static vm_fault_t do_numa_page(struct vm_fault =
+*vmf)
+>>>                  numa_rebuild_single_mapping(vmf, vma, vmf->address, =
+vmf->pte,
+>>>                                              writable);
+>>>          pte_unmap_unlock(vmf->pte, vmf->ptl);
+>>> -       goto out;
+>>> +       if (nid !=3D NUMA_NO_NODE)
+>>> +               task_numa_fault(last_cpupid, nid, nr_pages, flags);
+>>> +       return 0;
+>>>   }
+>>
+>> Looks good to me. Thanks.
+>>
+>> Hi Andrew,
+>>
+>> Should I resend this for an easy back porting? Or you want to fold Dav=
+id=E2=80=99s
+>> changes in directly?
+>
+> Note that I didn't touch huge_memory.c. So maybe just send a fixup on t=
+op?
 
-[<...>] list_del corruption, ffff888103ee2cb0->next (tracefs_inode_cache+0x0/0x4e0 [slab object]) is NULL (prev is tracefs_inode_cache+0x78/0x4e0 [slab object])
-[<...>] ------------[ cut here ]------------
-[<...>] kernel BUG at lib/list_debug.c:54!
-[<...>] invalid opcode: 0000 [#1] PREEMPT SMP KASAN
-[<...>] CPU: 3 PID: 2550 Comm: mount Tainted: G                 N  6.8.12-grsec+ #122 ed2f536ca62f28b087b90e3cc906a8d25b3ddc65
-[<...>] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
-[<...>] RIP: 0010:[<ffffffff84656018>] __list_del_entry_valid_or_report+0x138/0x3e0
-[<...>] Code: 48 b8 99 fb 65 f2 ff ff ff ff e9 03 5c d9 fc cc 48 b8 99 fb 65 f2 ff ff ff ff e9 33 5a d9 fc cc 48 b8 99 fb 65 f2 ff ff ff ff <0f> 0b 4c 89 e9 48 89 ea 48 89 ee 48 c7 c7 60 8f dd 89 31 c0 e8 2f
-[<...>] RSP: 0018:fffffe80416afaf0 EFLAGS: 00010283
-[<...>] RAX: 0000000000000098 RBX: ffff888103ee2cb0 RCX: 0000000000000000
-[<...>] RDX: ffffffff84655fe8 RSI: ffffffff89dd8b60 RDI: 0000000000000001
-[<...>] RBP: ffff888103ee2cb0 R08: 0000000000000001 R09: fffffbd0082d5f25
-[<...>] R10: fffffe80416af92f R11: 0000000000000001 R12: fdf99c16731d9b6d
-[<...>] R13: 0000000000000000 R14: ffff88819ad4b8b8 R15: 0000000000000000
-[<...>] RBX: tracefs_inode_cache+0x0/0x4e0 [slab object]
-[<...>] RDX: __list_del_entry_valid_or_report+0x108/0x3e0
-[<...>] RSI: __func__.47+0x4340/0x4400
-[<...>] RBP: tracefs_inode_cache+0x0/0x4e0 [slab object]
-[<...>] RSP: process kstack fffffe80416afaf0+0x7af0/0x8000 [mount 2550 2550]
-[<...>] R09: kasan shadow of process kstack fffffe80416af928+0x7928/0x8000 [mount 2550 2550]
-[<...>] R10: process kstack fffffe80416af92f+0x792f/0x8000 [mount 2550 2550]
-[<...>] R14: tracefs_inode_cache+0x78/0x4e0 [slab object]
-[<...>] FS:  00006dcb380c1840(0000) GS:ffff8881e0600000(0000) knlGS:0000000000000000
-[<...>] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[<...>] CR2: 000076ab72b30e84 CR3: 000000000b088004 CR4: 0000000000360ef0 shadow CR4: 0000000000360ef0
-[<...>] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[<...>] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[<...>] ASID: 0003
-[<...>] Stack:
-[<...>]  ffffffff818a2315 00000000f5c856ee ffffffff896f1840 ffff888103ee2cb0
-[<...>]  ffff88812b6b9750 0000000079d714b6 fffffbfff1e9280b ffffffff8f49405f
-[<...>]  0000000000000001 0000000000000000 ffff888104457280 ffffffff8248b392
-[<...>] Call Trace:
-[<...>]  <TASK>
-[<...>]  [<ffffffff818a2315>] ? lock_release+0x175/0x380 fffffe80416afaf0
-[<...>]  [<ffffffff8248b392>] list_lru_del+0x152/0x740 fffffe80416afb48
-[<...>]  [<ffffffff8248ba93>] list_lru_del_obj+0x113/0x280 fffffe80416afb88
-[<...>]  [<ffffffff8940fd19>] ? _atomic_dec_and_lock+0x119/0x200 fffffe80416afb90
-[<...>]  [<ffffffff8295b244>] iput_final+0x1c4/0x9a0 fffffe80416afbb8
-[<...>]  [<ffffffff8293a52b>] dentry_unlink_inode+0x44b/0xaa0 fffffe80416afbf8
-[<...>]  [<ffffffff8293fefc>] __dentry_kill+0x23c/0xf00 fffffe80416afc40
-[<...>]  [<ffffffff8953a85f>] ? __this_cpu_preempt_check+0x1f/0xa0 fffffe80416afc48
-[<...>]  [<ffffffff82949ce5>] ? shrink_dentry_list+0x1c5/0x760 fffffe80416afc70
-[<...>]  [<ffffffff82949b71>] ? shrink_dentry_list+0x51/0x760 fffffe80416afc78
-[<...>]  [<ffffffff82949da8>] shrink_dentry_list+0x288/0x760 fffffe80416afc80
-[<...>]  [<ffffffff8294ae75>] shrink_dcache_sb+0x155/0x420 fffffe80416afcc8
-[<...>]  [<ffffffff8953a7c3>] ? debug_smp_processor_id+0x23/0xa0 fffffe80416afce0
-[<...>]  [<ffffffff8294ad20>] ? do_one_tree+0x140/0x140 fffffe80416afcf8
-[<...>]  [<ffffffff82997349>] ? do_remount+0x329/0xa00 fffffe80416afd18
-[<...>]  [<ffffffff83ebf7a1>] ? security_sb_remount+0x81/0x1c0 fffffe80416afd38
-[<...>]  [<ffffffff82892096>] reconfigure_super+0x856/0x14e0 fffffe80416afd70
-[<...>]  [<ffffffff815d1327>] ? ns_capable_common+0xe7/0x2a0 fffffe80416afd90
-[<...>]  [<ffffffff82997436>] do_remount+0x416/0xa00 fffffe80416afdd0
-[<...>]  [<ffffffff829b2ba4>] path_mount+0x5c4/0x900 fffffe80416afe28
-[<...>]  [<ffffffff829b25e0>] ? finish_automount+0x13a0/0x13a0 fffffe80416afe60
-[<...>]  [<ffffffff82903812>] ? user_path_at_empty+0xb2/0x140 fffffe80416afe88
-[<...>]  [<ffffffff829b2ff5>] do_mount+0x115/0x1c0 fffffe80416afeb8
-[<...>]  [<ffffffff829b2ee0>] ? path_mount+0x900/0x900 fffffe80416afed8
-[<...>]  [<ffffffff8272461c>] ? __kasan_check_write+0x1c/0xa0 fffffe80416afee0
-[<...>]  [<ffffffff829b31cf>] __do_sys_mount+0x12f/0x280 fffffe80416aff30
-[<...>]  [<ffffffff829b36cd>] __x64_sys_mount+0xcd/0x2e0 fffffe80416aff70
-[<...>]  [<ffffffff819f8818>] ? syscall_trace_enter+0x218/0x380 fffffe80416aff88
-[<...>]  [<ffffffff8111655e>] x64_sys_call+0x5d5e/0x6720 fffffe80416affa8
-[<...>]  [<ffffffff8952756d>] do_syscall_64+0xcd/0x3c0 fffffe80416affb8
-[<...>]  [<ffffffff8100119b>] entry_SYSCALL_64_safe_stack+0x4c/0x87 fffffe80416affe8
-[<...>]  </TASK>
-[<...>]  <PTREGS>
-[<...>] RIP: 0033:[<00006dcb382ff66a>] vm_area_struct[mount 2550 2550 file 6dcb38225000-6dcb3837e000 22 55(read|exec|mayread|mayexec)]+0x0/0xb8 [userland map]
-[<...>] Code: 48 8b 0d 29 18 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d f6 17 0d 00 f7 d8 64 89 01 48
-[<...>] RSP: 002b:0000763d68192558 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-[<...>] RAX: ffffffffffffffda RBX: 00006dcb38433264 RCX: 00006dcb382ff66a
-[<...>] RDX: 000017c3e0d11210 RSI: 000017c3e0d1a5a0 RDI: 000017c3e0d1ae70
-[<...>] RBP: 000017c3e0d10fb0 R08: 000017c3e0d11260 R09: 00006dcb383d1be0
-[<...>] R10: 000000000020002e R11: 0000000000000246 R12: 0000000000000000
-[<...>] R13: 000017c3e0d1ae70 R14: 000017c3e0d11210 R15: 000017c3e0d10fb0
-[<...>] RBX: vm_area_struct[mount 2550 2550 file 6dcb38433000-6dcb38434000 5b 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>] RCX: vm_area_struct[mount 2550 2550 file 6dcb38225000-6dcb3837e000 22 55(read|exec|mayread|mayexec)]+0x0/0xb8 [userland map]
-[<...>] RDX: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>] RSI: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>] RDI: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>] RBP: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>] RSP: vm_area_struct[mount 2550 2550 anon 763d68173000-763d68195000 7ffffffdd 100133(read|write|mayread|maywrite|growsdown|account)]+0x0/0xb8 [userland map]
-[<...>] R08: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>] R09: vm_area_struct[mount 2550 2550 file 6dcb383d1000-6dcb383d3000 1cd 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>] R13: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>] R14: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>] R15: vm_area_struct[mount 2550 2550 anon 17c3e0d0f000-17c3e0d31000 17c3e0d0f 100033(read|write|mayread|maywrite|account)]+0x0/0xb8 [userland map]
-[<...>]  </PTREGS>
-[<...>] Modules linked in:
-[<...>] ---[ end trace 0000000000000000 ]---
+Got it. The fixup is attached.
 
-The list debug message as well as RBX's symbolic value point out that the
-object in question was allocated from 'tracefs_inode_cache' and that the
-list's '->next' member is at offset 0. Dumping the layout of the relevant
-parts of 'struct tracefs_inode' gives the following:
+Best Regards,
+Yan, Zi
 
-  struct tracefs_inode {
-    union {
-      struct inode {
-        struct list_head {
-          struct list_head * next;                    /*     0     8 */
-          struct list_head * prev;                    /*     8     8 */
-        } i_lru;
-        [...]
-      } vfs_inode;
-      struct callback_head {
-        void (*func)(struct callback_head *);         /*     0     8 */
-        struct callback_head * next;                  /*     8     8 */
-      } rcu;
-    };
-    [...]
-  };
+--=_MailMate_F46D6761-64E2-4125-B759-50F83487BA76_=
+Content-Disposition: attachment;
+ filename=0001-fixup-mm-numa-no-task_numa_fault-call-if-page-table-.patch
+Content-ID: <CE12BED7-1CD0-42D1-9D7A-99A00B7F4332@nvidia.com>
+Content-Type: text/plain;
+ name=0001-fixup-mm-numa-no-task_numa_fault-call-if-page-table-.patch
+Content-Transfer-Encoding: quoted-printable
 
-Above shows that 'vfs_inode.i_lru' overlaps with 'rcu' which will
-destroy the 'i_lru' list as soon as the 'rcu' member gets used, e.g. in
-call_rcu() or later when calling the RCU callback. This will disturb
-concurrent list traversals as well as object reuse which assumes these
-list heads will keep their integrity.
+=46rom c0494d569e77291f7f51abb16c2ceff0976371f4 Mon Sep 17 00:00:00 2001
+From: Zi Yan <ziy@nvidia.com>
+Date: Thu, 8 Aug 2024 10:18:42 -0400
+Subject: [PATCH] fixup! mm/numa: no task_numa_fault() call if page table =
+is
+ changed
 
-For reproduction, the following diff manually overlays 'i_lru' with
-'rcu' as, otherwise, one would require some good portion of luck for
-gambling an unlucky RANDSTRUCT seed:
-
-  --- a/include/linux/fs.h
-  +++ b/include/linux/fs.h
-  @@ -629,6 +629,7 @@ struct inode {
-   	umode_t			i_mode;
-   	unsigned short		i_opflags;
-   	kuid_t			i_uid;
-  +	struct list_head	i_lru;		/* inode LRU list */
-   	kgid_t			i_gid;
-   	unsigned int		i_flags;
-
-  @@ -690,7 +691,6 @@ struct inode {
-   	u16			i_wb_frn_avg_time;
-   	u16			i_wb_frn_history;
-   #endif
-  -	struct list_head	i_lru;		/* inode LRU list */
-   	struct list_head	i_sb_list;
-   	struct list_head	i_wb_list;	/* backing dev writeback list */
-   	union {
-
-The tracefs inode does not need to supply its own RCU delayed destruction
-of its inode. The inode code itself offers both a "destroy_inode()"
-callback that gets called when the last reference of the inode is
-released, and the "free_inode()" which is called after a RCU
-synchronization period from the "destroy_inode()".
-
-The tracefs code can unlink the inode from its list in the destroy_inode()
-callback, and the simply free it from the free_inode() callback. This
-should provide the same protection.
-
-Link: https://lore.kernel.org/all/20240807115143.45927-3-minipli@grsecurity.net/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Cc: Ilkka =?utf-8?b?TmF1bGFww6TDpA==?= <digirigawa@gmail.com>
-Link: https://lore.kernel.org/20240807185402.61410544@gandalf.local.home
-Fixes: baa23a8d4360 ("tracefs: Reset permissions on remount if permissions are options")
-Reported-by: Mathias Krause <minipli@grsecurity.net>
-Reported-by: Brad Spengler <spender@grsecurity.net>
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- fs/tracefs/inode.c    | 10 ++++------
- fs/tracefs/internal.h |  5 +----
- 2 files changed, 5 insertions(+), 10 deletions(-)
+ mm/huge_memory.c | 11 +++++------
+ mm/memory.c      | 12 ++++++------
+ 2 files changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index 21a7e51fc3c1..1748dff58c3b 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -53,15 +53,14 @@ static struct inode *tracefs_alloc_inode(struct super_block *sb)
- 	return &ti->vfs_inode;
- }
- 
--static void tracefs_free_inode_rcu(struct rcu_head *rcu)
-+static void tracefs_free_inode(struct inode *inode)
- {
--	struct tracefs_inode *ti;
-+	struct tracefs_inode *ti = get_tracefs(inode);
- 
--	ti = container_of(rcu, struct tracefs_inode, rcu);
- 	kmem_cache_free(tracefs_inode_cachep, ti);
- }
- 
--static void tracefs_free_inode(struct inode *inode)
-+static void tracefs_destroy_inode(struct inode *inode)
- {
- 	struct tracefs_inode *ti = get_tracefs(inode);
- 	unsigned long flags;
-@@ -69,8 +68,6 @@ static void tracefs_free_inode(struct inode *inode)
- 	spin_lock_irqsave(&tracefs_inode_lock, flags);
- 	list_del_rcu(&ti->list);
- 	spin_unlock_irqrestore(&tracefs_inode_lock, flags);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index a3c018f2b554..4e8746769a97 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1681,7 +1681,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *v=
+mf)
+ 	vmf->ptl =3D pmd_lock(vma->vm_mm, vmf->pmd);
+ 	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+ 		spin_unlock(vmf->ptl);
+-		goto out;
++		return 0;
+ 	}
+ =
+
+ 	pmd =3D pmd_modify(oldpmd, vma->vm_page_prot);
+@@ -1729,16 +1729,13 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault =
+*vmf)
+ 		vmf->ptl =3D pmd_lock(vma->vm_mm, vmf->pmd);
+ 		if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+ 			spin_unlock(vmf->ptl);
+-			goto out;
++			return 0;
+ 		}
+ 		goto out_map;
+ 	}
+ =
+
+-count_fault:
+ 	if (nid !=3D NUMA_NO_NODE)
+ 		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
 -
--	call_rcu(&ti->rcu, tracefs_free_inode_rcu);
+-out:
+ 	return 0;
+ =
+
+ out_map:
+@@ -1750,7 +1747,9 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *v=
+mf)
+ 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, pmd);
+ 	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+ 	spin_unlock(vmf->ptl);
+-	goto count_fault;
++	if (nid !=3D NUMA_NO_NODE)
++		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
++	return 0;
  }
- 
- static ssize_t default_read_file(struct file *file, char __user *buf,
-@@ -437,6 +434,7 @@ static int tracefs_drop_inode(struct inode *inode)
- static const struct super_operations tracefs_super_operations = {
- 	.alloc_inode    = tracefs_alloc_inode,
- 	.free_inode     = tracefs_free_inode,
-+	.destroy_inode  = tracefs_destroy_inode,
- 	.drop_inode     = tracefs_drop_inode,
- 	.statfs		= simple_statfs,
- 	.show_options	= tracefs_show_options,
-diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
-index f704d8348357..d83c2a25f288 100644
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -10,10 +10,7 @@ enum {
- };
- 
- struct tracefs_inode {
--	union {
--		struct inode            vfs_inode;
--		struct rcu_head		rcu;
--	};
-+	struct inode            vfs_inode;
- 	/* The below gets initialized with memset_after(ti, 0, vfs_inode) */
- 	struct list_head	list;
- 	unsigned long           flags;
--- 
+ =
+
+ /*
+diff --git a/mm/memory.c b/mm/memory.c
+index 503d493263df..410ba50ca746 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5461,7 +5461,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf=
+)
+ =
+
+ 	if (unlikely(!pte_same(old_pte, vmf->orig_pte))) {
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+-		goto out;
++		return 0;
+ 	}
+ =
+
+ 	pte =3D pte_modify(old_pte, vma->vm_page_prot);
+@@ -5528,18 +5528,16 @@ static vm_fault_t do_numa_page(struct vm_fault *v=
+mf)
+ 		vmf->pte =3D pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+ 					       vmf->address, &vmf->ptl);
+ 		if (unlikely(!vmf->pte))
+-			goto out;
++			return 0;
+ 		if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
+ 			pte_unmap_unlock(vmf->pte, vmf->ptl);
+-			goto out;
++			return 0;
+ 		}
+ 		goto out_map;
+ 	}
+ =
+
+-count_fault:
+ 	if (nid !=3D NUMA_NO_NODE)
+ 		task_numa_fault(last_cpupid, nid, nr_pages, flags);
+-out:
+ 	return 0;
+ out_map:
+ 	/*
+@@ -5553,7 +5551,9 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf=
+)
+ 		numa_rebuild_single_mapping(vmf, vma, vmf->address, vmf->pte,
+ 					    writable);
+ 	pte_unmap_unlock(vmf->pte, vmf->ptl);
+-	goto count_fault;
++	if (nid !=3D NUMA_NO_NODE)
++		task_numa_fault(last_cpupid, nid, nr_pages, flags);
++	return 0;
+ }
+ =
+
+ static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
+-- =
+
 2.43.0
 
 
+--=_MailMate_F46D6761-64E2-4125-B759-50F83487BA76_=--
+
+--=_MailMate_0EA17B2F-7900-4ED0-803B-8A33F87EA02A_=
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename=signature.asc
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJDBAEBCgAtFiEEh7yFAW3gwjwQ4C9anbJR82th+ooFAma01HAPHHppeUBudmlk
+aWEuY29tAAoJEJ2yUfNrYfqKM9MQAKFkXj61C+HLmAvZP31S4hb/H4OwCf2mjdw9
+1WKwHAJQZjtFm6A1b88bk6bvu/7dOxW9V5VhbRASfZGqSjQEMI3aS5KjeAAYIk3G
+IB32EAXfiBsUWGHc22m/4qZfiBb7KUqigFZWqnEwEQkOpTd6QqPGwJHaV7X+xV34
+u9gj4QSRvSpvARJQOMmuTvdrcB8sc2FCfVNLPdooFNEVBuQ6CfP1fHJMlAj4085d
++34gnMUXPvvBBD811PwORcnsAHb0XckQdtDu/HaWuhM4kyBZBA+dWQqnosGWtJD8
+QGN7/CiSYSqip5oDCNi8UgaKxaF6t0YDA5i2Oe5ZDIuyUYBkTeF1xXCmq7+KOcGa
+xQO+8SMXnRGUNKtLlEACVSQtfJhXoHZOzcKCx8CBBH90uylCDeqIQSCYEzPMmetb
+anYQ2oo+DWbl0QN2YV58vvIDgcM5sunI9dpK1Db7ziFXAsVikNqOWjvhVIMUkBgy
+LEtTpZsXiozF1stujgue+azL5vCAoCxS7GIWIe9aTEKRqfSdhxpZ0q5I7obwrLig
+SSi+WmfVoJspqywOguAbhBW4M+KjInx3BZ1zlaxeH2dRXpzHsRyT9ctcnGxmNJTF
+Oyhzuft7nqnIk73+XEuJQl26RpMz8obFoRR2AfMXEIPW5vQzTH1FVUd0/y6Ll0ki
+DdJkpUnU
+=fF9s
+-----END PGP SIGNATURE-----
+
+--=_MailMate_0EA17B2F-7900-4ED0-803B-8A33F87EA02A_=--
 
