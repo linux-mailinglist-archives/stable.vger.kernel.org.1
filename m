@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586CC94B5EA
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 06:29:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E56E94B65E
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 07:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 874E51C21C68
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 04:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D00F1285527
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 05:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A92C84047;
-	Thu,  8 Aug 2024 04:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0C4184524;
+	Thu,  8 Aug 2024 05:55:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12359479;
-	Thu,  8 Aug 2024 04:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1908183CD5;
+	Thu,  8 Aug 2024 05:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723091367; cv=none; b=GRS6xyadray8WDvBTo8rwSO9TFnaFxeBdOG6Ym69NUw4xE+VgUIZEbfXREsQ2DPa62F+OjwMJXRUHx3GA9BEFwGK4dDPzGuazvoQvTVpmXgnabWMc4aHx+7w0S5EB1nPP3C1VBobQYv5dQRBvpM6T5M9pdL3DuspxTblrUdQbXU=
+	t=1723096507; cv=none; b=M7GNloHXCmQLd/Dflc+ScnBmcVhfjSBGXrpLH28kkn5wy/CletrZp+in9mlwEc5LwTb7Fov9tsXcnNoXD9dSJ34ZvbSho4KS8+eidJNdycMVAuXZuTmLBySaNpX46Znv7Yv2jJEIoiv9beePaOumUMX4EcIaUpTxVT3LELO3WqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723091367; c=relaxed/simple;
-	bh=z0h5RZUv4Ugp2MrhgSqmn8OTk4rVenDC+5+77ckWmRA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=esHqhRG8DXDh1CKlEtONQ5vFF/s9mnPlhj4MXGzUEHRBut5I1RF+6M8MBYo5VsdVgwvZAHFaN6mHi6N8MG04G9+dV81D1lP7ie0u+Y1JkgnJZQJI5qTWkPvMdp68/bj/EGl9Hlo1X+kCi7mxrZKktGWnLSsJ8nX1b4Q9SVvoa8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+	s=arc-20240116; t=1723096507; c=relaxed/simple;
+	bh=d/YDeM3gBlId/zLD9YGyTJEGALHdfOuvwu8J/aYD0+U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HrS049+LqMkXkBs49WDzYUELRkAEGMS+1+JmAwus2LiaSt2JTafA6/G4F+hjt7ylClvA17PADTusfMsNMdZAn/GC5Cl1005PHGIJOzSnkaluph/g41rtw3eeqobyinvoeG5ok0IvHpdXbHleIIvqgPgDhUe3Latv/pbsg0QWX48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAA3PfmLSbRmyYNeBA--.65294S2;
-	Thu, 08 Aug 2024 12:29:03 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowACnjjl6XbRmqPFZBA--.19447S2;
+	Thu, 08 Aug 2024 13:54:17 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: ulf.hansson@linaro.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	geert+renesas@glider.be,
-	arnd@arndb.de,
-	peng.fan@nxp.com,
-	make24@iscas.ac.cn,
-	u.kleine-koenig@pengutronix.de,
-	marex@denx.de,
-	benjamin.gaignard@collabora.com
-Cc: linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+To: alim.akhtar@samsung.com,
+	avri.altman@wdc.com,
+	bvanassche@acm.org,
+	James.Bottomley@HansenPartnership.com,
+	martin.petersen@oracle.com,
+	peter.wang@mediatek.com,
+	manivannan.sadhasivam@linaro.org,
+	ahalaney@redhat.com,
+	beanhuo@micron.com,
+	subhashj@codeaurora.org,
+	quic_asutoshd@quicinc.com,
+	vviswana@codeaurora.org,
+	quic_cang@quicinc.com
+Cc: linux-scsi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] soc: imx: imx8m-blk-ctrl: Fix NULL pointer dereference
-Date: Thu,  8 Aug 2024 12:28:58 +0800
-Message-Id: <20240808042858.2768309-1-make24@iscas.ac.cn>
+Subject: [PATCH] scsi: ufs: Add missing check for alloc_ordered_workqueue
+Date: Thu,  8 Aug 2024 13:54:00 +0800
+Message-Id: <20240808055400.2784028-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,55 +60,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA3PfmLSbRmyYNeBA--.65294S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CrWrJryDGF48AFyDAF48tFb_yoW8Gr47pF
-	4DXFyYyrWIkr12yF1jgF1jva45Xa42kw17Gwn5Gas3X3y5JFyqka4fWw1v9r15AFWxXa4Y
-	ya12yr15C3WruFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
-	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr
-	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20x
-	vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
-	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIx
-	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAI
-	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
-	IEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRNAwsUUUUU=
+X-CM-TRANSID:zQCowACnjjl6XbRmqPFZBA--.19447S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Gr1DKryrtFW3uFyUKFWfKrg_yoWfXFb_Cr
+	ZxXr9Fy3yDKr4Dur1xJry3XrWrKay8Zr18Xa9avFZxJrykZF1Sq3yDZ395ur43ua98Xrnr
+	Cr40yr98uwsrWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbSkFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28Icx
+	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRiSfO3UUUUU==
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Check bc->bus_power_dev = dev_pm_domain_attach_by_name() return value using
-IS_ERR_OR_NULL() instead of plain IS_ERR(), and fail if bc->bus_power_dev 
-is either error or NULL.
-
-In case a power domain attached by dev_pm_domain_attach_by_name() is not
-described in DT, dev_pm_domain_attach_by_name() returns NULL, which is
-then used, which leads to NULL pointer dereference.
-
-Found by code review.
+As it may return NULL pointer and cause NULL pointer dereference. Add check
+for the return value of alloc_ordered_workqueue.
 
 Cc: stable@vger.kernel.org
-Fixes: 1a1da28544fd ("soc: imx: imx8m-blk-ctrl: Defer probe if 'bus' genpd is not yet ready")
+Fixes: 10e5e37581fc ("scsi: ufs: Add clock ungating to a separate workqueue")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/pmdomain/imx/imx8m-blk-ctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-index ca942d7929c2..d46fb5387148 100644
---- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-@@ -212,7 +212,7 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 5e3c67e96956..41842f2cd454 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -2139,6 +2139,8 @@ static void ufshcd_init_clk_gating(struct ufs_hba *hba)
+ 		 hba->host->host_no);
+ 	hba->clk_gating.clk_gating_workq = alloc_ordered_workqueue(wq_name,
+ 					WQ_MEM_RECLAIM | WQ_HIGHPRI);
++	if (!hba->clk_gating.clk_gating_workq)
++		return;
  
- 	bc->bus_power_dev = dev_pm_domain_attach_by_name(dev, "bus");
--	if (IS_ERR(bc->bus_power_dev)) {
-+	if (IS_ERR_OR_NULL(bc->bus_power_dev)) {
- 		if (PTR_ERR(bc->bus_power_dev) == -ENODEV)
- 			return dev_err_probe(dev, -EPROBE_DEFER,
- 					     "failed to attach power domain \"bus\"\n");
+ 	ufshcd_init_clk_gating_sysfs(hba);
+ 
 -- 
 2.25.1
 
