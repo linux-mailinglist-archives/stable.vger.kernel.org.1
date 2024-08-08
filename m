@@ -1,275 +1,182 @@
-Return-Path: <stable+bounces-66086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D60194C610
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 22:57:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153DC94C627
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 23:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1DD81C22E8B
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 20:57:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0D4328917B
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 21:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C43915B992;
-	Thu,  8 Aug 2024 20:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C033A14F9EA;
+	Thu,  8 Aug 2024 21:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BVIfNLjD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OpFPRAR/"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6569915B542
-	for <stable@vger.kernel.org>; Thu,  8 Aug 2024 20:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967A57E1;
+	Thu,  8 Aug 2024 21:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723150618; cv=none; b=mP1eWO2sjcU2UwViDq+P0nzLuI3B6JoKYaM+wZ+VWmRS/JKi6MkKrlT4CudimiXLUxbz7Si/z4zdbYFnfSJEnfKFUHSfkjFD9xKGiirdKMq8/vcoAxfKFOx8EKuGiNgaGww0c+IPrnU/70XO2i5tw0TelfqGGzf7tYELmnO/uKU=
+	t=1723151119; cv=none; b=cdWCVfM1/0f8e0/pWo/M2sPGOc3RAz7kW/4f03Lygm1p8H7BN29u8IDNwedKUuwuesisdKdA+XIfsAFGZxFwelG2MAS5nYpiYbhq3TuzPYDHOoufP0r4RYg0ZeUrO9SokvMh1xqxTuVbO7o92JHVVgsj6gATG7vwRxAv9RBFCwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723150618; c=relaxed/simple;
-	bh=BsX2d0K1c9Iyqy3iXpPM98RHfwVeEE9Uo37kfylRXkw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qp8/b15LXjvGnIPsRlPPYdq7n7W/K5ceqjJl4Jc9/eyUNh5THXlJjYN3djN4SsyDfENRLi10JfFUOKZ99S+7/hHxqoG1bMqhZyhbzx9BFx8S0SbBkY3IFl/2daZc9EXd9XdXTDDD31NT7tMxfOVpi74nkmraQUrpYaI6pzBu74s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BVIfNLjD; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723150615;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AjSNUygXxj1UKmmvy/1DKIe1v5Iq+pAlfR8gntxMDUA=;
-	b=BVIfNLjDZvE+5vSGXBDc+ezeyWNELdUxeh9xalzuvCB7t/42KDFIB5Ruy+qJ152Dq7QSKQ
-	M5IQ+JxUfkAFzZC0SZajpuhhxkRkP5Ft1/16oZutd1nN/c9GYOK3awNgPlHcxOtbHCsY/d
-	TSq4Pek0VlZsFSdzonilKzFumNGc8wI=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-olkl94kyOuiYpvbhC-lQ1g-1; Thu, 08 Aug 2024 16:56:54 -0400
-X-MC-Unique: olkl94kyOuiYpvbhC-lQ1g-1
-Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-82281fbfda5so325490241.1
-        for <stable@vger.kernel.org>; Thu, 08 Aug 2024 13:56:54 -0700 (PDT)
+	s=arc-20240116; t=1723151119; c=relaxed/simple;
+	bh=AzxTlK8d/8HPZmIPTyg8dGto3vYoDePium7toEyLDM8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dAU00zwYb4V0w9H+7nJ3v/vGAwyLT+Xo9Ie4fe0nLXEBmXk5/y+0jPj9uGB/yVqpCfQ9R7R9J6v4xK+ap838NsxJmDJZyCoZ7TCr/UNASw4ALJtKKqGw3Vl8IuTDtzm3f+upU/kGsmOWO1ccggOgfXeCJKAPue1GmPgBnNDhxcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OpFPRAR/; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3dc16d00ba6so992030b6e.0;
+        Thu, 08 Aug 2024 14:05:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723151116; x=1723755916; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hiuna0tSCDQBT7Iidr/W4z/hr7onQ/GC0/68Zq0Ogtk=;
+        b=OpFPRAR/e+gr9QlimS56Y/zJFLOnHOkGZOMYF/As4L6EP2JxsSPwh0NRMpBzM4nnrI
+         m+mZZeMcK/3aku0Vzo40wbMJBlscegUB0aKpHPwPOqZ1QagegFgfqtzdXbnqCmxxgfqa
+         ddUNY48KrlDVjIT5w6L0dIaTabt8UfyJsuP7C/L0MYGkVZG0jmWEBoVugfpE7QZDBTGO
+         G3PRN4yDWgx3oUS7xV+k4Kqul54zcBTaNCDWgyFbfCOfJxVmggQhf4yfhrHR9u4ZMOav
+         xXnKBsF7ZEzU+z64PTOzNybRUR5weCTe4fYCMRMvIeElDnxyteHnLW8SrH2dnyKKUkDm
+         b83Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723150614; x=1723755414;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AjSNUygXxj1UKmmvy/1DKIe1v5Iq+pAlfR8gntxMDUA=;
-        b=LuHlR+oBVbwL5l5hiH9J82kN73Fr1VPB1p/kRaT1ImkJ4Ur/2RE1ePogiOfYQUyI4C
-         jAt3ybAP83itQHKkcOU4cBlFmP3VU4lKVwNWXAqmzInGvz/SDHLJNxSD1w6T27SIf573
-         wyz1unqjuh+sdOVI7KUDr3YADpcPqNkvbmGOGbhicUsOtFbkyd0su2VbvCm16TP1p7nH
-         srp93N61PuSBuY6noByjadTCsC2dhOCApY9S+7NiGYnPMrhMvz5e58PkrsjsOsMp/cQD
-         8H8uqaEvosihdtCmgFG0FyTJLwfBHw2hwlB++n86zxgH2GL6aeb8vNjw43ZtTaRFk5Gn
-         hMUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUeU4RbXa56NxMt17ThIdjd27ibUzHqQ1MhLOqrPrH46CHB9Gn+B+F0WB76OHXsYz49KJIXks+RPM+u9rDDDQI64nvIyEer
-X-Gm-Message-State: AOJu0YzcyR5B3tHqGyOJmuNKH/VixYbIgSVi5zpEh+Yku8xdU+ytbt+D
-	PXS4Fxn8D/sL2Vk21IxzuPiwJXUXMhmBCwu7Ee5GucfbYuQ/MQ+A5hWU5H2yuximA9qHI5DBV0o
-	sKvBrhJs1M65KFuTzHgP6WOf/ecPCBkrYaH8BKn8GRvcDincF44V+xg==
-X-Received: by 2002:a05:6102:6d0:b0:493:badb:74ef with SMTP id ada2fe7eead31-495c5bf9df6mr3267073137.26.1723150613553;
-        Thu, 08 Aug 2024 13:56:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGKopPmF6amJedENwp5N1HJwLnev5fnpBwA+0PgZ0higtVR5UqfwM0fCb9gaFks6AjH2VLC/w==
-X-Received: by 2002:a05:6102:6d0:b0:493:badb:74ef with SMTP id ada2fe7eead31-495c5bf9df6mr3267048137.26.1723150613092;
-        Thu, 08 Aug 2024 13:56:53 -0700 (PDT)
-Received: from x1gen2nano ([2600:1700:1ff0:d0e0::13])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb9c84074esm69807896d6.80.2024.08.08.13.56.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 13:56:24 -0700 (PDT)
-Date: Thu, 8 Aug 2024 15:56:10 -0500
-From: Andrew Halaney <ahalaney@redhat.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com, 
-	vigneshr@ti.com, kishon@kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
-	srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
-Message-ID: <wr2z74wsqhitisgp4qsfrmuvvhw3cpp3bdzkp5batawv6btfyd@xcyhug7jyfxg>
-References: <20240724065048.285838-1-s-vadapalli@ti.com>
- <20240724161916.GG3349@thinkpad>
- <20240725042001.GC2317@thinkpad>
- <93e864fb-cf52-4cc0-84a0-d689dd829afb@ti.com>
- <20240726115609.GF2628@thinkpad>
- <CAL_JsqJ-mfU88E_Ri=BzH6nAFg405gkPPJTtjdp7UR2n96QMkw@mail.gmail.com>
- <20240805164519.GF7274@thinkpad>
- <CAL_JsqKxF6yYTWbmU8SRhxemNMwErNViHuk05sLyFjFzssh=Eg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1723151116; x=1723755916;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hiuna0tSCDQBT7Iidr/W4z/hr7onQ/GC0/68Zq0Ogtk=;
+        b=VRZiEY7hqdc1EgmCHhkXkb6tVJ1tOGhKOPUNKWHlxNl3WAiuygxErC4GcxcO7X4L0O
+         lGrd5zMs+LCZkalH55SOzS5SoKofiVvBifXYYcYA5pRUumnnJJBSKzn/2mPOnCzzHPCO
+         44ZN7q/lEsFXR77iYpZiiYQXNcFLtFgUX+ynlhiDPN2+r/TOPNALGtFVXDXt+sroqfWV
+         UH9FZp20wgSFzCajpfjfG7Dso4PXrwUS54AmeXueuqcJXRHFy6fYUeWtjTyOCloiVBpt
+         9BFHinJJuJl7+Df2YIyG5mABJVb2AMvIwlkIeTmsqiBO11s7ZFvT50qWdfpVjYKwhLNz
+         eP/w==
+X-Forwarded-Encrypted: i=1; AJvYcCWxsRIv09RPr5X+Dy3u8vUeaYbdZbP3jvXMKdZQyY0S3x6Sdi5/kPMQnKyolhLvEU8RUkPIE8yR3ImYkukqsaN7RUXG8ovS0xV7FgnKwGRarSUykyonp3aANcwRXCuwGrYgOgZo
+X-Gm-Message-State: AOJu0Yw+7B02Cc0Wvx1xkSwVlLnGtSCbkdGPnFzbUdR0dy2O40GiBxyp
+	XjHUwNCv1s7BdFU1/hafKt6kR/lLtUUIcapclt7cd4BsHW09iuBCSrgnxmh+tEffTO0foOaBjiB
+	p7sWKBwV38DV+nSPPwEY1kU2usPI=
+X-Google-Smtp-Source: AGHT+IH1naOuZoG8Xqc6HAUdtz5PmzN418+Kgpawt6IZkftwIf0pPolI/YMYZpCUzr2EhVq2FcQ0SA4hjYUHvVuUL1Q=
+X-Received: by 2002:a05:6808:178c:b0:3db:251b:c16 with SMTP id
+ 5614622812f47-3dc3b45fa99mr3744915b6e.42.1723151116528; Thu, 08 Aug 2024
+ 14:05:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqKxF6yYTWbmU8SRhxemNMwErNViHuk05sLyFjFzssh=Eg@mail.gmail.com>
+References: <20240808122019.3361-1-hailong.liu@oppo.com>
+In-Reply-To: <20240808122019.3361-1-hailong.liu@oppo.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 9 Aug 2024 09:05:05 +1200
+Message-ID: <CAGsJ_4z4+CCDoPR7+dPEhemBQN60Cj84rCeqRY7-xvWapY4LGg@mail.gmail.com>
+Subject: Re: [RESEND PATCH v1] mm/vmalloc: fix page mapping if
+ vm_area_alloc_pages() with high order fallback to order 0
+To: Hailong Liu <hailong.liu@oppo.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, 
+	Tangquan Zheng <zhengtangquan@oppo.com>, stable@vger.kernel.org, 
+	Baoquan He <bhe@redhat.com>, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 05, 2024 at 01:05:14PM GMT, Rob Herring wrote:
-> On Mon, Aug 5, 2024 at 10:45 AM Manivannan Sadhasivam
-> <manivannan.sadhasivam@linaro.org> wrote:
-> >
-> > On Mon, Aug 05, 2024 at 10:01:37AM -0600, Rob Herring wrote:
-> > > On Fri, Jul 26, 2024 at 5:56 AM Manivannan Sadhasivam
-> > > <manivannan.sadhasivam@linaro.org> wrote:
-> > > >
-> > > > On Thu, Jul 25, 2024 at 01:50:16PM +0530, Siddharth Vadapalli wrote:
-> > > > > On Thu, Jul 25, 2024 at 09:50:01AM +0530, Manivannan Sadhasivam wrote:
-> > > > > > On Wed, Jul 24, 2024 at 09:49:21PM +0530, Manivannan Sadhasivam wrote:
-> > > > > > > On Wed, Jul 24, 2024 at 12:20:48PM +0530, Siddharth Vadapalli wrote:
-> > > > > > > > Since the configuration of Legacy Interrupts (INTx) is not supported, set
-> > > > > > > > the .map_irq and .swizzle_irq callbacks to NULL. This fixes the error:
-> > > > > > > >   of_irq_parse_pci: failed with rc=-22
-> > > > > > > > due to the absence of Legacy Interrupts in the device-tree.
-> > > > > > > >
-> > > > > > >
-> > > > > > > Do you really need to set 'swizzle_irq' to NULL? pci_assign_irq() will bail out
-> > > > > > > if 'map_irq' is set to NULL.
-> > > > > > >
-> > > > > >
-> > > > > > Hold on. The errono of of_irq_parse_pci() is not -ENOENT. So the INTx interrupts
-> > > > > > are described in DT? Then why are they not supported?
-> > > > >
-> > > > > No, the INTx interrupts are not described in the DT. It is the pcieport
-> > > > > driver that is attempting to setup INTx via "of_irq_parse_and_map_pci()"
-> > > > > which is the .map_irq callback. The sequence of execution leading to the
-> > > > > error is as follows:
-> > > > >
-> > > > > pcie_port_probe_service()
-> > > > >   pci_device_probe()
-> > > > >     pci_assign_irq()
-> > > > >       hbrg->map_irq
-> > > > >         of_pciof_irq_parse_and_map_pci()
-> > > > >         of_irq_parse_pci()
-> > > > >           of_irq_parse_raw()
-> > > > >             rc = -EINVAL
-> > > > >             ...
-> > > > >             [DEBUG] OF: of_irq_parse_raw: ipar=/bus@100000/interrupt-controller@1800000, size=3
-> > > > >             if (out_irq->args_count != intsize)
-> > > > >               goto fail
-> > > > >                 return rc
-> > > > >
-> > > > > The call to of_irq_parse_raw() results in the Interrupt-Parent for the
-> > > > > PCIe node in the device-tree being found via of_irq_find_parent(). The
-> > > > > Interrupt-Parent for the PCIe node for MSI happens to be GIC_ITS:
-> > > > > msi-map = <0x0 &gic_its 0x0 0x10000>;
-> > > > > and the parent of GIC_ITS is:
-> > > > > gic500: interrupt-controller@1800000
-> > > > > which has the following:
-> > > > > #interrupt-cells = <3>;
-> > > > >
-> > > > > The "size=3" portion of the DEBUG print above corresponds to the
-> > > > > #interrupt-cells property above. Now, "out_irq->args_count" is set to 1
-> > > > > as __assumed__ by of_irq_parse_pci() and mentioned as a comment in that
-> > > > > function:
-> > > > >       /*
-> > > > >        * Ok, we don't, time to have fun. Let's start by building up an
-> > > > >        * interrupt spec.  we assume #interrupt-cells is 1, which is standard
-> > > > >        * for PCI. If you do different, then don't use that routine.
-> > > > >        */
-> > > > >
-> > > > > In of_irq_parse_pci(), since the PCIe-Port driver doesn't have a
-> > > > > device-tree node, the following doesn't apply:
-> > > > >   dn = pci_device_to_OF_node(pdev);
-> > > > > and we skip to the __assumption__ above and proceed as explained in the
-> > > > > execution sequence above.
-> > > > >
-> > > > > If the device-tree nodes for the INTx interrupts were present, the
-> > > > > "ipar" sequence to find the interrupt parent would be skipped and we
-> > > > > wouldn't end up with the -22 (-EINVAL) error code.
-> > > > >
-> > > > > I hope this clarifies the relation between the -22 error code and the
-> > > > > missing device-tree nodes for INTx.
-> > > > >
-> > > >
-> > > > Thanks for explaining the logic. Still I think the logic is flawed. Because the
-> > > > parent (host bridge) doesn't have 'interrupt-map', which means INTx is not
-> > > > supported. But parsing one level up to the GIC node and not returning -ENOENT
-> > > > doesn't make sense to me.
-> > > >
-> > > > Rob, what is your opinion on this behavior?
-> > >
-> > > Not sure I get the question. How should we handle/determine no INTx? I
-> > > suppose that's either based on the platform (as this patch did) or by
-> >
-> > Platform != driver. Here the driver is making the call, but the platform
-> > capability should come from DT, no? I don't like the idea of disabling INTx in
-> > the driver because, the driver may support multiple SoCs and these capability
-> > may differ between them. So the driver will end up just hardcoding the info
-> > which is already present in DT :/
-> 
-> Let me rephrase it to "a decision made within the driver" (vs.
-> globally decided). That could be hardcoded (for now) or as match data
-> based on compatible.
-> 
-> > Moreover, the issue I'm seeing is, even if the platform doesn't support INTx (as
-> > described by DT in this case), of_irq_parse_pci() doesn't report correct
-> > error/log. So of_irq_parse_pci() definitely needs a fixup.
-> 
-> Possibly. What's correct here?
-> 
-> There was some rework in 6.11 of the interrupt parsing. So it is
-> possible something changed here. There's also this issue still
-> pending:
-> 
-> https://lore.kernel.org/all/2046da39e53a8bbca5166e04dfe56bd5.squirrel@_/
-> 
-> > > or by
-> > > failing to parse the interrupts. The interrupt parsing code is pretty
-> > > tricky as it has to deal with some ancient DTs, so I'm a little
-> > > hesitant to rely on that failing. Certainly I wouldn't rely on a
-> > > specific errno value. The downside to doing that is also if someone
-> > > wants interrupts, but has an error in their DT, then all we can do is
-> > > print 'INTx not supported' or something. So we couldn't fail probe as
-> > > the common code wouldn't be able to distinguish. I suppose we could
-> > > just check for 'interrupt-map' present in the host bridge node or not.
-> >
-> > Yeah, as simple as that. But I don't know if that is globally applicable to
-> > all platforms.
-> 
-> There's a lot of history and the interrupt parsing is fragile due to
-> all the "interesting" DT interrupt hierarchies. So while I think it
-> would work, that's just a guess. I'm open to trying it and seeing.
+On Fri, Aug 9, 2024 at 12:20=E2=80=AFAM Hailong Liu <hailong.liu@oppo.com> =
+wrote:
+>
+> The __vmap_pages_range_noflush() assumes its argument pages** contains
+> pages with the same page shift. However, since commit e9c3cda4d86e
+> ("mm, vmalloc: fix high order __GFP_NOFAIL allocations"), if gfp_flags
+> includes __GFP_NOFAIL with high order in vm_area_alloc_pages()
+> and page allocation failed for high order, the pages** may contain
+> two different page shifts (high order and order-0). This could
+> lead __vmap_pages_range_noflush() to perform incorrect mappings,
+> potentially resulting in memory corruption.
+>
+> Users might encounter this as follows (vmap_allow_huge =3D true, 2M is fo=
+r PMD_SIZE):
+> kvmalloc(2M, __GFP_NOFAIL|GFP_X)
+>     __vmalloc_node_range_noprof(vm_flags=3DVM_ALLOW_HUGE_VMAP)
+>         vm_area_alloc_pages(order=3D9) ---> order-9 allocation failed and=
+ fallback to order-0
+>             vmap_pages_range()
+>                 vmap_pages_range_noflush()
+>                     __vmap_pages_range_noflush(page_shift =3D 21) ----> w=
+rong mapping happens
+>
+> We can remove the fallback code because if a high-order
+> allocation fails, __vmalloc_node_range_noprof() will retry with
+> order-0. Therefore, it is unnecessary to fallback to order-0
+> here. Therefore, fix this by removing the fallback code.
+>
+> Fixes: e9c3cda4d86e ("mm, vmalloc: fix high order __GFP_NOFAIL allocation=
+s")
+> Signed-off-by: Hailong Liu <hailong.liu@oppo.com>
+> Reported-by: Tangquan Zheng <zhengtangquan@oppo.com>
+> Cc: <stable@vger.kernel.org>
+> CC: Barry Song <21cnbao@gmail.com>
+> CC: Baoquan He <bhe@redhat.com>
+> CC: Matthew Wilcox <willy@infradead.org>
+> ---
 
-Would something like this be what you're imagining? If so I can post a
-patch if this patch is a dead end:
+Acked-by: Barry Song <baohua@kernel.org>
 
-    diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-    index dacea3fc5128..4e4ecaa95599 100644
-    --- a/drivers/pci/of.c
-    +++ b/drivers/pci/of.c
-    @@ -512,6 +512,10 @@ static int of_irq_parse_pci(const struct pci_dev *pdev, struct of_phandle_args *
-                            if (ppnode == NULL) {
-                                    rc = -EINVAL;
-                                    goto err;
-    +                       } else if (!of_get_property(ppnode, "interrupt-map", NULL)) {
-    +                               /* No interrupt-map on a host bridge means we're done here */
-    +                               rc = -ENOENT;
-    +                               goto err;
-                            }
-                    } else {
-                            /* We found a P2P bridge, check if it has a node */
+because we already have a fallback here:
 
-I must admit that you being nervous has me being nervous since I'm not all
-that familiar with PCI... but if y'all think this is ok then I'm for it.
-I'm sure I'm not picturing all the cases here so would appreciate
-some scrutiny.
+void *__vmalloc_node_range_noprof :
 
-You still end up with warnings, which kind of sucks, since as I
-understand it the lack of INTx interrupts on this platform is
-*intentional*:
+fail:
+        if (shift > PAGE_SHIFT) {
+                shift =3D PAGE_SHIFT;
+                align =3D real_align;
+                size =3D real_size;
+                goto again;
+        }
 
-    [    3.342548] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x4 may corrupt adjacent RW1C bits
-    [    3.346716] pcieport 0000:00:00.0: of_irq_parse_pci: no interrupt-map found, INTx interrupts not available
-    [    3.346721] PCI: OF: of_irq_parse_pci: possibly some PCI slots don't have level triggered interrupts capability
 
-You could have a combo of both this patch (to indicate that a specific driver (even further
-limited to a match data based on compatible) doesn't support these) as well as
-the above diff (to improve the message printed in the situation where a driver
-*does* claim to support these interrupts but fails to describe them properly).
-
-Am I barking up the right tree? If so I'll submit a proper patch
-independent of this (and depending on your views we can continue with v2
-of this patch too, or not).
-
-Thanks,
-Andrew
-
+>  mm/vmalloc.c | 11 ++---------
+>  1 file changed, 2 insertions(+), 9 deletions(-)
+>
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 6b783baf12a1..af2de36549d6 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3584,15 +3584,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>                         page =3D alloc_pages_noprof(alloc_gfp, order);
+>                 else
+>                         page =3D alloc_pages_node_noprof(nid, alloc_gfp, =
+order);
+> -               if (unlikely(!page)) {
+> -                       if (!nofail)
+> -                               break;
+> -
+> -                       /* fall back to the zero order allocations */
+> -                       alloc_gfp |=3D __GFP_NOFAIL;
+> -                       order =3D 0;
+> -                       continue;
+> -               }
+> +               if (unlikely(!page))
+> +                       break;
+>
+>                 /*
+>                  * Higher order allocations must be able to be treated as
+> ---
+> Sorry for fat fingers. with .rej file. resend this.
+>
+> Baoquan suggests set page_shift to 0 if fallback in (2 and concern about
+> performance of retry with order-0. But IMO with retry,
+> - Save memory usage if high order allocation failed.
+> - Keep consistancy with align and page-shift.
+> - make use of bulk allocator with order-0
+>
+> [2] https://lore.kernel.org/lkml/20240725035318.471-1-hailong.liu@oppo.co=
+m/
+> --
+> 2.30.0
 
