@@ -1,94 +1,73 @@
-Return-Path: <stable+bounces-66082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2567E94C55E
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 21:35:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E8594C430
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 20:20:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D00221F2767A
-	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 19:35:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54303286E84
+	for <lists+stable@lfdr.de>; Thu,  8 Aug 2024 18:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405561552EB;
-	Thu,  8 Aug 2024 19:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355951474B8;
+	Thu,  8 Aug 2024 18:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Hk2lqIWQ"
 X-Original-To: stable@vger.kernel.org
-Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A50144D27
-	for <stable@vger.kernel.org>; Thu,  8 Aug 2024 19:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB8978281;
+	Thu,  8 Aug 2024 18:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723145728; cv=none; b=Z9DWstnpFaOQ2bS6RRbiU+5lC7EXOGtfxp5kJjjyeNdG3FrYwcRk6EoiqQ/Z+MOFDjtQoae0VFITK5HVyuJ63jm3xMVRhUDFDOfDNqaKFN7WgngKTAYW0nU6Cv8AklfmRjfSPm46BjQgNW5nFQiIo9EZfLBOUxulaZySCaDsgc0=
+	t=1723141241; cv=none; b=SiOf+5Zxk7tE9ekYie6aFfLbHdv7vPH+xwvivsy1ZXQdLGhQaENyiFJ4y6COHhcqBtzAJvACSVjEG+ChghmVUJhMC5C6VbiEIT4KQA4XMZGhTNvXNnFkST7xL/jkAlHMUPPG3OHB221yGDtV88+/XD9VwT/Jln/hXpYbW7+V1R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723145728; c=relaxed/simple;
-	bh=iYqM+WNsd0qP3VQanTa53sZkW7HHHtbN4fJbspbI6dg=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=SgWAHMC5LZsr2KYMk3lW4swwb0psRDQfIg2bGDtMpli9tGTkfOeiYcsbg90B0wCiTMiCtTnwmyea1CFEAQ+tFH+4SsA5aCiH7mTxK4xiudizwBJ95s/WHOikglBO5s9FHc7ihUn37yxtASb4F0Ozp+RZR2+pTw1shET9ZV0KXK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
-Received: from mchehab by linuxtv.org with local (Exim 4.96)
-	(envelope-from <mchehab@linuxtv.org>)
-	id 1sc8uy-0003cH-2B;
-	Thu, 08 Aug 2024 19:35:24 +0000
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Date: Thu, 08 Aug 2024 13:23:21 +0000
-Subject: [git:media_stage/master] media: uapi/linux/cec.h: cec_msg_set_reply_to: zero flags
-To: linuxtv-commits@linuxtv.org
-Cc: stable@vger.kernel.org, Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1sc8uy-0003cH-2B@linuxtv.org>
+	s=arc-20240116; t=1723141241; c=relaxed/simple;
+	bh=j9eVzVOxOErcrgnP/Bt6vhmW0/cWMReSjVsh1FlguqM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=WgNFJkRio6bg5GYLjBUI9QWtHsSDKFfYMjz6icx/NI7K9Ub9yiskMJRrvgLn99NkDkiMZ5GskMpx80xx/GRl4+mvmj4eEC8U0EGv5PcfEhhU2QEtGGlaKEY0F1caa9GR2py0hUB7oEOAQp8j5En3yBliUFa+fPK2biIIlLuUDSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Hk2lqIWQ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id 2434920B7165; Thu,  8 Aug 2024 11:20:33 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2434920B7165
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1723141233;
+	bh=j9eVzVOxOErcrgnP/Bt6vhmW0/cWMReSjVsh1FlguqM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Hk2lqIWQ8mJ88pEWjaM+9ZH08nyb+l6tkaARknde+EIim4phdajl+rPzEt53R4mNZ
+	 FtG8MkPAmyMpAUiP7Uv0GXkoVZ0c5W3sBYOH8nxhegqEqntkQ9tI59o8uiR6PkEsDt
+	 uikd37UZDkR05dQM+mlg04ME+OtUxhtNCPkBs5JY=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: toracat@elrepo.org,
+	gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	qmo@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jolsa@kernel.org,
+	bpf@vger.kernel.org
+Subject: Re: bpf tool build failure in latest stable-rc 6.1.103-rc3 due to missing backport
+Date: Thu,  8 Aug 2024 11:20:33 -0700
+Message-Id: <1723141233-21006-1-git-send-email-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <v8lqgl$15bq$1@ciao.gmane.io>
+References: <v8lqgl$15bq$1@ciao.gmane.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-This is an automatic generated email to let you know that the following patch were queued:
+adding the BPF maintainers
 
-Subject: media: uapi/linux/cec.h: cec_msg_set_reply_to: zero flags
-Author:  Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date:    Wed Aug 7 09:22:10 2024 +0200
 
-The cec_msg_set_reply_to() helper function never zeroed the
-struct cec_msg flags field, this can cause unexpected behavior
-if flags was uninitialized to begin with.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: 0dbacebede1e ("[media] cec: move the CEC framework out of staging and to media")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
- include/uapi/linux/cec.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
----
-
-diff --git a/include/uapi/linux/cec.h b/include/uapi/linux/cec.h
-index 894fffc66f2c..b2af1dddd4d7 100644
---- a/include/uapi/linux/cec.h
-+++ b/include/uapi/linux/cec.h
-@@ -132,6 +132,8 @@ static inline void cec_msg_init(struct cec_msg *msg,
-  * Set the msg destination to the orig initiator and the msg initiator to the
-  * orig destination. Note that msg and orig may be the same pointer, in which
-  * case the change is done in place.
-+ *
-+ * It also zeroes the reply, timeout and flags fields.
-  */
- static inline void cec_msg_set_reply_to(struct cec_msg *msg,
- 					struct cec_msg *orig)
-@@ -139,7 +141,9 @@ static inline void cec_msg_set_reply_to(struct cec_msg *msg,
- 	/* The destination becomes the initiator and vice versa */
- 	msg->msg[0] = (cec_msg_destination(orig) << 4) |
- 		      cec_msg_initiator(orig);
--	msg->reply = msg->timeout = 0;
-+	msg->reply = 0;
-+	msg->timeout = 0;
-+	msg->flags = 0;
- }
- 
- /**
+Thanks,
+Hardik
 
