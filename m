@@ -1,38 +1,37 @@
-Return-Path: <stable+bounces-66198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757CF94CE55
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:10:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3EB94CE6F
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB1481F218F9
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:10:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BF521C21E0E
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA10175D2C;
-	Fri,  9 Aug 2024 10:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6441917D0;
+	Fri,  9 Aug 2024 10:17:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662C6EADA
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 10:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05D541C6E
+	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 10:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723198217; cv=none; b=N2UP5scQuGkVlbf2/wzfMi79pPF9zXRwu6yhvYjoqBminPeWwQOdy146L5UB4ImwWPJB7jM2+xnZUlK1dU8Lu/BmSaLpuDUeclk7JyzC0vVatwHFkNfupw85DckLxia3MpyySJ2cr88HucQuaa+9qnhW7gDuaW1umXW4FVXZShE=
+	t=1723198668; cv=none; b=e7W1kNXuLoctuEwa8eiHhk/HbBKHcrZL/6cxyjw/6aniiqTMPdsGM4N/J3ZjWjH4L5xtyXcqlt20/vsYQimNhQolz3j1NiKu05bU7KmkwzdUtFiBA9UgR7AUHQzaYRD8FZmW/jxi2Po9I1r1Rb/hI5Hm6ppNKBsX+iu/IjRPFxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723198217; c=relaxed/simple;
-	bh=it2Ust2+pKmnJtdigzznmHl7MNoPvkS+Pmzu/bsEtPI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=daQbEOg+0XpGtkKlIX5/Eul3Grg90t7PSSm3WSFg22Qp1vO1GXDZ4THwWQ2S2EbfTmMSxQP3h/gk6Fk4RspDOGoK1dK7FblfFc3wrr4d+jnrbHu1J9QWiMuZGgT17Uap+GAirnj4i0Uxu9gcJI3PmFpIQYRLBv/DGY5Q84wXz6w=
+	s=arc-20240116; t=1723198668; c=relaxed/simple;
+	bh=CWc5iWXdecks53Wdttu/vEjHuU8NI8xxqFyMLQIDmMk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=esoDkg4iA4xFqbZtz8O+SbF9leKmq8FEtsFKs/pUknx6PpcbJ80uSLQ/GVK3h04vkYUAUFNmtEdJLIIlBeR5RPnjZjIEjI2tSMtUXpYiuv+AaEDOZJ8A6IWs04oERGTDxp26D+ggBydUkia48M4JXLetad0vXZ+Ee79GHVvMzCM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E1D7D13D5;
-	Fri,  9 Aug 2024 03:10:40 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 11AF2168F;
+	Fri,  9 Aug 2024 03:18:11 -0700 (PDT)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A4B143F766;
-	Fri,  9 Aug 2024 03:10:13 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 152993F766;
+	Fri,  9 Aug 2024 03:17:43 -0700 (PDT)
 From: Mark Rutland <mark.rutland@arm.com>
 To: stable@vger.kernel.org
 Cc: anshuman.khandual@arm.com,
@@ -43,12 +42,10 @@ Cc: anshuman.khandual@arm.com,
 	mark.rutland@arm.com,
 	suzuki.poulose@arm.com,
 	will@kernel.org
-Subject: [PATCH 5.15.y 14/14] arm64: errata: Expand speculative SSBS workaround (again)
-Date: Fri,  9 Aug 2024 11:09:34 +0100
-Message-Id: <20240809100934.3477192-15-mark.rutland@arm.com>
+Subject: [PATCH 5.10.y 00/13] arm64: errata: Speculative SSBS workaround
+Date: Fri,  9 Aug 2024 11:17:26 +0100
+Message-Id: <20240809101739.3477931-1-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240809100934.3477192-1-mark.rutland@arm.com>
-References: <20240809100934.3477192-1-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,214 +54,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit b0672bbe133ebb6f7be21fce1d742d52f25bcdc7 ]
+Hi,
 
-A number of Arm Ltd CPUs suffer from errata whereby an MSR to the SSBS
-special-purpose register does not affect subsequent speculative
-instructions, permitting speculative store bypassing for a window of
-time.
+This series is a v5.10-only backport (based on v5.10.223) of the
+upstream workaround for SSBS errata on Arm Ltd CPUs, as affected parts
+are likely to be used with stable kernels. This does not apply to
+earlier stable trees, which will receive a separate backport.
 
-We worked around this for a number of CPUs in commits:
+The errata mean that an MSR to the SSBS special-purpose register does
+not affect subsequent speculative instructions, permitting speculative
+store bypassing for a window of time.
 
-* 7187bb7d0b5c7dfa ("arm64: errata: Add workaround for Arm errata 3194386 and 3312417")
-* 75b3c43eab594bfb ("arm64: errata: Expand speculative SSBS workaround")
+The upstream support was original posted as:
 
-Since then, similar errata have been published for a number of other Arm
-Ltd CPUs, for which the same mitigation is sufficient. This is described
-in their respective Software Developer Errata Notice (SDEN) documents:
+* https://lore.kernel.org/linux-arm-kernel/20240508081400.235362-1-mark.rutland@arm.com/
+  "arm64: errata: Add workaround for Arm errata 3194386 and 3312417"
+  Present in v6.10
 
-* Cortex-A76 (MP052) SDEN v31.0, erratum 3324349
-  https://developer.arm.com/documentation/SDEN-885749/3100/
+* https://lore.kernel.org/linux-arm-kernel/20240603111812.1514101-1-mark.rutland@arm.com/
+  "arm64: errata: Expand speculative SSBS workaround"
+  Present in v6.11-rc1
 
-* Cortex-A77 (MP074) SDEN v19.0, erratum 3324348
-  https://developer.arm.com/documentation/SDEN-1152370/1900/
+* https://lore.kernel.org/linux-arm-kernel/20240801101803.1982459-1-mark.rutland@arm.com/
+  "arm64: errata: Expand speculative SSBS workaround (again)"
+  Present in v6.11-rc2
 
-* Cortex-A78 (MP102) SDEN v21.0, erratum 3324344
-  https://developer.arm.com/documentation/SDEN-1401784/2100/
+This backport applies the patches which are not present in v5.10.y, and
+as prerequisites backports HWCAP detection based on user-visible id
+register values and the addition of Neoverse-V2 MIDR values. The
+spec_bar() macro exists in v5.10.y as its removal was not backported,
+and hence it doesn't need to be restored.
 
-* Cortex-A78C (MP138) SDEN v16.0, erratum 3324346
-  https://developer.arm.com/documentation/SDEN-1707916/1600/
+I have tested the backport (when applied to v5.10.223), ensuring that
+the detection logic works and that the HWCAP and string in /proc/cpuinfo
+are both hidden when the relevant errata are detected.
 
-* Cortex-A78C (MP154) SDEN v10.0, erratum 3324347
-  https://developer.arm.com/documentation/SDEN-2004089/1000/
+Mark.
 
-* Cortex-A725 (MP190) SDEN v5.0, erratum 3456106
-  https://developer.arm.com/documentation/SDEN-2832921/0500/
+Besar Wicaksono (1):
+  arm64: Add Neoverse-V2 part
 
-* Cortex-X1 (MP077) SDEN v21.0, erratum 3324344
-  https://developer.arm.com/documentation/SDEN-1401782/2100/
+James Morse (1):
+  arm64: cpufeature: Force HWCAP to be based on the sysreg visible to
+    user-space
 
-* Cortex-X1C (MP136) SDEN v16.0, erratum 3324346
-  https://developer.arm.com/documentation/SDEN-1707914/1600/
+Mark Rutland (11):
+  arm64: cputype: Add Cortex-X4 definitions
+  arm64: cputype: Add Neoverse-V3 definitions
+  arm64: errata: Add workaround for Arm errata 3194386 and 3312417
+  arm64: cputype: Add Cortex-X3 definitions
+  arm64: cputype: Add Cortex-A720 definitions
+  arm64: cputype: Add Cortex-X925 definitions
+  arm64: errata: Unify speculative SSBS errata logic
+  arm64: errata: Expand speculative SSBS workaround
+  arm64: cputype: Add Cortex-X1C definitions
+  arm64: cputype: Add Cortex-A725 definitions
+  arm64: errata: Expand speculative SSBS workaround (again)
 
-* Neoverse-N1 (MP050) SDEN v32.0, erratum 3324349
-  https://developer.arm.com/documentation/SDEN-885747/3200/
+ Documentation/arm64/silicon-errata.rst | 36 +++++++++++++++++++
+ arch/arm64/Kconfig                     | 38 ++++++++++++++++++++
+ arch/arm64/include/asm/cpucaps.h       |  3 +-
+ arch/arm64/include/asm/cputype.h       | 16 +++++++++
+ arch/arm64/kernel/cpu_errata.c         | 31 +++++++++++++++++
+ arch/arm64/kernel/cpufeature.c         | 48 ++++++++++++++++++++++----
+ arch/arm64/kernel/proton-pack.c        | 12 +++++++
+ 7 files changed, 176 insertions(+), 8 deletions(-)
 
-* Neoverse-V1 (MP076) SDEN v19.0, erratum 3324341
-  https://developer.arm.com/documentation/SDEN-1401781/1900/
-
-Note that due to the manner in which Arm develops IP and tracks errata,
-some CPUs share a common erratum number and some CPUs have multiple
-erratum numbers for the same HW issue.
-
-On parts without SB, it is necessary to use ISB for the workaround. The
-spec_bar() macro used in the mitigation will expand to a "DSB SY; ISB"
-sequence in this case, which is sufficient on all affected parts.
-
-Enable the existing mitigation by adding the relevant MIDRs to
-erratum_spec_ssbs_list. The list is sorted alphanumerically (involving
-moving Neoverse-V3 after Neoverse-V2) so that this is easy to audit and
-potentially extend again in future. The Kconfig text is also updated to
-clarify the set of affected parts and the mitigation.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240801101803.1982459-4-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: fix conflicts in silicon-errata.rst ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
----
- Documentation/arm64/silicon-errata.rst | 18 ++++++++++++++++++
- arch/arm64/Kconfig                     | 22 ++++++++++++++++------
- arch/arm64/kernel/cpu_errata.c         | 11 ++++++++++-
- 3 files changed, 44 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index 1740c0dfd5503..9868eb45c56a0 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -96,8 +96,16 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A76      | #1463225        | ARM64_ERRATUM_1463225       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A76      | #3324349        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A77      | #1508412        | ARM64_ERRATUM_1508412       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A77      | #3324348        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78      | #3324344        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78C     | #3324346,3324347| ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2441009        | ARM64_ERRATUM_2441009       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2457168        | ARM64_ERRATUM_2457168       |
-@@ -112,6 +120,12 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A720     | #3456091        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A725     | #3456106        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X1       | #3324344        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X1C      | #3324346        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #3324338        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X3       | #3324335        | ARM64_ERRATUM_3194386       |
-@@ -126,6 +140,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1542419        | ARM64_ERRATUM_1542419       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N1     | #3324349        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2139208        | ARM64_ERRATUM_2139208       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2067961        | ARM64_ERRATUM_2067961       |
-@@ -134,6 +150,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V1     | #3324341        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V2     | #3324336        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 91a956605925b..2d77e9269eb50 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -849,18 +849,28 @@ config ARM64_ERRATUM_2224489
- 	  If unsure, say Y.
- 
- config ARM64_ERRATUM_3194386
--	bool "Cortex-{A720,X4,X925}/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
-+	bool "Cortex-*/Neoverse-*: workaround for MSR SSBS not self-synchronizing"
- 	default y
- 	help
- 	  This option adds the workaround for the following errata:
- 
-+	  * ARM Cortex-A76 erratum 3324349
-+	  * ARM Cortex-A77 erratum 3324348
-+	  * ARM Cortex-A78 erratum 3324344
-+	  * ARM Cortex-A78C erratum 3324346
-+	  * ARM Cortex-A78C erratum 3324347
- 	  * ARM Cortex-A710 erratam 3324338
- 	  * ARM Cortex-A720 erratum 3456091
-+	  * ARM Cortex-A725 erratum 3456106
-+	  * ARM Cortex-X1 erratum 3324344
-+	  * ARM Cortex-X1C erratum 3324346
- 	  * ARM Cortex-X2 erratum 3324338
- 	  * ARM Cortex-X3 erratum 3324335
- 	  * ARM Cortex-X4 erratum 3194386
- 	  * ARM Cortex-X925 erratum 3324334
-+	  * ARM Neoverse-N1 erratum 3324349
- 	  * ARM Neoverse N2 erratum 3324339
-+	  * ARM Neoverse-V1 erratum 3324341
- 	  * ARM Neoverse V2 erratum 3324336
- 	  * ARM Neoverse-V3 erratum 3312417
- 
-@@ -868,11 +878,11 @@ config ARM64_ERRATUM_3194386
- 	  subsequent speculative instructions, which may permit unexepected
- 	  speculative store bypassing.
- 
--	  Work around this problem by placing a speculation barrier after
--	  kernel changes to SSBS. The presence of the SSBS special-purpose
--	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
--	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
--	  SSBS.
-+	  Work around this problem by placing a Speculation Barrier (SB) or
-+	  Instruction Synchronization Barrier (ISB) after kernel changes to
-+	  SSBS. The presence of the SSBS special-purpose register is hidden
-+	  from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such that userspace
-+	  will use the PR_SPEC_STORE_BYPASS prctl to change SSBS.
- 
- 	  If unsure, say Y.
- 
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index f360ec1619bd5..c358bc1c2954e 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -404,15 +404,24 @@ static struct midr_range trbe_write_out_of_range_cpus[] = {
- 
- #ifdef CONFIG_ARM64_ERRATUM_3194386
- static const struct midr_range erratum_spec_ssbs_list[] = {
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_A725),
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
-+	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
--	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
-+	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
-+	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
- 	{}
- };
- #endif
 -- 
 2.30.2
 
