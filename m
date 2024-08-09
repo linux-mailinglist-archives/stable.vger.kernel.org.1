@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-66201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB0694CE71
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4CF94CE72
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28AEF1C21AF9
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:17:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0974A1C21EB9
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3A0191F95;
-	Fri,  9 Aug 2024 10:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD411917D0;
+	Fri,  9 Aug 2024 10:17:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929FA18C926
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 10:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B44C18C926
+	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 10:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723198670; cv=none; b=GcmYXSsMA21EPN9Tc5wacOYOVvHLBO/FSQB6u1IA8Bu/BTQXnbfEjtVrk4BLM+cvUHsLka6lF1QkdIOPdMUtvgXhaFjfMWuBPyx8vASeLBSkWsJCSTvE6wqFhJpV9HQBnupH4PDKG7dA0ho+EDv8jaqIiHOgBE48to7Gup1bcfM=
+	t=1723198672; cv=none; b=sumj+iTWzySDG56VUsQHtBa4DCxq435DTXpw6eym+CN99YEn06w8r5odFTFKTMxZlqNsmPbNjGroYRc9WdBed1i+jtE+AI1+nFvJzvAYy3FSOW7X6k0+0hHhldBVQCV7kgqJDlQeVfkpoOlv5kmRv3TyF1X6gaFHqmL/Sz0WMMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723198670; c=relaxed/simple;
-	bh=UBjqgPyhqGjl6SWwg29aew3wsoPH0plbx7Zb5EKaMms=;
+	s=arc-20240116; t=1723198672; c=relaxed/simple;
+	bh=yI5I+FeF/IObiYRWri85ySWXsO9oHHI/9B9sxFzx8iY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rhTWQj7MCDidW9r597F5fiCklmwxy1dxKQJYHicyFo5T9q2WrOZOQQ3CXQNp1JPB61Nbjy1+G5y8J5i3KjwuycjEV9E8nyqnay3FrP3snb+ACDEJpMwBJ1mNBgkcWxbDxkDskbnq5v2ddXctFTaKuh7V3P/LqFrfm1wPiJlhueM=
+	 MIME-Version; b=oM4j6hWAEeRF55oAKBaC2R7SfjZ19cVIvJcVm+BiiEF5j6TNWXeGBxxjj18IADo8bPLAmMnjCRY8fN2+Z7s0LJbjL37q3WxPDFiqqfRAippYDtBQlMftA6s5DFq4YRoZ9VhRUwMbiV4KkbdTicLrtuiDsFWvDmcR+mF+haLcAfg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B98EE168F;
-	Fri,  9 Aug 2024 03:18:14 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 957F41691;
+	Fri,  9 Aug 2024 03:18:16 -0700 (PDT)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BE82A3F766;
-	Fri,  9 Aug 2024 03:17:47 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9A7563F766;
+	Fri,  9 Aug 2024 03:17:49 -0700 (PDT)
 From: Mark Rutland <mark.rutland@arm.com>
 To: stable@vger.kernel.org
 Cc: anshuman.khandual@arm.com,
@@ -43,9 +43,9 @@ Cc: anshuman.khandual@arm.com,
 	mark.rutland@arm.com,
 	suzuki.poulose@arm.com,
 	will@kernel.org
-Subject: [PATCH 5.10.y 02/13] arm64: Add Neoverse-V2 part
-Date: Fri,  9 Aug 2024 11:17:28 +0100
-Message-Id: <20240809101739.3477931-3-mark.rutland@arm.com>
+Subject: [PATCH 5.10.y 03/13] arm64: cputype: Add Cortex-X4 definitions
+Date: Fri,  9 Aug 2024 11:17:29 +0100
+Message-Id: <20240809101739.3477931-4-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20240809101739.3477931-1-mark.rutland@arm.com>
 References: <20240809101739.3477931-1-mark.rutland@arm.com>
@@ -57,39 +57,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Besar Wicaksono <bwicaksono@nvidia.com>
+[ Upstream commit 02a0a04676fa7796d9cbc9eb5ca120aaa194d2dd ]
 
-[ Upstream commit f4d9d9dcc70b96b5e5d7801bd5fbf8491b07b13d ]
+Add cputype definitions for Cortex-X4. These will be used for errata
+detection in subsequent patches.
 
-Add the part number and MIDR for Neoverse-V2
+These values can be found in Table B-249 ("MIDR_EL1 bit descriptions")
+in issue 0002-05 of the Cortex-X4 TRM, which can be found at:
 
-Signed-off-by: Besar Wicaksono <bwicaksono@nvidia.com>
-Reviewed-by: James Clark <james.clark@arm.com>
-Link: https://lore.kernel.org/r/20240109192310.16234-2-bwicaksono@nvidia.com
+  https://developer.arm.com/documentation/102484/0002/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240508081400.235362-3-mark.rutland@arm.com
 Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: trivial backport ]
+[ Mark: fix conflict (dealt with upstream via a later merge) ]
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 ---
  arch/arm64/include/asm/cputype.h | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index c2a1ccd5fd468..b772159a84b9c 100644
+index b772159a84b9c..a6d1276751dcc 100644
 --- a/arch/arm64/include/asm/cputype.h
 +++ b/arch/arm64/include/asm/cputype.h
-@@ -84,6 +84,7 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
+@@ -85,6 +85,7 @@
  #define ARM_CPU_PART_NEOVERSE_N2	0xD49
  #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
++#define ARM_CPU_PART_CORTEX_X4		0xD82
  
  #define APM_CPU_PART_POTENZA		0x000
  
-@@ -136,6 +137,7 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+@@ -138,6 +139,7 @@
  #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
  #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
++#define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
  #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
  #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
  #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
