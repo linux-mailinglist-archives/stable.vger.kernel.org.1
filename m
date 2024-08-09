@@ -1,133 +1,163 @@
-Return-Path: <stable+bounces-66119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C1394CBC5
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 09:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5263594CBE3
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 945A1B21590
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 07:57:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92210B2238C
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 08:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B83818C90C;
-	Fri,  9 Aug 2024 07:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="baoEat06"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D3C18CC1C;
+	Fri,  9 Aug 2024 08:11:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629DF148FF6;
-	Fri,  9 Aug 2024 07:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723190245; cv=pass; b=ApcK7SJfP/dRs22g4iDmSQ24q81oE9Oyxz7Zokeptrh/oDLmxD7lEijhbCeLZqfvGG+ITSlAa3WkxyKO3+ZIpprLCAl7LRuXsmxSHtVCICzZDgJDFmPlhRA4WXC73pnOMppu2CrFhs7GQ4zGIV23gmpBGE/bD/1oyfGG27I4CM0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723190245; c=relaxed/simple;
-	bh=IgK/VjeXR/viGZbuKEHuWnGeds1bN+eUNFUWUYgr1Lw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dQlFjgvExkOEKNY2wwJhau/kpPII7LwMqpivnFHj6oJ4oK4kH+kVnqgEptqO/4+hOsV/fCrb1LghQEWU+r+Uf0Esx0pDG0F8piIPYyBfnG4RjPo1Apo7DeBjIEBwPahlf23QNl08YATQCCClP7WZd1zOdkCXOFrThemsY6rli6o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=baoEat06; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Delivered-To: usama.anjum@collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1723190225; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hc7RzBokHDN2N9oNmXMxZQ2W2gtcn4BfdhAo7EGb5VOW/IWpn5FKeke0G3JR3FfxuGc/GLuxIeuWp1mKevBXTQ0yoFe2a3zPSkk4IfDoQP2BBOb/X8Ai/p74KrUBb/mkUhitK0oBT9/ylttChDbd4jVtbdN09YT58hqqQivyvas=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1723190225; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=icKPXt17t9Kx30jQW8DqzSUWcb+Xzik3rs56lRblVGo=; 
-	b=S+rqzHnzIgpu9k8DyzqRY6iDpo22yYa5iGor6HDiruYIyTjdobZ2Ss7L20DnlrFjjZQKRQ9KrAQwxqrA8NZueRUT922z+kf2V44ZP1POeZgP7+rdvsJtDGSkJY/F4AjqomZBwl8EVzETE/LICgSEJCjNikVE/0Xklu6ipCKfzIc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1723190225;
-	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=icKPXt17t9Kx30jQW8DqzSUWcb+Xzik3rs56lRblVGo=;
-	b=baoEat06HZ2Q4x+RKme432Zc7LrqBMAMUPE0jUd68CNpaX4vyylF3E5BbSbBCd78
-	J3hjUfJbGvhCJtRM4e62TTgXeA9M9qfQRAQJRyqEO3Si3TsxoO6fb3Alsn8U+1LhW4O
-	kG9VU8VXXd+Hhv3AjWM/56WC0h6yuPivTzf2tGt4=
-Received: by mx.zohomail.com with SMTPS id 1723190224501788.7935482020652;
-	Fri, 9 Aug 2024 00:57:04 -0700 (PDT)
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	kernel@collabora.com,
-	stable@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH] selftests: memfd_secret: don't build memfd_secret test on unsupported arches
-Date: Fri,  9 Aug 2024 12:56:42 +0500
-Message-Id: <20240809075642.403247-1-usama.anjum@collabora.com>
-X-Mailer: git-send-email 2.39.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B7418CC18
+	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 08:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723191113; cv=none; b=iYWIxDf5rvx3G4+5WLm62EZmteKuZjwT030kc1PzAndK8KHEghjbnDoEDX71UhRqRV0p27X9frVvg6y240BjCfx31GUcWT6H+Dpj6+nyfDaD8Mrw123nZtTXhQF8JDLnIlJXl1sKfe2wErFACimDUP+rIzowz+uySkDQemWeK3g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723191113; c=relaxed/simple;
+	bh=UChDSJoOms2RnfjZHswkOIinWo6xfxR2a6fsIAsboOI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VnE/gxDjXAjJCBQeEZb209PfpLWDAk79+bLqDy2Nv/SpfbpYs+Xoyq0pLp/Skn4nFG/anG/h+IXYwYTifi2+6fWco70jyM9ZMvERpxTYVNjirhG2+RTsc1sfVRdQWhZWuHjMHFtauXsshNoEW3x5/TPt16WJBe/vaympH1EbYR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1scKil-0005Ly-Tl; Fri, 09 Aug 2024 10:11:35 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1scKik-005cSk-Ip; Fri, 09 Aug 2024 10:11:34 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1scKik-003KfP-1Y;
+	Fri, 09 Aug 2024 10:11:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 09 Aug 2024 10:11:33 +0200
+Subject: [PATCH] mwifiex: duplicate static structs used in driver instances
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIADTPtWYC/x2NzQqDMBAGX0X23IWotWpfRTyEZNN+0Kpk4w+I7
+ 97Q0zCXmZNUIkTpWZwUZYNinrKUt4Lc204vYfjsVJnqbjrT83dHgBzs1+UDZ5OwJpvgMuLqknJ
+ 41E0jnbdt31LOLFECjv9iGK/rBwZUc9RyAAAA
+To: Brian Norris <briannorris@chromium.org>, 
+ Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>, 
+ Yogesh Ashok Powar <yogeshp@marvell.com>, Bing Zhao <bzhao@marvell.com>, 
+ "John W. Linville" <linville@tuxdriver.com>, 
+ Amitkumar Karwar <akarwar@marvell.com>, Avinash Patil <patila@marvell.com>
+Cc: Kiran Divekar <dkiran@marvell.com>, linux-wireless@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de, stable@vger.kernel.org, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723191094; l=2774;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=UChDSJoOms2RnfjZHswkOIinWo6xfxR2a6fsIAsboOI=;
+ b=vLLkxwiOVBMPUUy2aHzMDW4JLeM8VpJOoqr8x3Vc/I5Q7mRf7J61w9SeQr8Qp5msOXIrJWyfy
+ CeDUbRSjcLIAk44gpEf8iyGuNlqoVREcOu6+DSNy3KRVLIEemPQz5xY
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-[1] mentions that memfd_secret is only supported on arm64, riscv, x86
-and x86_64 for now. It doesn't support other architectures. I found the
-build error on arm and decided to send the fix as it was creating noise
-on KernelCI. Hence I'm adding condition that memfd_secret should only be
-compiled on supported architectures.
+mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
+used and modified in driver instances. Duplicate them before using
+them in driver instances so that different driver instances do not
+influence each other.
 
-Also check in run_vmtests script if memfd_secret binary is present
-before executing it.
+This was observed on a board which has one PCIe and one SDIO mwifiex
+adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
+the statically allocated struct which is modified in this function.
 
-[1] https://lore.kernel.org/all/20210518072034.31572-7-rppt@kernel.org/
 Cc: stable@vger.kernel.org
-Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- tools/testing/selftests/mm/Makefile       | 2 ++
- tools/testing/selftests/mm/run_vmtests.sh | 3 +++
- 2 files changed, 5 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 32 ++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 1a83b70e84535..4ea188be0588a 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -53,7 +53,9 @@ TEST_GEN_FILES += madv_populate
- TEST_GEN_FILES += map_fixed_noreplace
- TEST_GEN_FILES += map_hugetlb
- TEST_GEN_FILES += map_populate
-+ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
- TEST_GEN_FILES += memfd_secret
-+endif
- TEST_GEN_FILES += migration
- TEST_GEN_FILES += mkdirty
- TEST_GEN_FILES += mlock-random-test
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 03ac4f2e1cce6..36045edb10dea 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -374,8 +374,11 @@ CATEGORY="hmm" run_test bash ./test_hmm.sh smoke
- # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
- CATEGORY="madv_populate" run_test ./madv_populate
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index b909a7665e9cc..d2e4153192032 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4361,11 +4361,27 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
+ 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
+ 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
  
-+if [ -x ./memfd_secret ]
-+then
- (echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
- CATEGORY="memfd_secret" run_test ./memfd_secret
-+fi
+-	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
+-	if (adapter->config_bands & BAND_A)
+-		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
+-	else
++	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
++						       &mwifiex_band_2ghz,
++						       sizeof(mwifiex_band_2ghz),
++						       GFP_KERNEL);
++	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	if (adapter->config_bands & BAND_A) {
++		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
++							       &mwifiex_band_5ghz,
++							       sizeof(mwifiex_band_5ghz),
++							       GFP_KERNEL);
++		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
++			ret = -ENOMEM;
++			goto err;
++		}
++	} else {
+ 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
++	}
  
- # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
- CATEGORY="ksm" run_test ./ksm_tests -H -s 100
+ 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
+ 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
+@@ -4459,8 +4475,7 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
+ 	if (ret < 0) {
+ 		mwifiex_dbg(adapter, ERROR,
+ 			    "%s: wiphy_register failed: %d\n", __func__, ret);
+-		wiphy_free(wiphy);
+-		return ret;
++		goto err;
+ 	}
+ 
+ 	if (!adapter->regd) {
+@@ -4502,4 +4517,9 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
+ 
+ 	adapter->wiphy = wiphy;
+ 	return ret;
++
++err:
++	wiphy_free(wiphy);
++
++	return ret;
+ }
+
+---
+base-commit: 0c3836482481200ead7b416ca80c68a29cfdaabd
+change-id: 20240809-mwifiex-duplicate-static-structs-f6355e8da797
+
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
