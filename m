@@ -1,37 +1,38 @@
-Return-Path: <stable+bounces-66184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EB394CE45
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:09:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDEE94CE46
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 370D91F2182A
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:09:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 350071F21A04
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C2F175D2C;
-	Fri,  9 Aug 2024 10:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B533190490;
+	Fri,  9 Aug 2024 10:09:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E79EADA
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 10:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB83EADA
+	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 10:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723198187; cv=none; b=P/GrGeyTONmxjDhwHVkKm3/A7bmYlxIqDD95rdprVx+A7QXxmlzoY+7Owne5Oq2H7jwcq00RayYCevWe80Jk70dqG9m763AA0sg8c2LcG6NBS9UkQ9cxGQFnI3Cw4HBcTF8JHRIDjAU5UVIyqrG3VUYK2W8QpPyTdOUzHEGCbOg=
+	t=1723198189; cv=none; b=rhfKmnbkcasH7S9GoGj4D2R//8lnvWlkTuMETQt7OhCSAEYG16drEhq91c0JmrC4/faoNPVUJPZpq/h1Uy+c5pA4fbXs2ZNiMVrIFfncX/xvW3w7iN5Uu9yLr3aLG5iZqQ+HJz6pIANbQcSQNDKgS9wd2CXEdX2o/sFHK9RBxzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723198187; c=relaxed/simple;
-	bh=VUjlZUfZHLR1o7dLoK+6Oq8kMdduC6p7dLn2hjx21tA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WdfK5yMOdWMUsiQOFsOO9nQSc0lYc0ZvaXFA2oUJs0+cnPcR1X+6+yJukrveB/XNq7106Co+J+J3aV6dwMPzbEAg4kWY1OcxZJeTw82h4XqfWolvyWj9TT3/UxHKD1ZbYGaXpTMJTTH3YuQH/4SIVjaCg6DtArdff/r+EN6D8dw=
+	s=arc-20240116; t=1723198189; c=relaxed/simple;
+	bh=WsWFfXkPgDt+TgiHy801HabSiG95/ebuXIQRqyWPsTQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=seXQhCX/Jfbjvzm+DTZVjVq486ktm2noW2ahZABpZQZGfxdvyqgfMbpq2dSC2t6IVNcErPttydr1j4yDKE19Zy1GuYYSI7BWj4y/NvCoD9TJxbLV1Q/E8Wl5laNNWUT/gKmjJ2aQggJehdzB6qewoxBc7VuJi3b4kV+P3foFJFo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0726F13D5;
-	Fri,  9 Aug 2024 03:10:11 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 50F7F13D5;
+	Fri,  9 Aug 2024 03:10:13 -0700 (PDT)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AA58A3F766;
-	Fri,  9 Aug 2024 03:09:43 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 13EEE3F766;
+	Fri,  9 Aug 2024 03:09:45 -0700 (PDT)
 From: Mark Rutland <mark.rutland@arm.com>
 To: stable@vger.kernel.org
 Cc: anshuman.khandual@arm.com,
@@ -42,10 +43,12 @@ Cc: anshuman.khandual@arm.com,
 	mark.rutland@arm.com,
 	suzuki.poulose@arm.com,
 	will@kernel.org
-Subject: [PATCH 5.15.y 00/14] arm64: errata: Speculative SSBS workaround
-Date: Fri,  9 Aug 2024 11:09:20 +0100
-Message-Id: <20240809100934.3477192-1-mark.rutland@arm.com>
+Subject: [PATCH 5.15.y 01/14] arm64: cpufeature: Force HWCAP to be based on the sysreg visible to user-space
+Date: Fri,  9 Aug 2024 11:09:21 +0100
+Message-Id: <20240809100934.3477192-2-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20240809100934.3477192-1-mark.rutland@arm.com>
+References: <20240809100934.3477192-1-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,73 +57,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: James Morse <james.morse@arm.com>
 
-This series is a v5.15-only backport (based on v5.15.164) of the
-upstream workaround for SSBS errata on Arm Ltd CPUs, as affected parts
-are likely to be used with stable kernels. This does not apply to
-earlier stable trees, which will receive a separate backport.
+[ Upstream commit 237405ebef580a7352a52129b2465c117145eafa ]
 
-The errata mean that an MSR to the SSBS special-purpose register does
-not affect subsequent speculative instructions, permitting speculative
-store bypassing for a window of time.
+arm64 advertises hardware features to user-space via HWCAPs, and by
+emulating access to the CPUs id registers. The cpufeature code has a
+sanitised system-wide view of an id register, and a sanitised user-space
+view of an id register, where some features use their 'safe' value
+instead of the hardware value.
 
-The upstream support was original posted as:
+It is currently possible for a HWCAP to be advertised where the user-space
+view of the id register does not show the feature as supported.
+Erratum workaround need to remove both the HWCAP, and the feature from
+the user-space view of the id register. This involves duplicating the
+code, and spreading it over cpufeature.c and cpu_errata.c.
 
-* https://lore.kernel.org/linux-arm-kernel/20240508081400.235362-1-mark.rutland@arm.com/
-  "arm64: errata: Add workaround for Arm errata 3194386 and 3312417"
-  Present in v6.10
+Make the HWCAP code use the user-space view of id registers. This ensures
+the values never diverge, and allows erratum workaround to remove HWCAP
+by modifying the user-space view of the id register.
 
-* https://lore.kernel.org/linux-arm-kernel/20240603111812.1514101-1-mark.rutland@arm.com/
-  "arm64: errata: Expand speculative SSBS workaround"
-  Present in v6.11-rc1
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20220909165938.3931307-2-james.morse@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: fixup lack of 'width' parameter ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+---
+ arch/arm64/kernel/cpufeature.c | 36 +++++++++++++++++++++++++++-------
+ 1 file changed, 29 insertions(+), 7 deletions(-)
 
-* https://lore.kernel.org/linux-arm-kernel/20240801101803.1982459-1-mark.rutland@arm.com/
-  "arm64: errata: Expand speculative SSBS workaround (again)"
-  Present in v6.11-rc2
-
-This backport applies the patches which are not present in v5.15.y, and
-as prerequisites backports HWCAP detection based on user-visible id
-register values, the addition of Neoverse-V2 MIDR values, and the
-restoration of the spec_bar() macro.
-
-I have tested the backport (when applied to v5.15.164), ensuring that
-the detection logic works and that the HWCAP and string in /proc/cpuinfo
-are both hidden when the relevant errata are detected.
-
-Mark.
-
-Besar Wicaksono (1):
-  arm64: Add Neoverse-V2 part
-
-James Morse (1):
-  arm64: cpufeature: Force HWCAP to be based on the sysreg visible to
-    user-space
-
-Mark Rutland (12):
-  arm64: barrier: Restore spec_bar() macro
-  arm64: cputype: Add Cortex-X4 definitions
-  arm64: cputype: Add Neoverse-V3 definitions
-  arm64: errata: Add workaround for Arm errata 3194386 and 3312417
-  arm64: cputype: Add Cortex-X3 definitions
-  arm64: cputype: Add Cortex-A720 definitions
-  arm64: cputype: Add Cortex-X925 definitions
-  arm64: errata: Unify speculative SSBS errata logic
-  arm64: errata: Expand speculative SSBS workaround
-  arm64: cputype: Add Cortex-X1C definitions
-  arm64: cputype: Add Cortex-A725 definitions
-  arm64: errata: Expand speculative SSBS workaround (again)
-
- Documentation/arm64/silicon-errata.rst | 36 +++++++++++++++++++
- arch/arm64/Kconfig                     | 38 ++++++++++++++++++++
- arch/arm64/include/asm/barrier.h       |  4 +++
- arch/arm64/include/asm/cputype.h       | 16 +++++++++
- arch/arm64/kernel/cpu_errata.c         | 31 +++++++++++++++++
- arch/arm64/kernel/cpufeature.c         | 48 ++++++++++++++++++++++----
- arch/arm64/kernel/proton-pack.c        | 12 +++++++
- arch/arm64/tools/cpucaps               |  1 +
- 8 files changed, 179 insertions(+), 7 deletions(-)
-
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index f17d6cdea2605..1bb55f4a3421d 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -1319,17 +1319,39 @@ feature_matches(u64 reg, const struct arm64_cpu_capabilities *entry)
+ 	return val >= entry->min_field_value;
+ }
+ 
+-static bool
+-has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
++static u64
++read_scoped_sysreg(const struct arm64_cpu_capabilities *entry, int scope)
+ {
+-	u64 val;
+-
+ 	WARN_ON(scope == SCOPE_LOCAL_CPU && preemptible());
+ 	if (scope == SCOPE_SYSTEM)
+-		val = read_sanitised_ftr_reg(entry->sys_reg);
++		return read_sanitised_ftr_reg(entry->sys_reg);
+ 	else
+-		val = __read_sysreg_by_encoding(entry->sys_reg);
++		return __read_sysreg_by_encoding(entry->sys_reg);
++}
++
++static bool
++has_user_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
++{
++	int mask;
++	struct arm64_ftr_reg *regp;
++	u64 val = read_scoped_sysreg(entry, scope);
++
++	regp = get_arm64_ftr_reg(entry->sys_reg);
++	if (!regp)
++		return false;
++
++	mask = cpuid_feature_extract_unsigned_field(regp->user_mask,
++						    entry->field_pos);
++	if (!mask)
++		return false;
++
++	return feature_matches(val, entry);
++}
+ 
++static bool
++has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
++{
++	u64 val = read_scoped_sysreg(entry, scope);
+ 	return feature_matches(val, entry);
+ }
+ 
+@@ -2376,7 +2398,7 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ };
+ 
+ #define HWCAP_CPUID_MATCH(reg, field, s, min_value)				\
+-		.matches = has_cpuid_feature,					\
++		.matches = has_user_cpuid_feature,				\
+ 		.sys_reg = reg,							\
+ 		.field_pos = field,						\
+ 		.sign = s,							\
 -- 
 2.30.2
 
