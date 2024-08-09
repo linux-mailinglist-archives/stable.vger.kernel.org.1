@@ -1,155 +1,136 @@
-Return-Path: <stable+bounces-66141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD3794CD63
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 11:33:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E16FE94CD7B
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 11:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B3BE280D64
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 09:33:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EFC4283BF4
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 09:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE9819049A;
-	Fri,  9 Aug 2024 09:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713E2191F87;
+	Fri,  9 Aug 2024 09:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gsEZ0ZBY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CUk8mkuC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D94F190470
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 09:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A125E190684;
+	Fri,  9 Aug 2024 09:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723195992; cv=none; b=VN999Ji1rFDX3A0C/hM3KBJDGThHoSk7LZaRerNGs6kqXOerCgW9vfv2oz/Sa9zd9uGD8JoxWgrYvE0bsn6ddQWm1Gl1GJYHbK1b2nbadXyQHU7gIg20eV53P0DxDVJZ9Yy5GxRBrWzTXx9+MJ91p0toAvcTJFNkfzBeptZeAkg=
+	t=1723196618; cv=none; b=EnzN1hCD9D2XI2LVVVX7gfgYq2ARGYS4YgmnrtaiqdJn1M2kv/5Sj0Es5GHF6lztLTOca7i4yiTzL4ZaX2cijznP+Y4K+88/+esHP1GE51QxAcWQhTOXIrk1PH6gqROvKvYS/RTD99IYNjr9T4XFSOeq68ooNERxFuRGDd+ZME4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723195992; c=relaxed/simple;
-	bh=IBwrB0o9SVpqTpTVocBbFbx6YptYnKJObwRP76FZGEM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tFAh79JXTJ6OtTtkKw87rALLVBLlEFZ6zGZzUg/1l4fNekRMFfjtIbYYXt6KqH7PW1aHcu3u0A/LofWaw7pn61vEla1kAo9P7kPsDF9AE0MfqGx5xseQBGpe9JoyB2lOMsFwQUDYYuQHtf1e9b559kCGGR+aKLEB7Q8BL78c5TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gsEZ0ZBY; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5a1337cfbb5so2478286a12.3
-        for <stable@vger.kernel.org>; Fri, 09 Aug 2024 02:33:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1723195988; x=1723800788; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=YQ/7W0REmhBJNkhRjRfuyyIjuxfuImnqXUUGuD9v0J0=;
-        b=gsEZ0ZBYwt039/YlPB46jnjXHMUEBB3komhYblW4RGh6MLJGJrdhpLNuD+M0RTMF66
-         93iVEgVbq16vV2yNvmcihGfUpdKOoGx35oSPuJ6Jzw6YcK1y1OrLNFuJEiVzTCxeEdnU
-         3xIMcnkQeXeJ57Ev0DAvTnqOw0PEQqp7BG8w6UbCRSw+xKzCR1bb1H4F0zT6ENJAUPzo
-         4d0Cx+iuAJo9rJno/OOK+X95MMEuUmV1rhTeetxZUG8oK6+Zt2F5y4Jgrs8/YnGSvcSD
-         ByPV2pbehdUog5e/g3GaD6Jxvhx8LKtG2CBKyPn85LqwVxR1UQmzue6Bdrkqobbt1Ie3
-         wgxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723195988; x=1723800788;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YQ/7W0REmhBJNkhRjRfuyyIjuxfuImnqXUUGuD9v0J0=;
-        b=lUN8iTw3G6Tp56+woJWBG7m3CJUkD4U+eue/aSG8JXOZD8X4gXWlG8jKHt4Xy3ccoF
-         jiLg/me70d+uiNG66hLxRAqb9xAhnvVJJyIaNtpcYvgdeZKGWVtmHIPhSH9+AGfWMTVe
-         Df+EQfomzD7c+O0tn7Y4aZFhFbHbYhzkE7eLqQL8YVB0IJ0qnt625ImXb+RH6Phm5y+I
-         ij/YyjX4Fi3nUSW5fkOm10eiij8TIRZxd1UG9xlFnmq9N++0CZ0IXl+cb+/e/8pMZ350
-         L4auffk8OwVoBrTEPzUZnpL6xYry8H0EKL8e+amJMztrOlI3lNAlZlkW3fc5kqQ3q1Vs
-         KGRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgnFUIPq0f3ZojicxicaK5bpKSjoLJMTbwx4IXlHJ+PLPYDuS9/1yVmtlQA2zn/8ma+42uUL+xcFRTzQxn/fMSvLwPWaXu
-X-Gm-Message-State: AOJu0Ywast1uI3ECLDPWe+J6nRkBg12jt3oLtSpNxvDJJII99KYyYngk
-	Bbed5Tft/N+Dg3gpETGTIc5pfVNafCIk1HfMj94uYn/R/X/1AHaOGLyOk0rIIoA=
-X-Google-Smtp-Source: AGHT+IE9xexf/jaxgdOt406QdW0kF6zciEkqwtsHJEbToigyZHlPq0wpM1QjfdpTcmlCWSDpFwPaOA==
-X-Received: by 2002:a17:907:f19a:b0:a72:40b4:c845 with SMTP id a640c23a62f3a-a80aa65cffdmr86660366b.51.1723195987623;
-        Fri, 09 Aug 2024 02:33:07 -0700 (PDT)
-Received: from localhost (109-81-83-166.rct.o2.cz. [109.81.83.166])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9bc3bd7sm824463666b.34.2024.08.09.02.33.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Aug 2024 02:33:07 -0700 (PDT)
-Date: Fri, 9 Aug 2024 11:33:06 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: Hailong Liu <hailong.liu@oppo.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tangquan Zheng <zhengtangquan@oppo.com>, stable@vger.kernel.org,
-	Baoquan He <bhe@redhat.com>, Matthew Wilcox <willy@infradead.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH v1] mm/vmalloc: fix page mapping if
- vm_area_alloc_pages() with high order fallback to order 0
-Message-ID: <ZrXiUvj_ZPTc0yRk@tiehlicka>
-References: <20240808122019.3361-1-hailong.liu@oppo.com>
- <CAGsJ_4z4+CCDoPR7+dPEhemBQN60Cj84rCeqRY7-xvWapY4LGg@mail.gmail.com>
+	s=arc-20240116; t=1723196618; c=relaxed/simple;
+	bh=jSzPM+D//4KGm9m9/EKlgHWU7mMnonAm4fu/0+KnY7g=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ifDGWSij6G6bi3VKmL8YbLXezZKtcIMYckGipklJumSf0kyi6tBJXRYy611uZhHdBOOV/EfF4AU5cgC61jbAPqqUuxNJwK/j108CCqaXyqtXU7dxtlv421Sp251QarFK0oTF55tzRsO4W8VTgT8Dk1qtKdb0tBD76a4ARXcJ6fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CUk8mkuC; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723196617; x=1754732617;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=jSzPM+D//4KGm9m9/EKlgHWU7mMnonAm4fu/0+KnY7g=;
+  b=CUk8mkuCQaQQrwcEzHwJY3E+I/WQ+hxKaZpMoC0GvqFY8K1JCfpdcYzr
+   LHlMeIA7CLSJ7R05sCSM/tfVr9Ty8SYwKD6g4k1To7pkTeuje+5cylMLl
+   j/xmkxQa9QnYX7sMIz8uZnxEIeZzowDrSc1IkgZ88igjDuDu0pyVwISvA
+   59/wdSiFIXTKW0IwgNjpmEKSv4oujVCwPk6Y0ePbEfUEhqPwAxB97UMvl
+   EZI07QYF/4c3xfehU0H6/H79Il7W/rtcARFyZv7Mo2rPH2RviRa6kWa0/
+   eEMaMIkXZXbzTstFeArHIZi3D01HpSn2HLmnFaX35vZU72avnLHOr0fMu
+   g==;
+X-CSE-ConnectionGUID: ruJ5032VQRmzLmPzFgMYLQ==
+X-CSE-MsgGUID: xJgBeIqzReyGPepGVjSiIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21505248"
+X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; 
+   d="scan'208";a="21505248"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 02:43:36 -0700
+X-CSE-ConnectionGUID: uZSbRtSjTtO5r2F/DXiGxA==
+X-CSE-MsgGUID: HqvFyYYqRqWKTs9vvAoqgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; 
+   d="scan'208";a="57395096"
+Received: from mehlow-prequal01.jf.intel.com ([10.54.102.156])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 02:43:36 -0700
+From: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
+To: kai.huang@intel.com
+Cc: dave.hansen@linux.intel.com,
+	dmitrii.kuvaiskii@intel.com,
+	haitao.huang@linux.intel.com,
+	jarkko@kernel.org,
+	kailun.qin@intel.com,
+	linux-kernel@vger.kernel.org,
+	linux-sgx@vger.kernel.org,
+	mona.vij@intel.com,
+	reinette.chatre@intel.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] x86/sgx: Resolve EREMOVE page vs EAUG page data race
+Date: Fri,  9 Aug 2024 02:35:20 -0700
+Message-Id: <20240809093520.954552-1-dmitrii.kuvaiskii@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <6645526a-7c56-4f98-be8c-8c8090d8f043@intel.com>
+References: <6645526a-7c56-4f98-be8c-8c8090d8f043@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Deutschland GmbH - Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4z4+CCDoPR7+dPEhemBQN60Cj84rCeqRY7-xvWapY4LGg@mail.gmail.com>
 
-On Fri 09-08-24 09:05:05, Barry Song wrote:
-> On Fri, Aug 9, 2024 at 12:20 AM Hailong Liu <hailong.liu@oppo.com> wrote:
+On Thu, Jul 25, 2024 at 01:21:56PM +1200, Huang, Kai wrote:
+>
+> > Two enclave threads may try to add and remove the same enclave page
+> > simultaneously (e.g., if the SGX runtime supports both lazy allocation
+> > and MADV_DONTNEED semantics). Consider some enclave page added to the
+> > enclave. User space decides to temporarily remove this page (e.g.,
+> > emulating the MADV_DONTNEED semantics) on CPU1. At the same time, user
+> > space performs a memory access on the same page on CPU2, which results
+> > in a #PF and ultimately in sgx_vma_fault(). Scenario proceeds as
+> > follows:
 > >
-> > The __vmap_pages_range_noflush() assumes its argument pages** contains
-> > pages with the same page shift. However, since commit e9c3cda4d86e
-> > ("mm, vmalloc: fix high order __GFP_NOFAIL allocations"), if gfp_flags
-> > includes __GFP_NOFAIL with high order in vm_area_alloc_pages()
-> > and page allocation failed for high order, the pages** may contain
-> > two different page shifts (high order and order-0). This could
-> > lead __vmap_pages_range_noflush() to perform incorrect mappings,
-> > potentially resulting in memory corruption.
+> >   [ ... skipped ... ]
 > >
-> > Users might encounter this as follows (vmap_allow_huge = true, 2M is for PMD_SIZE):
-> > kvmalloc(2M, __GFP_NOFAIL|GFP_X)
-> >     __vmalloc_node_range_noprof(vm_flags=VM_ALLOW_HUGE_VMAP)
-> >         vm_area_alloc_pages(order=9) ---> order-9 allocation failed and fallback to order-0
-> >             vmap_pages_range()
-> >                 vmap_pages_range_noflush()
-> >                     __vmap_pages_range_noflush(page_shift = 21) ----> wrong mapping happens
-> >
-> > We can remove the fallback code because if a high-order
-> > allocation fails, __vmalloc_node_range_noprof() will retry with
-> > order-0. Therefore, it is unnecessary to fallback to order-0
-> > here. Therefore, fix this by removing the fallback code.
-> >
-> > Fixes: e9c3cda4d86e ("mm, vmalloc: fix high order __GFP_NOFAIL allocations")
-> > Signed-off-by: Hailong Liu <hailong.liu@oppo.com>
-> > Reported-by: Tangquan Zheng <zhengtangquan@oppo.com>
-> > Cc: <stable@vger.kernel.org>
-> > CC: Barry Song <21cnbao@gmail.com>
-> > CC: Baoquan He <bhe@redhat.com>
-> > CC: Matthew Wilcox <willy@infradead.org>
-> > ---
-> 
-> Acked-by: Barry Song <baohua@kernel.org>
-> 
-> because we already have a fallback here:
-> 
-> void *__vmalloc_node_range_noprof :
-> 
-> fail:
->         if (shift > PAGE_SHIFT) {
->                 shift = PAGE_SHIFT;
->                 align = real_align;
->                 size = real_size;
->                 goto again;
->         }
+> > Here, CPU1 removed the page. However CPU2 installed the PTE entry on the
+> > same page. This enclave page becomes perpetually inaccessible (until
+> > another SGX_IOC_ENCLAVE_REMOVE_PAGES ioctl). This is because the page is
+> > marked accessible in the PTE entry but is not EAUGed, and any subsequent
+> > access to this page raises a fault: with the kernel believing there to
+> > be a valid VMA, the unlikely error code X86_PF_SGX encountered by code
+> > path do_user_addr_fault() -> access_error() causes the SGX driver's
+> > sgx_vma_fault() to be skipped and user space receives a SIGSEGV instead.
+> > The userspace SIGSEGV handler cannot perform EACCEPT because the page
+> > was not EAUGed. Thus, the user space is stuck with the inaccessible
+> > page.
+>
+> Reading the code, it seems the ioctl(sgx_ioc_enclave_modify_types) also zaps
+> EPC mapping when converting a normal page to TSC.  Thus IIUC it should also
+> suffer this issue?
 
-This really deserves a comment because this is not really clear at all.
-The code is also fragile and it would benefit from some re-org.
+Technically yes, sgx_enclave_modify_types() has a similar code path and
+can be patched in a similar way.
 
-Thanks for the fix.
+Practically though, I can't imagine an SGX program or framework to allow a
+scenario when CPU1 modifies the type of the enclave page from REG to TCS
+and at the same time CPU2 performs a memory access on the same page. This
+would be clearly a bug in the SGX program/framework. For example, Gramine
+always follows the path of: create a new REG enclave page, modify it to
+TCS, only then start using it; i.e., there is never a point in time at
+which the REG page is allocated and ready to be converted to a TCS page,
+and some other thread/CPU accesses it in-between these steps.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+TLDR: I can add similar handling to sgx_enclave_modify_types() if
+reviewers insist, but I don't see how this data race can ever be
+triggered by benign real-world SGX applications.
 
--- 
-Michal Hocko
-SUSE Labs
+--
+Dmitrii Kuvaiskii
 
