@@ -1,243 +1,201 @@
-Return-Path: <stable+bounces-66278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2E094D2C8
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 16:59:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F8994D2E5
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 17:03:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CF761F21D7C
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 14:59:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B478B1F218A2
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 15:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE4419885E;
-	Fri,  9 Aug 2024 14:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C481953A2;
+	Fri,  9 Aug 2024 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tJmVXXx3"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UQntnsT/"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2056.outbound.protection.outlook.com [40.107.102.56])
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2073.outbound.protection.outlook.com [40.107.102.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62893198825;
-	Fri,  9 Aug 2024 14:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7C1155A25
+	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 15:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.73
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723215570; cv=fail; b=tHP02uqzKUakgLgW5JOzjaVgc43eccF5NxNwbvPJ8Jm7fPO4jM7VrCs4JVSjvdkaprXVQ3bW9jc/eMH+H4WD2F3nU08x0hBiE/+UjJkL5bPBbT18l+oTjaJkjiaifZhfQ1uiF7rVul70ElQEtCSsp+6rkPpDlVAuJh8zN6PyC6A=
+	t=1723215832; cv=fail; b=KhFR4CE5hRMteEGcwRUPwXGpIrQ8PVTsvmGw7cfH9KqjaARF+f/K0xHjpSlntwFSihyHtjAG3w/3UTNAYz9Re5qF6Mjb4XKptlSo3SjqFqInfE06WVwTuH/JltYCQyjfKCiGhyrwrYYoZOHf6usvKNSRkVVDyOVMqT+Fm81QszY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723215570; c=relaxed/simple;
-	bh=iCFOykj8kWC9b5XpMMgQ8sP5n4+nkOSTnOUrzZguwDA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BktTjhW7WxGuoaClZpUKweohTLNMiZu0mzKxeWueMJJyRdYqpoGEbR4a6ALi34XWEIPDE9aEVKl1Kn9Lo19sbDwsxLUrj+hvBRFmj6JtkDFf9IaNrC+JYH0rwcogO7+uw3YPIS8xO1yMqGVjP1ahKxZ4qEixqenIcHwM5S2tUTU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tJmVXXx3; arc=fail smtp.client-ip=40.107.102.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1723215832; c=relaxed/simple;
+	bh=W8pmOARDVCU2MJ1tja26xXDZMVbwVid+p/7HGQU8fuQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TKpwndlmttrJYBrsg56YsHBgm2UjRxWX0fJhQL2opx9I1zl6GAKXwISLJXXxneRvAIKxJTQ7Fem6i6hScAeLF9awFWZcRYHdmodImX0CiIsTL9pKuGTwP3FDvyp+8r1L4DahEsXh4xOMOh6REVN/BObZU/8mHY0ZFHpnlcpE+sk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UQntnsT/; arc=fail smtp.client-ip=40.107.102.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lJrUNknsdqer/ahxrBmkom08NyFnAxDLZoVTYRdkEfRdqj0xELHFfImwzbnnMrT29sdcIH1VbLU4mrZhjAceyAS0dLi13LtjFd9Emz6sjIMMbh5GiN22IVYVy1/5+QigY91gtHmcy3NLXcjcBTb+TIhD1k5gv+9DvWWhW2yS7JIflw99Vmcwj8rutB2SqE9YzIX72mKXMUoGLjNuIVINyK/BYv3yLtDP6iwt3pUz0dsj/mN8w9Np//U70BTsfr+8B9jgraDxrykCW6jCqv5nTRQpzpIbp0kGGnH/g6x4LLK4xiGPPDXvGBAYTQklUsLt5MVu132i6ef01n3SUHIOtw==
+ b=Gmum4+GBQG80rlASAzIXZR4KT9mVoLeAqlNE/15/ASP4GXvwIsoFBvZEXSAXK+qL5vUpe/7V2ghU1odx5lC20w57YueosNhI03iTXU3NStggctaTa2/CDQ7HMHQY6eQndRuqp+o5I82/4YdiPsBRySHLlYnojTegKrfeU8KyHvAa0giexNtRVlc1y+bR9Hp9ZJ65r+gLaBxVDYwZySIiopfWtqZz8d7XE9GyT8kF73q/Zy5cxA3n9COpv/x7C2A34N9fAg1CKdPWM63hmKwbaFKxCvbIw8b6BRqv6t7mQScn2lHEB2/TsrLYcfISunec5cX2RLN272+v2nRjJ6RmcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1XYiZT7rhmKPSP0vkQcCuc/N49agUoRG3Dy29+8nYjw=;
- b=pV0vlrlKIrYbcGP5gWNKDZyJX3AqSiJO4ZaeHNBGfCUwLGhg1WuPyD/fmpl41l6D7EmXSXxEnXfCnNKR2AL3CO6Wth13rhk1VFFViVJYR3MuaqNgx0UUjebABXJyRnGFQD59UJ1ovVPnZmaWDBuPIZnUw2PqMIoW3RozlWWyj/lRP3Ceyqoi7e/6rKs3e2Bb8qwXdLmAjFkVdcGSDD9PZKY1nGhZF1slPd8I+z0X9fb2kfShd4JR8DLpq1CshTWQmwq2Yo66dmnpvqRNwR9gpiQTNdLzpMGrX4LSvFoYu+wS1n3p4ahcOQAtACxcki2wabBE59Cu9J7tsXdwW1gr/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=SNdGtTGLYFjQVxvX5ut0IHppu6A7Fgg+hz1WGEZJx9c=;
+ b=NgIw0czQF5z836WFgpX+rJ6+z8llWCaFTVKh4h7ePwct8DvmwagfgHLQKubYhpCNX85lAU4sY8b/2hZ98uGYOHKQiad6TLUOKQeCAm2yv3mLBQBqFGrVdhktKoUkx8XlY+uhaIvGQsO0tAG/VPQeECaDNeMe2KvbvEwp1SI5u8SoQHRvsGfGX1BM8JPy4RFFIZtjmeqJckPylkk7sYLCMehAzMxgiAC/CEK0pMV2QcvtFaU+ti4PW3oVbQ0YEn8l3Nf43cNU/NmXteEfHMyAvUU8QyG53vSR3E2RnC40Ko2BpDpM5GJYU/X7n4MkPgK3QW5MqiV0sUbUeHGrtVFPtg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1XYiZT7rhmKPSP0vkQcCuc/N49agUoRG3Dy29+8nYjw=;
- b=tJmVXXx3MSWTndsVbGYnccDdTDn6ExcqgngxFID5vz3Gn5Eft+rfhnOLIXdLpPR8xuYMrxOljBH6VRwUb9EFjt6ggZGpaJ30RkDy4Sbc2Q0PRmVRXPgHnh1acopDIMgayVZhPKldzb3KJnYP8x6jT42p3+5c88AOHbOb8IMALjH0mes257vYUrKeML0eRxaErnZE2RePoaswwq1W68o8InSAluQcXMDseROp0CR/ZD7C1nJeBpSiNP4jnyw93IgCJgIu69IblsT0PllLitse6cNAL7O1C93mSUpdl+AZJ711pisdlDAT5HPqRHaf5ppP5gXQUKbdF6hYvRkz5FEXpA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CYXPR12MB9320.namprd12.prod.outlook.com (2603:10b6:930:e6::9)
- by SA1PR12MB6823.namprd12.prod.outlook.com (2603:10b6:806:25e::5) with
+ bh=SNdGtTGLYFjQVxvX5ut0IHppu6A7Fgg+hz1WGEZJx9c=;
+ b=UQntnsT//nqAp6R6kIjPYHdLGgHU9iY1yyIASDLFdBOTyCw7L0g1LpZ8fZlTT1/4XYZXpn4mABNlJmF+DMySbJNv+Er177x/ZzNSl74hLCk/yjTLWd3JBU4cy3qWKtrVsYyruB6Ro37M4SeD/KxwlC5RGdf4CHAQqMYAXjr22s0=
+Received: from CH2PR12CA0025.namprd12.prod.outlook.com (2603:10b6:610:57::35)
+ by BL3PR12MB6570.namprd12.prod.outlook.com (2603:10b6:208:38d::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.14; Fri, 9 Aug
- 2024 14:59:21 +0000
-Received: from CYXPR12MB9320.namprd12.prod.outlook.com
- ([fe80::9347:9720:e1df:bb5f]) by CYXPR12MB9320.namprd12.prod.outlook.com
- ([fe80::9347:9720:e1df:bb5f%3]) with mapi id 15.20.7849.014; Fri, 9 Aug 2024
- 14:59:21 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Yang Shi <shy828301@gmail.com>,
-	Mel Gorman <mgorman@suse.de>,
-	linux-kernel@vger.kernel.org,
-	Zi Yan <ziy@nvidia.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/3] mm/numa: no task_numa_fault() call if PMD is changed
-Date: Fri,  9 Aug 2024 10:59:05 -0400
-Message-ID: <20240809145906.1513458-3-ziy@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240809145906.1513458-1-ziy@nvidia.com>
-References: <20240809145906.1513458-1-ziy@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BLAPR03CA0077.namprd03.prod.outlook.com
- (2603:10b6:208:329::22) To CYXPR12MB9320.namprd12.prod.outlook.com
- (2603:10b6:930:e6::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.15; Fri, 9 Aug
+ 2024 15:03:47 +0000
+Received: from CH2PEPF0000013B.namprd02.prod.outlook.com
+ (2603:10b6:610:57:cafe::57) by CH2PR12CA0025.outlook.office365.com
+ (2603:10b6:610:57::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.17 via Frontend
+ Transport; Fri, 9 Aug 2024 15:03:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF0000013B.mail.protection.outlook.com (10.167.244.68) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7849.8 via Frontend Transport; Fri, 9 Aug 2024 15:03:46 +0000
+Received: from tr4.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 9 Aug
+ 2024 10:03:45 -0500
+From: Alex Deucher <alexander.deucher@amd.com>
+To: <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
+CC: <intel-gfx@lists.freedesktop.org>, Alex Deucher
+	<alexander.deucher@amd.com>, Javier Martinez Canillas <javierm@redhat.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>, "Sam
+ Ravnborg" <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] video/aperture: match the pci device when calling sysfb_disable()
+Date: Fri, 9 Aug 2024 11:03:27 -0400
+Message-ID: <20240809150327.2485848-1-alexander.deucher@amd.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CYXPR12MB9320:EE_|SA1PR12MB6823:EE_
-X-MS-Office365-Filtering-Correlation-Id: 033aea5b-0b48-4cf7-4272-08dcb883d9df
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000013B:EE_|BL3PR12MB6570:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42037397-a901-4cff-e3bf-08dcb8847811
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kF8MiWo6w8j10A2B2YK8g5fFiggSqMhA9C6wS2D9hbbbgCW5lcX3tyURZDdG?=
- =?us-ascii?Q?c2Cho4TBGP5wbKO+inaCdtQ37VuR0irJakQG9mQchJIUPv6Z/XNwJ3xQYqZW?=
- =?us-ascii?Q?RFxYZc8Zp9S7kSqxhXKvrGe60LNh4FKF5DK5rndj8oM6efLQweGp0y2vZF9d?=
- =?us-ascii?Q?70RrSP+Xzb+tGoPsPs9D2QywvZO8/HXBgbLZ9hfW6XA7zhMDdgL16hnsBklC?=
- =?us-ascii?Q?O5kdpMqHyGPiUZn5yQ5l/lwwf1fU73AQxSv0KpG2ejPHbJtvWdBuMFBJ411N?=
- =?us-ascii?Q?DatOzyqHl7BuOvfeAmpp091VK5RblvmWZqSm3SLs2DhVTJDT9cwxkUw4f1+R?=
- =?us-ascii?Q?PYZVNkEXqvNgfWrEDWnioedgO/1m+VuVjyVfvNOOZ33N3Gev1flo8YVM14v6?=
- =?us-ascii?Q?RZQ8E4ElqtSG5eDmZCr3qwT7PBBfJbdb0RrHKK9ksPF8tP2cPuVJDWffYCio?=
- =?us-ascii?Q?dYrPFwqdfaSNC730nKJEWmeGKaRDQ4Of9q3R86Lx8EOLNKU3l5X5YH5yt+Uc?=
- =?us-ascii?Q?BgXjqtCf3k5xmI2YjR1OS2V0W5glf97IG0sD78joYtMTE4gOR3cRYbVGy4Lz?=
- =?us-ascii?Q?UDOxLRom8MtIWKdTeZCMqC0BlmXjwIQPNMXKmvdGwFTt8bRosu/FKCr7PzH7?=
- =?us-ascii?Q?F7qA7Vg1FllAJJeliAUImbtNzTqjO9fDY4jIssI/Y0LbMfz5uRvXflFk+6bv?=
- =?us-ascii?Q?sw+3XVFLTjI7F48oqgRt+CdK8phDwf5R2hc2/vUGaGcDS8cV+BM+iqhrmWDP?=
- =?us-ascii?Q?crx3ePh9V6n+BqIalUTZquoxEaOQclDaWfzu1OWdj7JVfeAAGo3dt8mGcNqt?=
- =?us-ascii?Q?KlUkXfVDknJeSfjWnIxyPw2YBoqsAFiGsunfKdH3LO5mwszMU2wvkIIhCV7J?=
- =?us-ascii?Q?CrrCbER0TDplCCowA7Dvr0cd/ldGxNW/yMVYd10q0VGGvi6b4PIF7E0i4mB8?=
- =?us-ascii?Q?w6Geq9tt+WOLg8l2rpslyAKDoWwAZm6Gwc80TqkfTR0tYKtF4KF8xfxNaZm/?=
- =?us-ascii?Q?KHNstDgZsatXkoIB3jg4LR5zNecm91y3hGvL16BRwTBRX9Xvf5M89V7uqyhP?=
- =?us-ascii?Q?LWNNKm0/zOCLfV5WRATL1Oqn6O9O2AyoVHE06D504ACrKzE5E51w1V1SdM0u?=
- =?us-ascii?Q?AF8ZzOroYqPEDrGo1m1s8QIcDZJ0sRere4KomNinM/ANYgtC9f+tzRe+Ta0r?=
- =?us-ascii?Q?TleIjsxldHi1ShYh5cM9D+Hose8Yi/2s8p5Pb8w/OfZj2g+8dFEENXdck7eB?=
- =?us-ascii?Q?HT4uuzMBCwl0K4lgf+d5G62/Z/rkx0cdM+PcUsFRowGqn+1unI68J74zphZs?=
- =?us-ascii?Q?RfhgjBPp8N4qieM0gQU+cIzB4o3ulK4Q/H5sV6jpXzsKZujdPJX/00+UkW4k?=
- =?us-ascii?Q?6FIr20M=3D?=
+	=?us-ascii?Q?BmRTn6HjY2cJYylSZobwdK4ibUnXcXCinW2v+GNZmBQOV/RWEbrb1B2xPQCU?=
+ =?us-ascii?Q?bql1pUagHF3uAt10NaDF4RyOcKpLNqslF7aSGf1whyBv5BvoAiH7npr+MBa8?=
+ =?us-ascii?Q?PROEsM55WU8mGCBxAKfIny/ods3KD9qqqse+uK1JiPlhLYkArIn2B8pTF1yv?=
+ =?us-ascii?Q?sDFiJIlAUZ/MJ/OdmpA57/oKhkRJwDRw8xilnha1XRtw9qACCW9Kr2eO75zq?=
+ =?us-ascii?Q?KYNgjI/nKKs9bIjMSXFyfPNSZxwRT3Bnot56CIbaxg8ZJPMbOLG8Eu6v0NmV?=
+ =?us-ascii?Q?FC/TPNik1WimLU7N3gVMymXz0iZQJYexZADn3q683oDln9wdfZDLqQnc9EuG?=
+ =?us-ascii?Q?OXElrWYHQS1ujZf9hbhG+wfM4iEAUDO+PiLwI4/7659ByVTVi/p9BJXaok8T?=
+ =?us-ascii?Q?j6I1c5rMra0jTJyrwJd2u5r2TactkSoSUTHtlrVz7Ij6IHEnWi06U413e+2p?=
+ =?us-ascii?Q?BfVi+CWa1mu3Gi1GoAZNEUKKB4NVIu+Kwd6E2RfnVjE0smxWzu+P+z7D1xrI?=
+ =?us-ascii?Q?jyfLpT6UHeJ327ZdD9MEV0/vIA5HpDqjWLnEaixPQN63hnSLdKQgUlk7qM9A?=
+ =?us-ascii?Q?d9Qa8kzdE+sSmTq+S/HISt4YsA9eJISBSoF5C2oH1488/D3/Drpvk4hViUBq?=
+ =?us-ascii?Q?D92F7UvFDepCCB4lnL/9IVVpT/3iMlB1n9ugVJMQFLY9NwKZ+zMvFGsrdHGj?=
+ =?us-ascii?Q?0rcTda8HTWuqGu+jh6HwRt0asY7k9f5uycygHiQLLz+XexuH7JCUXOpzgUKf?=
+ =?us-ascii?Q?/bHzRYXim1Q3Kca97DFMXSQB9pzY47MXm0cm7y44Jaw75SIXL9lkptZ3kwKX?=
+ =?us-ascii?Q?EcKOg75yli8bESYbG39tI7mj1To+7X+BVBl2P89YBedLtkKmXju0DNeNYnd/?=
+ =?us-ascii?Q?X5BMiUzyPp2duv11/tHjMsjikWdVGcW8bIKHJMw5Xg7PoGI72UO3d863ovZl?=
+ =?us-ascii?Q?vxt1AM7B+cJPn0Bc9sUeZWIF+56VgjhQwhK/ipc74YOCvbpLGJlya7T1zpEa?=
+ =?us-ascii?Q?SQpQ5yoWkwcifoaqFQn6IRLim22zkEyjPxa3ECuEmHvVQX6T0ppPFmrob85z?=
+ =?us-ascii?Q?xxzWf++lGXpHVrHKdupTVymcTdpoAcEkVg9bEHZYC7Rt/kpZMdzyYM51aKt5?=
+ =?us-ascii?Q?1ZOCYokcTbQ4m+Ed1bgAfK7YpRPYXRtS3qDSttZ9hUgdSFNviZ6bUI20W609?=
+ =?us-ascii?Q?ZoX/He+/XaknhvSUokbKFKdGToxDh3uZupwTDvrSgxTZ9jmMDoafawP3BlF1?=
+ =?us-ascii?Q?iRRz05qAqTdknhN3hkluFgZ9nx1hSaW5FSehn6G7e8R+6Q+BNQvMIjeHk29A?=
+ =?us-ascii?Q?4lf0vwYz7ezCt57QF4PE1iTvJdAxr2qwRD4X4sgfjAv7mtbjn69OClhKTbkF?=
+ =?us-ascii?Q?7AGwq6EZ/KYEQQTmkOflnRbhYsSw9Gl/vY/fzg/xKSzVeA2NkT4g9QLDpOWE?=
+ =?us-ascii?Q?G7SXVvhRy7Ws8XVMXmBL6c4PYG48S3TJ?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYXPR12MB9320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?URpX3NK/YKDy0tNgoA4oxpJP1Y1xr0YYBSMaGZvS0o9NJTlywQwylPF/03tp?=
- =?us-ascii?Q?Q4RwNfX+LTsQK5T7Z3ml12100/LmO558upw1fvYtFMTa75yuwJpigx5uQNNH?=
- =?us-ascii?Q?U1qsAoqUG65PnOBQDRd2EKdeUjF35Wxe9kzmHZIN+PixJkNG0LW7sCxOwtBS?=
- =?us-ascii?Q?P5/MFgkUs+2bYOW2CSNKsANWEFxeFWDXzVrHJ5M54yFyw4TSgTljeQqX8hiV?=
- =?us-ascii?Q?f9AkyY7Ta6u1MFlAZrNkdVaE2bxQVshdhfa5C6xgy1UqGw814+2LPRNRfMSo?=
- =?us-ascii?Q?o/4hUF51QUPEwrpgezyxSYELOftp78+YZ8sNHWryZU7V/+7MxvC3TsWIMMbV?=
- =?us-ascii?Q?EbC2TI2nqnyGPQmcYB7LS3LbuxP8H1fGVI8w88CNE2EjFa61AwjGTkahObKi?=
- =?us-ascii?Q?+JZdJshfAipdBUMmnd8j6I6BFprcf4XJJwAlSMFWIZ2lXg0uHQ7msbKlY0lY?=
- =?us-ascii?Q?R4GMV9QjPfmXCTatQYWoMDpRC4FGbVOEjpXwSb0ST7gV5GOU3mufYcxs7seN?=
- =?us-ascii?Q?t9mIAVqPqJ4Vu6Z7ZCJgoQzpym5bMhoblBRAcPZm3xVjnsHhJ5KEiUeEwJMH?=
- =?us-ascii?Q?2SyiKHXTj0pjm92sZBIZB3oWNrrEtkgohNQvCd0kKLd7xiNkaq6wbj6EXPX+?=
- =?us-ascii?Q?i40ghAT1SAZAbNW9SJ3cF25OcJnkWp1M2TwGDhcHugj3Ynh/ouy6jPjbYq4h?=
- =?us-ascii?Q?h8jJGwhG8zIGt53IzOdOlgQnjhc8v3JGb9EvdY72vgtIoqVbG6x/liimxmFh?=
- =?us-ascii?Q?K8tMhw6BRVqQiBADYwamTI6uH1M6DlEJQGs/dKbmUeILB5jBGDHnjwd0nAIm?=
- =?us-ascii?Q?uWaE5qR8R1Otv5IM0H19b2JMZhtj/KUWlNIKolQgZdEhGh51TDZw2aMY8Bou?=
- =?us-ascii?Q?/BFPxluuK98/jOfhqSTT6d/VVnk2hGBdoyOwn2Zdh8wwddVJ2iGtevc6DKGW?=
- =?us-ascii?Q?WqZYDO7p5Ud/q+zPDNn5+Bn66cFK7rbZOro7xhjCIz3lGrTNtdVjaNNmJRtG?=
- =?us-ascii?Q?ZlIVbRN/Wy8qrhuLJ123G/VvnyY/6tuYsv0Sovd152EAchapGg8NKIOPzww7?=
- =?us-ascii?Q?yPningfp+bWRKlxoZvgb4n/ldcC0XkPaxZusBfNmiFnWbXlluXFa9/GTzVd2?=
- =?us-ascii?Q?WlGHqgOJlbhhqFtFNXql60xue49KCyPhVnU1vd4QLEGmIwsayIAcVl5VP+bS?=
- =?us-ascii?Q?tO93Sebt3qCOYAuUDKGLI5rxkyhoo3DyuAsi7pBnsWLXRp41kHQNUc+pY6so?=
- =?us-ascii?Q?UaUCmzpWfR5qaj8kN5/ZHxM7EvhBQ+F5DhSaKiZz4zNCRpvJoVpxECUtkEeT?=
- =?us-ascii?Q?cXXQCvIcL7q2W6xBr/yz6rkEFZsJJowrrUHryIQJpBo7RBV3W2q478O5hTAg?=
- =?us-ascii?Q?elmZRkQJ3Kjn6AmBiHAQpajjinmd6E/1TobdCiLeqIgI0olQTPiZkZA/km5l?=
- =?us-ascii?Q?mwDTaBPmfwnq5cEbI/YVKhJdAtStzDkjYSGrJfdV0QAY/RnUKee46y/IcRA9?=
- =?us-ascii?Q?O1tmYR/jIB6ufX7ikCZ3P/cZcUvJHRODWTGwA+9Np8qgtobD9NXllSD7J1v4?=
- =?us-ascii?Q?i50K6y6zgCThUjh+SUziUJCMv2YqINL0M9poWHu7?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 033aea5b-0b48-4cf7-4272-08dcb883d9df
-X-MS-Exchange-CrossTenant-AuthSource: CYXPR12MB9320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 14:59:21.6054
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 15:03:46.8462
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gu1i5YaaeqcuWRxGgDyxwsN9BGpuvjQIskos8790AZrQe4J/Zb+Uh/Fr2pp8sZeA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6823
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42037397-a901-4cff-e3bf-08dcb8847811
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000013B.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6570
 
-When handling a numa page fault, task_numa_fault() should be called by a
-process that restores the page table of the faulted folio to avoid
-duplicated stats counting. Commit c5b5a3dd2c1f ("mm: thp: refactor NUMA
-fault handling") restructured do_huge_pmd_numa_page() and did not avoid
-task_numa_fault() call in the second page table check after a numa
-migration failure. Fix it by making all !pmd_same() return immediately.
+In aperture_remove_conflicting_pci_devices(), match the pci
+device determine whether or not to call sysfb_disable().  This
+fixes cases where the pimary device is not VGA compatible which
+leads to the following problem:
 
-This issue can cause task_numa_fault() being called more than necessary
-and lead to unexpected numa balancing results (It is hard to tell whether
-the issue will cause positive or negative performance impact due to
-duplicated numa fault counting).
+1. A PCI device with a non-VGA class is the the boot display
+2. That device is probed first and it is not a vga device so
+   sysfb_disable() is not called, but the device resources
+   are freed by aperture_detach_platform_device()
+3. Non-primary GPU is vga device and it ends up calling sysfb_disable()
+4. NULL pointer dereference via sysfb_disable() since the resources
+   have already been freed by aperture_detach_platform_device() when
+   it was called by the other device.
 
-Reported-by: "Huang, Ying" <ying.huang@intel.com>
-Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
-Fixes: c5b5a3dd2c1f ("mm: thp: refactor NUMA fault handling")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Zi Yan <ziy@nvidia.com>
+Fix this by calling sysfb_disable() on the device associated with it.
+
+Fixes: 5ae3716cfdcd ("video/aperture: Only remove sysfb on the default vga pci device")
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 ---
- mm/huge_memory.c | 29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ drivers/video/aperture.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 0024266dea0a..666fa675e5b6 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1681,7 +1681,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
- 	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
- 	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
- 		spin_unlock(vmf->ptl);
--		goto out;
-+		return 0;
- 	}
+diff --git a/drivers/video/aperture.c b/drivers/video/aperture.c
+index 561be8feca96..56a5a0bc2b1a 100644
+--- a/drivers/video/aperture.c
++++ b/drivers/video/aperture.c
+@@ -6,6 +6,7 @@
+ #include <linux/mutex.h>
+ #include <linux/pci.h>
+ #include <linux/platform_device.h>
++#include <linux/screen_info.h>
+ #include <linux/slab.h>
+ #include <linux/sysfb.h>
+ #include <linux/types.h>
+@@ -346,6 +347,7 @@ EXPORT_SYMBOL(__aperture_remove_legacy_vga_devices);
+  */
+ int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const char *name)
+ {
++	struct screen_info *si = &screen_info;
+ 	bool primary = false;
+ 	resource_size_t base, size;
+ 	int bar, ret = 0;
+@@ -353,7 +355,7 @@ int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const char *na
+ 	if (pdev == vga_default_device())
+ 		primary = true;
  
- 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
-@@ -1724,22 +1724,16 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
- 	if (!migrate_misplaced_folio(folio, vma, target_nid)) {
- 		flags |= TNF_MIGRATED;
- 		nid = target_nid;
--	} else {
--		flags |= TNF_MIGRATE_FAIL;
--		vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
--		if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
--			spin_unlock(vmf->ptl);
--			goto out;
--		}
--		goto out_map;
--	}
--
--out:
--	if (nid != NUMA_NO_NODE)
- 		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
-+		return 0;
-+	}
+-	if (primary)
++	if (pdev == screen_info_pci_dev(si))
+ 		sysfb_disable();
  
--	return 0;
--
-+	flags |= TNF_MIGRATE_FAIL;
-+	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
-+	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
-+		spin_unlock(vmf->ptl);
-+		return 0;
-+	}
- out_map:
- 	/* Restore the PMD */
- 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
-@@ -1749,7 +1743,10 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
- 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, pmd);
- 	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
- 	spin_unlock(vmf->ptl);
--	goto out;
-+
-+	if (nid != NUMA_NO_NODE)
-+		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
-+	return 0;
- }
- 
- /*
+ 	for (bar = 0; bar < PCI_STD_NUM_BARS; ++bar) {
 -- 
-2.43.0
+2.45.2
 
 
