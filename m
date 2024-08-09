@@ -1,168 +1,118 @@
-Return-Path: <stable+bounces-66111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D71894C9A3
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 07:33:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6B594C9CB
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 07:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 423ED1C21C3F
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 05:33:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2E391F21642
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 05:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B0616C68D;
-	Fri,  9 Aug 2024 05:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BAB16C6A4;
+	Fri,  9 Aug 2024 05:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gxYIZ3+C"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="WRv/UDn2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809B3433A7
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 05:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CC02564;
+	Fri,  9 Aug 2024 05:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723181595; cv=none; b=chXs2DE9WYDu4KhKt1kSPD447QpB16KmKycz/bsjT2nrcEcx+Ywao+k6mFc6Hci6km38R78Z4x945S4f6MtmKQ6QGRW9S0fXlO/vLdWjWu90Y+zU+zMyguuHrMkoShKQpBjTxcwPM7/YbBHKFIJn5oPIcxI1TRNepVjh5bBsUO4=
+	t=1723182418; cv=none; b=lFgRRRqheXUJXw9wzHdlT2LoajMGrz1oK2XRTH4gYkKXWiRlCefI19vc+X9/fHM0HngNflWFL+SP0PpPrXsyEDSMbMCMaRHvFPT+z4VO0Jr+s7YCXnP6ZnhbPDiUibuoyB2h3/ytWFF22mfi8naNYpteIGbM6U3x4FadQwfaXL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723181595; c=relaxed/simple;
-	bh=pnz4pn2aIuI7q35aQCwWQSEhHuiNUdJUQyIwuU/LSLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YD0rq8UIM1Ran5nO8beKoPDmNo/X0W+K7JsmPmr+Sg7repejjV5Wi79rftHwLamyO6ayW+S6z4e0a4F6n6DLnlLRB349bOmWTaA8pEA5re9spoQtAKCZh+/WGtdtGjUdxoud4nWSu/I7HqFvbppej5Jp76uCIh1YzxUW4bopkGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gxYIZ3+C; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-70d18112b60so1118412b3a.1
-        for <stable@vger.kernel.org>; Thu, 08 Aug 2024 22:33:13 -0700 (PDT)
+	s=arc-20240116; t=1723182418; c=relaxed/simple;
+	bh=0E0LWRTGx2617hGp31o7gUJtB2TmoGqYJk5qN3qe7ik=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HEmYM2HlWrgXQ3Ze/cRRnTDYax60sq9mIh8zgAvH/ixzHGQExPi1qXCXMf5kCf01sdCb2DJY1RjvA064j8XGqX9f8q4PRN5x3TpzSRJxM9eBDcbZfAbITgUZcid10ZIzmHrPn2liDs+BiRTYz98ohsyyHvCOQ1GnyBWsBz8rvNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=WRv/UDn2; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5a156556fb4so2022584a12.3;
+        Thu, 08 Aug 2024 22:46:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723181593; x=1723786393; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Rpcp7sNOdXCekWfh56WPO6OMCeZXKdG+njZ3Axxp7Y8=;
-        b=gxYIZ3+CwZ4w1gVCNA/mqBAaXC53cvrQZGls5BPrVQ45oaK18T8Br91zEat6YzRx3u
-         044HV59tJM4kDzTLq7U4AJnNbI0d4PwzF9Uo0sJWobgNA212Y1dyS5Am+bYM0vSE9+kK
-         nVRxtmKLz30eodpi4aiFRGhkRGqStsqiDA4o9XQb9j7uZef3VmtN4K1ZJ7jo0Xt2SkYq
-         8c+ideIfz46vCdON5S+rMfSUW05L+SpI/AtBB7R0BQijYvcqQqyU4oKasG2oR5EdXeLT
-         98mazfh/3ZzwLFDvFu9AJzprpwPfhEjqfZPLolFs7r8e5Z5q0fP2x3fa3PeSNjEJ2ueQ
-         azuw==
+        d=googlemail.com; s=20230601; t=1723182415; x=1723787215; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c/lpeCLNhSG0sHQuHLswm/MdyizAAuRsLhhJ2tP51MM=;
+        b=WRv/UDn2qIIgnBwFAZFliAI3QUSm2lnWR37Fe7zuz1qrg9arpod70IinkLfwcolNOv
+         EMqa6mDzK9SMv0gSJFSDp23zj6qCKWfS3pEH12g69y0CZKDTn4/DdFwZRG5StZSI8nAd
+         yNbumozUyQQMgfW51n79J1IA3B1y93NEeBNnZsZRudTjyCl5FCS96375MI20FCMDBd4d
+         2nN9f9+Ydz8jA7BYMWkRHtSAVUsuL8mqk3H3F970BYOp9b0TcZ+ZMiPP4+ButHqZ7wa8
+         QGKHKQjVxLz1x6QwqjNaNTKjWwKETq7LhZgGmK5VuDq0KzdmWCxEr+jAcBPhGSxRa+Hz
+         f/pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723181593; x=1723786393;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1723182415; x=1723787215;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rpcp7sNOdXCekWfh56WPO6OMCeZXKdG+njZ3Axxp7Y8=;
-        b=r4pgBLHgUnONdB+/2LI3TjtRx+Y+a6ZFPMMi2FwFEVg0gV7495oM/iWIU7m0iKbov7
-         qgtwdsiSfpjZOiLp+KtqWyoqjrWQA5E8k5EerIPYB9jjN8YtjbavzTFr+uQ/OsLKiaRe
-         WvvGDs2a0zEe8rVRNbd05una7BAbw6eJSxJS1UpzLuOQyIhii+Dvv+vFVwu6v2YzfpJ4
-         7PlhepY8vw677Cm4bQjJnqI4BUKODqT7C6qexP1ErtIRpada3kFVf3amvZvYSMCsXkvH
-         VVotG6027Je1rv4U0m6miKCSjxJUyqek64zRZu5a+4fz3/geIqZwdVaI+sryVDkqj5je
-         oKXg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPUrqbbcTq0wjTDC9UOrdd7GUuBccah//cNAT7TN346ArVCaBwb+WNEge9cV4yF7mm38HvHKtAQTMOA8pwl1T/kvZjnfWc
-X-Gm-Message-State: AOJu0YzXb63kY3398lfilbpMmkO0GmcX1//82UhtGobfAiF8vx2fPho8
-	8fFk3QPkdcphwJBLiNZOwzxmGhF524NFHfAZ8Gf1FIRdGdpYCvug1LIg7GGubg==
-X-Google-Smtp-Source: AGHT+IHjsR+odVk/XFoa4hO6BfS6oiJfnTEktUyDC4vLxB+lplkufKntidsEa0rknzxBQC+JIgXZTA==
-X-Received: by 2002:a05:6a00:b8e:b0:70d:2a1b:422c with SMTP id d2e1a72fcca58-710dcd5c457mr847790b3a.7.1723181592792;
-        Thu, 08 Aug 2024 22:33:12 -0700 (PDT)
-Received: from thinkpad ([117.213.100.70])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-710cb2e7416sm1934529b3a.158.2024.08.08.22.33.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 22:33:12 -0700 (PDT)
-Date: Fri, 9 Aug 2024 11:03:04 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Andrew Halaney <ahalaney@redhat.com>
-Cc: Rob Herring <robh@kernel.org>, Siddharth Vadapalli <s-vadapalli@ti.com>,
-	bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com,
-	vigneshr@ti.com, kishon@kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org, srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
-Message-ID: <20240809053304.GB2826@thinkpad>
-References: <20240724065048.285838-1-s-vadapalli@ti.com>
- <20240724161916.GG3349@thinkpad>
- <20240725042001.GC2317@thinkpad>
- <93e864fb-cf52-4cc0-84a0-d689dd829afb@ti.com>
- <20240726115609.GF2628@thinkpad>
- <CAL_JsqJ-mfU88E_Ri=BzH6nAFg405gkPPJTtjdp7UR2n96QMkw@mail.gmail.com>
- <20240805164519.GF7274@thinkpad>
- <CAL_JsqKxF6yYTWbmU8SRhxemNMwErNViHuk05sLyFjFzssh=Eg@mail.gmail.com>
- <wr2z74wsqhitisgp4qsfrmuvvhw3cpp3bdzkp5batawv6btfyd@xcyhug7jyfxg>
+        bh=c/lpeCLNhSG0sHQuHLswm/MdyizAAuRsLhhJ2tP51MM=;
+        b=WSZuWRreeyrFOaHOFayADEyl4U5CdGw4N0TTp+5srRk2IDe8gKiLNQpCn1uIe8y5lF
+         IkpmL7pqdgoxBJ1qjNhp7Qa+p7TC4cDplqORXHrwP+8vTp17lqrSW3Wg0T9GKdiVudcN
+         aFkYNZj+bgThih1yGVX89S6yS+59S8bJULTKG3O2QclOsels/12FkRNVU3XoiLZt5imr
+         0y8R/DgcUvtziU3eM8K2Do2XBmAfevOvRi7EAtNRDJ9ZqggJN9hQsbyCNeV/3kyDsv8N
+         mySjaxKk2edWbuaFrMmb16xZpE7ecqt6XuxaOmc/knkGezAdV8bA257fLsG03F4oeIFY
+         Mnug==
+X-Forwarded-Encrypted: i=1; AJvYcCUUZoTET+WhR9S0jc2aLRzuXB6BzTwdk+LTFeCb8W2IKGfU1neam2tsjRT95Eik5Lm6xrnRqtWUWE/ZVJg=@vger.kernel.org, AJvYcCXB0ljdefb4n9i9RGVXwH8E1+gSCQGtAaC1cAHMuno+sPjuD6YCoRtCz0E3O4i9HzN2EoY4hzW0@vger.kernel.org
+X-Gm-Message-State: AOJu0YzD6v8F3GKsunb8v2GqId02d1jseF2/HVkvd7T5VZhjNiHf9X98
+	aOLuPT0V2GRf68fYXNYloXHdjHv0YyXnvbpKgt0L613refEe6eo=
+X-Google-Smtp-Source: AGHT+IEQDUWeO9IyesyvpxutFL1b+2BTg1/F6pcdSzEJWMH8VCDcqZq/Eap5yurEGbPb3qaOPrNPFQ==
+X-Received: by 2002:a17:907:c7ea:b0:a7a:bece:6223 with SMTP id a640c23a62f3a-a80aa556854mr38555166b.6.1723182414749;
+        Thu, 08 Aug 2024 22:46:54 -0700 (PDT)
+Received: from [192.168.1.3] (p5b05740f.dip0.t-ipconnect.de. [91.5.116.15])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9bcaf7esm824725966b.12.2024.08.08.22.46.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Aug 2024 22:46:54 -0700 (PDT)
+Message-ID: <3bb19eed-0ad8-48d2-ac57-9663e932e6c2@googlemail.com>
+Date: Fri, 9 Aug 2024 07:46:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240808091131.014292134@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240808091131.014292134@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <wr2z74wsqhitisgp4qsfrmuvvhw3cpp3bdzkp5batawv6btfyd@xcyhug7jyfxg>
 
-On Thu, Aug 08, 2024 at 03:56:10PM -0500, Andrew Halaney wrote:
+Am 08.08.2024 um 11:11 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.104 release.
+> There are 86 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-[...]
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-> > There's a lot of history and the interrupt parsing is fragile due to
-> > all the "interesting" DT interrupt hierarchies. So while I think it
-> > would work, that's just a guess. I'm open to trying it and seeing.
-> 
-> Would something like this be what you're imagining? If so I can post a
-> patch if this patch is a dead end:
-> 
->     diff --git a/drivers/pci/of.c b/drivers/pci/of.c
->     index dacea3fc5128..4e4ecaa95599 100644
->     --- a/drivers/pci/of.c
->     +++ b/drivers/pci/of.c
->     @@ -512,6 +512,10 @@ static int of_irq_parse_pci(const struct pci_dev *pdev, struct of_phandle_args *
->                             if (ppnode == NULL) {
->                                     rc = -EINVAL;
->                                     goto err;
->     +                       } else if (!of_get_property(ppnode, "interrupt-map", NULL)) {
->     +                               /* No interrupt-map on a host bridge means we're done here */
->     +                               rc = -ENOENT;
->     +                               goto err;
->                             }
->                     } else {
->                             /* We found a P2P bridge, check if it has a node */
-> 
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-This is a reasonable change if the parent is the host bridge. But if parent is a
-PCI bridge node (note the else condition), then of_irq_parse_raw() will get
-called and we will hit the same issue.
 
-IMO, either we need to fix of_irq_parse_raw() or come up with another
-implementation that does the right thing i.e., travese upto the host bridge and
-check for the 'interrupt-map'. Currently it goes till the top level interrupt
-controller.
-
-> I must admit that you being nervous has me being nervous since I'm not all
-> that familiar with PCI... but if y'all think this is ok then I'm for it.
-> I'm sure I'm not picturing all the cases here so would appreciate
-> some scrutiny.
-> 
-> You still end up with warnings, which kind of sucks, since as I
-> understand it the lack of INTx interrupts on this platform is
-> *intentional*:
-> 
->     [    3.342548] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x4 may corrupt adjacent RW1C bits
->     [    3.346716] pcieport 0000:00:00.0: of_irq_parse_pci: no interrupt-map found, INTx interrupts not available
->     [    3.346721] PCI: OF: of_irq_parse_pci: possibly some PCI slots don't have level triggered interrupts capability
-> 
-
-I propose to demote these prints to debug as these are not warnings by any
-means.
-
-> You could have a combo of both this patch (to indicate that a specific driver (even further
-> limited to a match data based on compatible) doesn't support these) as well as
-> the above diff (to improve the message printed in the situation where a driver
-> *does* claim to support these interrupts but fails to describe them properly).
-> 
-
-Again, I don't think we need to have the change in the driver. DT already
-indicated that there is no INTx support, so why should driver duplicate the same
-info?
-
-- Mani
+Beste Grüße,
+Peter Schneider
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
