@@ -1,81 +1,48 @@
-Return-Path: <stable+bounces-66284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A36994D37D
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 17:29:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC6694D387
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 17:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17241F23169
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 15:29:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F309D1C21283
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 15:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33D0198A24;
-	Fri,  9 Aug 2024 15:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942AF198845;
+	Fri,  9 Aug 2024 15:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dlslsKFd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="juuqxxgu"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DBF19885D
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 15:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E56168DC;
+	Fri,  9 Aug 2024 15:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723217391; cv=none; b=iTIx4dMMecXXWnxjpq53O4DcfUSuONgpHD3i3EHDoRKj+c8fekke14dJ/Kesog+anOhf0xc5oxv50P8dcuwghCHgOEvHHc8wewdP3O/WhQTyAd+ptsDP7Q/eAzEy7QZavctqHM/+tlRgUXATAsUBAl2WLo8l3ZhV6fz39pdRmPc=
+	t=1723217685; cv=none; b=DIDpLLN1+tpQM9ulyBOyPlZ4fp3dWuE0ibke7Ivg8E1kEFpXUUxos2nrszLjNwP9Uz0FzSp24kkOqnU2uQG1KEry0XdpgH1zlqeFWyngXNO6+leDe3vcROg+uo3wMkCnB8kxJbOV9rcgO1MO6W0AZ7ddOgTPLmDe/MezSMl897Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723217391; c=relaxed/simple;
-	bh=Cre+FQ/kmBnvYs5YgX6DqNdezSARA5lCioFzGEHHVvw=;
+	s=arc-20240116; t=1723217685; c=relaxed/simple;
+	bh=xOeajoTbjJnSdAiPass/Rpyu0Kl8NAn33BDrrQ9U+bo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SLM8MCasVliFdBS0Yjo5s1unazmrbipqdL7l1rSS0qtGeW9M49Dtmij4IxhXOx4otfU5t9lYNp6fledRMuhq0f0/QLayPkqBPUA6LxRek0E/4Na4bNSkcMoXyO4vWgapWCLXT14wLtiXmFk76ih36jr+9j7jZsw0plA4OtzNwGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dlslsKFd; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723217389;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+qb0Tn3R4/F9P9guJ4b8TeJDGiJ6K5JkcxwGHngJl1Y=;
-	b=dlslsKFdazzSJczq48PlYIcQLvpyNhOoaCf7iSSKLPKEOSVYyxPLXjL/4oxW7Sim5u996J
-	eDbMNdawiiYm0MXCFFWCtmWo9VAw5G8DsNpdhJwuvLFYLsxqvbsvnTPfuBGQ9gaYasdJT0
-	AYDy0UE5B9irZwcNZifvSr2KcR7nknQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-108-l4XHIdCQP2m-iah4PbjzNw-1; Fri, 09 Aug 2024 11:29:46 -0400
-X-MC-Unique: l4XHIdCQP2m-iah4PbjzNw-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4280645e3e0so14909075e9.1
-        for <stable@vger.kernel.org>; Fri, 09 Aug 2024 08:29:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723217385; x=1723822185;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+qb0Tn3R4/F9P9guJ4b8TeJDGiJ6K5JkcxwGHngJl1Y=;
-        b=mx8zjzWJZpW4FMoocBIbp9p7Q55ZwTtYZVCbYNL6IAAHPALCRtcZpSyxLZidnqU4l6
-         U/kDJlRA343p4j2PjMXWivBcbyq/fF2q98+U/hEnOB6r9247zaVEte06NDBBsCKZtRUn
-         rekwdll0j8XV1sw8rFu0EYb7sy62JTP+5cmmlGFHLB/riONadXuUcvpX3hF4RUTmGlrv
-         eOgFAfRIVgXgbdqu5WQJ3QKoa+Pw+VboCOiMVlCt7okTctjjgObKp/A1rFWhQ8JqlqGX
-         muiL3RCokOSlpZu/3L+0HEd8uMnJ7yVJfxz7nnuBhtKKqsPP5dkFUQ4UShzymBYexu1j
-         98RA==
-X-Forwarded-Encrypted: i=1; AJvYcCXJdMiQR0m479bVNlKrZyS8mFSmHMfyenSAGXY+ZOzmCPOiUmd7vlpDjux93eBjtqEcLF4GhcGnfRegsG9jpLU9jiOwFSeB
-X-Gm-Message-State: AOJu0Yx2im3qTcmVM8Fx9Lh/FiASgs6OI/pgywwz8jgR6S+kYqp5tEmD
-	xC4dyrScl5+N75QzAXEy289NXQSEzmH0+0UkL391ytRANv5RQi77PPsUOLj9gvvQ2vgXEFa6/tB
-	MXNgCeuaGKR8nTu0Tpz0fpib1+UyqVLy/wiFD/c3dQBnLo1sJze40CA==
-X-Received: by 2002:a05:600c:3588:b0:426:647b:1bfa with SMTP id 5b1f17b1804b1-429c3a174c2mr14386825e9.8.1723217385220;
-        Fri, 09 Aug 2024 08:29:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGKTiQa7A0hgIVpw/ZWs2EQKjIeTX5+pvF0wUqZq/lUQ9GaeOmQ8UyiigVuIJHlsZzHtD3kPw==
-X-Received: by 2002:a05:600c:3588:b0:426:647b:1bfa with SMTP id 5b1f17b1804b1-429c3a174c2mr14386615e9.8.1723217384686;
-        Fri, 09 Aug 2024 08:29:44 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f09:3f00:d228:bd67:7baa:d604? (p200300d82f093f00d228bd677baad604.dip0.t-ipconnect.de. [2003:d8:2f09:3f00:d228:bd67:7baa:d604])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429059e0082sm133666195e9.48.2024.08.09.08.29.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Aug 2024 08:29:44 -0700 (PDT)
-Message-ID: <13318f5e-6a76-49ca-8c7a-9f461061d1d7@redhat.com>
-Date: Fri, 9 Aug 2024 17:29:43 +0200
+	 In-Reply-To:Content-Type; b=U15/c73NePkuqlpQ1m/qC7qU/4Pt/FIuvpJ6H/V80oiGE9OVZLg8YH1R2fBNeBqL1usYns7HOZMdyql3TOx+05cli5KgtXlGJ+e1n9a/HBQv7tEOwyUx0xwwWl7rcdMgNrxQR7dZ+1X/TCCR4xMf4TYESgAE1CRK9pT1S4WrxOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=juuqxxgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FB0C32782;
+	Fri,  9 Aug 2024 15:34:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723217684;
+	bh=xOeajoTbjJnSdAiPass/Rpyu0Kl8NAn33BDrrQ9U+bo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=juuqxxguEpFZcSZ1aLZdWapJYMqubUZHPSLyVJyEIpio7ySRM7dvSR6ydu3UgHYcT
+	 LHZd1Vrz3OUy1mBudOj2xbHw4J+PxfV01irOVxAFYUNQVE/MsWp7Ktkw5yoBxd05tr
+	 QgcPsUAmikkzZgCHNSim17Ga7O/quLgU8zV+rysSRtUghP7HvNSvBIiAMh/gbIGpz2
+	 dR26SQbyeMaDc13ncfb7Nuq+aXfRw95k5cOxhoTy6S27DCGzIMUdDrgZXxfYZ8hxm+
+	 sEDk2Nc0ySSwf5quibaZUQEmXPQU6mZG/PVY77909E00qeZtEz5HqgNlPJL1L+gGe5
+	 1eahcJpc9af4g==
+Message-ID: <1376f541-bc8a-4162-a814-a9146ebaf4eb@kernel.org>
+Date: Fri, 9 Aug 2024 08:34:44 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,93 +50,181 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] mm/numa: no task_numa_fault() call if PMD is
- changed
-To: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Huang, Ying" <ying.huang@intel.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Yang Shi <shy828301@gmail.com>,
- Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240809145906.1513458-1-ziy@nvidia.com>
- <20240809145906.1513458-3-ziy@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
+Subject: Re: [REGRESSION][BISECTED][STABLE] hdparm errors since 28ab9769117c
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Christian Heusel <christian@heusel.eu>, Igor Pylypiv
+ <ipylypiv@google.com>, linux-ide@vger.kernel.org,
+ Hannes Reinecke <hare@suse.de>, regressions@lists.linux.dev,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <0bf3f2f0-0fc6-4ba5-a420-c0874ef82d64@heusel.eu>
+ <45cdf1c2-9056-4ac2-8e4d-4f07996a9267@kernel.org>
+ <ZrPw5m9LwMH5NQYy@x1-carbon.lan>
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240809145906.1513458-3-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <ZrPw5m9LwMH5NQYy@x1-carbon.lan>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09.08.24 16:59, Zi Yan wrote:
-> When handling a numa page fault, task_numa_fault() should be called by a
-> process that restores the page table of the faulted folio to avoid
-> duplicated stats counting. Commit c5b5a3dd2c1f ("mm: thp: refactor NUMA
-> fault handling") restructured do_huge_pmd_numa_page() and did not avoid
-> task_numa_fault() call in the second page table check after a numa
-> migration failure. Fix it by making all !pmd_same() return immediately.
+On 2024/08/07 15:10, Niklas Cassel wrote:
+> On Wed, Aug 07, 2024 at 11:26:46AM -0700, Damien Le Moal wrote:
+>> On 2024/08/07 10:23, Christian Heusel wrote:
+>>> Hello Igor, hello Niklas,
+>>>
+>>> on my NAS I am encountering the following issue since v6.6.44 (LTS),
+>>> when executing the hdparm command for my WD-WCC7K4NLX884 drives to get
+>>> the active or standby state:
+>>>
+>>>     $ hdparm -C /dev/sda
+>>>     /dev/sda:
+>>>     SG_IO: bad/missing sense data, sb[]:  f0 00 01 00 50 40 ff 0a 00 00 78 00 00 1d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>>>      drive state is:  unknown
+>>>
+>>>
+>>> While the expected output is the following:
+>>>
+>>>     $ hdparm -C /dev/sda
+>>>     /dev/sda:
+>>>      drive state is:  active/idle
+>>>
+>>> I did a bisection within the stable series and found the following
+>>> commit to be the first bad one:
+>>>
+>>>     28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error")
+>>>
+>>> According to kernel.dance the same commit was also backported to the
+>>> v6.10.3 and v6.1.103 stable kernels and I could not find any commit or
+>>> pending patch with a "Fixes:" tag for the offending commit.
+>>>
+>>> So far I have not been able to test with the mainline kernel as this is
+>>> a remote device which I couldn't rescue in case of a boot failure. Also
+>>> just for transparency it does have the out of tree ZFS module loaded,
+>>> but AFAIU this shouldn't be an issue here, as the commit seems clearly
+>>> related to the error. If needed I can test with an untainted mainline
+>>> kernel on Friday when I'm near the device.
+>>>
+>>> I have attached the output of hdparm -I below and would be happy to
+>>> provide further debug information or test patches.
+>>
+>> I confirm this, using 6.11-rc2. The problem is actually hdparm code which
+>> assumes that the sense data is in descriptor format without ever looking at the
+>> D_SENSE bit to verify that. So commit 28ab9769117c reveals this issue because as
+>> its title explains, it (correctly) honors D_SENSE instead of always generating
+>> sense data in descriptor format.
 > 
-> This issue can cause task_numa_fault() being called more than necessary
-> and lead to unexpected numa balancing results (It is hard to tell whether
-> the issue will cause positive or negative performance impact due to
-> duplicated numa fault counting).
-> 
-> Reported-by: "Huang, Ying" <ying.huang@intel.com>
-> Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
-> Fixes: c5b5a3dd2c1f ("mm: thp: refactor NUMA fault handling")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
+> You mean: the user space application is using the sense buffer without first
+> checking if the returned sense buffer is in descriptor or fixed format.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Yes. The code looks like:
+
+desc = sb + 8;
+if (io_hdr.driver_status != SG_DRIVER_SENSE) {
+	...
+} else if (sb[0] != 0x72 || sb[7] < 14 || desc[0] != 0x09 || desc[1] < 0x0c) {
+	if (verbose || tf->command != ATA_OP_IDENTIFY)
+		dump_bytes("SG_IO: bad/missing sense data, sb[]",
+			   sb, sizeof(sb));
+}
+
+So clearly it assumes descrip@tor format.
+
+> This seems like a fundamentally flawed assumption by the user space program.
+> If it doesn't even bother checking the first field in the sense buffer, sb[0],
+> perhaps it shouldn't bother trying to use the sense buffer at all.
+
+> (Yes, the D_SENSE bit can be configured by the user, but that doesn't change
+> the fact that a user space program must check the format of the returned buffer
+> before trying to use it.)
+
+Yep. I agree.
+
+> 
+> 
+>> Hmm... This is annoying. The kernel is fixed to be spec compliant but that
+>> breaks old/non-compliant applications... We definitely should fix hdparm code,
+>> but I think we still need to revert 28ab9769117c...
+> 
+> Well.. if we look at commit:
+> 11093cb1ef56 ("libata-scsi: generate correct ATA pass-through sense")
+> https://github.com/torvalds/linux/commit/11093cb1ef56147fe33f5750b1eab347bdef30db
+> 
+> We can see that before that commit, the kernel used to call
+> ata_scsi_set_sense().
+> 
+> Back then ata_scsi_set_sense() was defined as:
+> https://github.com/torvalds/linux/blob/11093cb1ef56147fe33f5750b1eab347bdef30db/drivers/ata/libata-scsi.c#L280
+> scsi_build_sense_buffer(0, cmd->sense_buffer, sk, asc, ascq);
+> 
+> Where the first argument to scsi_build_sense_buffer() is if the generated sense
+> buffer should be fixed or desc format (0 == fixed format), so we used to
+> generate the sense buffer in fixed format:
+> https://github.com/torvalds/linux/blob/11093cb1ef56147fe33f5750b1eab347bdef30db/drivers/scsi/scsi_common.c#L231
+> 
+> However, as we can see, the kernel then used to incorrectly just
+> change sb[0} to say that the buffer was in desc format,
+> without updating the other fields, e.g. sb[2]:
+> https://github.com/torvalds/linux/blob/11093cb1ef56147fe33f5750b1eab347bdef30db~/drivers/ata/libata-scsi.c#L1026
+> so the format was really in some franken format...
+> following neither fixed or descriptor format.
+> 
+> 11093cb1ef56 ("libata-scsi: generate correct ATA pass-through sense")
+> did change so that successful ATA-passthrough commands always generated
+> the sense data in descriptor format. However, that commit also managed to
+> mess up the offsets for fixed format sense...
+> 
+> The commit that later changed ata_scsi_set_sense() to honor D_SENSE
+> was commit: 06dbde5f3a44 ("libata: Implement control mode page to select
+> sense format")
+> 
+> So basically:
+> Before commit 11093cb1ef56 ("libata-scsi: generate correct ATA pass-through
+> sense"), we generated sense data in some franken format for both successful
+> and failed ATA-passthrough commands.
+> 
+> After commit 11093cb1ef56 ("libata-scsi: generate correct ATA pass-through
+> sense") we generate sense data for sucessful ATA-passthrough commands in
+> descriptor format unconditionally, but still in franken format for failed
+> ATA-passthrough commands.
+> 
+> After commit 06dbde5f3a44 ("libata: Implement control mode page to select
+> sense format") we generate sense data for sucessful ATA-passthrough commands
+> in descriptor format unconditionally, but for failed commands we actually
+> honored D_SENSE to generate it either in fixed format or descriptor format.
+> (However, because of a bug in 11093cb1ef56, if using fixed format, the
+> offsets were wrong...)
+> 
+> 
+> The incorrect offsets for fixed format was fixed recently, in commit
+> 38dab832c3f4 ("ata: libata-scsi: Fix offsets for the fixed format sense data")
+> 
+> Commit 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and
+> no error") fixed so that we actually honor D_SENSE not only for failed
+> ATA-passthrough commands, but also for successfull ATA-passthrough commands.
+> 
+> TL;DR: it is very hard to say that we have introduced a regression, because
+> this crap has basically been broken in one way or another since it was
+> introduced... Personally, I would definitely want all the patches that are in
+> mainline in the kernel running on my machine, since that is the only thing
+> that is consistent.
+> 
+> However, that assumes that user space programs that are trying to parse the
+> sense data actually bothers to check the first field in the sense data,
+> to see which format the returned sense data is in... Applications that
+> do not even both with that will have problems on a lot of (historic) kernel
+> versions.
+
+Yes, indeed. I do not want to revert any of these recent patches, because as you
+rightly summarize here, these fix something that has been broken for a long
+time. We were just lucky that we did not see more application failures until
+now, or rather unlucky that we did not as that would have revealed these
+problems earlier.
+
+So I think we will have some patching to do to hdparm at least to fix the
+problems there.
+
 
 -- 
-Cheers,
-
-David / dhildenb
+Damien Le Moal
+Western Digital Research
 
 
