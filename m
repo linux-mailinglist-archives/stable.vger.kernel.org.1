@@ -1,94 +1,109 @@
-Return-Path: <stable+bounces-66125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1684394CC9E
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:47:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9DE94CCB0
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96A07B20CB2
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 08:47:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D63F41F225C8
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 08:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2B418F2F8;
-	Fri,  9 Aug 2024 08:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D4F18FC86;
+	Fri,  9 Aug 2024 08:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxI142bh"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="nOpdApk3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3744431;
-	Fri,  9 Aug 2024 08:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007BB4431;
+	Fri,  9 Aug 2024 08:50:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723193242; cv=none; b=FSRobMpJiw+rZe7fUJu3UgWFw8pureAtei/3mo/XN4qYDe4NGqLDQ5Zkyy55IatxwskZyXOPMzWdHrS9k4uSV0qzVqhzTjQ/9F60D7kp9OLqU2uFb042Z174Rx4rVBtxHVKymFNdE5ylbIY5qYGz9EqzBjp8YoyqKPa8mKSlay0=
+	t=1723193447; cv=none; b=G8jDeg0yf9NmG4Ql+5rRK7nU1SNheAVw6hT4wYz1h6F+7B5S13MVE2yw4SBXTYWF8VhdYPBZuQpw1LpeXgrWvUyk4te538utCXBNY6qccsfqZiLUMt8Lngfjrg3eh7uevQmz3KHs5Ph2HGnfsKgM85DVCVtlcKNGhIBgJ3roVgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723193242; c=relaxed/simple;
-	bh=iXPqWLhyydEY9YljmfF4VAQ07JaykzvJfToiUIJSK/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jcAniCX04s7cngtIkjpF3FqNTRDjJ7tjRHkkZRESZXHoUe5VcuERLZjs/MX/b6xQMSfoUj0jOQcsZ0hA6yQzb4tK4WwfaUpOw3ZLijuHXcVsr7bl28ATJN48jeVbapX8TvJgqwjfl5br/Erwtq1iMvUxwBAtYNQvhjCkOgF3dl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxI142bh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81209C4AF0D;
-	Fri,  9 Aug 2024 08:47:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723193242;
-	bh=iXPqWLhyydEY9YljmfF4VAQ07JaykzvJfToiUIJSK/k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uxI142bhWfRH6jH17f0yElgC5vxURZVOlmL4W1CW3ux0+Fw9MP96S8JlRp87GsJAQ
-	 lvFKA99Q3vDIUUGrFxGA7SA5tcFL9VVjhO4Ud+3PKNhRTpP6X301tnn+BnMBlyik/3
-	 I959FgQzMWefV3DQwKnkCqUtjjbiE4y9DvHIegvzkDz39lyACQXBKgWgZeP8Dy96kL
-	 Mj8Rw6tq/2zmr9fJYjfp0iAHQ3zmKVRrtZw3gVPzxZrCL24cKKvii98GLrGUh+2ivQ
-	 DjsX5QHWUjb52+Gbiey1hG2x7igaivsX67Hy6gPXFoLap4bJqA/qzEMIg3iNUrTIO1
-	 AgC7dhYw1IVlA==
-Date: Fri, 9 Aug 2024 09:47:16 +0100
-From: Simon Horman <horms@kernel.org>
-To: longli@microsoft.com
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	Erick Archer <erick.archer@outlook.com>,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 net] net: mana: Fix doorbell out of order violation
- and avoid unnecessary doorbell rings
-Message-ID: <20240809084716.GA3432921@kernel.org>
-References: <1723072626-32221-1-git-send-email-longli@linuxonhyperv.com>
+	s=arc-20240116; t=1723193447; c=relaxed/simple;
+	bh=qaDG7zboSJyGxTR0mQvPfaD2Ys4GkNK0yXQZsnFbJP4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=D3wLQADT+j4Z8ebWnBLfscI2DxH25K1rg5y4aSjRurafQuY5GgBWyR3L2eXX5N1S+NzaJ36+2lrCeKlGlTqcvQ36Fxm+SuSCvXDld9JA3Mgm4o2otXkJU14P5oFHZKqVYVMIDMsexG2R+knJEr7Sk2rpedqwKugJ8BiC8W7sAJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=nOpdApk3; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4798nWJN1597209, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1723193372; bh=qaDG7zboSJyGxTR0mQvPfaD2Ys4GkNK0yXQZsnFbJP4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=nOpdApk3W0mIVGTGx8lDDLemkDXb1ikHaEb54/iNYEwoijh6Qc+r9DKF3j5ZZGGHD
+	 1v7CXIE0+cowGjtwDM2u33EwyAUDoKUUlZsDV1zk0qVsjatMHG1Qgxv9qTmQqRfh+H
+	 eGTDOtTrLmNbluwNwbWiGi0JtDBeCoSOb1/fzIpzSiCxiw76FbznvLDPm+3Bbd7WYi
+	 LiRmhq9CukB6QiHXHUD2KFEs0p8rN0Pw8jW/5pdcVn91+m6JSvGFIU5ZbEKKE5cyg0
+	 ReIw927RLQ/crzo+8VfOOoDVXcoRumv2oqQ3vEwe0p25+knGG2pfjg5FL4ygwqQpzp
+	 tml2ffGXktWWg==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 4798nWJN1597209
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Aug 2024 16:49:32 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 9 Aug 2024 16:49:33 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 9 Aug 2024 16:49:32 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Fri, 9 Aug 2024 16:49:32 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+        Brian Norris
+	<briannorris@chromium.org>,
+        Francesco Dolcini <francesco@dolcini.it>,
+        "Kalle
+ Valo" <kvalo@kernel.org>,
+        Yogesh Ashok Powar <yogeshp@marvell.com>,
+        Bing Zhao
+	<bzhao@marvell.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "Amitkumar
+ Karwar" <akarwar@marvell.com>,
+        Avinash Patil <patila@marvell.com>
+CC: Kiran Divekar <dkiran@marvell.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "kernel@pengutronix.de"
+	<kernel@pengutronix.de>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] mwifiex: duplicate static structs used in driver instances
+Thread-Topic: [PATCH] mwifiex: duplicate static structs used in driver
+ instances
+Thread-Index: AQHa6jPW1qXxj1kE10+gt4nIKUPfkrIenWTw
+Date: Fri, 9 Aug 2024 08:49:32 +0000
+Message-ID: <4021e822699b44939f6a4731290e2627@realtek.com>
+References: <20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de>
+In-Reply-To: <20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1723072626-32221-1-git-send-email-longli@linuxonhyperv.com>
 
-On Wed, Aug 07, 2024 at 04:17:06PM -0700, longli@linuxonhyperv.com wrote:
-> From: Long Li <longli@microsoft.com>
-> 
-> After napi_complete_done() is called when NAPI is polling in the current
-> process context, another NAPI may be scheduled and start running in
-> softirq on another CPU and may ring the doorbell before the current CPU
-> does. When combined with unnecessary rings when there is no need to arm
-> the CQ, it triggers error paths in the hardware.
-> 
-> This patch fixes this by calling napi_complete_done() after doorbell
-> rings. It limits the number of unnecessary rings when there is
-> no need to arm. MANA hardware specifies that there must be one doorbell
-> ring every 8 CQ wraparounds. This driver guarantees one doorbell ring as
-> soon as the number of consumed CQEs exceeds 4 CQ wraparounds. In pratical
-
-nit: practical
-
-     Flagged by checkpatch.pl --codespell
-
-...
+U2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPiB3cm90ZToNCj4gKyAgICAgICB3
+aXBoeS0+YmFuZHNbTkw4MDIxMV9CQU5EXzJHSFpdID0gZGV2bV9rbWVtZHVwKGFkYXB0ZXItPmRl
+diwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICZtd2lmaWV4X2JhbmRfMmdoeiwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHNpemVvZihtd2lmaWV4X2JhbmRfMmdoeiksDQo+ICsg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBHRlBf
+S0VSTkVMKTsNCg0KSXQgc2VlbXMgbGlrZSB5b3UgZm9yZ2V0IHRvIGZyZWUgdGhlIGR1cGxpY2F0
+ZSBtZW1vcnkgc29tZXdoZXJlPw0KDQoNCg==
 
