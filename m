@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-66283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2F194D37C
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 17:29:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A36994D37D
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 17:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCD791F23BF4
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 15:29:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17241F23169
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 15:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9A0198E60;
-	Fri,  9 Aug 2024 15:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33D0198A24;
+	Fri,  9 Aug 2024 15:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WM8s0Apg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dlslsKFd"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1609198842
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 15:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DBF19885D
+	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 15:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723217369; cv=none; b=teJsKlTclBtJJIWaVV7dvOYdEmyCKNbzv6PATUwJYjelaML71pY2qice1+Kozg1juOOfazMQHXr2pcF/VkQQMJcEs+RAgvrlnVzlDRA0f5tddMByMqJDDWgZ5bsHwWELX0o0UXg+5LZs94V4y4U6n1be9BQR3wtxwTIhAkDUNvU=
+	t=1723217391; cv=none; b=iTIx4dMMecXXWnxjpq53O4DcfUSuONgpHD3i3EHDoRKj+c8fekke14dJ/Kesog+anOhf0xc5oxv50P8dcuwghCHgOEvHHc8wewdP3O/WhQTyAd+ptsDP7Q/eAzEy7QZavctqHM/+tlRgUXATAsUBAl2WLo8l3ZhV6fz39pdRmPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723217369; c=relaxed/simple;
-	bh=98E3TuM3TQmqoSqfPWEv3I8pWRbRVWWV8quLbdF4slk=;
+	s=arc-20240116; t=1723217391; c=relaxed/simple;
+	bh=Cre+FQ/kmBnvYs5YgX6DqNdezSARA5lCioFzGEHHVvw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NY+MesQV6NXuYqcyQUwNSSKBAs3lUVnj1J1rXNtWfRT11aqbY0h30t7iaSStZgSeeH48Z1nWfIIdsrbTzJTGE6E7sUQVPazlBcIm5vowegdW4GH6Xi+xI6kdd2RX8eEaNUVT3QbUJWDeqJYqmrv960waIs0trWM0yuMtiwPg/gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WM8s0Apg; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=SLM8MCasVliFdBS0Yjo5s1unazmrbipqdL7l1rSS0qtGeW9M49Dtmij4IxhXOx4otfU5t9lYNp6fledRMuhq0f0/QLayPkqBPUA6LxRek0E/4Na4bNSkcMoXyO4vWgapWCLXT14wLtiXmFk76ih36jr+9j7jZsw0plA4OtzNwGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dlslsKFd; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723217365;
+	s=mimecast20190719; t=1723217389;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IkaFtYOglx3SERuq0AG1B8o+eSlXUn20hFBeWUD5Y4o=;
-	b=WM8s0Apg+nptOhMneZfSAjBrCEw2aPcqy2n02Tc4ONG/fC2CkCrxI50r7b6ckD/P8bbMcc
-	9gxdzm2hUXmXbKYYvyOfDhdl3zgDdf4vaP/fnG/pO4CDbZGO/oWpyhPvxY/UeWTLJzjeu0
-	mHvJi0U0jO2MwmCFAhBQXMO1Ba4fRtQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+qb0Tn3R4/F9P9guJ4b8TeJDGiJ6K5JkcxwGHngJl1Y=;
+	b=dlslsKFdazzSJczq48PlYIcQLvpyNhOoaCf7iSSKLPKEOSVYyxPLXjL/4oxW7Sim5u996J
+	eDbMNdawiiYm0MXCFFWCtmWo9VAw5G8DsNpdhJwuvLFYLsxqvbsvnTPfuBGQ9gaYasdJT0
+	AYDy0UE5B9irZwcNZifvSr2KcR7nknQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-404--p4ISoAqNI22A3NmwcGqmg-1; Fri, 09 Aug 2024 11:29:23 -0400
-X-MC-Unique: -p4ISoAqNI22A3NmwcGqmg-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-42808efc688so15492325e9.0
-        for <stable@vger.kernel.org>; Fri, 09 Aug 2024 08:29:23 -0700 (PDT)
+ us-mta-108-l4XHIdCQP2m-iah4PbjzNw-1; Fri, 09 Aug 2024 11:29:46 -0400
+X-MC-Unique: l4XHIdCQP2m-iah4PbjzNw-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4280645e3e0so14909075e9.1
+        for <stable@vger.kernel.org>; Fri, 09 Aug 2024 08:29:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723217362; x=1723822162;
+        d=1e100.net; s=20230601; t=1723217385; x=1723822185;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=IkaFtYOglx3SERuq0AG1B8o+eSlXUn20hFBeWUD5Y4o=;
-        b=wS/g2Jq9yr9Zykqna3+ZHAjPpA77vBNFOvIGcvzscmbedwoEQbfn7kVwBPjdVxJ4o3
-         R35hjC+ernaoB4tZJkvivepn7hJumjbAkiTJ0fQe6kiJwMJNluMmt4rYesw9f02TamuL
-         0qg8dX4rSmmCgBtQYTVC4QHC/lLtidduq1G5QXZ1i3D1kMZmoo27Du/px6v95+a4c4ob
-         YEIbISmNC5jWeETW+mXeK1VMSU/2GkYRHkD6lEJGdT03JCG5kKX7cMTND498DFPR5C5W
-         rPNk9oQWNF2ZxeeRKyxpeJj1yOVdDykS7UHK+CK9fVBhsAWaADx8NRM1cbXPh6Jje1Du
-         MUbw==
-X-Forwarded-Encrypted: i=1; AJvYcCXGtl/Fd/u7sCUjk31Tif+lcIfjkQpHrabETSoR+hGINpmS41oEJ7b3Ax7z/KkrEz/eXue3fmxsVODY2E8xGQDc2cPO1rGA
-X-Gm-Message-State: AOJu0YwBAbSCGTBVci3bQmVV6VABnkTntHObq5ZPHwr7W5J6rSY5C8kQ
-	ZO6gsuCcASll7CfsiPdTrkz68Pjd3d+GLr0jyxeHG8EgNx7U6mCQcviEGCUXBDPUTc7LuZNP5ll
-	FnyUphO0jtIv6GXjF081Eu+CI0PtudgaMuJNmqACIviTN49wl3DR0HQ==
-X-Received: by 2002:a05:600c:46ce:b0:426:5ddf:fd22 with SMTP id 5b1f17b1804b1-429c3a17f1bmr13036385e9.6.1723217362433;
-        Fri, 09 Aug 2024 08:29:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE9g/HImcMSBHo0q13rPpw/b1gOqisdmkCTPdK/rjlFupPIN6Eqj9sBoWS7cZ0WsvzucC7hMw==
-X-Received: by 2002:a05:600c:46ce:b0:426:5ddf:fd22 with SMTP id 5b1f17b1804b1-429c3a17f1bmr13036185e9.6.1723217361886;
-        Fri, 09 Aug 2024 08:29:21 -0700 (PDT)
+        bh=+qb0Tn3R4/F9P9guJ4b8TeJDGiJ6K5JkcxwGHngJl1Y=;
+        b=mx8zjzWJZpW4FMoocBIbp9p7Q55ZwTtYZVCbYNL6IAAHPALCRtcZpSyxLZidnqU4l6
+         U/kDJlRA343p4j2PjMXWivBcbyq/fF2q98+U/hEnOB6r9247zaVEte06NDBBsCKZtRUn
+         rekwdll0j8XV1sw8rFu0EYb7sy62JTP+5cmmlGFHLB/riONadXuUcvpX3hF4RUTmGlrv
+         eOgFAfRIVgXgbdqu5WQJ3QKoa+Pw+VboCOiMVlCt7okTctjjgObKp/A1rFWhQ8JqlqGX
+         muiL3RCokOSlpZu/3L+0HEd8uMnJ7yVJfxz7nnuBhtKKqsPP5dkFUQ4UShzymBYexu1j
+         98RA==
+X-Forwarded-Encrypted: i=1; AJvYcCXJdMiQR0m479bVNlKrZyS8mFSmHMfyenSAGXY+ZOzmCPOiUmd7vlpDjux93eBjtqEcLF4GhcGnfRegsG9jpLU9jiOwFSeB
+X-Gm-Message-State: AOJu0Yx2im3qTcmVM8Fx9Lh/FiASgs6OI/pgywwz8jgR6S+kYqp5tEmD
+	xC4dyrScl5+N75QzAXEy289NXQSEzmH0+0UkL391ytRANv5RQi77PPsUOLj9gvvQ2vgXEFa6/tB
+	MXNgCeuaGKR8nTu0Tpz0fpib1+UyqVLy/wiFD/c3dQBnLo1sJze40CA==
+X-Received: by 2002:a05:600c:3588:b0:426:647b:1bfa with SMTP id 5b1f17b1804b1-429c3a174c2mr14386825e9.8.1723217385220;
+        Fri, 09 Aug 2024 08:29:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKTiQa7A0hgIVpw/ZWs2EQKjIeTX5+pvF0wUqZq/lUQ9GaeOmQ8UyiigVuIJHlsZzHtD3kPw==
+X-Received: by 2002:a05:600c:3588:b0:426:647b:1bfa with SMTP id 5b1f17b1804b1-429c3a174c2mr14386615e9.8.1723217384686;
+        Fri, 09 Aug 2024 08:29:44 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f09:3f00:d228:bd67:7baa:d604? (p200300d82f093f00d228bd677baad604.dip0.t-ipconnect.de. [2003:d8:2f09:3f00:d228:bd67:7baa:d604])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429059713adsm133237355e9.11.2024.08.09.08.29.20
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429059e0082sm133666195e9.48.2024.08.09.08.29.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Aug 2024 08:29:21 -0700 (PDT)
-Message-ID: <2cdc6d9a-0855-4209-9745-0ae15c4498a8@redhat.com>
-Date: Fri, 9 Aug 2024 17:29:20 +0200
+        Fri, 09 Aug 2024 08:29:44 -0700 (PDT)
+Message-ID: <13318f5e-6a76-49ca-8c7a-9f461061d1d7@redhat.com>
+Date: Fri, 9 Aug 2024 17:29:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] mm/numa: no task_numa_fault() call if PTE is
+Subject: Re: [PATCH v3 2/3] mm/numa: no task_numa_fault() call if PMD is
  changed
 To: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -93,7 +93,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 References: <20240809145906.1513458-1-ziy@nvidia.com>
- <20240809145906.1513458-2-ziy@nvidia.com>
+ <20240809145906.1513458-3-ziy@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -141,18 +141,17 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240809145906.1513458-2-ziy@nvidia.com>
+In-Reply-To: <20240809145906.1513458-3-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 09.08.24 16:59, Zi Yan wrote:
 > When handling a numa page fault, task_numa_fault() should be called by a
 > process that restores the page table of the faulted folio to avoid
-> duplicated stats counting. Commit b99a342d4f11 ("NUMA balancing: reduce
-> TLB flush via delaying mapping on hint page fault") restructured
-> do_numa_page() and did not avoid task_numa_fault() call in the second page
-> table check after a numa migration failure. Fix it by making all
-> !pte_same() return immediately.
+> duplicated stats counting. Commit c5b5a3dd2c1f ("mm: thp: refactor NUMA
+> fault handling") restructured do_huge_pmd_numa_page() and did not avoid
+> task_numa_fault() call in the second page table check after a numa
+> migration failure. Fix it by making all !pmd_same() return immediately.
 > 
 > This issue can cause task_numa_fault() being called more than necessary
 > and lead to unexpected numa balancing results (It is hard to tell whether
@@ -161,7 +160,7 @@ On 09.08.24 16:59, Zi Yan wrote:
 > 
 > Reported-by: "Huang, Ying" <ying.huang@intel.com>
 > Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
-> Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
+> Fixes: c5b5a3dd2c1f ("mm: thp: refactor NUMA fault handling")
 > Cc: <stable@vger.kernel.org>
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
