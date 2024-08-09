@@ -1,71 +1,74 @@
-Return-Path: <stable+bounces-66287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6C294D4FA
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 18:48:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAFB94D651
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 20:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78DFD1C227FA
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 16:48:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E1731C215A6
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 18:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125031B59A;
-	Fri,  9 Aug 2024 16:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9095158D72;
+	Fri,  9 Aug 2024 18:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTp6fDN1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hKD+dWRb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2700138F83
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 16:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF6D15ECF9;
+	Fri,  9 Aug 2024 18:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723222104; cv=none; b=ic3m/gOE5Iw0m6uDlnuWEleENEi9BpYEeczoXCh0/xgpn5LpVwe9pbN0q7NC8UVGXy3NU/u8hST/BIWVEhMrpENghSjmOZRx+9GRRylgAkDY2dHpZgAQuadC/Y4REVLxvJ4N/ZLzsmlbXbb88XgCCONnvekvivoO/ozM3HC3xpw=
+	t=1723228511; cv=none; b=Ns+7/heIne0W+isUdH6PF65jVMhDp4I1U3Tmd/+TjmYXZyXGlawAU2x0uMMwyslrGda6EhcFWbgKnW2PQP3SeyaX4FdSGo2sj5epfuEQvZHdwz87llDSs+q7N9943f1ovDRLGLlFTQHJjCcZCJ2SeAq/IoIH7a52xdEzFkIes8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723222104; c=relaxed/simple;
-	bh=DV24Qth48BZmZMiflU4Rk1Xti/jR+zRd72sjOu5E2no=;
+	s=arc-20240116; t=1723228511; c=relaxed/simple;
+	bh=GBzaLQaNZ6M2z21ceLlhGZ8CycU1DoE/e0LTOcmZPvg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V13alK9KT4CMJ0utoaJCsf19xKGYbb0HAAa2L59FUYfX+YGXQo3T9DHsFeZLs8oLleq13Xy69DG3pyYUKzDnrJzhW+7504BzkuRwnEPRtdwejAuzcOjp+VbTAlOIvRhkruYcWjpLgh8G1+HYMK3eBVSlnYcJKuBjuxysPviIi8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTp6fDN1; arc=none smtp.client-ip=209.85.166.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-39aeccc63deso1136275ab.2
-        for <stable@vger.kernel.org>; Fri, 09 Aug 2024 09:48:21 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=ikmVsenbuZNVHCuBdEqysiL88mZTUAUdWbvWFoIDE7wj1FBHUfeNQGNKUpUSrFKpxPZwo0titdIFJ7Id63uMhGqNd8FpwYTeAbnXNdoi1cgQqJZMs2vF5l5dJTNXSNGPN/ro+kW24vsh5xSX/lSeD7piABg2sJVdWJWl8RcGDAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hKD+dWRb; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4519383592aso14328201cf.3;
+        Fri, 09 Aug 2024 11:35:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1723222101; x=1723826901; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1723228509; x=1723833309; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=XIBS2fiq1eabJ4IYCoixxVdAtJaZLZJZMFj7PGFDm3c=;
-        b=dTp6fDN19CEDWhGpEnSiaWVC9pelPOYpKhF3VYf4qJ+nDreec5pZi+4cY+gM0runoK
-         OIrZqUkzx6srTNQFgrskoPgp7j1cd1SH5P9j1/5/8WzHiF6SJeHHgqlrq24Np3fR/emF
-         dmT6LUjEs3qXcStlPfYpkNxXaZ1mqBLFRV5qI=
+        bh=ZKLnO3NzNrZPScOiuu1Er/4alnL7NJ0165pjeuCDvB8=;
+        b=hKD+dWRbKsiPRWLvBmbWkpc7Pi3qnTYcucdjLybd1dU+dTNbGWV9vApTtU3A2sLCmT
+         6eQZSiG+yrDQ78XynR3HGbkl05Ol/gb3F6l2vkQPE20ZRobaqnWdEvuqZZr+mAZ4Uv25
+         2CNkP1OkS3nJapUuFGnm/OiyKUTu4tBV3lA0Oht0D/S9jm2Lx4wVcd+F0xFOX9A2NThw
+         dA2RlNcCdA8Pg772mj5uzuVHL4WsTG38IsF4dNiS+rUPv1BqdW2H1GrXZ83I4l29dBMm
+         VgMwFi8ZZ36lwhA84FpVrUbIxaeZQJVNXWDJMOWJ3DDcR4LDiEbT/Q1DR16aiiKxp/Yd
+         XVdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723222101; x=1723826901;
+        d=1e100.net; s=20230601; t=1723228509; x=1723833309;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XIBS2fiq1eabJ4IYCoixxVdAtJaZLZJZMFj7PGFDm3c=;
-        b=DEgc9pkOk7UZfeU4K37AoycwR4Gwk1a+BusTXrRunbkj12IXtDB5L8yrzmQFjZ+p/f
-         Rnn3mvggzjtE4jxpTc+y9w4XNQHIsokt63IpAxVAQyFtmXsR1+QEduKUXly0t9SOXFg4
-         SyQmt1ifaxYRseMYsJvfMmO7rArmB8dKgG2aQ0v7pGX+MwjOvWq7Y60Vg+zcvS8vuFRq
-         FsgnBFGDUyZT9Igi+vONkIvHyieq1aT5IlsT9/Mr/0QktqsiseNFvthgvbx7UEb/UwXf
-         kf+kqa9dYiC2Pu3kAf5p62bKoZDEYyLZWi9UNlDqqtx8RxAckBlFBmZZIKrzqnsOmoHA
-         cPpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXy/ULyeVHysEA5CTzQGEaI0layRMubGK3cYNxO3vXVQRF7UAslBuLhxhzgS/dx5lw9RetOYOeWlDogEYZqxl3X50CCy8eT
-X-Gm-Message-State: AOJu0Yw2eABZOBWu0maYpyizjvhqa59wmZnTizk/lKy8fe4cmHD1vFPW
-	Xwffgf9ntHWW63Vdd2kejbsFGGpvI/sE1eAA5oNvB2w2HEbWKbeKhCZTl7ouLjk=
-X-Google-Smtp-Source: AGHT+IEPtXUbZewJJPbHdH3NNNItqquYGOjjEuRG2n0DfjjJa+ymgUHQYn2ADond5MgNHtrhIJmfAA==
-X-Received: by 2002:a05:6e02:2193:b0:39a:eac8:9be8 with SMTP id e9e14a558f8ab-39b7a40deb6mr15291675ab.1.1723222101188;
-        Fri, 09 Aug 2024 09:48:21 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-39b20a9ab7fsm65210735ab.6.2024.08.09.09.48.19
+        bh=ZKLnO3NzNrZPScOiuu1Er/4alnL7NJ0165pjeuCDvB8=;
+        b=f3H1CJe/TpJvQjuKPqizgzZxX5wMvRKNBuls79pWBuLGv8mobvlB/IhxC9MiVYvsuA
+         oWU3MAGqrbqwABdtqpcZNvaift9SjoKltUDhDyQy7bFqDo9nNLqYtasnO7wWl5sp2UsF
+         DGLoMYW+Yq7LNCYb2lr2cUL/WELF21JnqEcqaGCrZtosrNfh9+F6Pz8h+ftW2Hc8ngaG
+         P1Yp97OexH4K/he6eVv0Tl2id0GIl4KUM3cBNQVx9R4m//0pm8ullOiejIwmxUSo/IU5
+         7IN1v7ucjOMCiF9Of7QuRe2ZVRB6cpdHjLQhPlL/87YOlwjgZvHQxxrIqd09cwnr2xqR
+         5Yiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUU0sKliLnkcJc7aW4xtigkuBUIdxu69NCKqy/wSP7SH6qt/xGuHLeBXlw1IFTQVK2CmZJQTnweyEsCnkQzq7nbvbJcYI6HXLCyJtihwfCMxfST+V2bCCASts10PBT0wfF9C8oA
+X-Gm-Message-State: AOJu0YyJQDCQsYkYXh9LQFqVmpv/LR4kdYoUCT82E1tDiwXaEQ5D9+W/
+	kQcwFEEv00TnAFPG+Ve/uS8A+Zv1bpeTidOmFC+Hyb24E3Lb9pA8
+X-Google-Smtp-Source: AGHT+IGvOBdQGy9B0d4iLbiYIuCoHAJBcm/SlEVS/R0YZCbAPVGloz5VZdbDZ4emSyzwOWP9wkzLiQ==
+X-Received: by 2002:a05:622a:1c0d:b0:451:caeb:8cfd with SMTP id d75a77b69052e-453125b87c8mr23675521cf.31.1723228508674;
+        Fri, 09 Aug 2024 11:35:08 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id d75a77b69052e-4531c1c4c56sm342601cf.23.2024.08.09.11.35.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Aug 2024 09:48:19 -0700 (PDT)
-Message-ID: <cbb133f7-c447-4fc3-96e3-74952bb2bf44@linuxfoundation.org>
-Date: Fri, 9 Aug 2024 10:48:18 -0600
+        Fri, 09 Aug 2024 11:35:07 -0700 (PDT)
+Message-ID: <a74d414d-7701-436b-a31f-ed8ec54435d3@gmail.com>
+Date: Fri, 9 Aug 2024 11:35:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,79 +76,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests: memfd_secret: don't build memfd_secret test on
- unsupported arches
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- Mike Rapoport <rppt@kernel.org>
-Cc: kernel@collabora.com, stable@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20240809075642.403247-1-usama.anjum@collabora.com>
+Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240808091131.014292134@linuxfoundation.org>
 Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240809075642.403247-1-usama.anjum@collabora.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240808091131.014292134@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 8/9/24 01:56, Muhammad Usama Anjum wrote:
-> [1] mentions that memfd_secret is only supported on arm64, riscv, x86
-> and x86_64 for now. It doesn't support other architectures. I found the
-> build error on arm and decided to send the fix as it was creating noise
-> on KernelCI. Hence I'm adding condition that memfd_secret should only be
-> compiled on supported architectures.
+On 8/8/24 02:11, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.104 release.
+> There are 86 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 10 Aug 2024 09:11:02 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.104-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Good find. Please include the build error in the commit log.
-  
-> 
-> Also check in run_vmtests script if memfd_secret binary is present
-> before executing it.
-> 
-> [1] https://lore.kernel.org/all/20210518072034.31572-7-rppt@kernel.org/
-> Cc: stable@vger.kernel.org
-> Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
->   tools/testing/selftests/mm/Makefile       | 2 ++
->   tools/testing/selftests/mm/run_vmtests.sh | 3 +++
->   2 files changed, 5 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-> index 1a83b70e84535..4ea188be0588a 100644
-> --- a/tools/testing/selftests/mm/Makefile
-> +++ b/tools/testing/selftests/mm/Makefile
-> @@ -53,7 +53,9 @@ TEST_GEN_FILES += madv_populate
->   TEST_GEN_FILES += map_fixed_noreplace
->   TEST_GEN_FILES += map_hugetlb
->   TEST_GEN_FILES += map_populate
-> +ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
->   TEST_GEN_FILES += memfd_secret
-> +endif
->   TEST_GEN_FILES += migration
->   TEST_GEN_FILES += mkdirty
->   TEST_GEN_FILES += mlock-random-test
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index 03ac4f2e1cce6..36045edb10dea 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -374,8 +374,11 @@ CATEGORY="hmm" run_test bash ./test_hmm.sh smoke
->   # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
->   CATEGORY="madv_populate" run_test ./madv_populate
->   
-> +if [ -x ./memfd_secret ]
-> +then
->   (echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
->   CATEGORY="memfd_secret" run_test ./memfd_secret
-> +fi
->   
->   # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
->   CATEGORY="ksm" run_test ./ksm_tests -H -s 100
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-thanks,
--- Shuah
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
