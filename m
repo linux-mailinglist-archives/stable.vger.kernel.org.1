@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064EC94CE41
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:06:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03FDB94CE40
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68611B21A96
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87AB52840A1
 	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A941A190059;
-	Fri,  9 Aug 2024 10:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5211190693;
+	Fri,  9 Aug 2024 10:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZCDBo+q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="neoil/+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A584EADA;
-	Fri,  9 Aug 2024 10:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711D6190686;
+	Fri,  9 Aug 2024 10:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723197954; cv=none; b=kTB/9pUx6M47706kHQdQH7VN4s7YiP1oi1nk/XdO2xpH+mu+XyK29vvW8yhrOi1PXpWxXkJ2w2GUmOUpWMM5KnG3xVlEBhNRzG2fZG+v6YgSNcFR2cgLoIgy5SjO86HFr9gJR/Uc4Ws4v0qmfv9MpJMSpvGPZ666EPyBSJO2cKM=
+	t=1723197956; cv=none; b=S5XbwK0ku6RVeCmCjC2+U3Na9jUxbRr5qOQKUECFkn3Y387Wrdor8+PtB4fDJQngPCZLdArmSJze2u8bvtnHL43YWPgadbi/Xg8Opt5aBUXA2E5gNmC2Aw7vfSxsXjD5f/k3oONQ746RMervW8vxXdK16+IpXd8pEbllJZ+6zfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723197954; c=relaxed/simple;
-	bh=H6Edvmkak0d2RV6jf8sCTEr45VuVfKj1yD8t//x4d8s=;
+	s=arc-20240116; t=1723197956; c=relaxed/simple;
+	bh=YCSrhm71GldORqnA/6qfNtRYCM2OXbxfs5+FLoSbCoA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EQG2W14HZ2RfhQn2DPS1kdYTpDiJKuxu7lTzl4dGjCMs62othllxk2EAzWBWFH4NbJ1K8BB1CvotRzv3w/DHxebZrOGst1qB3niegaMSW1dN0yvuhSirztCLVcBidfEel76AaDBC+gCyk6Gb+XODzRqcIgl5R0Il7TfyKmeMz/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZCDBo+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE48BC32782;
-	Fri,  9 Aug 2024 10:05:52 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=fMbP47RDvGI7Bz3XTumWdI1N2+enJfQjJo36nJBPaFKETBmoFgQZHCZxcHk97NcvIE9R6a5AR2FJl80mZL7gn7fLSI1MTNZxanpvGjMu1vBZDdRgZT+1I/CbT/VU65JYLiX8b9BGr343WkpuwVWdyPvuCaSLhJ8VMy/KpFVXQZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=neoil/+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB41C32786;
+	Fri,  9 Aug 2024 10:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723197954;
-	bh=H6Edvmkak0d2RV6jf8sCTEr45VuVfKj1yD8t//x4d8s=;
+	s=k20201202; t=1723197956;
+	bh=YCSrhm71GldORqnA/6qfNtRYCM2OXbxfs5+FLoSbCoA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sZCDBo+qajJHmiBByLTSQSf4TcKemvKCW6Zrgb8V4L6b+Y9h5p33SPdD9w9a///NU
-	 x21R817lDgMLL+w2Ye5vTfW8OciFV/LON6+rxrCX4f8N5ydqiR0xA3Kbolda5ZNITx
-	 A2OoRvSav5aD348DQ+6FqXmEYIybAooEBB02IdrTkEKuM+yl3eQAHAnuOchTDOfbKT
-	 efFNU65XqXMNF1n2hHJBCV3pi8sHLy7jSHgezPGoVDrDZbuYsdm2wsrV6cMtoxbPS+
-	 OJudih0d6IazG/xS+Y41Oj+Nk/vCUUkjmvsy35U6p6L7zIHzsXJaK7EBLueC0o8oaN
-	 r4E7HC8NN6FnA==
-Message-ID: <b3fc223b-c9be-4c55-9515-1044b9fa42fd@kernel.org>
-Date: Fri, 9 Aug 2024 12:05:50 +0200
+	b=neoil/+xGQTxqMaZ30HwqaZb+7biKBqGKcFeThm772I0gX7mBe7dscBNYys5TVo5V
+	 DVDpE/wBufzvcTbEiFXVUqtlPwLPb6H67OZVgVZ/NuDYmTetFTB5FBWc8wYqnyIwcy
+	 J7IxGyMta9JvKSNl90MnGG7jMlz26qAC14QjtKgtRjYrhn7nRR31osUkKDGfRnHGLa
+	 /xqI03TgE2gsqPbJjGk29cn1eNf12yvg1p2GGDYGhASk4TdS/8gwgxG3nJGJAi+RNp
+	 aeNB/AK/ph1j76Qpl9kDiRmzwA7dfy57pQinqf2eOA/eEAgO1uu+k/noteNUdFAKdC
+	 YExFdPmSbbEBg==
+Message-ID: <a8e874c7-48db-4568-8c74-1e2d712a41eb@kernel.org>
+Date: Fri, 9 Aug 2024 12:05:54 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,13 +50,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: join: validate backup in
- MPJ" failed to apply to 5.10-stable tree
+Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: join: check backup
+ support in signal endp" failed to apply to 5.10-stable tree
+Content-Language: en-GB
 To: gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org, martineau@kernel.org, pabeni@redhat.com,
  MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024080708-abreast-sphere-f97c@gregkh>
-Content-Language: en-GB
+References: <2024080721-alarm-boots-fe07@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -102,7 +102,7 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024080708-abreast-sphere-f97c@gregkh>
+In-Reply-To: <2024080721-alarm-boots-fe07@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -121,26 +121,32 @@ Thank you for the notification!
 
 > ------------------ original commit in Linus's tree ------------------
 > 
-> From 935ff5bb8a1cfcdf8e60c8f5c794d0bbbc234437 Mon Sep 17 00:00:00 2001
+> From f833470c27832136d4416d8fc55d658082af0989 Mon Sep 17 00:00:00 2001
 > From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Sat, 27 Jul 2024 12:01:27 +0200
-> Subject: [PATCH] selftests: mptcp: join: validate backup in MPJ
+> Date: Sat, 27 Jul 2024 12:01:29 +0200
+> Subject: [PATCH] selftests: mptcp: join: check backup support in signal endp
 > 
-> A peer can notify the other one that a subflow has to be treated as
-> "backup" by two different ways: either by sending a dedicated MP_PRIO
-> notification, or by setting the backup flag in the MP_JOIN handshake.
+> Before the previous commit, 'signal' endpoints with the 'backup' flag
+> were ignored when sending the MP_JOIN.
 > 
-> The selftests were previously monitoring the former, but not the latter.
-> This is what is now done here by looking at these new MIB counters when
-> validating the 'backup' cases:
+> The MPTCP Join selftest has then been modified to validate this case:
+> the "single address, backup" test, is now validating the MP_JOIN with a
+> backup flag as it is what we expect it to do with such name. The
+> previous version has been kept, but renamed to "single address, switch
+> to backup" to avoid confusions.
 > 
->   MPTcpExtMPJoinSynBackupRx
->   MPTcpExtMPJoinSynAckBackupRx
+> The "single address with port, backup" test is also now validating the
+> MPJ with a backup flag, which makes more sense than checking the switch
+> to backup with an MP_PRIO.
+> 
+> The "mpc backup both sides" test is now validating that the backup flag
+> is also set in MP_JOIN from and to the addresses used in the initial
+> subflow, using the special ID 0.
 > 
 > The 'Fixes' tag here below is the same as the one from the previous
 > commit: this patch here is not fixing anything wrong in the selftests,
-> but it will help to validate a new fix for an issue introduced by this
-> commit ID.
+> but it validates the previous fix for an issue introduced by this commit
+> ID.
 
 FYI, there is no need to backport this patch to v5.10: the modified
 tests are not in this version. Some CI will not use these selftests, but
