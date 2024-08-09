@@ -1,198 +1,137 @@
-Return-Path: <stable+bounces-66247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FDC94CEF1
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:52:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C966794CEFA
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 12:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1FA7282EA8
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:51:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 061371C2155D
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5EA1922F3;
-	Fri,  9 Aug 2024 10:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC000192B64;
+	Fri,  9 Aug 2024 10:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eBf3VgIg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tkorLTHj"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2041.outbound.protection.outlook.com [40.107.223.41])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B0615ECE2;
-	Fri,  9 Aug 2024 10:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723200713; cv=fail; b=gxSsLDosLPeBH62FeZtNLt0uACuUof9s7JzZY3Yb/7p+Aod6RkEx8M82PrPZiCPEI6VXzFZUNUhTJa6DHznIBM/IQIwr5gueS7NTbAoyv9p5vkHjFN4KxId7+DAT7SrgbPC7VbX6Oej1f84Vy74ocj8MHx19euBGbsn4g2/tO0o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723200713; c=relaxed/simple;
-	bh=bq+EK/X3/XaKaZrZFx45GmY2IMOt+Ds9gJwseh1bnvQ=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=bSyzCMyiTvaXOEMXbDs7IJZyjKMMmMhKzOuhtwng7YnkCwYqQ7rkCVerc98/tnuptlvZ0EY3uUvO5Q0kKb7NCGf1hDyktyIWqoRi1j/R33y+pjQHVg/olbSg2mnG2s/J0ilqP86YVZiliMOSRzY7d1TqERsXpJyN7mIgvciVNY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eBf3VgIg; arc=fail smtp.client-ip=40.107.223.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bTS8i1xqHkUBURg3nAZcI4nbH2QFgU1FrmmjDhPSbVz9ii6erJndPLUzCBh3DGfiaJfywkCNQwsYMcThLnJ3KYNeujXF94KGDuzmGFkGRQyBS/q2kBbkGo97TJqhcXWd6rbEtd2pkIbxsoN2Cb7ywPTdKJ4EnlNRrQx+VzhFVuT4OZa0BuK1H8vhuW+2LQHAFcHG8T/fVJbimJucUsdDMheohkC3DzluJWzZdp117Nz1YTlAOL1uVbHhCTyduaWprQX0nRrfpiXgPPLsaauIoUZOAKN8oRHb12JUbuXJlPPGaNYqWfQwb+syF9fna7Ey/j5AF+OY0eSjx4SUhB1i9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hafN6TFFsvHX8fbanmhgz1CO5guAJ8JwFy35ix1KC3M=;
- b=uHJPmLJ5KZx2fDlKYLyWDqkUP9dXgzgkxIyxmKCmcICZGN1j2PI6eNZptJ15a97bkAHKzH/zRFuz42vrRXn6cSkkz/GN69WDS6OiG4/lIdxl2JElyG7XQ580MCm7ciHXos7c1IRmPFgJTLy0hrFfzs7LJix+emi6Q1fliNw5jrxLJFKVKf8kTScbb8Yqp+N+fTNnnUlDvFBmeO1iNqR9QqyjP7d+cE+0oSUyp3z2wr0aS69lcAiZ9ssUfHukBZBv3H44URQMZv2ALRyM3IwZyZhaytFzw762P189mlqMOAFrEmVJai0ZTCI1wYD7NO54/PiyzFGyvFUM+xLx0kRm/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hafN6TFFsvHX8fbanmhgz1CO5guAJ8JwFy35ix1KC3M=;
- b=eBf3VgIg4IxObHOMfJHcsLrZ0tqBHYL3yJsi24Cnd4tRWbgGuEHaENzIz4yWgP0MrDCo6XG2UMPW3OSZdS1PnDZIjmHKNg0Ird26jPgalh0x8Pt80t5D1u8eaevGXrtIZOi2hyu0vh5mXNoITz14E3NgcwfUAR3URbgBFsbh783r1vxO0mzJXKkoNP96GXEkYgNOw983bM5i3UCCMQPrNSflFqOxCQoiLSVZu1lSRDuvwwBhpqinKWlclUrsJc6QYKdv6F/nMmt0a0fcG2GvQQV7KFk1EuajTYpWvs3GCyPkQAfj1HYWRpnWrKzfYtbpQ8ZET0pxPsMQ5D59mDC/7A==
-Received: from PH7P223CA0018.NAMP223.PROD.OUTLOOK.COM (2603:10b6:510:338::35)
- by DS0PR12MB6605.namprd12.prod.outlook.com (2603:10b6:8:d3::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Fri, 9 Aug
- 2024 10:51:48 +0000
-Received: from SA2PEPF000015C6.namprd03.prod.outlook.com
- (2603:10b6:510:338:cafe::6a) by PH7P223CA0018.outlook.office365.com
- (2603:10b6:510:338::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.17 via Frontend
- Transport; Fri, 9 Aug 2024 10:51:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SA2PEPF000015C6.mail.protection.outlook.com (10.167.241.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7828.19 via Frontend Transport; Fri, 9 Aug 2024 10:51:47 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 9 Aug 2024
- 03:51:34 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 9 Aug 2024
- 03:51:34 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Fri, 9 Aug 2024 03:51:33 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc2 review
-In-Reply-To: <20240808091131.014292134@linuxfoundation.org>
-References: <20240808091131.014292134@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91EE192B60;
+	Fri,  9 Aug 2024 10:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723200860; cv=none; b=B9c8J2cWMPXSYYnwInPeQKzMum+kvkMlRZ0HDX7fa8AZRPs22zUz5YPUb+vy933c5nAttVCg4ZQqszCOec1oQRnDTUW96yS2519nW2BqC/K68OhFVLUvn6lP7OZBzICSxsAeRTiphj8+hcvs5E69MyZmmuglGmpkRztZ1fWZ7zM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723200860; c=relaxed/simple;
+	bh=mIy8OCMJjbDJRr0Uw+t6ZyqmDG2lLt0/ipVE5kaw754=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IDc2qSwMPA6hqbR+FSQyZxe7NHoqvUiHweAMA7vYTGsUHmgvHKcrq8WwmWRyIo0puPR9QcHrt3yb2VZFtkkZiiRLuUImuF4NKRLb101WtjGPvdS+kH1AImcw6SoaFjcr+DIoZEA4QM4GE0o4mds++6fHotvRICtk2rf3XqscCVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tkorLTHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C07C32786;
+	Fri,  9 Aug 2024 10:54:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723200860;
+	bh=mIy8OCMJjbDJRr0Uw+t6ZyqmDG2lLt0/ipVE5kaw754=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tkorLTHjO7c+sqhqx0s9z00oQy7wQyiEyGJ/bDOakApJ+HfFTDFP5I90qJKRfq/+r
+	 kTWy9deG4zzCq9uNDvXIab+9QYepSNXEmvJ4837kEWTqYisE7F8uuo6babedL0VV1Z
+	 RIOqlo8EUlS6wd+bDmb8uB0BGA+b00zmk3a9NmMha5kFm9TMxjJGrvdbnlihZgZ2fr
+	 YqUK3b05vu3y9M2SVAJY4vHzKACRh7BX5fPoMaUuHLHu/a326ciDsiI0fp3/KZkiPC
+	 wM80SU7i95wOr94GK+wu0VUdjtNzLOjKe5YCy7du/ZqbjnvMk/dI8zrondzNGTeipg
+	 IuCcKFfv6qQ7g==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10.y] mptcp: sched: check both directions for backup
+Date: Fri,  9 Aug 2024 12:54:13 +0200
+Message-ID: <20240809105412.2901173-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024080759-deploy-send-dfa5@gregkh>
+References: <2024080759-deploy-send-dfa5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <ec279728-5d36-4b01-b46c-5eefecb9198b@rnnvmail201.nvidia.com>
-Date: Fri, 9 Aug 2024 03:51:33 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015C6:EE_|DS0PR12MB6605:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8f6d1d8a-522c-48f1-d4c8-08dcb861443b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cGpqTml1SFJ1R1VPK0JtYkRpaWtRUkVVQkJkVlhJMmwvM3ZjNUtMZXd1VDJE?=
- =?utf-8?B?ODVnS3pSVldaSzJNTWNrWXE5NFIyQlNRMjB3Y05PVFhUOXFxVDVmUFppY1lt?=
- =?utf-8?B?dTh0WmhUb1hXNzhQK0RPV1FHaXE1RURmTjMyL3A2Tm1JQzFsTmJjUm9TMEw2?=
- =?utf-8?B?eXNlR25TVmVYdUxQQjlVZ3lzVFdiSVRoZnhzeXAzc2VYbFZzc1hUZ0VEYitD?=
- =?utf-8?B?YWx2VGNIenJDbmxmcDl6WjltZ0FKc2tyd25kYWozL0lEV2hYVHhrTUUwaVNl?=
- =?utf-8?B?MzZhZjUxejJEZ2g1WWdoMkJoVFJPWHIxbTRHODFhNk1ZUXl1Nmw5MEJzR1pG?=
- =?utf-8?B?V3VLZC95Y0QzWWZ1Zm4yOHpnVnFtT0pLZG9uUlZ1TCtqdlBjSUtSME5QOEd5?=
- =?utf-8?B?ZTdFVVNYMWxIdm5NZWRWRWpLbHo2bDBuck1xdzlHUGYzZnJ0RFdiUVJJT1Zn?=
- =?utf-8?B?bENwcCs0NHRHNnhOMzNpTDlSUXFkM3hKd2F6WDNpNk85dHc5SDZ6ZmQ3YjNk?=
- =?utf-8?B?NEwxTk9WUjdVVDNCVkNHamhzTHFKOEZvZDNWd2JoUkpvVm5qSHNjdkRwSzhz?=
- =?utf-8?B?MEtmV2JkbE5seURlWk0ySmE5aHg3V1J0cCtsUVJOR1BPemNQYmU3WnltUVA0?=
- =?utf-8?B?cHBjbW40L0xiYjFsY3lVdmpubDhvYnlyQUQzTnhLMzhqbjFNazNxQnZkTTU2?=
- =?utf-8?B?RU1Vc2sxV05jdmdUMDAzbWFENStEUWRPMnVhWW42cmo3SnY2T2w4MFZvNW9r?=
- =?utf-8?B?bFZwOWN3K1FvQWRCS28xUU5qSi9UOG1wOTdaRlh0MCtEd1JBSWQxNVZocFlO?=
- =?utf-8?B?NjluR01EeEE4SDdHTThudHBPUyt0SkR1MURvWm4xaFRMbnMzTE5aNXV5NDFr?=
- =?utf-8?B?RWtERm51Ym9rMDhzd1VlZ3RBZEVJNGF1RmZNN0VYTk9aYlhyVHUyQkI2TlVh?=
- =?utf-8?B?R2JyNkZDUzRHTkFCMXlqdDdnMlVRMnE0dllIdU5oVGk4SWRMZzJPcVFvQWho?=
- =?utf-8?B?aVNGTlBhMzNoM1pWcVBsZzV5UmhUK2lVOWduYmY5MVYyQ1NUU0JJc2dRRzAz?=
- =?utf-8?B?SWdkTmZJN1ZMekJNVHdaYmpTRFVZZnZCb0N4V0xhK3lNMWc4aDgrcmtwYSs3?=
- =?utf-8?B?VjdEMkFEMTJta3lUTWhQS1RwY2psV1k5UlJIWGtLSHEveExuemVwcUQya2kr?=
- =?utf-8?B?RmNWVXVZbUNUUWJnSlJCRkxJbmdMWTVJbnBYNElmbElOZXRUbW1teGxDKzBS?=
- =?utf-8?B?b3RxQ0IyVzBhN0VVZVYwNzVzVG5qYnV0Q2ZoMGx2WlA1Q0RMRlE2RHlIcmNy?=
- =?utf-8?B?UENDVFFBdUxVaEFhdENEV29OVVpyTDlVcXpXUUI0TEdpaGpvd1BTVE1NcDdB?=
- =?utf-8?B?cW5YL0h6UzdtS1BRcVUxTXh1Uk5ITWMrQUh0N3lYRVRLMjZCd2tPaEZ5dTlH?=
- =?utf-8?B?L2NmMTk1TW0rYXdQbnVxNGhJM2dPMVMyTmRSU0hTYXB5TlVEakl0UncxUWxr?=
- =?utf-8?B?QUt1WGRMMjNmQUZYUnpEaEVEZmlOQWE4b0ZZemNqUVV6MDBqdnpDQ096QVcr?=
- =?utf-8?B?WWhLZDhCeXBFcDdNbmgwNkhBelVVL25qYTFHbHNQMjU0R3VvVEgySDFJdnoz?=
- =?utf-8?B?Y1M2dmVVN0Z5U0tmUFNKdTBCNDRGUnVzSytDYWQ4OWR2eXdpa2s4Rkk1amZU?=
- =?utf-8?B?eDBCSTVCc0MwSTRQMlF3elRvNlM2NUZSSFdYeDY5Y3Y5NDhXR21LcEFZNGRq?=
- =?utf-8?B?WW42UGxIYTE3SkRlYzV2bmhCSitXalFiaUdFc2tyZTRabXNqTzNkVGE2dm1X?=
- =?utf-8?B?eWVjSFFsbm9vOTdQeSswZ0pKK1NYejdpcS9adm9jQ08zNk9qM3JZM21wSjBR?=
- =?utf-8?B?RFpwL3kxOFY5TlhlVFQ2WG9LU0VGN0hUKzIzeURUdU5HeDhMUnR2Qy9RV2tr?=
- =?utf-8?Q?poz8RUWNLrj78PSTTd1Orv323rX9uw0b?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 10:51:47.4315
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f6d1d8a-522c-48f1-d4c8-08dcb861443b
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015C6.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6605
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2724; i=matttbe@kernel.org; h=from:subject; bh=mIy8OCMJjbDJRr0Uw+t6ZyqmDG2lLt0/ipVE5kaw754=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmtfVURlEGLCH2iaJNsSGUnudgJaQSQ8EOjz7KF tnNk/8l4PmJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZrX1VAAKCRD2t4JPQmmg c/IFD/0SmhUFLS3ux3Fe4eyTmEZeMJZYLFocQ2rxwYiyzwALclXDXCYLDu0V9AjyIH6i3HcD0jt qB6EuyulsxhXVUB/oq1Bl9WpDAHjsW7qmufQ60vUasHaxx8ClLZsJUjKvcnJm5isMJlk6ATZzgg igqmtQSY6z7mlPyzEZMHS1mFVNPGPeTe/Ih45fecYsgS5IN0klcSxjthGRyDqlaXS+63t0xnOTy udicJXSrNHW2hL40+yV5uPHzOKCG39KnuARfXRpT2Zyhr8y1ZouzEF4Hhh/09LyrXyWIlwchedk DjzBxUrCAV8yEfdElIe5D4awLcBsM6N7sgek+ShysbViEAfdiNqZuIqxpuJTVmBEiOneSBEdnVy ZG1KKoJm7XMtIICmWsH+8fkNWMtX3539OvdhH33lPm0IDUrZWAa2XZFIvO2667MQSI8Oe3spPer Oy/kAv1yYj5CToIxa2pJxh8g/88DyIDISRXbuKVXAty3ajCusBwkKZJYkkWiVxQQgdoRZGQDLHn LnYE/08B3Eg1kwOfarbZQ/gioM4M86VqfdWzdKHTJbhqKoBJmj19JAeO717jasS41F1jhqVB+ea 6+LDYZ6Y0IJrKDOmwEpMx6aE8ET4Jin9/tV/qMON1EsBg7G1C+rRv5hsYQGo5pq98eibTZue56F 3mYpGfqyhBMhnqQ==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-On Thu, 08 Aug 2024 11:11:49 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.104 release.
-> There are 86 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 10 Aug 2024 09:11:02 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.104-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+commit b6a66e521a2032f7fcba2af5a9bcbaeaa19b7ca3 upstream.
 
-All tests passing for Tegra ...
+The 'mptcp_subflow_context' structure has two items related to the
+backup flags:
 
-Test results for stable-v6.1:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+ - 'backup': the subflow has been marked as backup by the other peer
 
-Linux version:	6.1.104-rc2-g54b8e3a13b43
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+ - 'request_bkup': the backup flag has been set by the host
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Before this patch, the scheduler was only looking at the 'backup' flag.
+That can make sense in some cases, but it looks like that's not what we
+wanted for the general use, because either the path-manager was setting
+both of them when sending an MP_PRIO, or the receiver was duplicating
+the 'backup' flag in the subflow request.
 
-Jon
+Note that the use of these two flags in the path-manager are going to be
+fixed in the next commits, but this change here is needed not to modify
+the behaviour.
+
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in protocol.c, because the context has changed in commit
+  3ce0852c86b9 ("mptcp: enforce HoL-blocking estimation") and in commit
+  33d41c9cd74c ("mptcp: more accurate timeout"), which are not in this
+  version. This commit is unrelated to this modification.
+  Note that the tracepoint is not in this version, see commit
+  e10a98920976 ("mptcp: add tracepoint in mptcp_subflow_get_send"). ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/protocol.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index a36493bbf895..a343b3077458 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1124,11 +1124,13 @@ static struct sock *mptcp_subflow_get_send(struct mptcp_sock *msk,
+ 		send_info[i].ratio = -1;
+ 	}
+ 	mptcp_for_each_subflow(msk, subflow) {
++		bool backup = subflow->backup || subflow->request_bkup;
++
+ 		ssk =  mptcp_subflow_tcp_sock(subflow);
+ 		if (!mptcp_subflow_active(subflow))
+ 			continue;
+ 
+-		nr_active += !subflow->backup;
++		nr_active += !backup;
+ 		*sndbuf = max(tcp_sk(ssk)->snd_wnd, *sndbuf);
+ 		if (!sk_stream_memory_free(subflow->tcp_sock))
+ 			continue;
+@@ -1139,9 +1141,9 @@ static struct sock *mptcp_subflow_get_send(struct mptcp_sock *msk,
+ 
+ 		ratio = div_u64((u64)READ_ONCE(ssk->sk_wmem_queued) << 32,
+ 				pace);
+-		if (ratio < send_info[subflow->backup].ratio) {
+-			send_info[subflow->backup].ssk = ssk;
+-			send_info[subflow->backup].ratio = ratio;
++		if (ratio < send_info[backup].ratio) {
++			send_info[backup].ssk = ssk;
++			send_info[backup].ratio = ratio;
+ 		}
+ 	}
+ 
+-- 
+2.45.2
+
 
