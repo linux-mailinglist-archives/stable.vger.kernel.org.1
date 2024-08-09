@@ -1,233 +1,118 @@
-Return-Path: <stable+bounces-66257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53FF194CF86
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 13:50:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A03E594CFAD
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 13:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B4FF284731
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 11:50:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06F8AB2228B
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 11:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52120194AD8;
-	Fri,  9 Aug 2024 11:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD379193088;
+	Fri,  9 Aug 2024 11:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="daypgCBf"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=shreeya.patel@collabora.com header.b="WuQIpQB1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AEC1940B3;
-	Fri,  9 Aug 2024 11:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723204157; cv=none; b=slLCTM0NXl94p/GCA/ZOqwwgF51jbMM+pIoy8+J0Uw/nao4uqYBpYRwoUL2VlpGqZMQDtf7PTRiF0gSnfYCQbq784Ef0k/E8rdNR+tXm1VbLaefZwx3RRRxDjdMERQU3ZqZiW3DwJDYC8oso9sDiaSQOK5695vmk9/lyAHkbxDw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723204157; c=relaxed/simple;
-	bh=SK6555nvVLN6liKsrnsOkA+XODJGhiDFiIQx9X5haBs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HhVIKy65bvsRpna2jsV+23c2DUqAW59ITvPPMkoSc8CJL+YQQWD4zSh1n3/18UZMLGuwz2phxB2aViEnI8Xs06Ro9gaMf2ysBPDiFaoe23xjDpwn2IFFzymshKdjuT1G2WRI97CZFZTXri/WeiuYDH1H72ztgJ2eSLFXq4ARbd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=daypgCBf; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723204155; x=1754740155;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=SK6555nvVLN6liKsrnsOkA+XODJGhiDFiIQx9X5haBs=;
-  b=daypgCBfoHTkW2GYEkxxvS+Msuq44yd486/g1S785+2zSdiV57zSG4L1
-   LPixAdIgm8tVDpEGlQEVQMhIqND/u9FGxA2XegTujRWdPAk40mFSDDCY0
-   aiw1Uh86LCdO+vxFqFKw9q6LDhQMx2N9sRLB1Ba/d7WAfPbiTCS9Rtb2j
-   t+N1Wa3IrHRNoPp6mx8NP2t5riWo1mKnDHiGI7rmhOJcO3QoPuRvQoIOV
-   n22pHfVPjjJG8kZ/Tid49KIrKBizWK7eE+zXqcYMkvbfs53/7QMErixev
-   XL87HTHyCnjEK/2f0MM9/Sco38cSEEdbS9MJN2sLndjbSSGuX+bhpEyDV
-   Q==;
-X-CSE-ConnectionGUID: i7/2CFVGTlOLu32oQpCdsA==
-X-CSE-MsgGUID: JqTTwyUnTj648fuEec23MQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="24280321"
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; 
-   d="scan'208";a="24280321"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 04:49:10 -0700
-X-CSE-ConnectionGUID: 7BLDRKQVTJG1D1Ux70Uajg==
-X-CSE-MsgGUID: qgriSKmHSL+s9l8ao6oQnA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; 
-   d="scan'208";a="57423600"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa010.jf.intel.com with ESMTP; 09 Aug 2024 04:49:07 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 31F3919E; Fri, 09 Aug 2024 14:49:02 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Mel Gorman <mgorman@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Jianxiong Gao <jxgao@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCHv2 1/8] mm: Fix endless reclaim on machines with unaccepted memory
-Date: Fri,  9 Aug 2024 14:48:47 +0300
-Message-ID: <20240809114854.3745464-2-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240809114854.3745464-1-kirill.shutemov@linux.intel.com>
-References: <20240809114854.3745464-1-kirill.shutemov@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CF5192B9F;
+	Fri,  9 Aug 2024 11:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723204749; cv=pass; b=jlUWTaESaxEvIpp50HoxniUvLURnDAsM0OaYqotveurmOeEfoOG63HFv2avFCoX/ItO8NYVTrwOGMF4xII1OPmx0ZmrnUs4/l0nBM1Z0y+RljRMXxuSVTfIPxKhBYfnp/Rk2G3JvMzmN4OaDCQbKlbC98V4jSvUHpFhvX1SaI2o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723204749; c=relaxed/simple;
+	bh=ian4pHvk/Ysor0BQM6WTFZw5Oc++xZLQ6te4Io7dcYE=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Z0SfhS5zTA/uv4liRmYkyDvvr2YLsStKYrn7uYXYAazAUQBDlwDObUnz94a9jtWQYBQglh2Iaz2lCjDcwFJ0Q9UL07xNGjtDaWoeoBZ9j2hoSyg2O9x0lwRmOGrsDs0KvD1yCj0pKenBGkNxw9MgFGw+/daox7thdaURSjzk/TM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=shreeya.patel@collabora.com header.b=WuQIpQB1; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Delivered-To: kernelci-regressions@lists.collabora.co.uk
+ARC-Seal: i=1; a=rsa-sha256; t=1723204703; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZEIwY7Il0tDeAjVOIkaINZxY95P4A2AZseUheeCfd2GFc04P6gIHL5AQKkdoZK0Y5rplZyZBVBQnCRyxAiME8Sxea7RHv5ngToPVGclAaBJe/Q3JiwEzMJpl0eC6x7AZV/AlrKN1/1r6aj/OqZhaV/wvHy+TYCXTO1zPANrFJ1M=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1723204703; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=7l8Pv9yp1aCfjnBqdkcyjr7Ggfd/MK0caBdzX+atJXU=; 
+	b=ZwVoSrlN9Rea22V95PVFar2T/l8kaVm9xLQBs83xCmXcf1mubzoaJM7u4TjsnI0CpLml24qB8hk5EjINegvvdm0A8nIWrHLuZveLBzhsRNNoh7PlmuaeXKJO92yHR32ZorPl34fPnWxqqYYzP1rFXXdGTpSDWY4tbu617G8UEFE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=shreeya.patel@collabora.com;
+	dmarc=pass header.from=<shreeya.patel@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1723204703;
+	s=zohomail; d=collabora.com; i=shreeya.patel@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=7l8Pv9yp1aCfjnBqdkcyjr7Ggfd/MK0caBdzX+atJXU=;
+	b=WuQIpQB1FG73qz70zwJLLcqMEKUMAr9KKAaC079Biri4eUd27lTGe9Opk8Xsb7js
+	JNoeJpz8T/tqcX8ciID6gkZueJjWqmXyAC2+xayHXbukZaoIrIJlfAc/tb47b0b6rvI
+	f8W4HompVrhXyR9su9Wyfpv9MtuFdwQjC69WHu5I=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1723204701719951.467106810877; Fri, 9 Aug 2024 04:58:21 -0700 (PDT)
+Date: Fri, 09 Aug 2024 17:28:21 +0530
+From: Shreeya Patel <shreeya.patel@collabora.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc: "stable" <stable@vger.kernel.org>, "patches" <patches@lists.linux.dev>,
+	"linux-kernel" <linux-kernel@vger.kernel.org>,
+	"torvalds" <torvalds@linux-foundation.org>,
+	"akpm" <akpm@linux-foundation.org>, "linux" <linux@roeck-us.net>,
+	"shuah" <shuah@kernel.org>, "patches" <patches@kernelci.org>,
+	"lkft-triage" <lkft-triage@lists.linaro.org>,
+	"pavel" <pavel@denx.de>, "jonathanh" <jonathanh@nvidia.com>,
+	"f.fainelli" <f.fainelli@gmail.com>,
+	"sudipm.mukherjee" <sudipm.mukherjee@gmail.com>,
+	"srw" <srw@sladewatkins.net>, "rwarsow" <rwarsow@gmx.de>,
+	"conor" <conor@kernel.org>, "allen.lkml" <allen.lkml@gmail.com>,
+	"broonie" <broonie@kernel.org>,
+	"Kernel CI - Regressions" <kernelci-regressions@lists.collabora.co.uk>
+Message-ID: <19137010dfd.e10dce2c1574702.3469505847442580482@collabora.com>
+In-Reply-To: <20240808091131.014292134@linuxfoundation.org>
+References: <20240808091131.014292134@linuxfoundation.org>
+Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc2 review
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-Unaccepted memory is considered unusable free memory, which is not
-counted as free on the zone watermark check. This causes
-get_page_from_freelist() to accept more memory to hit the high
-watermark, but it creates problems in the reclaim path.
+ ---- On Thu, 08 Aug 2024 14:41:49 +0530  Greg Kroah-Hartman  wrote ---=20
+ > This is the start of the stable review cycle for the 6.1.104 release.
+ > There are 86 patches in this series, all will be posted as a response
+ > to this one.  If anyone has any issues with these being applied, please
+ > let me know.
+ >=20
+ > Responses should be made by Sat, 10 Aug 2024 09:11:02 +0000.
+ > Anything received after that time might be too late.
+ >=20
+ > The whole patch series can be found in one patch at:
+ > =C2=A0=C2=A0=C2=A0=C2=A0https://www.kernel.org/pub/linux/kernel/v6.x/sta=
+ble-review/patch-6.1.104-rc2.gz
+ > or in the git tree and branch at:
+ > =C2=A0=C2=A0=C2=A0=C2=A0git://git.kernel.org/pub/scm/linux/kernel/git/st=
+able/linux-stable-rc.git linux-6.1.y
+ > and the diffstat can be found below.
+ >=20
+ > thanks,
+ >=20
+Date: 2024-08-07
 
-The reclaim path encounters a failed zone watermark check and attempts
-to reclaim memory. This is usually successful, but if there is little or
-no reclaimable memory, it can result in endless reclaim with little to
-no progress. This can occur early in the boot process, just after start
-of the init process when the only reclaimable memory is the page cache
-of the init executable and its libraries.
+## Build failures:
 
-Make unaccepted memory free from watermark check point of view. This way
-unaccepted memory will never be the trigger of memory reclaim.
-Accept more memory in the get_page_from_freelist() if needed.
+No **new** build failures seen for the stable-rc/linux-6.1.y commit head \o=
+/
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reported-by: Jianxiong Gao <jxgao@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-Cc: stable@vger.kernel.org # v6.5+
----
- mm/page_alloc.c | 42 ++++++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+## Boot failures:
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 5b5f99f4b20a..a9a89980f3f2 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -287,7 +287,7 @@ EXPORT_SYMBOL(nr_online_nodes);
- 
- static bool page_contains_unaccepted(struct page *page, unsigned int order);
- static void accept_page(struct page *page, unsigned int order);
--static bool try_to_accept_memory(struct zone *zone, unsigned int order);
-+static bool cond_accept_memory(struct zone *zone, unsigned int order);
- static inline bool has_unaccepted_memory(void);
- static bool __free_unaccepted(struct page *page);
- 
-@@ -3108,9 +3108,6 @@ static inline long __zone_watermark_unusable_free(struct zone *z,
- 	if (!(alloc_flags & ALLOC_CMA))
- 		unusable_free += zone_page_state(z, NR_FREE_CMA_PAGES);
- #endif
--#ifdef CONFIG_UNACCEPTED_MEMORY
--	unusable_free += zone_page_state(z, NR_UNACCEPTED);
--#endif
- 
- 	return unusable_free;
- }
-@@ -3404,6 +3401,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
- 			}
- 		}
- 
-+		cond_accept_memory(zone, order);
-+
- 		/*
- 		 * Detect whether the number of free pages is below high
- 		 * watermark.  If so, we will decrease pcp->high and free
-@@ -3429,10 +3428,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
- 				       gfp_mask)) {
- 			int ret;
- 
--			if (has_unaccepted_memory()) {
--				if (try_to_accept_memory(zone, order))
--					goto try_this_zone;
--			}
-+			if (cond_accept_memory(zone, order))
-+				goto try_this_zone;
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- 			/*
-@@ -3486,10 +3483,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
- 
- 			return page;
- 		} else {
--			if (has_unaccepted_memory()) {
--				if (try_to_accept_memory(zone, order))
--					goto try_this_zone;
--			}
-+			if (cond_accept_memory(zone, order))
-+				goto try_this_zone;
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- 			/* Try again if zone has deferred pages */
-@@ -6988,9 +6983,6 @@ static bool try_to_accept_memory_one(struct zone *zone)
- 	struct page *page;
- 	bool last;
- 
--	if (list_empty(&zone->unaccepted_pages))
--		return false;
--
- 	spin_lock_irqsave(&zone->lock, flags);
- 	page = list_first_entry_or_null(&zone->unaccepted_pages,
- 					struct page, lru);
-@@ -7016,23 +7008,29 @@ static bool try_to_accept_memory_one(struct zone *zone)
- 	return true;
- }
- 
--static bool try_to_accept_memory(struct zone *zone, unsigned int order)
-+static bool cond_accept_memory(struct zone *zone, unsigned int order)
- {
- 	long to_accept;
--	int ret = false;
-+	bool ret = false;
-+
-+	if (!has_unaccepted_memory())
-+		return false;
-+
-+	if (list_empty(&zone->unaccepted_pages))
-+		return false;
- 
- 	/* How much to accept to get to high watermark? */
- 	to_accept = high_wmark_pages(zone) -
- 		    (zone_page_state(zone, NR_FREE_PAGES) -
--		    __zone_watermark_unusable_free(zone, order, 0));
-+		    __zone_watermark_unusable_free(zone, order, 0) -
-+		    zone_page_state(zone, NR_UNACCEPTED));
- 
--	/* Accept at least one page */
--	do {
-+	while (to_accept > 0) {
- 		if (!try_to_accept_memory_one(zone))
- 			break;
- 		ret = true;
- 		to_accept -= MAX_ORDER_NR_PAGES;
--	} while (to_accept > 0);
-+	}
- 
- 	return ret;
- }
-@@ -7075,7 +7073,7 @@ static void accept_page(struct page *page, unsigned int order)
- {
- }
- 
--static bool try_to_accept_memory(struct zone *zone, unsigned int order)
-+static bool cond_accept_memory(struct zone *zone, unsigned int order)
- {
- 	return false;
- }
--- 
-2.43.0
+No **new** boot failures seen for the stable-rc/linux-6.1.y commit head \o/
 
+Tested-by: kernelci.org bot <bot@kernelci.org>
 
