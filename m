@@ -1,201 +1,202 @@
-Return-Path: <stable+bounces-66279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F8994D2E5
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 17:03:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4CD94D343
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 17:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B478B1F218A2
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 15:03:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90BEB1C21123
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 15:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C481953A2;
-	Fri,  9 Aug 2024 15:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6D0197A9F;
+	Fri,  9 Aug 2024 15:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UQntnsT/"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="YkVYJcwH"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2073.outbound.protection.outlook.com [40.107.102.73])
+Received: from CY4PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11020114.outbound.protection.outlook.com [40.93.198.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7C1155A25
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 15:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005731DFE1;
+	Fri,  9 Aug 2024 15:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.114
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723215832; cv=fail; b=KhFR4CE5hRMteEGcwRUPwXGpIrQ8PVTsvmGw7cfH9KqjaARF+f/K0xHjpSlntwFSihyHtjAG3w/3UTNAYz9Re5qF6Mjb4XKptlSo3SjqFqInfE06WVwTuH/JltYCQyjfKCiGhyrwrYYoZOHf6usvKNSRkVVDyOVMqT+Fm81QszY=
+	t=1723216770; cv=fail; b=E1qs58UKov/EDkkAkkY0S0+V1TfzPiscm56i3gABEjMDJY/zm7gC+o93hlRqo3ekBX1AedVVOGiwgpF4hJ/5UMxQjaqjgCM5a6cxxjpqapysJqPvbZSfCq9PZNpSZUqU6ybEsdjHm4htlasqb1bcKz0VK2q/5uHsGO8lqB/qKno=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723215832; c=relaxed/simple;
-	bh=W8pmOARDVCU2MJ1tja26xXDZMVbwVid+p/7HGQU8fuQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TKpwndlmttrJYBrsg56YsHBgm2UjRxWX0fJhQL2opx9I1zl6GAKXwISLJXXxneRvAIKxJTQ7Fem6i6hScAeLF9awFWZcRYHdmodImX0CiIsTL9pKuGTwP3FDvyp+8r1L4DahEsXh4xOMOh6REVN/BObZU/8mHY0ZFHpnlcpE+sk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UQntnsT/; arc=fail smtp.client-ip=40.107.102.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1723216770; c=relaxed/simple;
+	bh=fA64zh404lmyH2lgLoHz7eKq4KJuLCfUGPz/HtWDUlE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=EwIweDeFkjHvZrB/OJ1FIhapaBokJn13D9m9Dze+cxpinJAutIXF+1NFbG1C56/WmuTycCf/J/K1DKcSaRM2+mDkLBrltmMTVbYkkrVXcn9DH6DNihdsQGzQ6PwXjp7+olr+w91LJTWbhscuuw/nFsu238tnBzZB+bU1nwX1FPw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=YkVYJcwH; arc=fail smtp.client-ip=40.93.198.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gmum4+GBQG80rlASAzIXZR4KT9mVoLeAqlNE/15/ASP4GXvwIsoFBvZEXSAXK+qL5vUpe/7V2ghU1odx5lC20w57YueosNhI03iTXU3NStggctaTa2/CDQ7HMHQY6eQndRuqp+o5I82/4YdiPsBRySHLlYnojTegKrfeU8KyHvAa0giexNtRVlc1y+bR9Hp9ZJ65r+gLaBxVDYwZySIiopfWtqZz8d7XE9GyT8kF73q/Zy5cxA3n9COpv/x7C2A34N9fAg1CKdPWM63hmKwbaFKxCvbIw8b6BRqv6t7mQScn2lHEB2/TsrLYcfISunec5cX2RLN272+v2nRjJ6RmcA==
+ b=F4QvrhLaEHMOQKSbRn7NOYl3odJ0LfGM0Jl7firch+sSj4EgVjvI8lwHfcjBx7XFiMv+HRvCHpTv+bmfj8ENAwa8PGuOWMMrnPLFdRxey9cqyR85yP9y5KvYkeUcGu6Q+CslVJ6p1RhuQVBc3IRFXqjqOTsbjp19lDV4yemu2EZTQ0POqeBVBPs/KTAqj6qt9rT7oc2SFls+9R+FchYv0jzDHsazW/pGR+NHewHBQJTwTGN3WvvH1Os4Im+rifj8wrtiJkGaCBetZXCUGVNWEDf1BIBCEr/h/WXyz65EYyG8e6z841SS8G757x7zT68JdpzJX23d0j8xv9ZZYrmvjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SNdGtTGLYFjQVxvX5ut0IHppu6A7Fgg+hz1WGEZJx9c=;
- b=NgIw0czQF5z836WFgpX+rJ6+z8llWCaFTVKh4h7ePwct8DvmwagfgHLQKubYhpCNX85lAU4sY8b/2hZ98uGYOHKQiad6TLUOKQeCAm2yv3mLBQBqFGrVdhktKoUkx8XlY+uhaIvGQsO0tAG/VPQeECaDNeMe2KvbvEwp1SI5u8SoQHRvsGfGX1BM8JPy4RFFIZtjmeqJckPylkk7sYLCMehAzMxgiAC/CEK0pMV2QcvtFaU+ti4PW3oVbQ0YEn8l3Nf43cNU/NmXteEfHMyAvUU8QyG53vSR3E2RnC40Ko2BpDpM5GJYU/X7n4MkPgK3QW5MqiV0sUbUeHGrtVFPtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=YrThUFXO5n03XscYkWV08IKoTbh6JVqoiuV2d6pLSuI=;
+ b=tejMtVeJwT+GYQAaiYHG2szrLXtBrQ82RbIEbxmG5M5pGIVb/2+JuTDLX8PKpDswxPPws1mAsg4LvRNxPYUTbzFwZfDCAR3FE10LChCfy59jglcsxNmw72JBC8YNPgfhrvaUo/k1Gk7KHekcKIpHJzkK//V20qUfv5vNdAg184vBIKzNJSCAMgcSRY4kw13ZLAhPVdY42ShBY30E9Rl3QYx5+vmUnWSjGdi2qKjjNuGPBoDpVfwM5/nD7ebvUtY9d/kWceYnb1/5ZbUUNfBma51Rh2UowMZ6tminwDSKtJm/NJjr2KqTneRBynFfUr7Y/XtpH4tSyFHqlcMIlyjkYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SNdGtTGLYFjQVxvX5ut0IHppu6A7Fgg+hz1WGEZJx9c=;
- b=UQntnsT//nqAp6R6kIjPYHdLGgHU9iY1yyIASDLFdBOTyCw7L0g1LpZ8fZlTT1/4XYZXpn4mABNlJmF+DMySbJNv+Er177x/ZzNSl74hLCk/yjTLWd3JBU4cy3qWKtrVsYyruB6Ro37M4SeD/KxwlC5RGdf4CHAQqMYAXjr22s0=
-Received: from CH2PR12CA0025.namprd12.prod.outlook.com (2603:10b6:610:57::35)
- by BL3PR12MB6570.namprd12.prod.outlook.com (2603:10b6:208:38d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.15; Fri, 9 Aug
- 2024 15:03:47 +0000
-Received: from CH2PEPF0000013B.namprd02.prod.outlook.com
- (2603:10b6:610:57:cafe::57) by CH2PR12CA0025.outlook.office365.com
- (2603:10b6:610:57::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.17 via Frontend
- Transport; Fri, 9 Aug 2024 15:03:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH2PEPF0000013B.mail.protection.outlook.com (10.167.244.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7849.8 via Frontend Transport; Fri, 9 Aug 2024 15:03:46 +0000
-Received: from tr4.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 9 Aug
- 2024 10:03:45 -0500
-From: Alex Deucher <alexander.deucher@amd.com>
-To: <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-CC: <intel-gfx@lists.freedesktop.org>, Alex Deucher
-	<alexander.deucher@amd.com>, Javier Martinez Canillas <javierm@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>, "Sam
- Ravnborg" <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] video/aperture: match the pci device when calling sysfb_disable()
-Date: Fri, 9 Aug 2024 11:03:27 -0400
-Message-ID: <20240809150327.2485848-1-alexander.deucher@amd.com>
-X-Mailer: git-send-email 2.45.2
+ bh=YrThUFXO5n03XscYkWV08IKoTbh6JVqoiuV2d6pLSuI=;
+ b=YkVYJcwHYh4fS5lc+zbqTievT/aGgmssHLxsBcmTCYtyew/PQu3nob1Bn5vpiHJjJlqz6YcNKFUIMBEZACOoCA/EJmAWm3NcUQGwLuAOTQWdwsjVNiOfrY3f6s9SrdlydHMo5TwPma0vfQfGTh2tMHGT3Nu4Q8NTJj6NrIC7yXU=
+Received: from DM4PR21MB3536.namprd21.prod.outlook.com (2603:10b6:8:a4::5) by
+ DM4PR21MB3706.namprd21.prod.outlook.com (2603:10b6:8:ae::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7875.9; Fri, 9 Aug 2024 15:19:26 +0000
+Received: from DM4PR21MB3536.namprd21.prod.outlook.com
+ ([fe80::d1ee:5aa2:44d0:dee3]) by DM4PR21MB3536.namprd21.prod.outlook.com
+ ([fe80::d1ee:5aa2:44d0:dee3%4]) with mapi id 15.20.7875.009; Fri, 9 Aug 2024
+ 15:19:26 +0000
+From: Long Li <longli@microsoft.com>
+To: Simon Horman <horms@kernel.org>
+CC: KY Srinivasan <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shradha Gupta
+	<shradhagupta@linux.microsoft.com>, Konstantin Taranov
+	<kotaranov@microsoft.com>, Souradeep Chakrabarti
+	<schakrabarti@linux.microsoft.com>, Erick Archer <erick.archer@outlook.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v2 net] net: mana: Fix doorbell out of order violation and
+ avoid unnecessary doorbell rings
+Thread-Topic: [PATCH v2 net] net: mana: Fix doorbell out of order violation
+ and avoid unnecessary doorbell rings
+Thread-Index: AQHa6R/zQgAE3/VEwkaNHXMnN1gZdbIenzgAgABtdvA=
+Date: Fri, 9 Aug 2024 15:19:25 +0000
+Message-ID:
+ <DM4PR21MB35364264950F0182B50F5846CEBA2@DM4PR21MB3536.namprd21.prod.outlook.com>
+References: <1723072626-32221-1-git-send-email-longli@linuxonhyperv.com>
+ <20240809084716.GA3432921@kernel.org>
+In-Reply-To: <20240809084716.GA3432921@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=14296e4d-4e8e-468c-bbd9-e5cb7bf4707a;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-08-09T15:19:02Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR21MB3536:EE_|DM4PR21MB3706:EE_
+x-ms-office365-filtering-correlation-id: 651dc68e-da0b-45ac-dc28-08dcb886a7b7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?6iokwGZeUd7pyCbQ8ccXFEM/XJU53tKgnD9rvZxn+V9AsT9Hae3DwKdaadW0?=
+ =?us-ascii?Q?Lgvoj2XDy74hbN+b30hdFhqGHIIqnIKtbTOregEimt8GctVdDYNMUTZiyxAz?=
+ =?us-ascii?Q?DSNOyv+BcqavXN2HjRgRvElB3qo3Eaagb/OWQY/K/rhteFcT4prruBOQ1Lyk?=
+ =?us-ascii?Q?TDSF2uA0ZC/jhh2Iw44RMoWtj2hxC2feNC6672rN5Qui0wVLJ0o8e8sVz+yA?=
+ =?us-ascii?Q?mHWvEhuFxvmYexQr/jjpLwOKZcD4WgucXwNZXXJQEAS7OV0fZPPcUeR99Eaz?=
+ =?us-ascii?Q?B8bqaHn3rQSYyJYGppM4xn+HbFZ8KmqLYXUfMsuXd2rMilfYC3Em2E1DzZ8W?=
+ =?us-ascii?Q?qRIFvUxocSdCKZaFEN/vE9175liAetZ0q3Yogu0o0ZOAReCnyW9yug4wMKk9?=
+ =?us-ascii?Q?b1nnM+vO6VeefqahBwuTaHmforrlBN9P82rV6jKn+Bh0A3OkuSBOPOy6Omz1?=
+ =?us-ascii?Q?TImfky2PeSIACSDUJjfTRPbxMEFAyLjGsgOqIGhovw3CPowqFvW60XSCYwVz?=
+ =?us-ascii?Q?RZHjzRVJEmcZpObFdPQ/Zbu5xJWe8AXsF55tOF8+dR/rETLqHZzmWxdpqQ0Q?=
+ =?us-ascii?Q?6Nr0ySmibDmbH9fap1zkGKUHm16IAssKVNR3MJdaPPD3NX1OCH83kGzzTzqy?=
+ =?us-ascii?Q?lU9k4+hfEnKrvvRIYl9kY02sTmKM6YuFQsJRsB/pCwD/BTWDoK7EyMUSyOHd?=
+ =?us-ascii?Q?7Zu8D2csJRMpGP5995QSb6h1CTGMcECdL3WwOraWaXckvdimgQus+sAxop+4?=
+ =?us-ascii?Q?VZGhznyiPf46OG6BvSj3BWubgRXJVSs4mC7p9UreLWFg59uHf2JO/hFu7e8l?=
+ =?us-ascii?Q?+39XzTSZGong3cRdEn5BoQ0YqzZdLc7uyxGm0ckjB6Tto3oV9kIwe45XCJ0l?=
+ =?us-ascii?Q?wgcjt+kd5j5TQJxeOjfRW73EJV4K1YOarK2h+DXOY20BEprcBEq+LK9f0dhH?=
+ =?us-ascii?Q?2fIN1kqAcbz21DX8dr4/fMWg8mMQ1QcZkbX6PnhYNKaWVR0WE44XUsoFiv8T?=
+ =?us-ascii?Q?JQfTSTykhoB/J1vXfPHAlAQbdM8Pc0NXXxerMM8lRMG1yGIccECXYaPoK+Jn?=
+ =?us-ascii?Q?g6wX6zv/GvyEpuiv4ZXXGgLRWn968QaISzQEDRKX1Kd1tLpe9Nw1pZWjXjK0?=
+ =?us-ascii?Q?G3YEAzSc11HkLkf8X99/BRbRobxCSojLanpYPoaENKaMwuF7MQrTNqNwhJ8H?=
+ =?us-ascii?Q?qXYLgx43c67joZtnsAteg6pf42o0lBmzoc+5whidbkSn+80HzAhCrkuAmB1L?=
+ =?us-ascii?Q?2ZvwqzHvDp3ZzkDPxmD89nb8VAmtmTuQPHwKrhkJsqnwTKDP3BN+6FOjfTsI?=
+ =?us-ascii?Q?XSVBcg9zw5OBP81Lyqw5tbKm/qOGpGf7+OWXqIIeEPENIQsX12IxMEIcmqtZ?=
+ =?us-ascii?Q?gDGoH3STU5PAF5JhTtLFuUoKl2nz9jKBQ4bcOod1Ie6A3iuH+Q=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR21MB3536.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?KH9u8t6dH49iwIalKyClnF5PY7HWB3G4E+UXKZITI3m8C2j+J1liOE2xgPij?=
+ =?us-ascii?Q?PEtBZUpI34i1Ms9DkEQF5je7fUJucsehFTUcC95zXtl2bwjjYzX0Elk2KLn/?=
+ =?us-ascii?Q?eC0BKG61/E6v8Bxvd/9KalmQDuOHrviCh1cCe3bMVNfYQOXkvVLBVKT9ADaZ?=
+ =?us-ascii?Q?aCeV1an4nqWjtVLT2K7dZyFAIoSMz88nNjGcQNzxKt6UtFOuyfO8IxFXd1v5?=
+ =?us-ascii?Q?glj1SwNtt26v7U4OmZff3u1Ye+zZHa4kGRBDrdKnutkuF3dJwqm2TjRWsRgR?=
+ =?us-ascii?Q?PJDcazhz1iFbiOCDFp9KkmrQPp/rX1AZY2r7DljX46UtUzzvTRnuGLG+vyG+?=
+ =?us-ascii?Q?NZPp696IGatrSXm2TipLSGbCkRUG9Fp6TuCWl94G7gY9t1NyK3ZUSWJH0PFg?=
+ =?us-ascii?Q?6WYG0kWCAzA5ajFXeg5Z/uBieh2p9nWnAMQYLwju3LHOA/qnlQRYiFYjPpN3?=
+ =?us-ascii?Q?Sn1wxsf/o6VStRpxbnldfPUi5M3f1JS6k7blRcdvbQjt86PD3yrTsvuZFjrG?=
+ =?us-ascii?Q?scmzf8FfUoREpoNE2gOAxH9Iicir9DOYBc3rBKCxvQlnqGRGXTJPwAWIDAjz?=
+ =?us-ascii?Q?O+oI3l6RlRhuQUlbzDm5i6kzzvMhvZs+Bo2R/p+HafccqKZMSaZ6w+skbo9y?=
+ =?us-ascii?Q?UUw6sht8CGJ3YYZ3HHoTZreSmLCJlyF8kUbmryY83Ze2/ywbVSJFBsyvfFRm?=
+ =?us-ascii?Q?t/22eGHiovqpo3nr7udeOHT3S9SfxnNGmiibfC8xZF5Cf48arpONFF5NsIkZ?=
+ =?us-ascii?Q?RdAzk6xPgAOBJctxt/PMxR3IFzTzdrtDICFtSqLFZnVE/ix7JqhitaCw3IxD?=
+ =?us-ascii?Q?GttFwi9dEu/3ojEIdLfTRYLteZ/ORwb83a4NJjslF2TbzGgWfTsSCesZ9Bq/?=
+ =?us-ascii?Q?Sp9TSIjiaPBlJq4chazHC32/Xg5Jk3U8+WppXDSX87Li56aCWalugFDcFvvo?=
+ =?us-ascii?Q?TeVOjrUtrVcYKipOTynU3krAh0UwDQXVUCHOhclKL8CtVrVu0DiQEckabfnx?=
+ =?us-ascii?Q?BFXyDxULG7/YLUGuudOxLL0GmpJ93wqZxjwqKngkVMd5dr7BDKlm5+8x9wnA?=
+ =?us-ascii?Q?l6HsbsNPXGp3IwGvJTfhDtE2wwlqPwH3g3KgK56W5BgZ5fNbtunofpnM7pcD?=
+ =?us-ascii?Q?tIcQtyXM++qrwJHuZrvjGRqK3Cj0F0KHPAhMt2kJZBbtoR1qbAw9TZeBFjeI?=
+ =?us-ascii?Q?aKVThcxPkX5jJhgkyIg6NLQJWyde2o0hsktkn3KK68iuD/Jb9h3tdiVgpeGl?=
+ =?us-ascii?Q?Tvc3A4SUAPdoVVDrteUejEnDtJXigeG4X6OiUu+prjc4v3zAY6oV489VziSH?=
+ =?us-ascii?Q?jgZY5GMxjuFoeIO7d3l34Fv8Qu7tBdvwNFQvWA9+u71n/KaU+YCe6Tgek4Z+?=
+ =?us-ascii?Q?mWOqw+M5VQcamkx+8Av0Xt9FcEpEmeQtNrM+G/Sbl9i59qHy7qkMpjqz+pfx?=
+ =?us-ascii?Q?U6Q1xvgJmOTSSmdxsxCh1hd1vEa+Ez0EC4JTU2FinYsXdewW7gE/Jm2G4fFr?=
+ =?us-ascii?Q?KhlK1ydNKOML/NHFpALtO4pIdZYMoxPvrGeI6kh/ftZA03Nq8DO+PdHYKCfR?=
+ =?us-ascii?Q?Tw3nY5+4au28lL0Xyy5s8rytvXtS3JJaIMPslb7dOgjIdjJvQs4QQSFTF8Tc?=
+ =?us-ascii?Q?AupXYHC9e5t3omUHSN5LNZVzcJY+FNNf8pF+piVcFE6v?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000013B:EE_|BL3PR12MB6570:EE_
-X-MS-Office365-Filtering-Correlation-Id: 42037397-a901-4cff-e3bf-08dcb8847811
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BmRTn6HjY2cJYylSZobwdK4ibUnXcXCinW2v+GNZmBQOV/RWEbrb1B2xPQCU?=
- =?us-ascii?Q?bql1pUagHF3uAt10NaDF4RyOcKpLNqslF7aSGf1whyBv5BvoAiH7npr+MBa8?=
- =?us-ascii?Q?PROEsM55WU8mGCBxAKfIny/ods3KD9qqqse+uK1JiPlhLYkArIn2B8pTF1yv?=
- =?us-ascii?Q?sDFiJIlAUZ/MJ/OdmpA57/oKhkRJwDRw8xilnha1XRtw9qACCW9Kr2eO75zq?=
- =?us-ascii?Q?KYNgjI/nKKs9bIjMSXFyfPNSZxwRT3Bnot56CIbaxg8ZJPMbOLG8Eu6v0NmV?=
- =?us-ascii?Q?FC/TPNik1WimLU7N3gVMymXz0iZQJYexZADn3q683oDln9wdfZDLqQnc9EuG?=
- =?us-ascii?Q?OXElrWYHQS1ujZf9hbhG+wfM4iEAUDO+PiLwI4/7659ByVTVi/p9BJXaok8T?=
- =?us-ascii?Q?j6I1c5rMra0jTJyrwJd2u5r2TactkSoSUTHtlrVz7Ij6IHEnWi06U413e+2p?=
- =?us-ascii?Q?BfVi+CWa1mu3Gi1GoAZNEUKKB4NVIu+Kwd6E2RfnVjE0smxWzu+P+z7D1xrI?=
- =?us-ascii?Q?jyfLpT6UHeJ327ZdD9MEV0/vIA5HpDqjWLnEaixPQN63hnSLdKQgUlk7qM9A?=
- =?us-ascii?Q?d9Qa8kzdE+sSmTq+S/HISt4YsA9eJISBSoF5C2oH1488/D3/Drpvk4hViUBq?=
- =?us-ascii?Q?D92F7UvFDepCCB4lnL/9IVVpT/3iMlB1n9ugVJMQFLY9NwKZ+zMvFGsrdHGj?=
- =?us-ascii?Q?0rcTda8HTWuqGu+jh6HwRt0asY7k9f5uycygHiQLLz+XexuH7JCUXOpzgUKf?=
- =?us-ascii?Q?/bHzRYXim1Q3Kca97DFMXSQB9pzY47MXm0cm7y44Jaw75SIXL9lkptZ3kwKX?=
- =?us-ascii?Q?EcKOg75yli8bESYbG39tI7mj1To+7X+BVBl2P89YBedLtkKmXju0DNeNYnd/?=
- =?us-ascii?Q?X5BMiUzyPp2duv11/tHjMsjikWdVGcW8bIKHJMw5Xg7PoGI72UO3d863ovZl?=
- =?us-ascii?Q?vxt1AM7B+cJPn0Bc9sUeZWIF+56VgjhQwhK/ipc74YOCvbpLGJlya7T1zpEa?=
- =?us-ascii?Q?SQpQ5yoWkwcifoaqFQn6IRLim22zkEyjPxa3ECuEmHvVQX6T0ppPFmrob85z?=
- =?us-ascii?Q?xxzWf++lGXpHVrHKdupTVymcTdpoAcEkVg9bEHZYC7Rt/kpZMdzyYM51aKt5?=
- =?us-ascii?Q?1ZOCYokcTbQ4m+Ed1bgAfK7YpRPYXRtS3qDSttZ9hUgdSFNviZ6bUI20W609?=
- =?us-ascii?Q?ZoX/He+/XaknhvSUokbKFKdGToxDh3uZupwTDvrSgxTZ9jmMDoafawP3BlF1?=
- =?us-ascii?Q?iRRz05qAqTdknhN3hkluFgZ9nx1hSaW5FSehn6G7e8R+6Q+BNQvMIjeHk29A?=
- =?us-ascii?Q?4lf0vwYz7ezCt57QF4PE1iTvJdAxr2qwRD4X4sgfjAv7mtbjn69OClhKTbkF?=
- =?us-ascii?Q?7AGwq6EZ/KYEQQTmkOflnRbhYsSw9Gl/vY/fzg/xKSzVeA2NkT4g9QLDpOWE?=
- =?us-ascii?Q?G7SXVvhRy7Ws8XVMXmBL6c4PYG48S3TJ?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 15:03:46.8462
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR21MB3536.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 651dc68e-da0b-45ac-dc28-08dcb886a7b7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Aug 2024 15:19:25.8466
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42037397-a901-4cff-e3bf-08dcb8847811
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000013B.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6570
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SIhwpuHwj7sP2bgtZqOHUdIkuvO3dHiEG7xbF9WABLYKEM0R7H8oBHMbP5ko6F1J7vsPG3j6HCtqOdRegB+9Mg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR21MB3706
 
-In aperture_remove_conflicting_pci_devices(), match the pci
-device determine whether or not to call sysfb_disable().  This
-fixes cases where the pimary device is not VGA compatible which
-leads to the following problem:
+> Subject: Re: [PATCH v2 net] net: mana: Fix doorbell out of order violatio=
+n and
+> avoid unnecessary doorbell rings
+>=20
+> On Wed, Aug 07, 2024 at 04:17:06PM -0700, longli@linuxonhyperv.com
+> wrote:
+> > From: Long Li <longli@microsoft.com>
+> >
+> > After napi_complete_done() is called when NAPI is polling in the
+> > current process context, another NAPI may be scheduled and start
+> > running in softirq on another CPU and may ring the doorbell before the
+> > current CPU does. When combined with unnecessary rings when there is
+> > no need to arm the CQ, it triggers error paths in the hardware.
+> >
+> > This patch fixes this by calling napi_complete_done() after doorbell
+> > rings. It limits the number of unnecessary rings when there is no need
+> > to arm. MANA hardware specifies that there must be one doorbell ring
+> > every 8 CQ wraparounds. This driver guarantees one doorbell ring as
+> > soon as the number of consumed CQEs exceeds 4 CQ wraparounds. In
+> > pratical
+>=20
+> nit: practical
+>=20
+>      Flagged by checkpatch.pl --codespell
+>=20
+> ...
 
-1. A PCI device with a non-VGA class is the the boot display
-2. That device is probed first and it is not a vga device so
-   sysfb_disable() is not called, but the device resources
-   are freed by aperture_detach_platform_device()
-3. Non-primary GPU is vga device and it ends up calling sysfb_disable()
-4. NULL pointer dereference via sysfb_disable() since the resources
-   have already been freed by aperture_detach_platform_device() when
-   it was called by the other device.
-
-Fix this by calling sysfb_disable() on the device associated with it.
-
-Fixes: 5ae3716cfdcd ("video/aperture: Only remove sysfb on the default vga pci device")
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
----
- drivers/video/aperture.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/video/aperture.c b/drivers/video/aperture.c
-index 561be8feca96..56a5a0bc2b1a 100644
---- a/drivers/video/aperture.c
-+++ b/drivers/video/aperture.c
-@@ -6,6 +6,7 @@
- #include <linux/mutex.h>
- #include <linux/pci.h>
- #include <linux/platform_device.h>
-+#include <linux/screen_info.h>
- #include <linux/slab.h>
- #include <linux/sysfb.h>
- #include <linux/types.h>
-@@ -346,6 +347,7 @@ EXPORT_SYMBOL(__aperture_remove_legacy_vga_devices);
-  */
- int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const char *name)
- {
-+	struct screen_info *si = &screen_info;
- 	bool primary = false;
- 	resource_size_t base, size;
- 	int bar, ret = 0;
-@@ -353,7 +355,7 @@ int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const char *na
- 	if (pdev == vga_default_device())
- 		primary = true;
- 
--	if (primary)
-+	if (pdev == screen_info_pci_dev(si))
- 		sysfb_disable();
- 
- 	for (bar = 0; bar < PCI_STD_NUM_BARS; ++bar) {
--- 
-2.45.2
-
+Thank you! Will fix it.
 
