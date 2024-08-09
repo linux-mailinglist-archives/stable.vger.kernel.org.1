@@ -1,115 +1,252 @@
-Return-Path: <stable+bounces-66122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA3494CC19
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:24:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B962894CC24
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 10:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CDE6280A98
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 08:24:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D89481C228EC
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 08:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323E518E02E;
-	Fri,  9 Aug 2024 08:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EE718CBFA;
+	Fri,  9 Aug 2024 08:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="J5y08/sJ"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C77F18DF8A
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 08:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723191826; cv=none; b=Q9DXEcIWa45ZcfK7Ap7w1SG7H2WIEdTXRlaCDyHItu65Brmc6c9NK4bfuev9iI3OQKaXzk4JMGQqWl5EABY0xez2vmY1lEG6a/hzjiRMQ9pc8aGdETG+vyYEP/lUxfI7YvTCHA/bhQePMRCYnzadAAywNVMqejRIUtET92Na+Uk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723191826; c=relaxed/simple;
-	bh=No9zsEOOt5jN+jtC6WUt3ray/MqdMRvbuCF2qSdC1WY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I2VdvSW1D786mk4XJQ9hIsFUI8Gj6G7bCS3OOQs/nP3AEHXUDDrvwz7Xnv9y7QbDhQSs45t/jjs8Ic7TTfqbSKGnyRZLyAVNQ5MW8hDDK14kPOMADUSgcOi6Gzy264FllPjJhMZCMkBHkAvkMQi9PMerwYyUUlAgJtcNkFnFPbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1scKuA-0006lg-NL; Fri, 09 Aug 2024 10:23:22 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1scKu9-005cU3-LJ; Fri, 09 Aug 2024 10:23:21 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1scKu9-00Ajnc-1l;
-	Fri, 09 Aug 2024 10:23:21 +0200
-Date: Fri, 9 Aug 2024 10:23:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Yogesh Ashok Powar <yogeshp@marvell.com>,
-	Bing Zhao <bzhao@marvell.com>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	Amitkumar Karwar <akarwar@marvell.com>,
-	Avinash Patil <patila@marvell.com>,
-	Kiran Divekar <dkiran@marvell.com>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mwifiex: duplicate static structs used in driver
- instances
-Message-ID: <ZrXR-VCQWnO8nMGe@pengutronix.de>
-References: <20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de>
- <875xsai043.fsf@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA0017556C;
+	Fri,  9 Aug 2024 08:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723191944; cv=pass; b=MtCUnLPbYqlbGn96MQrQ8lj6il7ISE4/VCWFBW0weBuVp9RcXWIC/0YhY8YAGnnGDYjwOhp5ngvOUX3SoKaydW3r/HQn0zyEJqFwDjgbmzctvcHP1NoTDmlvUbnlbgyFIIiTj2UiJmWUqDin7gtUrK/ZmY92pb8KYkxGHIDOObM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723191944; c=relaxed/simple;
+	bh=hNhkS5s4pZ/TvPiMVzZP4/+E4B4Kp6Tp4r2or3Nb49g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LOcsIEG3lJvUNfIpGV/tBAkgpIjaBRlwVpwBpUDdyxIUh28JSxlxQhSEXJFtNJOEdx6hcuRk/QewBP8O0nk4d+Jss4J/NiBDc9638cAiM2RZTJiu62rX8Dk4ljLc+gxPW3FwJeNpriO380T9C3vp09hq94OGXRToKDLlRgx+19Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=J5y08/sJ; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Delivered-To: usama.anjum@collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1723191931; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=X5r0Hj1uIIiLsjBYiKa6Z37Abt5npPlrIY9CPYNSQjGU8ICmGL7Dmdo6rxJm3FKZOQ4eESI+mJUjdYJE+Dmc4f3sMVV+9wXlDNMbgoayjDrroQXRwIy6kTc5FhEZ/0O0Zg8QuTJHIVhIki0qh5koPVO/PNPeBirrsfTn075Ck74=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1723191931; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ARoGuwCRmzTNnu/zj+XGQUUTD1/UnUzYPaVkcwelbf8=; 
+	b=n2L+1UcFnl5J/P9X9bzVXOyKpO/aTZZ6Fo2AaF9d0fEYbNa0d4kGeIkhU05xmieTSr5/oaXihqXcRw/1hJmjMGt+5KqX8soK4llU8h4UUwAoBQNVZvlCvxzutRoVkf2W2HRsqWGmR9HRUPAxYfqllni70Ig6iJk6DXVZQKIdU48=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1723191931;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=ARoGuwCRmzTNnu/zj+XGQUUTD1/UnUzYPaVkcwelbf8=;
+	b=J5y08/sJWA/tUY8j5hz3pFViQRkicFYOGrpqydElIaUGGgFtoieRS2zEGS0NKx38
+	FB7MvyyWlMP1ciJHyCAW0A/YIUJ3UcQD9z7ulLk+g4icNRjjKHpbh67L2QCj1z1b7bw
+	qE5GvcexW8dK94Em0/m3iPSuNsRitistGVh0sf00=
+Received: by mx.zohomail.com with SMTPS id 1723191930315384.302913310908;
+	Fri, 9 Aug 2024 01:25:30 -0700 (PDT)
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	Kees Cook <kees@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	kernel@collabora.com,
+	stable@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests: mm: Fix build errors on armhf
+Date: Fri,  9 Aug 2024 13:25:11 +0500
+Message-Id: <20240809082511.497266-1-usama.anjum@collabora.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <875xsai043.fsf@kernel.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Fri, Aug 09, 2024 at 11:14:36AM +0300, Kalle Valo wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
-> 
-> > mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
-> > used and modified in driver instances. Duplicate them before using
-> > them in driver instances so that different driver instances do not
-> > influence each other.
-> >
-> > This was observed on a board which has one PCIe and one SDIO mwifiex
-> > adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
-> > the statically allocated struct which is modified in this function.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> Should this go to wireless tree for v6.11?
+The __NR_mmap isn't found on armhf. The mmap() is commonly available
+system call and its wrapper is presnet on all architectures. So it
+should be used directly. It solves problem for armhf and doesn't create
+problem for architectures as well. Remove sys_mmap() functions as they
+aren't doing anything else other than calling mmap(). There is no need
+to set errno = 0 manually as glibc always resets it.
 
-Yes, that would be great.
+For reference errors are as following:
 
-> 
-> "wifi:" missing in subject but I can add that, no need to resend because
-> of this.
+  CC       seal_elf
+seal_elf.c: In function 'sys_mmap':
+seal_elf.c:39:33: error: '__NR_mmap' undeclared (first use in this function)
+   39 |         sret = (void *) syscall(__NR_mmap, addr, len, prot,
+      |                                 ^~~~~~~~~
 
-Ok, thanks. I'll keep that in mind for the next patches.
+mseal_test.c: In function 'sys_mmap':
+mseal_test.c:90:33: error: '__NR_mmap' undeclared (first use in this function)
+   90 |         sret = (void *) syscall(__NR_mmap, addr, len, prot,
+      |                                 ^~~~~~~~~
 
-Sascha
+Cc: stable@vger.kernel.org
+Fixes: 4926c7a52de7 ("selftest mm/mseal memory sealing")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+---
+ tools/testing/selftests/mm/mseal_test.c | 37 +++++++++----------------
+ tools/testing/selftests/mm/seal_elf.c   | 13 +--------
+ 2 files changed, 14 insertions(+), 36 deletions(-)
 
+diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
+index a818f010de479..bfcea5cf9a484 100644
+--- a/tools/testing/selftests/mm/mseal_test.c
++++ b/tools/testing/selftests/mm/mseal_test.c
+@@ -81,17 +81,6 @@ static int sys_mprotect_pkey(void *ptr, size_t size, unsigned long orig_prot,
+ 	return sret;
+ }
+ 
+-static void *sys_mmap(void *addr, unsigned long len, unsigned long prot,
+-	unsigned long flags, unsigned long fd, unsigned long offset)
+-{
+-	void *sret;
+-
+-	errno = 0;
+-	sret = (void *) syscall(__NR_mmap, addr, len, prot,
+-		flags, fd, offset);
+-	return sret;
+-}
+-
+ static int sys_munmap(void *ptr, size_t size)
+ {
+ 	int sret;
+@@ -172,7 +161,7 @@ static void setup_single_address(int size, void **ptrOut)
+ {
+ 	void *ptr;
+ 
+-	ptr = sys_mmap(NULL, size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	ptr = mmap(NULL, size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	*ptrOut = ptr;
+ }
+ 
+@@ -181,7 +170,7 @@ static void setup_single_address_rw(int size, void **ptrOut)
+ 	void *ptr;
+ 	unsigned long mapflags = MAP_ANONYMOUS | MAP_PRIVATE;
+ 
+-	ptr = sys_mmap(NULL, size, PROT_READ | PROT_WRITE, mapflags, -1, 0);
++	ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, mapflags, -1, 0);
+ 	*ptrOut = ptr;
+ }
+ 
+@@ -205,7 +194,7 @@ bool seal_support(void)
+ 	void *ptr;
+ 	unsigned long page_size = getpagesize();
+ 
+-	ptr = sys_mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	ptr = mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	if (ptr == (void *) -1)
+ 		return false;
+ 
+@@ -481,8 +470,8 @@ static void test_seal_zero_address(void)
+ 	int prot;
+ 
+ 	/* use mmap to change protection. */
+-	ptr = sys_mmap(0, size, PROT_NONE,
+-			MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	ptr = mmap(0, size, PROT_NONE,
++		   MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+ 	FAIL_TEST_IF_FALSE(ptr == 0);
+ 
+ 	size = get_vma_size(ptr, &prot);
+@@ -1209,8 +1198,8 @@ static void test_seal_mmap_overwrite_prot(bool seal)
+ 	}
+ 
+ 	/* use mmap to change protection. */
+-	ret2 = sys_mmap(ptr, size, PROT_NONE,
+-			MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	ret2 = mmap(ptr, size, PROT_NONE,
++		    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1240,8 +1229,8 @@ static void test_seal_mmap_expand(bool seal)
+ 	}
+ 
+ 	/* use mmap to expand. */
+-	ret2 = sys_mmap(ptr, size, PROT_READ,
+-			MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	ret2 = mmap(ptr, size, PROT_READ,
++		    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1268,8 +1257,8 @@ static void test_seal_mmap_shrink(bool seal)
+ 	}
+ 
+ 	/* use mmap to shrink. */
+-	ret2 = sys_mmap(ptr, 8 * page_size, PROT_READ,
+-			MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	ret2 = mmap(ptr, 8 * page_size, PROT_READ,
++		    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1650,7 +1639,7 @@ static void test_seal_discard_ro_anon_on_filebacked(bool seal)
+ 	ret = fallocate(fd, 0, 0, size);
+ 	FAIL_TEST_IF_FALSE(!ret);
+ 
+-	ptr = sys_mmap(NULL, size, PROT_READ, mapflags, fd, 0);
++	ptr = mmap(NULL, size, PROT_READ, mapflags, fd, 0);
+ 	FAIL_TEST_IF_FALSE(ptr != MAP_FAILED);
+ 
+ 	if (seal) {
+@@ -1680,7 +1669,7 @@ static void test_seal_discard_ro_anon_on_shared(bool seal)
+ 	int ret;
+ 	unsigned long mapflags = MAP_ANONYMOUS | MAP_SHARED;
+ 
+-	ptr = sys_mmap(NULL, size, PROT_READ, mapflags, -1, 0);
++	ptr = mmap(NULL, size, PROT_READ, mapflags, -1, 0);
+ 	FAIL_TEST_IF_FALSE(ptr != (void *)-1);
+ 
+ 	if (seal) {
+diff --git a/tools/testing/selftests/mm/seal_elf.c b/tools/testing/selftests/mm/seal_elf.c
+index 7aa1366063e4e..d9f8ba8d5050b 100644
+--- a/tools/testing/selftests/mm/seal_elf.c
++++ b/tools/testing/selftests/mm/seal_elf.c
+@@ -30,17 +30,6 @@ static int sys_mseal(void *start, size_t len)
+ 	return sret;
+ }
+ 
+-static void *sys_mmap(void *addr, unsigned long len, unsigned long prot,
+-	unsigned long flags, unsigned long fd, unsigned long offset)
+-{
+-	void *sret;
+-
+-	errno = 0;
+-	sret = (void *) syscall(__NR_mmap, addr, len, prot,
+-		flags, fd, offset);
+-	return sret;
+-}
+-
+ static inline int sys_mprotect(void *ptr, size_t size, unsigned long prot)
+ {
+ 	int sret;
+@@ -56,7 +45,7 @@ static bool seal_support(void)
+ 	void *ptr;
+ 	unsigned long page_size = getpagesize();
+ 
+-	ptr = sys_mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	ptr = mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	if (ptr == (void *) -1)
+ 		return false;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
