@@ -1,86 +1,139 @@
-Return-Path: <stable+bounces-73152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C38A96D133
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:04:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C6296D1E9
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 10:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4378BB21C80
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:04:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ECB21C24A6C
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 08:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF2A193070;
-	Thu,  5 Sep 2024 08:04:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2kgCy4j"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB441925A6;
+	Thu,  5 Sep 2024 08:21:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE591925B0
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 08:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C662313AA2B
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 08:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725523466; cv=none; b=lxC1pRRoNgmIMwAx3RZJgVH/nuPZ4A03eSmkyx4jWv51wX+U/SCdrx4Oa8XiJnJo/2rtcbQTIbY0Qhv8sTcVr9pZSz3MSWAWfTkkLhmSzq8Rathhlh+SbsdyP8u0j17pgrv9wDtG1Hwh/PdnowOY/XlRWvQHfo++IJlzMj9ZghY=
+	t=1725524519; cv=none; b=EjKu43TaJrN4tTIyfmEcgH/fT4f1Ma1qTVK7B+vOLiffxDrhZHtycvtirzNdKPOmDIdFuv7iZcQ+Z+JtiWoRr9aSPb6Dt3WnyvXSNSfOYJi9h4f3V+DdWG4E+UEvE8bfl4fGPhdZvgxjWaaKgzHYh5MfuehQvL2ix//+VCZR1ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725523466; c=relaxed/simple;
-	bh=vo7VvD3zDcrOVNqTGgLuDE6YQg9UvOD5NS5YucnhBHo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rofaRPUqkFEb3RSrpDy+smVWCLt63Hv1UBWhjHgiHEYT1LY12beNCcrd/e8Q3DeJydl/Xpvyr0hZMuwCTnbhJ/71W28/iG8pBmQyzhJisJR3J1HzRTAOJj5dqi7TC9YVTp1KaGrheR3KC7zaeH2qxU8ztZL5lzzbk7IhdCSHOKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2kgCy4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 665DEC4CEC3;
-	Thu,  5 Sep 2024 08:04:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725523465;
-	bh=vo7VvD3zDcrOVNqTGgLuDE6YQg9UvOD5NS5YucnhBHo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N2kgCy4jeweHz9gr1AizVW/t1WDfmFMtLf9Ca9VhhNG/KSLwMfY9eOYTMLPu3Tu69
-	 /LU8g76oSkSy7oWjHVH8C8ADCQ4vvRRKSVLfeAlMF1BxDKx0ZWix1REqBtTSSKhQau
-	 q4QF/LNVs+EFFofuwoyraxzDs/gQ89i/Wc/7gal0=
-Date: Thu, 5 Sep 2024 10:04:22 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Aleksandr Nogikh <nogikh@google.com>
-Cc: sashal@kernel.org, dvyukov@google.com, stable@vger.kernel.org,
-	syzkaller@googlegroups.com
-Subject: Re: Missing fix backports detected by syzbot
-Message-ID: <2024090538-closure-mom-49c0@gregkh>
-References: <20240904102455.911642-1-nogikh@google.com>
+	s=arc-20240116; t=1725524519; c=relaxed/simple;
+	bh=FmXnfvV4FOeXZ2S6eY+62FXVV8GZsK3Xtz/Xmtih4Ms=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=UW2BPLra0U1cSj5Zws045KWJh1mSkYoZmd7qTXRlzurHrc0wakX1H7z5oGih1ibGyUyfpQJvjd4d+xr1e+p+mzxBGlMm95tWjvETSGCFJAhefEW6gdc1rsoj72mBa2oVHYuDiI7QZwT8xAkUWKzhOkcp8OO7RarTJQj9uq25+A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from mchehab by linuxtv.org with local (Exim 4.96)
+	(envelope-from <mchehab@linuxtv.org>)
+	id 1sm7ka-0006yp-0o;
+	Thu, 05 Sep 2024 08:21:56 +0000
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date: Fri, 09 Aug 2024 05:56:38 +0000
+Subject: [git:media_tree/master] media: qcom: camss: Remove use_count guard in stop_streaming
+To: linuxtv-commits@linuxtv.org
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1sm7ka-0006yp-0o@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240904102455.911642-1-nogikh@google.com>
 
-On Wed, Sep 04, 2024 at 12:24:55PM +0200, Aleksandr Nogikh wrote:
-> Hi Greg, Sasha,
-> 
-> A number of commits were identified[1] by syzbot as non-backported
-> fixes for the fuzzer-detected findings in various Linux LTS trees.
-> 
-> [1] https://syzkaller.appspot.com/upstream/backports
-> 
-> Please consider backporting the following commits to LTS v6.1:
-> 9a8ec9e8ebb5a7c0cfbce2d6b4a6b67b2b78e8f3 "Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm"
-> (fixes 9a8ec9e) 3dcaa192ac2159193bc6ab57bc5369dcb84edd8e "Bluetooth: SCO: fix sco_conn related locking and validity issues"
-> 3f5424790d4377839093b68c12b130077a4e4510 "ext4: fix inode tree inconsistency caused by ENOMEM"
-> 7b0151caf73a656b75b550e361648430233455a0 "KVM: x86: Remove WARN sanity check on hypervisor timer vs. UNINITIALIZED vCPU"
+This is an automatic generated email to let you know that the following patch were queued:
 
-Note, for kvm, and for:
+Subject: media: qcom: camss: Remove use_count guard in stop_streaming
+Author:  Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Date:    Mon Jul 29 13:42:02 2024 +0100
 
-> 4b827b3f305d1fcf837265f1e12acc22ee84327c "xfs: remove WARN when dquot cache insertion fails"
+The use_count check was introduced so that multiple concurrent Raw Data
+Interfaces RDIs could be driven by different virtual channels VCs on the
+CSIPHY input driving the video pipeline.
 
-xfs patches, we need explicit approval from the subsystem maintainers to
-take them into stable as they were not marked for such.
+This is an invalid use of use_count though as use_count pertains to the
+number of times a video entity has been opened by user-space not the number
+of active streams.
 
-Please work with them to get those patches merged if you wish to see
-them in stable trees.
+If use_count and stream-on count don't agree then stop_streaming() will
+break as is currently the case and has become apparent when using CAMSS
+with libcamera's released softisp 0.3.
 
-thanks,
+The use of use_count like this is a bit hacky and right now breaks regular
+usage of CAMSS for a single stream case. Stopping qcam results in the splat
+below, and then it cannot be started again and any attempts to do so fails
+with -EBUSY.
 
-greg k-h
+[ 1265.509831] WARNING: CPU: 5 PID: 919 at drivers/media/common/videobuf2/videobuf2-core.c:2183 __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
+...
+[ 1265.510630] Call trace:
+[ 1265.510636]  __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
+[ 1265.510648]  vb2_core_streamoff+0x24/0xcc [videobuf2_common]
+[ 1265.510660]  vb2_ioctl_streamoff+0x5c/0xa8 [videobuf2_v4l2]
+[ 1265.510673]  v4l_streamoff+0x24/0x30 [videodev]
+[ 1265.510707]  __video_do_ioctl+0x190/0x3f4 [videodev]
+[ 1265.510732]  video_usercopy+0x304/0x8c4 [videodev]
+[ 1265.510757]  video_ioctl2+0x18/0x34 [videodev]
+[ 1265.510782]  v4l2_ioctl+0x40/0x60 [videodev]
+...
+[ 1265.510944] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 0 in active state
+[ 1265.511175] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 1 in active state
+[ 1265.511398] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 2 in active st
+
+One CAMSS specific way to handle multiple VCs on the same RDI might be:
+
+- Reference count each pipeline enable for CSIPHY, CSID, VFE and RDIx.
+- The video buffers are already associated with msm_vfeN_rdiX so
+  release video buffers when told to do so by stop_streaming.
+- Only release the power-domains for the CSIPHY, CSID and VFE when
+  their internal refcounts drop.
+
+Either way refusing to release video buffers based on use_count is
+erroneous and should be reverted. The silicon enabling code for selecting
+VCs is perfectly fine. Its a "known missing feature" that concurrent VCs
+won't work with CAMSS right now.
+
+Initial testing with this code didn't show an error but, SoftISP and "real"
+usage with Google Hangouts breaks the upstream code pretty quickly, we need
+to do a partial revert and take another pass at VCs.
+
+This commit partially reverts commit 89013969e232 ("media: camss: sm8250:
+Pipeline starting and stopping for multiple virtual channels")
+
+Fixes: 89013969e232 ("media: camss: sm8250: Pipeline starting and stopping for multiple virtual channels")
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+
+ drivers/media/platform/qcom/camss/camss-video.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+---
+
+diff --git a/drivers/media/platform/qcom/camss/camss-video.c b/drivers/media/platform/qcom/camss/camss-video.c
+index cd72feca618c..3b8fc31d957c 100644
+--- a/drivers/media/platform/qcom/camss/camss-video.c
++++ b/drivers/media/platform/qcom/camss/camss-video.c
+@@ -297,12 +297,6 @@ static void video_stop_streaming(struct vb2_queue *q)
+ 
+ 		ret = v4l2_subdev_call(subdev, video, s_stream, 0);
+ 
+-		if (entity->use_count > 1) {
+-			/* Don't stop if other instances of the pipeline are still running */
+-			dev_dbg(video->camss->dev, "Video pipeline still used, don't stop streaming.\n");
+-			return;
+-		}
+-
+ 		if (ret) {
+ 			dev_err(video->camss->dev, "Video pipeline stop failed: %d\n", ret);
+ 			return;
 
