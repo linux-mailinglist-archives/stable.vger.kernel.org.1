@@ -1,95 +1,95 @@
-Return-Path: <stable+bounces-66276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98BD894D23C
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 16:32:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C2E94D232
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 16:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 422951F22A50
-	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 14:32:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DF53281B03
+	for <lists+stable@lfdr.de>; Fri,  9 Aug 2024 14:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EC9192B9A;
-	Fri,  9 Aug 2024 14:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DE61DA53;
+	Fri,  9 Aug 2024 14:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4gbTjfj"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8C3197A76
-	for <stable@vger.kernel.org>; Fri,  9 Aug 2024 14:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA2A946F;
+	Fri,  9 Aug 2024 14:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723213939; cv=none; b=XAMjGqoi3vUPHG6ZY8/ZMFbchUFZETnySlj9WHJaNi0hhaa91dQlo1eFAZWg1RZh0zHaS6xtkkEib6jUv9B8KwSgSmv6EBRbBAZwL2AIXArRqohPk/QCj/bFhHmfMuXeOWV3vYY2wZvzAl6FflafEEXsW8R28DjQavGfd71ERT0=
+	t=1723213817; cv=none; b=PVr1K8J4MhcOP3zFCS+vup+iKl7UdhY2eTSmdRPIRSlGZDQAVnNhuvHbcucCqeMQMBOm4qgWaqVxRjgl7IN9KrpeYCTVhsfxp7d+3mBkryE+MRuBX4P9yuTdhD5Jb1vAGKxivjq9FqVrjsyouZ7AHiM6p82cVSOVOfT3/bCQMgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723213939; c=relaxed/simple;
-	bh=D7BrfeSltrCH0avDP7QS/TjumZjqfLCIg9JFiWEDlbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CjnIDW3sXlqQuQUVlTliidTREGgEnFeDSu1gAScsaXHjAn/LxYYnShUVSmzys78HvCGyokAbTuLxHecLoCX7zckpzMKjwmMIAyueJglIi5YPzvKhxUAm3661bsb71JlpgGVX5flhCb2uWuIwSirAPQfK644AWwqnpnH/d9Plres=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id A512C2F2026A; Fri,  9 Aug 2024 14:24:13 +0000 (UTC)
-X-Spam-Level: 
-Received: from dutyrok-pc.ipa.basealt.ru (unknown [194.247.22.88])
-	by air.basealt.ru (Postfix) with ESMTPSA id 443792F20265;
-	Fri,  9 Aug 2024 14:24:13 +0000 (UTC)
-From: Alexandr Shashkin <dutyrok@altlinux.org>
-To: stable@vger.kernel.org
-Cc: Alexandr Shashkin <dutyrok@altlinux.org>,
-	lvc-project@linuxtesting.org,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	kovalev@altlinux.org,
-	syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
-	Alexander Ofitserov <oficerovas@altlinux.org>
-Subject: [PATCH v2 5.10/5.15] wifi: mac80211: apply mcast rate only if interface is up
-Date: Fri,  9 Aug 2024 17:23:48 +0300
-Message-ID: <20240809142348.534379-1-dutyrok@altlinux.org>
-X-Mailer: git-send-email 2.42.2
+	s=arc-20240116; t=1723213817; c=relaxed/simple;
+	bh=aGFkexEDKtcDtxI/9TDhesstY2pikbzLP7u4D0LRlUs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OmPLIKbneBVmlomrm8gaaIJJo67ow8ItvfulpgkiFr1iJ4imhwLRTDesmxv0whZ9GiCRWT2+s74DngqvTDniB3sNmWmh4Jrh+DTNJmj1zjF/OYT8FYWKp/7mVXUSVbWwb0z+2fYZ02KFCMDu/qIHKF3mKzQAPG+Ybicm9xZMpEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4gbTjfj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEF4C32782;
+	Fri,  9 Aug 2024 14:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723213817;
+	bh=aGFkexEDKtcDtxI/9TDhesstY2pikbzLP7u4D0LRlUs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V4gbTjfjcsbCptOy4nBEML23fxmSs4nzwEezuzx4nEpGiIcSlj8CfC1iWEAyl88lb
+	 gqPrKw779mt2r9rcDJ9slTW7IgclafZQdpUfujCGx3MUMU1TbFAnGdLJ+/2CBikGG0
+	 RZbz/UzgzfZVDQFFDeuV/Go+RYikL/080j/3NT0DlLXkupyHtZlDzGiheRa5EFhUTx
+	 xBAMpLssao0YJBHt57nW7yKKt+gepnLOpvu3Sr9GKYRB+9hAcVJD3k6kP7PgAlclJk
+	 9nwbeAbohC+QKdUpjY3fjI3MEQexgejRVAuSSfosRmolBlJIP7FNt27/6kI5BWzOk+
+	 fgoDE0vveVCkw==
+Date: Fri, 9 Aug 2024 16:30:12 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: Christian Heusel <christian@heusel.eu>,
+	Igor Pylypiv <ipylypiv@google.com>, linux-ide@vger.kernel.org,
+	Hannes Reinecke <hare@suse.de>, regressions@lists.linux.dev,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [REGRESSION][BISECTED][STABLE] hdparm errors since 28ab9769117c
+Message-ID: <ZrYn9CL1uLJEwpdT@ryzen.lan>
+References: <0bf3f2f0-0fc6-4ba5-a420-c0874ef82d64@heusel.eu>
+ <45cdf1c2-9056-4ac2-8e4d-4f07996a9267@kernel.org>
+ <ZrPw5m9LwMH5NQYy@x1-carbon.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZrPw5m9LwMH5NQYy@x1-carbon.lan>
 
-[ Upstream commit 02c665f048a439c0d58cc45334c94634bd7c18e6 ]
+Hello Damien,
 
-If the interface isn't enabled, don't apply multicast
-rate changes immediately.
+If we want to no longer respect the D_SENSE bit for successful ATA-passthrough
+commands, e.g. by replacing the ata_scsi_set_sense() call with a
+scsi_build_sense() call in the else clause:
+https://github.com/torvalds/linux/blob/v6.11-rc2/drivers/ata/libata-scsi.c#L955
 
-Reported-by: syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[oficerovas: Backported to 5.10 and 5.15]
-Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
-Signed-off-by: Alexandr Shashkin <dutyrok@altlinux.org>
----
-Changes in v2:
-- edit comment of oficerovas and add upstream commit
----
- net/mac80211/cfg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+...then I think that we should also replace the ata_scsi_set_sense() call with
+a scsi_build_sense() call for failed ATA-passthrough commands too
+(in the non-else clause):
+https://github.com/torvalds/linux/blob/v6.11-rc2/drivers/ata/libata-scsi.c#L952
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 0c3da7771b48..13ac16026129 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2560,7 +2560,8 @@ static int ieee80211_set_mcast_rate(struct wiphy *wiphy, struct net_device *dev,
- 	memcpy(sdata->vif.bss_conf.mcast_rate, rate,
- 	       sizeof(int) * NUM_NL80211_BANDS);
- 
--	ieee80211_bss_info_change_notify(sdata, BSS_CHANGED_MCAST_RATE);
-+	if (ieee80211_sdata_running(sdata))
-+		ieee80211_bss_info_change_notify(sdata, BSS_CHANGED_MCAST_RATE);
- 
- 	return 0;
- }
--- 
-2.42.2
+..however, that does not sound like a very nice solution IMO.
 
+
+Another option, if there are a lot of user space programs that incorrectly
+assume that the sense data (for both successful and failed commands) is in
+descriptor format, without bothering to check the sense data type, one option
+might be to change the default value of D_SENSE in the control mode page to 1
+in libata's SATL, i.e. set ATA_DFLAG_D_SENSE in dev->flags by default.
+
+That way, we will still respect D_SENSE while generating the sense data
+(in case the user issues a mode select to modify the bit), and the default
+will be to generate the sense data in descriptor format, as it has been
+since 11093cb1ef56 ("libata-scsi: generate correct ATA pass-through sense").
+
+
+Kind regards,
+Niklas
 
