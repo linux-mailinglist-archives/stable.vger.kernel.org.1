@@ -1,186 +1,178 @@
-Return-Path: <stable+bounces-66339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534CB94DE77
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 22:01:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5433A94DECA
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 23:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14409282C3D
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 20:01:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBC661F21D74
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 21:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9950A1311A3;
-	Sat, 10 Aug 2024 20:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCD613D88F;
+	Sat, 10 Aug 2024 21:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctTWWYCo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ots8z0Sz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551B0125BA;
-	Sat, 10 Aug 2024 20:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE87A3AC2B;
+	Sat, 10 Aug 2024 21:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723320087; cv=none; b=Qn09YilnoFYNeSLCsSu6K/dG7UvAvL4qKVFN6Z4Z9ExTdGv9ZrudBsPBoH1B5d+vfx4c63lCoiNt5ylU7TuMGK0DyEeG9F+a6G4fsAm5YXiCwme398iKzd7k2yLta36X/btQqW2aarq6tHycijcvOcJDdBzdKiWNUOZDkGsP2IQ=
+	t=1723325789; cv=none; b=godDP7ZqVck/VfSbKcXQ34uHvNcR9uPjx4qTTe9vACQGoB6JXWVbxXA2DCgUf1WfQ1+vBDoSe9v3+twGyG4RQA9934r2IzeVVhNBZVshiZh6emeKi05XFmban1GuW4l5wsY9bVB8/mHkD3xdf4rc3qqr1vWpoS+c2LI2IbSRLOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723320087; c=relaxed/simple;
-	bh=UVvGKjNkfbegLXzdyWRN4cGHbBWTIrLb9AIOOzEp/d4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwnnDSzPvmPOTTVZhBpG9zRFI+ZBX9LgmXE4wiPq+m8PpyZ8Zq6RxWECamQ9iu7582OTvplLoQuQ9i/eFv43Jnkx8Rj6uKjOFXT4gAfLhy4Udccpj63cLUcT9Y2jGiSZDRLjdPdB6b7kvzyw/c146GsZQpmw8AGQFJdWU+/7v3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctTWWYCo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F7BC4AF0D;
-	Sat, 10 Aug 2024 20:01:26 +0000 (UTC)
+	s=arc-20240116; t=1723325789; c=relaxed/simple;
+	bh=NPD6oAZbb8VbzqFH1mXAxFDKJ+lEi3tTLo8Gzty3uMs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eMhrgKggHiqA6GILFfvR9hjmwDyVbgyHhoMyxzjmcKkGOHm9lzx8TwYIrAa1ZwVnDRycHF0PsdRit9Upk6u0/thje0DB8D7aIHhZISRsotrCiJowxubVlG72mxVRSs4dTfigPEKPGBK1RRCKhSrzUGt64Ugz/Svd2MGLy8SdEos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ots8z0Sz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756CDC32781;
+	Sat, 10 Aug 2024 21:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723320087;
-	bh=UVvGKjNkfbegLXzdyWRN4cGHbBWTIrLb9AIOOzEp/d4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctTWWYCow39Q1QirBTFEeg7hNPHRG5cME2PdJxqXlyUjbKJkM45kF4cQV6hBiF6fI
-	 oZC/f0cRb1VfVWWDAcGSEHG41k1V1h43bQ9HQfHVNfQ2OhKVeM9yZEmtUCG0C8zRwv
-	 Bm8dIwyCfHzkdaDUfA0nJpsaemnoJ2MMVo489McgsdwltNwN8ikyMQHLbi10zWVa3Y
-	 wODWbKz7Je8W+fx0C0WmQ+pRX0WWKGvFF9VV7N7aywd4HCxNVUfEGGMZoYMiwH5eK+
-	 dbsHX4nYdvCufVmnJrPJ5iNGwfwv/PQQIyuklsx4xtqRpU8897esTVLR4WB9BZiaQy
-	 9IiJF0eneLYBA==
-From: cel@kernel.org
-To: <stable@vger.kernel.org>
-Cc: <linux-nfs@vger.kernel.org>,
-	pvorel@suse.cz,
-	sherry.yang@oracle.com,
-	calum.mackay@oracle.com,
-	kernel-team@fb.com,
-	ltp@lists.linux.it,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 6.1.y 18/18] nfsd: make svc_stat per-network namespace instead of global
-Date: Sat, 10 Aug 2024 16:00:09 -0400
-Message-ID: <20240810200009.9882-19-cel@kernel.org>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240810200009.9882-1-cel@kernel.org>
-References: <20240810200009.9882-1-cel@kernel.org>
+	s=k20201202; t=1723325788;
+	bh=NPD6oAZbb8VbzqFH1mXAxFDKJ+lEi3tTLo8Gzty3uMs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ots8z0Szs02+YAQL1tzxe9vtfiocqFGUotcKEt2GSnYb9jrCImS/k9BSaUImvBaZy
+	 H+MMBvH3RMWkNl88f7Bk5+WfJ2jJXR4rLbkXPw3rqQ96/Xl7DT+FvEBzlbAkL1zQmg
+	 8H4xidNV9NbsRLJLM8lcsaK6a/93gjhGv+JCArGU+zHKpS12Vf/4H9dwO4ylWY4eFQ
+	 IErETKTA0gHg5J1SIYBgzMA1p9B3ARGUvS7W3Bt9s0rWkZd/pygJVsujdaRAuHhTTz
+	 34CU+I9wQFw89Id9tqOoe4iUlV9ArIwfbwiQFwxDdmEJn4D1dmZffu3+6GOKJvYdgK
+	 491c9h9wh3bbQ==
+Message-ID: <67bfcb8a-e00e-47b2-afe2-970a60e4a173@kernel.org>
+Date: Sat, 10 Aug 2024 22:36:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc2 review
+To: Salvatore Bonaccorso <carnil@debian.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ allen.lkml@gmail.com, broonie@kernel.org,
+ Hardik Garg <hargar@linux.microsoft.com>, Akemi Yagi <toracat@elrepo.org>,
+ bpf@vger.kernel.org, Sahil Siddiq <icegambit91@gmail.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Tao Chen <chen.dylane@gmail.com>,
+ Sasha Levin <sashal@kernel.org>
+References: <20240808091131.014292134@linuxfoundation.org>
+ <ZrSe8gZ_GyFv1knq@eldamar.lan> <Zrb0Z0MJDkSzFwDD@eldamar.lan>
+From: Quentin Monnet <qmo@kernel.org>
+Content-Language: en-GB
+In-Reply-To: <Zrb0Z0MJDkSzFwDD@eldamar.lan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Josef Bacik <josef@toxicpanda.com>
+2024-08-10 07:02 UTC+0200 ~ Salvatore Bonaccorso <carnil@debian.org>
+> Hi Greg,
+>=20
+> [adding as well people involved in the original commit and the
+> backporting for 6.1.y branch]
+>=20
+> On Thu, Aug 08, 2024 at 12:33:22PM +0200, Salvatore Bonaccorso wrote:
+>> Hi Greg,
+>>
+>> On Thu, Aug 08, 2024 at 11:11:49AM +0200, Greg Kroah-Hartman wrote:
+>>> This is the start of the stable review cycle for the 6.1.104 release.=
 
-[ Upstream commit 16fb9808ab2c99979f081987752abcbc5b092eac ]
+>>> There are 86 patches in this series, all will be posted as a response=
 
-The final bit of stats that is global is the rpc svc_stat.  Move this
-into the nfsd_net struct and use that everywhere instead of the global
-struct.  Remove the unused global struct.
+>>> to this one.  If anyone has any issues with these being applied, plea=
+se
+>>> let me know.
+>>>
+>>> Responses should be made by Sat, 10 Aug 2024 09:11:02 +0000.
+>>> Anything received after that time might be too late.
+>>
+>> Sorry for bothering you again with it (see previous comment on
+>> 6.1.103, respectively 6.1.104-rc1): bpftool still would fail to
+>> compile:
+>>
+>> gcc -O2 -W -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-init=
+ializers -Wbad-function-cast -Wdeclaration-after-statement -Wformat-secur=
+ity -Wformat-y2k -Winit-self -Wmissing-declarations -Wmissing-prototypes =
+-Wno-system-headers -Wold-style-definition -Wpacked -Wredundant-decls -Ws=
+trict-prototypes -Wswitch-default -Wundef -Wwrite-strings -Wformat -Wno-t=
+ype-limits -Wstrict-aliasing=3D3 -Wshadow -DPACKAGE=3D'"bpftool"' -D__EXP=
+ORTED_HEADERS__ -I. -I/home/build/linux-stable-rc/tools/bpf/bpftool/libbp=
+f/include -I/home/build/linux-stable-rc/kernel/bpf/ -I/home/build/linux-s=
+table-rc/tools/include -I/home/build/linux-stable-rc/tools/include/uapi -=
+DUSE_LIBCAP -DBPFTOOL_WITHOUT_SKELETONS -c -MMD prog.c -o prog.o
+>> prog.c: In function =E2=80=98load_with_options=E2=80=99:
+>> prog.c:1710:23: warning: implicit declaration of function =E2=80=98cre=
+ate_and_mount_bpffs_dir=E2=80=99 [-Wimplicit-function-declaration]
+>>  1710 |                 err =3D create_and_mount_bpffs_dir(pinmaps);
+>>       |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~
+>> gcc -O2 -W -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-init=
+ializers -Wbad-function-cast -Wdeclaration-after-statement -Wformat-secur=
+ity -Wformat-y2k -Winit-self -Wmissing-declarations -Wmissing-prototypes =
+-Wno-system-headers -Wold-style-definition -Wpacked -Wredundant-decls -Ws=
+trict-prototypes -Wswitch-default -Wundef -Wwrite-strings -Wformat -Wno-t=
+ype-limits -Wstrict-aliasing=3D3 -Wshadow -DPACKAGE=3D'"bpftool"' -D__EXP=
+ORTED_HEADERS__ -I. -I/home/build/linux-stable-rc/tools/bpf/bpftool/libbp=
+f/include -I/home/build/linux-stable-rc/kernel/bpf/ -I/home/build/linux-s=
+table-rc/tools/include -I/home/build/linux-stable-rc/tools/include/uapi -=
+DUSE_LIBCAP -DBPFTOOL_WITHOUT_SKELETONS  btf.o btf_dumper.o cfg.o cgroup.=
+o common.o feature.o gen.o iter.o json_writer.o link.o main.o map.o map_p=
+erf_ring.o net.o netlink_dumper.o perf.o pids.o prog.o struct_ops.o trace=
+log.o xlated_dumper.o disasm.o /home/build/linux-stable-rc/tools/bpf/bpft=
+ool/libbpf/libbpf.a -lelf -lz -lcap -o bpftool
+>> /bin/ld: prog.o: in function `load_with_options':
+>> prog.c:(.text+0x2f98): undefined reference to `create_and_mount_bpffs_=
+dir'
+>> /bin/ld: prog.c:(.text+0x2ff2): undefined reference to `create_and_mou=
+nt_bpffs_dir'
+>> collect2: error: ld returned 1 exit status
+>> make[1]: *** [Makefile:216: bpftool] Error 1
+>> make: *** [Makefile:113: bpftool] Error 2
+>>
+>> Reverting 65dd9cbafec2f6f7908cebcab0386f750fc352af fixes the issue. In=
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
----
- fs/nfsd/netns.h  |  4 ++++
- fs/nfsd/nfsctl.c |  2 ++
- fs/nfsd/nfssvc.c |  2 +-
- fs/nfsd/stats.c  | 10 ++++------
- fs/nfsd/stats.h  |  2 --
- 5 files changed, 11 insertions(+), 9 deletions(-)
+>> fact 65dd9cbafec2f6f7908cebcab0386f750fc352af is the only commit
+>> adding call to create_and_mount_bpffs_dir:
+>>
+>> $ git grep create_and_mount_bpffs_dir
+>> tools/bpf/bpftool/prog.c:               err =3D create_and_mount_bpffs=
+_dir(pinmaps);
+>=20
+> Just one additional note, at least 478a535ae54a ("bpftool: Mount bpffs
+> on provided dir instead of parent dir") would be a reqisite where the
+> code was refactored introducing create_and_mount_bpffs_dir() (but
+> won't apply cleanly to 6.1.y). But are more requisites needed?
+>=20
+> Should it be safest to just revert the breaking commit for the bpftool
+> build?
+>=20
+> Regards,
+> Salvatore
+>=20
 
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index 55ab92326384..548422b24a7d 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -13,6 +13,7 @@
- #include <linux/nfs4.h>
- #include <linux/percpu_counter.h>
- #include <linux/siphash.h>
-+#include <linux/sunrpc/stats.h>
- 
- /* Hash tables for nfs4_clientid state */
- #define CLIENT_HASH_BITS                 4
-@@ -183,6 +184,9 @@ struct nfsd_net {
- 	/* Per-netns stats counters */
- 	struct percpu_counter    counter[NFSD_STATS_COUNTERS_NUM];
- 
-+	/* sunrpc svc stats */
-+	struct svc_stat          nfsd_svcstats;
-+
- 	/* longest hash chain seen */
- 	unsigned int             longest_chain;
- 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index d7a481aa1dac..813ae75e7128 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1453,6 +1453,8 @@ static __net_init int nfsd_init_net(struct net *net)
- 	retval = nfsd_stat_counters_init(nn);
- 	if (retval)
- 		goto out_repcache_error;
-+	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
-+	nn->nfsd_svcstats.program = &nfsd_program;
- 	nn->nfsd_versions = NULL;
- 	nn->nfsd4_minorversions = NULL;
- 	nfsd4_init_leases_net(nn);
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index 8b944620d798..9eb529969b22 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -657,7 +657,7 @@ int nfsd_create_serv(struct net *net)
- 	if (nfsd_max_blksize == 0)
- 		nfsd_max_blksize = nfsd_get_default_max_blksize();
- 	nfsd_reset_versions(nn);
--	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
-+	serv = svc_create_pooled(&nfsd_program, &nn->nfsd_svcstats,
- 				 nfsd_max_blksize, nfsd);
- 	if (serv == NULL)
- 		return -ENOMEM;
-diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
-index cd5e48382fba..36f1373bbe3f 100644
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -27,10 +27,6 @@
- 
- #include "nfsd.h"
- 
--struct svc_stat		nfsd_svcstats = {
--	.program	= &nfsd_program,
--};
--
- static int nfsd_show(struct seq_file *seq, void *v)
- {
- 	struct net *net = pde_data(file_inode(seq->file));
-@@ -56,7 +52,7 @@ static int nfsd_show(struct seq_file *seq, void *v)
- 	seq_puts(seq, "\nra 0 0 0 0 0 0 0 0 0 0 0 0\n");
- 
- 	/* show my rpc info */
--	svc_seq_show(seq, &nfsd_svcstats);
-+	svc_seq_show(seq, &nn->nfsd_svcstats);
- 
- #ifdef CONFIG_NFSD_V4
- 	/* Show count for individual nfsv4 operations */
-@@ -119,7 +115,9 @@ void nfsd_stat_counters_destroy(struct nfsd_net *nn)
- 
- void nfsd_proc_stat_init(struct net *net)
- {
--	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+
-+	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
- }
- 
- void nfsd_proc_stat_shutdown(struct net *net)
-diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
-index 9b22b1ae929f..14525e854cba 100644
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -10,8 +10,6 @@
- #include <uapi/linux/nfsd/stats.h>
- #include <linux/percpu_counter.h>
- 
--extern struct svc_stat		nfsd_svcstats;
--
- int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
--- 
-2.45.1
+Hi,
 
+You should be able to fix the build by first cherry-picking commit
+2a36c26fe3b8 ("bpftool: Support bpffs mountpoint as pin path for prog
+loadall"), and then commit 478a535ae54a ("bpftool: Mount bpffs on
+provided dir instead of parent dir") as you figured. Both commits have a
+minor conflict on tools/bpf/bpftool/struct_ops.c, which should be
+addressed by discarding the relevant hunk (for both commit).
+
+Alternatively, it's also fine to revert the breaking commit. It's a
+quality of life improvement without which users may have to manually
+mount the bpffs at the location they want to pin their maps when loading
+multiple BPF programs with "bpftool prog loadall", in the unlikely event
+they're not using /sys/kernel/bpf, prior to running the bpftool command.
+It's not in use during the kernel build process or for the BPF
+selftests, so not necessary on stable branches.
+
+I hope this helps,
+Quentin
 
