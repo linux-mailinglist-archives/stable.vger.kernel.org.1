@@ -1,59 +1,77 @@
-Return-Path: <stable+bounces-66311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B56394DBD9
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 11:12:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0918F94DBDC
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 11:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50D461F221C5
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 09:12:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42579B2235C
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 09:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E9E14D6F5;
-	Sat, 10 Aug 2024 09:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9218714E2C0;
+	Sat, 10 Aug 2024 09:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rd4qQF+M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WdF6L63C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781A421A0B;
-	Sat, 10 Aug 2024 09:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432F921A0B;
+	Sat, 10 Aug 2024 09:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723281137; cv=none; b=jbJTLmaJ5jwnoYIlO/zLtUlNga0KMls8CenwPhdcCPCQEIpJr8i1w5IjYdpA8ScrMezFFsMY0lgQPqQwWA5iHLBf3XoodOefrc79KqC3C9NJ5QGY73W7jhVZAqJ8sRTbvRf2blTAEa/3AN52MtPQpX7+yyQ9RjdQfZbnVX7DEko=
+	t=1723281159; cv=none; b=H+rOxpCNBWDwqp+kutE58wV4THcj7KDGdlDIVhhxze/fb+5VuQzWe0tAsgVoI5qx+5nKpPsvLU7oVOYrITOqgHe//NBC40TlZ1bXhu8vkXtauvsN6oh+RIwXuBdMTxonVqIpzMUeGFXiEQWkd2Gke3nVybLV4j7/8v531b4DMkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723281137; c=relaxed/simple;
-	bh=6fWma+A4UCcfcLG00G+S0Cq9e7F4xmhLzd2uZHGdky8=;
+	s=arc-20240116; t=1723281159; c=relaxed/simple;
+	bh=kETDzJtIbLOwXD4/xpys9fj3UYY1y3oAW9d2FSUpE4g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SQrTzchMktVvpQAsKG8nXm7ZnbQ/B3SSbHQNRV1akB5MFqVLeE5E+w2Xc+UHzL4uMf65m8qxn20yJlAbhlnlsWNOPES7gC761WAV6n61x+aoDfPp383y9E2jddavtxO0ROuNw05ha0iI9RUpmoZ7FdMmMlOeMY9SIOzc0vcVR00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rd4qQF+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6CAC32781;
-	Sat, 10 Aug 2024 09:12:17 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=KIjs//CoQ3jrY8yH9ov3LJQCCLohmkEX2vGKhCQTPOtVfL+7ffKFLh+k78+TKW4Upc1f9Lw0qPEg6NT4KTVGmNJ1XmGJ12gKrBa5mpyVaH8nHTRuAmWDXrwpngb9mvkpTHnevpNtVYzGrsIEqvsI5pi+ZKZz91VStjVs4Wji93E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WdF6L63C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F1BC32781;
+	Sat, 10 Aug 2024 09:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723281137;
-	bh=6fWma+A4UCcfcLG00G+S0Cq9e7F4xmhLzd2uZHGdky8=;
+	s=k20201202; t=1723281158;
+	bh=kETDzJtIbLOwXD4/xpys9fj3UYY1y3oAW9d2FSUpE4g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rd4qQF+MEz2PMSnAmGxXVqTHY0+/sSh+ymd9fdUNA07MmQFl7Y3iimtFj7t7D4fh/
-	 FMD2VVJnxwlIa97ISsf2a2thxR2p8ll6peShQerJjXyesED+GlygcbfbbROMbMj581
-	 iOeJqX96Xnuhg4+8sad4TfcOlSiXMiJ2ksNtVUCUHR+p1UFDcxhPKtIBDlckfXrogi
-	 +V0KNCT8tUexZ+ELDRGfXG+mv17G1RSUdL9wUQy841n1YderZxze4RvHAL3IhGIvR+
-	 164ryR19adjE+TbSuaLT2Sy4DCHA1DFq7KdbF0HQKaHgQDPkgPRCbq6VTdeeGyuoBh
-	 GrqZe8AuAqK0A==
-Date: Sat, 10 Aug 2024 05:12:15 -0400
+	b=WdF6L63Cw8AtBFWqe5oIQYYv6quo0TPehC3NbXH/V3peL9ZcV58r0kSkmgU8Fhe5x
+	 y8P+eO+Q15fIUMYk7hHtpdpFt9muxosR5NpZFtlRaeIzZqoMEW5+FOROUVtr2202w2
+	 y6bJ3XGA0jVBluVOBtWp+VpXgpWSaqzGbD+puWsgVIrvGkhNxXJOaTruv2PSj5lou/
+	 Gnt0nK0iIuDEImIuyueArWHXBmTENVgWPfp9sJjF/9jnM8Y08CIVaIBMmTQbdWRGeq
+	 ODqt83kqB5K5Q6kulcFfs2r5kfzDZ4fHzrG+3ZD35+8emeFQ6hvnlaihLOkrRB8o05
+	 VQgeh4xmphE2w==
+Date: Sat, 10 Aug 2024 05:12:37 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>, nic_swsd@realtek.com,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>, Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+	daniel@iogearbox.net, mingo@redhat.com, peterz@infradead.org,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
 	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.10 03/27] r8169: remove detection of chip
- version 11 (early RTL8168b)
-Message-ID: <Zrcu7-CfCIoGO18V@sashalap>
+	akpm@linux-foundation.org, brauner@kernel.org, oleg@redhat.com,
+	kees@kernel.org, tandersen@netflix.com, mjguzik@gmail.com,
+	willy@infradead.org, kent.overstreet@linux.dev,
+	zhangpeng.00@bytedance.com, linmiaohe@huawei.com, hca@linux.ibm.com,
+	jiri@resnulli.us, lorenzo@kernel.org, yan@cloudflare.com,
+	bpf@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.10 10/27] net: Reference bpf_redirect_info via
+ task_struct on PREEMPT_RT.
+Message-ID: <ZrcvBQh53BKoSinL@sashalap>
 References: <20240728005329.1723272-1-sashal@kernel.org>
- <20240728005329.1723272-3-sashal@kernel.org>
- <111ac84e-0d22-43cb-953e-fc5f029fe37c@gmail.com>
+ <20240728005329.1723272-10-sashal@kernel.org>
+ <20240729080014.2bfcd176@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,50 +80,16 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <111ac84e-0d22-43cb-953e-fc5f029fe37c@gmail.com>
+In-Reply-To: <20240729080014.2bfcd176@kernel.org>
 
-On Mon, Jul 29, 2024 at 10:45:15AM +0200, Heiner Kallweit wrote:
->On 28.07.2024 02:52, Sasha Levin wrote:
->> From: Heiner Kallweit <hkallweit1@gmail.com>
->>
->> [ Upstream commit 982300c115d229565d7af8e8b38aa1ee7bb1f5bd ]
->>
->> This early RTL8168b version was the first PCIe chip version, and it's
->> quite quirky. Last sign of life is from more than 15 yrs ago.
->> Let's remove detection of this chip version, we'll see whether anybody
->> complains. If not, support for this chip version can be removed a few
->> kernel versions later.
->>
->> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
->> Link: https://lore.kernel.org/r/875cdcf4-843c-420a-ad5d-417447b68572@gmail.com
->> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
->>  1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
->> index 7b9e04884575e..d2d46fe17631a 100644
->> --- a/drivers/net/ethernet/realtek/r8169_main.c
->> +++ b/drivers/net/ethernet/realtek/r8169_main.c
->> @@ -2274,7 +2274,9 @@ static enum mac_version rtl8169_get_mac_version(u16 xid, bool gmii)
->>
->>  		/* 8168B family. */
->>  		{ 0x7c8, 0x380,	RTL_GIGA_MAC_VER_17 },
->> -		{ 0x7c8, 0x300,	RTL_GIGA_MAC_VER_11 },
->> +		/* This one is very old and rare, let's see if anybody complains.
->> +		 * { 0x7c8, 0x300,	RTL_GIGA_MAC_VER_11 },
->> +		 */
->>
->>  		/* 8101 family. */
->>  		{ 0x7c8, 0x448,	RTL_GIGA_MAC_VER_39 },
+On Mon, Jul 29, 2024 at 08:00:14AM -0700, Jakub Kicinski wrote:
+>On Sat, 27 Jul 2024 20:52:53 -0400 Sasha Levin wrote:
+>> Subject: [PATCH AUTOSEL 6.10 10/27] net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.
 >
->It may be the case that there are still few users out there with this ancient hw.
->We will know better once 6.11 is out for a few month. In this case we would have to
->revert this change.
->I don't think it's a change which should go to stable.
+>no no no, let's drop this one, it's not a fix, and there's a ton
+>of fallout
 
-Sure, I'll drop it.
+Ack, will do. Thanks!
 
 -- 
 Thanks,
