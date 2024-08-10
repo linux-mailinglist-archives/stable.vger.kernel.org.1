@@ -1,158 +1,233 @@
-Return-Path: <stable+bounces-66301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DEF794DACC
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 07:03:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5676094DB01
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 08:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4B21F22347
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 05:03:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53AD41C20F99
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 06:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4744C13B5A5;
-	Sat, 10 Aug 2024 05:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750B9148300;
+	Sat, 10 Aug 2024 06:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="bxt12D9J"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KdCsZFAC"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A19543AB9;
-	Sat, 10 Aug 2024 05:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F5D146592;
+	Sat, 10 Aug 2024 06:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723266181; cv=none; b=XLnGXpibHQrQ+hxk56yk9MeCVdPS2TWaS/fydlQ6ouTiiBGTvgCBPLGRA7kHHzfioVicDxDWqztGlfx1bFvcS9rNTq63VGrwpijLZgFBNTBj4iAbB5NaOXNWZblZ4GeSmeN281moZmd5M2/7wADqEWP9EKWXIicdewQ8i1hmaVc=
+	t=1723270515; cv=none; b=REVcR18fI5yabLNPNVVmShCCqi2cuDBqQUv88ee3tB/NMCPnBvAOAUE6rErO4etFIusW7r3uZrqRSj9R6LuOgfHDfsVWRab3I0I7kOG3e28FGmPi0QYvIXWdgYsx8OMeaI9BNkf0Lm0fPtWv1nkWjxM4cP1zia8AJ2RUUD7YFpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723266181; c=relaxed/simple;
-	bh=p90VjkHd2QSyI8gT0inSZQc3MjLbk9DQli2MMojVYxM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fRUWqkAwS7eiOf9xKhUqFqTNMofv7fDmHMK9d0YjE2nHBwu8TGM3WNrVak0Il+dqEXHKA170wdkBV3QefrQ4+nG2/bRvxlL1hEI0wF/g1W3YjfutcwYbluXh2SIaYzXbABPpGP5eDaQCR42HZexzUUwP00pprqfV/TLl9TACZ+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=bxt12D9J; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=TKG+hP+MGaJcpG0oBhsja88fT5jqXMjmRyL9ouWt+d8=; b=bxt12D9Ji/p6jCn44E8utmb17D
-	PyiIkjjSF9cp5+gxfeP15vQCP16pm/a1gXSakW2ZmrV/x5SAEbilaufYH2eWdE0YmvBaumJNLvryi
-	5c8s0CW1h3gTlS9361X/YfHvj/UOtP2sVAFjpWrx8//s2gLyoHs3FgCgvPIzXlOGsRwpKlyZTVv7i
-	xZJ8TQRysHxPfBEpunUDxYRz+/QoEC6VpkhQrghLTlKVXRJ1iOnTKCk4Bgy7H7icsytLHr0lnXZlA
-	au0IbTK9x/hX8Wx/wVdlvYl7a7seMfFKHkXsW+3TSUp4NLs9MJLeNoXlcKDpjjv/TrKbEbtha4Ru4
-	olpwOSDg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <carnil@debian.org>)
-	id 1sceFN-003iGQ-F4; Sat, 10 Aug 2024 05:02:33 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id F1440BE2DE0; Sat, 10 Aug 2024 07:02:31 +0200 (CEST)
-Date: Sat, 10 Aug 2024 07:02:31 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	Hardik Garg <hargar@linux.microsoft.com>,
-	Akemi Yagi <toracat@elrepo.org>, bpf@vger.kernel.org,
-	Sahil Siddiq <icegambit91@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Tao Chen <chen.dylane@gmail.com>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc2 review
-Message-ID: <Zrb0Z0MJDkSzFwDD@eldamar.lan>
-References: <20240808091131.014292134@linuxfoundation.org>
- <ZrSe8gZ_GyFv1knq@eldamar.lan>
+	s=arc-20240116; t=1723270515; c=relaxed/simple;
+	bh=lyRkV0LJu+bodWWI+MR456a6dcbWeUgFgT2HFCrRfGI=;
+	h=Date:To:From:Subject:Message-Id; b=SYHQ5wow33q6QuxZJvReN7keriMO7K6Q6TkaJt1wUlAeD/zENZ45kWzNkWVKBnqwGQtH6WS9SImFJG2zWlEZrnGoRIUaYQD/ur1zdkbtvrtrSgodt+bGDDUelKwQjPbVC369+xBZ+xrH8pb+6eRScU9eZStREbpMtHv9FYO+UQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KdCsZFAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F927C32781;
+	Sat, 10 Aug 2024 06:15:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1723270514;
+	bh=lyRkV0LJu+bodWWI+MR456a6dcbWeUgFgT2HFCrRfGI=;
+	h=Date:To:From:Subject:From;
+	b=KdCsZFACKBTGwJQ8yogh0Pg4CVnxCcLckIskv7io02whxO2fUWB+s0VBcKe1XTSjP
+	 APBJ9Jjm4MDVUwnnAd4c3M1yWBlvpd3QKHv+ogsxVvWl9wS9t9M63HDTRO9r0yBb+Q
+	 J5bwCVtphR3ExjwQ/fE65lsQdcd8H6vWUyNoNI6c=
+Date: Fri, 09 Aug 2024 23:15:13 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,vbabka@suse.cz,thomas.lendacky@amd.com,stable@vger.kernel.org,rppt@kernel.org,mgorman@suse.de,jxgao@google.com,hannes@cmpxchg.org,david@redhat.com,bp@alien8.de,kirill.shutemov@linux.intel.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-endless-reclaim-on-machines-with-unaccepted-memory.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240810061514.5F927C32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <ZrSe8gZ_GyFv1knq@eldamar.lan>
-X-Debian-User: carnil
 
-Hi Greg,
 
-[adding as well people involved in the original commit and the
-backporting for 6.1.y branch]
+The patch titled
+     Subject: mm: fix endless reclaim on machines with unaccepted memory
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-fix-endless-reclaim-on-machines-with-unaccepted-memory.patch
 
-On Thu, Aug 08, 2024 at 12:33:22PM +0200, Salvatore Bonaccorso wrote:
-> Hi Greg,
->=20
-> On Thu, Aug 08, 2024 at 11:11:49AM +0200, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.1.104 release.
-> > There are 86 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >=20
-> > Responses should be made by Sat, 10 Aug 2024 09:11:02 +0000.
-> > Anything received after that time might be too late.
->=20
-> Sorry for bothering you again with it (see previous comment on
-> 6.1.103, respectively 6.1.104-rc1): bpftool still would fail to
-> compile:
->=20
-> gcc -O2 -W -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initial=
-izers -Wbad-function-cast -Wdeclaration-after-statement -Wformat-security -=
-Wformat-y2k -Winit-self -Wmissing-declarations -Wmissing-prototypes -Wno-sy=
-stem-headers -Wold-style-definition -Wpacked -Wredundant-decls -Wstrict-pro=
-totypes -Wswitch-default -Wundef -Wwrite-strings -Wformat -Wno-type-limits =
--Wstrict-aliasing=3D3 -Wshadow -DPACKAGE=3D'"bpftool"' -D__EXPORTED_HEADERS=
-__ -I. -I/home/build/linux-stable-rc/tools/bpf/bpftool/libbpf/include -I/ho=
-me/build/linux-stable-rc/kernel/bpf/ -I/home/build/linux-stable-rc/tools/in=
-clude -I/home/build/linux-stable-rc/tools/include/uapi -DUSE_LIBCAP -DBPFTO=
-OL_WITHOUT_SKELETONS -c -MMD prog.c -o prog.o
-> prog.c: In function =E2=80=98load_with_options=E2=80=99:
-> prog.c:1710:23: warning: implicit declaration of function =E2=80=98create=
-_and_mount_bpffs_dir=E2=80=99 [-Wimplicit-function-declaration]
->  1710 |                 err =3D create_and_mount_bpffs_dir(pinmaps);
->       |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> gcc -O2 -W -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initial=
-izers -Wbad-function-cast -Wdeclaration-after-statement -Wformat-security -=
-Wformat-y2k -Winit-self -Wmissing-declarations -Wmissing-prototypes -Wno-sy=
-stem-headers -Wold-style-definition -Wpacked -Wredundant-decls -Wstrict-pro=
-totypes -Wswitch-default -Wundef -Wwrite-strings -Wformat -Wno-type-limits =
--Wstrict-aliasing=3D3 -Wshadow -DPACKAGE=3D'"bpftool"' -D__EXPORTED_HEADERS=
-__ -I. -I/home/build/linux-stable-rc/tools/bpf/bpftool/libbpf/include -I/ho=
-me/build/linux-stable-rc/kernel/bpf/ -I/home/build/linux-stable-rc/tools/in=
-clude -I/home/build/linux-stable-rc/tools/include/uapi -DUSE_LIBCAP -DBPFTO=
-OL_WITHOUT_SKELETONS  btf.o btf_dumper.o cfg.o cgroup.o common.o feature.o =
-gen.o iter.o json_writer.o link.o main.o map.o map_perf_ring.o net.o netlin=
-k_dumper.o perf.o pids.o prog.o struct_ops.o tracelog.o xlated_dumper.o dis=
-asm.o /home/build/linux-stable-rc/tools/bpf/bpftool/libbpf/libbpf.a -lelf -=
-lz -lcap -o bpftool
-> /bin/ld: prog.o: in function `load_with_options':
-> prog.c:(.text+0x2f98): undefined reference to `create_and_mount_bpffs_dir'
-> /bin/ld: prog.c:(.text+0x2ff2): undefined reference to `create_and_mount_=
-bpffs_dir'
-> collect2: error: ld returned 1 exit status
-> make[1]: *** [Makefile:216: bpftool] Error 1
-> make: *** [Makefile:113: bpftool] Error 2
->=20
-> Reverting 65dd9cbafec2f6f7908cebcab0386f750fc352af fixes the issue. In
-> fact 65dd9cbafec2f6f7908cebcab0386f750fc352af is the only commit
-> adding call to create_and_mount_bpffs_dir:
->=20
-> $ git grep create_and_mount_bpffs_dir
-> tools/bpf/bpftool/prog.c:               err =3D create_and_mount_bpffs_di=
-r(pinmaps);
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-endless-reclaim-on-machines-with-unaccepted-memory.patch
 
-Just one additional note, at least 478a535ae54a ("bpftool: Mount bpffs
-on provided dir instead of parent dir") would be a reqisite where the
-code was refactored introducing create_and_mount_bpffs_dir() (but
-won't apply cleanly to 6.1.y). But are more requisites needed?
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Should it be safest to just revert the breaking commit for the bpftool
-build?
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Regards,
-Salvatore
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: mm: fix endless reclaim on machines with unaccepted memory
+Date: Fri, 9 Aug 2024 14:48:47 +0300
+
+Unaccepted memory is considered unusable free memory, which is not counted
+as free on the zone watermark check.  This causes get_page_from_freelist()
+to accept more memory to hit the high watermark, but it creates problems
+in the reclaim path.
+
+The reclaim path encounters a failed zone watermark check and attempts to
+reclaim memory.  This is usually successful, but if there is little or no
+reclaimable memory, it can result in endless reclaim with little to no
+progress.  This can occur early in the boot process, just after start of
+the init process when the only reclaimable memory is the page cache of the
+init executable and its libraries.
+
+Make unaccepted memory free from watermark check point of view.  This way
+unaccepted memory will never be the trigger of memory reclaim.  Accept
+more memory in the get_page_from_freelist() if needed.
+
+Link: https://lkml.kernel.org/r/20240809114854.3745464-2-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reported-by: Jianxiong Gao <jxgao@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/page_alloc.c |   42 ++++++++++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
+
+--- a/mm/page_alloc.c~mm-fix-endless-reclaim-on-machines-with-unaccepted-memory
++++ a/mm/page_alloc.c
+@@ -287,7 +287,7 @@ EXPORT_SYMBOL(nr_online_nodes);
+ 
+ static bool page_contains_unaccepted(struct page *page, unsigned int order);
+ static void accept_page(struct page *page, unsigned int order);
+-static bool try_to_accept_memory(struct zone *zone, unsigned int order);
++static bool cond_accept_memory(struct zone *zone, unsigned int order);
+ static inline bool has_unaccepted_memory(void);
+ static bool __free_unaccepted(struct page *page);
+ 
+@@ -3072,9 +3072,6 @@ static inline long __zone_watermark_unus
+ 	if (!(alloc_flags & ALLOC_CMA))
+ 		unusable_free += zone_page_state(z, NR_FREE_CMA_PAGES);
+ #endif
+-#ifdef CONFIG_UNACCEPTED_MEMORY
+-	unusable_free += zone_page_state(z, NR_UNACCEPTED);
+-#endif
+ 
+ 	return unusable_free;
+ }
+@@ -3368,6 +3365,8 @@ retry:
+ 			}
+ 		}
+ 
++		cond_accept_memory(zone, order);
++
+ 		/*
+ 		 * Detect whether the number of free pages is below high
+ 		 * watermark.  If so, we will decrease pcp->high and free
+@@ -3393,10 +3392,8 @@ check_alloc_wmark:
+ 				       gfp_mask)) {
+ 			int ret;
+ 
+-			if (has_unaccepted_memory()) {
+-				if (try_to_accept_memory(zone, order))
+-					goto try_this_zone;
+-			}
++			if (cond_accept_memory(zone, order))
++				goto try_this_zone;
+ 
+ #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+ 			/*
+@@ -3450,10 +3447,8 @@ try_this_zone:
+ 
+ 			return page;
+ 		} else {
+-			if (has_unaccepted_memory()) {
+-				if (try_to_accept_memory(zone, order))
+-					goto try_this_zone;
+-			}
++			if (cond_accept_memory(zone, order))
++				goto try_this_zone;
+ 
+ #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+ 			/* Try again if zone has deferred pages */
+@@ -6950,9 +6945,6 @@ static bool try_to_accept_memory_one(str
+ 	struct page *page;
+ 	bool last;
+ 
+-	if (list_empty(&zone->unaccepted_pages))
+-		return false;
+-
+ 	spin_lock_irqsave(&zone->lock, flags);
+ 	page = list_first_entry_or_null(&zone->unaccepted_pages,
+ 					struct page, lru);
+@@ -6978,23 +6970,29 @@ static bool try_to_accept_memory_one(str
+ 	return true;
+ }
+ 
+-static bool try_to_accept_memory(struct zone *zone, unsigned int order)
++static bool cond_accept_memory(struct zone *zone, unsigned int order)
+ {
+ 	long to_accept;
+-	int ret = false;
++	bool ret = false;
++
++	if (!has_unaccepted_memory())
++		return false;
++
++	if (list_empty(&zone->unaccepted_pages))
++		return false;
+ 
+ 	/* How much to accept to get to high watermark? */
+ 	to_accept = high_wmark_pages(zone) -
+ 		    (zone_page_state(zone, NR_FREE_PAGES) -
+-		    __zone_watermark_unusable_free(zone, order, 0));
++		    __zone_watermark_unusable_free(zone, order, 0) -
++		    zone_page_state(zone, NR_UNACCEPTED));
+ 
+-	/* Accept at least one page */
+-	do {
++	while (to_accept > 0) {
+ 		if (!try_to_accept_memory_one(zone))
+ 			break;
+ 		ret = true;
+ 		to_accept -= MAX_ORDER_NR_PAGES;
+-	} while (to_accept > 0);
++	}
+ 
+ 	return ret;
+ }
+@@ -7037,7 +7035,7 @@ static void accept_page(struct page *pag
+ {
+ }
+ 
+-static bool try_to_accept_memory(struct zone *zone, unsigned int order)
++static bool cond_accept_memory(struct zone *zone, unsigned int order)
+ {
+ 	return false;
+ }
+_
+
+Patches currently in -mm which might be from kirill.shutemov@linux.intel.com are
+
+mm-fix-endless-reclaim-on-machines-with-unaccepted-memory.patch
+
 
