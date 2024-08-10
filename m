@@ -1,135 +1,123 @@
-Return-Path: <stable+bounces-66316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08C094DC27
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 11:59:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C4194DC94
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 13:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EF54282232
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 09:59:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED25D1C20ED4
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 11:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF87155345;
-	Sat, 10 Aug 2024 09:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718B3155332;
+	Sat, 10 Aug 2024 11:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b5o8F080"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="maVue8W4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8AB12F399;
-	Sat, 10 Aug 2024 09:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A0EEC2
+	for <stable@vger.kernel.org>; Sat, 10 Aug 2024 11:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723283986; cv=none; b=bjYmRM4v5agBEZUEYwt8Vj0OWD4j68anUemsXf7WHfE5voOwvE6Oxe3DAEXt/IrKK9wsfu6ZQ4sZCTCtoJGTGQZ6Fld/WVozVgIW+w0nwIJxgZODYOGlehENmOSJqxr9i8Ra8cUQED1r0Mxtibu7F/oewGZwELb2rBII/kuRDZQ=
+	t=1723290358; cv=none; b=muGDsyTF/BGvaGMOyMAiV8jAlpVqKwYGfMW6IFRJprVlrVLG6SMcQAnzWQ54/+MZFv37lLtHc96Kbz4Dcww56p13/r1d3aMCMFhSyQ2PO0JM/65DD1kRWEuCyXR+PBRJtxSY6c+FFSD7OmMZtOHob/8ZwGPPwc7/Jz2GPg/gwPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723283986; c=relaxed/simple;
-	bh=Eos5OrWju3q9VNj8863o2jSSNytrHsCwXWdpjZax35c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u4mHqJphfUYAPA+eZ0tUMeuYfR23sB7CdUdYhVzv7OFhp0lLh5F6S6POBFRBLhY2I6yhPCNJW0xzoW6pInGaNyhe6qbDTocYgUM+6pSwVpZIkA+e2hm/R4CZ1EHvOUFJ7uIDI3pZm5exslCzmthGoyXFp7djiiqUk7mV0igWS/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b5o8F080; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5bb85e90ad5so2552814a12.3;
-        Sat, 10 Aug 2024 02:59:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723283984; x=1723888784; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ufjWIF7ovSvw4Egs+nhOKZIcCZ2hYtulQ4jV8EnQZKQ=;
-        b=b5o8F080SbKmtJeOhdv7LAG0Nbg7HuwmGQ6G9Me23A4OHI9VK0uEj/TKkPba4IePLy
-         xpjzGBD4UmJotudRz2aTpKSRd4/4Fw8VpVgOGQE39WA0xSU+eGb9NYx3zgcqdZIadQJj
-         mfNYkEtAf3DRQz1oERjOcSNx/JpIZMQ218fB/5sStMLrvep4k2WpEgO2qMab/XVBFRLW
-         jMiteSJP66JZPA3D7MeQp/GjrugnQ0jdfQbeH5sDO99t9+f7kP8nfiZlUrfDkKkyD/5C
-         p8jOzM9xL6UYM23zIwkimkosIHdSMmEbAqHafOhasLrUXqLhAuxlLm2T+SFrP+1TTeEw
-         5z7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723283984; x=1723888784;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ufjWIF7ovSvw4Egs+nhOKZIcCZ2hYtulQ4jV8EnQZKQ=;
-        b=bV6NdQZ9A+xOJkvjf15phULKNLUAP4LZtghprwA6vZuc8IcPXIzn8TzxaYrN5qcc7a
-         BTXcQLnjJIwnat6MAIv4/sn7MXUuxk+pyglAOxG+Er7+uLEi6/6AtR2rPJvEhWacXXmV
-         XvLMO58xVKEV9QzwP/KoqhF30bxZEBU8MviqwoDZdcezPrgSXNzH+BKEOIYFo41H1MgZ
-         B6Wf/u8Sw5FmSnQnMYPmu4C2FT+fHSar553HaeK7Xnk8/7TiuiMySxbS3woxD+noY7pt
-         nPQshiX5xUV9RKMKRUVDJ4fTF627sovLvO+J3DQdYEnNktVvixsXQ4YbzRi8sz4V4GdB
-         4wuA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+adseMKlRyUudVfJR3Lc9x2plr/qwe8OgHBLOC3RcXKMAS+/87gLKy36JzJ5d68ewC2k8td6xpu5TcdQ+nKd7iNQ9lqNms8h/HLWLkNXcG0h1ujtOuN+wJeOsZKohi4FHEbOOOgz43RslKeKYUELtCVWkoQf+IfW9On4tSw4=
-X-Gm-Message-State: AOJu0Yw5UaIS1ErUtgPJ2oALn0aN7N5KeMvM/hDBD+qvxpx/7qwTLZsf
-	ecgjJijpk9SjfYyOafdCwbmVyj9JKqDD+MKhG9x2qymeiUycU0RI
-X-Google-Smtp-Source: AGHT+IHuibuosDraN54YWhLgpVT4Q5DmW8EepJIgbRpRL8oKvJymiyx4wsc5KPlRFFSX6vVctDq62g==
-X-Received: by 2002:a05:6402:26c9:b0:5a2:cc1c:4cf0 with SMTP id 4fb4d7f45d1cf-5bd0a535ccemr2285582a12.7.1723283983467;
-        Sat, 10 Aug 2024 02:59:43 -0700 (PDT)
-Received: from [192.168.1.19] (net-93-65-244-85.cust.vodafonedsl.it. [93.65.244.85])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bd1a60984bsm482259a12.79.2024.08.10.02.59.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Aug 2024 02:59:43 -0700 (PDT)
-Message-ID: <35593d3b-e4df-45a3-9c9b-101420aedff8@gmail.com>
-Date: Sat, 10 Aug 2024 11:59:41 +0200
+	s=arc-20240116; t=1723290358; c=relaxed/simple;
+	bh=8DIEUv9amZ+E2lCgoLiQtJnnKGQaWds7ILyjPec/rbg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fXa07KVVIvk9bK6ypgAKfGp5boXhJFwESF51Acg9MQZIKTLSGMSQUywZkDesl8YgB3t/0PmyNUL/dHbqmMs2ION0dwrWb2DQzdsPfmYLOPHOHxe/VLy8FWjsSkpI+GxP/SQ0vYWbn3M8Bb+jPRmof0i5iwswCXbOPCbx41hkCjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=maVue8W4; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723290357; x=1754826357;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8DIEUv9amZ+E2lCgoLiQtJnnKGQaWds7ILyjPec/rbg=;
+  b=maVue8W45+qEmCpoC0RdFy5FI75zJBa08cEet2kd2Fu+4Vm1d0SF7oyr
+   Rc2phGWo8Zim0Xrd5cW3PFA80cLKUhWiQZlGZlagH8uwCP+lxJ+eqDOS5
+   Swc7dTkNGoGZDmZnDBkasBXVstVa2/5KtjVilZTGEm2LAVTV5XilF0CN1
+   FYt7ZbZCmAYwaH3hoBQJ3ZNjYueF7+kxW3T5F75AWgujHjeXNhOk+E/i8
+   kj0apCq9CbYod9bNz3fwHhHVkFwYWRyybm9M6CG3IUsF/3o/nGMAnMcwl
+   a45F40hHDGMovXaRUafnuwY9VcBv7MATVVkgkyCVQpicIIuREBsIWZZTP
+   w==;
+X-CSE-ConnectionGUID: anfk73kxRxGXqDTVJA4aJA==
+X-CSE-MsgGUID: eCbN/8V7RbWkaXcpG7P2ig==
+X-IronPort-AV: E=McAfee;i="6700,10204,11159"; a="21434574"
+X-IronPort-AV: E=Sophos;i="6.09,279,1716274800"; 
+   d="scan'208";a="21434574"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2024 04:45:56 -0700
+X-CSE-ConnectionGUID: ZE69ZQ+cRkaODyeSfuUf/A==
+X-CSE-MsgGUID: 8yfBQNjpRaGLylUsHtViLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,279,1716274800"; 
+   d="scan'208";a="57701445"
+Received: from unknown (HELO b6bf6c95bbab) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 10 Aug 2024 04:45:06 -0700
+Received: from kbuild by b6bf6c95bbab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sckWt-0009tr-0P;
+	Sat, 10 Aug 2024 11:45:03 +0000
+Date: Sat, 10 Aug 2024 19:44:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: oe-kbuild-all@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>, Sam Ravnborg <sam@ravnborg.org>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>, stable@vger.kernel.org
+Subject: Re: [PATCH] video/aperture: match the pci device when calling
+ sysfb_disable()
+Message-ID: <202408101951.tXyqYOzv-lkp@intel.com>
+References: <20240809150327.2485848-1-alexander.deucher@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: check basic rates validity
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: johannes@sipsolutions.net, sashal@kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- javier.carrasco.cruz@gmail.com, skhan@linuxfoundation.org,
- stable@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
- syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
-References: <20240729134318.291424-1-vincenzo.mezzela@gmail.com>
- <2024073014-borrowing-justifier-18c8@gregkh>
-Content-Language: en-US
-From: vincenzo mezzela <vincenzo.mezzela@gmail.com>
-In-Reply-To: <2024073014-borrowing-justifier-18c8@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240809150327.2485848-1-alexander.deucher@amd.com>
 
-On 7/30/24 16:23, Greg KH wrote:
-> On Mon, Jul 29, 2024 at 03:43:18PM +0200, Vincenzo Mezzela wrote:
->> From: Johannes Berg <johannes.berg@intel.com>
->>
->> commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
->>
->> When userspace sets basic rates, it might send us some rates
->> list that's empty or consists of invalid values only. We're
->> currently ignoring invalid values and then may end up with a
->> rates bitmap that's empty, which later results in a warning.
->>
->> Reject the call if there were no valid rates.
->>
->> [ Conflict resolution involved adjusting the patch to accommodate
->> changes in the function signature of ieee80211_parse_bitrates and
->> ieee80211_check_rate_mask ]
->>
->> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->> Reported-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
->> Tested-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
->> Closes: https://syzkaller.appspot.com/bug?extid=07bee335584b04e7c2f8
->> Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
->> ---
->> Hi,
->> please note that a backport of the same patch for v5.15 is available at
->> [1].
-> Please resend [1] as it's gone from my queue.
->
-> greg k-h
+Hi Alex,
 
-Hi Greg,
+kernel test robot noticed the following build errors:
 
-I've just sent it here [1].
+[auto build test ERROR on drm-misc/drm-misc-next]
+[also build test ERROR on linus/master v6.11-rc2 next-20240809]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Alex-Deucher/video-aperture-match-the-pci-device-when-calling-sysfb_disable/20240810-021357
+base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
+patch link:    https://lore.kernel.org/r/20240809150327.2485848-1-alexander.deucher%40amd.com
+patch subject: [PATCH] video/aperture: match the pci device when calling sysfb_disable()
+config: csky-randconfig-001-20240810 (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/reproduce)
 
-Vincenzo
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408101951.tXyqYOzv-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
 
-- [1] 
-https://lore.kernel.org/all/20240810095432.89063-1-vincenzo.mezzela@gmail.com/
+   csky-linux-ld: drivers/video/aperture.o: in function `aperture_remove_conflicting_pci_devices':
+>> aperture.c:(.text+0x222): undefined reference to `screen_info_pci_dev'
+   csky-linux-ld: drivers/video/aperture.o: in function `devm_aperture_acquire_release':
+>> aperture.c:(.text+0x2c0): undefined reference to `screen_info'
+>> csky-linux-ld: aperture.c:(.text+0x2c4): undefined reference to `screen_info_pci_dev'
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
