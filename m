@@ -1,35 +1,35 @@
-Return-Path: <stable+bounces-66306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F9A94DB8C
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 10:45:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE30A94DB8A
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 10:45:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A3BE1F21EAF
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 08:45:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AF2E1C20CDA
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 08:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F24714D444;
-	Sat, 10 Aug 2024 08:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F5414D2A8;
+	Sat, 10 Aug 2024 08:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ljiuYpet";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="74XQaywc"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="B+qIo6I3";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BH9CrZL5"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AF114C5B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AAA14C5B3;
 	Sat, 10 Aug 2024 08:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723279521; cv=none; b=UiCLAsn7jfoBo37Xj/LSpzHBsoG8xMIjFt8w6cDBU/P/eQtV4JKPGLr1m5MXf6kj9lNZwZrpbjmOyXkVkTvH6r7052RNA6Y2geAfHlhQjVGcwwXq/ppf6CNDZ8TRiP73Up3/cmrK0ESJ+QOra07v1+EZaAXh9tCyK6JFmLvTwsw=
+	t=1723279521; cv=none; b=m7j3JOYqzIZqr2DR4EsaJ8pP8QiYQDcCB6qRgiLFLG8sJagJBmCzkwqhw/zBW1ODimcJXXWnKfJBfKaR9u7ZySR6veo015d6pDC0/bvlzfNp27Cp3OQBZB2SmJfGKnkDZdFzcZC0HsF10z8Uxxhxsxca5mEOuUB4VQ0dmzl/z9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1723279521; c=relaxed/simple;
-	bh=ilpXUuTUXGs5exW2A+RhdHqgfWS/fpbIuz78AEWYgCI=;
+	bh=SuPUJenUXnr0BMBShF0UHK3iUChHp7wzXRULMT/jlwM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=AfI+wx2+yW2QDKg9oUhFxRz+re+WPPB37Z13Efsa+5DWAJFGpP8SJG2tPy1Eqir7u0pOrhSLeAqrxpzazMyMIBYo2DeQ1s7LWnakzcMnUDf4ap3+X2PqlgsksSi2se5zpbXx2IlMwbPb+A0u2RQxzBb0IpsyHH/5CqLPdKNjI2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ljiuYpet; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=74XQaywc; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=NZDHV7WGGbhnSpQDTOVE2E4qyTLtN5SpgFOU9B2ofK6Hq8OqvhKaLUr24eW3CEqDAcuaCAqEc/ZlwTeb3YaVFCtWuBSHRH3+zhOoeyxnvUJh9eA3LU6kNiDU9KGZMHkhVQjgg5sumn7Oh+d6ppN0MlfXmo5DbD2+GpYkl33QyC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=B+qIo6I3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BH9CrZL5; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Sat, 10 Aug 2024 08:45:17 -0000
@@ -40,12 +40,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qoXMfZjLY0rWS4/ESdXfLyEJcJJFrL/q2UORtfRycsE=;
-	b=ljiuYpetE2p7mxRqnsOu3CXVVv0wxW397kSTSYSrNzVc8x1ieagvsHcBkjtVMoS3Pa5+ze
-	1Yu5Ayakpftf++5507xHyQK/mIA423gDw0TcyYRuot0zLR9x/ua8Zmb4u8ySF20+4sgJUY
-	rHp6cxygrOLuopck+Cft17TUOPqPwaoX7r+Ph1HAuroYBhPze/4v+QIdMaH6MTGQ16e91D
-	BS40BFZU2DGnz1s0vAoidrXZXEGwQGFBEd2P2BVItMwkJVKDHgKWwPTFVD1MpWCTt3Z5kk
-	SRzTxLM0IMyWKrkT9LQwAQc5jwnUpn1URwcn2xIl5Qd7KHxGWL6ADYMFstTmbw==
+	bh=Hy/kMvBkr+hruugCsGp0VY/ojuxjrCUy6tkeoB7pQRs=;
+	b=B+qIo6I3700aFsGolfbe/1FF3oO8FXKqNyqUbL9/CBF4IqoaqdHztQWuDriWy3HOH+6Jqn
+	NVIaxWrhb7pkUtIgcLctinjiY9qJY+9vIkNXPk4FjrvXNhCjcxC/d9XwLjpe9qjQi3Q7E3
+	c+wqETP4d/4vgH/l++P9H51MmOeKtDMw2kIBTWSOIXAJ2W7jJ2x4p0N6rda6ZDbVf44Tsi
+	RkXXWYYg7qANRxHoeaIKMCPwFOEvFogAKrnzouHRV2gFPLGg2qob3ruFV7C5Q0Xqtf4anU
+	PqVVoxOiYxqxqSdM74KdEPciwX4reSC7+TqOPlU+n5HvKL941vPbIUXDYA559Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1723279518;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -53,28 +53,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qoXMfZjLY0rWS4/ESdXfLyEJcJJFrL/q2UORtfRycsE=;
-	b=74XQaywcfwHVzMR3xL+MwKz50ZdbeBvkIjrBhiYt2tioElH3q8zFIzufyHxp4nsrzEZ34e
-	IqwtUnlc0SeeMTAQ==
-From: "tip-bot2 for Yong-Xuan Wang" <tip-bot2@linutronix.de>
+	bh=Hy/kMvBkr+hruugCsGp0VY/ojuxjrCUy6tkeoB7pQRs=;
+	b=BH9CrZL5HaC44KvXVJlLeC2kwiqitthUvihhKfJwdHIp1WrkpOy9k7uIV3vs38vj0iv8XR
+	TKp4t5jNwgildvDw==
+From: "tip-bot2 for Radhey Shyam Pandey" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/riscv-aplic: Retrigger MSI interrupt on
- source configuration
-Cc: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vincent Chen <vincent.chen@sifive.com>,
- Anup Patel <anup@brainfault.org>, stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: irq/urgent] irqchip/xilinx: Fix shift out of bounds
+Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240809071049.2454-1-yongxuan.wang@sifive.com>
-References: <20240809071049.2454-1-yongxuan.wang@sifive.com>
+In-Reply-To: <1723186944-3571957-1-git-send-email-radhey.shyam.pandey@amd.com>
+References: <1723186944-3571957-1-git-send-email-radhey.shyam.pandey@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172327951735.2215.9481646283292037219.tip-bot2@tip-bot2>
+Message-ID: <172327951777.2215.8494612611829907133.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,97 +82,51 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     03f9885c60adf73488fe32aab628ee3d4a39598e
-Gitweb:        https://git.kernel.org/tip/03f9885c60adf73488fe32aab628ee3d4a39598e
-Author:        Yong-Xuan Wang <yongxuan.wang@sifive.com>
-AuthorDate:    Fri, 09 Aug 2024 15:10:47 +08:00
+Commit-ID:     d73f0f49daa84176c3beee1606e73c7ffb6af8b2
+Gitweb:        https://git.kernel.org/tip/d73f0f49daa84176c3beee1606e73c7ffb6af8b2
+Author:        Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+AuthorDate:    Fri, 09 Aug 2024 12:32:24 +05:30
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 10 Aug 2024 10:42:04 +02:00
+CommitterDate: Sat, 10 Aug 2024 10:39:24 +02:00
 
-irqchip/riscv-aplic: Retrigger MSI interrupt on source configuration
+irqchip/xilinx: Fix shift out of bounds
 
-The section 4.5.2 of the RISC-V AIA specification says that "any write
-to a sourcecfg register of an APLIC might (or might not) cause the
-corresponding interrupt-pending bit to be set to one if the rectified
-input value is high (= 1) under the new source mode."
+The device tree property 'xlnx,kind-of-intr' is sanity checked that the
+bitmask contains only set bits which are in the range of the number of
+interrupts supported by the controller.
 
-When the interrupt type is changed in the sourcecfg register, the APLIC
-device might not set the corresponding pending bit, so the interrupt might
-never become pending.
+The check is done by shifting the mask right by the number of supported
+interrupts and checking the result for zero.
 
-To handle sourcecfg register changes for level-triggered interrupts in MSI
-mode, manually set the pending bit for retriggering interrupt so it gets
-retriggered if it was already asserted.
+The data type of the mask is u32 and the number of supported interrupts is
+up to 32. In case of 32 interrupts the shift is out of bounds, resulting in
+a mismatch warning. The out of bounds condition is also reported by UBSAN:
 
-Fixes: ca8df97fe679 ("irqchip/riscv-aplic: Add support for MSI-mode")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+  UBSAN: shift-out-of-bounds in irq-xilinx-intc.c:332:22
+  shift exponent 32 is too large for 32-bit type 'unsigned int'
+
+Fix it by promoting the mask to u64 for the test.
+
+Fixes: d50466c90724 ("microblaze: intc: Refactor DT sanity check")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Vincent Chen <vincent.chen@sifive.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240809071049.2454-1-yongxuan.wang@sifive.com
+Link: https://lore.kernel.org/all/1723186944-3571957-1-git-send-email-radhey.shyam.pandey@amd.com
 ---
- drivers/irqchip/irq-riscv-aplic-msi.c | 32 ++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ drivers/irqchip/irq-xilinx-intc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-riscv-aplic-msi.c b/drivers/irqchip/irq-riscv-aplic-msi.c
-index 028444a..d7773f7 100644
---- a/drivers/irqchip/irq-riscv-aplic-msi.c
-+++ b/drivers/irqchip/irq-riscv-aplic-msi.c
-@@ -32,15 +32,10 @@ static void aplic_msi_irq_unmask(struct irq_data *d)
- 	aplic_irq_unmask(d);
- }
- 
--static void aplic_msi_irq_eoi(struct irq_data *d)
-+static void aplic_msi_irq_retrigger_level(struct irq_data *d)
- {
- 	struct aplic_priv *priv = irq_data_get_irq_chip_data(d);
- 
--	/*
--	 * EOI handling is required only for level-triggered interrupts
--	 * when APLIC is in MSI mode.
--	 */
--
- 	switch (irqd_get_trigger_type(d)) {
- 	case IRQ_TYPE_LEVEL_LOW:
- 	case IRQ_TYPE_LEVEL_HIGH:
-@@ -59,6 +54,29 @@ static void aplic_msi_irq_eoi(struct irq_data *d)
+diff --git a/drivers/irqchip/irq-xilinx-intc.c b/drivers/irqchip/irq-xilinx-intc.c
+index 238d3d3..7e08714 100644
+--- a/drivers/irqchip/irq-xilinx-intc.c
++++ b/drivers/irqchip/irq-xilinx-intc.c
+@@ -189,7 +189,7 @@ static int __init xilinx_intc_of_init(struct device_node *intc,
+ 		irqc->intr_mask = 0;
  	}
- }
  
-+static void aplic_msi_irq_eoi(struct irq_data *d)
-+{
-+	/*
-+	 * EOI handling is required only for level-triggered interrupts
-+	 * when APLIC is in MSI mode.
-+	 */
-+	aplic_msi_irq_retrigger_level(d);
-+}
-+
-+static int aplic_msi_irq_set_type(struct irq_data *d, unsigned int type)
-+{
-+	int rc = aplic_irq_set_type(d, type);
-+
-+	if (rc)
-+		return rc;
-+	/*
-+	 * Updating sourcecfg register for level-triggered interrupts
-+	 * requires interrupt retriggering when APLIC is in MSI mode.
-+	 */
-+	aplic_msi_irq_retrigger_level(d);
-+	return 0;
-+}
-+
- static void aplic_msi_write_msg(struct irq_data *d, struct msi_msg *msg)
- {
- 	unsigned int group_index, hart_index, guest_index, val;
-@@ -130,7 +148,7 @@ static const struct msi_domain_template aplic_msi_template = {
- 		.name			= "APLIC-MSI",
- 		.irq_mask		= aplic_msi_irq_mask,
- 		.irq_unmask		= aplic_msi_irq_unmask,
--		.irq_set_type		= aplic_irq_set_type,
-+		.irq_set_type		= aplic_msi_irq_set_type,
- 		.irq_eoi		= aplic_msi_irq_eoi,
- #ifdef CONFIG_SMP
- 		.irq_set_affinity	= irq_chip_set_affinity_parent,
+-	if (irqc->intr_mask >> irqc->nr_irq)
++	if ((u64)irqc->intr_mask >> irqc->nr_irq)
+ 		pr_warn("irq-xilinx: mismatch in kind-of-intr param\n");
+ 
+ 	pr_info("irq-xilinx: %pOF: num_irq=%d, edge=0x%x\n",
 
