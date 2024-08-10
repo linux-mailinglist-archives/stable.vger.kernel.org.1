@@ -1,123 +1,168 @@
-Return-Path: <stable+bounces-66314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F31B94DBE7
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 11:17:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8034A94DC22
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 11:55:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AAD31F22188
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 09:17:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33EC51F21E07
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 09:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B4614C5BF;
-	Sat, 10 Aug 2024 09:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F977153BFC;
+	Sat, 10 Aug 2024 09:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oiqi1YA4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="am08aGf8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F31E4436E;
-	Sat, 10 Aug 2024 09:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C6D1798C;
+	Sat, 10 Aug 2024 09:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723281428; cv=none; b=tWbCskYNUwEnUKqu4F09fAXrIC3Vtdv8jQYn+qGYsYKkiaHXmgBswxLrueAhd4aA+8CBMZmNWM6z/k7X/dfLMSlnz/1qiMeoc7paZ5Kj58o7NarVAskZCvwvo2Abcu2dqmNymYkoyaYYtZ3UAVOocnppwBq0cU6Ytl8Wfup9rs4=
+	t=1723283734; cv=none; b=jAC4LS/ap58sTQ/a5BI88jJbWQyMXVef3WN1CUIxT2/S3GdRiT1QmIiYFfJYpChJuuL7kbK++KxdFY+vGSUXLwvfWuQxRJDcwOt2pvWKQe2wnIoA3wX6Zhxsj1SLD4nl7ZWklEE2X1MzxjBhSQ9dzd/De+vkvJoxcpzmbTKqjlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723281428; c=relaxed/simple;
-	bh=zb4bAQPkC8PuI8iRT17mPKYwOYBQem3QeLvrxpTiEH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a/2INPId1tybvweKLfPvmXz9L3nYWGwot6WcUINlSZCrraCBAwSb4BX75ftoVm3SQG/PI1bExE+b4N//VCgybodoXK1LOPys8g4f4zjknqNF4X0OeyX9g1sPTHes3jDhb5d4/8gjdVSBqnTN89DKjdlk7sj6mfLlFpfLKvEhP2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oiqi1YA4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB139C32781;
-	Sat, 10 Aug 2024 09:17:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723281428;
-	bh=zb4bAQPkC8PuI8iRT17mPKYwOYBQem3QeLvrxpTiEH4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Oiqi1YA4ZgNRWmOpHCOBWeHgy3LzYP5gWGnHlWVvFn0ZEKtMIdQ6+YGJ2A38JzEgq
-	 9Oo5aofLeP+A2OBgb2PGtnjzGc7/ts/0oszaEAba+/RwKfEcBpaWRk9d5HLqUDnc5B
-	 cpjL0lw8DMBdvuuZSfxtVF4qu+4AipMwdqCrvVCHPb1JlqRYm9JMTyxQNfcvwOe4n5
-	 Cft8ouLSki2/L6FZS/DTD613X48gbeBms6hkNeX3wqzIrIjPHy9u/9jo16Difkoqa6
-	 ZRHl6qkq7D5iM2eo/vGMMdS71s4i5SWU+IEmIV0/nB9UuCvJ8yx297YpnWsgXMmxKq
-	 dIBOq5VaW3snw==
-Date: Sat, 10 Aug 2024 10:17:03 +0100
-From: Simon Horman <horms@kernel.org>
-To: Gui-Dong Han <hanguidong02@outlook.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH] ice: Fix improper handling of refcount in
- ice_dpll_init_rclk_pins()
-Message-ID: <20240810091703.GG1951@kernel.org>
-References: <SY8P300MB0460FB85729319189B40576FC0BA2@SY8P300MB0460.AUSP300.PROD.OUTLOOK.COM>
+	s=arc-20240116; t=1723283734; c=relaxed/simple;
+	bh=hRpxI5aWlAWLkEnnePj1K7YJsxCy/fCjF/Ajo2Tq60w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fhDpPWdwxiiPjLbIhGbMH1R3qlSvro/00CP74lCC0sMiJ2jSucxRIeYjWgebICo5pRvCcKsMAjMHQBS4M0dpEt3rHOGuWtZ/ZdjiQEH5WeV/h/tVORs4kaZUn59VVx9k4IhUAJ3tmXx++PzxEMGIy1kpFo5y4Y9JRMU/1moZBY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=am08aGf8; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5a156556fb4so3369505a12.3;
+        Sat, 10 Aug 2024 02:55:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723283731; x=1723888531; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7FJPxArVt2QCQnOFcPrUVyt9riSmvMq3yX/VBcIgITE=;
+        b=am08aGf8VeQROz+u9M+a2ihbn4C8v4ms92NoIMbtl+xUEuPF6YnmRGwwsnlHfwl5pO
+         A2//Efma0U2v/l6iQE3ZurxjT9WJ82n+VNW87p0r01ur1QTX6e0QW9hC45T70r0PLqAb
+         HIt2aoF9DtxOI+aVN8fPjh/fL3UiaiGswps4sVRzcS5ffycnOhmGCzz4/a8LgFzIO2Np
+         hmQdjuNUhV61uIavt9xd3FuI2wwXQOI961xiG43bLjTieDo9rbY6GR0KZt0A1Vibjtye
+         fLXXULJANrPqHuVXDYpTpzJ1AFxPKRt4FAVJ5E0BBr76Uo6S6zA96MF3eaUtB/ZyGq3E
+         /blA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723283731; x=1723888531;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7FJPxArVt2QCQnOFcPrUVyt9riSmvMq3yX/VBcIgITE=;
+        b=Id2CMiZGArAENtXA9AOzBsK5eJQC0X6moE3Y4wy3IbKql584M7SxBWhvm2Dy6b6Mrg
+         2wRlRA5ZizQxucc35Lp4XbugV3qzfcdUHcnsX3kOnUSM/K6BoDLrjIZS1b52Ajn3D6Lr
+         uyINbWrtnxhIaryV0BeAXSNGNx3Y4BiZjgP53cWK4aDEls8J4ZSBlZ9DZCBpR12CDS9a
+         yzKiPZFn/mII09Qx7/89c57QA1KMx6ClkxEc4cc6Fb/d2TjUlBsSS+Q8bTUf0rqwO7n9
+         Z8IBMe4RJm2gdqZp4atL7Lgr8FPaab5jhqVn/FCESLQG4rbWtygvqNMWVhnzN4RGPXHS
+         GBKw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/W9RuZa41nEDvN22dCCBVuRUKjfwaW8PmmbNGOEwdsufGCNhRDjhNrEoDxv+hk3pNXcn8a9PNa5A0DTc17y80l7nmrq83kCsOCE+ebF/HMD0ljM/0ZJzSJX3/PRK1
+X-Gm-Message-State: AOJu0YxZ/ni1nNNWAhCyVhInpHlH0WVXYscDwmVnCQG3j6wGWYTFnM27
+	zc1k5s8+1UP+QJjD3Z+kommoP3DghrpexkWRRZRU5tQ0OO4N4+jg
+X-Google-Smtp-Source: AGHT+IE1W/czQOB9ClkuLcLzYYTh1KZWVB8qiFT80780wV3w7KtOVpZFsp/F0DXlel7sPTRBCPkiEQ==
+X-Received: by 2002:a17:906:6a02:b0:a7d:2a62:40e9 with SMTP id a640c23a62f3a-a80aa65a470mr311172866b.50.1723283730347;
+        Sat, 10 Aug 2024 02:55:30 -0700 (PDT)
+Received: from sacco.station (net-93-65-244-85.cust.vodafonedsl.it. [93.65.244.85])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80bb21375esm55994866b.174.2024.08.10.02.55.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Aug 2024 02:55:29 -0700 (PDT)
+From: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+To: johannes@sipsolutions.net,
+	sashal@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	javier.carrasco.cruz@gmail.com,
+	skhan@linuxfoundation.org,
+	stable@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com,
+	Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+Subject: [PATCH v5.15 RESEND] wifi: mac80211: check basic rates validity
+Date: Sat, 10 Aug 2024 11:54:31 +0200
+Message-ID: <20240810095432.89063-1-vincenzo.mezzela@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SY8P300MB0460FB85729319189B40576FC0BA2@SY8P300MB0460.AUSP300.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 09, 2024 at 01:02:15PM +0800, Gui-Dong Han wrote:
-> This patch addresses a reference count handling issue in the
-> ice_dpll_init_rclk_pins() function. The function calls ice_dpll_get_pins(),
-> which increments the reference count of the relevant resources. However,
-> if the condition WARN_ON((!vsi || !vsi->netdev)) is met, the function
-> currently returns an error without properly releasing the resources
-> acquired by ice_dpll_get_pins(), leading to a reference count leak.
-> 
-> To resolve this, the patch introduces a goto unregister_pins; statement
-> when the condition is met, ensuring that the resources are correctly
-> released and the reference count is decremented before returning the error.
-> This change prevents potential memory leaks and ensures proper resource
->  management within the function.
-> 
-> This bug was identified by an experimental static analysis tool developed
-> by our team. The tool specializes in analyzing reference count operations
-> and detecting potential issues where resources are not properly managed.
-> In this case, the tool flagged the missing release operation as a
-> potential problem, which led to the development of this patch.
-> 
-> Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gui-Dong Han <hanguidong02@outlook.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_dpll.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-> index e92be6f130a3..f3f204cae093 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-> @@ -1641,8 +1641,10 @@ ice_dpll_init_rclk_pins(struct ice_pf *pf, struct ice_dpll_pin *pin,
->  		if (ret)
->  			goto unregister_pins;
->  	}
-> -	if (WARN_ON((!vsi || !vsi->netdev)))
-> -		return -EINVAL;
-> +	if (WARN_ON((!vsi || !vsi->netdev))) {
-> +		ret = -EINVAL;
-> +		goto unregister_pins;
-> +	}
+From: Johannes Berg <johannes.berg@intel.com>
 
+commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
+
+When userspace sets basic rates, it might send us some rates
+list that's empty or consists of invalid values only. We're
+currently ignoring invalid values and then may end up with a
+rates bitmap that's empty, which later results in a warning.
+
+Reject the call if there were no valid rates.
+
+[ Conflict resolution involved adjusting the patch to accommodate
+changes in the function signature of ieee80211_parse_bitrates,
+specifically the updated first parameter ]
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
+Tested-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=19013115c9786bfd0c4e
+Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+---
 Hi,
+I'm resending the backport for v5.15 [1], following the one I previously
+sent for v6.1 [2].
 
-I wonder if it would make sense to move the check to the
-top of the function. It seems to be more of a verification
-of state at the time the function is run than anything else.
+Best regards,
+Vincenzo
 
-Doing so would avoid the need to handle unwind in this case.
+- [1] https://lore.kernel.org/all/20240727125033.1774143-1-vincenzo.mezzela@gmail.com/
+- [2] https://lore.kernel.org/all/20240729134318.291424-1-vincenzo.mezzela@gmail.com/
 
->  	dpll_netdev_pin_set(vsi->netdev, pf->dplls.rclk.pin);
->  
->  	return 0;
-> -- 
-> 2.25.1
-> 
-> 
+ net/mac80211/cfg.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f277ce839ddb..85abd3ff07b4 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2339,6 +2339,17 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 	if (!sband)
+ 		return -EINVAL;
+ 
++	if (params->basic_rates) {
++		if (!ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
++					      wiphy->bands[sband->band],
++					      params->basic_rates,
++					      params->basic_rates_len,
++					      &sdata->vif.bss_conf.basic_rates))
++			return -EINVAL;
++		changed |= BSS_CHANGED_BASIC_RATES;
++		ieee80211_check_rate_mask(sdata);
++	}
++
+ 	if (params->use_cts_prot >= 0) {
+ 		sdata->vif.bss_conf.use_cts_prot = params->use_cts_prot;
+ 		changed |= BSS_CHANGED_ERP_CTS_PROT;
+@@ -2362,16 +2373,6 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 		changed |= BSS_CHANGED_ERP_SLOT;
+ 	}
+ 
+-	if (params->basic_rates) {
+-		ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
+-					 wiphy->bands[sband->band],
+-					 params->basic_rates,
+-					 params->basic_rates_len,
+-					 &sdata->vif.bss_conf.basic_rates);
+-		changed |= BSS_CHANGED_BASIC_RATES;
+-		ieee80211_check_rate_mask(sdata);
+-	}
+-
+ 	if (params->ap_isolate >= 0) {
+ 		if (params->ap_isolate)
+ 			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
+-- 
+2.43.0
+
 
