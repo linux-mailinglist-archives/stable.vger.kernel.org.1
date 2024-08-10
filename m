@@ -1,163 +1,158 @@
-Return-Path: <stable+bounces-66300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B113494D9B4
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 03:17:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DEF794DACC
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 07:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703E32826B9
-	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 01:17:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4B21F22347
+	for <lists+stable@lfdr.de>; Sat, 10 Aug 2024 05:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB73F28379;
-	Sat, 10 Aug 2024 01:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4744C13B5A5;
+	Sat, 10 Aug 2024 05:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sN2pCAGi"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="bxt12D9J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEE0DDDC
-	for <stable@vger.kernel.org>; Sat, 10 Aug 2024 01:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A19543AB9;
+	Sat, 10 Aug 2024 05:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723252623; cv=none; b=kI9nBKuA6Q2Y2bnvha9RKlzeul2C76RiMS93R2qP5yiFylJV+ss3M4188kMX+4t/KGwrkR1M/OX9DOkDSfOVO6Ahk0Y6SAMY9naboCHDObg7QrTEMjF9hdqlsdE0ctdTTAlW63pKX23pdXAs3CS0co177sDrrZS8DAekehkpA0w=
+	t=1723266181; cv=none; b=XLnGXpibHQrQ+hxk56yk9MeCVdPS2TWaS/fydlQ6ouTiiBGTvgCBPLGRA7kHHzfioVicDxDWqztGlfx1bFvcS9rNTq63VGrwpijLZgFBNTBj4iAbB5NaOXNWZblZ4GeSmeN281moZmd5M2/7wADqEWP9EKWXIicdewQ8i1hmaVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723252623; c=relaxed/simple;
-	bh=jVidmmJSJCHMjCbvcwDROW4wNdl7moiLujt9wpGQKSU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=R0rl9nREEFU81aRerL8ggknJfV5EUXNTJVRQ4HRdOABEwCRwqi1ZYz61/PyQTavqm3kvonvRS8GSoD9ST6KjGsapgA3yXb/twyeqVEJnzGcXyAhV49gMPmjMH4f6IqYFq2ZTPN/fvxaXTyPI2IHf1tmLfQQcwDj7VtiYrlKdnF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kpberry.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sN2pCAGi; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kpberry.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-70d1c28cd89so2470432b3a.1
-        for <stable@vger.kernel.org>; Fri, 09 Aug 2024 18:17:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723252621; x=1723857421; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rzuGDO8q1udHGjWzP2mZRvfBY0jHkPQ93TjSZVq4gBM=;
-        b=sN2pCAGiufe4pjXKdWVOeHR8+tk/qRdbdCHbS6qa2G6CSV1W7cNdXWZXMoHkSKd7x8
-         S1ZowneKeeiRF7c51Ask9wolWwZYdXwMvVzAbyzPpPwpYzGgS/gMk7/S1GBjA4hMNY83
-         LlPLogztivuU9JXMe7N7gSO2/mAv4fZ5drSUZK7rbBAjiiRqbQ1qmUL/1il4Wle7idze
-         L240PEqUadaYsJokHH9UvVxLWdeO03Ee3EiY2OE7FOw+f+XaqHOiS7bg2g74iQ0hV3mj
-         MftVGTT9jNjxIr2O2tckmy44GU7VMFm+O0dHqviKnNLH6FFf2mnBzUVlqueoqYuim8yf
-         CjNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723252621; x=1723857421;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rzuGDO8q1udHGjWzP2mZRvfBY0jHkPQ93TjSZVq4gBM=;
-        b=QHEbSjm9+TBOyprCK+yaTwosvQg90W5SnImV+aEjcvWrJTbN81u4WkRfW/WvY3oHFK
-         MLk5fZnR008GOFvwKT8idfPGbddWKCgRH0EExXG4M7FUXHmysS7D24RtNC6rCxHm66t7
-         cEI5UPYjGJpKpIQt5AlI0fZ4ufo+KZetBqe9qWItw/2YPlqoBHRfZXDJDBXuhbwDSm65
-         a9OKb0SQnZ1klwC9MBdcmLN338VW20tnFgwbKHia1NFov19mTb4iCDf9aZkhCToq+F79
-         ndrD1H8VU7ciiiOhLocFxL+/biSOmtaNwqJrGPCCwqQ/W3077j6dwUWBbBxMRkhXA3h5
-         rJ5A==
-X-Gm-Message-State: AOJu0YxMgniNEBerOCjEIBY+UqPDvCFhsVHOuHYwObIJN54raPXHFMGS
-	KpPnW9qk3R7WOvkGRtjnZRri3nfOkOfuue7YjaqtZFbhujy0UV1TGEL/FqS4XNCEczw++ftnmaQ
-	Do/ZzyczdliU+M3uElhZQdT0GnG1m8xV7Ykn2tzh+nMG3vVpaTf/81W504WH/1yjAjT8h8VIkfC
-	7uQNvA9vw/09VIJc4adw2X08A5McdbYnbaSb31Eg==
-X-Google-Smtp-Source: AGHT+IFMomNBWY9RIl8MG3x9++PDmzfZdK11wn1AVDRaHuoN8BvvnJKC/lZBof3IZkAqF6HTXI4MEEVBhgH/
-X-Received: from kpberry.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:1f28])
- (user=kpberry job=sendgmr) by 2002:a05:6a00:138b:b0:70f:84b6:8634 with SMTP
- id d2e1a72fcca58-710dc2cfb49mr177766b3a.0.1723252619912; Fri, 09 Aug 2024
- 18:16:59 -0700 (PDT)
-Date: Sat, 10 Aug 2024 01:16:46 +0000
-In-Reply-To: <20240810011646.3746457-1-kpberry@google.com>
+	s=arc-20240116; t=1723266181; c=relaxed/simple;
+	bh=p90VjkHd2QSyI8gT0inSZQc3MjLbk9DQli2MMojVYxM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fRUWqkAwS7eiOf9xKhUqFqTNMofv7fDmHMK9d0YjE2nHBwu8TGM3WNrVak0Il+dqEXHKA170wdkBV3QefrQ4+nG2/bRvxlL1hEI0wF/g1W3YjfutcwYbluXh2SIaYzXbABPpGP5eDaQCR42HZexzUUwP00pprqfV/TLl9TACZ+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=bxt12D9J; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=TKG+hP+MGaJcpG0oBhsja88fT5jqXMjmRyL9ouWt+d8=; b=bxt12D9Ji/p6jCn44E8utmb17D
+	PyiIkjjSF9cp5+gxfeP15vQCP16pm/a1gXSakW2ZmrV/x5SAEbilaufYH2eWdE0YmvBaumJNLvryi
+	5c8s0CW1h3gTlS9361X/YfHvj/UOtP2sVAFjpWrx8//s2gLyoHs3FgCgvPIzXlOGsRwpKlyZTVv7i
+	xZJ8TQRysHxPfBEpunUDxYRz+/QoEC6VpkhQrghLTlKVXRJ1iOnTKCk4Bgy7H7icsytLHr0lnXZlA
+	au0IbTK9x/hX8Wx/wVdlvYl7a7seMfFKHkXsW+3TSUp4NLs9MJLeNoXlcKDpjjv/TrKbEbtha4Ru4
+	olpwOSDg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <carnil@debian.org>)
+	id 1sceFN-003iGQ-F4; Sat, 10 Aug 2024 05:02:33 +0000
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id F1440BE2DE0; Sat, 10 Aug 2024 07:02:31 +0200 (CEST)
+Date: Sat, 10 Aug 2024 07:02:31 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+	Hardik Garg <hargar@linux.microsoft.com>,
+	Akemi Yagi <toracat@elrepo.org>, bpf@vger.kernel.org,
+	Sahil Siddiq <icegambit91@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Tao Chen <chen.dylane@gmail.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc2 review
+Message-ID: <Zrb0Z0MJDkSzFwDD@eldamar.lan>
+References: <20240808091131.014292134@linuxfoundation.org>
+ <ZrSe8gZ_GyFv1knq@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240810011646.3746457-1-kpberry@google.com>
-X-Mailer: git-send-email 2.46.0.76.ge559c4bf1a-goog
-Message-ID: <20240810011646.3746457-2-kpberry@google.com>
-Subject: [PATCH 1/1] xfs: fix log recovery buffer allocation for the legacy
- h_size fixup
-From: Kevin Berry <kpberry@google.com>
-To: stable@vger.kernel.org
-Cc: ovt@google.com, Christoph Hellwig <hch@lst.de>, Sam Sun <samsun1006219@gmail.com>, 
-	Brian Foster <bfoster@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>, 
-	Chandan Babu R <chandanbabu@kernel.org>, Kevin Berry <kpberry@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ZrSe8gZ_GyFv1knq@eldamar.lan>
+X-Debian-User: carnil
 
-From: Christoph Hellwig <hch@lst.de>
+Hi Greg,
 
-[ Upstream commit 45cf976008ddef4a9c9a30310c9b4fb2a9a6602a ]
+[adding as well people involved in the original commit and the
+backporting for 6.1.y branch]
 
-Note: The upstream commit was adjusted to use kmem_free instead of
-kvfree since kmem_free was used in xfs_log_recover.c until commit
-49292576136f (xfs: convert kmem_free() for kvmalloc users to
-kvfree()), and the remainder of the file still uses kmem_free.
+On Thu, Aug 08, 2024 at 12:33:22PM +0200, Salvatore Bonaccorso wrote:
+> Hi Greg,
+>=20
+> On Thu, Aug 08, 2024 at 11:11:49AM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.104 release.
+> > There are 86 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >=20
+> > Responses should be made by Sat, 10 Aug 2024 09:11:02 +0000.
+> > Anything received after that time might be too late.
+>=20
+> Sorry for bothering you again with it (see previous comment on
+> 6.1.103, respectively 6.1.104-rc1): bpftool still would fail to
+> compile:
+>=20
+> gcc -O2 -W -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initial=
+izers -Wbad-function-cast -Wdeclaration-after-statement -Wformat-security -=
+Wformat-y2k -Winit-self -Wmissing-declarations -Wmissing-prototypes -Wno-sy=
+stem-headers -Wold-style-definition -Wpacked -Wredundant-decls -Wstrict-pro=
+totypes -Wswitch-default -Wundef -Wwrite-strings -Wformat -Wno-type-limits =
+-Wstrict-aliasing=3D3 -Wshadow -DPACKAGE=3D'"bpftool"' -D__EXPORTED_HEADERS=
+__ -I. -I/home/build/linux-stable-rc/tools/bpf/bpftool/libbpf/include -I/ho=
+me/build/linux-stable-rc/kernel/bpf/ -I/home/build/linux-stable-rc/tools/in=
+clude -I/home/build/linux-stable-rc/tools/include/uapi -DUSE_LIBCAP -DBPFTO=
+OL_WITHOUT_SKELETONS -c -MMD prog.c -o prog.o
+> prog.c: In function =E2=80=98load_with_options=E2=80=99:
+> prog.c:1710:23: warning: implicit declaration of function =E2=80=98create=
+_and_mount_bpffs_dir=E2=80=99 [-Wimplicit-function-declaration]
+>  1710 |                 err =3D create_and_mount_bpffs_dir(pinmaps);
+>       |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> gcc -O2 -W -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initial=
+izers -Wbad-function-cast -Wdeclaration-after-statement -Wformat-security -=
+Wformat-y2k -Winit-self -Wmissing-declarations -Wmissing-prototypes -Wno-sy=
+stem-headers -Wold-style-definition -Wpacked -Wredundant-decls -Wstrict-pro=
+totypes -Wswitch-default -Wundef -Wwrite-strings -Wformat -Wno-type-limits =
+-Wstrict-aliasing=3D3 -Wshadow -DPACKAGE=3D'"bpftool"' -D__EXPORTED_HEADERS=
+__ -I. -I/home/build/linux-stable-rc/tools/bpf/bpftool/libbpf/include -I/ho=
+me/build/linux-stable-rc/kernel/bpf/ -I/home/build/linux-stable-rc/tools/in=
+clude -I/home/build/linux-stable-rc/tools/include/uapi -DUSE_LIBCAP -DBPFTO=
+OL_WITHOUT_SKELETONS  btf.o btf_dumper.o cfg.o cgroup.o common.o feature.o =
+gen.o iter.o json_writer.o link.o main.o map.o map_perf_ring.o net.o netlin=
+k_dumper.o perf.o pids.o prog.o struct_ops.o tracelog.o xlated_dumper.o dis=
+asm.o /home/build/linux-stable-rc/tools/bpf/bpftool/libbpf/libbpf.a -lelf -=
+lz -lcap -o bpftool
+> /bin/ld: prog.o: in function `load_with_options':
+> prog.c:(.text+0x2f98): undefined reference to `create_and_mount_bpffs_dir'
+> /bin/ld: prog.c:(.text+0x2ff2): undefined reference to `create_and_mount_=
+bpffs_dir'
+> collect2: error: ld returned 1 exit status
+> make[1]: *** [Makefile:216: bpftool] Error 1
+> make: *** [Makefile:113: bpftool] Error 2
+>=20
+> Reverting 65dd9cbafec2f6f7908cebcab0386f750fc352af fixes the issue. In
+> fact 65dd9cbafec2f6f7908cebcab0386f750fc352af is the only commit
+> adding call to create_and_mount_bpffs_dir:
+>=20
+> $ git grep create_and_mount_bpffs_dir
+> tools/bpf/bpftool/prog.c:               err =3D create_and_mount_bpffs_di=
+r(pinmaps);
 
-Commit a70f9fe52daa ("xfs: detect and handle invalid iclog size set by
-mkfs") added a fixup for incorrect h_size values used for the initial
-umount record in old xfsprogs versions.  Later commit 0c771b99d6c9
-("xfs: clean up calculation of LR header blocks") cleaned up the log
-reover buffer calculation, but stoped using the fixed up h_size value
-to size the log recovery buffer, which can lead to an out of bounds
-access when the incorrect h_size does not come from the old mkfs
-tool, but a fuzzer.
+Just one additional note, at least 478a535ae54a ("bpftool: Mount bpffs
+on provided dir instead of parent dir") would be a reqisite where the
+code was refactored introducing create_and_mount_bpffs_dir() (but
+won't apply cleanly to 6.1.y). But are more requisites needed?
 
-Fix this by open coding xlog_logrec_hblks and taking the fixed h_size
-into account for this calculation.
+Should it be safest to just revert the breaking commit for the bpftool
+build?
 
-Fixes: 0c771b99d6c9 ("xfs: clean up calculation of LR header blocks")
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Kevin Berry <kpberry@google.com>
----
- fs/xfs/xfs_log_recover.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
-index 57f366c3d355..9f9d3abad2cf 100644
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2965,7 +2965,7 @@ xlog_do_recovery_pass(
- 	int			error = 0, h_size, h_len;
- 	int			error2 = 0;
- 	int			bblks, split_bblks;
--	int			hblks, split_hblks, wrapped_hblks;
-+	int			hblks = 1, split_hblks, wrapped_hblks;
- 	int			i;
- 	struct hlist_head	rhash[XLOG_RHASH_SIZE];
- 	LIST_HEAD		(buffer_list);
-@@ -3021,14 +3021,22 @@ xlog_do_recovery_pass(
- 		if (error)
- 			goto bread_err1;
- 
--		hblks = xlog_logrec_hblks(log, rhead);
--		if (hblks != 1) {
--			kmem_free(hbp);
--			hbp = xlog_alloc_buffer(log, hblks);
-+		/*
-+		 * This open codes xlog_logrec_hblks so that we can reuse the
-+		 * fixed up h_size value calculated above.  Without that we'd
-+		 * still allocate the buffer based on the incorrect on-disk
-+		 * size.
-+		 */
-+		if (h_size > XLOG_HEADER_CYCLE_SIZE &&
-+		    (rhead->h_version & cpu_to_be32(XLOG_VERSION_2))) {
-+			hblks = DIV_ROUND_UP(h_size, XLOG_HEADER_CYCLE_SIZE);
-+			if (hblks > 1) {
-+				kmem_free(hbp);
-+				hbp = xlog_alloc_buffer(log, hblks);
-+			}
- 		}
- 	} else {
- 		ASSERT(log->l_sectBBsize == 1);
--		hblks = 1;
- 		hbp = xlog_alloc_buffer(log, 1);
- 		h_size = XLOG_BIG_RECORD_BSIZE;
- 	}
--- 
-2.46.0.76.ge559c4bf1a-goog
-
+Regards,
+Salvatore
 
