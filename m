@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E8D94E216
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:58:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E9994E217
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC3C61F21508
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:58:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96AE1281459
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488DF14D2A4;
-	Sun, 11 Aug 2024 15:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E2214C5A3;
+	Sun, 11 Aug 2024 15:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/6rQzs/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9TmrtSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DEA14C5A3
-	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC7F14D2A4
+	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723391884; cv=none; b=dET/Fs0l/Y8ThxChFEYIxXq9XPC+KtGwxVfWXCcRZBs+4uu7BfSQKD/R0kHOrNZNOgDLuye5SNJCnbbmFZ0LCXKq+3Hd8mF240XuAknEUtpuOdQouvIvclOYEorDJRaAK6OoUsg29lMyadVzEW4NaRW2rCjge/YuPwsNgD5BZjM=
+	t=1723391886; cv=none; b=HygNkc/SkyGGQMlDlElyI4ipS+7rm1BfSWsSO0ZoNhphLjf41a9QwZEcY9rwagtoIU9CXyQw7dOOV3b6Z+Ztt/FEncqZRChvWog4zZaxsp63IVqBjLb5kas777gUr9sA4IR6RlQ0cwbTBDVzJtHvGP/56yMwqCHp9yDXxfvMcIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723391884; c=relaxed/simple;
-	bh=rehHMdx8atVVSMdHvnq5DBtYRqkO8fOCRyZfyZkyxis=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KN3MfrHmEVn3gpKhrclZMVD4oKVCTHThwHVD5KhmJKSRdDsEFNHpvpoJuq0TODHsCpw99xjGk3MUkkFPBuKX6j16NJJtKVdybTBPahlXfUMpkvv2yMfhAqg55mZJCUxyFsVbrzHUHzLhk4hOIsPuj12VGsJpbjE8kT+VFTcosOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/6rQzs/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFE9C32786;
-	Sun, 11 Aug 2024 15:58:01 +0000 (UTC)
+	s=arc-20240116; t=1723391886; c=relaxed/simple;
+	bh=63Szd27cJGncUHjwarQzp/nCT4b/crs70TF1BsqtVHc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BlUBwQTll2YzwHZxbxH4LvDY2t4YijdkDRfqs9QtvhP3AVu5FQglQhol8GfwbYp4mBDnATuyTtMnLGuRyZyC6CHSQIy6Bp+BdxER/WRp1LwESX7ApGpe1pxErbrO1LWW8ONzwqGv4/BgTVRBjFzpGTmpexSvF3QsIdX99x87MBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9TmrtSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46C2C32786;
+	Sun, 11 Aug 2024 15:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723391882;
-	bh=rehHMdx8atVVSMdHvnq5DBtYRqkO8fOCRyZfyZkyxis=;
+	s=korg; t=1723391886;
+	bh=63Szd27cJGncUHjwarQzp/nCT4b/crs70TF1BsqtVHc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=U/6rQzs/BiWxXpEjIXvxUwM/L3IbrLCOvGWZNpImmQGkKpUgQWeiF+IhBnHsSf90T
-	 msL44RlI/zdtTkgptPl3iAznlpdY+8RCTib/Vzq59tBSu+KDhpslYzdbh4l5yndhTr
-	 lQXfMiHFhF7yHjeZbniJTLc+8/iG2z83wf2Pm1+k=
-Subject: FAILED: patch "[PATCH] irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock" failed to apply to 5.4-stable tree
+	b=R9TmrtSI8A8WK2uZEzGbGc6yk+MrSGZ7vOIWCzMPjXpLFQ/yP5RFBKLYZYXsgvyFg
+	 wHgDL9sVXLqo24F/K502mophrvuWVDq1DhyMlWessUqJ31D8/JD2i6cfpiDU1SR7eC
+	 NvEzbvY9UfjvitNbK4dnIicU/FaWKIbq89UWsb0I=
+Subject: FAILED: patch "[PATCH] irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock" failed to apply to 4.19-stable tree
 To: avkrasnov@salutedevices.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 11 Aug 2024 17:57:48 +0200
-Message-ID: <2024081148-crafty-capitol-0b4f@gregkh>
+Date: Sun, 11 Aug 2024 17:57:49 +0200
+Message-ID: <2024081149-moisten-possum-0959@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x f872d4af79fe8c71ae291ce8875b477e1669a6c7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081148-crafty-capitol-0b4f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081149-moisten-possum-0959@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,8 @@ cc311074f681 ("irqchip/meson-gpio: support more than 8 channels gpio irq")
 0a66d6f90cf7 ("irqchip/meson-gpio: Fix HARDIRQ-safe -> HARDIRQ-unsafe lock order")
 8f78bd62bdd7 ("irqchip/meson-gpio: Add support for meson a1 SoCs")
 e2514165f36e ("irqchip/meson-gpio: Rework meson irqchip driver to support meson-A1 SoCs")
+b2fb4b77994a ("irqchip/meson-gpio: Add support for meson sm1 SoCs")
+c64a9e804ccf ("irqchip/meson-gpio: Add support for Meson-G12A SoC")
 
 thanks,
 
