@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E430094E219
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D6994E21A
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F9A3281375
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:58:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8322128144B
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5249C14C5A3;
-	Sun, 11 Aug 2024 15:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB4414C5A3;
+	Sun, 11 Aug 2024 15:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dd5n2Vu2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZ4fFduE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1185B14A624
-	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4063614A624
+	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723391931; cv=none; b=Bhxww5+8UDCubSPakvfq4B7Kee40aTyJSiA9RdnnAmAl/1Kl+rEOy3Sc8ieXdho6eDm0MuRCaYLQkpJpeHjgPQx0KwrfCetNeyEHacWutNlJux20LNS6aidkY8oqlRizRgAy1YJ60ArKm5h4ReqdiNoe83hh7cxb3IG3XxU/qD0=
+	t=1723391940; cv=none; b=C22ZajTwKiEPmwuUXyjJJLjdMi4CGSWVPVHm1XToQTHuJ4Ge3I9b0sUquf4GQS0/7t8eRvAz0SM/bLKAgUDMxT5kG6hO0U89+/ccovHq2PSaDMc6lANV7SACloO7kVLHPjMjzOauvaWkLEbXl/mK8qctYWcghHi08cUkFj9nRuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723391931; c=relaxed/simple;
-	bh=lJQh4tjlPnTV4CdHaHN3CtHJRiUVTieKreUMqtImB3s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bxPyWHVKYeHgeB2CoZYKuMys28qwS8D+DPzPWZBeqsVEU+uCwpCIU5LbPOM4+23p8+Y7YobLnwKlfemb6kGS7EcLoVorcUfmWTGa0LxWXgDIiO59qlNIPCFkCRHkZ1RfeTefGsvHyLVTybzLdPbUuPZc8l5CIMnQPt/xbU9iyFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dd5n2Vu2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9B4C32786;
-	Sun, 11 Aug 2024 15:58:49 +0000 (UTC)
+	s=arc-20240116; t=1723391940; c=relaxed/simple;
+	bh=sLyZnF7mOoAz5IEeyjIrTSkO3qSd+Mype9jVkj6bV2k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DJOvljTB3GaMpqxZk+nY4Jyprpqhdx4/33loppE7N/4GkOyuNxPVTe33Xcr26BqAXqbxfuBjGMkt1HWFYYIkagkBqYOBCHFBWcvc6s+fW8otcMqj2R9ud/YapfFRyxDhq9TgRGC2l2Si8UHxbod2Qw7XqvqtYFdtDBzZU4IX/i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZ4fFduE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D0EC32786;
+	Sun, 11 Aug 2024 15:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723391930;
-	bh=lJQh4tjlPnTV4CdHaHN3CtHJRiUVTieKreUMqtImB3s=;
+	s=korg; t=1723391940;
+	bh=sLyZnF7mOoAz5IEeyjIrTSkO3qSd+Mype9jVkj6bV2k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dd5n2Vu26Mg4bWEJ+pdzpZwxWxy5Jew1h37hrfAuj8tiSp8nTiCaAihYvDCJ5zxTh
-	 eTGvF99MKafsjv1qX28Ul/fMOb9SRkmv85YXHs9KhRMRU7g/pw9JbTuE+bqFLgsfUZ
-	 uCMocSEdk9HC+UHC0h/liO4VlF932CyK/sVO5hdc=
-Subject: FAILED: patch "[PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr" failed to apply to 6.1-stable tree
+	b=yZ4fFduE3Akub1CVA+Qr8h5yVaPAw3oCxHsqkUDgmhfSE07kxbzm5c3TM7s8ms/fc
+	 Bl+ATiAU6OQWquuuwnJ+CXJp9AwKWLY8MoUAfSkWCWCiOSpyIwetvV0hA3iuqsbb/G
+	 Fe4Vpkleknyxi+zUf7eSwzgcMvTQ8I4QgzHVhs5A=
+Subject: FAILED: patch "[PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr" failed to apply to 5.15-stable tree
 To: willemb@google.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 11 Aug 2024 17:58:47 +0200
-Message-ID: <2024081147-altitude-luminous-19d1@gregkh>
+Date: Sun, 11 Aug 2024 17:58:48 +0200
+Message-ID: <2024081148-unhappily-maturity-a413@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 89add40066f9ed9abe5f7f886fe5789ff7e0c50e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081147-altitude-luminous-19d1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081148-unhappily-maturity-a413@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
 fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
 9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
+cf9acc90c80e ("net: virtio_net_hdr_to_skb: count transport header in UFO")
 
 thanks,
 
