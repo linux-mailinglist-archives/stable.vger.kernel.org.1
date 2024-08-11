@@ -1,175 +1,115 @@
-Return-Path: <stable+bounces-66372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC88B94E1F5
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:46:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3445894E207
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87C76B20E44
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:46:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62C5B1C209CA
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5CC14A624;
-	Sun, 11 Aug 2024 15:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9054114C5A3;
+	Sun, 11 Aug 2024 15:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1a+vO72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJQIx2Ka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEE07F6;
-	Sun, 11 Aug 2024 15:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEFF14B971
+	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723391185; cv=none; b=BPl+fQL9BjF4gvI1cBdaOpmuOH5XnRel0BF+7H3hiw/PMFcAzAOBAXXZDhiK+6YBN8/1QD7/Rug6Tp7h6cJZJbm5GuK3tJNW3nY6YnXaIbGZFwSpOgzVYxXVx4p6sZmJbjM0fsZ0FYBN3qll4OeOi86PI9rBjGzawRAEc+koU8s=
+	t=1723391794; cv=none; b=ehzRODukgcRAdDVx/jK6zAq9fVY0k22rWXZOoQ/ppfKATeYofjfIKvipEjFL2TXUdsaQNSw2dqg0z/wsYVzvGTqeD2uWjqxQ0GtQXNKDI9eyO7ptUuBvpsqfJ3yWgl+i4w1DAcEY4ButTREH4wq4f6xOdVLSkxOOc0vpxwZ4M90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723391185; c=relaxed/simple;
-	bh=CRfYkOqSSRpBV+j9j3p2R9tMob7B7SdfSAEcSEsyNQU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jUCFGJkoa7nWUJqAPIiyFlRjeKKL5ZA3M/N9JeKZJrFERerJTveqwm0YKiL0cCPViratZKVxURZ2+VLtZAEG6FcNOCuGKkq+2PvWmHjrTJHGJWJxNevrByTraoDUE7c71WzGLanrlXCkqNLSRrMdP3XgMeEkKYbllCURXSSOgHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1a+vO72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59DCC4AF0F;
-	Sun, 11 Aug 2024 15:46:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723391185;
-	bh=CRfYkOqSSRpBV+j9j3p2R9tMob7B7SdfSAEcSEsyNQU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=e1a+vO722KWhKRzsdkSJMV2E/OitihmExzLmMEoBs9cBlq1Pba3dixj1qqC68t+vc
-	 hA8eA6aIF02vULd01ByhQHoMRP5o+iXUixnc561PRhIiUFPfrAiA6IE4ZQhP/uhv2A
-	 dbya4RQpQwioNDIuDJO0Rjs87XycDc/eAolMQpxy+mEjdg+sVAS9QGlTbA8bhboyCj
-	 QR70ca2vkDa1LRrgJJixmtLh1xWEvlQmF3uPPFXYfKjIIrJ3u+IFbiz+zKWajYbo6v
-	 oc115mHFIFtJO1ZuYIMAZK3sLlycwjpNMXUbvqfvMlfpfPq4PfEImiMhbB+zEvpf6N
-	 AlcZ107QzvHVw==
-Message-ID: <7180dcdb-694f-4014-9828-8baced3bfa7a@kernel.org>
-Date: Sun, 11 Aug 2024 17:46:22 +0200
+	s=arc-20240116; t=1723391794; c=relaxed/simple;
+	bh=JZtdGeMlCiH1AvwXWWQwnL7r19uz6yKtN5OyJFr7T5w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=osawfy8oEhOcc21Z9E1t66eYEFgR9UC9BJItMXzRnuScB7yMkca2WR0Lvo4oV2lhCQNOtZmjqMz7xnKPJxhov//tzOXYsEfO5KCNc7Ix9mSkX71+904RvWgLjtPX7wsfu/x8XIJVog8rLv2RYoyK+lgZrLWh0IJIr7UIgTEDLTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJQIx2Ka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D88CC4AF0E;
+	Sun, 11 Aug 2024 15:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723391793;
+	bh=JZtdGeMlCiH1AvwXWWQwnL7r19uz6yKtN5OyJFr7T5w=;
+	h=Subject:To:Cc:From:Date:From;
+	b=SJQIx2Ka0AJTdZay/MHV9tOJ6G4QLxGNK55i/Jro/4R5ZWt7BfK3rMN0Xa1PPUvFX
+	 ly+2dLgJQ03mR1ifoviLiCawJ/LKpq+VVunHM8a65bl8juzKkb/eFJtFUeFEthAHoM
+	 M2NWwxJ1wTqPuXFdg19oIvRTmxNFNvLj8SkvAs5I=
+Subject: FAILED: patch "[PATCH] clocksource: Fix brown-bag boolean thinko in" failed to apply to 6.6-stable tree
+To: paulmck@kernel.org,bp@alien8.de,tglx@linutronix.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 11 Aug 2024 17:56:30 +0200
+Message-ID: <2024081130-crucial-lurch-a32a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: Patch "selftests: mptcp: join: ability to invert ADD_ADDR check"
- has been added to the 6.10-stable tree
-Content-Language: en-GB
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- Sasha Levin <sashal@kernel.org>, Greg KH <gregkh@linuxfoundation.org>
-Cc: Mat Martineau <martineau@kernel.org>
-References: <20240811125614.1262228-1-sashal@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20240811125614.1262228-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha, Greg,
 
-On 11/08/2024 14:56, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     selftests: mptcp: join: ability to invert ADD_ADDR check
-> 
-> to the 6.10-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      selftests-mptcp-join-ability-to-invert-add_addr-chec.patch
-> and it can be found in the queue-6.10 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit 469e6fe99988649029b7f136218d5c3d8854e705
-> Author: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Date:   Wed Jul 31 13:05:58 2024 +0200
-> 
->     selftests: mptcp: join: ability to invert ADD_ADDR check
->     
->     [ Upstream commit bec1f3b119ebc613d08dfbcdbaef01a79aa7de92 ]
->     
->     In the following commit, the client will initiate the ADD_ADDR, instead
->     of the server. We need to way to verify the ADD_ADDR have been correctly
->     sent.
->     
->     Note: the default expected counters for when the port number is given
->     are never changed by the caller, no need to accept them as parameter
->     then.
->     
->     The 'Fixes' tag here below is the same as the one from the previous
->     commit: this patch here is not fixing anything wrong in the selftests,
->     but it validates the previous fix for an issue introduced by this commit
->     ID.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Sorry, I just realised I forgot to add the "Cc: Stable" on all patches
-from this series :-/
+To reproduce the conflict and resubmit, you may use the following commands:
 
-This patch and "selftests: mptcp: join: test both signal & subflow"
-should be backported with the other patches modifying files in
-net/mptcp. Without them, the two patches that have just been added to
-the queue will just make the selftests failing.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x f2655ac2c06a15558e51ed6529de280e1553c86e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081130-crucial-lurch-a32a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Is it then possible to drop these two patches from the 6.10, 6.6 and 6.1
-queues for the moment please? I can send patches for these versions
-later on.
+Possible dependencies:
 
-  selftests-mptcp-join-ability-to-invert-add_addr-chec.patch: 6.10, 6.6
-  selftests-mptcp-join-test-both-signal-subflow.patch: 6.10, 6.6 and 6.1
+f2655ac2c06a ("clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()")
+2ed08e4bc532 ("clocksource: Scale the watchdog read retries automatically")
 
->     Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
->     Reviewed-by: Mat Martineau <martineau@kernel.org>
->     Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->     Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-6-c8a9b036493b@kernel.org
->     Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f2655ac2c06a15558e51ed6529de280e1553c86e Mon Sep 17 00:00:00 2001
+From: "Paul E. McKenney" <paulmck@kernel.org>
+Date: Fri, 2 Aug 2024 08:46:15 -0700
+Subject: [PATCH] clocksource: Fix brown-bag boolean thinko in
+ cs_watchdog_read()
+
+The current "nretries > 1 || nretries >= max_retries" check in
+cs_watchdog_read() will always evaluate to true, and thus pr_warn(), if
+nretries is greater than 1.  The intent is instead to never warn on the
+first try, but otherwise warn if the successful retry was the last retry.
+
+Therefore, change that "||" to "&&".
+
+Fixes: db3a34e17433 ("clocksource: Retry clock read if long delays detected")
+Reported-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240802154618.4149953-2-paulmck@kernel.org
+
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index d25ba49e313c..d0538a75f4c6 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -246,7 +246,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow,
+ 
+ 		wd_delay = cycles_to_nsec_safe(watchdog, *wdnow, wd_end);
+ 		if (wd_delay <= WATCHDOG_MAX_SKEW) {
+-			if (nretries > 1 || nretries >= max_retries) {
++			if (nretries > 1 && nretries >= max_retries) {
+ 				pr_warn("timekeeping watchdog on CPU%d: %s retried %d times before success\n",
+ 					smp_processor_id(), watchdog->name, nretries);
+ 			}
 
 
