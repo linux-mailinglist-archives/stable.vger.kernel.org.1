@@ -1,148 +1,185 @@
-Return-Path: <stable+bounces-66362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E8494E10A
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 14:13:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E700A94E1A9
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 16:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCC3B281790
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 12:13:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14A371C20A95
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 14:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696D6481AA;
-	Sun, 11 Aug 2024 12:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0F4148825;
+	Sun, 11 Aug 2024 14:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="iqagdlus";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="edfi6leC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AhG+5zRZ"
 X-Original-To: stable@vger.kernel.org
-Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EC33D97F;
-	Sun, 11 Aug 2024 12:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF421798C;
+	Sun, 11 Aug 2024 14:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723378411; cv=none; b=N+zMAsFBm52ducC+xCYU59AqUcUd7tgcJRkhVM09aWh03NYLg1v9r98XL6Natd3bomZI9xlMyEO3/BkvMpLC0daYIxH50sg5R5jYAcRAVgtI7sikbRfFLoPhfvEkEQEM8A5ibHrqDzWl6U2k8/CwG3GJAGYXHTAnijJQtoN9wHY=
+	t=1723386731; cv=none; b=tCpHM4vV36aeyLVDoh7tYOpIocHeyTtlN3+SpJmK7qK47saQTZoAB8qzpnP7DwXqee7YBdK+9mZByVxV/y7VwCFI9VkHvi+HxyE8AshkaLqRtq5I4sC3eBXfVxRf/W0JJLQ6Ij+zZPERR3jGxe3th4OXblbg5fGzNaUzFmyRo6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723378411; c=relaxed/simple;
-	bh=WWnL96gAy3HoQSrpoi+3mq3BYzsQnPVg3/BiFHBYxFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mQCPbzjsdSlkKEua21S6b0sSZkiRvTUftAd6fGqZG4zwUJeQ70rqMX4k42CxEydSEchlV2ePHXNKE3rFRDMLTktm91AcjbULFG2KyDs/lYEFNSq+TITlJhdffjWIJkjnAW7oQ0Sr7KPJf8vLSiwAqDhosj75+7h2m/7gcVzvwcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=iqagdlus; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=edfi6leC; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 7022F138FCDC;
-	Sun, 11 Aug 2024 08:13:28 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Sun, 11 Aug 2024 08:13:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1723378408; x=1723464808; bh=bN/mOZQgK8
-	R1TmjEJ6lNJc8Sf+gJv+a60h50Kou4cuo=; b=iqagdlusCS3dT9FpqXKasV4YaT
-	ekkx/vsqvF44Q+nQfhN+McGfpZKm7VUSBEElOU/ajtQyLOaQjEwo5IHFzpSVc6P9
-	t9+mr51AhancDTbLYI4LVP6FCeZZEJ6JL2F9H2sgCY6tsIvIzNytC/bQk7rqpGMo
-	Obhm94DXk0CmdjhINN+hxPA72KNmRS4RGW2e7nXLYAi2oPksJuFQ6qeKVFOTUGAX
-	zFFd1t3Ih+oUf4UZDeVUe3gk/QI2YvIwQt/iPQYup4Zql/UlskvYprIF53xpTBXl
-	yj6LkopuvmmtNxE4oY8bNwcE9VgJzNiX86P0haEVCmXCVOcxyQOCd8kks0Fg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1723378408; x=1723464808; bh=bN/mOZQgK8R1TmjEJ6lNJc8Sf+gJ
-	v+a60h50Kou4cuo=; b=edfi6leCnJJ0Cv/rslMCnBHnWOAsCMpvCcwiXb7a7cii
-	W7gjtn5jbDlF9CMgpYnjio3UDEDAvdXpkoPaSaW1s7qGehxXMgKO3r/mPr1cifKI
-	IO1E/fdpIKw2xVABNJbOXc4DQfp5yuenE7l4ss7vp6dYOKndpne4tF/Y73uT4A0A
-	SvotFEDZ/WMOifzM7KmstFHmtuJrnfyY1vh8BOwlLE6IBl73pPrkjRAezHgqnbGs
-	KEqD/+GB2Rcwd4Wl5IyhT6QByN+6dyoFU16F/P0Vu3CkHy4iFBvmKvpz+h7WOBTA
-	ZrpjlMB4DxHRbhJmZvaLjPPit4cecC349KAfMb/YcA==
-X-ME-Sender: <xms:6Kq4Zp_YHSX5EGYFLSiQLTRCT1YPwkKD8ZqG9awFX5TeRgwKIdt1gg>
-    <xme:6Kq4Ztsx3nrIt1HKgE_w_KsvpdC4iJUbgWTHT6d8dtCUTPhSDqlXZRU2m6HqQxyNX
-    ftSkKMobbCrfw>
-X-ME-Received: <xmr:6Kq4ZnBUqsgVUTSDts07H4vhNbwitVpDx8ZkEcgzuhVT30KwwK6YlhG1Yb2A7YvfPxolu0nnHqq_kj_UAyYhK_URPSyiUPYfgBv0ZA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrleekgdehudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
-    hfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeegheeuhefgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleev
-    tddtvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhn
-    sggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepkhgvvh
-    hinheshhholhhmrdguvghvpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheprhgvghhrvghsshhiohhnsheslhhishhtshdrlhhinh
-    hugidruggvvhdprhgtphhtthhopegrmhguqdhgfhigsehlihhsthhsrdhfrhgvvgguvghs
-    khhtohhprdhorhhgpdhrtghpthhtohepughrihdquggvvhgvlheslhhishhtshdrfhhrvg
-    gvuggvshhkthhophdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhg
-    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeifrgihnhgvrdhlihhnsegrmhgurd
-    gtohhmpdhrtghpthhtohepjhgvrhhrhidriihuohesrghmugdrtghomhdprhgtphhtthho
-    peiirggvvghmrdhmohhhrghmvggusegrmhgurdgtohhm
-X-ME-Proxy: <xmx:6Kq4Ztf_hbQWGCQSsIvsVGTJ3d4HSeQPG3dfo1AWRsNbsJV6uxGBKg>
-    <xmx:6Kq4ZuPcYMlfMNoRFyiC3ARBJNUz3iJSJHUVaPStD5RZhmFDHoFRZg>
-    <xmx:6Kq4Zvma3MCkKGDsk74sGuJq28jYf6dYxOYlb1EfZXWuTBaa3TcrjA>
-    <xmx:6Kq4ZotDU49Hf7RGXvdKesU2U7DCA-k5v01lsrrVnCY331CgMG4N2Q>
-    <xmx:6Kq4Zl-uHpbt6TYXbwRDt-dbGnrCgYhpBaRBDcIccYuU6rbOi89l6EUe>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 11 Aug 2024 08:13:27 -0400 (EDT)
-Date: Sun, 11 Aug 2024 14:13:26 +0200
-From: Greg KH <greg@kroah.com>
-To: Kevin Holm <kevin@holm.dev>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
-	amd-gfx@lists.freedesktop.org,
-	ML dri-devel <dri-devel@lists.freedesktop.org>,
-	LKML <linux-kernel@vger.kernel.org>, Wayne Lin <wayne.lin@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: Re: [PATCH 6.10] drm/amd/display: Refactor function
- dm_dp_mst_is_port_support_mode()
-Message-ID: <2024081141-clump-obliged-8fb0@gregkh>
-References: <20240730185339.543359-1-kevin@holm.dev>
+	s=arc-20240116; t=1723386731; c=relaxed/simple;
+	bh=8wlOlKEv1P2u6aMLa1BbhYFSivgyaJ10HmRu/onwV6E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mLNjhO53nPmUU+qLrQv1p0iA81oYeWFlvdBdkPxTv5oM197KKjbSCdjUPKNSmSgtwjWOI2RMWCIdaXpz8rzePIaSWcBFpCSvc2+BWe7YAiemThc8i4SB1vtsPHCoPhry2j71pbJTWw4LmYrSNh0+a5b9CxTN9GgZrNCw/DolnUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AhG+5zRZ; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-530ad969360so3738017e87.0;
+        Sun, 11 Aug 2024 07:32:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723386728; x=1723991528; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=lRZPDQeJi8gV5FjG+WOyNGRr8ce7b4ax/xgMOADtm0Y=;
+        b=AhG+5zRZqwIG1e3vx4aehXSmBLaitHQZMjWekiig8rW/lsCuOl2d2eH96SBzntsWjA
+         qaJHo7TWi6l/XWThiOYRbT7jSOtPS/gvoVyhKbzd253QPXKE3mAf/ZFt+C8YddR1flJS
+         hi82zGqPDXZ+IUqT/3xsiXLg0z3HkFkRvEmIQe9g/EqRmcgR60EAsFZvU4fbgR8JxuFr
+         etii8/k/g39kMExY9I4nJjsGfhfONcXq3PFaDTtGBumXBm0yLSB9AMyC5xcoBnaT4lQI
+         NXegUtYQIo8+iyqwXl+NdtyZrB1zcrVe1Y8ps1algRqFPxyKaUHKP9hPI2po6zMnj80b
+         Z6yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723386728; x=1723991528;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lRZPDQeJi8gV5FjG+WOyNGRr8ce7b4ax/xgMOADtm0Y=;
+        b=kF3+Glhw+2Vr6lafEg73B9uTKLQTbbSK+S0PnXXLTaRZpMQ033EBO36lCPZK88rViL
+         9k7gLD+1XApOw/zmX+zu50eElGuZqPE4/rKzuUx4ed9Z0H+DGs1kEHGXYeaGYFzdnzdA
+         i7CADnbyeW/DS/W4LtP6VuCT5PESWo0SwDtoqcXm/PKiVkiKdDGfAb4LGqecp+UXXZYW
+         rIG5/mDsl42RFIpWJouDQTPA6qUI2/FGnqAI3T+2lAeaPyk5hVpIGhuWsxhP+Ku3D32C
+         FWCGFg1t4YBlJQOJG4/hg+cx4mIfKZrhdbhH6nVPw+sq6F1fClJOF6J9VIDbeSrhlzS2
+         LDIg==
+X-Forwarded-Encrypted: i=1; AJvYcCVwY+qu0kZdo44x5U/iCBSwfV3YSAvmOcvQIJ+WQYH4aU/czzP3vj/WR7AFL5v957LWH5DR+P9655u620f0cUe4cL6mEjsTc1A+Vb5UIIHo88/nkJvWHTTtVZzpspF+
+X-Gm-Message-State: AOJu0YzNNNAUiyX9XrvXxWbtoUiz64enBCTxgYEWQlqIl8+hf4rnmR0g
+	lnYxKRPte7tznObYAJu2OeE9voeBVw4WwdvMEhtEKVGyS21XIyT0
+X-Google-Smtp-Source: AGHT+IHuqBgINOZtfRlI8H+UyUlqnCWQjYa3wuCYd5xj0DdASVkL/x1Ho7y7mQOdMzWYRjmHHNXR8A==
+X-Received: by 2002:a05:6512:138d:b0:52f:cffd:39f9 with SMTP id 2adb3069b0e04-530ee984473mr4735154e87.24.1723386727199;
+        Sun, 11 Aug 2024 07:32:07 -0700 (PDT)
+Received: from ?IPV6:2a01:c23:bdf7:500:55ff:b5b3:d77:9d3a? (dynamic-2a01-0c23-bdf7-0500-55ff-b5b3-0d77-9d3a.c23.pool.telefonica.de. [2a01:c23:bdf7:500:55ff:b5b3:d77:9d3a])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5bd187f4fe2sm1370276a12.9.2024.08.11.07.32.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 11 Aug 2024 07:32:06 -0700 (PDT)
+Message-ID: <39b2fc1f-421a-4547-b7bb-47b207975d73@gmail.com>
+Date: Sun, 11 Aug 2024 16:32:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240730185339.543359-1-kevin@holm.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.10 03/27] r8169: remove detection of chip
+ version 11 (early RTL8168b)
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, nic_swsd@realtek.com, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org
+References: <20240728005329.1723272-1-sashal@kernel.org>
+ <20240728005329.1723272-3-sashal@kernel.org>
+ <111ac84e-0d22-43cb-953e-fc5f029fe37c@gmail.com> <Zrcu7-CfCIoGO18V@sashalap>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+In-Reply-To: <Zrcu7-CfCIoGO18V@sashalap>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 30, 2024 at 08:53:39PM +0200, Kevin Holm wrote:
-> From: Wayne Lin <wayne.lin@amd.com>
+On 10.08.2024 11:12, Sasha Levin wrote:
+> On Mon, Jul 29, 2024 at 10:45:15AM +0200, Heiner Kallweit wrote:
+>> On 28.07.2024 02:52, Sasha Levin wrote:
+>>> From: Heiner Kallweit <hkallweit1@gmail.com>
+>>>
+>>> [ Upstream commit 982300c115d229565d7af8e8b38aa1ee7bb1f5bd ]
+>>>
+>>> This early RTL8168b version was the first PCIe chip version, and it's
+>>> quite quirky. Last sign of life is from more than 15 yrs ago.
+>>> Let's remove detection of this chip version, we'll see whether anybody
+>>> complains. If not, support for this chip version can be removed a few
+>>> kernel versions later.
+>>>
+>>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+>>> Link: https://lore.kernel.org/r/875cdcf4-843c-420a-ad5d-417447b68572@gmail.com
+>>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>> ---
+>>>  drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+>>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+>>> index 7b9e04884575e..d2d46fe17631a 100644
+>>> --- a/drivers/net/ethernet/realtek/r8169_main.c
+>>> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+>>> @@ -2274,7 +2274,9 @@ static enum mac_version rtl8169_get_mac_version(u16 xid, bool gmii)
+>>>
+>>>          /* 8168B family. */
+>>>          { 0x7c8, 0x380,    RTL_GIGA_MAC_VER_17 },
+>>> -        { 0x7c8, 0x300,    RTL_GIGA_MAC_VER_11 },
+>>> +        /* This one is very old and rare, let's see if anybody complains.
+>>> +         * { 0x7c8, 0x300,    RTL_GIGA_MAC_VER_11 },
+>>> +         */
+>>>
+>>>          /* 8101 family. */
+>>>          { 0x7c8, 0x448,    RTL_GIGA_MAC_VER_39 },
+>>
+>> It may be the case that there are still few users out there with this ancient hw.
+>> We will know better once 6.11 is out for a few month. In this case we would have to
+>> revert this change.
+>> I don't think it's a change which should go to stable.
 > 
-> [ Upstream commit fa57924c76d995e87ca3533ec60d1d5e55769a27 ]
+> Sure, I'll drop it.
 > 
-> [Why]
-> dm_dp_mst_is_port_support_mode() is a bit not following the original design rule and cause
-> light up issue with multiple 4k monitors after mst dsc hub.
-> 
-> [How]
-> Refactor function dm_dp_mst_is_port_support_mode() a bit to solve the light up issue.
-> 
-> Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
-> Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> [kevin@holm.dev: Resolved merge conflict in .../amdgpu_dm_mst_types.c]
-> Fixes: 4df96ba6676034 ("drm/amd/display: Add timing pixel encoding for mst mode validation")
-> Link: https://lore.kernel.org/stable/d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev/T/#u
-> Signed-off-by: Kevin Holm <kevin@holm.dev>
-> ---
-> I resolved the merge conflict so that, after this patch is applied to the
-> linux-6.10.y branch of the stable git repository, the resulting function
-> dm_dp_mst_is_port_support_mode (and also the new function 
-> dp_get_link_current_set_bw) is identical to the original commit.
-> 
-> I've confirmed that it fixes the regression I reported for my use case.
+Just saw that this patch has been added to stable again an hour ago.
+Technical issue?
 
-Now queued up, thanks.
-
-greg k-h
 
