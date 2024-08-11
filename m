@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D367294E20E
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:57:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D38394E20F
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0AD2812F2
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:57:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4C41C20C4E
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A98614C586;
-	Sun, 11 Aug 2024 15:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B817714C5A3;
+	Sun, 11 Aug 2024 15:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBAk3xD9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edh9aFa2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5EF7F6
-	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FE27F6
+	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723391846; cv=none; b=UTa1nZO/kTzSfM4wpa0PaW4GxojUEdwkKnWwmsCc5YyKKXj3NbB0wbZ0CMxai2vGY0hsB1d2m2lqhNuK969ZyjGd6SvTrjabXDjjrDonjrD7UXRsc7M0XSmp3NnNdNC53DkXK9O2FrQLj2bGo94rccmn3jMcX52SXHwkh3Q0o3A=
+	t=1723391849; cv=none; b=PhH76BF9zHq+Qr6dIpoxFOymVxKXLnNVBSpEDtVJaOfd0QrQQHkZGbp9htn6sKKfKn9Ij+GqPu65AN16PnQTvXshluY4dCKeST9gSpn336hNgBBobqWIJKrYMmOtPcwqJ0HcFZp4bFb2YecuVvrEKdjkExwU/DTyOoKCZyXNF3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723391846; c=relaxed/simple;
-	bh=02ewbHgBBSsLt+jx8I7kVMW/O81DUXtc7HTMM2xIcqw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sxgwKF3lfa2YROr2ei8Tj/7TaMQSEtUyaR7Y40K+EtOfv3fJHn0K7H1iDQAmub/OyrV8TtitgOx0syRQKl0bklZPEjwfLh+SyhN5wzvo4jinZnMG9f1ypmLcCeD33w3DPET6Yyx0KWU8MGWTEBCj4Fe7N+qqW9YSGdAn6MtAV/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBAk3xD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5281C32786;
-	Sun, 11 Aug 2024 15:57:24 +0000 (UTC)
+	s=arc-20240116; t=1723391849; c=relaxed/simple;
+	bh=McOca4Du8CecU5ETKYuJCXED0BU1MTnCdirv6KXL+L4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hAivjFcSkEjhYb3YhCNUqiaza8lxDPL82y3JHhMF7OyS9vA2de4rO6Ut5QeOEu8bB4eSZ5vJSRuNJRyKT3qZke5pOBTxCDS3ElAv9kNsnYZBVvpAiwd6L49lIn6aFqfXi+mcFAFCp0A1q5bRc15LQ964AnXvdNkPwtB31h7KrUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edh9aFa2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967F3C32786;
+	Sun, 11 Aug 2024 15:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723391845;
-	bh=02ewbHgBBSsLt+jx8I7kVMW/O81DUXtc7HTMM2xIcqw=;
+	s=korg; t=1723391849;
+	bh=McOca4Du8CecU5ETKYuJCXED0BU1MTnCdirv6KXL+L4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EBAk3xD9ywNrKSCq+aLPwPlzkIrry5KdKcZ+NlZt3hgmYX9oPVM+CCb6ANJ9t+Fxd
-	 ity4ro7moDrV0AhsrR7XNCHO9eHdIPCTpiUlJjtHCi8QWo12alMS2wDy4eaPzYLaM2
-	 qcohuzvOcppqy3+ujlkDwHeMO4k6BAYQfu2ff020=
-Subject: FAILED: patch "[PATCH] scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES" failed to apply to 5.4-stable tree
+	b=edh9aFa29QCgzry8XA8QPIguxMqXT4wuSop4R+lc3PMXjC8j62Te3AITtOmp2y+Cz
+	 ZFGCf++UKj4ByYtrRW22KY5DQ3GFDzN6BsX4gVEcYNe3zXeGRce+HVZpzx8lrgXV6A
+	 9AJP5WU52kykQ9tE5sIeOs3qMtW37bLiWOzdUQtA=
+Subject: FAILED: patch "[PATCH] scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES" failed to apply to 4.19-stable tree
 To: dlemoal@kernel.org,hch@lst.de,johannes.thumshirn@wdc.com,martin.petersen@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 11 Aug 2024 17:57:14 +0200
-Message-ID: <2024081113-creamed-unleaded-c696@gregkh>
+Date: Sun, 11 Aug 2024 17:57:15 +0200
+Message-ID: <2024081115-giving-hacked-fffb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 82dbb57ac8d06dfe8227ba9ab11a49de2b475ae5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081113-creamed-unleaded-c696@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081115-giving-hacked-fffb@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 82dbb57ac8d0 ("scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES")
 0c25422d34b4 ("scsi: mpt3sas: Remove scsi_dma_map() error messages")
+1c2048bdc3f4 ("scsi: mpt3sas: switch to generic DMA API")
+919d8a3f3fef ("scsi: mpt3sas: Convert uses of pr_<level> with MPT3SAS_FMT to ioc_<level>")
 
 thanks,
 
