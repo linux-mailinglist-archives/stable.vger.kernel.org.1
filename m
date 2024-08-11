@@ -1,161 +1,97 @@
-Return-Path: <stable+bounces-66364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E453A94E1BE
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:03:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E868794E1C1
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:06:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EDBC1F213AB
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:03:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9111B2813E9
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB63914A602;
-	Sun, 11 Aug 2024 15:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B33214A4DC;
+	Sun, 11 Aug 2024 15:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MlZPxKrM"
+	dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b="MC1Zo6U1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D13B64E;
-	Sun, 11 Aug 2024 15:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1DFB64E
+	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723388630; cv=none; b=D/CTZDcUoPTU0QrzC5BFZBm2AI+RJJOP9ck4W9+IqoFZfTQAc+rtZbSlK4QsvzWXsKxsWeY7ENnUP7/uJt/A7N+7M02nfjdjtPGvtnGaZrrTMg/YtGxWUccRxg2788TpxwHjl6TbEQ4yDDHLB6/tSrjrebyPCuHlwL7YtbSeJ8Y=
+	t=1723388776; cv=none; b=CAb4TAeZa39CwfnVnHhq56X9CrczMNuP0KzNYnplQ7fXNaE/EcIPdriBJUJoA6gSJtQl5N5PmNzg94KuDcKKFiLzutCy48S9KHQlU/uPor2xPynzL+ZGXV2PQR8EaNNQS853PvwtEUSEwMy8zUjPGLPlDSwAAPlgE7q8epfmHlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723388630; c=relaxed/simple;
-	bh=t56VbpVtJ+Zdlnja/qi8vfMVnThbtLYAwjUZlQMKN0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ww25z070e2T8i0TaCiVgFRKyvAa94LJf1MtLtU3tOvq0diOFxh5o3v6A6/c8ubeNXl7Mo9aJw8dKQs3ZCrMacCo2PtiUzJrWEYHiocjxmm9ImW3FsqYK9v/rIHE4Py9MAGSscFeHjv228GIJSprL3IuUR+28hL/QowEIsJkuPv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MlZPxKrM; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4281faefea9so25949225e9.2;
-        Sun, 11 Aug 2024 08:03:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723388627; x=1723993427; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BLQEJ+WX0ldiAMY/HSIi4WEWR2xNDc8YrU3kn4DHc6g=;
-        b=MlZPxKrM9vhx1Bxa/4lxoTv/PEzhSfe0K4uYHbfF3wD4z8wv262Oc64t94pJVzE67r
-         aQGKbtrXB3g5bx/zxDqfmhgh5sA2fwKaSIAKV2xBzKwMokW2fPpagQCNTXZF8B2vo3Fk
-         SSJXTUgfS++wsclf9BtgWW3Rr6MlzUUhAVGQmAm5iug5ONTAvEEmgQez1n3p2mMMls1q
-         4cp6yEG7I6zE+T/esGv8pmlx+t5k2FpCHs9C7cIHXXXmaTbGOQt8yNgUki75XnXg/Bs7
-         nUeppUoVVTJ1AVDLf47hru0OTECGzCCMBCNBxHifyTEbG53U6Dw79yzUVK/mgMltYJcu
-         7Oqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723388627; x=1723993427;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BLQEJ+WX0ldiAMY/HSIi4WEWR2xNDc8YrU3kn4DHc6g=;
-        b=cElpbXoS4rx4UG6Q44/ZeAc1co2QIALyD1Yi2ZEg7XMwmsCITM21FcTxp1mKws5vlD
-         xlrY7g/ER+8PNKjyuDxdfC3QnMlmSTJhaSJzsDVZCvlWwsl6TYPwgFXwDab4PHwxsnTM
-         qdj1bdOnRfGlnIQ1V/Z+0ims8gwdMHB/7M8epuEyg+X8ApAlpOc/gjTf3qWnkjTeO3vw
-         tzfJAyzLTOIUsFDTErdMar+c/wJLa7yc7KBNnp0ZLS1uS0oyZqS9Rz+r+wo9bzHdXUNe
-         ANNTeRnA+FKcUI72quYLuETZokrwJPxjisVgBuRL4dqWi+OdQpSv5tVfZzCEWvN/IIwx
-         rV9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVUyC4LzQNwra/H2RdPE4GTPB8x0QO+FAOUO+e/8KHnhgJekb/C929YWq/JKFbu36TZSr93KYqq1ZZok1OLULLh5AclPzGMHo9BlUvLzdWUwyy1wY0hKe7Kb8IN/6wWeWYO
-X-Gm-Message-State: AOJu0Yxpwh1tDuFZq3VkdggEdaKvOjiwZi4cFIOnhuxRa20cRLuRN3Yc
-	7ZhzN11e+klcIbMlfP2YmBGNNbb230VGhvWmBmiBpTL0BjOk88AX
-X-Google-Smtp-Source: AGHT+IGRCcyYRtOhzZaRR+hNljuWSn1EeObk0KM0LDvFEUW0jXe00dokU1umwMkyPsJJouac/jht5Q==
-X-Received: by 2002:a05:600c:4f8f:b0:426:6ea8:5037 with SMTP id 5b1f17b1804b1-429c3a643bdmr46498235e9.37.1723388626791;
-        Sun, 11 Aug 2024 08:03:46 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36e4f0a6d76sm5087903f8f.115.2024.08.11.08.03.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Aug 2024 08:03:45 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 2F04ABE2DE0; Sun, 11 Aug 2024 17:03:45 +0200 (CEST)
-Date: Sun, 11 Aug 2024 17:03:45 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	Akemi Yagi <toracat@elrepo.org>,
-	Hardik Garg <hargar@linux.microsoft.com>,
-	Quentin Monnet <qmo@kernel.org>, bpf@vger.kernel.org
-Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc1 review
-Message-ID: <ZrjS0V-tCQ1tGkRu@eldamar.lan>
-References: <20240807150039.247123516@linuxfoundation.org>
- <ZrPafx6KUuhZZsci@eldamar.lan>
- <2024081117-delusion-halved-9e9c@gregkh>
+	s=arc-20240116; t=1723388776; c=relaxed/simple;
+	bh=nTDus+CUuN/IzDJPi1CLwtMKPNcdqehB37J69lNznQ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n8dTkOcytq75Cwx88wrifYJK9u0K6bJ5WEONWRTkBtBlKV3KqbU+cf4eBsjMoZO4TFiGWS6k2q12XjeuKxAtbQ+RPjiLGBQjWZuqiknN8kB3UY3PuFN2RiTQT/8CJLMhoJmznnwjXqHkE52km7zjrvDtCok6pmrJOtEjgiirzgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev; spf=pass smtp.mailfrom=holm.dev; dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b=MC1Zo6U1; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holm.dev
+Message-ID: <f9528a9e-7d25-4f56-8117-463bb0306ba1@holm.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=holm.dev; s=key1;
+	t=1723388769;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nfE5UGXfZ6DfqfciykKLXYsSsTb4vbpzZ/jcUdeRuiw=;
+	b=MC1Zo6U1nLBzzaY58aoCx3LEDtJKDTcsMxV/5nyqlW0i2WtOYv2gRNW83Owax0B1dLJ8P9
+	KSGOJVuH+TBhCmibTin3mkQScC24FGNoQ2+k/GlWpAB9kE38byWVlfu12o/AjGNlRUAqhq
+	1sHk7Xk9v8FrHlihmEv1F5L/uvRCydN7MWhnQkLhb67tTQ2mKMaPM1xLiLsGRrLXYocSrt
+	TEj1L6krGBRv57/d2uezK+w1UzUwVkNXCWXMK4vZxGx5Ag/jMGNwdvHSgBYNlz0UM/R5RP
+	3nXMoe7YVmrrPgk2pd4PbXbkFT0DRoub/v7bwE4sZnvn39ZVH5OgvYUfyc83Bw==
+Date: Sun, 11 Aug 2024 17:06:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024081117-delusion-halved-9e9c@gregkh>
+Subject: Re: [PATCH 6.10 001/123] mm/huge_memory: mark racy access
+ onhuge_anon_orders_always
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+References: <20240807150020.790615758@linuxfoundation.org>
+ <20240807150020.834416694@linuxfoundation.org>
+ <27a85289-1fe4-4131-b5d6-6608ef699632@holm.dev>
+ <2024081124-clothes-dazzling-c257@gregkh>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kevin Holm <kevin@holm.dev>
+Content-Language: en-US
+In-Reply-To: <2024081124-clothes-dazzling-c257@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Greg,
-
-On Sun, Aug 11, 2024 at 12:09:30PM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Aug 07, 2024 at 10:35:11PM +0200, Salvatore Bonaccorso wrote:
-> > Hi Greg,
-> > 
-> > On Wed, Aug 07, 2024 at 04:59:39PM +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.1.104 release.
-> > > There are 86 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > > 
-> > > Responses should be made by Fri, 09 Aug 2024 15:00:24 +0000.
-> > > Anything received after that time might be too late.
-> > 
-> > 6.1.103 had the regression of bpftool not building, due to a missing
-> > backport:
-> > 
-> > https://lore.kernel.org/stable/v8lqgl$15bq$1@ciao.gmane.io/
-> > 
-> > The problem is that da5f8fd1f0d3 ("bpftool: Mount bpffs when pinmaps
-> > path not under the bpffs") was backported to 6.1.103 but there is no
-> > defintion of create_and_mount_bpffs_dir(). 
-> > 
-> > it was suggested to revert the commit completely.
+On 11.08.24 12:56, Greg Kroah-Hartman wrote:
+> On Wed, Aug 07, 2024 at 05:06:54PM +0200, Kevin Holm wrote:
+>> On 8/7/24 16:58, Greg Kroah-Hartman wrote:
+>>> 6.10-stable review patch.  If anyone has any objections, please let me know.
+>> Did the back port [1] I submit just get missed? It fixes a regression I
+>> reported [2] with high resolution displays on a dp link after a hub in the
+>> amdgpu driver.
+>>
+>> [1] https://lore.kernel.org/stable/20240730185339.543359-1-kevin@holm.dev/
+>> [2] https://lore.kernel.org/stable/d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev/T/#u
 > 
-> Thanks for this, I'll fix it up after this release.
-
-Thanks! Note today Quentin Monnet proposed another solution by
-cherry-picking two commits:
-
-https://lore.kernel.org/stable/67bfcb8a-e00e-47b2-afe2-970a60e4a173@kernel.org/
-
-Quoting:
-
-> You should be able to fix the build by first cherry-picking commit
-> 2a36c26fe3b8 ("bpftool: Support bpffs mountpoint as pin path for prog
-> loadall"), and then commit 478a535ae54a ("bpftool: Mount bpffs on
-> provided dir instead of parent dir") as you figured. Both commits have a
-> minor conflict on tools/bpf/bpftool/struct_ops.c, which should be
-> addressed by discarding the relevant hunk (for both commit).
+> It's in the queue to apply, and has nothing to do with this specific
+> commit oddly...  I'll get to it this week, hopefully.
+Yes, sorry about that, I only noticed after sending this message that I 
+didn't reply to the initial message, but to an individual patch.
 > 
-> Alternatively, it's also fine to revert the breaking commit. It's a
-> quality of life improvement without which users may have to manually
-> mount the bpffs at the location they want to pin their maps when loading
-> multiple BPF programs with "bpftool prog loadall", in the unlikely event
-> they're not using /sys/kernel/bpf, prior to running the bpftool command.
-> It's not in use during the kernel build process or for the BPF
-> selftests, so not necessary on stable branches.
+> thanks,
 > 
-> I hope this helps,
-> Quentin
+> greg k-h
 
-I cannot judge which is less risky, but I will for Debian in any case
-follow what will be picked (if needed to cherry-pick those in advance;
-I was meaning to release another update but can now as well wait for
-6.1.105 with that bpftool fix).
+And sorry again for causing you more work having to respond to my 
+additional emails.
 
-Regards,
-Salvatore
+Thanks for your amazing work!
+
+~kevin
+
 
