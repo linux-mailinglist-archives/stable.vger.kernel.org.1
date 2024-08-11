@@ -1,130 +1,175 @@
-Return-Path: <stable+bounces-66371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114BB94E1F4
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:42:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC88B94E1F5
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD20528157F
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:42:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87C76B20E44
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B5C14B94E;
-	Sun, 11 Aug 2024 15:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5CC14A624;
+	Sun, 11 Aug 2024 15:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9W9TuGV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1a+vO72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DB322615;
-	Sun, 11 Aug 2024 15:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEE07F6;
+	Sun, 11 Aug 2024 15:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723390974; cv=none; b=ljiGA6TD4eK9Wt2sIL9l5P1UC2p9gEbNZI+uk+IzAZM5VMF7Pi/Pu5vD6HzmX3Yf3tY6TKmdVN6SZR65d0Ps3ecqlaxU8gX1O4OI0WQn2yQh7w7lqek4WHaiN8eJUv0s4Vjt/byLMIhZrrlyVnULZHhcyJ9CUmxodF5UCTNCIzU=
+	t=1723391185; cv=none; b=BPl+fQL9BjF4gvI1cBdaOpmuOH5XnRel0BF+7H3hiw/PMFcAzAOBAXXZDhiK+6YBN8/1QD7/Rug6Tp7h6cJZJbm5GuK3tJNW3nY6YnXaIbGZFwSpOgzVYxXVx4p6sZmJbjM0fsZ0FYBN3qll4OeOi86PI9rBjGzawRAEc+koU8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723390974; c=relaxed/simple;
-	bh=RfN2eLdQYRcxLEXUx5OMX2Hcrwqp3yedHcg9gDMAwX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y4LDnZTg5P+zjRlWj05jIoFcjBf7rAnkjwZtSngieCbQBYrSygoglsOn+K6fd/qIDs7/2xUi+/LDz+nM46Y3Cbk2NVCmzAcU1dsR7i0DnPbQ56IGDkv4o022/Pfjh3rqnvms+yPDXdzLO3QEq0X1BZcISdzftdYeQ/HmyxplXCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9W9TuGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4EAC32786;
-	Sun, 11 Aug 2024 15:42:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723390973;
-	bh=RfN2eLdQYRcxLEXUx5OMX2Hcrwqp3yedHcg9gDMAwX8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c9W9TuGVjiUm39yj8GR4B27ohrI0cnV6wJgwMzUtZvbxvTquGT0cwTpRXbNJPWr37
-	 ax6do0qnFkBgI1GVYuookdY/hdtekFeHzeTNOEKtlLhBpDSCMi490Ddn2GtdGWTLOU
-	 khnn1saCJtLs3H184XYPpZSKiUiFaKTlLPBflT7c=
-Date: Sun, 11 Aug 2024 17:42:50 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH for-stable] LoongArch: Define __ARCH_WANT_NEW_STAT in
- unistd.h
-Message-ID: <2024081126-blubber-flaky-8219@gregkh>
-References: <CAAhV-H6vXEaJf9NO9Lqh0xKoFAehtOOOLQVO4j5v+_tD7oKEXQ@mail.gmail.com>
- <20240730022542.3553255-1-chenhuacai@loongson.cn>
- <2024073059-hamstring-verbalize-91df@gregkh>
- <CAAhV-H7W-Ygn6tXySrip4k3P5xVbVf7GpjOzjXfQvCCbA4r5Wg@mail.gmail.com>
+	s=arc-20240116; t=1723391185; c=relaxed/simple;
+	bh=CRfYkOqSSRpBV+j9j3p2R9tMob7B7SdfSAEcSEsyNQU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jUCFGJkoa7nWUJqAPIiyFlRjeKKL5ZA3M/N9JeKZJrFERerJTveqwm0YKiL0cCPViratZKVxURZ2+VLtZAEG6FcNOCuGKkq+2PvWmHjrTJHGJWJxNevrByTraoDUE7c71WzGLanrlXCkqNLSRrMdP3XgMeEkKYbllCURXSSOgHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1a+vO72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59DCC4AF0F;
+	Sun, 11 Aug 2024 15:46:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723391185;
+	bh=CRfYkOqSSRpBV+j9j3p2R9tMob7B7SdfSAEcSEsyNQU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=e1a+vO722KWhKRzsdkSJMV2E/OitihmExzLmMEoBs9cBlq1Pba3dixj1qqC68t+vc
+	 hA8eA6aIF02vULd01ByhQHoMRP5o+iXUixnc561PRhIiUFPfrAiA6IE4ZQhP/uhv2A
+	 dbya4RQpQwioNDIuDJO0Rjs87XycDc/eAolMQpxy+mEjdg+sVAS9QGlTbA8bhboyCj
+	 QR70ca2vkDa1LRrgJJixmtLh1xWEvlQmF3uPPFXYfKjIIrJ3u+IFbiz+zKWajYbo6v
+	 oc115mHFIFtJO1ZuYIMAZK3sLlycwjpNMXUbvqfvMlfpfPq4PfEImiMhbB+zEvpf6N
+	 AlcZ107QzvHVw==
+Message-ID: <7180dcdb-694f-4014-9828-8baced3bfa7a@kernel.org>
+Date: Sun, 11 Aug 2024 17:46:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhV-H7W-Ygn6tXySrip4k3P5xVbVf7GpjOzjXfQvCCbA4r5Wg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: Patch "selftests: mptcp: join: ability to invert ADD_ADDR check"
+ has been added to the 6.10-stable tree
+Content-Language: en-GB
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>, Greg KH <gregkh@linuxfoundation.org>
+Cc: Mat Martineau <martineau@kernel.org>
+References: <20240811125614.1262228-1-sashal@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20240811125614.1262228-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 31, 2024 at 09:06:56AM +0800, Huacai Chen wrote:
-> On Tue, Jul 30, 2024 at 10:24 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, Jul 30, 2024 at 10:25:42AM +0800, Huacai Chen wrote:
-> > > Chromium sandbox apparently wants to deny statx [1] so it could properly
-> > > inspect arguments after the sandboxed process later falls back to fstat.
-> > > Because there's currently not a "fd-only" version of statx, so that the
-> > > sandbox has no way to ensure the path argument is empty without being
-> > > able to peek into the sandboxed process's memory. For architectures able
-> > > to do newfstatat though, glibc falls back to newfstatat after getting
-> > > -ENOSYS for statx, then the respective SIGSYS handler [2] takes care of
-> > > inspecting the path argument, transforming allowed newfstatat's into
-> > > fstat instead which is allowed and has the same type of return value.
-> > >
-> > > But, as LoongArch is the first architecture to not have fstat nor
-> > > newfstatat, the LoongArch glibc does not attempt falling back at all
-> > > when it gets -ENOSYS for statx -- and you see the problem there!
-> > >
-> > > Actually, back when the LoongArch port was under review, people were
-> > > aware of the same problem with sandboxing clone3 [3], so clone was
-> > > eventually kept. Unfortunately it seemed at that time no one had noticed
-> > > statx, so besides restoring fstat/newfstatat to LoongArch uapi (and
-> > > postponing the problem further), it seems inevitable that we would need
-> > > to tackle seccomp deep argument inspection.
-> > >
-> > > However, this is obviously a decision that shouldn't be taken lightly,
-> > > so we just restore fstat/newfstatat by defining __ARCH_WANT_NEW_STAT
-> > > in unistd.h. This is the simplest solution for now, and so we hope the
-> > > community will tackle the long-standing problem of seccomp deep argument
-> > > inspection in the future [4][5].
-> > >
-> > > More infomation please reading this thread [6].
-> > >
-> > > [1] https://chromium-review.googlesource.com/c/chromium/src/+/2823150
-> > > [2] https://chromium.googlesource.com/chromium/src/sandbox/+/c085b51940bd/linux/seccomp-bpf-helpers/sigsys_handlers.cc#355
-> > > [3] https://lore.kernel.org/linux-arch/20220511211231.GG7074@brightrain.aerifal.cx/
-> > > [4] https://lwn.net/Articles/799557/
-> > > [5] https://lpc.events/event/4/contributions/560/attachments/397/640/deep-arg-inspection.pdf
-> > > [6] https://lore.kernel.org/loongarch/20240226-granit-seilschaft-eccc2433014d@brauner/T/#t
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > ---
-> > >  arch/loongarch/include/uapi/asm/unistd.h | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/arch/loongarch/include/uapi/asm/unistd.h b/arch/loongarch/include/uapi/asm/unistd.h
-> > > index fcb668984f03..b344b1f91715 100644
-> > > --- a/arch/loongarch/include/uapi/asm/unistd.h
-> > > +++ b/arch/loongarch/include/uapi/asm/unistd.h
-> > > @@ -1,4 +1,5 @@
-> > >  /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> > > +#define __ARCH_WANT_NEW_STAT
-> > >  #define __ARCH_WANT_SYS_CLONE
-> > >  #define __ARCH_WANT_SYS_CLONE3
-> > >
-> > > --
-> > > 2.43.5
-> > >
-> > >
-> >
-> > What kernel branch(s) is this for?
-> For 6.1~6.10.
+Hi Sasha, Greg,
 
-What is the git id of this change in Linus's tree?
+On 11/08/2024 14:56, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     selftests: mptcp: join: ability to invert ADD_ADDR check
+> 
+> to the 6.10-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      selftests-mptcp-join-ability-to-invert-add_addr-chec.patch
+> and it can be found in the queue-6.10 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit 469e6fe99988649029b7f136218d5c3d8854e705
+> Author: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Date:   Wed Jul 31 13:05:58 2024 +0200
+> 
+>     selftests: mptcp: join: ability to invert ADD_ADDR check
+>     
+>     [ Upstream commit bec1f3b119ebc613d08dfbcdbaef01a79aa7de92 ]
+>     
+>     In the following commit, the client will initiate the ADD_ADDR, instead
+>     of the server. We need to way to verify the ADD_ADDR have been correctly
+>     sent.
+>     
+>     Note: the default expected counters for when the port number is given
+>     are never changed by the caller, no need to accept them as parameter
+>     then.
+>     
+>     The 'Fixes' tag here below is the same as the one from the previous
+>     commit: this patch here is not fixing anything wrong in the selftests,
+>     but it validates the previous fix for an issue introduced by this commit
+>     ID.
+
+Sorry, I just realised I forgot to add the "Cc: Stable" on all patches
+from this series :-/
+
+This patch and "selftests: mptcp: join: test both signal & subflow"
+should be backported with the other patches modifying files in
+net/mptcp. Without them, the two patches that have just been added to
+the queue will just make the selftests failing.
+
+Is it then possible to drop these two patches from the 6.10, 6.6 and 6.1
+queues for the moment please? I can send patches for these versions
+later on.
+
+  selftests-mptcp-join-ability-to-invert-add_addr-chec.patch: 6.10, 6.6
+  selftests-mptcp-join-test-both-signal-subflow.patch: 6.10, 6.6 and 6.1
+
+>     Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
+>     Reviewed-by: Mat Martineau <martineau@kernel.org>
+>     Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>     Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-6-c8a9b036493b@kernel.org
+>     Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
 
