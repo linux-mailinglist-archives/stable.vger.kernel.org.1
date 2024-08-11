@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9E9994E217
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E430094E219
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96AE1281459
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:58:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F9A3281375
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E2214C5A3;
-	Sun, 11 Aug 2024 15:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5249C14C5A3;
+	Sun, 11 Aug 2024 15:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9TmrtSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dd5n2Vu2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC7F14D2A4
-	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1185B14A624
+	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723391886; cv=none; b=HygNkc/SkyGGQMlDlElyI4ipS+7rm1BfSWsSO0ZoNhphLjf41a9QwZEcY9rwagtoIU9CXyQw7dOOV3b6Z+Ztt/FEncqZRChvWog4zZaxsp63IVqBjLb5kas777gUr9sA4IR6RlQ0cwbTBDVzJtHvGP/56yMwqCHp9yDXxfvMcIw=
+	t=1723391931; cv=none; b=Bhxww5+8UDCubSPakvfq4B7Kee40aTyJSiA9RdnnAmAl/1Kl+rEOy3Sc8ieXdho6eDm0MuRCaYLQkpJpeHjgPQx0KwrfCetNeyEHacWutNlJux20LNS6aidkY8oqlRizRgAy1YJ60ArKm5h4ReqdiNoe83hh7cxb3IG3XxU/qD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723391886; c=relaxed/simple;
-	bh=63Szd27cJGncUHjwarQzp/nCT4b/crs70TF1BsqtVHc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BlUBwQTll2YzwHZxbxH4LvDY2t4YijdkDRfqs9QtvhP3AVu5FQglQhol8GfwbYp4mBDnATuyTtMnLGuRyZyC6CHSQIy6Bp+BdxER/WRp1LwESX7ApGpe1pxErbrO1LWW8ONzwqGv4/BgTVRBjFzpGTmpexSvF3QsIdX99x87MBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9TmrtSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46C2C32786;
-	Sun, 11 Aug 2024 15:58:05 +0000 (UTC)
+	s=arc-20240116; t=1723391931; c=relaxed/simple;
+	bh=lJQh4tjlPnTV4CdHaHN3CtHJRiUVTieKreUMqtImB3s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bxPyWHVKYeHgeB2CoZYKuMys28qwS8D+DPzPWZBeqsVEU+uCwpCIU5LbPOM4+23p8+Y7YobLnwKlfemb6kGS7EcLoVorcUfmWTGa0LxWXgDIiO59qlNIPCFkCRHkZ1RfeTefGsvHyLVTybzLdPbUuPZc8l5CIMnQPt/xbU9iyFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dd5n2Vu2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9B4C32786;
+	Sun, 11 Aug 2024 15:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723391886;
-	bh=63Szd27cJGncUHjwarQzp/nCT4b/crs70TF1BsqtVHc=;
+	s=korg; t=1723391930;
+	bh=lJQh4tjlPnTV4CdHaHN3CtHJRiUVTieKreUMqtImB3s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=R9TmrtSI8A8WK2uZEzGbGc6yk+MrSGZ7vOIWCzMPjXpLFQ/yP5RFBKLYZYXsgvyFg
-	 wHgDL9sVXLqo24F/K502mophrvuWVDq1DhyMlWessUqJ31D8/JD2i6cfpiDU1SR7eC
-	 NvEzbvY9UfjvitNbK4dnIicU/FaWKIbq89UWsb0I=
-Subject: FAILED: patch "[PATCH] irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock" failed to apply to 4.19-stable tree
-To: avkrasnov@salutedevices.com,tglx@linutronix.de
+	b=dd5n2Vu26Mg4bWEJ+pdzpZwxWxy5Jew1h37hrfAuj8tiSp8nTiCaAihYvDCJ5zxTh
+	 eTGvF99MKafsjv1qX28Ul/fMOb9SRkmv85YXHs9KhRMRU7g/pw9JbTuE+bqFLgsfUZ
+	 uCMocSEdk9HC+UHC0h/liO4VlF932CyK/sVO5hdc=
+Subject: FAILED: patch "[PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr" failed to apply to 6.1-stable tree
+To: willemb@google.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 11 Aug 2024 17:57:49 +0200
-Message-ID: <2024081149-moisten-possum-0959@gregkh>
+Date: Sun, 11 Aug 2024 17:58:47 +0200
+Message-ID: <2024081147-altitude-luminous-19d1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,29 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x f872d4af79fe8c71ae291ce8875b477e1669a6c7
+git cherry-pick -x 89add40066f9ed9abe5f7f886fe5789ff7e0c50e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081149-moisten-possum-0959@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081147-altitude-luminous-19d1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-f872d4af79fe ("irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock to 'raw_spinlock_t'")
-cc311074f681 ("irqchip/meson-gpio: support more than 8 channels gpio irq")
-0a66d6f90cf7 ("irqchip/meson-gpio: Fix HARDIRQ-safe -> HARDIRQ-unsafe lock order")
-8f78bd62bdd7 ("irqchip/meson-gpio: Add support for meson a1 SoCs")
-e2514165f36e ("irqchip/meson-gpio: Rework meson irqchip driver to support meson-A1 SoCs")
-b2fb4b77994a ("irqchip/meson-gpio: Add support for meson sm1 SoCs")
-c64a9e804ccf ("irqchip/meson-gpio: Add support for Meson-G12A SoC")
+89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
+fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
+9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
 
 thanks,
 
@@ -83,105 +79,148 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f872d4af79fe8c71ae291ce8875b477e1669a6c7 Mon Sep 17 00:00:00 2001
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Date: Mon, 29 Jul 2024 16:18:50 +0300
-Subject: [PATCH] irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock
- to 'raw_spinlock_t'
+From 89add40066f9ed9abe5f7f886fe5789ff7e0c50e Mon Sep 17 00:00:00 2001
+From: Willem de Bruijn <willemb@google.com>
+Date: Mon, 29 Jul 2024 16:10:12 -0400
+Subject: [PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr
 
-This lock is acquired under irq_desc::lock with interrupts disabled.
+Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
+for GSO packets.
 
-When PREEMPT_RT is enabled, 'spinlock_t' becomes preemptible, which results
-in invalid lock acquire context;
+The function already checks that a checksum requested with
+VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
+this might not hold for segs after segmentation.
 
-  [ BUG: Invalid wait context ]
-  swapper/0/1 is trying to lock:
-  ffff0000008fed30 (&ctl->lock){....}-{3:3}, at: meson_gpio_irq_update_bits0
-  other info that might help us debug this:
-  context-{5:5}
-  3 locks held by swapper/0/1:
-   #0: ffff0000003cd0f8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0x90c
-   #1: ffff000004714650 (&desc->request_mutex){+.+.}-{4:4}, at: __setup_irq0
-   #2: ffff0000047144c8 (&irq_desc_lock_class){-.-.}-{2:2}, at: __setup_irq0
-  stack backtrace:
-  CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.9-sdkernel #1
-  Call trace:
-   _raw_spin_lock_irqsave+0x60/0x88
-   meson_gpio_irq_update_bits+0x34/0x70
-   meson8_gpio_irq_set_type+0x78/0xc4
-   meson_gpio_irq_set_type+0x30/0x60
-   __irq_set_trigger+0x60/0x180
-   __setup_irq+0x30c/0x6e0
-   request_threaded_irq+0xec/0x1a4
+Syzkaller demonstrated to reach this warning in skb_checksum_help
 
-Fixes: 215f4cc0fb20 ("irqchip/meson: Add support for gpio interrupt controller")
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+	offset = skb_checksum_start_offset(skb);
+	ret = -EINVAL;
+	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
+
+By injecting a TSO packet:
+
+WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
+ ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
+ ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
+ __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
+ iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
+ ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
+ __gre_xmit net/ipv4/ip_gre.c:469 [inline]
+ ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
+ __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4864 [inline]
+ xmit_one net/core/dev.c:3595 [inline]
+ dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
+ __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
+ packet_snd net/packet/af_packet.c:3073 [inline]
+
+The geometry of the bad input packet at tcp_gso_segment:
+
+[   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
+[   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
+[   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
+[   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
+ip_summed=3 complete_sw=0 valid=0 level=0)
+
+Mitigate with stricter input validation.
+
+csum_offset: for GSO packets, deduce the correct value from gso_type.
+This is already done for USO. Extend it to TSO. Let UFO be:
+udp[46]_ufo_fragment ignores these fields and always computes the
+checksum in software.
+
+csum_start: finding the real offset requires parsing to the transport
+header. Do not add a parser, use existing segmentation parsing. Thanks
+to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
+Again test both TSO and USO. Do not test UFO for the above reason, and
+do not test UDP tunnel offload.
+
+GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
+CHECKSUM_NONE since commit 10154dbded6d6 ("udp: Allow GSO transmit
+from devices with no checksum offload"), but then still these fields
+are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
+need to test for ip_summed == CHECKSUM_PARTIAL first.
+
+This revises an existing fix mentioned in the Fixes tag, which broke
+small packets with GSO offload, as detected by kselftests.
+
+Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
+Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
+Fixes: e269d79c7d35 ("net: missing check virtio")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240729131850.3015508-1-avkrasnov@salutedevices.com
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240729201108.1615114-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/drivers/irqchip/irq-meson-gpio.c b/drivers/irqchip/irq-meson-gpio.c
-index 27e30ce41db3..cd789fa51519 100644
---- a/drivers/irqchip/irq-meson-gpio.c
-+++ b/drivers/irqchip/irq-meson-gpio.c
-@@ -178,7 +178,7 @@ struct meson_gpio_irq_controller {
- 	void __iomem *base;
- 	u32 channel_irqs[MAX_NUM_CHANNEL];
- 	DECLARE_BITMAP(channel_map, MAX_NUM_CHANNEL);
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- };
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index d1d7825318c3..6c395a2600e8 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -56,7 +56,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 	unsigned int thlen = 0;
+ 	unsigned int p_off = 0;
+ 	unsigned int ip_proto;
+-	u64 ret, remainder, gso_size;
  
- static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
-@@ -187,14 +187,14 @@ static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
- 	unsigned long flags;
- 	u32 tmp;
+ 	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+ 		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
+@@ -99,16 +98,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
+ 		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
  
--	spin_lock_irqsave(&ctl->lock, flags);
-+	raw_spin_lock_irqsave(&ctl->lock, flags);
+-		if (hdr->gso_size) {
+-			gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
+-			ret = div64_u64_rem(skb->len, gso_size, &remainder);
+-			if (!(ret && (hdr->gso_size > needed) &&
+-						((remainder > needed) || (remainder == 0)))) {
+-				return -EINVAL;
+-			}
+-			skb_shinfo(skb)->tx_flags |= SKBFL_SHARED_FRAG;
+-		}
+-
+ 		if (!pskb_may_pull(skb, needed))
+ 			return -EINVAL;
  
- 	tmp = readl_relaxed(ctl->base + reg);
- 	tmp &= ~mask;
- 	tmp |= val;
- 	writel_relaxed(tmp, ctl->base + reg);
+@@ -182,6 +171,11 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 			if (gso_type != SKB_GSO_UDP_L4)
+ 				return -EINVAL;
+ 			break;
++		case SKB_GSO_TCPV4:
++		case SKB_GSO_TCPV6:
++			if (skb->csum_offset != offsetof(struct tcphdr, check))
++				return -EINVAL;
++			break;
+ 		}
  
--	spin_unlock_irqrestore(&ctl->lock, flags);
-+	raw_spin_unlock_irqrestore(&ctl->lock, flags);
- }
+ 		/* Kernel has a special handling for GSO_BY_FRAGS. */
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 4b791e74529e..e4ad3311e148 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -140,6 +140,9 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	if (thlen < sizeof(*th))
+ 		goto out;
  
- static void meson_gpio_irq_init_dummy(struct meson_gpio_irq_controller *ctl)
-@@ -244,12 +244,12 @@ meson_gpio_irq_request_channel(struct meson_gpio_irq_controller *ctl,
- 	unsigned long flags;
- 	unsigned int idx;
++	if (unlikely(skb_checksum_start(skb) != skb_transport_header(skb)))
++		goto out;
++
+ 	if (!pskb_may_pull(skb, thlen))
+ 		goto out;
  
--	spin_lock_irqsave(&ctl->lock, flags);
-+	raw_spin_lock_irqsave(&ctl->lock, flags);
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index aa2e0a28ca61..bc8a9da750fe 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -278,6 +278,10 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 	if (gso_skb->len <= sizeof(*uh) + mss)
+ 		return ERR_PTR(-EINVAL);
  
- 	/* Find a free channel */
- 	idx = find_first_zero_bit(ctl->channel_map, ctl->params->nr_channels);
- 	if (idx >= ctl->params->nr_channels) {
--		spin_unlock_irqrestore(&ctl->lock, flags);
-+		raw_spin_unlock_irqrestore(&ctl->lock, flags);
- 		pr_err("No channel available\n");
- 		return -ENOSPC;
- 	}
-@@ -257,7 +257,7 @@ meson_gpio_irq_request_channel(struct meson_gpio_irq_controller *ctl,
- 	/* Mark the channel as used */
- 	set_bit(idx, ctl->channel_map);
- 
--	spin_unlock_irqrestore(&ctl->lock, flags);
-+	raw_spin_unlock_irqrestore(&ctl->lock, flags);
- 
- 	/*
- 	 * Setup the mux of the channel to route the signal of the pad
-@@ -567,7 +567,7 @@ static int meson_gpio_irq_of_init(struct device_node *node, struct device_node *
- 	if (!ctl)
- 		return -ENOMEM;
- 
--	spin_lock_init(&ctl->lock);
-+	raw_spin_lock_init(&ctl->lock);
- 
- 	ctl->base = of_iomap(node, 0);
- 	if (!ctl->base) {
++	if (unlikely(skb_checksum_start(gso_skb) !=
++		     skb_transport_header(gso_skb)))
++		return ERR_PTR(-EINVAL);
++
+ 	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
+ 		/* Packet is from an untrusted source, reset gso_segs. */
+ 		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh),
 
 
