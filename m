@@ -1,128 +1,99 @@
-Return-Path: <stable+bounces-66343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6C294DF65
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 02:30:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D1894DFDF
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 05:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2259B20B5D
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 00:30:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48CE0B21105
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 03:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28F04C79;
-	Sun, 11 Aug 2024 00:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PDGanktD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF70EAD5;
+	Sun, 11 Aug 2024 03:44:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E48C360;
-	Sun, 11 Aug 2024 00:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56CABA47;
+	Sun, 11 Aug 2024 03:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723336231; cv=none; b=md5tbQxyFZVWOPd9Az5P1Aqs+VxOga++uc9l4V6KhOc1dMcChutkuDLQ7Qmapwq/QuP+SRkWW4Rxs02Ltoa6Qg0REAytmJQNygaxF3b2Uj4FdbE1/ecNv7j3h9bRAnWlxTctP+PuzFt5ul5d4JOqzCQKZqfqPZSvOlz289E6vhU=
+	t=1723347863; cv=none; b=QG62rhUktqO0f5dtgIPUJC0EY7gF7of4MwSyAqQwAc+KdOZa98eamSw3htyVRniEyJuOaZbCGEafTvNDu0tqY6ZKZNkZWcfz/yLyHlZ8PIE8os/sZUVW19+N3iS/t29In+ClIHq0/XsVCGDZu7nh0/XX2RRjJHjvFjJS968D1jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723336231; c=relaxed/simple;
-	bh=vaUddXrjASxrFU7ujZ90h3PNCsSdvh8bEciES9HDY5w=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h7K+Q6NnV/Ft1rg+2Fvjufu4uooYIVGpwIojJzJiXCAoxdOTm5n3zt+9oqturitb9EldcxwVnrYtRzK2hsVgIrLljRi78p5Gz7En2RxN7QFM7wf8vaYlg5HujpSGXi771VhetgrEjq+KhdNCadOsAe+CX1VJCpPEj3aPw6IeMeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PDGanktD; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70ea2f25bfaso2434460b3a.1;
-        Sat, 10 Aug 2024 17:30:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723336229; x=1723941029; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=RTU5KagBlB4zAmSVjdZRQ8PvXJgJUde7W6biB3B8HIU=;
-        b=PDGanktDT6sCdu8YITX9U/RDW+QLuH4ER8rT3mHeqjob5JBeEmUPCc+Tkpa1FFNoOy
-         340ww0fBwpbAy3lcDORxgDCi20misjdwnDgRfFzHWqmwkSfkn/DZfdb07Ie/F5DetfWo
-         JQrZ8B1rmN8+47fR8xiA6wj0Sbqq3lOeehyWejA/9ldNToz4u84svqX0uGPxc7SF609d
-         tLGL2RRUPZc9AGCjmdHWgQ7wfJGgoQBsoIKdOZd5OJAAxmWw8TyPSJldNOpzwOasfyTy
-         Fs7A29RuJfOwLmjzbvWUAOfqKF4xb8hld7gl8hju9T9xLKF4q3mD+mhlPftdbmBX+0UU
-         Rz3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723336229; x=1723941029;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RTU5KagBlB4zAmSVjdZRQ8PvXJgJUde7W6biB3B8HIU=;
-        b=WZGH9oE6vRn95vxPc/vo9UhHa7z8ud3uXwqBcLOGI5smgTkCmo1yAU8XllVDWURNK6
-         csC44v/HJ7eOAbnphz6wYO/TPKSM3x40p0LHX3VKJbxgX3jnMnAffeiFBGieesOCVR73
-         nmHYv5vhsmu9Oot/KWwNa5LQTovvsI3UPg6n3ivrLdFaoUEhGBKxJziVGePtWeK4ADjU
-         Rs64yN8PJqlteSgI5I29oB/864nz6+mgfGUz4dCjSK5DHlDkcffDJ4SxKwaoQvfEi/it
-         reKUn7I1DsDmlDYbymc3bW85TquvFqtkdbcbVZarv5rojR3UOgHCul3OSQCVxsud/QW0
-         9ohg==
-X-Forwarded-Encrypted: i=1; AJvYcCVp12g21QJvqL0g2AFzZ+ESZgf8paLiz/s65Oahn0sjF1iTR77xbXRshI1FgArN0sq592MNEx9X5/FrXNA1T4OmqAb4fC0f98j6bOnR9aie1GZDrCNF6CoapPYa5712VwFHWlh9
-X-Gm-Message-State: AOJu0Yxwi4dUJOcTGqPf0oao9c+YuwLOz7XfNtKtQNQQpNzY4Pm2+npX
-	63ayW7P9LdUUBCqn9hL01t2Kg2ui8fbVKFcl2cbEr9H6wClj08R4
-X-Google-Smtp-Source: AGHT+IHmJtGI/0vlKenALImUzngCP/eRiB6LzA0ka4Y6QAeUFBN2+br1D17hsZWcPi8WeKtYzvaJRg==
-X-Received: by 2002:a05:6a00:a2a:b0:70d:1d48:a7d9 with SMTP id d2e1a72fcca58-710dc768d0dmr5741709b3a.15.1723336229256;
-        Sat, 10 Aug 2024 17:30:29 -0700 (PDT)
-Received: from Cyndaquil. ([174.127.224.220])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-710e5a43cc2sm1713303b3a.104.2024.08.10.17.30.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Aug 2024 17:30:28 -0700 (PDT)
-Message-ID: <66b80624.050a0220.39b486.4736@mx.google.com>
-X-Google-Original-Message-ID: <ZrgGI/4lVVJuN+uE@Cyndaquil.>
-Date: Sat, 10 Aug 2024 17:30:27 -0700
-From: Mitchell Levy <levymitchell0@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Mitchell Levy via B4 Relay <devnull+levymitchell0.gmail.com@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	stable@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-	linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCH v2] x86/fpu: Avoid writing LBR bit to IA32_XSS unless
- supported
-References: <20240809-xsave-lbr-fix-v2-1-04296b387380@gmail.com>
- <87ttfsrn6l.ffs@tglx>
+	s=arc-20240116; t=1723347863; c=relaxed/simple;
+	bh=yLmXaG/cKVhz7dTlSNAsmqnxExRJustnfBGAs+3vvSQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pDXoMfxShehm6lAs6LMaZoO+v9K5QVDS+3BNFFfCRXa45uuEzh7vKg+M984bj8wZ8BJQbxJVJN/Fyl3yfgg9X3T7l8F+AgGyrn1NLC2Y9AxDaSZivBVQ0VMOC7mOlkhPuoL7TdvxedwyzzYULxP76XqMjdedhdl/ZrIQ1Z6q0to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowABXXUl6M7hmxlZFBQ--.8961S2;
+	Sun, 11 Aug 2024 11:44:04 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: vkoul@kernel.org,
+	arnd@arndb.de,
+	akpm@linux-foundation.org
+Cc: dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 RESEND] dmaengine: moxart: handle irq_of_parse_and_map() errors
+Date: Sun, 11 Aug 2024 11:43:53 +0800
+Message-Id: <20240811034353.3481879-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ttfsrn6l.ffs@tglx>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowABXXUl6M7hmxlZFBQ--.8961S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JrWfuF17Kr4DCryUJw47urg_yoW3trgEk3
+	WI9FWfZr1DJF1j9w1Yywn3AFy0yF1rWrn29Fn0q3sxCryUJF1avr4xZFn3Jr1DXry09ry2
+	yrWDuryfua47CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbVxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+	b7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+	vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa
+	73UjIFyTuYvjfUY3kuUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Sun, Aug 11, 2024 at 01:08:18AM +0200, Thomas Gleixner wrote:
-> On Fri, Aug 09 2024 at 13:53, Mitchell Levy via wrote:
-> > From: Mitchell Levy <levymitchell0@gmail.com>
-> 
-> ...
-> 
-> > Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> > ---
-> > Changes in v2:
-> > - Corrected Fixes tag (thanks tglx)
-> > - Properly check for XSAVES support of LBR (thanks tglx)
-> 
-> IOW. I provided you the proper fix and now you are reposting it and
-> claiming authorship for it?
-Apologies, I did not consider authorship implications when resubmitting,
-as I haven't encountered the situation where a patch is essentially
-rewritten during the review process before. I will be much more mindful
-of issues of authorship in future, and I appreciate you pointing this
-out to me.
+Zero and negative number is not a valid IRQ for in-kernel code and the
+irq_of_parse_and_map() function returns zero on error.  So this check for
+valid IRQs should only accept values > 0.
 
-> May I ask you to read Documentation/process/ ?
-Yes, I have now more thoroughly covered these docs. On second look, it
-appears there's no Signed-off-by in your reply to my v1. I can send the
-patch with you properly listed as the author and the proper
-Signed-off-by lines if I have your permission to add your signoff.
-Alternatively, feel free to reuse part/all of my commit message if you'd
-rather submit the patch directly; it's quite understandable if you feel
-unenthusiastic about me being involved with code you've authored.
+Cc: stable@vger.kernel.org
+Fixes: 2d9e31b9412c ("dmaengine: moxart: remove NO_IRQ")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/dma/moxart-dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Thanks,
-> 
->         tglx
+diff --git a/drivers/dma/moxart-dma.c b/drivers/dma/moxart-dma.c
+index 66dc6d31b603..16dd3c5aba4d 100644
+--- a/drivers/dma/moxart-dma.c
++++ b/drivers/dma/moxart-dma.c
+@@ -568,7 +568,7 @@ static int moxart_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	irq = irq_of_parse_and_map(node, 0);
+-	if (!irq) {
++	if (irq <= 0) {
+ 		dev_err(dev, "no IRQ resource\n");
+ 		return -EINVAL;
+ 	}
+-- 
+2.25.1
+
 
