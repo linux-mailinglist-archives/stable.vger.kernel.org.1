@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8520994E209
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:56:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A820594E20A
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 17:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39B431F214FB
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6410C2815C9
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 15:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F1F14D2A4;
-	Sun, 11 Aug 2024 15:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EA513634C;
+	Sun, 11 Aug 2024 15:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6CBOizO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ez69ODhY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644B214C59C
-	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7474B7F6
+	for <stable@vger.kernel.org>; Sun, 11 Aug 2024 15:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723391804; cv=none; b=tm87aqOZPmL/fTNM+yInu+SY1y2zjLj70bTLJAjU+yMa6o2DwUIJzGoMIsYiKwZoV/7QokZQLFSDni/HApvIYyI42wYO56ZXcNRW7bXFXmkEiNKvYsNs71hMmShlnGAmN495jiOoNtV2dCFrZ/VZkJ6izkujFjgzQAcCUqEGlCE=
+	t=1723391809; cv=none; b=YnY3MI5e3bOX1akXXnat1ymDpX3uMu6UgH84kAbamEBwVeLVjle0RXGZbg7C3cDnh89ZMZbHPup+GCmInhsPE4YRO/EB4C+RZ2IVKGhCs8Jz+556hp3ceNWheJPGVIgC0iA4HV97ObuBF+yEpaAEfYBnqcZmFSot5EeFnYQH3YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723391804; c=relaxed/simple;
-	bh=+Y5daW6nxY5zVvdThXC5zvHE2wQkjOnh5qQ/0nIbub4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=W5d87F3ao2zHtSOPM4dFNkRGQSvHeKtFnustWSf9zy/oNMweApOLDQLb9OwGPurGk4ta9gBxQBbW3G2Mh4D+Rhs5ZGAhKHcPHu1iXewvSwcKEyOuJ+9LDo17drcnOUd6QH6n/QyHUyvsCxOwePyWQ8nMKZx/soHJLJ8WOOsbP5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6CBOizO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CC8C32786;
-	Sun, 11 Aug 2024 15:56:43 +0000 (UTC)
+	s=arc-20240116; t=1723391809; c=relaxed/simple;
+	bh=HiYzwTpNkOK2OM9Gw9v9eVMJXQpcYuibjuOVLiRehLo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rIQPqmMJTZQ+czK1ImisqDF1rTjqXvuSM5gCjX3PG363H2nMCe7xjEjwT9LsN0Ft84OhmA+yBGPSWqG3AJmf4p37tPFbC7Fe1uFT51FxiKmluONChquZyduaRHKMKegpKNouuz5vF/Pb0yR5IAcVHEC/Ytu6Et0SE0N5uB5CsVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ez69ODhY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71084C32786;
+	Sun, 11 Aug 2024 15:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723391803;
-	bh=+Y5daW6nxY5zVvdThXC5zvHE2wQkjOnh5qQ/0nIbub4=;
+	s=korg; t=1723391808;
+	bh=HiYzwTpNkOK2OM9Gw9v9eVMJXQpcYuibjuOVLiRehLo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=c6CBOizOfmGPJZYDF6cOM/G7+3YRw1LBhMkIjPdXvXZv7YWB8pIN3nqxVJeqooUqL
-	 yNA3zXjlu/mv3xlyJOXB/kl6n6wr8k1WDoQYZACzU0vmh+OgKl9d4QxgY4f3BDbJpM
-	 3RYvW2jSsrvzoH9P4tiFYIqS/BGb0G2sbJzbWK7A=
-Subject: FAILED: patch "[PATCH] clocksource: Fix brown-bag boolean thinko in" failed to apply to 5.15-stable tree
+	b=Ez69ODhYcCkMQ0bXA8ermEjBFy51IzI4oWTrdjD3DDk1heJqCeALfreYnvJ6xwYkX
+	 yxxEnaO3ADtXFDzXeVpnEBmhShrpX9XWELlWcSZiCDLDt8vFGfyirua5uABjz8vHcz
+	 9yB3J5nO+bJQR5dU62Y8zi7jkqhgqxJn7cIxPjaY=
+Subject: FAILED: patch "[PATCH] clocksource: Fix brown-bag boolean thinko in" failed to apply to 5.10-stable tree
 To: paulmck@kernel.org,bp@alien8.de,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 11 Aug 2024 17:56:32 +0200
-Message-ID: <2024081131-ravioli-caloric-32de@gregkh>
+Date: Sun, 11 Aug 2024 17:56:37 +0200
+Message-ID: <2024081137-departed-drop-down-937e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x f2655ac2c06a15558e51ed6529de280e1553c86e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081131-ravioli-caloric-32de@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081137-departed-drop-down-937e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,16 @@ f2655ac2c06a ("clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()")
 877a0e83c57f ("torture: Enable clocksource watchdog with "tsc=watchdog"")
 1a5620671a1b ("clocksource: Reduce the default clocksource_watchdog() retries to 2")
 c86ff8c55b8a ("clocksource: Avoid accidental unstable marking of clocksources")
+ef4dac7dbde7 ("torture: Add clocksource-watchdog testing to torture.sh")
+1253b9b87e42 ("clocksource: Provide kernel module to test clocksource watchdog")
+2e27e793e280 ("clocksource: Reduce clocksource-skew threshold")
+fa218f1cce6b ("clocksource: Limit number of CPUs checked for clock synchronization")
+7560c02bdffb ("clocksource: Check per-CPU clock synchronization when marked unstable")
+db3a34e17433 ("clocksource: Retry clock read if long delays detected")
+a115a775a8d5 ("torture: Add "make allmodconfig" to torture.sh")
+197220d4a334 ("torture: Remove use of "eval" in torture.sh")
+1adb5d6b5225 ("torture: Make torture.sh use common time-duration bash functions")
+bfc19c13d24c ("torture: Add torture.sh torture-everything script")
 
 thanks,
 
