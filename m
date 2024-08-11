@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-66348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D202694E0C5
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 12:09:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75FA694E0C6
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 12:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35FA6B218C9
-	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 10:09:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22A441F2123C
+	for <lists+stable@lfdr.de>; Sun, 11 Aug 2024 10:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2732C3B295;
-	Sun, 11 Aug 2024 10:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FAF3BBE3;
+	Sun, 11 Aug 2024 10:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3dYTZjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wStmPFug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5E61BF24;
-	Sun, 11 Aug 2024 10:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FEA1BF24;
+	Sun, 11 Aug 2024 10:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723370943; cv=none; b=S7WYw9FQyMhq4OBTRUzhkC2CHyllcYD8eSkBAH/HF7es2hzGDNGSIyLlDawjqX/hZT+BlsJgkmcihca6vg20PeOSP91m1kgaDp7cHh9BVF8WJCUkjYz2HN7AFPGLO2dmbDz24s7iXEiS98lqPyiVA1ZezOdEYpPGUf/64xkYEOc=
+	t=1723370974; cv=none; b=c9GDw6OL/WKFK/OT4b5n1sq3zWWziiiZmBw087U6cHvAfJ0i6LPh/JshSp/flqHHVvhP2WjQzs1Z0g2ng0uwIo9ov0/BkxYAxtf5V3LQnOtLqZirc+9GDBXCbmHWi4DKxRD/PN9rDVMa2oA6B+LRyZqDtaBwQ9KWFaHG05dO63w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723370943; c=relaxed/simple;
-	bh=wuajA0ZnMyfkOsfEIXk02pSEr3JtqAnoSajcnVhXru8=;
+	s=arc-20240116; t=1723370974; c=relaxed/simple;
+	bh=ilC40Nmsw33MfZF3x6PHdMLsA4yI2N+MWvd+qYOYjmw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=quyB1wCANWA+1aGVmsCTXyj1QUmSPVr1HsTK0WA7YXsg2uiXCI33lt9j37JAh8HZ+bI1p4lV1C4vv+BphXkqufMoiOmyMlexokpcJO/AbFf8DYUZltXfep8f6U+RdlpsNkA09rqhU011Ii14CIsL2FsFRLaZUyJEF8ggnG4k0Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3dYTZjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE03C32786;
-	Sun, 11 Aug 2024 10:09:02 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mqdj/aYGiGlTVSynfWiiGBu3FxZyizTMi+jEWw0bj7T9hqHhSb5rBSyRYApyLFDW/JkgdSYuo6p5yTrszEr2Z51vHhHwvh3nN4NqGDabumn+RAdfqq19/n3SvNTKsOQaJ9zY4wijgsmeXWeCVQA2b/AnjfSpulJJ8AqlcmDoERM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wStmPFug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B648C32786;
+	Sun, 11 Aug 2024 10:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723370943;
-	bh=wuajA0ZnMyfkOsfEIXk02pSEr3JtqAnoSajcnVhXru8=;
+	s=korg; t=1723370974;
+	bh=ilC40Nmsw33MfZF3x6PHdMLsA4yI2N+MWvd+qYOYjmw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s3dYTZjHgyvAyYzQ+CFgHrqC5fFOmP4Hi3nxHdOG9O+UsA5KSYGNDheosOBifJAQR
-	 gIhZBFagJRsr21hiSBgg45fsB/9PvagCclsD9aE8EAvLf3NYfi31O2V2plp+k9BSX8
-	 pPfSfcbcAtV5IKxneJEzlJdjTIP9VHq3/a2RY1Z0=
-Date: Sun, 11 Aug 2024 12:08:59 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Hardik Garg <hargar@linux.microsoft.com>
-Cc: toracat@elrepo.org, stable@vger.kernel.org, qmo@kernel.org,
-	martin.lau@linux.dev, eddyz87@gmail.com, yonghong.song@linux.dev,
-	john.fastabend@gmail.com, sdf@fomichev.me, haoluo@google.com,
-	jolsa@kernel.org, bpf@vger.kernel.org
-Subject: Re: bpf tool build failure in latest stable-rc 6.1.103-rc3 due to
- missing backport
-Message-ID: <2024081147-straggler-reclaim-3e10@gregkh>
-References: <v8lqgl$15bq$1@ciao.gmane.io>
- <1723141233-21006-1-git-send-email-hargar@linux.microsoft.com>
+	b=wStmPFugh/sWlFUMlLCwJJhxMrjyNj940Ibk9/4SjYIrzbTzeg7LKui14MWHKtX7Z
+	 k9Rw1o7ff8k/t5K+VdbtCZ8GUM6v0twJt+XvKuZA68ObdOlxT8fMNwY3pC+nNCfqft
+	 G24tw71mTt+DuPbfSgZutj3lBcSmpeOA3LvGyvUI=
+Date: Sun, 11 Aug 2024 12:09:30 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+	Akemi Yagi <toracat@elrepo.org>,
+	Hardik Garg <hargar@linux.microsoft.com>
+Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc1 review
+Message-ID: <2024081117-delusion-halved-9e9c@gregkh>
+References: <20240807150039.247123516@linuxfoundation.org>
+ <ZrPafx6KUuhZZsci@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,10 +62,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1723141233-21006-1-git-send-email-hargar@linux.microsoft.com>
+In-Reply-To: <ZrPafx6KUuhZZsci@eldamar.lan>
 
-On Thu, Aug 08, 2024 at 11:20:33AM -0700, Hardik Garg wrote:
-> adding the BPF maintainers
+On Wed, Aug 07, 2024 at 10:35:11PM +0200, Salvatore Bonaccorso wrote:
+> Hi Greg,
+> 
+> On Wed, Aug 07, 2024 at 04:59:39PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.104 release.
+> > There are 86 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Fri, 09 Aug 2024 15:00:24 +0000.
+> > Anything received after that time might be too late.
+> 
+> 6.1.103 had the regression of bpftool not building, due to a missing
+> backport:
+> 
+> https://lore.kernel.org/stable/v8lqgl$15bq$1@ciao.gmane.io/
+> 
+> The problem is that da5f8fd1f0d3 ("bpftool: Mount bpffs when pinmaps
+> path not under the bpffs") was backported to 6.1.103 but there is no
+> defintion of create_and_mount_bpffs_dir(). 
+> 
+> it was suggested to revert the commit completely.
 
-There was no data here at all for anyone to respond to :(
+Thanks for this, I'll fix it up after this release.
+
+greg k-h
 
