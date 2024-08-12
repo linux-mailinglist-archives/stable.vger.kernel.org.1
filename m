@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-66849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E61694F2C1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1997F94F389
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 910EB1F2124B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C34401F210F1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9146E1891DE;
-	Mon, 12 Aug 2024 16:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9D81862B4;
+	Mon, 12 Aug 2024 16:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZgaw7f5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2C54ruj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512D8183CD9;
-	Mon, 12 Aug 2024 16:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B41183CC4;
+	Mon, 12 Aug 2024 16:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478986; cv=none; b=J6Kz/vdknCcjM2gmnHJXUeyig5qcybLk1y8bEfDj8sNOVlvFgGoXEJaakX11jo2GuDv183eUcyNlULbAlap1LkO+8PEyMQfdZkvujsdOTTqovJV6SoYyiifyS4Hky4NM0VX/EYLwAj2vkMvAzp0HHqZDYFp4xmtJaOGrn0H8b4Y=
+	t=1723479533; cv=none; b=ULx1k+aKy3eS/g5LYR1khC6Pqx0zObBDvlTkewmm+SjVDfzXk6c4OOW8/6bifo44dkFvgABqYnjDXiySYZFhNGxULO3G6lDQYOA7hFXQJdRj7iQAfCgGMEkPyFWS4oeBDvQ+oVhLNBI2/uGkthPx8mOwaTI+g2pzwy4UAUPj6zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478986; c=relaxed/simple;
-	bh=FGdDpWmOxzs5Yw20QJajsgSrXB+5jfQcvyiHITvHLO0=;
+	s=arc-20240116; t=1723479533; c=relaxed/simple;
+	bh=0V2daR+RuCGHZnkgCUIXRJo1e0YpL8b6SDtZNtD44Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lz3Iwf7YEKs7NeKu1H+xFFyvIiRPTdSnd6O756WRnNRf2CS6Ilr6ycCZ7JYK8yTTLeVbt8IaMFFZ6zzVqyq1AxLYYWuXezd0NZGVsINBaUeagdcCF5jPCW/kCGGZVQiZ9blpgw+VXkagkfUnH9PQ1nu27gwK9E7FdhBf+ix/k+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZgaw7f5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA623C32782;
-	Mon, 12 Aug 2024 16:09:45 +0000 (UTC)
+	 MIME-Version; b=fvTuhK+Em5yTdvHF9Rbf2Hyp7jTiMyoMWdX37FEZoLkNZWaP3PVBKQ7WePSCcDrptE0v6kry4rAyF3EIa8U9Ge/E/S5qFsITUBwiCF7cNE5i9kfD5vEYaVZBLKZnQAB2ZnbVBQ0TY55LNVzfQttDmBGdOlZvpASrf7Qvh/NOsv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2C54ruj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDB7C32782;
+	Mon, 12 Aug 2024 16:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478986;
-	bh=FGdDpWmOxzs5Yw20QJajsgSrXB+5jfQcvyiHITvHLO0=;
+	s=korg; t=1723479532;
+	bh=0V2daR+RuCGHZnkgCUIXRJo1e0YpL8b6SDtZNtD44Po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZgaw7f5msSapgAEUUymNfi+iTvTpappChhcx1fpZXyiUyfoYeRmkOw6b9V+IDb5E
-	 MnVKkKWMTsT97DBOqXDA/I+A6o0PXboGxW3USp5tiltAomDGYx6CJaRhmfP+7IDAbC
-	 s+BlxO9l2L3FUYENdSxmlea9wO7yzQtjm1HbnFIA=
+	b=f2C54rujU8Rc6XfZEa/nTHN+Efuma2Cxf0nQGdd8KbIYlu0nQKLtDKz3c5jD2myiJ
+	 MaHVYvXTpND8YTZYxfPLtgkoeCPHlgsAS5PXwb3xpxUNo4IfjqbGUyK1AIopkywayK
+	 5lXWDnbIXZEeA5JIZlbZPEWThU2aHRcMIaCpoezU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Steve Kendall <skend@chromium.org>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 090/150] ALSA: hda: Add HP MP9 G4 Retail System AMS to force connect list
-Date: Mon, 12 Aug 2024 18:02:51 +0200
-Message-ID: <20240812160128.638679339@linuxfoundation.org>
+Subject: [PATCH 6.6 116/189] ALSA: hda/hdmi: Yet more pin fix for HP EliteDesk 800 G4
+Date: Mon, 12 Aug 2024 18:02:52 +0200
+Message-ID: <20240812160136.603765533@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,24 +60,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven 'Steve' Kendall <skend@chromium.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 7e1e206b99f4b3345aeb49d94584a420b7887f1d upstream.
+commit 176fd1511dd9086ab4fa9323cb232177c6235288 upstream.
 
-In recent HP UEFI firmware (likely v2.15 and above, tested on 2.27),
-these pins are incorrectly set for HDMI/DP audio. Tested on
-HP MP9 G4 Retail System AMS. Tested audio with two monitors connected
-via DisplayPort.
+HP EliteDesk 800 G4 (PCI SSID 103c:83e2) is another Kabylake machine
+where BIOS misses the HDMI pin initializations.  Add the quirk entry.
 
-Link: https://forum.manjaro.org/t/intel-cannon-lake-pch-cavs-conexant-cx20632-no-sound-at-hdmi-or-displayport/133494
-Link: https://bbs.archlinux.org/viewtopic.php?id=270523
-Signed-off-by: Steven 'Steve' Kendall <skend@chromium.org>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240806-hdmi-audio-hp-wrongpins-v2-1-d9eb4ad41043@chromium.org
+Link: https://patch.msgid.link/20240806064918.11132-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -91,10 +85,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  }
  
  static const struct snd_pci_quirk force_connect_list[] = {
-+	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
++	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
  	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
  	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
 
 
 
