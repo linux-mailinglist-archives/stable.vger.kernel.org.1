@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FBB494F39E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB23094F4B5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1E931C20D02
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1EF1C20D3F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D8929CA;
-	Mon, 12 Aug 2024 16:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A8A187324;
+	Mon, 12 Aug 2024 16:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mByNj7A6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNrjex1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92750183CA6;
-	Mon, 12 Aug 2024 16:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2729C187347;
+	Mon, 12 Aug 2024 16:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479588; cv=none; b=ed0O9sD11YGeoWDZIP+wuKYWFWcViXC4uBozpU750hH5lG1x+Uph9q+iSDztmFbQIRiUseBWWzvjLb2hOUYilSwOhoS9r30il2qVEUTzZXbVX4QCNFuicZ2VhTSWO2yBA1DiWfJ/7nJjreCm0RLQ42f+RiAV2UiSxa1xB4tRsYQ=
+	t=1723480414; cv=none; b=sezhJYu6J8MmsD6yBtp85PK3Pz2CsULWTavfDCcSNSSZSPa04YTER3Ojhthi5GdfkUEkyn9YY4+SGQNn19bnkf6ZPrfvRzUZG3FzvtElPfPCWhr5GVx44jRsnM/L4qTwyiBgAnWeQ5G+eXHXePZKJu8SPMtdoJFwsgHy2fKFnoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479588; c=relaxed/simple;
-	bh=HJqGqr5jVPWubxgcZJTa5iHV0cEIAWw/8CxCEKNZyGk=;
+	s=arc-20240116; t=1723480414; c=relaxed/simple;
+	bh=3LgyD0gkT55QUh2aHBFmL/fz905xIshsbgFXmwdF5mY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MuFEmMsY7tVfdFRnGWkKkJyBrojrOfeEruZv6hxoYtP1HSgA1V0T/j/xNk0JwL41dJH1zfc4l+Er0+CtPp97eaKD+S+WnXs0x/qy1axPUVo/vDCrutm//av4owSIuukS4qDDIC4+nZuMA+10/EJ0osz6lhcMC07ir/S42dAfU/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mByNj7A6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1756C4AF09;
-	Mon, 12 Aug 2024 16:19:47 +0000 (UTC)
+	 MIME-Version; b=l8+qHgvB8+AD4p/QdJrEq9WoQ7i/DZvo0swUhnUOz5Eplzj+omJgomPJ+cKkDbwW9yROH5JJGQZc59NwWu/8gZ5yJwZ8MnP2Ewbbx5J4MEtXLb4YD4bRGiuyQ3WLdqWGnhlAP2Fe9j8/Zcbqtth7VmeBomhEsfVKd9mhBmqXcp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNrjex1o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DA1C32782;
+	Mon, 12 Aug 2024 16:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479588;
-	bh=HJqGqr5jVPWubxgcZJTa5iHV0cEIAWw/8CxCEKNZyGk=;
+	s=korg; t=1723480414;
+	bh=3LgyD0gkT55QUh2aHBFmL/fz905xIshsbgFXmwdF5mY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mByNj7A6b9+NN2RgfdMEtauYWAL5YUzPLrN2u/J6SOefBFXeiUGHKngog2p0NkeIE
-	 kKsNSZrjEtZeb5Un+bHXEzmm+9lcuxWb5rAR289KbZKGbR3VQOzQQHRm5s20sic82s
-	 lbw5gf+/Q+satKGT1wgavCC+NOuzID3c6k8Kl+f0=
+	b=mNrjex1ozg4+mTJy1yNTEVoUx311P6Wl/HV1jYxeIwVuUTmNmmCdzPjy4b61iZelT
+	 4x+3mjF77lwmV0n/zW2bQrb+neh0DHpYDw5XdUHO6c91VolPfDuDmNAhnhrbxBk+F+
+	 egRtAPmo58oNmE5AF6vWUuKtNpOPDfPE20SGpfQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Mark Brown <broonie@kernel.org>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/189] spi: spi-fsl-lpspi: Fix scldiv calculation
+Subject: [PATCH 6.10 157/263] i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume
 Date: Mon, 12 Aug 2024 18:02:38 +0200
-Message-ID: <20240812160136.068485035@linuxfoundation.org>
+Message-ID: <20240812160152.557792378@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 730bbfaf7d4890bd99e637db7767dc68cfeb24e7 ]
+[ Upstream commit 9ba48db9f77ce0001dbb882476fa46e092feb695 ]
 
-The effective SPI clock frequency should never exceed speed_hz
-otherwise this might result in undefined behavior of the SPI device.
+Add the missing geni_icc_disable() before return in
+geni_i2c_runtime_resume().
 
-Currently the scldiv calculation could violate this constraint.
-For the example parameters perclk_rate = 24 MHz and speed_hz = 7 MHz,
-the function fsl_lpspi_set_bitrate will determine perscale = 0 and
-scldiv = 1, which is a effective SPI clock of 8 MHz.
-
-So fix this by rounding up the quotient of perclk_rate and speed_hz.
-While this never change within the loop, we can pull this out.
-
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://patch.msgid.link/20240804113611.83613-1-wahrenst@gmx.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-qcom-geni.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 079035db7dd85..3c0f7dc9614d1 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -296,7 +296,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
- static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	struct lpspi_config config = fsl_lpspi->config;
--	unsigned int perclk_rate, scldiv;
-+	unsigned int perclk_rate, scldiv, div;
- 	u8 prescale;
- 
- 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-@@ -313,8 +313,10 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 		return -EINVAL;
+diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
+index 78f43648e9f3a..365e37bba0f33 100644
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -992,6 +992,7 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
+ 	ret = geni_se_resources_on(&gi2c->se);
+ 	if (ret) {
+ 		clk_disable_unprepare(gi2c->core_clk);
++		geni_icc_disable(&gi2c->se);
+ 		return ret;
  	}
  
-+	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
-+
- 	for (prescale = 0; prescale < 8; prescale++) {
--		scldiv = perclk_rate / config.speed_hz / (1 << prescale) - 2;
-+		scldiv = div / (1 << prescale) - 2;
- 		if (scldiv < 256) {
- 			fsl_lpspi->config.prescale = prescale;
- 			break;
 -- 
 2.43.0
 
