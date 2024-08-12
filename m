@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F5394EBF7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:42:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED4C94EBF9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 412D228131C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:42:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B69728189E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E32A176FA5;
-	Mon, 12 Aug 2024 11:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE625176AD2;
+	Mon, 12 Aug 2024 11:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdaM5aV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDX4VrqD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D85416A948
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E62216A948
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723462929; cv=none; b=VK66sN967O4xcWipKrVzeN0roITQfAyb9iVpV/FnGcDyBjjtLFF5Tj4eFQlAVrdJ4V0pxvtKVKczCayuB17PQ8fsOspKx5Ann5pwwY1WWD1D8kxbmmNlFPtxgxVucRPDe/eoPDuoAOlpVG6Qdsu71XfQQOhbixH7DhQl3X2gNe0=
+	t=1723462933; cv=none; b=TZWM5jMLuEDHrJuRXDHT9E4uOt0+keCBEnDyQBxE5wAcoTNsRFfNuzim8qA44oSgEatJHbqgUFSTL2xCl5qxO7ZAhvADOSWaS0bITU5WjUNc9ovjXSurq6Cnq9fqtrVb/gLYjfx78TkNeKK2/iyd82C1mK4o+YTzdne5ugk134s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723462929; c=relaxed/simple;
-	bh=aotD6jDn3M29QhtMODqMBQtb4E0t9zgK99XGhJ0pXfc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LWKZG+WzaFMiUXaz8zXRccOHv2MVRTz5fgINV+ECw8W63jNrcnxhRzZ1XuBFeR2CKOT4+TeFBvr1+mkYHJYLHyJfbz8B6rSNr7Z106sKCwJZ4XV+8/DRWB9l6nby0CEf3XJNc8jq2q9z2DboSnbZRTHeoK8C0XtjNj3axC8B1I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdaM5aV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D684C32782;
-	Mon, 12 Aug 2024 11:42:08 +0000 (UTC)
+	s=arc-20240116; t=1723462933; c=relaxed/simple;
+	bh=aKnNPYcw7tH1RdhMIntOW2JTBhZN8YmU8NVQAVTC+2E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C5eMGBhG9QQQEfTdwUlBjWP/vu4ceuXJOj6BD4PJNzypJZ6aV58H9Q4/xuG1/rAdAm/HPkYluQyh+sDqz+Wo7bv6jtarUYXQakYm6wuYWpq/JPUnCgSOMcdNdWfvbpFvDPhWYkqQeKsbepexCerp96igefG6d/L77yi1h2rZPVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDX4VrqD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB3EC32782;
+	Mon, 12 Aug 2024 11:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723462929;
-	bh=aotD6jDn3M29QhtMODqMBQtb4E0t9zgK99XGhJ0pXfc=;
+	s=korg; t=1723462933;
+	bh=aKnNPYcw7tH1RdhMIntOW2JTBhZN8YmU8NVQAVTC+2E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BdaM5aV8vXLZHys4yeg0tldRbpBlFWwqzKYAL96npILoIoG6U/dXvD68wZZqbFplp
-	 2sBLBWDmoZhYUbyHKzOszJ3E7OkgEN7MaIB2V5xSOIT9ILyZ3jLq5NBvFxnZnwPoTe
-	 mH1IOIXB4UdBhX/SI1DTxpVtJowmra2GZukcgpU4=
-Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix invalid FIFO access with special" failed to apply to 6.1-stable tree
+	b=TDX4VrqDrdv3+2F1N2UYg5/X2HCTq2eFvDMo6JXTf2Yhr/Xt2u9lJsnMzeOrhuZvM
+	 2rzbRWJR9uBsjiJoJiAOhzh3VE6wVgsKhLzAaU/iuqJ1Tfc3yhZGcEhg/uwQrDlZmX
+	 emilVOUjlmRETXTdEtFg1HpmRBzf+0DSnZJaKmoE=
+Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix invalid FIFO access with special" failed to apply to 5.15-stable tree
 To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 13:42:05 +0200
-Message-ID: <2024081204-deserving-flanked-a918@gregkh>
+Date: Mon, 12 Aug 2024 13:42:09 +0200
+Message-ID: <2024081208-geometry-thread-d393@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7d3b793faaab1305994ce568b59d61927235f57b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081204-deserving-flanked-a918@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081208-geometry-thread-d393@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -81,6 +81,11 @@ b4a778303ea0 ("serial: sc16is7xx: add missing support for rs485 devicetree prope
 049994292834 ("serial: sc16is7xx: fix regression with GPIO configuration")
 dabc54a45711 ("serial: sc16is7xx: remove obsolete out_thread label")
 c8f71b49ee4d ("serial: sc16is7xx: setup GPIO controller later in probe")
+267913ecf737 ("serial: sc16is7xx: Fill in rs485_supported")
+6e124e58ae2e ("sc16is7xx: Set AUTOCTS and AUTORTS bits")
+21144bab4f11 ("sc16is7xx: Handle modem status lines")
+cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop")
+d4ab5487cc77 ("Merge 5.17-rc6 into tty-next")
 
 thanks,
 
