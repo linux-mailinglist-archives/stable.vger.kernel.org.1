@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-67147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C4694F41A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2235794F3F3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25FBE1C20895
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D38B82830C3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8885C186E34;
-	Mon, 12 Aug 2024 16:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B58187335;
+	Mon, 12 Aug 2024 16:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojirCayd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5LPyUNZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4641F134AC;
-	Mon, 12 Aug 2024 16:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CF1186E47;
+	Mon, 12 Aug 2024 16:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479963; cv=none; b=cNPK6ffSFwGxSvaRPdarF6vrf086xh5jNah0cSNhla0gWGPTuqf8EhC9q9lZGmevEVMsgLNMO4rOtxZifLE4l0lOY9ujsF5ipi22+aZaIgvJLERPdmFzQgp2geaU6j+IgJLdmN0cjIUVVCkum3hxM6zg6HvE0wYbcxIjSiAVSBw=
+	t=1723479855; cv=none; b=ippJQnppGx35QEDxEzzH5vbQt45GdGLq+Q++XW8CYA1pvi6/5RXh9qIKTlciT0123NlsWTDwBOmTpRMuPkttGa6YC796hAmShkaGIPU4ckGDpf2ZgQtMFNMg0A07kzRbpPzRcnGME9rB+p8tSezrxZBcr85dp7UuMu3GhQgFItk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479963; c=relaxed/simple;
-	bh=R2A2K5VPuQ44IUQigd9Ev3mANQ/72RHmY20iLQXWKKg=;
+	s=arc-20240116; t=1723479855; c=relaxed/simple;
+	bh=Hyh7DkvJKdFCR5PBJ2oNncnnbLeiR4R6kwPMhDH57ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYkftA8yk5Q7Nz7P+4TzVL5ct2tzFTpjwR8lzVJ03C7pSJvR4AE5zyZnzi/Tx1powYc+8eq1QpaH1gtJWsIwIGl2NddwedoRYVyyy2Z5GjVWGQEqKyX9q+WFifN6XslqU4nnETvd68iunRZdYxLMPRgRFh0HZ5YEovT7CmPmarM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojirCayd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7935C32782;
-	Mon, 12 Aug 2024 16:26:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PuWomO5N5VrOPCnkwwXxUVS7AVp/yAwLMNN825BlNEuCozXJh5MEZZ6MKLO7LoTXDQebn2otoNVnBrhCmQDI73YK36KDOyIz8aepevY3CtAPoTSupeQJTazabsOADGW2Fe+8ZtUbKkm0w13RSNvpWBZG/cqTvt5EvjXk+4Sg+r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5LPyUNZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA02C4AF09;
+	Mon, 12 Aug 2024 16:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479963;
-	bh=R2A2K5VPuQ44IUQigd9Ev3mANQ/72RHmY20iLQXWKKg=;
+	s=korg; t=1723479854;
+	bh=Hyh7DkvJKdFCR5PBJ2oNncnnbLeiR4R6kwPMhDH57ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojirCaydps2R9hnaCYaMmnpmG/xRFj7IssmH/P2qqmxPScF139PxT9fglHixz83fc
-	 hH2D9yXXgtQIiaM9dU0pPFn9ccyI9onSDTZ5LRmO+DHtlyZhRCdxvwJkVE2HYGgyzP
-	 YoSTMMQQZUzXZvDj7V6o0l/RgXbR9WEwQl8v21g8=
+	b=d5LPyUNZYtp2nmHtO5izT15/ICFaWOHSTgHYzwd4OqB+8c6SqYQZgH6b7rLdtTrtj
+	 nw2dwmeLuD48Gf6o0zJ7EOBH7da0K50BKu2/Yo1GXT2atRM7k74aDBtcIfqKPy0TL9
+	 XL+v5lx+wLvXVbOvSziYxp1x81HrSOAdQpRyDSDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Huafei <lihuafei1@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: [PATCH 6.10 013/263] perf/x86: Fix smp_processor_id()-in-preemptible warnings
-Date: Mon, 12 Aug 2024 18:00:14 +0200
-Message-ID: <20240812160147.048710240@linuxfoundation.org>
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Laura Nao <laura.nao@collabora.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 014/263] selftests: ksft: Fix finished() helper exit code on skipped tests
+Date: Mon, 12 Aug 2024 18:00:15 +0200
+Message-ID: <20240812160147.086631856@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -62,102 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Huafei <lihuafei1@huawei.com>
+From: Laura Nao <laura.nao@collabora.com>
 
-[ Upstream commit f73cefa3b72eaa90abfc43bf6d68137ba059d4b1 ]
+[ Upstream commit 170c966cbe274e664288cfc12ee919d5e706dc50 ]
 
-The following bug was triggered on a system built with
-CONFIG_DEBUG_PREEMPT=y:
+The Python finished() helper currently exits with KSFT_FAIL when there
+are only passed and skipped tests. Fix the logic to exit with KSFT_PASS
+instead, making it consistent with its C and bash counterparts
+(ksft_finished() and ktap_finished() respectively).
 
- # echo p > /proc/sysrq-trigger
-
- BUG: using smp_processor_id() in preemptible [00000000] code: sh/117
- caller is perf_event_print_debug+0x1a/0x4c0
- CPU: 3 UID: 0 PID: 117 Comm: sh Not tainted 6.11.0-rc1 #109
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4f/0x60
-  check_preemption_disabled+0xc8/0xd0
-  perf_event_print_debug+0x1a/0x4c0
-  __handle_sysrq+0x140/0x180
-  write_sysrq_trigger+0x61/0x70
-  proc_reg_write+0x4e/0x70
-  vfs_write+0xd0/0x430
-  ? handle_mm_fault+0xc8/0x240
-  ksys_write+0x9c/0xd0
-  do_syscall_64+0x96/0x190
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-This is because the commit d4b294bf84db ("perf/x86: Hybrid PMU support
-for counters") took smp_processor_id() outside the irq critical section.
-If a preemption occurs in perf_event_print_debug() and the task is
-migrated to another cpu, we may get incorrect pmu debug information.
-Move smp_processor_id() back inside the irq critical section to fix this
-issue.
-
-Fixes: d4b294bf84db ("perf/x86: Hybrid PMU support for counters")
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Reviewed-and-tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20240729220928.325449-1-lihuafei1@huawei.com
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Fixes: dacf1d7a78bf ("kselftest: Add test to verify probe of devices from discoverable buses")
+Signed-off-by: Laura Nao <laura.nao@collabora.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ tools/testing/selftests/devices/ksft.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 0c51cfdf76092..83d12dd3f831a 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1521,20 +1521,23 @@ static void x86_pmu_start(struct perf_event *event, int flags)
- void perf_event_print_debug(void)
- {
- 	u64 ctrl, status, overflow, pmc_ctrl, pmc_count, prev_left, fixed;
-+	unsigned long *cntr_mask, *fixed_cntr_mask;
-+	struct event_constraint *pebs_constraints;
-+	struct cpu_hw_events *cpuc;
- 	u64 pebs, debugctl;
--	int cpu = smp_processor_id();
--	struct cpu_hw_events *cpuc = &per_cpu(cpu_hw_events, cpu);
--	unsigned long *cntr_mask = hybrid(cpuc->pmu, cntr_mask);
--	unsigned long *fixed_cntr_mask = hybrid(cpuc->pmu, fixed_cntr_mask);
--	struct event_constraint *pebs_constraints = hybrid(cpuc->pmu, pebs_constraints);
--	unsigned long flags;
--	int idx;
-+	int cpu, idx;
-+
-+	guard(irqsave)();
-+
-+	cpu = smp_processor_id();
-+	cpuc = &per_cpu(cpu_hw_events, cpu);
-+	cntr_mask = hybrid(cpuc->pmu, cntr_mask);
-+	fixed_cntr_mask = hybrid(cpuc->pmu, fixed_cntr_mask);
-+	pebs_constraints = hybrid(cpuc->pmu, pebs_constraints);
+diff --git a/tools/testing/selftests/devices/ksft.py b/tools/testing/selftests/devices/ksft.py
+index cd89fb2bc10e7..bf215790a89d7 100644
+--- a/tools/testing/selftests/devices/ksft.py
++++ b/tools/testing/selftests/devices/ksft.py
+@@ -70,7 +70,7 @@ def test_result(condition, description=""):
  
- 	if (!*(u64 *)cntr_mask)
- 		return;
  
--	local_irq_save(flags);
--
- 	if (x86_pmu.version >= 2) {
- 		rdmsrl(MSR_CORE_PERF_GLOBAL_CTRL, ctrl);
- 		rdmsrl(MSR_CORE_PERF_GLOBAL_STATUS, status);
-@@ -1578,7 +1581,6 @@ void perf_event_print_debug(void)
- 		pr_info("CPU#%d: fixed-PMC%d count: %016llx\n",
- 			cpu, idx, pmc_count);
- 	}
--	local_irq_restore(flags);
- }
- 
- void x86_pmu_stop(struct perf_event *event, int flags)
+ def finished():
+-    if ksft_cnt["pass"] == ksft_num_tests:
++    if ksft_cnt["pass"] + ksft_cnt["skip"] == ksft_num_tests:
+         exit_code = KSFT_PASS
+     else:
+         exit_code = KSFT_FAIL
 -- 
 2.43.0
 
