@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7ABC94F020
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D46B294F01F
 	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5971BB251D3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12B761C21F9D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C7E186E36;
-	Mon, 12 Aug 2024 14:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCF7186E32;
+	Mon, 12 Aug 2024 14:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0POMXnir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/DPUUzo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451CB186E33
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24694B5AE
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723473951; cv=none; b=YAWSE2g89WUf1DBOy4hEbZE1JcASlR/+e66VotbuaQBt++7WnD6lMLKfSuwSyy+vJCJ3uKmaqiuFtjInGbPlyluYysMHGiKo4CIWlXafsa4sD7bouNO/S1DrTQspSgMd+4ey8g/hfQefNtNTo5+vFmJ/Nqpn6c/LovLDzpgjxd4=
+	t=1723473959; cv=none; b=BQMSHx+0Lo8YCW5g3AuKEWWy+mFu1E49Lx906JrL3tVsoqS07RnbhiMkAt0z/3s+GyYqSjlQ7mwHmLWrFSnP8PQs4UEzNZ/hCnEN7grgXGajTJhpXTph84TJWxgMEc4N9lZVLdQQ0SQ+YzhaKTiwZ7MmHNUu+7HECfynMDmiyfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723473951; c=relaxed/simple;
-	bh=kgXD+Pq8OdRJ93FwH2yCgjte9trxUnd7zaoJhHX2cEM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=av7TCT4KP4KjMZuAx00i8If03GlRbK4tzr22ea7jc0gJmxVoRBX1XMPlRCAxXlGcCEZ+mtxtkKXStFH28bG7vDVyz9b+OxvQXe9s+1Ec9dED0ElUfrGXsms7O547lBRUxM/MUJo05gekQDTJHc/tabCgAPph5HMsPvNcdKVqZrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0POMXnir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BFBC32782;
-	Mon, 12 Aug 2024 14:45:50 +0000 (UTC)
+	s=arc-20240116; t=1723473959; c=relaxed/simple;
+	bh=YqkSl0nLeNab0x6YY4DwHXf18XMyNgJ/WbwJJlVaqgw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Yw7Nml5/eUo4U2E6GrFvpHeqrZlKOGyLeAkvMl7jyp4OcNWprIuGUnvgWS64tORXTraG43Yd7zES6q0caX4hJZuU8f/j1AR2R8jIpD6G2UbRe7U5Ay8Pmi2S2pBvdnlistYLpIVYVT/8FYUTa6ApxP8FoNx6AVE4FyKO9tJvUMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/DPUUzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF67C32782;
+	Mon, 12 Aug 2024 14:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723473950;
-	bh=kgXD+Pq8OdRJ93FwH2yCgjte9trxUnd7zaoJhHX2cEM=;
+	s=korg; t=1723473959;
+	bh=YqkSl0nLeNab0x6YY4DwHXf18XMyNgJ/WbwJJlVaqgw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0POMXnirjL2LxXClndTPSIXDiuPnyMo9Yn3NGBvvk2xjL8WlRqsrOVawMLZIKebeD
-	 V1TRzJuiObSQtD5Fa0EZR8Q77Qm4X/L2Jp5zncsszblV2uUYL9vCG5Z/LHHMGvX4Kc
-	 +E3ISOB7bd4sHvhTU8dxNoJxDp5LY4chctFuw+Es=
-Subject: FAILED: patch "[PATCH] drm/amd: Fix shutdown (again) on some SMU v13.0.4/11" failed to apply to 6.10-stable tree
+	b=k/DPUUzo6/d6jhpup9BMz9RW3smh6aOyNVC+FZlCoHtuzEbkv2+5HS+VwlJDGttNX
+	 VxQp4np4KFMCz6qNuxgsp8SEb9jYIWJ3MpyBuBtpTEgkjD5qV7My9bXcVEqgkYVbvY
+	 FH56QjTqWlv7Tma0cCqRi3sY35IveHIb1hmNEdBc=
+Subject: FAILED: patch "[PATCH] drm/amd: Fix shutdown (again) on some SMU v13.0.4/11" failed to apply to 6.6-stable tree
 To: mario.limonciello@amd.com,Tim.Huang@amd.com,alexander.deucher@amd.com,electrodexsnet@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:45:47 +0200
-Message-ID: <2024081247-smolder-deputize-5350@gregkh>
+Date: Mon, 12 Aug 2024 16:45:48 +0200
+Message-ID: <2024081248-evident-fever-c73b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x ff4e49f446ed24772182c724e0ef1a5be23c622a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081247-smolder-deputize-5350@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081248-evident-fever-c73b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 ff4e49f446ed ("drm/amd: Fix shutdown (again) on some SMU v13.0.4/11 platforms")
 b911505e6ba4 ("dm/amd/pm: Fix problems with reboot/shutdown for some SMU 13.0.4/13.0.11 users")
+fedb6ae49758 ("drm/amd/pm: fixes a random hang in S4 for SMU v13.0.4/11")
 
 thanks,
 
