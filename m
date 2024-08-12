@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-67153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1961594F420
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B126F94F326
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0856280DB5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29723B26713
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D602186E47;
-	Mon, 12 Aug 2024 16:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085F718734F;
+	Mon, 12 Aug 2024 16:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="an2l9tGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K//RCTjT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6D2134AC;
-	Mon, 12 Aug 2024 16:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB79186E36;
+	Mon, 12 Aug 2024 16:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479983; cv=none; b=ee3uhXS5vwxjuxCi/ukm89KQ6yYYTN5RywE7TQ+CWInAHCZZfFIyu3HWQfnhVgn7skRaorOGPmYq4QADitJ/Qj/rKkk5Gwc749QuqEtXW32OPPEngqvMIyDmYX7YqC6T2PFSP8F4eDF9krNY7Wyd4jPMSJrl5LDWdgbzy2tBiAk=
+	t=1723479253; cv=none; b=UJVwmtIxcG+bso6J4bvLGgROBrYOUwrqfbxgemm30Bxu81qHVbrpakJOS+Hh/Ci6HPT2ldyzfB4WVh2wA79sZ4gK3exLlDVNUuxtebnrXVJtzOPA/vbYofLPKVPG5TQmEaHvxGvXnWbu+BXru81MMvrxHbD+KNA/ganEUharSbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479983; c=relaxed/simple;
-	bh=kyJP5ZLxoqkJ/fu2bQ82Mi6PIMjkZ9ZfCV1BsEpvr7g=;
+	s=arc-20240116; t=1723479253; c=relaxed/simple;
+	bh=iManYBu3PBTX0ebBtVXrrtRR3SCEWPfAEaTSGX//n/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8qKOKCnZOhhdblss8zjM0KbREf9AIxIch80X1sdM+IMQPkZuAEvq8O62hfzQcv1Qbt6ZbdAmzeZ19UPYkFTEh0lIP0MVk+ChIrspe92f4nZXRbJH33CgvMAYoX2SlMu3eWFTt6v+ueAGqPMnWVrR3Ge7QULv3xoWd/OBDp9Ok4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=an2l9tGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8753AC32782;
-	Mon, 12 Aug 2024 16:26:22 +0000 (UTC)
+	 MIME-Version; b=XifG2+/+0mKlf8b6ozhaAA06w9SNtAHePsBtRz2IgW1X2Rw3K7Im1RcO0oJ1qtb4qadOW13J4I46JtK9lmUUjtw000/iuyuIqwSFDAurnoMVgl/To8PN3XGrRMy+uTM+dtqNjB00GKLd3L7sH3ZMe1rP+ttrE7A1GMV4ulVvPLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K//RCTjT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EE5C32782;
+	Mon, 12 Aug 2024 16:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479982;
-	bh=kyJP5ZLxoqkJ/fu2bQ82Mi6PIMjkZ9ZfCV1BsEpvr7g=;
+	s=korg; t=1723479253;
+	bh=iManYBu3PBTX0ebBtVXrrtRR3SCEWPfAEaTSGX//n/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=an2l9tGA7Z1d7Od0zCzP8WnzZTYiaQdfbB+4xfrKAoXralsc40lMiDcYRgKSXrL6y
-	 m5BtHRUJc9Z3j8uTgTmNXOLBKJNAy5aR+rwadC3RXh/47rTLRkOFWVPHY+M5NuMctO
-	 2vALVmVggPbYpHaLftFx1cTN0SxgZZHpwWaRd+rs=
+	b=K//RCTjTVyeEJyukWOv2nJfPEV7XAYB8QR7xvKJwfnnk3UxvQpjTZhn0SrNOfuFSR
+	 KNrXnJINJOm4DXJ20CBfwGR+euCE+nsZGXOL5kxCF/XrQ9G76R9g9upN7a8OcP2hw4
+	 S0R9ZZzv1b4f1KS5B978w9nzTpaAb50gcgS2tw6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amber Connelly <amb3r.dev@gmail.com>,
-	Tamim Khan <tamim@fusetak.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 061/263] ACPI: resource: Skip IRQ override on Asus Vivobook Pro N6506MJ
-Date: Mon, 12 Aug 2024 18:01:02 +0200
-Message-ID: <20240812160148.879577232@linuxfoundation.org>
+Subject: [PATCH 6.6 007/189] x86/mm: Fix pti_clone_entry_text() for i386
+Date: Mon, 12 Aug 2024 18:01:03 +0200
+Message-ID: <20240812160132.422615752@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamim Khan <tamim@fusetak.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit e2e7f037b400aebbb3892d8010fb3d9cae6f426e ]
+[ Upstream commit 3db03fb4995ef85fc41e86262ead7b4852f4bcf0 ]
 
-Similar to other Asus Vivobooks, the Asus Vivobook Pro N6506MJ has a DSDT table
-that describes IRQ 1 as ActiveLow, whereas the kernel overrides it to Edge_High.
-This discrepancy prevents the internal keyboard from functioning properly. This
-patch resolves this issue by adding this laptop to the override table that prevents
-the kernel from overriding this IRQ.
+While x86_64 has PMD aligned text sections, i386 does not have this
+luxery. Notably ALIGN_ENTRY_TEXT_END is empty and _etext has PAGE
+alignment.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218929
-Tested-by: Amber Connelly <amb3r.dev@gmail.com>
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
-Link: https://patch.msgid.link/20240708000557.83539-1-tamim@fusetak.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This means that text on i386 can be page granular at the tail end,
+which in turn means that the PTI text clones should consistently
+account for this.
+
+Make pti_clone_entry_text() consistent with pti_clone_kernel_text().
+
+Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/mm/pti.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index b3ae5f9ac5510..df5d5a554b388 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -531,6 +531,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "N6506MU"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook Pro N6506MJ */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "N6506MJ"),
-+		},
-+	},
- 	{
- 		/* LG Electronics 17U70P */
- 		.matches = {
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index f7d1bbe76eb94..41d8c8f475a7c 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -496,7 +496,7 @@ static void pti_clone_entry_text(void)
+ {
+ 	pti_clone_pgtable((unsigned long) __entry_text_start,
+ 			  (unsigned long) __entry_text_end,
+-			  PTI_CLONE_PMD);
++			  PTI_LEVEL_KERNEL_IMAGE);
+ }
+ 
+ /*
 -- 
 2.43.0
 
