@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B02094F427
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C6594F311
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 176F1280CA0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39B311F2180B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3088186E34;
-	Mon, 12 Aug 2024 16:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E511862BD;
+	Mon, 12 Aug 2024 16:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKZ8vFHl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTKWVnKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721CB134AC;
-	Mon, 12 Aug 2024 16:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA61C130E27;
+	Mon, 12 Aug 2024 16:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480006; cv=none; b=B++KlYKy4O4icUWv6GhFBqyGxSrUPNYIbn4AlL94WwZLzKFL52SflqEODKtmSJgwXpiX/QvLUmcguwIiN+fECNCnAQOQfCFxYEEQetEKRh8DbKd4qFsJ5J0J79ZMTbUULLm0pyM+XbgculyZBnfrPUVnQa8zBEZW1xGThPWa4rU=
+	t=1723479198; cv=none; b=mP8SjuHZOvKG7z3yidOzLJ2otUoYY1acC5YZ/qsxLLWLyusZPRFb3RNXhrf+WU8wQoBvEziqGJvSkyI7AtyWx8vse5d7M5G3Gm7o4/XvTu+NrjDmMRoy4Lb3p+/tnzhPDHx9OL3xpMqClygXiDxMRCTuRK3M29VKxt4tRfArHXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480006; c=relaxed/simple;
-	bh=61j13H6xHqIOVzekAN3pSmdKsKu5T9OMpBmeMzo48qk=;
+	s=arc-20240116; t=1723479198; c=relaxed/simple;
+	bh=QkBxEe3IZ2FiXujbGfQcnmINnN/i2EB0RjrEIIhtQJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sV9o5gTPFsQ4orrSZLxRg69oFI46PFyg3m1Zddig+vXTpKqezUFE9PFJvMqZ8ULhnSreuJsddCQUByoEKl8uWQkftkTd3mBdh7KRKO3FVjVJpN+WGijwsKXhScLsp3e61Of1Q4mCtUrMyLJJzMMot+d/wpLMj2RpTov6+clCBbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKZ8vFHl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE98C32782;
-	Mon, 12 Aug 2024 16:26:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y2FIlLdfwOQVWSpLDY8Z7tKK0yZs6Cbhy2OEdNVH6qX01nujfvk4DkQtIRw9AKuK4ZZCJmeY9SZ6SvDGkz4RORZfwcNmXmmRN/xf6RlrCR48tU9xAepRQcyevqwGPOJF6PJOQ8q4c9HNOIFtnTdgWlqowxrYg3wleV7qP7JMo/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTKWVnKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597B6C32782;
+	Mon, 12 Aug 2024 16:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480006;
-	bh=61j13H6xHqIOVzekAN3pSmdKsKu5T9OMpBmeMzo48qk=;
+	s=korg; t=1723479198;
+	bh=QkBxEe3IZ2FiXujbGfQcnmINnN/i2EB0RjrEIIhtQJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tKZ8vFHlQyqb9kf1Foh5fZD3/Z8xSxZD4sDlIkHt8D+XhylfnnT+y4k7n+SVgOV1H
-	 J8vd1Qw5jANeHa7WqSjP9cTeT3M6HMpjhoN2/oR5aM3HSnfKSI8DR3wmimTSt6mQUY
-	 tp+xKBeYHvCunUi1QXJICbRe+t81ZIoIzMdOIRPY=
+	b=mTKWVnKRwhWrGhHosKrYuXFRh7xDWLnO1FkK1muk39/wczCyGEmiYnAildoHtundn
+	 gC3x4a8LrW0lY//gfLNkOOpIV20Ht2CV2/4ugSAZnioNhrG2pna2nvIjJkRIgCs1Sx
+	 lz7QG9nWtxmGB+zQ/xRF4jk26pxg3P7uUY5Z0NXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 067/263] net/mlx5e: SHAMPO, Fix invalid WQ linked list unlink
-Date: Mon, 12 Aug 2024 18:01:08 +0200
-Message-ID: <20240812160149.108678414@linuxfoundation.org>
+Subject: [PATCH 6.6 013/189] net: usb: qmi_wwan: fix memory leak for not ip packets
+Date: Mon, 12 Aug 2024 18:01:09 +0200
+Message-ID: <20240812160132.653325714@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit fba8334721e266f92079632598e46e5f89082f30 ]
+[ Upstream commit 7ab107544b777c3bd7feb9fe447367d8edd5b202 ]
 
-When all the strides in a WQE have been consumed, the WQE is unlinked
-from the WQ linked list (mlx5_wq_ll_pop()). For SHAMPO, it is possible
-to receive CQEs with 0 consumed strides for the same WQE even after the
-WQE is fully consumed and unlinked. This triggers an additional unlink
-for the same wqe which corrupts the linked list.
+Free the unused skb when not ip packets arrive.
 
-Fix this scenario by accepting 0 sized consumed strides without
-unlinking the WQE again.
-
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240603212219.1037656-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index b5333da20e8a7..cdc84a27a04ed 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -2374,6 +2374,9 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
- 	if (likely(wi->consumed_strides < rq->mpwqe.num_strides))
- 		return;
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index befbca01bfe37..b1380cf1b13ab 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -201,6 +201,7 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			break;
+ 		default:
+ 			/* not ip - do not know what to do */
++			kfree_skb(skbn);
+ 			goto skip;
+ 		}
  
-+	if (unlikely(!cstrides))
-+		return;
-+
- 	wq  = &rq->mpwqe.wq;
- 	wqe = mlx5_wq_ll_get_wqe(wq, wqe_id);
- 	mlx5_wq_ll_pop(wq, cqe->wqe_id, &wqe->next.next_wqe_index);
 -- 
 2.43.0
 
