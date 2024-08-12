@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-67054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FFED94F3B0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F4B94F4CB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2D171C2133D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 640EA281D4B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3AD186E38;
-	Mon, 12 Aug 2024 16:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14425186E34;
+	Mon, 12 Aug 2024 16:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHJmKPfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9drIHKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2300183CA6;
-	Mon, 12 Aug 2024 16:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72221494B8;
+	Mon, 12 Aug 2024 16:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479650; cv=none; b=tm0+oTRuPieppF5HRSOGQbuFVFsSTFT/exisi4kC9HRAz4QZ4yymRpdOD+JUYWvnRVQzXlLjdfNLbo3jWKM1NSOr/Sz55x2Qzyiy6d0dMusn3S5GyliKyYSE08w9FERiAaMeu+vnGz55w/KyOynntV/0azjwtrVjRoK24dlu5h4=
+	t=1723480476; cv=none; b=fDXwbDawW4c+nPg4plpLqeGscfHb5ct/AxMpI8N69vEC6MSUPRIA80NjnymOPMpUd8cKfZZOWYcAL9MGiKQya9uDgEOvV4pojPgUHkUa2Z0KbK5xrRfKiDC/9b99g6PN2F2ivlNEzFKTIMlHGgeopoVyMxQbI0s1NWdm/Nw8D0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479650; c=relaxed/simple;
-	bh=OfU9FIz0TlwR3T+7oPsStQAA0u5Z8/itsWbcjptYkwc=;
+	s=arc-20240116; t=1723480476; c=relaxed/simple;
+	bh=R5r0AYrHVE+7HDTCjTLJa9RW+bIpKiUxs94tv7wclfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+n/OsVCZst6NrjC9r7DEseBB83vjSzYGhaHTYm1ymvUmDmfKDl+dkn6hAa5hekY218lfGjI+a4jq9G8deQVIyu8ynVUlXXreq4VEAZ9CgNmZDFUczYhqMnjSoaC/4qHmmqy1wC1rMi1fMlafyLxJIuv5aNrxfBmBglXxaRioaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHJmKPfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56094C32782;
-	Mon, 12 Aug 2024 16:20:50 +0000 (UTC)
+	 MIME-Version; b=K7Rrjr55K8t5HunZbQPOq0AIOpUxhRYdkgjYinVb1BRehyisgJD7DIlrz33fDR0oEzW/A7d3nEsSLjZbxwiU9KC9GoKII33s2VTdi6GICI3dwOD5Ahmp6E+WVjeC3O71UMxVfqGGXpjf8vSOKyQ2x9YXCZVAD2qotCsa+2zg6Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9drIHKI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D97C32782;
+	Mon, 12 Aug 2024 16:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479650;
-	bh=OfU9FIz0TlwR3T+7oPsStQAA0u5Z8/itsWbcjptYkwc=;
+	s=korg; t=1723480476;
+	bh=R5r0AYrHVE+7HDTCjTLJa9RW+bIpKiUxs94tv7wclfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHJmKPfzfeGuvHlJdjaWv0lfTjikE7e3ecoEsecsGalakUPgF76xKMQo1jfGcuddv
-	 2oqoMhag+O0MQyq1BH3KJeJS0UcrTFuab+gKtGbjMUb5WtD4y0mFdM2l1077nKAV7E
-	 I5UgNMukqjdTDjj/FxFphPLuVpq2110KPCHYGSUI=
+	b=q9drIHKIQO8w0idWYV03Km0ZUs40lw28tWd8ZnBEuwRe0Wxzpq/v2L9vWB2PXMSS0
+	 eE+7pYTNi49a70xhq1MwgCmJPS9RdQzLx/0IGLwll4hfqyU5898ntVZqkxT3WFCw8I
+	 pdwgMdPs2Ck0r2hpy2jjJbWpYRshP4IksPZdExYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Mathias Krause <minipli@grsecurity.net>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 151/189] eventfs: Dont return NULL in eventfs_create_dir()
-Date: Mon, 12 Aug 2024 18:03:27 +0200
-Message-ID: <20240812160137.954616181@linuxfoundation.org>
+	Justin Stitt <justinstitt@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miroslav Lichvar <mlichvar@redhat.com>
+Subject: [PATCH 6.10 207/263] ntp: Safeguard against time_constant overflow
+Date: Mon, 12 Aug 2024 18:03:28 +0200
+Message-ID: <20240812160154.472729935@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Krause <minipli@grsecurity.net>
+From: Justin Stitt <justinstitt@google.com>
 
-commit 12c20c65d0460cf34f9a665d8f0c0d77d45a3829 upstream.
+commit 06c03c8edce333b9ad9c6b207d93d3a5ae7c10c0 upstream.
 
-Commit 77a06c33a22d ("eventfs: Test for ei->is_freed when accessing
-ei->dentry") added another check, testing if the parent was freed after
-we released the mutex. If so, the function returns NULL. However, all
-callers expect it to either return a valid pointer or an error pointer,
-at least since commit 5264a2f4bb3b ("tracing: Fix a NULL vs IS_ERR() bug
-in event_subsystem_dir()"). Returning NULL will therefore fail the error
-condition check in the caller.
+Using syzkaller with the recently reintroduced signed integer overflow
+sanitizer produces this UBSAN report:
 
-Fix this by substituting the NULL return value with a fitting error
-pointer.
+UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:738:18
+9223372036854775806 + 4 cannot be represented in type 'long'
+Call Trace:
+ handle_overflow+0x171/0x1b0
+ __do_adjtimex+0x1236/0x1440
+ do_adjtimex+0x2be/0x740
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+The user supplied time_constant value is incremented by four and then
+clamped to the operating range.
+
+Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
+supplied value was sanity checked to be in the operating range. That change
+removed the sanity check and relied on clamping after incrementing which
+does not work correctly when the user supplied value is in the overflow
+zone of the '+ 4' operation.
+
+The operation requires CAP_SYS_TIME and the side effect of the overflow is
+NTP getting out of sync.
+
+Similar to the fixups for time_maxerror and time_esterror, clamp the user
+space supplied value to the operating range.
+
+[ tglx: Switch to clamping ]
+
+Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miroslav Lichvar <mlichvar@redhat.com>
 Cc: stable@vger.kernel.org
-Fixes: 77a06c33a22d ("eventfs: Test for ei->is_freed when accessing ei->dentry")
-Link: https://lore.kernel.org/20240723122522.2724-1-minipli@grsecurity.net
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-c-v2-1-f3a80096f36f@google.com
+Closes: https://github.com/KSPP/linux/issues/352
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/ntp.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -806,7 +806,7 @@ struct eventfs_inode *eventfs_create_dir
- 	/* Was the parent freed? */
- 	if (list_empty(&ei->list)) {
- 		cleanup_ei(ei);
--		ei = NULL;
-+		ei = ERR_PTR(-EBUSY);
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -733,11 +733,10 @@ static inline void process_adjtimex_mode
+ 		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
+ 
+ 	if (txc->modes & ADJ_TIMECONST) {
+-		time_constant = txc->constant;
++		time_constant = clamp(txc->constant, 0, MAXTC);
+ 		if (!(time_status & STA_NANO))
+ 			time_constant += 4;
+-		time_constant = min(time_constant, (long)MAXTC);
+-		time_constant = max(time_constant, 0l);
++		time_constant = clamp(time_constant, 0, MAXTC);
  	}
- 	return ei;
- }
+ 
+ 	if (txc->modes & ADJ_TAI &&
 
 
 
