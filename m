@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-66791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6566494F27A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2201894F374
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22E66281E31
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1C86B24706
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5A8186E38;
-	Mon, 12 Aug 2024 16:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607DF187571;
+	Mon, 12 Aug 2024 16:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z39+ndPz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBafokKX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFB0186295;
-	Mon, 12 Aug 2024 16:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E73A187563;
+	Mon, 12 Aug 2024 16:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478797; cv=none; b=hH5S/0yLGtHR0HM29XeUtynwF4ph4x12YUJ6hNYJFilmL4ENcOobv2rehcsqs39WEVqoi8KhrQ7LnyDaR7PDS73v+XCEX/0ogJF+SUy0CfSEMHDWQ5pMscNYciLghQQDlrApedq9GsKpgM7wcnCpE02NaRO/sBTn3P6/nx2mLOw=
+	t=1723479467; cv=none; b=IgSxrH3FdEtRzXodgHC7FttgtGSWY+lAV2KAPh4Koz23vB0qtAwMYvZQAk5rzlzweCSoeh1Iac0XkD7OEyg6o+1+14D0+e6DWXxTntnIC6ycupaI/DOkaGRiM7si5XuKk8vB1SQjDCjrzB4CmGC+ho4AbfBZz5BbH3DrL+RlVWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478797; c=relaxed/simple;
-	bh=P5EHO6njLgsFXTB9qjWAj5+GAfxOZvkVJMW8PKVOe0g=;
+	s=arc-20240116; t=1723479467; c=relaxed/simple;
+	bh=kEx+opdeWDHwzk32oOEaais05MOl6Zze3Leyh5a+R2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inbR03lQpGS7cp7+7LcniTFenU5x/srLsB6IjfcRsFnD7lWHhCaooaD7hTWjBbBWcld/6GNwjryOAeJZQ6I5e2IgXArzplBdGxID3vpNoCu+qZT98kKkAiUWvEgEWw+bKqbFVEH1N4FIsteVfA4OhelTlPBgMM+JGoy732tl9CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z39+ndPz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398D0C32782;
-	Mon, 12 Aug 2024 16:06:36 +0000 (UTC)
+	 MIME-Version; b=TWn0CuiViraBHhlJYzinGAwyshNVjJxYBH7rbdFK9pckZ0fRhOkf3lbslwmFtBL4+ILCpA8GD/iNCILk13V/8x7jPHD4XPR49EvQUl2+Yz1BHT7S5TTBFD2WV8N3g2gIs6cFfgkGPnhTYeJ54/OgraqbcZeHyX1J0Q7WRGS9Gak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBafokKX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480E4C32782;
+	Mon, 12 Aug 2024 16:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478796;
-	bh=P5EHO6njLgsFXTB9qjWAj5+GAfxOZvkVJMW8PKVOe0g=;
+	s=korg; t=1723479466;
+	bh=kEx+opdeWDHwzk32oOEaais05MOl6Zze3Leyh5a+R2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z39+ndPztREF/aF05Ja7Vb4oM/hcaswBRjiyx4x+HEzploiDwU680m8vbF4/ogOd9
-	 yOHh/OGkYh/tJsi6IPx50Ct3GbeWekuuq58tOZzjduqr5FRjizIGHUjjKNAcw4MsII
-	 Kw04vbZa5inX8oo3nPVAQS6WoyHgpMBNEV5Oaq88=
+	b=IBafokKXVjiozTQVWPXhyqcgmKVZxFYvwH5EWUr3M0rjJIX/G8hyJFPwvudj3M3cL
+	 2/l7/OSQoKQAR0U6hLyZKBuuqZwBzuoWJLbVcsrZn7vkYr4F3rWHwbj901pmzrmuZL
+	 MCmgrt4GsTSl8RUcJjGmRL5FWwJvmvDh3DbfTFbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@nxp.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/150] media: amphion: Remove lock in s_ctrl callback
+Subject: [PATCH 6.6 065/189] jbd2: avoid memleak in jbd2_journal_write_metadata_buffer
 Date: Mon, 12 Aug 2024 18:02:01 +0200
-Message-ID: <20240812160126.711144856@linuxfoundation.org>
+Message-ID: <20240812160134.645167320@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 065927b51eb1f042c3e026cebfd55e72ccc26093 ]
+[ Upstream commit cc102aa24638b90e04364d64e4f58a1fa91a1976 ]
 
-There is no need to add a lock in s_ctrl callback, it has been
-synchronized by the ctrl_handler's lock, otherwise it may led to
-a deadlock if the driver calls v4l2_ctrl_s_ctrl().
+The new_bh is from alloc_buffer_head, we should call free_buffer_head to
+free it in error case.
 
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240514112438.1269037-2-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vdec.c | 2 --
- drivers/media/platform/amphion/venc.c | 2 --
- 2 files changed, 4 deletions(-)
+ fs/jbd2/journal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
-index dc35a87e628ec..2bfab4467b81c 100644
---- a/drivers/media/platform/amphion/vdec.c
-+++ b/drivers/media/platform/amphion/vdec.c
-@@ -145,7 +145,6 @@ static int vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
- 	struct vdec_t *vdec = inst->priv;
- 	int ret = 0;
- 
--	vpu_inst_lock(inst);
- 	switch (ctrl->id) {
- 	case V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE:
- 		vdec->params.display_delay_enable = ctrl->val;
-@@ -157,7 +156,6 @@ static int vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
- 		ret = -EINVAL;
- 		break;
- 	}
--	vpu_inst_unlock(inst);
- 
- 	return ret;
- }
-diff --git a/drivers/media/platform/amphion/venc.c b/drivers/media/platform/amphion/venc.c
-index 1df2b35c1a240..c9cfef16c5b92 100644
---- a/drivers/media/platform/amphion/venc.c
-+++ b/drivers/media/platform/amphion/venc.c
-@@ -528,7 +528,6 @@ static int venc_op_s_ctrl(struct v4l2_ctrl *ctrl)
- 	struct venc_t *venc = inst->priv;
- 	int ret = 0;
- 
--	vpu_inst_lock(inst);
- 	switch (ctrl->id) {
- 	case V4L2_CID_MPEG_VIDEO_H264_PROFILE:
- 		venc->params.profile = ctrl->val;
-@@ -589,7 +588,6 @@ static int venc_op_s_ctrl(struct v4l2_ctrl *ctrl)
- 		ret = -EINVAL;
- 		break;
- 	}
--	vpu_inst_unlock(inst);
- 
- 	return ret;
- }
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 0168d28427077..57264eb4d9da3 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -399,6 +399,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
+ 		tmp = jbd2_alloc(bh_in->b_size, GFP_NOFS);
+ 		if (!tmp) {
+ 			brelse(new_bh);
++			free_buffer_head(new_bh);
+ 			return -ENOMEM;
+ 		}
+ 		spin_lock(&jh_in->b_state_lock);
 -- 
 2.43.0
 
