@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B2E94F255
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 520A294F331
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2C2BB208C7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:05:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B399286658
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C67C183CD4;
-	Mon, 12 Aug 2024 16:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E434186E40;
+	Mon, 12 Aug 2024 16:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mm1xDKBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HA7ef3Rm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8781EA8D;
-	Mon, 12 Aug 2024 16:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFFF186295;
+	Mon, 12 Aug 2024 16:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478711; cv=none; b=SoyHCPsxQMKHtHlH8p5TAfGD0c8oW3ann8wWQpawCeu+rcroSltgOFoy0pAV4DV40e7Ka8zjJhU7lx3IPcyJScBu8wVytK7ITx9jK9m/WqH7OLDqWooI42cuOFFKiMTr1Q0ZW/ZKVIVOuOcsdFcSDoNB/I/moA8dAAPA9tWOpuk=
+	t=1723479290; cv=none; b=H95TVQ1bPMAmmz6Gzu8EVLBik7F0n8c7Kb6sMyxqbTwZ/L/GaSbLOqGnY+HCqFmrzVcxOZw6ECypPLn2rjSf39M0dRBCJx5OLWDdxqyvjEuM47tuZq/OkFqWKchu2pGOmzBr6GjTIauIT/W6UFvo1CHbctxserq4A4OeTSa8MAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478711; c=relaxed/simple;
-	bh=Ly06PjFnvHQYZdltpS6EJ6TOKrMpK7OB29sBP+pnZio=;
+	s=arc-20240116; t=1723479290; c=relaxed/simple;
+	bh=SQmQgKBJhEMIXjgY84+QKGhbvUnWIdVxrKS5YoSp1U4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l0yCt6jSPQBNwwJNiPbvPVJbcZVcbpMLL41BiUyxk7YBAVlqyK+tzsGjDkFFiC8trklyBLX0EINoHV0evjkMLEsI/DeBgpFoi6aHS8Z7E7AXCGhmym+I6iTe1MYafTj/GKBuhNs1QPIY0xOZKiTa1dxSgE6zM9Z+bTYnVvMsy2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mm1xDKBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99516C32782;
-	Mon, 12 Aug 2024 16:05:10 +0000 (UTC)
+	 MIME-Version; b=ns46qJzBNvR63frqoY1hFP6YJiNm37QzlUrb2QeubgdTDnpPO8lBJCp8ZvaHNZvilzW5mP52v8ZTtLNoqLcBFv4moMqLjKmAE9PPmlWpIwLYS2Z+XPARfa9LDy/nMOPPeqmzvD7GXwBNTSKhymqq/tdrGqhUxeA8eEB590FiKCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HA7ef3Rm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613DBC4AF09;
+	Mon, 12 Aug 2024 16:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478711;
-	bh=Ly06PjFnvHQYZdltpS6EJ6TOKrMpK7OB29sBP+pnZio=;
+	s=korg; t=1723479289;
+	bh=SQmQgKBJhEMIXjgY84+QKGhbvUnWIdVxrKS5YoSp1U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mm1xDKBrUU1nVvJcwz3N2L7Z5ATmIHg9qc9JA+eEPQe2yFsCFme6sllRI31EHoo7y
-	 1FFhWPm/tPQTOXMSFPEk8iDXxUZhVGY0o5AJaOQuVUSaQXy34MlklevnRu3DpW0pvJ
-	 KagDqnLHvupVZL2Q5ipaqRtrwu5fweQWCxX+1//4=
+	b=HA7ef3RmPmnS2vw7JrpsQGCpOZffL8/Vwro3/LrXdVrSNXybjSSsL17woaDOychvP
+	 v4wBmJHCapOy9xF9m99XmOnU2n3letqeH8h4Mj2FY2oDbOBIxooEtRW1Z2xBJwfF+x
+	 gpeVjXi3njC7Bulg289Upq/wWotoU1/X8GOsgbHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
-	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
+	patches@lists.linux.dev,
+	Jan Kara <jack@suse.com>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/150] net: fec: Stop PPS on driver remove
-Date: Mon, 12 Aug 2024 18:01:36 +0200
-Message-ID: <20240812160125.744837804@linuxfoundation.org>
+Subject: [PATCH 6.6 041/189] udf: prevent integer overflow in udf_bitmap_free_blocks()
+Date: Mon, 12 Aug 2024 18:01:37 +0200
+Message-ID: <20240812160133.727306257@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 8fee6d5ad5fa18c270eedb2a2cdf58dbadefb94b ]
+[ Upstream commit 56e69e59751d20993f243fb7dd6991c4e522424c ]
 
-PPS was not stopped in `fec_ptp_stop()`, called when
-the adapter was removed. Consequentially, you couldn't
-safely reload the driver with the PPS signal on.
+An overflow may occur if the function is called with the last
+block and an offset greater than zero. It is necessary to add
+a check to avoid this.
 
-Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://lore.kernel.org/netdev/CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com/T/#m01dcb810bfc451a492140f6797ca77443d0cb79f
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240807080956.2556602-1-csokas.bence@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+[JK: Make test cover also unalloc table freeing]
+
+Link: https://patch.msgid.link/20240620072413.7448-1-r.smirnov@omp.ru
+Suggested-by: Jan Kara <jack@suse.com>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/udf/balloc.c | 36 +++++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index e0393dc159fc7..37d83ff5b30be 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -635,6 +635,9 @@ void fec_ptp_stop(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
+diff --git a/fs/udf/balloc.c b/fs/udf/balloc.c
+index 558ad046972ad..bb471ec364046 100644
+--- a/fs/udf/balloc.c
++++ b/fs/udf/balloc.c
+@@ -18,6 +18,7 @@
+ #include "udfdecl.h"
  
-+	if (fep->pps_enable)
-+		fec_ptp_enable_pps(fep, 0);
+ #include <linux/bitops.h>
++#include <linux/overflow.h>
+ 
+ #include "udf_i.h"
+ #include "udf_sb.h"
+@@ -140,7 +141,6 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
+ {
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct buffer_head *bh = NULL;
+-	struct udf_part_map *partmap;
+ 	unsigned long block;
+ 	unsigned long block_group;
+ 	unsigned long bit;
+@@ -149,19 +149,9 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
+ 	unsigned long overflow;
+ 
+ 	mutex_lock(&sbi->s_alloc_mutex);
+-	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
+-	if (bloc->logicalBlockNum + count < count ||
+-	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
+-		udf_debug("%u < %d || %u + %u > %u\n",
+-			  bloc->logicalBlockNum, 0,
+-			  bloc->logicalBlockNum, count,
+-			  partmap->s_partition_len);
+-		goto error_return;
+-	}
+-
++	/* We make sure this cannot overflow when mounting the filesystem */
+ 	block = bloc->logicalBlockNum + offset +
+ 		(sizeof(struct spaceBitmapDesc) << 3);
+-
+ 	do {
+ 		overflow = 0;
+ 		block_group = block >> (sb->s_blocksize_bits + 3);
+@@ -391,7 +381,6 @@ static void udf_table_free_blocks(struct super_block *sb,
+ 				  uint32_t count)
+ {
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+-	struct udf_part_map *partmap;
+ 	uint32_t start, end;
+ 	uint32_t elen;
+ 	struct kernel_lb_addr eloc;
+@@ -400,16 +389,6 @@ static void udf_table_free_blocks(struct super_block *sb,
+ 	struct udf_inode_info *iinfo;
+ 
+ 	mutex_lock(&sbi->s_alloc_mutex);
+-	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
+-	if (bloc->logicalBlockNum + count < count ||
+-	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
+-		udf_debug("%u < %d || %u + %u > %u\n",
+-			  bloc->logicalBlockNum, 0,
+-			  bloc->logicalBlockNum, count,
+-			  partmap->s_partition_len);
+-		goto error_return;
+-	}
+-
+ 	iinfo = UDF_I(table);
+ 	udf_add_free_space(sb, sbi->s_partition, count);
+ 
+@@ -684,6 +663,17 @@ void udf_free_blocks(struct super_block *sb, struct inode *inode,
+ {
+ 	uint16_t partition = bloc->partitionReferenceNum;
+ 	struct udf_part_map *map = &UDF_SB(sb)->s_partmaps[partition];
++	uint32_t blk;
 +
- 	cancel_delayed_work_sync(&fep->time_keep);
- 	if (fep->ptp_clock)
- 		ptp_clock_unregister(fep->ptp_clock);
++	if (check_add_overflow(bloc->logicalBlockNum, offset, &blk) ||
++	    check_add_overflow(blk, count, &blk) ||
++	    bloc->logicalBlockNum + count > map->s_partition_len) {
++		udf_debug("Invalid request to free blocks: (%d, %u), off %u, "
++			  "len %u, partition len %u\n",
++			  partition, bloc->logicalBlockNum, offset, count,
++			  map->s_partition_len);
++		return;
++	}
+ 
+ 	if (map->s_partition_flags & UDF_PART_FLAG_UNALLOC_BITMAP) {
+ 		udf_bitmap_free_blocks(sb, map->s_uspace.s_bitmap,
 -- 
 2.43.0
 
