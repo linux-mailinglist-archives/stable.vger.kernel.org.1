@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D210494F4FF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:37:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D6694F3E2
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE981F212EB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:37:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 207DC1C21948
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97627186E36;
-	Mon, 12 Aug 2024 16:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870B2186E34;
+	Mon, 12 Aug 2024 16:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egT5oMEa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzKmLUY4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554741494B8;
-	Mon, 12 Aug 2024 16:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D4C134AC;
+	Mon, 12 Aug 2024 16:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480630; cv=none; b=FpOc32E/XzvMKvzH8vzjy09k2khRycQarN18iKJP4LrhYgqbTJmUs3RXCAmLdZJeX+4Mo5BjYuNBhTMD8YaA55klr1ljf7ysLjsI2WFnc0kKQpPU0BYORDaLBIJNMKUZg+rKbij1cePZsWwyHVt8KJE/F4FxcQPhUWdrhFveCqA=
+	t=1723479801; cv=none; b=Z7fXDkKsuiY5CEktnE6Gxh6XcEedEMDxaHj3fTM8jenOoSeiK3NKku03vc/YFI/thDGqhpoTX5ks7MV1XKB2NLXRaXPQY2Yk4Qv2seAOCIemUf19ge90V6PnGL1sm2Xc24JUIXKXTvdTMwvM2E61xfJEL6PCj1qJYtjH9JRdCtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480630; c=relaxed/simple;
-	bh=5BBTj+0Y622aLd7m8V59zRSSRfuEdKFlQeciW4xYLhk=;
+	s=arc-20240116; t=1723479801; c=relaxed/simple;
+	bh=O/GuWgy0pLbgO/vd4G01rBABaCNxV5vhCUdaqU4RDfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUKH6vpD8qJEZHabX58s0v10vg4GDOpeFa5xK6gqIPzrJc3aAiOT5F8tvucQrNSwkXKaHTBbUfkWIma86uxrlvtBHjL/fv3byHjXY2yVrz4eF+YR21ncIATb8gmx1dTHFSqs4rFryFtKxAMl8zFpGi5cVKmF7HPIAqoR6O356dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egT5oMEa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E869C32782;
-	Mon, 12 Aug 2024 16:37:09 +0000 (UTC)
+	 MIME-Version; b=r4958SEbhyj0hGjrhTQ6H8AMbjI/6APGnd8AetltR09vnkHFeT0gwTXxNTeuO9JNh3frNF4SgbjKrRmR9E8J502TmDYZpuB29+/MJrZwDtDY+vIT0mg20HDscZl3oQj7K3ZSK04Egx0XIB3frDSfqO0zDhMlrlSkyL0t7RS6RFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzKmLUY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F2AC32782;
+	Mon, 12 Aug 2024 16:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480629;
-	bh=5BBTj+0Y622aLd7m8V59zRSSRfuEdKFlQeciW4xYLhk=;
+	s=korg; t=1723479801;
+	bh=O/GuWgy0pLbgO/vd4G01rBABaCNxV5vhCUdaqU4RDfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=egT5oMEajvPLLCDFf/Dj3Cs0IUcv2q85tSnJKS/usJleA5xQ9inC9FoQW0vKLY2uZ
-	 BIGTHcKyv9CKbeY03g0U5fSd9vvW3JAGn8Mtr0uQdaVV2Hsdn1s77X30IrsPdvhyKL
-	 PXN6IcE3DouteJsPadjQgi4bu3vwThKKrDuTRu/8=
+	b=EzKmLUY4ZB3nU042xv3tUteZ7wbQrcHGYtAlSg1NsUDkJI8+aiRkfprY/BpvZTZ46
+	 WSxhhSMJUyKTzw4stWgaR0VtAH1yePC4iQxo6oyN90+I/4V/Hn5sXYryue+k+Y58kn
+	 +u1uRSn1GeormOT/7hQYsli8YncJ+pDouV5HKAvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.10 223/263] power: supply: qcom_battmgr: return EAGAIN when firmware service is not up
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 168/189] mptcp: pm: fix backup support in signal endpoints
 Date: Mon, 12 Aug 2024 18:03:44 +0200
-Message-ID: <20240812160155.074995657@linuxfoundation.org>
+Message-ID: <20240812160138.614096318@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit bf9d5cb588755ee41ac12a8976dccf44ae18281b upstream.
+commit 6834097fc38c5416701c793da94558cea49c0a1f upstream.
 
-The driver returns -ENODEV when the firmware battmrg service hasn't
-started yet, while per-se -ENODEV is fine, we usually use -EAGAIN to
-tell the user to retry again later. And the power supply core uses
--EGAIN when the device isn't initialized, let's use the same return.
+There was a support for signal endpoints, but only when the endpoint's
+flag was changed during a connection. If an endpoint with the signal and
+backup was already present, the MP_JOIN reply was not containing the
+backup flag as expected.
 
-This notably causes an infinite spam of:
-thermal thermal_zoneXX: failed to read out thermal zone (-19)
-because the thermal core doesn't understand -ENODEV, but only
-considers -EAGAIN as a non-fatal error.
+That's confusing to have this inconsistent behaviour. On the other hand,
+the infrastructure to set the backup flag in the SYN + ACK + MP_JOIN was
+already there, it was just never set before. Now when requesting the
+local ID from the path-manager, the backup status is also requested.
 
-While it didn't appear until now, commit [1] fixes thermal core
-and no more ignores thermal zones returning an error at first
-temperature update.
+Note that when the userspace PM is used, the backup flag can be set if
+the local address was already used before with a backup flag, e.g. if
+the address was announced with the 'backup' flag, or a subflow was
+created with the 'backup' flag.
 
-[1] 5725f40698b9 ("thermal: core: Call monitor_thermal_zone() if zone temperature is invalid")
-
-Link: https://lore.kernel.org/all/2ed4c630-204a-4f80-a37f-f2ca838eb455@linaro.org/
+Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
 Cc: stable@vger.kernel.org
-Fixes: 29e8142b5623 ("power: supply: Introduce Qualcomm PMIC GLINK power supply")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20240715-topic-sm8x50-upstream-fix-battmgr-temp-tz-warn-v1-1-16e842ccead7@linaro.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/507
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in pm_userspace.c because the context has changed in commit
+  1e07938e29c5 ("net: mptcp: rename netlink handlers to
+  mptcp_pm_nl_<blah>_{doit,dumpit}") which is not in this version. This
+  commit is unrelated to this modification.
+  Conflicts in protocol.h because the context has changed in commit
+  9ae7846c4b6b ("mptcp: dump addrs in userspace pm list") which is not
+  in this version. This commit is unrelated to this modification. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/qcom_battmgr.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/mptcp/pm.c           |   12 ++++++++++++
+ net/mptcp/pm_netlink.c   |   18 ++++++++++++++++++
+ net/mptcp/pm_userspace.c |   18 ++++++++++++++++++
+ net/mptcp/protocol.h     |    3 +++
+ net/mptcp/subflow.c      |    3 +++
+ 5 files changed, 54 insertions(+)
 
---- a/drivers/power/supply/qcom_battmgr.c
-+++ b/drivers/power/supply/qcom_battmgr.c
-@@ -486,7 +486,7 @@ static int qcom_battmgr_bat_get_property
- 	int ret;
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -427,6 +427,18 @@ int mptcp_pm_get_local_id(struct mptcp_s
+ 	return mptcp_pm_nl_get_local_id(msk, &skc_local);
+ }
  
- 	if (!battmgr->service_up)
--		return -ENODEV;
-+		return -EAGAIN;
++bool mptcp_pm_is_backup(struct mptcp_sock *msk, struct sock_common *skc)
++{
++	struct mptcp_addr_info skc_local;
++
++	mptcp_local_address((struct sock_common *)skc, &skc_local);
++
++	if (mptcp_pm_is_userspace(msk))
++		return mptcp_userspace_pm_is_backup(msk, &skc_local);
++
++	return mptcp_pm_nl_is_backup(msk, &skc_local);
++}
++
+ int mptcp_pm_get_flags_and_ifindex_by_id(struct mptcp_sock *msk, unsigned int id,
+ 					 u8 *flags, int *ifindex)
+ {
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1109,6 +1109,24 @@ int mptcp_pm_nl_get_local_id(struct mptc
+ 	return ret;
+ }
  
- 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
- 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
-@@ -683,7 +683,7 @@ static int qcom_battmgr_ac_get_property(
- 	int ret;
++bool mptcp_pm_nl_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc)
++{
++	struct pm_nl_pernet *pernet = pm_nl_get_pernet_from_msk(msk);
++	struct mptcp_pm_addr_entry *entry;
++	bool backup = false;
++
++	rcu_read_lock();
++	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list) {
++		if (mptcp_addresses_equal(&entry->addr, skc, entry->addr.port)) {
++			backup = !!(entry->flags & MPTCP_PM_ADDR_FLAG_BACKUP);
++			break;
++		}
++	}
++	rcu_read_unlock();
++
++	return backup;
++}
++
+ #define MPTCP_PM_CMD_GRP_OFFSET       0
+ #define MPTCP_PM_EV_GRP_OFFSET        1
  
- 	if (!battmgr->service_up)
--		return -ENODEV;
-+		return -EAGAIN;
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -157,6 +157,24 @@ int mptcp_userspace_pm_get_local_id(stru
+ 	return mptcp_userspace_pm_append_new_local_addr(msk, &new_entry, true);
+ }
  
- 	ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
- 	if (ret)
-@@ -748,7 +748,7 @@ static int qcom_battmgr_usb_get_property
- 	int ret;
++bool mptcp_userspace_pm_is_backup(struct mptcp_sock *msk,
++				  struct mptcp_addr_info *skc)
++{
++	struct mptcp_pm_addr_entry *entry;
++	bool backup = false;
++
++	spin_lock_bh(&msk->pm.lock);
++	list_for_each_entry(entry, &msk->pm.userspace_pm_local_addr_list, list) {
++		if (mptcp_addresses_equal(&entry->addr, skc, false)) {
++			backup = !!(entry->flags & MPTCP_PM_ADDR_FLAG_BACKUP);
++			break;
++		}
++	}
++	spin_unlock_bh(&msk->pm.lock);
++
++	return backup;
++}
++
+ int mptcp_nl_cmd_announce(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1032,6 +1032,9 @@ bool mptcp_pm_rm_addr_signal(struct mptc
+ int mptcp_pm_get_local_id(struct mptcp_sock *msk, struct sock_common *skc);
+ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
+ int mptcp_userspace_pm_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
++bool mptcp_pm_is_backup(struct mptcp_sock *msk, struct sock_common *skc);
++bool mptcp_pm_nl_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
++bool mptcp_userspace_pm_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
  
- 	if (!battmgr->service_up)
--		return -ENODEV;
-+		return -EAGAIN;
+ static inline u8 subflow_get_local_id(const struct mptcp_subflow_context *subflow)
+ {
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -100,6 +100,7 @@ static struct mptcp_sock *subflow_token_
+ 		return NULL;
+ 	}
+ 	subflow_req->local_id = local_id;
++	subflow_req->request_bkup = mptcp_pm_is_backup(msk, (struct sock_common *)req);
  
- 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
- 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
-@@ -867,7 +867,7 @@ static int qcom_battmgr_wls_get_property
- 	int ret;
+ 	return msk;
+ }
+@@ -601,6 +602,8 @@ static int subflow_chk_local_id(struct s
+ 		return err;
  
- 	if (!battmgr->service_up)
--		return -ENODEV;
-+		return -EAGAIN;
+ 	subflow_set_local_id(subflow, err);
++	subflow->request_bkup = mptcp_pm_is_backup(msk, (struct sock_common *)sk);
++
+ 	return 0;
+ }
  
- 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
- 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
 
 
 
