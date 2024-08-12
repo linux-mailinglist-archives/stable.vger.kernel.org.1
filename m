@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-66850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B22594F2C2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1A394F4A9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C97E284493
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3562F1F21047
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AA4189515;
-	Mon, 12 Aug 2024 16:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7302F15C127;
+	Mon, 12 Aug 2024 16:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcjwuvW3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8c5y4Zi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F092189507;
-	Mon, 12 Aug 2024 16:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310B7183CA6;
+	Mon, 12 Aug 2024 16:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478989; cv=none; b=Yh+BtxFc8LgRsB3vnSctxy2Hrt5krcfnEXCefucazYw9TiBDS022GLwV0CKPO5Taaw39S5OnyHANgoWLblkYk/Wlbl04ne+kqnvQd8Zn69iq21wIMl8YsW9CHQxjazUycsKg7EGcCTFdzjVU9hh+ag0dkC7NVM84hFRN+HHCXdc=
+	t=1723480388; cv=none; b=Eycw2l8ANNfRhQxRvB9yp+02aUBMq/5EOJgoKtw8p2dM40/aptZ+DSeEIW+I/MLSi01uufjyA2JAoBu6/9O3M+1T1HErG415nG+DD/LgdCf2q0Y/fEq+0uV1GAdGWdYadHVn5Ueo6Osmgqy8Ufhs3ON3wrf0VM/FxZ9dYiwCu5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478989; c=relaxed/simple;
-	bh=0UqkjFyMiIDsUmtHyvggrVaczX2BE2oW4xpQ7Uss6Kg=;
+	s=arc-20240116; t=1723480388; c=relaxed/simple;
+	bh=4OseameZuHtBWPxRPRVQOm0Yifzkn0DyaiXFvr03cA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKvTENU8u+Olp9pkBxZP27gApn0GJxpEwS8usBiwmWhLW7exeZKgUNA0D8L8WXW4BkS4dqJUiuuej3LGLFNobAN3cbp3p142x7Yp6zb3R4uU6pf4psZpG+4F9iIdGyCNtYRXAPV83g7+duSsApzK2Lau/msb2GnB+yXrbVObpik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcjwuvW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD28C32782;
-	Mon, 12 Aug 2024 16:09:48 +0000 (UTC)
+	 MIME-Version; b=pgfIFTSIdCbPgmrpI9iakrlIiDYaS820JvpoN5GSzmvxynuYNY4va4oWg44tltwaKboAFeaWR40hjuiPBFoC9v9nn53FKG+bhL+wz96UAATPioEa9Wi/i7TKesu8ndGS1VcPU9aKdBXdxwt3DkfIuthl20CTdqcX07BngtS1Ha0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8c5y4Zi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A7EC32782;
+	Mon, 12 Aug 2024 16:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478989;
-	bh=0UqkjFyMiIDsUmtHyvggrVaczX2BE2oW4xpQ7Uss6Kg=;
+	s=korg; t=1723480388;
+	bh=4OseameZuHtBWPxRPRVQOm0Yifzkn0DyaiXFvr03cA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GcjwuvW3xh9NHBpQXLnF+aZrnJ1IuQiu6sU1WDNNr6UqPrnLxzaVyHfGIyyBQGifV
-	 47nUAqwnL/gNgW9XxzTOFSHdyMyFLo8n6C+RUroTDG3Xfy/7SZv+RzmYHPKt11+CGT
-	 +R/Ey8cBrv4zfBSft1Yp51l+zpYlTvSLtwk5buqc=
+	b=d8c5y4Zi0uHkLbOI6QhjS9sOJ+lBiBaIICy/Y0hCOweZPJ+gp5qzvacfTyJDYcNvB
+	 5h6TpnJEP9t2hjffHMenyKCH7M1Y4gPNBCy3MFXcjHxQFtq0CudwcCV5yfh5hbiLRk
+	 Rq50HVhP9XOy8usD++VSupZWrBhOHN2lR6Q5vpwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vamshi Gajjela <vamshigajjela@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 099/150] scsi: ufs: core: Fix hba->last_dme_cmd_tstamp timestamp updating logic
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 179/263] io_uring/net: ensure expanded bundle recv gets marked for cleanup
 Date: Mon, 12 Aug 2024 18:03:00 +0200
-Message-ID: <20240812160128.981547121@linuxfoundation.org>
+Message-ID: <20240812160153.401548579@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vamshi Gajjela <vamshigajjela@google.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit ab9fd06cb8f0db0854291833fc40c789e43a361f upstream.
+commit 11893e144ed75be55d99349760513ca104781fc0 upstream.
 
-The ufshcd_add_delay_before_dme_cmd() always introduces a delay of
-MIN_DELAY_BEFORE_DME_CMDS_US between DME commands even when it's not
-required. The delay is added when the UFS host controller supplies the
-quirk UFSHCD_QUIRK_DELAY_BEFORE_DME_CMDS.
+If the iovec inside the kmsg isn't already allocated AND one gets
+expanded beyond the fixed size, then the request may not already have
+been marked for cleanup. Ensure that it is.
 
-Fix the logic to update hba->last_dme_cmd_tstamp to ensure subsequent DME
-commands have the correct delay in the range of 0 to
-MIN_DELAY_BEFORE_DME_CMDS_US.
-
-Update the timestamp at the end of the function to ensure it captures the
-latest time after any necessary delay has been applied.
-
-Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-Link: https://lore.kernel.org/r/20240724135126.1786126-1-vamshigajjela@google.com
-Fixes: cad2e03d8607 ("ufs: add support to allow non standard behaviours (quirks)")
 Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 2f9c9515bdfd ("io_uring/net: support bundles for recv")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ io_uring/net.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -3909,11 +3909,16 @@ static inline void ufshcd_add_delay_befo
- 			min_sleep_time_us =
- 				MIN_DELAY_BEFORE_DME_CMDS_US - delta;
- 		else
--			return; /* no more delay required */
-+			min_sleep_time_us = 0; /* no more delay required */
- 	}
- 
--	/* allow sleep for extra 50us if needed */
--	usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-+	if (min_sleep_time_us > 0) {
-+		/* allow sleep for extra 50us if needed */
-+		usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-+	}
-+
-+	/* update the last_dme_cmd_tstamp */
-+	hba->last_dme_cmd_tstamp = ktime_get();
- }
- 
- /**
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1084,6 +1084,7 @@ static int io_recv_buf_select(struct io_
+ 		if (arg.iovs != &kmsg->fast_iov && arg.iovs != kmsg->free_iov) {
+ 			kmsg->free_iov_nr = ret;
+ 			kmsg->free_iov = arg.iovs;
++			req->flags |= REQ_F_NEED_CLEANUP;
+ 		}
+ 	} else {
+ 		void __user *buf;
 
 
 
