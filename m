@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EAC94F094
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:51:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198F194F095
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:51:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 887B11C2042A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:51:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C369B1F21DB4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3464817C9F9;
-	Mon, 12 Aug 2024 14:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7440653370;
+	Mon, 12 Aug 2024 14:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7kQHDsC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORffZc4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA38453370
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BA84B5AE
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474291; cv=none; b=igBbQnUFpBPcLRk9n0In7EvoMmzKnH15anMIcIgDQUe0F2SG8zFCMQGal7fnfogNWU0R1/2pWa7LMgxzyrwlodLCqj5TCLaOvdMO2QoYVdSuKz0lZCSt+df9ikWheeXIH2YFTvY1jNrjctRPmGPJIlL2BTuxl9rvo2d1FdJpXTg=
+	t=1723474294; cv=none; b=G2GIlAF9sTvcmo4MUlAUdK3qzRoMokA212aUUAgH8P6sHQBjWky6XGFZEsMzQVIgr9kzRD5hwYP+pihgyCCa3lmoqx2UR8th8PVfXbJtAF2UVEbDst1bgsH1gVPzckNOBT9YKP2L536oY035Usr7gcVq2QIpQSt6GM2RxjNpKVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474291; c=relaxed/simple;
-	bh=yplhwVp6JDkxW9ldowo5U2Bbd2nn6vngDNnNaIjIiHc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EvM4h+sNpgrDXi1HRsYnksdWTKGKPvQ9M17c+Jpdm6Uh5sB8xI4mEPV8EA8LldcnewPrp6ZtTNBfUNCzyH5Fd4dD98DWzMSvWIpv88sBtZepCj6d2MURi87NrD8tJd76+xPa4sE38EMiS0Noi44SyqTah49TtDietVMJFjEU1Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7kQHDsC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C49FC32782;
-	Mon, 12 Aug 2024 14:51:30 +0000 (UTC)
+	s=arc-20240116; t=1723474294; c=relaxed/simple;
+	bh=F6hSr6BxqyJ9b+UZY2SbxnD1ig1bias6HH4JtboF8pU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GYnWEi1KmZnq5N+TrmFQdZSYKs2xvSsU08dmHCxJdzwoWIR+3rViJPTaURQJp3WglbGSFHexTOgCphOS2+A3OxYW1xVolMSeOXrv404Cd3/WA1DelbpyFr75HvmXbs1BUGOp2AmSeEOPMzy8vZG04+MhXiaZ/Dv5flB1TQwPFVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORffZc4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD6CC32782;
+	Mon, 12 Aug 2024 14:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474290;
-	bh=yplhwVp6JDkxW9ldowo5U2Bbd2nn6vngDNnNaIjIiHc=;
+	s=korg; t=1723474294;
+	bh=F6hSr6BxqyJ9b+UZY2SbxnD1ig1bias6HH4JtboF8pU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=n7kQHDsCBtzQyXmU56Nl2YPywLIrEZOhkXMrZkOFL1gk8xu3m9xNfgq2ZFCzpmpH3
-	 +gQa1e6pqOHIm6teLtYcfcqwLYLVY8biKNdPtjWEfiJBY+ZEeFVbuIKvXQGBIL40nD
-	 00MLDhfAmGFpCW5Zw7bPCDY7eIC8JD9Y6B4lNkro=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix reduced resolution and refresh rate" failed to apply to 4.19-stable tree
-To: daniel.sa@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,wenjing.liu@amd.com
+	b=ORffZc4YHcwdSfnw8ro79qXvkrpppC44aovUAl+UMQNHDkQQwQOLEBoFAJ9Qn/ydj
+	 VsF0LXljyblO2KGmS+rDGRbz8Vdl7JH4LuMy4kzZdnoj8MGdK12KOXCKFx91mzYzud
+	 7xylIpRLB+1E54y10PgdQ6mJzk8jPvjxYMugQ9ZM=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Use sw cursor for DCN401 with rotation" failed to apply to 6.10-stable tree
+To: aurabindo.pillai@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,rodrigo.siqueira@amd.com,sunpeng.li@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:49:11 +0200
-Message-ID: <2024081211-stardom-escalate-24c5@gregkh>
+Date: Mon, 12 Aug 2024 16:49:35 +0200
+Message-ID: <2024081234-exuberant-preppy-8c43@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0dd1190faff7f7b389291266e118deb381b6c8d9
+git cherry-pick -x 2ffa97c50a8b0598975e47c890032e71958425a0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081211-stardom-escalate-24c5@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081234-exuberant-preppy-8c43@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-0dd1190faff7 ("drm/amd/display: Fix reduced resolution and refresh rate")
-82c421ba46ec ("drm/amd/display: Add fallback defaults for invalid LTTPR DPCD caps")
-4eaf110f97ae ("drm/amd/display: Check UHBR13.5 cap when determining max link cap")
-bc33f5e5f05b ("drm/amd/display: create accessories, hwss and protocols sub folders in link")
-028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
-603a521ec279 ("drm/amd/display: remove duplicate included header files")
-d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
-94dfeaa46925 ("drm/amd/display: move dp phy related logic to link_dp_phy")
-630168a97314 ("drm/amd/display: move dp link training logic to link_dp_training")
-d144b40a4833 ("drm/amd/display: move dc_link_dpia logic to link_dp_dpia")
-a28d0bac0956 ("drm/amd/display: move dpcd logic from dc_link_dpcd to link_dpcd")
-a98cdd8c4856 ("drm/amd/display: refactor ddc logic from dc_link_ddc to link_ddc")
-4370f72e3845 ("drm/amd/display: refactor hpd logic from dc_link to link_hpd")
-0e8cf83a2b47 ("drm/amd/display: allow hpo and dio encoder switching during dp retrain test")
-7462475e3a06 ("drm/amd/display: move dccg programming from link hwss hpo dp to hwss")
-e85d59885409 ("drm/amd/display: use encoder type independent hwss instead of accessing enc directly")
-ebf13b72020a ("drm/amd/display: Revert Scaler HCBlank issue workaround")
-639f6ad6df7f ("drm/amd/display: Revert Reduce delay when sink device not able to ACK 00340h write")
-e3aa827e2ab3 ("drm/amd/display: Avoid setting pixel rate divider to N/A")
-fe4e2662b2dd ("drm/amd/display: Phase 1 Add Bw Allocation source and header files")
+2ffa97c50a8b ("drm/amd/display: Use sw cursor for DCN401 with rotation")
+1b04dcca4fb1 ("drm/amd/display: Introduce overlay cursor mode")
+730ac573868b ("drm/amd/display: Convert some legacy DRM debug macros into appropriate categories")
+e582c097d3d1 ("drm/amd/display: Always use legacy way of setting cursor on DCE")
+66eba12a5482 ("drm/amd/display: Do cursor programming with rest of pipe")
+f63f86b5affc ("drm/amd/display: Separate setting and programming of cursor")
 
 thanks,
 
@@ -96,69 +82,96 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0dd1190faff7f7b389291266e118deb381b6c8d9 Mon Sep 17 00:00:00 2001
-From: Daniel Sa <daniel.sa@amd.com>
-Date: Thu, 13 Jun 2024 15:38:06 -0400
-Subject: [PATCH] drm/amd/display: Fix reduced resolution and refresh rate
+From 2ffa97c50a8b0598975e47c890032e71958425a0 Mon Sep 17 00:00:00 2001
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Date: Mon, 10 Jun 2024 18:22:59 +0000
+Subject: [PATCH] drm/amd/display: Use sw cursor for DCN401 with rotation
 
-[WHY]
-Some monitors are forced to a lower resolution and refresh rate after
-system restarts.
+[WHAT & HOW]
+On DCN401, the cursor composition to the plane happens after scaler.
+So the cursor isn't stretched with the rest of the surface. Temporarily
+disable hardware cursor in case when hardware rotation is enabled
+such that userspace falls back to software cursor.
 
-[HOW]
-Some monitors may give invalid LTTPR information when queried such as
-indicating they have one DP lane instead of 4. If given an invalid DPCD
-version, skip over getting lttpr link rate and lane counts.
-
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Daniel Sa <daniel.sa@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-index f1cac74dd7f7..46bb7a855bc2 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -409,9 +409,6 @@ static enum dc_link_rate get_lttpr_max_link_rate(struct dc_link *link)
- 	case LINK_RATE_HIGH3:
- 		lttpr_max_link_rate = link->dpcd_caps.lttpr_caps.max_link_rate;
- 		break;
--	default:
--		// Assume all LTTPRs support up to HBR3 to improve misbehaving sink interop
--		lttpr_max_link_rate = LINK_RATE_HIGH3;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index cefc2569a50f..6e757ee2d74b 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -11093,8 +11093,12 @@ static int dm_crtc_get_cursor_mode(struct amdgpu_device *adev,
+ 	int cursor_scale_w, cursor_scale_h;
+ 	int i;
+ 
+-	/* Overlay cursor not supported on HW before DCN */
+-	if (amdgpu_ip_version(adev, DCE_HWIP, 0) == 0) {
++	/* Overlay cursor not supported on HW before DCN
++	 * DCN401 does not have the cursor-on-scaled-plane or cursor-on-yuv-plane restrictions
++	 * as previous DCN generations, so enable native mode on DCN401 in addition to DCE
++	 */
++	if (amdgpu_ip_version(adev, DCE_HWIP, 0) == 0 ||
++	    amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(4, 0, 1)) {
+ 		*cursor_mode = DM_CURSOR_NATIVE_MODE;
+ 		return 0;
+ 	}
+@@ -11237,7 +11241,7 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
+ 	struct drm_crtc *crtc;
+ 	struct drm_crtc_state *old_crtc_state, *new_crtc_state;
+ 	struct drm_plane *plane;
+-	struct drm_plane_state *old_plane_state, *new_plane_state;
++	struct drm_plane_state *old_plane_state, *new_plane_state, *new_cursor_state;
+ 	enum dc_status status;
+ 	int ret, i;
+ 	bool lock_and_validation_needed = false;
+@@ -11465,19 +11469,39 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
+ 			drm_dbg_atomic(dev, "MPO enablement requested on crtc:[%p]\n", crtc);
  	}
  
- 	if (link->dpcd_caps.lttpr_caps.supported_128b_132b_rates.bits.UHBR20)
-@@ -2137,15 +2134,19 @@ struct dc_link_settings dp_get_max_link_cap(struct dc_link *link)
- 	 * notes: repeaters do not snoop in the DPRX Capabilities addresses (3.6.3).
- 	 */
- 	if (dp_is_lttpr_present(link)) {
--		if (link->dpcd_caps.lttpr_caps.max_lane_count < max_link_cap.lane_count)
--			max_link_cap.lane_count = link->dpcd_caps.lttpr_caps.max_lane_count;
--		lttpr_max_link_rate = get_lttpr_max_link_rate(link);
+-	/* Check cursor planes restrictions */
++	/* Check cursor restrictions */
+ 	for_each_new_crtc_in_state(state, crtc, new_crtc_state, i) {
+ 		enum amdgpu_dm_cursor_mode required_cursor_mode;
++		int is_rotated, is_scaled;
  
--		if (lttpr_max_link_rate < max_link_cap.link_rate)
--			max_link_cap.link_rate = lttpr_max_link_rate;
-+		/* Some LTTPR devices do not report valid DPCD revisions, if so, do not take it's link cap into consideration. */
-+		if (link->dpcd_caps.lttpr_caps.revision.raw >= DPCD_REV_14) {
-+			if (link->dpcd_caps.lttpr_caps.max_lane_count < max_link_cap.lane_count)
-+				max_link_cap.lane_count = link->dpcd_caps.lttpr_caps.max_lane_count;
-+			lttpr_max_link_rate = get_lttpr_max_link_rate(link);
+ 		/* Overlay cusor not subject to native cursor restrictions */
+ 		dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
+ 		if (dm_new_crtc_state->cursor_mode == DM_CURSOR_OVERLAY_MODE)
+ 			continue;
  
--		if (!link->dpcd_caps.lttpr_caps.supported_128b_132b_rates.bits.UHBR13_5)
--			is_uhbr13_5_supported = false;
-+			if (lttpr_max_link_rate < max_link_cap.link_rate)
-+				max_link_cap.link_rate = lttpr_max_link_rate;
++		/* Check if rotation or scaling is enabled on DCN401 */
++		if ((drm_plane_mask(crtc->cursor) & new_crtc_state->plane_mask) &&
++		    amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(4, 0, 1)) {
++			new_cursor_state = drm_atomic_get_new_plane_state(state, crtc->cursor);
 +
-+			if (!link->dpcd_caps.lttpr_caps.supported_128b_132b_rates.bits.UHBR13_5)
-+				is_uhbr13_5_supported = false;
++			is_rotated = new_cursor_state &&
++				((new_cursor_state->rotation & DRM_MODE_ROTATE_MASK) != DRM_MODE_ROTATE_0);
++			is_scaled = new_cursor_state && ((new_cursor_state->src_w >> 16 != new_cursor_state->crtc_w) ||
++				(new_cursor_state->src_h >> 16 != new_cursor_state->crtc_h));
++
++			if (is_rotated || is_scaled) {
++				drm_dbg_driver(
++					crtc->dev,
++					"[CRTC:%d:%s] cannot enable hardware cursor due to rotation/scaling\n",
++					crtc->base.id, crtc->name);
++				ret = -EINVAL;
++				goto fail;
++			}
 +		}
- 
- 		DC_LOG_HW_LINK_TRAINING("%s\n Training with LTTPR,  max_lane count %d max_link rate %d \n",
- 						__func__,
++
+ 		/* If HW can only do native cursor, check restrictions again */
+ 		ret = dm_crtc_get_cursor_mode(adev, state, dm_new_crtc_state,
+ 					      &required_cursor_mode);
+-
+ 		if (ret) {
+ 			drm_dbg_driver(crtc->dev,
+ 				       "[CRTC:%d:%s] Checking cursor mode failed\n",
 
 
