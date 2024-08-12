@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-67124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF9A94F400
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:24:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B58594F402
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A1E3281F86
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:24:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8AC1B23153
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA19187339;
-	Mon, 12 Aug 2024 16:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D776C18732E;
+	Mon, 12 Aug 2024 16:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjurE2OC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nV9k4yaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A02B186E38;
-	Mon, 12 Aug 2024 16:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA81187321;
+	Mon, 12 Aug 2024 16:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479888; cv=none; b=YayU2nYtIzWYVzHuWf3FXGd8Q65TdcBTytnH0d8qVfMdk+jrLx/J1OuQo1i6TLQbiGHBNQteP+ytZMFK5rFnC3qlDVc8qZMX2dVrB2f0qaOS91oA7wJ+EXbGJvfnhCL6c9zPidE26NTX/UiEJPZCJ3bSqvam8Qy4rMIAuza0r/s=
+	t=1723479894; cv=none; b=W+OflGtvKdTe6fSTOyRqVQFzjQFh1lW4QgtaSaRQX9Qgz6Szhy2QkaJYnbqz2PqaK3xVJ54iBAgv9Bn6u1tMVAEbu/Mq51wGBzOHLyeuyt5Sb345XFpN6zpaNLZmXq0rezIYa2FBUQHh8jEnM2BXJysi9dZMteecwXU8+XHfCQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479888; c=relaxed/simple;
-	bh=bSYnFpxdmoARCZKD5x0KFCtL4EzncCxKMGevL6HGQFw=;
+	s=arc-20240116; t=1723479894; c=relaxed/simple;
+	bh=5OJsJN+c2FtTkLSQClpFLJLNwP50RHG1kXQOcuHTCWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHVF1NckBVlPIw40RfcZAUPZdF9IE/9JZVD9mgz7d4MSF62KqUfFfCy0KB4XRbNJNypeACBlNXaqTfGs8ByNQo9PjpV/uaKcSA8XEa5ifcafRzX1yLOkX7+lLpCWucuq7W/i20/A9t2pIjiEpjlgCsmWqVZ9YjCBYZk+30siqcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjurE2OC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8984AC32782;
-	Mon, 12 Aug 2024 16:24:47 +0000 (UTC)
+	 MIME-Version; b=RHbghhYA9yEBbOCVGdEBVmoo0LstsCj8Hf3aM980Ud4Wl4XoZJeUD0/7dKnDlwBLP4+44pAMdeQPsRQfgUUyPBLTQD8Fs1M55OMgLYxhUz5Pwc6XZgDsmQ3eluJjBP1vO3Jso+HgII/TPg3SyMxJ+9nLiNgnY11+Rxabo9GAMkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nV9k4yaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0056C32782;
+	Mon, 12 Aug 2024 16:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479888;
-	bh=bSYnFpxdmoARCZKD5x0KFCtL4EzncCxKMGevL6HGQFw=;
+	s=korg; t=1723479894;
+	bh=5OJsJN+c2FtTkLSQClpFLJLNwP50RHG1kXQOcuHTCWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjurE2OCGueizM+loQqJmfVMSEgwuQjVsbk2ybx6MdlKqFqN+ohqL4ITInE8xBmHM
-	 EqzZfQVpci0Obl3rP1SGjW2dWNse/O8j+S48iaa96M3vBDqGLtp7zCizQWdmQG0gyf
-	 M0vK+Gb2Mt/IvjMsKmDBkt1HxU5lASM+Udg9DfdE=
+	b=nV9k4yaR16/qyMsbdQ4gIU79LnCfBYlkrz/k4jSDfLEVuurTHlMEIjblx9nNOTlHl
+	 3FMX+Ih807QbZpTzSGyX6AcaVG+OXUZI72WK5AjstQhw0A7aJyZMVNXCIn15YUF59A
+	 79pUi0xP4tkj9Vvr1YMm9fldyzeUQJ1o3JjxDVuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Krishneil Singh <krishneil.k.singh@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 032/263] bnxt_en : Fix memory out-of-bounds in bnxt_fill_hw_rss_tbl()
-Date: Mon, 12 Aug 2024 18:00:33 +0200
-Message-ID: <20240812160147.772678041@linuxfoundation.org>
+Subject: [PATCH 6.10 033/263] idpf: fix memory leaks and crashes while performing a soft reset
+Date: Mon, 12 Aug 2024 18:00:34 +0200
+Message-ID: <20240812160147.810653957@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -70,94 +69,131 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit da03f5d1b2c319a2b74fe76edeadcd8fa5f44376 ]
+[ Upstream commit f01032a2ca099ec8d619aaa916c3762aa62495df ]
 
-A recent commit has modified the code in __bnxt_reserve_rings() to
-set the default RSS indirection table to default only when the number
-of RX rings is changing.  While this works for newer firmware that
-requires RX ring reservations, it causes the regression on older
-firmware not requiring RX ring resrvations (BNXT_NEW_RM() returns
-false).
+The second tagged commit introduced a UAF, as it removed restoring
+q_vector->vport pointers after reinitializating the structures.
+This is due to that all queue allocation functions are performed here
+with the new temporary vport structure and those functions rewrite
+the backpointers to the vport. Then, this new struct is freed and
+the pointers start leading to nowhere.
 
-With older firmware, RX ring reservations are not required and so
-hw_resc->resv_rx_rings is not always set to the proper value.  The
-comparison:
+But generally speaking, the current logic is very fragile. It claims
+to be more reliable when the system is low on memory, but in fact, it
+consumes two times more memory as at the moment of running this
+function, there are two vports allocated with their queues and vectors.
+Moreover, it claims to prevent the driver from running into "bad state",
+but in fact, any error during the rebuild leaves the old vport in the
+partially allocated state.
+Finally, if the interface is down when the function is called, it always
+allocates a new queue set, but when the user decides to enable the
+interface later on, vport_open() allocates them once again, IOW there's
+a clear memory leak here.
 
-if (old_rx_rings != bp->hw_resc.resv_rx_rings)
+Just don't allocate a new queue set when performing a reset, that solves
+crashes and memory leaks. Readd the old queue number and reopen the
+interface on rollback - that solves limbo states when the device is left
+disabled and/or without HW queues enabled.
 
-in __bnxt_reserve_rings() may be false even when the RX rings are
-changing.  This will cause __bnxt_reserve_rings() to skip setting
-the default RSS indirection table to default to match the current
-number of RX rings.  This may later cause bnxt_fill_hw_rss_tbl() to
-use an out-of-range index.
-
-We already have bnxt_check_rss_tbl_no_rmgr() to handle exactly this
-scenario.  We just need to move it up in bnxt_need_reserve_rings()
-to be called unconditionally when using older firmware.  Without the
-fix, if the TX rings are changing, we'll skip the
-bnxt_check_rss_tbl_no_rmgr() call and __bnxt_reserve_rings() may also
-skip the bnxt_set_dflt_rss_indir_tbl() call for the reason explained
-in the last paragraph.  Without setting the default RSS indirection
-table to default, it causes the regression:
-
-BUG: KASAN: slab-out-of-bounds in __bnxt_hwrm_vnic_set_rss+0xb79/0xe40
-Read of size 2 at addr ffff8881c5809618 by task ethtool/31525
-Call Trace:
-__bnxt_hwrm_vnic_set_rss+0xb79/0xe40
- bnxt_hwrm_vnic_rss_cfg_p5+0xf7/0x460
- __bnxt_setup_vnic_p5+0x12e/0x270
- __bnxt_open_nic+0x2262/0x2f30
- bnxt_open_nic+0x5d/0xf0
- ethnl_set_channels+0x5d4/0xb30
- ethnl_default_set_doit+0x2f1/0x620
-
-Reported-by: Breno Leitao <leitao@debian.org>
-Closes: https://lore.kernel.org/netdev/ZrC6jpghA3PWVWSB@gmail.com/
-Fixes: 98ba1d931f61 ("bnxt_en: Fix RSS logic in __bnxt_reserve_rings()")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Tested-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20240806053742.140304-1-michael.chan@broadcom.com
+Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
+Fixes: e4891e4687c8 ("idpf: split &idpf_queue into 4 strictly-typed queue structures")
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20240806220923.3359860-2-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c | 30 +++++++++++-----------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 23627c973e40f..a2d672a698e35 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -7433,19 +7433,20 @@ static bool bnxt_need_reserve_rings(struct bnxt *bp)
- 	int rx = bp->rx_nr_rings, stat;
- 	int vnic, grp = rx;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index f1ee5584e8fa2..32b6f0d52e3c5 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -1337,9 +1337,8 @@ static void idpf_rx_init_buf_tail(struct idpf_vport *vport)
+ /**
+  * idpf_vport_open - Bring up a vport
+  * @vport: vport to bring up
+- * @alloc_res: allocate queue resources
+  */
+-static int idpf_vport_open(struct idpf_vport *vport, bool alloc_res)
++static int idpf_vport_open(struct idpf_vport *vport)
+ {
+ 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
+ 	struct idpf_adapter *adapter = vport->adapter;
+@@ -1352,11 +1351,9 @@ static int idpf_vport_open(struct idpf_vport *vport, bool alloc_res)
+ 	/* we do not allow interface up just yet */
+ 	netif_carrier_off(vport->netdev);
  
--	if (hw_resc->resv_tx_rings != bp->tx_nr_rings &&
--	    bp->hwrm_spec_code >= 0x10601)
--		return true;
--
- 	/* Old firmware does not need RX ring reservations but we still
- 	 * need to setup a default RSS map when needed.  With new firmware
- 	 * we go through RX ring reservations first and then set up the
- 	 * RSS map for the successfully reserved RX rings when needed.
- 	 */
--	if (!BNXT_NEW_RM(bp)) {
-+	if (!BNXT_NEW_RM(bp))
- 		bnxt_check_rss_tbl_no_rmgr(bp);
-+
-+	if (hw_resc->resv_tx_rings != bp->tx_nr_rings &&
-+	    bp->hwrm_spec_code >= 0x10601)
-+		return true;
-+
-+	if (!BNXT_NEW_RM(bp))
- 		return false;
+-	if (alloc_res) {
+-		err = idpf_vport_queues_alloc(vport);
+-		if (err)
+-			return err;
 -	}
++	err = idpf_vport_queues_alloc(vport);
++	if (err)
++		return err;
  
- 	vnic = bnxt_get_total_vnics(bp, rx);
+ 	err = idpf_vport_intr_alloc(vport);
+ 	if (err) {
+@@ -1541,7 +1538,7 @@ void idpf_init_task(struct work_struct *work)
+ 	np = netdev_priv(vport->netdev);
+ 	np->state = __IDPF_VPORT_DOWN;
+ 	if (test_and_clear_bit(IDPF_VPORT_UP_REQUESTED, vport_config->flags))
+-		idpf_vport_open(vport, true);
++		idpf_vport_open(vport);
+ 
+ 	/* Spawn and return 'idpf_init_task' work queue until all the
+ 	 * default vports are created
+@@ -1900,9 +1897,6 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
+ 		goto free_vport;
+ 	}
+ 
+-	err = idpf_vport_queues_alloc(new_vport);
+-	if (err)
+-		goto free_vport;
+ 	if (current_state <= __IDPF_VPORT_DOWN) {
+ 		idpf_send_delete_queues_msg(vport);
+ 	} else {
+@@ -1974,17 +1968,23 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
+ 
+ 	err = idpf_set_real_num_queues(vport);
+ 	if (err)
+-		goto err_reset;
++		goto err_open;
+ 
+ 	if (current_state == __IDPF_VPORT_UP)
+-		err = idpf_vport_open(vport, false);
++		err = idpf_vport_open(vport);
+ 
+ 	kfree(new_vport);
+ 
+ 	return err;
+ 
+ err_reset:
+-	idpf_vport_queues_rel(new_vport);
++	idpf_send_add_queues_msg(vport, vport->num_txq, vport->num_complq,
++				 vport->num_rxq, vport->num_bufq);
++
++err_open:
++	if (current_state == __IDPF_VPORT_UP)
++		idpf_vport_open(vport);
++
+ free_vport:
+ 	kfree(new_vport);
+ 
+@@ -2213,7 +2213,7 @@ static int idpf_open(struct net_device *netdev)
+ 	idpf_vport_ctrl_lock(netdev);
+ 	vport = idpf_netdev_to_vport(netdev);
+ 
+-	err = idpf_vport_open(vport, true);
++	err = idpf_vport_open(vport);
+ 
+ 	idpf_vport_ctrl_unlock(netdev);
  
 -- 
 2.43.0
