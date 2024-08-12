@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-66929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC75894F321
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE8394F41E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BA1F1C21296
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F6881C20A78
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EFA18732B;
-	Mon, 12 Aug 2024 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE888186E20;
+	Mon, 12 Aug 2024 16:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z91Q3Yfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADHr1no1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F02186E51;
-	Mon, 12 Aug 2024 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C132134AC;
+	Mon, 12 Aug 2024 16:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479244; cv=none; b=lr/MmCYIIm/jhpA/RVeZV6E+8bKhy86fHBzs90Ds0HNd/Mwqlw20zeI2c00yQqPI/w1HQ7rVk6czjZGl8X4rJIUmPvsra6b34poIVjKb8eZkaBiPvYToOa0AQLbvKdUyG/id1TTc8EAsjUo4NBLy3W1zEtiYiygZEB3dDoAcM2c=
+	t=1723479976; cv=none; b=BESm1N8jQhu6oZZg+nqmZamNtZtay7F6D7CEZv147p9in1COqHV7WrdWvxjFU11uHHbfQG0zmrZmH5DFv1VIaIENkJJ2WfWDViOQOmbisWJbp84xPb4IeXPu15/KAqDtbNvh/bP4D3jxxZ24woNKQnzYXHHjLnwrZ40iW+nyuss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479244; c=relaxed/simple;
-	bh=bs+sz4i0itXb99LpcEmvxYKI0x3CO4A5p8B7UYSUVkk=;
+	s=arc-20240116; t=1723479976; c=relaxed/simple;
+	bh=rM76ByfLif6QdzXVUAS9sxaEvFcmC/tZuEx80g2e0KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TqfRuDA3l0HuPYCtszY8j4L7d1/l7RfqBWyhvOTuhyKu07sARymIQzQWZJbWT4bplVqCAipwOa9phJPNauSzEoHm7twhYt4clM1rl4uzoUPTzXvS+2C0ft4h96g7lrrZqIr+qW2GM1kUlEY1LHo7pGAFROmvQYYOATxTcR0qHow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z91Q3Yfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A69C32782;
-	Mon, 12 Aug 2024 16:14:03 +0000 (UTC)
+	 MIME-Version; b=PYGtAXwyM/0MwfGIWj4pDk6/asntjs7/CCXfeUKlUxLk8GyG7jqjrSfIF8j6C3Qn4Ia1KmI6sTOxt34qs1MvbuJll5U39Tg5fIYfUTbRbxbZqC+wIM4IUL3Lax2wJ25kwA6aNU6ob7npiXc9svWj9keHHgCmAqX57uInFPs3jFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADHr1no1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BF8C32782;
+	Mon, 12 Aug 2024 16:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479244;
-	bh=bs+sz4i0itXb99LpcEmvxYKI0x3CO4A5p8B7UYSUVkk=;
+	s=korg; t=1723479976;
+	bh=rM76ByfLif6QdzXVUAS9sxaEvFcmC/tZuEx80g2e0KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z91Q3Yfv5qP1ISPNT17+WwgkpUTU1BwyKYrFrX42lX7zul80D99OegVDtKzlFS2Ow
-	 dCH1yVk3YAnbg7VwJka1PJVtG2aTI0MB85TbH6dPP2kAJinRTjCQS/Ym5zzxvkZwPI
-	 bjIun3SG1/sPHAeu6hl1gx9qXeZX6jlMOS37oOMk=
+	b=ADHr1no1HC9y2Y0vsly1OhySkzxJE3T+yz1kwmtK6jIMeQ1AwbfnQksLdvUUZUFac
+	 A1yuWHSFStMOBTO5KztY5e24YRG+7AoiudN1YcjndyXgGP5zYto7Ps3dOW7sfmKH3C
+	 Fw4C47X38yqO+9SxMYqFES0BW5wIOAH1q7eqyUYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jithu Joseph <jithu.joseph@intel.com>,
-	Ashok Raj <ashok.raj@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/189] platform/x86/intel/ifs: Initialize union ifs_status to zero
+Subject: [PATCH 6.10 059/263] xen: privcmd: Switch from mutex to spinlock for irqfds
 Date: Mon, 12 Aug 2024 18:01:00 +0200
-Message-ID: <20240812160132.308904015@linuxfoundation.org>
+Message-ID: <20240812160148.803297724@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 3114f77e9453daa292ec0906f313a715c69b5943 ]
+[ Upstream commit 1c682593096a487fd9aebc079a307ff7a6d054a3 ]
 
-If the IFS scan test exits prematurely due to a timeout before
-completing a single run, the union ifs_status remains uninitialized,
-leading to incorrect test status reporting. To prevent this, always
-initialize the union ifs_status to zero.
+irqfd_wakeup() gets EPOLLHUP, when it is called by
+eventfd_release() by way of wake_up_poll(&ctx->wqh, EPOLLHUP), which
+gets called under spin_lock_irqsave(). We can't use a mutex here as it
+will lead to a deadlock.
 
-Fixes: 2b40e654b73a ("platform/x86/intel/ifs: Add scan test support")
-Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jithu Joseph <jithu.joseph@intel.com>
-Reviewed-by: Ashok Raj <ashok.raj@intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Link: https://lore.kernel.org/r/20240730155930.1754744-1-sathyanarayanan.kuppuswamy@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fix it by switching over to a spin lock.
+
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/a66d7a7a9001424d432f52a9fc3931a1f345464f.1718703669.git.viresh.kumar@linaro.org
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/ifs/runtest.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/privcmd.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/ifs/runtest.c b/drivers/platform/x86/intel/ifs/runtest.c
-index fd6a9e3799a3f..c7a5bf24bef35 100644
---- a/drivers/platform/x86/intel/ifs/runtest.c
-+++ b/drivers/platform/x86/intel/ifs/runtest.c
-@@ -167,8 +167,8 @@ static int doscan(void *data)
-  */
- static void ifs_test_core(int cpu, struct device *dev)
+diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
+index 67dfa47788649..c9c620e32fa8b 100644
+--- a/drivers/xen/privcmd.c
++++ b/drivers/xen/privcmd.c
+@@ -845,7 +845,7 @@ static long privcmd_ioctl_mmap_resource(struct file *file,
+ #ifdef CONFIG_XEN_PRIVCMD_EVENTFD
+ /* Irqfd support */
+ static struct workqueue_struct *irqfd_cleanup_wq;
+-static DEFINE_MUTEX(irqfds_lock);
++static DEFINE_SPINLOCK(irqfds_lock);
+ static LIST_HEAD(irqfds_list);
+ 
+ struct privcmd_kernel_irqfd {
+@@ -909,9 +909,11 @@ irqfd_wakeup(wait_queue_entry_t *wait, unsigned int mode, int sync, void *key)
+ 		irqfd_inject(kirqfd);
+ 
+ 	if (flags & EPOLLHUP) {
+-		mutex_lock(&irqfds_lock);
++		unsigned long flags;
++
++		spin_lock_irqsave(&irqfds_lock, flags);
+ 		irqfd_deactivate(kirqfd);
+-		mutex_unlock(&irqfds_lock);
++		spin_unlock_irqrestore(&irqfds_lock, flags);
+ 	}
+ 
+ 	return 0;
+@@ -929,6 +931,7 @@ irqfd_poll_func(struct file *file, wait_queue_head_t *wqh, poll_table *pt)
+ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
  {
-+	union ifs_status status = {};
- 	union ifs_scan activate;
--	union ifs_status status;
- 	unsigned long timeout;
- 	struct ifs_data *ifsd;
- 	int to_start, to_stop;
+ 	struct privcmd_kernel_irqfd *kirqfd, *tmp;
++	unsigned long flags;
+ 	__poll_t events;
+ 	struct fd f;
+ 	void *dm_op;
+@@ -968,18 +971,18 @@ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
+ 	init_waitqueue_func_entry(&kirqfd->wait, irqfd_wakeup);
+ 	init_poll_funcptr(&kirqfd->pt, irqfd_poll_func);
+ 
+-	mutex_lock(&irqfds_lock);
++	spin_lock_irqsave(&irqfds_lock, flags);
+ 
+ 	list_for_each_entry(tmp, &irqfds_list, list) {
+ 		if (kirqfd->eventfd == tmp->eventfd) {
+ 			ret = -EBUSY;
+-			mutex_unlock(&irqfds_lock);
++			spin_unlock_irqrestore(&irqfds_lock, flags);
+ 			goto error_eventfd;
+ 		}
+ 	}
+ 
+ 	list_add_tail(&kirqfd->list, &irqfds_list);
+-	mutex_unlock(&irqfds_lock);
++	spin_unlock_irqrestore(&irqfds_lock, flags);
+ 
+ 	/*
+ 	 * Check if there was an event already pending on the eventfd before we
+@@ -1011,12 +1014,13 @@ static int privcmd_irqfd_deassign(struct privcmd_irqfd *irqfd)
+ {
+ 	struct privcmd_kernel_irqfd *kirqfd;
+ 	struct eventfd_ctx *eventfd;
++	unsigned long flags;
+ 
+ 	eventfd = eventfd_ctx_fdget(irqfd->fd);
+ 	if (IS_ERR(eventfd))
+ 		return PTR_ERR(eventfd);
+ 
+-	mutex_lock(&irqfds_lock);
++	spin_lock_irqsave(&irqfds_lock, flags);
+ 
+ 	list_for_each_entry(kirqfd, &irqfds_list, list) {
+ 		if (kirqfd->eventfd == eventfd) {
+@@ -1025,7 +1029,7 @@ static int privcmd_irqfd_deassign(struct privcmd_irqfd *irqfd)
+ 		}
+ 	}
+ 
+-	mutex_unlock(&irqfds_lock);
++	spin_unlock_irqrestore(&irqfds_lock, flags);
+ 
+ 	eventfd_ctx_put(eventfd);
+ 
+@@ -1073,13 +1077,14 @@ static int privcmd_irqfd_init(void)
+ static void privcmd_irqfd_exit(void)
+ {
+ 	struct privcmd_kernel_irqfd *kirqfd, *tmp;
++	unsigned long flags;
+ 
+-	mutex_lock(&irqfds_lock);
++	spin_lock_irqsave(&irqfds_lock, flags);
+ 
+ 	list_for_each_entry_safe(kirqfd, tmp, &irqfds_list, list)
+ 		irqfd_deactivate(kirqfd);
+ 
+-	mutex_unlock(&irqfds_lock);
++	spin_unlock_irqrestore(&irqfds_lock, flags);
+ 
+ 	destroy_workqueue(irqfd_cleanup_wq);
+ }
 -- 
 2.43.0
 
