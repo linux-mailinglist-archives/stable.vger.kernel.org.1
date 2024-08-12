@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-66863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE1094F2CF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7172494F4DC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EE491C216D9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B3E1F214CA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D40186E51;
-	Mon, 12 Aug 2024 16:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33953186E36;
+	Mon, 12 Aug 2024 16:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVF84PYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgNzyq+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C0C183CD9;
-	Mon, 12 Aug 2024 16:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E655715C127;
+	Mon, 12 Aug 2024 16:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479032; cv=none; b=oFj5nqcrR9NhTAkPMWd9H9wd9FZOftsht3TRjxO4wEncXZvd3R77QguhubZHseBWiJfBqoop7LrCZbs711ypiDXHEeAxND6LX9F0lyrQwA9+ZatYRVhFBqsK/UnU9P4KJJY+UOMgvIDy6eXzWIHuxNTwmnjFkTqPTAcfMKcmBzA=
+	t=1723480527; cv=none; b=HVkFh+pvrL9aYtnd4j/nOOcNGSHiDo4U6j2mMEvLfruLuN8F4rO2WGe7Nc1lj3klmg94L6DIJJxeQmexpFuLaEZzdtL0z4l8ISxdPde+23CY00T2oSlTOhIJtPp+Fj2c+x6Fi518rAyMk6JsxF3U7ftAQK5AzZI5a2W97r8418c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479032; c=relaxed/simple;
-	bh=d2h8XVrP4nrzIln+bWa0pC1RPFRSshQVqGY5AhkjHOM=;
+	s=arc-20240116; t=1723480527; c=relaxed/simple;
+	bh=yfKw1TszDMECT7S1BjlNLUUTh13eZocExh4ic4MvSFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e70bpw/SMubVFGZInlRc+cstdwf+Y5hYfWJhtXyfFS7TYcQ/doIpFuxFqV7Nf0Pi2/LpKYlOB6rZEcHMyaBpxlK0TkJg1KkJ1QU1i5dSih/q9tr4y8Pab2cCqC20z1lt/u7KMyUD3laB71gyAs/csSaOro1wZUBYiNULjO3qfFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVF84PYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C52C32782;
-	Mon, 12 Aug 2024 16:10:32 +0000 (UTC)
+	 MIME-Version; b=IPOBFGUqlveQoPRh1QChxmLX2lF6c1QFUrBJsKNKLIv0Hk1YFwwvd54gMLK03jUDl8VxCfHpKIzJRd8jl+OeNH6iG6EZzmOmZmw/tyFqDolEpIEsNR8jbUg9J751tIbyxp9wx95kNRHg2kHOcyPJL0NS0edUtBef0my3U96AvmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgNzyq+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A466C32782;
+	Mon, 12 Aug 2024 16:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479032;
-	bh=d2h8XVrP4nrzIln+bWa0pC1RPFRSshQVqGY5AhkjHOM=;
+	s=korg; t=1723480526;
+	bh=yfKw1TszDMECT7S1BjlNLUUTh13eZocExh4ic4MvSFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVF84PYAOrluOrxrZoSKa4ruNJ17vWMhLJTp9qMhy968JsxolYYgipcwJy6wK6V2u
-	 S2isq2UsEXalPa/uUgRV++diMwLBboAuvtpcd9vDJCXd8OJX/YdavsxP3zf0ZAuU75
-	 Mp1I/LsRmCTddlV5zHw+Gnc1qC9ajHArw0dpG6Bk=
+	b=EgNzyq+y3WJXVwXTJQJhPZOIFkU5rMVXJyQU6CdcHK8JSvcqdQVLltXIvMvqc//mB
+	 ODfHQ8Jdbst5P6KPFLPoL0hpTvmXE+X0maKzTEb0SJFy90AqrG0rSly1mxVMnaP19w
+	 xVH6KrN5xu/lfvjrIqU+8jd0a+aYYXJ/htXs0UAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 111/150] ASoC: amd: yc: Add quirk entry for OMEN by HP Gaming Laptop 16-n0xxx
+	Prashanth K <quic_prashk@quicinc.com>
+Subject: [PATCH 6.10 191/263] usb: gadget: u_serial: Set start_delayed during suspend
 Date: Mon, 12 Aug 2024 18:03:12 +0200
-Message-ID: <20240812160129.444544532@linuxfoundation.org>
+Message-ID: <20240812160153.857317980@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-commit 6675e76a5c441b52b1b983ebb714122087020ebe upstream.
+commit 5a444bea37e2759549ef72bfe83d1c8712e76b3d upstream.
 
-Fix the missing mic on OMEN by HP Gaming Laptop 16-n0xxx by adding the
-quirk entry with the board ID 8A44.
+Upstream commit aba3a8d01d62 ("usb: gadget: u_serial: add suspend
+resume callbacks") added started_delayed flag, so that new ports
+which are opened after USB suspend can start IO while resuming.
+But if the port was already opened, and gadget suspend kicks in
+afterwards, start_delayed will never be set. This causes resume
+to bail out before calling gs_start_io(). Fix this by setting
+start_delayed during suspend.
 
+Fixes: aba3a8d01d62 ("usb: gadget: u_serial: add suspend resume callbacks")
 Cc: stable@vger.kernel.org
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1227182
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20240807170249.16490-1-tiwai@suse.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Link: https://lore.kernel.org/r/20240730125754.576326-1-quic_prashk@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/gadget/function/u_serial.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -385,6 +385,13 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_BOARD_NAME, "8A44"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
- 			DMI_MATCH(DMI_BOARD_NAME, "8A22"),
- 		}
- 	},
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -1441,6 +1441,7 @@ void gserial_suspend(struct gserial *gse
+ 	spin_lock(&port->port_lock);
+ 	spin_unlock(&serial_port_lock);
+ 	port->suspended = true;
++	port->start_delayed = true;
+ 	spin_unlock_irqrestore(&port->port_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(gserial_suspend);
 
 
 
