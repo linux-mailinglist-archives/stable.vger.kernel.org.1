@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-67308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B3B94F4D3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 975A494F2EC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E835228234C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F195285201
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31991186E36;
-	Mon, 12 Aug 2024 16:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C49018732E;
+	Mon, 12 Aug 2024 16:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rN364Jgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKOrHtnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36281494B8;
-	Mon, 12 Aug 2024 16:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FBE187325;
+	Mon, 12 Aug 2024 16:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480502; cv=none; b=Yqpw36kPhS0CQdREilhH+pm0O4oOFGSrWyUX/M2zoiJx6ShL5WYUKrqPAjjpqvi/pqPTjdqMSYElNiKw3wS7+wcclYESXdD6Eo1bCdNBck48031imd6oZ7ouhDArSqr/nUXZqTiiSXHsdYDN8qaVATt8wZxgBSwRf12phX6tiwM=
+	t=1723479102; cv=none; b=AJzNsd+Ub878/94AHnG0HIEhPk41cXYCNCQ7khyxX4UjMnpfS0Sr2+VyJjtrX9ZmLkY2kLU/8AI3DDU59EjI7JFuXNds4SCPmEh/Ap9dEf+Lp09A9xtP4z75EPPIJD7wLPcQvxSrCshlFz84tYHVi2LOX0Y8QFDyczVoR+xiz40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480502; c=relaxed/simple;
-	bh=n0pWSROb00cySgL+Ygmc91yIAm+bHJJtHesI4ecKyYU=;
+	s=arc-20240116; t=1723479102; c=relaxed/simple;
+	bh=YCrfAsUf5NVO39TKAhId2XvpVaHQwewBn6toSrhEZos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PC4UkzlWlpiiNe/8gYsAOQ86QdruEExU8TjcVIrfwrP58sqdwzNTl4AHK/loYq9ciNTqM0/deHKbQoteTF1Iwi6fLdX7YiaMrK+YCFZo7ifj9pqc//4hbvIrfJtI7SQsXkhbdW4eHTotSaJWZlVyMVzNVvvwKCPerwGOdnWksB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rN364Jgw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFF7C32782;
-	Mon, 12 Aug 2024 16:35:01 +0000 (UTC)
+	 MIME-Version; b=YEkyLUX7qoq/BiQDbQ0WoxOcKjHMk14CTSK2eoz0W+WbvwU43pRfkfaNU2Ash6gkvuVll1HMaLKeQZ9KtPGMNcPkq59/OxaoAxKnQ0ToDC+6X348QirAPJjjsfs0uzuWFyDxSQcp6b8aT7ULVFZJS+XRu8XkREIaN1zKVZIic6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKOrHtnM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783A6C32782;
+	Mon, 12 Aug 2024 16:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480501;
-	bh=n0pWSROb00cySgL+Ygmc91yIAm+bHJJtHesI4ecKyYU=;
+	s=korg; t=1723479101;
+	bh=YCrfAsUf5NVO39TKAhId2XvpVaHQwewBn6toSrhEZos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rN364JgwLJ08rlqw/js7+v52uUKujyINPoX/dY7ZCRZZk0LsMa6dtqnS2YJi71CTj
-	 zcU6iTTh+sS68n7KdVIKlJkOCmrzdR9kFpBRIruMEwpLaEKN3xJCEleS9FU8UTMsoo
-	 D1Mkfx05YCpkeMgy0vcI09yCwKYyraIWIF6x9Quc=
+	b=uKOrHtnMM+VP99OLSZPTuVgnXKvukEI/5vbiuqejo8REKCFCv1AXI27rg91VqWN0d
+	 g+LPNCF+KGTPkV94Tu3KUTZtI6jHDiIPANdtOTKn7wgvEDwQDXsMGkREgcZpbPmxyJ
+	 FQyoMRRXwdIOezOGJwWmlCFbN0cmuV3vkYLj38Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.10 214/263] parisc: fix unaligned accesses in BPF
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 134/150] mptcp: pm: deny endp with signal + subflow + port
 Date: Mon, 12 Aug 2024 18:03:35 +0200
-Message-ID: <20240812160154.736533526@linuxfoundation.org>
+Message-ID: <20240812160130.341851831@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 1fd2c10acb7b35d72101a4619ee5b2cddb9efd3a upstream.
+commit 8af1f11865f259c882cce71d32f85ee9004e2660 upstream.
 
-There were spurious unaligned access warnings when calling BPF code.
-Sometimes, the warnings were triggered with any incoming packet, making
-the machine hard to use.
+As mentioned in the 'Fixes' commit, the port flag is only supported by
+the 'signal' flag, and not by the 'subflow' one. Then if both the
+'signal' and 'subflow' flags are set, the problem is the same: the
+feature cannot work with the 'subflow' flag.
 
-The reason for the warnings is this: on parisc64, pointers to functions
-are not really pointers to functions, they are pointers to 16-byte
-descriptor. The first 8 bytes of the descriptor is a pointer to the
-function and the next 8 bytes of the descriptor is the content of the
-"dp" register. This descriptor is generated in the function
-bpf_jit_build_prologue.
+Technically, if both the 'signal' and 'subflow' flags are set, it will
+be possible to create the listening socket, but not to establish a
+subflow using this source port. So better to explicitly deny it, not to
+create some confusions because the expected behaviour is not possible.
 
-The problem is that the function bpf_int_jit_compile advertises 4-byte
-alignment when calling bpf_jit_binary_alloc, bpf_jit_binary_alloc
-randomizes the returned array and if the array happens to be not aligned
-on 8-byte boundary, the descriptor generated in bpf_jit_build_prologue is
-also not aligned and this triggers the unaligned access warning.
-
-Fix this by advertising 8-byte alignment on parisc64 when calling
-bpf_jit_binary_alloc.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 09f12c3ab7a5 ("mptcp: allow to use port and non-signal in set_flags")
 Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-2-c8a9b036493b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/net/bpf_jit_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/parisc/net/bpf_jit_core.c
-+++ b/arch/parisc/net/bpf_jit_core.c
-@@ -114,7 +114,7 @@ struct bpf_prog *bpf_int_jit_compile(str
- 			jit_data->header =
- 				bpf_jit_binary_alloc(prog_size + extable_size,
- 						     &jit_data->image,
--						     sizeof(u32),
-+						     sizeof(long),
- 						     bpf_fill_ill_insns);
- 			if (!jit_data->header) {
- 				prog = orig_prog;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1360,8 +1360,8 @@ static int mptcp_nl_cmd_add_addr(struct
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	if (addr.addr.port && !(addr.flags & MPTCP_PM_ADDR_FLAG_SIGNAL)) {
+-		GENL_SET_ERR_MSG(info, "flags must have signal when using port");
++	if (addr.addr.port && !address_use_port(&addr)) {
++		GENL_SET_ERR_MSG(info, "flags must have signal and not subflow when using port");
+ 		return -EINVAL;
+ 	}
+ 
 
 
 
