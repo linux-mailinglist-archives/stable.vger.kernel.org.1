@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE0994F08F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:51:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD21C94F090
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B461F212F7
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F22441C22095
 	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A245A183CCD;
-	Mon, 12 Aug 2024 14:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB605336D;
+	Mon, 12 Aug 2024 14:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrDiNyrC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUGHFbth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6437117BB03
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFD34B5AE
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474272; cv=none; b=Dw3oYSRewPwh5YWQwwQZXHn87bKxomK9GNGys9nxgmQESmaHgT+H16DfvWwtU4s2h0/30DznVJnCQWfOaiaMwAY6jdZtpBFJcO/iZWcrTiFStVe/UMYY1HewAJ/hgSqF6ARgQv6jyBy/554yq5M1mmzNMWFiaq8Tt6aESXz8G0w=
+	t=1723474276; cv=none; b=pk/zvnHfmEIfrtO7dINxX5I2C3krQNzidrtWeNwX+v0yykqEvv4Ir040ozDs3jb3AdePwlPqi56IT8kAv3bBbdDSq32m+D/qY5YFI65N5/G+BWcYGqWtkuw9aNRMuFDKgX1ICXImy6qHfF03tAV2tgucTnCmFbnFvsJbV9V1l4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474272; c=relaxed/simple;
-	bh=a7cCKAhpmGP/tG6s599a/BIO+p0uhc6gs7CT2qSy6kY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HH8tiGKwZJMVoJZGJ8ZSPdL5VIrk2R+JfFoWlX7BBlLxbSzx8bOOLIXWLieFkwG7RKBzrJn56iM3Jzjs+lR6ZqwSnc0S7+jjRDFCnj/I+NbJdUGU/cKDbVgRsZmYkFVUzgYYDmNmy3dJxV9/UlH3ASjDV1XGkvBPYcgPKEcqX78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrDiNyrC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB4DC32782;
-	Mon, 12 Aug 2024 14:51:11 +0000 (UTC)
+	s=arc-20240116; t=1723474276; c=relaxed/simple;
+	bh=+zCDnfQ6g5gPPJNwCG1G7jOMtZ3YcZFbl2e3nUoEnv4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Mpayk9K3sG/8aDMJ0/wN/v0alf0CJbNio30ADoLYHkLQFDkSqmOJvj5bqZy/yloeuBxV/3SVhMBiGeBorVi6Zm4ekKusX+7q4Hbm/wUeGYcGe3zEAdBWjmeh2LFhp6n9qdr2R5xNDnQ82d6OdwjQU1mZOeqRkqXgPQonwD53GNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUGHFbth; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBD1C4AF09;
+	Mon, 12 Aug 2024 14:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474272;
-	bh=a7cCKAhpmGP/tG6s599a/BIO+p0uhc6gs7CT2qSy6kY=;
+	s=korg; t=1723474275;
+	bh=+zCDnfQ6g5gPPJNwCG1G7jOMtZ3YcZFbl2e3nUoEnv4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OrDiNyrCyQt5CYi3J80NBu9Svqc/amcvSWXT1XgP8xQUYYgCe/gBw6aElkNdOL9rb
-	 WMDw/Uulu5SkbKTb43A1jr94EvXldiUbJWrjFoPBljK3q5LRypk5QQyaO2H9SeYT47
-	 ormlwi5cQ+qQOf3LNOsN/wvlSNd8vZ/iVpw+dxLI=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix reduced resolution and refresh rate" failed to apply to 6.6-stable tree
+	b=qUGHFbthMdDBd9jVAKFCz4mxgHYXH1Q+nXXa3EKcwMl2OYT4zkdyW5nHbbTGpnu+Y
+	 CkDDnLV3qF1Ennjni9FKJXmc70caA/R7JlvhVI3h81ZyX17uqirA1NmnIlM9mqD39p
+	 RT6JHT0SqVArKyIJn91J7nOmxPJDtiKgGmf5p65U=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix reduced resolution and refresh rate" failed to apply to 6.1-stable tree
 To: daniel.sa@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:49:07 +0200
-Message-ID: <2024081207-voter-silencer-8387@gregkh>
+Date: Mon, 12 Aug 2024 16:49:08 +0200
+Message-ID: <2024081208-lilac-skintight-2316@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0dd1190faff7f7b389291266e118deb381b6c8d9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081207-voter-silencer-8387@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081208-lilac-skintight-2316@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 0dd1190faff7 ("drm/amd/display: Fix reduced resolution and refresh rate")
 82c421ba46ec ("drm/amd/display: Add fallback defaults for invalid LTTPR DPCD caps")
 4eaf110f97ae ("drm/amd/display: Check UHBR13.5 cap when determining max link cap")
+bc33f5e5f05b ("drm/amd/display: create accessories, hwss and protocols sub folders in link")
+028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
+603a521ec279 ("drm/amd/display: remove duplicate included header files")
+d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
+94dfeaa46925 ("drm/amd/display: move dp phy related logic to link_dp_phy")
+630168a97314 ("drm/amd/display: move dp link training logic to link_dp_training")
+d144b40a4833 ("drm/amd/display: move dc_link_dpia logic to link_dp_dpia")
+a28d0bac0956 ("drm/amd/display: move dpcd logic from dc_link_dpcd to link_dpcd")
+a98cdd8c4856 ("drm/amd/display: refactor ddc logic from dc_link_ddc to link_ddc")
+4370f72e3845 ("drm/amd/display: refactor hpd logic from dc_link to link_hpd")
+0e8cf83a2b47 ("drm/amd/display: allow hpo and dio encoder switching during dp retrain test")
+7462475e3a06 ("drm/amd/display: move dccg programming from link hwss hpo dp to hwss")
+e85d59885409 ("drm/amd/display: use encoder type independent hwss instead of accessing enc directly")
+ebf13b72020a ("drm/amd/display: Revert Scaler HCBlank issue workaround")
+639f6ad6df7f ("drm/amd/display: Revert Reduce delay when sink device not able to ACK 00340h write")
+e3aa827e2ab3 ("drm/amd/display: Avoid setting pixel rate divider to N/A")
+fe4e2662b2dd ("drm/amd/display: Phase 1 Add Bw Allocation source and header files")
 
 thanks,
 
