@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F02A94F3CF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 082FB94F4E8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0CF11C2129F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C7751C20ECD
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D215186E47;
-	Mon, 12 Aug 2024 16:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2012016D9B8;
+	Mon, 12 Aug 2024 16:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGt1aAl5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGHNrDWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDFE183CA6;
-	Mon, 12 Aug 2024 16:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE404186E38;
+	Mon, 12 Aug 2024 16:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479743; cv=none; b=mB9gOW4pRR6vX5dKIZnOnGi7WPn0tYdJiWOOCQRCoR4hr6C5uVrOT553sHtcsf2TO7FJRchcxlScHNmix1Y8dJTPPDIBb5VWini72Ws+z4pU+fcJVizuQ+dA33gWUlX0YuMGq7J2T+S92ASlVGtPOYfcL2EKHkavMZwrNWewydM=
+	t=1723480561; cv=none; b=s+uXzfU4H+rfvFQ1ag11BV7q3z+Rnf7j4fgciCfgKpVrCBdETAQRZTf9isc5h7zf7NjIjcJW2Hy0J3i/JNIpq+/r+TF/qrQXeXmmmRH5cwywcex1r8CsoJ2EWAHjNjKsP80D1kzqlEjRvfRJn/yW7/3ImvlhvVkWEdz/5toTiB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479743; c=relaxed/simple;
-	bh=5EbgAV3bjjBWfqPYxblcSthcVdvg6AXDg/KRVF+W8SU=;
+	s=arc-20240116; t=1723480561; c=relaxed/simple;
+	bh=NW7N2qfbdrFKBPHnmhwXrHGer8mVALiRT7an4d427m4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzyNfOdKTtZMIrq1hztj+YVB9sTSl3YZ6RvxpCor+dKUudfH8xGDwjHvnIlLeA7Kl8sv/A5kC181O/rT4/NoJAKWnJjFfMPW8sMrLqSAGjrvxqVyNe0CcCo2rVSDaaILfWqLUnqiGt5yLaKW3z1tHygGs3lbcVDiWRkwWGFhUZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGt1aAl5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679EFC32782;
-	Mon, 12 Aug 2024 16:22:22 +0000 (UTC)
+	 MIME-Version; b=V5+vK0CVqBEyDq4deEnuug7iudC1kgt5ZLWOHa2T36yhq3is6qEqe+DnF5taFpGGx1y4b6ggFGclEwfvlGP6Tm8s+wJD25xvWPknrYs0Y5bhKo8O4fphQd2gCm2ksIPD00+jQZFAGdb6Rd07RIcHi0ZaiqFXgfLS0TpuaM7Ul08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGHNrDWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBA3C4AF0F;
+	Mon, 12 Aug 2024 16:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479742;
-	bh=5EbgAV3bjjBWfqPYxblcSthcVdvg6AXDg/KRVF+W8SU=;
+	s=korg; t=1723480561;
+	bh=NW7N2qfbdrFKBPHnmhwXrHGer8mVALiRT7an4d427m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGt1aAl5Rkl/jeylVMUl1S2XTBFVAQnJQ903S8qgR/lh92OBSCtqNP5rLppkrepxx
-	 6ftLxQYRxomHhI84c5PEjhw1Ngm0quQFVEMcQIQRqPShHxphTsCuemuh1VVz5ratov
-	 7XO3nHzC+cZr12p0+SiN7yQwKNGSNCQl4GgTS9dI=
+	b=XGHNrDWF3ESMgbe2r5oqn5g8PZF6zulr7mSpC6ReKki2D1KgqZRl8sf4Ws7q3LnX/
+	 Hm2E65njKHvCOvvOpKkqNisfLexOMXyUqlv78qIf6OwZIX8eHxo/H0UeZCXqtIZd0L
+	 2jr2lVSBfvIgwvpj43GBsU446A3EXu8XN2avubpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 179/189] mm/hugetlb: fix potential race in __update_and_free_hugetlb_folio()
+	stable@kernel.org,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.10 234/263] net/tcp: Disable TCP-AO static key after RCU grace period
 Date: Mon, 12 Aug 2024 18:03:55 +0200
-Message-ID: <20240812160139.036711671@linuxfoundation.org>
+Message-ID: <20240812160155.492860103@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Dmitry Safonov <0x7f454c46@gmail.com>
 
-commit 5596d9e8b553dacb0ac34bcf873cbbfb16c3ba3e upstream.
+commit 14ab4792ee120c022f276a7e4768f4dcb08f0cdd upstream.
 
-There is a potential race between __update_and_free_hugetlb_folio() and
-try_memory_failure_hugetlb():
+The lifetime of TCP-AO static_key is the same as the last
+tcp_ao_info. On the socket destruction tcp_ao_info ceases to be
+with RCU grace period, while tcp-ao static branch is currently deferred
+destructed. The static key definition is
+: DEFINE_STATIC_KEY_DEFERRED_FALSE(tcp_ao_needed, HZ);
 
- CPU1					CPU2
- __update_and_free_hugetlb_folio	try_memory_failure_hugetlb
-					 folio_test_hugetlb
-					  -- It's still hugetlb folio.
-  folio_clear_hugetlb_hwpoison
-  					  spin_lock_irq(&hugetlb_lock);
-					   __get_huge_page_for_hwpoison
-					    folio_set_hugetlb_hwpoison
-					  spin_unlock_irq(&hugetlb_lock);
-  spin_lock_irq(&hugetlb_lock);
-  __folio_clear_hugetlb(folio);
-   -- Hugetlb flag is cleared but too late.
-  spin_unlock_irq(&hugetlb_lock);
+which means that if RCU grace period is delayed by more than a second
+and tcp_ao_needed is in the process of disablement, other CPUs may
+yet see tcp_ao_info which atent dead, but soon-to-be.
+And that breaks the assumption of static_key_fast_inc_not_disabled().
 
-When the above race occurs, raw error page info will be leaked.  Even
-worse, raw error pages won't have hwpoisoned flag set and hit
-pcplists/buddy.  Fix this issue by deferring
-folio_clear_hugetlb_hwpoison() until __folio_clear_hugetlb() is done.  So
-all raw error pages will have hwpoisoned flag set.
+See the comment near the definition:
+> * The caller must make sure that the static key can't get disabled while
+> * in this function. It doesn't patch jump labels, only adds a user to
+> * an already enabled static key.
 
-Link: https://lkml.kernel.org/r/20240708025127.107713-1-linmiaohe@huawei.com
-Fixes: 32c877191e02 ("hugetlb: do not clear hugetlb dtor until allocating vmemmap")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Originally it was introduced in commit eb8c507296f6 ("jump_label:
+Prevent key->enabled int overflow"), which is needed for the atomic
+contexts, one of which would be the creation of a full socket from a
+request socket. In that atomic context, it's known by the presence
+of the key (md5/ao) that the static branch is already enabled.
+So, the ref counter for that static branch is just incremented
+instead of holding the proper mutex.
+static_key_fast_inc_not_disabled() is just a helper for such usage
+case. But it must not be used if the static branch could get disabled
+in parallel as it's not protected by jump_label_mutex and as a result,
+races with jump_label_update() implementation details.
+
+Happened on netdev test-bot[1], so not a theoretical issue:
+
+[] jump_label: Fatal kernel bug, unexpected op at tcp_inbound_hash+0x1a7/0x870 [ffffffffa8c4e9b7] (eb 50 0f 1f 44 != 66 90 0f 1f 00)) size:2 type:1
+[] ------------[ cut here ]------------
+[] kernel BUG at arch/x86/kernel/jump_label.c:73!
+[] Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+[] CPU: 3 PID: 243 Comm: kworker/3:3 Not tainted 6.10.0-virtme #1
+[] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[] Workqueue: events jump_label_update_timeout
+[] RIP: 0010:__jump_label_patch+0x2f6/0x350
+...
+[] Call Trace:
+[]  <TASK>
+[]  arch_jump_label_transform_queue+0x6c/0x110
+[]  __jump_label_update+0xef/0x350
+[]  __static_key_slow_dec_cpuslocked.part.0+0x3c/0x60
+[]  jump_label_update_timeout+0x2c/0x40
+[]  process_one_work+0xe3b/0x1670
+[]  worker_thread+0x587/0xce0
+[]  kthread+0x28a/0x350
+[]  ret_from_fork+0x31/0x70
+[]  ret_from_fork_asm+0x1a/0x30
+[]  </TASK>
+[] Modules linked in: veth
+[] ---[ end trace 0000000000000000 ]---
+[] RIP: 0010:__jump_label_patch+0x2f6/0x350
+
+[1]: https://netdev-3.bots.linux.dev/vmksft-tcp-ao-dbg/results/696681/5-connect-deny-ipv6/stderr
+
+Cc: stable@kernel.org
+Fixes: 67fa83f7c86a ("net/tcp: Add static_key for TCP-AO")
+Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/ipv4/tcp_ao.c |   43 ++++++++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 13 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1770,13 +1770,6 @@ static void __update_and_free_hugetlb_fo
- 	}
+--- a/net/ipv4/tcp_ao.c
++++ b/net/ipv4/tcp_ao.c
+@@ -266,32 +266,49 @@ static void tcp_ao_key_free_rcu(struct r
+ 	kfree_sensitive(key);
+ }
  
- 	/*
--	 * Move PageHWPoison flag from head page to the raw error pages,
--	 * which makes any healthy subpages reusable.
--	 */
--	if (unlikely(folio_test_hwpoison(folio)))
--		folio_clear_hugetlb_hwpoison(folio);
--
--	/*
- 	 * If vmemmap pages were allocated above, then we need to clear the
- 	 * hugetlb destructor under the hugetlb lock.
- 	 */
-@@ -1787,6 +1780,13 @@ static void __update_and_free_hugetlb_fo
- 	}
+-void tcp_ao_destroy_sock(struct sock *sk, bool twsk)
++static void tcp_ao_info_free_rcu(struct rcu_head *head)
+ {
+-	struct tcp_ao_info *ao;
++	struct tcp_ao_info *ao = container_of(head, struct tcp_ao_info, rcu);
+ 	struct tcp_ao_key *key;
+ 	struct hlist_node *n;
  
- 	/*
-+	 * Move PageHWPoison flag from head page to the raw error pages,
-+	 * which makes any healthy subpages reusable.
-+	 */
-+	if (unlikely(folio_test_hwpoison(folio)))
-+		folio_clear_hugetlb_hwpoison(folio);
++	hlist_for_each_entry_safe(key, n, &ao->head, node) {
++		hlist_del(&key->node);
++		tcp_sigpool_release(key->tcp_sigpool_id);
++		kfree_sensitive(key);
++	}
++	kfree(ao);
++	static_branch_slow_dec_deferred(&tcp_ao_needed);
++}
 +
-+	/*
- 	 * Non-gigantic pages demoted from CMA allocated gigantic pages
- 	 * need to be given back to CMA in free_gigantic_folio.
- 	 */
++static void tcp_ao_sk_omem_free(struct sock *sk, struct tcp_ao_info *ao)
++{
++	size_t total_ao_sk_mem = 0;
++	struct tcp_ao_key *key;
++
++	hlist_for_each_entry(key,  &ao->head, node)
++		total_ao_sk_mem += tcp_ao_sizeof_key(key);
++	atomic_sub(total_ao_sk_mem, &sk->sk_omem_alloc);
++}
++
++void tcp_ao_destroy_sock(struct sock *sk, bool twsk)
++{
++	struct tcp_ao_info *ao;
++
+ 	if (twsk) {
+ 		ao = rcu_dereference_protected(tcp_twsk(sk)->ao_info, 1);
+-		tcp_twsk(sk)->ao_info = NULL;
++		rcu_assign_pointer(tcp_twsk(sk)->ao_info, NULL);
+ 	} else {
+ 		ao = rcu_dereference_protected(tcp_sk(sk)->ao_info, 1);
+-		tcp_sk(sk)->ao_info = NULL;
++		rcu_assign_pointer(tcp_sk(sk)->ao_info, NULL);
+ 	}
+ 
+ 	if (!ao || !refcount_dec_and_test(&ao->refcnt))
+ 		return;
+ 
+-	hlist_for_each_entry_safe(key, n, &ao->head, node) {
+-		hlist_del_rcu(&key->node);
+-		if (!twsk)
+-			atomic_sub(tcp_ao_sizeof_key(key), &sk->sk_omem_alloc);
+-		call_rcu(&key->rcu, tcp_ao_key_free_rcu);
+-	}
+-
+-	kfree_rcu(ao, rcu);
+-	static_branch_slow_dec_deferred(&tcp_ao_needed);
++	if (!twsk)
++		tcp_ao_sk_omem_free(sk, ao);
++	call_rcu(&ao->rcu, tcp_ao_info_free_rcu);
+ }
+ 
+ void tcp_ao_time_wait(struct tcp_timewait_sock *tcptw, struct tcp_sock *tp)
 
 
 
