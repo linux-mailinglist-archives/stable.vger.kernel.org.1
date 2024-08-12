@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A93F94F3A8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D696194F4C2
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C7BA1C21600
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93DB0281B80
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF5D186E20;
-	Mon, 12 Aug 2024 16:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9008B187328;
+	Mon, 12 Aug 2024 16:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNq/MRrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcsU+mmQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B12329CA;
-	Mon, 12 Aug 2024 16:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4752C1A5;
+	Mon, 12 Aug 2024 16:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479624; cv=none; b=JbcKIf1uIMGxZ5cUCtrFx1IzeFFhxeKyXizkG0veHHmYsWtppiZUmIeONM3lDW6Mz30MdYx+NlxRb93v8dh7x7nzNL77z40ZDaQt6NdweeMIpihCoxliQjcqEl3TggAnMzISD8uU8X4ROZ96os6omAoBQt5Vy3BH1FN/GtMW6lY=
+	t=1723480447; cv=none; b=UWS4+HF4ltOjrlz/ULEHCzQSu73wD9miPbioXQmkJXdJ6jypfiDlQ5gfC1vJP8jV7fmCXiCfmsjND8s3kKsC+l37HlZJXuG0+FJ+spm3aZ6yseMDOp2Z6qNritYmBeEUArqA0aBQYdshJeE6eGDEJlahn1pNf9S2J6WNwyyamXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479624; c=relaxed/simple;
-	bh=6J20SP2mn4hoP/RLrLF/WBD+6ox6kSlhJKFGUfizfnk=;
+	s=arc-20240116; t=1723480447; c=relaxed/simple;
+	bh=4AKSP0osm8r8nBoYOTn2Ns+23mvsd4bi8rRnxoKRfKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHpFAVvhMdq4MoioWwyqms9oQtO810xTGmouXydmS3mdL8RxQM0MkCWOI0X94jkapt1IDNBKomLtp0wdLjGlM4HayArbVC6ZxW1PqzspgkCmb8aludaCPVepashn1CgJ0xfDwnJ11FTPevQ3YLQAC7p3INAyfqHbaMt9Qg/ZRAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNq/MRrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF95BC32782;
-	Mon, 12 Aug 2024 16:20:23 +0000 (UTC)
+	 MIME-Version; b=XWo0H/vWXNN6BXRaPCACGuN9K3ZoEJcpsHJdJqk7cuBFgJjc6ZM2AsoGRuPXdi6vnlNmwMj2QI4ulZLWGllLI7b5ppoV+b4Y+VeMYUM0gjpoJuWCdfn6AH7TjKWCnvhDCywAPqY8eaA1lQRp/FiUi22GMAebCuf5PXimPQAzjcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcsU+mmQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B46AC32782;
+	Mon, 12 Aug 2024 16:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479624;
-	bh=6J20SP2mn4hoP/RLrLF/WBD+6ox6kSlhJKFGUfizfnk=;
+	s=korg; t=1723480446;
+	bh=4AKSP0osm8r8nBoYOTn2Ns+23mvsd4bi8rRnxoKRfKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNq/MRrWp1K1GeRncaP24Ock9kgHQ8H9iPRc1oe2tFdPEUX9jBVvXC+XvJVfdc/wP
-	 wRw0wq76WSlF5JAndj6HChQZwOmCBmiC6mcJav5KAcSavQEqr7PtU/hbZ4bUfkjBpz
-	 HhZMQJ26AIscN7gM2I0TZRRiiNRPB3slqz+Ax5B8=
+	b=tcsU+mmQwD4gNYze6zjvuM1wxRLE/08oZ4KkXe2Hy+tsqp/XT+sgSYEM9hfK/RiTi
+	 A6ckfAX363slMFtqOyV8Y+9OHicSXnwf+hT7oF34Dp54VogBt3sUeGnMF9k5dM/G1P
+	 jtsaiCoYdDY4rRrdTr1O4KKuxyz37LRTzlUGXx90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Miao Wang <shankerwangmiao@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 144/189] LoongArch: Enable general EFI poweroff method
+	Akira Yokosawa <akiyks@gmail.com>,
+	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.10 199/263] media: v4l: Fix missing tabular column hint for Y14P format
 Date: Mon, 12 Aug 2024 18:03:20 +0200
-Message-ID: <20240812160137.685856084@linuxfoundation.org>
+Message-ID: <20240812160154.166508371@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Wang <shankerwangmiao@gmail.com>
+From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
 
-commit e688c220732e518c2eb1639e9ef77d4a9311713c upstream.
+commit 914f8961879de6fadd166ebd75151a778481e09a upstream.
 
-efi_shutdown_init() can register a general sys_off handler named
-efi_power_off(). Enable this by providing efi_poweroff_required(),
-like arm and x86. Since EFI poweroff is also supported on LoongArch,
-and the enablement makes the poweroff function usable for hardwares
-which lack ACPI S5.
+The original patch added two columns in the flat-table of Luma-Only
+Image Formats, without updating hints to latex: above it.  This results
+in wrong column count in the output of Sphinx's latex builder.
 
-We prefer ACPI poweroff rather than EFI poweroff (like x86), so we only
-require EFI poweroff if acpi_gbl_reduced_hardware or acpi_no_s5 is true.
+Fix it.
 
-Cc: stable@vger.kernel.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reported-by: Akira Yokosawa <akiyks@gmail.com>
+Closes: https://lore.kernel.org/linux-media/bdbc27ba-5098-49fb-aabf-753c81361cc7@gmail.com/
+Fixes: adb1d4655e53 ("media: v4l: Add V4L2-PIX-FMT-Y14P format")
+Cc: stable@vger.kernel.org # for v6.10
+Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/efi.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/kernel/efi.c
-+++ b/arch/loongarch/kernel/efi.c
-@@ -66,6 +66,12 @@ void __init efi_runtime_init(void)
- 	set_bit(EFI_RUNTIME_SERVICES, &efi.flags);
- }
+diff --git a/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst b/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst
+index f02e6cf3516a..74df19be91f6 100644
+--- a/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst
++++ b/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst
+@@ -21,9 +21,9 @@ are often referred to as greyscale formats.
  
-+bool efi_poweroff_required(void)
-+{
-+	return efi_enabled(EFI_RUNTIME_SERVICES) &&
-+		(acpi_gbl_reduced_hardware || acpi_no_s5);
-+}
-+
- unsigned long __initdata screen_info_table = EFI_INVALID_TABLE_ADDR;
+ .. raw:: latex
  
- static void __init init_screen_info(void)
+-    \scriptsize
++    \tiny
+ 
+-.. tabularcolumns:: |p{3.6cm}|p{3.0cm}|p{1.3cm}|p{2.6cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|
++.. tabularcolumns:: |p{3.6cm}|p{2.4cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|
+ 
+ .. flat-table:: Luma-Only Image Formats
+     :header-rows: 1
+-- 
+2.46.0
+
 
 
 
