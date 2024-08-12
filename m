@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-66878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8703094F2DF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3E394F38D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA3CC1C216F1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C978A1F21052
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25ACD187323;
-	Mon, 12 Aug 2024 16:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB5B1862BD;
+	Mon, 12 Aug 2024 16:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItMTqa5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yj3kPjTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8872184551;
-	Mon, 12 Aug 2024 16:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF03183CA6;
+	Mon, 12 Aug 2024 16:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479079; cv=none; b=sqsHxTL59HPqx21gJ6f99qVeQuGogtCzH+FFXbWhdyZV8LJdIusei+vUbMDkKdu+aIOht3wRCg9hYHLCPErwvgenO4ByK+K3xxjMQJmDBEk0Ss5gJTnpeLyJsU649AMp/c8s73sS3S12rvTXkjLlvlQVkurF1ojnLfv617rB2B8=
+	t=1723479546; cv=none; b=pZDZVJ3VUkMmcFLXTnvKc7S+yNoziyTSAjCckUgEdzcmbPCl6GfnGVL6sBqcO98FIROT9yDhoxVtJIiAz4/zR5gn4q72jr/epi+c5qSBlu+KY4SYp8MPupoRaPAxWw1LXjU/MnzroJ5mdXQC0sWH9NbYrx1OAUPo70CUuXEMXoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479079; c=relaxed/simple;
-	bh=e/Y4V2sNpQeIxU8KErcCBNrZVe4Kfec3LqB2HYsl7ic=;
+	s=arc-20240116; t=1723479546; c=relaxed/simple;
+	bh=S2+9awx9AUNo8DY5oZrtEuDKVM0+mYeTv2eyNauUqIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wlydnjz0+fSm2Oszle1uAbOP/BYmGqmzudkTb3068EKC+kQUeHicN7dfYuvGIwRMOZi/Uic/hbXLtmnIUEkNfB2ZeYAsX3M7aiewSGtzOmtHdtwgYpjSg0FrnJr4//HQVRqI5Df7tEWRngJrnaP7kVIEG+gDLA7qRO9K2/ufr3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItMTqa5H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B39BC4AF09;
-	Mon, 12 Aug 2024 16:11:19 +0000 (UTC)
+	 MIME-Version; b=ZLg5/iEiRtHTRzkRFBOK8u8Oiitn/PytaBqiNgEU4nvbJJQ+HtugxifZF7fMwKkLpd6jJAjmo1nVn/5E14g8w8JwG7F2dZLGsMRMTED83ek+lvOAoozC3RB9vU7n/I7lH6r1xOnnsgOyPYxvRxrAllli+g+FaYy3r92hVH6IkUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yj3kPjTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D8BC32782;
+	Mon, 12 Aug 2024 16:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479079;
-	bh=e/Y4V2sNpQeIxU8KErcCBNrZVe4Kfec3LqB2HYsl7ic=;
+	s=korg; t=1723479546;
+	bh=S2+9awx9AUNo8DY5oZrtEuDKVM0+mYeTv2eyNauUqIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ItMTqa5HIofdmpkvdBh1GGzlA9WcOQBlEwDpUKi8Qh19zKmcDdiZZ3jirfRH2Tlwn
-	 cIJsActqqpFejnyPs6T/dkCtpuwWfcBXRy3rke2vodtSmqSe2UCPxs1qpRj/+QgwlR
-	 hPOMUwZ+dddaPsL3A06uSD0++xiwZTDDL/5B/faA=
+	b=yj3kPjTesfjbY3q5rAYcqW8r/fdVMRZiAK3to3XGb3ZMc39Gat1lHZZ9jqZxwSkyO
+	 UfMxlaFhKDgYKIox3DLcG60txcWnrJc9NbGKGbs3QSpE4hU6vFLN/UFdJxbSQQHWBR
+	 sG8WbYzSmZp/bomxxu/WCV7ucRwjmRQhiDj5YFl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wulff <crwulff@gmail.com>
-Subject: [PATCH 6.1 095/150] usb: gadget: core: Check for unset descriptor
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 120/189] usb: gadget: midi2: Fix the response for FB info with block 0xff
 Date: Mon, 12 Aug 2024 18:02:56 +0200
-Message-ID: <20240812160128.829840408@linuxfoundation.org>
+Message-ID: <20240812160136.765207994@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wulff <crwulff@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 973a57891608a98e894db2887f278777f564de18 upstream.
+commit 228a953e61d6d608a3facc1c3a27b9fb03c99de7 upstream.
 
-Make sure the descriptor has been set before looking at maxpacket.
-This fixes a null pointer panic in this case.
+When the block number 0xff is given to Function Block Discovery
+message, the device should return the information of all Function
+Blocks, but currently the gadget driver treats it as an error.
 
-This may happen if the gadget doesn't properly set up the endpoint
-for the current speed, or the gadget descriptors are malformed and
-the descriptor for the speed/endpoint are not found.
+Implement the proper behavior for the block 0xff instead.
 
-No current gadget driver is known to have this problem, but this
-may cause a hard-to-find bug during development of new gadgets.
-
-Fixes: 54f83b8c8ea9 ("USB: gadget: Reject endpoints with 0 maxpacket value")
+Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chris Wulff <crwulff@gmail.com>
-Link: https://lore.kernel.org/r/20240725010419.314430-2-crwulff@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240717095102.10493-1-tiwai@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/function/f_midi2.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -118,12 +118,10 @@ int usb_ep_enable(struct usb_ep *ep)
- 		goto out;
- 
- 	/* UDC drivers can't handle endpoints with maxpacket size 0 */
--	if (usb_endpoint_maxp(ep->desc) == 0) {
--		/*
--		 * We should log an error message here, but we can't call
--		 * dev_err() because there's no way to find the gadget
--		 * given only ep.
--		 */
-+	if (!ep->desc || usb_endpoint_maxp(ep->desc) == 0) {
-+		WARN_ONCE(1, "%s: ep%d (%s) has %s\n", __func__, ep->address, ep->name,
-+			  (!ep->desc) ? "NULL descriptor" : "maxpacket 0");
-+
- 		ret = -EINVAL;
- 		goto out;
+--- a/drivers/usb/gadget/function/f_midi2.c
++++ b/drivers/usb/gadget/function/f_midi2.c
+@@ -642,12 +642,21 @@ static void process_ump_stream_msg(struc
+ 		if (format)
+ 			return; // invalid
+ 		blk = (*data >> 8) & 0xff;
+-		if (blk >= ep->num_blks)
+-			return;
+-		if (*data & UMP_STREAM_MSG_REQUEST_FB_INFO)
+-			reply_ump_stream_fb_info(ep, blk);
+-		if (*data & UMP_STREAM_MSG_REQUEST_FB_NAME)
+-			reply_ump_stream_fb_name(ep, blk);
++		if (blk == 0xff) {
++			/* inquiry for all blocks */
++			for (blk = 0; blk < ep->num_blks; blk++) {
++				if (*data & UMP_STREAM_MSG_REQUEST_FB_INFO)
++					reply_ump_stream_fb_info(ep, blk);
++				if (*data & UMP_STREAM_MSG_REQUEST_FB_NAME)
++					reply_ump_stream_fb_name(ep, blk);
++			}
++		} else if (blk < ep->num_blks) {
++			/* only the specified block */
++			if (*data & UMP_STREAM_MSG_REQUEST_FB_INFO)
++				reply_ump_stream_fb_info(ep, blk);
++			if (*data & UMP_STREAM_MSG_REQUEST_FB_NAME)
++				reply_ump_stream_fb_name(ep, blk);
++		}
+ 		return;
  	}
+ }
 
 
 
