@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F01694F4C0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F6394F2D6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFD71281F38
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8F51F21622
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A896186E38;
-	Mon, 12 Aug 2024 16:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49DC187842;
+	Mon, 12 Aug 2024 16:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tN2uI1XQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmnvzcfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274341494B8;
-	Mon, 12 Aug 2024 16:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E22183CD9;
+	Mon, 12 Aug 2024 16:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480440; cv=none; b=SzMuxkuXJx1DQOPmfjPCnFZjFKficZ8A73443kTxSCueT9Ld359d2Y3qNiej/3NxCrxXbexeNZCl4ySyY6dpOA1NPLLhy0YqbzqAOfWqLqA1PRVwMrYLCFKaNoEKdUGM37Gvtf9YOG8Y/O8iLBarPMG8xf43I8AVF7xOrl9CMuI=
+	t=1723479051; cv=none; b=idYmkd9Ri2YFsaP3FQOyKgpkIE1pJyjuJCQmPIUtvWdqgjbbs0/YE2imImSEjai1uQRzxgvDAYnbV0Smh9IyN0Lk7nkYz1V+op1k/ltBIPDgpMN4sYck2AlBVILWohm3oijehWcJuaWw/ngzrlhFoBEbt4XXr0u4r+IQo+mFmNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480440; c=relaxed/simple;
-	bh=ZduedcmUKPJrQpt31Rn6ubMS7vpvePfCNCJpcXGkUUk=;
+	s=arc-20240116; t=1723479051; c=relaxed/simple;
+	bh=RRfA8R2sM34Lt423xpxBx1WXj6YJeucCmrbhcWu4E8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BtuStZtx8CXMXhOYZtiZJVNwmmjO4+LkMT8LMqSsKP9BBl2CjGDMCnB2cdJLiKV3PaI2se/ELfsRCwQN3gbblugFytAtVQPdvuc3mE5NbmwAts2Hsbe4NtkDyOtmhtb7aJJNAdVqJanO9J3/zVm5HgyUVm5SvohjN4AQcckT+K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tN2uI1XQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94580C32782;
-	Mon, 12 Aug 2024 16:33:59 +0000 (UTC)
+	 MIME-Version; b=eQ5bQlTcCFFUZ4/pstTIB1vCBpN6k5DbVNjzlKoqDRjnDjcplNRxlAMP2LYS3o+YC/+INJ04alxY05jz84OEoM6nvLYuKZTsu3GDDASRnl7OFbuAZDa5rEu34+rMr/ikZ+06JjH8tm9sFdYI3bXrXjA7aFDWdQtwxb6MM54eDu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmnvzcfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB523C32782;
+	Mon, 12 Aug 2024 16:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480440;
-	bh=ZduedcmUKPJrQpt31Rn6ubMS7vpvePfCNCJpcXGkUUk=;
+	s=korg; t=1723479051;
+	bh=RRfA8R2sM34Lt423xpxBx1WXj6YJeucCmrbhcWu4E8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tN2uI1XQQcT31wNbKYuardMGT66QE29Jc11qiVCAr0IYHVGwyK/aKUyxn8nUfJtoI
-	 hAswixHdAareCq4BKYQURhpeXu+DUwYnu+iTndp7GA8SJEPzlh3qOd1RWIGgPrUlYI
-	 t2OtlOIcZMPTSn780WEx7yJNmDUa5fOKGSWBf+iY=
+	b=TmnvzcfP9GTRq0rZC6/vgf59vhKajs1ZH0q8Ql6UKLzxfJsiDOtHAPM2FCW0xYvPL
+	 6QtYZpS76wkaFpYOdmfIUbJ09ilysdTkSDGPDKKYfx5sXcMhLaIfGPuHtgydb6scQn
+	 QjjNQwCs344UXieftINiO8+4fS2XlJTSONPJGkI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vamshi Gajjela <vamshigajjela@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.10 197/263] scsi: ufs: core: Fix hba->last_dme_cmd_tstamp timestamp updating logic
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
+	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 117/150] tracing: Fix overflow in get_free_elt()
 Date: Mon, 12 Aug 2024 18:03:18 +0200
-Message-ID: <20240812160154.087446304@linuxfoundation.org>
+Message-ID: <20240812160129.676355366@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vamshi Gajjela <vamshigajjela@google.com>
+From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
 
-commit ab9fd06cb8f0db0854291833fc40c789e43a361f upstream.
+commit bcf86c01ca4676316557dd482c8416ece8c2e143 upstream.
 
-The ufshcd_add_delay_before_dme_cmd() always introduces a delay of
-MIN_DELAY_BEFORE_DME_CMDS_US between DME commands even when it's not
-required. The delay is added when the UFS host controller supplies the
-quirk UFSHCD_QUIRK_DELAY_BEFORE_DME_CMDS.
+"tracing_map->next_elt" in get_free_elt() is at risk of overflowing.
 
-Fix the logic to update hba->last_dme_cmd_tstamp to ensure subsequent DME
-commands have the correct delay in the range of 0 to
-MIN_DELAY_BEFORE_DME_CMDS_US.
+Once it overflows, new elements can still be inserted into the tracing_map
+even though the maximum number of elements (`max_elts`) has been reached.
+Continuing to insert elements after the overflow could result in the
+tracing_map containing "tracing_map->max_size" elements, leaving no empty
+entries.
+If any attempt is made to insert an element into a full tracing_map using
+`__tracing_map_insert()`, it will cause an infinite loop with preemption
+disabled, leading to a CPU hang problem.
 
-Update the timestamp at the end of the function to ensure it captures the
-latest time after any necessary delay has been applied.
+Fix this by preventing any further increments to "tracing_map->next_elt"
+once it reaches "tracing_map->max_elt".
 
-Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-Link: https://lore.kernel.org/r/20240724135126.1786126-1-vamshigajjela@google.com
-Fixes: cad2e03d8607 ("ufs: add support to allow non standard behaviours (quirks)")
 Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 08d43a5fa063e ("tracing: Add lock-free tracing_map")
+Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Link: https://lore.kernel.org/20240805055922.6277-1-Tze-nan.Wu@mediatek.com
+Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ kernel/trace/tracing_map.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -4086,11 +4086,16 @@ static inline void ufshcd_add_delay_befo
- 			min_sleep_time_us =
- 				MIN_DELAY_BEFORE_DME_CMDS_US - delta;
- 		else
--			return; /* no more delay required */
-+			min_sleep_time_us = 0; /* no more delay required */
- 	}
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -454,7 +454,7 @@ static struct tracing_map_elt *get_free_
+ 	struct tracing_map_elt *elt = NULL;
+ 	int idx;
  
--	/* allow sleep for extra 50us if needed */
--	usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-+	if (min_sleep_time_us > 0) {
-+		/* allow sleep for extra 50us if needed */
-+		usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-+	}
-+
-+	/* update the last_dme_cmd_tstamp */
-+	hba->last_dme_cmd_tstamp = ktime_get();
- }
+-	idx = atomic_inc_return(&map->next_elt);
++	idx = atomic_fetch_add_unless(&map->next_elt, 1, map->max_elts);
+ 	if (idx < map->max_elts) {
+ 		elt = *(TRACING_MAP_ELT(map->elts, idx));
+ 		if (map->ops && map->ops->elt_init)
+@@ -699,7 +699,7 @@ void tracing_map_clear(struct tracing_ma
+ {
+ 	unsigned int i;
  
- /**
+-	atomic_set(&map->next_elt, -1);
++	atomic_set(&map->next_elt, 0);
+ 	atomic64_set(&map->hits, 0);
+ 	atomic64_set(&map->drops, 0);
+ 
+@@ -783,7 +783,7 @@ struct tracing_map *tracing_map_create(u
+ 
+ 	map->map_bits = map_bits;
+ 	map->max_elts = (1 << map_bits);
+-	atomic_set(&map->next_elt, -1);
++	atomic_set(&map->next_elt, 0);
+ 
+ 	map->map_size = (1 << (map_bits + 1));
+ 	map->ops = ops;
 
 
 
