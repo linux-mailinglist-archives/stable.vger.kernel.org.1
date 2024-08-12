@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D12794EC4D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:04:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE30694EC4E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91E51F228A8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:04:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98F3B282E52
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AE0175D3E;
-	Mon, 12 Aug 2024 12:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019EE14B95B;
+	Mon, 12 Aug 2024 12:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jf/M6m5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fX3t4mp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E461366
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44361366
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723464244; cv=none; b=MY4sE34oTh4RyZQHsqX09tYzjWe52IEnL0BpN8ITVGDG5oW7P0MHPYxg8R5ueQg5P9EyZlz/FdHuxISXa9bw9EulNw+x4T0RMLWZ7Q0j09tkX9GFw5KHcooPpvsVNiZesKTzhtj2yrLh/Z8/Hom95Ng9lBQ/nWjktm036vJ3UUw=
+	t=1723464283; cv=none; b=XjLRAhEUG9Od/0lkMHqhLv1nSADQ6dicU1/WFJ5bO3Fer/hXXZ52AD1WZRvslJjfGnmUpok4KzzFzOSwdevCMpv0MXmlmN/5RwRXITZymCLszUH+FHTWoyX0wXSWgv6mMiQ9SsdQyoIw9t0WopofkzcruEoX5wxSoFHGbykwP0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723464244; c=relaxed/simple;
-	bh=077qRtEAhvlzETWCHOaZ0MjC2+h5ztR3qyOhtqGaBJE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Mn0Om95reyi+i40qsRBXXdzIccSnZnlzzna8NybxvTBQRWkJQM2K/icjPwsuVs0De9VWar+6LhJ+/ubw4MzGNBt3gWqZhTgJvSueVrZ4OwAZIPM+Ji9JP7LNlZRb7wIqqLFdJ4lMjnzjHptmCXesDHrkOoBZoLkEalyUisGpkBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jf/M6m5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF78DC32782;
-	Mon, 12 Aug 2024 12:04:03 +0000 (UTC)
+	s=arc-20240116; t=1723464283; c=relaxed/simple;
+	bh=/WXuaObBNSRGzjruQutCmJJ5RsnylfgXiuZAuydl8B0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RFu6xHGpyXibkJf+iMNo2X4hLeTSIgbcw4qT8KX0NTp/v2gfEgvRlzkDuzzS2qkQ33zfhkfZKft30JryMd0/lK6U5lnriI++8qJB578GarU0scsW2v8BP+PtyUH5qYSxq69BjQ4RBUxGL7wSipJbT45kLet1toOLBDtbOU3S1yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fX3t4mp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F3CC32782;
+	Mon, 12 Aug 2024 12:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723464244;
-	bh=077qRtEAhvlzETWCHOaZ0MjC2+h5ztR3qyOhtqGaBJE=;
+	s=korg; t=1723464283;
+	bh=/WXuaObBNSRGzjruQutCmJJ5RsnylfgXiuZAuydl8B0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Jf/M6m5dsejds76c4wJ0i1x5s6StWtUm/u9/qGT5KxHPbjAwO/KSe9APVIxdRBGpF
-	 epDcJVjFnbjFlhEMi0TBiq8t9Lr8NImZw0p36Nyr96EjN7isemZznV08gQHmRF+Zd1
-	 n7UDquGetbKSFvXtI2CpRm2wJDCFHybtY/OukQjI=
-Subject: FAILED: patch "[PATCH] smb3: fix setting SecurityFlags when encryption is required" failed to apply to 5.10-stable tree
-To: stfrench@microsoft.com,bharathsm@microsoft.com
+	b=2fX3t4mpNzQBq83Rq6S57/owe+msAqTqXVWx7gDrZ+7BN1YqFQnmrGRjs1dfnLaXL
+	 C8gn1ofMloBVO8goABKQKgxFpd23aK2CTmug1AXdA7zsM7WsTvjiHYqOwhuJ7MWEX+
+	 e6cikh15xs7gzp5wNLEhdgZYEmGIu0K0znrHJQUE=
+Subject: FAILED: patch "[PATCH] drm/xe/vm: prevent UAF in rebind_work_func()" failed to apply to 6.10-stable tree
+To: matthew.auld@intel.com,matthew.brost@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 14:03:53 +0200
-Message-ID: <2024081253-collie-hatless-bc0e@gregkh>
+Date: Mon, 12 Aug 2024 14:04:40 +0200
+Message-ID: <2024081239-constant-defrost-6ddf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1b5487aefb1ce7a6b1f15a33297d1231306b4122
+git cherry-pick -x 3d44d67c441a9fe6f81a1d705f7de009a32a5b35
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081253-collie-hatless-bc0e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081239-constant-defrost-6ddf@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-1b5487aefb1c ("smb3: fix setting SecurityFlags when encryption is required")
-d2346e283631 ("cifs: fix setting SecurityFlags to true")
-2ac7069ad764 ("Documentation, arch: Remove leftovers from CIFS_WEAK_PW_HASH")
-7cca308cfdc0 ("Merge tag 'powerpc-5.15-1' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux")
+3d44d67c441a ("drm/xe/vm: prevent UAF in rebind_work_func()")
 
 thanks,
 
@@ -80,93 +77,52 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1b5487aefb1ce7a6b1f15a33297d1231306b4122 Mon Sep 17 00:00:00 2001
-From: Steve French <stfrench@microsoft.com>
-Date: Wed, 31 Jul 2024 21:38:50 -0500
-Subject: [PATCH] smb3: fix setting SecurityFlags when encryption is required
+From 3d44d67c441a9fe6f81a1d705f7de009a32a5b35 Mon Sep 17 00:00:00 2001
+From: Matthew Auld <matthew.auld@intel.com>
+Date: Tue, 23 Apr 2024 08:47:23 +0100
+Subject: [PATCH] drm/xe/vm: prevent UAF in rebind_work_func()
 
-Setting encryption as required in security flags was broken.
-For example (to require all mounts to be encrypted by setting):
+We flush the rebind worker during the vm close phase, however in places
+like preempt_fence_work_func() we seem to queue the rebind worker
+without first checking if the vm has already been closed.  The concern
+here is the vm being closed with the worker flushed, but then being
+rearmed later, which looks like potential uaf, since there is no actual
+refcounting to track the queued worker. We can't take the vm->lock here
+in preempt_rebind_work_func() to first check if the vm is closed since
+that will deadlock, so instead flush the worker again when the vm
+refcount reaches zero.
 
-  "echo 0x400c5 > /proc/fs/cifs/SecurityFlags"
+v2:
+ - Grabbing vm->lock in the preempt worker creates a deadlock, so
+   checking the closed state is tricky. Instead flush the worker when
+   the refcount reaches zero. It should be impossible to queue the
+   preempt worker without already holding vm ref.
 
-Would return "Invalid argument" and log "Unsupported security flags"
-This patch fixes that (e.g. allowing overriding the default for
-SecurityFlags  0x00c5, including 0x40000 to require seal, ie
-SMB3.1.1 encryption) so now that works and forces encryption
-on subsequent mounts.
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1676
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1591
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1364
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1304
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1249
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240423074721.119633-4-matthew.auld@intel.com
 
-Acked-by: Bharath SM <bharathsm@microsoft.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/Documentation/admin-guide/cifs/usage.rst b/Documentation/admin-guide/cifs/usage.rst
-index fd4b56c0996f..c09674a75a9e 100644
---- a/Documentation/admin-guide/cifs/usage.rst
-+++ b/Documentation/admin-guide/cifs/usage.rst
-@@ -742,7 +742,7 @@ SecurityFlags		Flags which control security negotiation and
- 			  may use NTLMSSP               		0x00080
- 			  must use NTLMSSP           			0x80080
- 			  seal (packet encryption)			0x00040
--			  must seal (not implemented yet)               0x40040
-+			  must seal                                     0x40040
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 633485c8c62b..dc685bf45857 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1504,6 +1504,9 @@ static void vm_destroy_work_func(struct work_struct *w)
+ 	/* xe_vm_close_and_put was not called? */
+ 	xe_assert(xe, !vm->size);
  
- cifsFYI			If set to non-zero value, additional debug information
- 			will be logged to the system error log.  This field
-diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
-index c71ae5c04306..4a20e92474b2 100644
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -1072,7 +1072,7 @@ static int cifs_security_flags_proc_open(struct inode *inode, struct file *file)
- static void
- cifs_security_flags_handle_must_flags(unsigned int *flags)
- {
--	unsigned int signflags = *flags & CIFSSEC_MUST_SIGN;
-+	unsigned int signflags = *flags & (CIFSSEC_MUST_SIGN | CIFSSEC_MUST_SEAL);
++	if (xe_vm_in_preempt_fence_mode(vm))
++		flush_work(&vm->preempt.rebind_work);
++
+ 	mutex_destroy(&vm->snap_mutex);
  
- 	if ((*flags & CIFSSEC_MUST_KRB5) == CIFSSEC_MUST_KRB5)
- 		*flags = CIFSSEC_MUST_KRB5;
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index f6d1f075987f..b9f46d29a441 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1881,7 +1881,7 @@ static inline bool is_replayable_error(int error)
- #define   CIFSSEC_MAY_SIGN	0x00001
- #define   CIFSSEC_MAY_NTLMV2	0x00004
- #define   CIFSSEC_MAY_KRB5	0x00008
--#define   CIFSSEC_MAY_SEAL	0x00040 /* not supported yet */
-+#define   CIFSSEC_MAY_SEAL	0x00040
- #define   CIFSSEC_MAY_NTLMSSP	0x00080 /* raw ntlmssp with ntlmv2 */
- 
- #define   CIFSSEC_MUST_SIGN	0x01001
-@@ -1891,11 +1891,11 @@ require use of the stronger protocol */
- #define   CIFSSEC_MUST_NTLMV2	0x04004
- #define   CIFSSEC_MUST_KRB5	0x08008
- #ifdef CONFIG_CIFS_UPCALL
--#define   CIFSSEC_MASK          0x8F08F /* flags supported if no weak allowed */
-+#define   CIFSSEC_MASK          0xCF0CF /* flags supported if no weak allowed */
- #else
--#define	  CIFSSEC_MASK          0x87087 /* flags supported if no weak allowed */
-+#define	  CIFSSEC_MASK          0xC70C7 /* flags supported if no weak allowed */
- #endif /* UPCALL */
--#define   CIFSSEC_MUST_SEAL	0x40040 /* not supported yet */
-+#define   CIFSSEC_MUST_SEAL	0x40040
- #define   CIFSSEC_MUST_NTLMSSP	0x80080 /* raw ntlmssp with ntlmv2 */
- 
- #define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP | CIFSSEC_MAY_SEAL)
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 9a06b5594669..83facb54276a 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -82,6 +82,9 @@ int smb3_encryption_required(const struct cifs_tcon *tcon)
- 	if (tcon->seal &&
- 	    (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
- 		return 1;
-+	if (((global_secflags & CIFSSEC_MUST_SEAL) == CIFSSEC_MUST_SEAL) &&
-+	    (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
-+		return 1;
- 	return 0;
- }
- 
+ 	if (!(vm->flags & XE_VM_FLAG_MIGRATION))
 
 
