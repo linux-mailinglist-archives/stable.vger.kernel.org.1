@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-67188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9AD94F443
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE7294F334
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 015741F218D3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08037B269DA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7764E186E34;
-	Mon, 12 Aug 2024 16:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52116187332;
+	Mon, 12 Aug 2024 16:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDwlLM1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFRYMmCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CB0134AC;
-	Mon, 12 Aug 2024 16:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10175130E27;
+	Mon, 12 Aug 2024 16:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480097; cv=none; b=X0+gqblc995/mCoOqr2lzPaz7JSZfONIZmnuPCG/Yhf41xeDP79ubdlU4Gw2ssJihxq8x1oniKDOjSCb4U0yGezB/Yq7s8ZIGz766+fo5jMUnlXnen0sBo0hyGhHzvqu57bTwUOXp6CXFEkGdJle+4n/ZveIBGbFxT9lRCiIzBk=
+	t=1723479293; cv=none; b=EiqrDOwLJcI0ZYYSgT7l3qq0Uzcru55Hc+BkhcPAUyqT4o4r4y7/UTx1W8TKUcmUzb0kiMbU1PNBycY0VnUQw3u6jTWiwy5cK9kFNnOVrQ8Y+Nkuf2QGsMIc0iaj0jj9CsEWT6NreiJ328dp4UQqV0nK0WkkvemBpaby3b6beo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480097; c=relaxed/simple;
-	bh=P/Gl/FzYAA//A1RMqUViVpLeFZHf4r8lHIH/bKRgMpk=;
+	s=arc-20240116; t=1723479293; c=relaxed/simple;
+	bh=dCf37IKVRwUrFBNSDEl1oAh3kHE0s4dIGL4il/JcWbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=du6K93AYQ5/UsCQW2s3O0ZlOQt4Da+Yue3JtvQ7O1N4v/aCd31tapzSby9+K39TGfp6L/uuIboXhrVofOtbJhpJMJmyTxijUBfMQzsQ6ZXfJ7LXOdhZL0VHfpTmmqkgZM6wG6ATshliFAeLYFLEvgWvaB2SEMQC5tu3lkvEmqvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDwlLM1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5E8C32782;
-	Mon, 12 Aug 2024 16:28:16 +0000 (UTC)
+	 MIME-Version; b=A//s4FAZZLAJq8zjbLZ9OQruUlQZPfXcETYZicn9LkJaVWuagGCmLA/BpPkwnGbV79HJB3rdigkUHUrFEkZHBD9gWUss8q13f5JLxi8ALmrZS+n2BXQAEKKtCc9ALB8Tfnu+pt6YnW4/of+/CKTdmy1RqFxtZJqNItl3hH34cs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFRYMmCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4E3C32782;
+	Mon, 12 Aug 2024 16:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480097;
-	bh=P/Gl/FzYAA//A1RMqUViVpLeFZHf4r8lHIH/bKRgMpk=;
+	s=korg; t=1723479292;
+	bh=dCf37IKVRwUrFBNSDEl1oAh3kHE0s4dIGL4il/JcWbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MDwlLM1uQIdyuKRrl1VfhdLReBJHj/kBOLmNXDa/HRaFp4HqNKdvS4fAamryGIN/B
-	 EI/KL4WmtfoyX6b0rDdyxmUoWy8nA1+5zy2kyyEWwinyoUZ+XGBh398kfkquLbYfr0
-	 QpbZf5FwUciEXEauDfXRFGEzjTGEZUNPhEcivNc4=
+	b=XFRYMmCpilS2ERXqq6K/mP2CIgU0+krFKOEE3yx9dt47hXIjL6rRsVPkNMPBMQYMR
+	 i6OEqIYVgyIbHuAibIU6eK/pKkgGJxe8r0nEF1nDjJRm/ya5HvEoLfOq6emrviPbmh
+	 GOkfmXBgoz3CR17bf+xEgIDYku1OlAkg3FIyyHkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 096/263] drm/admgpu: fix dereferencing null pointer context
-Date: Mon, 12 Aug 2024 18:01:37 +0200
-Message-ID: <20240812160150.219923851@linuxfoundation.org>
+Subject: [PATCH 6.6 042/189] wifi: nl80211: dont give key data to userspace
+Date: Mon, 12 Aug 2024 18:01:38 +0200
+Message-ID: <20240812160133.765507151@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 030ffd4d43b433bc6671d9ec34fc12c59220b95d ]
+[ Upstream commit a7e5793035792cc46a1a4b0a783655ffa897dfe9 ]
 
-When user space sets an invalid ta type, the pointer context will be empty.
-So it need to check the pointer context before using it
+When a key is requested by userspace, there's really no need
+to include the key data, the sequence counter is really what
+userspace needs in this case. The fact that it's included is
+just a historic quirk.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Remove the key data.
+
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240627104411.b6a4f097e4ea.I7e6cc976cb9e8a80ef25a3351330f313373b4578@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/nl80211.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-index ca5c86e5f7cd6..8e8afbd237bcd 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-@@ -334,7 +334,7 @@ static ssize_t ta_if_invoke_debugfs_write(struct file *fp, const char *buf, size
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 053258b4e28d2..be5c42d6ffbea 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4473,10 +4473,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	struct nlattr *key;
+ 	struct get_key_cookie *cookie = c;
  
- 	set_ta_context_funcs(psp, ta_type, &context);
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_ATTR_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_ATTR_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
+@@ -4488,10 +4485,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	if (!key)
+ 		goto nla_put_failure;
  
--	if (!context->initialized) {
-+	if (!context || !context->initialized) {
- 		dev_err(adev->dev, "TA is not initialized\n");
- 		ret = -EINVAL;
- 		goto err_free_shared_buf;
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
 -- 
 2.43.0
 
