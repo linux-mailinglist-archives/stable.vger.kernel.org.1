@@ -1,50 +1,83 @@
-Return-Path: <stable+bounces-66519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1078094ED03
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:30:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BDF94ED0B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 886F3282F4D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:30:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E9A81F211F4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9452717ADF2;
-	Mon, 12 Aug 2024 12:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A9F17ADE5;
+	Mon, 12 Aug 2024 12:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBQJV8AK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="de9bqy/G"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F3B17A5B5;
-	Mon, 12 Aug 2024 12:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F8E17A937
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723465828; cv=none; b=Vsp2Ar+9IBiVjAndNBgOVm76xJY9Qim4mCTnLd2S9+q12UJqRLxgpnV4+lFqejXskNCG4hTsTwG0aetfcaWCTpaYKrcQsun9vNweJYfNN5qN4LUgJ/GNMg7PotkYfqz5wQOrpIT1IbBsclH8SSd1+/OZh0YJEO5wij/kNiZip1k=
+	t=1723465862; cv=none; b=JqX0kWr+vWsthikSaobnXyQYfgm3AkmyEUHd8nBa/4G8m3aqx9nBGAD4oDy7HXIckAd3lwNoSwYMKjJuQlu+SIOYwj4g2uZZkagoYZerovlU4Db82cO8eAxH/7Ibk8y/Sn9q0H+PJnW+XOEkmSxlRVFoqtxWzZ4f8NzriRN53As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723465828; c=relaxed/simple;
-	bh=daslIMI9OAMAvqRfkYqd0A4uF/CVa60AExTLNpeFK9U=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Ub7uX0geD8JwyP9Z/Tvu65YgOHkC1uGgwZAQBRxCz3FPsbHmKRctK+u8APlxTDKUWeIgyqMgILcY+TYSHBOkdkaY87jzUvgrRSj9tyLSRTu2+6Zi1uTx21BS1IENrVwmsp7hVDZkbeeZUjYadYsTAgXoUBsiKpiJqbwNyq/HON0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBQJV8AK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D7CC4AF0E;
-	Mon, 12 Aug 2024 12:30:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723465827;
-	bh=daslIMI9OAMAvqRfkYqd0A4uF/CVa60AExTLNpeFK9U=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=cBQJV8AK+rCicBDSwVUri/rjC57zlg2FU2Hx8gttFSiZbrsEfD6tB+v46ULi98a3B
-	 Auq5FZWFhsp3F6szggHozl+fNZoELFMCQshx11bfFB/4Z6UW6zVolneZIUCqASx/ko
-	 BO6NJAwQH+KYkIYx5HaVAiSXuCaEQHJ3zCnaO1Fwl0MLOehK1YsxytUJLy2VEc1Cvd
-	 /oQxRpGpUlYeMbR4oIZQEgF6JHaqms6XbkwXP2eTrSbJmgp/Xux5Jnz2+xYtt1maJq
-	 D2FinY154EiDJjXsVkPjO4oQKB2x+208zpGPye8lOCKgOYxEUmi+Do6RXxe13cT0L5
-	 jnEUbQ+z6E06w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EC8CC382332D;
-	Mon, 12 Aug 2024 12:30:27 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1723465862; c=relaxed/simple;
+	bh=4s62qVRHCnsvaoNH4q2XMZiaS9GZto2/rKo40yJ5wGQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rOhC0ZLytysVSR27WE/gdCxlm/1Ce882+i+DX/qAIDmVKsAvpGCfdy9tbv47oJI2gjtou3XUOD8RsSHzy+f6N2UJOB99ODc1djoyCvRLzPVYcYo+aD/cj8JvXKxM+5uxTh+GJfMMuMStl9bGdbTzIC1cgF5BIie3F7KTOrwMe2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=de9bqy/G; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-367963ea053so3444818f8f.2
+        for <stable@vger.kernel.org>; Mon, 12 Aug 2024 05:31:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723465859; x=1724070659; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CrjMzxFTOymK1yhiDsFxq0lcAyXP/N53dsHhhTtc+pE=;
+        b=de9bqy/GLISDqJXhRY/AzKzFfYNx/NlU4BsWVM/a799aNPDuzsnyW3I9Utwsv1aVOT
+         S3pZ2etyjLOt7Ay6g/b0hPnDqn7+FOTpwAiNfW0R56VWkROya8c4kTR96P+Hg3MjTuNm
+         F5O8YsOYvOWPfIWLHKbd06Xh2Pw/1LAa756GUwnqo9gJhE3r9Qy102mh1yzc1Bf4RweG
+         SqhzlOzwXOOyJpMvj4SQ/BBCCQqp8ATfETZ6Lz3Qux63EPv5xtGqkJHKk/1ZAu1H/h5Z
+         1KNmV9gh3GkReiMp68TPUzAOCzYP2uEf0BphBTr+LdI0fUOuk5vNUjFP5AKMemawaarT
+         u/Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723465859; x=1724070659;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CrjMzxFTOymK1yhiDsFxq0lcAyXP/N53dsHhhTtc+pE=;
+        b=X1zyz6cCZqLO2aZqFJ3KgN5/H3hau9StlHUTj1w3KsaApiBK4NdQQdld9vC9N0TcYC
+         i1YJthzh5Xo3B6MY4TDy1RhaZs+rfCsi05eSa19tjiNge0gLhtOS5EKd+F+Z7BoBWRjF
+         fjXDh/9UNPtW5v9deEFq1wHcdwqu2gtC0NF+US23Mnk37fJt2qg2dQkLjvvtuhl4DTK4
+         0b2jk70th7peeXrEfO9gt6K01Fhe85mzLQASK0juhKHINho6Hvj/NhmxpMaCXV+odp5M
+         zUhgFp5hyVkmLL4551e3+9ATfNJSCeAuuBDUAjS1TnfaqB70OPl2V1O1xjWydA3KUnVM
+         3Ltg==
+X-Forwarded-Encrypted: i=1; AJvYcCUC+WMv/uGr4wSE1rKC2sVMxNGrEWN9V14LxipheEqx7LlV3mKIunKPVkGc3EiJcMvhjjyc+lp06C8Hxdrzxtp4/jl5a7bG
+X-Gm-Message-State: AOJu0YzqQkRzHk/vfesCxkmKLGvLOc+tLzXyEvGQJ3J15qeU0m8kihee
+	9xa6c7zxT8EB5/R7gwTLbtL6AAlmFaNeA3c+ncnNzBaezvRoSkTWGV624o6naY8=
+X-Google-Smtp-Source: AGHT+IHqBpkoDp5Wal5s8Y3KdZUq9WqkY3HpRBrs+w1cLO3eMxLwKdriiu6K0wUn5dFjISVeNq3Axg==
+X-Received: by 2002:a05:6000:1b02:b0:368:7282:51d6 with SMTP id ffacd0b85a97d-3716ccef03cmr182934f8f.21.1723465858925;
+        Mon, 12 Aug 2024 05:30:58 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.215.209])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36e4e51eb10sm7349493f8f.84.2024.08.12.05.30.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Aug 2024 05:30:58 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] memory: tegra186-emc: drop unused to_tegra186_emc()
+Date: Mon, 12 Aug 2024 14:30:55 +0200
+Message-ID: <20240812123055.124123-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,48 +85,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: mana: Fix RX buf alloc_size alignment and atomic op
- panic
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172346582650.1009420.18122025004130803028.git-patchwork-notify@kernel.org>
-Date: Mon, 12 Aug 2024 12:30:26 +0000
-References: <1723237284-7262-1-git-send-email-haiyangz@microsoft.com>
-In-Reply-To: <1723237284-7262-1-git-send-email-haiyangz@microsoft.com>
-To: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, decui@microsoft.com,
- stephen@networkplumber.org, kys@microsoft.com, paulros@microsoft.com,
- olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net, wei.liu@kernel.org,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
- longli@microsoft.com, ssengar@linux.microsoft.com,
- linux-rdma@vger.kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
- bpf@vger.kernel.org, ast@kernel.org, hawk@kernel.org, tglx@linutronix.de,
- shradhagupta@linux.microsoft.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
 
-Hello:
+to_tegra186_emc() is not used, W=1 builds:
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+  tegra186-emc.c:38:36: error: unused function 'to_tegra186_emc' [-Werror,-Wunused-function]
 
-On Fri,  9 Aug 2024 14:01:24 -0700 you wrote:
-> The MANA driver's RX buffer alloc_size is passed into napi_build_skb() to
-> create SKB. skb_shinfo(skb) is located at the end of skb, and its alignment
-> is affected by the alloc_size passed into napi_build_skb(). The size needs
-> to be aligned properly for better performance and atomic operations.
-> Otherwise, on ARM64 CPU, for certain MTU settings like 4000, atomic
-> operations may panic on the skb_shinfo(skb)->dataref due to alignment fault.
-> 
-> [...]
+Fixes: 9a38cb27668e ("memory: tegra: Add interconnect support for DRAM scaling in Tegra234")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ drivers/memory/tegra/tegra186-emc.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Here is the summary with links:
-  - [net] net: mana: Fix RX buf alloc_size alignment and atomic op panic
-    https://git.kernel.org/netdev/net/c/32316f676b4e
-
-You are awesome, thank you!
+diff --git a/drivers/memory/tegra/tegra186-emc.c b/drivers/memory/tegra/tegra186-emc.c
+index 57d9ae12fcfe..33d67d251719 100644
+--- a/drivers/memory/tegra/tegra186-emc.c
++++ b/drivers/memory/tegra/tegra186-emc.c
+@@ -35,11 +35,6 @@ struct tegra186_emc {
+ 	struct icc_provider provider;
+ };
+ 
+-static inline struct tegra186_emc *to_tegra186_emc(struct icc_provider *provider)
+-{
+-	return container_of(provider, struct tegra186_emc, provider);
+-}
+-
+ /*
+  * debugfs interface
+  *
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
 
