@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-66902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA32F94F303
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D0194F4E3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 090D61C219E6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B04271F212C7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F32D186E47;
-	Mon, 12 Aug 2024 16:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90A3183CA6;
+	Mon, 12 Aug 2024 16:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6JO51FN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeQGR+cm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E790183CA6;
-	Mon, 12 Aug 2024 16:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978D316D9B8;
+	Mon, 12 Aug 2024 16:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479156; cv=none; b=dVubYnQsrde/7o9o4Gdv6yJyqwqAjw32kSpP32Fw6wJItUWXon3bPosqoBamBpysvKUR/X+T3zfJ7mKQvnA6CttdLLskTeoux4ZXitgFr0PCswLEU37CRD4kDx5bD3RTA8ru3PDvF2Y60hezyVHtStJX45fCCVrnCIOwR5rCHgk=
+	t=1723480548; cv=none; b=Hp9Qh0mEzm6/n+0JQ2SusszhnQy2XYk2kD6bNkOacd9jW0++MDc0HSgBSR0zTJ83fDFrmsyjczc8ZabGfhO1psWWB9dA/d4uvbFaCYo68EDCi/BCQgrF0loUVBNUU6U37kSjNlhWvMO75UYkvQ8GbRIQLCbU0tTIkWO53elps2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479156; c=relaxed/simple;
-	bh=GFmDbnhAZ8UJL3nSVhU/gdZQ8K3p+iLSDC6MGzihgnY=;
+	s=arc-20240116; t=1723480548; c=relaxed/simple;
+	bh=uqSfKuiew0QyPnakfkN2XHTkSnoqDuPo2vC+wHcoZLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVT5CpVpQimunzlMC1X5S1ZAZRMCPslH9ttmnKfTljtw9DNbdivCZ3tMvdfFnzdiTybOtRwiW0V9Yevb1kgA3eaSZ7i+oCOoxZ5Q9GyP+FtCn48B3WXNlxrntsdlVcMjZ3eqaksZieWLh/Ff2rcXqOHP+UX5cIu+8ygC6SAQ3Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6JO51FN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2133C32782;
-	Mon, 12 Aug 2024 16:12:35 +0000 (UTC)
+	 MIME-Version; b=KJRkecQ/vekwYA05Asf4e/oMBbVXt84v/NUBFRp/gQ/Qn0c60farhKwpgawA7bJMPq+dkqOOI76PSrFy6aiMLlw+U3UsjBLN3SaGcbho29tCmgse2XKH6mRMZSNP5b/Ix5SH6J5zR/qlGyAewawLYNm2nlKGZa1f1d3U9xJOM+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeQGR+cm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CA3C32782;
+	Mon, 12 Aug 2024 16:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479156;
-	bh=GFmDbnhAZ8UJL3nSVhU/gdZQ8K3p+iLSDC6MGzihgnY=;
+	s=korg; t=1723480548;
+	bh=uqSfKuiew0QyPnakfkN2XHTkSnoqDuPo2vC+wHcoZLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6JO51FNpSqIU+RnpZHIL7QYyOlCArt9bmR4dwfFEzCcMWk75xqKqSSopgwmtkOkP
-	 wzNmXjz9g/WtKVozkkliKJ8oD4HkwIyFaun2NolgKoL7SFwMfBCGzHpxJ4stcgqW2j
-	 scT9jomyYc9v+KjoCMrP0NIWKAhw7EDA2Ur8VZsk=
+	b=ZeQGR+cmxa/DwGVsplLDnpNP5JjFQlneNWPtEMtFWNUQPt3Uk5SsUD2W6z/TaDqMX
+	 gY6L8sVjcUOZwFEwq/RBhGtzKXFh5t4IFJJIfmddWH7/qh2OJYa7bh0G2GZimXzZUo
+	 I8x2aazhWfAjOuwrTCZBl5PQHXoltFfQ2Tx/HfDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 150/150] btrfs: fix double inode unlock for direct IO sync writes
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Mathias Krause <minipli@grsecurity.net>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.10 230/263] eventfs: Dont return NULL in eventfs_create_dir()
 Date: Mon, 12 Aug 2024 18:03:51 +0200
-Message-ID: <20240812160130.956350577@linuxfoundation.org>
+Message-ID: <20240812160155.340996872@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Mathias Krause <minipli@grsecurity.net>
 
-commit e0391e92f9ab4fb3dbdeb139c967dcfa7ac4b115 upstream.
+commit 12c20c65d0460cf34f9a665d8f0c0d77d45a3829 upstream.
 
-If we do a direct IO sync write, at btrfs_sync_file(), and we need to skip
-inode logging or we get an error starting a transaction or an error when
-flushing delalloc, we end up unlocking the inode when we shouldn't under
-the 'out_release_extents' label, and then unlock it again at
-btrfs_direct_write().
+Commit 77a06c33a22d ("eventfs: Test for ei->is_freed when accessing
+ei->dentry") added another check, testing if the parent was freed after
+we released the mutex. If so, the function returns NULL. However, all
+callers expect it to either return a valid pointer or an error pointer,
+at least since commit 5264a2f4bb3b ("tracing: Fix a NULL vs IS_ERR() bug
+in event_subsystem_dir()"). Returning NULL will therefore fail the error
+condition check in the caller.
 
-Fix that by checking if we have to skip inode unlocking under that label.
+Fix this by substituting the NULL return value with a fitting error
+pointer.
 
-Reported-by: syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/000000000000dfd631061eaeb4bc@google.com/
-Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: stable@vger.kernel.org
+Fixes: 77a06c33a22d ("eventfs: Test for ei->is_freed when accessing ei->dentry")
+Link: https://lore.kernel.org/20240723122522.2724-1-minipli@grsecurity.net
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/file.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/tracefs/event_inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -2037,7 +2037,10 @@ out:
- 
- out_release_extents:
- 	btrfs_release_log_ctx_extents(&ctx);
--	btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
-+	if (skip_ilock)
-+		up_write(&BTRFS_I(inode)->i_mmap_lock);
-+	else
-+		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
- 	goto out;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -736,7 +736,7 @@ struct eventfs_inode *eventfs_create_dir
+ 	/* Was the parent freed? */
+ 	if (list_empty(&ei->list)) {
+ 		cleanup_ei(ei);
+-		ei = NULL;
++		ei = ERR_PTR(-EBUSY);
+ 	}
+ 	return ei;
  }
- 
 
 
 
