@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-66911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4507F94F30E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F3F94F43B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C233CB2640F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3104CB233C6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77EAF187348;
-	Mon, 12 Aug 2024 16:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728B4186E38;
+	Mon, 12 Aug 2024 16:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEEg8H1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVqtwFIO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351B71EA8D;
-	Mon, 12 Aug 2024 16:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31545134AC;
+	Mon, 12 Aug 2024 16:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479186; cv=none; b=oHn+bEH5f6zJx6g3RWWFDjtq289jQoWnvbPZEhFXPbH05KHcwWGA5f0IEk3j7nYCAXoNEjlKC5xo3OoLLjz1XPc9rVFrNA0mYVZStTmeRx7y6t478IPKmUyLwkKDikE5QbMSTTCpLTfKej364fywqQDdzf6UIrltnRK12JFPcR4=
+	t=1723480071; cv=none; b=hPyfpvsqCevr+bbDYQOfvpN8HtVNcMGPefVwqd4bHknTSdFKHuQQRZ4Gsrw9HF4P8oWkhY5d6hG8Ezz86lI2Cr/mJgi840J7XWAnW+TDp0XgTwjDuX0Yq1jMxOS3F8dTYCKVI3njnPDX+wRbeU3ZdodLDXViU7fZZJAFiWu98lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479186; c=relaxed/simple;
-	bh=iO12GF78u3kURUDhkPba3dEAJTvsrUtAa2ngYGj12uo=;
+	s=arc-20240116; t=1723480071; c=relaxed/simple;
+	bh=lIYu3+rYqrtjfYFfOn79UGUlxb8O5VhNdJ+eAlM5P20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihgZPTckjpaiQEsoeK5UvX6t1WCwIjbEqrB2Wg6DvSjOYGg5LdTpJ2g/cW2Qhm7ONBR3ME9p6eJpbEw1QbbDxP45N0lX8F40xWBUXaHrVmcYiHta1O1c8xHJ0H8quCA8WaTNeQvv3m2xILp9c8PrSFm528IMKHYli1GbqD/FbJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEEg8H1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F04C32782;
-	Mon, 12 Aug 2024 16:13:05 +0000 (UTC)
+	 MIME-Version; b=f74/iWr8qeTu+E0x6ejY63pj8baSBIaE1taZ2oaMJliGJ8mkbNkFh3Uyzv/3yo5Gh+bchuGdUjQuYKZ45IrCyRxyfOwInVLi5LCK/mTdxu66JXsxkovlMtAeFSzYuY+rn/VfPvU55LgNuqEEzC0eswrCg8ozHov72LKwMPRgfmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVqtwFIO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99D2C32782;
+	Mon, 12 Aug 2024 16:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479185;
-	bh=iO12GF78u3kURUDhkPba3dEAJTvsrUtAa2ngYGj12uo=;
+	s=korg; t=1723480071;
+	bh=lIYu3+rYqrtjfYFfOn79UGUlxb8O5VhNdJ+eAlM5P20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEEg8H1url4Fd4qmXWGOYFbbeBILCDlT3k38EuMEkgOrlRUUwRSyIQBFsxkOjamRc
-	 +S32sefziD/Zy9uCL+F+RmR1Yof2RPztTrN9Sz3uN4nJSM2mHyfKQ2wYXbxAXoXRdw
-	 1wpFmo+VWtU0QFaShZtYCwqVOZFpqG0Ydwz2K2b8=
+	b=oVqtwFIOsYOoG6gldDxD0m1oKd65SCYBRIHan3uRQg/lW8F848RLe118ALaDJRwap
+	 zJQjke5YMGKz1ZmTpjjEXhq89DqOlcjyCbNwaJlNfmlCtN688z7mN3RHOdPqLHdVpB
+	 MMG5IcnyhrwGHT+A+bvc/4s4OzznwYEPrftkXB48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yipeng Zou <zouyipeng@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	"Artem S. Tashkinov" <aros@gmx.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/189] irqchip/mbigen: Fix mbigen node address layout
+Subject: [PATCH 6.10 056/263] cpufreq: amd-pstate: Allow users to write default EPP string
 Date: Mon, 12 Aug 2024 18:00:57 +0200
-Message-ID: <20240812160132.195393755@linuxfoundation.org>
+Message-ID: <20240812160148.688598974@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 6be6cba9c4371d27f78d900ccfe34bb880d9ee20 ]
+[ Upstream commit fc6e0837264a8b2504b6160e63ec92eb012540f3 ]
 
-The mbigen interrupt chip has its per node registers located in a
-contiguous region of page sized chunks. The code maps them into virtual
-address space as a contiguous region and determines the address of a node
-by using the node ID as index.
+The EPP string for 'default' represents what the firmware had configured
+as the default EPP value but once a user changes EPP to another string
+they can't reset it back to 'default'.
 
-                    mbigen chip
-       |-----------------|------------|--------------|
-   mgn_node_0         mgn_node_1     ...         mgn_node_i
-|--------------|   |--------------|       |----------------------|
-[0x0000, 0x0x0FFF] [0x1000, 0x1FFF]    [i*0x1000, (i+1)*0x1000 - 1]
+Cache the firmware EPP value and allow the user to write 'default' using
+this value.
 
-This works correctly up to 10 nodes, but then fails because the 11th's
-array slot is used for the MGN_CLEAR registers.
-
-                         mbigen chip
-    |-----------|--------|--------|---------------|--------|
-mgn_node_0  mgn_node_1  ...  mgn_clear_register  ...   mgn_node_i
-                            |-----------------|
-                             [0xA000, 0xAFFF]
-
-Skip the MGN_CLEAR register space when calculating the offset for node IDs
-greater than or equal to ten.
-
-Fixes: a6c2f87b8820 ("irqchip/mbigen: Implement the mbigen irq chip operation functions")
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240730014400.1751530-1-zouyipeng@huawei.com
+Reported-by: Artem S. Tashkinov <aros@gmx.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217931#c61
+Reviewed-by: Perry Yuan <perry.yuan@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mbigen.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ drivers/cpufreq/amd-pstate.c | 8 +++-----
+ drivers/cpufreq/amd-pstate.h | 1 +
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
-index 58881d3139792..244a8d489cac6 100644
---- a/drivers/irqchip/irq-mbigen.c
-+++ b/drivers/irqchip/irq-mbigen.c
-@@ -64,6 +64,20 @@ struct mbigen_device {
- 	void __iomem		*base;
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index a092b13ffbc2f..874ee90b1cf10 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -304,10 +304,8 @@ static int amd_pstate_set_energy_pref_index(struct amd_cpudata *cpudata,
+ 	int epp = -EINVAL;
+ 	int ret;
+ 
+-	if (!pref_index) {
+-		pr_debug("EPP pref_index is invalid\n");
+-		return -EINVAL;
+-	}
++	if (!pref_index)
++		epp = cpudata->epp_default;
+ 
+ 	if (epp == -EINVAL)
+ 		epp = epp_values[pref_index];
+@@ -1439,7 +1437,7 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
+ 
+ 	policy->driver_data = cpudata;
+ 
+-	cpudata->epp_cached = amd_pstate_get_epp(cpudata, 0);
++	cpudata->epp_cached = cpudata->epp_default = amd_pstate_get_epp(cpudata, 0);
+ 
+ 	policy->min = policy->cpuinfo.min_freq;
+ 	policy->max = policy->cpuinfo.max_freq;
+diff --git a/drivers/cpufreq/amd-pstate.h b/drivers/cpufreq/amd-pstate.h
+index e6a28e7f4dbf1..f80b33fa5d43a 100644
+--- a/drivers/cpufreq/amd-pstate.h
++++ b/drivers/cpufreq/amd-pstate.h
+@@ -99,6 +99,7 @@ struct amd_cpudata {
+ 	u32	policy;
+ 	u64	cppc_cap1_cached;
+ 	bool	suspended;
++	s16	epp_default;
  };
  
-+static inline unsigned int get_mbigen_node_offset(unsigned int nid)
-+{
-+	unsigned int offset = nid * MBIGEN_NODE_OFFSET;
-+
-+	/*
-+	 * To avoid touched clear register in unexpected way, we need to directly
-+	 * skip clear register when access to more than 10 mbigen nodes.
-+	 */
-+	if (nid >= (REG_MBIGEN_CLEAR_OFFSET / MBIGEN_NODE_OFFSET))
-+		offset += MBIGEN_NODE_OFFSET;
-+
-+	return offset;
-+}
-+
- static inline unsigned int get_mbigen_vec_reg(irq_hw_number_t hwirq)
- {
- 	unsigned int nid, pin;
-@@ -72,8 +86,7 @@ static inline unsigned int get_mbigen_vec_reg(irq_hw_number_t hwirq)
- 	nid = hwirq / IRQS_PER_MBIGEN_NODE + 1;
- 	pin = hwirq % IRQS_PER_MBIGEN_NODE;
- 
--	return pin * 4 + nid * MBIGEN_NODE_OFFSET
--			+ REG_MBIGEN_VEC_OFFSET;
-+	return pin * 4 + get_mbigen_node_offset(nid) + REG_MBIGEN_VEC_OFFSET;
- }
- 
- static inline void get_mbigen_type_reg(irq_hw_number_t hwirq,
-@@ -88,8 +101,7 @@ static inline void get_mbigen_type_reg(irq_hw_number_t hwirq,
- 	*mask = 1 << (irq_ofst % 32);
- 	ofst = irq_ofst / 32 * 4;
- 
--	*addr = ofst + nid * MBIGEN_NODE_OFFSET
--		+ REG_MBIGEN_TYPE_OFFSET;
-+	*addr = ofst + get_mbigen_node_offset(nid) + REG_MBIGEN_TYPE_OFFSET;
- }
- 
- static inline void get_mbigen_clear_reg(irq_hw_number_t hwirq,
+ #endif /* _LINUX_AMD_PSTATE_H */
 -- 
 2.43.0
 
