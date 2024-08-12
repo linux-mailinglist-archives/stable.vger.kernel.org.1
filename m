@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F97B94F433
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBDC94F31F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1392B21589
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDF3DB265DA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296C2186E34;
-	Mon, 12 Aug 2024 16:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B87186E40;
+	Mon, 12 Aug 2024 16:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDaB6cS4"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCHoqXdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC791134AC;
-	Mon, 12 Aug 2024 16:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914F11862B9;
+	Mon, 12 Aug 2024 16:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480044; cv=none; b=b/Lrdf0J6zuyXU9tt8qVDQoW4y/Z8y5P4Kps2q2VZkNgzXrnfWJkoBDtkVTB47WhuXyczAHPhkDB+JOvi3iJHyOMAxCEoiFF3qVFwNdtkX2xIKvUENKC2rFHcM51JN5Z8YP9Y+5iK0hdaJQdKsA80VrWh8KALThwAeA+cadnSdg=
+	t=1723479234; cv=none; b=AlK8jqi8WH4F3dHnFb++CZ1P+v+ECqymcYCtkutgKpRdc90aP54eQt2R57ECYYeSAEKmB1zKArDsVlmsnItguLoWg2elRHeLKpsyfFRzqWYy62AXBaCNmaUjquAiINLptvQqFUwCK0F/+cF+0qjPg27V7zgagwTp2FHQOIfnyj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480044; c=relaxed/simple;
-	bh=TM/NoMCUWan0JX37yuR0Qx8wrkPV/A2/vnb62vdkaB8=;
+	s=arc-20240116; t=1723479234; c=relaxed/simple;
+	bh=iPFhmMXbES1rP3eVCtBklbIL/0iFV0Lf7VdxWt1VWjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKYa79UNdPtB8vFzMVdeyoyHk6htlNLJbNNL/FQ29lKlDgpBXzxJwLD/YLdYrW+bIF994DDGVvOGyOxY0HyDcYHyV5+ljtRSjkXLYVEhObCPr2ogoa7ZuUERVP9EL953x3li8L3/UymqxRGTJ5l1XzQiimtqmK8eaz7khDmS7Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDaB6cS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D3DC32782;
-	Mon, 12 Aug 2024 16:27:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b42ii+jxGAMVybR3iSkeZIu3fX0qD6ylGUcG15PIUFbHGKK9Cy3haLeWFaTyrerNXe6BprRn+3j6RzJmKGKCOweNjIofGK0ECmY2WOk8/NmPWvZJZ3GX8CDGd2iOxzhxyg5OHK1NbGzELxjCkMVZ2EUyKWF3E0KoRntH2lwy8Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCHoqXdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D612BC32782;
+	Mon, 12 Aug 2024 16:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480044;
-	bh=TM/NoMCUWan0JX37yuR0Qx8wrkPV/A2/vnb62vdkaB8=;
+	s=korg; t=1723479234;
+	bh=iPFhmMXbES1rP3eVCtBklbIL/0iFV0Lf7VdxWt1VWjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDaB6cS4a/KWLcbUHTwgFQV0qUr/oAHjniExDNZiRJTG/oJnuqKlDiJKg0Uq2CmGp
-	 gTU3U01CiEN6m4VHD9zzqoV0gTzVBgS0s887fbg3BDtn+KsQsMVVgk3TFBmujoODRa
-	 WBWX5TsaFmOHdgocyOTMKCT9bK0SbIBmiBnZXD8k=
+	b=NCHoqXdRUMmkm/mvFZmtasLQAQ3/ZHGetvvN0wcTZRreC2YSnobmZa40wcjhXhDa5
+	 mdgitww3FKgt0VzItEQuOkmKB+lAEXebbZRv4YU5xbE4RZKAu3uWiom8iJIVF0w6Zx
+	 E+MJ7KFEA98hkQI9ZwucixgUg5D+3jBvoyA37qow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	patches@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
+	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 078/263] net: stmmac: qcom-ethqos: enable SGMII loopback during DMA reset on sa8775p-ride-r3
+Subject: [PATCH 6.6 023/189] net: fec: Stop PPS on driver remove
 Date: Mon, 12 Aug 2024 18:01:19 +0200
-Message-ID: <20240812160149.531566322@linuxfoundation.org>
+Message-ID: <20240812160133.036690102@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,123 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit 3c466d6537b99f801b3f68af3d8124d4312437a0 ]
+[ Upstream commit 8fee6d5ad5fa18c270eedb2a2cdf58dbadefb94b ]
 
-On sa8775p-ride-r3 the RX clocks from the AQR115C PHY are not available at
-the time of the DMA reset. We can however extract the RX clock from the
-internal SERDES block. Once the link is up, we can revert to the
-previous state.
+PPS was not stopped in `fec_ptp_stop()`, called when
+the adapter was removed. Consequentially, you couldn't
+safely reload the driver with the PPS signal on.
 
-The AQR115C PHY doesn't support in-band signalling so we can count on
-getting the link up notification and safely reuse existing callbacks
-which are already used by another HW quirk workaround which enables the
-functional clock to avoid a DMA reset due to timeout.
-
-Only enable loopback on revision 3 of the board - check the phy_mode to
-make sure.
-
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://lore.kernel.org/netdev/CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com/T/#m01dcb810bfc451a492140f6797ca77443d0cb79f
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240703181500.28491-3-brgl@bgdev.pl
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20240807080956.2556602-1-csokas.bence@prolan.hu
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../stmicro/stmmac/dwmac-qcom-ethqos.c        | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 466c4002f00d4..3a7f3a8b06718 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -21,6 +21,7 @@
- #define RGMII_IO_MACRO_CONFIG2		0x1C
- #define RGMII_IO_MACRO_DEBUG1		0x20
- #define EMAC_SYSTEM_LOW_POWER_DEBUG	0x28
-+#define EMAC_WRAPPER_SGMII_PHY_CNTRL1	0xf4
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index e32f6724f5681..2e4f3e1782a25 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -775,6 +775,9 @@ void fec_ptp_stop(struct platform_device *pdev)
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
  
- /* RGMII_IO_MACRO_CONFIG fields */
- #define RGMII_CONFIG_FUNC_CLK_EN		BIT(30)
-@@ -79,6 +80,9 @@
- #define ETHQOS_MAC_CTRL_SPEED_MODE		BIT(14)
- #define ETHQOS_MAC_CTRL_PORT_SEL		BIT(15)
- 
-+/* EMAC_WRAPPER_SGMII_PHY_CNTRL1 bits */
-+#define SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN	BIT(3)
++	if (fep->pps_enable)
++		fec_ptp_enable_pps(fep, 0);
 +
- #define SGMII_10M_RX_CLK_DVDR			0x31
- 
- struct ethqos_emac_por {
-@@ -95,6 +99,7 @@ struct ethqos_emac_driver_data {
- 	bool has_integrated_pcs;
- 	u32 dma_addr_width;
- 	struct dwmac4_addrs dwmac4_addrs;
-+	bool needs_sgmii_loopback;
- };
- 
- struct qcom_ethqos {
-@@ -114,6 +119,7 @@ struct qcom_ethqos {
- 	unsigned int num_por;
- 	bool rgmii_config_loopback_en;
- 	bool has_emac_ge_3;
-+	bool needs_sgmii_loopback;
- };
- 
- static int rgmii_readl(struct qcom_ethqos *ethqos, unsigned int offset)
-@@ -191,8 +197,22 @@ ethqos_update_link_clk(struct qcom_ethqos *ethqos, unsigned int speed)
- 	clk_set_rate(ethqos->link_clk, ethqos->link_clk_rate);
- }
- 
-+static void
-+qcom_ethqos_set_sgmii_loopback(struct qcom_ethqos *ethqos, bool enable)
-+{
-+	if (!ethqos->needs_sgmii_loopback ||
-+	    ethqos->phy_mode != PHY_INTERFACE_MODE_2500BASEX)
-+		return;
-+
-+	rgmii_updatel(ethqos,
-+		      SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN,
-+		      enable ? SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN : 0,
-+		      EMAC_WRAPPER_SGMII_PHY_CNTRL1);
-+}
-+
- static void ethqos_set_func_clk_en(struct qcom_ethqos *ethqos)
- {
-+	qcom_ethqos_set_sgmii_loopback(ethqos, true);
- 	rgmii_updatel(ethqos, RGMII_CONFIG_FUNC_CLK_EN,
- 		      RGMII_CONFIG_FUNC_CLK_EN, RGMII_IO_MACRO_CONFIG);
- }
-@@ -277,6 +297,7 @@ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
- 	.has_emac_ge_3 = true,
- 	.link_clk_name = "phyaux",
- 	.has_integrated_pcs = true,
-+	.needs_sgmii_loopback = true,
- 	.dma_addr_width = 36,
- 	.dwmac4_addrs = {
- 		.dma_chan = 0x00008100,
-@@ -674,6 +695,7 @@ static void ethqos_fix_mac_speed(void *priv, unsigned int speed, unsigned int mo
- {
- 	struct qcom_ethqos *ethqos = priv;
- 
-+	qcom_ethqos_set_sgmii_loopback(ethqos, false);
- 	ethqos->speed = speed;
- 	ethqos_update_link_clk(ethqos, speed);
- 	ethqos_configure(ethqos);
-@@ -809,6 +831,7 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
- 	ethqos->num_por = data->num_por;
- 	ethqos->rgmii_config_loopback_en = data->rgmii_config_loopback_en;
- 	ethqos->has_emac_ge_3 = data->has_emac_ge_3;
-+	ethqos->needs_sgmii_loopback = data->needs_sgmii_loopback;
- 
- 	ethqos->link_clk = devm_clk_get(dev, data->link_clk_name ?: "rgmii");
- 	if (IS_ERR(ethqos->link_clk))
+ 	cancel_delayed_work_sync(&fep->time_keep);
+ 	hrtimer_cancel(&fep->perout_timer);
+ 	if (fep->ptp_clock)
 -- 
 2.43.0
 
