@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-66952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B24594F33B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DCD94F287
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14F362868C9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 667101C2179A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BDD187335;
-	Mon, 12 Aug 2024 16:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59214187345;
+	Mon, 12 Aug 2024 16:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZqs2iAg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RnRWHm3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCE018732A;
-	Mon, 12 Aug 2024 16:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1810E187339;
+	Mon, 12 Aug 2024 16:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479318; cv=none; b=X5aagz3kmz1vK2cgWLz9W/dTu7IEsxzI2vFMkgvrFEtp0fLpEl18JU6zSWFOv19RnlAQiLNi+PKnS/FzIwHtEru8rX6FHPzYkultHYyoMAt5p5i0pKqSY6fXKwnBTkH6AALI6JUtq2HaTTNKwmfQOcjw8McHa8iR6gagH/IQLPM=
+	t=1723478836; cv=none; b=n2ZlBO40lzkGZakB7BcgOq5Cb+J6tLrF+G4vUMLJvawbjVyTn7DS50HvYB4Kbv3qiLPqQYUq7CuOw5vPBuEf/LglSj4ufnaw2OHWFJVYZbJtcPil0SfQQl8d+3Bg89FjWwP+rkG1Cgha8/HbjJRaDk9tRkwizXjFHZrFxuPCqZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479318; c=relaxed/simple;
-	bh=gemjgLJeDMD7UQqloJypj7QwPxgMNyFIw3R2xdJwCXs=;
+	s=arc-20240116; t=1723478836; c=relaxed/simple;
+	bh=Uzb73MNEBRtFXFx5f5dW+YWjZjkbEczrCA1J6R7CKpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oasVvkHhVyliL5+ak7SfdQk08AvW5AcCW3mVFYBr/mTEyTezy0B6i3/rRBplmTRigAuCj8EHwKnqWVBvuCLvUcL/MnBG68FOfHGU2lA4Lx/ghj65/Nos3jBbYCetSV6ErguWlzgSIdX2AbEyvBMysM3F53ofgFkqjuLel3V3ArI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZqs2iAg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A64C32782;
-	Mon, 12 Aug 2024 16:15:17 +0000 (UTC)
+	 MIME-Version; b=bu/KuuwsAUeTUqTK/n1UjNiR4Hn94RKkZARISahhmcua7aYKVXf7v+ZOCLhBFB1Op2LOJr+gLkDyyQ9dR7T51AM3ysUmHIaZnP03awJfEnrbBEq66W9y4kyTp01tT4Ga27Vs9mzac7cgRKpuW+wipGpUo3epNxeP2BPnedOSZPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RnRWHm3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9DBC32782;
+	Mon, 12 Aug 2024 16:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479318;
-	bh=gemjgLJeDMD7UQqloJypj7QwPxgMNyFIw3R2xdJwCXs=;
+	s=korg; t=1723478835;
+	bh=Uzb73MNEBRtFXFx5f5dW+YWjZjkbEczrCA1J6R7CKpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZqs2iAgMf5rYb2QJu6MeZ+YWDSbPJVyGSi2zjZeA2vAxMrrX+sxFXQTRrRTNg9Mh
-	 W+RWtkHiqtQDjIQ9oGhgfm8eIbAtW1g9hxCRQgwfSxvVafFHEPlC7+gtQwaivFKHG2
-	 O1CUaJs0L8/E7ln+oI3Shef0AYsNuLXvb175gZAc=
+	b=1RnRWHm3kOGe9HzAz3m4SXax1/m3P6ca8t34lSl7V08gFTui8e7KbIDq0Np94OFsz
+	 makS3vAefgZeTLpNyAF9hHs4vBUGASkIO8w+aozFH1rI/2GwIUfwrQXsLIL0vGQdIB
+	 4hV6R4oYfSLV5MO9AoXpJdtyVXmDpaveRxp+wPaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+bc0f5b92cc7091f45fb6@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/189] drm/amd/display: Add delay to improve LTTPR UHBR interop
+Subject: [PATCH 6.1 024/150] wifi: nl80211: disallow setting special AP channel widths
 Date: Mon, 12 Aug 2024 18:01:45 +0200
-Message-ID: <20240812160134.032361042@linuxfoundation.org>
+Message-ID: <20240812160126.095188800@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 10839ee6a977ed1f7d0f4deb29f2d7e5d1f2a9dd ]
+[ Upstream commit 23daf1b4c91db9b26f8425cc7039cf96d22ccbfe ]
 
-[WHY]
-Avoid race condition which puts LTTPR into bad state during UHBR LT.
+Setting the AP channel width is meant for use with the normal
+20/40/... MHz channel width progression, and switching around
+in S1G or narrow channels isn't supported. Disallow that.
 
-[HOW]
-Delay 30ms between starting UHBR TPS1 PHY output and sending TPS1 via DPCD.
-
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: syzbot+bc0f5b92cc7091f45fb6@syzkaller.appspotmail.com
+Link: https://msgid.link/20240515141600.d4a9590bfe32.I19a32d60097e81b527eafe6b0924f6c5fbb2dc45@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c      | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/wireless/nl80211.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c
-index b621b97711b61..a7f5b0f6272ce 100644
---- a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c
-@@ -162,7 +162,12 @@ static void set_hpo_fixed_vs_pe_retimer_dp_link_test_pattern(struct dc_link *lin
- 		link_res->hpo_dp_link_enc->funcs->set_link_test_pattern(
- 				link_res->hpo_dp_link_enc, tp_params);
- 	}
-+
- 	link->dc->link_srv->dp_trace_source_sequence(link, DPCD_SOURCE_SEQ_AFTER_SET_SOURCE_PATTERN);
-+
-+	// Give retimer extra time to lock before updating DP_TRAINING_PATTERN_SET to TPS1
-+	if (tp_params->dp_phy_pattern == DP_TEST_PATTERN_128b_132b_TPS1_TRAINING_MODE)
-+		msleep(30);
- }
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index a00df7b89ca86..603fcd921bd22 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3346,6 +3346,33 @@ static int __nl80211_set_channel(struct cfg80211_registered_device *rdev,
+ 			if (chandef.chan != cur_chan)
+ 				return -EBUSY;
  
- static void set_hpo_fixed_vs_pe_retimer_dp_lane_settings(struct dc_link *link,
++			/* only allow this for regular channel widths */
++			switch (wdev->links[link_id].ap.chandef.width) {
++			case NL80211_CHAN_WIDTH_20_NOHT:
++			case NL80211_CHAN_WIDTH_20:
++			case NL80211_CHAN_WIDTH_40:
++			case NL80211_CHAN_WIDTH_80:
++			case NL80211_CHAN_WIDTH_80P80:
++			case NL80211_CHAN_WIDTH_160:
++			case NL80211_CHAN_WIDTH_320:
++				break;
++			default:
++				return -EINVAL;
++			}
++
++			switch (chandef.width) {
++			case NL80211_CHAN_WIDTH_20_NOHT:
++			case NL80211_CHAN_WIDTH_20:
++			case NL80211_CHAN_WIDTH_40:
++			case NL80211_CHAN_WIDTH_80:
++			case NL80211_CHAN_WIDTH_80P80:
++			case NL80211_CHAN_WIDTH_160:
++			case NL80211_CHAN_WIDTH_320:
++				break;
++			default:
++				return -EINVAL;
++			}
++
+ 			result = rdev_set_ap_chanwidth(rdev, dev, link_id,
+ 						       &chandef);
+ 			if (result)
 -- 
 2.43.0
 
