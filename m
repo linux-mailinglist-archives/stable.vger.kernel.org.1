@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-67243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC1E94F487
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E5E94F370
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:17:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7195E1F21A72
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6270C281588
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CDB16D9B8;
-	Mon, 12 Aug 2024 16:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142A418454D;
+	Mon, 12 Aug 2024 16:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DG2Rriaw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4No8pfg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFE0183CD4;
-	Mon, 12 Aug 2024 16:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5819178CE4;
+	Mon, 12 Aug 2024 16:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480284; cv=none; b=qanGT+gbJEBgHKVDcQ8E/VsvWX9vY0WHiTAsTz7PdjSF95okieIWQvMPY6gaE+i88EmMM01Domq6mgvROeqvqbz2R3ofTH6YSLdVGbl06EP1pe5eP/ZYchT0rWbEcQBjgi2d1FaWs+44f60CK8hmNgkaGAsb/5zg0Zll/ZJr6Bk=
+	t=1723479463; cv=none; b=uw9h06jifuH9X06hVweaTWPdmZvm9CFLQsyYmCVZulB/6I/ZsOg56FEVIkBNTjU2i3hcgU0Qy9xjY9Qkzknt54iNG/sEbzxt+LGa0LrplNj1PMI3R0PeroLlITRJmysqmfTOHThl2lOae+Xg7jsarcQmih2yN4QMSTTOE6RPm20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480284; c=relaxed/simple;
-	bh=RGy9ugdX+AB1b9c3haeTN4z1/WZ4TA5UDzQV9bF2rcw=;
+	s=arc-20240116; t=1723479463; c=relaxed/simple;
+	bh=JOxD+qO6FcjAN38rn5jt2KMU0D7UKdf6fAlFR7VFlqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsSAOqagciXl9Yl/3S556SXkumyhB8R+Ce5JiBuWukb3sCcjBQC9aK0Swurgd1G7Wrg2ptEpwteVLfzKIk5ZOv6VumTfLX3hSMHSpWXABz0yOYzt97QlJXDkM5NS8Pjs2AkVejLPwh2Oixn2SsZDr9I4g07u2xQKDG5b3sE7zDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DG2Rriaw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF83C32782;
-	Mon, 12 Aug 2024 16:31:23 +0000 (UTC)
+	 MIME-Version; b=pqZ4lxLyjmb90qkRn9DYhSjK/APHQhOAu0ClR6XyQZYz74fUbw2eZhUZE5xxlSsS6o56KBmNs9o9y+NqE7TswVIQbyZShR44Tk5PR2BOCQjWJI5fADi5tgoLXi/5C9bVsFPadW7OdaW06HeHgtfz0+4gv6qP/AZTyY8/oLLC7rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4No8pfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3221CC32782;
+	Mon, 12 Aug 2024 16:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480284;
-	bh=RGy9ugdX+AB1b9c3haeTN4z1/WZ4TA5UDzQV9bF2rcw=;
+	s=korg; t=1723479463;
+	bh=JOxD+qO6FcjAN38rn5jt2KMU0D7UKdf6fAlFR7VFlqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DG2RriawJTKDB2ILinJazuj08hi0r/Yvhp7GKtZWis2ptPwjXaVgZ1Xqyp8JSFoXC
-	 dsmNAZxj/iVh2w7yPKMFFzVIMBXhQw4xoBsBDqDPjtb9IyWJ4x3oAP1ldkaCMGW3BC
-	 EmSdeCHuMYCuMCRQRk199YgFwZ1hqZyYGCZxV/q4=
+	b=E4No8pfgwr2MWz4Q57muNJ9sjtvN7hQH420x/4R2IQeEJnZ/W8txle65mZq9jKua1
+	 3Kiqh0iTIQZdCeTNqYOcsUfozVZotLhaevMeSv5H/SBhR7WYr10c3Rk5fh8ygw4BSw
+	 b3UGcdeudV6CtnyBazPG7+kNbLaeSCohnngXjbX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.10 119/263] profiling: remove profile=sleep support
+	Xiaxi Shen <shenxiaxi26@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 064/189] ext4: fix uninitialized variable in ext4_inlinedir_to_tree
 Date: Mon, 12 Aug 2024 18:02:00 +0200
-Message-ID: <20240812160151.101789817@linuxfoundation.org>
+Message-ID: <20240812160134.606517980@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Xiaxi Shen <shenxiaxi26@gmail.com>
 
-commit b88f55389ad27f05ed84af9e1026aa64dbfabc9a upstream.
+[ Upstream commit 8dc9c3da79c84b13fdb135e2fb0a149a8175bffe ]
 
-The kernel sleep profile is no longer working due to a recursive locking
-bug introduced by commit 42a20f86dc19 ("sched: Add wrapper for get_wchan()
-to keep task blocked")
+Syzbot has found an uninit-value bug in ext4_inlinedir_to_tree
 
-Booting with the 'profile=sleep' kernel command line option added or
-executing
+This error happens because ext4_inlinedir_to_tree does not
+handle the case when ext4fs_dirhash returns an error
 
-  # echo -n sleep > /sys/kernel/profiling
+This can be avoided by checking the return value of ext4fs_dirhash
+and propagating the error,
+similar to how it's done with ext4_htree_store_dirent
 
-after boot causes the system to lock up.
-
-Lockdep reports
-
-  kthreadd/3 is trying to acquire lock:
-  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: get_wchan+0x32/0x70
-
-  but task is already holding lock:
-  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: try_to_wake_up+0x53/0x370
-
-with the call trace being
-
-   lock_acquire+0xc8/0x2f0
-   get_wchan+0x32/0x70
-   __update_stats_enqueue_sleeper+0x151/0x430
-   enqueue_entity+0x4b0/0x520
-   enqueue_task_fair+0x92/0x6b0
-   ttwu_do_activate+0x73/0x140
-   try_to_wake_up+0x213/0x370
-   swake_up_locked+0x20/0x50
-   complete+0x2f/0x40
-   kthread+0xfb/0x180
-
-However, since nobody noticed this regression for more than two years,
-let's remove 'profile=sleep' support based on the assumption that nobody
-needs this functionality.
-
-Fixes: 42a20f86dc19 ("sched: Add wrapper for get_wchan() to keep task blocked")
-Cc: stable@vger.kernel.org # v5.16+
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
+Reported-and-tested-by: syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=eaba5abe296837a640c0
+Link: https://patch.msgid.link/20240501033017.220000-1-shenxiaxi26@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |    4 +---
- include/linux/profile.h                         |    1 -
- kernel/profile.c                                |   11 +----------
- kernel/sched/stats.c                            |   10 ----------
- 4 files changed, 2 insertions(+), 24 deletions(-)
+ fs/ext4/inline.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4801,11 +4801,9 @@
- 
- 	profile=	[KNL] Enable kernel profiling via /proc/profile
- 			Format: [<profiletype>,]<number>
--			Param: <profiletype>: "schedule", "sleep", or "kvm"
-+			Param: <profiletype>: "schedule" or "kvm"
- 				[defaults to kernel profiling]
- 			Param: "schedule" - profile schedule points.
--			Param: "sleep" - profile D-state sleeping (millisecs).
--				Requires CONFIG_SCHEDSTATS
- 			Param: "kvm" - profile VM exits.
- 			Param: <number> - step/bucket size as a power of 2 for
- 				statistical time based profiling.
---- a/include/linux/profile.h
-+++ b/include/linux/profile.h
-@@ -11,7 +11,6 @@
- 
- #define CPU_PROFILING	1
- #define SCHED_PROFILING	2
--#define SLEEP_PROFILING	3
- #define KVM_PROFILING	4
- 
- struct proc_dir_entry;
---- a/kernel/profile.c
-+++ b/kernel/profile.c
-@@ -57,20 +57,11 @@ static DEFINE_MUTEX(profile_flip_mutex);
- int profile_setup(char *str)
- {
- 	static const char schedstr[] = "schedule";
--	static const char sleepstr[] = "sleep";
- 	static const char kvmstr[] = "kvm";
- 	const char *select = NULL;
- 	int par;
- 
--	if (!strncmp(str, sleepstr, strlen(sleepstr))) {
--#ifdef CONFIG_SCHEDSTATS
--		force_schedstat_enabled();
--		prof_on = SLEEP_PROFILING;
--		select = sleepstr;
--#else
--		pr_warn("kernel sleep profiling requires CONFIG_SCHEDSTATS\n");
--#endif /* CONFIG_SCHEDSTATS */
--	} else if (!strncmp(str, schedstr, strlen(schedstr))) {
-+	if (!strncmp(str, schedstr, strlen(schedstr))) {
- 		prof_on = SCHED_PROFILING;
- 		select = schedstr;
- 	} else if (!strncmp(str, kvmstr, strlen(kvmstr))) {
---- a/kernel/sched/stats.c
-+++ b/kernel/sched/stats.c
-@@ -92,16 +92,6 @@ void __update_stats_enqueue_sleeper(stru
- 
- 			trace_sched_stat_blocked(p, delta);
- 
--			/*
--			 * Blocking time is in units of nanosecs, so shift by
--			 * 20 to get a milliseconds-range estimation of the
--			 * amount of time that the task spent sleeping:
--			 */
--			if (unlikely(prof_on == SLEEP_PROFILING)) {
--				profile_hits(SLEEP_PROFILING,
--					     (void *)get_wchan(p),
--					     delta >> 20);
--			}
- 			account_scheduler_latency(p, delta >> 10, 0);
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 012d9259ff532..a604aa1d23aed 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -1411,7 +1411,11 @@ int ext4_inlinedir_to_tree(struct file *dir_file,
+ 			hinfo->hash = EXT4_DIRENT_HASH(de);
+ 			hinfo->minor_hash = EXT4_DIRENT_MINOR_HASH(de);
+ 		} else {
+-			ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
++			err = ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
++			if (err) {
++				ret = err;
++				goto out;
++			}
  		}
- 	}
+ 		if ((hinfo->hash < start_hash) ||
+ 		    ((hinfo->hash == start_hash) &&
+-- 
+2.43.0
+
 
 
 
