@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B5B94F03B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D90C94F03D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2C24B21FDD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77025B26487
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE361184546;
-	Mon, 12 Aug 2024 14:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3E718454E;
+	Mon, 12 Aug 2024 14:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lopz9j7j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bxq7zmZf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED8C1836E2
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D93B183CAB
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474041; cv=none; b=U4EkI8CyiPtb8yUu7DqL4+nBjDpAFI41WGtIuy0juZP2vr190+nheoKgBc1/D/8hqxEy8L+ieVBNyU0EKnG2JWyRNx1iUrfybteAe8jmq+fVLGIh1qx3MMCzScIvuyFzxX/kRK0isaJqvS5Qg4BLtQR23pb3JAPQl0imIGyv0bI=
+	t=1723474048; cv=none; b=uoePzSOFgP5DTzC5vn57DpvwrWHaOpVGs9b2eObfoA9CnAnojXnminUdfuJh2RMy4AjOg7af9M2TC8SnofT/D7uJqLfzErFy+9SdcOabyovIFGCmCuUTtliuA6BHgosFysf4gChodxvOrGaCRomfC9W6fXEMrE0LUMrHYyFVuDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474041; c=relaxed/simple;
-	bh=650mtgwez7mSlQfwZnnDUbqE/4a4sw9S5e80+PEX5gw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MeMy5Dq8WeEFmBCG9bEeGnhrmcuBYIJfqm1YvCvnDlr0CTCmlDG0OcvCUcKXPJTL0fyWE4szVC86+ZGetxx3TMRpgeZGfgVmoe2rP3kv0O9toFYmsyRqFgezgsbD108AjR+LIzGQhzji+KlfCcrkkkphtu/7lSdB+35dDEUSFZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lopz9j7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E213DC32782;
-	Mon, 12 Aug 2024 14:47:20 +0000 (UTC)
+	s=arc-20240116; t=1723474048; c=relaxed/simple;
+	bh=zk75DrKQ3b0IL9j5XQEXAuhbmIzwLvtKnilvm9iXaR0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=f5S+93U1rX9t/N8e8ZKr90gQsoSkJmF1PFFVVBr9G9WQvUxPWwVaDF1WtNFZE4K/fjxL5qzMYoFrF0P2C8DAH82nOxcoV3bugWTEFnbweKBfxtYqdISbI+xqK+ag4PBh39DnpR0Do8UkYtsj+rPRJU9ib/+PSnaMwWLGSJRWrM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bxq7zmZf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5EBC32782;
+	Mon, 12 Aug 2024 14:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474041;
-	bh=650mtgwez7mSlQfwZnnDUbqE/4a4sw9S5e80+PEX5gw=;
+	s=korg; t=1723474048;
+	bh=zk75DrKQ3b0IL9j5XQEXAuhbmIzwLvtKnilvm9iXaR0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lopz9j7jsJzx0HaGkXPXJhNZNI3130xiERlcu9H9cQPz+XXXPUuGxq9vlXHr8WKfA
-	 gdR7imNixOWEoejLp5Fti0Uvxe9fvT0vog1/BC8qGQR23cj0NVeJ3aaRE4CIKCxLGg
-	 vC48RgaafKZuPkFreVDWNj0vqtEr23b7WTxa2m3k=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Adjust reg field for DSC wait for disconnect" failed to apply to 6.1-stable tree
+	b=Bxq7zmZf5qRD43ixX0MrmI2d+l6ILtur6/1yySGkgxkb48s39Z/+vyMWYGSdH0HzI
+	 c8mFQ4L92iL0go94z2A7JscwjHvFPBxks38ruLuGIbhIInet49MeAxhLCPlgvP4KGh
+	 HaL05WcFhKme7XlJBZl0jU7YTAFw9SqfrkNU0X8k=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Adjust reg field for DSC wait for disconnect" failed to apply to 5.15-stable tree
 To: ryanseto@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:47:11 +0200
-Message-ID: <2024081211-foothold-crayfish-6d6d@gregkh>
+Date: Mon, 12 Aug 2024 16:47:12 +0200
+Message-ID: <2024081211-whacking-visa-8ff1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 569d7db70e5dcf13fbf072f10e9096577ac1e565
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081211-foothold-crayfish-6d6d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081211-whacking-visa-8ff1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
