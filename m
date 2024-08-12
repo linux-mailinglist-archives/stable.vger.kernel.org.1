@@ -1,78 +1,76 @@
-Return-Path: <stable+bounces-66568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DCD94F02F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19F994F030
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01751281F5A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD48281BB7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DFA18452F;
-	Mon, 12 Aug 2024 14:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7107E187335;
+	Mon, 12 Aug 2024 14:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tg9CW1U1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YksX6A/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9424187328
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F87186E5F
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474001; cv=none; b=X6xG6xBcpCAO957qBDlMnKweM+mXX9pDyKBTE29FHBuQjg01r9Q/FtOoG3dRxy5nV4aEvkJ2oUyNKr36Rb+LJ3pmdbrQKT0z9o4xwd/uYA+OKjUM+upCY8/1mM7L/qem/VasU1yA9apgm+g7MAgTTGErmpNEqLX5l7n9Pwmqzas=
+	t=1723474004; cv=none; b=BKtvKaTp6g8UNe1Hi5Y2TGjtpJfs/S833tOommpiRU9YoXo2neFgTd9gB+ZfmSaepmQK5N6CPSHJsZ0KVnKehUQ+voCZdIzPs8XFFsslU+OgOHBE2Q8etcobON8K/OAZshRRgE5LkGlfxSdTelDM/hu6YNBF8LxClyUOPmM+el4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474001; c=relaxed/simple;
-	bh=F/DwFkhCN5QLHiQEY1wdYnDhhwSWBVMCB+9dY9AjfFs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZvDlMrw422DTCHEPyFLMkilmNfKNW+ObB8B9s1cgT9HTGvMKGqzhrrpDBeUNTyhC6awzMvId7b3eun4qDtbIGGeDrp33syEMq9YUFRp9IDdSPonGXy+1HX3+abw9Q4ZTLfhhCCKRrHBcO2Sq+R6iUZFhRNhvOh3+LzSOq9fBtdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tg9CW1U1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64CEAC4AF0F;
-	Mon, 12 Aug 2024 14:46:40 +0000 (UTC)
+	s=arc-20240116; t=1723474004; c=relaxed/simple;
+	bh=dVPSxbepDV64yi+sZZcKlr2RnKfLEgPuZztkY7GBIy4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=p96hVaV3n6hnQlnX9QvXoe8iksDfsj5Byl0S9R+g0Ln/ljvdT9FJFavr4n3Vw+vlXO+6JHHv4LoBV/Qxi2Fl0XWCA8Qyj+dPXU0HKs9bt13uGe2jA+gYkVpyw5FpGJgfuvhJ759Fxj7opz3+vbSWWQ3xlOTm0JxzGYiHxvUdHyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YksX6A/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FBEC4AF0D;
+	Mon, 12 Aug 2024 14:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474000;
-	bh=F/DwFkhCN5QLHiQEY1wdYnDhhwSWBVMCB+9dY9AjfFs=;
+	s=korg; t=1723474004;
+	bh=dVPSxbepDV64yi+sZZcKlr2RnKfLEgPuZztkY7GBIy4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tg9CW1U1hYcosPQCd1ICuiuHfqka33tjk1FG64HBuMve0G5O13axif+dUwp/RTXEO
-	 yc2gzdHF9ZkQMddk1INPgglaU5X4gyN9kD7AryK/pS910UaOIvNTdlEhPpwHHAI3g8
-	 wPDu/DRJ00gihcxW+11riuc9AmDZGTytXNHi9vVY=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: once more fix the call oder in amdgpu_ttm_move()" failed to apply to 5.15-stable tree
-To: christian.koenig@amd.com,alexander.deucher@amd.com
+	b=YksX6A/VB2p7Com6J1ACGy7NfBD+x5L3UDDqo7HGpo8UaqxxXyNBId3Z7Cn0CIwtf
+	 pPCWlxkVVbND5YZr4B+mH3/u3NaYDiNvNM2masG8zyH8igVf60xHq+qre82tdgxBsM
+	 pLcjI1cLJQx/k0KbhOkb5GhkZ2o9AwIiEXjKJY1k=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Call dpmm when checking mode support" failed to apply to 6.10-stable tree
+To: george.shen@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,chaitanya.dhere@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:46:18 +0200
-Message-ID: <2024081218-throng-try-3395@gregkh>
+Date: Mon, 12 Aug 2024 16:46:31 +0200
+Message-ID: <2024081231-patrol-immovable-7bf4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x ffda7081489b2c14650798b3b46fb76292f163a3
+git cherry-pick -x a42e74391783603b28f266fc7bbfc1011eb0a151
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081218-throng-try-3395@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081231-patrol-immovable-7bf4@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-ffda7081489b ("drm/amdgpu: once more fix the call oder in amdgpu_ttm_move() v2")
-94aeb4117343 ("drm/amdgpu: fix ftrace event amdgpu_bo_move always move on same heap")
-63af82cf5e36 ("drm/amdgpu: audit bo->resource usage")
-32f90e652519 ("drm/amdgpu: prevent memory wipe in suspend/shutdown stage")
+a42e74391783 ("drm/amd/display: Call dpmm when checking mode support")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
 
 thanks,
 
@@ -80,200 +78,93 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ffda7081489b2c14650798b3b46fb76292f163a3 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Date: Thu, 21 Mar 2024 11:32:02 +0100
-Subject: [PATCH] drm/amdgpu: once more fix the call oder in amdgpu_ttm_move()
- v2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From a42e74391783603b28f266fc7bbfc1011eb0a151 Mon Sep 17 00:00:00 2001
+From: George Shen <george.shen@amd.com>
+Date: Tue, 4 Jun 2024 10:11:23 -0400
+Subject: [PATCH] drm/amd/display: Call dpmm when checking mode support
 
-This reverts drm/amdgpu: fix ftrace event amdgpu_bo_move always move
-on same heap. The basic problem here is that after the move the old
-location is simply not available any more.
+[WHY]
+In check_mode_supported, we should validate that the required clocks
+can be successfully mapped to DPM levels.
 
-Some fixes were suggested, but essentially we should call the move
-notification before actually moving things because only this way we have
-the correct order for DMA-buf and VM move notifications as well.
+This ensures we only apply dynamic ODM optimizations to modes that
+are supported without dynamic ODM optimizations to begin with.
 
-Also rework the statistic handling so that we don't update the eviction
-counter before the move.
+[HOW]
+Call dpmm to check that the display config can successfully be
+mapped to a DPM level.
 
-v2: add missing NULL check
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: 94aeb4117343 ("drm/amdgpu: fix ftrace event amdgpu_bo_move always move on same heap")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3171
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-CC: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-index 706345ea1430..751443402ced 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -1255,14 +1255,18 @@ int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
-  * amdgpu_bo_move_notify - notification about a memory move
-  * @bo: pointer to a buffer object
-  * @evict: if this move is evicting the buffer from the graphics address space
-+ * @new_mem: new resource for backing the BO
-  *
-  * Marks the corresponding &amdgpu_bo buffer object as invalid, also performs
-  * bookkeeping.
-  * TTM driver callback which is called when ttm moves a buffer.
-  */
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict)
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
-+			   bool evict,
-+			   struct ttm_resource *new_mem)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+index b442e1f9f204..9c28304568d2 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+@@ -257,6 +257,7 @@ static bool dml21_check_mode_support(const struct dc *in_dc, struct dc_state *co
+ 
+ 	mode_support->dml2_instance = dml_init->dml2_instance;
+ 	dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
++	dml_ctx->v21.mode_programming.dml2_instance->scratch.build_mode_programming_locals.mode_programming_params.programming = dml_ctx->v21.mode_programming.programming;
+ 	is_supported = dml2_check_mode_supported(mode_support);
+ 	if (!is_supported)
+ 		return false;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_top/dml_top.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_top/dml_top.c
+index 6f334fdc6eb8..2fb3e2f45e07 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_top/dml_top.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_top/dml_top.c
+@@ -96,10 +96,15 @@ bool dml2_check_mode_supported(struct dml2_check_mode_supported_in_out *in_out)
  {
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->bdev);
-+	struct ttm_resource *old_mem = bo->resource;
- 	struct amdgpu_bo *abo;
+ 	struct dml2_instance *dml = (struct dml2_instance *)in_out->dml2_instance;
+ 	struct dml2_check_mode_supported_locals *l = &dml->scratch.check_mode_supported_locals;
++	/* Borrow the build_mode_programming_locals programming struct for DPMM call. */
++	struct dml2_display_cfg_programming *dpmm_programming = dml->scratch.build_mode_programming_locals.mode_programming_params.programming;
  
- 	if (!amdgpu_bo_is_amdgpu_bo(bo))
-@@ -1274,12 +1278,12 @@ void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict)
- 	amdgpu_bo_kunmap(abo);
+ 	bool result = false;
+ 	bool mcache_success = false;
  
- 	if (abo->tbo.base.dma_buf && !abo->tbo.base.import_attach &&
--	    bo->resource->mem_type != TTM_PL_SYSTEM)
-+	    old_mem && old_mem->mem_type != TTM_PL_SYSTEM)
- 		dma_buf_move_notify(abo->tbo.base.dma_buf);
- 
--	/* remember the eviction */
--	if (evict)
--		atomic64_inc(&adev->num_evictions);
-+	/* move_notify is called before move happens */
-+	trace_amdgpu_bo_move(abo, new_mem ? new_mem->mem_type : -1,
-+			     old_mem ? old_mem->mem_type : -1);
- }
- 
- void amdgpu_bo_get_memory(struct amdgpu_bo *bo,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-index fa03d9e4874c..bc42ccbde659 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -328,7 +328,9 @@ int amdgpu_bo_set_metadata (struct amdgpu_bo *bo, void *metadata,
- int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
- 			   size_t buffer_size, uint32_t *metadata_size,
- 			   uint64_t *flags);
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict);
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
-+			   bool evict,
-+			   struct ttm_resource *new_mem);
- void amdgpu_bo_release_notify(struct ttm_buffer_object *bo);
- vm_fault_t amdgpu_bo_fault_reserve_notify(struct ttm_buffer_object *bo);
- void amdgpu_bo_fence(struct amdgpu_bo *bo, struct dma_fence *fence,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index 7805ea4d82f2..923b20d3fdbd 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -486,14 +486,16 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
- 
- 	if (!old_mem || (old_mem->mem_type == TTM_PL_SYSTEM &&
- 			 bo->ttm == NULL)) {
-+		amdgpu_bo_move_notify(bo, evict, new_mem);
- 		ttm_bo_move_null(bo, new_mem);
--		goto out;
-+		return 0;
- 	}
- 	if (old_mem->mem_type == TTM_PL_SYSTEM &&
- 	    (new_mem->mem_type == TTM_PL_TT ||
- 	     new_mem->mem_type == AMDGPU_PL_PREEMPT)) {
-+		amdgpu_bo_move_notify(bo, evict, new_mem);
- 		ttm_bo_move_null(bo, new_mem);
--		goto out;
-+		return 0;
- 	}
- 	if ((old_mem->mem_type == TTM_PL_TT ||
- 	     old_mem->mem_type == AMDGPU_PL_PREEMPT) &&
-@@ -503,9 +505,10 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
- 			return r;
- 
- 		amdgpu_ttm_backend_unbind(bo->bdev, bo->ttm);
-+		amdgpu_bo_move_notify(bo, evict, new_mem);
- 		ttm_resource_free(bo, &bo->resource);
- 		ttm_bo_assign_mem(bo, new_mem);
--		goto out;
-+		return 0;
- 	}
- 
- 	if (old_mem->mem_type == AMDGPU_PL_GDS ||
-@@ -517,8 +520,9 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
- 	    new_mem->mem_type == AMDGPU_PL_OA ||
- 	    new_mem->mem_type == AMDGPU_PL_DOORBELL) {
- 		/* Nothing to save here */
-+		amdgpu_bo_move_notify(bo, evict, new_mem);
- 		ttm_bo_move_null(bo, new_mem);
--		goto out;
-+		return 0;
- 	}
- 
- 	if (bo->type == ttm_bo_type_device &&
-@@ -530,23 +534,24 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
- 		abo->flags &= ~AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
- 	}
- 
--	if (adev->mman.buffer_funcs_enabled) {
--		if (((old_mem->mem_type == TTM_PL_SYSTEM &&
--		      new_mem->mem_type == TTM_PL_VRAM) ||
--		     (old_mem->mem_type == TTM_PL_VRAM &&
--		      new_mem->mem_type == TTM_PL_SYSTEM))) {
--			hop->fpfn = 0;
--			hop->lpfn = 0;
--			hop->mem_type = TTM_PL_TT;
--			hop->flags = TTM_PL_FLAG_TEMPORARY;
--			return -EMULTIHOP;
--		}
--
--		r = amdgpu_move_blit(bo, evict, new_mem, old_mem);
--	} else {
--		r = -ENODEV;
-+	if (adev->mman.buffer_funcs_enabled &&
-+	    ((old_mem->mem_type == TTM_PL_SYSTEM &&
-+	      new_mem->mem_type == TTM_PL_VRAM) ||
-+	     (old_mem->mem_type == TTM_PL_VRAM &&
-+	      new_mem->mem_type == TTM_PL_SYSTEM))) {
-+		hop->fpfn = 0;
-+		hop->lpfn = 0;
-+		hop->mem_type = TTM_PL_TT;
-+		hop->flags = TTM_PL_FLAG_TEMPORARY;
-+		return -EMULTIHOP;
- 	}
- 
-+	amdgpu_bo_move_notify(bo, evict, new_mem);
-+	if (adev->mman.buffer_funcs_enabled)
-+		r = amdgpu_move_blit(bo, evict, new_mem, old_mem);
-+	else
-+		r = -ENODEV;
++	if (dpmm_programming)
++		memset(dpmm_programming, 0, sizeof(struct dml2_display_cfg_programming));
 +
- 	if (r) {
- 		/* Check that all memory is CPU accessible */
- 		if (!amdgpu_res_copyable(adev, old_mem) ||
-@@ -560,11 +565,10 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
- 			return r;
+ 	setup_unoptimized_display_config_with_meta(dml, &l->base_display_config_with_meta, in_out->display_config);
+ 
+ 	l->mode_support_params.instance = &dml->core_instance;
+@@ -122,6 +127,18 @@ bool dml2_check_mode_supported(struct dml2_check_mode_supported_in_out *in_out)
+ 		mcache_success = dml2_top_optimization_perform_optimization_phase(&l->optimization_phase_locals, &mcache_phase);
  	}
  
--	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
--out:
--	/* update statistics */
-+	/* update statistics after the move */
-+	if (evict)
-+		atomic64_inc(&adev->num_evictions);
- 	atomic64_add(bo->base.size, &adev->num_bytes_moved);
--	amdgpu_bo_move_notify(bo, evict);
- 	return 0;
- }
++	/*
++	 * Call DPMM to map all requirements to minimum clock state
++	 */
++	if (result && dpmm_programming) {
++		l->dppm_map_mode_params.min_clk_table = &dml->min_clk_table;
++		l->dppm_map_mode_params.display_cfg = &l->base_display_config_with_meta;
++		l->dppm_map_mode_params.programming = dpmm_programming;
++		l->dppm_map_mode_params.soc_bb = &dml->soc_bbox;
++		l->dppm_map_mode_params.ip = &dml->core_instance.clean_me_up.mode_lib.ip;
++		result = dml->dpmm_instance.map_mode_to_soc_dpm(&l->dppm_map_mode_params);
++	}
++
+ 	in_out->is_supported = mcache_success;
+ 	result = result && in_out->is_supported;
  
-@@ -1564,7 +1568,7 @@ static int amdgpu_ttm_access_memory(struct ttm_buffer_object *bo,
- static void
- amdgpu_bo_delete_mem_notify(struct ttm_buffer_object *bo)
- {
--	amdgpu_bo_move_notify(bo, false);
-+	amdgpu_bo_move_notify(bo, false, NULL);
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/inc/dml2_internal_shared_types.h b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/inc/dml2_internal_shared_types.h
+index dd90c5df5a5a..5632cdacb7f4 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/inc/dml2_internal_shared_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/inc/dml2_internal_shared_types.h
+@@ -870,6 +870,7 @@ struct dml2_check_mode_supported_locals {
+ 	struct dml2_optimization_phase_locals optimization_phase_locals;
+ 	struct display_configuation_with_meta base_display_config_with_meta;
+ 	struct display_configuation_with_meta optimized_display_config_with_meta;
++	struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out dppm_map_mode_params;
+ };
  
- static struct ttm_device_funcs amdgpu_bo_driver = {
+ struct optimization_init_function_params {
 
 
