@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-66775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D33894F25F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5951394F45E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2FD02814D2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:05:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BF9C1C20E39
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD84186E36;
-	Mon, 12 Aug 2024 16:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE21187321;
+	Mon, 12 Aug 2024 16:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNwpSfon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mD2+m0ze"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D015186295;
-	Mon, 12 Aug 2024 16:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB62D183CD4;
+	Mon, 12 Aug 2024 16:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478742; cv=none; b=kPfJ22xGkgNeAdjXpC2mpjHvT3IdDJB56c+EFbFo1Pr4XJX6m8fY3cJggQhaxw5nNaSEnyrGv1KF/vE9W3inNn5WeEQq5ejychWg/hqeHCPVJPJU/obRMqusud8Cziujy+Y0XiEC/zaS2wPmqSZvaM7pjRkLupXB3X8N58dvpoU=
+	t=1723480171; cv=none; b=Sti2Se2p2W/rAliytbCDwFv3n4QKU7O7iw9+iZZNLmsXtQVoj4xFwqXUJ1w1pGOhcfL8/uuFfe5poSI/Pqcw7Vtvs6TYN/jd+bh4HD/vLrNbpi0nIgIIb1N80UenLfWYqmzHp21nu59podSryAkjTfE5QpSLu94G+BfK95V8T7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478742; c=relaxed/simple;
-	bh=bsi49ZM1BSif4gY68WpDBXwGyYtolcnbwRpu0eGiaAM=;
+	s=arc-20240116; t=1723480171; c=relaxed/simple;
+	bh=rRDcj+oDvNVfnZLwcYg/FgwiduyLvP040Uh6ERiOEUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNLQlnE/dGlTSI6+4aIB4tCSGo4R9B/JIT5xyOY0OSZYAOdwvh5BwXEULe2SqGO7if8JPciW2T/lSG3yG+rCDiIFfJ/Oca8gyFDeqaskkSXH0OlLNGT1DZvDeInVEc9Jc+UUPHbC8SdD2gZgqMSYi1OWNjyiE1IJtV6w+klZxU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNwpSfon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB233C32782;
-	Mon, 12 Aug 2024 16:05:41 +0000 (UTC)
+	 MIME-Version; b=EOUNu/4mjXpBx/b4/6TPX68X+jk3V1EnMXl0nSl/1Qfy65bHh47PGwmKXhu2dWTFomq7JGxKjm2fxX21FcE8oGmxCPXQmgb67GmReTUKpxxvt//v/j1aGwDCqTp1Xv+Z6NtTQTwd3ECK7Jw4yExFOldfUy9WBJ332CU8pe/21pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mD2+m0ze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291EEC32782;
+	Mon, 12 Aug 2024 16:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478742;
-	bh=bsi49ZM1BSif4gY68WpDBXwGyYtolcnbwRpu0eGiaAM=;
+	s=korg; t=1723480171;
+	bh=rRDcj+oDvNVfnZLwcYg/FgwiduyLvP040Uh6ERiOEUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNwpSfongqq714G7JyFkyGRRcqMG47+U4kSVlL3WEJz7sDwvsg3AZkZSSls2cJTVO
-	 IDlT1Smm/VkD0J5mhE0q2HfQOGSuWK7LoqyF/IVW3UtUwCLaSWn9k5GCKptJK4pQby
-	 /InNXjKkowAsbFG+mx+Zn0tN+xuLTfs2Io2fsWBE=
+	b=mD2+m0zeIqma5bBtDsnIX96Tfq/GTf8aJHOodtpdQo/8UtWsijgbCgQiihOy8+BdB
+	 iVdERp2hLRoobl+6ydIJw3JOJZGf8CaeBeWZRv3q3FuhrveMrTvOcOFmR3LGhUoMzG
+	 eExbczFLZZIEq12zjAbYPRZNwqCOOinsnGQZn3Fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/150] x86/mm: Fix pti_clone_pgtable() alignment assumption
+Subject: [PATCH 6.10 085/263] Bluetooth: btnxpuart: Shutdown timer and prevent rearming when driver unloading
 Date: Mon, 12 Aug 2024 18:01:26 +0200
-Message-ID: <20240812160125.357607135@linuxfoundation.org>
+Message-ID: <20240812160149.800265748@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-[ Upstream commit 41e71dbb0e0a0fe214545fe64af031303a08524c ]
+[ Upstream commit 0d0df1e750bac0fdaa77940e711c1625cff08d33 ]
 
-Guenter reported dodgy crashes on an i386-nosmp build using GCC-11
-that had the form of endless traps until entry stack exhaust and then
-#DF from the stack guard.
+When unload the btnxpuart driver, its associated timer will be deleted.
+If the timer happens to be modified at this moment, it leads to the
+kernel call this timer even after the driver unloaded, resulting in
+kernel panic.
+Use timer_shutdown_sync() instead of del_timer_sync() to prevent rearming.
 
-It turned out that pti_clone_pgtable() had alignment assumptions on
-the start address, notably it hard assumes start is PMD aligned. This
-is true on x86_64, but very much not true on i386.
+panic log:
+  Internal error: Oops: 0000000086000007 [#1] PREEMPT SMP
+  Modules linked in: algif_hash algif_skcipher af_alg moal(O) mlan(O) crct10dif_ce polyval_ce polyval_generic   snd_soc_imx_card snd_soc_fsl_asoc_card snd_soc_imx_audmux mxc_jpeg_encdec v4l2_jpeg snd_soc_wm8962 snd_soc_fsl_micfil   snd_soc_fsl_sai flexcan snd_soc_fsl_utils ap130x rpmsg_ctrl imx_pcm_dma can_dev rpmsg_char pwm_fan fuse [last unloaded:   btnxpuart]
+  CPU: 5 PID: 723 Comm: memtester Tainted: G           O       6.6.23-lts-next-06207-g4aef2658ac28 #1
+  Hardware name: NXP i.MX95 19X19 board (DT)
+  pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : 0xffff80007a2cf464
+  lr : call_timer_fn.isra.0+0x24/0x80
+...
+  Call trace:
+   0xffff80007a2cf464
+   __run_timers+0x234/0x280
+   run_timer_softirq+0x20/0x40
+   __do_softirq+0x100/0x26c
+   ____do_softirq+0x10/0x1c
+   call_on_irq_stack+0x24/0x4c
+   do_softirq_own_stack+0x1c/0x2c
+   irq_exit_rcu+0xc0/0xdc
+   el0_interrupt+0x54/0xd8
+   __el0_irq_handler_common+0x18/0x24
+   el0t_64_irq_handler+0x10/0x1c
+   el0t_64_irq+0x190/0x194
+  Code: ???????? ???????? ???????? ???????? (????????)
+  ---[ end trace 0000000000000000 ]---
+  Kernel panic - not syncing: Oops: Fatal exception in interrupt
+  SMP: stopping secondary CPUs
+  Kernel Offset: disabled
+  CPU features: 0x0,c0000000,40028143,1000721b
+  Memory Limit: none
+  ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
 
-These assumptions can cause the end condition to malfunction, leading
-to a 'short' clone. Guess what happens when the user mapping has a
-short copy of the entry text?
-
-Use the correct increment form for addr to avoid alignment
-assumptions.
-
-Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240731163105.GG33588@noisy.programming.kicks-ass.net
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/pti.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/bluetooth/btnxpuart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 78414c6d1b5ed..2c4037174ed22 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -374,14 +374,14 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
- 			 */
- 			*target_pmd = *pmd;
+diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
+index 6a863328b8053..d310b525fbf00 100644
+--- a/drivers/bluetooth/btnxpuart.c
++++ b/drivers/bluetooth/btnxpuart.c
+@@ -344,7 +344,7 @@ static void ps_cancel_timer(struct btnxpuart_dev *nxpdev)
+ 	struct ps_data *psdata = &nxpdev->psdata;
  
--			addr += PMD_SIZE;
-+			addr = round_up(addr + 1, PMD_SIZE);
+ 	flush_work(&psdata->work);
+-	del_timer_sync(&psdata->ps_timer);
++	timer_shutdown_sync(&psdata->ps_timer);
+ }
  
- 		} else if (level == PTI_CLONE_PTE) {
- 
- 			/* Walk the page-table down to the pte level */
- 			pte = pte_offset_kernel(pmd, addr);
- 			if (pte_none(*pte)) {
--				addr += PAGE_SIZE;
-+				addr = round_up(addr + 1, PAGE_SIZE);
- 				continue;
- 			}
- 
-@@ -401,7 +401,7 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
- 			/* Clone the PTE */
- 			*target_pte = *pte;
- 
--			addr += PAGE_SIZE;
-+			addr = round_up(addr + 1, PAGE_SIZE);
- 
- 		} else {
- 			BUG();
+ static void ps_control(struct hci_dev *hdev, u8 ps_state)
 -- 
 2.43.0
 
