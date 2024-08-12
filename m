@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-67226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4C994F472
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D663994F35E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D809E1C20F4C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:30:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 147F11C211D7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E397187345;
-	Mon, 12 Aug 2024 16:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7097E18454D;
+	Mon, 12 Aug 2024 16:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deVvPL6W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVhmeH7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8C7183CD3;
-	Mon, 12 Aug 2024 16:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0EC4B5AE;
+	Mon, 12 Aug 2024 16:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480228; cv=none; b=gEO9sFJmqzas7EyVqwAtf2Zuq1eahWo4CN3raIemMqQvW1XWZkIql+2MJvIi8eXxkhdTzsXM2vPM2TeTJiPaRl+GT76d4kHk/xEVOuy0NsFvqLktinFytICUdP/yUBOZtfTdk9oJQT188MaSpL9LXksttpSRDopg6DDiLIszHVM=
+	t=1723479416; cv=none; b=qARWb3fLlcnVTtedq6EjiXJO3Zeto0kvVx3ZNvtBWxHhDnafbbPYWrK/0pz29igNkht3f9BccMqfvxlmJ6Fu1ufBTCazX/dAJx8N105sACcBpR8EU+1JxgLDOrmjNWYpRNalVINJdzhHWKX96BmiGHLkjIbybHdNjb4uVYay4y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480228; c=relaxed/simple;
-	bh=dQDHt7cfCRwSxhTVaRfi7Tn1jnc0kC5dNEwswj+ZVl0=;
+	s=arc-20240116; t=1723479416; c=relaxed/simple;
+	bh=wQqe5RuLhKTy216LXxPu5aNpeJgzL7oTod59FupmdUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvnBHZsDUw68o5zUQi07jhD1lMn9TZutupACNoMJWuW88uZbOX3weKPYi5fQHa6qh2CGWGj1PEcDI3D01zWZXV7urWJriFsbt6kI2Oaq+/Q2xLOwVe5wmTGb9bJFXgsfnDIgY6lDG/dyI7xW4TF/1r7FdAWwTQFNL7nrnYXzlF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deVvPL6W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9295DC32782;
-	Mon, 12 Aug 2024 16:30:27 +0000 (UTC)
+	 MIME-Version; b=cuLmPHl54TH7I5jWVH2lSKdHknTHWXXz7ECwcP7jsLaswbkiN2tF4O6pbTF3Zg/LV+UI18SPvzmV5PPlV1j90VTFnjGkYnZ/DZ7cefwf9iUE7haslePTgJ105+ZuFn3pE23dDYxh7i7DiSLkHuo4C4FdJu/xo5t1LMHZpE4Wsmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVhmeH7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD51C32782;
+	Mon, 12 Aug 2024 16:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480228;
-	bh=dQDHt7cfCRwSxhTVaRfi7Tn1jnc0kC5dNEwswj+ZVl0=;
+	s=korg; t=1723479416;
+	bh=wQqe5RuLhKTy216LXxPu5aNpeJgzL7oTod59FupmdUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deVvPL6W7KvIphdOv2sAukCmbb+f9PGCxIreidt79QSmLoDXrGCMc9o/knjX9xLnk
-	 iZl3+wB2OrXxzzZ6sFs/nt54GeavO7rv/6GBp4h7aX9myOBn7cKMQ5UREOxoayS3us
-	 pJA8Jw1+L/eNBAAocYHA/z2pedY2Mc8wL5IdZQGk=
+	b=AVhmeH7xmd4vUspaolZGfIyI/qFXQl/9fVQsoysTc7+x4/qs/Nb8Ym87ugT28gYOG
+	 dnoXadFxRiJ8pSwwH0d3/5qgE5nhLKAm5HYFPeQqy4job4vvN92/pqkMQBEFEZrYRo
+	 Lo1nf/NyCrMWvSTP9QIc9Jf6zgeABj/Ep9NrHldM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,15 +45,14 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	James Morse <james.morse@arm.com>,
 	Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 134/263] arm64: cputype: Add Cortex-X1C definitions
-Date: Mon, 12 Aug 2024 18:02:15 +0200
-Message-ID: <20240812160151.678543392@linuxfoundation.org>
+Subject: [PATCH 6.6 080/189] arm64: cputype: Add Cortex-A720 definitions
+Date: Mon, 12 Aug 2024 18:02:16 +0200
+Message-ID: <20240812160135.221825719@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,28 +64,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 58d245e03c324d083a0ec3b9ab8ebd46ec9848d7 ]
+[ Upstream commit add332c40328cf06fe35e4b3cde8ec315c4629e5 ]
 
-Add cputype definitions for Cortex-X1C. These will be used for errata
+Add cputype definitions for Cortex-A720. These will be used for errata
 detection in subsequent patches.
 
-These values can be found in the Cortex-X1C TRM:
+These values can be found in Table A-186 ("MIDR_EL1 bit descriptions")
+in issue 0002-05 of the Cortex-A720 TRM, which can be found at:
 
-  https://developer.arm.com/documentation/101968/0002/
-
-... in section B2.107 ("MIDR_EL1, Main ID Register, EL1").
+  https://developer.arm.com/documentation/102530/0002/?lang=en
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Cc: James Morse <james.morse@arm.com>
 Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20240801101803.1982459-2-mark.rutland@arm.com
+Link: https://lore.kernel.org/r/20240603111812.1514101-3-mark.rutland@arm.com
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 [ Mark: trivial backport ]
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
@@ -96,25 +93,25 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 1cb0704c6163f..5dc68ace305e5 100644
+index 72fe207403c83..dcbac1ce6c25c 100644
 --- a/arch/arm64/include/asm/cputype.h
 +++ b/arch/arm64/include/asm/cputype.h
-@@ -86,6 +86,7 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+@@ -88,6 +88,7 @@
  #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_CORTEX_X1C		0xD4C
  #define ARM_CPU_PART_CORTEX_X3		0xD4E
  #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_A720	0xD81
++#define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+ 
 @@ -165,6 +166,7 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
  #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_CORTEX_X1C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
  #define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
  #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
++#define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
 -- 
 2.43.0
 
