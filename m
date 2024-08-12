@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-67239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F268894F484
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 388BE94F296
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A93E81F219BE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8AFB282D4E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0380187845;
-	Mon, 12 Aug 2024 16:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0605D187321;
+	Mon, 12 Aug 2024 16:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/SFHc9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6GuiaR4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E16718756D;
-	Mon, 12 Aug 2024 16:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86F4186295;
+	Mon, 12 Aug 2024 16:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480271; cv=none; b=L0+pJek9/Nbn/tALgjIM79QcgWp7VyPxkx8GXxSNariqLOYpaRQaUqPoAFjUFK4QAixecGYeQfuXQEQCbh9GnXjb4z9XjLJ70C4r5nUfd6JBZdVmvsW174jCCqb3HFhQgjMdrh9f86rbKNIZzSDBm8mhfzNdCNTPRUF6V7x2iOE=
+	t=1723478878; cv=none; b=GeywBOx0rhnxzqxVsm8fGSbXKgGvTqrFaRrpWY947b/SdFTQjpbclJDESt/bN+4G5TRaBo/lbT9GlskNTPmboWZu7VIY8i4/pkNHiSXQCfaHMIgdTUUi5vaqdvHRnPemHNENsFQxH3TEzYUXavCjuKRPVzWJqZuM8WXZHLoaCEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480271; c=relaxed/simple;
-	bh=5lJvFHQeleZSx779yBawUS/dYGItliRLp8opJMffDLU=;
+	s=arc-20240116; t=1723478878; c=relaxed/simple;
+	bh=P2UL7ldGITs/9Zvu7xKVJEjnH63pLscVCnYYam10lvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NkRFQr8SO7SPAYFiKbY0INEDc3QS4y/nSOgOfevXaOQSHOPx5Hwy81EfXo5iBCTtWLu1mMxYFvZ1nAnUajvS7JyC8B17zwIB5dysEB4DMXaMwNaEAg9UH8PZ6Gp51qggict25hbYd4CEJKtn+AmLHXLS6s/q8wMDoAwBP0QAdEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/SFHc9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0622C4AF09;
-	Mon, 12 Aug 2024 16:31:10 +0000 (UTC)
+	 MIME-Version; b=YSztnL/8f9Yi1uEPp6y/wzB1L79J95LAI+tP4N6vb7CD1JYEZwBXEi+x/VEJW7dHexL74h3aA9CGv4vJcg77NgksTlh51hDsnJ9afiSw3idWGrczHU/pZ32FJQpGyPYB9XdP5vQFg0ioYjVotH2a814edTeDs65puVGUj6Aw6d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6GuiaR4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D7EC32782;
+	Mon, 12 Aug 2024 16:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480271;
-	bh=5lJvFHQeleZSx779yBawUS/dYGItliRLp8opJMffDLU=;
+	s=korg; t=1723478878;
+	bh=P2UL7ldGITs/9Zvu7xKVJEjnH63pLscVCnYYam10lvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/SFHc9LugpIHIdarvfw3wGSEt3Qzs6p4LFJs/JayuoVeyKGznuaVZSZQLeDLKPrk
-	 vghrUVPEoiVcIlBcEoc176aCuz4ROrMGAUGB04vFSCQJLc8A7mBMcXs1C6SFDFiGYH
-	 altrSX640QhZwXspucUA9SVrVVi+2pYZgt+mS8uY=
+	b=T6GuiaR4EPc/OOnqcflyISFUF+9sEVJrPj8POY+l79I6oI8vd+p88qRisBHh5WyEm
+	 DcUr/6oxUrt5r5LCSy9CGTYxa2MtXwCaHl7ZdyiB9Sgy2PZD2GNjCQiyTOnnO3ILmc
+	 YeOj7JQh5prSqTMxse2P/C8v+p/8l46PXUzR3FzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 145/263] ASoC: codecs: wsa884x: Correct Soundwire ports mask
+Subject: [PATCH 6.1 065/150] arm64: cputype: Add Cortex-X925 definitions
 Date: Mon, 12 Aug 2024 18:02:26 +0200
-Message-ID: <20240812160152.098986348@linuxfoundation.org>
+Message-ID: <20240812160127.683141177@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit dcb6631d05152930e2ea70fd2abfd811b0e970b5 ]
+[ Upstream commit fd2ff5f0b320f418288e7a1f919f648fbc8a0dfc ]
 
-Device has up to WSA884X_MAX_SWR_PORTS number of ports and the array
-assigned to prop.sink_dpn_prop has 0..WSA884X_MAX_SWR_PORTS-1 elements.
-On the other hand, GENMASK(high, low) creates an inclusive mask between
-<high, low>, so we need the mask from 0 up to WSA884X_MAX_SWR_PORTS-1.
+Add cputype definitions for Cortex-X925. These will be used for errata
+detection in subsequent patches.
 
-Theoretically, too wide mask could cause an out of bounds read in
-sdw_get_slave_dpn_prop() in stream.c, however only in the case of buggy
-driver, e.g. adding incorrect number of ports via
-sdw_stream_add_slave().
+These values can be found in Table A-285 ("MIDR_EL1 bit descriptions")
+in issue 0001-05 of the Cortex-X925 TRM, which can be found at:
 
-Fixes: aa21a7d4f68a ("ASoC: codecs: wsa884x: Add WSA884x family of speakers")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240726-asoc-wcd-wsa-swr-ports-genmask-v1-6-d4d7a8b56f05@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  https://developer.arm.com/documentation/102807/0001/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-4-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa884x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/wsa884x.c b/sound/soc/codecs/wsa884x.c
-index a6034547b4f36..de4caf61eef9e 100644
---- a/sound/soc/codecs/wsa884x.c
-+++ b/sound/soc/codecs/wsa884x.c
-@@ -1895,7 +1895,7 @@ static int wsa884x_probe(struct sdw_slave *pdev,
- 					WSA884X_MAX_SWR_PORTS))
- 		dev_dbg(dev, "Static Port mapping not specified\n");
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 1e3dbfc81d432..b52d974da8283 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -90,6 +90,7 @@
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
++#define ARM_CPU_PART_CORTEX_X925	0xD85
  
--	pdev->prop.sink_ports = GENMASK(WSA884X_MAX_SWR_PORTS, 0);
-+	pdev->prop.sink_ports = GENMASK(WSA884X_MAX_SWR_PORTS - 1, 0);
- 	pdev->prop.simple_clk_stop_capable = true;
- 	pdev->prop.sink_dpn_prop = wsa884x_sink_dpn_prop;
- 	pdev->prop.scp_int1_mask = SDW_SCP_INT1_BUS_CLASH | SDW_SCP_INT1_PARITY;
+ #define APM_CPU_PART_XGENE		0x000
+ #define APM_CPU_VAR_POTENZA		0x00
+@@ -161,6 +162,7 @@
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
++#define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 -- 
 2.43.0
 
