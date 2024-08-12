@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4382794F02A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 069D894F02C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF7881F2609D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 101B128169D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8CD7186E5D;
-	Mon, 12 Aug 2024 14:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBA618732B;
+	Mon, 12 Aug 2024 14:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sl9OM1ak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkLLRfxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D13C18453E
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A21A187326
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723473991; cv=none; b=dQ7ySRjGikSHIg0UINO0FZYExXelgxYOiMY3zYm5u6fjjwdT8qmlZvND+Pu0wqF2hNG0ep9mQQMFT/cGD2ooK1tc9JfHfGhD0wKObmDW8jm5h6hSxa/dgGqh2B0iAGpZIASmwHpZ3fEkroLiMq4NK8/XyzW/QifwmkGPysutQuo=
+	t=1723473994; cv=none; b=VqdIu/tVPhEJM+RbTKwsFuyu4EDAGsF2ru0CY954GEvwr1D8VWurLHx1yODodgSsspVSBshkmYiuy5Rubdtge3WM/g8euxafKfsKc1pIzeyoWAz2BbbsXZM9GkOssJ5dxAZHnM2jDB38POjedRSyt3TWxp6+2HiaJDda9suvNxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723473991; c=relaxed/simple;
-	bh=eK1VIOWhJzsUfIci9Kb5PUc6Rds1bRshEeEDn7qqCzQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NVCtpd3QzodpCCymPRbSmbU/0zfrY5YD4cpjGUX2NcLA/Bz+Dckm6/dTrfkGlKetztLx4XrhpezPibUWGoBqtx4pLN5xehzX8r9fzaei6eylF9Yy9wTdKBiMJF+geyDzxap7xCDveUH9oGiAbXUfIr+ROfbsAnh32/TZfx0e1Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sl9OM1ak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9CAC32782;
-	Mon, 12 Aug 2024 14:46:30 +0000 (UTC)
+	s=arc-20240116; t=1723473994; c=relaxed/simple;
+	bh=IuipKmMhpr/JQBrpIUEGUcatscMmyGttAfAocBMHb3E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SHqv/3WabgVRF9XZXcUmtzTGJkiXrPWLEQAMigcNFKD5cUe9W045KNKMyy6IkyW1r9DP6/yN1HXcIvwpVnGGtVz+mUfhsp8Q7POopv52Lc1Oz0sNJm4odWyhdpWVLEa8XH9icn1NDgLutIxYc0xzfYTQ19Qa/8IATn0uDWbPWb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkLLRfxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED3DC4AF09;
+	Mon, 12 Aug 2024 14:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723473990;
-	bh=eK1VIOWhJzsUfIci9Kb5PUc6Rds1bRshEeEDn7qqCzQ=;
+	s=korg; t=1723473994;
+	bh=IuipKmMhpr/JQBrpIUEGUcatscMmyGttAfAocBMHb3E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sl9OM1ak5xlC5cUWzgeJnGLT2EaO+kVLin814O0ujtkP8nA6Ko3fOOuavesBUGeE/
-	 0YDgTBij87Qz/9I3uqKJUsPdMLcKHBmNtzKdO1dfWKISu02IXu+MHHHF7SRw6/BdWI
-	 kruN7B/Zp+lbHkdrXsBEPZTmJQOY4NoNMK9UVh8w=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: once more fix the call oder in amdgpu_ttm_move()" failed to apply to 6.10-stable tree
+	b=nkLLRfxQzoCM8hztPH/a3UW4I4NB5FHD3xuOjwy6fihb6foP83pAwgvq/Ho/yAk9X
+	 3TNLrP9UKn9eY5YkY0MMI46DiSWyd8vN9gsdiX6m9XRXVlMTN1G2LToo4OQOqUOORY
+	 ctEuZgyqv1SL1/Gf+ArY7Dldsen91S0jPy5R1LDQ=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: once more fix the call oder in amdgpu_ttm_move()" failed to apply to 6.6-stable tree
 To: christian.koenig@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:46:15 +0200
-Message-ID: <2024081215-unvisited-virtual-11ae@gregkh>
+Date: Mon, 12 Aug 2024 16:46:16 +0200
+Message-ID: <2024081216-mammogram-everyone-2ea3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x ffda7081489b2c14650798b3b46fb76292f163a3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081215-unvisited-virtual-11ae@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081216-mammogram-everyone-2ea3@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 ffda7081489b ("drm/amdgpu: once more fix the call oder in amdgpu_ttm_move() v2")
+94aeb4117343 ("drm/amdgpu: fix ftrace event amdgpu_bo_move always move on same heap")
 
 thanks,
 
