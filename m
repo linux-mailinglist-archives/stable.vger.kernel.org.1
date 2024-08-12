@@ -1,103 +1,169 @@
-Return-Path: <stable+bounces-66464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B53594EB4C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:39:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B566494EBBE
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF6D7B20BE9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 10:38:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23A57B22ADA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62D116FF39;
-	Mon, 12 Aug 2024 10:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD57170A0F;
+	Mon, 12 Aug 2024 11:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVgWLp+k"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CD416DC2C;
-	Mon, 12 Aug 2024 10:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD3A1586C0
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723459132; cv=none; b=afMmSkJ+8MLFrcsyFd2YMtnR7RAHer3ltAFq8azqiz+Wz3cdzsVLmrz9lfI+yQC0E3G2YgAzDMyelp1WUDBgH9O9juwzuT4ScnT4eVhW+bIusg+euURNAKzph/L92tWsviLPXRa+YM9cdaiXs1Tth0wHPZTD8o+oF8HVmZ7308w=
+	t=1723461837; cv=none; b=ot5jk41dwYmnWaG3J6j5Sfo0fRVwbR4WVqnI08ujMPxYwsAoEIVIYsz+/vgYVUq0OO/rLxhJQv+Fbw59rgFbZ8uE6BX+RL4dwY0z+9iU2RFSdlZf75yqEV3fbv8pQCLshTAe985SGwNeWySc7xNW2fUQO2a/1uKUhG0XeUFdg9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723459132; c=relaxed/simple;
-	bh=4UYDJVRe6KgTAVzMjSOYGd2NkpVsSHKygr+86n9S3QE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B8Ft9Nnwei7bpfH9paArwGIvxh8x988Nczjis7G5WSJkyR9hLqaASS20f0KinxkndA/5MGhlI07clW6FbMb9VRUI0ffyZNRhaJoMvk80RDrFsY3fTZDnWmxnOO/OViqPKzzQ6/1cuEcjYchFamo90Q9c6+dXADxEv90HZ2jIeyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 88ABE72C8CC;
-	Mon, 12 Aug 2024 13:38:42 +0300 (MSK)
-Received: from altlinux.org (sole.flsd.net [185.75.180.6])
-	by imap.altlinux.org (Postfix) with ESMTPSA id 78B4836D0246;
-	Mon, 12 Aug 2024 13:38:42 +0300 (MSK)
-Date: Mon, 12 Aug 2024 13:38:42 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	=?utf-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>, lgirdwood@gmail.com,
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.9 17/40] ASoC: topology: Fix route memory
- corruption
-Message-ID: <20240812103842.p7mcx7iyb5oyj7ly@altlinux.org>
-References: <czx7na7qfoacihuxcalowdosncubkqatf7gkd3snrb63wvpsdb@mncryvo4iiep>
- <14e54a89-5c62-41b2-8205-d69ddf75e7c7@linux.intel.com>
- <e95a876a-b4b4-4a9d-9608-ec27a9db3e0c@leemhuis.info>
- <210a825d-ace3-4873-ba72-2c15347f9812@linux.intel.com>
- <2024081225-finally-grandma-011d@gregkh>
+	s=arc-20240116; t=1723461837; c=relaxed/simple;
+	bh=gaKCGfZ/c5CyQhHiquyNUvU2ZCnyYAjog0Wo8LlSxag=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ShvQ/Y/1SeYIxC+1hHvsNN0bAUz6dPm8f6jvL9pF0Tj/9xdXLRjzs3ueE6BM48bypRsEVAzWtI2WV5lc1x0mzOBVWaNM6HZDO8mI617J8UJPROMy2JSJs3Yaqi1lK+kqIzE0zknl3IqU8U85eSVMwkywi1Ja7wV+seCYjsxEwp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVgWLp+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B64C32782;
+	Mon, 12 Aug 2024 11:23:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723461836;
+	bh=gaKCGfZ/c5CyQhHiquyNUvU2ZCnyYAjog0Wo8LlSxag=;
+	h=Subject:To:Cc:From:Date:From;
+	b=bVgWLp+ki6o4XJxkvyuF8gxpLuXjIosaFtdIoemBm/Dv/eNxqR0gbVTICTtmgb6aX
+	 iJJjZiE4zHJ/2hPY0Fv0M7czIBG8lreOag2Ldj0SuzIbRmhWQv/7BhMu+yS+DEi6Ze
+	 STQujKADm5/dgtQf/y+dW29o2CYYeFtv75Zd7mUE=
+Subject: FAILED: patch "[PATCH] idpf: fix memleak in vport interrupt configuration" failed to apply to 6.10-stable tree
+To: michal.kubiak@intel.com,aleksander.lobakin@intel.com,anthony.l.nguyen@intel.com,horms@kernel.org,krishneil.k.singh@intel.com,kuba@kernel.org,pavan.kumar.linga@intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 12 Aug 2024 13:23:53 +0200
+Message-ID: <2024081253-evict-snarl-1f5c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024081225-finally-grandma-011d@gregkh>
 
-Greg,
 
-On Mon, Aug 12, 2024 at 12:25:54PM +0200, Greg Kroah-Hartman wrote:
-> On Mon, Aug 12, 2024 at 12:01:48PM +0200, Amadeusz Sławiński wrote:
-> > I guess that for completeness you need to apply both patches:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=97ab304ecd95c0b1703ff8c8c3956dc6e2afe8e1
-> 
-> This is already in the tree.
-> 
-> > was an incorrect fix which was later fixed by:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=0298f51652be47b79780833e0b63194e1231fa34
-> 
-> This commit will not apply :(
+The patch below does not apply to the 6.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-It depends upon e0e7bc2cbee9 ("ASoC: topology: Clean up route loading"),
-which was in the same patchset that didn't get applied.
-  
-  https://lore.kernel.org/stable/?q=ASoC%3A+topology%3A+Clean+up+route+loading
+To reproduce the conflict and resubmit, you may use the following commands:
 
-I see, Mark Brown said it's not suitable material for stable kernels
-(since it's code cleanup), and Sasha Levin dropped it, and the dependent
-commit with real fix.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 3cc88e8405b8d55e0ff035e31971aadd6baee2b6
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081253-evict-snarl-1f5c@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
-Thanks,
+Possible dependencies:
 
-> 
-> > Applying just first one will result in runtime problems, while applying just
-> > second one will result in missing NULL checks on allocation.
-> 
-> The second patch can not apply to the stable trees, so we need a
-> backported version please.
-> 
-> thanks,
-> 
-> greg k-h
+3cc88e8405b8 ("idpf: fix memleak in vport interrupt configuration")
+bf9bf7042a38 ("idpf: avoid bloating &idpf_q_vector with big %NR_CPUS")
+e4891e4687c8 ("idpf: split &idpf_queue into 4 strictly-typed queue structures")
+66c27e3b19d5 ("idpf: stop using macros for accessing queue descriptors")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 3cc88e8405b8d55e0ff035e31971aadd6baee2b6 Mon Sep 17 00:00:00 2001
+From: Michal Kubiak <michal.kubiak@intel.com>
+Date: Tue, 6 Aug 2024 15:09:21 -0700
+Subject: [PATCH] idpf: fix memleak in vport interrupt configuration
+
+The initialization of vport interrupt consists of two functions:
+ 1) idpf_vport_intr_init() where a generic configuration is done
+ 2) idpf_vport_intr_req_irq() where the irq for each q_vector is
+   requested.
+
+The first function used to create a base name for each interrupt using
+"kasprintf()" call. Unfortunately, although that call allocated memory
+for a text buffer, that memory was never released.
+
+Fix this by removing creating the interrupt base name in 1).
+Instead, always create a full interrupt name in the function 2), because
+there is no need to create a base name separately, considering that the
+function 2) is never called out of idpf_vport_intr_init() context.
+
+Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
+Cc: stable@vger.kernel.org # 6.7
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20240806220923.3359860-3-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index af2879f03b8d..a2f9f252694a 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3780,13 +3780,15 @@ void idpf_vport_intr_update_itr_ena_irq(struct idpf_q_vector *q_vector)
+ /**
+  * idpf_vport_intr_req_irq - get MSI-X vectors from the OS for the vport
+  * @vport: main vport structure
+- * @basename: name for the vector
+  */
+-static int idpf_vport_intr_req_irq(struct idpf_vport *vport, char *basename)
++static int idpf_vport_intr_req_irq(struct idpf_vport *vport)
+ {
+ 	struct idpf_adapter *adapter = vport->adapter;
++	const char *drv_name, *if_name, *vec_name;
+ 	int vector, err, irq_num, vidx;
+-	const char *vec_name;
++
++	drv_name = dev_driver_string(&adapter->pdev->dev);
++	if_name = netdev_name(vport->netdev);
+ 
+ 	for (vector = 0; vector < vport->num_q_vectors; vector++) {
+ 		struct idpf_q_vector *q_vector = &vport->q_vectors[vector];
+@@ -3804,8 +3806,8 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport, char *basename)
+ 		else
+ 			continue;
+ 
+-		name = kasprintf(GFP_KERNEL, "%s-%s-%d", basename, vec_name,
+-				 vidx);
++		name = kasprintf(GFP_KERNEL, "%s-%s-%s-%d", drv_name, if_name,
++				 vec_name, vidx);
+ 
+ 		err = request_irq(irq_num, idpf_vport_intr_clean_queues, 0,
+ 				  name, q_vector);
+@@ -4326,7 +4328,6 @@ int idpf_vport_intr_alloc(struct idpf_vport *vport)
+  */
+ int idpf_vport_intr_init(struct idpf_vport *vport)
+ {
+-	char *int_name;
+ 	int err;
+ 
+ 	err = idpf_vport_intr_init_vec_idx(vport);
+@@ -4340,11 +4341,7 @@ int idpf_vport_intr_init(struct idpf_vport *vport)
+ 	if (err)
+ 		goto unroll_vectors_alloc;
+ 
+-	int_name = kasprintf(GFP_KERNEL, "%s-%s",
+-			     dev_driver_string(&vport->adapter->pdev->dev),
+-			     vport->netdev->name);
+-
+-	err = idpf_vport_intr_req_irq(vport, int_name);
++	err = idpf_vport_intr_req_irq(vport);
+ 	if (err)
+ 		goto unroll_vectors_alloc;
+ 
+
 
