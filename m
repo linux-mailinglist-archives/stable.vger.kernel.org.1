@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198F194F095
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:51:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDB894F096
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:51:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C369B1F21DB4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:51:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A02B0B273B8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7440653370;
-	Mon, 12 Aug 2024 14:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D719C172773;
+	Mon, 12 Aug 2024 14:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORffZc4Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDW+MZTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BA84B5AE
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985DB54724
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474294; cv=none; b=G2GIlAF9sTvcmo4MUlAUdK3qzRoMokA212aUUAgH8P6sHQBjWky6XGFZEsMzQVIgr9kzRD5hwYP+pihgyCCa3lmoqx2UR8th8PVfXbJtAF2UVEbDst1bgsH1gVPzckNOBT9YKP2L536oY035Usr7gcVq2QIpQSt6GM2RxjNpKVY=
+	t=1723474297; cv=none; b=u1rBE16ufysIriSMZiF51qSqc+LmUdWiFeR5mhBpIFIf7aZE+L6t3FQ7TPMLMqmahBYxtJz/xucw1MFJPvMq9HpkwykzzI6KNw33Qfs2BV/RZpEPkK2bguo9AclnX56kqUdG39Mr/MYaf8+K2hNWdi8/0m4ASUDKCAWB675x354=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474294; c=relaxed/simple;
-	bh=F6hSr6BxqyJ9b+UZY2SbxnD1ig1bias6HH4JtboF8pU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GYnWEi1KmZnq5N+TrmFQdZSYKs2xvSsU08dmHCxJdzwoWIR+3rViJPTaURQJp3WglbGSFHexTOgCphOS2+A3OxYW1xVolMSeOXrv404Cd3/WA1DelbpyFr75HvmXbs1BUGOp2AmSeEOPMzy8vZG04+MhXiaZ/Dv5flB1TQwPFVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORffZc4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD6CC32782;
-	Mon, 12 Aug 2024 14:51:33 +0000 (UTC)
+	s=arc-20240116; t=1723474297; c=relaxed/simple;
+	bh=/lnDxZOhF5tD/DGFfRwV9VFRXEbpxGAt9moXdNNZ8Zc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Lt9hvl5rvxSGvFcG8vxvq+XXzXFGZKiU7w/bDEVARRTBHDK0rEcsW1SGdLjcLZXDu8OiuTAvRdNA0jDbUqoUfB/w2N9NTKkgTGdukGOnr1Rvc1ENnx5Csnhzi4TJteFFWVBMGCrIIWtVnSxO5BMEx5/nU50mOQSZmq4EqmRMz9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDW+MZTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08169C32782;
+	Mon, 12 Aug 2024 14:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474294;
-	bh=F6hSr6BxqyJ9b+UZY2SbxnD1ig1bias6HH4JtboF8pU=;
+	s=korg; t=1723474297;
+	bh=/lnDxZOhF5tD/DGFfRwV9VFRXEbpxGAt9moXdNNZ8Zc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ORffZc4YHcwdSfnw8ro79qXvkrpppC44aovUAl+UMQNHDkQQwQOLEBoFAJ9Qn/ydj
-	 VsF0LXljyblO2KGmS+rDGRbz8Vdl7JH4LuMy4kzZdnoj8MGdK12KOXCKFx91mzYzud
-	 7xylIpRLB+1E54y10PgdQ6mJzk8jPvjxYMugQ9ZM=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Use sw cursor for DCN401 with rotation" failed to apply to 6.10-stable tree
+	b=JDW+MZTA+T1ECDeYg+jXUzc921UAcej4tuBKmX1NgWX6kAKoTSdI4wscd5M7Q2ye8
+	 +KZSaUpyRilB4zABRd2WEgH5XwwtIWCvF+DvpX4mmPHZdSueVdtekWrv4YHQZCX4FH
+	 xO2Qai5rA5LXiBTL+5dkavnNonVwugsIZemfQg2M=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Use sw cursor for DCN401 with rotation" failed to apply to 6.6-stable tree
 To: aurabindo.pillai@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,rodrigo.siqueira@amd.com,sunpeng.li@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:49:35 +0200
-Message-ID: <2024081234-exuberant-preppy-8c43@gregkh>
+Date: Mon, 12 Aug 2024 16:49:38 +0200
+Message-ID: <2024081238-cable-overhang-ff75@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2ffa97c50a8b0598975e47c890032e71958425a0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081234-exuberant-preppy-8c43@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081238-cable-overhang-ff75@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,20 @@ Possible dependencies:
 e582c097d3d1 ("drm/amd/display: Always use legacy way of setting cursor on DCE")
 66eba12a5482 ("drm/amd/display: Do cursor programming with rest of pipe")
 f63f86b5affc ("drm/amd/display: Separate setting and programming of cursor")
+27f03bc680ef ("drm/amd/display: Guard cursor idle reallow by DC debug option")
+0701117efd1e ("Revert "drm/amd/display: For FPO and SubVP/DRR configs program vmin/max sel"")
+1b5b72b4d67c ("drm/amd/display: Fix MST Null Ptr for RV")
+a9b1a4f684b3 ("drm/amd/display: Add more checks for exiting idle in DC")
+dcbf438d4834 ("drm/amd/display: Unify optimize_required flags and VRR adjustments")
+8457bddc266c ("drm/amd/display: Revert "Rework DC Z10 restore"")
+e6f82bd44b40 ("drm/amd/display: Rework DC Z10 restore")
+a465536ebff8 ("drm/amd/display: revert "Optimize VRR updates to only necessary ones"")
+012a04b1d6af ("drm/amd/display: Refactor phantom resource allocation")
+09a4ec5da92c ("drm/amd/display: Refactor dc_state interface")
+8e57c06bf4b0 ("drm/amd/display: Refactor DMCUB enter/exit idle interface")
+6e4337f695c2 ("drm/amd/display: Unify optimize_required flags and VRR adjustments")
+0f657938e434 ("drm/amd/display: do not send commands to DMUB if DMUB is inactive from S3")
+0f5afa190b89 ("drm/amd/display: add CRTC gamma TF driver-specific property")
 
 thanks,
 
