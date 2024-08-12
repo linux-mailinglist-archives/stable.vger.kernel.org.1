@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91CD94EBFE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:43:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B9B94EBFF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83F1A282AB4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:43:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB22C1F22412
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688A9176AD1;
-	Mon, 12 Aug 2024 11:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE35176AD1;
+	Mon, 12 Aug 2024 11:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CheaRgzZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqMb2Qhw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A8316A948
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3DA16A948
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723462989; cv=none; b=lcDHbkB7pn+w9qFZLoiRk1Fg+nYzEqVxP0iicimj8SunrVBEwg/zGC3wh1vsvdrmmOVhLIj9S9I5+dgSgdwR1kxpUdjqNLhQqhdqSKtThdlnpAi5K0vp7meXuXM9L8qL8PR5snJvtdTu2+mHr/i3Nb6FudNIMOKsdczlDENwhD0=
+	t=1723462996; cv=none; b=UPPuFNjHZXy3xrlrtKr/nKGs0HONyjnxbPa8PN7tvbTc9Ga6WrlYH4L4yyRw2wEMlDQMMbnXWeadzyf5LN1APsCJLANqVbqy+niKm7q/veOzzG2mwV/zwRpIc2s5Rq6MxcHzv2801XPi9OWXnGXoDktJRwZQkkG7tuMV9YOBXRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723462989; c=relaxed/simple;
-	bh=2pfank+5t4OfJr5y/Pz3+X4Ksba2TxwrLJ4XVNWJHFk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pNZaGbwxZY3Ke0+SZYzLYsYZR2016f1OAuWR2wlOWUHyt243Z0taikfykMah5esIDN1FSPR3AqtoD+ku44Gl2WR5gZ4Oaxd+Vgu9qRuY+c0at44sdliO5FRKuuWU/0BNeTqxw3ehtsQtLwge1SEsum1dYTaUiJ22wPX5UKQzcN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CheaRgzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B8DC32782;
-	Mon, 12 Aug 2024 11:43:08 +0000 (UTC)
+	s=arc-20240116; t=1723462996; c=relaxed/simple;
+	bh=cyMPdCyokOGIadlmjtoRO3iaTKt7UhdVJ94jbCp0k6g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=be6GrOk6T3rXZXD5PPkPFKcH2TUFWW7Zf7FQLwjlTDkgs1+z3sIUyFELxMCYgyaJh6ESCft4iTIq1cnjFd99hdSrsPt8PzYm+TAW9JRezk4O52j6SzeJ9PoQpJZzzf/aCxI7nScUygiBPPX7K4pLbSzn12rDGhskHfiYj8wMFUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqMb2Qhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE61C32782;
+	Mon, 12 Aug 2024 11:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723462989;
-	bh=2pfank+5t4OfJr5y/Pz3+X4Ksba2TxwrLJ4XVNWJHFk=;
+	s=korg; t=1723462996;
+	bh=cyMPdCyokOGIadlmjtoRO3iaTKt7UhdVJ94jbCp0k6g=;
 	h=Subject:To:Cc:From:Date:From;
-	b=CheaRgzZvF7vKVFr9mWFxkjKFc8WGAS+5pjhK98FYjtcxHTgubEw753425g4sNCKv
-	 R+NWWLKI1aYodIzcU7mi/qYu3iz3FG2BvU9ENu8YBG5W3/k9SwFdzMRl5NJPEwuUrP
-	 vlyIFVrSdYDzWHcl0KNHgjIBT5zLKmJ8ju0Cmyj8=
-Subject: FAILED: patch "[PATCH] memcg: protect concurrent access to mem_cgroup_idr" failed to apply to 6.1-stable tree
+	b=ZqMb2QhwrK+oc0V1TFNpx8nZMkIiR0Fxct30J4WzrJcLM/h48wzQ9Vh+bvOPGXIeM
+	 K3gJ/jfy6Jx7/UMl4aCYVMBiAlhE4QkuTdM3BuKKMSGbERA2/M3D7LZrXmKKtEEC7y
+	 BL39cgJdfa5x02W8idrxtM87EyzIfA2+ZBMRqfMA=
+Subject: FAILED: patch "[PATCH] memcg: protect concurrent access to mem_cgroup_idr" failed to apply to 5.15-stable tree
 To: shakeel.butt@linux.dev,akpm@linux-foundation.org,hannes@cmpxchg.org,mhocko@suse.com,muchun.song@linux.dev,roman.gushchin@linux.dev,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 13:43:00 +0200
-Message-ID: <2024081259-plow-freezing-a93e@gregkh>
+Date: Mon, 12 Aug 2024 13:43:12 +0200
+Message-ID: <2024081211-owl-snowdrop-d2aa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9972605a238339b85bd16b084eed5f18414d22db
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081259-plow-freezing-a93e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081211-owl-snowdrop-d2aa@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,19 @@ e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
 a579086c99ed ("mm: multi-gen LRU: remove eviction fairness safeguard")
 adb8213014b2 ("mm: memcg: fix stale protection of reclaim target memcg")
 57e9cc50f4dd ("mm: vmscan: split khugepaged stats from direct reclaim stats")
+e4fea72b1438 ("mglru: mm/vmscan.c: fix imprecise comments")
+d396def5d86d ("memcg: rearrange code")
+410f8e82689e ("memcg: extract memcg_vmstats from struct mem_cgroup")
+d6c3af7d8a2b ("mm: multi-gen LRU: debugfs interface")
+1332a809d95a ("mm: multi-gen LRU: thrashing prevention")
+354ed5974429 ("mm: multi-gen LRU: kill switch")
+f76c83378851 ("mm: multi-gen LRU: optimize multiple memcgs")
+bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
+ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+ec1c86b25f4b ("mm: multi-gen LRU: groundwork")
+f1e1a7be4718 ("mm/vmscan.c: refactor shrink_node()")
+d3629af59f41 ("mm/vmscan: make the annotations of refaults code at the right place")
 
 thanks,
 
