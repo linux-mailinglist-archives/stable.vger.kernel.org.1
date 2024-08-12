@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-67057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF4A94F3B3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79C394F309
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF8811F21012
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94304285291
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E71D186E38;
-	Mon, 12 Aug 2024 16:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0346F187339;
+	Mon, 12 Aug 2024 16:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lM8sYUqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZ6KVInD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D40229CA;
-	Mon, 12 Aug 2024 16:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65E61862B9;
+	Mon, 12 Aug 2024 16:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479661; cv=none; b=NxY8LrrR+qNPrTgdLcF19Bmaphi4AJCUqTt0XwFnCwLs++I0vST94bsL1Ci44ZBodTNuUOyDtvxsvb3tf5YkmaW9lWzFw8ci9zX3AfzGzM19nZrr4F2J7VU01+Ew2z04uXqEgsIQgApSv051vhCXA1EeagiwkrymEn0qLMagAuw=
+	t=1723479172; cv=none; b=k9VM10/VPINJG/k29qV0DzHEVFXOUJmRkrdgmk8eglYny6DZVbvmXvP1N3pxFZe0jGm+UUhVqaiMga7B8XC9bAwdVow+tRWOJG9ySa8bJRzy7qLBzuLqoLZgCfWwqcPkPQc1/mYtHR+tSlkdo4tGATrN0oy2Ync/AwJkPoIwHqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479661; c=relaxed/simple;
-	bh=tGfHVzMXRMmzqNRm3hiBUp5ceD3A0yfZErdgAp2fkrA=;
+	s=arc-20240116; t=1723479172; c=relaxed/simple;
+	bh=xuGsr/emB0M/6tBS9jCdKr+aD5i52gjtOeLiL9GJcQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TCEUqOIBK693aOXthH++jI4P8JgR5ze1FQatpQzva0GfmVV8YGhYmC96LhXnAd0g+Y75z5LSPoH/nfaw6/l3dEEmxl4oBgAMWoalD431BHFElhF27ujeueDPnYet/nuk3yz/r0zim9Gnr7TxpEhCQv4ctxsoxbyGkAfRAnq7iYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lM8sYUqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A90C32782;
-	Mon, 12 Aug 2024 16:21:00 +0000 (UTC)
+	 MIME-Version; b=I9OnEkmCYFs1+n2HjhRT7YTO3mSNsLAH//tQgEKkJioVn64b9+Z4LggZKVFtCl5/9wzljE4DSGupPh7TzHPVo2m6pRVfpipLVlETfcUUk//NFCQ8TJsspW06j+hu+vTBIDExctfnka7ZpDb9y4qpL5AgWoPsZ1hw15OVWE2OVBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZ6KVInD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E903CC4AF0D;
+	Mon, 12 Aug 2024 16:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479661;
-	bh=tGfHVzMXRMmzqNRm3hiBUp5ceD3A0yfZErdgAp2fkrA=;
+	s=korg; t=1723479172;
+	bh=xuGsr/emB0M/6tBS9jCdKr+aD5i52gjtOeLiL9GJcQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lM8sYUqkxYboEf6GPhK5XPfz3eephjcaO70FhbyMH/rh+6//TCJ104vuwfFGPo6V5
-	 zShHYDIW6viV6y3f4tPjg3EW8ZS3CGZ9Q2rqf4z/19geNIWMufLJIZWLJM9RBiyzCF
-	 hb0311EDxdZi7JhUMwpCVUjYWfyHY5ynbTblm6VE=
+	b=CZ6KVInDi9TReFVJmkH0AaDQUvQON4o/cIZuOvlqsj0YQEFk2Do+D7/H4fsJ0didU
+	 TujbJTOUrFvZLZ8m/b1kE+ukifiFJflnAruCSdj20Qplu865zWuA/n/TPAzTPFoYM7
+	 lQRVyXpD/XEeI/1cI5ZTVJPpJov4845XkndYH7Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam James <sam@gentoo.org>,
-	Alejandro Colomar <alx@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 154/189] btrfs: avoid using fixed char array size for tree names
-Date: Mon, 12 Aug 2024 18:03:30 +0200
-Message-ID: <20240812160138.069338661@linuxfoundation.org>
+	Geliang Tang <geliang.tang@suse.com>,
+	Matthieu Baerts <matthieu.baerts@tessares.net>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.1 130/150] mptcp: export local_address
+Date: Mon, 12 Aug 2024 18:03:31 +0200
+Message-ID: <20240812160130.183393088@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-commit 12653ec36112ab55fa06c01db7c4432653d30a8d upstream.
+commit dc886bce753cc2cf3c88ec5c7a6880a4e17d65ba upstream.
 
-[BUG]
-There is a bug report that using the latest trunk GCC 15, btrfs would cause
-unterminated-string-initialization warning:
+Rename local_address() with "mptcp_" prefix and export it in protocol.h.
 
-  linux-6.6/fs/btrfs/print-tree.c:29:49: error: initializer-string for array of ‘char’ is too long [-Werror=unterminated-string-initialization]
-   29 |         { BTRFS_BLOCK_GROUP_TREE_OBJECTID,      "BLOCK_GROUP_TREE"      },
-      |
-      ^~~~~~~~~~~~~~~~~~
+This function will be re-used in the common PM code (pm.c) in the
+following commit.
 
-[CAUSE]
-To print tree names we have an array of root_name_map structure, which
-uses "char name[16];" to store the name string of a tree.
-
-But the following trees have names exactly at 16 chars length:
-- "BLOCK_GROUP_TREE"
-- "RAID_STRIPE_TREE"
-
-This means we will have no space for the terminating '\0', and can lead
-to unexpected access when printing the name.
-
-[FIX]
-Instead of "char name[16];" use "const char *" instead.
-
-Since the name strings are all read-only data, and are all NULL
-terminated by default, there is not much need to bother the length at
-all.
-
-Reported-by: Sam James <sam@gentoo.org>
-Reported-by: Alejandro Colomar <alx@kernel.org>
-Fixes: edde81f1abf29 ("btrfs: add raid stripe tree pretty printer")
-Fixes: 9c54e80ddc6bd ("btrfs: add code to support the block group root")
-CC: stable@vger.kernel.org # 6.1+
-Suggested-by: Alejandro Colomar <alx@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Alejandro Colomar <alx@kernel.org>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6834097fc38c ("mptcp: pm: fix backup support in signal endpoints")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/print-tree.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |   17 ++++++++---------
+ net/mptcp/protocol.h   |    1 +
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/fs/btrfs/print-tree.c
-+++ b/fs/btrfs/print-tree.c
-@@ -12,7 +12,7 @@
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -86,8 +86,7 @@ bool mptcp_addresses_equal(const struct
+ 	return a->port == b->port;
+ }
  
- struct root_name_map {
- 	u64 id;
--	char name[16];
-+	const char *name;
- };
+-static void local_address(const struct sock_common *skc,
+-			  struct mptcp_addr_info *addr)
++void mptcp_local_address(const struct sock_common *skc, struct mptcp_addr_info *addr)
+ {
+ 	addr->family = skc->skc_family;
+ 	addr->port = htons(skc->skc_num);
+@@ -122,7 +121,7 @@ static bool lookup_subflow_by_saddr(cons
+ 	list_for_each_entry(subflow, list, node) {
+ 		skc = (struct sock_common *)mptcp_subflow_tcp_sock(subflow);
  
- static const struct root_name_map root_map[] = {
+-		local_address(skc, &cur);
++		mptcp_local_address(skc, &cur);
+ 		if (mptcp_addresses_equal(&cur, saddr, saddr->port))
+ 			return true;
+ 	}
+@@ -274,7 +273,7 @@ bool mptcp_pm_sport_in_anno_list(struct
+ 	struct mptcp_addr_info saddr;
+ 	bool ret = false;
+ 
+-	local_address((struct sock_common *)sk, &saddr);
++	mptcp_local_address((struct sock_common *)sk, &saddr);
+ 
+ 	spin_lock_bh(&msk->pm.lock);
+ 	list_for_each_entry(entry, &msk->pm.anno_list, list) {
+@@ -545,7 +544,7 @@ static void mptcp_pm_create_subflow_or_s
+ 		struct mptcp_addr_info mpc_addr;
+ 		bool backup = false;
+ 
+-		local_address((struct sock_common *)msk->first, &mpc_addr);
++		mptcp_local_address((struct sock_common *)msk->first, &mpc_addr);
+ 		rcu_read_lock();
+ 		entry = __lookup_addr(pernet, &mpc_addr, false);
+ 		if (entry) {
+@@ -753,7 +752,7 @@ int mptcp_pm_nl_mp_prio_send_ack(struct
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 		struct mptcp_addr_info local, remote;
+ 
+-		local_address((struct sock_common *)ssk, &local);
++		mptcp_local_address((struct sock_common *)ssk, &local);
+ 		if (!mptcp_addresses_equal(&local, addr, addr->port))
+ 			continue;
+ 
+@@ -1072,8 +1071,8 @@ int mptcp_pm_nl_get_local_id(struct mptc
+ 	/* The 0 ID mapping is defined by the first subflow, copied into the msk
+ 	 * addr
+ 	 */
+-	local_address((struct sock_common *)msk, &msk_local);
+-	local_address((struct sock_common *)skc, &skc_local);
++	mptcp_local_address((struct sock_common *)msk, &msk_local);
++	mptcp_local_address((struct sock_common *)skc, &skc_local);
+ 	if (mptcp_addresses_equal(&msk_local, &skc_local, false))
+ 		return 0;
+ 
+@@ -1507,7 +1506,7 @@ static int mptcp_nl_remove_id_zero_addre
+ 		if (list_empty(&msk->conn_list) || mptcp_pm_is_userspace(msk))
+ 			goto next;
+ 
+-		local_address((struct sock_common *)msk, &msk_local);
++		mptcp_local_address((struct sock_common *)msk, &msk_local);
+ 		if (!mptcp_addresses_equal(&msk_local, addr, addr->port))
+ 			goto next;
+ 
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -618,6 +618,7 @@ void __mptcp_unaccepted_force_close(stru
+ 
+ bool mptcp_addresses_equal(const struct mptcp_addr_info *a,
+ 			   const struct mptcp_addr_info *b, bool use_port);
++void mptcp_local_address(const struct sock_common *skc, struct mptcp_addr_info *addr);
+ 
+ /* called with sk socket lock held */
+ int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_addr_info *loc,
 
 
 
