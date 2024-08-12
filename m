@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-66880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B476294F2E7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A642794F38F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FA78B242DF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68612283B53
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E13A188CB2;
-	Mon, 12 Aug 2024 16:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B471862BD;
+	Mon, 12 Aug 2024 16:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/eMzo7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUcDTVwk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB50186E47;
-	Mon, 12 Aug 2024 16:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC42183CA6;
+	Mon, 12 Aug 2024 16:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479086; cv=none; b=dTTLOx/FqsQBIHjcURBjkIY7rXPN1R9iNIssmQWm91AGuoLvh0XEOWXXBtEEu2uqrnJLAJ1FGXMOjUNrzGimkWdIMW1JwwqxSMNsWv8nm7S4KfvyKSfS4Ou5fAgmesT23+hFyfW8s2HkzqCK+ogQD8YpYOLWA+ugMu+lCZcWHms=
+	t=1723479552; cv=none; b=rHk8BWLTT5kNdF62cOHHSK4xXfLA54IRHdDGzkWnWaTqVR9qV/4fbiXUrVQxm+Psq72BfTbKdxWSns1DrabW91X41v662rJpvOuyuvGGI7UiERQcipBCBuObM4p3MjJhB/PjARQEg//xwyb12mM6P5rob091RhlxKkJXX2nWuFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479086; c=relaxed/simple;
-	bh=JmDgb7+ZFUDoW6Ltg7bJvTt3SMxUjZ9cizhhwCY1m4g=;
+	s=arc-20240116; t=1723479552; c=relaxed/simple;
+	bh=JZL9PG9rBOHQH7exup4JoqmhgOVG/MLJRkPlq7oEkL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KueLeLL4jdnptAt7GVeBDUtfpfcuGQVykDfusEEJhfBPpW2wqpVy3v3ULnvFZpoucihEPySy4lxkdXzzv8q+w/7FPuXkij6MOdwa7I306H0ax1bhMQNj27w1lwJjnFmW/XVILaFxmKrBKS56V9pl9Nq17SNVazrR49hJV5/RhAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/eMzo7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84012C32782;
-	Mon, 12 Aug 2024 16:11:25 +0000 (UTC)
+	 MIME-Version; b=coChHTJjzNxZpZrR9PTxBpZiaGkqaHOUkoBTBf/LWK+TlP7RL6+z4T3gItkxn6O6BS4Iz0HtedEh0/TxlVUXreOXi9b33TdBWf8y0RaYnrCNw5ohoWcvc1uFOKq7zkaWns4+Hpgg2LdHKLjUER0azB3qrX1awLlMdvY2Rk6iCt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUcDTVwk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D78C32782;
+	Mon, 12 Aug 2024 16:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479085;
-	bh=JmDgb7+ZFUDoW6Ltg7bJvTt3SMxUjZ9cizhhwCY1m4g=;
+	s=korg; t=1723479552;
+	bh=JZL9PG9rBOHQH7exup4JoqmhgOVG/MLJRkPlq7oEkL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/eMzo7GsSEgAmZB2nf8tU0jC9JyaFRYZasM043+pckrRji/g8x4pX1CFlzBPf2S1
-	 rHXLinU+shnw6otirB1ivHJ8S8ZYnpX69nV7EBI3b5jBC83SM+lDioNtPW0zVpybhm
-	 HZXyCK7+4PREbeVUzEfuHP5z24Td8C82C49PJuiE=
+	b=TUcDTVwk8ncuFXjq53ZfQCrrOcxVf8oy4tuFoX/GGUE+4p6wFAdOSJ1m9aHgbfnsr
+	 VA4PNMfiTAg36aMe9oRW1sTrLC8TnHkzh5ROpWRxtA9Gqd90yTzTEJeW/bO1oO57kE
+	 utGAZadBODudH+uBEwXB+sZ7Zy1lisG1hVZV1u2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chris Wulff <crwulff@gmail.com>
-Subject: [PATCH 6.1 097/150] usb: gadget: u_audio: Check return codes from usb_ep_enable and config_ep_by_speed.
+Subject: [PATCH 6.6 122/189] usb: gadget: u_audio: Check return codes from usb_ep_enable and config_ep_by_speed.
 Date: Mon, 12 Aug 2024 18:02:58 +0200
-Message-ID: <20240812160128.905892968@linuxfoundation.org>
+Message-ID: <20240812160136.841581901@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
