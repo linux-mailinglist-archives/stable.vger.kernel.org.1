@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-67328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 859AB94F4EB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F382B94F3D2
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C50B2690C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3240F1C21907
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C34183CD4;
-	Mon, 12 Aug 2024 16:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B484186E38;
+	Mon, 12 Aug 2024 16:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBtqw7Ks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeJH5paP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBED186E5E;
-	Mon, 12 Aug 2024 16:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A936183CA6;
+	Mon, 12 Aug 2024 16:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480568; cv=none; b=UCGKzL/7h0mU9KxpjRyXgCOlCZYM0rk+gY4KtuORgsNEvWvA6QXoqE8ThMT2IYVxseaUpL+e5cAD4iq+FBNnDOB7UKffj+6pJkMJK8GNcTE7ltf7+LD5Akua1ZSO+lW/0K4q4g+8xVKviMbKW01igCChpE2+N6WSBza6U05346o=
+	t=1723479754; cv=none; b=sbwrTU+4aQF5/lDuAfHJ0ygM4Z6pe9E3IgZ+gV01O5BmA49bm+6zaF8f4H3i76nREoGfp8AKHFJ70tRmGwvSRpfujB8VStMxyIZHysJcK7h+yOowKEBryK/1t2zXaoUpu7MN/dko0aPfuCv7cfdDhyavXftL6pNzbNzTnbhM+m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480568; c=relaxed/simple;
-	bh=larPktUZuJ13/XWMvfyiyQmWOnANMizyrfPOUok3dZo=;
+	s=arc-20240116; t=1723479754; c=relaxed/simple;
+	bh=is3FBxTYkS7FSRoD9NtlavL7FHATqKP6Z3/mIzF2hoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZL0AQd3y/uJV6hvhacAuMLNdc3DcMTHKYfEhS7iZSs0GEjfHlM9XIjQt4S2201uSYjrObzEAMdo+ynbgsZADvzSNWFGj5goUVxFZhtzZqfV3X0LDNqBrEZZRv8sXT6If3FL7uZ2Ez8odpYbh6/gqmAO/mw1bana+fPWnQ2zOQWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBtqw7Ks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D33AC32782;
-	Mon, 12 Aug 2024 16:36:07 +0000 (UTC)
+	 MIME-Version; b=JOLBD1SzjSzk1/63MSqoCYhca8lYY6y7T49SU14qGGgEvYdB9aESkaMhwa9TXCzlZ8Ud8Rb1EVGMBc4tEVYXbJQ78VsIVjJohyxtpb4pss6yoc0WTEf+vPUKTwbsVWWEGNEtpXENpX2ZKbCROfHXvNFmV+pX99Hd0Op5oqEWxCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeJH5paP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D228AC32782;
+	Mon, 12 Aug 2024 16:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480567;
-	bh=larPktUZuJ13/XWMvfyiyQmWOnANMizyrfPOUok3dZo=;
+	s=korg; t=1723479754;
+	bh=is3FBxTYkS7FSRoD9NtlavL7FHATqKP6Z3/mIzF2hoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBtqw7Ks0DjWIkvEYs+UJ6dWZoG0pg6FRiPr/BZF59JQwYdiBUG85dlISbmBXpl0N
-	 EXvovgrZOIV6PaGeIg6K32SsGNeIalTqOw+OxHGQmyrPEZSUp7jzdPbin08tcGVE+D
-	 UqN9khL9HiF5acMhtOETQbZBu1lhVP8K+HnrAsaU=
+	b=CeJH5paP86zEDfBmZJlRs3mv1GdGKq2KvPLaQ0Ii8anwKq3FTn0wgskqmFvAMWfax
+	 eB82UFyrF8scjuoEMJAACjmM0+P4iSuZA4alPXBbAV7CSrQnnQVcU37f6F+iho9G9a
+	 EdKWSq7noKPGXO7Bf43tweDbHE3AeEF1GfT/RpEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prem Nath Dey <prem.nath.dey@intel.com>,
-	Xiaoping Zhou <xiaoping.zhou@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.10 236/263] x86/paravirt: Fix incorrect virt spinlock setting on bare metal
+	Sam Sun <samsun1006219@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Kevin Berry <kpberry@google.com>
+Subject: [PATCH 6.6 181/189] xfs: fix log recovery buffer allocation for the legacy h_size fixup
 Date: Mon, 12 Aug 2024 18:03:57 +0200
-Message-ID: <20240812160155.569531968@linuxfoundation.org>
+Message-ID: <20240812160139.116618882@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit e639222a51196c69c70b49b67098ce2f9919ed08 upstream.
+commit 45cf976008ddef4a9c9a30310c9b4fb2a9a6602a upstream.
 
-The kernel can change spinlock behavior when running as a guest. But this
-guest-friendly behavior causes performance problems on bare metal.
+Commit a70f9fe52daa ("xfs: detect and handle invalid iclog size set by
+mkfs") added a fixup for incorrect h_size values used for the initial
+umount record in old xfsprogs versions.  Later commit 0c771b99d6c9
+("xfs: clean up calculation of LR header blocks") cleaned up the log
+reover buffer calculation, but stoped using the fixed up h_size value
+to size the log recovery buffer, which can lead to an out of bounds
+access when the incorrect h_size does not come from the old mkfs
+tool, but a fuzzer.
 
-The kernel uses a static key to switch between the two modes.
+Fix this by open coding xlog_logrec_hblks and taking the fixed h_size
+into account for this calculation.
 
-In theory, the static key is enabled by default (run in guest mode) and
-should be disabled for bare metal (and in some guests that want native
-behavior or paravirt spinlock).
-
-A performance drop is reported when running encode/decode workload and
-BenchSEE cache sub-workload.
-
-Bisect points to commit ce0a1b608bfc ("x86/paravirt: Silence unused
-native_pv_lock_init() function warning"). When CONFIG_PARAVIRT_SPINLOCKS is
-disabled the virt_spin_lock_key is incorrectly set to true on bare
-metal. The qspinlock degenerates to test-and-set spinlock, which decreases
-the performance on bare metal.
-
-Set the default value of virt_spin_lock_key to false. If booting in a VM,
-enable this key. Later during the VM initialization, if other
-high-efficient spinlock is preferred (e.g. paravirt-spinlock), or the user
-wants the native qspinlock (via nopvspin boot commandline), the
-virt_spin_lock_key is disabled accordingly.
-
-This results in the following decision matrix:
-
-X86_FEATURE_HYPERVISOR         Y    Y       Y     N
-CONFIG_PARAVIRT_SPINLOCKS      Y    Y       N     Y/N
-PV spinlock                    Y    N       N     Y/N
-
-virt_spin_lock_key             N    Y/N     Y     N
-
-Fixes: ce0a1b608bfc ("x86/paravirt: Silence unused native_pv_lock_init() function warning")
-Reported-by: Prem Nath Dey <prem.nath.dey@intel.com>
-Reported-by: Xiaoping Zhou <xiaoping.zhou@intel.com>
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Suggested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Suggested-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240806112207.29792-1-yu.c.chen@intel.com
+Fixes: 0c771b99d6c9 ("xfs: clean up calculation of LR header blocks")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Kevin Berry <kpberry@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/qspinlock.h |   12 +++++++-----
- arch/x86/kernel/paravirt.c       |    7 +++----
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ fs/xfs/xfs_log_recover.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/arch/x86/include/asm/qspinlock.h
-+++ b/arch/x86/include/asm/qspinlock.h
-@@ -66,13 +66,15 @@ static inline bool vcpu_is_preempted(lon
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2965,7 +2965,7 @@ xlog_do_recovery_pass(
+ 	int			error = 0, h_size, h_len;
+ 	int			error2 = 0;
+ 	int			bblks, split_bblks;
+-	int			hblks, split_hblks, wrapped_hblks;
++	int			hblks = 1, split_hblks, wrapped_hblks;
+ 	int			i;
+ 	struct hlist_head	rhash[XLOG_RHASH_SIZE];
+ 	LIST_HEAD		(buffer_list);
+@@ -3021,14 +3021,22 @@ xlog_do_recovery_pass(
+ 		if (error)
+ 			goto bread_err1;
  
- #ifdef CONFIG_PARAVIRT
- /*
-- * virt_spin_lock_key - enables (by default) the virt_spin_lock() hijack.
-+ * virt_spin_lock_key - disables by default the virt_spin_lock() hijack.
-  *
-- * Native (and PV wanting native due to vCPU pinning) should disable this key.
-- * It is done in this backwards fashion to only have a single direction change,
-- * which removes ordering between native_pv_spin_init() and HV setup.
-+ * Native (and PV wanting native due to vCPU pinning) should keep this key
-+ * disabled. Native does not touch the key.
-+ *
-+ * When in a guest then native_pv_lock_init() enables the key first and
-+ * KVM/XEN might conditionally disable it later in the boot process again.
-  */
--DECLARE_STATIC_KEY_TRUE(virt_spin_lock_key);
-+DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
- 
- /*
-  * Shortcut for the queued_spin_lock_slowpath() function that allows
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -51,13 +51,12 @@ DEFINE_ASM_FUNC(pv_native_irq_enable, "s
- DEFINE_ASM_FUNC(pv_native_read_cr2, "mov %cr2, %rax", .noinstr.text);
- #endif
- 
--DEFINE_STATIC_KEY_TRUE(virt_spin_lock_key);
-+DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
- 
- void __init native_pv_lock_init(void)
- {
--	if (IS_ENABLED(CONFIG_PARAVIRT_SPINLOCKS) &&
--	    !boot_cpu_has(X86_FEATURE_HYPERVISOR))
--		static_branch_disable(&virt_spin_lock_key);
-+	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
-+		static_branch_enable(&virt_spin_lock_key);
- }
- 
- static void native_tlb_remove_table(struct mmu_gather *tlb, void *table)
+-		hblks = xlog_logrec_hblks(log, rhead);
+-		if (hblks != 1) {
+-			kmem_free(hbp);
+-			hbp = xlog_alloc_buffer(log, hblks);
++		/*
++		 * This open codes xlog_logrec_hblks so that we can reuse the
++		 * fixed up h_size value calculated above.  Without that we'd
++		 * still allocate the buffer based on the incorrect on-disk
++		 * size.
++		 */
++		if (h_size > XLOG_HEADER_CYCLE_SIZE &&
++		    (rhead->h_version & cpu_to_be32(XLOG_VERSION_2))) {
++			hblks = DIV_ROUND_UP(h_size, XLOG_HEADER_CYCLE_SIZE);
++			if (hblks > 1) {
++				kmem_free(hbp);
++				hbp = xlog_alloc_buffer(log, hblks);
++			}
+ 		}
+ 	} else {
+ 		ASSERT(log->l_sectBBsize == 1);
+-		hblks = 1;
+ 		hbp = xlog_alloc_buffer(log, 1);
+ 		h_size = XLOG_BIG_RECORD_BSIZE;
+ 	}
 
 
 
