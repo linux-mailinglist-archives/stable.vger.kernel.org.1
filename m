@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F3194F32E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F8C94F43E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6513B26959
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77B4282432
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04766187844;
-	Mon, 12 Aug 2024 16:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAED186E38;
+	Mon, 12 Aug 2024 16:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZ74LBLv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntEu2Shk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B721B187332;
-	Mon, 12 Aug 2024 16:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1DB134AC;
+	Mon, 12 Aug 2024 16:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479273; cv=none; b=RFbhiDydEYZmCD9YzRNDVLjLzDOoFVZuUzs5yYzmpc4BcM1+xZwj1zJXEppdBxTdqI1yTAxYl/klsXkUz/jX8dTtgTOy9kc6vl0FezSbGlmcLZYr8vNMsXFY0YBTs60Px9uzjGQsn0pW2FAOyKy5kX8kZIPJ9Nn97a+8HTx8GgI=
+	t=1723480081; cv=none; b=KIbpoMFDrfX16hjETIfy+e/Bg9K3LbyHcJHctErbo4jty08qwYakCEYkhKxqbqKItsycVYWv2Vwk8IWOPZ0idVOEnmo+qTaihYwUJ5PyWVXYrJAJZjViw7Ift3bfMFCqFz4YyO92vtdSenFV7Pbjv7aLt0NjGltxK/nraFNCWpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479273; c=relaxed/simple;
-	bh=nU7jkriuy0v+LVA6GzNfRWw90LKYwSFMOrdTYruBvkg=;
+	s=arc-20240116; t=1723480081; c=relaxed/simple;
+	bh=Om8TESHo7vcrNNsINsBx9khqLRxHJ32zsY4RVvsS/4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4DX4GqYNRaHEj3jaSEs4Mfo3ipTlnnBNADdqOkDjk76GjjQ09C9/lGl3iT2sUSYoXQRLALl8t/zt9ORFmIIQmcqlrl/svLUQiAv9hexn9dUY8h9K9k/YNZ5ulR1INraAPZ6fW25XkE+fWJDkZcwYlKo9QtpgnGJtDJemPM6Yfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZ74LBLv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C5FC32782;
-	Mon, 12 Aug 2024 16:14:32 +0000 (UTC)
+	 MIME-Version; b=sR4VpINPcK6esZOXL588uYHaCZ3INnrUS59+MMF2ZkQjRv6YODaA2WaQdyzpzL7V2mabUdPSnpjbmVpYlV7NThzP1I2f61n6HFM6K0S4CTy6dR4rxvHLnP9WG+h828FhEjY1b25u272JUe2339l9eS+0ooyHVLAPnM1FuIvCmXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntEu2Shk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07D7C32782;
+	Mon, 12 Aug 2024 16:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479273;
-	bh=nU7jkriuy0v+LVA6GzNfRWw90LKYwSFMOrdTYruBvkg=;
+	s=korg; t=1723480081;
+	bh=Om8TESHo7vcrNNsINsBx9khqLRxHJ32zsY4RVvsS/4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZ74LBLvuMzJ8lJR9zaEGd2QNu0WsRdejFhkMp/208AVoe3UiBhtiSO/bFXLwtJFV
-	 pMxk4Ixxahi26C0zZ8BR1aKiG2n9DRkorQdnx51WxoCEcQgIylrGis1SgYtQZweadW
-	 B9d+H2daTLFn13PSVtWazJX/VPkM3PyLek6C24wI=
+	b=ntEu2Shkml597Ipm1f+qjGY+UMImCIsLj1Lc3+TKOcPj4h2X6XN0BlkxVWoafveAN
+	 kpTA1bAlh4whV+brWpNHMGTuco1H0WXVaiBgvnbQcmKrPm97XXSUV2ZLHDODEHSW/c
+	 fPi6bajrN7GDqU/n1J+N4qf/0wj/BEWDDYzwAn14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Ramesh Errabolu <Ramesh.Errabolu@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/189] wifi: ath12k: fix memory leak in ath12k_dp_rx_peer_frag_setup()
+Subject: [PATCH 6.10 091/263] drm/amd/amdkfd: Fix a resource leak in svm_range_validate_and_map()
 Date: Mon, 12 Aug 2024 18:01:32 +0200
-Message-ID: <20240812160133.536782575@linuxfoundation.org>
+Message-ID: <20240812160150.028368187@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Ramesh Errabolu <Ramesh.Errabolu@amd.com>
 
-[ Upstream commit 3d60041543189438cd1b03a1fa40ff6681c77970 ]
+[ Upstream commit d2d3a44008fea01ec7d5a9d9ca527286be2e0257 ]
 
-Currently the resource allocated by crypto_alloc_shash() is not
-freed in case ath12k_peer_find() fails, resulting in memory leak.
+Analysis of code by Coverity, a static code analyser, has identified
+a resource leak in the symbol hmm_range. This leak occurs when one of
+the prior steps before it is released encounters an error.
 
-Add crypto_free_shash() to fix it.
-
-This is found during code review, compile tested only.
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240526124226.24661-1-quic_bqiang@quicinc.com
+Signed-off-by: Ramesh Errabolu <Ramesh.Errabolu@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 2c17b1e7681a5..d9bc07844fb71 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2759,6 +2759,7 @@ int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev
- 	peer = ath12k_peer_find(ab, vdev_id, peer_mac);
- 	if (!peer) {
- 		spin_unlock_bh(&ab->base_lock);
-+		crypto_free_shash(tfm);
- 		ath12k_warn(ab, "failed to find the peer to set up fragment info\n");
- 		return -ENOENT;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 31e500859ab01..92485251247a0 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1658,7 +1658,7 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
+ 	start = map_start << PAGE_SHIFT;
+ 	end = (map_last + 1) << PAGE_SHIFT;
+ 	for (addr = start; !r && addr < end; ) {
+-		struct hmm_range *hmm_range;
++		struct hmm_range *hmm_range = NULL;
+ 		unsigned long map_start_vma;
+ 		unsigned long map_last_vma;
+ 		struct vm_area_struct *vma;
+@@ -1696,7 +1696,12 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
+ 		}
+ 
+ 		svm_range_lock(prange);
+-		if (!r && amdgpu_hmm_range_get_pages_done(hmm_range)) {
++
++		/* Free backing memory of hmm_range if it was initialized
++		 * Overrride return value to TRY AGAIN only if prior returns
++		 * were successful
++		 */
++		if (hmm_range && amdgpu_hmm_range_get_pages_done(hmm_range) && !r) {
+ 			pr_debug("hmm update the range, need validate again\n");
+ 			r = -EAGAIN;
+ 		}
 -- 
 2.43.0
 
