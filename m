@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-66793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7677794F27D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE98294F48A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AC9AB223A5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13EE1C20EB9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0989186E5E;
-	Mon, 12 Aug 2024 16:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFF7187335;
+	Mon, 12 Aug 2024 16:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9NRUi4U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcm5386Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F283186295;
-	Mon, 12 Aug 2024 16:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEA62C1A5;
+	Mon, 12 Aug 2024 16:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478803; cv=none; b=qrZa0yysIQd0VdcjGNpZI7Cef+1Uvt41cJ5QknNhsnBRAu37lgI/vkD/2AN6+G9WDwkLi4Hao1/BLC35eBgZBmFnp6Vc9lXKPpA2Rzdn78srDEUyUU5Jprw+bJCuy8KPHzr1rviACfqGPu/q6JKnEAggL8LOk4Apxz+WJwE4fVo=
+	t=1723480291; cv=none; b=tPXDzy1mZZSO1Tb8XXIEGexmgzSQezlBj6A7P/GReJmx6wTyL1UXvCLtChTQkShAjRUMrvu0VWMma9jpeMIJlVZ3gq2Y3XjqFF6c58U03yhKBk0XcW8KzQU3npwkE6jN9/ZJwlpL/LMGGp/4KHGdbK4v1dYVBHNab+IZgxIx1To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478803; c=relaxed/simple;
-	bh=YikAgcnntTP/okxF56LwhmkLKggU16V745ZBkYngBPg=;
+	s=arc-20240116; t=1723480291; c=relaxed/simple;
+	bh=ojyDG1uCalYpHBwz1qK4XsDQXAUhG5V423fE2ITJ2vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Il1k1o9jRuSBuVspRS5n7/ay7YTdoAIupzqQC3Ob+39CD1oHutc4A/yszTQL++0M4dXEHKle/u8mR2TPfNzgNZGto/n52jt+QmkfLzQcg6y6sqw0Ejwt18KRhipAWfVzt3hjsHbdMhwQGGnggCrEgoXqww2JqGge9dNCBXdWNI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9NRUi4U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739EDC32782;
-	Mon, 12 Aug 2024 16:06:42 +0000 (UTC)
+	 MIME-Version; b=MemcrvM47Lw1ofdOLqe5NyI2VOZxMqPdzLDK1iKRS7MgHGoPuclgr0l6mAeDf1Icx05fAQiSjJEiYjTXKg/QtYIItqQFL8zRh8g30/7QGHv7Myrm/KorxZJWlW3ajw8l4mYEPEDxs+L9ZTPTMfZcycrlDc9XF3FTYYgbvjjAjsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcm5386Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DECEC32782;
+	Mon, 12 Aug 2024 16:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478803;
-	bh=YikAgcnntTP/okxF56LwhmkLKggU16V745ZBkYngBPg=;
+	s=korg; t=1723480290;
+	bh=ojyDG1uCalYpHBwz1qK4XsDQXAUhG5V423fE2ITJ2vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9NRUi4Urbte8uh3Szs6DIwaqO5qynyTOyrmTpNw2hKwWRwEgBBY36GOHAusBbi1f
-	 Q7PomoiSzkdpB6EYqq7A9ME21aQwI01SFttll02TgZiEVc7AvXtpCN06eBqB4ThJnu
-	 qKzbAEc9yguW6idzpNnTs9jPQ6IeuwNKIXcFWkOE=
+	b=tcm5386Z3x4X7v0+N80PDDEJrveEVL/ttVkpXtPw0ugmv2xNxPFvL1ZBKcxcY9Bb+
+	 mQI5YMO9XZ5Px0vxC5PH7wDzKSfwUWE925tuvTjcJqIijUHvO0KM4FiE2k2AWScgZd
+	 6MZ2r8sYWgjhFf2ooMcU3O0JuB4oUBIxS4ULCxDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/150] drm/amd/display: Add NULL check for afb before dereferencing in amdgpu_dm_plane_handle_cursor_update
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.10 121/263] scsi: Revert "scsi: sd: Do not repeat the starting disk message"
 Date: Mon, 12 Aug 2024 18:02:02 +0200
-Message-ID: <20240812160126.749885027@linuxfoundation.org>
+Message-ID: <20240812160151.180502887@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 38e6f715b02b572f74677eb2f29d3b4bc6f1ddff ]
+commit da3e19ef0b3de0aa4b25595bdc214c02a04f19b8 upstream.
 
-This commit adds a null check for the 'afb' variable in the
-amdgpu_dm_plane_handle_cursor_update function. Previously, 'afb' was
-assumed to be null, but was used later in the code without a null check.
-This could potentially lead to a null pointer dereference.
+This reverts commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_plane.c:1298 amdgpu_dm_plane_handle_cursor_update() error: we previously assumed 'afb' could be null (see line 1252)
+The offending commit tried to suppress a double "Starting disk" message for
+some drivers, but instead started spamming the log with bogus messages
+every five seconds:
 
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Hersen Wu <hersenxs.wu@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	[  311.798956] sd 0:0:0:0: [sda] Starting disk
+	[  316.919103] sd 0:0:0:0: [sda] Starting disk
+	[  322.040775] sd 0:0:0:0: [sda] Starting disk
+	[  327.161140] sd 0:0:0:0: [sda] Starting disk
+	[  332.281352] sd 0:0:0:0: [sda] Starting disk
+	[  337.401878] sd 0:0:0:0: [sda] Starting disk
+	[  342.521527] sd 0:0:0:0: [sda] Starting disk
+	[  345.850401] sd 0:0:0:0: [sda] Starting disk
+	[  350.967132] sd 0:0:0:0: [sda] Starting disk
+	[  356.090454] sd 0:0:0:0: [sda] Starting disk
+	...
+
+on machines that do not actually stop the disk on runtime suspend (e.g.
+the Qualcomm sc8280xp CRD with UFS).
+
+Let's just revert for now to address the regression.
+
+Fixes: 7a6bbc2829d4 ("scsi: sd: Do not repeat the starting disk message")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240716161101.30692-1-johan+linaro@kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c  | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/scsi/sd.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-index cd6e99cf74a06..984a5affc5af1 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -1225,14 +1225,22 @@ void handle_cursor_update(struct drm_plane *plane,
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -4119,6 +4119,8 @@ static int sd_resume(struct device *dev)
  {
- 	struct amdgpu_device *adev = drm_to_adev(plane->dev);
- 	struct amdgpu_framebuffer *afb = to_amdgpu_framebuffer(plane->state->fb);
--	struct drm_crtc *crtc = afb ? plane->state->crtc : old_plane_state->crtc;
--	struct dm_crtc_state *crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
--	struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
--	uint64_t address = afb ? afb->address : 0;
-+	struct drm_crtc *crtc;
-+	struct dm_crtc_state *crtc_state;
-+	struct amdgpu_crtc *amdgpu_crtc;
-+	u64 address;
- 	struct dc_cursor_position position = {0};
- 	struct dc_cursor_attributes attributes;
- 	int ret;
+ 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
  
-+	if (!afb)
-+		return;
++	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
 +
-+	crtc = plane->state->crtc ? plane->state->crtc : old_plane_state->crtc;
-+	crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
-+	amdgpu_crtc = to_amdgpu_crtc(crtc);
-+	address = afb->address;
-+
- 	if (!plane->state->fb && !old_plane_state->fb)
- 		return;
+ 	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
+ 		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
+ 		return -EIO;
+@@ -4135,13 +4137,12 @@ static int sd_resume_common(struct devic
+ 	if (!sdkp)	/* E.g.: runtime resume at the start of sd_probe() */
+ 		return 0;
  
--- 
-2.43.0
-
+-	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
+-
+ 	if (!sd_do_start_stop(sdkp->device, runtime)) {
+ 		sdkp->suspended = false;
+ 		return 0;
+ 	}
+ 
++	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
+ 	ret = sd_start_stop_device(sdkp, 1);
+ 	if (!ret) {
+ 		sd_resume(dev);
 
 
 
