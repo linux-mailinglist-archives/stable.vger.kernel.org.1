@@ -1,85 +1,161 @@
-Return-Path: <stable+bounces-66553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D1394EFD4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:41:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3EC94EFD5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5AF31F2361E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:41:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2DA51C22003
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98649183CBA;
-	Mon, 12 Aug 2024 14:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F6018309C;
+	Mon, 12 Aug 2024 14:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bivtU72P"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SW/KMQzA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5806A183CB1
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E17B183087
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723473692; cv=none; b=HW5Md9wXlshSLON8yuy6QdF5eG1Tqe87mV/C8NMFEJmVQVAiVNf2XOGp1kIqIfgNuEsvvf011e8nXecrbCQxy7djzJjRhN+gM95B23pDz7aiqPrYNhfj4k8DlvnJG+LrznH0vXU1Xs1fXLaZ/aoiskU4e6eyyIfnYVz4x4/lHTs=
+	t=1723473716; cv=none; b=fUp+3bThrn8qOIQ3ka4hEIdxw6bB3X8T5DfIdzSKoapns4yqaFWQ0eNRfpPA3/yaFZIweQt0XGIXcKLg3g4OEjORR9MR+b5kbaeWSO3GWy3jAPIIOIaJcsBbDl5ScARzS8A+kTkgVieNiWiq7BuTd//kvwMvyq0Ennr2+yVXL88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723473692; c=relaxed/simple;
-	bh=CMlixNh8/YU3d3IVorxyqGf5YmpiVgk5zNwt19KJ/j8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XfHrlN/RfuHN+oRvsFeoXM0NiL8l8pKYGxBtVOdr62sQI9lPdjpvEdmCKxtbJ6zLAVPFzqXm6Sjhqlj7dgsuTjSL1GZoosmvdtHrCH13EumvcFYP5hFTF+CvTdgKuEETVvqAfVmdK70/yRynT5KxNrv+DFH7r1WV5bqxzWQ1xXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bivtU72P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA72C4AF09;
-	Mon, 12 Aug 2024 14:41:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723473692;
-	bh=CMlixNh8/YU3d3IVorxyqGf5YmpiVgk5zNwt19KJ/j8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bivtU72P5n9fv0XDho7J0vxo7+rlVL8pPcMcTNu/TcQMPdMVIpG1c4svL7xN6I+Yu
-	 6x0JgXdJ1sFCtXAaVBGfHItLepJgSo2aFd4TN69xY8Akmis6+7grDnBVHLudXNjlMX
-	 M6t+UMC1xTJzPhuU3cuJ9JGsYNUsWXQrjYRUiHdM=
-Date: Mon, 12 Aug 2024 16:41:29 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Kevin Berry <kpberry@google.com>
-Cc: stable@vger.kernel.org, ovt@google.com
-Subject: Re: [PATCH 0/1] xfs: fix log recovery buffer allocation for the
-Message-ID: <2024081203-striving-music-7e6a@gregkh>
-References: <20240810011646.3746457-1-kpberry@google.com>
+	s=arc-20240116; t=1723473716; c=relaxed/simple;
+	bh=AI6spKZhz4JWrlNyXuIgItaquR7eJd+58DceIHTXTs8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tGg6flluoeq66lOu1ZcioDrBKSMzPouYntWscZ1pLT9QOtL3rgT4CUmfz/QVivdEopziuiA9o9tPRLv8Tum+S8A1PNaz5CJvHf8QOasE/plWtp8nWcCFr4uApQj1AjrSS2doJ5yqJPNwf2l7AwYem+MRym2VUplDd3lMvyGf9Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SW/KMQzA; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723473714;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ct7/View+4l3ph9qWoSqlnR+2ecSNu4xsS9euEQ7PTY=;
+	b=SW/KMQzAQtBNr7p96aBYu4Q4d6aGOuVO3V1CKErG/Fckxb57BRu7ltgBlsnuAnFkjEcmEl
+	gfJ2HLQWiSwndxZHrfmqh6sLGpSt+0ZWfssZXk0KmXtLgT8/7z2Upo0cPbdzc157c/KZMg
+	pfrqGDQjnIPbkcUW7WuTLgtEXdom9HE=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-679-UAsFpm9TM6GeOAAOzAu-dQ-1; Mon, 12 Aug 2024 10:41:52 -0400
+X-MC-Unique: UAsFpm9TM6GeOAAOzAu-dQ-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a7abee2b4b0so354820366b.1
+        for <stable@vger.kernel.org>; Mon, 12 Aug 2024 07:41:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723473712; x=1724078512;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ct7/View+4l3ph9qWoSqlnR+2ecSNu4xsS9euEQ7PTY=;
+        b=TmUnHjrGQKP6bQoG89V0YtWP81D7KX3agDibaDuLjSqqeBRFZiSFjXT4E80bXwS5o4
+         FL4ri4p9Q74e/nfAWFUEzXYHVC85u5hq4kzpQWu/hpVImhlTTP12PLGtm2pk+T4PR/Um
+         EP8F6boY8VzI8KFK8b1Kj3W/CLCUcGzLTiDOtxNOLHync0gLm6szIyCTqDpdcebMzdSx
+         jN5Rum+KCsiRXwE1n+IySZdop5LwTrxATP3DApUoAcKaLDYfQtjmSC8y+Wz0vC3kFdd4
+         uCltnxkdx8Rt4kQpeJwnas7Pyo3veiyIqLnaEocFhXGoaGcOK/MCBhOh/iGsuHehK8sE
+         0kJw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9ao9IaPSYHr+LibqWlXDXU7OSfYMAUqnaXeacat6GRNCANY/xe31R3/UvspdobH0hayA1bVuWi4n6qO86OCHBcBeFv2wX
+X-Gm-Message-State: AOJu0YxvNTb7vEv3xRGu+/FhN0XMlAN+WA/zbdoshedJPPxm+jwukZ9d
+	uI0B3eNR83TdWJZWp9RPr6qRdYo+D7Hiv3YHFJjM/OvEkUTIQHCdLvz/YhVVQmL+ZVpY73QohgX
+	pkFENR0Cus3lUAVO1x4FEgXO+xgRpmrvDqLr0JusAuv/zYbDpgFiLmg==
+X-Received: by 2002:a17:906:7953:b0:a7d:4dc4:3d8 with SMTP id a640c23a62f3a-a80ed2cc78amr32944066b.54.1723473711658;
+        Mon, 12 Aug 2024 07:41:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG6pYDoPxHKF0JtU+KsXm6QfsnfgvBOvGxMFko4h6mu7vuViWNqYCE9tPtEA3SMKi5lL4X/DA==
+X-Received: by 2002:a17:906:7953:b0:a7d:4dc4:3d8 with SMTP id a640c23a62f3a-a80ed2cc78amr32943066b.54.1723473711186;
+        Mon, 12 Aug 2024 07:41:51 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80bb213782sm234549566b.156.2024.08.12.07.41.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Aug 2024 07:41:50 -0700 (PDT)
+Message-ID: <80dc479e-33af-4d09-8177-7862c34a4882@redhat.com>
+Date: Mon, 12 Aug 2024 16:41:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240810011646.3746457-1-kpberry@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] platform/x86: ideapad-laptop: Stop calling
+ i8042_command()
+To: Maxim Mikityanskiy <maxtram95@gmail.com>
+Cc: Ike Panhc <ike.pan@canonical.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Andy Shevchenko <andy@kernel.org>, platform-driver-x86@vger.kernel.org,
+ linux-input@vger.kernel.org, Jonathan Denose <jdenose@chromium.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, stable@vger.kernel.org
+References: <20240805141608.170844-1-hdegoede@redhat.com>
+ <ZrDwF919M0YZTqde@mail.gmail.com>
+ <5c5120a7-4739-4d92-a5b8-9b9c60edc3b7@redhat.com>
+ <ZroaE5Q6OdGe6ewz@mail.gmail.com>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <ZroaE5Q6OdGe6ewz@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 10, 2024 at 01:16:45AM +0000, Kevin Berry wrote:
-> Hi folks, in order to fix CVE-2024-39472 in kernels 5.15, 6.1, and 6.6,
-> I have adapted the mainline patch 45cf976008dd (xfs: fix log recovery
-> buffer allocation for the legacy h_size fixup) to resolve conflicts
-> with those kernels. Specifically, the mainline patch uses kvfree, but
-> the amended patch uses kmem_free since kmem_free was used in xfs until
-> patch 49292576136f (xfs: convert kmem_free() for kvmalloc users to
-> kvfree()).
+Hi Maxim,
+
+On 8/12/24 4:37 PM, Maxim Mikityanskiy wrote:
+> On Mon, 05 Aug 2024 at 17:45:19 +0200, Hans de Goede wrote:
+>> On 8/5/24 5:30 PM, Maxim Mikityanskiy wrote:
+>>> That means, userspace is not filtering out events upon receiving
+>>> KEY_TOUCHPAD_OFF. If we wanted to rely on that, we would need to send
+>>> KEY_TOUCHPAD_TOGGLE from the driver, but we actually can't, because Z570
+>>> is weird. It maintains the touchpad state in firmware to light up the
+>>> status LED, but the firmware doesn't do the actual touchpad disablement.
+>>>
+>>> That is, if we use TOGGLE, the LED will get out of sync. If we use
+>>> ON/OFF, the touchpad won't be disabled, unless we do it in the kernel.
+>>
+>> Ack.
+>>
+>> So how about this instead:
+>>
+>> diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+>> index 1ace711f7442..b7fa06f793cb 100644
+>> --- a/drivers/platform/x86/ideapad-laptop.c
+>> +++ b/drivers/platform/x86/ideapad-laptop.c
+>> @@ -1574,7 +1574,7 @@ static void ideapad_sync_touchpad_state(struct ideapad_private *priv, bool send_
+>>  	 * touchpad off and on. We send KEY_TOUCHPAD_OFF and
+>>  	 * KEY_TOUCHPAD_ON to not to get out of sync with LED
+>>  	 */
+>> -	if (priv->features.ctrl_ps2_aux_port)
+>> +	if (send_events && priv->features.ctrl_ps2_aux_port)
+>>  		i8042_command(&param, value ? I8042_CMD_AUX_ENABLE : I8042_CMD_AUX_DISABLE);
+>>  
+>>  	/*
+>>
+>> Maxmime, if you still have your Z570 can you check if the touchpad state after a suspend/resume
+>> correctly reflects the state before suspend/resume in both touchpad on / off states ?
 > 
-> I tested the patch by applying it to the above kernels and recompiling
-> them. I also ran xfstests on the 6.6.43 kernel with the patch applied.
-> In my initial xfstests run, all xfs and generic tests passed except for
-> generic/082, generic/269, generic/627, and xfs/155, but those tests all
-> passed on a second run. I'm assuming those initial failures were
-> unrelated to this patch, unless someone more familiar with those tests
-> thinks otherwise.
-> 
-> I'd be more than happy to do any more verification or tests if they're
-> required. Thanks!
+> *Maxim
 
-Note, for xfs changes, you do need to actually cc: the xfs developers :(
+Oops, sorry.
 
-Please do so in the future...
+> Just a heads-up, my Z570 now belongs to a family member, we'll test what
+> you asked, but right now there is a btrfs corruption on that laptop that
+> we need to fix first, it interferes with kernel compilation =/
 
-thanks,
+Note as discussed in another part of the thread the original bug report
+actually was not on a Z570, so the whole usage of i8042_command() on
+suspend/resume was a bit of a red herring. And the suspend/resume issue
+has been fixed in another way in the mean time.
 
-greg k-h
+So there really is no need to test this change anymore. At the moment
+there are no planned changes to ideapad-laptop related to this.
+
+Good luck with the BTRFS problem.
+
+Regards,
+
+Hans
+
+
 
