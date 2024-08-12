@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-66995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EC494F36D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:17:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F27494F299
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25A9A1C215D4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:17:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FA40B20BBD
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676911862B4;
-	Mon, 12 Aug 2024 16:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183211862BD;
+	Mon, 12 Aug 2024 16:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u06rx9zD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwhxtDkS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2706F178CE4;
-	Mon, 12 Aug 2024 16:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EAB18455B;
+	Mon, 12 Aug 2024 16:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479454; cv=none; b=tvozLqA6hBeFffqp10ThPkcfO1kx832Qa1mxgI1R2EzKRYK/RXPYUzBQCmvFP10ctZbXpUbQL1Vl9mQ2S+XW/R2UF98EAoma4l9IcATBAI7qbdvz2VEwqQJ3B5QXuZDPDZ0cSMeQ00ZOTzTzI97hn8L9JN0FkX55qTi7IHuiaaY=
+	t=1723478881; cv=none; b=c52kOpH7UorjnpZolaqhMXJ2in9WhM4dpYZ+X+Yo2CZ+ItY/55cNFGV4iGzkYE4l7v8Jt77jiFZAw02oiKGGM57fbIVUYV0xW2o2WYktoNyOwVjb/83QN2rrZDnrSj8D8PoHjKAUSoaJi+vcKYwvraXY5wZOSAdS8e2Gv8/Kj3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479454; c=relaxed/simple;
-	bh=Lx1tfoyf6jXYcyiZ0763Rg2argdq7Hu/u2HKgM0+U04=;
+	s=arc-20240116; t=1723478881; c=relaxed/simple;
+	bh=zMVMgF6xRl/2zN7LMQr3mkGbV1zvR//W8zsohU/AiLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bv0ArM36IFXw4qmldGoAogLrnIWmfFF1Fpy3NyVBPL+CIKGRnfhuesKCMzxrj3LSxzgMU3pSY1EWlITZr5VjpexFG2mBp1iR073JyjZeif3ASqcyOKSB6aijnr3SbiAWPsL2bbfx4i72MqPRDK4JTl19gbk6QApudXFeMQzJAzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u06rx9zD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED15C32782;
-	Mon, 12 Aug 2024 16:17:33 +0000 (UTC)
+	 MIME-Version; b=WuWzGJ/Vmwp9cMY17QV3I78yZROeXmnyx9SDEUd2rmkitPiYP88N7pS//5wWqd7CJFkby7Jv+L7crQIeWNT2Huia+dRYvgpSdLrEc4fFOllAUPO5yxwEjiSWCWOjXoaGAyROOVSKnytNX4upUOEuQvVEDLfKd7AwzLB8KAvy6qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwhxtDkS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4C7C32782;
+	Mon, 12 Aug 2024 16:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479454;
-	bh=Lx1tfoyf6jXYcyiZ0763Rg2argdq7Hu/u2HKgM0+U04=;
+	s=korg; t=1723478881;
+	bh=zMVMgF6xRl/2zN7LMQr3mkGbV1zvR//W8zsohU/AiLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u06rx9zDJNrCi7vlr4saBr6IoPxBDo50bAS+YjVK+euuMvtyAhp/tTmzwj3eiwvd2
-	 zHI5I2r7YWSfR8XLdDvTYsc6ddwxv05epv5HYED3+9du884D0o6XflldxWMng5nZly
-	 1unEng8Od2YXpSHdOehtxumPaXBYNJrIztT+BqQI=
+	b=EwhxtDkSy9rimIrVllFtkBxgHceRHdcl7URATIR+jVr9obi6Igbm1be8ycrblmHeI
+	 RTInRQd0vEKJDK+XcGw2delCZN9o42lz4ktxNcLh3QeXv8akvfhaFJe5HR8/mJpz33
+	 Sre0Tb6pCy2rGFuFmQSyxD4j4dCCBwTGp4EOctMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/189] ASoC: codecs: wsa883x: Correct Soundwire ports mask
+Subject: [PATCH 6.1 066/150] arm64: errata: Unify speculative SSBS errata logic
 Date: Mon, 12 Aug 2024 18:02:27 +0200
-Message-ID: <20240812160135.646013670@linuxfoundation.org>
+Message-ID: <20240812160127.722470132@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 6801ac36f25690e14955f7f9eace1eaa29edbdd0 ]
+[ Upstream commit ec768766608092087dfb5c1fc45a16a6f524dee2 ]
 
-Device has up to WSA883X_MAX_SWR_PORTS number of ports and the array
-assigned to prop.sink_dpn_prop has 0..WSA883X_MAX_SWR_PORTS-1 elements.
-On the other hand, GENMASK(high, low) creates an inclusive mask between
-<high, low>, so we need the mask from 0 up to WSA883X_MAX_SWR_PORTS-1.
+Cortex-X4 erratum 3194386 and Neoverse-V3 erratum 3312417 are identical,
+with duplicate Kconfig text and some unsightly ifdeffery. While we try
+to share code behind CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS, having
+separate options results in a fair amount of boilerplate code, and this
+will only get worse as we expand the set of affected CPUs.
 
-Theoretically, too wide mask could cause an out of bounds read in
-sdw_get_slave_dpn_prop() in stream.c, however only in the case of buggy
-driver, e.g. adding incorrect number of ports via
-sdw_stream_add_slave().
+To reduce this boilerplate, unify the two behind a common Kconfig
+option. This removes the duplicate text and Kconfig logic, and removes
+the need for the intermediate ARM64_WORKAROUND_SPECULATIVE_SSBS option.
+The set of affected CPUs is described as a list so that this can easily
+be extended.
 
-Fixes: 43b8c7dc85a1 ("ASoC: codecs: add wsa883x amplifier support")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240726-asoc-wcd-wsa-swr-ports-genmask-v1-5-d4d7a8b56f05@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+I've used ARM64_ERRATUM_3194386 (matching the Neoverse-V3 erratum ID) as
+the common option, matching the way we use ARM64_ERRATUM_1319367 to
+cover Cortex-A57 erratum 1319537 and Cortex-A72 erratum 1319367.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-5-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: fix conflicts & renames, drop unneeded cpucaps.h ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa883x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/arm64/silicon-errata.rst |  2 +-
+ arch/arm64/Kconfig                     | 28 ++++----------------------
+ arch/arm64/kernel/cpu_errata.c         |  8 ++------
+ arch/arm64/kernel/proton-pack.c        |  2 +-
+ 4 files changed, 8 insertions(+), 32 deletions(-)
 
-diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
-index 5443a5c4100c0..2169d93989841 100644
---- a/sound/soc/codecs/wsa883x.c
-+++ b/sound/soc/codecs/wsa883x.c
-@@ -1407,7 +1407,7 @@ static int wsa883x_probe(struct sdw_slave *pdev,
- 					WSA883X_MAX_SWR_PORTS))
- 		dev_dbg(dev, "Static Port mapping not specified\n");
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index 701ec95ebc5e3..1566cf898fc20 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -143,7 +143,7 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N2     | #2253138        | ARM64_ERRATUM_2253138       |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3312417       |
++| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index cb9e16823fb2b..1a0eae0ced3f2 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1000,34 +1000,14 @@ config ARM64_ERRATUM_2966298
  
--	pdev->prop.sink_ports = GENMASK(WSA883X_MAX_SWR_PORTS, 0);
-+	pdev->prop.sink_ports = GENMASK(WSA883X_MAX_SWR_PORTS - 1, 0);
- 	pdev->prop.simple_clk_stop_capable = true;
- 	pdev->prop.sink_dpn_prop = wsa_sink_dpn_prop;
- 	pdev->prop.scp_int1_mask = SDW_SCP_INT1_BUS_CLASH | SDW_SCP_INT1_PARITY;
+ 	  If unsure, say Y.
+ 
+-config ARM64_WORKAROUND_SPECULATIVE_SSBS
+-	bool
+-
+ config ARM64_ERRATUM_3194386
+-	bool "Cortex-X4: 3194386: workaround for MSR SSBS not self-synchronizing"
+-	select ARM64_WORKAROUND_SPECULATIVE_SSBS
++	bool "Cortex-X4/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
+ 	default y
+ 	help
+-	  This option adds the workaround for ARM Cortex-X4 erratum 3194386.
+-
+-	  On affected cores "MSR SSBS, #0" instructions may not affect
+-	  subsequent speculative instructions, which may permit unexepected
+-	  speculative store bypassing.
+-
+-	  Work around this problem by placing a speculation barrier after
+-	  kernel changes to SSBS. The presence of the SSBS special-purpose
+-	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
+-	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
+-	  SSBS.
++	  This option adds the workaround for the following errata:
+ 
+-	  If unsure, say Y.
+-
+-config ARM64_ERRATUM_3312417
+-	bool "Neoverse-V3: 3312417: workaround for MSR SSBS not self-synchronizing"
+-	select ARM64_WORKAROUND_SPECULATIVE_SSBS
+-	default y
+-	help
+-	  This option adds the workaround for ARM Neoverse-V3 erratum 3312417.
++	  * ARM Cortex-X4 erratum 3194386
++	  * ARM Neoverse-V3 erratum 3312417
+ 
+ 	  On affected cores "MSR SSBS, #0" instructions may not affect
+ 	  subsequent speculative instructions, which may permit unexepected
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index c9d05f753829c..d098a2ea494e2 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -435,14 +435,10 @@ static struct midr_range broken_aarch32_aes[] = {
+ };
+ #endif /* CONFIG_ARM64_WORKAROUND_TRBE_WRITE_OUT_OF_RANGE */
+ 
+-#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
+-static const struct midr_range erratum_spec_ssbs_list[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_3194386
++static const struct midr_range erratum_spec_ssbs_list[] = {
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
+-#endif
+-#ifdef CONFIG_ARM64_ERRATUM_3312417
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+-#endif
+ 	{}
+ };
+ #endif
+@@ -738,7 +734,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ 		.cpu_enable = cpu_clear_bf16_from_user_emulation,
+ 	},
+ #endif
+-#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
++#ifdef CONFIG_ARM64_ERRATUM_3194386
+ 	{
+ 		.desc = "ARM errata 3194386, 3312417",
+ 		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
+diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+index e476692cea976..2df5e43ae4d14 100644
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -579,7 +579,7 @@ static enum mitigation_state spectre_v4_enable_hw_mitigation(void)
+ 	 * Mitigate this with an unconditional speculation barrier, as CPUs
+ 	 * could mis-speculate branches and bypass a conditional barrier.
+ 	 */
+-	if (IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS))
++	if (IS_ENABLED(CONFIG_ARM64_ERRATUM_3194386))
+ 		spec_bar();
+ 
+ 	return SPECTRE_MITIGATED;
 -- 
 2.43.0
 
