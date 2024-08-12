@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-66904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0839694F307
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6187594F3B1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79DE4B257B9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5A32B2200E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109B518732B;
-	Mon, 12 Aug 2024 16:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6864B186E20;
+	Mon, 12 Aug 2024 16:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rR6FFSA/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5voUNSG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DC3183CC4;
-	Mon, 12 Aug 2024 16:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AEF183CA6;
+	Mon, 12 Aug 2024 16:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479162; cv=none; b=XFheW0jHZIsFARfo72XAie4CLLzpoGF1mYbn9zLENZH4SfGtZEyqeLIKaLc891TqvzC2Zvylm3dbmRWIAZe7ROZ8Suo3Nug7NIExU9/gzmgEYfxf/LnBVq9VE/RthlA6FtMZQG5dTmLKrWgUmm6y/n7pGlsgkGEIfZVHG0vjy5Y=
+	t=1723479654; cv=none; b=NBJEObt+qSAUA1ng0bHRLSLKr3JUHeWQqJy7cI9t7FGJeHhYFWMOJJxErv/BbiixB2nbavPf4aiSaerH78oHWAZv/JzeJdg9hQQZZrCNP58ygCOaNL1WiXn2QQw/xKGf3GJUd//wAY1Ohsq3fNn46CyHdv5YFThZzn1WW/8LXqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479162; c=relaxed/simple;
-	bh=pqWssRMV6QSGHEM6pJihmwrUM/K4zGgMylZGWyhC0Qw=;
+	s=arc-20240116; t=1723479654; c=relaxed/simple;
+	bh=9LxrvFeGdcuIFv1RUqZNRSsmasaS04gIbNgoOc3Pw4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=We6n74yZrRlQ73k0RAi3OkrFmNO5M8tptRjJh+CRB1Iblqv1hRHvSLYaO0Bwn2oG29LKOE2gpGlJglpGiXdIWdOnPt5SIuHFitKxMnLbJWvhh0YDsLCvAJsMT5P46hiaBhTY7Co/c8tDCBxNbaORh5RV1hhIB1eVIsOefU4bB5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rR6FFSA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B91C32782;
-	Mon, 12 Aug 2024 16:12:42 +0000 (UTC)
+	 MIME-Version; b=rbMwktTEWZiW4sMtSQ6vpWB4kYeVugMVE7zu5/2Yusja4F5B7pAZijOJAIgAm3AZbcdI8B7J3c5Jfa3TL0agvOuS6FRLYvTUz1v8fYgaspdBuo4D88Ti4xE3VbD0trVuKt9xhn0+gMFpeUR0BMQAJaGMoa7Z7K+WpuCTEziTrf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5voUNSG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3C5C32782;
+	Mon, 12 Aug 2024 16:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479162;
-	bh=pqWssRMV6QSGHEM6pJihmwrUM/K4zGgMylZGWyhC0Qw=;
+	s=korg; t=1723479654;
+	bh=9LxrvFeGdcuIFv1RUqZNRSsmasaS04gIbNgoOc3Pw4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rR6FFSA/WC8TWjNYTZvZEZdINY/lFfkeRAlkiC59NjrQ/Qn1lFlmsr2CrN3tzfzcI
-	 LMdcW6cA56j1U5nvIvle7N5TCzw0KeuLn9Hr7d3vDxwAJ6hEBKAff86m7NA7LNRHCb
-	 jJVohc34gZss+AHpTODFqHtaLIqPXKKz5XgqJu0M=
+	b=l5voUNSGlQRhG5P+lXorFPFhqVDFiYbi3/HXHzagE/FBC06vd7/QbuYXyARDGhxCs
+	 fHXXgyy/tb1pEMUQogLX09Csw/sW/Ux2jIBDWR62er+9Z1rBBtONqhvDlOqx9lmw7K
+	 8sistH+uSW4IcEZt/Pu5/qtL5FKdjDgr65a1/OV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.1 127/150] drm/mgag200: Set DDC timeout in milliseconds
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Mathias Krause <minipli@grsecurity.net>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 152/189] eventfs: Use SRCU for freeing eventfs_inodes
 Date: Mon, 12 Aug 2024 18:03:28 +0200
-Message-ID: <20240812160130.062682253@linuxfoundation.org>
+Message-ID: <20240812160137.993519949@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Mathias Krause <minipli@grsecurity.net>
 
-commit ecde5db1598aecab54cc392282c15114f526f05f upstream.
+commit 8e556432477e97ad6179c61b61a32bf5f1af2355 upstream.
 
-Compute the i2c timeout in jiffies from a value in milliseconds. The
-original values of 2 jiffies equals 2 milliseconds if HZ has been
-configured to a value of 1000. This corresponds to 2.2 milliseconds
-used by most other DRM drivers. Update mgag200 accordingly.
+To mirror the SRCU lock held in eventfs_iterate() when iterating over
+eventfs inodes, use call_srcu() to free them too.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-2-tzimmermann@suse.de
+This was accidentally(?) degraded to RCU in commit 43aa6f97c2d0
+("eventfs: Get rid of dentry pointers without refcounts").
+
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20240723210755.8970-1-minipli@grsecurity.net
+Fixes: 43aa6f97c2d0 ("eventfs: Get rid of dentry pointers without refcounts")
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mgag200/mgag200_i2c.c |    2 +-
+ fs/tracefs/event_inode.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
-@@ -115,7 +115,7 @@ int mgag200_i2c_init(struct mga_device *
- 	i2c->adapter.algo_data = &i2c->bit;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -113,7 +113,7 @@ static void release_ei(struct kref *ref)
+ 			entry->release(entry->name, ei->data);
+ 	}
  
- 	i2c->bit.udelay = 10;
--	i2c->bit.timeout = 2;
-+	i2c->bit.timeout = usecs_to_jiffies(2200);
- 	i2c->bit.data = i2c;
- 	i2c->bit.setsda		= mga_gpio_setsda;
- 	i2c->bit.setscl		= mga_gpio_setscl;
+-	call_rcu(&ei->rcu, free_ei_rcu);
++	call_srcu(&eventfs_srcu, &ei->rcu, free_ei_rcu);
+ }
+ 
+ static inline void put_ei(struct eventfs_inode *ei)
 
 
 
