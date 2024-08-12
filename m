@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-66916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4398894F312
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F375594F42A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C7051F21067
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD011F219A0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7DF186E51;
-	Mon, 12 Aug 2024 16:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29560186E38;
+	Mon, 12 Aug 2024 16:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+klmxar"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ki93+ezd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A9F130E27;
-	Mon, 12 Aug 2024 16:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA9E134AC;
+	Mon, 12 Aug 2024 16:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479202; cv=none; b=YH1rOm8PsRCcmqT0H3Q4CuNNpvdRvQtEMm+jgP5j8/aJB32KBrfYP5m2P9SG0M5eE2ndWlWf8jrGSWCrpiO0OF5UbPwdUFuNZVlZV5Uouom4xWDPLM/uRyskRY7JzdRopdgChHteiStXg4/yVlXSRgLPKy2iJ/7GL/4A1tbOUhw=
+	t=1723480016; cv=none; b=ZUCd7t9z0fWbYhZmQUzbGfhmOAbQfLEJyiFpx2Ye0s7VUWp1E8prQuW7EvE16+V1Ickg7wSamYEbzU6ceLgIafvVUGIgQYe81zxMf1XoPC3uDt3zcmQyRhG5YI0j+1NpvyXf/3Kl/zaXdiugN7+hCiB45DQOqr0cdU4R4CVOWjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479202; c=relaxed/simple;
-	bh=6MIRbxphhahE2iFpBbeOnMLJ8lRx8PVju6WswegBtB0=;
+	s=arc-20240116; t=1723480016; c=relaxed/simple;
+	bh=1IubDN/aCTiXdrVy8euq5kldYlmZdtmVJaMDlrbsSOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuIvAjilgnSnUt4mqxqrB4/EHphT36Hy+E+fewKsFp8DEFLCvpbes5xlP5HZcsJwXJLl1JU5V4YBdrmMnmHYbEp/bPmuFGfoZ7mdZOPzSoXqST+y3LmnXaS53+y9EfC/TLMktUztJAPKoQlo6VYay3Sr58+T7vgetkKA46ekt1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+klmxar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB87C32782;
-	Mon, 12 Aug 2024 16:13:21 +0000 (UTC)
+	 MIME-Version; b=KNawjbOjUTFAXrLBizB3PFttS64JrtBOFdOwarAjr95hRMlrqbpFOBGGygsXgykqfFx5z25FpMzgfGdUEY5DORhBGQpdYPKCsVQyjCtcesEYaDD+Zj87dYpnAZO3PfcFFAY31YotI7drBNzJcGrokAmgtyv01X1AzqIISjJrY88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ki93+ezd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2A4C32782;
+	Mon, 12 Aug 2024 16:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479202;
-	bh=6MIRbxphhahE2iFpBbeOnMLJ8lRx8PVju6WswegBtB0=;
+	s=korg; t=1723480015;
+	bh=1IubDN/aCTiXdrVy8euq5kldYlmZdtmVJaMDlrbsSOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+klmxarAf8wvdtQWwxzRbEEDdxQCJvq26myo8gmVehelZb5SclcgnJVKmmFxvfar
-	 o/4f3w5jB4Zro0UbRc4t+56ODmObl4yHpwn5ydvb6hC8mD3ZavTBp2IiF/RQ1O1I6R
-	 1UlMjXEztgNtKYYsUVSNncSKfQdfpwtgbYHKnlIA=
+	b=Ki93+ezddAw5mzAkxZRZvUi518jigZhjuWEDYFWy6wUxiwTX3uh0ZnfxdLn656Ihg
+	 T4fIS915kF3qfPLlv6gb5BT755+6faGkbQSluYXmqAB9Dvzg0PQluPDy49qzPzJrMw
+	 aupbA4iQeu67mDtl9oiDPjpj13yUpUGOEtdsLMNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+263426984509be19c9a0@syzkaller.appspotmail.com,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/189] net: bridge: mcast: wait for previous gc cycles when removing port
-Date: Mon, 12 Aug 2024 18:01:10 +0200
-Message-ID: <20240812160132.691132801@linuxfoundation.org>
+Subject: [PATCH 6.10 070/263] af_unix: Dont retry after unix_state_lock_nested() in unix_stream_connect().
+Date: Mon, 12 Aug 2024 18:01:11 +0200
+Message-ID: <20240812160149.223030126@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 92c4ee25208d0f35dafc3213cdf355fbe449e078 ]
+[ Upstream commit 1ca27e0c8c13ac50a4acf9cdf77069e2d94a547d ]
 
-syzbot hit a use-after-free[1] which is caused because the bridge doesn't
-make sure that all previous garbage has been collected when removing a
-port. What happens is:
-      CPU 1                   CPU 2
- start gc cycle           remove port
-                         acquire gc lock first
- wait for lock
-                         call br_multicasg_gc() directly
- acquire lock now but    free port
- the port can be freed
- while grp timers still
- running
+When a SOCK_(STREAM|SEQPACKET) socket connect()s to another one, we need
+to lock the two sockets to check their states in unix_stream_connect().
 
-Make sure all previous gc cycles have finished by using flush_work before
-freeing the port.
+We use unix_state_lock() for the server and unix_state_lock_nested() for
+client with tricky sk->sk_state check to avoid deadlock.
 
-[1]
-  BUG: KASAN: slab-use-after-free in br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
-  Read of size 8 at addr ffff888071d6d000 by task syz.5.1232/9699
+The possible deadlock scenario are the following:
 
-  CPU: 1 PID: 9699 Comm: syz.5.1232 Not tainted 6.10.0-rc5-syzkaller-00021-g24ca36a562d6 #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
-  Call Trace:
-   <IRQ>
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
-   print_address_description mm/kasan/report.c:377 [inline]
-   print_report+0xc3/0x620 mm/kasan/report.c:488
-   kasan_report+0xd9/0x110 mm/kasan/report.c:601
-   br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
-   call_timer_fn+0x1a3/0x610 kernel/time/timer.c:1792
-   expire_timers kernel/time/timer.c:1843 [inline]
-   __run_timers+0x74b/0xaf0 kernel/time/timer.c:2417
-   __run_timer_base kernel/time/timer.c:2428 [inline]
-   __run_timer_base kernel/time/timer.c:2421 [inline]
-   run_timer_base+0x111/0x190 kernel/time/timer.c:2437
+  1) Self connect()
+  2) Simultaneous connect()
 
-Reported-by: syzbot+263426984509be19c9a0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=263426984509be19c9a0
-Fixes: e12cec65b554 ("net: bridge: mcast: destroy all entries via gc")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20240802080730.3206303-1-razor@blackwall.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The former is simple, attempt to grab the same lock, and the latter is
+AB-BA deadlock.
+
+After the server's unix_state_lock(), we check the server socket's state,
+and if it's not TCP_LISTEN, connect() fails with -EINVAL.
+
+Then, we avoid the former deadlock by checking the client's state before
+unix_state_lock_nested().  If its state is not TCP_LISTEN, we can make
+sure that the client and the server are not identical based on the state.
+
+Also, the latter deadlock can be avoided in the same way.  Due to the
+server sk->sk_state requirement, AB-BA deadlock could happen only with
+TCP_LISTEN sockets.  So, if the client's state is TCP_LISTEN, we can
+give up the second lock to avoid the deadlock.
+
+  CPU 1                 CPU 2                  CPU 3
+  connect(A -> B)       connect(B -> A)        listen(A)
+  ---                   ---                    ---
+  unix_state_lock(B)
+  B->sk_state == TCP_LISTEN
+  READ_ONCE(A->sk_state) == TCP_CLOSE
+                            ^^^^^^^^^
+                            ok, will lock A    unix_state_lock(A)
+             .--------------'                  WRITE_ONCE(A->sk_state, TCP_LISTEN)
+             |                                 unix_state_unlock(A)
+             |
+             |          unix_state_lock(A)
+             |          A->sk_sk_state == TCP_LISTEN
+             |          READ_ONCE(B->sk_state) == TCP_LISTEN
+             v                                    ^^^^^^^^^^
+  unix_state_lock_nested(A)                       Don't lock B !!
+
+Currently, while checking the client's state, we also check if it's
+TCP_ESTABLISHED, but this is unlikely and can be checked after we know
+the state is not TCP_CLOSE.
+
+Moreover, if it happens after the second lock, we now jump to the restart
+label, but it's unlikely that the server is not found during the retry,
+so the jump is mostly to revist the client state check.
+
+Let's remove the retry logic and check the state against TCP_CLOSE first.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_multicast.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/unix/af_unix.c | 34 +++++++++-------------------------
+ 1 file changed, 9 insertions(+), 25 deletions(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 38373b4fb7ddf..c38244d60ff86 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -2044,16 +2044,14 @@ void br_multicast_del_port(struct net_bridge_port *port)
- {
- 	struct net_bridge *br = port->br;
- 	struct net_bridge_port_group *pg;
--	HLIST_HEAD(deleted_head);
- 	struct hlist_node *n;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 11cb5badafb6d..be5266007b489 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1473,6 +1473,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	struct unix_sock *u = unix_sk(sk), *newu, *otheru;
+ 	struct net *net = sock_net(sk);
+ 	struct sk_buff *skb = NULL;
++	unsigned char state;
+ 	long timeo;
+ 	int err;
  
- 	/* Take care of the remaining groups, only perm ones should be left */
- 	spin_lock_bh(&br->multicast_lock);
- 	hlist_for_each_entry_safe(pg, n, &port->mglist, mglist)
- 		br_multicast_find_del_pg(br, pg);
--	hlist_move_list(&br->mcast_gc_list, &deleted_head);
- 	spin_unlock_bh(&br->multicast_lock);
--	br_multicast_gc(&deleted_head);
-+	flush_work(&br->mcast_gc_work);
- 	br_multicast_port_ctx_deinit(&port->multicast_ctx);
- 	free_percpu(port->mcast_stats);
- }
+@@ -1523,7 +1524,6 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		goto out;
+ 	}
+ 
+-	/* Latch state of peer */
+ 	unix_state_lock(other);
+ 
+ 	/* Apparently VFS overslept socket death. Retry. */
+@@ -1553,37 +1553,21 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		goto restart;
+ 	}
+ 
+-	/* Latch our state.
+-
+-	   It is tricky place. We need to grab our state lock and cannot
+-	   drop lock on peer. It is dangerous because deadlock is
+-	   possible. Connect to self case and simultaneous
+-	   attempt to connect are eliminated by checking socket
+-	   state. other is TCP_LISTEN, if sk is TCP_LISTEN we
+-	   check this before attempt to grab lock.
+-
+-	   Well, and we have to recheck the state after socket locked.
++	/* self connect and simultaneous connect are eliminated
++	 * by rejecting TCP_LISTEN socket to avoid deadlock.
+ 	 */
+-	switch (READ_ONCE(sk->sk_state)) {
+-	case TCP_CLOSE:
+-		/* This is ok... continue with connect */
+-		break;
+-	case TCP_ESTABLISHED:
+-		/* Socket is already connected */
+-		err = -EISCONN;
+-		goto out_unlock;
+-	default:
+-		err = -EINVAL;
++	state = READ_ONCE(sk->sk_state);
++	if (unlikely(state != TCP_CLOSE)) {
++		err = state == TCP_ESTABLISHED ? -EISCONN : -EINVAL;
+ 		goto out_unlock;
+ 	}
+ 
+ 	unix_state_lock_nested(sk, U_LOCK_SECOND);
+ 
+-	if (sk->sk_state != TCP_CLOSE) {
++	if (unlikely(sk->sk_state != TCP_CLOSE)) {
++		err = sk->sk_state == TCP_ESTABLISHED ? -EISCONN : -EINVAL;
+ 		unix_state_unlock(sk);
+-		unix_state_unlock(other);
+-		sock_put(other);
+-		goto restart;
++		goto out_unlock;
+ 	}
+ 
+ 	err = security_unix_stream_connect(sk, other, newsk);
 -- 
 2.43.0
 
