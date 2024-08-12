@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4829694F30F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489D794F425
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 050892859C5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F384B1F21622
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D2F18734B;
-	Mon, 12 Aug 2024 16:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1A2183CD4;
+	Mon, 12 Aug 2024 16:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="No3N52Eq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPQA6tx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBAC130E27;
-	Mon, 12 Aug 2024 16:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DA3134AC;
+	Mon, 12 Aug 2024 16:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479192; cv=none; b=A7yGrBMp1LAy+Ojx4h4mOuyhD5ZrStTIipfYD+/kE4ZT/3VIMKTzO1SJkqSH7OXClNdjeX5Ggqid9B6wVoQ/9SkoQLFrcnzG+O7xOgse3v3fATl6Obes6TAdzWY/BUSWDhhcwzjGk0GWcXV1hRpLmp16s3krbBN3s6MjCn/hOto=
+	t=1723480000; cv=none; b=OSH6DdILPfk3RllE55hcgazHnBGywrLPv8jfqaZAcmW23Fo0A3QLCMdaCzgfh0+flIDADJxI3tFUDRWpygOR3w174rtCru7Y1IRXV2INtzjlUyzzdd1tHGKwtwHf2ly0qequihCpI6z19cyXgfm529DF3RwjtUlzrROTsLMAvXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479192; c=relaxed/simple;
-	bh=RBA0MUz+jWK28gtEvXXIZ+nU5fjGTVwV0xuUqLYOKhk=;
+	s=arc-20240116; t=1723480000; c=relaxed/simple;
+	bh=opyuWAoKru04MOSHRP5Mk1JM+KONiRwLttmIRAqlwzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYoI+syeTl23G43PBOBRoCCAQStcbbFHcVDVDIESoGK8tZgGSRPH978BnaUuZR02WD4d3ONcViRyN8FelCB91muNbeWWAqf0aB8k+grRJEoijzkdyqk7wkqiYUOmJHjRw9KXQZ69VGWxKKwS20kcpgqJLC8dQyqh/Nyq+LD+HwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=No3N52Eq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2125C32782;
-	Mon, 12 Aug 2024 16:13:11 +0000 (UTC)
+	 MIME-Version; b=kzesLUPCcf9IGkRqKhcDjUB6P5JMjOFQ6NJdCMnnfShvapVYKVv2C+OOndGdpPMj8BjDwdpmv1eAis6VMnJOZjMtlgmaEVBcbo6P4ckRTLDubPF1mD3rCj2XvHhc/8wl561iqcyXFgWLAkKmecHCSnDHPCYjmRDQXYZG/XE0mj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPQA6tx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFE1C32782;
+	Mon, 12 Aug 2024 16:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479192;
-	bh=RBA0MUz+jWK28gtEvXXIZ+nU5fjGTVwV0xuUqLYOKhk=;
+	s=korg; t=1723480000;
+	bh=opyuWAoKru04MOSHRP5Mk1JM+KONiRwLttmIRAqlwzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=No3N52EqhkBmQhzNw+YZDWP6vguQAh6AUaRO1K1O4/rxX72960cWIu0eGp9anxvui
-	 +vb0wxJaMrP/S5ZcruMtW78oDRKiByu1v8sQXVFADdpjCXFQKYm02KeXCSktkr+M5A
-	 5FHfEr4tvbMFbuZkZPB9vYAQK/NSg6eW3WeAa+Vk=
+	b=HPQA6tx0WegirSpAkxeaHnmCwOtNFiqP/FVo7Ini3dBAan2TjziS+PDYa4F0jV0nA
+	 XKxTew8R3MpiBD0+wIKcaBNzXeFSgSrO4c/8bZBdBNxILH1SVmW9KSBJNRi7n+/yQ5
+	 92i4PxsrTAfvJny4kPaHLqxt+lOxa9UZxL5NMB5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/189] wifi: ath12k: fix soft lockup on suspend
+Subject: [PATCH 6.10 066/263] wifi: ath12k: fix memory leak in ath12k_dp_rx_peer_frag_setup()
 Date: Mon, 12 Aug 2024 18:01:07 +0200
-Message-ID: <20240812160132.575845385@linuxfoundation.org>
+Message-ID: <20240812160149.070638589@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit a47f3320bb4ba6714abe8dddb36399367b491358 ]
+[ Upstream commit 3d60041543189438cd1b03a1fa40ff6681c77970 ]
 
-The ext interrupts are enabled when the firmware has been started, but
-this may never happen, for example, if the board configuration file is
-missing.
+Currently the resource allocated by crypto_alloc_shash() is not
+freed in case ath12k_peer_find() fails, resulting in memory leak.
 
-When the system is later suspended, the driver unconditionally tries to
-disable interrupts, which results in an irq disable imbalance and causes
-the driver to spin indefinitely in napi_synchronize().
+Add crypto_free_shash() to fix it.
 
-Make sure that the interrupts have been enabled before attempting to
-disable them.
+This is found during code review, compile tested only.
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org	# 6.3
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20240709073132.9168-1-johan+linaro@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240526124226.24661-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index f27b93c20a349..041a9602f0e15 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -434,7 +434,8 @@ static void __ath12k_pci_ext_irq_disable(struct ath12k_base *ab)
- {
- 	int i;
- 
--	clear_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
-+	if (!test_and_clear_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags))
-+		return;
- 
- 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
- 		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 121f27284be59..1d287ed25a949 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2793,6 +2793,7 @@ int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev
+ 	peer = ath12k_peer_find(ab, vdev_id, peer_mac);
+ 	if (!peer) {
+ 		spin_unlock_bh(&ab->base_lock);
++		crypto_free_shash(tfm);
+ 		ath12k_warn(ab, "failed to find the peer to set up fragment info\n");
+ 		return -ENOENT;
+ 	}
 -- 
 2.43.0
 
