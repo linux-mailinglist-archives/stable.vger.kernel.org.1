@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-67252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C0A94F493
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 939F794F37B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE68B1F21A77
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C72431C21742
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C393186E33;
-	Mon, 12 Aug 2024 16:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA84186E38;
+	Mon, 12 Aug 2024 16:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uObXD1yS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdXItE8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1462C1A5;
-	Mon, 12 Aug 2024 16:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F190718454D;
+	Mon, 12 Aug 2024 16:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480313; cv=none; b=VCUNWsTWlNrAqHB11v7PwAFyrsDB4DWtOHwLUYpNETtsQBkC1wLGtSeEPfBgSsJGAxeSScZdKOjKnsaEPopl7AMxn9yJ1PnpmLpu6Mrj26dqGwB6UQG2nHNrVnDaY5LZViWQx3NrJL9pSfLfLJSxqvqovVhASLJ/0Xlh2DnnNm4=
+	t=1723479494; cv=none; b=OSQnqryuShtrWmZ6UVnhKfV6yPVBZeRo/ZuIoBuO3j5ZQ2U0rU1ZpZKxPPFW9lr+6YC/49gjSUOPFREByi8tzNEJPFhPZ4sSNpSmEtAx5IkNZVzkXqUpcoOM/Be4qzHkkrmZYQmkoqQm33crNah6qfRUVPqaYgB0uveqQHDOahs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480313; c=relaxed/simple;
-	bh=CGR7j+3ujGhZUJj7c46knhSCwIUkrKmcurvYhLA+24I=;
+	s=arc-20240116; t=1723479494; c=relaxed/simple;
+	bh=prnFRAPI5e48lw1aj+cqDQLbqabaSoO6FoLVk+NIc7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmEclXIxgu8NjArOUYtsg+7DCun78KkjlkbhMhmUOgNknxrlzJ3YikM6GtVecutaoY56OLpDOUGNu+yWafssZzTCaxraC/mVroLA0p46E5X/GiSVAlk8ABeg47BsZlJpodkrJX2dYYSX5zQmLlvPbJjX9jdBE2h5pybYWfLQv68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uObXD1yS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6059FC32782;
-	Mon, 12 Aug 2024 16:31:52 +0000 (UTC)
+	 MIME-Version; b=Ky4K4xCd+1oTTRS/uTFsc7IC5ANS1gHN0dUeCBXjuq7ItyLurbIBzJa/pmmbVEaGLB2rH/X3SorTHsbfUgnAiDbUzt7TAXeCkNjY3m8vCBWj5fQrRj7jnpkHUO2wBXNrjjQPtGUUlOXa4jUfovMC2gJP1QmyakUBeEtDS6ArlqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdXItE8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74663C32782;
+	Mon, 12 Aug 2024 16:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480312;
-	bh=CGR7j+3ujGhZUJj7c46knhSCwIUkrKmcurvYhLA+24I=;
+	s=korg; t=1723479493;
+	bh=prnFRAPI5e48lw1aj+cqDQLbqabaSoO6FoLVk+NIc7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uObXD1ySfSTfxPTbp6bkXo+8lr4ROQk54e7O2OVMV2lSzwJgOtewP/V/gDXKo0xTA
-	 bHcq0AeOss9HBbGitVPh6fdj+nZ9VFQY1o27rzsCyer3bCQWnvdVzaHSi5i/b+qFP8
-	 SvPbdUV/slwluqGLs3rR3fy0z2+ozT+fNGsLMt98=
+	b=OdXItE8ZAUCh88an4cCZtDYw77dvudA6DTByq6hCFyJJoRvc3qfuP+VqEPliDS3rr
+	 kwnK1ukYEi8Z3KnaOd8t0H+l8IGW5g0mSvDkREiqKQPCGNpj41Gyp7HOw8vvOAVOBG
+	 I8ILxGpznW2/SgAJ6aNTZnJTCKV89WC2RVszzuIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Gleb Korobeynikov <gkorobeynikov@astralinux.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 160/263] drm/amd/display: Replace dm_execute_dmub_cmd with dc_wake_and_execute_dmub_cmd
+Subject: [PATCH 6.6 105/189] cifs: cifs_inval_name_dfs_link_error: correct the check for fullpath
 Date: Mon, 12 Aug 2024 18:02:41 +0200
-Message-ID: <20240812160152.672683136@linuxfoundation.org>
+Message-ID: <20240812160136.182978947@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Gleb Korobeynikov <gkorobeynikov@astralinux.ru>
 
-[ Upstream commit f2aaed194a54d78c307c44d1829c7e1ba67e9ba5 ]
+[ Upstream commit 36bb22a08a69d9984a8399c07310d18b115eae20 ]
 
-In the commit c2cec7a872b6 ("drm/amd/display: Wake DMCUB before sending
-a command for replay feature"), replaced dm_execute_dmub_cmd with
-dc_wake_and_execute_dmub_cmd in multiple areas, but due to merge issues
-the replacement of this function in the dmub_replay_copy_settings was
-missed. This commit replaces the old dm_execute_dmub_cmd with
-dc_wake_and_execute_dmub_cmd.
+Replace the always-true check tcon->origin_fullpath with
+check of server->leaf_fullpath
 
-Fixes: 3601a35a2e9d ("drm/amd/display: Wake DMCUB before sending a command for replay feature")
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6cc213b9aa34bc3213e20f9256345c5cc1495b0b)
+See https://bugzilla.kernel.org/show_bug.cgi?id=219083
+
+The check of the new @tcon will always be true during mounting,
+since @tcon->origin_fullpath will only be set after the tree is
+connected to the latest common resource, as well as checking if
+the prefix paths from it are fully accessible.
+
+Fixes: 3ae872de4107 ("smb: client: fix shared DFS root mounts with different prefixes")
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Gleb Korobeynikov <gkorobeynikov@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/smb/client/misc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
-index f820647443d16..09cf54586fd5d 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
-@@ -209,8 +209,7 @@ static bool dmub_replay_copy_settings(struct dmub_replay *dmub,
- 	else
- 		copy_settings_data->flags.bitfields.force_wakeup_by_tps3 = 0;
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index 07c468ddb88a8..65d4b72b4d51a 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -1288,6 +1288,7 @@ int cifs_inval_name_dfs_link_error(const unsigned int xid,
+ 				   const char *full_path,
+ 				   bool *islink)
+ {
++	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_ses *ses = tcon->ses;
+ 	size_t len;
+ 	char *path;
+@@ -1304,12 +1305,12 @@ int cifs_inval_name_dfs_link_error(const unsigned int xid,
+ 	    !is_tcon_dfs(tcon))
+ 		return 0;
  
--
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
+-	spin_lock(&tcon->tc_lock);
+-	if (!tcon->origin_fullpath) {
+-		spin_unlock(&tcon->tc_lock);
++	spin_lock(&server->srv_lock);
++	if (!server->leaf_fullpath) {
++		spin_unlock(&server->srv_lock);
+ 		return 0;
+ 	}
+-	spin_unlock(&tcon->tc_lock);
++	spin_unlock(&server->srv_lock);
  
- 	return true;
- }
+ 	/*
+ 	 * Slow path - tcon is DFS and @full_path has prefix path, so attempt
 -- 
 2.43.0
 
