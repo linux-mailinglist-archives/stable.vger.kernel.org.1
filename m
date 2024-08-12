@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-67086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB97194F3D3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACAE94F4EC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE711281170
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 406DD1F21502
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E658186E47;
-	Mon, 12 Aug 2024 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680CB183CD4;
+	Mon, 12 Aug 2024 16:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ggp/xwQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOoBSXxH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCA4183CA6;
-	Mon, 12 Aug 2024 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F91186E36;
+	Mon, 12 Aug 2024 16:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479761; cv=none; b=oNoxhai++sk8D10wkHxPNRixMQruKrr0UdzeSbqsBoB8XYP9a0xBDiV9weKLdmnGP33Lb2AS1exXndajeJROp14jy/ek46pkIlryat4VbpJTB/8jPGZQ3lZdvIwVnxkEyc5IPntau2xmMmd3mpFvdAjzmRuxHz5i5aKfqBuIKXI=
+	t=1723480578; cv=none; b=Gur3FFH128Tp/NQ/mORK0f50qufgBLGx5gpHAH5NMvh8AQ9BJXxdj5s4sipVWJYtyQmDmo8syUq3uBlojSQZf2WZCvMpnywu/X2FYoSZjlgWCYpEO3bPCbQSzzzbFVfvtSCJipfljluXLZRb77dS/pAYLQLNmetyqFJX+dddbbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479761; c=relaxed/simple;
-	bh=YHefbteDGPVIv6hUya16n4tk96hE5BkSehjwMalBSKg=;
+	s=arc-20240116; t=1723480578; c=relaxed/simple;
+	bh=teMc66VdP/vOekXqs0z68h54vDaTxfjt2lq7HMF0pkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tH811rZsaPIKCBteduLCCe5SFMkYdQ4rCnIbe5KtuLB3CG7I9oWIYm4GAIoVeDm7qsi3IHfzUiK50779s2Lv93xEmMzDLr0g22zRODWDMPW9TfH0VExELyaegeWN1ba0sN1j62bQV8SPMAii5OPI+cPcKa8vLBTtQ5sS+RF86WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ggp/xwQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86366C32782;
-	Mon, 12 Aug 2024 16:22:40 +0000 (UTC)
+	 MIME-Version; b=EmdgYhxppxio278Sb7MvuDtyXySVQafuXLVQGOJFJkc3pNJcOpDUHiNSBQnDKHHjxQOmXOr52JRDyEGcH5zp/8Hh5BIvLXGCIOYAWOb+CMP1Yr7BybXiRjzNwv7fS97SljuCgZeJapg/VlW28yq9FJ8ZoSPStCwNJtNANV+q+Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOoBSXxH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30532C32782;
+	Mon, 12 Aug 2024 16:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479760;
-	bh=YHefbteDGPVIv6hUya16n4tk96hE5BkSehjwMalBSKg=;
+	s=korg; t=1723480577;
+	bh=teMc66VdP/vOekXqs0z68h54vDaTxfjt2lq7HMF0pkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ggp/xwQzyhqzo+N/kuw0Yn6dxt/T3/7HqGcLXxi5sOcZy/cVS7fZWQDe/jtp3zuPc
-	 EgylrSvAFFJF91Ocen4RdA4U0Fz+hguPEDcjawtoLbG0kgwsDaFnH3spxrnNdMnTFB
-	 fkbuGELvaQ6Op81kjUv3FRB48mlxZmE/ooqVEXsk=
+	b=BOoBSXxHZrK1zgWRORDUSKf3aQOvw34IFtBfl9uon1nrr93yHtg+tyo6PnpLSXDIr
+	 Wdd9GbhGyTpymTjJhCaQEhvnevZoCc5rbFCEhcaF1bOEmU0N4JVNQwXPYyJ0ogxbMb
+	 Y2Sl4D6+Qmdk4EmnIvdSuDy3Oi45ZKsoq4ObxZME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 183/189] mptcp: pm: reduce indentation blocks
+	stable@kernel.org,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.10 238/263] sched/smt: Introduce sched_smt_present_inc/dec() helper
 Date: Mon, 12 Aug 2024 18:03:59 +0200
-Message-ID: <20240812160139.193183027@linuxfoundation.org>
+Message-ID: <20240812160155.646129753@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit c95eb32ced823a00be62202b43966b07b2f20b7f upstream.
+commit 31b164e2e4af84d08d2498083676e7eeaa102493 upstream.
 
-That will simplify the following commits.
+Introduce sched_smt_present_inc/dec() helper, so it can be called
+in normal or error path simply. No functional changed.
 
-No functional changes intended.
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-3-c8a9b036493b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: cd7c957f936f ("mptcp: pm: don't try to create sf if alloc failed")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240703031610.587047-2-yangyingliang@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ kernel/sched/core.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -575,16 +575,19 @@ static void mptcp_pm_create_subflow_or_s
- 		if (msk->pm.addr_signal & BIT(MPTCP_ADD_ADDR_SIGNAL))
- 			return;
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9654,6 +9654,22 @@ static int cpuset_cpu_inactive(unsigned
+ 	return 0;
+ }
  
--		if (local) {
--			if (mptcp_pm_alloc_anno_list(msk, &local->addr)) {
--				__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
--				msk->pm.add_addr_signaled++;
--				mptcp_pm_announce_addr(msk, &local->addr, false);
--				mptcp_pm_nl_addr_send_ack(msk);
--			}
--		}
-+		if (!local)
-+			goto subflow;
++static inline void sched_smt_present_inc(int cpu)
++{
++#ifdef CONFIG_SCHED_SMT
++	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
++		static_branch_inc_cpuslocked(&sched_smt_present);
++#endif
++}
 +
-+		if (!mptcp_pm_alloc_anno_list(msk, &local->addr))
-+			goto subflow;
++static inline void sched_smt_present_dec(int cpu)
++{
++#ifdef CONFIG_SCHED_SMT
++	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
++		static_branch_dec_cpuslocked(&sched_smt_present);
++#endif
++}
 +
-+		__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
-+		msk->pm.add_addr_signaled++;
-+		mptcp_pm_announce_addr(msk, &local->addr, false);
-+		mptcp_pm_nl_addr_send_ack(msk);
+ int sched_cpu_activate(unsigned int cpu)
+ {
+ 	struct rq *rq = cpu_rq(cpu);
+@@ -9665,13 +9681,10 @@ int sched_cpu_activate(unsigned int cpu)
+ 	 */
+ 	balance_push_set(cpu, false);
+ 
+-#ifdef CONFIG_SCHED_SMT
+ 	/*
+ 	 * When going up, increment the number of cores with SMT present.
+ 	 */
+-	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
+-		static_branch_inc_cpuslocked(&sched_smt_present);
+-#endif
++	sched_smt_present_inc(cpu);
+ 	set_cpu_active(cpu, true);
+ 
+ 	if (sched_smp_initialized) {
+@@ -9740,13 +9753,12 @@ int sched_cpu_deactivate(unsigned int cp
  	}
+ 	rq_unlock_irqrestore(rq, &rf);
  
-+subflow:
- 	/* check if should create a new subflow */
- 	while (msk->pm.local_addr_used < local_addr_max &&
- 	       msk->pm.subflows < subflows_max) {
+-#ifdef CONFIG_SCHED_SMT
+ 	/*
+ 	 * When going down, decrement the number of cores with SMT present.
+ 	 */
+-	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
+-		static_branch_dec_cpuslocked(&sched_smt_present);
++	sched_smt_present_dec(cpu);
+ 
++#ifdef CONFIG_SCHED_SMT
+ 	sched_core_cpu_deactivate(cpu);
+ #endif
+ 
 
 
 
