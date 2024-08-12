@@ -1,238 +1,153 @@
-Return-Path: <stable+bounces-66516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97EC94ECBD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:19:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF5894ECE6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69B341F232D3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:19:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A07C4B20D8E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD64117B434;
-	Mon, 12 Aug 2024 12:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E535017A59C;
+	Mon, 12 Aug 2024 12:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzdgcKBd"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="K5IAu3Na"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4A617B422
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9101E17994D
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723465080; cv=none; b=rR2R0ZGmaUdA0yg6v1B4UMMsUxOCX0olgxgTaEhc4/SNGDxihUt74TAWjD5qgBUS6ZXPbONXamJP08k2icJAMfFSJ6b0pj1qCFrvuSOAx8MY1SlSPS0fErDOFpTyXyloqvnDMAb3lN/QcfOw9Zr8ajUM/5aFfAme6qB/yfFXLR4=
+	t=1723465435; cv=none; b=IwBvMvvAlKnLLArgdH8tAR4dDx8+xc+j9OHRtXfBPRt9sHZ/nYd2ULVORPZ08s7XrmZOfbSzLEkyvp/vI/ZfJhF+kF8bK7O+xul5QUlzPQKGJJj4+3YIyjuwea4pRWyshx8HfMsLfFZZlI0+0nznBocRI8u71dpK9YzXg+GXP78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723465080; c=relaxed/simple;
-	bh=8CslNpuyR8iMUSrMQN8pHrjPOvDeCnGh7BGThfOVWo4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O6hGWm07cBVuziUWqLBg+qxS2Scrdgbm/NN8XYQafPrzc7bpYWOfM96qZr6gzhHYokqTlyStYS8sr1KHLUXJq6vRIbUs9eijKHD5OzJwv+yxXz3c+f6AQXyp/SEpXsXUnBO9DtIfXmxA9SPEosbpiQMwqH8rt3le4R+Y5Vt+Gj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzdgcKBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08DCC32782;
-	Mon, 12 Aug 2024 12:17:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723465079;
-	bh=8CslNpuyR8iMUSrMQN8pHrjPOvDeCnGh7BGThfOVWo4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=KzdgcKBd8+cut96rDlOTt9BCzLp08k4QMPB2A5JK2W1TsotttH2IFlm1X6GJusEbR
-	 C1ecOlvCXHR+E4tOFuUGlYO/AgVcKHXp/XLWV+mf7F3YXj1tHXr67NATFIQr9ld8j9
-	 PuhovOeN45N8uMpNsXisZR38ozJF9agbbD6Qs18g=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: revert "take runtime pm reference when we attach" failed to apply to 4.19-stable tree
-To: christian.koenig@amd.com,alexander.deucher@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 14:17:41 +0200
-Message-ID: <2024081241-sulfate-protegee-673a@gregkh>
+	s=arc-20240116; t=1723465435; c=relaxed/simple;
+	bh=jGosGmNqg+3CGldQhIO8Q9Yl5xt8JrZV5L5omlJeBwA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ds/8v4W+VPRvQcAoOCEnHKcQJBwGV8i7Nn1ADED/Ni9PiHmZmwEj3DS4WSzeN+xpEhNRWSpBUo7QcM7p2qgCjZU8YyguIf3zfiD83iRRydJogs/2N6ia9Rfklgil0TuY7vOxLBfoptRXsF3Dt4idXJABT5sNT8wu3wPxpmff8uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=K5IAu3Na; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42816ca782dso32530695e9.2
+        for <stable@vger.kernel.org>; Mon, 12 Aug 2024 05:23:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1723465430; x=1724070230; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XehwAsVHbXNGMp5RdCTcg+jS1mcwWOdOd2oDmc3/TGI=;
+        b=K5IAu3NaZSfFJo/Ug25gkdnHhcrxc6Gf7bVzfcHY37cpY1KVuDPj6Fu1KZBnJXOX6c
+         vaNaZBNtnG7N//fUwFWZIyOcrG4cTvqUu3G9HI8p/y7mC4N6G0dBbyO46KWxVDhkoD6w
+         zY+4WRu5wmPFK3sNEzZlYbcpTBIV6pdjYOLmVgUkH5Tradch/X4MHWypFS2wJNxWoC2t
+         AFNv8e+FJC796/NJAqeW6pAOlKtD/RCSZbgA9DjOkiDGgOmdXdb0XFYuYVmlHQK5vDp+
+         Ekjb6UEOYZot/l9fAovsgIBnMbhIeZdeRH5llcDJqClMGaaJKV2QCMyKDzP5qrIdjoQn
+         NxkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723465430; x=1724070230;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XehwAsVHbXNGMp5RdCTcg+jS1mcwWOdOd2oDmc3/TGI=;
+        b=KhZptKLHx5hsyroKx/7kapI4TubK8H1Omypw3ekDj+PyvT6lgh8gd8Z5R/jptJuCQd
+         H0PFx+AfHDYA51kfgQngdf/Slz6QzBIUU9KHAKhhokpAmiyRXiYBKoFFVDLEK7pSS92z
+         ik9p2540ZoHPzvpLrOC+oMCgZAPWmsZOIlqT2sXRQ1HuWFROtWkOy/t7LrnL8/+MDCWj
+         9hrnck7DzE9+T8nFEO2aCSNi7APdMlwCljlEtER7IzJKcMdKR+bVA91t4os9+EfGNc6z
+         Ux4dJ1DOknxNKw1MRwyDr5SaF7qc3VI8JlqwuBVnTDQxY2bNFcsCifGiXaBVcyhKHdXl
+         D03w==
+X-Forwarded-Encrypted: i=1; AJvYcCWnG6LjPBE0rF3+fkUqWh+1tTtLmNU13nDDRtdCyuBOXklWI1EWQvq2XcCC57SLppv0SPRdDpZ0ALQd+9MTh/6Q7O1um5qD
+X-Gm-Message-State: AOJu0YwASygqEtukFXzB53uShVXefV+Muy3o4lp803vmJ7Box052AAdG
+	ayyp16eYhWnqArAqwc59YmhwTwJ9lKCvsU8hFdY07pbxVNKjLlijZSCiAmK8GVg=
+X-Google-Smtp-Source: AGHT+IG8N1oZwbzivFuOXMO8KjI25Y2SXPR/dyyxOki85347hWjVPqJg+oatclhLoGiEpsJJCbZ3lw==
+X-Received: by 2002:a05:600c:468d:b0:426:55a3:71af with SMTP id 5b1f17b1804b1-429d4894febmr1580465e9.33.1723465429768;
+        Mon, 12 Aug 2024 05:23:49 -0700 (PDT)
+Received: from localhost ([2a01:e0a:3c5:5fb1:e555:6809:45b3:2496])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429c775e0e8sm100690605e9.41.2024.08.12.05.23.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Aug 2024 05:23:49 -0700 (PDT)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,  Neil Armstrong
+ <neil.armstrong@linaro.org>,  Kevin Hilman <khilman@baylibre.com>,  Martin
+ Blumenstingl <martin.blumenstingl@googlemail.com>,
+  linux-mmc@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
+  linux-amlogic@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH] mmc: meson-gx: fix wrong conversion of __bf_shf to __ffs
+In-Reply-To: <20240812115515.20158-1-ansuelsmth@gmail.com> (Christian
+	Marangi's message of "Mon, 12 Aug 2024 13:55:10 +0200")
+References: <20240812115515.20158-1-ansuelsmth@gmail.com>
+Date: Mon, 12 Aug 2024 14:23:48 +0200
+Message-ID: <1j8qx2x73f.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
+On Mon 12 Aug 2024 at 13:55, Christian Marangi <ansuelsmth@gmail.com> wrote:
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> Commit 795c633f6093 ("mmc: meson-gx: fix __ffsdi2 undefined on arm32")
+> changed __bf_shf to __ffs to fix a compile error on 32bit arch that have
+> problems with __ffsdi2. This comes from the fact that __bf_shf use
+> __builtin_ffsll and on 32bit __ffsdi2 is missing.
+>
+> Problem is that __bf_shf is defined as
+>
+>   #define __bf_shf(x) (__builtin_ffsll(x) - 1)
+>
+> but the patch doesn't account for the - 1.
+>
+> Fix this by using the __builtin_ffs and add the - 1 to reflect the
+> original implementation.
+>
+> The commit also converted other entry of __bf_shf in the code but those
+> got dropped in later patches.
+>
+> Fixes: 795c633f6093 ("mmc: meson-gx: fix __ffsdi2 undefined on arm32")
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Hi Christian,
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 030631e97b209481edbac38000d2a60fd340f6b1
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081241-sulfate-protegee-673a@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Are you fixing an actual problem you've seen with the platform and or
+this solely based on the original commit description ?
 
-Possible dependencies:
+If I dump the shift values with what we have right now, on sm1 at least
+* Mux shift is 6
+* Div shift is 0
 
-030631e97b20 ("drm/amdgpu: revert "take runtime pm reference when we attach a buffer" v2")
-425285d39afd ("drm/amdgpu: add amdgpu runpm usage trace for separate funcs")
-15fd09a05a66 ("drm/amdgpu: add reset register dump trace on GPU")
-21a6732f4648 ("drm/amdgpu: don't skip runtime pm get on A+A config")
-8c505bdc9c8b ("drm/amdgpu: rework dma_resv handling v3")
-d3fae3b3daac ("dma-buf: drop the _rcu postfix on function names v3")
-fb5ce730f214 ("dma-buf: rename and cleanup dma_resv_get_list v2")
-6edbd6abb783 ("dma-buf: rename and cleanup dma_resv_get_excl v3")
-0c6b522abc2a ("dma-buf: cleanup dma-resv shared fence debugging a bit v2")
-068d9d754bc1 ("dma-buf: add SPDX header and fix style in dma-resv.c")
-680753dd9d7d ("dma-buf: fix inconsistent debug print v2")
-71df0368e9b6 ("drm/amdgpu: Implement mmap as GEM object function")
-304ba5dca49a ("Merge drm/drm-next into drm-misc-next")
+This is aligned with the datasheet and has been working for while now.
 
-thanks,
+> Cc: stable@vger.kernel.org # see patch description, needs adjustements for < 5.2
+> ---
+>  drivers/mmc/host/meson-gx-mmc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+> index c7c067b9415a..8f64083a08fa 100644
+> --- a/drivers/mmc/host/meson-gx-mmc.c
+> +++ b/drivers/mmc/host/meson-gx-mmc.c
+> @@ -464,7 +464,7 @@ static int meson_mmc_clk_init(struct meson_host *host)
+>  	init.num_parents = MUX_CLK_NUM_PARENTS;
+>  
+>  	mux->reg = host->regs + SD_EMMC_CLOCK;
+> -	mux->shift = __ffs(CLK_SRC_MASK);
+> +	mux->shift = __builtin_ffs(CLK_SRC_MASK) - 1;
+>  	mux->mask = CLK_SRC_MASK >> mux->shift;
+>  	mux->hw.init = &init;
+>  
+> @@ -486,7 +486,7 @@ static int meson_mmc_clk_init(struct meson_host *host)
+>  	init.num_parents = 1;
+>  
+>  	div->reg = host->regs + SD_EMMC_CLOCK;
+> -	div->shift = __ffs(CLK_DIV_MASK);
+> +	div->shift = __builtin_ffs(CLK_DIV_MASK) - 1;
+>  	div->width = __builtin_popcountl(CLK_DIV_MASK);
+>  	div->hw.init = &init;
+>  	div->flags = CLK_DIVIDER_ONE_BASED;
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 030631e97b209481edbac38000d2a60fd340f6b1 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Date: Wed, 5 Jun 2024 13:27:20 +0200
-Subject: [PATCH] drm/amdgpu: revert "take runtime pm reference when we attach
- a buffer" v2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-This reverts commit b8c415e3bf98 ("drm/amdgpu: take runtime pm reference
-when we attach a buffer") and commit 425285d39afd ("drm/amdgpu: add amdgpu
-runpm usage trace for separate funcs").
-
-Taking a runtime pm reference for DMA-buf is actually completely
-unnecessary and even dangerous.
-
-The problem is that calling pm_runtime_get_sync() from the DMA-buf
-callbacks is illegal because we have the reservation locked here
-which is also taken during resume. So this would deadlock.
-
-When the buffer is in GTT it is still accessible even when the GPU
-is powered down and when it is in VRAM the buffer gets migrated to
-GTT before powering down.
-
-The only use case which would make it mandatory to keep the runtime
-pm reference would be if we pin the buffer into VRAM, and that's not
-something we currently do.
-
-v2: improve the commit message
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-CC: stable@vger.kernel.org
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-index 0b3b10d21952..8e81a83d37d8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -41,8 +41,6 @@
- #include <linux/dma-buf.h>
- #include <linux/dma-fence-array.h>
- #include <linux/pci-p2pdma.h>
--#include <linux/pm_runtime.h>
--#include "amdgpu_trace.h"
- 
- /**
-  * amdgpu_dma_buf_attach - &dma_buf_ops.attach implementation
-@@ -58,42 +56,11 @@ static int amdgpu_dma_buf_attach(struct dma_buf *dmabuf,
- 	struct drm_gem_object *obj = dmabuf->priv;
- 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
--	int r;
- 
- 	if (pci_p2pdma_distance(adev->pdev, attach->dev, false) < 0)
- 		attach->peer2peer = false;
- 
--	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
--	trace_amdgpu_runpm_reference_dumps(1, __func__);
--	if (r < 0)
--		goto out;
--
- 	return 0;
--
--out:
--	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
--	trace_amdgpu_runpm_reference_dumps(0, __func__);
--	return r;
--}
--
--/**
-- * amdgpu_dma_buf_detach - &dma_buf_ops.detach implementation
-- *
-- * @dmabuf: DMA-buf where we remove the attachment from
-- * @attach: the attachment to remove
-- *
-- * Called when an attachment is removed from the DMA-buf.
-- */
--static void amdgpu_dma_buf_detach(struct dma_buf *dmabuf,
--				  struct dma_buf_attachment *attach)
--{
--	struct drm_gem_object *obj = dmabuf->priv;
--	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
--	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
--
--	pm_runtime_mark_last_busy(adev_to_drm(adev)->dev);
--	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
--	trace_amdgpu_runpm_reference_dumps(0, __func__);
- }
- 
- /**
-@@ -266,7 +233,6 @@ static int amdgpu_dma_buf_begin_cpu_access(struct dma_buf *dma_buf,
- 
- const struct dma_buf_ops amdgpu_dmabuf_ops = {
- 	.attach = amdgpu_dma_buf_attach,
--	.detach = amdgpu_dma_buf_detach,
- 	.pin = amdgpu_dma_buf_pin,
- 	.unpin = amdgpu_dma_buf_unpin,
- 	.map_dma_buf = amdgpu_dma_buf_map,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-index 3f492277d7d3..2f24a6aa13bf 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-@@ -181,7 +181,6 @@ int amdgpu_fence_emit(struct amdgpu_ring *ring, struct dma_fence **f, struct amd
- 	amdgpu_ring_emit_fence(ring, ring->fence_drv.gpu_addr,
- 			       seq, flags | AMDGPU_FENCE_FLAG_INT);
- 	pm_runtime_get_noresume(adev_to_drm(adev)->dev);
--	trace_amdgpu_runpm_reference_dumps(1, __func__);
- 	ptr = &ring->fence_drv.fences[seq & ring->fence_drv.num_fences_mask];
- 	if (unlikely(rcu_dereference_protected(*ptr, 1))) {
- 		struct dma_fence *old;
-@@ -309,7 +308,6 @@ bool amdgpu_fence_process(struct amdgpu_ring *ring)
- 		dma_fence_put(fence);
- 		pm_runtime_mark_last_busy(adev_to_drm(adev)->dev);
- 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
--		trace_amdgpu_runpm_reference_dumps(0, __func__);
- 	} while (last_seq != seq);
- 
- 	return true;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h
-index f539b1d00234..2fd1bfb35916 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h
-@@ -554,21 +554,6 @@ TRACE_EVENT(amdgpu_reset_reg_dumps,
- 		      __entry->value)
- );
- 
--TRACE_EVENT(amdgpu_runpm_reference_dumps,
--	    TP_PROTO(uint32_t index, const char *func),
--	    TP_ARGS(index, func),
--	    TP_STRUCT__entry(
--			     __field(uint32_t, index)
--			     __string(func, func)
--			     ),
--	    TP_fast_assign(
--			   __entry->index = index;
--			   __assign_str(func, func);
--			   ),
--	    TP_printk("amdgpu runpm reference dump 0x%x: 0x%s\n",
--		      __entry->index,
--		      __get_str(func))
--);
- #undef AMDGPU_JOB_GET_TIMELINE_NAME
- #endif
- 
-
+-- 
+Jerome
 
