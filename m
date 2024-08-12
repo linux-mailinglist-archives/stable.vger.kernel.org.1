@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-67291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D696194F4C2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D4F94F2DA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93DB0281B80
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69475284BA0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9008B187328;
-	Mon, 12 Aug 2024 16:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DED18785F;
+	Mon, 12 Aug 2024 16:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcsU+mmQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpTuqIqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4752C1A5;
-	Mon, 12 Aug 2024 16:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBB318757D;
+	Mon, 12 Aug 2024 16:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480447; cv=none; b=UWS4+HF4ltOjrlz/ULEHCzQSu73wD9miPbioXQmkJXdJ6jypfiDlQ5gfC1vJP8jV7fmCXiCfmsjND8s3kKsC+l37HlZJXuG0+FJ+spm3aZ6yseMDOp2Z6qNritYmBeEUArqA0aBQYdshJeE6eGDEJlahn1pNf9S2J6WNwyyamXA=
+	t=1723479064; cv=none; b=mzhYuw5+tGl4mma4aerMkUI/8qJtrHbotbGqljokCoGRObSN/iKLCNQw+IfT9Jh/rXcEN0Fm7XKGaioO3CNBmLEMsF7e6j8rcOWlyULf5HG14M2/Yyqxhm2Dgxs6RGzfs1JxpVgi7fkOSQRzusTjzW5duwTSF+ZgbsgQFahbD1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480447; c=relaxed/simple;
-	bh=4AKSP0osm8r8nBoYOTn2Ns+23mvsd4bi8rRnxoKRfKM=;
+	s=arc-20240116; t=1723479064; c=relaxed/simple;
+	bh=XfEOHCFebZTmbJCOdQYVK+wlO1myYGTdCNAm496giZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWo0H/vWXNN6BXRaPCACGuN9K3ZoEJcpsHJdJqk7cuBFgJjc6ZM2AsoGRuPXdi6vnlNmwMj2QI4ulZLWGllLI7b5ppoV+b4Y+VeMYUM0gjpoJuWCdfn6AH7TjKWCnvhDCywAPqY8eaA1lQRp/FiUi22GMAebCuf5PXimPQAzjcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcsU+mmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B46AC32782;
-	Mon, 12 Aug 2024 16:34:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TW8XQWGQEtsKLq4gO0awz1o8bnAr0xnGcRvHEpQgd+0wYwt90lXtgeL9M+i0aHU+gff9W6xNH/GL4I4Nw9mSjhG7BxPcuCbaXEuQd34RLrN0tuZimjT2pxd3loMbchfQnP+kU9L82zP8xqyJf3xrWQ/AKCg6SqlEAVTCFP0bYvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpTuqIqB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1664C32782;
+	Mon, 12 Aug 2024 16:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480446;
-	bh=4AKSP0osm8r8nBoYOTn2Ns+23mvsd4bi8rRnxoKRfKM=;
+	s=korg; t=1723479064;
+	bh=XfEOHCFebZTmbJCOdQYVK+wlO1myYGTdCNAm496giZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tcsU+mmQwD4gNYze6zjvuM1wxRLE/08oZ4KkXe2Hy+tsqp/XT+sgSYEM9hfK/RiTi
-	 A6ckfAX363slMFtqOyV8Y+9OHicSXnwf+hT7oF34Dp54VogBt3sUeGnMF9k5dM/G1P
-	 jtsaiCoYdDY4rRrdTr1O4KKuxyz37LRTzlUGXx90=
+	b=xpTuqIqBRnYcPzKU2eZIbK9ii7LTUgRj8eiwy+QIgQmGhg4xunMNNlTalTP3wWRyp
+	 daqoZVOFXALnXFMIQA9Sza3Mo+iEKvZUJYi7+WZkyYlKhReUThf6mzmRux80PAiM19
+	 HvG7y99NqJZrm55MGHVfAselPgbiZVjZcuj6o6pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.10 199/263] media: v4l: Fix missing tabular column hint for Y14P format
-Date: Mon, 12 Aug 2024 18:03:20 +0200
-Message-ID: <20240812160154.166508371@linuxfoundation.org>
+	Sam James <sam@gentoo.org>,
+	Alejandro Colomar <alx@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 120/150] btrfs: avoid using fixed char array size for tree names
+Date: Mon, 12 Aug 2024 18:03:21 +0200
+Message-ID: <20240812160129.794426672@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 914f8961879de6fadd166ebd75151a778481e09a upstream.
+commit 12653ec36112ab55fa06c01db7c4432653d30a8d upstream.
 
-The original patch added two columns in the flat-table of Luma-Only
-Image Formats, without updating hints to latex: above it.  This results
-in wrong column count in the output of Sphinx's latex builder.
+[BUG]
+There is a bug report that using the latest trunk GCC 15, btrfs would cause
+unterminated-string-initialization warning:
 
-Fix it.
+  linux-6.6/fs/btrfs/print-tree.c:29:49: error: initializer-string for array of ‘char’ is too long [-Werror=unterminated-string-initialization]
+   29 |         { BTRFS_BLOCK_GROUP_TREE_OBJECTID,      "BLOCK_GROUP_TREE"      },
+      |
+      ^~~~~~~~~~~~~~~~~~
 
-Reported-by: Akira Yokosawa <akiyks@gmail.com>
-Closes: https://lore.kernel.org/linux-media/bdbc27ba-5098-49fb-aabf-753c81361cc7@gmail.com/
-Fixes: adb1d4655e53 ("media: v4l: Add V4L2-PIX-FMT-Y14P format")
-Cc: stable@vger.kernel.org # for v6.10
-Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[CAUSE]
+To print tree names we have an array of root_name_map structure, which
+uses "char name[16];" to store the name string of a tree.
+
+But the following trees have names exactly at 16 chars length:
+- "BLOCK_GROUP_TREE"
+- "RAID_STRIPE_TREE"
+
+This means we will have no space for the terminating '\0', and can lead
+to unexpected access when printing the name.
+
+[FIX]
+Instead of "char name[16];" use "const char *" instead.
+
+Since the name strings are all read-only data, and are all NULL
+terminated by default, there is not much need to bother the length at
+all.
+
+Reported-by: Sam James <sam@gentoo.org>
+Reported-by: Alejandro Colomar <alx@kernel.org>
+Fixes: edde81f1abf29 ("btrfs: add raid stripe tree pretty printer")
+Fixes: 9c54e80ddc6bd ("btrfs: add code to support the block group root")
+CC: stable@vger.kernel.org # 6.1+
+Suggested-by: Alejandro Colomar <alx@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Alejandro Colomar <alx@kernel.org>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/print-tree.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst b/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst
-index f02e6cf3516a..74df19be91f6 100644
---- a/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst
-+++ b/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst
-@@ -21,9 +21,9 @@ are often referred to as greyscale formats.
+--- a/fs/btrfs/print-tree.c
++++ b/fs/btrfs/print-tree.c
+@@ -9,7 +9,7 @@
  
- .. raw:: latex
+ struct root_name_map {
+ 	u64 id;
+-	char name[16];
++	const char *name;
+ };
  
--    \scriptsize
-+    \tiny
- 
--.. tabularcolumns:: |p{3.6cm}|p{3.0cm}|p{1.3cm}|p{2.6cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|
-+.. tabularcolumns:: |p{3.6cm}|p{2.4cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|
- 
- .. flat-table:: Luma-Only Image Formats
-     :header-rows: 1
--- 
-2.46.0
-
+ static const struct root_name_map root_map[] = {
 
 
 
