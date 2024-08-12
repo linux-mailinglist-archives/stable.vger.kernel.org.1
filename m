@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-67345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7FF94F4FD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:37:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C83B94F2F9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27DB41C20EEB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:37:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B092DB25591
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839D9186E34;
-	Mon, 12 Aug 2024 16:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCFC187323;
+	Mon, 12 Aug 2024 16:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihTCkUHo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwmPCRVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4370C1494B8;
-	Mon, 12 Aug 2024 16:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC16186E38;
+	Mon, 12 Aug 2024 16:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480623; cv=none; b=tfKxtEcRS/5ovP9rA2JoTRpLnHZLbKyz4iEWcKu++piBTGn7IuEvrd27/Q8k28O26rSOdxJIbWsfbdXS6lp1GEPSbqmvNtgipPVEsw605ndeHfPrtllGihe4nbW92BsQ4Z4qFFp4BSoeicozuN1wH+HqpXTYrz7kJK8VZNLeAhc=
+	t=1723479127; cv=none; b=fvYXr7D2JShn+5WVCQ/HWUlPqm5sWNYzldfNtHCBmssN+fBlzavzSnphGQ/rBS5HwpMyM7M7bMXbVwBRf/dpv/A9JnqBzH48JUEnn3C5jirHUdNMo6T/c6zaewdayU7Qv4CVXdNABuMWTOFilDt7iitvNgA4OEMv4mWqCKBy/yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480623; c=relaxed/simple;
-	bh=+/K4iVt2ndRcAspcpDaZQyRnwAoizDMjUnVoWuoTFB8=;
+	s=arc-20240116; t=1723479127; c=relaxed/simple;
+	bh=xGtzHABa9vOwzf49QiTLNwYC7/+uXTyC6JbhXSsOHJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8209+nMT6Q7icXqoyjJ5S9llBsK026PAKaCI0bRC/BeMKT0uIHYIk3LJTrziFEYmTdH8RqWuVcmKiq2eGMFEHUQ9aHf516fZkLCE33485L4Lyw/KWDgSEYpCeoP7FeDLxQ9mI5/3SOCkvmqIDFPoXGDtWCXhMiA/RYEVWB4Tl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihTCkUHo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF70C32782;
-	Mon, 12 Aug 2024 16:37:02 +0000 (UTC)
+	 MIME-Version; b=NPEcRbhtdBUFSk1kVGeLTdW6s1MEQj7I/WBUdGDaQGfFnDzkkz3msx8F4iKwxSGkyKog47uv556BdTRXd7VeBrcowAsLFzz3oUE5r2b2MqRN5Os6VgQkQn1pwz6hNez7ffWbuy/Rg4vFA2a2EDdEXfviD5txQP7vUjkTXIGKe2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwmPCRVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B97C32782;
+	Mon, 12 Aug 2024 16:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480623;
-	bh=+/K4iVt2ndRcAspcpDaZQyRnwAoizDMjUnVoWuoTFB8=;
+	s=korg; t=1723479127;
+	bh=xGtzHABa9vOwzf49QiTLNwYC7/+uXTyC6JbhXSsOHJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihTCkUHonGmvsYHEnDUUCZKpbWvpbXJANT3uAqHoHUkdj1sZyEJ4QRO//G+hENyfP
-	 DnyqZBfS3m1VAmxHpQOkKztQo1ELMXj4izaX4BtwyCwGon+STXvUWpinqFsJZEAOZJ
-	 GCdxJ/VvygT6dsSMXE6bQScW6NR0qPDbFPSwaEcI=
+	b=pwmPCRVHRLdfIk5YeOO6UC9c8EImIAoSoq03Ga4euG/2MhO3Eliv6PbpNFLGhYJi1
+	 03UnXaU/FCmAP0ZBpqPYmuEDkzQjcsMUNKHmX/R8H2HqW4klamWaw673KOsWtPB3XJ
+	 O04tp7MpmjeZrWh5kmzvXDSqKiojCdWZ5YEQSrVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.10 221/263] genirq/irqdesc: Honor caller provided affinity in alloc_desc()
-Date: Mon, 12 Aug 2024 18:03:42 +0200
-Message-ID: <20240812160154.999135127@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 142/150] block: Call .limit_depth() after .hctx has been set
+Date: Mon, 12 Aug 2024 18:03:43 +0200
+Message-ID: <20240812160130.651988558@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit edbbaae42a56f9a2b39c52ef2504dfb3fb0a7858 upstream.
+commit 6259151c04d4e0085e00d2dcb471ebdd1778e72e upstream.
 
-Currently, whenever a caller is providing an affinity hint for an
-interrupt, the allocation code uses it to calculate the node and copies the
-cpumask into irq_desc::affinity.
+Call .limit_depth() after data->hctx has been set such that data->hctx can
+be used in .limit_depth() implementations.
 
-If the affinity for the interrupt is not marked 'managed' then the startup
-of the interrupt ignores irq_desc::affinity and uses the system default
-affinity mask.
-
-Prevent this by setting the IRQD_AFFINITY_SET flag for the interrupt in the
-allocator, which causes irq_setup_affinity() to use irq_desc::affinity on
-interrupt startup if the mask contains an online CPU.
-
-[ tglx: Massaged changelog ]
-
-Fixes: 45ddcecbfa94 ("genirq: Use affinity hint in irqdesc allocation")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/all/20240806072044.837827-1-shayd@nvidia.com
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Fixes: 07757588e507 ("block/mq-deadline: Reserve 25% of scheduler tags for synchronous requests")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Tested-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240509170149.7639-2-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/irq/irqdesc.c |    1 +
- 1 file changed, 1 insertion(+)
+ block/blk-mq.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -530,6 +530,7 @@ static int alloc_descs(unsigned int star
- 				flags = IRQD_AFFINITY_MANAGED |
- 					IRQD_MANAGED_SHUTDOWN;
- 			}
-+			flags |= IRQD_AFFINITY_SET;
- 			mask = &affinity->mask;
- 			node = cpu_to_node(cpumask_first(mask));
- 			affinity++;
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -439,6 +439,7 @@ __blk_mq_alloc_requests_batch(struct blk
+ 
+ static struct request *__blk_mq_alloc_requests(struct blk_mq_alloc_data *data)
+ {
++	void (*limit_depth)(blk_opf_t, struct blk_mq_alloc_data *) = NULL;
+ 	struct request_queue *q = data->q;
+ 	u64 alloc_time_ns = 0;
+ 	struct request *rq;
+@@ -465,7 +466,7 @@ static struct request *__blk_mq_alloc_re
+ 		    !blk_op_is_passthrough(data->cmd_flags) &&
+ 		    e->type->ops.limit_depth &&
+ 		    !(data->flags & BLK_MQ_REQ_RESERVED))
+-			e->type->ops.limit_depth(data->cmd_flags, data);
++			limit_depth = e->type->ops.limit_depth;
+ 	}
+ 
+ retry:
+@@ -477,6 +478,9 @@ retry:
+ 	if (data->flags & BLK_MQ_REQ_RESERVED)
+ 		data->rq_flags |= RQF_RESV;
+ 
++	if (limit_depth)
++		limit_depth(data->cmd_flags, data);
++
+ 	/*
+ 	 * Try batched alloc if we want more than 1 tag.
+ 	 */
 
 
 
