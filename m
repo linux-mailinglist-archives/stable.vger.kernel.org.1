@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-66967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C53194F34F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E6D094F461
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC690B2517A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60F5D1C20C54
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33EB187346;
-	Mon, 12 Aug 2024 16:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5293186E38;
+	Mon, 12 Aug 2024 16:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OI7zt7va"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMdmiPb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2EC186E38;
-	Mon, 12 Aug 2024 16:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64473183CD4;
+	Mon, 12 Aug 2024 16:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479366; cv=none; b=dANNHbDP/DgHEUEdMd37feBDx2PrSrS2pqnjQri1eOvgFsM/GtP616GCFHCTG17rNLs1sh4ZCr2CMTIHzRuawHJb2HrbKgqAs9kRTmEJt2b2GX4wFwpFh+sOvvez5SYInMiWt/Wj+alVQ7qWYMec3bshRoDT6hRO23fD6TZH1sU=
+	t=1723480181; cv=none; b=Jlz+tLza1mkPdfEToTPyaSwvZOa3OqDlekPfW3pBwVjUjUiy4j1uAeWwiSNg1JdTUyGNUVwujybGK9zrZSY9PUO93DZ9K7G0Xu44yFQowchkSCKNjlrg2cravfJTd7TE56PX+E62B/tBsOzkFWxT4jZzDXEpIuof7FE70b3L95A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479366; c=relaxed/simple;
-	bh=ru1D+1ghLFROaiq38/84BXeNDT2QELhYAh92q3XWcv0=;
+	s=arc-20240116; t=1723480181; c=relaxed/simple;
+	bh=zqnbut42tQRkqsKvYt6gV+uFGWhdZ6q1sZ20OBp+IzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QGvHN1jWQ+aJ/8hE8iWvJY+1dnH9CtkVR6iEqqBCzgBqrUmUDMRIDD+z8FU4d+LyKealeBZ5oqBLvn4q86k+5zhTVuREZ//e9HfEUfPML/E/ftTH7YfU0J6yOGhYWDFbVgttT0S4YlqjKKXipKfpR0NqijNe89rkO9EITUQvB88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OI7zt7va; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13DAC32782;
-	Mon, 12 Aug 2024 16:16:05 +0000 (UTC)
+	 MIME-Version; b=SIrFWeuQle9PWFG6to8drqahmaYuSdmAyrTV9oN7BkiI2xQu+kqCmtvrC+aMrJShfQJ+q9m/mLudpXkIeWD805FU4XwsElM4TTYccRKoITRjSsh4m053cCar3+4PkAIGJar1mgqPANKkZpgBgTcl38NvpNKJNS+mI94PR16F7yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMdmiPb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EC8C32782;
+	Mon, 12 Aug 2024 16:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479366;
-	bh=ru1D+1ghLFROaiq38/84BXeNDT2QELhYAh92q3XWcv0=;
+	s=korg; t=1723480181;
+	bh=zqnbut42tQRkqsKvYt6gV+uFGWhdZ6q1sZ20OBp+IzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OI7zt7vaY6R1T20kkXNtzypXxqGBMXlH2lyrlQQDEJIVFKAfPHLlMbrDs/exZmqru
-	 3nSitAZlxd4wEWsFxW2zk9dF9ZS8AWxDVcvh8javv82IHZof28TGNfU3hdghhD8tcL
-	 21eXgqQ/Kj+p//yoZ+GpRb9GsXt/RpUTVbvLZcM4=
+	b=pMdmiPb1s0Nipuu+JZ1cUXLrNmTWBf6W4y+rFbQit0+DI18PrCDjU6cAX1RuUdwL4
+	 1NqyADWT1s1taIBlCtkV7G3hhiPtyNERj09fhnGxQruSIuFIMSByOO4Yg09IKY0CZp
+	 6WjcK3AOBTf2sFl/kotdqDrORUt45c9iUesBEJPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Michael Strauss <michael.strauss@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/189] ACPI: SBS: manage alarm sysfs attribute through psy core
+Subject: [PATCH 6.10 088/263] drm/amd/display: Add delay to improve LTTPR UHBR interop
 Date: Mon, 12 Aug 2024 18:01:29 +0200
-Message-ID: <20240812160133.419818452@linuxfoundation.org>
+Message-ID: <20240812160149.914489992@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +63,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Michael Strauss <michael.strauss@amd.com>
 
-[ Upstream commit 6bad28cfc30988a845fb3f59a99f4b8a4ce8fe95 ]
+[ Upstream commit 10839ee6a977ed1f7d0f4deb29f2d7e5d1f2a9dd ]
 
-Let the power supply core register the attribute.
+[WHY]
+Avoid race condition which puts LTTPR into bad state during UHBR LT.
 
-This ensures that the attribute is created before the device is
-announced to userspace, avoiding a race condition.
+[HOW]
+Delay 30ms between starting UHBR TPS1 PHY output and sending TPS1 via DPCD.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Michael Strauss <michael.strauss@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/sbs.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ .../dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c      | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index 94e3c000df2e1..fdeb46ed21d69 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -77,7 +77,6 @@ struct acpi_battery {
- 	u16 spec;
- 	u8 id;
- 	u8 present:1;
--	u8 have_sysfs_alarm:1;
- };
- 
- #define to_acpi_battery(x) power_supply_get_drvdata(x)
-@@ -462,12 +461,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
- 	return count;
- }
- 
--static const struct device_attribute alarm_attr = {
-+static struct device_attribute alarm_attr = {
- 	.attr = {.name = "alarm", .mode = 0644},
- 	.show = acpi_battery_alarm_show,
- 	.store = acpi_battery_alarm_store,
- };
- 
-+static struct attribute *acpi_battery_attrs[] = {
-+	&alarm_attr.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(acpi_battery);
-+
- /* --------------------------------------------------------------------------
-                                  Driver Interface
-    -------------------------------------------------------------------------- */
-@@ -518,7 +523,10 @@ static int acpi_battery_read(struct acpi_battery *battery)
- static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
--	struct power_supply_config psy_cfg = { .drv_data = battery, };
-+	struct power_supply_config psy_cfg = {
-+		.drv_data = battery,
-+		.attr_grp = acpi_battery_groups,
-+	};
- 	int result;
- 
- 	battery->id = id;
-@@ -548,10 +556,6 @@ static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- 		goto end;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c
+index 3e6c7be7e2786..5302d2c9c7607 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c
++++ b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c
+@@ -165,7 +165,12 @@ static void set_hpo_fixed_vs_pe_retimer_dp_link_test_pattern(struct dc_link *lin
+ 		link_res->hpo_dp_link_enc->funcs->set_link_test_pattern(
+ 				link_res->hpo_dp_link_enc, tp_params);
  	}
- 
--	result = device_create_file(&battery->bat->dev, &alarm_attr);
--	if (result)
--		goto end;
--	battery->have_sysfs_alarm = 1;
-       end:
- 	pr_info("%s [%s]: Battery Slot [%s] (battery %s)\n",
- 	       ACPI_SBS_DEVICE_NAME, acpi_device_bid(sbs->device),
-@@ -563,11 +567,8 @@ static void acpi_battery_remove(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
- 
--	if (battery->bat) {
--		if (battery->have_sysfs_alarm)
--			device_remove_file(&battery->bat->dev, &alarm_attr);
-+	if (battery->bat)
- 		power_supply_unregister(battery->bat);
--	}
++
+ 	link->dc->link_srv->dp_trace_source_sequence(link, DPCD_SOURCE_SEQ_AFTER_SET_SOURCE_PATTERN);
++
++	// Give retimer extra time to lock before updating DP_TRAINING_PATTERN_SET to TPS1
++	if (tp_params->dp_phy_pattern == DP_TEST_PATTERN_128b_132b_TPS1_TRAINING_MODE)
++		msleep(30);
  }
  
- static int acpi_charger_add(struct acpi_sbs *sbs)
+ static void set_hpo_fixed_vs_pe_retimer_dp_lane_settings(struct dc_link *link,
 -- 
 2.43.0
 
