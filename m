@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-66890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF17294F2F3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8AA94F3DC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D9491C216F1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A7FA1F212D3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C88F187550;
-	Mon, 12 Aug 2024 16:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099911862BD;
+	Mon, 12 Aug 2024 16:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWBzabhm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqrWrl4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3851EA8D;
-	Mon, 12 Aug 2024 16:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB196134AC;
+	Mon, 12 Aug 2024 16:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479118; cv=none; b=uCu0R0AEQ1glEhcrOShz11qf/yyF7B1ejrgmCpBJKy1I5Bu0/SyZF/5sNtuShCIFjzk8EImDPTsEffosX2r4lqiwgGK7/VUaLf6CEjNU5WKDLOBfZActZkEXC16rl1wCZDSkqt01T7pS5x8sZui0s6OX5NchAjYZcIfMthQ5ljI=
+	t=1723479787; cv=none; b=BTF+/YeJpff8JZnkSwwwstuo3Xe1POoSFNsQ7K/R4eHRefNHxzwOvL9XHdltc5V/6iP34r+5D4W0VXhAoQpf6LOorpO3S5eitGbuK/SjtL5HQxk1XZS0SnYuDDty+BYAMJ6lJIsfjGbBLS4pA0qLa8QgJUUb/bC++ceTeivOM5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479118; c=relaxed/simple;
-	bh=9dehpreKBimegf5mHRwWZ13Ou85v/FR5PBzFdbam7+A=;
+	s=arc-20240116; t=1723479787; c=relaxed/simple;
+	bh=BS5J1MDa3EAoXS/UpQ+j5b3TdaN6azO0mLgs2S/1ms4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aE25L+wtgObnq3R8oGWRHGugFcBdGi0pAr+wKDcojHT5kNJlGfRu5AMMT/uLynZ19aCzNQvkV+SWRaEca27KZk1jCZ9wkL/Vb95UeqnCS6nRsUdo084+uG/anXJcJkJF97KTfFDVc6Zl+UImr0E5bBWJ7IwcGxy48abNsy8OS2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWBzabhm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A60C32782;
-	Mon, 12 Aug 2024 16:11:56 +0000 (UTC)
+	 MIME-Version; b=RIPawd9BKE4Q7QnlBGtNNZe6Ql+9Qrc3SlUIaAf1cqm993luHcWz24wIa0zlDci5xHnNbY6QVDEpJR0cVYGxAw8QT751jV+1siyBhVDCnWnVCl19Mlcss2jQnmCkNMJ/ibCYk5Xc9ZyKDAj7Ue8afBECoOBSmQ/gLSYA/uzyq6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqrWrl4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB85C32782;
+	Mon, 12 Aug 2024 16:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479117;
-	bh=9dehpreKBimegf5mHRwWZ13Ou85v/FR5PBzFdbam7+A=;
+	s=korg; t=1723479787;
+	bh=BS5J1MDa3EAoXS/UpQ+j5b3TdaN6azO0mLgs2S/1ms4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWBzabhmaeZee+Wk9+0xP1X5EjAPjGcNxVrD46zHfr01330SoJDILBzAWIIZ/zDim
-	 1cyy5UbFWbw6WbzMnibdBrZAbnZCuh9tBF8ScuyumnPKgE6ODh/I+CLjIo5MeXWdY4
-	 yCdvpV61LTlCMnXe31QHe8L1Z3GqchT8gb0BNW7U=
+	b=vqrWrl4Je884r8BQl/03l1wmvTmTPb16efiMu/piEs9iDPMihRYbu9lQ+xzmr9Ufi
+	 3ayPsfaXTNMjwRIt4euyBH+qQv1p5rfDFchYj+3zUscMQycKTEhOpr7uUzDrpTEFRA
+	 WxPoKz3WYs9DeRp+MDoSPQ9H96EWhTGIRKcM31rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 139/150] ipv6: fix source address selection with route leak
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.6 164/189] drm/mgag200: Set DDC timeout in milliseconds
 Date: Mon, 12 Aug 2024 18:03:40 +0200
-Message-ID: <20240812160130.535871748@linuxfoundation.org>
+Message-ID: <20240812160138.456578699@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 252442f2ae317d109ef0b4b39ce0608c09563042 upstream.
+commit ecde5db1598aecab54cc392282c15114f526f05f upstream.
 
-By default, an address assigned to the output interface is selected when
-the source address is not specified. This is problematic when a route,
-configured in a vrf, uses an interface from another vrf (aka route leak).
-The original vrf does not own the selected source address.
+Compute the i2c timeout in jiffies from a value in milliseconds. The
+original values of 2 jiffies equals 2 milliseconds if HZ has been
+configured to a value of 1000. This corresponds to 2.2 milliseconds
+used by most other DRM drivers. Update mgag200 accordingly.
 
-Let's add a check against the output interface and call the appropriate
-function to select the source address.
-
-CC: stable@vger.kernel.org
-Fixes: 0d240e7811c4 ("net: vrf: Implement get_saddr for IPv6")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://patch.msgid.link/20240710081521.3809742-3-nicolas.dichtel@6wind.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.5+
+Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip6_route.h |   20 ++++++++++++++------
- net/ipv6/ip6_output.c   |    1 +
- net/ipv6/route.c        |    2 +-
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/mgag200/mgag200_i2c.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -132,18 +132,26 @@ void rt6_age_exceptions(struct fib6_info
+--- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
++++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
+@@ -115,7 +115,7 @@ int mgag200_i2c_init(struct mga_device *
+ 	i2c->adapter.algo_data = &i2c->bit;
  
- static inline int ip6_route_get_saddr(struct net *net, struct fib6_info *f6i,
- 				      const struct in6_addr *daddr,
--				      unsigned int prefs,
-+				      unsigned int prefs, int l3mdev_index,
- 				      struct in6_addr *saddr)
- {
-+	struct net_device *l3mdev;
-+	struct net_device *dev;
-+	bool same_vrf;
- 	int err = 0;
- 
--	if (f6i && f6i->fib6_prefsrc.plen) {
-+	rcu_read_lock();
-+
-+	l3mdev = dev_get_by_index_rcu(net, l3mdev_index);
-+	if (!f6i || !f6i->fib6_prefsrc.plen || l3mdev)
-+		dev = f6i ? fib6_info_nh_dev(f6i) : NULL;
-+	same_vrf = !l3mdev || l3mdev_master_dev_rcu(dev) == l3mdev;
-+	if (f6i && f6i->fib6_prefsrc.plen && same_vrf)
- 		*saddr = f6i->fib6_prefsrc.addr;
--	} else {
--		struct net_device *dev = f6i ? fib6_info_nh_dev(f6i) : NULL;
-+	else
-+		err = ipv6_dev_get_saddr(net, same_vrf ? dev : l3mdev, daddr, prefs, saddr);
- 
--		err = ipv6_dev_get_saddr(net, dev, daddr, prefs, saddr);
--	}
-+	rcu_read_unlock();
- 
- 	return err;
- }
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1120,6 +1120,7 @@ static int ip6_dst_lookup_tail(struct ne
- 		from = rt ? rcu_dereference(rt->from) : NULL;
- 		err = ip6_route_get_saddr(net, from, &fl6->daddr,
- 					  sk ? inet6_sk(sk)->srcprefs : 0,
-+					  fl6->flowi6_l3mdev,
- 					  &fl6->saddr);
- 		rcu_read_unlock();
- 
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5681,7 +5681,7 @@ static int rt6_fill_node(struct net *net
- 				goto nla_put_failure;
- 	} else if (dest) {
- 		struct in6_addr saddr_buf;
--		if (ip6_route_get_saddr(net, rt, dest, 0, &saddr_buf) == 0 &&
-+		if (ip6_route_get_saddr(net, rt, dest, 0, 0, &saddr_buf) == 0 &&
- 		    nla_put_in6_addr(skb, RTA_PREFSRC, &saddr_buf))
- 			goto nla_put_failure;
- 	}
+ 	i2c->bit.udelay = 10;
+-	i2c->bit.timeout = 2;
++	i2c->bit.timeout = usecs_to_jiffies(2200);
+ 	i2c->bit.data = i2c;
+ 	i2c->bit.setsda		= mga_gpio_setsda;
+ 	i2c->bit.setscl		= mga_gpio_setscl;
 
 
 
