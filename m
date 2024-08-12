@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-67242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B32094F486
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F16094F298
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BEB01C20E9C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 675571C21358
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2571E186E5F;
-	Mon, 12 Aug 2024 16:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9B7183CD9;
+	Mon, 12 Aug 2024 16:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5cZUD0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oc4Ia7je"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93FD183CD4;
-	Mon, 12 Aug 2024 16:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDCF1EA8D;
+	Mon, 12 Aug 2024 16:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480281; cv=none; b=MePq3blvTLbmM8c8FWWRxQ8FVvzBC/p/6jlHl7FcTfbOIlh9te7N+dbLTFQbhkZRITHOI9jJLdr8e/4pheUObwJgyrx5OIsPN66ZpwOfRcftC6P8C873OqmgaekTUnXoMqu9vVUdEOdSKg0xKoW7R93YtNiRJpRlY5lEYruUSV4=
+	t=1723478888; cv=none; b=YNI7vyYjJrMRwlY/pFwp/zqoX8mH28VPARYCmpqRxNUZvXuTsta7FE2zOByTV0xJIo9LlO8LcXrLuEX26/MwFenfztSVj6cKfpFZQnAmDVFnoG4yALiUfdYg7+kOzeVjr0sUNYXe+xRlsk8fvVI+GaEaWr+JeR2vYQTAjZ9245I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480281; c=relaxed/simple;
-	bh=Co5i59Wyx0z/Cej37AXmm3R//CvNME1ig+q6UzHdeTU=;
+	s=arc-20240116; t=1723478888; c=relaxed/simple;
+	bh=jKdKS/DxbTHTcIm57Ar/7JY7XJNu2HiTCjapofx4rCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DcMTOJevu6z8HdKR4Qabiyyv4gdmvHZjjz8DgtJOie0YdISRLGBueLkmwPBgw5miIJ0nu5/UqI1/i6azWGDLoiScsOqKuPJNvuvIkcsPiJFIhPuGhAAYu6BH1c3TNH8HmTw2SJdlODrdcxocAT2n86wxZcV8c87V209lptRIDnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5cZUD0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA35AC32782;
-	Mon, 12 Aug 2024 16:31:20 +0000 (UTC)
+	 MIME-Version; b=CSsbc7CqzjEAqcTn4OJfYjG2b8f42xK/6TRBrqu4cML2irWrBEtJs0aRba//6qabFtiWXv5Su5IYlNNpXIJXpwuFGwjnUTdQH7GVpKhv6IV8fDMsOZbQxu5w51iLTHVlyoGdleTlaick7zNt9j9PR6u1FrHfspMMsLSpzq8zKP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oc4Ia7je; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED617C4AF0D;
+	Mon, 12 Aug 2024 16:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480281;
-	bh=Co5i59Wyx0z/Cej37AXmm3R//CvNME1ig+q6UzHdeTU=;
+	s=korg; t=1723478888;
+	bh=jKdKS/DxbTHTcIm57Ar/7JY7XJNu2HiTCjapofx4rCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5cZUD0bjStiqpp9EZWymvQlZVv3LhRmA2LILxO0E3nuznoV1lW3e4f73gsRZqSw6
-	 XIc6sT9iMBz2RqdwPqtf2cJfIj4TlGZs63ypf2fOTZue8mnqylLMd/qmgINjzmw6uX
-	 QO0sbGXXQ4oDskp6Rfn4TubvP78VWMbV4bxgw3W4=
+	b=oc4Ia7jeYwE/WffTdAErBuksX9XO/P0FdWQ9dAZ1hBQgNR1W9yYvw4paLM5voZj9i
+	 +3VN6xUclJqaH8URVTBTS5Cuf04lxRjw9IFSKRPtw0LCYnmrlF++pET6YKH22FrDEq
+	 uQtep6hfKenrMDjg+m3LeREzJ9n8nVBXjjYZUK94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Malainey <cujomalainey@chromium.org>,
-	Wojciech Macek <wmacek@google.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 148/263] ASoC: SOF: Remove libraries from topology lookups
+Subject: [PATCH 6.1 068/150] arm64: cputype: Add Cortex-X1C definitions
 Date: Mon, 12 Aug 2024 18:02:29 +0200
-Message-ID: <20240812160152.213717208@linuxfoundation.org>
+Message-ID: <20240812160127.799703564@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Curtis Malainey <cujomalainey@chromium.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 7354eb7f1558466e92e926802d36e69e42938ea9 ]
+[ Upstream commit 58d245e03c324d083a0ec3b9ab8ebd46ec9848d7 ]
 
-Default firmware shipped in open source are not licensed for 3P
-libraries, therefore topologies should not reference them.
+Add cputype definitions for Cortex-X1C. These will be used for errata
+detection in subsequent patches.
 
-If a OS wants to use 3P (that they have licensed) then they should use
-the appropriate topology override mechanisms.
+These values can be found in the Cortex-X1C TRM:
 
-Fixes: 8a7d5d85ed2161 ("ASoC: SOF: mediatek: mt8195: Add devicetree support to select topologies")
-Signed-off-by: Curtis Malainey <cujomalainey@chromium.org>
-Cc: Wojciech Macek <wmacek@google.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20240731212153.921327-1-cujomalainey@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  https://developer.arm.com/documentation/101968/0002/
+
+... in section B2.107 ("MIDR_EL1, Main ID Register, EL1").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20240801101803.1982459-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/mediatek/mt8195/mt8195.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/sof/mediatek/mt8195/mt8195.c b/sound/soc/sof/mediatek/mt8195/mt8195.c
-index 31dc98d1b1d8b..8d3fc167cd810 100644
---- a/sound/soc/sof/mediatek/mt8195/mt8195.c
-+++ b/sound/soc/sof/mediatek/mt8195/mt8195.c
-@@ -573,7 +573,7 @@ static const struct snd_sof_dsp_ops sof_mt8195_ops = {
- static struct snd_sof_of_mach sof_mt8195_machs[] = {
- 	{
- 		.compatible = "google,tomato",
--		.sof_tplg_filename = "sof-mt8195-mt6359-rt1019-rt5682-dts.tplg"
-+		.sof_tplg_filename = "sof-mt8195-mt6359-rt1019-rt5682.tplg"
- 	}, {
- 		.compatible = "mediatek,mt8195",
- 		.sof_tplg_filename = "sof-mt8195.tplg"
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index b52d974da8283..ee736fbd40d5b 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -85,6 +85,7 @@
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
++#define ARM_CPU_PART_CORTEX_X1C		0xD4C
+ #define ARM_CPU_PART_CORTEX_X3		0xD4E
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+@@ -157,6 +158,7 @@
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
++#define MIDR_CORTEX_X1C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
+ #define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
 -- 
 2.43.0
 
