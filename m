@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-67280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1D394F4B3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:33:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D456B94F39D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD87E1C20EF9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:33:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A5E31F2168C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E8116D9B8;
-	Mon, 12 Aug 2024 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E169186E34;
+	Mon, 12 Aug 2024 16:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgppcTzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+ub1anb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB012C1A5;
-	Mon, 12 Aug 2024 16:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0E4183CA6;
+	Mon, 12 Aug 2024 16:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480412; cv=none; b=K9HDEvmPw/6uw9dRLk+mGoIC18lReFWPSytUCB7wxZudVotxCgYjQAfdNPZCSs6WiVpvwYVAjQTKvf/5lYi1toBxH/UedXuo3hkBZTOS/gC5JFiujY5b+mSFukP9xYK4cauiVz0lQ3vExAL+4f9O+wy5Un52/1PhLkHlmLMeffE=
+	t=1723479585; cv=none; b=flqrgz2amsRHziyZOoqUNCg9vhrZR1jEYvjYmJt5QDmk2vrLnM4x/Cd9mOpzdQOw3ktO1uXpEETNSc7wOKN6s5e5sN5UUUMJjvtZGI3Qnj1tE57MBwuDaOm/Y/AcZRlenJARx4X3LdpC9uOM+k8g1VTXd8uj6B2q3za2T+kukZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480412; c=relaxed/simple;
-	bh=T/ptafwQi1WhAIqDG1O9jYtZwPF/L2ukwALfWCgc+Mk=;
+	s=arc-20240116; t=1723479585; c=relaxed/simple;
+	bh=ErY0mxZQ0NEeiPnB3oAV04Btyw/8JgYlE0ecFC2IeA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B9MKiZYAgIWN+NWUAwjTD6IlcNQmqoV67xw5ZteVHonbQlCOLDXjTzRRBn2GVyvhrlqVES7S/zbFXoxb+8nxjDxeNdfofX0+oEGFG+J2g+7oT/HedHyoM1WrBGDcqxSUUeSUmIe7YIE6FrhORRgPjPJD7n7d+E1BXR3egCu0Dqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgppcTzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461A0C32782;
-	Mon, 12 Aug 2024 16:33:30 +0000 (UTC)
+	 MIME-Version; b=gO1c0PJERgTJu3nm0eAppIiTm36xlw2qFZl42ZMubQnOOPb8pD2PMhf+q4TDRHWoA3EMSg+LoerHJOlzIei0U36pTyj8cbu3ccOM7ADordF84fQQMVLLlmSeNU+Oew/r4PvL6ioQ7V9D9VKkLGXqHfCDco6JHJZfgTUg+uNj16M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+ub1anb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2717C32782;
+	Mon, 12 Aug 2024 16:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480410;
-	bh=T/ptafwQi1WhAIqDG1O9jYtZwPF/L2ukwALfWCgc+Mk=;
+	s=korg; t=1723479585;
+	bh=ErY0mxZQ0NEeiPnB3oAV04Btyw/8JgYlE0ecFC2IeA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgppcTzCptLqdLgDREEFUOOe6jcZvJ8YZsh5TfXhLBF9BkdojWGnY+LOfP+wFPUQA
-	 TvSNFKS40/6AcJxG/zAVfO3oJ5vD8QNlcaX8wcNsddAWcFNNdgsGLyw/dVbRNrDtBJ
-	 b+2TV9pMWBXW97LEoLZo6tz4RFJ3SqbzbbWDxaUw=
+	b=e+ub1anbA7gfeWysG+xbeoL6O4m6gKbV6LgXMlVGYT/iedw2rfFCkJGD0sYowpHg4
+	 PqQAXxyqZMfY2SbAcDAI8GZSNGxTie16T9+IYeZR7IvwChzL4eUWDvdRmC/hNpgwnd
+	 DNCGwvE1iAubEb3IN1YFvK72HhXKLGMkFYYfRraA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Ser <contact@emersion.fr>,
-	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
-	Xaver Hugl <xaver.hugl@kde.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	=?UTF-8?q?Michel=20D=C3=A4nzer?= <michel.daenzer@mailbox.org>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 156/263] drm/atomic: allow no-op FB_ID updates for async flips
+Subject: [PATCH 6.6 101/189] i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume
 Date: Mon, 12 Aug 2024 18:02:37 +0200
-Message-ID: <20240812160152.519171457@linuxfoundation.org>
+Message-ID: <20240812160136.030329671@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Ser <contact@emersion.fr>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 929725bd7eb4eea1f75197d9847f3f1ea5afdad1 ]
+[ Upstream commit 9ba48db9f77ce0001dbb882476fa46e092feb695 ]
 
-User-space is allowed to submit any property in an async flip as
-long as the value doesn't change. However we missed one case:
-as things stand, the kernel rejects no-op FB_ID changes on
-non-primary planes. Fix this by changing the conditional and
-skipping drm_atomic_check_prop_changes() only for FB_ID on the
-primary plane (instead of skipping for FB_ID on any plane).
+Add the missing geni_icc_disable() before return in
+geni_i2c_runtime_resume().
 
-Fixes: 0e26cc72c71c ("drm: Refuse to async flip with atomic prop changes")
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Reviewed-by: André Almeida <andrealmeid@igalia.com>
-Tested-by: Xaver Hugl <xaver.hugl@kde.org>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Michel Dänzer <michel.daenzer@mailbox.org>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240731191014.878320-1-contact@emersion.fr
+Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_uapi.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/i2c/busses/i2c-qcom-geni.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_atomic_uapi.c b/drivers/gpu/drm/drm_atomic_uapi.c
-index 02b1235c6d619..106292d6ed268 100644
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -1067,23 +1067,16 @@ int drm_atomic_set_property(struct drm_atomic_state *state,
- 		}
+diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
+index 5ed61cecd8d0e..b17411e97be68 100644
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -993,6 +993,7 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
+ 	ret = geni_se_resources_on(&gi2c->se);
+ 	if (ret) {
+ 		clk_disable_unprepare(gi2c->core_clk);
++		geni_icc_disable(&gi2c->se);
+ 		return ret;
+ 	}
  
- 		if (async_flip &&
--		    prop != config->prop_fb_id &&
--		    prop != config->prop_in_fence_fd &&
--		    prop != config->prop_fb_damage_clips) {
-+		    (plane_state->plane->type != DRM_PLANE_TYPE_PRIMARY ||
-+		     (prop != config->prop_fb_id &&
-+		      prop != config->prop_in_fence_fd &&
-+		      prop != config->prop_fb_damage_clips))) {
- 			ret = drm_atomic_plane_get_property(plane, plane_state,
- 							    prop, &old_val);
- 			ret = drm_atomic_check_prop_changes(ret, old_val, prop_value, prop);
- 			break;
- 		}
- 
--		if (async_flip && plane_state->plane->type != DRM_PLANE_TYPE_PRIMARY) {
--			drm_dbg_atomic(prop->dev,
--				       "[OBJECT:%d] Only primary planes can be changed during async flip\n",
--				       obj->id);
--			ret = -EINVAL;
--			break;
--		}
--
- 		ret = drm_atomic_plane_set_property(plane,
- 				plane_state, file_priv,
- 				prop, prop_value);
 -- 
 2.43.0
 
