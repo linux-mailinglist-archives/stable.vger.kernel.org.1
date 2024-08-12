@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE8494EA14
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:40:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D6E94EA15
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A9931C21717
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:40:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE696281316
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C232016DC12;
-	Mon, 12 Aug 2024 09:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75E216D9CC;
+	Mon, 12 Aug 2024 09:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COiSiuRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmQ5Adhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8103616DEAD
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878F916D9AB
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723455607; cv=none; b=NCJpphP0IQ0mqyRivSODGOFLoHBsBwMgR6LgQ1cMue/j/ctTyOGU4Q3bTolJMlgicFfNV5mMeLqXU4RVYyA2owcabzbxymeCYebGiGz/T/l/xQTX26+9rsBdz5lRRHuLZ3SIMFJgSk2/dK2JV3MSMB8PD3CLaMT4S9k/v5ew96E=
+	t=1723455618; cv=none; b=qk1r+RnGQLe3s0Amg76DYy8CgdfzGCKeIJ1jdaYGdqk4bE+jZppsvXRuoUrPQmGxGdaAlBosx4MOO4kM3wPFns8CVl9oGP0+QXFWkNSmNcfrhY1p/Sj3JDQI3ooN4lbKRWEP+LKGeE95/w2TyyoEkefUyxPnkBq5ubXWsvxIFz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723455607; c=relaxed/simple;
-	bh=ciWY8QFvrjDAVoH4nTpdV4DEuUnxSie7eJIozJvAqT0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ik2T0sR6hhJQi32nth5O2ZI+xh4gxDhjVMY11wBWOqXL94m1FCBxzW25MJvO4p6uaX2+UIsosRahThCazN8ClX2fADoHlGKnb/6Sd1uNBV9551KX/ngDf+01jLI12KW4j0LeaxIrbd5/nsxR9xnHJFiZV5rRYyiLnaqilt7O8Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COiSiuRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827EFC4AF0F;
-	Mon, 12 Aug 2024 09:40:06 +0000 (UTC)
+	s=arc-20240116; t=1723455618; c=relaxed/simple;
+	bh=sz+N1O+WavzBT3VyEdKYXt7bcQYk809dLQRqlqkBgiM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ceWIl0hJ3+FY1GHifz30HgJnVEn5Dx48x9tr25Rm0Dylulp1lndcUKEDSFHC5K8mKWD2v9uCCbdoKGtF2hYdlfbxKulh6ElvSH3RAU/5MebROvMLT1diXXTj7xHDsrGFfXj9ygMGItD4qL9NU2+sqVulLJIu0TiL4aOA0Anh7z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmQ5Adhj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF48C32782;
+	Mon, 12 Aug 2024 09:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723455607;
-	bh=ciWY8QFvrjDAVoH4nTpdV4DEuUnxSie7eJIozJvAqT0=;
+	s=korg; t=1723455618;
+	bh=sz+N1O+WavzBT3VyEdKYXt7bcQYk809dLQRqlqkBgiM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=COiSiuRq7kk26qv+pWKyCIe+0GE2mO/oum7fTyiNIe7EwrcRotrDFABakUBtG2A9H
-	 KFiMWXMavq17BsxVkfWXylZkLe8EtlB5JHYdmtU4zzO+WBA9PUUIEM6BL6GG/1K5Nh
-	 YRWH6F0mLBPpeH0r+ejFapvuU9sTN/7A2cwZwn+Y=
-Subject: FAILED: patch "[PATCH] usb: typec: fsa4480: Check if the chip is really there" failed to apply to 6.6-stable tree
+	b=fmQ5AdhjwXiCZi5lUGvPUS1/dXA3HjTQNcVHHuLKUkDeZ2BrM3UKN82xidPfzh/B6
+	 AxiuYL/LGViP2INQbKzGrbip5WsorOmv6kYBGvHjSVFengrFuufmUd0wBWKZ95D0IN
+	 aes4rENqHewCZPB5eX+sFByl/UYQWwuuKOBLHaeo=
+Subject: FAILED: patch "[PATCH] usb: typec: fsa4480: Check if the chip is really there" failed to apply to 6.1-stable tree
 To: konrad.dybcio@linaro.org,dmitry.baryshkov@linaro.org,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 11:40:03 +0200
-Message-ID: <2024081202-author-suspense-c645@gregkh>
+Date: Mon, 12 Aug 2024 11:40:07 +0200
+Message-ID: <2024081206-aqua-obscure-d702@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x e885f5f1f2b43575aa8e4e31404132d77d6663d1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081202-author-suspense-c645@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081206-aqua-obscure-d702@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 e885f5f1f2b4 ("usb: typec: fsa4480: Check if the chip is really there")
 cf07c55f9922 ("usb: typec: fsa4480: Add support to swap SBU orientation")
+c7054c31c1c9 ("usb: typec: fsa4480: rework mux & switch setup to handle more states")
 
 thanks,
 
