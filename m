@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D139794F423
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1064794F30D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8787B1F21783
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5C062859F1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24246186E20;
-	Mon, 12 Aug 2024 16:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0A618734F;
+	Mon, 12 Aug 2024 16:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hb0SjdSY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bgk65a/t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F2B134AC;
-	Mon, 12 Aug 2024 16:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A501EA8D;
+	Mon, 12 Aug 2024 16:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479993; cv=none; b=g3f2ujWafjg1J/hQHgWoSrvgDyQYjrChJiMQ67yS20oJ8qB7v84oDZ/B98zSbZDAClE+wzw6eD/J1soi/qmQp6KAFCgZHngH+QmjWmR41TZoUvzOQrPKYhqg6y3P9lmVpiXRy2LJ3FlJ/ZKqs1znOYZC0KUk7QIUrdC7IXUFXQc=
+	t=1723479189; cv=none; b=CGSqvn/wiKHIUnLM6yWyORMJbfVn4EW2YzZTBQXh7DMy4VRLylxzlib0zM1XXugqGV8b9i2q2ibkiBUwylO246HPResiBu+qXV+WzVBKSnU3i9G97DYM1mYJtreJ61+yLBR0XwjWwbOHmJ1iS5o4A4fJ26+yTqK+l+OYH6zI5Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479993; c=relaxed/simple;
-	bh=72bkisED54y7RcUhaqN2nxAF+iL194/g/qn6S22iqLc=;
+	s=arc-20240116; t=1723479189; c=relaxed/simple;
+	bh=HUfCjQFzlaEjX4dkDow1sM0TJFTp7QwCGUOB0dGQwLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sNt21SOnurVUB7olCKsjApnAMqgkHKrkUzrJvPn2GUJOIwdajImaGNL7FUG75+t3K8il2ckhjxZlRRzxY7dpeYQDfLaQJ5Qalgakz38sgP1VcuTgLjyQU3KTw0xtlafSu0q8gSMx6Rafiqe8XiQI66aTxQxGubVIKfVZsVqf5Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hb0SjdSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADB4C32782;
-	Mon, 12 Aug 2024 16:26:33 +0000 (UTC)
+	 MIME-Version; b=SCDRDWgojHddP+2VtpwhgOAOV0MVB5lRewAPaUURcBLvruK79pj9iw7MEsFRLd9XBAfni+5EV22qXP8e27lFMhIVYUD7yxNPNdmne0CEL5qVvjNMy731IL9U1R0q7ih5FDG+7GuzkFRdO22inSR+nuU4q2mnEWCgEtD3ZusQU9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bgk65a/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87599C4AF0D;
+	Mon, 12 Aug 2024 16:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479993;
-	bh=72bkisED54y7RcUhaqN2nxAF+iL194/g/qn6S22iqLc=;
+	s=korg; t=1723479189;
+	bh=HUfCjQFzlaEjX4dkDow1sM0TJFTp7QwCGUOB0dGQwLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hb0SjdSYLs/k73ckSFAAj+sdzySMKifAgYaltAfw0vMK5dH7+OZHRftFWAiLWZ0bB
-	 1bBLPVp+G5AqVd1efVPN9hJI7JMB46KxyPeI0zQVjOm7gQaGCIyBtrhoiGwkK5YU0B
-	 MzHe9AyXGNCAnSKN9qDZyQfTjczAdTgfkoXEgZlc=
+	b=Bgk65a/taApuBAtTyKcHEMA4h27Rctqz/2KoJNiK2w8ybtiqqXxqUBNRVdybJWMwV
+	 RDJFwwQWIfhcpHJc8s5Qpm7zk8WGgbeuuRN+buHxb7OTYnTYRwEvcP+5cILk7Byi1d
+	 SXXAIddwATO/vBKf7VXwaEXasA2JLAL4YzfJGhGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Kang Yang <quic_kangyang@quicinc.com>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 064/263] wifi: ath12k: fix race due to setting ATH12K_FLAG_EXT_IRQ_ENABLED too early
-Date: Mon, 12 Aug 2024 18:01:05 +0200
-Message-ID: <20240812160148.994688689@linuxfoundation.org>
+Subject: [PATCH 6.6 010/189] wifi: ath12k: add CE and ext IRQ flag to indicate irq_handler
+Date: Mon, 12 Aug 2024 18:01:06 +0200
+Message-ID: <20240812160132.537190084@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-[ Upstream commit 0a993772e0f0934d730c0d451622c80e03a40ab1 ]
+[ Upstream commit 604308a34487eaa382c50fcdb4396c435030b4fa ]
 
-Commit 5082b3e3027e ("wifi: ath11k: fix race due to setting
-ATH11K_FLAG_EXT_IRQ_ENABLED too early") fixes a race in ath11k
-driver. Since ath12k shares the same logic as ath11k, currently
-the race also exists in ath12k: in ath12k_pci_ext_irq_enable(),
-ATH12K_FLAG_EXT_IRQ_ENABLED is set before NAPI is enabled.
-In cases where only one MSI vector is allocated, this results
-in a race condition: after ATH12K_FLAG_EXT_IRQ_ENABLED is set
-but before NAPI enabled, CE interrupt breaks in. Since IRQ is
-shared by CE and data path, ath12k_pci_ext_interrupt_handler()
-is also called where we call disable_irq_nosync() to disable
-IRQ. Then napi_schedule() is called but it does nothing because
-NAPI is not enabled at that time, meaning that
-ath12k_pci_ext_grp_napi_poll() will never run, so we have
-no chance to call enable_irq() to enable IRQ back. Since IRQ
-is shared, all interrupts are disabled and we would finally
-get no response from target.
+Add two flags to indicate whether IRQ handler for CE and DP can be called.
+This is because in one MSI vector case, interrupt is not disabled in
+hif_stop and hif_irq_disable. So if interrupt is disabled, MHI interrupt
+is disabled too.
 
-So port ath11k fix here, this is done by setting
-ATH12K_FLAG_EXT_IRQ_ENABLED after all NAPI and IRQ work are
-done. With the fix, we are sure that by the time
-ATH12K_FLAG_EXT_IRQ_ENABLED is set, NAPI is enabled.
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 
-Note that the fix above also introduce some side effects:
-if ath12k_pci_ext_interrupt_handler() breaks in after NAPI
-enabled but before ATH12K_FLAG_EXT_IRQ_ENABLED set, nothing
-will be done by the handler this time, the work will be
-postponed till the next time the IRQ fires.
-
-This is found during code review.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240524023642.37030-1-quic_bqiang@quicinc.com
+Link: https://lore.kernel.org/r/20231121021304.12966-3-quic_kangyang@quicinc.com
+Stable-dep-of: a47f3320bb4b ("wifi: ath12k: fix soft lockup on suspend")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.h |  2 ++
+ drivers/net/wireless/ath/ath12k/pci.c  | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index c926952c956ef..33f4706af880d 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -181,6 +181,8 @@ enum ath12k_dev_flags {
+ 	ATH12K_FLAG_REGISTERED,
+ 	ATH12K_FLAG_QMI_FAIL,
+ 	ATH12K_FLAG_HTC_SUSPEND_COMPLETE,
++	ATH12K_FLAG_CE_IRQ_ENABLED,
++	ATH12K_FLAG_EXT_IRQ_ENABLED,
+ };
+ 
+ enum ath12k_monitor_flags {
 diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 55fde0d33183c..f92b4ce49dfd4 100644
+index a6a5f9bcffbd6..f27b93c20a349 100644
 --- a/drivers/net/wireless/ath/ath12k/pci.c
 +++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1091,14 +1091,14 @@ void ath12k_pci_ext_irq_enable(struct ath12k_base *ab)
+@@ -373,6 +373,8 @@ static void ath12k_pci_ce_irqs_disable(struct ath12k_base *ab)
  {
  	int i;
  
--	set_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
--
++	clear_bit(ATH12K_FLAG_CE_IRQ_ENABLED, &ab->dev_flags);
++
+ 	for (i = 0; i < ab->hw_params->ce_count; i++) {
+ 		if (ath12k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+@@ -406,6 +408,10 @@ static void ath12k_pci_ce_tasklet(struct tasklet_struct *t)
+ static irqreturn_t ath12k_pci_ce_interrupt_handler(int irq, void *arg)
+ {
+ 	struct ath12k_ce_pipe *ce_pipe = arg;
++	struct ath12k_base *ab = ce_pipe->ab;
++
++	if (!test_bit(ATH12K_FLAG_CE_IRQ_ENABLED, &ab->dev_flags))
++		return IRQ_HANDLED;
+ 
+ 	/* last interrupt received for this CE */
+ 	ce_pipe->timestamp = jiffies;
+@@ -428,6 +434,8 @@ static void __ath12k_pci_ext_irq_disable(struct ath12k_base *ab)
+ {
+ 	int i;
+ 
++	clear_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
++
  	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
  		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
  
- 		napi_enable(&irq_grp->napi);
- 		ath12k_pci_ext_grp_enable(irq_grp);
- 	}
+@@ -483,6 +491,10 @@ static int ath12k_pci_ext_grp_napi_poll(struct napi_struct *napi, int budget)
+ static irqreturn_t ath12k_pci_ext_interrupt_handler(int irq, void *arg)
+ {
+ 	struct ath12k_ext_irq_grp *irq_grp = arg;
++	struct ath12k_base *ab = irq_grp->ab;
 +
-+	set_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
- }
++	if (!test_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags))
++		return IRQ_HANDLED;
  
- void ath12k_pci_ext_irq_disable(struct ath12k_base *ab)
+ 	ath12k_dbg(irq_grp->ab, ATH12K_DBG_PCI, "ext irq:%d\n", irq);
+ 
+@@ -626,6 +638,8 @@ static void ath12k_pci_ce_irqs_enable(struct ath12k_base *ab)
+ {
+ 	int i;
+ 
++	set_bit(ATH12K_FLAG_CE_IRQ_ENABLED, &ab->dev_flags);
++
+ 	for (i = 0; i < ab->hw_params->ce_count; i++) {
+ 		if (ath12k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+@@ -956,6 +970,8 @@ void ath12k_pci_ext_irq_enable(struct ath12k_base *ab)
+ {
+ 	int i;
+ 
++	set_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
++
+ 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
+ 		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 
 -- 
 2.43.0
 
