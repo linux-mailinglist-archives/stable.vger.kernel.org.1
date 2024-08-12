@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-66805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF35694F289
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9076C94F470
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B71AB224B8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB9DE282046
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C8818734B;
-	Mon, 12 Aug 2024 16:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405BB187324;
+	Mon, 12 Aug 2024 16:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aS9kFJoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjem2Grk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765C7183CC9;
-	Mon, 12 Aug 2024 16:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91782B9B5;
+	Mon, 12 Aug 2024 16:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478842; cv=none; b=A+SBXG4IMv4MXxBey7nK4RokNZdO++G73HgwmX8mfQpNJlFpSi8KwFtYcdAEz8kFZmQCBysswLEXeTvh9Ix7u5ZF97u989HVxo0Ib869wDWo5lCe9aorQA0U0UKcWyPte3mWRAlPUlMgjKUASRlR8vwXhV3KrINC/jaRFj7+2is=
+	t=1723480222; cv=none; b=kVselopH9wkS0t2VvTOQ5+k/ZP4aVLxUiz4JI+c7IE/nfrBnjNTzyhNAiksP4mpr+3H7aoR6rqCPleEL0jJRUh3I91Y9b02qEdHy4PNtlG7ClIMs0GF1pyGDaEu3IVc3B9Z2i8bJugwa78D49S850/4b62ZICtmFhVYhhHZ98lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478842; c=relaxed/simple;
-	bh=6Taz2mqp1n1AF9xXY99taCwtKLREbYdTQvxZtYFtkF4=;
+	s=arc-20240116; t=1723480222; c=relaxed/simple;
+	bh=NNYNDz8IEMD1lJVktqexWw4pRFofDx/YZeAhTbkQ9PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJW1V45Fwaes4bZQODkD4QWid+5yvmaIel9A2mvERoz/xNsv0xRAHTsoY4kgAbu5e4a9ac7TMZrUcNqokVzifkHAOB5v6/KeBLtdrSjieGfL5dsEZVW4zBn8sOWE8HsLGN9QaI4wdWzhN1YOLollUv3Zq1anNf3ZMVLLZLMyFFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aS9kFJoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0D4C32782;
-	Mon, 12 Aug 2024 16:07:21 +0000 (UTC)
+	 MIME-Version; b=Rxg7snihS1OVQ/Bx7Qk3is0DqWKYBo9HKrZFI1txsNVpaF6kWsxfCi38eYe23GSeVi0TrqNkH3F5/R9qV1NDa+6BF97dB5zGyPC5DiCQm7x8V88raIDNzoY0KmfI9XK9BK5v/CpP0qGteMAO5j3ZIpnsW9DgAHp39dZOQfPruNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjem2Grk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1857BC32782;
+	Mon, 12 Aug 2024 16:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478842;
-	bh=6Taz2mqp1n1AF9xXY99taCwtKLREbYdTQvxZtYFtkF4=;
+	s=korg; t=1723480221;
+	bh=NNYNDz8IEMD1lJVktqexWw4pRFofDx/YZeAhTbkQ9PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aS9kFJoAjGZ4gj7AGp6tnceME+pBvejeu7EObtS7hEETvjcLNSXOHITdc3GB26+Ql
-	 CTVkNG9ywDhKoMoWfVd+P/zHkxOFv/NiM5GUGSySbdIRVdOstgOl+LpZZa5WKCb7P6
-	 yVG+4G89vL/3oEI5h7lzgTkJGx20/4fo1+wQdpTc=
+	b=xjem2GrkmzS4STjkBo+OQLqJbhZWHdQ/1MZK5l7FoVZwu/LXr3FVlT0DeBU8o1cps
+	 yM1eLzWaBLX8TnPvcV131fcqxUMTCLF7xb5vXVWlhu0t8C1vhvXMuoWwFJI5ArQP1c
+	 6Q1dFOxJRImYLMRQGwgxYbGKEkpqBLUy3MjmMECc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 052/150] profiling: remove profile=sleep support
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 132/263] arm64: errata: Unify speculative SSBS errata logic
 Date: Mon, 12 Aug 2024 18:02:13 +0200
-Message-ID: <20240812160127.174126079@linuxfoundation.org>
+Message-ID: <20240812160151.601701948@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +64,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit b88f55389ad27f05ed84af9e1026aa64dbfabc9a upstream.
+[ Upstream commit ec768766608092087dfb5c1fc45a16a6f524dee2 ]
 
-The kernel sleep profile is no longer working due to a recursive locking
-bug introduced by commit 42a20f86dc19 ("sched: Add wrapper for get_wchan()
-to keep task blocked")
+Cortex-X4 erratum 3194386 and Neoverse-V3 erratum 3312417 are identical,
+with duplicate Kconfig text and some unsightly ifdeffery. While we try
+to share code behind CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS, having
+separate options results in a fair amount of boilerplate code, and this
+will only get worse as we expand the set of affected CPUs.
 
-Booting with the 'profile=sleep' kernel command line option added or
-executing
+To reduce this boilerplate, unify the two behind a common Kconfig
+option. This removes the duplicate text and Kconfig logic, and removes
+the need for the intermediate ARM64_WORKAROUND_SPECULATIVE_SSBS option.
+The set of affected CPUs is described as a list so that this can easily
+be extended.
 
-  # echo -n sleep > /sys/kernel/profiling
+I've used ARM64_ERRATUM_3194386 (matching the Neoverse-V3 erratum ID) as
+the common option, matching the way we use ARM64_ERRATUM_1319367 to
+cover Cortex-A57 erratum 1319537 and Cortex-A72 erratum 1319367.
 
-after boot causes the system to lock up.
-
-Lockdep reports
-
-  kthreadd/3 is trying to acquire lock:
-  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: get_wchan+0x32/0x70
-
-  but task is already holding lock:
-  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: try_to_wake_up+0x53/0x370
-
-with the call trace being
-
-   lock_acquire+0xc8/0x2f0
-   get_wchan+0x32/0x70
-   __update_stats_enqueue_sleeper+0x151/0x430
-   enqueue_entity+0x4b0/0x520
-   enqueue_task_fair+0x92/0x6b0
-   ttwu_do_activate+0x73/0x140
-   try_to_wake_up+0x213/0x370
-   swake_up_locked+0x20/0x50
-   complete+0x2f/0x40
-   kthread+0xfb/0x180
-
-However, since nobody noticed this regression for more than two years,
-let's remove 'profile=sleep' support based on the assumption that nobody
-needs this functionality.
-
-Fixes: 42a20f86dc19 ("sched: Add wrapper for get_wchan() to keep task blocked")
-Cc: stable@vger.kernel.org # v5.16+
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-5-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |    4 +---
- include/linux/profile.h                         |    1 -
- kernel/profile.c                                |   11 +----------
- kernel/sched/stats.c                            |   10 ----------
- 4 files changed, 2 insertions(+), 24 deletions(-)
+ Documentation/arch/arm64/silicon-errata.rst |  2 +-
+ arch/arm64/Kconfig                          | 29 +++------------------
+ arch/arm64/include/asm/cpucaps.h            |  2 +-
+ arch/arm64/kernel/cpu_errata.c              |  8 ++----
+ arch/arm64/kernel/proton-pack.c             |  2 +-
+ 5 files changed, 9 insertions(+), 34 deletions(-)
 
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4556,11 +4556,9 @@
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index eb8af8032c315..59ee2832406c2 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -158,7 +158,7 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V1     | #1619801        | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3312417       |
++| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 5d91259ee7b53..fb31ff9151b9d 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1067,34 +1067,14 @@ config ARM64_ERRATUM_3117295
  
- 	profile=	[KNL] Enable kernel profiling via /proc/profile
- 			Format: [<profiletype>,]<number>
--			Param: <profiletype>: "schedule", "sleep", or "kvm"
-+			Param: <profiletype>: "schedule" or "kvm"
- 				[defaults to kernel profiling]
- 			Param: "schedule" - profile schedule points.
--			Param: "sleep" - profile D-state sleeping (millisecs).
--				Requires CONFIG_SCHEDSTATS
- 			Param: "kvm" - profile VM exits.
- 			Param: <number> - step/bucket size as a power of 2 for
- 				statistical time based profiling.
---- a/include/linux/profile.h
-+++ b/include/linux/profile.h
-@@ -11,7 +11,6 @@
+ 	  If unsure, say Y.
  
- #define CPU_PROFILING	1
- #define SCHED_PROFILING	2
--#define SLEEP_PROFILING	3
- #define KVM_PROFILING	4
+-config ARM64_WORKAROUND_SPECULATIVE_SSBS
+-	bool
+-
+ config ARM64_ERRATUM_3194386
+-	bool "Cortex-X4: 3194386: workaround for MSR SSBS not self-synchronizing"
+-	select ARM64_WORKAROUND_SPECULATIVE_SSBS
++	bool "Cortex-X4/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
+ 	default y
+ 	help
+-	  This option adds the workaround for ARM Cortex-X4 erratum 3194386.
++	  This option adds the workaround for the following errata:
  
- struct proc_dir_entry;
---- a/kernel/profile.c
-+++ b/kernel/profile.c
-@@ -57,20 +57,11 @@ static DEFINE_MUTEX(profile_flip_mutex);
- int profile_setup(char *str)
- {
- 	static const char schedstr[] = "schedule";
--	static const char sleepstr[] = "sleep";
- 	static const char kvmstr[] = "kvm";
- 	const char *select = NULL;
- 	int par;
+-	  On affected cores "MSR SSBS, #0" instructions may not affect
+-	  subsequent speculative instructions, which may permit unexepected
+-	  speculative store bypassing.
+-
+-	  Work around this problem by placing a speculation barrier after
+-	  kernel changes to SSBS. The presence of the SSBS special-purpose
+-	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
+-	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
+-	  SSBS.
+-
+-	  If unsure, say Y.
+-
+-config ARM64_ERRATUM_3312417
+-	bool "Neoverse-V3: 3312417: workaround for MSR SSBS not self-synchronizing"
+-	select ARM64_WORKAROUND_SPECULATIVE_SSBS
+-	default y
+-	help
+-	  This option adds the workaround for ARM Neoverse-V3 erratum 3312417.
++	  * ARM Cortex-X4 erratum 3194386
++	  * ARM Neoverse-V3 erratum 3312417
  
--	if (!strncmp(str, sleepstr, strlen(sleepstr))) {
--#ifdef CONFIG_SCHEDSTATS
--		force_schedstat_enabled();
--		prof_on = SLEEP_PROFILING;
--		select = sleepstr;
--#else
--		pr_warn("kernel sleep profiling requires CONFIG_SCHEDSTATS\n");
--#endif /* CONFIG_SCHEDSTATS */
--	} else if (!strncmp(str, schedstr, strlen(schedstr))) {
-+	if (!strncmp(str, schedstr, strlen(schedstr))) {
- 		prof_on = SCHED_PROFILING;
- 		select = schedstr;
- 	} else if (!strncmp(str, kvmstr, strlen(kvmstr))) {
---- a/kernel/sched/stats.c
-+++ b/kernel/sched/stats.c
-@@ -92,16 +92,6 @@ void __update_stats_enqueue_sleeper(stru
+ 	  On affected cores "MSR SSBS, #0" instructions may not affect
+ 	  subsequent speculative instructions, which may permit unexepected
+@@ -1108,7 +1088,6 @@ config ARM64_ERRATUM_3312417
  
- 			trace_sched_stat_blocked(p, delta);
+ 	  If unsure, say Y.
  
--			/*
--			 * Blocking time is in units of nanosecs, so shift by
--			 * 20 to get a milliseconds-range estimation of the
--			 * amount of time that the task spent sleeping:
--			 */
--			if (unlikely(prof_on == SLEEP_PROFILING)) {
--				profile_hits(SLEEP_PROFILING,
--					     (void *)get_wchan(p),
--					     delta >> 20);
--			}
- 			account_scheduler_latency(p, delta >> 10, 0);
- 		}
+-
+ config CAVIUM_ERRATUM_22375
+ 	bool "Cavium erratum 22375, 24313"
+ 	default y
+diff --git a/arch/arm64/include/asm/cpucaps.h b/arch/arm64/include/asm/cpucaps.h
+index 7529c02639332..a6e5b07b64fd5 100644
+--- a/arch/arm64/include/asm/cpucaps.h
++++ b/arch/arm64/include/asm/cpucaps.h
+@@ -59,7 +59,7 @@ cpucap_is_possible(const unsigned int cap)
+ 	case ARM64_WORKAROUND_REPEAT_TLBI:
+ 		return IS_ENABLED(CONFIG_ARM64_WORKAROUND_REPEAT_TLBI);
+ 	case ARM64_WORKAROUND_SPECULATIVE_SSBS:
+-		return IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS);
++		return IS_ENABLED(CONFIG_ARM64_ERRATUM_3194386);
  	}
+ 
+ 	return true;
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index 828be635e7e1d..5fbe14dc607f0 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -432,14 +432,10 @@ static const struct midr_range erratum_spec_unpriv_load_list[] = {
+ };
+ #endif
+ 
+-#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
+-static const struct midr_range erratum_spec_ssbs_list[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_3194386
++static const struct midr_range erratum_spec_ssbs_list[] = {
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
+-#endif
+-#ifdef CONFIG_ARM64_ERRATUM_3312417
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+-#endif
+ 	{}
+ };
+ #endif
+@@ -741,7 +737,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ 		MIDR_FIXED(MIDR_CPU_VAR_REV(1,1), BIT(25)),
+ 	},
+ #endif
+-#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
++#ifdef CONFIG_ARM64_ERRATUM_3194386
+ 	{
+ 		.desc = "ARM errata 3194386, 3312417",
+ 		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
+diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+index baca47bd443c8..da53722f95d41 100644
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -567,7 +567,7 @@ static enum mitigation_state spectre_v4_enable_hw_mitigation(void)
+ 	 * Mitigate this with an unconditional speculation barrier, as CPUs
+ 	 * could mis-speculate branches and bypass a conditional barrier.
+ 	 */
+-	if (IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS))
++	if (IS_ENABLED(CONFIG_ARM64_ERRATUM_3194386))
+ 		spec_bar();
+ 
+ 	return SPECTRE_MITIGATED;
+-- 
+2.43.0
+
 
 
 
