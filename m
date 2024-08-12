@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-67043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C136D94F3A5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB14C94F2D7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D44928125D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63779B23FA9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D9E186E47;
-	Mon, 12 Aug 2024 16:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1EA187571;
+	Mon, 12 Aug 2024 16:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvFtHvfq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDgxzlp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D2D29CA;
-	Mon, 12 Aug 2024 16:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180DE183CD9;
+	Mon, 12 Aug 2024 16:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479613; cv=none; b=QzlWalbr40Fn0hr3f48YmiAUkLMC+x8ct6myiHbkJr+gOFPZhMVd25MG/qtgzn5S3kSTgxN89MYnGtcsHPpAHf+WpKtZLMnnf+ee5lH6K+ok5Abv7OE/wA1N6nBcZI9GZApM4EJlxTTGpxaVE1JSD+nQf+bisYZC0B8uwcLANQU=
+	t=1723479048; cv=none; b=KhEkHqx+0wNbjlwoH0L2wzpL4bQdVQjY5Mf7NvmZ1E3X0lUUk9JMt/j10zHtEjKe2BwzCmEP1Ia0RmzMphZf/OG8HoDu2IXGvV0P5o671FmDJnjuu5z5nvuwhQOn0qNBnTRgdiVfkQQq7FDJrvvOtyZ3AE4V9kg14+4rTFUYb2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479613; c=relaxed/simple;
-	bh=kCoyaihn8YAc6+vBTBcRkCiNUWDaV3vVL6E2O7GqhL8=;
+	s=arc-20240116; t=1723479048; c=relaxed/simple;
+	bh=8dN1fRLfesoJphi5uDBCrmhqi7gqzhq4pp9pZp1mIs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPGOkHr2uLAiQzn+GhqPxMhnSu7tAEgM4FWQAkRGnqVSdyMJRlAkNNjjN+YcjAs1K44tPHrIKjzXbbLLkVVIFRYcmbuLcIWlpmgGo1Oa94Nr1RoFNKiIU2pD7Q4iodZGgPRlBZJFCB4pQ7Z39nIc+TfGs7qlz4w3vER/Mys0p2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvFtHvfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D91C4AF0D;
-	Mon, 12 Aug 2024 16:20:12 +0000 (UTC)
+	 MIME-Version; b=S3CbvsSJZEYO8BKO6JwjP6n+l1ON0DNpWc+PS7pMiWrCdjut15CU1jdnzQDLZOgJazTFaPJF+M8sC1QCTnSvAfI52hEtejp89IKG0MGmR2IUNCYPL1ikIW4V+vkvoLi61a6Er2XQFTw85xEws72lrCFE8M3wj31BhagbhYKOObM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDgxzlp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880C2C32782;
+	Mon, 12 Aug 2024 16:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479613;
-	bh=kCoyaihn8YAc6+vBTBcRkCiNUWDaV3vVL6E2O7GqhL8=;
+	s=korg; t=1723479047;
+	bh=8dN1fRLfesoJphi5uDBCrmhqi7gqzhq4pp9pZp1mIs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LvFtHvfqYJGnC5cATUoN1B57USBiKjkWON+OVaaBKDCqOLqJDvfM5lOcIWRULhGZT
-	 20+7d0++O2FoJA7J7DjX66prh92BlSxnQQyQQ+FbsbirxgupD1oXobAfRnwxt37b7U
-	 qaEW9DccgMkUYcArMB3TWM7CB3kMhnqc9S4i+Jfo=
+	b=sDgxzlp/jrAW9pd+bzKaUsY9mWju1EhCBTz5uAeAdg/F1doebjnTLl2LI5qP00KXx
+	 mrrG0DsuucfMFWIFuWoAjbbdiTF6w5nbSSAsQd7855rhu5qlLizc3IaQ+1aRrTWy/H
+	 GNzoPpQ4rP64uoSGsySf5C9bKOYmQ9j9BxuyB0w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com,
-	Marco Elver <elver@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Aleksandr Nogikh <nogikh@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Marcello Sylvester Bauer <sylv@sylv.io>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 141/189] kcov: properly check for softirq context
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 116/150] power: supply: axp288_charger: Round constant_charge_voltage writes down
 Date: Mon, 12 Aug 2024 18:03:17 +0200
-Message-ID: <20240812160137.568896551@linuxfoundation.org>
+Message-ID: <20240812160129.637965934@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 7d4df2dad312f270d62fecb0e5c8b086c6d7dcfc upstream.
+commit 81af7f2342d162e24ac820c10e68684d9f927663 upstream.
 
-When collecting coverage from softirqs, KCOV uses in_serving_softirq() to
-check whether the code is running in the softirq context.  Unfortunately,
-in_serving_softirq() is > 0 even when the code is running in the hardirq
-or NMI context for hardirqs and NMIs that happened during a softirq.
+Round constant_charge_voltage writes down to the first supported lower
+value, rather then rounding them up to the first supported higher value.
 
-As a result, if a softirq handler contains a remote coverage collection
-section and a hardirq with another remote coverage collection section
-happens during handling the softirq, KCOV incorrectly detects a nested
-softirq coverate collection section and prints a WARNING, as reported by
-syzbot.
+This fixes e.g. writing 4250000 resulting in a value of 4350000 which
+might be dangerous, instead writing 4250000 will now result in a safe
+4200000 value.
 
-This issue was exposed by commit a7f3813e589f ("usb: gadget: dummy_hcd:
-Switch to hrtimer transfer scheduler"), which switched dummy_hcd to using
-hrtimer and made the timer's callback be executed in the hardirq context.
-
-Change the related checks in KCOV to account for this behavior of
-in_serving_softirq() and make KCOV ignore remote coverage collection
-sections in the hardirq and NMI contexts.
-
-This prevents the WARNING printed by syzbot but does not fix the inability
-of KCOV to collect coverage from the __usb_hcd_giveback_urb when dummy_hcd
-is in use (caused by a7f3813e589f); a separate patch is required for that.
-
-Link: https://lkml.kernel.org/r/20240729022158.92059-1-andrey.konovalov@linux.dev
-Fixes: 5ff3b30ab57d ("kcov: collect coverage from interrupts")
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Reported-by: syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2388cdaeb6b10f0c13ac
-Acked-by: Marco Elver <elver@google.com>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Cc: Aleksandr Nogikh <nogikh@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Marcello Sylvester Bauer <sylv@sylv.io>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240717200333.56669-2-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kcov.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/power/supply/axp288_charger.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/kernel/kcov.c
-+++ b/kernel/kcov.c
-@@ -161,6 +161,15 @@ static void kcov_remote_area_put(struct
- 	kmsan_unpoison_memory(&area->list, sizeof(area->list));
- }
+--- a/drivers/power/supply/axp288_charger.c
++++ b/drivers/power/supply/axp288_charger.c
+@@ -178,18 +178,18 @@ static inline int axp288_charger_set_cv(
+ 	u8 reg_val;
+ 	int ret;
  
-+/*
-+ * Unlike in_serving_softirq(), this function returns false when called during
-+ * a hardirq or an NMI that happened in the softirq context.
-+ */
-+static inline bool in_softirq_really(void)
-+{
-+	return in_serving_softirq() && !in_hardirq() && !in_nmi();
-+}
-+
- static notrace bool check_kcov_mode(enum kcov_mode needed_mode, struct task_struct *t)
- {
- 	unsigned int mode;
-@@ -170,7 +179,7 @@ static notrace bool check_kcov_mode(enum
- 	 * so we ignore code executed in interrupts, unless we are in a remote
- 	 * coverage collection section in a softirq.
- 	 */
--	if (!in_task() && !(in_serving_softirq() && t->kcov_softirq))
-+	if (!in_task() && !(in_softirq_really() && t->kcov_softirq))
- 		return false;
- 	mode = READ_ONCE(t->kcov_mode);
- 	/*
-@@ -848,7 +857,7 @@ void kcov_remote_start(u64 handle)
+-	if (cv <= CV_4100MV) {
+-		reg_val = CHRG_CCCV_CV_4100MV;
+-		cv = CV_4100MV;
+-	} else if (cv <= CV_4150MV) {
+-		reg_val = CHRG_CCCV_CV_4150MV;
+-		cv = CV_4150MV;
+-	} else if (cv <= CV_4200MV) {
++	if (cv >= CV_4350MV) {
++		reg_val = CHRG_CCCV_CV_4350MV;
++		cv = CV_4350MV;
++	} else if (cv >= CV_4200MV) {
+ 		reg_val = CHRG_CCCV_CV_4200MV;
+ 		cv = CV_4200MV;
++	} else if (cv >= CV_4150MV) {
++		reg_val = CHRG_CCCV_CV_4150MV;
++		cv = CV_4150MV;
+ 	} else {
+-		reg_val = CHRG_CCCV_CV_4350MV;
+-		cv = CV_4350MV;
++		reg_val = CHRG_CCCV_CV_4100MV;
++		cv = CV_4100MV;
+ 	}
  
- 	if (WARN_ON(!kcov_check_handle(handle, true, true, true)))
- 		return;
--	if (!in_task() && !in_serving_softirq())
-+	if (!in_task() && !in_softirq_really())
- 		return;
- 
- 	local_lock_irqsave(&kcov_percpu_data.lock, flags);
-@@ -990,7 +999,7 @@ void kcov_remote_stop(void)
- 	int sequence;
- 	unsigned long flags;
- 
--	if (!in_task() && !in_serving_softirq())
-+	if (!in_task() && !in_softirq_really())
- 		return;
- 
- 	local_lock_irqsave(&kcov_percpu_data.lock, flags);
+ 	reg_val = reg_val << CHRG_CCCV_CV_BIT_POS;
 
 
 
