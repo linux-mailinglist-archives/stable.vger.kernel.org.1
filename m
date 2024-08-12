@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770DC94F14C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:08:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A6594F14E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED455B24D18
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:08:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2D962825A4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AAB183CB4;
-	Mon, 12 Aug 2024 15:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B033F17F4FE;
+	Mon, 12 Aug 2024 15:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSZEJZP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="In7Aohqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C19180032
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 15:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEDD178370
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 15:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723475289; cv=none; b=ZnTIxAm7P8g+p5K32bxp9Ld3JzIYKTO08+bbkjEwyRf+JFGaUXvgncWitjxZpcjp2fUmcj1YOWS0tnjvDQpSAVWI56B1I1bJfEwBea2/AaNppLBtg7i7gEEd+ozj2t6ue5+5QnABbeCzotLhemgSuzWJrSO+Ix3+4nbH3VahqYo=
+	t=1723475296; cv=none; b=PrBtpeICY38F2PZ+YUVIscJd8wNdzOuo31PD6ebVu2SKM2QtbDi4ac5FCDXrEQTuJgxfeXCs/SNSb0ejlChUwL0VVjmmh/8oGoq8jx1U/x/xVgWI5rcM7zcbLMJRrUxjadouCp5g+/lBfmOh4nLL53FZva6826NoVjqBWCjgwTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723475289; c=relaxed/simple;
-	bh=F2o+igB3TD2/i2B8/IyXfrzp1bAdBtVWhPjtpZlDokg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jv5ffdcAlTeMyzLJYXDt9BwtP4ykvxgJHs/8x8C9f9QJfjw48XMfW9lUErFWg4De3kSHkxssWRHpMvKXSXlDWWQI4epc7jp47WQg3H0Gu4DkeKb6/v+cH+ix6Ir/6qWWtA5YSbQ/Nj4i6fpDs92cUx+y4xNPLgsvLPYzs1IFFxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSZEJZP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7879FC32782;
-	Mon, 12 Aug 2024 15:08:08 +0000 (UTC)
+	s=arc-20240116; t=1723475296; c=relaxed/simple;
+	bh=hBodh4kdItezPIjwh9Q3SYriYAlFegyyLNRfwLGDjpg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UY3AhICG6nkdLAz0WgLxPhF1+4wFNbGYz4G6AABJqDrHeR0Dtr6vvJ0LbPnNX1ASnRvEySbLWFCJAqXK/5n9Fe81ms5MdN9A9X+/3FQpM8h16RRR3V1ArJ55wFNfP30q6ojshyv7weawipKg3X0h6gGqREUQQ3v2lMv6hXmuj8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=In7Aohqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9842DC32782;
+	Mon, 12 Aug 2024 15:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723475288;
-	bh=F2o+igB3TD2/i2B8/IyXfrzp1bAdBtVWhPjtpZlDokg=;
+	s=korg; t=1723475296;
+	bh=hBodh4kdItezPIjwh9Q3SYriYAlFegyyLNRfwLGDjpg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=WSZEJZP9EdSocIL3HjZLBC85AlFFoqGiL/9JoKt64HprffBPtlvE46pknlpuey60i
-	 4UjUXrsC214CwD3GCXC/ram2nJKyqK2Q1xj2NC//3DNzlzbIx8V9cA3DUouKuulOGI
-	 6jHDQAoVq5Cd1HYR30PVOTOGRWZs/WUOJr20FD6c=
-Subject: FAILED: patch "[PATCH] btrfs: fix double inode unlock for direct IO sync writes" failed to apply to 6.1-stable tree
-To: fdmanana@suse.com,dsterba@suse.com,josef@toxicpanda.com
+	b=In7AohqnXh7smAw+cHxZhumf8OgCGMUaylsjGTaLXvHD6WDZZuRXeZTRaGYYdcbqG
+	 dKNmMNHwP7H9LMiYghvLkSlXuTb7lB3aCgshYZdhNwtGTDEeZVceHQxRwRZED1MvbZ
+	 D1AFRUAs9EA2jm++W8k0KGhmdOunbFJgwbNizixA=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Solve mst monitors blank out problem after" failed to apply to 6.10-stable tree
+To: Wayne.Lin@amd.com,alexander.deucher@amd.com,jerry.zuo@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 17:07:52 +0200
-Message-ID: <2024081251-aloof-connector-b9fa@gregkh>
+Date: Mon, 12 Aug 2024 17:08:12 +0200
+Message-ID: <2024081212-vitally-baked-7f93@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x e0391e92f9ab4fb3dbdeb139c967dcfa7ac4b115
+git cherry-pick -x e33697141bac18906345ea46533a240f1ad3cd21
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081251-aloof-connector-b9fa@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081212-vitally-baked-7f93@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-e0391e92f9ab ("btrfs: fix double inode unlock for direct IO sync writes")
-56b7169f691c ("btrfs: use a btrfs_inode local variable at btrfs_sync_file()")
-e641e323abb3 ("btrfs: pass a btrfs_inode to btrfs_wait_ordered_range()")
-f13e01b89daf ("btrfs: ensure fast fsync waits for ordered extents after a write failure")
-41044b41ad2c ("btrfs: add helper to get fs_info from struct inode pointer")
-b33d2e535f9b ("btrfs: add helpers to get fs_info from page/folio pointers")
-c8293894afa7 ("btrfs: add helpers to get inode from page/folio pointers")
-4e00422ee626 ("btrfs: replace sb::s_blocksize by fs_info::sectorsize")
-dfba9f477306 ("btrfs: add set_folio_extent_mapped() helper")
-418b09027743 ("btrfs: ensure fiemap doesn't race with writes when FIEMAP_FLAG_SYNC is given")
-b0ad381fa769 ("btrfs: fix deadlock with fiemap and extent locking")
-6a69631ec9b1 ("btrfs: lzo: fix and simplify the inline extent decompression")
-2c25716dcc25 ("btrfs: zlib: fix and simplify the inline extent decompression")
-55151ea9ec1b ("btrfs: migrate subpage code to folio interfaces")
-8d993618350c ("btrfs: migrate get_eb_page_index() and get_eb_offset_in_page() to folios")
-13df3775efca ("btrfs: cleanup metadata page pointer usage")
-082d5bb9b336 ("btrfs: migrate extent_buffer::pages[] to folio")
-09e6cef19c9f ("btrfs: refactor alloc_extent_buffer() to allocate-then-attach method")
-ed9b50a13edf ("btrfs: cache that we don't have security.capability set")
-397239ed6a6c ("btrfs: allow extent buffer helpers to skip cross-page handling")
+e33697141bac ("drm/amd/display: Solve mst monitors blank out problem after resume")
+1ff6631baeb1 ("drm/amd/display: Prevent IPX From Link Detect and Set Mode")
+f63f86b5affc ("drm/amd/display: Separate setting and programming of cursor")
 
 thanks,
 
@@ -96,41 +79,47 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e0391e92f9ab4fb3dbdeb139c967dcfa7ac4b115 Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Fri, 2 Aug 2024 09:38:51 +0100
-Subject: [PATCH] btrfs: fix double inode unlock for direct IO sync writes
+From e33697141bac18906345ea46533a240f1ad3cd21 Mon Sep 17 00:00:00 2001
+From: Wayne Lin <Wayne.Lin@amd.com>
+Date: Thu, 23 May 2024 12:18:07 +0800
+Subject: [PATCH] drm/amd/display: Solve mst monitors blank out problem after
+ resume
 
-If we do a direct IO sync write, at btrfs_sync_file(), and we need to skip
-inode logging or we get an error starting a transaction or an error when
-flushing delalloc, we end up unlocking the inode when we shouldn't under
-the 'out_release_extents' label, and then unlock it again at
-btrfs_direct_write().
+[Why]
+In dm resume, we firstly restore dc state and do the mst resume for topology
+probing thereafter. If we change dpcd DP_MSTM_CTRL value after LT in mst reume,
+it will cause light up problem on the hub.
 
-Fix that by checking if we have to skip inode unlocking under that label.
+[How]
+Revert commit 202dc359adda ("drm/amd/display: Defer handling mst up request in resume").
+And adjust the reason to trigger dc_link_detect by DETECT_REASON_RESUMEFROMS3S4.
 
-Reported-by: syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/000000000000dfd631061eaeb4bc@google.com/
-Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: 202dc359adda ("drm/amd/display: Defer handling mst up request in resume")
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index 9f10a9f23fcc..9914419f3b7d 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -1868,7 +1868,10 @@ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 98cf523a629e..29af22ddccc9 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2583,6 +2583,7 @@ static void resume_mst_branch_status(struct drm_dp_mst_topology_mgr *mgr)
  
- out_release_extents:
- 	btrfs_release_log_ctx_extents(&ctx);
--	btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
-+	if (skip_ilock)
-+		up_write(&inode->i_mmap_lock);
-+	else
-+		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
- 	goto out;
- }
+ 	ret = drm_dp_dpcd_writeb(mgr->aux, DP_MSTM_CTRL,
+ 				 DP_MST_EN |
++				 DP_UP_REQ_EN |
+ 				 DP_UPSTREAM_IS_SRC);
+ 	if (ret < 0) {
+ 		drm_dbg_kms(mgr->dev, "mst write failed - undocked during suspend?\n");
+@@ -3186,7 +3187,7 @@ static int dm_resume(void *handle)
+ 		} else {
+ 			mutex_lock(&dm->dc_lock);
+ 			dc_exit_ips_for_hw_access(dm->dc);
+-			dc_link_detect(aconnector->dc_link, DETECT_REASON_HPD);
++			dc_link_detect(aconnector->dc_link, DETECT_REASON_RESUMEFROMS3S4);
+ 			mutex_unlock(&dm->dc_lock);
+ 		}
  
 
 
