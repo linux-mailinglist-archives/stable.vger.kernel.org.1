@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-67023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3E394F38D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C555694F4A4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C978A1F21052
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81FEB281541
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB5B1862BD;
-	Mon, 12 Aug 2024 16:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E73186E5E;
+	Mon, 12 Aug 2024 16:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yj3kPjTe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfBIe/f8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF03183CA6;
-	Mon, 12 Aug 2024 16:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B103915C127;
+	Mon, 12 Aug 2024 16:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479546; cv=none; b=pZDZVJ3VUkMmcFLXTnvKc7S+yNoziyTSAjCckUgEdzcmbPCl6GfnGVL6sBqcO98FIROT9yDhoxVtJIiAz4/zR5gn4q72jr/epi+c5qSBlu+KY4SYp8MPupoRaPAxWw1LXjU/MnzroJ5mdXQC0sWH9NbYrx1OAUPo70CUuXEMXoE=
+	t=1723480369; cv=none; b=pwsrvwTD2i5kEOgAkuRLcVYKhOSOuvHDdDa3rNOKJL6oQ9U3Q53MmvnVjc9j8Un7pQyqE+RFNBxIJ4yU+6EGh93hSbZ5rwFGNdrtuGJRPz4zZ7P4DBtVZDaEe1MLTPGDx8hK3+BxtHIWQpjHNIY64TPpsTG8uY1z4kTaCzHFh8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479546; c=relaxed/simple;
-	bh=S2+9awx9AUNo8DY5oZrtEuDKVM0+mYeTv2eyNauUqIc=;
+	s=arc-20240116; t=1723480369; c=relaxed/simple;
+	bh=m69+zG2FjI8P7RPtJnVSNlH3/sU1OEb9UKBs2dJIzoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZLg5/iEiRtHTRzkRFBOK8u8Oiitn/PytaBqiNgEU4nvbJJQ+HtugxifZF7fMwKkLpd6jJAjmo1nVn/5E14g8w8JwG7F2dZLGsMRMTED83ek+lvOAoozC3RB9vU7n/I7lH6r1xOnnsgOyPYxvRxrAllli+g+FaYy3r92hVH6IkUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yj3kPjTe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D8BC32782;
-	Mon, 12 Aug 2024 16:19:05 +0000 (UTC)
+	 MIME-Version; b=nvBue3oeGiXHSfO5Qg1lka3r1SX2iOyc5i9ZjD5MvIvRWJ4mA0kxHZXw+yjqrjEIZyrh9XblwMo/AqBquVNI65qhIEe/B3VFdDHV9efCUX+irJWs1oSRrtK5H8zYjbm8gekviuQ1N0uINX1X4m6nt65I8LifQqmEQj//K6E0Chk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfBIe/f8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18187C32782;
+	Mon, 12 Aug 2024 16:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479546;
-	bh=S2+9awx9AUNo8DY5oZrtEuDKVM0+mYeTv2eyNauUqIc=;
+	s=korg; t=1723480369;
+	bh=m69+zG2FjI8P7RPtJnVSNlH3/sU1OEb9UKBs2dJIzoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yj3kPjTesfjbY3q5rAYcqW8r/fdVMRZiAK3to3XGb3ZMc39Gat1lHZZ9jqZxwSkyO
-	 UfMxlaFhKDgYKIox3DLcG60txcWnrJc9NbGKGbs3QSpE4hU6vFLN/UFdJxbSQQHWBR
-	 sG8WbYzSmZp/bomxxu/WCV7ucRwjmRQhiDj5YFl4=
+	b=mfBIe/f8a2TS2j4Vidva60HgX/vlsf6q4Jo1pFLIgwrCemZxsv17OIkdyefOk3ccB
+	 yEMGhpJ0gVia6zZz7JBaynDAcHRMswKGUVcGFc/nfO4bhp8i2Ek/FrzH7fRjzqZlvW
+	 M70mnagJG0xKwBzNCe5x40RVizkVT/9SVLLU/t18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 120/189] usb: gadget: midi2: Fix the response for FB info with block 0xff
-Date: Mon, 12 Aug 2024 18:02:56 +0200
-Message-ID: <20240812160136.765207994@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 6.10 176/263] drm/client: fix null pointer dereference in drm_client_modeset_probe
+Date: Mon, 12 Aug 2024 18:02:57 +0200
+Message-ID: <20240812160153.287404475@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 228a953e61d6d608a3facc1c3a27b9fb03c99de7 upstream.
+commit 113fd6372a5bb3689aba8ef5b8a265ed1529a78f upstream.
 
-When the block number 0xff is given to Function Block Discovery
-message, the device should return the information of all Function
-Blocks, but currently the gadget driver treats it as an error.
+In drm_client_modeset_probe(), the return value of drm_mode_duplicate() is
+assigned to modeset->mode, which will lead to a possible NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Implement the proper behavior for the block 0xff instead.
-
-Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240717095102.10493-1-tiwai@suse.de
+Fixes: cf13909aee05 ("drm/fb-helper: Move out modeset config code")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240802044736.1570345-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_midi2.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/drm_client_modeset.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -642,12 +642,21 @@ static void process_ump_stream_msg(struc
- 		if (format)
- 			return; // invalid
- 		blk = (*data >> 8) & 0xff;
--		if (blk >= ep->num_blks)
--			return;
--		if (*data & UMP_STREAM_MSG_REQUEST_FB_INFO)
--			reply_ump_stream_fb_info(ep, blk);
--		if (*data & UMP_STREAM_MSG_REQUEST_FB_NAME)
--			reply_ump_stream_fb_name(ep, blk);
-+		if (blk == 0xff) {
-+			/* inquiry for all blocks */
-+			for (blk = 0; blk < ep->num_blks; blk++) {
-+				if (*data & UMP_STREAM_MSG_REQUEST_FB_INFO)
-+					reply_ump_stream_fb_info(ep, blk);
-+				if (*data & UMP_STREAM_MSG_REQUEST_FB_NAME)
-+					reply_ump_stream_fb_name(ep, blk);
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -880,6 +880,11 @@ int drm_client_modeset_probe(struct drm_
+ 
+ 			kfree(modeset->mode);
+ 			modeset->mode = drm_mode_duplicate(dev, mode);
++			if (!modeset->mode) {
++				ret = -ENOMEM;
++				break;
 +			}
-+		} else if (blk < ep->num_blks) {
-+			/* only the specified block */
-+			if (*data & UMP_STREAM_MSG_REQUEST_FB_INFO)
-+				reply_ump_stream_fb_info(ep, blk);
-+			if (*data & UMP_STREAM_MSG_REQUEST_FB_NAME)
-+				reply_ump_stream_fb_name(ep, blk);
-+		}
- 		return;
- 	}
- }
++
+ 			drm_connector_get(connector);
+ 			modeset->connectors[modeset->num_connectors++] = connector;
+ 			modeset->x = offset->x;
 
 
 
