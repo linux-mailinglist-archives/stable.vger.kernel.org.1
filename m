@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-66885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975A494F2EC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C3794F3BB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F195285201
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F6F41F2189E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C49018732E;
-	Mon, 12 Aug 2024 16:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A893187550;
+	Mon, 12 Aug 2024 16:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKOrHtnM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbEXbZfi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FBE187325;
-	Mon, 12 Aug 2024 16:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588FF18734F;
+	Mon, 12 Aug 2024 16:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479102; cv=none; b=AJzNsd+Ub878/94AHnG0HIEhPk41cXYCNCQ7khyxX4UjMnpfS0Sr2+VyJjtrX9ZmLkY2kLU/8AI3DDU59EjI7JFuXNds4SCPmEh/Ap9dEf+Lp09A9xtP4z75EPPIJD7wLPcQvxSrCshlFz84tYHVi2LOX0Y8QFDyczVoR+xiz40=
+	t=1723479682; cv=none; b=S5GoBkbk1uOm1Xc0z0Ev9pOIwli18lEmGXCqZ1wlzNIosGhvHW0v+/ch/mOv5Rmwdl75chb/QGHUVJlLl+tKx6nhNV6YWbEOMIszczfs2kJU+PXTtCTM7P+wsWg0X6vdNqgOs/jQJnl6WJ2ZfnMI66cOCTg5OVagvDMvGS0rUVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479102; c=relaxed/simple;
-	bh=YCrfAsUf5NVO39TKAhId2XvpVaHQwewBn6toSrhEZos=;
+	s=arc-20240116; t=1723479682; c=relaxed/simple;
+	bh=aBWXgHqoMDILUReSXU27UiSJuHGGPBuTlfmRnO0RBus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEkyLUX7qoq/BiQDbQ0WoxOcKjHMk14CTSK2eoz0W+WbvwU43pRfkfaNU2Ash6gkvuVll1HMaLKeQZ9KtPGMNcPkq59/OxaoAxKnQ0ToDC+6X348QirAPJjjsfs0uzuWFyDxSQcp6b8aT7ULVFZJS+XRu8XkREIaN1zKVZIic6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKOrHtnM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783A6C32782;
-	Mon, 12 Aug 2024 16:11:41 +0000 (UTC)
+	 MIME-Version; b=nSMxvCbCReSBViT3XSiHmaL51/xrjP68fOrfZ3lb/bPN/RmZp/meHua16R1Xzp9Qt9uIeOL+VHF20f/ZdrgS6bWv8O92O/EbluH3x4YR4BI4qihvadRNnFBpnMh1vjahkYPW17TPhAhmluzG6h2z777mtEpSfXjSRKEiPgkrT8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbEXbZfi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC73C4AF09;
+	Mon, 12 Aug 2024 16:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479101;
-	bh=YCrfAsUf5NVO39TKAhId2XvpVaHQwewBn6toSrhEZos=;
+	s=korg; t=1723479682;
+	bh=aBWXgHqoMDILUReSXU27UiSJuHGGPBuTlfmRnO0RBus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKOrHtnMM+VP99OLSZPTuVgnXKvukEI/5vbiuqejo8REKCFCv1AXI27rg91VqWN0d
-	 g+LPNCF+KGTPkV94Tu3KUTZtI6jHDiIPANdtOTKn7wgvEDwQDXsMGkREgcZpbPmxyJ
-	 FQyoMRRXwdIOezOGJwWmlCFbN0cmuV3vkYLj38Ek=
+	b=HbEXbZfiu8Ik7OoG71iUyQ5oXgwV8+Qv3kgCWiisb6I2Iitep6FBuN5qVlH4yZrPV
+	 A/hupT+813Whp2zZJAtZEmv3FYbrcGmM5+Nk28JKybBhcIbQNP/k9INNHVyhKqrWLi
+	 JZIyvsJCWLO0Ts+qjwdi0z22bv05BcYfINrnfi+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 134/150] mptcp: pm: deny endp with signal + subflow + port
+	stable@kernel.org,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 159/189] sched/core: Introduce sched_set_rq_on/offline() helper
 Date: Mon, 12 Aug 2024 18:03:35 +0200
-Message-ID: <20240812160130.341851831@linuxfoundation.org>
+Message-ID: <20240812160138.261905228@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit 8af1f11865f259c882cce71d32f85ee9004e2660 upstream.
+commit 2f027354122f58ee846468a6f6b48672fff92e9b upstream.
 
-As mentioned in the 'Fixes' commit, the port flag is only supported by
-the 'signal' flag, and not by the 'subflow' one. Then if both the
-'signal' and 'subflow' flags are set, the problem is the same: the
-feature cannot work with the 'subflow' flag.
+Introduce sched_set_rq_on/offline() helper, so it can be called
+in normal or error path simply. No functional changed.
 
-Technically, if both the 'signal' and 'subflow' flags are set, it will
-be possible to create the listening socket, but not to establish a
-subflow using this source port. So better to explicitly deny it, not to
-create some confusions because the expected behaviour is not possible.
-
-Fixes: 09f12c3ab7a5 ("mptcp: allow to use port and non-signal in set_flags")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-2-c8a9b036493b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240703031610.587047-4-yangyingliang@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/core.c |   40 ++++++++++++++++++++++++++--------------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1360,8 +1360,8 @@ static int mptcp_nl_cmd_add_addr(struct
- 	if (ret < 0)
- 		return ret;
- 
--	if (addr.addr.port && !(addr.flags & MPTCP_PM_ADDR_FLAG_SIGNAL)) {
--		GENL_SET_ERR_MSG(info, "flags must have signal when using port");
-+	if (addr.addr.port && !address_use_port(&addr)) {
-+		GENL_SET_ERR_MSG(info, "flags must have signal and not subflow when using port");
- 		return -EINVAL;
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9596,6 +9596,30 @@ void set_rq_offline(struct rq *rq)
  	}
+ }
  
++static inline void sched_set_rq_online(struct rq *rq, int cpu)
++{
++	struct rq_flags rf;
++
++	rq_lock_irqsave(rq, &rf);
++	if (rq->rd) {
++		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
++		set_rq_online(rq);
++	}
++	rq_unlock_irqrestore(rq, &rf);
++}
++
++static inline void sched_set_rq_offline(struct rq *rq, int cpu)
++{
++	struct rq_flags rf;
++
++	rq_lock_irqsave(rq, &rf);
++	if (rq->rd) {
++		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
++		set_rq_offline(rq);
++	}
++	rq_unlock_irqrestore(rq, &rf);
++}
++
+ /*
+  * used to mark begin/end of suspend/resume:
+  */
+@@ -9665,7 +9689,6 @@ static inline void sched_smt_present_dec
+ int sched_cpu_activate(unsigned int cpu)
+ {
+ 	struct rq *rq = cpu_rq(cpu);
+-	struct rq_flags rf;
+ 
+ 	/*
+ 	 * Clear the balance_push callback and prepare to schedule
+@@ -9694,12 +9717,7 @@ int sched_cpu_activate(unsigned int cpu)
+ 	 * 2) At runtime, if cpuset_cpu_active() fails to rebuild the
+ 	 *    domains.
+ 	 */
+-	rq_lock_irqsave(rq, &rf);
+-	if (rq->rd) {
+-		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
+-		set_rq_online(rq);
+-	}
+-	rq_unlock_irqrestore(rq, &rf);
++	sched_set_rq_online(rq, cpu);
+ 
+ 	return 0;
+ }
+@@ -9707,7 +9725,6 @@ int sched_cpu_activate(unsigned int cpu)
+ int sched_cpu_deactivate(unsigned int cpu)
+ {
+ 	struct rq *rq = cpu_rq(cpu);
+-	struct rq_flags rf;
+ 	int ret;
+ 
+ 	/*
+@@ -9738,12 +9755,7 @@ int sched_cpu_deactivate(unsigned int cp
+ 	 */
+ 	synchronize_rcu();
+ 
+-	rq_lock_irqsave(rq, &rf);
+-	if (rq->rd) {
+-		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
+-		set_rq_offline(rq);
+-	}
+-	rq_unlock_irqrestore(rq, &rf);
++	sched_set_rq_offline(rq, cpu);
+ 
+ 	/*
+ 	 * When going down, decrement the number of cores with SMT present.
 
 
 
