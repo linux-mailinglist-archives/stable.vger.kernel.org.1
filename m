@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-67064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F6794F3BE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CFEA94F4D1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9265B25D65
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13D311F21609
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8DF186E34;
-	Mon, 12 Aug 2024 16:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5441D186E36;
+	Mon, 12 Aug 2024 16:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAnOfRRF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtCm5Fno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9171862BD;
-	Mon, 12 Aug 2024 16:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144F41494B8;
+	Mon, 12 Aug 2024 16:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479686; cv=none; b=PkkQpLX6xmndneDmg59lM15dAtwIDgJPe1EmnaH5soLCPTlHZ2fWHK6e5ZjXlBcV/jO2M0pxpULw1w/GJWigNUSpv2CgOduRj0RuZAF9VkqaM4Wus9Y16d2zSBhMwWg8ukypc2DTKXlO1gGqGQz/gAr0IlRYIE12XozLkzq6ocM=
+	t=1723480496; cv=none; b=dF9YYvRBHFWFI+ONsAt4X9YF09BsIAFIy4jlOFaSkgDLkGP240Go5mY6Kci/8e5EkAkghxOncANJjWjwzZoXxnZXFiVHCboQzLMCDjbC2a9efcpQ5femlr4Gcj2bX6ryefQLm3DCXPXZmlrVv8Rm257+mPfNt/ArdO0a7Z9mRu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479686; c=relaxed/simple;
-	bh=Sy3IhrzYsH12cNk3LBZRqgYbWyhHCWSB0o8YH0UQzgk=;
+	s=arc-20240116; t=1723480496; c=relaxed/simple;
+	bh=Yq9TB10/Jzlf0ORhLFDcKWKqSm1SHMdnxZTAAeili3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YsF7B6zWAvi9lu+d+aSlvVYZzodi2XSEv19EejNTjQkI2Zx24UI9yiNjSabgw5U68MzS789BpUQCzl5Zd4YBQRcDXbFfRZRzUWA6i8MD6gO+7oFyMsUO8wMAKJ9CDBQRe9i+O8VOk/1Hh3kT6+uxluLNSiLcCxJv2QaoCOoTdlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAnOfRRF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4974BC4AF09;
-	Mon, 12 Aug 2024 16:21:24 +0000 (UTC)
+	 MIME-Version; b=eW0lNpGYs9bJkd1KbzKrJktUj6DNtXg7x1eR5n3Ls05eHCji7cf54gyYVwC11s9pB/nxmzbrwi1G1i9a8tfr1FtpyqL7oNkfw2OODqLXWYIuUMB9YYFyvJwfl6ivfUCvZs556fLgP9N98WpVwur1Avtnwd8B1c2hsnabqtjOuzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtCm5Fno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E06C32782;
+	Mon, 12 Aug 2024 16:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479685;
-	bh=Sy3IhrzYsH12cNk3LBZRqgYbWyhHCWSB0o8YH0UQzgk=;
+	s=korg; t=1723480495;
+	bh=Yq9TB10/Jzlf0ORhLFDcKWKqSm1SHMdnxZTAAeili3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAnOfRRFOaDNwx6EjvX7m4xLXOdFl60cj7r+z1vzXmm26L5utFTdz6UzplWjN/tYK
-	 MzW8A2I9O9olmOUHy+DHuTBTiRcO46GiGOpSeNXrbT2PEwmkAOLip3DY21f/grNrWd
-	 ENC3XwUb5fujsVA0kM/0R+XL7X2LwatJlhw6unhQ=
+	b=JtCm5FnoY4CaJFmuppCoUsX2QDUZl723Tka+yphNUOtsFUbqN6LL9sODP4y0i4OCM
+	 t7mwTk/1RblWk1+/vf1ThNObC0rs2+2Kqh+ZoDdTJNygcuKmBqOSKI2a8dhKWPnaNU
+	 ONNpU38N0Ywr/TuSPhu3FecoUz0L6uLIGNP8aLrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.6 131/189] driver core: Fix uevent_show() vs driver detach race
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.10 186/263] usb: vhci-hcd: Do not drop references before new references are gained
 Date: Mon, 12 Aug 2024 18:03:07 +0200
-Message-ID: <20240812160137.186258579@linuxfoundation.org>
+Message-ID: <20240812160153.666220974@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,162 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c upstream.
+commit afdcfd3d6fcdeca2735ca8d994c5f2d24a368f0a upstream.
 
-uevent_show() wants to de-reference dev->driver->name. There is no clean
-way for a device attribute to de-reference dev->driver unless that
-attribute is defined via (struct device_driver).dev_groups. Instead, the
-anti-pattern of taking the device_lock() in the attribute handler risks
-deadlocks with code paths that remove device attributes while holding
-the lock.
+At a few places the driver carries stale pointers
+to references that can still be used. Make sure that does not happen.
+This strictly speaking closes ZDI-CAN-22273, though there may be
+similar races in the driver.
 
-This deadlock is typically invisible to lockdep given the device_lock()
-is marked lockdep_set_novalidate_class(), but some subsystems allocate a
-local lockdep key for @dev->mutex to reveal reports of the form:
-
- ======================================================
- WARNING: possible circular locking dependency detected
- 6.10.0-rc7+ #275 Tainted: G           OE    N
- ------------------------------------------------------
- modprobe/2374 is trying to acquire lock:
- ffff8c2270070de0 (kn->active#6){++++}-{0:0}, at: __kernfs_remove+0xde/0x220
-
- but task is already holding lock:
- ffff8c22016e88f8 (&cxl_root_key){+.+.}-{3:3}, at: device_release_driver_internal+0x39/0x210
-
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #1 (&cxl_root_key){+.+.}-{3:3}:
-        __mutex_lock+0x99/0xc30
-        uevent_show+0xac/0x130
-        dev_attr_show+0x18/0x40
-        sysfs_kf_seq_show+0xac/0xf0
-        seq_read_iter+0x110/0x450
-        vfs_read+0x25b/0x340
-        ksys_read+0x67/0xf0
-        do_syscall_64+0x75/0x190
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #0 (kn->active#6){++++}-{0:0}:
-        __lock_acquire+0x121a/0x1fa0
-        lock_acquire+0xd6/0x2e0
-        kernfs_drain+0x1e9/0x200
-        __kernfs_remove+0xde/0x220
-        kernfs_remove_by_name_ns+0x5e/0xa0
-        device_del+0x168/0x410
-        device_unregister+0x13/0x60
-        devres_release_all+0xb8/0x110
-        device_unbind_cleanup+0xe/0x70
-        device_release_driver_internal+0x1c7/0x210
-        driver_detach+0x47/0x90
-        bus_remove_driver+0x6c/0xf0
-        cxl_acpi_exit+0xc/0x11 [cxl_acpi]
-        __do_sys_delete_module.isra.0+0x181/0x260
-        do_syscall_64+0x75/0x190
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The observation though is that driver objects are typically much longer
-lived than device objects. It is reasonable to perform lockless
-de-reference of a @driver pointer even if it is racing detach from a
-device. Given the infrequency of driver unregistration, use
-synchronize_rcu() in module_remove_driver() to close any potential
-races.  It is potentially overkill to suffer synchronize_rcu() just to
-handle the rare module removal racing uevent_show() event.
-
-Thanks to Tetsuo Handa for the debug analysis of the syzbot report [1].
-
-Fixes: c0a40097f0bc ("drivers: core: synchronize really_probe() and dev_uevent()")
-Reported-by: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Closes: http://lore.kernel.org/5aa5558f-90a4-4864-b1b1-5d6784c5607d@I-love.SAKURA.ne.jp [1]
-Link: http://lore.kernel.org/669073b8ea479_5fffa294c1@dwillia2-xfh.jf.intel.com.notmuch
-Cc: stable@vger.kernel.org
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/r/172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240709113851.14691-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c   |   13 ++++++++-----
- drivers/base/module.c |    4 ++++
- 2 files changed, 12 insertions(+), 5 deletions(-)
+ drivers/usb/usbip/vhci_hcd.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -25,6 +25,7 @@
- #include <linux/mutex.h>
- #include <linux/pm_runtime.h>
- #include <linux/netdevice.h>
-+#include <linux/rcupdate.h>
- #include <linux/sched/signal.h>
- #include <linux/sched/mm.h>
- #include <linux/string_helpers.h>
-@@ -2565,6 +2566,7 @@ static const char *dev_uevent_name(const
- static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -745,6 +745,7 @@ static int vhci_urb_enqueue(struct usb_h
+ 	 *
+ 	 */
+ 	if (usb_pipedevice(urb->pipe) == 0) {
++		struct usb_device *old;
+ 		__u8 type = usb_pipetype(urb->pipe);
+ 		struct usb_ctrlrequest *ctrlreq =
+ 			(struct usb_ctrlrequest *) urb->setup_packet;
+@@ -755,14 +756,15 @@ static int vhci_urb_enqueue(struct usb_h
+ 			goto no_need_xmit;
+ 		}
+ 
++		old = vdev->udev;
+ 		switch (ctrlreq->bRequest) {
+ 		case USB_REQ_SET_ADDRESS:
+ 			/* set_address may come when a device is reset */
+ 			dev_info(dev, "SetAddress Request (%d) to port %d\n",
+ 				 ctrlreq->wValue, vdev->rhport);
+ 
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 
+ 			spin_lock(&vdev->ud.lock);
+ 			vdev->ud.status = VDEV_ST_USED;
+@@ -781,8 +783,8 @@ static int vhci_urb_enqueue(struct usb_h
+ 				usbip_dbg_vhci_hc(
+ 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+ 
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 			goto out;
+ 
+ 		default:
+@@ -1067,6 +1069,7 @@ static void vhci_shutdown_connection(str
+ static void vhci_device_reset(struct usbip_device *ud)
  {
- 	const struct device *dev = kobj_to_dev(kobj);
-+	struct device_driver *driver;
- 	int retval = 0;
+ 	struct vhci_device *vdev = container_of(ud, struct vhci_device, ud);
++	struct usb_device *old = vdev->udev;
+ 	unsigned long flags;
  
- 	/* add device node properties if present */
-@@ -2593,8 +2595,12 @@ static int dev_uevent(const struct kobje
- 	if (dev->type && dev->type->name)
- 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
+ 	spin_lock_irqsave(&ud->lock, flags);
+@@ -1074,8 +1077,8 @@ static void vhci_device_reset(struct usb
+ 	vdev->speed  = 0;
+ 	vdev->devid  = 0;
  
--	if (dev->driver)
--		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
-+	/* Synchronize with module_remove_driver() */
-+	rcu_read_lock();
-+	driver = READ_ONCE(dev->driver);
-+	if (driver)
-+		add_uevent_var(env, "DRIVER=%s", driver->name);
-+	rcu_read_unlock();
+-	usb_put_dev(vdev->udev);
+ 	vdev->udev = NULL;
++	usb_put_dev(old);
  
- 	/* Add common DT information about the device */
- 	of_device_uevent(dev, env);
-@@ -2664,11 +2670,8 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
- 
--	/* Synchronize with really_probe() */
--	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
--	device_unlock(dev);
- 	if (retval)
- 		goto out;
- 
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -7,6 +7,7 @@
- #include <linux/errno.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-+#include <linux/rcupdate.h>
- #include "base.h"
- 
- static char *make_driver_name(struct device_driver *drv)
-@@ -97,6 +98,9 @@ void module_remove_driver(struct device_
- 	if (!drv)
- 		return;
- 
-+	/* Synchronize with dev_uevent() */
-+	synchronize_rcu();
-+
- 	sysfs_remove_link(&drv->p->kobj, "module");
- 
- 	if (drv->owner)
+ 	if (ud->tcp_socket) {
+ 		sockfd_put(ud->tcp_socket);
 
 
 
