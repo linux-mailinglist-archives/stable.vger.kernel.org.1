@@ -1,156 +1,107 @@
-Return-Path: <stable+bounces-66759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA6C94F24D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:03:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC5D94F195
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7461F213CA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:03:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AFEA1C21F4E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57C0183CBF;
-	Mon, 12 Aug 2024 16:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2A8183CCD;
+	Mon, 12 Aug 2024 15:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="fPs0LdW0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Heskn4Iq"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2541EA8D
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 16:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2568717C9FC;
+	Mon, 12 Aug 2024 15:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478604; cv=none; b=p+ShC4JkQB64yCmxJMd+RguM7vMaZSHp923ig6WaNu437iyRbfE+7POlDTeY1Rb7Ujy0Uq4avKoZTGOf6LViWYO6j6KDmThXMRc5MbefDz8VGgLPFnzRhX+T+3T8GVBsky0iw88H++YiKFX9iqULCNprDvriqvDHTI+xvglksLw=
+	t=1723476359; cv=none; b=SWK0pvExDHSCrewKnzQDk6pvhowYhxPJQKe+5mEj+tONWcSvzlOEjMssfEYCdQZSwTt72RaSLAZS7TG/Kv4wC1i02WT0nPWsqy01CWkn3tcLYVvDTn/YI7jIhJ+lZfP9ce/LesjuDqNRwZidt3UD8Y0ALmlzZDl7fervcSmo/JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478604; c=relaxed/simple;
-	bh=Ql7+am2Ck0wCso6wuEU37+t+6ceNVQr+Ab5i1HGsDQQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W0xMdm6nZblBqVkGwCUuu/nZLWw4hQKLbqY6qwFuA0T9+nvh142LRER8EKKlI/nseebUu/EUfYZr1XDEbu8WrEzHf/S2MoFZc1YPAo8zle2BKfx9EQyFq8zb6Wm3+5eIjXKhszyU5pl8xt0+3znetWl0r3hdlF63KuV0QbBLv2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=fPs0LdW0; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=W2tXrpivxXwyGj62CCSvbqkyUobzbnXp5Gf12/d9eXM=; b=fPs0LdW0pgBav7sxhgFjSuR9b2
-	m7LGASrNE2P7Zh9BA8HDpu+82OLvLq93LjmrFzfTxKQNfhdND8KogQMdHTgujXaFEmK7jBSdA9O6n
-	3LSSOUbbI5t+IWAFzKh1Odxe+XZcfPhFHH3GEnhlAMdK6wNCbFOF+pTNPkKVp9tcgnmeN0tGH+zCw
-	7qkEGCzq/lupxSmeCUMnpRMb9hhMGtNiqyVzZrs/Sp39ber8NJFn3XRz/4facNeuc5uYNxymYWHE6
-	GN3njGTjQUMko4HRNxPwxcKcmuuDUfCOXjIYhu5wEbgvOfnhJAqCNNnWtypEL8TIyXqRGKfOQeAnN
-	E0kh2wWw==;
-Received: from [187.36.213.55] (helo=[192.168.1.212])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1sdWsy-00BYqe-4J; Mon, 12 Aug 2024 17:23:04 +0200
-Message-ID: <b57d265e-3e46-4755-91d6-2cac86f48266@igalia.com>
-Date: Mon, 12 Aug 2024 12:22:59 -0300
+	s=arc-20240116; t=1723476359; c=relaxed/simple;
+	bh=NmCf39JdeAxzWlINGyTyT0YTEVkYbzQv+t+jtZ22OCI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CLjod4kWA4rLNi8IbS07VU0MZAnHHw8GJCLI5JJ4T25u8YsDbiRNTxhoOvD1D3sXfo5HGfgXlLhJdrwu5aw8wWyjEh88YBLTJpNKu2YVQsR1CJOGF0GH4qTEYDAzMByOhhpEntJpiLpDqcNo4uNJGIFDBuGDLPncQzfVToV7cTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Heskn4Iq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A97EC32782;
+	Mon, 12 Aug 2024 15:25:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723476358;
+	bh=NmCf39JdeAxzWlINGyTyT0YTEVkYbzQv+t+jtZ22OCI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Heskn4Iqi8vOyNirE+GW6Qtq9Rqa6ScXuxU2yTQrimxHUPVO0mCrmLAfMf3+kha+S
+	 5LHwzCONssor1SEYIupv0oSNIu57TTmQksF4dahzxGfg51NUiyOCNp1IFH7DOJAkQ0
+	 gJ/YnsI1ycfnHmwj1NdCV07WeVK2UjZv9YL5bXaj9mY95v5UaYIODb6tv1qOT7RUu8
+	 +Gw/XHfspFADCYkpCWjLbLcUVroE/L91EJwg+Fv4ZxMljrfXVm+3e7FRowCekReH7k
+	 vYtw403tloqBsU3PYPNWmXsbqai8lZT/2ehujqPCz6gh2SB/+PqqUifN3O1XYafe83
+	 CwP0TGA9wDbmg==
+From: fdmanana@kernel.org
+To: stable@vger.kernel.org
+Cc: linux-btrfs@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	Filipe Manana <fdmanana@suse.com>,
+	syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH for 6.10 stable] btrfs: fix double inode unlock for direct IO sync writes
+Date: Mon, 12 Aug 2024 16:25:53 +0100
+Message-ID: <8ffd293acee0e4c823a4ed1e4e5672981d614d72.1723043969.git.fdmanana@suse.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1723043969.git.fdmanana@suse.com>
+References: <cover.1723043969.git.fdmanana@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/v3d: Disable preemption while updating GPU stats
-To: Tvrtko Ursulin <tursulin@igalia.com>, dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- stable@vger.kernel.org
-References: <20240812091218.70317-1-tursulin@igalia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Autocrypt: addr=mcanal@igalia.com; keydata=
- xjMEZIsaeRYJKwYBBAHaRw8BAQdAGU6aY8oojw61KS5rGGMrlcilFqR6p6ID45IZ6ovX0h3N
- H01haXJhIENhbmFsIDxtY2FuYWxAaWdhbGlhLmNvbT7CjwQTFggANxYhBDMCqFtIvFKVRJZQ
- hDSPnHLaGFVuBQJkixp5BQkFo5qAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQNI+cctoYVW5u
- GAEAwpaC5rI3wD8zqETKwGVoXd6+AbmGfZuVD40xepy7z/8BAM5w95/oyPsHUqOsg/xUTlNp
- rlbhA+WWoaOXA3XgR+wCzjgEZIsaeRIKKwYBBAGXVQEFAQEHQGoOK0jgh0IorMAacx6WUUWb
- s3RLiJYWUU6iNrk5wWUbAwEIB8J+BBgWCAAmFiEEMwKoW0i8UpVEllCENI+cctoYVW4FAmSL
- GnkFCQWjmoACGwwACgkQNI+cctoYVW6cqwD/Q9R98msvkhgRvi18fzUPFDwwogn+F+gQJJ6o
- pwpgFkAA/R2zOfla3IT6G3SBoV5ucdpdCpnIXFpQLbmfHK7dXsAC
-In-Reply-To: <20240812091218.70317-1-tursulin@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Tvrtko,
+From: Filipe Manana <fdmanana@suse.com>
 
-On 8/12/24 06:12, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> 
-> We forgot to disable preemption around the write_seqcount_begin/end() pair
-> while updating GPU stats:
-> 
->    [ ] WARNING: CPU: 2 PID: 12 at include/linux/seqlock.h:221 __seqprop_assert.isra.0+0x128/0x150 [v3d]
->    [ ] Workqueue: v3d_bin drm_sched_run_job_work [gpu_sched]
->   <...snip...>
->    [ ] Call trace:
->    [ ]  __seqprop_assert.isra.0+0x128/0x150 [v3d]
->    [ ]  v3d_job_start_stats.isra.0+0x90/0x218 [v3d]
->    [ ]  v3d_bin_job_run+0x23c/0x388 [v3d]
->    [ ]  drm_sched_run_job_work+0x520/0x6d0 [gpu_sched]
->    [ ]  process_one_work+0x62c/0xb48
->    [ ]  worker_thread+0x468/0x5b0
->    [ ]  kthread+0x1c4/0x1e0
->    [ ]  ret_from_fork+0x10/0x20
-> 
-> Fix it.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Fixes: 6abe93b621ab ("drm/v3d: Fix race-condition between sysfs/fdinfo and interrupt handler")
-> Cc: Maíra Canal <mcanal@igalia.com>
-> Cc: <stable@vger.kernel.org> # v6.10+
-> ---
->   drivers/gpu/drm/v3d/v3d_sched.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-> index 42d4f4a2dba2..cc2e5a89467b 100644
-> --- a/drivers/gpu/drm/v3d/v3d_sched.c
-> +++ b/drivers/gpu/drm/v3d/v3d_sched.c
-> @@ -136,6 +136,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
->   	struct v3d_stats *local_stats = &file->stats[queue];
->   	u64 now = local_clock();
->   
-> +	preempt_disable();
-> +
->   	write_seqcount_begin(&local_stats->lock);
->   	local_stats->start_ns = now;
->   	write_seqcount_end(&local_stats->lock);
-> @@ -143,6 +145,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
->   	write_seqcount_begin(&global_stats->lock);
->   	global_stats->start_ns = now;
->   	write_seqcount_end(&global_stats->lock);
-> +
-> +	preempt_enable();
->   }
->   
->   static void
-> @@ -164,8 +168,10 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
->   	struct v3d_stats *local_stats = &file->stats[queue];
->   	u64 now = local_clock();
->   
-> +	preempt_disable();
->   	v3d_stats_update(local_stats, now);
->   	v3d_stats_update(global_stats, now);
-> +	preempt_enable();
+commit e0391e92f9ab4fb3dbdeb139c967dcfa7ac4b115 upstream.
 
-Although `v3d_stats_update()` is only used here, shouldn't we move 
-`preempt_disable()` and `preempt_enable()` inside of the
-`v3d_stats_update()` function? This way, we can guarantee that any
-future uses will disable preemption.
+If we do a direct IO sync write, at btrfs_sync_file(), and we need to skip
+inode logging or we get an error starting a transaction or an error when
+flushing delalloc, we end up unlocking the inode when we shouldn't under
+the 'out_release_extents' label, and then unlock it again at
+btrfs_direct_write().
 
-With that, you can add my:
+Fix that by checking if we have to skip inode unlocking under that label.
 
-Acked-by: Maíra Canal <mcanal@igalia.com>
+Reported-by: syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/000000000000dfd631061eaeb4bc@google.com/
+Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+---
+ fs/btrfs/file.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Best Regards,
-- Maíra
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index 35ce1c810bd3..ca434f0cd27f 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -2080,7 +2080,10 @@ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ 
+ out_release_extents:
+ 	btrfs_release_log_ctx_extents(&ctx);
+-	btrfs_inode_unlock(BTRFS_I(inode), BTRFS_ILOCK_MMAP);
++	if (skip_ilock)
++		up_write(&BTRFS_I(inode)->i_mmap_lock);
++	else
++		btrfs_inode_unlock(BTRFS_I(inode), BTRFS_ILOCK_MMAP);
+ 	goto out;
+ }
+ 
+-- 
+2.43.0
 
->   }
->   
->   static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
 
