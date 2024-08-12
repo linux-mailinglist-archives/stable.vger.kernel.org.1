@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-67093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD9B94F3DB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E86ED94F4DE
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 405F51C2069E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A44BA282238
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A10186E20;
-	Mon, 12 Aug 2024 16:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF50F1494B8;
+	Mon, 12 Aug 2024 16:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0zwOPn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fU4jFDNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF64134AC;
-	Mon, 12 Aug 2024 16:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBC615C127;
+	Mon, 12 Aug 2024 16:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479784; cv=none; b=beAR9aleGhjtJ1upKjwZ42ys8M57QsRmicEeKLqAb3j78qqxClqgArkAS4MKINah56366d86mZ9HkgMfKnOVN9Dfg/lMLVtPpNauCOJFAVw1eN7wiLGzz4dX6l6A84S5odWS8eAHpTIsSY1AHQSIdpZFXlW54u7WIJP8JKd3Pwo=
+	t=1723480536; cv=none; b=H/WRFPVK5EVvhTYquqs0WdPnZUe4Cm2ixIqmi3fZDwFto5X6rJ5vg3GHEdbW3LouoSdNh9pvz+dq+JuXlXhlOZUTqCRd10Vx97fUy+ZcYfC5FYv7UYiTOapA3iO21QtZ9a2U7IIJWQRj87JeA0NFCOgs2Yzulf7wm+IGMWenbbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479784; c=relaxed/simple;
-	bh=+5LCLh9VA2JPR41HFcDhPKqriRY9js/XdEdtez+SYic=;
+	s=arc-20240116; t=1723480536; c=relaxed/simple;
+	bh=L53xQqI+LINu5kqJRvSOv7rFxwfOh5Ikj4B0qMvdy4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TWla6pACXf9GCh2H6f6DkPtIjd6RulnZUKmh5Dn9wRy2qBuaYLbBpzMUQIBcUVdHEbI/JoMXzNaK9uFUn6AxE31scxT5ekn4Mwr2Fadkd1XIdnMhc4CXV1QNbPd7MNI5k7vbboluYidwZnfz76r0L9DsF5wov1QIuphzQfd1Hwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0zwOPn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75A5C32782;
-	Mon, 12 Aug 2024 16:23:03 +0000 (UTC)
+	 MIME-Version; b=RcRhX4JKpvOzZPjROuy+yb4ZDI0btXPbCYRQ7BxnxCa5JQ0X3amUVYEBH7U+WrwpKeQzcStFkcKR2VxBjiPfpy8u4hL0MZYXa7KvYSKvamX9ygSbYphzPUX3N8NE/u5U0om7CZ6+ht8FeNdMBQTS38qICZZ1VxKbb8JeuINzOQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fU4jFDNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0A6C32782;
+	Mon, 12 Aug 2024 16:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479784;
-	bh=+5LCLh9VA2JPR41HFcDhPKqriRY9js/XdEdtez+SYic=;
+	s=korg; t=1723480536;
+	bh=L53xQqI+LINu5kqJRvSOv7rFxwfOh5Ikj4B0qMvdy4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0zwOPn6ZUNyRwSVlyhngX+C9xtXOaeedLiVOezu7LYGgYS+I0EIo30R+UNPrF1Y5
-	 mAAwnc0Palm2G8NT3qJpj20eE6hd0csmE6em5Z5+xAN4YTlQJLu2jNmyBBV+j97KIG
-	 Yh+mRnq62yL3+M0/Rqq3MKJaXlI/dAuLSSFV/wL0=
+	b=fU4jFDNP21Z9av2bH72ccOldssnv50TCccpcm+5Er/pEk0FOE6i/vam+S4b7joASu
+	 5/CbTE7ehSPQR2GNeKLrrJkpYZ1KvCGcYUMX9JgX1wLa2sbeqltohHpLzzdIG8s/qN
+	 4lniJKuyjFTo8IzlMRxZec8cPTzIA2x/VKrem5tM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Muller <philm@manjaro.org>,
-	Oliver Smith <ollieparanoid@postmarketos.org>,
-	Daniel Smith <danct12@disroot.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Qiang Yu <yuq825@gmail.com>
-Subject: [PATCH 6.6 163/189] drm/lima: Mark simple_ondemand governor as softdep
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com,
+	Marco Elver <elver@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Aleksandr Nogikh <nogikh@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marcello Sylvester Bauer <sylv@sylv.io>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 218/263] kcov: properly check for softirq context
 Date: Mon, 12 Aug 2024 18:03:39 +0200
-Message-ID: <20240812160138.417255003@linuxfoundation.org>
+Message-ID: <20240812160154.888135199@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +68,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-commit 0c94f58cef319ad054fd909b3bf4b7d09c03e11c upstream.
+commit 7d4df2dad312f270d62fecb0e5c8b086c6d7dcfc upstream.
 
-Lima DRM driver uses devfreq to perform DVFS, while using simple_ondemand
-devfreq governor by default.  This causes driver initialization to fail on
-boot when simple_ondemand governor isn't built into the kernel statically,
-as a result of the missing module dependency and, consequently, the
-required governor module not being included in the initial ramdisk.  Thus,
-let's mark simple_ondemand governor as a softdep for Lima, to have its
-kernel module included in the initial ramdisk.
+When collecting coverage from softirqs, KCOV uses in_serving_softirq() to
+check whether the code is running in the softirq context.  Unfortunately,
+in_serving_softirq() is > 0 even when the code is running in the hardirq
+or NMI context for hardirqs and NMIs that happened during a softirq.
 
-This is a rather longstanding issue that has forced distributions to build
-devfreq governors statically into their kernels, [1][2] or may have forced
-some users to introduce unnecessary workarounds.
+As a result, if a softirq handler contains a remote coverage collection
+section and a hardirq with another remote coverage collection section
+happens during handling the softirq, KCOV incorrectly detects a nested
+softirq coverate collection section and prints a WARNING, as reported by
+syzbot.
 
-Having simple_ondemand marked as a softdep for Lima may not resolve this
-issue for all Linux distributions.  In particular, it will remain
-unresolved for the distributions whose utilities for the initial ramdisk
-generation do not handle the available softdep information [3] properly
-yet.  However, some Linux distributions already handle softdeps properly
-while generating their initial ramdisks, [4] and this is a prerequisite
-step in the right direction for the distributions that don't handle them
-properly yet.
+This issue was exposed by commit a7f3813e589f ("usb: gadget: dummy_hcd:
+Switch to hrtimer transfer scheduler"), which switched dummy_hcd to using
+hrtimer and made the timer's callback be executed in the hardirq context.
 
-[1] https://gitlab.manjaro.org/manjaro-arm/packages/core/linux-pinephone/-/blob/6.7-megi/config?ref_type=heads#L5749
-[2] https://gitlab.com/postmarketOS/pmaports/-/blob/7f64e287e7732c9eaa029653e73ca3d4ba1c8598/main/linux-postmarketos-allwinner/config-postmarketos-allwinner.aarch64#L4654
-[3] https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
-[4] https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
+Change the related checks in KCOV to account for this behavior of
+in_serving_softirq() and make KCOV ignore remote coverage collection
+sections in the hardirq and NMI contexts.
 
-Cc: Philip Muller <philm@manjaro.org>
-Cc: Oliver Smith <ollieparanoid@postmarketos.org>
-Cc: Daniel Smith <danct12@disroot.org>
-Cc: stable@vger.kernel.org
-Fixes: 1996970773a3 ("drm/lima: Add optional devfreq and cooling device support")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/fdaf2e41bb6a0c5118ff9cc21f4f62583208d885.1718655070.git.dsimic@manjaro.org
+This prevents the WARNING printed by syzbot but does not fix the inability
+of KCOV to collect coverage from the __usb_hcd_giveback_urb when dummy_hcd
+is in use (caused by a7f3813e589f); a separate patch is required for that.
+
+Link: https://lkml.kernel.org/r/20240729022158.92059-1-andrey.konovalov@linux.dev
+Fixes: 5ff3b30ab57d ("kcov: collect coverage from interrupts")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Reported-by: syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2388cdaeb6b10f0c13ac
+Acked-by: Marco Elver <elver@google.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Aleksandr Nogikh <nogikh@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Marcello Sylvester Bauer <sylv@sylv.io>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/lima/lima_drv.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/kcov.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/lima/lima_drv.c
-+++ b/drivers/gpu/drm/lima/lima_drv.c
-@@ -486,3 +486,4 @@ module_platform_driver(lima_platform_dri
- MODULE_AUTHOR("Lima Project Developers");
- MODULE_DESCRIPTION("Lima DRM Driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_SOFTDEP("pre: governor_simpleondemand");
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -161,6 +161,15 @@ static void kcov_remote_area_put(struct
+ 	kmsan_unpoison_memory(&area->list, sizeof(area->list));
+ }
+ 
++/*
++ * Unlike in_serving_softirq(), this function returns false when called during
++ * a hardirq or an NMI that happened in the softirq context.
++ */
++static inline bool in_softirq_really(void)
++{
++	return in_serving_softirq() && !in_hardirq() && !in_nmi();
++}
++
+ static notrace bool check_kcov_mode(enum kcov_mode needed_mode, struct task_struct *t)
+ {
+ 	unsigned int mode;
+@@ -170,7 +179,7 @@ static notrace bool check_kcov_mode(enum
+ 	 * so we ignore code executed in interrupts, unless we are in a remote
+ 	 * coverage collection section in a softirq.
+ 	 */
+-	if (!in_task() && !(in_serving_softirq() && t->kcov_softirq))
++	if (!in_task() && !(in_softirq_really() && t->kcov_softirq))
+ 		return false;
+ 	mode = READ_ONCE(t->kcov_mode);
+ 	/*
+@@ -849,7 +858,7 @@ void kcov_remote_start(u64 handle)
+ 
+ 	if (WARN_ON(!kcov_check_handle(handle, true, true, true)))
+ 		return;
+-	if (!in_task() && !in_serving_softirq())
++	if (!in_task() && !in_softirq_really())
+ 		return;
+ 
+ 	local_lock_irqsave(&kcov_percpu_data.lock, flags);
+@@ -991,7 +1000,7 @@ void kcov_remote_stop(void)
+ 	int sequence;
+ 	unsigned long flags;
+ 
+-	if (!in_task() && !in_serving_softirq())
++	if (!in_task() && !in_softirq_really())
+ 		return;
+ 
+ 	local_lock_irqsave(&kcov_percpu_data.lock, flags);
 
 
 
