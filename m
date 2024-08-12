@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8BDC94F45B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:29:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 836A894F26E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 862DD280D68
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:29:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC80FB262C2
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AE5186E5E;
-	Mon, 12 Aug 2024 16:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F46187347;
+	Mon, 12 Aug 2024 16:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le+UDp5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dadyXOyn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A34183CD4;
-	Mon, 12 Aug 2024 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3504187325;
+	Mon, 12 Aug 2024 16:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480162; cv=none; b=XThcDNfsJqKevvbq4FsgAdHjTibirNfeY+uOnEs7+Vi4LJI4PdaAwVNs4khXX5jOHWR7/xyaYwWzHsIcYBOhr9gVvyexJzBFRjiP/YzcKmcNMhLVwcElwrdNVtKR4R1QUEqivQHh9HZLnU84FpNu9jPNgk6rloA/gMLX5uJ9EDE=
+	t=1723478770; cv=none; b=Taw2X/OXuquL+rBRSVdfIHcYQT0SiKiQRoHsOk/00WlycZwWp8GBiwuosqhjEz+i6XlQztg1L5I4z7sh4lzMFhhFH7S2vLsCBeTFaF2yZn1Ew8lsar6kgPKAIKiizdzACix2WeeOM0HfyzE/VUhlUzq260NyM0YTrSumOdKz4OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480162; c=relaxed/simple;
-	bh=esnH7aJQ5IZABY5/0G7Jp1N3/vrRO0RklnvDexfawjM=;
+	s=arc-20240116; t=1723478770; c=relaxed/simple;
+	bh=DObySV9x7dQWWN5dHgCmoOeOJnhUU62tBX26BEOSYgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVtTVt3QywpLBcP8C3nA7NUQ1hdHrngAnN/UY0mGLm0yZUUTFWMm9kZt8dqX9ZOG9mxjd0P+iflw2T9UjhCBCcuB56w81Yjz9MFGe3o2koQtk7sNaYTVj9ClOMDuvAXEhDzgny8nlPvDzmgLIwaNa1JfEnH21yMg3yfjShzByb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le+UDp5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54891C32782;
-	Mon, 12 Aug 2024 16:29:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ikqxXfV6TM7C0RTSO+UI8OUp6Y1lBMyM4vmOHtU9zoV+H+SNBqwFssscuVTu0JIJvl2bFgtU14iYOjPym533aky/rCdIksiJ0KPxrMGEJ06Y9CvLmQvaY4Zpr4humgh9JK3lEVcjp0LD06g0pLzHdcmDlr6p9R2EathW1Uohuhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dadyXOyn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20ECC4AF0D;
+	Mon, 12 Aug 2024 16:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480161;
-	bh=esnH7aJQ5IZABY5/0G7Jp1N3/vrRO0RklnvDexfawjM=;
+	s=korg; t=1723478770;
+	bh=DObySV9x7dQWWN5dHgCmoOeOJnhUU62tBX26BEOSYgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Le+UDp5CEj45m9UaPxyIr3UTiUUr09Kmv3JgkfUctNNDVw9HgyURRHOqvmUgUVh3k
-	 jhWfK8jz3KT5xeZheTMwWasaYwfizMmfk6KhjbAfOPefwlRNMVJe30sHg1CZXAUB/W
-	 X6K0TGzRYG/zROJ7EOJLPJrvCPGtx7Ypvl1ge9a8=
+	b=dadyXOynSy8t7w/dPCU2CaMMLTHDkCuI3CmWWSivzKmQpt5zcKbjG9xdC4mbAQsx1
+	 MvljSE9/ecqtcWx7hq6M/A9FwcxavKK6oS48g8VbV0NW8S/N7T6OApV6+0b2i6FVVV
+	 yvHjzER6RtHb7DSIGw40C3yFECusbjZ+Ud2NxGw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaxi Shen <shenxiaxi26@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com
-Subject: [PATCH 6.10 112/263] ext4: fix uninitialized variable in ext4_inlinedir_to_tree
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 032/150] can: mcp251xfd: tef: update workaround for erratum DS80000789E 6 of mcp2518fd
 Date: Mon, 12 Aug 2024 18:01:53 +0200
-Message-ID: <20240812160150.833250681@linuxfoundation.org>
+Message-ID: <20240812160126.405902253@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaxi Shen <shenxiaxi26@gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 8dc9c3da79c84b13fdb135e2fb0a149a8175bffe ]
+[ Upstream commit 3a0a88fcbaf9e027ecca3fe8775be9700b4d6460 ]
 
-Syzbot has found an uninit-value bug in ext4_inlinedir_to_tree
+This patch updates the workaround for a problem similar to erratum
+DS80000789E 6 of the mcp2518fd, the other variants of the chip
+family (mcp2517fd and mcp251863) are probably also affected.
 
-This error happens because ext4_inlinedir_to_tree does not
-handle the case when ext4fs_dirhash returns an error
+Erratum DS80000789E 6 says "reading of the FIFOCI bits in the FIFOSTA
+register for an RX FIFO may be corrupted". However observation shows
+that this problem is not limited to RX FIFOs but also effects the TEF
+FIFO.
 
-This can be avoided by checking the return value of ext4fs_dirhash
-and propagating the error,
-similar to how it's done with ext4_htree_store_dirent
+In the bad case, the driver reads a too large head index. As the FIFO
+is implemented as a ring buffer, this results in re-handling old CAN
+transmit complete events.
 
-Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
-Reported-and-tested-by: syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=eaba5abe296837a640c0
-Link: https://patch.msgid.link/20240501033017.220000-1-shenxiaxi26@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Every transmit complete event contains with a sequence number that
+equals to the sequence number of the corresponding TX request. This
+way old TX complete events can be detected.
+
+If the original driver detects a non matching sequence number, it
+prints an info message and tries again later. As wrong sequence
+numbers can be explained by the erratum DS80000789E 6, demote the info
+message to debug level, streamline the code and update the comments.
+
+Keep the behavior: If an old CAN TX complete event is detected, abort
+the iteration and mark the number of valid CAN TX complete events as
+processed in the chip by incrementing the FIFO's tail index.
+
+Cc: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Cc: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 71 +++++++------------
+ 1 file changed, 27 insertions(+), 44 deletions(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index d5bd1e3a5d36c..e7a09a99837b9 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -1410,7 +1410,11 @@ int ext4_inlinedir_to_tree(struct file *dir_file,
- 			hinfo->hash = EXT4_DIRENT_HASH(de);
- 			hinfo->minor_hash = EXT4_DIRENT_MINOR_HASH(de);
- 		} else {
--			ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
-+			err = ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
-+			if (err) {
-+				ret = err;
-+				goto out;
-+			}
- 		}
- 		if ((hinfo->hash < start_hash) ||
- 		    ((hinfo->hash == start_hash) &&
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+index b33192964cf7d..902eb767426d1 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -60,56 +60,39 @@ static int mcp251xfd_check_tef_tail(const struct mcp251xfd_priv *priv)
+ 	return 0;
+ }
+ 
+-static int
+-mcp251xfd_handle_tefif_recover(const struct mcp251xfd_priv *priv, const u32 seq)
+-{
+-	const struct mcp251xfd_tx_ring *tx_ring = priv->tx;
+-	u32 tef_sta;
+-	int err;
+-
+-	err = regmap_read(priv->map_reg, MCP251XFD_REG_TEFSTA, &tef_sta);
+-	if (err)
+-		return err;
+-
+-	if (tef_sta & MCP251XFD_REG_TEFSTA_TEFOVIF) {
+-		netdev_err(priv->ndev,
+-			   "Transmit Event FIFO buffer overflow.\n");
+-		return -ENOBUFS;
+-	}
+-
+-	netdev_info(priv->ndev,
+-		    "Transmit Event FIFO buffer %s. (seq=0x%08x, tef_tail=0x%08x, tef_head=0x%08x, tx_head=0x%08x).\n",
+-		    tef_sta & MCP251XFD_REG_TEFSTA_TEFFIF ?
+-		    "full" : tef_sta & MCP251XFD_REG_TEFSTA_TEFNEIF ?
+-		    "not empty" : "empty",
+-		    seq, priv->tef->tail, priv->tef->head, tx_ring->head);
+-
+-	/* The Sequence Number in the TEF doesn't match our tef_tail. */
+-	return -EAGAIN;
+-}
+-
+ static int
+ mcp251xfd_handle_tefif_one(struct mcp251xfd_priv *priv,
+ 			   const struct mcp251xfd_hw_tef_obj *hw_tef_obj,
+ 			   unsigned int *frame_len_ptr)
+ {
+ 	struct net_device_stats *stats = &priv->ndev->stats;
++	u32 seq, tef_tail_masked, tef_tail;
+ 	struct sk_buff *skb;
+-	u32 seq, seq_masked, tef_tail_masked, tef_tail;
+ 
+-	seq = FIELD_GET(MCP251XFD_OBJ_FLAGS_SEQ_MCP2518FD_MASK,
++	 /* Use the MCP2517FD mask on the MCP2518FD, too. We only
++	  * compare 7 bits, this is enough to detect old TEF objects.
++	  */
++	seq = FIELD_GET(MCP251XFD_OBJ_FLAGS_SEQ_MCP2517FD_MASK,
+ 			hw_tef_obj->flags);
+-
+-	/* Use the MCP2517FD mask on the MCP2518FD, too. We only
+-	 * compare 7 bits, this should be enough to detect
+-	 * net-yet-completed, i.e. old TEF objects.
+-	 */
+-	seq_masked = seq &
+-		field_mask(MCP251XFD_OBJ_FLAGS_SEQ_MCP2517FD_MASK);
+ 	tef_tail_masked = priv->tef->tail &
+ 		field_mask(MCP251XFD_OBJ_FLAGS_SEQ_MCP2517FD_MASK);
+-	if (seq_masked != tef_tail_masked)
+-		return mcp251xfd_handle_tefif_recover(priv, seq);
++
++	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
++	 * bits of a FIFOSTA register, here the TX FIFO tail index
++	 * might be corrupted and we might process past the TEF FIFO's
++	 * head into old CAN frames.
++	 *
++	 * Compare the sequence number of the currently processed CAN
++	 * frame with the expected sequence number. Abort with
++	 * -EBADMSG if an old CAN frame is detected.
++	 */
++	if (seq != tef_tail_masked) {
++		netdev_dbg(priv->ndev, "%s: chip=0x%02x ring=0x%02x\n", __func__,
++			   seq, tef_tail_masked);
++		stats->tx_fifo_errors++;
++
++		return -EBADMSG;
++	}
+ 
+ 	tef_tail = mcp251xfd_get_tef_tail(priv);
+ 	skb = priv->can.echo_skb[tef_tail];
+@@ -223,12 +206,12 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
+ 		unsigned int frame_len = 0;
+ 
+ 		err = mcp251xfd_handle_tefif_one(priv, &hw_tef_obj[i], &frame_len);
+-		/* -EAGAIN means the Sequence Number in the TEF
+-		 * doesn't match our tef_tail. This can happen if we
+-		 * read the TEF objects too early. Leave loop let the
+-		 * interrupt handler call us again.
++		/* -EBADMSG means we're affected by mcp2518fd erratum
++		 * DS80000789E 6., i.e. the Sequence Number in the TEF
++		 * doesn't match our tef_tail. Don't process any
++		 * further and mark processed frames as good.
+ 		 */
+-		if (err == -EAGAIN)
++		if (err == -EBADMSG)
+ 			goto out_netif_wake_queue;
+ 		if (err)
+ 			return err;
 -- 
 2.43.0
 
