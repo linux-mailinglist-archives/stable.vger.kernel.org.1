@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-67191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F6594F447
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D62294F25C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A8F61C2037F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C6541C21292
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF38186E38;
-	Mon, 12 Aug 2024 16:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4DE183CD9;
+	Mon, 12 Aug 2024 16:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dA3QCtGU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pX6kUM/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD38134AC;
-	Mon, 12 Aug 2024 16:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A3A1EA8D;
+	Mon, 12 Aug 2024 16:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480107; cv=none; b=b/f5z2iJEy4YvP23RVfzaT280vBaoX6fIrGRD+cn5ED3gIxbkoRjtkjfD7T52t+gxQGCDd+1oSRxztQfNFka2MBFVaNN+lhsrZFYWFwdw8iyAETSIo76lBkUW80tN/Io5R01DYSf+xRv1bse+/nA1BdWcH+fYv05tRwQjljvgDA=
+	t=1723478732; cv=none; b=eOmGHDpKem2Cpib+Yzds9fJSJv/rzQFLLS1EZBFm3sNNnk5JG+fmcc/A/wit21Fa87tOZOpAUgr4A9PA+uGYElvzK2RDIaS1VSFZIOXFDWZQputNaaduoVVnm/oGxM3zY5bDqxhLucYNI4WDOosFMvos2tdKREv7ub2sUxXH33M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480107; c=relaxed/simple;
-	bh=JgQkRbQEWSJvkqMjrDKWYu+5VGHerXqGYLVUskdvm6E=;
+	s=arc-20240116; t=1723478732; c=relaxed/simple;
+	bh=CX+PEq8+eYtSidLb5oTv7804uDC157TmgMcwy+GhpR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKQxot8Fy7RT3EOQg4UMpkOuRgW1gv9lSRm3GY98v7/85Nj8vBfcsp2kfz2713iEaMSBKBm7JOjBuB6FeNvv/fYlB8noKoIEvS0RzlC/Wky2vTqRiXTwAhSM5Z82pSqeuhDes4bC5mLUU35fSUDuz/kbfZw4qioDGkI+8glGIds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dA3QCtGU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9984DC32782;
-	Mon, 12 Aug 2024 16:28:26 +0000 (UTC)
+	 MIME-Version; b=KzI+yTvpI0nSxlySxvY4lHwFIJIXBMGgISxrGw9STkDhpZqfTQfGWHvL7pmCbZyIb9wVCiH4nVEDsA608/DOsHKJ35Zf3r/50nAAMhIphp6yPgNnB1DZglwZ2JNe7aMD1n0mVTBvu3uY7tIJgLm1vKglyXhoe+BSn2bRi7zEFuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pX6kUM/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2736C32782;
+	Mon, 12 Aug 2024 16:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480107;
-	bh=JgQkRbQEWSJvkqMjrDKWYu+5VGHerXqGYLVUskdvm6E=;
+	s=korg; t=1723478732;
+	bh=CX+PEq8+eYtSidLb5oTv7804uDC157TmgMcwy+GhpR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dA3QCtGUBlnw69Cq4X5IurmoLXCWacog3JYvoD/ZokmrgOP0CxA8YmvgifoJrKLtg
-	 lUcnBuxxOAf5Ur1K+GWyCMJzuSX6i0Axcsxl3rL7Q2DKdQi43tbtuRdR0PCclMktS+
-	 7GSFVI3QwNnjgV+lrryzEihR40VSxD/eeXF7pJqs=
+	b=pX6kUM/oOEtZhklhX0aZdwad8a9lhpdqemnSdIalChmN228nbfHK5UqHunSrBbCip
+	 Om4U7Nu4FJ67QhO4FSd15oyLq/9KO6iER0AIf1QuqPu65qLzXtQPEQppZpdLU/slGD
+	 mzRsom9TpQpwkkJjmzXOOpsie0D2QOK3baTKfE8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 099/263] drm/amd/display: Add null checks for stream and plane before dereferencing
-Date: Mon, 12 Aug 2024 18:01:40 +0200
-Message-ID: <20240812160150.333112292@linuxfoundation.org>
+Subject: [PATCH 6.1 020/150] rcu: Fix rcu_barrier() VS post CPUHP_TEARDOWN_CPU invocation
+Date: Mon, 12 Aug 2024 18:01:41 +0200
+Message-ID: <20240812160125.941175374@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,58 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit 15c2990e0f0108b9c3752d7072a97d45d4283aea ]
+[ Upstream commit 55d4669ef1b76823083caecfab12a8bd2ccdcf64 ]
 
-This commit adds null checks for the 'stream' and 'plane' variables in
-the dcn30_apply_idle_power_optimizations function. These variables were
-previously assumed to be null at line 922, but they were used later in
-the code without checking if they were null. This could potentially lead
-to a null pointer dereference, which would cause a crash.
+When rcu_barrier() calls rcu_rdp_cpu_online() and observes a CPU off
+rnp->qsmaskinitnext, it means that all accesses from the offline CPU
+preceding the CPUHP_TEARDOWN_CPU are visible to RCU barrier, including
+callbacks expiration and counter updates.
 
-The null checks ensure that 'stream' and 'plane' are not null before
-they are used, preventing potential crashes.
+However interrupts can still fire after stop_machine() re-enables
+interrupts and before rcutree_report_cpu_dead(). The related accesses
+happening between CPUHP_TEARDOWN_CPU and rnp->qsmaskinitnext clearing
+are _NOT_ guaranteed to be seen by rcu_barrier() without proper
+ordering, especially when callbacks are invoked there to the end, making
+rcutree_migrate_callback() bypass barrier_lock.
 
-Fixes the below static smatch checker:
-drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:938 dcn30_apply_idle_power_optimizations() error: we previously assumed 'stream' could be null (see line 922)
-drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:940 dcn30_apply_idle_power_optimizations() error: we previously assumed 'plane' could be null (see line 922)
+The following theoretical race example can make rcu_barrier() hang:
 
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Cc: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Hersen Wu <hersenxs.wu@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+CPU 0                                               CPU 1
+-----                                               -----
+//cpu_down()
+smpboot_park_threads()
+//ksoftirqd is parked now
+<IRQ>
+rcu_sched_clock_irq()
+   invoke_rcu_core()
+do_softirq()
+   rcu_core()
+      rcu_do_batch()
+         // callback storm
+         // rcu_do_batch() returns
+         // before completing all
+         // of them
+   // do_softirq also returns early because of
+   // timeout. It defers to ksoftirqd but
+   // it's parked
+</IRQ>
+stop_machine()
+   take_cpu_down()
+                                                    rcu_barrier()
+                                                        spin_lock(barrier_lock)
+                                                        // observes rcu_segcblist_n_cbs(&rdp->cblist) != 0
+<IRQ>
+do_softirq()
+   rcu_core()
+      rcu_do_batch()
+         //completes all pending callbacks
+         //smp_mb() implied _after_ callback number dec
+</IRQ>
+
+rcutree_report_cpu_dead()
+   rnp->qsmaskinitnext &= ~rdp->grpmask;
+
+rcutree_migrate_callback()
+   // no callback, early return without locking
+   // barrier_lock
+                                                        //observes !rcu_rdp_cpu_online(rdp)
+                                                        rcu_barrier_entrain()
+                                                           rcu_segcblist_entrain()
+                                                              // Observe rcu_segcblist_n_cbs(rsclp) == 0
+                                                              // because no barrier between reading
+                                                              // rnp->qsmaskinitnext and rsclp->len
+                                                              rcu_segcblist_add_len()
+                                                                 smp_mb__before_atomic()
+                                                                 // will now observe the 0 count and empty
+                                                                 // list, but too late, we enqueue regardless
+                                                                 WRITE_ONCE(rsclp->len, rsclp->len + v);
+                                                        // ignored barrier callback
+                                                        // rcu barrier stall...
+
+This could be solved with a read memory barrier, enforcing the message
+passing between rnp->qsmaskinitnext and rsclp->len, matching the full
+memory barrier after rsclp->len addition in rcu_segcblist_add_len()
+performed at the end of rcu_do_batch().
+
+However the rcu_barrier() is complicated enough and probably doesn't
+need too many more subtleties. CPU down is a slowpath and the
+barrier_lock seldom contended. Solve the issue with unconditionally
+locking the barrier_lock on rcutree_migrate_callbacks(). This makes sure
+that either rcu_barrier() sees the empty queue or its entrained
+callback will be migrated.
+
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/rcu/tree.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-index ed9141a67db37..5b09d95cc5b8f 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-@@ -919,6 +919,9 @@ bool dcn30_apply_idle_power_optimizations(struct dc *dc, bool enable)
- 			stream = dc->current_state->streams[0];
- 			plane = (stream ? dc->current_state->stream_status[0].plane_states[0] : NULL);
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 61f9503a5fe9c..cd6144cea5a1a 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -4391,11 +4391,15 @@ void rcutree_migrate_callbacks(int cpu)
+ 	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
+ 	bool needwake;
  
-+			if (!stream || !plane)
-+				return false;
+-	if (rcu_rdp_is_offloaded(rdp) ||
+-	    rcu_segcblist_empty(&rdp->cblist))
+-		return;  /* No callbacks to migrate. */
++	if (rcu_rdp_is_offloaded(rdp))
++		return;
+ 
+ 	raw_spin_lock_irqsave(&rcu_state.barrier_lock, flags);
++	if (rcu_segcblist_empty(&rdp->cblist)) {
++		raw_spin_unlock_irqrestore(&rcu_state.barrier_lock, flags);
++		return;  /* No callbacks to migrate. */
++	}
 +
- 			if (stream && plane) {
- 				cursor_cache_enable = stream->cursor_position.enable &&
- 						plane->address.grph.cursor_cache_addr.quad_part;
+ 	WARN_ON_ONCE(rcu_rdp_cpu_online(rdp));
+ 	rcu_barrier_entrain(rdp);
+ 	my_rdp = this_cpu_ptr(&rcu_data);
 -- 
 2.43.0
 
