@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-66831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CB494F2AA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C0A94F493
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E73A7B249F7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE68B1F21A77
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441AC186E38;
-	Mon, 12 Aug 2024 16:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C393186E33;
+	Mon, 12 Aug 2024 16:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkctJujo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uObXD1yS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016B2183CA6;
-	Mon, 12 Aug 2024 16:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1462C1A5;
+	Mon, 12 Aug 2024 16:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478928; cv=none; b=uQFQtJWghMfqbAK/ZcuS/dl7WYdRQp3+2ThWdYZArLXzt7gNqapyjODfjeziFSGInNEC9wlc9ncgGL216Y2CtztrOwyKfhAPmGQu2ibvsL7rC4Un2Z4DWJ/MDtxgHmOGmjV3jFMqZh3vuxP1Cb1algUWBr+xpgXprWZAvbbvgug=
+	t=1723480313; cv=none; b=VCUNWsTWlNrAqHB11v7PwAFyrsDB4DWtOHwLUYpNETtsQBkC1wLGtSeEPfBgSsJGAxeSScZdKOjKnsaEPopl7AMxn9yJ1PnpmLpu6Mrj26dqGwB6UQG2nHNrVnDaY5LZViWQx3NrJL9pSfLfLJSxqvqovVhASLJ/0Xlh2DnnNm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478928; c=relaxed/simple;
-	bh=FxnE8F2akFSOu7htiLwkObYcOiz/E+PLOx7BKXYldXg=;
+	s=arc-20240116; t=1723480313; c=relaxed/simple;
+	bh=CGR7j+3ujGhZUJj7c46knhSCwIUkrKmcurvYhLA+24I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaX9JD4SsDD77z+Qpgdy0oIWv9bwSE8fUp3ApOxnUqkuzt4hxl4AEHlezAfcvFnAdI0kkW+nGsIMXBJzcAd6sa6wqumGdcrhGcc7HvgeMU+i8FQ/j1YPMJzX21zIMhC5Mq98ipe04IguSogB/98B9KGi2bU/RQes3xl+IRPVUvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkctJujo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DABC32782;
-	Mon, 12 Aug 2024 16:08:47 +0000 (UTC)
+	 MIME-Version; b=LmEclXIxgu8NjArOUYtsg+7DCun78KkjlkbhMhmUOgNknxrlzJ3YikM6GtVecutaoY56OLpDOUGNu+yWafssZzTCaxraC/mVroLA0p46E5X/GiSVAlk8ABeg47BsZlJpodkrJX2dYYSX5zQmLlvPbJjX9jdBE2h5pybYWfLQv68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uObXD1yS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6059FC32782;
+	Mon, 12 Aug 2024 16:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478927;
-	bh=FxnE8F2akFSOu7htiLwkObYcOiz/E+PLOx7BKXYldXg=;
+	s=korg; t=1723480312;
+	bh=CGR7j+3ujGhZUJj7c46knhSCwIUkrKmcurvYhLA+24I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkctJujoKMIg+iT8OVJKa2ZQfAKI5yoeD5APYcAm+YV65nESPxAxKcO0j3FBxQRam
-	 wWhbm0+lyNoRwlIHKtvEoDh5j3mfL9hmLAhAOw66H6PpkwdE258+7r0Cc/eIVQSQ9y
-	 MRAjSor03HAIa8d3ZKOzuQIERU1M2suTpex3x+Mg=
+	b=uObXD1ySfSTfxPTbp6bkXo+8lr4ROQk54e7O2OVMV2lSzwJgOtewP/V/gDXKo0xTA
+	 bHcq0AeOss9HBbGitVPh6fdj+nZ9VFQY1o27rzsCyer3bCQWnvdVzaHSi5i/b+qFP8
+	 SvPbdUV/slwluqGLs3rR3fy0z2+ozT+fNGsLMt98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/150] bpf: kprobe: remove unused declaring of bpf_kprobe_override
-Date: Mon, 12 Aug 2024 18:02:40 +0200
-Message-ID: <20240812160128.224953688@linuxfoundation.org>
+Subject: [PATCH 6.10 160/263] drm/amd/display: Replace dm_execute_dmub_cmd with dc_wake_and_execute_dmub_cmd
+Date: Mon, 12 Aug 2024 18:02:41 +0200
+Message-ID: <20240812160152.672683136@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit 0e8b53979ac86eddb3fd76264025a70071a25574 ]
+[ Upstream commit f2aaed194a54d78c307c44d1829c7e1ba67e9ba5 ]
 
-After the commit 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction
-pointer with original one"), "bpf_kprobe_override" is not used anywhere
-anymore, and we can remove it now.
+In the commit c2cec7a872b6 ("drm/amd/display: Wake DMCUB before sending
+a command for replay feature"), replaced dm_execute_dmub_cmd with
+dc_wake_and_execute_dmub_cmd in multiple areas, but due to merge issues
+the replacement of this function in the dmub_replay_copy_settings was
+missed. This commit replaces the old dm_execute_dmub_cmd with
+dc_wake_and_execute_dmub_cmd.
 
-Link: https://lore.kernel.org/all/20240710085939.11520-1-dongml2@chinatelecom.cn/
-
-Fixes: 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction pointer with original one")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 3601a35a2e9d ("drm/amd/display: Wake DMCUB before sending a command for replay feature")
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6cc213b9aa34bc3213e20f9256345c5cc1495b0b)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index c8b5e9781d01a..f70624ec4188f 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -847,7 +847,6 @@ do {									\
- struct perf_event;
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
+index f820647443d16..09cf54586fd5d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
+@@ -209,8 +209,7 @@ static bool dmub_replay_copy_settings(struct dmub_replay *dmub,
+ 	else
+ 		copy_settings_data->flags.bitfields.force_wakeup_by_tps3 = 0;
  
- DECLARE_PER_CPU(struct pt_regs, perf_trace_regs);
--DECLARE_PER_CPU(int, bpf_kprobe_override);
+-
+-	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
++	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
  
- extern int  perf_trace_init(struct perf_event *event);
- extern void perf_trace_destroy(struct perf_event *event);
+ 	return true;
+ }
 -- 
 2.43.0
 
