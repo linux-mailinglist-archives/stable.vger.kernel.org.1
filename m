@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A06694F3E1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F58294F4FE
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B997C1F20F9D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6171D1C20400
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC65186E20;
-	Mon, 12 Aug 2024 16:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B7D183CD4;
+	Mon, 12 Aug 2024 16:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuSFWZMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/mjq/NO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE424134AC;
-	Mon, 12 Aug 2024 16:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835051494B8;
+	Mon, 12 Aug 2024 16:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479798; cv=none; b=JaEXfoN66Jb7eRUWRGz3JjoanLV82DWMKbq8/xZ3aIZJdrS9DN9ARcYVfJxhM7g0P2Rcxohevr0pX0JGEKVQM9+YX0kOs4W8KuDnVdvw61IhIQePXSyu7MdLTLk3pgD9oD0zqtdstepqpclNQeYgxUNZb8ae9yymPQR5k+e4ocQ=
+	t=1723480626; cv=none; b=VEIY5wRqcc9pMnHuJuweVO4ovH/Bn0GF4tTl7DzBvZggU0VM2UbyhTnOlmRnEUjQAvt51rDfATbXqZCHYmsoxtTHCi6TWWa3u54GonD9+aS4jUhXYhAZof5RDxqbvsvlVowcZwC9V8QMikzLLddPpVQsauXWabtBnYt6C2VJ9SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479798; c=relaxed/simple;
-	bh=3JHZSSRjeMlPogryc3hYnQa9CwC4zZjT2wRhV0/WPrY=;
+	s=arc-20240116; t=1723480626; c=relaxed/simple;
+	bh=xhbd65Vpkoc0j9X+jpYPRkMa0E8hamwDGxADU44cw0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGTbIk63dGRKxP1LhgfZm8qNX6KvBMRgb2vX/DbWBFZALY5979Uw/RDIS9Mc7ek08OVXLB1pTbdvPEKvNXUJzT43JHKCwcaqdg9EkglLMZcOa7XlKdbwlEyTKnEum2mLBF8O9VkY7Fs7bl6EUY/mhzo0LNJc7XDZZjo3XWC8THI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuSFWZMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C207C4AF13;
-	Mon, 12 Aug 2024 16:23:17 +0000 (UTC)
+	 MIME-Version; b=LaZTIFSO6/XT1RSWjP9T8PujguSvzfu9feeJ0aixhXUiZH6OaQn9tj7hThLoqCEcxNgRKakLHZfDLHSJUMu/H1r9tPrVGIrkcOwtIQjJkz/qgv95EK7rI8r7UVZGFbHXAt2JgGrPaCBdOAvUnYGpwkKbw5KjlUyNDo4gtYfB2bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/mjq/NO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A1BC32782;
+	Mon, 12 Aug 2024 16:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479797;
-	bh=3JHZSSRjeMlPogryc3hYnQa9CwC4zZjT2wRhV0/WPrY=;
+	s=korg; t=1723480626;
+	bh=xhbd65Vpkoc0j9X+jpYPRkMa0E8hamwDGxADU44cw0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuSFWZMOi2jZhiqN2lGdPujx4srWaLd09zkciK/dpmhgyxR2i+zjbxo9spaBiWk9I
-	 Vv9PeWmNZ5FWFbIx9vzkp1I0Q0iElKlSMKf4NmEKwGaG3RE68uYKq6IEF+f9eNwx6U
-	 dN812HBaLcE9Br59ltzcFQDe25kx3MpWgzLc2J08=
+	b=w/mjq/NOP7yEuj2DDj6ymPXLKnUTiacOBZNUja+XySe+cttc60kdjkrdJik5Z2PX5
+	 NbFYaoqLYj72ugzGbjceg3aEQrrCWUoDi//8gHsgpw/LvgEibXYrin5pusaduDl3Zp
+	 pTBlgBfHOQzdIIUdq+lPvSBrm6OEAFvm0vGeBgyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 167/189] mptcp: fully established after ADD_ADDR echo on MPJ
+	Ard Biesheuvel <ardb@kernel.org>,
+	Miao Wang <shankerwangmiao@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.10 222/263] LoongArch: Enable general EFI poweroff method
 Date: Mon, 12 Aug 2024 18:03:43 +0200
-Message-ID: <20240812160138.574831253@linuxfoundation.org>
+Message-ID: <20240812160155.036295718@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Miao Wang <shankerwangmiao@gmail.com>
 
-commit d67c5649c1541dc93f202eeffc6f49220a4ed71d upstream.
+commit e688c220732e518c2eb1639e9ef77d4a9311713c upstream.
 
-Before this patch, receiving an ADD_ADDR echo on the just connected
-MP_JOIN subflow -- initiator side, after the MP_JOIN 3WHS -- was
-resulting in an MP_RESET. That's because only ACKs with a DSS or
-ADD_ADDRs without the echo bit were allowed.
+efi_shutdown_init() can register a general sys_off handler named
+efi_power_off(). Enable this by providing efi_poweroff_required(),
+like arm and x86. Since EFI poweroff is also supported on LoongArch,
+and the enablement makes the poweroff function usable for hardwares
+which lack ACPI S5.
 
-Not allowing the ADD_ADDR echo after an MP_CAPABLE 3WHS makes sense, as
-we are not supposed to send an ADD_ADDR before because it requires to be
-in full established mode first. For the MP_JOIN 3WHS, that's different:
-the ADD_ADDR can be sent on a previous subflow, and the ADD_ADDR echo
-can be received on the recently created one. The other peer will already
-be in fully established, so it is allowed to send that.
+We prefer ACPI poweroff rather than EFI poweroff (like x86), so we only
+require EFI poweroff if acpi_gbl_reduced_hardware or acpi_no_s5 is true.
 
-We can then relax the conditions here to accept the ADD_ADDR echo for
-MPJ subflows.
-
-Fixes: 67b12f792d5e ("mptcp: full fully established support after ADD_ADDR")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-1-c8a9b036493b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/efi.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -958,7 +958,8 @@ static bool check_fully_established(stru
+--- a/arch/loongarch/kernel/efi.c
++++ b/arch/loongarch/kernel/efi.c
+@@ -66,6 +66,12 @@ void __init efi_runtime_init(void)
+ 	set_bit(EFI_RUNTIME_SERVICES, &efi.flags);
+ }
  
- 	if (subflow->remote_key_valid &&
- 	    (((mp_opt->suboptions & OPTION_MPTCP_DSS) && mp_opt->use_ack) ||
--	     ((mp_opt->suboptions & OPTION_MPTCP_ADD_ADDR) && !mp_opt->echo))) {
-+	     ((mp_opt->suboptions & OPTION_MPTCP_ADD_ADDR) &&
-+	      (!mp_opt->echo || subflow->mp_join)))) {
- 		/* subflows are fully established as soon as we get any
- 		 * additional ack, including ADD_ADDR.
- 		 */
++bool efi_poweroff_required(void)
++{
++	return efi_enabled(EFI_RUNTIME_SERVICES) &&
++		(acpi_gbl_reduced_hardware || acpi_no_s5);
++}
++
+ unsigned long __initdata screen_info_table = EFI_INVALID_TABLE_ADDR;
+ 
+ #if defined(CONFIG_SYSFB) || defined(CONFIG_EFI_EARLYCON)
 
 
 
