@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-67004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB4794F377
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F24194F29D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E1F81C20D02
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91F041C21873
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FC018732E;
-	Mon, 12 Aug 2024 16:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06DDB187568;
+	Mon, 12 Aug 2024 16:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8zEWdMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mI3Vu2Sk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB5D183CB8;
-	Mon, 12 Aug 2024 16:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B599F187547;
+	Mon, 12 Aug 2024 16:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479484; cv=none; b=Yt/lUZYQnSrRfBG6Q853txxudtBy9BDdYK5AYgsP6QUfAl6mN4dG6TMRdQ3ecJ4d0ITfZmKJ/7TL8cIKpN+0HvLrYEaoeROIqEzFNh3YL/9/fhu3tgxEupju4K01yCVWuTGjeM7yTPD6sSY2n5yg/ksw8L75jnjXib8d0eqKDk0=
+	t=1723478891; cv=none; b=uq+84JC5l/M5z/eTxTxTIUUkksCMVcMabhHKW6EsRebmNrM9S5TZAKPvcd/5yXEcLTa3cFyg9FzGPzuisIZJrMtCXND183fFg+RKx+sjIolsY10HQf1PwKB1zm8inBdRQGCal89Q67/IZ2H/Pd5lx+n+RJfpCyq+dAwMFdteqlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479484; c=relaxed/simple;
-	bh=wUTnSGuu8RO5Y61x+JFnmr/M9VlCkdh1b8jEEHwxBjE=;
+	s=arc-20240116; t=1723478891; c=relaxed/simple;
+	bh=ouyaofsvkPsINTXfb344Lbo16gi7RvNTJGpdzSTapJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PM2bZDUEqoS4E8qGt+sX77qe+VnDO0hYg282fHAk+uYpaRyO2QdPXpA4GSLIuOVEPFSPPsX0JR7WaskHib7VqKU2C+cPdg4jYqtW85Ro7didppjHpVF1LaAIHyhqps72MTjrEqAsWxq3FUMKBG+8+AKaOuN5u12M6NcRiaYoQSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8zEWdMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B36C32782;
-	Mon, 12 Aug 2024 16:18:02 +0000 (UTC)
+	 MIME-Version; b=MsrLqqTyIIBOqpdR6LKgAwSVlvn902ERYNgTiFRoKebuE4GlpuZQy9WMoi2Y/Zv0+wiSuUGW8pOUVcwIF9alzg6b6AdCuJajJil2WBVeWXZOGPLTTazCFK88L41JWF4lmhGmZaI6xo7PhD0EP420w8JlvEI7UF3EJ6GOkCiqrdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mI3Vu2Sk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371FEC4AF0D;
+	Mon, 12 Aug 2024 16:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479483;
-	bh=wUTnSGuu8RO5Y61x+JFnmr/M9VlCkdh1b8jEEHwxBjE=;
+	s=korg; t=1723478891;
+	bh=ouyaofsvkPsINTXfb344Lbo16gi7RvNTJGpdzSTapJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8zEWdMnXYybA5ywtR42eQpR7WzkCzA/0FwW6xPxqhiBM+3z77+BAkCHh9aheJ5Y2
-	 az+MwSwbYpgEcV5EjGzXrneMuapG3gOg+043gcIsitc1UOH+4dc3CKJN9+6eTbmD1B
-	 hk0N7xc2eJYMvix8tbpwxHqUMJB4YAxnNS4FH3tM=
+	b=mI3Vu2Sk8cNYFTEuvKv/J+ZzrOVd9YS8WvKElVHP0wgPId14AY5Kwq5V7lXtWTDZA
+	 rAoY3zRJI6dnRK6eEJmOMWJPyvk5x0Yt3fyou+Hv1bedAIPMMP/jQLMDum5pu346Oe
+	 9IF9MKciNcax0LGCVJz0pizl5Dw2C7jdBv9wtJPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Audu <jau@free.fr>,
-	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/189] ASoC: sti: add missing probe entry for player and reader
+Subject: [PATCH 6.1 069/150] arm64: cputype: Add Cortex-A725 definitions
 Date: Mon, 12 Aug 2024 18:02:30 +0200
-Message-ID: <20240812160135.761151548@linuxfoundation.org>
+Message-ID: <20240812160127.838148686@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Audu <jau@free.fr>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 6b99068d5ea0aa295f15f30afc98db74d056ec7b ]
+[ Upstream commit 9ef54a384526911095db465e77acc1cb5266b32c ]
 
-This patch addresses a regression in the ASoC STI drivers that was
-introduced in Linux version 6.6.y. The issue originated from a series of
-patches (see https://lore.kernel.org/all/87wmy5b0wt.wl-kuninori.morimoto.gx@renesas.com/)
-that unintentionally omitted necessary probe functions for the player
-and reader components.
+Add cputype definitions for Cortex-A725. These will be used for errata
+detection in subsequent patches.
 
-Probe function in `sound/soc/sti/sti_uniperif.c:415` is being replaced
-by another probe function located at `sound/soc/sti/sti_uniperif.c:453`,
-which should instead be derived from the player and reader components.
-This patch correctly reinserts the missing probe entries,
-restoring the intended functionality.
+These values can be found in the Cortex-A725 TRM:
 
-Fixes: 9f625f5e6cf9 ("ASoC: sti: merge DAI call back functions into ops")
-Signed-off-by: Jerome Audu <jau@free.fr>
-Link: https://patch.msgid.link/20240727-sti-audio-fix-v2-1-208bde546c3f@free.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  https://developer.arm.com/documentation/107652/0001/
+
+... in table A-247 ("MIDR_EL1 bit descriptions").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20240801101803.1982459-3-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sti/sti_uniperif.c    | 2 +-
- sound/soc/sti/uniperif.h        | 1 +
- sound/soc/sti/uniperif_player.c | 1 +
- sound/soc/sti/uniperif_reader.c | 1 +
- 4 files changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/sti/sti_uniperif.c b/sound/soc/sti/sti_uniperif.c
-index 2c21a86421e66..cc9a8122b9bc2 100644
---- a/sound/soc/sti/sti_uniperif.c
-+++ b/sound/soc/sti/sti_uniperif.c
-@@ -352,7 +352,7 @@ static int sti_uniperiph_resume(struct snd_soc_component *component)
- 	return ret;
- }
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index ee736fbd40d5b..a0a028a6b9670 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -92,6 +92,7 @@
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+ #define ARM_CPU_PART_CORTEX_X925	0xD85
++#define ARM_CPU_PART_CORTEX_A725	0xD87
  
--static int sti_uniperiph_dai_probe(struct snd_soc_dai *dai)
-+int sti_uniperiph_dai_probe(struct snd_soc_dai *dai)
- {
- 	struct sti_uniperiph_data *priv = snd_soc_dai_get_drvdata(dai);
- 	struct sti_uniperiph_dai *dai_data = &priv->dai_data;
-diff --git a/sound/soc/sti/uniperif.h b/sound/soc/sti/uniperif.h
-index 2a5de328501c1..74e51f0ff85c8 100644
---- a/sound/soc/sti/uniperif.h
-+++ b/sound/soc/sti/uniperif.h
-@@ -1380,6 +1380,7 @@ int uni_reader_init(struct platform_device *pdev,
- 		    struct uniperif *reader);
- 
- /* common */
-+int sti_uniperiph_dai_probe(struct snd_soc_dai *dai);
- int sti_uniperiph_dai_set_fmt(struct snd_soc_dai *dai,
- 			      unsigned int fmt);
- 
-diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
-index dd9013c476649..6d1ce030963c6 100644
---- a/sound/soc/sti/uniperif_player.c
-+++ b/sound/soc/sti/uniperif_player.c
-@@ -1038,6 +1038,7 @@ static const struct snd_soc_dai_ops uni_player_dai_ops = {
- 		.startup = uni_player_startup,
- 		.shutdown = uni_player_shutdown,
- 		.prepare = uni_player_prepare,
-+		.probe = sti_uniperiph_dai_probe,
- 		.trigger = uni_player_trigger,
- 		.hw_params = sti_uniperiph_dai_hw_params,
- 		.set_fmt = sti_uniperiph_dai_set_fmt,
-diff --git a/sound/soc/sti/uniperif_reader.c b/sound/soc/sti/uniperif_reader.c
-index 065c5f0d1f5f0..05ea2b794eb92 100644
---- a/sound/soc/sti/uniperif_reader.c
-+++ b/sound/soc/sti/uniperif_reader.c
-@@ -401,6 +401,7 @@ static const struct snd_soc_dai_ops uni_reader_dai_ops = {
- 		.startup = uni_reader_startup,
- 		.shutdown = uni_reader_shutdown,
- 		.prepare = uni_reader_prepare,
-+		.probe = sti_uniperiph_dai_probe,
- 		.trigger = uni_reader_trigger,
- 		.hw_params = sti_uniperiph_dai_hw_params,
- 		.set_fmt = sti_uniperiph_dai_set_fmt,
+ #define APM_CPU_PART_XGENE		0x000
+ #define APM_CPU_VAR_POTENZA		0x00
+@@ -165,6 +166,7 @@
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
++#define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 -- 
 2.43.0
 
