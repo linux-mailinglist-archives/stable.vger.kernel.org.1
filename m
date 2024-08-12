@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-67164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD1294F42B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E2D94F313
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED4BDB22D2C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 797AC1C218B2
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C70C1862BD;
-	Mon, 12 Aug 2024 16:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11631862B4;
+	Mon, 12 Aug 2024 16:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSZ6LSU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+icZjQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF35134AC;
-	Mon, 12 Aug 2024 16:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCA3130E27;
+	Mon, 12 Aug 2024 16:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480019; cv=none; b=LBNwz4hdXt23pmPKv0giA90c7l5kovajKfq6sJYoNKENwBngbnglpOF9++dBOUsctrMd/YlTLfDs8oynhwVGnIQ6zzN3xtWeVY0LEeF1x7u69sZ1j7OUKETfUd2vux5P1il2+mFC/ovJWXQWx6I8zRgRY8Eu9J6WSKF4PdDYsJk=
+	t=1723479208; cv=none; b=JXIrFPCehbC76mdmSlbwpSUKYXmIh5r5Swnvz3bjvDliviIqzUbXaopKoXTBrGGoZBEzP/AhK26SSCTM8B+FN9wOzcb6g5WtsZ+tC/2qbA1J3WRgtMKuXGb1BIHGkvm97pljWlcJrsHoqo42YjaJlDapNSVGRNRLie3utEz4M8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480019; c=relaxed/simple;
-	bh=ss6ckAD6uIFR9MubE9TLCCUunO8NQ5DtfbNVynOHRNU=;
+	s=arc-20240116; t=1723479208; c=relaxed/simple;
+	bh=jqcJftunb+hTU0mZbKhPqg7arw4E8VFlEHPXHqnLnik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csmHTICDaBAeFTl0rsto73SwKGjheD75j4qLZlleDWMmCzuZGnNVge3jDs1JCC8gmLB5f/wE4RRF8Zr9l7ejnKh6C11hxwlee/5+8JlttcmTxxi5ogx+VMmdR7o9jrGA0PRtTTgtW9SHid0dKQ3Wk6fTDYa8DHd+NX+XDaqTcq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSZ6LSU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EBBC32782;
-	Mon, 12 Aug 2024 16:26:58 +0000 (UTC)
+	 MIME-Version; b=e7S9X1j++XGfj8uGe01nqkzgNxGNqh3S0KkXRbrF0CLDt2Dw5ua3e/AumL3XY32tGWW3G2Jjxyzv0fURntj+wYZPQeiGEAyiGkK+QO1vjIAY/AHXmRIfT+bqDOc12Y1F8v+erf/eiK+CUhjjtnykz6NVRM7X4uYU2kJwEQghrGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+icZjQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A2EC32782;
+	Mon, 12 Aug 2024 16:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480019;
-	bh=ss6ckAD6uIFR9MubE9TLCCUunO8NQ5DtfbNVynOHRNU=;
+	s=korg; t=1723479208;
+	bh=jqcJftunb+hTU0mZbKhPqg7arw4E8VFlEHPXHqnLnik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xSZ6LSU6N3gQsz8hxtRhfMppKu8Ogz1JZ3w08DfEq1Z1oT972GHSBu0ZvPeIaEO7v
-	 9YVPuh5/cyNgSyeetspHa6eolt6KMUbbh1DRmMYVpPA/SOBuQmQi23bM6EmE+OdMfa
-	 Q2U+kG1NVbaTMhf2ye+mmho2AcWkt+H3O4f/460c=
+	b=x+icZjQqsm85rJCZf9bYa3cV/PL97m6RjueEDfiGNUh32BiUE845zdG8EDH2cSR1x
+	 Yha5TJ/R+5ki/F+UmdCtLmCvesKOkc9h6yhjQq4c/vunOLyIty6OJ7YXtpkhDt3ses
+	 u5uXuv7mNOmOsa38ZRAD5ookxS81gV9QUSqwH5q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 071/263] PCI: Add Edimax Vendor ID to pci_ids.h
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Sergey Temerkhanov <sergey.temerkhanov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.6 016/189] ice: Fix reset handler
 Date: Mon, 12 Aug 2024 18:01:12 +0200
-Message-ID: <20240812160149.261019271@linuxfoundation.org>
+Message-ID: <20240812160132.767809446@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-[ Upstream commit eee5528890d54b22b46f833002355a5ee94c3bb4 ]
+[ Upstream commit 25a7123579ecac9a89a7e5b8d8a580bee4b68acd ]
 
-Add the Edimax Vendor ID (0x1432) for an ethernet driver for Tehuti
-Networks TN40xx chips. This ID can be used for Realtek 8180 and Ralink
-rt28xx wireless drivers.
+Synchronize OICR IRQ when preparing for reset to avoid potential
+race conditions between the reset procedure and OICR
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20240623235507.108147-2-fujita.tomonori@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4aad5335969f ("ice: add individual interrupt allocation")
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci_ids.h | 2 ++
+ drivers/net/ethernet/intel/ice/ice_main.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 942a587bb97e3..677aea20d3e11 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2126,6 +2126,8 @@
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 600a2f5370875..b168a37a5dfff 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -557,6 +557,8 @@ ice_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 	if (test_bit(ICE_PREPARED_FOR_RESET, pf->state))
+ 		return;
  
- #define PCI_VENDOR_ID_CHELSIO		0x1425
- 
-+#define PCI_VENDOR_ID_EDIMAX		0x1432
++	synchronize_irq(pf->oicr_irq.virq);
 +
- #define PCI_VENDOR_ID_ADLINK		0x144a
+ 	ice_unplug_aux_dev(pf);
  
- #define PCI_VENDOR_ID_SAMSUNG		0x144d
+ 	/* Notify VFs of impending reset */
 -- 
 2.43.0
 
