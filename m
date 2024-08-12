@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-67033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC2294F399
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB1794F2A4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A6F52841C6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B877BB24778
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C28E186E38;
-	Mon, 12 Aug 2024 16:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5A818757D;
+	Mon, 12 Aug 2024 16:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtJD0mYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7duNnbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB4F18454D;
-	Mon, 12 Aug 2024 16:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F0B186E36;
+	Mon, 12 Aug 2024 16:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479579; cv=none; b=N4jgWdV1fq7nZ8qfVs4KvcE6kjAtzKXskra857wJ0+oF4LfLMfGDKvYMrBs97vvBkOfbNxafrZi4OH2y4VMTF6FlJ9kFaOW7Ip5tgHsEw8DPMQHi7lnx5ZD2I8xCzF5ocf/c5zS2PwYYihdQf/arZKkk2/tJv5i5T5XVzkD/4WI=
+	t=1723478908; cv=none; b=ae0DTGSB5vJkMFYxlgxjKp4JpPLM9naOqT20SCL/Q7ZYbJoR/ovlRw/glKcy5E9JQNirHzzKv3QLnL2tkpbXtuxOIH9Gm03n4GzqdVLlK0uhvnEsup4UmN6/uoJ6DOlxDzP1eoESjnzUw+BiTitG7LMSrgr5HyFTGBfgP+u/hHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479579; c=relaxed/simple;
-	bh=ELAZvREwBpoUgH6CYSOtrf2fh/1GPV29zfHdRYVmP0M=;
+	s=arc-20240116; t=1723478908; c=relaxed/simple;
+	bh=zpq+SE+v84XAPwMYxRYkqLRpwSPUT/qmxep27uZozw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptTQ/jeoMZ7eU9JAtCKspU/nHPBGv++kp96ZhsgfJSeFcnD8wtjAXPNw3sQG+yVADQAAraj/GSeu8rJ+SwVokunld9T2tQB7sdZrZlLujMsiBz5ZSpYeL08TJs1MVaa5VC71Gnl2MG+CjuswT2198dbK3LEN9fGoOyHCkqU+Skc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtJD0mYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7480EC32782;
-	Mon, 12 Aug 2024 16:19:38 +0000 (UTC)
+	 MIME-Version; b=KG21dD1wHVY8YiHUvKzx4Um2LCUvE3nlD6+N4dL23M/jdPC502t+ghUWeGdZ5iPD/XCq1Bb2bNwk8lpXh7w9gB9+JT7q6+TmC0ElfBnEiJBVxYk7wstNExF3Thr0aIMjNtAR3RF1h4nK4wl7YM07Glj0VK0nqL3zmm1nwH46C+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7duNnbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD65C32782;
+	Mon, 12 Aug 2024 16:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479578;
-	bh=ELAZvREwBpoUgH6CYSOtrf2fh/1GPV29zfHdRYVmP0M=;
+	s=korg; t=1723478908;
+	bh=zpq+SE+v84XAPwMYxRYkqLRpwSPUT/qmxep27uZozw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtJD0mYdklJHBY1Wt0lV5W9ainVRfBQWEuz+R5ecVEkO1nqOAG2T1HFuNHQ8Bp4KQ
-	 HgvloGmbYmbGtpLostrs6U8SkHFKOJddVp+F5b2mUkWeJxa7yzdKyLLJJTFaoBHEkE
-	 5/0d9AtJEhO4XyRwxClhT3t/5idY8V/IU0jO++lQ=
+	b=H7duNnbfRhHlcAfuJ+Ah8Uqnq1A/fNk3iwSAO0iVGcnFcaG9CP2SIRo8GNflZ1d4c
+	 bULozYgz0eoCmdT3m3qT8Su1GPbT+9g0OYi89TNj8CKA2ay/TkCoJkqFnCUjd2miH5
+	 lkdJ8aik550GiavEirF+aVUt7Qb47BREH0if6IgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/189] kprobes: Fix to check symbol prefixes correctly
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.1 074/150] ASoC: codecs: wsa883x: parse port-mapping information
 Date: Mon, 12 Aug 2024 18:02:35 +0200
-Message-ID: <20240812160135.953509727@linuxfoundation.org>
+Message-ID: <20240812160128.031753175@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 8c8acb8f26cbde665b233dd1b9bbcbb9b86822dc ]
+[ Upstream commit 1cf3295bd108abbd7f128071ae9775fd18394ca9 ]
 
-Since str_has_prefix() takes the prefix as the 2nd argument and the string
-as the first, is_cfi_preamble_symbol() always fails to check the prefix.
-Fix the function parameter order so that it correctly check the prefix.
+Add support to parse static master port map information from device tree.
 
-Link: https://lore.kernel.org/all/172260679559.362040.7360872132937227206.stgit@devnote2/
-
-Fixes: de02f2ac5d8c ("kprobes: Prohibit probing on CFI preamble symbol")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patch.msgid.link/20240626-port-map-v2-2-6cc1c5608cdd@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 6801ac36f256 ("ASoC: codecs: wsa883x: Correct Soundwire ports mask")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kprobes.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/wsa883x.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index add63428c0b40..c10954bd84448 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1558,8 +1558,8 @@ static bool is_cfi_preamble_symbol(unsigned long addr)
- 	if (lookup_symbol_name(addr, symbuf))
- 		return false;
+diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
+index cd96c35a150c8..908f3c5035721 100644
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -1410,6 +1410,14 @@ static int wsa883x_probe(struct sdw_slave *pdev,
+ 	wsa883x->sconfig.direction = SDW_DATA_DIR_RX;
+ 	wsa883x->sconfig.type = SDW_STREAM_PDM;
  
--	return str_has_prefix("__cfi_", symbuf) ||
--		str_has_prefix("__pfx_", symbuf);
-+	return str_has_prefix(symbuf, "__cfi_") ||
-+		str_has_prefix(symbuf, "__pfx_");
- }
- 
- static int check_kprobe_address_safe(struct kprobe *p,
++	/**
++	 * Port map index starts with 0, however the data port for this codec
++	 * are from index 1
++	 */
++	if (of_property_read_u32_array(dev->of_node, "qcom,port-mapping", &pdev->m_port_map[1],
++					WSA883X_MAX_SWR_PORTS))
++		dev_dbg(dev, "Static Port mapping not specified\n");
++
+ 	pdev->prop.sink_ports = GENMASK(WSA883X_MAX_SWR_PORTS, 0);
+ 	pdev->prop.simple_clk_stop_capable = true;
+ 	pdev->prop.sink_dpn_prop = wsa_sink_dpn_prop;
 -- 
 2.43.0
 
