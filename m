@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-67250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8E794F491
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECE594F49C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 953141F21A2F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C19EF1C20AF5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F76187332;
-	Mon, 12 Aug 2024 16:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEE6186E5E;
+	Mon, 12 Aug 2024 16:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GN/TwdyD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWe5BIR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D56183CD4;
-	Mon, 12 Aug 2024 16:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36312C1A5;
+	Mon, 12 Aug 2024 16:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480306; cv=none; b=lo8gURdpw17p7/4OmLSG3D2DKT95QjC9EHY1MEp83mQ/du96/Dcf1GsneQuJCMI+ddKimGCRlHBu+aC3nyS9aQVlvS5ZiBt+IWUTr98STHT0M2AVUl+G9zcsCHIPnly3ZGvnPF/UsinHPY8VOBeESBKmiB2YPQTOGlOJtdWYto0=
+	t=1723480342; cv=none; b=hLjZMw/+EXNlDzUiI+iWmTh4XgBcA3Ccnb8rscDc1zGLmR0j9vbgQq3cM3P1ZYDFM3tZYxTV4VZCeABR2ggPpIQz5f0tloRHPOVGsPknF+tintgwV9AynoC+4/f4HaK1i36eqkcWgtbNN34MZY47JiSZ2AhuSBMaRaWN8REQNrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480306; c=relaxed/simple;
-	bh=z6wANyY/eGPU9nL0fYMogqFCSJg/e46WI01L7nwI4ms=;
+	s=arc-20240116; t=1723480342; c=relaxed/simple;
+	bh=HuOpkZzDmdS+a++ce2HyH4Tb3dIvqepbohgCf18b2yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnAeJbft2/ghGClQCyj/kFpW5bdlu8XD4hY0SiAvG5VQMJL0e9UaWlOARIPpD9jywt7tDZq4pkSjRtNinw4w74AJQV4u8jSrVQzKefu64O6RMMWOxtRAw5qeW+O7pkGLhGOup68XZnwh6Mpmr1J857kFqY061L8jbYVFXVR1iq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GN/TwdyD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BA3C4AF0D;
-	Mon, 12 Aug 2024 16:31:45 +0000 (UTC)
+	 MIME-Version; b=ACmRYMV2D9WOydevnRkzkoz8lAvDgVDaF+WYX2lqR5QhXgza9DEOXbyLrfgTgLMLFkCnJ2TjJuD+O17ovIMVj3l1MG7EwhPbouZGD7oNfIus+dDJj0ca6Tjjo6gPCbuvR9PNdG1WlNktZJwkH7uQnNpVKU0/aqtkzV/eWNK2cwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWe5BIR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF04BC32782;
+	Mon, 12 Aug 2024 16:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480306;
-	bh=z6wANyY/eGPU9nL0fYMogqFCSJg/e46WI01L7nwI4ms=;
+	s=korg; t=1723480342;
+	bh=HuOpkZzDmdS+a++ce2HyH4Tb3dIvqepbohgCf18b2yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GN/TwdyDLHSRxsDSTYHeWBsq78UaLIP0gBRIeQ+GCulV2D/xMXp+dhHVbdIlPioJL
-	 wqr9qhrw5LaX6kUduRep70lNqmPhDHcfqV3bli3oLYNok9MCPTPahZ5KK7o2h1VXts
-	 r9UVRMY04HUU4qocdJMO6z8ZKzGXL4yKXiXodZzo=
+	b=HWe5BIR/iNJ6k3aghQsw+t6jqGNGeyPCmSjgXL6ZM/7xTLEff4NV5ZlY3y/+TgI/9
+	 yDN9Fwf8t5HBvJV+ASUySC8GNCL09rGYPBGQqq9upm57adRhDAzDwYA2NzXJnrQKgN
+	 NfdIfwhELG9Can49DgaiaGMKnZqPNFUAnF0zkDGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Jiri Olsa <jolsa@kernel.org>,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 150/263] bpf: kprobe: remove unused declaring of bpf_kprobe_override
-Date: Mon, 12 Aug 2024 18:02:31 +0200
-Message-ID: <20240812160152.289422930@linuxfoundation.org>
+Subject: [PATCH 6.10 151/263] kprobes: Fix to check symbol prefixes correctly
+Date: Mon, 12 Aug 2024 18:02:32 +0200
+Message-ID: <20240812160152.327207487@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -67,37 +65,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 0e8b53979ac86eddb3fd76264025a70071a25574 ]
+[ Upstream commit 8c8acb8f26cbde665b233dd1b9bbcbb9b86822dc ]
 
-After the commit 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction
-pointer with original one"), "bpf_kprobe_override" is not used anywhere
-anymore, and we can remove it now.
+Since str_has_prefix() takes the prefix as the 2nd argument and the string
+as the first, is_cfi_preamble_symbol() always fails to check the prefix.
+Fix the function parameter order so that it correctly check the prefix.
 
-Link: https://lore.kernel.org/all/20240710085939.11520-1-dongml2@chinatelecom.cn/
+Link: https://lore.kernel.org/all/172260679559.362040.7360872132937227206.stgit@devnote2/
 
-Fixes: 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction pointer with original one")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
+Fixes: de02f2ac5d8c ("kprobes: Prohibit probing on CFI preamble symbol")
 Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h | 1 -
- 1 file changed, 1 deletion(-)
+ kernel/kprobes.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 9df3e2973626b..9435185c10ef7 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -880,7 +880,6 @@ do {									\
- struct perf_event;
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index 6a76a81000735..85251c254d8a6 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1557,8 +1557,8 @@ static bool is_cfi_preamble_symbol(unsigned long addr)
+ 	if (lookup_symbol_name(addr, symbuf))
+ 		return false;
  
- DECLARE_PER_CPU(struct pt_regs, perf_trace_regs);
--DECLARE_PER_CPU(int, bpf_kprobe_override);
+-	return str_has_prefix("__cfi_", symbuf) ||
+-		str_has_prefix("__pfx_", symbuf);
++	return str_has_prefix(symbuf, "__cfi_") ||
++		str_has_prefix(symbuf, "__pfx_");
+ }
  
- extern int  perf_trace_init(struct perf_event *event);
- extern void perf_trace_destroy(struct perf_event *event);
+ static int check_kprobe_address_safe(struct kprobe *p,
 -- 
 2.43.0
 
