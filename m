@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1025494F251
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BED94F43F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16F2281598
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:04:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75FB11C2037F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A58186295;
-	Mon, 12 Aug 2024 16:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF0E186E38;
+	Mon, 12 Aug 2024 16:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClhLRwSb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYYZZ8HI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D191EA8D;
-	Mon, 12 Aug 2024 16:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686C0134AC;
+	Mon, 12 Aug 2024 16:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478697; cv=none; b=Tbq3AnT0HU/XMDAaJltfSjZClZ+wPteBPcthvrr3N2c6hxmkqIzYWG/Bk1vdNN5DRWBDHYGqkaDzlchIhGWIx4WXmPE2g0xjoWHviDXQO3ACyC+P9IZ8WVjv+1xLYm/m3zs7dVLWeLw5G5TbnN6QHlgbl27/RCHCpBE4POXDdbc=
+	t=1723480084; cv=none; b=otesxkEddGtiuUKeQCPEvzGQ4DlBB9RzjwTvyZBmcv0RWDoeLb7vWYO8Byj+pop/WuWbDLGRVv63fPxLoj/RCKp8hDFz/sAkAfgRZcxPVP3T3Fv3Je8G+1wdQMu/Zp1DLS/MOLf5VYLpDhBjW1an4QJ1i5BCZvhnrb/eR/8wIkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478697; c=relaxed/simple;
-	bh=7KdsjgEvMow1EyG2Ga/pgxObuZPwoZjtNs2H4xcxTYI=;
+	s=arc-20240116; t=1723480084; c=relaxed/simple;
+	bh=Dz+BzA7aqq5jF+nldFL2DV2D0y4wyTBsxoHe7FuaUS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQcN+NwMJQBgnRm5p296zbgsuCizX6JUb9oRII5yOV1jVcVi2KUx1Y2fQbe12x9uxvRdU5BWjjneA998wpd+MwsKyzD+O6WufLMcVNFzfByfKaXRmQQFvz6e/puEwGVfSlhj9Arqf83PKYq4b/iBwfZV5j+50gE1nl7T9dP8Mtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClhLRwSb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC5DC32782;
-	Mon, 12 Aug 2024 16:04:56 +0000 (UTC)
+	 MIME-Version; b=VzHVVFSAhiiWJ9mnwtUf9xQzt4A9sn3tbZMOwJ4FZ8wFEgCbGIEqACmOJUbQME99yJdtYN9Ent50/Vlqu7muI60r1h5uMG6qJammFSTaeYry6ClWaBJ4vvR2S+Kv0F/UjBzDkavbB82e/HOSfJ/u6ffOFUdlBRTjq8eSKhWc4WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYYZZ8HI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0BBC32782;
+	Mon, 12 Aug 2024 16:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478697;
-	bh=7KdsjgEvMow1EyG2Ga/pgxObuZPwoZjtNs2H4xcxTYI=;
+	s=korg; t=1723480084;
+	bh=Dz+BzA7aqq5jF+nldFL2DV2D0y4wyTBsxoHe7FuaUS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClhLRwSbG/3ef8ooWG2nfiOfBO7+/1gWEnK1tDtm+hO7F2EKN/wPpqgz/rUlzIj5K
-	 EXSb1hXaj7QsF8m8q4FArgSCXHg4xtYb8V7asUjW0tvsxfpNdA0TZzXU8NFuIVA2TC
-	 SFnlU8F23ORk6Y4cey2uFtC8iFryDU0kfIyUxIdQ=
+	b=JYYZZ8HIYET1ge2n2ehXegwTkka3IhNio9VfKe6TYzfCK0DAaueUODlwYFBjkkSWB
+	 8MMFQx0atEz3s2FAlEcGvsaNAGApe2LcgIyv4FdmJXn0zKGL7OB7MUhrMiycEjiSJy
+	 4ApnCwJnUYr6e59LwyM2Y1YiPih6H6Zi3/FtdM/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/150] Bluetooth: l2cap: always unlock channel in l2cap_conless_channel()
-Date: Mon, 12 Aug 2024 18:01:32 +0200
-Message-ID: <20240812160125.590709729@linuxfoundation.org>
+Subject: [PATCH 6.10 092/263] drm/xe/xe_guc_submit: Fix exec queue stop race condition
+Date: Mon, 12 Aug 2024 18:01:33 +0200
+Message-ID: <20240812160150.066687160@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 
-[ Upstream commit c531e63871c0b50c8c4e62c048535a08886fba3e ]
+[ Upstream commit 1564d411e17f51e2f64655b4e4da015be1ba7eaa ]
 
-Add missing call to 'l2cap_chan_unlock()' on receive error handling
-path in 'l2cap_conless_channel()'.
+Reorder the xe_sched_tdr_queue_imm and set_exec_queue_banned calls in
+guc_exec_queue_stop.  This prevents a possible race condition between
+the two events in which it's possible for xe_sched_tdr_queue_imm to
+wake the ufence waiter before the exec queue is banned, causing the
+ufence waiter to miss the banned state.
 
-Fixes: a24cce144b98 ("Bluetooth: Fix reference counting of global L2CAP channels")
-Reported-by: syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=45ac74737e866894acb0
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240510194540.3246991-1-jonathan.cavitt@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_guc_submit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 98dabbbe42938..209c6d458d336 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7811,6 +7811,7 @@ static void l2cap_conless_channel(struct l2cap_conn *conn, __le16 psm,
- 	bt_cb(skb)->l2cap.psm = psm;
- 
- 	if (!chan->ops->recv(chan, skb)) {
-+		l2cap_chan_unlock(chan);
- 		l2cap_chan_put(chan);
- 		return;
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index e4e3658e6a138..0f42971ff0a83 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -1429,8 +1429,8 @@ static void guc_exec_queue_stop(struct xe_guc *guc, struct xe_exec_queue *q)
+ 			    !xe_sched_job_completed(job)) ||
+ 			    xe_sched_invalidate_job(job, 2)) {
+ 				trace_xe_sched_job_ban(job);
+-				xe_sched_tdr_queue_imm(&q->guc->sched);
+ 				set_exec_queue_banned(q);
++				xe_sched_tdr_queue_imm(&q->guc->sched);
+ 			}
+ 		}
  	}
 -- 
 2.43.0
