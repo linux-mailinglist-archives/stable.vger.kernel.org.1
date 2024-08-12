@@ -1,129 +1,71 @@
-Return-Path: <stable+bounces-66734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AD194F134
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB1D94F139
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 018901C220A9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:03:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AFB51C218D9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A4A184522;
-	Mon, 12 Aug 2024 15:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5D9178370;
+	Mon, 12 Aug 2024 15:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NnFoookQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJx912jy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BE917CA0B;
-	Mon, 12 Aug 2024 15:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F4A1E504
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 15:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474968; cv=none; b=nM8XIToS/2KtBwP7rHgLr3QCOxRoXiyQpNRKP3myniN5YRimTrGr94EPYZIVucvCmCLfN1v1cz1F2C/ahubjPG73hNtnkXTdpuAVES+e1rgsbAHB6mdQQIx+DBugolp2eEUIxKVd9abgYfwGonWILS31Llk97mDcOhJIQYZY1PY=
+	t=1723475029; cv=none; b=VcWJKL8QlVEYslBNt0BE7F+DcQTkb4/BPFS1iEWLU2uWljJL3B1eI6elPEImJuNYtor/bbHm20Hy7rwihh1hbYHjtgJM2aNFSd9uUs84jdDmiLdbGMgXMvzl3PPbn5gczTnINGk2eNIWW02LRw/0spXMsT4SKw2sargMSLWTTBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474968; c=relaxed/simple;
-	bh=ek0GvpFyQhMtfrRDWGQe+M5JkNQjyO//K/wFq0rCGyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJGjHR5FI7Uv98GcVnDmnhidBPOWV4A+j/aVEnitE4VbWgkuuOG2Q8Q98uodpokcszNrtZXp3chvuh2vPzFi6hpRT4gjItzIuOda35ArrPkhc+eu7FZJqIJvAVmluwtoJHidIlECRVSPw+TCDG1ZgE6Tw3CDAQGCNtmKmI6+RjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NnFoookQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626C0C4AF11;
-	Mon, 12 Aug 2024 15:02:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723474967;
-	bh=ek0GvpFyQhMtfrRDWGQe+M5JkNQjyO//K/wFq0rCGyI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnFoookQTTVtQxkBWvsuSA404js9hHhV8kDsn2HghJqcbZWBtF94DHTcZ6gn0WcEJ
-	 YDNkPrttazIh+UNLR6K39ecKpK7eGsJ/RmvlStyNivm3MxHpe++KU4/wTkTbXE5bLR
-	 5WLWxeF+KDl9XAQxJMyyUdUZI9Pzo8NJeeR6AmYa88jvHrW6JOUWjMHh524JqCqkdr
-	 egHNn9952rNYR6TfMnn8Gg2qhXrnLBDXeDl2tRzu3hbzZn6+OhI3r9qXUDwjdqkdEt
-	 05++NQZkSkcGBufmr1Ib7Zja91sYj3mHr9VG5Yg95+IgeCVB8Asi/yUiVPIUCYmFsu
-	 bKTUbo2GunCpg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: mptcp@lists.linux.dev,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10.y 5/5] selftests: mptcp: join: test both signal & subflow
-Date: Mon, 12 Aug 2024 17:02:19 +0200
-Message-ID: <20240812150213.489098-12-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024081244-smock-nearest-c09a@gregkh>
-References: <2024081244-smock-nearest-c09a@gregkh>
+	s=arc-20240116; t=1723475029; c=relaxed/simple;
+	bh=BpRsYPDP3VoYUOYNLXNkbFUiRd9/bf4wTybjrb5yvL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bZ81sL8ZvYEhTa06AJoIS68NW6W6sz/gtzl6hSIhs053ZsWV0+LsNUBB4hOduZ5EoTVlUnVZVjkc2awBGxoOtCrSfG7ovRur5lDeekhehoUxT0QW0uE3WsEEhvGk4jhaG80AXBzSaRvezZkDq9ycVZjp+Ntux5OkZTvtYHTeYGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJx912jy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED37CC32782;
+	Mon, 12 Aug 2024 15:03:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723475028;
+	bh=BpRsYPDP3VoYUOYNLXNkbFUiRd9/bf4wTybjrb5yvL8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dJx912jypyWuTss9GqIvIvk+qJIesv65v0EyCrN6o2xz9qgi+367Nu4F2BiHoNwEe
+	 lR6kZZwhJu0puK/MXA0suDz8Qp8r3uu2ANgS6O3XFi3gnUbrxpbgCFtRgnt5be3I4C
+	 cO85ooweV2JgPTUEn5ZeqlAZWk9DNvCEDC3lPkh4=
+Date: Mon, 12 Aug 2024 17:03:45 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: stable@vger.kernel.org, anshuman.khandual@arm.com,
+	bwicaksono@nvidia.com, catalin.marinas@arm.com, james.clark@arm.com,
+	james.morse@arm.com, will@kernel.org
+Subject: Re: [PATCH 6.6.y 13/13] arm64: errata: Expand speculative SSBS
+ workaround (again)
+Message-ID: <2024081211-props-gimmick-e3f5@gregkh>
+References: <20240809095745.3476191-1-mark.rutland@arm.com>
+ <20240809095745.3476191-14-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2733; i=matttbe@kernel.org; h=from:subject; bh=ek0GvpFyQhMtfrRDWGQe+M5JkNQjyO//K/wFq0rCGyI=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmuiP1Wc9DMJ0sM8XP8P+xL5GzdCymmKzXkHASE wWWBEXfkpOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZroj9QAKCRD2t4JPQmmg cyQrEADwhs7dQSbvAkeWa+B6d3nHOc6kiF8KXZzVXKNOxRKfPTLHouffphzIv6t5mNrUJaU4PsD FGy9AWJ+vkw4JIxsiCjXzYEbeWBed+A+sQp6prv3kowrzfSbQDyl190SvRksPF/S9uYeHfbaNX9 GTAPK7AyAJmZ7TBTRTE/Fga46TG1Ij+5ZyqJumXDJL1S8QuVhZKKFaBtAZDc7jOhVxR/afwKcoJ dWLiEcfD65LLj0Z1sPHKIhn6daAZB7yUlG4uTsdGPF/2ItrUketYW75/jpG+KoOVgvDvAtmXJAT y3AQ7FI4Dw+caCJyDqGUT50vEsS5cVgJaEGk4KiHiqF7c0J91rAsf5SOIVeMidOWrkXdeMlerJ+ lTqDXwPUX/39uZJ3UK7q3mV6MdYQkpvRKTZPTxegbVJO1JQTzjjfNmypTVuV1qZu/OqCj5iDIfm o6qCYthpmZJvZ65Js0JrfnaM08RGBqtHGDyTBfo8guJhLfmq8f1UmN7z2PcePg/yGjvXG0O1Ceb 0ptT34096w+trZi7UCh+fvNWWGOXHa6L5/j1lcFNRAFfC0pZGhbnId12XNzE3RrDibzN/n141z/ IETC7v7KZoBQrGNWFJkkZPRq7KaIEg+uqExVgRiGQHp1MPwihP4MVmkL74T+IhdjdZS0Aabdh6i 0XyRStvhthr/+2w==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240809095745.3476191-14-mark.rutland@arm.com>
 
-commit 4d2868b5d191c74262f7407972d68d1bf3245d6a upstream.
+On Fri, Aug 09, 2024 at 10:57:45AM +0100, Mark Rutland wrote:
+> [ Upstream commit b0672bbe133ebb6f7be21fce1d742d52f25bcdc7 ]
 
-It should be quite uncommon to set both the subflow and the signal
-flags: the initiator of the connection is typically the one creating new
-subflows, not the other peer, then no need to announce additional local
-addresses, and use it to create subflows.
+Now I figured it out, this is the wrong git id, and is not in any tree
+anywhere.  It should be adeec61a4723fd3e39da68db4cc4d924e6d7f641.
 
-But some people might be confused about the flags, and set both "just to
-be sure at least the right one is set". To verify the previous fix, and
-avoid future regressions, this specific case is now validated: the
-client announces a new address, and initiates a new subflow from the
-same address.
+I'll go hand-edit it now...
 
-While working on this, another bug has been noticed, where the client
-reset the new subflow because an ADD_ADDR echo got received as the 3rd
-ACK: this new test also explicitly checks that no RST have been sent by
-the client and server.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-7-c8a9b036493b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 8ab350059ce1..a3293043c85d 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -1989,6 +1989,21 @@ signal_address_tests()
- 		chk_add_nr 1 1
- 	fi
- 
-+	# uncommon: subflow and signal flags on the same endpoint
-+	# or because the user wrongly picked both, but still expects the client
-+	# to create additional subflows
-+	if reset "subflow and signal together"; then
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 0 2
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags signal,subflow
-+		run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 1 1 1
-+		chk_add_nr 1 1 0 invert  # only initiated by ns2
-+		chk_add_nr 0 0 0         # none initiated by ns1
-+		chk_rst_nr 0 0 invert    # no RST sent by the client
-+		chk_rst_nr 0 0           # no RST sent by the server
-+	fi
-+
- 	# accept and use add_addr with additional subflows
- 	if reset "multiple subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
--- 
-2.45.2
-
+greg k-h
 
