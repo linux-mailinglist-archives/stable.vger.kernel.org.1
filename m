@@ -1,88 +1,94 @@
-Return-Path: <stable+bounces-66442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D582A94EABD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:25:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36DCD94EAC0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FC4D1F22762
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 10:25:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 684AA1C21429
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 10:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2509D16F0CF;
-	Mon, 12 Aug 2024 10:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPjC/vwO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2348416F0F9;
+	Mon, 12 Aug 2024 10:24:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C609E16EC16;
-	Mon, 12 Aug 2024 10:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5745716EBFE;
+	Mon, 12 Aug 2024 10:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723458282; cv=none; b=Z+a6CNBsYxGfNPKdNs1iYY1TnFAo/H6XYlCR/fYbtTHnwGu54BmOFKhrjHaUqHx2Isq94x/CJsmqH78k7zVqvtTcOJ/fBsHNrgM5WnDjblb9U8t3efOC2Ojd8bUtIytgWq+pP+jfl68HKZ9AwVXj8vFaLH8aA53DzLY/PTF6Xwk=
+	t=1723458296; cv=none; b=UF49aH7LNDk8m/LbMbQ0jpK1KDjdApNG+axZN6YaWP0arMyVGz2zIIPjrp9AjahrEwoJz5TLxLteAObLI/b/CWLJjF3OgukCxKgSBuI4vXKaQR2wQx06ofkYoBwLVKMDsJAkbfRc64sPv6+rbdoCCjMrFvbQihjALZppDpOzJ8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723458282; c=relaxed/simple;
-	bh=+cVxtBneiG5GQqDahZath/rPvSDoru3swRCQjqvU6Rg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZcsoQzqUZogHp+6SFQ/1oxWwTEXm+tHNWQaovxJD4XJQrp13fjaZMgabiAUmrhn6IajCQ8iE4l9KMVyMdBS67htzQ/BdMEJ5HtyrBtEv5sN1A1nCI0Nj6+p40cmtL9b/0dS+UXlc+r7K4kZbieAus5EwfZAB4BAKXihMskwX8gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPjC/vwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABDB0C32782;
-	Mon, 12 Aug 2024 10:24:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723458282;
-	bh=+cVxtBneiG5GQqDahZath/rPvSDoru3swRCQjqvU6Rg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cPjC/vwOU70CRZg8jZYlnOFDuG8J2sg6HRwJZ8seRgE25CTFEdkpvbwWWrdGxhZg4
-	 qQdiwyGLZphu3l5QYx1FjgIy+IzUkvgOLh+Z3wNm0wk3pZtrJlRVfJVuCFrOl/GgeB
-	 3RNscbtLoBnP4W5FIzdcwhdU90Zl/IvUoJ2fVuM4=
-Date: Mon, 12 Aug 2024 12:24:39 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>,
-	=?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>, lgirdwood@gmail.com,
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	Vitaly Chikunov <vt@altlinux.org>, stable@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.9 17/40] ASoC: topology: Fix route memory
- corruption
-Message-ID: <2024081204-delirious-nursery-f950@gregkh>
-References: <czx7na7qfoacihuxcalowdosncubkqatf7gkd3snrb63wvpsdb@mncryvo4iiep>
- <14e54a89-5c62-41b2-8205-d69ddf75e7c7@linux.intel.com>
- <e95a876a-b4b4-4a9d-9608-ec27a9db3e0c@leemhuis.info>
+	s=arc-20240116; t=1723458296; c=relaxed/simple;
+	bh=08Xmd7jBWI2ZS++477ywCjhiYEwCkk6o1BEwlc78jJY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iM+TXZjVe1vY2Ld8L3DQEjIXcPmdRSb14NjRDboHJTfV30lpI03UgApUYDFKbij5T0swvnYEBxCtf+FiXpZVxyjuuSzAtRviF71fmmmz2TaCb8nyZDVcW3WkHocURKMcRFeIOpaY+2gMlDcWC5YRrF2IqX4Oa4KYauGXPO+Nl/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH -stable,5.15.x 0/5] Netfilter fixes for -stable
+Date: Mon, 12 Aug 2024 12:24:41 +0200
+Message-Id: <20240812102446.369777-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e95a876a-b4b4-4a9d-9608-ec27a9db3e0c@leemhuis.info>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 12, 2024 at 11:53:17AM +0200, Thorsten Leemhuis wrote:
-> Hi, top-posting for once, to make this easily accessible to everyone.
-> 
-> Greg, Sasha, to me it looks like something fell through the cracks.
-> Pierre-Louis afaics about a week ago asked (see the quote below) to
-> revert 97ab304ecd95c0 ("ASoC: topology: Fix references to freed memory")
-> [v6.10-rc6, v6.9.11, v6.6.42, v6.1.101] from the stable branches *or*
-> pick up b9dd212b14d27a ("ASoC: topology: Fix route memory corruption").
+Hi Greg, Sasha,
 
-Commit b9dd212b14d27a is a merge commit, nothing that we can take at all
-here, sorry.
+This batch contains a backport for recent fixes already upstream for 5.15.x.
 
-> But nothing like that has happened yet and I can't see any of those
-> resolutions in the 6.6 queue.
+The following list shows the backported patches, I am using original commit
+IDs for reference:
 
-Again, I can't take a merge commit :(
+1) b53c11664250 ("netfilter: nf_tables: set element extended ACK reporting support")
 
-thanks,
+   This improves error reporting when adding more than one single element to set,
+   it is not specifically fixing up a crash.
 
-greg k-h
+2) 7395dfacfff6 ("netfilter: nf_tables: use timestamp to check for set element timeout")
+
+3) 3c13725f43dc ("netfilter: nf_tables: bail out if stateful expression provides no .clone")
+
+4) fa23e0d4b756 ("netfilter: nf_tables: allow clone callbacks to sleep")
+
+5) cff3bd012a95 ("netfilter: nf_tables: prefer nft_chain_validate")
+
+Please, apply,
+Thanks
+
+Florian Westphal (2):
+  netfilter: nf_tables: allow clone callbacks to sleep
+  netfilter: nf_tables: prefer nft_chain_validate
+
+Pablo Neira Ayuso (3):
+  netfilter: nf_tables: set element extended ACK reporting support
+  netfilter: nf_tables: use timestamp to check for set element timeout
+  netfilter: nf_tables: bail out if stateful expression provides no .clone
+
+ include/net/netfilter/nf_tables.h |  20 +++-
+ net/netfilter/nf_tables_api.c     | 188 ++++++------------------------
+ net/netfilter/nft_connlimit.c     |   4 +-
+ net/netfilter/nft_counter.c       |   4 +-
+ net/netfilter/nft_dynset.c        |   2 +-
+ net/netfilter/nft_last.c          |   4 +-
+ net/netfilter/nft_limit.c         |  14 ++-
+ net/netfilter/nft_quota.c         |   4 +-
+ net/netfilter/nft_set_hash.c      |   8 +-
+ net/netfilter/nft_set_pipapo.c    |  18 +--
+ net/netfilter/nft_set_rbtree.c    |   6 +-
+ 11 files changed, 90 insertions(+), 182 deletions(-)
+
+--
+2.30.2
+
 
