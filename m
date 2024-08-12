@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-67016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208AC94F385
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5EF94F2E8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 533411C2112C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C418285122
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834F0186E34;
-	Mon, 12 Aug 2024 16:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB5D186E34;
+	Mon, 12 Aug 2024 16:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLHaouqJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyq95Ize"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40402183CA6;
-	Mon, 12 Aug 2024 16:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF87183CA6;
+	Mon, 12 Aug 2024 16:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479523; cv=none; b=s0Gd7y2F5HpfTzLt7E0QtrQMlRX0krT06uRJKXO9kqJh3CJg3jg4NMPfsLjooRXbmgqTXP4dNcloy/kYNfZQzhGmXXtfkaMfZ8lI4oCrITLLLVadmfhkfHEwJvEYxoE95sW7MJnRokY1eFsp/IVVo+Vz1QDdt7QMAgxAefMIm1c=
+	t=1723479092; cv=none; b=kEh2pCGVylaZ8bMXX/6epniUQyzBuV5PK+I6vd0nkiMxKsxlyktAc7TNb2bhAZfhNgkJFz+AR/ljT75BUJp6FnZ2XCItjmIZFdgsZFYZNwcWx2OWzwPM5ym3uVS3TiRTVxme7cGB55lBiPJ+lo5NAff9wwmW3eys2VmkaXJHX04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479523; c=relaxed/simple;
-	bh=Yf6Fbe67njvpErkxMtEm3Fgootg3Ew5frsM9OHN1+As=;
+	s=arc-20240116; t=1723479092; c=relaxed/simple;
+	bh=gJyi/tkCJosgJmf6jwNTYQ2JDLzCkpgTNQUQUjm80qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1uDUmHHhF2oA+gFAhC0z06Sx+WjuUPR5f0NnfLXGPwXF2pP7jX+qFkvayGLDnlchYCurRdtQHBBQSWlqeqJL4mmJUE5YkQwaBeGSD8tAVzQfbAKh1zvHOWpiLbdSpHhlb0Ryx6YqdRu5nNSegrWVLCpSI4mrl6bpoiQzu0dWpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLHaouqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72306C32782;
-	Mon, 12 Aug 2024 16:18:42 +0000 (UTC)
+	 MIME-Version; b=ht70SCeVFowtVoh13A23qckzzMSzMT0ZFSwfzEFuo/Bn11Dzg+KIxYH54YraKoqsbxJbZaSuIvE2io8ecjVC+lGm9NgVJ0rQ4oMi44zZfA8Vkzlv+jbP2k8sK98FWIwsiyh0oVVci+rOWvYrqERamE+fVt8et17WeZSzREQ8Kis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyq95Ize; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E0FC4AF0D;
+	Mon, 12 Aug 2024 16:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479522;
-	bh=Yf6Fbe67njvpErkxMtEm3Fgootg3Ew5frsM9OHN1+As=;
+	s=korg; t=1723479092;
+	bh=gJyi/tkCJosgJmf6jwNTYQ2JDLzCkpgTNQUQUjm80qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLHaouqJ1dGdmjVS+yPPWOzS06O0PJ0jjcE12oR+DTy4LPdLSW+veZKsYyq8fROzR
-	 PRz31qe+wrMhxPTpt8ofB5Dss+j4xdIl09qb2oUBbyzc+X6hTyVgILjHgiqHBjBIV/
-	 NrLuXwci5hr7BPTPEFo22tD39GC45LSZ7QpLIo68=
+	b=tyq95IzeslpO+RpAM6K5pc8f5O7mjXaogbK0OLFJ/hP1a8YwKX6b9WdzdiTqnml58
+	 dPsazbez2a3EkqDOZrnJd/I9gXmUCfNBWgmSJ0f2Kf3k67xPL43loApsZb6GE/AUxz
+	 aGGmrM6ZGNnRo0DohUlITu/WHzE6oq4THYeL+FUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 113/189] ALSA: line6: Fix racy access to midibuf
-Date: Mon, 12 Aug 2024 18:02:49 +0200
-Message-ID: <20240812160136.490731221@linuxfoundation.org>
+Subject: [PATCH 6.1 089/150] ALSA: line6: Fix racy access to midibuf
+Date: Mon, 12 Aug 2024 18:02:50 +0200
+Message-ID: <20240812160128.601471828@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
