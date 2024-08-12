@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-67258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D645694F499
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA6D94F2B1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 806B21F20D3B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0740C1F211EC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054C0186E34;
-	Mon, 12 Aug 2024 16:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2BC187353;
+	Mon, 12 Aug 2024 16:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xuSdBqpp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xc3NbRGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86812C1A5;
-	Mon, 12 Aug 2024 16:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69594187342;
+	Mon, 12 Aug 2024 16:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480332; cv=none; b=EFJL2VsFLfAErD6E31Qo7Gaexp9xik74lQ/viaadZpOYU50ypMvWyj9AiQ7WOUqmToNOWqaP733P+nZFwy2ZEemdUHrKYz3n1yHR2Uu9+w01C7nVrpKR+paA6wEfE3CkOUL7wTMbc2jRFQ7wOnJ6SUJ3j1CFFkMklhc3RtxBdJY=
+	t=1723478954; cv=none; b=UUaEqDPy1od5qzpLKbfSgx6KoaI+U6hZc+wU0vK9cAfRYa0P8k639p4zuQF3r88NHStb2Ffg1qTpz2lKC46WR+q63dsAgECGU1T9u08WhWwpENqhhU+kpG+09IDgih/iSQvdeQmJaGc559rqoMeeGl+a38xmmvEmST8/PdCUZk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480332; c=relaxed/simple;
-	bh=MQI5LO58t9geenFfHxRQ0wN/IZgXXQvRpdtNXJxYaVE=;
+	s=arc-20240116; t=1723478954; c=relaxed/simple;
+	bh=gR02txtKUEOGgAYKOU0bckIGLycbraU4pr5U+ZPIbQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGw0kBa7X2vsG2TvradeAyu8pxgPsWRMMO6+pbDb2/PuEtT145jgZR0iKVQbJnXsyRTC3PbW87JEDdiVWHdprMPsTNpXWh//wUUoiDxoRm968GV7tXC76KzJBpqFRP+oExTtNtKy21Nby5Q0kM7fy3Alk5KIHc7BbZ4UpdLa7ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xuSdBqpp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31A6C32782;
-	Mon, 12 Aug 2024 16:32:11 +0000 (UTC)
+	 MIME-Version; b=R0mzGcBL6W+YVBCXpSsyl+WW9tOlL5Nrm4ffFgkOgiMR2C+YoInWrqulb1KWN7jZKO/0VzmeOoi/GZ7673jUPDrJ8N49yGmkaXXJHw+rM18mR4gk450XhE6ros2n1+b9M32QJDFwQrP7F7IlQNmzSkp6708cC6I/PBt64CxyDCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xc3NbRGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D0BC32782;
+	Mon, 12 Aug 2024 16:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480332;
-	bh=MQI5LO58t9geenFfHxRQ0wN/IZgXXQvRpdtNXJxYaVE=;
+	s=korg; t=1723478954;
+	bh=gR02txtKUEOGgAYKOU0bckIGLycbraU4pr5U+ZPIbQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xuSdBqppKcOW0EBFf9R5WphRiDfB8LkEqEEQkltidI+ExR0YiGaxpItUHPigKIwZP
-	 AvyQHRkalE6D8u5QU/zxaeEBO0dmWejwVjgAZ2if3e7bgkS46ej3JJ7nfGYLzcHhqR
-	 sZKNfdjQWN8qZA8sxhv3FwfQPu4+rsqaUrmr3YqQ=
+	b=Xc3NbRGhX/RWyVGgmhJ2OA1HAASsNxEVnJBiMzHxFcEorlryFFB3nmfjm9d7yt1fH
+	 b/TI8ZjqY3IBWWPJGUyVyjzCrHQuAeolcZl69DGrmq9a0FEWht43Tg5dta+Cy7/FBz
+	 qGwmGmyGZlgbI8WwiiQV03PTScHwLWWuWN/jADwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 166/263] drm/xe: Minor cleanup in LRC handling
+Subject: [PATCH 6.1 086/150] ASoC: meson: axg-fifo: fix irq scheduling issue with PREEMPT_RT
 Date: Mon, 12 Aug 2024 18:02:47 +0200
-Message-ID: <20240812160152.902221234@linuxfoundation.org>
+Message-ID: <20240812160128.488532264@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 85cfc412579c041f1aaebba71427acec75ceca39 ]
+[ Upstream commit 5003d0ce5c7da3a02c0aff771f516f99731e7390 ]
 
-Properly define register fields and remove redundant
-lower_32_bits().
+With PREEMPT_RT enabled a spinlock_t becomes a sleeping lock.
 
-Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240507224255.5059-2-niranjana.vishwanathapura@intel.com
-Stable-dep-of: 642dfc9d5964 ("drm/xe: Take ref to VM in delayed snapshot")
+This is usually not a problem with spinlocks used in IRQ context since
+IRQ handlers get threaded. However, if IRQF_ONESHOT is set, the primary
+handler won't be force-threaded and runs always in hardirq context. This is
+a problem because spinlock_t requires a preemptible context on PREEMPT_RT.
+
+In this particular instance, regmap mmio uses spinlock_t to protect the
+register access and IRQF_ONESHOT is set on the IRQ. In this case, it is
+actually better to do everything in threaded handler and it solves the
+problem with PREEMPT_RT.
+
+Reported-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Closes: https://lore.kernel.org/linux-amlogic/20240729131652.3012327-1-avkrasnov@salutedevices.com
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: b11d26660dff ("ASoC: meson: axg-fifo: use threaded irq to check periods")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20240807162705.4024136-1-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/regs/xe_engine_regs.h | 4 ++--
- drivers/gpu/drm/xe/xe_lrc.c              | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/meson/axg-fifo.c | 26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/regs/xe_engine_regs.h b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
-index af71b87d80301..03c6d4d50a839 100644
---- a/drivers/gpu/drm/xe/regs/xe_engine_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
-@@ -44,9 +44,10 @@
- #define GSCCS_RING_BASE				0x11a000
+diff --git a/sound/soc/meson/axg-fifo.c b/sound/soc/meson/axg-fifo.c
+index 94b169a5493b5..5218e40aeb1bb 100644
+--- a/sound/soc/meson/axg-fifo.c
++++ b/sound/soc/meson/axg-fifo.c
+@@ -207,25 +207,18 @@ static irqreturn_t axg_fifo_pcm_irq_block(int irq, void *dev_id)
+ 	status = FIELD_GET(STATUS1_INT_STS, status);
+ 	axg_fifo_ack_irq(fifo, status);
  
- #define RING_TAIL(base)				XE_REG((base) + 0x30)
-+#define   TAIL_ADDR				REG_GENMASK(20, 3)
+-	/* Use the thread to call period elapsed on nonatomic links */
+-	if (status & FIFO_INT_COUNT_REPEAT)
+-		return IRQ_WAKE_THREAD;
++	if (status & ~FIFO_INT_COUNT_REPEAT)
++		dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
++			status);
  
- #define RING_HEAD(base)				XE_REG((base) + 0x34)
--#define   HEAD_ADDR				0x001FFFFC
-+#define   HEAD_ADDR				REG_GENMASK(20, 2)
+-	dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
+-		status);
++	if (status & FIFO_INT_COUNT_REPEAT) {
++		snd_pcm_period_elapsed(ss);
++		return IRQ_HANDLED;
++	}
  
- #define RING_START(base)			XE_REG((base) + 0x38)
+ 	return IRQ_NONE;
+ }
  
-@@ -135,7 +136,6 @@
- #define   RING_VALID_MASK			0x00000001
- #define   RING_VALID				0x00000001
- #define   STOP_RING				REG_BIT(8)
--#define   TAIL_ADDR				0x001FFFF8
+-static irqreturn_t axg_fifo_pcm_irq_block_thread(int irq, void *dev_id)
+-{
+-	struct snd_pcm_substream *ss = dev_id;
+-
+-	snd_pcm_period_elapsed(ss);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ int axg_fifo_pcm_open(struct snd_soc_component *component,
+ 		      struct snd_pcm_substream *ss)
+ {
+@@ -251,8 +244,9 @@ int axg_fifo_pcm_open(struct snd_soc_component *component,
+ 	if (ret)
+ 		return ret;
  
- #define RING_CTX_TIMESTAMP(base)		XE_REG((base) + 0x3a8)
- #define CSBE_DEBUG_STATUS(base)			XE_REG((base) + 0x3fc)
-diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
-index 615bbc372ac62..760f38992ff07 100644
---- a/drivers/gpu/drm/xe/xe_lrc.c
-+++ b/drivers/gpu/drm/xe/xe_lrc.c
-@@ -1354,7 +1354,7 @@ struct xe_lrc_snapshot *xe_lrc_snapshot_capture(struct xe_lrc *lrc)
- 	if (!snapshot)
- 		return NULL;
- 
--	snapshot->context_desc = lower_32_bits(xe_lrc_ggtt_addr(lrc));
-+	snapshot->context_desc = xe_lrc_ggtt_addr(lrc);
- 	snapshot->head = xe_lrc_ring_head(lrc);
- 	snapshot->tail.internal = lrc->ring.tail;
- 	snapshot->tail.memory = xe_lrc_read_ctx_reg(lrc, CTX_RING_TAIL);
+-	ret = request_threaded_irq(fifo->irq, axg_fifo_pcm_irq_block,
+-				   axg_fifo_pcm_irq_block_thread,
++	/* Use the threaded irq handler only with non-atomic links */
++	ret = request_threaded_irq(fifo->irq, NULL,
++				   axg_fifo_pcm_irq_block,
+ 				   IRQF_ONESHOT, dev_name(dev), ss);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
