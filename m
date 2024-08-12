@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-67044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51C994F3A6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A256E94F4C1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DE8A1F2093F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57AF21F211B6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE49B186E20;
-	Mon, 12 Aug 2024 16:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C807C1494B8;
+	Mon, 12 Aug 2024 16:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1AavnEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWB9Ww8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8A429CA;
-	Mon, 12 Aug 2024 16:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876A3187328;
+	Mon, 12 Aug 2024 16:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479617; cv=none; b=sepc50O9Y/jEZWIyNr4owsw0Rt+SPzIV7KRYutsAtQNpF2qAd+M/gAkDiNF5vqZ9vP4qFej5GpySW1sL7Q4X9S4VwnjhKb4AhTBo0jT6FZwwJU3eNvz0w+TptVGCnyZHKz3vOWl+20kso6c93TSdCzaeBoE+lzZY4Do4JNqXwrg=
+	t=1723480443; cv=none; b=D5aAIRMS7wzWc4HDEi+RAbj6PkiahWUivh5shsmbJgZcuZdKxMHp/UO8dusMmlAX/pEQtKjZcGuSmymyBBG6i+NBiK+V3yVZSgXyO4gxSux4IeU3R7nF3SZOlPUBh1XiFPln5DKzQzdGL8Ho7jAadgQWwiO8QULKqVSO5hVBYo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479617; c=relaxed/simple;
-	bh=2S7wqsS9JmoHxdh4D/M+ZfTOAoybPNHqfjveBX1PkAo=;
+	s=arc-20240116; t=1723480443; c=relaxed/simple;
+	bh=E4Li5F5c/dDYYn/LP/ZdOlBKBjjnz/+FxG9TXK95Uok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vmveyn0Ziq09t35il/O0hYhqbLxpHGCvsHsJRca71I+dMDL8w/UFF96fNQGnUMNHB1GK/cAL8qMRArJnM1rwA9c9nUIa+HmdyIjoWIlPvUawCm9nFPTJyNdNANIiiECaj1bz+ZMr49RWw+b6+1A5AVkPaXc5to2O5FFlfzvAla8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1AavnEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0C5C32782;
-	Mon, 12 Aug 2024 16:20:16 +0000 (UTC)
+	 MIME-Version; b=EFR534pE9RQLtXEQBA5EOCjoYzWJtKeVKnn6WB/bxVnBYR1vE33KYe1adGLqQcpoKtoNlY/OWEU2hQF5V+O/CTr/GDiOqLdwZ4ROI+KL+PrCCK+micTuclmxWkeJ93nZmuKj6X24YgkwSfPstxefMpwjXDS31wX6NK2Vj86dU5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWB9Ww8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F99C32782;
+	Mon, 12 Aug 2024 16:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479617;
-	bh=2S7wqsS9JmoHxdh4D/M+ZfTOAoybPNHqfjveBX1PkAo=;
+	s=korg; t=1723480443;
+	bh=E4Li5F5c/dDYYn/LP/ZdOlBKBjjnz/+FxG9TXK95Uok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1AavnEhjkZZWCioXIzMikbDln6tS0TZX2kf3wFODF0EHwuIrWOLQGGrGcboZFCOw
-	 nID4+LHAEHcsFWQIy/L3nfQMbblaso1Xn9CoIo8Op/KmfQoyXeS3tD/MyvXZhD6PMO
-	 5dTbI0lumqgRkUc20uSGVrOWpqTJ+7DR++GD9fnM=
+	b=nWB9Ww8qdf9ylI5W3agRYyQnoHuN6XHUbKFznvEwuGTWGvqWeJYxtEpCxkcYItYR8
+	 niYOpmQvVbVlqI+EWbTBWt07RE49kWwz2fWas4/ioqcxJRXL/mI9t6a88RxgWEZmIS
+	 RCZOfC1k40JPkByRORNGxRRokTjZf7iMURradgBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 142/189] irqchip/xilinx: Fix shift out of bounds
-Date: Mon, 12 Aug 2024 18:03:18 +0200
-Message-ID: <20240812160137.607716650@linuxfoundation.org>
+	David Wang <00107082@163.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yu Liao <liaoyu15@huawei.com>
+Subject: [PATCH 6.10 198/263] tick/broadcast: Move per CPU pointer access into the atomic section
+Date: Mon, 12 Aug 2024 18:03:19 +0200
+Message-ID: <20240812160154.126298173@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit d73f0f49daa84176c3beee1606e73c7ffb6af8b2 upstream.
+commit 6881e75237a84093d0986f56223db3724619f26e upstream.
 
-The device tree property 'xlnx,kind-of-intr' is sanity checked that the
-bitmask contains only set bits which are in the range of the number of
-interrupts supported by the controller.
+The recent fix for making the take over of the broadcast timer more
+reliable retrieves a per CPU pointer in preemptible context.
 
-The check is done by shifting the mask right by the number of supported
-interrupts and checking the result for zero.
+This went unnoticed as compilers hoist the access into the non-preemptible
+region where the pointer is actually used. But of course it's valid that
+the compiler keeps it at the place where the code puts it which rightfully
+triggers:
 
-The data type of the mask is u32 and the number of supported interrupts is
-up to 32. In case of 32 interrupts the shift is out of bounds, resulting in
-a mismatch warning. The out of bounds condition is also reported by UBSAN:
+  BUG: using smp_processor_id() in preemptible [00000000] code:
+       caller is hotplug_cpu__broadcast_tick_pull+0x1c/0xc0
 
-  UBSAN: shift-out-of-bounds in irq-xilinx-intc.c:332:22
-  shift exponent 32 is too large for 32-bit type 'unsigned int'
+Move it to the actual usage site which is in a non-preemptible region.
 
-Fix it by promoting the mask to u64 for the test.
-
-Fixes: d50466c90724 ("microblaze: intc: Refactor DT sanity check")
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Fixes: f7d43dd206e7 ("tick/broadcast: Make takeover of broadcast hrtimer reliable")
+Reported-by: David Wang <00107082@163.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Yu Liao <liaoyu15@huawei.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/1723186944-3571957-1-git-send-email-radhey.shyam.pandey@amd.com
+Link: https://lore.kernel.org/all/87ttg56ers.ffs@tglx
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-xilinx-intc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/tick-broadcast.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-xilinx-intc.c
-+++ b/drivers/irqchip/irq-xilinx-intc.c
-@@ -189,7 +189,7 @@ static int __init xilinx_intc_of_init(st
- 		irqc->intr_mask = 0;
- 	}
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -1141,7 +1141,6 @@ void tick_broadcast_switch_to_oneshot(vo
+ #ifdef CONFIG_HOTPLUG_CPU
+ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
+ {
+-	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+ 	struct clock_event_device *bc;
+ 	unsigned long flags;
  
--	if (irqc->intr_mask >> irqc->nr_irq)
-+	if ((u64)irqc->intr_mask >> irqc->nr_irq)
- 		pr_warn("irq-xilinx: mismatch in kind-of-intr param\n");
- 
- 	pr_info("irq-xilinx: %pOF: num_irq=%d, edge=0x%x\n",
+@@ -1167,6 +1166,8 @@ void hotplug_cpu__broadcast_tick_pull(in
+ 		 * device to avoid the starvation.
+ 		 */
+ 		if (tick_check_broadcast_expired()) {
++			struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
++
+ 			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
+ 			tick_program_event(td->evtdev->next_event, 1);
+ 		}
 
 
 
