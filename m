@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8023D94F43D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B4C94F336
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B38DC1C20384
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7BB428678A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2306E1862BD;
-	Mon, 12 Aug 2024 16:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F2618734B;
+	Mon, 12 Aug 2024 16:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpOUwBUV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWFDxoHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55E0134AC;
-	Mon, 12 Aug 2024 16:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D83187343;
+	Mon, 12 Aug 2024 16:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480077; cv=none; b=RCS8k8VrFfYlvJzGd6GDExC4wXFolPdEk6E5Rr8SIzK1AEt2L24Kkk10GpWBq8em7s1aq6PVxvdNDTOmVYlRO1L7fVDvM0QVlM5LrQeXLgjhqVtTe5Ed2GujrhvIPDbOokj7X7T8Y3T8traXl/IIt5OF6OED/s4ussHyQWhDnog=
+	t=1723479302; cv=none; b=sN/ElapIsGP32ACtFcu3CCI8cVdqCF9KKealpL48gP2ESPKkQa16k3L9889e7XByxDIEjzjQAs25ut/Zx3tcqAPf939YUIsxANJgcCuVrJv0fJtL2VsdKAwBgOWHqzuoTkciopxOFXHBKWCKCNMp5VG5r+7cfUVA2A3l/a7g2y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480077; c=relaxed/simple;
-	bh=PihX3XsMQKcUrYJiPYtlQC61Ooe9LspFpIaKn3jYfKw=;
+	s=arc-20240116; t=1723479302; c=relaxed/simple;
+	bh=uScv1mny68jhCAJlVOOLH3HJOWEJJmBZsDeXzZcyrtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnYk3cQUhtFFmf62yBdI0wyTlM+e6E+MTWEGO0IJzcObWLj4wk5kXVqjvodqfnPTZDTe5KOzjhrBu6Rw5cvNCGZuxKnIiW6NVp/YKL4wBkTj3XfSM0q1nF5sCxrouXG700H/nQi1hMIf1ALSKx1dtYIbEn1LWWtKurDjzzeLeeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpOUwBUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40369C32782;
-	Mon, 12 Aug 2024 16:27:57 +0000 (UTC)
+	 MIME-Version; b=WqrFohGuSdyzrD7/lU3pZUEUTjUxkpbgK61aNYlRC8L/LozhPx663YZmt8ayBuB5+9T3HeZ7QrEAOaUP1R+NuyNhForhiw9HDeLyTyPjLWhW1sKg4lzq5cLszSJ3G0Br13pj8q+kkVX5WWJiNRet30lQR90GtjvvMgLyNyL3mac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWFDxoHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D943AC32782;
+	Mon, 12 Aug 2024 16:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480077;
-	bh=PihX3XsMQKcUrYJiPYtlQC61Ooe9LspFpIaKn3jYfKw=;
+	s=korg; t=1723479302;
+	bh=uScv1mny68jhCAJlVOOLH3HJOWEJJmBZsDeXzZcyrtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TpOUwBUVFMqdI7qRwpkfs8qb3x3N7NsP8rEL0Njsmgg/L+HfA5OMr5GrCYd3CmUvU
-	 3F9HeQ6Qq9PeoIgHnK7Ok/7YcOEfM4wv0FcDqAHduHOXVBe6F1YsdaXuRL8QrypY6M
-	 4oTU4CUA2mbbKjXQvNompssLxOVsZ8golJorESrk=
+	b=sWFDxoHDNsB5h2V86hPmzS3MbeONL7qbduHyiwJbhfe4S09Z1g298TAd+qk2eS2bU
+	 jnpgVNxacsKChHMYCuqaq+62z86OlSD/mUG7GoaSwxFZUbRkPgnfCf5f+KadkyiJzT
+	 O6hZk0Iz0BEa9U/WoJa/JU2XaUENCym5kRVfFK8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 082/263] btrfs: reduce nesting for extent processing at btrfs_lookup_extent_info()
+Subject: [PATCH 6.6 027/189] md: do not delete safemode_timer in mddev_suspend
 Date: Mon, 12 Aug 2024 18:01:23 +0200
-Message-ID: <20240812160149.686265912@linuxfoundation.org>
+Message-ID: <20240812160133.190533569@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 5c83b3beaee06aa88d4015408ac2d8bb35380b06 ]
+[ Upstream commit a8768a134518e406d41799a3594aeb74e0889cf7 ]
 
-Instead of using an if-else statement when processing the extent item at
-btrfs_lookup_extent_info(), use a single if statement for the error case
-since it does a goto at the end and leave the success (expected) case
-following the if statement, reducing indentation and making the logic a
-bit easier to follow. Also make the if statement's condition as unlikely
-since it's not expected to ever happen, as it signals some corruption,
-making it clear and hint the compiler to generate more efficient code.
+The deletion of safemode_timer in mddev_suspend() is redundant and
+potentially harmful now. If timer is about to be woken up but gets
+deleted, 'in_sync' will remain 0 until the next write, causing array
+to stay in the 'active' state instead of transitioning to 'clean'.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Commit 0d9f4f135eb6 ("MD: Add del_timer_sync to mddev_suspend (fix
+nasty panic))" introduced this deletion for dm, because if timer fired
+after dm is destroyed, the resource which the timer depends on might
+have been freed.
+
+However, commit 0dd84b319352 ("md: call __md_stop_writes in md_stop")
+added __md_stop_writes() to md_stop(), which is called before freeing
+resource. Timer is deleted in __md_stop_writes(), and the origin issue
+is resolved. Therefore, delete safemode_timer can be removed safely now.
+
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240508092053.1447930-1-linan666@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ drivers/md/md.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 153297cb97a4a..844b677d054ec 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -104,10 +104,7 @@ int btrfs_lookup_extent_info(struct btrfs_trans_handle *trans,
- 	struct btrfs_delayed_ref_head *head;
- 	struct btrfs_delayed_ref_root *delayed_refs;
- 	struct btrfs_path *path;
--	struct btrfs_extent_item *ei;
--	struct extent_buffer *leaf;
- 	struct btrfs_key key;
--	u32 item_size;
- 	u64 num_refs;
- 	u64 extent_flags;
- 	u64 owner = 0;
-@@ -157,16 +154,11 @@ int btrfs_lookup_extent_info(struct btrfs_trans_handle *trans,
- 	}
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index b5dea664f946d..35b003b83ef1b 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -456,7 +456,6 @@ void mddev_suspend(struct mddev *mddev)
+ 	clear_bit_unlock(MD_ALLOW_SB_UPDATE, &mddev->flags);
+ 	wait_event(mddev->sb_wait, !test_bit(MD_UPDATING_SB, &mddev->flags));
  
- 	if (ret == 0) {
--		leaf = path->nodes[0];
--		item_size = btrfs_item_size(leaf, path->slots[0]);
--		if (item_size >= sizeof(*ei)) {
--			ei = btrfs_item_ptr(leaf, path->slots[0],
--					    struct btrfs_extent_item);
--			num_refs = btrfs_extent_refs(leaf, ei);
--			extent_flags = btrfs_extent_flags(leaf, ei);
--			owner = btrfs_get_extent_owner_root(fs_info, leaf,
--							    path->slots[0]);
--		} else {
-+		struct extent_buffer *leaf = path->nodes[0];
-+		struct btrfs_extent_item *ei;
-+		const u32 item_size = btrfs_item_size(leaf, path->slots[0]);
-+
-+		if (unlikely(item_size < sizeof(*ei))) {
- 			ret = -EUCLEAN;
- 			btrfs_err(fs_info,
- 			"unexpected extent item size, has %u expect >= %zu",
-@@ -179,6 +171,10 @@ int btrfs_lookup_extent_info(struct btrfs_trans_handle *trans,
- 			goto out_free;
- 		}
- 
-+		ei = btrfs_item_ptr(leaf, path->slots[0], struct btrfs_extent_item);
-+		num_refs = btrfs_extent_refs(leaf, ei);
-+		extent_flags = btrfs_extent_flags(leaf, ei);
-+		owner = btrfs_get_extent_owner_root(fs_info, leaf, path->slots[0]);
- 		BUG_ON(num_refs == 0);
- 	} else {
- 		num_refs = 0;
+-	del_timer_sync(&mddev->safemode_timer);
+ 	/* restrict memory reclaim I/O during raid array is suspend */
+ 	mddev->noio_flag = memalloc_noio_save();
+ }
 -- 
 2.43.0
 
