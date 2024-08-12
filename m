@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D73694F0B5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:53:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B8594F0B7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A10DC1C21C1C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:53:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16B50B231DC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105A917995B;
-	Mon, 12 Aug 2024 14:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD2817BB03;
+	Mon, 12 Aug 2024 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7O68UIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZETSG2C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CE54B5AE
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC2C4B5AE
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474395; cv=none; b=dK/gBFfNfnslR03evTngCTeH1xqc1GeLRUSX2wPCgj5iXhGDUVX+slEpht/zTXnonuiysKfWNoy/neLVG9DWXUmoy1gDIoHbLYm6R6/npL3IP2wnsfargfimV6yypeCdshouYA7aQv4sLF1uUBELg+LJnGTnLNmRlB9cUxFzZ3s=
+	t=1723474402; cv=none; b=W0zI2fp8DXgvu+HuwJN4Vq/H+UioAYLUeIp36x0R+oyXjUh4KwP6CCguLgDeCpeIQbqrjFO7ln9sbY17OGl1uzmCgBSWKSiRPZZSANBqYxaxtGT6ixph89ToBQY5ijHFjPLkjP/jPOBqdPFVlJsoDYneFT8XeywgHWJuthQD2kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474395; c=relaxed/simple;
-	bh=eyOMNqCvqF6JFJ/WLtOaH+AFxtY6joLblGx9NYUiDJ0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=L0O9FqEFxn9KB6hzhf67Tc7Buz/SanjRNM1M1b9GRhdtrhZEG5BuGgb5D0ylBtzJNW0wWUfR+WODZjG54cezWOd5QSdwUiJ8uR4kZFjCdVERAAiBaCo4eVkinhsONGCjnjZPVvN+SvGJUo1SCsLHpNGOGoMm8Izp7GMpYaOwF3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7O68UIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386D6C4AF09;
-	Mon, 12 Aug 2024 14:53:15 +0000 (UTC)
+	s=arc-20240116; t=1723474402; c=relaxed/simple;
+	bh=ZipDnpiA9RTcVuThK4xDA8fedfJs324DeU3Vp9LUj7k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=d7O7x2/WpGs3kDBTkSh4fKhEM2+vPAuFfVm2HGmgcdT+QEYJ2UixU8Szkq4+77tHiJxScLAQyspV78zG//wzKbhSbQBJLUvZtwDunXjWJhTzs7yVGoYdij+5mFFqnQSldSvsxfIkBd8xI5owiyexSw2kBH8qxGJzzc9guW4ElNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZETSG2C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D942C32782;
+	Mon, 12 Aug 2024 14:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474395;
-	bh=eyOMNqCvqF6JFJ/WLtOaH+AFxtY6joLblGx9NYUiDJ0=;
+	s=korg; t=1723474402;
+	bh=ZipDnpiA9RTcVuThK4xDA8fedfJs324DeU3Vp9LUj7k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=J7O68UIvdALe3nM8ADZwN2P8lZuZ2KCMx9wYSVzQwL3ctGU2g3NfB8VYb2wJCFRgL
-	 UaZTHgwjI4xIsJBSO/bQqTL+mfUc3AxDA7TVPHCOGy3maCswrUR9ERFl9oqEZO3OR6
-	 0tRl5YKFpiyIF8DAmq6igAshcE8zjpDpL7Gk8/84=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix incorrect DSC instance for MST" failed to apply to 6.6-stable tree
+	b=MZETSG2CyhT5Mkfa79z88pspEUnfBkcclQJca7Ftme/Yta13PgRyNyOpJrmTYaEZG
+	 FzKLQn2STKk/kp8ptlvYKclftUS0BSedLVvSmn4LS0vPreE64dPxUHLOFiZoHSj1B7
+	 innsmOMf6S2RsMiK2USpkvz+p+GcXch0q2lzH02k=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix incorrect DSC instance for MST" failed to apply to 6.1-stable tree
 To: hersenxs.wu@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,daniel.wheeler@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:50:52 +0200
-Message-ID: <2024081252-uncured-vessel-e637@gregkh>
+Date: Mon, 12 Aug 2024 16:50:53 +0200
+Message-ID: <2024081253-retainer-deceit-22df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 81f3d3c9a03705328f5368d19e23796ed077610a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081252-uncured-vessel-e637@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081253-retainer-deceit-22df@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 81f3d3c9a037 ("drm/amd/display: Fix incorrect DSC instance for MST")
+f8e12e770e80 ("drm/amd/display: drop unnecessary NULL checks in debugfs")
 
 thanks,
 
