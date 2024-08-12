@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-67247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44BD694F48E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C1894F281
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E37211F21045
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52CF6B20B2F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D711187563;
-	Mon, 12 Aug 2024 16:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038C5187849;
+	Mon, 12 Aug 2024 16:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziMPa5Pi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWfP4NoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C889187543;
-	Mon, 12 Aug 2024 16:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45CB186E5B;
+	Mon, 12 Aug 2024 16:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480297; cv=none; b=RYc1OIt00zRTu7uqdNa2/9S2G6XtN5RAZqw9Wfh3PUw2qPx/jAujn2DrnA2L8lJbQcd7jvlBPzJRJ30YKT1AQIlafLPiKHQ6/oBQooIMXR3loAB2DnMF7ZgZtsccg0ge/4ZsTyA9KV3B8zAcowxMldfIS9TmLuwhU7fE9fyMgEc=
+	t=1723478809; cv=none; b=YTrcqudJbvSbf/LVSDx8E64Azo38+MB+7xpvOi0M4+m+hW1tBXinXotX7Mnoch/lXOVZFU1PqYNnKwdMXt0tG6NjLKBMnL6ZqPUJi+k/NdrRgbR2Nca12DW+Efz5N2+SkVI9RS7pvgGe8AIoDriV+OqY/VTkf1XdFRFq6jz3j1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480297; c=relaxed/simple;
-	bh=/O1nVAxHz1Rd7PVHtHfVJHkrzyr9+rEuKStsNy3NPzU=;
+	s=arc-20240116; t=1723478809; c=relaxed/simple;
+	bh=YUsHEnVgTANS4XVcwM0up7v1XME83ZbndlzN7PNChlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2JCvphXtJ3Eka6wiUooWNfK+qMbfPNyeFlcS6RgW3ZsRPuIVlr7ULAxf6/MedVbRshgSTXmEmQHeYnQKZdr4FfVc2/5Bkp0TselNikxdqM7uVngFyb0vBnLIDPG9RE6IkeBkCzhGOObCIkqzEdh4iRI3v8JqZna4hQVWoPfpSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziMPa5Pi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D26C32782;
-	Mon, 12 Aug 2024 16:31:36 +0000 (UTC)
+	 MIME-Version; b=CPJdPy1i+YRyNtzCvLEO1cJhzoUp0AETAXNp1ZDkjml0jYBHtct04WZ6YUSSL4PDWvQcdouPzyxYKEm42mlzSs1ylaVrAnrmV8HZgulXG29iu9WnaqGD45+Az3Z/cLqomnkfYQ88TURFj7oJdVMnIHIOt3pIA3HYLQtzfbABQVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWfP4NoP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D212C32782;
+	Mon, 12 Aug 2024 16:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480297;
-	bh=/O1nVAxHz1Rd7PVHtHfVJHkrzyr9+rEuKStsNy3NPzU=;
+	s=korg; t=1723478809;
+	bh=YUsHEnVgTANS4XVcwM0up7v1XME83ZbndlzN7PNChlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziMPa5PiT44NxAhOxm+2kzQ6qy0VvpjMk1/P8lbUa4vuT/bd1vl+aPdCtJGOyIbnw
-	 fJaEKL+Tic5f0ohPqgix+/1OpPslNn68J8LIqSbMcLULYy4D8XfrEtLbET/tvvqjWB
-	 FNrSChTlTRSFVTmGZH86136APNubFpw/5RmQZ1PU=
+	b=tWfP4NoPZD7kxXuSWlhYAHVhUv+GCT9LEDbtanSNaU2AUfIHdXGR7HnIJ8VMdVKYm
+	 mKiUmqAcReKOUKrG4x7Mk8tj3XlKLiwUEVusuRGdP3VlHcy6QHgeoRv+muwEipmhZ/
+	 E4gj+ZIT9bmQrok8eDdZ4J47oPuHaeicUp/V1VhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.10 123/263] media: ipu-bridge: fix ipu6 Kconfig dependencies
+	HungNien Chen <hn.chen@sunplusit.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 043/150] media: uvcvideo: Ignore empty TS packets
 Date: Mon, 12 Aug 2024 18:02:04 +0200
-Message-ID: <20240812160151.256949033@linuxfoundation.org>
+Message-ID: <20240812160126.827666714@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +65,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit d7b5f7537c8282e1e1919408d0b6c69877fd35f8 upstream.
+[ Upstream commit 5cd7c25f6f0576073b3d03bc4cfb1e8ca63a1195 ]
 
-Commit 4670c8c3fb04 ("media: ipu-bridge: Fix Kconfig dependencies") changed
-how IPU_BRIDGE dependencies are handled for all drivers, but the IPU6
-variant was added the old way, which causes build time warnings when I2C is
-turned off:
+Some SunplusIT cameras took a borderline interpretation of the UVC 1.5
+standard, and fill the PTS and SCR fields with invalid data if the
+package does not contain data.
 
-WARNING: unmet direct dependencies detected for IPU_BRIDGE
-  Depends on [n]: MEDIA_SUPPORT [=m] && PCI [=y] && MEDIA_PCI_SUPPORT [=y] && (ACPI [=y] || COMPILE_TEST [=y]) && I2C [=n]
-  Selected by [m]:
-  - VIDEO_INTEL_IPU6 [=m] && MEDIA_SUPPORT [=m] && PCI [=y] && MEDIA_PCI_SUPPORT [=y] && (ACPI [=y] || COMPILE_TEST [=y]) && VIDEO_DEV [=m] && X86 [=y] && X86_64 [=y] && HAS_DMA [=y]
+"STC must be captured when the first video data of a video frame is put
+on the USB bus."
 
-To make it consistent with the other IPU drivers as well as avoid this
-warning, change the 'select' into 'depends on'.
+Some SunplusIT devices send, e.g.,
 
-Fixes: c70281cc83d6 ("media: intel/ipu6: add Kconfig and Makefile")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-[Sakari Ailus: Alternatively depend on !IPU_BRIDGE.]
-Cc: stable@vger.kernel.org # for v6.10
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
+buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
+buffer: 0xa7755c00 len 000668 header:0x8c stc 73779dba sof 070c pts 7376d37a
+
+While the UVC specification meant that the first two packets shouldn't
+have had the SCR bit set in the header.
+
+This borderline/buggy interpretation has been implemented in a variety
+of devices, from directly SunplusIT and from other OEMs that rebrand
+SunplusIT products. So quirking based on VID:PID will be problematic.
+
+All the affected modules have the following extension unit:
+VideoControl Interface Descriptor:
+  guidExtensionCode         {82066163-7050-ab49-b8cc-b3855e8d221d}
+
+But the vendor plans to use that GUID in the future and fix the bug,
+this means that we should use heuristic to figure out the broken
+packets.
+
+This patch takes care of this.
+
+lsusb of one of the affected cameras:
+
+Bus 001 Device 003: ID 1bcf:2a01 Sunplus Innovation Technology Inc.
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.01
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 ?
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x1bcf Sunplus Innovation Technology Inc.
+  idProduct          0x2a01
+  bcdDevice            0.02
+  iManufacturer           1 SunplusIT Inc
+  iProduct                2 HanChen Wise Camera
+  iSerial                 3 01.00.00
+  bNumConfigurations      1
+
+Tested-by: HungNien Chen <hn.chen@sunplusit.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Tomasz Figa <tfiga@chromium.org>
+Link: https://lore.kernel.org/r/20240323-resend-hwtimestamp-v10-2-b08e590d97c7@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_video.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/intel/ipu6/Kconfig b/drivers/media/pci/intel/ipu6/Kconfig
-index 154343080c82..b7ab24b89836 100644
---- a/drivers/media/pci/intel/ipu6/Kconfig
-+++ b/drivers/media/pci/intel/ipu6/Kconfig
-@@ -3,13 +3,13 @@ config VIDEO_INTEL_IPU6
- 	depends on ACPI || COMPILE_TEST
- 	depends on VIDEO_DEV
- 	depends on X86 && X86_64 && HAS_DMA
-+	depends on IPU_BRIDGE || !IPU_BRIDGE
- 	select DMA_OPS
- 	select IOMMU_IOVA
- 	select VIDEO_V4L2_SUBDEV_API
- 	select MEDIA_CONTROLLER
- 	select VIDEOBUF2_DMA_CONTIG
- 	select V4L2_FWNODE
--	select IPU_BRIDGE
- 	help
- 	  This is the 6th Gen Intel Image Processing Unit, found in Intel SoCs
- 	  and used for capturing images and video from camera sensors.
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index a5ad3ff8bdbb9..7ca0760574598 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -476,6 +476,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	ktime_t time;
+ 	u16 host_sof;
+ 	u16 dev_sof;
++	u32 dev_stc;
+ 
+ 	switch (data[1] & (UVC_STREAM_PTS | UVC_STREAM_SCR)) {
+ 	case UVC_STREAM_PTS | UVC_STREAM_SCR:
+@@ -522,6 +523,34 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	if (dev_sof == stream->clock.last_sof)
+ 		return;
+ 
++	dev_stc = get_unaligned_le32(&data[header_size - 6]);
++
++	/*
++	 * STC (Source Time Clock) is the clock used by the camera. The UVC 1.5
++	 * standard states that it "must be captured when the first video data
++	 * of a video frame is put on the USB bus". This is generally understood
++	 * as requiring devices to clear the payload header's SCR bit before
++	 * the first packet containing video data.
++	 *
++	 * Most vendors follow that interpretation, but some (namely SunplusIT
++	 * on some devices) always set the `UVC_STREAM_SCR` bit, fill the SCR
++	 * field with 0's,and expect that the driver only processes the SCR if
++	 * there is data in the packet.
++	 *
++	 * Ignore all the hardware timestamp information if we haven't received
++	 * any data for this frame yet, the packet contains no data, and both
++	 * STC and SOF are zero. This heuristics should be safe on compliant
++	 * devices. This should be safe with compliant devices, as in the very
++	 * unlikely case where a UVC 1.1 device would send timing information
++	 * only before the first packet containing data, and both STC and SOF
++	 * happen to be zero for a particular frame, we would only miss one
++	 * clock sample from many and the clock recovery algorithm wouldn't
++	 * suffer from this condition.
++	 */
++	if (buf && buf->bytesused == 0 && len == header_size &&
++	    dev_stc == 0 && dev_sof == 0)
++		return;
++
+ 	stream->clock.last_sof = dev_sof;
+ 
+ 	host_sof = usb_get_current_frame_number(stream->dev->udev);
+@@ -560,7 +589,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
+ 	spin_lock_irqsave(&stream->clock.lock, flags);
+ 
+ 	sample = &stream->clock.samples[stream->clock.head];
+-	sample->dev_stc = get_unaligned_le32(&data[header_size - 6]);
++	sample->dev_stc = dev_stc;
+ 	sample->dev_sof = dev_sof;
+ 	sample->host_sof = host_sof;
+ 	sample->host_time = time;
 -- 
-2.46.0
+2.43.0
 
 
 
