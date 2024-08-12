@@ -1,81 +1,61 @@
-Return-Path: <stable+bounces-66410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8764194E8C1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 10:40:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B002194E978
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:13:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17194282F75
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 08:40:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676291F245E0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0C216B3B7;
-	Mon, 12 Aug 2024 08:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD20616CD1D;
+	Mon, 12 Aug 2024 09:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QdnWj+bK"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="UyF08sfW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2438E4D599;
-	Mon, 12 Aug 2024 08:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182B116CD16
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723452024; cv=none; b=RE4R7z6e1pgfl0EnYvvRzBAdtb1xW/04QlsrK+JD5Xkuz2lr0n9kz2EA9jHdhJ3QmRKP9L9SikBqpGr/i/PMpSYyWVaIBTwGzU65b919G9TqPM3h9qqB2FTSOgcS2iwtDNmm7FTSZNQ68rjchuohpLDBc7Qe+51kdLUzw9lihUs=
+	t=1723453971; cv=none; b=ot4zWKgxKTOcDq6Bv7evDwLpAwZLNVWRKZVLCuwbLwysdYfhrSNxf6kUMsPzXD0sHZRMj3R1uWupfHHXOXE/zugfSHOEBOxDZNapxyWohipDCNaFyMYtZbSc9tpxIOiff1fw3X1KcCFahPlsvBxz2CEh+uhHY1LrGt3u5PMs9PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723452024; c=relaxed/simple;
-	bh=XGG8unNJdo137wh16BkBQ7L7NU8nK3Nb5MbGuKRbMH8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GW8deSRPuQdB2zlpIKFrkzOF/qrNqgKuO65hkpocgoxlo796XVfBvodaeVFwt4q1Ocf1r2mnkOMuUVb/OY97eDO1MxgQrf+8OWEBDRWwyqb5FYxGOYGwzpvMX6s6YghL5JmQQyGZpwyhXOXVX3gUZAgNowuD/WCMIknmbNROt5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QdnWj+bK; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723452022; x=1754988022;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=XGG8unNJdo137wh16BkBQ7L7NU8nK3Nb5MbGuKRbMH8=;
-  b=QdnWj+bK4JZGcQ8JVsCC9CGi1Ss4xHNURtq0OrfB2uTwJfO7BzR/AxKW
-   H8sLqkDKBtR8u09+Z+uLs5FtiTHDD9PVtARimF35zG8VRSEd4TM/WI47v
-   jA1tqP9Q7rCQV5YDRaI2FatVwgV/mZGm4ZZpVkNCHWKipqmG/Dk3XMrLm
-   QUMcGeyX4exaf0ZDaSFdJ4eZ44ky45vh5TWOAKgnibcHNNsAumEBk3hzq
-   p7gt+n8uYLIHzqbfSVPr9dfaRjlgtrpwLGdeEhShGuF9WY+IPNsHeekLE
-   H/MgmttaYlC/LwdRSQJrth7PBJYlEMEM0Nhc/zb6eQv5rIteQaWm4QxFX
-   w==;
-X-CSE-ConnectionGUID: QdVMN4I0TxKdnHXI/8jaow==
-X-CSE-MsgGUID: W6w/hWzfTsqgF+rpE3RBEA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11161"; a="21694058"
-X-IronPort-AV: E=Sophos;i="6.09,282,1716274800"; 
-   d="scan'208";a="21694058"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 01:40:21 -0700
-X-CSE-ConnectionGUID: bJLHTNlvQGWc2LkHuBpeOQ==
-X-CSE-MsgGUID: V/dL+im2RvOeq9UTlC1TiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,282,1716274800"; 
-   d="scan'208";a="58096158"
-Received: from mehlow-prequal01.jf.intel.com ([10.54.102.156])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 01:40:21 -0700
-From: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
-To: kai.huang@intel.com
-Cc: dave.hansen@linux.intel.com,
-	dmitrii.kuvaiskii@intel.com,
-	haitao.huang@linux.intel.com,
-	jarkko@kernel.org,
-	kailun.qin@intel.com,
-	linux-kernel@vger.kernel.org,
-	linux-sgx@vger.kernel.org,
-	mona.vij@intel.com,
-	reinette.chatre@intel.com,
+	s=arc-20240116; t=1723453971; c=relaxed/simple;
+	bh=pxGn8TVe9E+n8XsIG00DYfvIdNAfIdI8Kw3fATAzsEc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I4Z3w42UE2KRVzYc0l1nDUEDwNsuJ8cFGFjwY7BS5Of+zPQteLyz1bSlgmvzKVMU8T8lyDGpPeWhtu9asLsEbIAIkDkGPRhaitj81AxULQF36mGDyidJbmLjMFY5NBzkOteD5eM1okXEQ0sQUvTZ72IVQS0oPcrmDPMHkz3iZp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=UyF08sfW; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=nzakQAeO2wVmbzs7cMJEkVxni0mJK8NaG4e9tA5Swdw=; b=UyF08sfWt6vvsk1wD92VMzHwza
+	6dBKCZQjgnUbDZz84oKmAIGMiF4Fis27tM8cKnrpKpBCKBo5i5CQtENdNMBogzQjYxeOi0XUHDkBb
+	qZj48Gv793KLcoMu6mHl5hGAeGgYTbBw+yuD3HK/Uj5z4qFahlKssGGUhLeVkXQkGQOioCeq0xEdJ
+	hXq+ckjfuY7D3C50xnf61H/yOb27neKm7l4P0WPSEAilhn6xuEIisYVghCQ68uIJ4XbQuUa+cADjQ
+	sS/L7Ng0HYCqww/V7FFHOvJ2zvUc4cVFbofSzb7tHU0NoPufhOSbz+Lmt+m9dYC9moKaDlWHHTUKg
+	KukKhWNw==;
+Received: from [84.69.19.168] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1sdR6T-00BSDl-05; Mon, 12 Aug 2024 11:12:37 +0200
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] x86/sgx: Resolve EREMOVE page vs EAUG page data race
-Date: Mon, 12 Aug 2024 01:32:07 -0700
-Message-Id: <20240812083207.3173402-1-dmitrii.kuvaiskii@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <8ab0f2d8aaf80e263796e18010e0fa0a4f0686a3.camel@intel.com>
-References: <8ab0f2d8aaf80e263796e18010e0fa0a4f0686a3.camel@intel.com>
+Subject: [PATCH 1/2] drm/v3d: Disable preemption while updating GPU stats
+Date: Mon, 12 Aug 2024 10:12:17 +0100
+Message-ID: <20240812091218.70317-1-tursulin@igalia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,30 +63,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Organization: Intel Deutschland GmbH - Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
 Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 09, 2024 at 11:19:22AM +0000, Huang, Kai wrote:
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-> > TLDR: I can add similar handling to sgx_enclave_modify_types() if
-> > reviewers insist, but I don't see how this data race can ever be
-> > triggered by benign real-world SGX applications.
->
-> So as mentioned above, I intend to suggest to also apply the BUSY flag here.  
-> And we can have a consist rule in the kernel:
->
-> If an enclave page is under certainly operation by the kernel with the mapping
-> removed, other threads trying to access that page are temporarily blocked and
-> should retry.
+We forgot to disable preemption around the write_seqcount_begin/end() pair
+while updating GPU stats:
 
-I agree with your assessment on the consequences of such bug in
-sgx_enclave_modify_types(). To my understanding, this bug can only affect
-the SGX enclave (i.e. the userspace) -- either the SGX enclave will hang
-or will be terminated.
+  [ ] WARNING: CPU: 2 PID: 12 at include/linux/seqlock.h:221 __seqprop_assert.isra.0+0x128/0x150 [v3d]
+  [ ] Workqueue: v3d_bin drm_sched_run_job_work [gpu_sched]
+ <...snip...>
+  [ ] Call trace:
+  [ ]  __seqprop_assert.isra.0+0x128/0x150 [v3d]
+  [ ]  v3d_job_start_stats.isra.0+0x90/0x218 [v3d]
+  [ ]  v3d_bin_job_run+0x23c/0x388 [v3d]
+  [ ]  drm_sched_run_job_work+0x520/0x6d0 [gpu_sched]
+  [ ]  process_one_work+0x62c/0xb48
+  [ ]  worker_thread+0x468/0x5b0
+  [ ]  kthread+0x1c4/0x1e0
+  [ ]  ret_from_fork+0x10/0x20
 
-Anyway, I will apply the BUSY flag also in sgx_enclave_modify_types() in
-the next iteration of this patch series.
+Fix it.
 
---
-Dmitrii Kuvaiskii
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: 6abe93b621ab ("drm/v3d: Fix race-condition between sysfs/fdinfo and interrupt handler")
+Cc: Maíra Canal <mcanal@igalia.com>
+Cc: <stable@vger.kernel.org> # v6.10+
+---
+ drivers/gpu/drm/v3d/v3d_sched.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index 42d4f4a2dba2..cc2e5a89467b 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -136,6 +136,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
+ 	struct v3d_stats *local_stats = &file->stats[queue];
+ 	u64 now = local_clock();
+ 
++	preempt_disable();
++
+ 	write_seqcount_begin(&local_stats->lock);
+ 	local_stats->start_ns = now;
+ 	write_seqcount_end(&local_stats->lock);
+@@ -143,6 +145,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
+ 	write_seqcount_begin(&global_stats->lock);
+ 	global_stats->start_ns = now;
+ 	write_seqcount_end(&global_stats->lock);
++
++	preempt_enable();
+ }
+ 
+ static void
+@@ -164,8 +168,10 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
+ 	struct v3d_stats *local_stats = &file->stats[queue];
+ 	u64 now = local_clock();
+ 
++	preempt_disable();
+ 	v3d_stats_update(local_stats, now);
+ 	v3d_stats_update(global_stats, now);
++	preempt_enable();
+ }
+ 
+ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
+-- 
+2.44.0
+
 
