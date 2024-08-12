@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-67042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BD594F3A3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AF294F2D4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 224E81C217E0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B0A28493E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838B5186E34;
-	Mon, 12 Aug 2024 16:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5450818756A;
+	Mon, 12 Aug 2024 16:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqDXZytr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcGwFLWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396CB29CA;
-	Mon, 12 Aug 2024 16:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DA4186E38;
+	Mon, 12 Aug 2024 16:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479610; cv=none; b=s1q/Gvru9AsZwfvZ+pw6uS4L3rBW/GTfUKgZGrVuf1HPqV1VPao5NIPv56BKTFVtpbXGa8MTZb+0T9bovRY92BhvoCZzVWOIbxhigMfoucuDlYJs5cFf5eezUe1t0vWgyKu7VpUM4ConyEGWXQFYSxaIzFDuXXsAZXiIVjCQsLI=
+	t=1723479045; cv=none; b=KQH9ST3MCRIK8nYSCIquNV+uZFWKCJeVwYo56OtML3KET7Nkz799hwklXbtcZ1pFTyp5BngMbUWXNCeYm4EQNeMgeTpoWcFAOI9Vk5Cx4e0h9MTfYIQ91R1hih9johutRCu2ZU6CTG8pCrUyCcMCzd9HxjxIfW4L8VSHk9nv2Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479610; c=relaxed/simple;
-	bh=wWo+FqzFZ2CYj+H6YYj6kkjsYQ/oO3/n1CWPVGF8Fzc=;
+	s=arc-20240116; t=1723479045; c=relaxed/simple;
+	bh=FOAwlT3rV7Ir9y0XwnDL0+lgzU2oHPNmtua/LgEH6/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7dVVZPn52cmfZxo8fDSHlnJRb5omnFjH2dXx6yNKMpwKn62fwIyE6CIuOzjhcHjCUFzAl0PXKiizmx2JmG+sTuEGfDmVC4/8lIe8vxYYJd/suPLjPaN4OJcErEXCxFsRVkUihLBqogD+CzVdXmW33uynJ0kymW0Jqx0fv5EzAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqDXZytr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32DBC4AF09;
-	Mon, 12 Aug 2024 16:20:09 +0000 (UTC)
+	 MIME-Version; b=aVYJvk+4X2U1YurVFSRU8WAOK15YU6SJcjC5UmT8EBBei4pEm4EcOKI26iwkB1I97/70FGLg+cVgfV1OTK2ZPnGK0yDR0Bi2cYryvKHuHUeTn2ux0k3qHWOT5QTkdEIETaEqexppi07mIES6Z1MbqKJ5/Owt3pa8jGL0nyTtJsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcGwFLWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EA0C32782;
+	Mon, 12 Aug 2024 16:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479610;
-	bh=wWo+FqzFZ2CYj+H6YYj6kkjsYQ/oO3/n1CWPVGF8Fzc=;
+	s=korg; t=1723479044;
+	bh=FOAwlT3rV7Ir9y0XwnDL0+lgzU2oHPNmtua/LgEH6/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqDXZytrRdvB0+4bfNWfsnUVtePbbzl0lZk5ZiM6sPoE8vxe93xeIiVsbRkNgXX/L
-	 fQ0SvSphSUuNkA37tn1xChwDxdMDQzbAc/iIasLE74aQde021AMYdFj7PX8s1m4lAY
-	 m405F6ikqe9xw5XimvtCcBKmsGQsG/2aE4lhji6Q=
+	b=HcGwFLWZ2GghmAShLCg5Iz2Ru8qKCiHmlrxUcdaA3WcswVBAZTUFVx6COkKDQPLqG
+	 L8bDLvFjdA1rFWKL+piGPyxmTB+3qxh9l3DJyXoH8w9fyJMhypSpgh96zSBj3ArxyB
+	 EJ/dRfY/BN6IX/IDlq1RiEZeXI6jrkbmq2TZDTGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 140/189] ASoC: amd: yc: Add quirk entry for OMEN by HP Gaming Laptop 16-n0xxx
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 115/150] power: supply: axp288_charger: Fix constant_charge_voltage writes
 Date: Mon, 12 Aug 2024 18:03:16 +0200
-Message-ID: <20240812160137.530150571@linuxfoundation.org>
+Message-ID: <20240812160129.599542652@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 6675e76a5c441b52b1b983ebb714122087020ebe upstream.
+commit b34ce4a59cfe9cd0d6f870e6408e8ec88a964585 upstream.
 
-Fix the missing mic on OMEN by HP Gaming Laptop 16-n0xxx by adding the
-quirk entry with the board ID 8A44.
+info->max_cv is in millivolts, divide the microvolt value being written
+to constant_charge_voltage by 1000 *before* clamping it to info->max_cv.
 
+Before this fix the code always tried to set constant_charge_voltage
+to max_cv / 1000 = 4 millivolt, which ends up in setting it to 4.1V
+which is the lowest supported value.
+
+Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
 Cc: stable@vger.kernel.org
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1227182
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20240807170249.16490-1-tiwai@suse.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240717200333.56669-1-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/power/supply/axp288_charger.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -413,6 +413,13 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_BOARD_NAME, "8A44"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
- 			DMI_MATCH(DMI_BOARD_NAME, "8A22"),
+--- a/drivers/power/supply/axp288_charger.c
++++ b/drivers/power/supply/axp288_charger.c
+@@ -337,8 +337,8 @@ static int axp288_charger_usb_set_proper
  		}
- 	},
+ 		break;
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+-		scaled_val = min(val->intval, info->max_cv);
+-		scaled_val = DIV_ROUND_CLOSEST(scaled_val, 1000);
++		scaled_val = DIV_ROUND_CLOSEST(val->intval, 1000);
++		scaled_val = min(scaled_val, info->max_cv);
+ 		ret = axp288_charger_set_cv(info, scaled_val);
+ 		if (ret < 0) {
+ 			dev_warn(&info->pdev->dev, "set charge voltage failed\n");
 
 
 
