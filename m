@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9304494EC8E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:14:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E09294EC8F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C2EA1F226B8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:14:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4048A1C20C18
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6300178CE2;
-	Mon, 12 Aug 2024 12:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3716B17967F;
+	Mon, 12 Aug 2024 12:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0/HDpJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5zyRrXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C3C175D3E
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1DB175D3E
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723464862; cv=none; b=qandTckuYWP3TL9i24yMqSSyfBX/MwiHb0Rn59FvBbTmpYqKgq8wu198btjZ9azExbQ+odgY3vIyR2TPOCbNJ07NyXlTPZRnAT73VD+pP0eu/hmdPjkfT2DLzwiUcC5mQGXen4gegIUtKZ8c7BmZ7HaZgivhBrySko94JgVeUQc=
+	t=1723464872; cv=none; b=Vz0fG2lMCRoHuE8gW/hWX9ahIGKHT3LRpQbtRA+8eZC7/CZmw1bRs/JrmC5Nsd2m4D+40GBV9z+3MdZw6TWRCv1oL/G1BNGJnBTZ5eYDO4krn6bnaMlMW86XXHzbfwsXXibiv9bqj4zhKQRkyn+CRNONIxlheObZ7UWsadpUh2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723464862; c=relaxed/simple;
-	bh=X1VpnpUJrwby095VvQtK58qvKJIZKqFPS+C2aGZSTio=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h91Z4vJf/Vh9X+15IQbSgaFIxnit0hOe7N3c9+dWdoH4fDRSVpNvrViRE9jCKQMJqJCV64AwsDrEjQhirPCbELuY17B3EEA6WR+yGdWyT3e46QzsCjTt7Ci2uwvTQ4HD3OJdnCOjO7PQmy9OdUqDM3xkidhNRF1OXZnMMohiANQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0/HDpJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D59C4AF0E;
-	Mon, 12 Aug 2024 12:14:21 +0000 (UTC)
+	s=arc-20240116; t=1723464872; c=relaxed/simple;
+	bh=x39KKw1dvORRIgXPCWZhQxFVwwFJZy1gyTCQS+ZricM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gi0JTgkT/JJA0xOD/fk+HJyGcDdh6FiTFf4nxy0bLzuT5/fdEwDCvVWO5NGj31QkSDzXaUSEog1NgH2Kua01YOHCDkbZQiumTKqdwSVlkcaYFHzCcgfVIuv1a7LQiPyfvIzu5uvNZ/wZXx3aBsYag0hzj9W2s8nKT7aDt153p0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5zyRrXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CF9C32782;
+	Mon, 12 Aug 2024 12:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723464862;
-	bh=X1VpnpUJrwby095VvQtK58qvKJIZKqFPS+C2aGZSTio=;
+	s=korg; t=1723464870;
+	bh=x39KKw1dvORRIgXPCWZhQxFVwwFJZy1gyTCQS+ZricM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=B0/HDpJra5YIHvcexkUWfP1Z1yS4z22Fp22bDBBLvh07InI/5M2bodtUdd+Ti8uX7
-	 iqsrkcIOo/rBKgdqioS5SnrVAs7nHLLnAJHE8KnFmq7ZbLR+ux33maDsoh287Vgcws
-	 bTm54R0vIikC5+b4X14em98HnFuob0p6SQfWoXTg=
-Subject: FAILED: patch "[PATCH] sched/core: Introduce sched_set_rq_on/offline() helper" failed to apply to 6.1-stable tree
+	b=o5zyRrXNMZOUJD0RlI8o3HvBYnDgfo3el3ESvH7h1Waq1C6AFWXRRPIHaNSs8UvKb
+	 CZYp0bwTrlDzjv9YpveBd9g1UqMDFURTS2iCN/urhLQ5z3F1R9rLptfRDtJXA+V7Wa
+	 hwvvGzb5o2Q8s5+3fItxus7w3ZcRTtW7XtrKKsdA=
+Subject: FAILED: patch "[PATCH] sched/core: Introduce sched_set_rq_on/offline() helper" failed to apply to 5.10-stable tree
 To: yangyingliang@huawei.com,peterz@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 14:14:19 +0200
-Message-ID: <2024081219-bankroll-buddy-1ced@gregkh>
+Date: Mon, 12 Aug 2024 14:14:20 +0200
+Message-ID: <2024081220-explore-caption-ec0b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2f027354122f58ee846468a6f6b48672fff92e9b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081219-bankroll-buddy-1ced@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081220-explore-caption-ec0b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 2f027354122f ("sched/core: Introduce sched_set_rq_on/offline() helper")
 cab3ecaed5cd ("sched/core: Fixed missing rq clock update before calling set_rq_offline()")
+5cb9eaa3d274 ("sched: Wrap rq::lock access")
+39d371b7c0c2 ("sched: Provide raw_spin_rq_*lock*() helpers")
+ed3cd45f8ca8 ("Merge tag 'v5.11' into sched/core, to pick up fixes & refresh the branch")
 
 thanks,
 
