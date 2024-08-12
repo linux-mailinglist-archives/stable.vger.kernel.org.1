@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-67030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CBD94F398
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D70994F3C3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B089D1F21809
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02BA91F212C7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3104C187321;
-	Mon, 12 Aug 2024 16:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67621183CD9;
+	Mon, 12 Aug 2024 16:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgFTyltu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnT7mIwI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E433D18454D;
-	Mon, 12 Aug 2024 16:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24401186E38;
+	Mon, 12 Aug 2024 16:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479569; cv=none; b=dEMA8hsmVEDImOQXf4I90einytOl8a1gVMulRCu4C4nuvnzgHV80tTilzY0HsiSZxxQD6PJpnwwUTjLYRolyct7emd7BWos14QoHGmNEerT4HiuEVSlKD9Dn6PyaeaF9mvXiWMBNZ3rUivF7DG43N2wvfL7KcH0RXTADGwzdRPs=
+	t=1723479706; cv=none; b=hOp2f205FPtGepyG0CB+TDuRwCj2vmC7yjaDN41WIR2g01eCYzaTTbAaMJ61tL5Vakn/IDI33h+sUgzIWBkGL5j6KS7tmU7Ly9ULCFealHFwIZHb8nyTVWUhog543Hl+252CKEUq2On69owKIUDT+MQ7Kx1MBrndGtPL6qMvFrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479569; c=relaxed/simple;
-	bh=0JWOFf7W9PNUozfDMP3WYuOZY+6ynzPowl9GcHKKkVI=;
+	s=arc-20240116; t=1723479706; c=relaxed/simple;
+	bh=aZuVy3a8NV4/qqTUSgq+LXBrR/lFbppjb5GHejy7+EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBXJ2PfCvEz+t2pUzwMBGQDL+njjiA3adVA3TaQHDB8ipsvsJ0JfzWXXVY1hbYLauDViRKYYlOZLXF8+dVTJkupsc8ndOorWF9KHI1M4pWcDXsNvxYCfXAYzaAoWKs1cv4T8FZpdRW3J98y9OHzhmdACf7Q8+hF82/V1ccD7TNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgFTyltu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500C4C32782;
-	Mon, 12 Aug 2024 16:19:28 +0000 (UTC)
+	 MIME-Version; b=ZT2xBrHQPufPu+NqN5+m6UgF/AZ2HnRpuiqf7LQpVV7crt2EUDelD7WeU/YoAM4vJ2QEpGPsp6/liL0Snr85XY5/4vj3IKcfmExTB2nv8/YxRnh2j7C8c79sCgb2OMfim5SEZsU8zK1NdzQflAuryXsU9lpuML4/OWVbe4cjbhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnT7mIwI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF92C4AF0C;
+	Mon, 12 Aug 2024 16:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479568;
-	bh=0JWOFf7W9PNUozfDMP3WYuOZY+6ynzPowl9GcHKKkVI=;
+	s=korg; t=1723479706;
+	bh=aZuVy3a8NV4/qqTUSgq+LXBrR/lFbppjb5GHejy7+EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KgFTyltuE8CFmHRkGjZa0VX3TW/plxlJ5m4+yFZ4bUAhie+ymqndKpDvJdgVI5nQa
-	 SvgEAjiSxiwMnM7ANvfnVWJTLppYZpb8aB2GJe1aWs2UeUCNqY3LZwPJQwEc4ZABy5
-	 t2IQWOyqm9y3k4HQ8+N1gmpkT65EjMjzSR2G0xIc=
+	b=UnT7mIwI7Gt5ZuUdRcciKya6OI5srXSi3oL7mNezb7sWv/EJEwRQ/pzsmr5k8zQMN
+	 Wg9/NSnGTDxVwQQoU9xSFK7JEWefAopXuf8gcUIa6L9sQfa3+dBG4p3XKo0F0DQuz4
+	 +jJxg6AklBavlGKGpfVkfZwTNRYYzC2AMtHfs8AA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yu Liao <liaoyu15@huawei.com>
-Subject: [PATCH 6.6 126/189] tick/broadcast: Move per CPU pointer access into the atomic section
-Date: Mon, 12 Aug 2024 18:03:02 +0200
-Message-ID: <20240812160136.995963125@linuxfoundation.org>
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Michal Kubiak <michal.kubiak@intel.com>
+Subject: [PATCH 6.6 127/189] vhost-vdpa: switch to use vmf_insert_pfn() in the fault handler
+Date: Mon, 12 Aug 2024 18:03:03 +0200
+Message-ID: <20240812160137.033807951@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
 References: <20240812160132.135168257@linuxfoundation.org>
@@ -66,53 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Jason Wang <jasowang@redhat.com>
 
-commit 6881e75237a84093d0986f56223db3724619f26e upstream.
+commit 0823dc64586ba5ea13a7d200a5d33e4c5fa45950 upstream.
 
-The recent fix for making the take over of the broadcast timer more
-reliable retrieves a per CPU pointer in preemptible context.
+remap_pfn_page() should not be called in the fault handler as it may
+change the vma->flags which may trigger lockdep warning since the vma
+write lock is not held. Actually there's no need to modify the
+vma->flags as it has been set in the mmap(). So this patch switches to
+use vmf_insert_pfn() instead.
 
-This went unnoticed as compilers hoist the access into the non-preemptible
-region where the pointer is actually used. But of course it's valid that
-the compiler keeps it at the place where the code puts it which rightfully
-triggers:
-
-  BUG: using smp_processor_id() in preemptible [00000000] code:
-       caller is hotplug_cpu__broadcast_tick_pull+0x1c/0xc0
-
-Move it to the actual usage site which is in a non-preemptible region.
-
-Fixes: f7d43dd206e7 ("tick/broadcast: Make takeover of broadcast hrtimer reliable")
-Reported-by: David Wang <00107082@163.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Yu Liao <liaoyu15@huawei.com>
+Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
+Fixes: ddd89d0a059d ("vhost_vdpa: support doorbell mapping via mmap")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/87ttg56ers.ffs@tglx
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240701033159.18133-1-jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/tick-broadcast.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/vhost/vdpa.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -1141,7 +1141,6 @@ void tick_broadcast_switch_to_oneshot(vo
- #ifdef CONFIG_HOTPLUG_CPU
- void hotplug_cpu__broadcast_tick_pull(int deadcpu)
- {
--	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
- 	struct clock_event_device *bc;
- 	unsigned long flags;
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -1378,13 +1378,7 @@ static vm_fault_t vhost_vdpa_fault(struc
  
-@@ -1167,6 +1166,8 @@ void hotplug_cpu__broadcast_tick_pull(in
- 		 * device to avoid the starvation.
- 		 */
- 		if (tick_check_broadcast_expired()) {
-+			struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
-+
- 			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
- 			tick_program_event(td->evtdev->next_event, 1);
- 		}
+ 	notify = ops->get_vq_notification(vdpa, index);
+ 
+-	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+-	if (remap_pfn_range(vma, vmf->address & PAGE_MASK,
+-			    PFN_DOWN(notify.addr), PAGE_SIZE,
+-			    vma->vm_page_prot))
+-		return VM_FAULT_SIGBUS;
+-
+-	return VM_FAULT_NOPAGE;
++	return vmf_insert_pfn(vma, vmf->address & PAGE_MASK, PFN_DOWN(notify.addr));
+ }
+ 
+ static const struct vm_operations_struct vhost_vdpa_vm_ops = {
 
 
 
