@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-66910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8E394F30C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8A094F3AD
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0E791C2129D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7D7C1F20F9D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE983187346;
-	Mon, 12 Aug 2024 16:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E55186E20;
+	Mon, 12 Aug 2024 16:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPTj/ng2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2C4RYFQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B89A186295;
-	Mon, 12 Aug 2024 16:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257EC183CA6;
+	Mon, 12 Aug 2024 16:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479182; cv=none; b=d65EyMEZaf5MBi1qash67f/xhmPSFNN4eXHNtBrfKDCEigBq1ISTo9rbUjLi4/TLR6UyMm5sWB1gjRzMYrvnHDPDCC5K/ICKCvkdSFwcHEm8hk1vCihO8EOla4qBu23gVmso4MjfHphhXRtgA4E8DNtWKnLBA8hAEKTL295y8Ns=
+	t=1723479641; cv=none; b=NI+qai8oG/UFMtLVD5AqkNZrjg2FhrrvyKrjIeDLOCxHZ1BcPRkEtif3jsW06N7xvn/O9DlqVbyAQaADrBQ4NlrgRNBUlV+EQ0iAXoIJ9/Sjp/vd+zHuhFOhz8dgk0/Q7fqtazga8R8snaOKp7ZsPfeTRA4z8F6y/aB70pXQGH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479182; c=relaxed/simple;
-	bh=MCtJFa6GHyTyNaktMbWIDTPDjnCON0l424VwO7vJBiY=;
+	s=arc-20240116; t=1723479641; c=relaxed/simple;
+	bh=2GEwOOA5u7LphoxHGhtOsNcB7ZvtfRfNgd0zvrkiYyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUuczXRoQADVc0hUy3/N+MNPlfi7xtt7xv7BBpq5gV9fdnMRvROL7eILWtnI+kGnNNiRrRxhHJHoQx+WNZcTHqaD3Cqx0QDWe5J7Z5UVwjRwxD8FzbxNipxaEAB4lbwgd5dpPXxzfmn3oXk0OGyOL29vM7spAOdbH44WFHcLk9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPTj/ng2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF394C32782;
-	Mon, 12 Aug 2024 16:13:01 +0000 (UTC)
+	 MIME-Version; b=pqyL6LM2caZu4+MzZDNVke4hqHGdh8KKib1kOpvHGo63aNdHEjFb29pz9lHcV7JMzRetoMREBkMwo9NuqSn3lEHh2ZbyEZQf4a3+g5eLRb5fIucD9b1NZyHHnvPUllRiPoBPWBXgehNYTA+JTSP7t3iGxVjfWfL0y+1SibdL/iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2C4RYFQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827AAC32782;
+	Mon, 12 Aug 2024 16:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479182;
-	bh=MCtJFa6GHyTyNaktMbWIDTPDjnCON0l424VwO7vJBiY=;
+	s=korg; t=1723479641;
+	bh=2GEwOOA5u7LphoxHGhtOsNcB7ZvtfRfNgd0zvrkiYyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPTj/ng2RAcatFliKmZifoMDk2TQda+UnBJirGGuiL6axRa4qELzFLuEEIowHvfdS
-	 JLEz7x+rmGe15jbuL4oeaPnhv+yEjcwt2RIrVPxIP/b8sMGfjxwUA5fBu0TGqocqAh
-	 pqFyuKUlv4TSNmGgtWNHJdjhZvfVSuBDUNK/boBQ=
+	b=2C4RYFQLjrsZQ9DtVLLcFr6Rgklk/1wfLyAdOHeZ7vu5idNGBm9H3VCjYxqUpu4sE
+	 oPpspNyHujwlfqb9ZaXAwrsBVV55UFobsMO96I+hGc+4mvj8F0jR7z9H/TQgCQlOcV
+	 iTxNvntptY97k/uol2p1MEZ+x2i5YDKhF/IOMM/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Chen Yu <yu.c.chen@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>
-Subject: [PATCH 6.1 123/150] sched/smt: Fix unbalance sched_smt_present dec/inc
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
+	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 148/189] tracing: Fix overflow in get_free_elt()
 Date: Mon, 12 Aug 2024 18:03:24 +0200
-Message-ID: <20240812160129.909287082@linuxfoundation.org>
+Message-ID: <20240812160137.839734351@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
 
-commit e22f910a26cc2a3ac9c66b8e935ef2a7dd881117 upstream.
+commit bcf86c01ca4676316557dd482c8416ece8c2e143 upstream.
 
-I got the following warn report while doing stress test:
+"tracing_map->next_elt" in get_free_elt() is at risk of overflowing.
 
-jump label: negative count!
-WARNING: CPU: 3 PID: 38 at kernel/jump_label.c:263 static_key_slow_try_dec+0x9d/0xb0
-Call Trace:
- <TASK>
- __static_key_slow_dec_cpuslocked+0x16/0x70
- sched_cpu_deactivate+0x26e/0x2a0
- cpuhp_invoke_callback+0x3ad/0x10d0
- cpuhp_thread_fun+0x3f5/0x680
- smpboot_thread_fn+0x56d/0x8d0
- kthread+0x309/0x400
- ret_from_fork+0x41/0x70
- ret_from_fork_asm+0x1b/0x30
- </TASK>
+Once it overflows, new elements can still be inserted into the tracing_map
+even though the maximum number of elements (`max_elts`) has been reached.
+Continuing to insert elements after the overflow could result in the
+tracing_map containing "tracing_map->max_size" elements, leaving no empty
+entries.
+If any attempt is made to insert an element into a full tracing_map using
+`__tracing_map_insert()`, it will cause an infinite loop with preemption
+disabled, leading to a CPU hang problem.
 
-Because when cpuset_cpu_inactive() fails in sched_cpu_deactivate(),
-the cpu offline failed, but sched_smt_present is decremented before
-calling sched_cpu_deactivate(), it leads to unbalanced dec/inc, so
-fix it by incrementing sched_smt_present in the error path.
+Fix this by preventing any further increments to "tracing_map->next_elt"
+once it reaches "tracing_map->max_elt".
 
-Fixes: c5511d03ec09 ("sched/smt: Make sched_smt_present track topology")
-Cc: stable@kernel.org
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Chen Yu <yu.c.chen@intel.com>
-Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240703031610.587047-3-yangyingliang@huaweicloud.com
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 08d43a5fa063e ("tracing: Add lock-free tracing_map")
+Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Link: https://lore.kernel.org/20240805055922.6277-1-Tze-nan.Wu@mediatek.com
+Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/tracing_map.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9513,6 +9513,7 @@ int sched_cpu_deactivate(unsigned int cp
- 	sched_update_numa(cpu, false);
- 	ret = cpuset_cpu_inactive(cpu);
- 	if (ret) {
-+		sched_smt_present_inc(cpu);
- 		balance_push_set(cpu, false);
- 		set_cpu_active(cpu, true);
- 		sched_update_numa(cpu, true);
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -454,7 +454,7 @@ static struct tracing_map_elt *get_free_
+ 	struct tracing_map_elt *elt = NULL;
+ 	int idx;
+ 
+-	idx = atomic_inc_return(&map->next_elt);
++	idx = atomic_fetch_add_unless(&map->next_elt, 1, map->max_elts);
+ 	if (idx < map->max_elts) {
+ 		elt = *(TRACING_MAP_ELT(map->elts, idx));
+ 		if (map->ops && map->ops->elt_init)
+@@ -699,7 +699,7 @@ void tracing_map_clear(struct tracing_ma
+ {
+ 	unsigned int i;
+ 
+-	atomic_set(&map->next_elt, -1);
++	atomic_set(&map->next_elt, 0);
+ 	atomic64_set(&map->hits, 0);
+ 	atomic64_set(&map->drops, 0);
+ 
+@@ -783,7 +783,7 @@ struct tracing_map *tracing_map_create(u
+ 
+ 	map->map_bits = map_bits;
+ 	map->max_elts = (1 << map_bits);
+-	atomic_set(&map->next_elt, -1);
++	atomic_set(&map->next_elt, 0);
+ 
+ 	map->map_size = (1 << (map_bits + 1));
+ 	map->ops = ops;
 
 
 
