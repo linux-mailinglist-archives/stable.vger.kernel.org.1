@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-66958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A8294F346
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D1794F44A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C43761F21834
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91E7BB228BF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8C2187335;
-	Mon, 12 Aug 2024 16:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D89E187321;
+	Mon, 12 Aug 2024 16:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4OhMV7j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbfVLvf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F4E187341;
-	Mon, 12 Aug 2024 16:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB31186E34;
+	Mon, 12 Aug 2024 16:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479338; cv=none; b=KdWi22epEuJjFj767MKQKSBgPX/DpHXsCiowTThsrmphsJhebYa5XRm2ZtCMuHCQbFX5bC0G9pkvZwiEuphQ9db3IWuGmGiZXPP6Y+cbJFSU4PQUC7aSnGI9AjaORFiqjqPyR4wvk+X3Tyqeek3xlkfbG48gYQ+PDktqVvvzPyg=
+	t=1723480113; cv=none; b=qGZlu8Vj8u5TCbxyi4Da1avnQJsVHPhrrmXSdEOqLD1ezFL4T8juSdRd5hXWc29CYrNpiMikHjYZeQQBWBEowpfGdn9SMX9j5W4gCDy5sOF2XgUYutrUWRsP+lCLyIYKarwpC2uiwFX66AYy1UkJfZvat3uzQ3RJkmmUtDRdCCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479338; c=relaxed/simple;
-	bh=qxt0M05CrYBavKAsj3wOMAdjJaVBLBsKl/AwairAd+c=;
+	s=arc-20240116; t=1723480113; c=relaxed/simple;
+	bh=VhFqZhXrm6yFi3l21Ha6V5z6vy+ARdQkwSmcMxJ8tPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ru1puhgRJMXwLnDNIHHGmelAZ6GIW9oHKsCEzVAehmSym1Jfu8J1nQZXyAkkKNH2CfT8WOs1Jqj6JxcEYIUiZHme6hon2HDCp6EJvaZQIyZl8qgLrJIZgb8tyxDgZ7WBnycZVmYv3d+C7rrG6ZU2/U1KuY/spxVGSR05+ky+VRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4OhMV7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E767C32782;
-	Mon, 12 Aug 2024 16:15:37 +0000 (UTC)
+	 MIME-Version; b=nHusZQxT2BVSq7I5rO5RJ+R1u8MoxK54I4EbBiCVq1Y+6ehSV1Tj8pQ39bODrk0TjAieILHflNhQZq4zRqkuslEmeyO8ZXr4q31n9Fl+vnThDvGB/tTe/nzXnw+rjQMoyGlZJAfwHYITKSTCGLLoCwWy48aDUTLSusuacbPjZL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbfVLvf3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352A6C32782;
+	Mon, 12 Aug 2024 16:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479337;
-	bh=qxt0M05CrYBavKAsj3wOMAdjJaVBLBsKl/AwairAd+c=;
+	s=korg; t=1723480113;
+	bh=VhFqZhXrm6yFi3l21Ha6V5z6vy+ARdQkwSmcMxJ8tPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4OhMV7jNSmn/odqzaxqahppQ5Tz4cboqi0wtxskexpyu22sxEVs/axxuPG1hQF43
-	 6KYfuRqqsMNb1RXqCUEJcK+cK04dT4JTfHOLNOuFrEXYXRPSTMBEGpj7IFADeo2NyJ
-	 LOBYiHMHo/9wCQBlUokeGZs107ygehI3i5WrozHs=
+	b=TbfVLvf3SAkSM1ddmXTQR7PeRquAm8QSXA948cXxP+di7rW6hMZR/XPWBrzjJeoNY
+	 tCm2bH/JcaRKDawcXG2hjwYn6aa74EzwlCZGsgdof1v2JTVNbj+5Ucvh9wykqmHMNL
+	 BZixv/LJPz36u2oDwel4lWhvYZHp1j7dxWBDuylw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/189] md/raid5: avoid BUG_ON() while continue reshape after reassembling
+Subject: [PATCH 6.10 083/263] btrfs: fix data race when accessing the last_trans field of a root
 Date: Mon, 12 Aug 2024 18:01:24 +0200
-Message-ID: <20240812160133.229812145@linuxfoundation.org>
+Message-ID: <20240812160149.724879263@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,229 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 305a5170dc5cf3d395bb4c4e9239bca6d0b54b49 ]
+[ Upstream commit ca84529a842f3a15a5f17beac6252aa11955923f ]
 
-Currently, mdadm support --revert-reshape to abort the reshape while
-reassembling, as the test 07revert-grow. However, following BUG_ON()
-can be triggerred by the test:
+KCSAN complains about a data race when accessing the last_trans field of a
+root:
 
-kernel BUG at drivers/md/raid5.c:6278!
-invalid opcode: 0000 [#1] PREEMPT SMP PTI
-irq event stamp: 158985
-CPU: 6 PID: 891 Comm: md0_reshape Not tainted 6.9.0-03335-g7592a0b0049a #94
-RIP: 0010:reshape_request+0x3f1/0xe60
-Call Trace:
- <TASK>
- raid5_sync_request+0x43d/0x550
- md_do_sync+0xb7a/0x2110
- md_thread+0x294/0x2b0
- kthread+0x147/0x1c0
- ret_from_fork+0x59/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+  [  199.553628] BUG: KCSAN: data-race in btrfs_record_root_in_trans [btrfs] / record_root_in_trans [btrfs]
 
-Root cause is that --revert-reshape update the raid_disks from 5 to 4,
-while reshape position is still set, and after reassembling the array,
-reshape position will be read from super block, then during reshape the
-checking of 'writepos' that is caculated by old reshape position will
-fail.
+  [  199.555186] read to 0x000000008801e308 of 8 bytes by task 2812 on cpu 1:
+  [  199.555210]  btrfs_record_root_in_trans+0x9a/0x128 [btrfs]
+  [  199.555999]  start_transaction+0x154/0xcd8 [btrfs]
+  [  199.556780]  btrfs_join_transaction+0x44/0x60 [btrfs]
+  [  199.557559]  btrfs_dirty_inode+0x9c/0x140 [btrfs]
+  [  199.558339]  btrfs_update_time+0x8c/0xb0 [btrfs]
+  [  199.559123]  touch_atime+0x16c/0x1e0
+  [  199.559151]  pipe_read+0x6a8/0x7d0
+  [  199.559179]  vfs_read+0x466/0x498
+  [  199.559204]  ksys_read+0x108/0x150
+  [  199.559230]  __s390x_sys_read+0x68/0x88
+  [  199.559257]  do_syscall+0x1c6/0x210
+  [  199.559286]  __do_syscall+0xc8/0xf0
+  [  199.559318]  system_call+0x70/0x98
 
-Fix this panic the easy way first, by converting the BUG_ON() to
-WARN_ON(), and stop the reshape if checkings fail.
+  [  199.559431] write to 0x000000008801e308 of 8 bytes by task 2808 on cpu 0:
+  [  199.559464]  record_root_in_trans+0x196/0x228 [btrfs]
+  [  199.560236]  btrfs_record_root_in_trans+0xfe/0x128 [btrfs]
+  [  199.561097]  start_transaction+0x154/0xcd8 [btrfs]
+  [  199.561927]  btrfs_join_transaction+0x44/0x60 [btrfs]
+  [  199.562700]  btrfs_dirty_inode+0x9c/0x140 [btrfs]
+  [  199.563493]  btrfs_update_time+0x8c/0xb0 [btrfs]
+  [  199.564277]  file_update_time+0xb8/0xf0
+  [  199.564301]  pipe_write+0x8ac/0xab8
+  [  199.564326]  vfs_write+0x33c/0x588
+  [  199.564349]  ksys_write+0x108/0x150
+  [  199.564372]  __s390x_sys_write+0x68/0x88
+  [  199.564397]  do_syscall+0x1c6/0x210
+  [  199.564424]  __do_syscall+0xc8/0xf0
+  [  199.564452]  system_call+0x70/0x98
 
-Noted that mdadm must fix --revert-shape as well, and probably md/raid
-should enhance metadata validation as well, however this means
-reassemble will fail and there must be user tools to fix the wrong
-metadata.
+This is because we update and read last_trans concurrently without any
+type of synchronization. This should be generally harmless and in the
+worst case it can make us do extra locking (btrfs_record_root_in_trans())
+trigger some warnings at ctree.c or do extra work during relocation - this
+would probably only happen in case of load or store tearing.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240611132251.1967786-13-yukuai1@huaweicloud.com
+So fix this by always reading and updating the field using READ_ONCE()
+and WRITE_ONCE(), this silences KCSAN and prevents load and store tearing.
+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ fs/btrfs/ctree.c       |  4 ++--
+ fs/btrfs/ctree.h       | 10 ++++++++++
+ fs/btrfs/defrag.c      |  2 +-
+ fs/btrfs/disk-io.c     |  4 ++--
+ fs/btrfs/relocation.c  |  8 ++++----
+ fs/btrfs/transaction.c |  8 ++++----
+ 6 files changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 1507540a9cb4e..2c7f11e576673 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -6326,7 +6326,9 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
- 	safepos = conf->reshape_safe;
- 	sector_div(safepos, data_disks);
- 	if (mddev->reshape_backwards) {
--		BUG_ON(writepos < reshape_sectors);
-+		if (WARN_ON(writepos < reshape_sectors))
-+			return MaxSector;
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index ca372068226d5..8a791b648ac53 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -321,7 +321,7 @@ int btrfs_copy_root(struct btrfs_trans_handle *trans,
+ 	WARN_ON(test_bit(BTRFS_ROOT_SHAREABLE, &root->state) &&
+ 		trans->transid != fs_info->running_transaction->transid);
+ 	WARN_ON(test_bit(BTRFS_ROOT_SHAREABLE, &root->state) &&
+-		trans->transid != root->last_trans);
++		trans->transid != btrfs_get_root_last_trans(root));
+ 
+ 	level = btrfs_header_level(buf);
+ 	if (level == 0)
+@@ -551,7 +551,7 @@ int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
+ 	WARN_ON(test_bit(BTRFS_ROOT_SHAREABLE, &root->state) &&
+ 		trans->transid != fs_info->running_transaction->transid);
+ 	WARN_ON(test_bit(BTRFS_ROOT_SHAREABLE, &root->state) &&
+-		trans->transid != root->last_trans);
++		trans->transid != btrfs_get_root_last_trans(root));
+ 
+ 	level = btrfs_header_level(buf);
+ 
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index c03c58246033b..b2e4b30b8fae9 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -354,6 +354,16 @@ static inline void btrfs_set_root_last_log_commit(struct btrfs_root *root, int c
+ 	WRITE_ONCE(root->last_log_commit, commit_id);
+ }
+ 
++static inline u64 btrfs_get_root_last_trans(const struct btrfs_root *root)
++{
++	return READ_ONCE(root->last_trans);
++}
 +
- 		writepos -= reshape_sectors;
- 		readpos += reshape_sectors;
- 		safepos += reshape_sectors;
-@@ -6344,14 +6346,18 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
- 	 * to set 'stripe_addr' which is where we will write to.
- 	 */
- 	if (mddev->reshape_backwards) {
--		BUG_ON(conf->reshape_progress == 0);
-+		if (WARN_ON(conf->reshape_progress == 0))
-+			return MaxSector;
++static inline void btrfs_set_root_last_trans(struct btrfs_root *root, u64 transid)
++{
++	WRITE_ONCE(root->last_trans, transid);
++}
 +
- 		stripe_addr = writepos;
--		BUG_ON((mddev->dev_sectors &
--			~((sector_t)reshape_sectors - 1))
--		       - reshape_sectors - stripe_addr
--		       != sector_nr);
-+		if (WARN_ON((mddev->dev_sectors &
-+		    ~((sector_t)reshape_sectors - 1)) -
-+		    reshape_sectors - stripe_addr != sector_nr))
-+			return MaxSector;
- 	} else {
--		BUG_ON(writepos != sector_nr + reshape_sectors);
-+		if (WARN_ON(writepos != sector_nr + reshape_sectors))
-+			return MaxSector;
-+
- 		stripe_addr = sector_nr;
+ /*
+  * Structure that conveys information about an extent that is going to replace
+  * all the extents in a file range.
+diff --git a/fs/btrfs/defrag.c b/fs/btrfs/defrag.c
+index 407ccec3e57ed..f664678c71d15 100644
+--- a/fs/btrfs/defrag.c
++++ b/fs/btrfs/defrag.c
+@@ -139,7 +139,7 @@ int btrfs_add_inode_defrag(struct btrfs_trans_handle *trans,
+ 	if (trans)
+ 		transid = trans->transid;
+ 	else
+-		transid = inode->root->last_trans;
++		transid = btrfs_get_root_last_trans(root);
+ 
+ 	defrag = kmem_cache_zalloc(btrfs_inode_defrag_cachep, GFP_NOFS);
+ 	if (!defrag)
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index cabb558dbdaa8..3791813dc7b62 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -658,7 +658,7 @@ static void __setup_root(struct btrfs_root *root, struct btrfs_fs_info *fs_info,
+ 	root->state = 0;
+ 	RB_CLEAR_NODE(&root->rb_node);
+ 
+-	root->last_trans = 0;
++	btrfs_set_root_last_trans(root, 0);
+ 	root->free_objectid = 0;
+ 	root->nr_delalloc_inodes = 0;
+ 	root->nr_ordered_extents = 0;
+@@ -1010,7 +1010,7 @@ int btrfs_add_log_tree(struct btrfs_trans_handle *trans,
+ 		return ret;
  	}
+ 
+-	log_root->last_trans = trans->transid;
++	btrfs_set_root_last_trans(log_root, trans->transid);
+ 	log_root->root_key.offset = btrfs_root_id(root);
+ 
+ 	inode_item = &log_root->root_item.inode;
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index 8b24bb5a0aa18..f2935252b981a 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -817,7 +817,7 @@ static struct btrfs_root *create_reloc_root(struct btrfs_trans_handle *trans,
+ 		goto abort;
+ 	}
+ 	set_bit(BTRFS_ROOT_SHAREABLE, &reloc_root->state);
+-	reloc_root->last_trans = trans->transid;
++	btrfs_set_root_last_trans(reloc_root, trans->transid);
+ 	return reloc_root;
+ fail:
+ 	kfree(root_item);
+@@ -864,7 +864,7 @@ int btrfs_init_reloc_root(struct btrfs_trans_handle *trans,
+ 	 */
+ 	if (root->reloc_root) {
+ 		reloc_root = root->reloc_root;
+-		reloc_root->last_trans = trans->transid;
++		btrfs_set_root_last_trans(reloc_root, trans->transid);
+ 		return 0;
+ 	}
+ 
+@@ -1739,7 +1739,7 @@ static noinline_for_stack int merge_reloc_root(struct reloc_control *rc,
+ 		 * btrfs_update_reloc_root() and update our root item
+ 		 * appropriately.
+ 		 */
+-		reloc_root->last_trans = trans->transid;
++		btrfs_set_root_last_trans(reloc_root, trans->transid);
+ 		trans->block_rsv = rc->block_rsv;
+ 
+ 		replaced = 0;
+@@ -2082,7 +2082,7 @@ static int record_reloc_root_in_trans(struct btrfs_trans_handle *trans,
+ 	struct btrfs_root *root;
+ 	int ret;
+ 
+-	if (reloc_root->last_trans == trans->transid)
++	if (btrfs_get_root_last_trans(reloc_root) == trans->transid)
+ 		return 0;
+ 
+ 	root = btrfs_get_fs_root(fs_info, reloc_root->root_key.offset, false);
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 3388c836b9a56..76117bb2c726c 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -405,7 +405,7 @@ static int record_root_in_trans(struct btrfs_trans_handle *trans,
+ 	int ret = 0;
+ 
+ 	if ((test_bit(BTRFS_ROOT_SHAREABLE, &root->state) &&
+-	    root->last_trans < trans->transid) || force) {
++	    btrfs_get_root_last_trans(root) < trans->transid) || force) {
+ 		WARN_ON(!force && root->commit_root != root->node);
+ 
+ 		/*
+@@ -421,7 +421,7 @@ static int record_root_in_trans(struct btrfs_trans_handle *trans,
+ 		smp_wmb();
+ 
+ 		spin_lock(&fs_info->fs_roots_radix_lock);
+-		if (root->last_trans == trans->transid && !force) {
++		if (btrfs_get_root_last_trans(root) == trans->transid && !force) {
+ 			spin_unlock(&fs_info->fs_roots_radix_lock);
+ 			return 0;
+ 		}
+@@ -429,7 +429,7 @@ static int record_root_in_trans(struct btrfs_trans_handle *trans,
+ 				   (unsigned long)btrfs_root_id(root),
+ 				   BTRFS_ROOT_TRANS_TAG);
+ 		spin_unlock(&fs_info->fs_roots_radix_lock);
+-		root->last_trans = trans->transid;
++		btrfs_set_root_last_trans(root, trans->transid);
+ 
+ 		/* this is pretty tricky.  We don't want to
+ 		 * take the relocation lock in btrfs_record_root_in_trans
+@@ -491,7 +491,7 @@ int btrfs_record_root_in_trans(struct btrfs_trans_handle *trans,
+ 	 * and barriers
+ 	 */
+ 	smp_rmb();
+-	if (root->last_trans == trans->transid &&
++	if (btrfs_get_root_last_trans(root) == trans->transid &&
+ 	    !test_bit(BTRFS_ROOT_IN_TRANS_SETUP, &root->state))
+ 		return 0;
  
 -- 
 2.43.0
