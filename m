@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-67051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8A094F3AD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390DE94F4C8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7D7C1F20F9D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9C2CB263D9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E55186E20;
-	Mon, 12 Aug 2024 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1764183CD4;
+	Mon, 12 Aug 2024 16:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2C4RYFQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdxEk3jK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257EC183CA6;
-	Mon, 12 Aug 2024 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F67E1494B8;
+	Mon, 12 Aug 2024 16:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479641; cv=none; b=NI+qai8oG/UFMtLVD5AqkNZrjg2FhrrvyKrjIeDLOCxHZ1BcPRkEtif3jsW06N7xvn/O9DlqVbyAQaADrBQ4NlrgRNBUlV+EQ0iAXoIJ9/Sjp/vd+zHuhFOhz8dgk0/Q7fqtazga8R8snaOKp7ZsPfeTRA4z8F6y/aB70pXQGH8=
+	t=1723480466; cv=none; b=LV8M12aom2N7r2MoN9Cvu7CIO91hMg0WEFeke3hbP1nJog/Ljw7wRM1oyrSt+a8DzrkgCxdUZjg1jOj1KeZG1OYC3IvI2lhrPjjv2acnJ/0fgj1r+1HmwDWn0H5qVLuljDtjMq2KqANYXwB19akZmdyz8TDwWjBEiAUZtOLS4II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479641; c=relaxed/simple;
-	bh=2GEwOOA5u7LphoxHGhtOsNcB7ZvtfRfNgd0zvrkiYyM=;
+	s=arc-20240116; t=1723480466; c=relaxed/simple;
+	bh=2Vz4XFVMExA/vjQ41kMyGo2xlyxqOIpSNuakI2tF6M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqyL6LM2caZu4+MzZDNVke4hqHGdh8KKib1kOpvHGo63aNdHEjFb29pz9lHcV7JMzRetoMREBkMwo9NuqSn3lEHh2ZbyEZQf4a3+g5eLRb5fIucD9b1NZyHHnvPUllRiPoBPWBXgehNYTA+JTSP7t3iGxVjfWfL0y+1SibdL/iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2C4RYFQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827AAC32782;
-	Mon, 12 Aug 2024 16:20:40 +0000 (UTC)
+	 MIME-Version; b=dv9f1FY+IrRKVY1rS7q7lnVAXrLV6mHn8TtaCLd63mEParIOxq8EC7Qtjt8ML9qDXe6XpI0FMgHcfp6N3IikH54/d7ghkyQ4jPg1tj/y7nvFEYSiLrWrRiMHJysoRBffocXomrPa8oc3DPenJw/f1XEv2b5hanNTWEpontAym24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdxEk3jK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F135CC4AF0C;
+	Mon, 12 Aug 2024 16:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479641;
-	bh=2GEwOOA5u7LphoxHGhtOsNcB7ZvtfRfNgd0zvrkiYyM=;
+	s=korg; t=1723480466;
+	bh=2Vz4XFVMExA/vjQ41kMyGo2xlyxqOIpSNuakI2tF6M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2C4RYFQLjrsZQ9DtVLLcFr6Rgklk/1wfLyAdOHeZ7vu5idNGBm9H3VCjYxqUpu4sE
-	 oPpspNyHujwlfqb9ZaXAwrsBVV55UFobsMO96I+hGc+4mvj8F0jR7z9H/TQgCQlOcV
-	 iTxNvntptY97k/uol2p1MEZ+x2i5YDKhF/IOMM/U=
+	b=XdxEk3jKOIz+BN44vrA1qD9VEaTwqvATkONjqc4ERN7dUTX8BjoIuVRAU8evclozW
+	 luOfK+6vwLYJkx+I9+8NuQDZ58QWp0TJtVJ7v8vgZFB4Q2Yn0U0U5So4TrYAlf2q9h
+	 oCRC1DVuH8tbpoQP0/bOKv0G+nF8VSYTRS1L3poI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
-	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 148/189] tracing: Fix overflow in get_free_elt()
-Date: Mon, 12 Aug 2024 18:03:24 +0200
-Message-ID: <20240812160137.839734351@linuxfoundation.org>
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.10 204/263] arm64: dts: ti: k3-am62-verdin-dahlia: Keep CTRL_SLEEP_MOCI# regulator on
+Date: Mon, 12 Aug 2024 18:03:25 +0200
+Message-ID: <20240812160154.358247983@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit bcf86c01ca4676316557dd482c8416ece8c2e143 upstream.
+commit 9438f970296f9c3a6dd340ae0ad01d2f056c88e6 upstream.
 
-"tracing_map->next_elt" in get_free_elt() is at risk of overflowing.
+This reverts commit 3935fbc87ddebea5439f3ab6a78b1e83e976bf88.
 
-Once it overflows, new elements can still be inserted into the tracing_map
-even though the maximum number of elements (`max_elts`) has been reached.
-Continuing to insert elements after the overflow could result in the
-tracing_map containing "tracing_map->max_size" elements, leaving no empty
-entries.
-If any attempt is made to insert an element into a full tracing_map using
-`__tracing_map_insert()`, it will cause an infinite loop with preemption
-disabled, leading to a CPU hang problem.
+CTRL_SLEEP_MOCI# is a signal that is defined for all the SoM
+implementing the Verdin family specification, this signal is supposed to
+control the power enable in the carrier board when the system is in deep
+sleep mode. However this is not possible with Texas Instruments AM62
+SoC, IOs output buffer is disabled in deep sleep and IOs are in
+tri-state mode.
 
-Fix this by preventing any further increments to "tracing_map->next_elt"
-once it reaches "tracing_map->max_elt".
+Given that we cannot properly control this pin, force it to be always
+high to minimize potential issues.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Fixes: 08d43a5fa063e ("tracing: Add lock-free tracing_map")
-Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Link: https://lore.kernel.org/20240805055922.6277-1-Tze-nan.Wu@mediatek.com
-Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 3935fbc87dde ("arm64: dts: ti: k3-am62-verdin-dahlia: support sleep-moci")
+Cc:  <stable@vger.kernel.org>
+Link: https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1361669/am625-gpio-output-state-in-deep-sleep/5244802
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20240731054804.6061-1-francesco@dolcini.it
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/tracing_map.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62-verdin-dahlia.dtsi |   22 ----------------------
+ arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi        |    6 ------
+ 2 files changed, 28 deletions(-)
 
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -454,7 +454,7 @@ static struct tracing_map_elt *get_free_
- 	struct tracing_map_elt *elt = NULL;
- 	int idx;
+--- a/arch/arm64/boot/dts/ti/k3-am62-verdin-dahlia.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-verdin-dahlia.dtsi
+@@ -43,15 +43,6 @@
+ 			sound-dai = <&mcasp0>;
+ 		};
+ 	};
+-
+-	reg_usb_hub: regulator-usb-hub {
+-		compatible = "regulator-fixed";
+-		enable-active-high;
+-		/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
+-		gpio = <&main_gpio0 31 GPIO_ACTIVE_HIGH>;
+-		regulator-boot-on;
+-		regulator-name = "HUB_PWR_EN";
+-	};
+ };
  
--	idx = atomic_inc_return(&map->next_elt);
-+	idx = atomic_fetch_add_unless(&map->next_elt, 1, map->max_elts);
- 	if (idx < map->max_elts) {
- 		elt = *(TRACING_MAP_ELT(map->elts, idx));
- 		if (map->ops && map->ops->elt_init)
-@@ -699,7 +699,7 @@ void tracing_map_clear(struct tracing_ma
- {
- 	unsigned int i;
+ /* Verdin ETHs */
+@@ -193,11 +184,6 @@
+ 	status = "okay";
+ };
  
--	atomic_set(&map->next_elt, -1);
-+	atomic_set(&map->next_elt, 0);
- 	atomic64_set(&map->hits, 0);
- 	atomic64_set(&map->drops, 0);
+-/* Do not force CTRL_SLEEP_MOCI# always enabled */
+-&reg_force_sleep_moci {
+-	status = "disabled";
+-};
+-
+ /* Verdin SD_1 */
+ &sdhci1 {
+ 	status = "okay";
+@@ -218,15 +204,7 @@
+ };
  
-@@ -783,7 +783,7 @@ struct tracing_map *tracing_map_create(u
+ &usb1 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+ 	status = "okay";
+-
+-	usb-hub@1 {
+-		compatible = "usb424,2744";
+-		reg = <1>;
+-		vdd-supply = <&reg_usb_hub>;
+-	};
+ };
  
- 	map->map_bits = map_bits;
- 	map->max_elts = (1 << map_bits);
--	atomic_set(&map->next_elt, -1);
-+	atomic_set(&map->next_elt, 0);
+ /* Verdin CTRL_WAKE1_MICO# */
+--- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
+@@ -138,12 +138,6 @@
+ 		vin-supply = <&reg_1v8>;
+ 	};
  
- 	map->map_size = (1 << (map_bits + 1));
- 	map->ops = ops;
+-	/*
+-	 * By default we enable CTRL_SLEEP_MOCI#, this is required to have
+-	 * peripherals on the carrier board powered.
+-	 * If more granularity or power saving is required this can be disabled
+-	 * in the carrier board device tree files.
+-	 */
+ 	reg_force_sleep_moci: regulator-force-sleep-moci {
+ 		compatible = "regulator-fixed";
+ 		enable-active-high;
 
 
 
