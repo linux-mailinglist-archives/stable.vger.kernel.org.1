@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-67018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBFB94F388
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E61694F2C1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 169E91F21D79
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 910EB1F2124B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53DF186E38;
-	Mon, 12 Aug 2024 16:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9146E1891DE;
+	Mon, 12 Aug 2024 16:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTRcaKo1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZgaw7f5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63722183CA6;
-	Mon, 12 Aug 2024 16:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512D8183CD9;
+	Mon, 12 Aug 2024 16:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479529; cv=none; b=ezTJaEPo8Z4c/rG+cfA6Vk80xvQ7o4J0T6Mu/8U+fRvtWSXtRiYvlBJEQZkrfWNB7wMYGS5h1UWIV4LDerOLhUjW+Ib2aj0QGEJ16Y0Q3M9/Jz+A2TtS2Upcj/fufLe+GcyBXMrJRVZxqnI9WxtBQ2SZ7K7qmhhXIvog9S5ofHs=
+	t=1723478986; cv=none; b=J6Kz/vdknCcjM2gmnHJXUeyig5qcybLk1y8bEfDj8sNOVlvFgGoXEJaakX11jo2GuDv183eUcyNlULbAlap1LkO+8PEyMQfdZkvujsdOTTqovJV6SoYyiifyS4Hky4NM0VX/EYLwAj2vkMvAzp0HHqZDYFp4xmtJaOGrn0H8b4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479529; c=relaxed/simple;
-	bh=uTFhppyweZSZRoIe1x8+5C5wtKhxfnA8pcD/0Czr/gw=;
+	s=arc-20240116; t=1723478986; c=relaxed/simple;
+	bh=FGdDpWmOxzs5Yw20QJajsgSrXB+5jfQcvyiHITvHLO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtPbQWKFpCGzltqM19l8P4TXLIjv8ECj5rNlGULtvwepxQL/TyL1Mzb3V1mnb5Ze0JRdXOgbV2OCjvsBUbluFsi1YDuRWPfVvX06kDJUYK3CAEQXXkkiSPlIhIzYbFcN5l6hdYdyFRJXGeaKKIxFhFFJ8BXDheyZ1xeiwgfZY2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTRcaKo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2336C32782;
-	Mon, 12 Aug 2024 16:18:48 +0000 (UTC)
+	 MIME-Version; b=Lz3Iwf7YEKs7NeKu1H+xFFyvIiRPTdSnd6O756WRnNRf2CS6Ilr6ycCZ7JYK8yTTLeVbt8IaMFFZ6zzVqyq1AxLYYWuXezd0NZGVsINBaUeagdcCF5jPCW/kCGGZVQiZ9blpgw+VXkagkfUnH9PQ1nu27gwK9E7FdhBf+ix/k+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZgaw7f5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA623C32782;
+	Mon, 12 Aug 2024 16:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479529;
-	bh=uTFhppyweZSZRoIe1x8+5C5wtKhxfnA8pcD/0Czr/gw=;
+	s=korg; t=1723478986;
+	bh=FGdDpWmOxzs5Yw20QJajsgSrXB+5jfQcvyiHITvHLO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTRcaKo10GXiMcjgy9WfF7z66/APg3lk7wHOVtLEsrIH7Ik4Fo4AMUAKKSHR97uT0
-	 RTpHMV45IDzbPWQdmj3x1bQ1eAKUF7kW4G7vMKJ7rdpBOUmcyWrCsL24DdB3yfcx8W
-	 XZrbY8u6jvQGh8SZcqkQvvhEb9aOkXTQgZeohUKs=
+	b=kZgaw7f5msSapgAEUUymNfi+iTvTpappChhcx1fpZXyiUyfoYeRmkOw6b9V+IDb5E
+	 MnVKkKWMTsT97DBOqXDA/I+A6o0PXboGxW3USp5tiltAomDGYx6CJaRhmfP+7IDAbC
+	 s+BlxO9l2L3FUYENdSxmlea9wO7yzQtjm1HbnFIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dustin L. Howett" <dustin@howett.net>,
+	Steven Steve Kendall <skend@chromium.org>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 115/189] ALSA: hda/realtek: Add Framework Laptop 13 (Intel Core Ultra) to quirks
+Subject: [PATCH 6.1 090/150] ALSA: hda: Add HP MP9 G4 Retail System AMS to force connect list
 Date: Mon, 12 Aug 2024 18:02:51 +0200
-Message-ID: <20240812160136.565010154@linuxfoundation.org>
+Message-ID: <20240812160128.638679339@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dustin L. Howett <dustin@howett.net>
+From: Steven 'Steve' Kendall <skend@chromium.org>
 
-commit eb91c456f3714c336f0812dccab422ec0e72bde4 upstream.
+commit 7e1e206b99f4b3345aeb49d94584a420b7887f1d upstream.
 
-The Framework Laptop 13 (Intel Core Ultra) has an ALC285 that ships in a
-similar configuration to the ALC295 in previous models. It requires the
-same quirk for headset detection.
+In recent HP UEFI firmware (likely v2.15 and above, tested on 2.27),
+these pins are incorrectly set for HDMI/DP audio. Tested on
+HP MP9 G4 Retail System AMS. Tested audio with two monitors connected
+via DisplayPort.
 
-Signed-off-by: Dustin L. Howett <dustin@howett.net>
+Link: https://forum.manjaro.org/t/intel-cannon-lake-pch-cavs-conexant-cx20632-no-sound-at-hdmi-or-displayport/133494
+Link: https://bbs.archlinux.org/viewtopic.php?id=270523
+Signed-off-by: Steven 'Steve' Kendall <skend@chromium.org>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240806-alsa-hda-realtek-add-framework-laptop-13-intel-core-ultra-to-quirks-v1-1-42d6ce2dbf14@howett.net
+Link: https://patch.msgid.link/20240806-hdmi-audio-hp-wrongpins-v2-1-d9eb4ad41043@chromium.org
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ sound/pci/hda/patch_hdmi.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10360,6 +10360,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x8086, 0x3038, "Intel NUC 13", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0006, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0xf111, 0x0009, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1989,6 +1989,7 @@ static int hdmi_add_cvt(struct hda_codec
+ }
  
- #if 0
- 	/* Below is a quirk table taken from the old code.
+ static const struct snd_pci_quirk force_connect_list[] = {
++	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
 
 
 
