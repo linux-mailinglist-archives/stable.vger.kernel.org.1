@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6D294F0BA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:53:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7CE94F0BB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 289F8B2339B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:53:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43AE3280CE1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97500153BF6;
-	Mon, 12 Aug 2024 14:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C0F172773;
+	Mon, 12 Aug 2024 14:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kG+67dol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDfsf+Nc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C5C4B5AE
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A744B4B5AE
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474414; cv=none; b=WkPr+p3In2tNAIOkNmwBXw01ydBn7uFLgSHgEHPf23zASAn3TIJd9U5KUFN4kLYaPLIHmrwF5UXBT+aIg1BIJBcL9fpx9J9DG1XV09NPNMRsm1afHIzpAQ4X1YcQkMsx6zWNlJNy7dfhV0YTZUuXoliwao5e29F1q5er8AQeqrY=
+	t=1723474419; cv=none; b=msOgQH/6q9X2sBK2fPCRh29S8+2gZovrEKKdi1jTrqkynhsSajnMv0jfnjExCqoQ7B+S6P9eiTSbn1RJTobS0z9Y0lo2SnGOexfZnZ6nAR4y3W2ffaEMT51IN/hkXmN5zfZ9/NU30qsyyUfJ6veK6NzLKpd6Skts6FKKbEZoPAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474414; c=relaxed/simple;
-	bh=Hnd9tg8lMbGr+d401jJ8AWve6R7/GDfD/oqEWXR4Sio=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eehKUmr1wnbMFF2fnhgFLw7gVZasWJyLCmfYa1ffPjQyAO/7eGtlHmdVODmdNl1fAWkYaPYHnOac57sFhhWbamjQcmokxnpOAunKpDdwpWk5I4+LEuJT5JkXYFmwlfuBtfbucUtAE7QqL8Bs3eMp1xSsjKBlgKg4RZY7hg0vcNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kG+67dol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB163C4AF0D;
-	Mon, 12 Aug 2024 14:53:33 +0000 (UTC)
+	s=arc-20240116; t=1723474419; c=relaxed/simple;
+	bh=E4Rn0XWxzrkGwYQes6p44JY7lqTGxlrQ3+DkmcGF7+c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bQQpDLMlPX0W4SZPjIHiZetoGm0qpJNksYTlpZObJOVdj3/jeHFAuKnGTBWRvraPhoMYbgV84k9rP+kQGAb4PJOGVAmG6MnYBRADpTkjMOrtnrCIvQgOpLcdOQ/SamLN212vYKcHcsZhtYYf3MNkUV72IB1DMTWHk0EN7shWB/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDfsf+Nc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA10AC32782;
+	Mon, 12 Aug 2024 14:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474414;
-	bh=Hnd9tg8lMbGr+d401jJ8AWve6R7/GDfD/oqEWXR4Sio=;
+	s=korg; t=1723474419;
+	bh=E4Rn0XWxzrkGwYQes6p44JY7lqTGxlrQ3+DkmcGF7+c=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kG+67dolmA09JUlHQkrMH1rO1tCkfIij/aOkKheqerNzbLqXM575cM2ct2fcFAgW6
-	 yICBxv/3eeSPLy6LWj5gNw29OOokZA/iD33l5P/Fu28oVDjLB0Re/0lATz4bHezsbu
-	 lej4/EPO3uTr2oCAtQqjK2/ihlhydzOUfebrSVG0=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix incorrect DSC instance for MST" failed to apply to 4.19-stable tree
-To: hersenxs.wu@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,daniel.wheeler@amd.com
+	b=iDfsf+NcNGumJTCTXqZxz2alOgPmllfH3WbCJWbs3hMlPthqm9+xJN/OW93SHIjAm
+	 s0oI3BmhD//F4XnSNivb/LvJCVVfWPTtmMgqWeVaCr8WNvOTja/Uh8EoGJ7dse3ET6
+	 1mzWTryZnu+W9QCvzW8gxAxAoinykW9nzkoFOBH8=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix FEC_READY write on DP LT" failed to apply to 6.10-stable tree
+To: ilya.bakoulin@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,wayne.lin@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:50:56 +0200
-Message-ID: <2024081256-crayon-curtly-8285@gregkh>
+Date: Mon, 12 Aug 2024 16:51:10 +0200
+Message-ID: <2024081210-crablike-harmonize-49e1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 81f3d3c9a03705328f5368d19e23796ed077610a
+git cherry-pick -x a8baec4623aedf36d50767627f6eae5ebf07c6fb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081256-crayon-curtly-8285@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081210-crablike-harmonize-49e1@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-81f3d3c9a037 ("drm/amd/display: Fix incorrect DSC instance for MST")
-f8e12e770e80 ("drm/amd/display: drop unnecessary NULL checks in debugfs")
-e3b0079be8f0 ("drm/amd/display: Clean up some inconsistent indenting")
-5d5c6dba2b43 ("drm/amd/display: Fix memory leak")
-712343cd21ea ("drm/amd/display: Add function and debugfs to dump DCC_EN bit")
-46a83eba276c ("drm/amd/display: Add debugfs to control DMUB trace buffer events")
-0dd795323405 ("drm/amdgpu/display: Implement functions to let DC allocate GPU memory")
-0b7421f0a6a4 ("drm/amd/display: Old sequence for HUBP blank")
-e7a30ade740f ("Revert "drm/amd/display: Unblank hubp based on plane visibility"")
-afd3a359c452 ("drm/amd/display: do not use drm middle layer for debugfs")
-dbb7898ac1bc ("drm/amd/display: Drop SOC bounding box hookup in DM/DC")
-d209124ddae3 ("drm/amd/display: enable HUBP blank behaviour")
-985faf2c4ecb ("drm/amd/display: New sequence for HUBP blank")
-fd1c85d3ac2c ("drm/amd/display: Unblank hubp based on plane visibility")
-5a83bf80723d ("drm/amd/display: Use provided offset for DPG generation")
-9a3e698c0758 ("drm/amd/display: init soc bounding box for dcn3.01.")
-20f2ffe50472 ("drm/amdgpu: fold CONFIG_DRM_AMD_DC_DCN3* into CONFIG_DRM_AMD_DC_DCN (v3)")
-4dbcdc9cada2 ("drm/amd/display: fix the NULL pointer that missed set_disp_pattern_generator callback")
-b15bfd0d8613 ("drm/amd/display: Revert HUBP blank behaviour for now")
-dbf5256bbf19 ("drm/amd/display: Blank HUBP during pixel data blank for DCN30 v2")
+a8baec4623ae ("drm/amd/display: Fix FEC_READY write on DP LT")
+a8ac994cf069 ("drm/amd/display: Disable error correction if it's not supported")
 
 thanks,
 
@@ -96,160 +78,51 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 81f3d3c9a03705328f5368d19e23796ed077610a Mon Sep 17 00:00:00 2001
-From: Hersen Wu <hersenxs.wu@amd.com>
-Date: Tue, 13 Feb 2024 14:26:06 -0500
-Subject: [PATCH] drm/amd/display: Fix incorrect DSC instance for MST
+From a8baec4623aedf36d50767627f6eae5ebf07c6fb Mon Sep 17 00:00:00 2001
+From: Ilya Bakoulin <ilya.bakoulin@amd.com>
+Date: Wed, 17 Apr 2024 14:21:28 -0400
+Subject: [PATCH] drm/amd/display: Fix FEC_READY write on DP LT
 
-[Why] DSC debugfs, such as dp_dsc_clock_en_read,
-use aconnector->dc_link to find pipe_ctx for display.
-Displays connected to MST hub share the same dc_link.
-DSC instance is from pipe_ctx. This causes incorrect
-DSC instance for display connected to MST hub.
+[Why/How]
+We can miss writing FEC_READY in some cases before LT start, which
+violates DP spec. Remove the condition guarding the DPCD write so that
+the write happens unconditionally.
 
-[How] Add aconnector->sink check to find pipe_ctx.
-
-CC: stable@vger.kernel.org
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-index fdbeef9720c9..4d7a5d470b1e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-@@ -1495,7 +1495,9 @@ static ssize_t dp_dsc_clock_en_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
+index 5cbf5f93e584..bafa52a0165a 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
+@@ -151,16 +151,14 @@ enum dc_status dp_set_fec_ready(struct dc_link *link, const struct link_resource
+ 		return DC_NOT_SUPPORTED;
  
-@@ -1596,7 +1598,9 @@ static ssize_t dp_dsc_clock_en_write(struct file *f, const char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
+ 	if (ready && dp_should_enable_fec(link)) {
+-		if (link->fec_state == dc_link_fec_not_ready) {
+-			fec_config = 1;
++		fec_config = 1;
  
-@@ -1681,7 +1685,9 @@ static ssize_t dp_dsc_slice_width_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
+-			status = core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
+-					&fec_config, sizeof(fec_config));
++		status = core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
++				&fec_config, sizeof(fec_config));
  
-@@ -1780,7 +1786,9 @@ static ssize_t dp_dsc_slice_width_write(struct file *f, const char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1865,7 +1873,9 @@ static ssize_t dp_dsc_slice_height_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1964,7 +1974,9 @@ static ssize_t dp_dsc_slice_height_write(struct file *f, const char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2045,7 +2057,9 @@ static ssize_t dp_dsc_bits_per_pixel_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2141,7 +2155,9 @@ static ssize_t dp_dsc_bits_per_pixel_write(struct file *f, const char __user *bu
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2220,7 +2236,9 @@ static ssize_t dp_dsc_pic_width_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2276,7 +2294,9 @@ static ssize_t dp_dsc_pic_height_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2347,7 +2367,9 @@ static ssize_t dp_dsc_chunk_size_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2418,7 +2440,9 @@ static ssize_t dp_dsc_slice_bpg_offset_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
+-			if (status == DC_OK) {
+-				link_enc->funcs->fec_set_ready(link_enc, true);
+-				link->fec_state = dc_link_fec_ready;
+-			}
++		if (status == DC_OK) {
++			link_enc->funcs->fec_set_ready(link_enc, true);
++			link->fec_state = dc_link_fec_ready;
+ 		}
+ 	} else {
+ 		if (link->fec_state == dc_link_fec_ready) {
 
 
