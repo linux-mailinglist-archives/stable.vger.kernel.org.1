@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-66824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27DA94F2A2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DF094F39C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 003BA1C21BE2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B5C5B25941
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8318F187855;
-	Mon, 12 Aug 2024 16:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13634187335;
+	Mon, 12 Aug 2024 16:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zg4lN3oJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mG804j8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424BF1891BB;
-	Mon, 12 Aug 2024 16:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BBD186E34;
+	Mon, 12 Aug 2024 16:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478905; cv=none; b=D/E6eVnn5JJK7dxq4IHncHfdIcv/GBU6Oz/PUNr/wOgiTGofasJRQAcpHbOm/IcP7HpM/czOLuxkNqk9uOp6L7ISeuCnJi++kkOi3sGFsqwy5lk5p618/e2nWaNQOz2xE6xjoWptQ0S9ipBtdTz7lIZrN67uRKIQhed/KBfGrvk=
+	t=1723479575; cv=none; b=FhqNQH+SHVA4krfVCS8foi+SdOszUA7lv8X6/ZPNQUJMP5gxYpN5SzYfbUj0FMM8v/lalvnHYi4G8tvCZxebpmtjm3GaZfN5RUZApyplEWtKDukwwa62UHuodgxju2O0WmdT7H01t/c1nlj1LJDlMZovvgzb8rbhGzA0BZcNaEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478905; c=relaxed/simple;
-	bh=KFzXYLvGD2t2N4hIj8TmwOgtDYB1gbXzTMOGBXhoC6k=;
+	s=arc-20240116; t=1723479575; c=relaxed/simple;
+	bh=6V/argz9w+NNFpkCEhq6rA01sqpgeNfwAGDHeEbaT8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmjiMsOYkiBq23dqZc/qiiSIc6+LlVFgeH5EN6kN1o9AgjpQaRXsxvVjZNQyaGvHqjCh0A6oUOzusbyK9uKzRFlCYVC4E6UNOdXjFDxVhBLXo+B+qmqxakmXhqmQgW/V0s+ARF33GgY0kN2zfInll0wpS3umWmIpFLcpsmqAmKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zg4lN3oJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0062C32782;
-	Mon, 12 Aug 2024 16:08:24 +0000 (UTC)
+	 MIME-Version; b=Tu4yPETx5HTZ+hxwjljjjeGri/Mxc0bHJ8MlXS/gVTqpvbQsowPFWrlQ6OaPl4JLksN/+gwO+AdYOLGvyFOTZKXwz63ql2jkrMeLPGddAJZ8HaAl59myQolydzoDTDwIH6/g6dl7D7udcvmYm4KChKa7kSqo3dvak7Aa70mG3Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mG804j8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B52EC32782;
+	Mon, 12 Aug 2024 16:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478905;
-	bh=KFzXYLvGD2t2N4hIj8TmwOgtDYB1gbXzTMOGBXhoC6k=;
+	s=korg; t=1723479575;
+	bh=6V/argz9w+NNFpkCEhq6rA01sqpgeNfwAGDHeEbaT8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zg4lN3oJ+06bt26GCiRwOhz9gNqqyoiv7jP1b18AQy/y19XLHgS64FymH/Xif/eDQ
-	 6jaI0f13ra4i6KpAZkAFY1GBTLFiRB2hQ6ZVC7zKSxNDDrhYi7cZY7ymK0CVXEBgts
-	 dTXDLGHA3juvMB4nICeEcKXgU1urjCrlsUEp+9bA=
+	b=mG804j8/u2gOE5udXmTCzMFL21CIpgTwLVYi54SOHsmHgJFVOItOZaeogFg6scWX/
+	 y3+8jfok9u77hYv0HO+owEkKO+OKv1kpqR0gNrt4CS/ZLwe7MqnHTtS/co5HVhjkLd
+	 cBgbfrIJMWqVRMoW2qulKzaIJaj8XgUju5ciAA9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/150] ASoC: codecs: wsa881x: Correct Soundwire ports mask
+Subject: [PATCH 6.6 098/189] bpf: kprobe: remove unused declaring of bpf_kprobe_override
 Date: Mon, 12 Aug 2024 18:02:34 +0200
-Message-ID: <20240812160127.993243694@linuxfoundation.org>
+Message-ID: <20240812160135.914885455@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-[ Upstream commit eb11c3bb64ad0a05aeacdb01039863aa2aa3614b ]
+[ Upstream commit 0e8b53979ac86eddb3fd76264025a70071a25574 ]
 
-Device has up to WSA881X_MAX_SWR_PORTS number of ports and the array
-assigned to prop.sink_dpn_prop has 0..WSA881X_MAX_SWR_PORTS-1 elements.
-On the other hand, GENMASK(high, low) creates an inclusive mask between
-<high, low>, so we need the mask from 0 up to WSA881X_MAX_SWR_PORTS-1.
+After the commit 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction
+pointer with original one"), "bpf_kprobe_override" is not used anywhere
+anymore, and we can remove it now.
 
-Theoretically, too wide mask could cause an out of bounds read in
-sdw_get_slave_dpn_prop() in stream.c, however only in the case of buggy
-driver, e.g. adding incorrect number of ports via
-sdw_stream_add_slave().
+Link: https://lore.kernel.org/all/20240710085939.11520-1-dongml2@chinatelecom.cn/
 
-Fixes: a0aab9e1404a ("ASoC: codecs: add wsa881x amplifier support")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240726-asoc-wcd-wsa-swr-ports-genmask-v1-4-d4d7a8b56f05@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction pointer with original one")
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa881x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/trace_events.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wsa881x.c b/sound/soc/codecs/wsa881x.c
-index 264ec05a3c675..054da9d2776cd 100644
---- a/sound/soc/codecs/wsa881x.c
-+++ b/sound/soc/codecs/wsa881x.c
-@@ -1131,7 +1131,7 @@ static int wsa881x_probe(struct sdw_slave *pdev,
- 	wsa881x->sconfig.frame_rate = 48000;
- 	wsa881x->sconfig.direction = SDW_DATA_DIR_RX;
- 	wsa881x->sconfig.type = SDW_STREAM_PDM;
--	pdev->prop.sink_ports = GENMASK(WSA881X_MAX_SWR_PORTS, 0);
-+	pdev->prop.sink_ports = GENMASK(WSA881X_MAX_SWR_PORTS - 1, 0);
- 	pdev->prop.sink_dpn_prop = wsa_sink_dpn_prop;
- 	pdev->prop.scp_int1_mask = SDW_SCP_INT1_BUS_CLASH | SDW_SCP_INT1_PARITY;
- 	gpiod_direction_output(wsa881x->sd_n, 1);
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index 696f8dc4aa53c..cb8bd759e8005 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -869,7 +869,6 @@ do {									\
+ struct perf_event;
+ 
+ DECLARE_PER_CPU(struct pt_regs, perf_trace_regs);
+-DECLARE_PER_CPU(int, bpf_kprobe_override);
+ 
+ extern int  perf_trace_init(struct perf_event *event);
+ extern void perf_trace_destroy(struct perf_event *event);
 -- 
 2.43.0
 
