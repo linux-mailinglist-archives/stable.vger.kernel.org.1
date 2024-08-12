@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35CC94F467
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:30:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACFEB94F282
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3B72814DC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:30:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DFF1F21869
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2B3186E5E;
-	Mon, 12 Aug 2024 16:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D752C187335;
+	Mon, 12 Aug 2024 16:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKsnkHpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I43jqzcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D17D183CD4;
-	Mon, 12 Aug 2024 16:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AEE184551;
+	Mon, 12 Aug 2024 16:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480201; cv=none; b=c3HRrB0JWyiWgg6JxJJ5Nvq7Ggt6jT0k+dD14CDpRU0qfW3hAO3+cETwYbEnOrUtLtJNEW1Izhj6Olsrh3zqOb8qkyEGB7awfr7hT1IOm4dBEoKJWbqEX60wAyUylrjb6oq9QB30wL3yHwD8NtqM8FFo0cxe3CZ3ZQ5BWWz2c70=
+	t=1723478819; cv=none; b=MfMGqeOLUunsd39scvs4iaiG7+TcGwdxFllSTWyAQ9W3OXG81/2qrLqB5S0QoBl75GZAsutnXGJWwZyNI/mgovZ7z3dNHXt4kV3wlEImOJqcuYSRk6qnGEuhhKi+4KacG27U0LwrKmPmvzvbNAiFkkxzVm9Zs0DBaJOlkGZyE3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480201; c=relaxed/simple;
-	bh=tzycfB+wTbQ4UZ6sFrJYFY0pxpL2hypwg7YJYaGlCXM=;
+	s=arc-20240116; t=1723478819; c=relaxed/simple;
+	bh=MKW+m4+NY9L8Zi4JQrOIqPIciIo+gYzLgP1eSh5+At0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQuJH8s8Tm4lywyzmMLfhKYhqoiPpJixLO+Ic1+v0XdzdWW8ekDFrAiubuirH+dqtbuIDC/jUPRLhx4Ln4uW8BsXng/DtPQCD7BwDnTyc2HkF/0/1KH6r0hXTwsybuA4bzeGfsQzbmasyZvM9AarNXVivmkbcM9yFVGU4Qu6hf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKsnkHpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE53CC32782;
-	Mon, 12 Aug 2024 16:30:00 +0000 (UTC)
+	 MIME-Version; b=lObeY+N31YZSPyqMeo7Otn6TSwvzRLibaTttWSRt83HhAgP65FNSDBcZQXKlJK5fMu722reSdi0Bp9b0Q17H/JN0DahobKzNlkYiVxUkVqFETUyMpj0A/2+B090dN3B5RjizeNQdzfIdjgrWDFxLcYgsh2jPKlA4lrp/5K/elgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I43jqzcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE36C32782;
+	Mon, 12 Aug 2024 16:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480201;
-	bh=tzycfB+wTbQ4UZ6sFrJYFY0pxpL2hypwg7YJYaGlCXM=;
+	s=korg; t=1723478819;
+	bh=MKW+m4+NY9L8Zi4JQrOIqPIciIo+gYzLgP1eSh5+At0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKsnkHpXtYJ8T85NUJY7jXu1SXH0dgysHU7xizeFFoSyrQzaLuyhUp4Ja4ghd2DEG
-	 fbYLq0jaAYcODfIgA2yfTsuc0UUcngCgwyPP5socGoRfITkdQHnIRYkVYTlMttzG4w
-	 jr+1nyT6XxF1SjLpZ/HXUdX71old2TTd/YfdGJrc=
+	b=I43jqzcfOakXK0XIEyMjwpIs1VTdf22yg13RzF2MXmC84RRDsjA3cX1tKE7JYYbqp
+	 mBF/cIc2HpJC8Z9dxkzpbe5vtzH21zKEcW5EelmWnypT3pFXOJUsZcfMdFuSLHQ/Um
+	 0Qa1vsyX3dUCWehyg5f5YWukWQKKoqDktu6ogXwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Wang <shankerwangmiao@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 6.10 126/263] irqchip/loongarch-cpu: Fix return value of lpic_gsi_to_irq()
+	Xiaxi Shen <shenxiaxi26@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 046/150] ext4: fix uninitialized variable in ext4_inlinedir_to_tree
 Date: Mon, 12 Aug 2024 18:02:07 +0200
-Message-ID: <20240812160151.374603171@linuxfoundation.org>
+Message-ID: <20240812160126.943236138@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Xiaxi Shen <shenxiaxi26@gmail.com>
 
-commit 81a91abab1307d7725fa4620952c0767beae7753 upstream.
+[ Upstream commit 8dc9c3da79c84b13fdb135e2fb0a149a8175bffe ]
 
-lpic_gsi_to_irq() should return a valid Linux interrupt number if
-acpi_register_gsi() succeeds, and return 0 otherwise. But lpic_gsi_to_irq()
-converts a negative return value of acpi_register_gsi() to a positive value
-silently.
+Syzbot has found an uninit-value bug in ext4_inlinedir_to_tree
 
-Convert the return value explicitly.
+This error happens because ext4_inlinedir_to_tree does not
+handle the case when ext4fs_dirhash returns an error
 
-Fixes: e8bba72b396c ("irqchip / ACPI: Introduce ACPI_IRQ_MODEL_LPIC for LoongArch")
-Reported-by: Miao Wang <shankerwangmiao@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240723064508.35560-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This can be avoided by checking the return value of ext4fs_dirhash
+and propagating the error,
+similar to how it's done with ext4_htree_store_dirent
+
+Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
+Reported-and-tested-by: syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=eaba5abe296837a640c0
+Link: https://patch.msgid.link/20240501033017.220000-1-shenxiaxi26@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongarch-cpu.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/ext4/inline.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-loongarch-cpu.c
-+++ b/drivers/irqchip/irq-loongarch-cpu.c
-@@ -18,11 +18,13 @@ struct fwnode_handle *cpuintc_handle;
- 
- static u32 lpic_gsi_to_irq(u32 gsi)
- {
-+	int irq = 0;
-+
- 	/* Only pch irqdomain transferring is required for LoongArch. */
- 	if (gsi >= GSI_MIN_PCH_IRQ && gsi <= GSI_MAX_PCH_IRQ)
--		return acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
-+		irq = acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
- 
--	return 0;
-+	return (irq > 0) ? irq : 0;
- }
- 
- static struct fwnode_handle *lpic_get_gsi_domain_id(u32 gsi)
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 3a91be1d9bbe7..ee9d2faa5218f 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -1439,7 +1439,11 @@ int ext4_inlinedir_to_tree(struct file *dir_file,
+ 			hinfo->hash = EXT4_DIRENT_HASH(de);
+ 			hinfo->minor_hash = EXT4_DIRENT_MINOR_HASH(de);
+ 		} else {
+-			ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
++			err = ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
++			if (err) {
++				ret = err;
++				goto out;
++			}
+ 		}
+ 		if ((hinfo->hash < start_hash) ||
+ 		    ((hinfo->hash == start_hash) &&
+-- 
+2.43.0
+
 
 
 
