@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-67000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FCE594F376
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7677794F27D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B6B9B24A4E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AC9AB223A5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4D0186E34;
-	Mon, 12 Aug 2024 16:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0989186E5E;
+	Mon, 12 Aug 2024 16:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjMOLcop"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9NRUi4U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC261494B8;
-	Mon, 12 Aug 2024 16:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F283186295;
+	Mon, 12 Aug 2024 16:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479470; cv=none; b=HbnW57VJ/GkoxcHk2zTD148M+w43zENbCakOPtX+GFhv1aSmS9dzXjkOzgX5j14mp6OkMLqom8leSVvBrzsxYZCXTbgWslBmAbkffA7wwasX1BMTPssWGjaKurydM8rLpAyCH8dmpA87zFnJm7Ua1ja8TnVoPulFZyexjR1JmDE=
+	t=1723478803; cv=none; b=qrZa0yysIQd0VdcjGNpZI7Cef+1Uvt41cJ5QknNhsnBRAu37lgI/vkD/2AN6+G9WDwkLi4Hao1/BLC35eBgZBmFnp6Vc9lXKPpA2Rzdn78srDEUyUU5Jprw+bJCuy8KPHzr1rviACfqGPu/q6JKnEAggL8LOk4Apxz+WJwE4fVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479470; c=relaxed/simple;
-	bh=ldsHjqy9q34qglYRCeSHxCFvnmlpH2ZHXbtCljXuqBU=;
+	s=arc-20240116; t=1723478803; c=relaxed/simple;
+	bh=YikAgcnntTP/okxF56LwhmkLKggU16V745ZBkYngBPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQwnJnViGb5cw29Obvo3QNfClsYgcivZj46CYA65Pt2Tm3vmEARQwJRj3/G6RSoXjdxeQ+FQ7x4uQpQDMyUPFNtKboNnKS138g9bcecSxcYsGl9OXK2CGOIZvmsgdpL41MKkn7LDxbPVK1GyFku0IqCpzn6N3YJO6xC58+4chYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjMOLcop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994E6C32782;
-	Mon, 12 Aug 2024 16:17:49 +0000 (UTC)
+	 MIME-Version; b=Il1k1o9jRuSBuVspRS5n7/ay7YTdoAIupzqQC3Ob+39CD1oHutc4A/yszTQL++0M4dXEHKle/u8mR2TPfNzgNZGto/n52jt+QmkfLzQcg6y6sqw0Ejwt18KRhipAWfVzt3hjsHbdMhwQGGnggCrEgoXqww2JqGge9dNCBXdWNI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9NRUi4U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739EDC32782;
+	Mon, 12 Aug 2024 16:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479470;
-	bh=ldsHjqy9q34qglYRCeSHxCFvnmlpH2ZHXbtCljXuqBU=;
+	s=korg; t=1723478803;
+	bh=YikAgcnntTP/okxF56LwhmkLKggU16V745ZBkYngBPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjMOLcopPAHKtGPmiFFKv1FvsB++rcX5rjUmyvbxzbkNxwOVHiPKjJTlccCEOCpcM
-	 wS0D/rHLWmA782DG8ugk2tpYvb6U3FJsOA8gJ2W5t7dRjJ98s7vdfr1plAYSnaoV5X
-	 CRDvUhmLQok57JSx08cnyD5bpAB6a1CwhF7meaQw=
+	b=X9NRUi4Urbte8uh3Szs6DIwaqO5qynyTOyrmTpNw2hKwWRwEgBBY36GOHAusBbi1f
+	 Q7PomoiSzkdpB6EYqq7A9ME21aQwI01SFttll02TgZiEVc7AvXtpCN06eBqB4ThJnu
+	 qKzbAEc9yguW6idzpNnTs9jPQ6IeuwNKIXcFWkOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/189] s390/sclp: Prevent release of buffer in I/O
+Subject: [PATCH 6.1 041/150] drm/amd/display: Add NULL check for afb before dereferencing in amdgpu_dm_plane_handle_cursor_update
 Date: Mon, 12 Aug 2024 18:02:02 +0200
-Message-ID: <20240812160134.683941500@linuxfoundation.org>
+Message-ID: <20240812160126.749885027@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +69,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit bf365071ea92b9579d5a272679b74052a5643e35 ]
+[ Upstream commit 38e6f715b02b572f74677eb2f29d3b4bc6f1ddff ]
 
-When a task waiting for completion of a Store Data operation is
-interrupted, an attempt is made to halt this operation. If this attempt
-fails due to a hardware or firmware problem, there is a chance that the
-SCLP facility might store data into buffers referenced by the original
-operation at a later time.
+This commit adds a null check for the 'afb' variable in the
+amdgpu_dm_plane_handle_cursor_update function. Previously, 'afb' was
+assumed to be null, but was used later in the code without a null check.
+This could potentially lead to a null pointer dereference.
 
-Handle this situation by not releasing the referenced data buffers if
-the halt attempt fails. For current use cases, this might result in a
-leak of few pages of memory in case of a rare hardware/firmware
-malfunction.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_plane.c:1298 amdgpu_dm_plane_handle_cursor_update() error: we previously assumed 'afb' could be null (see line 1252)
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_sd.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c  | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_sd.c b/drivers/s390/char/sclp_sd.c
-index f9e164be7568f..944e75beb160c 100644
---- a/drivers/s390/char/sclp_sd.c
-+++ b/drivers/s390/char/sclp_sd.c
-@@ -320,8 +320,14 @@ static int sclp_sd_store_data(struct sclp_sd_data *result, u8 di)
- 			  &esize);
- 	if (rc) {
- 		/* Cancel running request if interrupted */
--		if (rc == -ERESTARTSYS)
--			sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL);
-+		if (rc == -ERESTARTSYS) {
-+			if (sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL)) {
-+				pr_warn("Could not stop Store Data request - leaking at least %zu bytes\n",
-+					(size_t)dsize * PAGE_SIZE);
-+				data = NULL;
-+				asce = 0;
-+			}
-+		}
- 		vfree(data);
- 		goto out;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index cd6e99cf74a06..984a5affc5af1 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1225,14 +1225,22 @@ void handle_cursor_update(struct drm_plane *plane,
+ {
+ 	struct amdgpu_device *adev = drm_to_adev(plane->dev);
+ 	struct amdgpu_framebuffer *afb = to_amdgpu_framebuffer(plane->state->fb);
+-	struct drm_crtc *crtc = afb ? plane->state->crtc : old_plane_state->crtc;
+-	struct dm_crtc_state *crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
+-	struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
+-	uint64_t address = afb ? afb->address : 0;
++	struct drm_crtc *crtc;
++	struct dm_crtc_state *crtc_state;
++	struct amdgpu_crtc *amdgpu_crtc;
++	u64 address;
+ 	struct dc_cursor_position position = {0};
+ 	struct dc_cursor_attributes attributes;
+ 	int ret;
+ 
++	if (!afb)
++		return;
++
++	crtc = plane->state->crtc ? plane->state->crtc : old_plane_state->crtc;
++	crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
++	amdgpu_crtc = to_amdgpu_crtc(crtc);
++	address = afb->address;
++
+ 	if (!plane->state->fb && !old_plane_state->fb)
+ 		return;
+ 
 -- 
 2.43.0
 
