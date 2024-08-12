@@ -1,214 +1,118 @@
-Return-Path: <stable+bounces-66416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D45B94E9B9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:26:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9398094E9BA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0315B21DFD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:26:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 484BC1F21265
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A0916D4FE;
-	Mon, 12 Aug 2024 09:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4479E16D4DE;
+	Mon, 12 Aug 2024 09:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oV6HxiLO"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="DCCC95wy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91AC20323
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABF320323;
+	Mon, 12 Aug 2024 09:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723454796; cv=none; b=SRd25YP3xeMW9kRL2Unxcm1ZkxIIrK6hcO3wGiayYZKoyZC0kwjKOGKYd3GdOHe7VkvC4b9m9cb5Edujahc6Rb7d/qWB81IR9RVHMHP613wRRvCGfAWi9+kFxojv0eAVZf2jr/JNkpTDfOFE6ZU6ngpNsLZ1PPGBGLFZSIrqWVA=
+	t=1723454820; cv=none; b=fE8XfaV61Yb5tJVkeTJI+PIt+UaiUi33X/WvW334jVDuxxzH9eTyY6HqWi2+dsEQXXGk3SD3UNr2W3U5Ji8TtZPR1XWa1PO3zGkVdK8BiupLLVT+rglpnjHHIOzO5bh8A0kAgAQ7BJ+d9YB0QS1E/PFW/jJosrX2/EtqL9NG+Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723454796; c=relaxed/simple;
-	bh=E76HFw6klLVIUxB5Bus7GA4LRkXBw+Kv58TS+hQLXeo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CBWKKqMILSnfeo4gL9geRws48TZY8m2KaHXkdTuAk4ZGx8pe/eO28z74DNLhA3AgAlRT622LMzcCWj385/LdTae6XYImxAexL3DevLXK92IaWQTaC08lTehDPx53rL+hGmGGDSabTOS5662t49nMll0ohjxNhpbOpSRaOvkwxv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oV6HxiLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220EFC4AF0C;
-	Mon, 12 Aug 2024 09:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723454796;
-	bh=E76HFw6klLVIUxB5Bus7GA4LRkXBw+Kv58TS+hQLXeo=;
-	h=Subject:To:Cc:From:Date:From;
-	b=oV6HxiLOuhHxoN1FTPA/fPpPo67vbCdhvSSLQlZpbiAxx8k+/5i3rjO/4+8cHgZZ4
-	 j5Abc/AL7dQ1weh2FgR6lZ1YKn5GOErSdVNCPFLJpkLxUCl/Onu+u8EPMusyurO9iv
-	 K/CZhvNNnR28vn3zdDAZN3/yBQGYDf5asXyEkJT0=
-Subject: FAILED: patch "[PATCH] drm/i915/gem: Fix Virtual Memory mapping boundaries" failed to apply to 4.19-stable tree
-To: andi.shyti@linux.intel.com,Jonathan.cavitt@intel.com,chris.p.wilson@linux.intel.com,jannh@google.com,joonas.lahtinen@linux.intel.com,matthew.auld@intel.com,rodrigo.vivi@intel.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 11:26:22 +0200
-Message-ID: <2024081222-process-suspect-d983@gregkh>
+	s=arc-20240116; t=1723454820; c=relaxed/simple;
+	bh=+TOpnq771vnp9m+jll3UhJCsuI4wccY6bIz5U2rAqKU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ncNqzPTOzIFNsdRiwlZ3PqgZH/YeDqDH1Wga6xqusRy9wELKSXkt5/9f5XbB3uQD6J7L9LrqriS62ciAigq0RFiELD0lutNJgna7g1+f7WHd8JrCajA6SO+Gba5Fzjyl2FmyOxoa0O+sFC0yOcf//Lr/7Xmyu4n+1h6yfyR3FwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=DCCC95wy; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=wPeLYjeMosSUb2DOdkipv7FiyTkLh//sOcA6BT4w+PI=;
+	t=1723454818; x=1723886818; b=DCCC95wyD3wohOCatXIGuNIgO4di3eRT/PWhoq168DSlhrL
+	XdTPPjpfOllj5addbIlFJAqtplblb0I5MwPZsIPO83AVldBONVjMR308ImHbXeRXQDFy87UBCIgWC
+	kbJp2q59xe96G23CvJzrb/saYPhfPFy5dtWSZTRQm1GEobQrq0Ca841JwNXeROk00bntOYrfp1BNe
+	Pz90b/LwKIjHlV3GflAS+PE49/wdC8tiwEEnPkVvkzr8k5KtJWd4exGITWyzcGAzIoZmHCz8r+Nm8
+	oN32EOMxUORMT+7rxslg3/RS6GrLoEYO53/zevcGWQDqgam3lcLFIZhAxPokUesA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sdRKJ-00078r-NH; Mon, 12 Aug 2024 11:26:55 +0200
+Message-ID: <d224b165-14dd-4131-b923-1ef5bdf3fb7f@leemhuis.info>
+Date: Mon, 12 Aug 2024 11:26:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION][BISECTED][STABLE] hdparm errors since 28ab9769117c
+To: Christian Heusel <christian@heusel.eu>,
+ Damien Le Moal <dlemoal@kernel.org>
+Cc: Niklas Cassel <cassel@kernel.org>, Igor Pylypiv <ipylypiv@google.com>,
+ linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
+ regressions@lists.linux.dev, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <0bf3f2f0-0fc6-4ba5-a420-c0874ef82d64@heusel.eu>
+ <45cdf1c2-9056-4ac2-8e4d-4f07996a9267@kernel.org>
+ <ZrPw5m9LwMH5NQYy@x1-carbon.lan>
+ <1376f541-bc8a-4162-a814-a9146ebaf4eb@kernel.org>
+ <df43ed14-9762-4193-990a-daec1a320288@heusel.eu>
+ <e206181e-d9d7-421b-af14-2a70a7f83006@heusel.eu>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Content-Language: en-US, de-DE
+In-Reply-To: <e206181e-d9d7-421b-af14-2a70a7f83006@heusel.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1723454818;d05a56c1;
+X-HE-SMSGID: 1sdRKJ-00078r-NH
 
+On 09.08.24 22:13, Christian Heusel wrote:
+> On 24/08/09 08:42PM, Christian Heusel wrote:
+>> On 24/08/09 08:34AM, Damien Le Moal wrote:
+>>> On 2024/08/07 15:10, Niklas Cassel wrote:
+>>>> On Wed, Aug 07, 2024 at 11:26:46AM -0700, Damien Le Moal wrote:
+>>>>> On 2024/08/07 10:23, Christian Heusel wrote:
+>>>>>>
+>>>>>> on my NAS I am encountering the following issue since v6.6.44 (LTS),
+>>>>>> when executing the hdparm command for my WD-WCC7K4NLX884 drives to get
+>>>>>> the active or standby state:
+>>> [...]
+>>> Yes, indeed. I do not want to revert any of these recent patches, because as you
+>>> rightly summarize here, these fix something that has been broken for a long
+>>> time. We were just lucky that we did not see more application failures until
+>>> now, or rather unlucky that we did not as that would have revealed these
+>>> problems earlier.
+>>
+>> It seems like this does not only break hdparm but also hddtemp, which
+>> does not use hdparm as dep as far as I can tell:
+> 
+> As someone on the same thread has pointed out, this also seems to affect
+> udiskd:
+> 
+> https://github.com/storaged-project/udisks/issues/732
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+For the record, three more people reported similar symptoms in the past
+few days:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+https://lore.kernel.org/all/e620f887-a674-f007-c17b-dc16f9a0a588@web.de/
+https://bugzilla.kernel.org/show_bug.cgi?id=219144
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081222-process-suspect-d983@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Ciao, Thorsten
 
-Possible dependencies:
+P.S.: I for the tracking for now assume those are indeed the same problem:
 
-8bdd9ef7e9b1 ("drm/i915/gem: Fix Virtual Memory mapping boundaries calculation")
-8e4ee5e87ce6 ("drm/i915: Wrap all access to i915_vma.node.start|size")
-3bb6a44251b4 ("drm/i915: Rename ggtt_view as gtt_view")
-d976521a995a ("drm/i915: extend i915_vma_pin_iomap()")
-d63ddca7c581 ("drm/i915: Update tiled blits selftest")
-a0ed9c95cce6 ("drm/i915/gt: Use XY_FAST_COLOR_BLT to clear obj on graphics ver 12+")
-fd5803e5eebe ("drm/i915/gt: use engine instance directly for offset")
-892bfb8a604d ("drm/i915/fbdev: fixup setting screen_size")
-c674c5b9342e ("drm/i915/xehp: CCS should use RCS setup functions")
-30b9d1b3ef37 ("drm/i915: add I915_BO_ALLOC_GPU_ONLY")
-3312a4ac8a46 ("drm/i915/ttm: require mappable by default")
-8fbf28934acf ("drm/i915/ttm: fixup the mock_bo")
-db927686e43f ("Merge drm/drm-next into drm-intel-gt-next")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 Mon Sep 17 00:00:00 2001
-From: Andi Shyti <andi.shyti@linux.intel.com>
-Date: Fri, 2 Aug 2024 10:38:50 +0200
-Subject: [PATCH] drm/i915/gem: Fix Virtual Memory mapping boundaries
- calculation
-
-Calculating the size of the mapped area as the lesser value
-between the requested size and the actual size does not consider
-the partial mapping offset. This can cause page fault access.
-
-Fix the calculation of the starting and ending addresses, the
-total size is now deduced from the difference between the end and
-start addresses.
-
-Additionally, the calculations have been rewritten in a clearer
-and more understandable form.
-
-Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
-Reported-by: Jann Horn <jannh@google.com>
-Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v4.9+
-Reviewed-by: Jann Horn <jannh@google.com>
-Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
-[Joonas: Add Requires: tag]
-Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
-(cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-index ce10dd259812..cac6d4184506 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -290,6 +290,41 @@ static vm_fault_t vm_fault_cpu(struct vm_fault *vmf)
- 	return i915_error_to_vmf_fault(err);
- }
- 
-+static void set_address_limits(struct vm_area_struct *area,
-+			       struct i915_vma *vma,
-+			       unsigned long obj_offset,
-+			       unsigned long *start_vaddr,
-+			       unsigned long *end_vaddr)
-+{
-+	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
-+	long start, end; /* memory boundaries */
-+
-+	/*
-+	 * Let's move into the ">> PAGE_SHIFT"
-+	 * domain to be sure not to lose bits
-+	 */
-+	vm_start = area->vm_start >> PAGE_SHIFT;
-+	vm_end = area->vm_end >> PAGE_SHIFT;
-+	vma_size = vma->size >> PAGE_SHIFT;
-+
-+	/*
-+	 * Calculate the memory boundaries by considering the offset
-+	 * provided by the user during memory mapping and the offset
-+	 * provided for the partial mapping.
-+	 */
-+	start = vm_start;
-+	start -= obj_offset;
-+	start += vma->gtt_view.partial.offset;
-+	end = start + vma_size;
-+
-+	start = max_t(long, start, vm_start);
-+	end = min_t(long, end, vm_end);
-+
-+	/* Let's move back into the "<< PAGE_SHIFT" domain */
-+	*start_vaddr = (unsigned long)start << PAGE_SHIFT;
-+	*end_vaddr = (unsigned long)end << PAGE_SHIFT;
-+}
-+
- static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
- {
- #define MIN_CHUNK_PAGES (SZ_1M >> PAGE_SHIFT)
-@@ -302,14 +337,18 @@ static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
- 	struct i915_ggtt *ggtt = to_gt(i915)->ggtt;
- 	bool write = area->vm_flags & VM_WRITE;
- 	struct i915_gem_ww_ctx ww;
-+	unsigned long obj_offset;
-+	unsigned long start, end; /* memory boundaries */
- 	intel_wakeref_t wakeref;
- 	struct i915_vma *vma;
- 	pgoff_t page_offset;
-+	unsigned long pfn;
- 	int srcu;
- 	int ret;
- 
--	/* We don't use vmf->pgoff since that has the fake offset */
-+	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
- 	page_offset = (vmf->address - area->vm_start) >> PAGE_SHIFT;
-+	page_offset += obj_offset;
- 
- 	trace_i915_gem_object_fault(obj, page_offset, true, write);
- 
-@@ -402,12 +441,14 @@ static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
- 	if (ret)
- 		goto err_unpin;
- 
-+	set_address_limits(area, vma, obj_offset, &start, &end);
-+
-+	pfn = (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
-+	pfn += (start - area->vm_start) >> PAGE_SHIFT;
-+	pfn += obj_offset - vma->gtt_view.partial.offset;
-+
- 	/* Finally, remap it using the new GTT offset */
--	ret = remap_io_mapping(area,
--			       area->vm_start + (vma->gtt_view.partial.offset << PAGE_SHIFT),
--			       (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT,
--			       min_t(u64, vma->size, area->vm_end - area->vm_start),
--			       &ggtt->iomap);
-+	ret = remap_io_mapping(area, start, pfn, end - start, &ggtt->iomap);
- 	if (ret)
- 		goto err_fence;
- 
-
+#regzbot dup:
+https://lore.kernel.org/all/e620f887-a674-f007-c17b-dc16f9a0a588@web.de/
+#regzbot dup: https://bugzilla.kernel.org/show_bug.cgi?id=219144
 
