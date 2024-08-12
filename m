@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-67268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B7394F4A3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8703094F2DF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E896D1C20ACD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA3CC1C216F1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C28D186E38;
-	Mon, 12 Aug 2024 16:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25ACD187323;
+	Mon, 12 Aug 2024 16:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbkVLOCv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItMTqa5H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF65A183CD4;
-	Mon, 12 Aug 2024 16:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8872184551;
+	Mon, 12 Aug 2024 16:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480366; cv=none; b=ujMZ18ICqtm15XET9RtGCkoHw62/BIBVHuRCru7NFeb5ljbqfHFGrwa50YE1codNFudzA3EMiwHneJgsuBlP1JuTfoqLb3qGcSDJCynK48VXbTZubbkyNEJcktttKW+1/jsuoC6xz6T9At8pgGbUFiQv22hX56WcChtNpty4WLQ=
+	t=1723479079; cv=none; b=sqsHxTL59HPqx21gJ6f99qVeQuGogtCzH+FFXbWhdyZV8LJdIusei+vUbMDkKdu+aIOht3wRCg9hYHLCPErwvgenO4ByK+K3xxjMQJmDBEk0Ss5gJTnpeLyJsU649AMp/c8s73sS3S12rvTXkjLlvlQVkurF1ojnLfv617rB2B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480366; c=relaxed/simple;
-	bh=P84OWrvw1PfAeOjNKAhazx9sOBRw1FC47su4J/nKcA8=;
+	s=arc-20240116; t=1723479079; c=relaxed/simple;
+	bh=e/Y4V2sNpQeIxU8KErcCBNrZVe4Kfec3LqB2HYsl7ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCfoKVhNTUQrsdVZ1k+YtHVuY4IAGhUh+rGmJpxKvHFZ8YU3WxhosMKF4abJ7JqJXkChA6HO9Ih1BMz0+WztXiR8dpalJ02ZyCzf6464xNvcigpminO0uJd6VK0Fs+tTVUtSJy8etIyEuqsco5ipAizGxhY1kar1RvwbC7O+r2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbkVLOCv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7508C32782;
-	Mon, 12 Aug 2024 16:32:45 +0000 (UTC)
+	 MIME-Version; b=Wlydnjz0+fSm2Oszle1uAbOP/BYmGqmzudkTb3068EKC+kQUeHicN7dfYuvGIwRMOZi/Uic/hbXLtmnIUEkNfB2ZeYAsX3M7aiewSGtzOmtHdtwgYpjSg0FrnJr4//HQVRqI5Df7tEWRngJrnaP7kVIEG+gDLA7qRO9K2/ufr3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItMTqa5H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B39BC4AF09;
+	Mon, 12 Aug 2024 16:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480366;
-	bh=P84OWrvw1PfAeOjNKAhazx9sOBRw1FC47su4J/nKcA8=;
+	s=korg; t=1723479079;
+	bh=e/Y4V2sNpQeIxU8KErcCBNrZVe4Kfec3LqB2HYsl7ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbkVLOCvsO6lX54WshtVWP3zOdeQGNMA2FnStb5Yq1wW5Y3nAzK0V84pDHFUegXsY
-	 aZP0js4o5iClhUdXoFNR6sccWCVyGClxtQ3dXdbbM8yIqgBKNK6W+q+lIOEaDhj0mq
-	 Gw/BWshkPx8G3jdqDMIYcYPBKxZ6WQceAXX83b8Y=
+	b=ItMTqa5HIofdmpkvdBh1GGzlA9WcOQBlEwDpUKi8Qh19zKmcDdiZZ3jirfRH2Tlwn
+	 cIJsActqqpFejnyPs6T/dkCtpuwWfcBXRy3rke2vodtSmqSe2UCPxs1qpRj/+QgwlR
+	 hPOMUwZ+dddaPsL3A06uSD0++xiwZTDDL/5B/faA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.10 175/263] drm/i915/gem: Adjust vma offset for framebuffer mmap offset
+	Chris Wulff <crwulff@gmail.com>
+Subject: [PATCH 6.1 095/150] usb: gadget: core: Check for unset descriptor
 Date: Mon, 12 Aug 2024 18:02:56 +0200
-Message-ID: <20240812160153.248771045@linuxfoundation.org>
+Message-ID: <20240812160128.829840408@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Chris Wulff <crwulff@gmail.com>
 
-commit 1ac5167b3a90c9820daa64cc65e319b2d958d686 upstream.
+commit 973a57891608a98e894db2887f278777f564de18 upstream.
 
-When mapping a framebuffer object, the virtual memory area (VMA)
-offset ('vm_pgoff') should be adjusted by the start of the
-'vma_node' associated with the object. This ensures that the VMA
-offset is correctly aligned with the corresponding offset within
-the GGTT aperture.
+Make sure the descriptor has been set before looking at maxpacket.
+This fixes a null pointer panic in this case.
 
-Increment vm_pgoff by the start of the vma_node with the offset=
-provided by the user.
+This may happen if the gadget doesn't properly set up the endpoint
+for the current speed, or the gadget descriptors are malformed and
+the descriptor for the speed/endpoint are not found.
 
-Suggested-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v4.9+
-[Joonas: Add Cc: stable]
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-2-andi.shyti@linux.intel.com
-(cherry picked from commit 60a2066c50058086510c91f404eb582029650970)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+No current gadget driver is known to have this problem, but this
+may cause a hard-to-find bug during development of new gadgets.
+
+Fixes: 54f83b8c8ea9 ("USB: gadget: Reject endpoints with 0 maxpacket value")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chris Wulff <crwulff@gmail.com>
+Link: https://lore.kernel.org/r/20240725010419.314430-2-crwulff@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_mman.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/udc/core.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -1125,6 +1125,8 @@ int i915_gem_fb_mmap(struct drm_i915_gem
- 		mmo = mmap_offset_attach(obj, mmap_type, NULL);
- 		if (IS_ERR(mmo))
- 			return PTR_ERR(mmo);
-+
-+		vma->vm_pgoff += drm_vma_node_start(&mmo->vma_node);
- 	}
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -118,12 +118,10 @@ int usb_ep_enable(struct usb_ep *ep)
+ 		goto out;
  
- 	/*
+ 	/* UDC drivers can't handle endpoints with maxpacket size 0 */
+-	if (usb_endpoint_maxp(ep->desc) == 0) {
+-		/*
+-		 * We should log an error message here, but we can't call
+-		 * dev_err() because there's no way to find the gadget
+-		 * given only ep.
+-		 */
++	if (!ep->desc || usb_endpoint_maxp(ep->desc) == 0) {
++		WARN_ONCE(1, "%s: ep%d (%s) has %s\n", __func__, ep->address, ep->name,
++			  (!ep->desc) ? "NULL descriptor" : "maxpacket 0");
++
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
 
 
 
