@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-67297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390DE94F4C8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA0094F2EA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9C2CB263D9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69A4A285170
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1764183CD4;
-	Mon, 12 Aug 2024 16:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D50183CD4;
+	Mon, 12 Aug 2024 16:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdxEk3jK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e70NzGOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F67E1494B8;
-	Mon, 12 Aug 2024 16:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D15183CA6;
+	Mon, 12 Aug 2024 16:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480466; cv=none; b=LV8M12aom2N7r2MoN9Cvu7CIO91hMg0WEFeke3hbP1nJog/Ljw7wRM1oyrSt+a8DzrkgCxdUZjg1jOj1KeZG1OYC3IvI2lhrPjjv2acnJ/0fgj1r+1HmwDWn0H5qVLuljDtjMq2KqANYXwB19akZmdyz8TDwWjBEiAUZtOLS4II=
+	t=1723479095; cv=none; b=fu98xHK3tPwmEOTD1G0Fb6Hp8I4bqf/3LT3vsbMqtZ3PjDFcD2NSu3dScSVvFchsO4xmheQb4AEqxyYxr+tOvDaWACK8rxBFgovih3fX6F+ZFnm4EADQ7/87PkHYj7zvOO/2Gpg7lni/xuhsdyvkKNLCkwT60jptjP9vdc+inOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480466; c=relaxed/simple;
-	bh=2Vz4XFVMExA/vjQ41kMyGo2xlyxqOIpSNuakI2tF6M4=;
+	s=arc-20240116; t=1723479095; c=relaxed/simple;
+	bh=SMAIh/6SL78v5EYnjZSv6OpuzRNOXr5lxAtlnqWotCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dv9f1FY+IrRKVY1rS7q7lnVAXrLV6mHn8TtaCLd63mEParIOxq8EC7Qtjt8ML9qDXe6XpI0FMgHcfp6N3IikH54/d7ghkyQ4jPg1tj/y7nvFEYSiLrWrRiMHJysoRBffocXomrPa8oc3DPenJw/f1XEv2b5hanNTWEpontAym24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdxEk3jK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F135CC4AF0C;
-	Mon, 12 Aug 2024 16:34:25 +0000 (UTC)
+	 MIME-Version; b=qvg1x7mHsAnHgGldlb5zi6RE2dOHHvkuN/T3oJDVN7Qp3O6ng2LaMREJZB8m0Q8OjGjzpD3j93/2BFvT8Vj68W/mTcclubg8rTLvkcX7k4+4QG6eH3p3NLiXEo/+J7H4FFDFUT1hmLald7uCvbppWIq2zK/yKeOOVXGD8mOLZGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e70NzGOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18472C32782;
+	Mon, 12 Aug 2024 16:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480466;
-	bh=2Vz4XFVMExA/vjQ41kMyGo2xlyxqOIpSNuakI2tF6M4=;
+	s=korg; t=1723479095;
+	bh=SMAIh/6SL78v5EYnjZSv6OpuzRNOXr5lxAtlnqWotCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdxEk3jKOIz+BN44vrA1qD9VEaTwqvATkONjqc4ERN7dUTX8BjoIuVRAU8evclozW
-	 luOfK+6vwLYJkx+I9+8NuQDZ58QWp0TJtVJ7v8vgZFB4Q2Yn0U0U5So4TrYAlf2q9h
-	 oCRC1DVuH8tbpoQP0/bOKv0G+nF8VSYTRS1L3poI=
+	b=e70NzGOWLHmkeVMfKyu50eqvKe/Ect74oLyMhR7zYNkcKoROAEKV3vvxk4rREgltw
+	 UXtx+giYng027E1GfmFIrYouFI+t79zGfT2inbMYnLEU1Ww+ic0u8hxqbQTADwMX3B
+	 iWJj5zvlM3C5dTtoE8unPtsHaQlTUQl2yap79iAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.10 204/263] arm64: dts: ti: k3-am62-verdin-dahlia: Keep CTRL_SLEEP_MOCI# regulator on
+	Lucas Stach <l.stach@pengutronix.de>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 6.1 124/150] drm/bridge: analogix_dp: properly handle zero sized AUX transactions
 Date: Mon, 12 Aug 2024 18:03:25 +0200
-Message-ID: <20240812160154.358247983@linuxfoundation.org>
+Message-ID: <20240812160129.946978069@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-commit 9438f970296f9c3a6dd340ae0ad01d2f056c88e6 upstream.
+commit e82290a2e0e8ec5e836ecad1ca025021b3855c2d upstream.
 
-This reverts commit 3935fbc87ddebea5439f3ab6a78b1e83e976bf88.
+Address only transactions without any data are valid and should not
+be flagged as short transactions. Simply return the message size when
+no transaction errors occured.
 
-CTRL_SLEEP_MOCI# is a signal that is defined for all the SoM
-implementing the Verdin family specification, this signal is supposed to
-control the power enable in the carrier board when the system is in deep
-sleep mode. However this is not possible with Texas Instruments AM62
-SoC, IOs output buffer is disabled in deep sleep and IOs are in
-tri-state mode.
-
-Given that we cannot properly control this pin, force it to be always
-high to minimize potential issues.
-
-Fixes: 3935fbc87dde ("arm64: dts: ti: k3-am62-verdin-dahlia: support sleep-moci")
-Cc:  <stable@vger.kernel.org>
-Link: https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1361669/am625-gpio-output-state-in-deep-sleep/5244802
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20240731054804.6061-1-francesco@dolcini.it
-Signed-off-by: Nishanth Menon <nm@ti.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240318203925.2837689-1-l.stach@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-verdin-dahlia.dtsi |   22 ----------------------
- arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi        |    6 ------
- 2 files changed, 28 deletions(-)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62-verdin-dahlia.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-verdin-dahlia.dtsi
-@@ -43,15 +43,6 @@
- 			sound-dai = <&mcasp0>;
- 		};
- 	};
--
--	reg_usb_hub: regulator-usb-hub {
--		compatible = "regulator-fixed";
--		enable-active-high;
--		/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
--		gpio = <&main_gpio0 31 GPIO_ACTIVE_HIGH>;
--		regulator-boot-on;
--		regulator-name = "HUB_PWR_EN";
--	};
- };
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
+@@ -1027,7 +1027,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 	u32 status_reg;
+ 	u8 *buffer = msg->buffer;
+ 	unsigned int i;
+-	int num_transferred = 0;
+ 	int ret;
  
- /* Verdin ETHs */
-@@ -193,11 +184,6 @@
- 	status = "okay";
- };
+ 	/* Buffer size of AUX CH is 16 bytes */
+@@ -1079,7 +1078,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = buffer[i];
+ 			writel(reg, dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 			       4 * i);
+-			num_transferred++;
+ 		}
+ 	}
  
--/* Do not force CTRL_SLEEP_MOCI# always enabled */
--&reg_force_sleep_moci {
--	status = "disabled";
--};
--
- /* Verdin SD_1 */
- &sdhci1 {
- 	status = "okay";
-@@ -218,15 +204,7 @@
- };
+@@ -1127,7 +1125,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = readl(dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 				    4 * i);
+ 			buffer[i] = (unsigned char)reg;
+-			num_transferred++;
+ 		}
+ 	}
  
- &usb1 {
--	#address-cells = <1>;
--	#size-cells = <0>;
- 	status = "okay";
--
--	usb-hub@1 {
--		compatible = "usb424,2744";
--		reg = <1>;
--		vdd-supply = <&reg_usb_hub>;
--	};
- };
+@@ -1144,7 +1141,7 @@ ssize_t analogix_dp_transfer(struct anal
+ 		 (msg->request & ~DP_AUX_I2C_MOT) == DP_AUX_NATIVE_READ)
+ 		msg->reply = DP_AUX_NATIVE_REPLY_ACK;
  
- /* Verdin CTRL_WAKE1_MICO# */
---- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-@@ -138,12 +138,6 @@
- 		vin-supply = <&reg_1v8>;
- 	};
+-	return num_transferred > 0 ? num_transferred : -EBUSY;
++	return msg->size;
  
--	/*
--	 * By default we enable CTRL_SLEEP_MOCI#, this is required to have
--	 * peripherals on the carrier board powered.
--	 * If more granularity or power saving is required this can be disabled
--	 * in the carrier board device tree files.
--	 */
- 	reg_force_sleep_moci: regulator-force-sleep-moci {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
+ aux_error:
+ 	/* if aux err happen, reset aux */
 
 
 
