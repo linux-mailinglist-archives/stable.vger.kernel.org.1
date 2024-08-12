@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DC294EBFC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:42:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C91CD94EBFE
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F9CC1F2260B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:42:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83F1A282AB4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27675176AD1;
-	Mon, 12 Aug 2024 11:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688A9176AD1;
+	Mon, 12 Aug 2024 11:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6PlOHcU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CheaRgzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D936C16A948
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A8316A948
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723462946; cv=none; b=VkZBRQcWDcG5P+MxG5KON5DdNIKLqVpbFDf1IGqSV+BFxpqiw401jubDS0UGZ09/hIzUJVJ60U24NbYNXYxTbUDAj3grkbPFiU/QjLz8C/Acu0iVbnXDElrPKal9W0qd3Ufi4ZYkPsw3GeHIh5Lk4QRfxlDPBRjvZ7P4xVLTNZU=
+	t=1723462989; cv=none; b=lcDHbkB7pn+w9qFZLoiRk1Fg+nYzEqVxP0iicimj8SunrVBEwg/zGC3wh1vsvdrmmOVhLIj9S9I5+dgSgdwR1kxpUdjqNLhQqhdqSKtThdlnpAi5K0vp7meXuXM9L8qL8PR5snJvtdTu2+mHr/i3Nb6FudNIMOKsdczlDENwhD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723462946; c=relaxed/simple;
-	bh=/nXgR2AwgiEJmAK07OlqUlJyQZmaHd2O00Qio60hPZg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=d7rA66Md1QTXdcxYQOgLqQSFw/aHXRw6S4yZkbdv++alLpR+c61hgGeAXsJMUa0AmkMQ/Fuv3fkl97qMOm9KPUBXgiCHOZfnBqvwwuJ3ND6LtARp16H7l85fNQ2zJQfdjcKKJ2vxn+djPac69NU4o12UVeooXL3U+HnViU2fnaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6PlOHcU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A558C32782;
-	Mon, 12 Aug 2024 11:42:24 +0000 (UTC)
+	s=arc-20240116; t=1723462989; c=relaxed/simple;
+	bh=2pfank+5t4OfJr5y/Pz3+X4Ksba2TxwrLJ4XVNWJHFk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pNZaGbwxZY3Ke0+SZYzLYsYZR2016f1OAuWR2wlOWUHyt243Z0taikfykMah5esIDN1FSPR3AqtoD+ku44Gl2WR5gZ4Oaxd+Vgu9qRuY+c0at44sdliO5FRKuuWU/0BNeTqxw3ehtsQtLwge1SEsum1dYTaUiJ22wPX5UKQzcN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CheaRgzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B8DC32782;
+	Mon, 12 Aug 2024 11:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723462945;
-	bh=/nXgR2AwgiEJmAK07OlqUlJyQZmaHd2O00Qio60hPZg=;
+	s=korg; t=1723462989;
+	bh=2pfank+5t4OfJr5y/Pz3+X4Ksba2TxwrLJ4XVNWJHFk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=G6PlOHcUxmzztGKQUp7nkRXkedXB5vJxe8tNXsaxNMlPXwXl3RtKV9sFAcMgd2ehb
-	 DPPgPa/kLTaKUcXu3CYZexGfeVUUgkdJ7BOIQeWKaVcri+vY4gqxN0sG92FDyH7WJe
-	 Lr/rT8nq8ex86hxO8KTm495XK2djutN0AheHgQpM=
-Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix invalid FIFO access with special" failed to apply to 4.19-stable tree
-To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org
+	b=CheaRgzZvF7vKVFr9mWFxkjKFc8WGAS+5pjhK98FYjtcxHTgubEw753425g4sNCKv
+	 R+NWWLKI1aYodIzcU7mi/qYu3iz3FG2BvU9ENu8YBG5W3/k9SwFdzMRl5NJPEwuUrP
+	 vlyIFVrSdYDzWHcl0KNHgjIBT5zLKmJ8ju0Cmyj8=
+Subject: FAILED: patch "[PATCH] memcg: protect concurrent access to mem_cgroup_idr" failed to apply to 6.1-stable tree
+To: shakeel.butt@linux.dev,akpm@linux-foundation.org,hannes@cmpxchg.org,mhocko@suse.com,muchun.song@linux.dev,roman.gushchin@linux.dev,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 13:42:22 +0200
-Message-ID: <2024081221-mumbo-smugly-ba61@gregkh>
+Date: Mon, 12 Aug 2024 13:43:00 +0200
+Message-ID: <2024081259-plow-freezing-a93e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,39 +53,29 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7d3b793faaab1305994ce568b59d61927235f57b
+git cherry-pick -x 9972605a238339b85bd16b084eed5f18414d22db
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081221-mumbo-smugly-ba61@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081259-plow-freezing-a93e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-7d3b793faaab ("serial: sc16is7xx: fix invalid FIFO access with special register set")
-8492bd91aa05 ("serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler")
-0c84bea0cabc ("serial: sc16is7xx: refactor EFR lock")
-2de8a1b46756 ("serial: sc16is7xx: reorder code to remove prototype declarations")
-2e57cefc4477 ("serial: sc16is7xx: replace hardcoded divisor value with BIT() macro")
-4409df5866b7 ("serial: sc16is7xx: change EFR lock to operate on each channels")
-3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-22a048b07493 ("serial: sc16is7xx: remove unused to_sc16is7xx_port macro")
-b4a778303ea0 ("serial: sc16is7xx: add missing support for rs485 devicetree properties")
-049994292834 ("serial: sc16is7xx: fix regression with GPIO configuration")
-dabc54a45711 ("serial: sc16is7xx: remove obsolete out_thread label")
-c8f71b49ee4d ("serial: sc16is7xx: setup GPIO controller later in probe")
-267913ecf737 ("serial: sc16is7xx: Fill in rs485_supported")
-6e124e58ae2e ("sc16is7xx: Set AUTOCTS and AUTORTS bits")
-21144bab4f11 ("sc16is7xx: Handle modem status lines")
-cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop")
-d4ab5487cc77 ("Merge 5.17-rc6 into tty-next")
+9972605a2383 ("memcg: protect concurrent access to mem_cgroup_idr")
+6f0df8e16eb5 ("memcontrol: ensure memcg acquired by id is properly set up")
+e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+7348cc91821b ("mm: multi-gen LRU: remove aging fairness safeguard")
+a579086c99ed ("mm: multi-gen LRU: remove eviction fairness safeguard")
+adb8213014b2 ("mm: memcg: fix stale protection of reclaim target memcg")
+57e9cc50f4dd ("mm: vmscan: split khugepaged stats from direct reclaim stats")
 
 thanks,
 
@@ -93,58 +83,103 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7d3b793faaab1305994ce568b59d61927235f57b Mon Sep 17 00:00:00 2001
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Tue, 23 Jul 2024 08:53:01 -0400
-Subject: [PATCH] serial: sc16is7xx: fix invalid FIFO access with special
- register set
+From 9972605a238339b85bd16b084eed5f18414d22db Mon Sep 17 00:00:00 2001
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Date: Fri, 2 Aug 2024 16:58:22 -0700
+Subject: [PATCH] memcg: protect concurrent access to mem_cgroup_idr
 
-When enabling access to the special register set, Receiver time-out and
-RHR interrupts can happen. In this case, the IRQ handler will try to read
-from the FIFO thru the RHR register at address 0x00, but address 0x00 is
-mapped to DLL register, resulting in erroneous FIFO reading.
+Commit 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure after
+many small jobs") decoupled the memcg IDs from the CSS ID space to fix the
+cgroup creation failures.  It introduced IDR to maintain the memcg ID
+space.  The IDR depends on external synchronization mechanisms for
+modifications.  For the mem_cgroup_idr, the idr_alloc() and idr_replace()
+happen within css callback and thus are protected through cgroup_mutex
+from concurrent modifications.  However idr_remove() for mem_cgroup_idr
+was not protected against concurrency and can be run concurrently for
+different memcgs when they hit their refcnt to zero.  Fix that.
 
-Call graph example:
-    sc16is7xx_startup(): entry
-    sc16is7xx_ms_proc(): entry
-    sc16is7xx_set_termios(): entry
-    sc16is7xx_set_baud(): DLH/DLL = $009C --> access special register set
-    sc16is7xx_port_irq() entry            --> IIR is 0x0C
-    sc16is7xx_handle_rx() entry
-    sc16is7xx_fifo_read(): --> unable to access FIFO (RHR) because it is
-                               mapped to DLL (LCR=LCR_CONF_MODE_A)
-    sc16is7xx_set_baud(): exit --> Restore access to general register set
+We have been seeing list_lru based kernel crashes at a low frequency in
+our fleet for a long time.  These crashes were in different part of
+list_lru code including list_lru_add(), list_lru_del() and reparenting
+code.  Upon further inspection, it looked like for a given object (dentry
+and inode), the super_block's list_lru didn't have list_lru_one for the
+memcg of that object.  The initial suspicions were either the object is
+not allocated through kmem_cache_alloc_lru() or somehow
+memcg_list_lru_alloc() failed to allocate list_lru_one() for a memcg but
+returned success.  No evidence were found for these cases.
 
-Fix the problem by claiming the efr_lock mutex when accessing the Special
-register set.
+Looking more deeply, we started seeing situations where valid memcg's id
+is not present in mem_cgroup_idr and in some cases multiple valid memcgs
+have same id and mem_cgroup_idr is pointing to one of them.  So, the most
+reasonable explanation is that these situations can happen due to race
+between multiple idr_remove() calls or race between
+idr_alloc()/idr_replace() and idr_remove().  These races are causing
+multiple memcgs to acquire the same ID and then offlining of one of them
+would cleanup list_lrus on the system for all of them.  Later access from
+other memcgs to the list_lru cause crashes due to missing list_lru_one.
 
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240723125302.1305372-3-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240802235822.1830976-1-shakeel.butt@linux.dev
+Fixes: 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure after many small jobs")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 58696e05492c..b4c1798a1df2 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -592,6 +592,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
- 			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 960371788687..f29157288b7d 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3386,11 +3386,28 @@ static void memcg_wb_domain_size_changed(struct mem_cgroup *memcg)
  
-+	mutex_lock(&one->efr_lock);
+ #define MEM_CGROUP_ID_MAX	((1UL << MEM_CGROUP_ID_SHIFT) - 1)
+ static DEFINE_IDR(mem_cgroup_idr);
++static DEFINE_SPINLOCK(memcg_idr_lock);
 +
- 	/* Backup LCR and access special register set (DLL/DLH) */
- 	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
-@@ -606,6 +608,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	/* Restore LCR and access to general register set */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
++static int mem_cgroup_alloc_id(void)
++{
++	int ret;
++
++	idr_preload(GFP_KERNEL);
++	spin_lock(&memcg_idr_lock);
++	ret = idr_alloc(&mem_cgroup_idr, NULL, 1, MEM_CGROUP_ID_MAX + 1,
++			GFP_NOWAIT);
++	spin_unlock(&memcg_idr_lock);
++	idr_preload_end();
++	return ret;
++}
  
-+	mutex_unlock(&one->efr_lock);
+ static void mem_cgroup_id_remove(struct mem_cgroup *memcg)
+ {
+ 	if (memcg->id.id > 0) {
++		spin_lock(&memcg_idr_lock);
+ 		idr_remove(&mem_cgroup_idr, memcg->id.id);
++		spin_unlock(&memcg_idr_lock);
 +
- 	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
+ 		memcg->id.id = 0;
+ 	}
  }
+@@ -3524,8 +3541,7 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+ 	if (!memcg)
+ 		return ERR_PTR(error);
  
+-	memcg->id.id = idr_alloc(&mem_cgroup_idr, NULL,
+-				 1, MEM_CGROUP_ID_MAX + 1, GFP_KERNEL);
++	memcg->id.id = mem_cgroup_alloc_id();
+ 	if (memcg->id.id < 0) {
+ 		error = memcg->id.id;
+ 		goto fail;
+@@ -3667,7 +3683,9 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	 * publish it here at the end of onlining. This matches the
+ 	 * regular ID destruction during offlining.
+ 	 */
++	spin_lock(&memcg_idr_lock);
+ 	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
++	spin_unlock(&memcg_idr_lock);
+ 
+ 	return 0;
+ offline_kmem:
 
 
