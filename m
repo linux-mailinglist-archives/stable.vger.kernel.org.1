@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FEC94F025
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0333194F024
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 318B71F26069
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 362411C20B58
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F9F186E3D;
-	Mon, 12 Aug 2024 14:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A176186E50;
+	Mon, 12 Aug 2024 14:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2G1zBn1H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKq8G8ih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D3A184533
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3E7184532
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723473978; cv=none; b=st+QvrXU8xJ3xlw0cwdnq3GHEYlL3dH7h0NdjP5E5xfzn/0WfALK/PZvEezqAuWn3xH0M4gPSLF4/l7Fz/ztwgUqtBjieOB8ub9DeJo6HJLEMAQrr7pKdAIVHSne/TatZGDawuCz8EkV/U4B0297cpVTg2xRUwlQ6P4Xzx1/NV8=
+	t=1723473975; cv=none; b=ONREQQCYNVHEYN1b5UGQeRE3cwp1lNqXm8uQD9K1r9JrD27c8Ev5+mWUffhpEthMPo2RvBsjoN77205KzREiUCjesuuHHbsqMzPtRrmHErewpiKNcjckn63AcNk5LtC0SCxpvLR4YHkHOkXAdhctFKfWz3WmO4+aoMsRvDEE9LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723473978; c=relaxed/simple;
-	bh=eU9UEDouEIiXx86u9YUm6dzPb1x+Z0rY0INgr2sq3mk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i4T70qvKKYvck5YsDfMLxsZp94O/Kdc1lqFIqXJRiIVydwB4UdItUnu30k9Z9UslfSjHySyQrRE+rsVoyR/p+lv3PoCApzOqEiRS9lMZoDuJQoVco8OLh+LKmaInNf34UMdNa3e5x6SCIxzXYd58zzM/1h4SdxjnHuHEXkng9fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2G1zBn1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CADC32782;
-	Mon, 12 Aug 2024 14:46:17 +0000 (UTC)
+	s=arc-20240116; t=1723473975; c=relaxed/simple;
+	bh=TLlPLf4rQpKQnbBbMDWuQ/4e2gea4RrmAVgExkPRzYc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tbJhBZ5CY08YaAORcxLx7ItVNoK++2I2yi4X+Kec8DDosbWMx4kr4YamwuTqFJU/nsB3YY2XxpVPIXc79fg2n5jyMamY1zMpX+8YcIgNXA8aJ8yU7osJ/YYiYzALnelzacP7RA1Npo38iUCbS9F0ks+m/CfGp7/kaZXjYqTZ8vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKq8G8ih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4FCC32782;
+	Mon, 12 Aug 2024 14:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723473978;
-	bh=eU9UEDouEIiXx86u9YUm6dzPb1x+Z0rY0INgr2sq3mk=;
+	s=korg; t=1723473975;
+	bh=TLlPLf4rQpKQnbBbMDWuQ/4e2gea4RrmAVgExkPRzYc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2G1zBn1HTYeBN9qk7eOfQu+t0MxJQsQwYb2vp7VfaXFcWQWIDMtJgJ3fM6yP3ESvc
-	 pvADpIEvUvgIN95TQQxtbo/ljRG3c4h4dof+j7MOmDuwCUkhLTU1XUmXwjvnUZhXA3
-	 TK6gNG0Mgf6BXv4ty+4zN+gsAPb1n3cSSl4BxnFs=
-Subject: FAILED: patch "[PATCH] drm/amdkfd: don't allow mapping the MMIO HDP page with large" failed to apply to 6.1-stable tree
+	b=WKq8G8ihT0WmgSL/u9zf179z+7s7uo+ZzosTFnr2IGkEW4dIsLcS2pjkjkgOgNyEG
+	 IhpC0lu8xxLEqmsi4aVDrbs4GjGRZGClFHyT93cmOdBd4KXG5LFx0tYxCy60HuvpfS
+	 WqT+llq0Xa/R5ryNR0MjATuyRlujtqjmR47HWx+E=
+Subject: FAILED: patch "[PATCH] drm/amdkfd: don't allow mapping the MMIO HDP page with large" failed to apply to 5.15-stable tree
 To: alexander.deucher@amd.com,felix.kuehling@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 12 Aug 2024 16:46:02 +0200
-Message-ID: <2024081201-knoll-credit-f60d@gregkh>
+Message-ID: <2024081202-hastily-panic-ee65@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 24e82654e98e96cece5d8b919c522054456eeec6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081201-knoll-credit-f60d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081202-hastily-panic-ee65@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 24e82654e98e ("drm/amdkfd: don't allow mapping the MMIO HDP page with large pages")
+b38c074b2b07 ("drm/amdkfd: CRIU Refactor restore BO function")
+67a359d85ec2 ("drm/amdkfd: CRIU remove sync and TLB flush on restore")
+22804e03f7a5 ("drm/amdkfd: Fix criu_restore_bo error handling")
+d8a25e485857 ("drm/amdkfd: fix loop error handling")
+e5af61ffaaef ("drm/amdkfd: CRIU fix a NULL vs IS_ERR() check")
+be072b06c739 ("drm/amdkfd: CRIU export BOs as prime dmabuf objects")
+bef153b70c6e ("drm/amdkfd: CRIU implement gpu_id remapping")
+40e8a766a761 ("drm/amdkfd: CRIU checkpoint and restore events")
+42c6c48214b7 ("drm/amdkfd: CRIU checkpoint and restore queue mqds")
+2485c12c980a ("drm/amdkfd: CRIU restore sdma id for queues")
+8668dfc30d3e ("drm/amdkfd: CRIU restore queue ids")
+626f7b3190b4 ("drm/amdkfd: CRIU add queues support")
+cd9f79103003 ("drm/amdkfd: CRIU Implement KFD unpause operation")
+011bbb03024f ("drm/amdkfd: CRIU Implement KFD resume ioctl")
+73fa13b6a511 ("drm/amdkfd: CRIU Implement KFD restore ioctl")
+5ccbb057c0a1 ("drm/amdkfd: CRIU Implement KFD checkpoint ioctl")
+f185381b6481 ("drm/amdkfd: CRIU Implement KFD process_info ioctl")
+3698807094ec ("drm/amdkfd: CRIU Introduce Checkpoint-Restore APIs")
+f61c40c0757a ("drm/amdkfd: enable heavy-weight TLB flush on Arcturus")
 
 thanks,
 
