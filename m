@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-67301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C5094F4CC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5DEB94F308
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21BEA1C20F0E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5491A1F21597
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3F5183CD4;
-	Mon, 12 Aug 2024 16:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F083187328;
+	Mon, 12 Aug 2024 16:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4ciFmy9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2yNh2WI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9491494B8;
-	Mon, 12 Aug 2024 16:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6E4183CC4;
+	Mon, 12 Aug 2024 16:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480480; cv=none; b=o0+LMTetLkGKe4QlBLeoV3cb4GH2V6gxx+hGhzhNlzMzB210iajPYuZtQ9VLcR0USYaEU7/3HppicZDcfDqwxbW6VMMDtXyXaVbWuZq3sK6moxgZpzj3D7ktg/0a+Rspie4jpdyd8jRd/7zYVzCN4F8/gWHKxzmE+CedDq1bPY8=
+	t=1723479166; cv=none; b=KYQWY4cqTeLXxp9MqK8xCaXu8YMyREBpROMsf7tZ44u3nvqjGztuBTNv9It5pwZS8WoKtoSKQ7ebxeXPoTnR6vADppfbWdyGdljvovbvW1yCuiWmqbHkgItlUf6UvGheDVgQaLGoKGl0T/kSWOw6FYZjQx2+XMOLX8WBC58tb50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480480; c=relaxed/simple;
-	bh=WTgMTUymh3upxdbBQZV+KBc8PYbDkj4xu97Bfb3PakA=;
+	s=arc-20240116; t=1723479166; c=relaxed/simple;
+	bh=EUAO7Kqkt4DWW6qTOY5HoP9jcTx0nL19zyil3jJZEY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2bCiSLNAS8dFLUus5E3BAOVNdlEKJBK74txF62a7mMsmEsshWtnCIOWepoKJH5dlbU+NPpl8plHbto4WNzwiob881UZhnv5r9ay4buNVVxtSIoCgAm5iIiOpRI9t6DIRQlHptuD1sHjEyRALHPf7fk+A22/LCC4SqkJqQ+XsQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4ciFmy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758C1C32782;
-	Mon, 12 Aug 2024 16:34:39 +0000 (UTC)
+	 MIME-Version; b=H93emhQt4bBfY9sLq41xAaxcYLxBIq47ADSEwlB2WRtFn1zb17ID2hdT/vH5LOCsov/sz+16sYpgefUF8DI0q0/M5dEyv30x+sikxQFJ7TOIsGmelVmcWQ1TD4SvjtJzjej4vSPEM7whkYY9sxYo4SDqM2h+94lRP41coXY9PnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2yNh2WI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EABC32782;
+	Mon, 12 Aug 2024 16:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480479;
-	bh=WTgMTUymh3upxdbBQZV+KBc8PYbDkj4xu97Bfb3PakA=;
+	s=korg; t=1723479166;
+	bh=EUAO7Kqkt4DWW6qTOY5HoP9jcTx0nL19zyil3jJZEY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4ciFmy9hsBwmExz8GaQtrPKdf7RBlncaeApUzj1Lwvjdya2u7Pd9zWoa7dig+WTr
-	 DXZtb/1xmSKRZ/P6HOOVLf0oOhXm166NYrzrc8QYfBSactzq/oAfQgHgYaM/S96u65
-	 1krEV8eU5kxkQGhRfXKGGRwf7NjTEDv9VWtunSFE=
+	b=h2yNh2WIOtdsF7QJjIHu1r7fpudR7HYA7cSm3783b9UBFKOzjsYhai8YbYXr1pq31
+	 93HtYm2XwruaYnj2GF0RSZNBeromL0ZOXq7nuKdglrWGIZe0A/5dKzLLpuuN4Sx8SS
+	 1YKLVYqPvzVnnrTsjsJIVnr3OC63QUF1GoDzo6Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.10 208/263] timekeeping: Fix bogus clock_was_set() invocation in do_adjtimex()
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.1 128/150] drm/mgag200: Bind I2C lifetime to DRM device
 Date: Mon, 12 Aug 2024 18:03:29 +0200
-Message-ID: <20240812160154.510303023@linuxfoundation.org>
+Message-ID: <20240812160130.103419817@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 5916be8a53de6401871bdd953f6c60237b47d6d3 upstream.
+commit eb1ae34e48a09b7a1179c579aed042b032e408f4 upstream.
 
-The addition of the bases argument to clock_was_set() fixed up all call
-sites correctly except for do_adjtimex(). This uses CLOCK_REALTIME
-instead of CLOCK_SET_WALL as argument. CLOCK_REALTIME is 0.
+Managed cleanup with devm_add_action_or_reset() will release the I2C
+adapter when the underlying Linux device goes away. But the connector
+still refers to it, so this cleanup leaves behind a stale pointer
+in struct drm_connector.ddc.
 
-As a result the effect of that clock_was_set() notification is incomplete
-and might result in timers expiring late because the hrtimer code does
-not re-evaluate the affected clock bases.
+Bind the lifetime of the I2C adapter to the connector's lifetime by
+using DRM's managed release. When the DRM device goes away (after
+the Linux device) DRM will first clean up the connector and then
+clean up the I2C adapter.
 
-Use CLOCK_SET_WALL instead of CLOCK_REALTIME to tell the hrtimers code
-which clock bases need to be re-evaluated.
-
-Fixes: 17a1b8826b45 ("hrtimer: Add bases argument to clock_was_set()")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/877ccx7igo.ffs@tglx
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: b279df242972 ("drm/mgag200: Switch I2C code to managed cleanup")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.0+
+Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-3-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timekeeping.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mgag200/mgag200_i2c.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -2479,7 +2479,7 @@ int do_adjtimex(struct __kernel_timex *t
- 		clock_set |= timekeeping_advance(TK_ADV_FREQ);
+--- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
++++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
+@@ -31,6 +31,8 @@
+ #include <linux/i2c.h>
+ #include <linux/pci.h>
  
- 	if (clock_set)
--		clock_was_set(CLOCK_REALTIME);
-+		clock_was_set(CLOCK_SET_WALL);
++#include <drm/drm_managed.h>
++
+ #include "mgag200_drv.h"
  
- 	ntp_notify_cmos_timer();
+ static int mga_i2c_read_gpio(struct mga_device *mdev)
+@@ -86,7 +88,7 @@ static int mga_gpio_getscl(void *data)
+ 	return (mga_i2c_read_gpio(mdev) & i2c->clock) ? 1 : 0;
+ }
  
+-static void mgag200_i2c_release(void *res)
++static void mgag200_i2c_release(struct drm_device *dev, void *res)
+ {
+ 	struct mga_i2c_chan *i2c = res;
+ 
+@@ -126,5 +128,5 @@ int mgag200_i2c_init(struct mga_device *
+ 	if (ret)
+ 		return ret;
+ 
+-	return devm_add_action_or_reset(dev->dev, mgag200_i2c_release, i2c);
++	return drmm_add_action_or_reset(dev, mgag200_i2c_release, i2c);
+ }
 
 
 
