@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DE294F036
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE29794F035
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E1DBB2641A
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5E802812B5
 	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737E618733C;
-	Mon, 12 Aug 2024 14:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27A2187341;
+	Mon, 12 Aug 2024 14:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bATJEw2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcizDY7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34086184541
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3089184541
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474021; cv=none; b=T+LzcflXBj6KT2vt42gmErWGMOH4ckKjOWa2qgRylpH2CluY/XF3TbuzruigTxNdoD4gGw1e3cmOB4Cnuz0DK433YXl/iXqWdwOdTdk08FDFwlL77Yi8Zne+0RRpT87UCB7pSPkYtXNGFMdL31uMdBKqwHCNPCRuwfijOUfinKE=
+	t=1723474024; cv=none; b=UzBTW9+hRO+rXdsK5yPVKBC03YBsbGAWyINSOwp9FUPbwPVCA2QmSuPv7KrXgoB59LgeB9mQUCAimhgDAQ4i/maqb21ck7jKxkv0fCLsxZmuIi56aAOyc7qoyhLNQAd72UHILJZ6jCX2MFaRwwmdAkr5lnvdTTJ1LqbWVYFayIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474021; c=relaxed/simple;
-	bh=8koKx4pJZlIh2MfZHh96XbFzYpWv5XkHHu11cBL95zw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eggdF6G6TDowPvL0xtX/HpmzbQnfnBDiGbkdNBS6TxFE3nj2Ln7SseBEfn3Janc2+kymsX2tZLSDkj8ed4vRsKl22cp1dlvBdkgyO84IAnYBmi7Av0k+3ViNctfcUgFV1mXy1z2pArDUj+tyWTkaNQ1kmrvimURA+WghM+f6Egs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bATJEw2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EADFC32782;
-	Mon, 12 Aug 2024 14:47:00 +0000 (UTC)
+	s=arc-20240116; t=1723474024; c=relaxed/simple;
+	bh=Ee6feQK5MrEXk/tHUSHJEMMTlDMJSR+fSzNvS5UTneQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kUs6XmulbJ0eMfC+ZTLv3SwVYvd9DujZKbdG4uBkBeJtcnAm0J19ySiWGWh4zmvPCT7lPlV38V0ej4N6WQ8A2YZcqyahgev19aNFVIk9NjMAr8W55pDyK8q2hJJZ90XzUdDPR24IY7F4TJvD4zojZzsYCi8m+vkHiLVXUT2HZJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcizDY7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBFFC32782;
+	Mon, 12 Aug 2024 14:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474021;
-	bh=8koKx4pJZlIh2MfZHh96XbFzYpWv5XkHHu11cBL95zw=;
+	s=korg; t=1723474024;
+	bh=Ee6feQK5MrEXk/tHUSHJEMMTlDMJSR+fSzNvS5UTneQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bATJEw2UgH/QLtLrtHisr7id0bTk+AnhJyaq0yNdpSEA2RGQ1DmvqPcpF2L+XvRBH
-	 2UEiRM+lMTPIhp63cY8BF+hd1Lu6lCm4wosCJf88eqL0kkNj5TW28QmIZ6mqt/NyKP
-	 TenMQ1dixU0K+glFRqlzoGZdruW1UBeXWg7EGqEw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Call dpmm when checking mode support" failed to apply to 5.10-stable tree
+	b=UcizDY7W+BIqxF+pwtxRPuhoYNYN74lJTZccePo6AoTRShnSFdH/Mub+ECt2t/7pF
+	 YSybHEcgk0pv9UBISUyy5aXcxaSdz6jHinrp62nOKooZ+nPHHLDEhCTMlZcDJMT2uZ
+	 1b4/ok2+dkoEn/c/vFKqTykhygg/Ky+oleXDJeGA=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Call dpmm when checking mode support" failed to apply to 4.19-stable tree
 To: george.shen@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,chaitanya.dhere@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:46:40 +0200
-Message-ID: <2024081239-pungent-monetize-073a@gregkh>
+Date: Mon, 12 Aug 2024 16:46:41 +0200
+Message-ID: <2024081241-pencil-parka-345c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,41 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x a42e74391783603b28f266fc7bbfc1011eb0a151
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081239-pungent-monetize-073a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081241-pencil-parka-345c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 a42e74391783 ("drm/amd/display: Call dpmm when checking mode support")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
 
 thanks,
