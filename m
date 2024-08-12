@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-67067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2472294F3BF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817A294F4DB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56F301C2180D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F5E8281823
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302A5187339;
-	Mon, 12 Aug 2024 16:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E446C18757D;
+	Mon, 12 Aug 2024 16:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J4NIN5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcZv2cNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1297186E38;
-	Mon, 12 Aug 2024 16:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9963D186E33;
+	Mon, 12 Aug 2024 16:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479697; cv=none; b=YHvttAHXbR8gBkpFMFE8ULzS8bJh40tX6FbuJiXx2LyGDHiISSkQk7ib5yQwzF0GMPJcKZv122h/rZkmtKHljIeFyRHO3bWadjPW3CDmp7yjinR5VwJOEXOwOqXFJfaWgMRBALj4kCfrPE6u4Gl7qYSISzon8JPOdjx7xx2/4/o=
+	t=1723480523; cv=none; b=ftE8tPQC1ECoYg8x1uB65sUA05BWBv+WvOn/9FFIyWTHNECu9hB6cOLmqeEnZ9GuNIPlbTekDSfAckgMlXKqXDrfsgBNo3wQ3fKjb2DP63kjjkdctPKJmUXDA5gTmMkBgOvzTlGkjMkUu2w9TqMFFLSJHf+U4fON+idnrf7UBv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479697; c=relaxed/simple;
-	bh=EP+IXVgDL6rG8NktUsNxDwaB3YEx6i6VpjD2N5zs4wg=;
+	s=arc-20240116; t=1723480523; c=relaxed/simple;
+	bh=QXurh/k7PfitLh6A6D2g7uq6l2qrPlZGC1wMeb3E/Hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTQeXOmO0LZE7eXfqXz3BnfSjkoerl7TDMIef4iQz4uo75HrjcumVYjTDnUqkUve+JFrdD/7C/Hmg6YIFnrAbPrwPuYDlJFKIfeB7Hj9ZRFe0jp7I8nWKd2Ulp1pmKywT0jx140yFXHJMaILYfDIiuAoveNfe1KoSkHREBt54Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J4NIN5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36D0C32782;
-	Mon, 12 Aug 2024 16:21:35 +0000 (UTC)
+	 MIME-Version; b=QnN+zIlhqleby1tdOdySj91DMIhZgaDxH0JVXOfaAcEN1xTLy1DeZPO9em29UJO3cnC7tfPeBhDsDvQc2lsQv7ZSmWTuKSExMT9Chl6IWaQMH29MI4Uw+ZhtIvK8cu5dX+0QfHsB8TsPVwe5y8bOiDFd3LrpQIWRrVYguO7aFj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcZv2cNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBCCC32782;
+	Mon, 12 Aug 2024 16:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479696;
-	bh=EP+IXVgDL6rG8NktUsNxDwaB3YEx6i6VpjD2N5zs4wg=;
+	s=korg; t=1723480523;
+	bh=QXurh/k7PfitLh6A6D2g7uq6l2qrPlZGC1wMeb3E/Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1J4NIN5DkFulOdtKOuE+QpLpE7dx6tvTP8Om7yTY95O0IUadTILXPUcRRwZc4uqv+
-	 JHLueizqLE466q3IeBB6Ibow9Sog6FQxyJgm667adSg2k/GkS/bZeSskZADUp31sFj
-	 rSLODrjFVieFhg9R0cskNrUQsO6G83JMtdYg6w0g=
+	b=FcZv2cNCuZcDxF7Wb/tVYIVhFGajdsIIH1SyUC5F0tYxN/S3DpwxGDmmdwZAi4Fga
+	 E2fL/xvlEtN3amY2IhjgAlxmPJFRZQSZ//w5ItuF1f6mWncMkKM/HJF2oyjKzNTl/J
+	 NbU3AJDobLoeHL8mtwfyntgiLveIc+S2gas35V1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miroslav Lichvar <mlichvar@redhat.com>
-Subject: [PATCH 6.6 134/189] ntp: Safeguard against time_constant overflow
-Date: Mon, 12 Aug 2024 18:03:10 +0200
-Message-ID: <20240812160137.303986486@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 190/263] usb: gadget: midi2: Fix the response for FB info with block 0xff
+Date: Mon, 12 Aug 2024 18:03:11 +0200
+Message-ID: <20240812160153.819217656@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 06c03c8edce333b9ad9c6b207d93d3a5ae7c10c0 upstream.
+commit 228a953e61d6d608a3facc1c3a27b9fb03c99de7 upstream.
 
-Using syzkaller with the recently reintroduced signed integer overflow
-sanitizer produces this UBSAN report:
+When the block number 0xff is given to Function Block Discovery
+message, the device should return the information of all Function
+Blocks, but currently the gadget driver treats it as an error.
 
-UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:738:18
-9223372036854775806 + 4 cannot be represented in type 'long'
-Call Trace:
- handle_overflow+0x171/0x1b0
- __do_adjtimex+0x1236/0x1440
- do_adjtimex+0x2be/0x740
+Implement the proper behavior for the block 0xff instead.
 
-The user supplied time_constant value is incremented by four and then
-clamped to the operating range.
-
-Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
-supplied value was sanity checked to be in the operating range. That change
-removed the sanity check and relied on clamping after incrementing which
-does not work correctly when the user supplied value is in the overflow
-zone of the '+ 4' operation.
-
-The operation requires CAP_SYS_TIME and the side effect of the overflow is
-NTP getting out of sync.
-
-Similar to the fixups for time_maxerror and time_esterror, clamp the user
-space supplied value to the operating range.
-
-[ tglx: Switch to clamping ]
-
-Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Miroslav Lichvar <mlichvar@redhat.com>
+Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-c-v2-1-f3a80096f36f@google.com
-Closes: https://github.com/KSPP/linux/issues/352
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240717095102.10493-1-tiwai@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/ntp.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/f_midi2.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/kernel/time/ntp.c
-+++ b/kernel/time/ntp.c
-@@ -733,11 +733,10 @@ static inline void process_adjtimex_mode
- 		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
- 
- 	if (txc->modes & ADJ_TIMECONST) {
--		time_constant = txc->constant;
-+		time_constant = clamp(txc->constant, 0, MAXTC);
- 		if (!(time_status & STA_NANO))
- 			time_constant += 4;
--		time_constant = min(time_constant, (long)MAXTC);
--		time_constant = max(time_constant, 0l);
-+		time_constant = clamp(time_constant, 0, MAXTC);
+--- a/drivers/usb/gadget/function/f_midi2.c
++++ b/drivers/usb/gadget/function/f_midi2.c
+@@ -642,12 +642,21 @@ static void process_ump_stream_msg(struc
+ 		if (format)
+ 			return; // invalid
+ 		blk = (*data >> 8) & 0xff;
+-		if (blk >= ep->num_blks)
+-			return;
+-		if (*data & UMP_STREAM_MSG_REQUEST_FB_INFO)
+-			reply_ump_stream_fb_info(ep, blk);
+-		if (*data & UMP_STREAM_MSG_REQUEST_FB_NAME)
+-			reply_ump_stream_fb_name(ep, blk);
++		if (blk == 0xff) {
++			/* inquiry for all blocks */
++			for (blk = 0; blk < ep->num_blks; blk++) {
++				if (*data & UMP_STREAM_MSG_REQUEST_FB_INFO)
++					reply_ump_stream_fb_info(ep, blk);
++				if (*data & UMP_STREAM_MSG_REQUEST_FB_NAME)
++					reply_ump_stream_fb_name(ep, blk);
++			}
++		} else if (blk < ep->num_blks) {
++			/* only the specified block */
++			if (*data & UMP_STREAM_MSG_REQUEST_FB_INFO)
++				reply_ump_stream_fb_info(ep, blk);
++			if (*data & UMP_STREAM_MSG_REQUEST_FB_NAME)
++				reply_ump_stream_fb_name(ep, blk);
++		}
+ 		return;
  	}
- 
- 	if (txc->modes & ADJ_TAI &&
+ }
 
 
 
