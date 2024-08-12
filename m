@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-67053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BCD94F3AF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4ED94F2F8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99C271F21A53
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB444285403
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE32186E34;
-	Mon, 12 Aug 2024 16:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41A0187571;
+	Mon, 12 Aug 2024 16:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTTz6isV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVaHi7GP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70AA29CA;
-	Mon, 12 Aug 2024 16:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C48186E38;
+	Mon, 12 Aug 2024 16:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479647; cv=none; b=l0iti+J0ud/FoGO6iENPusi4rF+oyksJjK3dqQhwL9scA2ux9+bLJqUQ5SL+gzKWXP9ywP/DxbnCRUYynNztfBtXaDKMN2joFhqu+JU7wBrn35MZimtljqIn4Ll1z3YkA+KWY+8PNNx68VxS5e53dea/F2F9teQaDvRG9S/d9r8=
+	t=1723479130; cv=none; b=Ixl/4pLBqqOqQnxPLR60skFn4RaH8Gx67FGqhb3iyVtzKwZaLUB1JvljLFuOJgdSSwqP1x3dpb8XhfljHoG0BRHo9kYHpiRUeP+Ok5d/Dbo729Ji1/kYU+0+NvdW9+BYaDV0MUM3uCPp97wDYQ1wolceONL76wc0jM+lkun/hf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479647; c=relaxed/simple;
-	bh=+WypOlvp5qtTWERsLKg4mEywDLFpnc0dAFDXX5PTC0A=;
+	s=arc-20240116; t=1723479130; c=relaxed/simple;
+	bh=1ltYnoLP15R2KbHMMBy9zSF0rAay6F19b47OZyGLcB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDbMka4bVMCP7qfjJlvEXiUKjr5dReqPl0cGSzREjQvJkpJVL3x7PpQXstoT2U9DFsAPIN9tQIDcRXNDiJFm/ofHY3VHC76SOjbzwa0DeHjO9oWSRxgn9qglqGxshjrckB1fkEpWVzt+s6yI0hPezTj2UsxKaFa6QWRGzA+3OSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTTz6isV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D3FC32782;
-	Mon, 12 Aug 2024 16:20:46 +0000 (UTC)
+	 MIME-Version; b=VChxOpiDzOFy5+zQC6rqAX5kGW8bM041KQAMJu/JG1J2hyGbaqq1X64B3ocFVeuid8qBymS+52xMg3gmyKWcBrm7igCTBvPBuh4mYYKEWPxcWCgWcB5s4uozb/C16z41xmPKgoFmhVCuIjM1w81hyp1oAOOOzUlyqz/1TKa89T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVaHi7GP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE83AC4AF09;
+	Mon, 12 Aug 2024 16:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479647;
-	bh=+WypOlvp5qtTWERsLKg4mEywDLFpnc0dAFDXX5PTC0A=;
+	s=korg; t=1723479130;
+	bh=1ltYnoLP15R2KbHMMBy9zSF0rAay6F19b47OZyGLcB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mTTz6isVIfeBZF6p6NOeDQoto/Eetzyxn6ws7hYTs9D67w7G0t+Nh/U0fGXd+ASin
-	 uwH+I1yp3GKizcL59T79uTCn/K16T07s/TXyKNlzNccxe7hUBXce6sdkKI/YiGXi4d
-	 PNl+WeLAyC1i220DgMo++P7GzFTfIL88DJiRvTrk=
+	b=aVaHi7GPFC5pWvyVU/2YdSG+abLWG1Sv8JMpEXGoWKJQ/BiOzso5d7VNetVNmlR3u
+	 zXoUkK7jYCbQSiqISBrOhOQMt6v3kGq1BhUyrBNR//HZ9DIIYQyLm/4ji9/6XxSNzH
+	 GbQAAAZCyCT0ZW7CjJccP46SC6JyLy3uVq0Cuojo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 150/189] smb3: fix setting SecurityFlags when encryption is required
+	Lyude Paul <lyude@redhat.com>,
+	Harry Wentland <hwentlan@amd.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Wayne Lin <Wayne.Lin@amd.com>
+Subject: [PATCH 6.1 125/150] drm/dp_mst: Skip CSN if topology probing is not done yet
 Date: Mon, 12 Aug 2024 18:03:26 +0200
-Message-ID: <20240812160137.916724855@linuxfoundation.org>
+Message-ID: <20240812160129.986042836@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit 1b5487aefb1ce7a6b1f15a33297d1231306b4122 upstream.
+commit ddf983488c3e8d30d5c2e2b315ae7d9cd87096ed upstream.
 
-Setting encryption as required in security flags was broken.
-For example (to require all mounts to be encrypted by setting):
+[Why]
+During resume, observe that we receive CSN event before we start topology
+probing. Handling CSN at this moment based on uncertain topology is
+unnecessary.
 
-  "echo 0x400c5 > /proc/fs/cifs/SecurityFlags"
+[How]
+Add checking condition in drm_dp_mst_handle_up_req() to skip handling CSN
+if the topology is yet to be probed.
 
-Would return "Invalid argument" and log "Unsupported security flags"
-This patch fixes that (e.g. allowing overriding the default for
-SecurityFlags  0x00c5, including 0x40000 to require seal, ie
-SMB3.1.1 encryption) so now that works and forces encryption
-on subsequent mounts.
-
-Acked-by: Bharath SM <bharathsm@microsoft.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Harry Wentland <hwentlan@amd.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240626084825.878565-3-Wayne.Lin@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/cifs/usage.rst |    2 +-
- fs/smb/client/cifs_debug.c               |    2 +-
- fs/smb/client/cifsglob.h                 |    8 ++++----
- fs/smb/client/smb2pdu.c                  |    3 +++
- 4 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/Documentation/admin-guide/cifs/usage.rst
-+++ b/Documentation/admin-guide/cifs/usage.rst
-@@ -741,7 +741,7 @@ SecurityFlags		Flags which control secur
- 			  may use NTLMSSP               		0x00080
- 			  must use NTLMSSP           			0x80080
- 			  seal (packet encryption)			0x00040
--			  must seal (not implemented yet)               0x40040
-+			  must seal                                     0x40040
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -4024,6 +4024,7 @@ static int drm_dp_mst_handle_up_req(stru
+ 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
+ 		const struct drm_dp_connection_status_notify *conn_stat =
+ 			&up_req->msg.u.conn_stat;
++		bool handle_csn;
  
- cifsFYI			If set to non-zero value, additional debug information
- 			will be logged to the system error log.  This field
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -1072,7 +1072,7 @@ static int cifs_security_flags_proc_open
- static void
- cifs_security_flags_handle_must_flags(unsigned int *flags)
- {
--	unsigned int signflags = *flags & CIFSSEC_MUST_SIGN;
-+	unsigned int signflags = *flags & (CIFSSEC_MUST_SIGN | CIFSSEC_MUST_SEAL);
- 
- 	if ((*flags & CIFSSEC_MUST_KRB5) == CIFSSEC_MUST_KRB5)
- 		*flags = CIFSSEC_MUST_KRB5;
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1922,7 +1922,7 @@ static inline bool is_replayable_error(i
- #define   CIFSSEC_MAY_SIGN	0x00001
- #define   CIFSSEC_MAY_NTLMV2	0x00004
- #define   CIFSSEC_MAY_KRB5	0x00008
--#define   CIFSSEC_MAY_SEAL	0x00040 /* not supported yet */
-+#define   CIFSSEC_MAY_SEAL	0x00040
- #define   CIFSSEC_MAY_NTLMSSP	0x00080 /* raw ntlmssp with ntlmv2 */
- 
- #define   CIFSSEC_MUST_SIGN	0x01001
-@@ -1932,11 +1932,11 @@ require use of the stronger protocol */
- #define   CIFSSEC_MUST_NTLMV2	0x04004
- #define   CIFSSEC_MUST_KRB5	0x08008
- #ifdef CONFIG_CIFS_UPCALL
--#define   CIFSSEC_MASK          0x8F08F /* flags supported if no weak allowed */
-+#define   CIFSSEC_MASK          0xCF0CF /* flags supported if no weak allowed */
- #else
--#define	  CIFSSEC_MASK          0x87087 /* flags supported if no weak allowed */
-+#define	  CIFSSEC_MASK          0xC70C7 /* flags supported if no weak allowed */
- #endif /* UPCALL */
--#define   CIFSSEC_MUST_SEAL	0x40040 /* not supported yet */
-+#define   CIFSSEC_MUST_SEAL	0x40040
- #define   CIFSSEC_MUST_NTLMSSP	0x80080 /* raw ntlmssp with ntlmv2 */
- 
- #define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP | CIFSSEC_MAY_SEAL)
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -80,6 +80,9 @@ int smb3_encryption_required(const struc
- 	if (tcon->seal &&
- 	    (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
- 		return 1;
-+	if (((global_secflags & CIFSSEC_MUST_SEAL) == CIFSSEC_MUST_SEAL) &&
-+	    (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
-+		return 1;
- 	return 0;
- }
- 
+ 		drm_dbg_kms(mgr->dev, "Got CSN: pn: %d ldps:%d ddps: %d mcs: %d ip: %d pdt: %d\n",
+ 			    conn_stat->port_number,
+@@ -4032,6 +4033,16 @@ static int drm_dp_mst_handle_up_req(stru
+ 			    conn_stat->message_capability_status,
+ 			    conn_stat->input_port,
+ 			    conn_stat->peer_device_type);
++
++		mutex_lock(&mgr->probe_lock);
++		handle_csn = mgr->mst_primary->link_address_sent;
++		mutex_unlock(&mgr->probe_lock);
++
++		if (!handle_csn) {
++			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
++			kfree(up_req);
++			goto out;
++		}
+ 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
+ 		const struct drm_dp_resource_status_notify *res_stat =
+ 			&up_req->msg.u.resource_stat;
 
 
 
