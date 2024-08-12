@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-67070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D70994F3C3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDBF94F4B0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02BA91F212C7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DA401C20C4A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67621183CD9;
-	Mon, 12 Aug 2024 16:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E781818784F;
+	Mon, 12 Aug 2024 16:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnT7mIwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYGDkrHA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24401186E38;
-	Mon, 12 Aug 2024 16:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AA4187845;
+	Mon, 12 Aug 2024 16:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479706; cv=none; b=hOp2f205FPtGepyG0CB+TDuRwCj2vmC7yjaDN41WIR2g01eCYzaTTbAaMJ61tL5Vakn/IDI33h+sUgzIWBkGL5j6KS7tmU7Ly9ULCFealHFwIZHb8nyTVWUhog543Hl+252CKEUq2On69owKIUDT+MQ7Kx1MBrndGtPL6qMvFrY=
+	t=1723480397; cv=none; b=Mb6Uj2xtxqJQ4FdBnLYumMWcG/HzPp1PuJBhq6PWOjeu6ySkFn52YZcku381Xj4BvdHNlcAzCWtxcPCVJHhaaiOXnvgl4GRV9NlWtWMmUtKN3Oy7Uoig5G2hLWb+8sSdBKmROFh8n/nXWRcvomY1yRHKTTDzfMz91UqX0tF7R9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479706; c=relaxed/simple;
-	bh=aZuVy3a8NV4/qqTUSgq+LXBrR/lFbppjb5GHejy7+EY=;
+	s=arc-20240116; t=1723480397; c=relaxed/simple;
+	bh=7cknwIYouWmv1MkN7AJuHxvzawNT0+rYqy6gi44ZhDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZT2xBrHQPufPu+NqN5+m6UgF/AZ2HnRpuiqf7LQpVV7crt2EUDelD7WeU/YoAM4vJ2QEpGPsp6/liL0Snr85XY5/4vj3IKcfmExTB2nv8/YxRnh2j7C8c79sCgb2OMfim5SEZsU8zK1NdzQflAuryXsU9lpuML4/OWVbe4cjbhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnT7mIwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF92C4AF0C;
-	Mon, 12 Aug 2024 16:21:45 +0000 (UTC)
+	 MIME-Version; b=rhHOPpn7voyOkduvlpUN2dBqeJfOlVGmT+oPYEmEJbV4beM1OqorbgHp+EU6cK7rOWHf6hvuC/Pobav6uPzrBiaOlPjd9ecDdzk9BTDrLtJzLgKrMEJwBracwhEgjJSNk8+NcosDlAu4KSlOhmCfVeCHpx75OFIWgEjxmhGGbAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYGDkrHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2726FC32782;
+	Mon, 12 Aug 2024 16:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479706;
-	bh=aZuVy3a8NV4/qqTUSgq+LXBrR/lFbppjb5GHejy7+EY=;
+	s=korg; t=1723480397;
+	bh=7cknwIYouWmv1MkN7AJuHxvzawNT0+rYqy6gi44ZhDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UnT7mIwI7Gt5ZuUdRcciKya6OI5srXSi3oL7mNezb7sWv/EJEwRQ/pzsmr5k8zQMN
-	 Wg9/NSnGTDxVwQQoU9xSFK7JEWefAopXuf8gcUIa6L9sQfa3+dBG4p3XKo0F0DQuz4
-	 +jJxg6AklBavlGKGpfVkfZwTNRYYzC2AMtHfs8AA=
+	b=uYGDkrHAxjneN5scIzkQ90Q9VbJSRIZ9RUHgjgttoowWYUCLaz/5mwI5GNyf11gJ+
+	 7LX9FYxNoZgHvKx0CbOiSWYyCAwTwLiSLWk34mhnrvZ4U3dKjl3pdZzexVQ8O9O8Pm
+	 gbnio5ERMr+3ug5RSSLv7BooINoQy8/nuFHA9vbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Michal Kubiak <michal.kubiak@intel.com>
-Subject: [PATCH 6.6 127/189] vhost-vdpa: switch to use vmf_insert_pfn() in the fault handler
+	syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 182/263] ALSA: line6: Fix racy access to midibuf
 Date: Mon, 12 Aug 2024 18:03:03 +0200
-Message-ID: <20240812160137.033807951@linuxfoundation.org>
+Message-ID: <20240812160153.514413303@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Wang <jasowang@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 0823dc64586ba5ea13a7d200a5d33e4c5fa45950 upstream.
+commit 15b7a03205b31bc5623378c190d22b7ff60026f1 upstream.
 
-remap_pfn_page() should not be called in the fault handler as it may
-change the vma->flags which may trigger lockdep warning since the vma
-write lock is not held. Actually there's no need to modify the
-vma->flags as it has been set in the mmap(). So this patch switches to
-use vmf_insert_pfn() instead.
+There can be concurrent accesses to line6 midibuf from both the URB
+completion callback and the rawmidi API access.  This could be a cause
+of KMSAN warning triggered by syzkaller below (so put as reported-by
+here).
 
-Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
-Fixes: ddd89d0a059d ("vhost_vdpa: support doorbell mapping via mmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20240701033159.18133-1-jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+This patch protects the midibuf call of the former code path with a
+spinlock for avoiding the possible races.
+
+Reported-by: syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/00000000000000949c061df288c5@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240805130129.10872-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/vdpa.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ sound/usb/line6/driver.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -1378,13 +1378,7 @@ static vm_fault_t vhost_vdpa_fault(struc
+--- a/sound/usb/line6/driver.c
++++ b/sound/usb/line6/driver.c
+@@ -286,12 +286,14 @@ static void line6_data_received(struct u
+ {
+ 	struct usb_line6 *line6 = (struct usb_line6 *)urb->context;
+ 	struct midi_buffer *mb = &line6->line6midi->midibuf_in;
++	unsigned long flags;
+ 	int done;
  
- 	notify = ops->get_vq_notification(vdpa, index);
+ 	if (urb->status == -ESHUTDOWN)
+ 		return;
  
--	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
--	if (remap_pfn_range(vma, vmf->address & PAGE_MASK,
--			    PFN_DOWN(notify.addr), PAGE_SIZE,
--			    vma->vm_page_prot))
--		return VM_FAULT_SIGBUS;
--
--	return VM_FAULT_NOPAGE;
-+	return vmf_insert_pfn(vma, vmf->address & PAGE_MASK, PFN_DOWN(notify.addr));
- }
+ 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
++		spin_lock_irqsave(&line6->line6midi->lock, flags);
+ 		done =
+ 			line6_midibuf_write(mb, urb->transfer_buffer, urb->actual_length);
  
- static const struct vm_operations_struct vhost_vdpa_vm_ops = {
+@@ -300,12 +302,15 @@ static void line6_data_received(struct u
+ 			dev_dbg(line6->ifcdev, "%d %d buffer overflow - message skipped\n",
+ 				done, urb->actual_length);
+ 		}
++		spin_unlock_irqrestore(&line6->line6midi->lock, flags);
+ 
+ 		for (;;) {
++			spin_lock_irqsave(&line6->line6midi->lock, flags);
+ 			done =
+ 				line6_midibuf_read(mb, line6->buffer_message,
+ 						   LINE6_MIDI_MESSAGE_MAXLEN,
+ 						   LINE6_MIDIBUF_READ_RX);
++			spin_unlock_irqrestore(&line6->line6midi->lock, flags);
+ 
+ 			if (done <= 0)
+ 				break;
 
 
 
