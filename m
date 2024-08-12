@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539CA94F333
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A05A594F446
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7734B1C208EF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2E1F1C20CFA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACB5186E47;
-	Mon, 12 Aug 2024 16:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C471186E34;
+	Mon, 12 Aug 2024 16:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EvVUwu4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1W8yaKRg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78082130E27;
-	Mon, 12 Aug 2024 16:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCDC134AC;
+	Mon, 12 Aug 2024 16:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479296; cv=none; b=CMdHvCanV1gKS86xzLSlWyLMDu1VchwMTLhrxXJkXng3QjY4yvUDM+X+3LMVPsNAL18GrffdeB3yp08pFMyk+Ew1oIZIHp/+npD28QIoPgsSO9yeSEFPqybgK6X0RUftvxlhxpQaGIZ8P341XMOJr5WIB20adPAp5kEF0GjZG8I=
+	t=1723480104; cv=none; b=EeZVNY2bYu/mZLIoUhS0MtiXysJnm9c9DBZS+SMmM7/GvwO/fsu3vendSKTBA71KjS8pbeaXa+5lqcVaOwhgG+F+0QW8ii+A/hsboLF1KsDtr7N0IyI028rk8ee1oxjDdIZ1d2P4yUPbrXLhM4ikmbh5sDbW+wYeEnuOaCK0+W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479296; c=relaxed/simple;
-	bh=UKh9g9kJ2kSpTvazVxkxDV8mnKPk+1Ec1BC2h7N2V1M=;
+	s=arc-20240116; t=1723480104; c=relaxed/simple;
+	bh=CQd4JQt2JynmU/hnLaW+zmOluCa3yaOEmVmYm53m/zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vj65OUwJRwq35f7ruBSPSKcvykpik7Av54drowJrvWLGf5FU9Tjrdt0GLD92ypYsk335rjvi+OXKGvguKMPU7JAXrtctuv9sB9/u9KY/uBOHBvhJNOU+9Qmx9iCf7o7UfF4RK6lxwvNl/f7u8XcH9Rec1EJNgLl7toLHe+fHSLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EvVUwu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E8EC32782;
-	Mon, 12 Aug 2024 16:14:55 +0000 (UTC)
+	 MIME-Version; b=OMcug1Jqe3O+iXjgV2pMo0sUmMKomqnWRWbQPNlKy2SgkLxDT1+mpvvklqqHUzND0fg31VsMV9Nbp2F2c4ds8TU6hUOkRCZ617v1Ast7F45jFEqhUCGFBWftHIKCIB1+YOm/ZJklP1i4tpFEKmqIFHZTfljWRjeoH0dviygMU9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1W8yaKRg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C32C32782;
+	Mon, 12 Aug 2024 16:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479296;
-	bh=UKh9g9kJ2kSpTvazVxkxDV8mnKPk+1Ec1BC2h7N2V1M=;
+	s=korg; t=1723480103;
+	bh=CQd4JQt2JynmU/hnLaW+zmOluCa3yaOEmVmYm53m/zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EvVUwu4gPzBQipCqL5wllSkCKwzEiKGeG20mUbYrrJ0DvFeuH4eLXrDjW4Rk8wh5
-	 XGgLIk3PuY8EnC9+k22G8fl6Ghtw/De2ONlfFTs/dj7etkZb8M8D7y7TG/G4gcDDYb
-	 5J11UyNNfXhrNcTuDtS1dqyrYSSwKzuwHq3MoiW0=
+	b=1W8yaKRgwVVbOPjd/GuXhs7IQ822nAZ8TAApueL1SwGYQXPKvuayLKA9tytLVVJV7
+	 uFRiCWUmcpMXdc/fWlgw8YjqeCgaAvQY3u0cwNpZdkzmlqiXXQPjD69NJhfvkF7xwz
+	 V6EIeaFweGGO/1tE5PhJKdaz53nX6t0lvaGJ6tcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Bob Zhou <bob.zhou@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/189] can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum
+Subject: [PATCH 6.10 098/263] drm/amd/pm: Fix the null pointer dereference for vega10_hwmgr
 Date: Mon, 12 Aug 2024 18:01:39 +0200
-Message-ID: <20240812160133.804708467@linuxfoundation.org>
+Message-ID: <20240812160150.295763912@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,212 +61,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Bob Zhou <bob.zhou@amd.com>
 
-[ Upstream commit b8e0ddd36ce9536ad7478dd27df06c9ae92370ba ]
+[ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
 
-This is a preparatory patch to work around a problem similar to
-erratum DS80000789E 6 of the mcp2518fd, the other variants of the chip
-family (mcp2517fd and mcp251863) are probably also affected.
+Check return value and conduct null pointer handling to avoid null pointer dereference.
 
-Erratum DS80000789E 6 says "reading of the FIFOCI bits in the FIFOSTA
-register for an RX FIFO may be corrupted". However observation shows
-that this problem is not limited to RX FIFOs but also effects the TEF
-FIFO.
-
-When handling the TEF interrupt, the driver reads the FIFO header
-index from the TEF FIFO STA register of the chip.
-
-In the bad case, the driver reads a too large head index. In the
-original code, the driver always trusted the read value, which caused
-old CAN transmit complete events that were already processed to be
-re-processed.
-
-Instead of reading and trusting the head index, read the head index
-and calculate the number of CAN frames that were supposedly received -
-replace mcp251xfd_tef_ring_update() with mcp251xfd_get_tef_len().
-
-The mcp251xfd_handle_tefif() function reads the CAN transmit complete
-events from the chip, iterates over them and pushes them into the
-network stack. The original driver already contains code to detect old
-CAN transmit complete events, that will be updated in the next patch.
-
-Cc: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Cc: Thomas Kopp <thomas.kopp@microchip.com>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  2 +
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 54 +++++++++++++------
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h     | 13 ++---
- 3 files changed, 43 insertions(+), 26 deletions(-)
+ .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 29 ++++++++++++++++---
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-index bfe4caa0c99d4..4cb79a4f24612 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-@@ -485,6 +485,8 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
- 		clear_bit(MCP251XFD_FLAGS_FD_MODE, priv->flags);
- 	}
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index 8d7dc0e5417ed..f4acdb2267416 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3418,13 +3418,17 @@ static int vega10_find_dpm_states_clocks_in_dpm_table(struct pp_hwmgr *hwmgr, co
+ 	const struct vega10_power_state *vega10_ps =
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	struct vega10_single_dpm_table *sclk_table = &(data->dpm_table.gfx_table);
+-	uint32_t sclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].gfx_clock;
+ 	struct vega10_single_dpm_table *mclk_table = &(data->dpm_table.mem_table);
+-	uint32_t mclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].mem_clock;
++	uint32_t sclk, mclk;
+ 	uint32_t i;
  
-+	tx_ring->obj_num_shift_to_u8 = BITS_PER_TYPE(tx_ring->obj_num) -
-+		ilog2(tx_ring->obj_num);
- 	tx_ring->obj_size = tx_obj_size;
- 
- 	rem = priv->rx_obj_num;
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-index e5bd57b65aafe..b41fad3b37c06 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -2,7 +2,7 @@
- //
- // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
- //
--// Copyright (c) 2019, 2020, 2021 Pengutronix,
-+// Copyright (c) 2019, 2020, 2021, 2023 Pengutronix,
- //               Marc Kleine-Budde <kernel@pengutronix.de>
- //
- // Based on:
-@@ -16,6 +16,11 @@
- 
- #include "mcp251xfd.h"
- 
-+static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
-+{
-+	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
-+}
++	if (vega10_ps == NULL)
++		return -EINVAL;
++	sclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].gfx_clock;
++	mclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].mem_clock;
 +
- static inline int
- mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
- 				 u8 *tef_tail)
-@@ -120,28 +125,44 @@ mcp251xfd_handle_tefif_one(struct mcp251xfd_priv *priv,
- 	return 0;
- }
+ 	for (i = 0; i < sclk_table->count; i++) {
+ 		if (sclk == sclk_table->dpm_levels[i].value)
+ 			break;
+@@ -3731,6 +3735,9 @@ static int vega10_generate_dpm_level_enable_mask(
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	int i;
  
--static int mcp251xfd_tef_ring_update(struct mcp251xfd_priv *priv)
-+static int
-+mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
- {
- 	const struct mcp251xfd_tx_ring *tx_ring = priv->tx;
--	unsigned int new_head;
--	u8 chip_tx_tail;
-+	const u8 shift = tx_ring->obj_num_shift_to_u8;
-+	u8 chip_tx_tail, tail, len;
-+	u32 fifo_sta;
- 	int err;
- 
--	err = mcp251xfd_tx_tail_get_from_chip(priv, &chip_tx_tail);
-+	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(priv->tx->fifo_nr),
-+			  &fifo_sta);
- 	if (err)
- 		return err;
- 
--	/* chip_tx_tail, is the next TX-Object send by the HW.
--	 * The new TEF head must be >= the old head, ...
-+	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
-+		*len_p = tx_ring->obj_num;
-+		return 0;
-+	}
++	if (vega10_ps == NULL)
++		return -EINVAL;
 +
-+	chip_tx_tail = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
+ 	PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps),
+ 			"Attempt to Trim DPM States Failed!",
+ 			return -1);
+@@ -4998,6 +5005,8 @@ static int vega10_check_states_equal(struct pp_hwmgr *hwmgr,
+ 
+ 	vega10_psa = cast_const_phw_vega10_power_state(pstate1);
+ 	vega10_psb = cast_const_phw_vega10_power_state(pstate2);
++	if (vega10_psa == NULL || vega10_psb == NULL)
++		return -EINVAL;
+ 
+ 	/* If the two states don't even have the same number of performance levels
+ 	 * they cannot be the same state.
+@@ -5131,6 +5140,8 @@ static int vega10_set_sclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].gfx_clock =
+@@ -5182,6 +5193,8 @@ static int vega10_set_mclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].mem_clock =
+@@ -5423,6 +5436,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
+ 		return;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return;
 +
-+	err =  mcp251xfd_check_tef_tail(priv);
-+	if (err)
-+		return err;
-+	tail = mcp251xfd_get_tef_tail(priv);
+ 	max_level = vega10_ps->performance_level_count - 1;
+ 
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5445,6 +5461,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
+ 
+ 	ps = (struct pp_power_state *)((unsigned long)(hwmgr->ps) + hwmgr->ps_size * (hwmgr->num_ps - 1));
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return;
 +
-+	/* First shift to full u8. The subtraction works on signed
-+	 * values, that keeps the difference steady around the u8
-+	 * overflow. The right shift acts on len, which is an u8.
- 	 */
--	new_head = round_down(priv->tef->head, tx_ring->obj_num) + chip_tx_tail;
--	if (new_head <= priv->tef->head)
--		new_head += tx_ring->obj_num;
-+	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(chip_tx_tail));
-+	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(tail));
-+	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
+ 	max_level = vega10_ps->performance_level_count - 1;
  
--	/* ... but it cannot exceed the TX head. */
--	priv->tef->head = min(new_head, tx_ring->head);
-+	len = (chip_tx_tail << shift) - (tail << shift);
-+	*len_p = len >> shift;
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5635,6 +5654,8 @@ static int vega10_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_
+ 		return -EINVAL;
  
--	return mcp251xfd_check_tef_tail(priv);
-+	return 0;
- }
+ 	vega10_ps = cast_const_phw_vega10_power_state(state);
++	if (vega10_ps == NULL)
++		return -EINVAL;
  
- static inline int
-@@ -182,13 +203,12 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
- 	u8 tef_tail, len, l;
- 	int err, i;
- 
--	err = mcp251xfd_tef_ring_update(priv);
-+	err = mcp251xfd_get_tef_len(priv, &len);
- 	if (err)
- 		return err;
- 
- 	tef_tail = mcp251xfd_get_tef_tail(priv);
--	len = mcp251xfd_get_tef_len(priv);
--	l = mcp251xfd_get_tef_linear_len(priv);
-+	l = mcp251xfd_get_tef_linear_len(priv, len);
- 	err = mcp251xfd_tef_obj_read(priv, hw_tef_obj, tef_tail, l);
- 	if (err)
- 		return err;
-@@ -223,6 +243,8 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
- 		struct mcp251xfd_tx_ring *tx_ring = priv->tx;
- 		int offset;
- 
-+		ring->head += len;
-+
- 		/* Increment the TEF FIFO tail pointer 'len' times in
- 		 * a single SPI message.
- 		 *
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-index b35bfebd23f29..4628bf847bc9b 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-@@ -524,6 +524,7 @@ struct mcp251xfd_tef_ring {
- 
- 	/* u8 obj_num equals tx_ring->obj_num */
- 	/* u8 obj_size equals sizeof(struct mcp251xfd_hw_tef_obj) */
-+	/* u8 obj_num_shift_to_u8 equals tx_ring->obj_num_shift_to_u8 */
- 
- 	union mcp251xfd_write_reg_buf irq_enable_buf;
- 	struct spi_transfer irq_enable_xfer;
-@@ -542,6 +543,7 @@ struct mcp251xfd_tx_ring {
- 	u8 nr;
- 	u8 fifo_nr;
- 	u8 obj_num;
-+	u8 obj_num_shift_to_u8;
- 	u8 obj_size;
- 
- 	struct mcp251xfd_tx_obj obj[MCP251XFD_TX_OBJ_NUM_MAX];
-@@ -861,17 +863,8 @@ static inline u8 mcp251xfd_get_tef_tail(const struct mcp251xfd_priv *priv)
- 	return priv->tef->tail & (priv->tx->obj_num - 1);
- }
- 
--static inline u8 mcp251xfd_get_tef_len(const struct mcp251xfd_priv *priv)
-+static inline u8 mcp251xfd_get_tef_linear_len(const struct mcp251xfd_priv *priv, u8 len)
- {
--	return priv->tef->head - priv->tef->tail;
--}
--
--static inline u8 mcp251xfd_get_tef_linear_len(const struct mcp251xfd_priv *priv)
--{
--	u8 len;
--
--	len = mcp251xfd_get_tef_len(priv);
--
- 	return min_t(u8, len, priv->tx->obj_num - mcp251xfd_get_tef_tail(priv));
- }
- 
+ 	i = index > vega10_ps->performance_level_count - 1 ?
+ 			vega10_ps->performance_level_count - 1 : index;
 -- 
 2.43.0
 
