@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-66854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F5294F2C7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6DC94F3A0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15D6328471F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4486DB25A14
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF7D18733F;
-	Mon, 12 Aug 2024 16:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB06186E20;
+	Mon, 12 Aug 2024 16:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gxu03H6c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdQLczsK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA273187335;
-	Mon, 12 Aug 2024 16:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9EB29CA;
+	Mon, 12 Aug 2024 16:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479003; cv=none; b=ZTYVOY3HOibSmX6L2khkX3Zncvap85EwaJlrpdZxh3T3F7lKi600zhENaTL6SzE0Io9Rdy9R1QJI5rXjEFH8ndHYhoaO5wRQISfgNP5jK9axZFz2e06t4kCLVFNt/+M7L6GeZVKjQz4s3OaB8Vddd9fIxLHjCQfE+MNNEePSyA8=
+	t=1723479595; cv=none; b=Cun0cuaZ2QuV6hzJPzBg9Tlrwn7VeKZAAmpLkMvQt0aCx3dxen37enGum4utMetsuU6bD6sja5aeOGbB7UC7zChdMeCd/a3thVvh3Kusg86q+BustDqv3rYDYoLfNCU5Y4wdOTHhah+z4KusYlFq9GalJRXE0mBs5XW7o/PCu3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479003; c=relaxed/simple;
-	bh=wxt2EUbAA/gt6mlxTDIH6aYB6ZwdlpIeDVzOBefforI=;
+	s=arc-20240116; t=1723479595; c=relaxed/simple;
+	bh=K3F1PcUJYI66H5a9NcUq6G0iyjQdsbPmDNlhXO6uQ4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GveeGd5otrhO8gjnthrcHBeG3A8AESj4/N7ygLwiYgSGebHgezOD6LXnxuoVvQUC5UGzXJmxgCNOR7k/VoScJcZYx4S4FelYcpdFXHnzmUtoXRRRxhkVh6qwgCEWJ12v3M5pk5+fMgFF4uqkzCz+uLR9O0XMPkaqlY3xFNyNCQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gxu03H6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A36BC32782;
-	Mon, 12 Aug 2024 16:10:02 +0000 (UTC)
+	 MIME-Version; b=aY/Ao2zwbNbRMrsF9QRBOxsEyMcz87wcQEBK8WaUYCXgWkw1RKfRpbuXWHVEkq0ItJsuH8ZJAqMgD0VvX0k4fioOY85Rtn7QZAEKYtZz1grYqGk+IcE4YM3XgK+P3maH91SIE3B8SZihCM0tlqhTGB6HXe6OKH6+l105S3s+nps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdQLczsK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C46C32782;
+	Mon, 12 Aug 2024 16:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479002;
-	bh=wxt2EUbAA/gt6mlxTDIH6aYB6ZwdlpIeDVzOBefforI=;
+	s=korg; t=1723479595;
+	bh=K3F1PcUJYI66H5a9NcUq6G0iyjQdsbPmDNlhXO6uQ4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gxu03H6cxS928upAdfsgNKIYN1jVeVYLUPRB4tSpEeAAtaBdal98f1IOQRsfcNXLS
-	 ixtWvCsGeCXBfYrK+j0bkq5jTLMsPdVKsLKhp45GfjrU89kRPn1vaOcXZYXQ3sEulB
-	 xEYow7HhorPXiasIZAQnAhyJAxIgVWvo7MxTHVts=
+	b=PdQLczsKeF3WRzpVH/8M2ts17y1p6XIj1QITVh5YI4OJaKQ1rZgGXbvfa8Msgqfnh
+	 iHEFn0JMbMMiCDLIXMneYzfn+WykoLgJwIrWnZHNMMiLm/V+Zp0ebWf0wo2t0uvZad
+	 m/tQ/xCFwu8KzAQPC980OlKCODWgij0gQS3B/pbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miroslav Lichvar <mlichvar@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/150] torture: Enable clocksource watchdog with "tsc=watchdog"
+Subject: [PATCH 6.6 128/189] ntp: Clamp maxerror and esterror to operating range
 Date: Mon, 12 Aug 2024 18:03:04 +0200
-Message-ID: <20240812160129.135763136@linuxfoundation.org>
+Message-ID: <20240812160137.072000125@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Justin Stitt <justinstitt@google.com>
 
-[ Upstream commit 877a0e83c57fa5e2a7fd628ec2e1733ed70c8792 ]
+[ Upstream commit 87d571d6fb77ec342a985afa8744bb9bb75b3622 ]
 
-This commit tests the "tsc=watchdog" kernel boot parameter when running
-the clocksourcewd torture tests.
+Using syzkaller alongside the newly reintroduced signed integer overflow
+sanitizer spits out this report:
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Stable-dep-of: f2655ac2c06a ("clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()")
+UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:461:16
+9223372036854775807 + 500 cannot be represented in type 'long'
+Call Trace:
+ handle_overflow+0x171/0x1b0
+ second_overflow+0x2d6/0x500
+ accumulate_nsecs_to_secs+0x60/0x160
+ timekeeping_advance+0x1fe/0x890
+ update_wall_time+0x10/0x30
+
+time_maxerror is unconditionally incremented and the result is checked
+against NTP_PHASE_LIMIT, but the increment itself can overflow, resulting
+in wrap-around to negative space.
+
+Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
+supplied value was sanity checked to be in the operating range. That change
+removed the sanity check and relied on clamping in handle_overflow() which
+does not work correctly when the user supplied value is in the overflow
+zone of the '+ 500' operation.
+
+The operation requires CAP_SYS_TIME and the side effect of the overflow is
+NTP getting out of sync.
+
+Miroslav confirmed that the input value should be clamped to the operating
+range and the same applies to time_esterror. The latter is not used by the
+kernel, but the value still should be in the operating range as it was
+before the sanity check got removed.
+
+Clamp them to the operating range.
+
+[ tglx: Changed it to clamping and included time_esterror ]
+
+Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miroslav Lichvar <mlichvar@redhat.com>
+Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-usec-v2-1-d539180f2b79@google.com
+Closes: https://github.com/KSPP/linux/issues/354
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/torture.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/time/ntp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/torture.sh b/tools/testing/selftests/rcutorture/bin/torture.sh
-index d477618e7261d..91bca30e8587c 100755
---- a/tools/testing/selftests/rcutorture/bin/torture.sh
-+++ b/tools/testing/selftests/rcutorture/bin/torture.sh
-@@ -405,16 +405,16 @@ fi
+diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
+index 406dccb79c2b6..502e1e5b7f7f6 100644
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -727,10 +727,10 @@ static inline void process_adjtimex_modes(const struct __kernel_timex *txc,
+ 	}
  
- if test "$do_clocksourcewd" = "yes"
- then
--	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000"
-+	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 tsc=watchdog"
- 	torture_set "clocksourcewd-1" tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration 45s --configs TREE03 --kconfig "CONFIG_TEST_CLOCKSOURCE_WATCHDOG=y" --trust-make
+ 	if (txc->modes & ADJ_MAXERROR)
+-		time_maxerror = txc->maxerror;
++		time_maxerror = clamp(txc->maxerror, 0, NTP_PHASE_LIMIT);
  
--	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 clocksource.max_cswd_read_retries=1"
-+	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 clocksource.max_cswd_read_retries=1 tsc=watchdog"
- 	torture_set "clocksourcewd-2" tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration 45s --configs TREE03 --kconfig "CONFIG_TEST_CLOCKSOURCE_WATCHDOG=y" --trust-make
+ 	if (txc->modes & ADJ_ESTERROR)
+-		time_esterror = txc->esterror;
++		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
  
- 	# In case our work is already done...
- 	if test "$do_rcutorture" != "yes"
- 	then
--		torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000"
-+		torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 tsc=watchdog"
- 		torture_set "clocksourcewd-3" tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration 45s --configs TREE03 --trust-make
- 	fi
- fi
+ 	if (txc->modes & ADJ_TIMECONST) {
+ 		time_constant = txc->constant;
 -- 
 2.43.0
 
