@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-66998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E5E94F370
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:17:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0505C94F489
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6270C281588
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:17:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B07181F20E38
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142A418454D;
-	Mon, 12 Aug 2024 16:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FDC187346;
+	Mon, 12 Aug 2024 16:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4No8pfg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvXIXNpd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5819178CE4;
-	Mon, 12 Aug 2024 16:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3DB183CD4;
+	Mon, 12 Aug 2024 16:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479463; cv=none; b=uw9h06jifuH9X06hVweaTWPdmZvm9CFLQsyYmCVZulB/6I/ZsOg56FEVIkBNTjU2i3hcgU0Qy9xjY9Qkzknt54iNG/sEbzxt+LGa0LrplNj1PMI3R0PeroLlITRJmysqmfTOHThl2lOae+Xg7jsarcQmih2yN4QMSTTOE6RPm20=
+	t=1723480287; cv=none; b=hCHQB/nM0yUkENtGgb8kVuqPGhLvbZOWk+2RYLcLn/BPwfjbLOtq1kZwG8vT8ykqEe6ElHM0V2qkMUQWzl/mX2ffAET1zV5I/TsfiU+IfxTrZr1mp8zjXYSzTtWquoDjhPAsr8IzuGXyXPwKgT30t8noD2g54VnX1n6kGuFIOzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479463; c=relaxed/simple;
-	bh=JOxD+qO6FcjAN38rn5jt2KMU0D7UKdf6fAlFR7VFlqQ=;
+	s=arc-20240116; t=1723480287; c=relaxed/simple;
+	bh=YZDgHrq9o+3dCcHJF117eTtkfkVmQbmyTItz+wx3IWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqZ4lxLyjmb90qkRn9DYhSjK/APHQhOAu0ClR6XyQZYz74fUbw2eZhUZE5xxlSsS6o56KBmNs9o9y+NqE7TswVIQbyZShR44Tk5PR2BOCQjWJI5fADi5tgoLXi/5C9bVsFPadW7OdaW06HeHgtfz0+4gv6qP/AZTyY8/oLLC7rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4No8pfg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3221CC32782;
-	Mon, 12 Aug 2024 16:17:43 +0000 (UTC)
+	 MIME-Version; b=OBcuUzMzR+Mip0W02/7eIo+tAkzuDnRYzq1kZuBGu9ZBRT0/zTZRmsRYL/LdrU8lUPvNnSI4cKHjN+vp3eiPYisbL/uRqY87MNP0HnZdoMJ9jfu12uIh7rLYGPleeSywxBUW9D0WwvDKJC/sp5RZ4levIGUef7s1IWiwIxcKMK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvXIXNpd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48ED6C32782;
+	Mon, 12 Aug 2024 16:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479463;
-	bh=JOxD+qO6FcjAN38rn5jt2KMU0D7UKdf6fAlFR7VFlqQ=;
+	s=korg; t=1723480287;
+	bh=YZDgHrq9o+3dCcHJF117eTtkfkVmQbmyTItz+wx3IWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4No8pfgwr2MWz4Q57muNJ9sjtvN7hQH420x/4R2IQeEJnZ/W8txle65mZq9jKua1
-	 3Kiqh0iTIQZdCeTNqYOcsUfozVZotLhaevMeSv5H/SBhR7WYr10c3Rk5fh8ygw4BSw
-	 b3UGcdeudV6CtnyBazPG7+kNbLaeSCohnngXjbX4=
+	b=nvXIXNpdd2GU2aAT1d/SpOxzP28HsLoA85r7V6eTiLj1nwy8vK8gHni4AWIDASdwk
+	 q39prq9cXrPVpLNr2dQkF6LCSBcqfHlVyqAw6fIWlDVcZKkMCCAva8exBWx6iqmUyC
+	 s3+5obbAJL49MvT5e8IBWhHoVtZJ+C7zKN1kdPNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaxi Shen <shenxiaxi26@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 064/189] ext4: fix uninitialized variable in ext4_inlinedir_to_tree
-Date: Mon, 12 Aug 2024 18:02:00 +0200
-Message-ID: <20240812160134.606517980@linuxfoundation.org>
+	Borislav Petkov <bp@alien8.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.10 120/263] clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()
+Date: Mon, 12 Aug 2024 18:02:01 +0200
+Message-ID: <20240812160151.142400612@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaxi Shen <shenxiaxi26@gmail.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 8dc9c3da79c84b13fdb135e2fb0a149a8175bffe ]
+commit f2655ac2c06a15558e51ed6529de280e1553c86e upstream.
 
-Syzbot has found an uninit-value bug in ext4_inlinedir_to_tree
+The current "nretries > 1 || nretries >= max_retries" check in
+cs_watchdog_read() will always evaluate to true, and thus pr_warn(), if
+nretries is greater than 1.  The intent is instead to never warn on the
+first try, but otherwise warn if the successful retry was the last retry.
 
-This error happens because ext4_inlinedir_to_tree does not
-handle the case when ext4fs_dirhash returns an error
+Therefore, change that "||" to "&&".
 
-This can be avoided by checking the return value of ext4fs_dirhash
-and propagating the error,
-similar to how it's done with ext4_htree_store_dirent
-
-Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
-Reported-and-tested-by: syzbot+eaba5abe296837a640c0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=eaba5abe296837a640c0
-Link: https://patch.msgid.link/20240501033017.220000-1-shenxiaxi26@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: db3a34e17433 ("clocksource: Retry clock read if long delays detected")
+Reported-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240802154618.4149953-2-paulmck@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inline.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/time/clocksource.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index 012d9259ff532..a604aa1d23aed 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -1411,7 +1411,11 @@ int ext4_inlinedir_to_tree(struct file *dir_file,
- 			hinfo->hash = EXT4_DIRENT_HASH(de);
- 			hinfo->minor_hash = EXT4_DIRENT_MINOR_HASH(de);
- 		} else {
--			ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
-+			err = ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
-+			if (err) {
-+				ret = err;
-+				goto out;
-+			}
- 		}
- 		if ((hinfo->hash < start_hash) ||
- 		    ((hinfo->hash == start_hash) &&
--- 
-2.43.0
-
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -246,7 +246,7 @@ static enum wd_read_status cs_watchdog_r
+ 
+ 		wd_delay = cycles_to_nsec_safe(watchdog, *wdnow, wd_end);
+ 		if (wd_delay <= WATCHDOG_MAX_SKEW) {
+-			if (nretries > 1 || nretries >= max_retries) {
++			if (nretries > 1 && nretries >= max_retries) {
+ 				pr_warn("timekeeping watchdog on CPU%d: %s retried %d times before success\n",
+ 					smp_processor_id(), watchdog->name, nretries);
+ 			}
 
 
 
