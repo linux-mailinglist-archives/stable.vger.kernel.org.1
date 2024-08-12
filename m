@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-66858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF9694F2CB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCB994F3BC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B2A1284821
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B716C1F211E7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F532186E5B;
-	Mon, 12 Aug 2024 16:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1836D186E5E;
+	Mon, 12 Aug 2024 16:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRTgO/D7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pzi7BiGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF220183CD9;
-	Mon, 12 Aug 2024 16:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB68F1862BD;
+	Mon, 12 Aug 2024 16:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479015; cv=none; b=nhr2bujdiFPwo+LaBwC8TylvWNRR5GCWprDI4mS2/Wj4QRtSO3W0LAaE1XE1+IIkHQbceBpTIQkjxALgm0iAwSmEbhmoAlYnJsRLs3Wta3CYv+f4OSTWscQRdKhnMkDAy8uW+ObId3911nORcOZwV+es0NjwGQs5G3I/j7fQFAw=
+	t=1723479689; cv=none; b=nq6AFSkT6M3GL/9+JEBtPBGAm9/OilGk/u67Fv8W9EUtfwox5sTNQG8gIyQh+OQmu9DTHv9FIyjufn7wZbQCjN6xd9pf3bfEx4OWvGoid7R+DjuInL0rFXtZ8QmCVN4w0FJ9DHoT4p+lRBaT1R8HsxODxF+WBYYniUYzTCwKJAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479015; c=relaxed/simple;
-	bh=C6luYDtuloErUbKDFI6l8kaq7vEpZGhNEm3F3UP6g7g=;
+	s=arc-20240116; t=1723479689; c=relaxed/simple;
+	bh=yZy4EGs46Pt0QAWE/KzLq+I7p05CnxHe72oIAns7y3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXN1Rq/FAdfsYnAbSTecOOdohwk4LvkhkNgxzO2OM6Tly/ZLLBwbiqhMcbO3tC5EqgTTdzipYLmsMUtKxIOWZ0vrf39+K6E4+gyeFgpPVcKIzX4IWrgrvGh3Ecib7SyhrLLLSvH+OPAZExcP6UxwWxOlv9hEZwD/7njg24BagCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRTgO/D7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29276C32782;
-	Mon, 12 Aug 2024 16:10:14 +0000 (UTC)
+	 MIME-Version; b=sm2qb/9SG6AwmVKfIiqb2VfNZ7RKutsa/17Gi3z6q2xvFmmD9qJUR5nJcnrXpElxDOGIReihi3H9iOsfr12MQq5UwK6BIKcKGuXnlIQozPEgMrEZzDNzOC9/81KJn6gX1fqLiTOR9un9wZqUJ+2TlLnZ3RxIC6ackd4pfr3/tFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pzi7BiGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B435C4AF0C;
+	Mon, 12 Aug 2024 16:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479015;
-	bh=C6luYDtuloErUbKDFI6l8kaq7vEpZGhNEm3F3UP6g7g=;
+	s=korg; t=1723479689;
+	bh=yZy4EGs46Pt0QAWE/KzLq+I7p05CnxHe72oIAns7y3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRTgO/D7rFsa3/U1LEXB3UqBdFntXU+ws7vegl9uIBAjxqDMMzlIr3bBwcTwgkbZg
-	 vYLwmxxSS96qpc/jcJyMdXHYcIGQTsmC0mlEplGGg0VvoIilL3eT49CpuyaCKIMwrb
-	 bv+5wvtle3CE6tWPqGzg39ff3g569gPmo3qK43vc=
+	b=Pzi7BiGWSObUI4QC7nLbGZpufLPxEQ4egbqNpLbD/K2UzkTen4jOS7fnnKXgBIIHQ
+	 ThruX9vlzuB/ZBxDIsBa/SzBBu4CqFbmXyUcb9LOWMZ6zeKGAWPnI7Kr30JwNAAO7C
+	 M0GKAa0/52LUAf8Mv0/H1ATSzCBqbIf+qEt/n73w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miroslav Lichvar <mlichvar@redhat.com>
-Subject: [PATCH 6.1 107/150] ntp: Safeguard against time_constant overflow
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Mathias Krause <minipli@grsecurity.net>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 132/189] tracefs: Fix inode allocation
 Date: Mon, 12 Aug 2024 18:03:08 +0200
-Message-ID: <20240812160129.291318661@linuxfoundation.org>
+Message-ID: <20240812160137.224881770@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Mathias Krause <minipli@grsecurity.net>
 
-commit 06c03c8edce333b9ad9c6b207d93d3a5ae7c10c0 upstream.
+commit 0df2ac59bebfac221463ef57ed3554899b41d75f upstream.
 
-Using syzkaller with the recently reintroduced signed integer overflow
-sanitizer produces this UBSAN report:
+The leading comment above alloc_inode_sb() is pretty explicit about it:
 
-UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:738:18
-9223372036854775806 + 4 cannot be represented in type 'long'
-Call Trace:
- handle_overflow+0x171/0x1b0
- __do_adjtimex+0x1236/0x1440
- do_adjtimex+0x2be/0x740
+  /*
+   * This must be used for allocating filesystems specific inodes to set
+   * up the inode reclaim context correctly.
+   */
 
-The user supplied time_constant value is incremented by four and then
-clamped to the operating range.
+Switch tracefs over to alloc_inode_sb() to make sure inodes are properly
+linked.
 
-Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
-supplied value was sanity checked to be in the operating range. That change
-removed the sanity check and relied on clamping after incrementing which
-does not work correctly when the user supplied value is in the overflow
-zone of the '+ 4' operation.
-
-The operation requires CAP_SYS_TIME and the side effect of the overflow is
-NTP getting out of sync.
-
-Similar to the fixups for time_maxerror and time_esterror, clamp the user
-space supplied value to the operating range.
-
-[ tglx: Switch to clamping ]
-
-Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Miroslav Lichvar <mlichvar@redhat.com>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-c-v2-1-f3a80096f36f@google.com
-Closes: https://github.com/KSPP/linux/issues/352
+Link: https://lore.kernel.org/20240807115143.45927-2-minipli@grsecurity.net
+Fixes: ba37ff75e04b ("eventfs: Implement tracefs_inode_cache")
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/ntp.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/tracefs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/time/ntp.c
-+++ b/kernel/time/ntp.c
-@@ -733,11 +733,10 @@ static inline void process_adjtimex_mode
- 		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index 1028ab6d9a74..21a7e51fc3c1 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -42,7 +42,7 @@ static struct inode *tracefs_alloc_inode(struct super_block *sb)
+ 	struct tracefs_inode *ti;
+ 	unsigned long flags;
  
- 	if (txc->modes & ADJ_TIMECONST) {
--		time_constant = txc->constant;
-+		time_constant = clamp(txc->constant, 0, MAXTC);
- 		if (!(time_status & STA_NANO))
- 			time_constant += 4;
--		time_constant = min(time_constant, (long)MAXTC);
--		time_constant = max(time_constant, 0l);
-+		time_constant = clamp(time_constant, 0, MAXTC);
- 	}
+-	ti = kmem_cache_alloc(tracefs_inode_cachep, GFP_KERNEL);
++	ti = alloc_inode_sb(sb, tracefs_inode_cachep, GFP_KERNEL);
+ 	if (!ti)
+ 		return NULL;
  
- 	if (txc->modes & ADJ_TAI &&
+-- 
+2.46.0
+
 
 
 
