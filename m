@@ -1,202 +1,96 @@
-Return-Path: <stable+bounces-67405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B3094FA51
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 01:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 014D094FA58
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 01:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D7241C222C6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 23:34:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33EF21C2223F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 23:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AE6170A22;
-	Mon, 12 Aug 2024 23:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9180118455E;
+	Mon, 12 Aug 2024 23:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V3iz2srk"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s5VOG/At"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com [209.85.167.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159F17E0E8
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 23:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A087E0E8
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 23:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723505665; cv=none; b=OJQm9q4YuSeWRtvELyLnuU3RXWceoKq/CyzU5LioPBDhCe4L/QHt21fi1HmyjUzAjKPDJOkYU9PIEDi++pdR7+95p1ol8Z5cDqV6D8PAK3OPoUSobpV/kVYY/MVLQ3BXJznE6QTiYlrnqYDqwFYikenaRB0PY+2PXF22Cg6Iyus=
+	t=1723505727; cv=none; b=U17oh9b79YimkGh2BDojSmsaMLolKfBHQc/ThpIuvU8dQXo6a52Ui7pydZBpn2WhZa/rTzKZYmN6zSKoq+8eOOA8CrVXgvSm3pXtXeysqa/1FQl0zRHctWwmgrtJtZ7Y3UD/a/tqPK0WyiwpUSPdpnYuV9plbk5ubd8o7cCg2h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723505665; c=relaxed/simple;
-	bh=jvTBjRpRoW78XsIotGEOmlF/dnPKtDcAOdq6tU7Lnuc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iQFCHpv6+EoUgSlg5mHJgcUBEWKcr+RLg+pkNjLlZAlLtMqvHN8CwrRzzOF95eYTtWPwzc+ehD0SwmD8K5L6rnz6LfOXC50Iul43issA3GqnGaE/MB1srQf61Q1XTmuYNDIS9rUuRPD2joEFb5xnH7OTN1C0YO75yDz/VQUyDJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V3iz2srk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723505661;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xKDbGaTX8EZpcenHgPa8veNn1wKEPpwdIKATGSiYtC4=;
-	b=V3iz2srkHdsuFli8Aeu2AVWmttkvtREhNJogzDYmqStuU3Bx56kFvSY8Ah2Ot4JpfqkAH8
-	IZwWBXx0AO+7YK4Xka0tFbna04Ea1tch7f44XjMxUCsIHCUDak1sE/Q3/mQMN/PsgwqTz5
-	3VhnIijfcHhaZaPFyviF3fW/v9Gu0Q4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-367-9hhukabLNNaaRmDZhHsE1w-1; Mon,
- 12 Aug 2024 19:34:18 -0400
-X-MC-Unique: 9hhukabLNNaaRmDZhHsE1w-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5E4DC1955F45;
-	Mon, 12 Aug 2024 23:34:16 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.25])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B6CB30001A1;
-	Mon, 12 Aug 2024 23:34:14 +0000 (UTC)
-Date: Tue, 13 Aug 2024 07:34:10 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Will Deacon <will@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-	"Hailong . Liu" <hailong.liu@oppo.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: vmalloc: Ensure vmap_block is initialised before
- adding to queue
-Message-ID: <Zrqb8n3DikE+K+Xm@MiWiFi-R3L-srv>
-References: <20240812171606.17486-1-will@kernel.org>
+	s=arc-20240116; t=1723505727; c=relaxed/simple;
+	bh=Hy0ZvmapsHnKQsjI2/9Kuh7dY0hLrow3eJAbXthoyh8=;
+	h=MIME-Version:In-Reply-To:Message-ID:Date:Subject:From:To:Cc:
+	 Content-Type; b=e3OHMvLjP7T12eWnYcm1SbwC+E/zPZIm61hmnbyQs+/y2lUTRFZFXHW1KkL1XyKpJpb8KVxIfy/ojcPrRPVcd5hiuiIi4QGhr7o3c1QLx71+rGNZ8goBl6w7VM19SHPOdmNAUoP9lkypvq10SxVij0EQoY5bUz+pUCq5tyc/HPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=cros-rc-feedback.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s5VOG/At; arc=none smtp.client-ip=209.85.167.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cros-rc-feedback.bounces.google.com
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-52efd4afebeso5618858e87.2
+        for <stable@vger.kernel.org>; Mon, 12 Aug 2024 16:35:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723505724; x=1724110524; darn=vger.kernel.org;
+        h=cc:to:from:subject:date:message-id:in-reply-to:mime-version:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Hy0ZvmapsHnKQsjI2/9Kuh7dY0hLrow3eJAbXthoyh8=;
+        b=s5VOG/At8ETWbB3/1b6nOsOCOWh2oJ+27W3lmGhPe+pAGfgOye42x6IxU0vjqpy6qK
+         Kqpu99BhZ2vcoztIDXHqTfBo7KfZgwxX1BHoh2y/TjFMkTu7Wr1+d7DK9TtKpuEIUPsb
+         3dApBCHKW+kyYs9dr285o+TxBA9cejhqdUA4b/9NE9VmtVDAAxDf8587qPD750CijkeK
+         pbVJTufuM213vORo4OaWPccKQkswlGC2B6UzzHXXqUkqyVDtBxGXvtzIDU6fU2pvHl2o
+         AmzM2o7YZA4qci7IQnZP5ZCm7sefjwRUEUwYHZyVEIsNnXZCzkOcPfoCycpC6yxNfvkJ
+         va6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723505724; x=1724110524;
+        h=cc:to:from:subject:date:message-id:in-reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hy0ZvmapsHnKQsjI2/9Kuh7dY0hLrow3eJAbXthoyh8=;
+        b=tdBAzX4ILg6Djxu6/eQZbCfWilG+RmzklKPIj9c3mnZs1ccKnS0qNSTV7B8n4PLO09
+         WVyTAzSlIq/0LSx4htNoShhMyzTiX44M+43Bsg/PyZwsUwtzcbSqS3FlDInTGwy1rtPF
+         38crTen8L5l9GJVKpVHDmWaWZBeQbLi5qdNPmzTjcvp1Ee9WLqkeg9EdHz0IyI0uBaHa
+         foein/2DL+JoRzJXHxL5x2VxB+S55+Yd0UTsIJR1rj66Evc4DPNjnFwiA8TG9++fb7+M
+         2Drzl5p2sfSPrlfCyJzjbiBZpr++Mio+dd63VIsePx8HykePllRRC3l0O8IvZ19T5fVO
+         eYHw==
+X-Gm-Message-State: AOJu0YyPZlMeeLjdy0BMFYw+9u87gkJF76dxDkC6olK+WJWh0TTLw+ff
+	cBxdJJHGheAzHlVcDuVOZnDY8c2mnfbcG9P0NY0VlifgJ0MpgDCxtdY3LYvty+oWVhqbll/lq+X
+	HfcXf7Z446rA3vcoanPPYLL7aejkWTSmV1WSwElY3/RMD+/75CnG7BjYzZXEp5rUPcJ689ZBLsn
+	rQGzTuQ0Gdnj65KMFhL9ToP6hhbidk
+X-Google-Smtp-Source: AGHT+IGEp+AwdpeFm4dxHYRCCnoilgVvaClqAM29tGqqDOKna6lHdwZJdY1EXP7H5dtHO2HUltCC1HJ6Z63/LBHkMWlKRjtPdAWISN57IgE25B2mOg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240812171606.17486-1-will@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Received: by 2002:a05:6512:1291:b0:52f:384:1a1d with SMTP id
+ 2adb3069b0e04-532136a5aa1mr3029e87.11.1723505723801; Mon, 12 Aug 2024
+ 16:35:23 -0700 (PDT)
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+Message-ID: <0000000000006fd56f061f84f2f3@google.com>
+Date: Mon, 12 Aug 2024 23:35:23 +0000
+Subject: Re: [PATCH 6.6 000/189] 6.6.46-rc1 review
+From: ChromeOS Kernel Stable Merge <mdb.chromeos-kernel-auto-merge+noreply@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, chromeos-kernel-stable-merge@google.com, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-On 08/12/24 at 06:16pm, Will Deacon wrote:
-> Commit 8c61291fd850 ("mm: fix incorrect vbq reference in
-> purge_fragmented_block") extended the 'vmap_block' structure to contain
-> a 'cpu' field which is set at allocation time to the id of the
-> initialising CPU.
-> 
-> When a new 'vmap_block' is being instantiated by new_vmap_block(), the
-> partially initialised structure is added to the local 'vmap_block_queue'
-> xarray before the 'cpu' field has been initialised. If another CPU is
-> concurrently walking the xarray (e.g. via vm_unmap_aliases()), then it
-> may perform an out-of-bounds access to the remote queue thanks to an
-> uninitialised index.
-> 
-> This has been observed as UBSAN errors in Android:
-> 
->  | Internal error: UBSAN: array index out of bounds: 00000000f2005512 [#1] PREEMPT SMP
->  |
->  | Call trace:
->  |  purge_fragmented_block+0x204/0x21c
->  |  _vm_unmap_aliases+0x170/0x378
->  |  vm_unmap_aliases+0x1c/0x28
->  |  change_memory_common+0x1dc/0x26c
->  |  set_memory_ro+0x18/0x24
->  |  module_enable_ro+0x98/0x238
->  |  do_init_module+0x1b0/0x310
-> 
-> Move the initialisation of 'vb->cpu' in new_vmap_block() ahead of the
-> addition to the xarray.
-> 
-> Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> Cc: Hailong.Liu <hailong.liu@oppo.com>
-> Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Christoph Hellwig <hch@infradead.org>
-> Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: <stable@vger.kernel.org>
-> Fixes: 8c61291fd850 ("mm: fix incorrect vbq reference in purge_fragmented_block")
-> Signed-off-by: Will Deacon <will@kernel.org>
-> ---
+Hello,
 
-Good catch, this truly could happen and collapse system.
+This rc kernel passed ChromeOS CQ tests:
+https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/5782321/1?tab=checks
 
-Reviewed-by: Baoquan He <bhe@redhat.com>
+Thanks,
 
-> 
-> I _think_ the insertion into the free list is ok, as the vb shouldn't be
-> considered for purging if it's clean. It would be great if somebody more
-> familiar with this code could confirm either way, however.
-
-It's OK, please see below comment.
-
-static void *new_vmap_block(unsigned int order, gfp_t gfp_mask)
-{
-......
-        vaddr = vmap_block_vaddr(va->va_start, 0);
-        spin_lock_init(&vb->lock);
-        vb->va = va;
-        /* At least something should be left free */
-        BUG_ON(VMAP_BBMAP_BITS <= (1UL << order));
-        bitmap_zero(vb->used_map, VMAP_BBMAP_BITS);
-        vb->free = VMAP_BBMAP_BITS - (1UL << order);
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         Here we have cut away one piece according to vb_alloc() and set vb->free.
-        vb->dirty = 0;
-        vb->dirty_min = VMAP_BBMAP_BITS;
-        vb->dirty_max = 0;
-        bitmap_set(vb->used_map, 0, (1UL << order));
-        INIT_LIST_HEAD(&vb->free_list);
-...
-}
-
-static bool purge_fragmented_block(struct vmap_block *vb,
-                struct list_head *purge_list, bool force_purge)
-{
-        struct vmap_block_queue *vbq = &per_cpu(vmap_block_queue, vb->cpu);
-
-        if (vb->free + vb->dirty != VMAP_BBMAP_BITS ||
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The above setting
-                of vb->free and vb->dirty will fail conditional check here.
-                So it won't be purged. 
-            vb->dirty == VMAP_BBMAP_BITS)
-                return false;
- 
-        /* Don't overeagerly purge usable blocks unless requested */
-        if (!(force_purge || vb->free < VMAP_PURGE_THRESHOLD))
-                return false;
-...
-}
-> 
->  mm/vmalloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 6b783baf12a1..64c0a2c8a73c 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2626,6 +2626,7 @@ static void *new_vmap_block(unsigned int order, gfp_t gfp_mask)
->  	vb->dirty_max = 0;
->  	bitmap_set(vb->used_map, 0, (1UL << order));
->  	INIT_LIST_HEAD(&vb->free_list);
-> +	vb->cpu = raw_smp_processor_id();
->  
->  	xa = addr_to_vb_xa(va->va_start);
->  	vb_idx = addr_to_vb_idx(va->va_start);
-> @@ -2642,7 +2643,6 @@ static void *new_vmap_block(unsigned int order, gfp_t gfp_mask)
->  	 * integrity together with list_for_each_rcu from read
->  	 * side.
->  	 */
-> -	vb->cpu = raw_smp_processor_id();
->  	vbq = per_cpu_ptr(&vmap_block_queue, vb->cpu);
->  	spin_lock(&vbq->lock);
->  	list_add_tail_rcu(&vb->free_list, &vbq->free);
-> -- 
-> 2.46.0.76.ge559c4bf1a-goog
-> 
-
+Tested-by: ChromeOS CQ Test <chromeos-kernel-stable-merge@google.com>
 
