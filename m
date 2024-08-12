@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-66983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D663994F35E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8661494F2BF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 147F11C211D7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B9111F2120C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7097E18454D;
-	Mon, 12 Aug 2024 16:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62BF1891AB;
+	Mon, 12 Aug 2024 16:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVhmeH7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phoUpDIZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0EC4B5AE;
-	Mon, 12 Aug 2024 16:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643D3188CC0;
+	Mon, 12 Aug 2024 16:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479416; cv=none; b=qARWb3fLlcnVTtedq6EjiXJO3Zeto0kvVx3ZNvtBWxHhDnafbbPYWrK/0pz29igNkht3f9BccMqfvxlmJ6Fu1ufBTCazX/dAJx8N105sACcBpR8EU+1JxgLDOrmjNWYpRNalVINJdzhHWKX96BmiGHLkjIbybHdNjb4uVYay4y0=
+	t=1723478983; cv=none; b=W15kXej6VmNyAFbIa8Pa9etfATeRTHj5N/KOeCizPZ12GLYe78e+0uZf/+MfNf3J5pS7ZFt1Ywyt6Bmmgg31NPXMcvAuCcuMSdrnKo1gBNvzkpyhcRzIKtXxfsH5IPUSQj6fVE3j9gNnN/2a4iGuhbeIBBC/wir5SFd+xUrCniY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479416; c=relaxed/simple;
-	bh=wQqe5RuLhKTy216LXxPu5aNpeJgzL7oTod59FupmdUU=;
+	s=arc-20240116; t=1723478983; c=relaxed/simple;
+	bh=S1nBEsnyDzky0xi1WwK9ijP0AKn4PQWk7xDzCrz6IhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cuLmPHl54TH7I5jWVH2lSKdHknTHWXXz7ECwcP7jsLaswbkiN2tF4O6pbTF3Zg/LV+UI18SPvzmV5PPlV1j90VTFnjGkYnZ/DZ7cefwf9iUE7haslePTgJ105+ZuFn3pE23dDYxh7i7DiSLkHuo4C4FdJu/xo5t1LMHZpE4Wsmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVhmeH7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD51C32782;
-	Mon, 12 Aug 2024 16:16:55 +0000 (UTC)
+	 MIME-Version; b=igxXg191PeUq0sP8hQydeCeUx1MWI4OjlUZNTeZNrfgWMPWKqec+DftbYG5p6dQw97uZw1KW0xOr8fhuvyLabGST/MBzkG2egghvMyuaAUtOMkzdmsesoqYQm4VAm5oXyV9T/iT/26HAcn2Dpfut0j3VLNSsqz2fjIs5agpyWxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phoUpDIZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E83C4AF0F;
+	Mon, 12 Aug 2024 16:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479416;
-	bh=wQqe5RuLhKTy216LXxPu5aNpeJgzL7oTod59FupmdUU=;
+	s=korg; t=1723478983;
+	bh=S1nBEsnyDzky0xi1WwK9ijP0AKn4PQWk7xDzCrz6IhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVhmeH7xmd4vUspaolZGfIyI/qFXQl/9fVQsoysTc7+x4/qs/Nb8Ym87ugT28gYOG
-	 dnoXadFxRiJ8pSwwH0d3/5qgE5nhLKAm5HYFPeQqy4job4vvN92/pqkMQBEFEZrYRo
-	 Lo1nf/NyCrMWvSTP9QIc9Jf6zgeABj/Ep9NrHldM=
+	b=phoUpDIZMDXWMVIbDc6Stv23SXAHx9E3rrUnX4EvC59an3VIxdIfUNGZdphlsA2lu
+	 0uStUGlpsD2NWVe1Lp1Yx+RPdk49hUxTsgYm9wHujOJ0ecY6VovHsqLIrueYhIUdE4
+	 Wnlmv9ljCMvFFF6LzHQQrtEPN43/YS2jKZoyyezk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/189] arm64: cputype: Add Cortex-A720 definitions
+	Miao Wang <shankerwangmiao@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH 6.1 055/150] irqchip/loongarch-cpu: Fix return value of lpic_gsi_to_irq()
 Date: Mon, 12 Aug 2024 18:02:16 +0200
-Message-ID: <20240812160135.221825719@linuxfoundation.org>
+Message-ID: <20240812160127.294706626@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit add332c40328cf06fe35e4b3cde8ec315c4629e5 ]
+commit 81a91abab1307d7725fa4620952c0767beae7753 upstream.
 
-Add cputype definitions for Cortex-A720. These will be used for errata
-detection in subsequent patches.
+lpic_gsi_to_irq() should return a valid Linux interrupt number if
+acpi_register_gsi() succeeds, and return 0 otherwise. But lpic_gsi_to_irq()
+converts a negative return value of acpi_register_gsi() to a positive value
+silently.
 
-These values can be found in Table A-186 ("MIDR_EL1 bit descriptions")
-in issue 0002-05 of the Cortex-A720 TRM, which can be found at:
+Convert the return value explicitly.
 
-  https://developer.arm.com/documentation/102530/0002/?lang=en
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-3-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e8bba72b396c ("irqchip / ACPI: Introduce ACPI_IRQ_MODEL_LPIC for LoongArch")
+Reported-by: Miao Wang <shankerwangmiao@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240723064508.35560-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-loongarch-cpu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 72fe207403c83..dcbac1ce6c25c 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -88,6 +88,7 @@
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
- #define ARM_CPU_PART_CORTEX_X3		0xD4E
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
-+#define ARM_CPU_PART_CORTEX_A720	0xD81
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+diff --git a/drivers/irqchip/irq-loongarch-cpu.c b/drivers/irqchip/irq-loongarch-cpu.c
+index 9d8f2c406043..b35903a06902 100644
+--- a/drivers/irqchip/irq-loongarch-cpu.c
++++ b/drivers/irqchip/irq-loongarch-cpu.c
+@@ -18,11 +18,13 @@ struct fwnode_handle *cpuintc_handle;
  
-@@ -165,6 +166,7 @@
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
- #define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
-+#define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ static u32 lpic_gsi_to_irq(u32 gsi)
+ {
++	int irq = 0;
++
+ 	/* Only pch irqdomain transferring is required for LoongArch. */
+ 	if (gsi >= GSI_MIN_PCH_IRQ && gsi <= GSI_MAX_PCH_IRQ)
+-		return acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
++		irq = acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
+ 
+-	return 0;
++	return (irq > 0) ? irq : 0;
+ }
+ 
+ static struct fwnode_handle *lpic_get_gsi_domain_id(u32 gsi)
 -- 
-2.43.0
+2.46.0
 
 
 
