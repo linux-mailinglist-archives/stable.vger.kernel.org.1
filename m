@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-66828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729E294F2A6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBB494F39E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8971D1C211FB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1E931C20D02
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D963918756E;
-	Mon, 12 Aug 2024 16:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D8929CA;
+	Mon, 12 Aug 2024 16:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlHWBiuf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mByNj7A6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E32183CA6;
-	Mon, 12 Aug 2024 16:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92750183CA6;
+	Mon, 12 Aug 2024 16:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478918; cv=none; b=P1358o3bNnWU/sd00Shfrj8+xJauZK2yCLhWV1duC4EGg8rt16CvnqiLTuPkGGzDMj55uku4WjLs4gao5kj3t0oOLX2YK4U1jTVdqdE1gHC950nuGGzF4kkaDzN9OR2NDpjMmRGMUN88SC7ymiSwXB/024jHq1nv3fYOkYZ/CjY=
+	t=1723479588; cv=none; b=ed0O9sD11YGeoWDZIP+wuKYWFWcViXC4uBozpU750hH5lG1x+Uph9q+iSDztmFbQIRiUseBWWzvjLb2hOUYilSwOhoS9r30il2qVEUTzZXbVX4QCNFuicZ2VhTSWO2yBA1DiWfJ/7nJjreCm0RLQ42f+RiAV2UiSxa1xB4tRsYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478918; c=relaxed/simple;
-	bh=XrBU8yjTwWOgOFpJQukV/XeR6Y7yaQgtCdwjxE3pKNo=;
+	s=arc-20240116; t=1723479588; c=relaxed/simple;
+	bh=HJqGqr5jVPWubxgcZJTa5iHV0cEIAWw/8CxCEKNZyGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0dzecMHfp/fETaqESlG1qNZK8bFjpVFKnh235+6Y9KPCGmbXXoWTRjc4GgHDEwEr+29dc7hMvWadtaJLaVHySe6QtYAYgosefu2OcTI2gC8V/AWGHRIqiPGs26Hu0JyK62RcIPx81TQIhcVR/j6598w65YeomFTtg/6e++w7+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlHWBiuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A53C32782;
-	Mon, 12 Aug 2024 16:08:37 +0000 (UTC)
+	 MIME-Version; b=MuFEmMsY7tVfdFRnGWkKkJyBrojrOfeEruZv6hxoYtP1HSgA1V0T/j/xNk0JwL41dJH1zfc4l+Er0+CtPp97eaKD+S+WnXs0x/qy1axPUVo/vDCrutm//av4owSIuukS4qDDIC4+nZuMA+10/EJ0osz6lhcMC07ir/S42dAfU/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mByNj7A6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1756C4AF09;
+	Mon, 12 Aug 2024 16:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478918;
-	bh=XrBU8yjTwWOgOFpJQukV/XeR6Y7yaQgtCdwjxE3pKNo=;
+	s=korg; t=1723479588;
+	bh=HJqGqr5jVPWubxgcZJTa5iHV0cEIAWw/8CxCEKNZyGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlHWBiufQIuHelAXR2mA3JQ+LAaanyAwbk9sjK5WIZfqGkm8J4uxqLq2u7uPBfFXW
-	 0WSiAd/AbDs7wERaPkywEAnOh1fxwx3qtqKa2fp2s87woUj1EaLektul8xtI5UclmP
-	 QCJdrfWM1H/PYaAsoWczWTHRgF0mD0+R4Mk6pqgo=
+	b=mByNj7A6b9+NN2RgfdMEtauYWAL5YUzPLrN2u/J6SOefBFXeiUGHKngog2p0NkeIE
+	 kKsNSZrjEtZeb5Un+bHXEzmm+9lcuxWb5rAR289KbZKGbR3VQOzQQHRm5s20sic82s
+	 lbw5gf+/Q+satKGT1wgavCC+NOuzID3c6k8Kl+f0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Stefan Wahren <wahrenst@gmx.net>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/150] spi: spidev: Add missing spi_device_id for bh2228fv
-Date: Mon, 12 Aug 2024 18:02:37 +0200
-Message-ID: <20240812160128.108687530@linuxfoundation.org>
+Subject: [PATCH 6.6 102/189] spi: spi-fsl-lpspi: Fix scldiv calculation
+Date: Mon, 12 Aug 2024 18:02:38 +0200
+Message-ID: <20240812160136.068485035@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit e4c4638b6a10427d30e29d22351c375886025f47 ]
+[ Upstream commit 730bbfaf7d4890bd99e637db7767dc68cfeb24e7 ]
 
-When the of_device_id entry for "rohm,bh2228fv" was added, the
-corresponding spi_device_id was forgotten, causing a warning message
-during boot-up:
+The effective SPI clock frequency should never exceed speed_hz
+otherwise this might result in undefined behavior of the SPI device.
 
-    SPI driver spidev has no spi_device_id for rohm,bh2228fv
+Currently the scldiv calculation could violate this constraint.
+For the example parameters perclk_rate = 24 MHz and speed_hz = 7 MHz,
+the function fsl_lpspi_set_bitrate will determine perscale = 0 and
+scldiv = 1, which is a effective SPI clock of 8 MHz.
 
-Fix module autoloading and shut up the warning by adding the missing
-entry.
+So fix this by rounding up the quotient of perclk_rate and speed_hz.
+While this never change within the loop, we can pull this out.
 
-Fixes: fc28d1c1fe3b3e2f ("spi: spidev: add correct compatible for Rohm BH2228FV")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/cb571d4128f41175f31319cd9febc829417ea167.1722346539.git.geert+renesas@glider.be
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://patch.msgid.link/20240804113611.83613-1-wahrenst@gmx.net
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-fsl-lpspi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 00612efc2277f..477c3578e7d9e 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -692,6 +692,7 @@ static const struct file_operations spidev_fops = {
- static struct class *spidev_class;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 079035db7dd85..3c0f7dc9614d1 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -296,7 +296,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
+ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	struct lpspi_config config = fsl_lpspi->config;
+-	unsigned int perclk_rate, scldiv;
++	unsigned int perclk_rate, scldiv, div;
+ 	u8 prescale;
  
- static const struct spi_device_id spidev_spi_ids[] = {
-+	{ .name = "bh2228fv" },
- 	{ .name = "dh2228fv" },
- 	{ .name = "ltc2488" },
- 	{ .name = "sx1301" },
+ 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
+@@ -313,8 +313,10 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 		return -EINVAL;
+ 	}
+ 
++	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
++
+ 	for (prescale = 0; prescale < 8; prescale++) {
+-		scldiv = perclk_rate / config.speed_hz / (1 << prescale) - 2;
++		scldiv = div / (1 << prescale) - 2;
+ 		if (scldiv < 256) {
+ 			fsl_lpspi->config.prescale = prescale;
+ 			break;
 -- 
 2.43.0
 
