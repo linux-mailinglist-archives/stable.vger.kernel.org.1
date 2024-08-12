@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-67349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544BB94F502
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:37:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC68F94F2FC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 871B11C20E78
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:37:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C002854FE
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8836186E34;
-	Mon, 12 Aug 2024 16:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387FA187849;
+	Mon, 12 Aug 2024 16:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdAjYh/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icqZVKJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B091494B8;
-	Mon, 12 Aug 2024 16:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9639186E52;
+	Mon, 12 Aug 2024 16:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480636; cv=none; b=PVG0R3s7TNN1e5SE7BkFBuFnqNOR761HTTLBtGZjKqDxa5lEesJaSsV/ALZk5mLqDZD70I7QRBbBABpMefN2dOXrtBnuhd+0TCJDjz6iNVRzMdqlGHv5PB182xzfCvwPkpDNrOVCj5A9QeBzOVX/7Uuj5a1KHdhUYBD7ESPEPiY=
+	t=1723479140; cv=none; b=LbDJFcGWvlavL8evx1AeVE/vCu1ozQW8dcK0ZXFkTLnmV7YcpPnKR00k+Yt/h21tR3MgYJ8L7HiABglgPRMtKnxL+/r94pPDgEGF6jzDv+xRz+TZEiGQL3YJg34I/+ZzXkoJuO2YuFtijuvI0HJnbOv8sWhBZnnG4BPD6QDqZd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480636; c=relaxed/simple;
-	bh=6pGFNfdV2pkIJfVh16vLNlbeabLQe60uMPbFyCXThkw=;
+	s=arc-20240116; t=1723479140; c=relaxed/simple;
+	bh=DlEcKtyZe6RMV5gUNCgssRZhxbIWryfHd3OQMU5NUwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/b+MtWwDPonBUMFQNxdE7vxTARo1M4ZWbHTGft40eBbDubSxATaBPXSiNCnVbChc3ZsY/9/1EGLApSoTg/k6dcAdZyqzstPDW9r7VIJ8u5MqwObHPuteQIB9OeuincUqU5MBXPk6B2CT22chcY8vQFd/e2oz3eHIlanWEuaLCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdAjYh/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC21AC32782;
-	Mon, 12 Aug 2024 16:37:15 +0000 (UTC)
+	 MIME-Version; b=pyGtA7qHVT5uWpTfuyOKKvpf+IbwC9QLcKwbg+vaJGEnOMs2+1tJhWtQ3659j8gSGlIeYIgB0TEPMRbkWtyQY+B5GQJEFhAo7X4cukuIMWly7MI4V/qzvr2DlgBUKBmtOYDXGz5IODpSVAlBsP3IZ2Zkgafhqk1MRFyKpX8IaSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icqZVKJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEE4C32782;
+	Mon, 12 Aug 2024 16:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480636;
-	bh=6pGFNfdV2pkIJfVh16vLNlbeabLQe60uMPbFyCXThkw=;
+	s=korg; t=1723479139;
+	bh=DlEcKtyZe6RMV5gUNCgssRZhxbIWryfHd3OQMU5NUwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vdAjYh/1BME/hBis5XOq47UbDGCDE7XfskvMgWzdGleq9Lutw1ad9wUf2T4gNUc9w
-	 dS8pYuSHAVGS6SZqCfYNdASNUHO/vItDm+alEjTagH6y3TZx8IDPzzz1bNHLZuL8H5
-	 LAUd7PsHwV4zzxKhZe7Bzagd+KxQ4ZMOsUtkbnKs=
+	b=icqZVKJFXLJqxGtEtPE13FnTqMG4cvJZiclCfE3O2w1B5HvopYiOMWY0nbJQvFMI/
+	 5xp7u812vcRGPrN+UKZLu5w6LUa5LfE1e48zWSmny5dhw89hpIGismGNso+9mizOZG
+	 XeuYeFYOJbR0ciBjZvQFf+Cpsk4SZpSzrOtf+6GA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.10 225/263] power: supply: axp288_charger: Round constant_charge_voltage writes down
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.1 145/150] drm/amd/display: Defer handling mst up request in resume
 Date: Mon, 12 Aug 2024 18:03:46 +0200
-Message-ID: <20240812160155.151280554@linuxfoundation.org>
+Message-ID: <20240812160130.766759288@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Wayne Lin <wayne.lin@amd.com>
 
-commit 81af7f2342d162e24ac820c10e68684d9f927663 upstream.
+commit 202dc359addab29451d3d18243c3d957da5392c8 upstream.
 
-Round constant_charge_voltage writes down to the first supported lower
-value, rather then rounding them up to the first supported higher value.
+[Why]
+Like commit ec5fa9fcdeca ("drm/amd/display: Adjust the MST resume flow"), we
+want to avoid handling mst topology changes before restoring the old state.
+If we enable DP_UP_REQ_EN before calling drm_atomic_helper_resume(), have
+changce to handle CSN event first and fire hotplug event before restoring the
+cached state.
 
-This fixes e.g. writing 4250000 resulting in a value of 4350000 which
-might be dangerous, instead writing 4250000 will now result in a safe
-4200000 value.
+[How]
+Disable mst branch sending up request event before we restoring the cached state.
+DP_UP_REQ_EN will be set later when we call drm_dp_mst_topology_mgr_resume().
 
-Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240717200333.56669-2-hdegoede@redhat.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Hersen Wu <hersenxs.wu@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/axp288_charger.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/power/supply/axp288_charger.c
-+++ b/drivers/power/supply/axp288_charger.c
-@@ -178,18 +178,18 @@ static inline int axp288_charger_set_cv(
- 	u8 reg_val;
- 	int ret;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2363,7 +2363,6 @@ static void resume_mst_branch_status(str
  
--	if (cv <= CV_4100MV) {
--		reg_val = CHRG_CCCV_CV_4100MV;
--		cv = CV_4100MV;
--	} else if (cv <= CV_4150MV) {
--		reg_val = CHRG_CCCV_CV_4150MV;
--		cv = CV_4150MV;
--	} else if (cv <= CV_4200MV) {
-+	if (cv >= CV_4350MV) {
-+		reg_val = CHRG_CCCV_CV_4350MV;
-+		cv = CV_4350MV;
-+	} else if (cv >= CV_4200MV) {
- 		reg_val = CHRG_CCCV_CV_4200MV;
- 		cv = CV_4200MV;
-+	} else if (cv >= CV_4150MV) {
-+		reg_val = CHRG_CCCV_CV_4150MV;
-+		cv = CV_4150MV;
- 	} else {
--		reg_val = CHRG_CCCV_CV_4350MV;
--		cv = CV_4350MV;
-+		reg_val = CHRG_CCCV_CV_4100MV;
-+		cv = CV_4100MV;
- 	}
- 
- 	reg_val = reg_val << CHRG_CCCV_CV_BIT_POS;
+ 	ret = drm_dp_dpcd_writeb(mgr->aux, DP_MSTM_CTRL,
+ 				 DP_MST_EN |
+-				 DP_UP_REQ_EN |
+ 				 DP_UPSTREAM_IS_SRC);
+ 	if (ret < 0) {
+ 		drm_dbg_kms(mgr->dev, "mst write failed - undocked during suspend?\n");
 
 
 
