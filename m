@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-66973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375FE94F354
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35CC94F467
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C41D1F218D2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3B72814DC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F0C187328;
-	Mon, 12 Aug 2024 16:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2B3186E5E;
+	Mon, 12 Aug 2024 16:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFDUC1y4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKsnkHpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53564184527;
-	Mon, 12 Aug 2024 16:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D17D183CD4;
+	Mon, 12 Aug 2024 16:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479385; cv=none; b=L7FC+aTq96WyF67pDZY/HePPAqbJRoLahYPy6e+sb2fcba5qbN+lu6mLW58yMqd0lxUG7IUeLdmB//qRs1TZfDPHy4ZuxUxlP+f14Fu3G7TDeuiQzMEeo0BRsjSkxORh8w/FJJp6nINpIWxAXzTmXmncejt+zNXv0QsW2WAcjr4=
+	t=1723480201; cv=none; b=c3HRrB0JWyiWgg6JxJJ5Nvq7Ggt6jT0k+dD14CDpRU0qfW3hAO3+cETwYbEnOrUtLtJNEW1Izhj6Olsrh3zqOb8qkyEGB7awfr7hT1IOm4dBEoKJWbqEX60wAyUylrjb6oq9QB30wL3yHwD8NtqM8FFo0cxe3CZ3ZQ5BWWz2c70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479385; c=relaxed/simple;
-	bh=UFNucJrD7yoheXamSArJRS8TeAJGTc9W8ByPuWq/bac=;
+	s=arc-20240116; t=1723480201; c=relaxed/simple;
+	bh=tzycfB+wTbQ4UZ6sFrJYFY0pxpL2hypwg7YJYaGlCXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zs4Ai5B/SY0HC4on/kCYATN84OUgTq3F/HqMmKZKRRe5PigBTz67tAopGFeqQNau8TtlB2jp9DLsXUzW9BUhAthLf6jOBpUU13PQ0HnsfVtSqsf8x1cXE/K4msyNlA6CT5vqmvKJEB4JZgyrDX2d7fTRale05HR4/PggDEy0zTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFDUC1y4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE01C4AF09;
-	Mon, 12 Aug 2024 16:16:24 +0000 (UTC)
+	 MIME-Version; b=MQuJH8s8Tm4lywyzmMLfhKYhqoiPpJixLO+Ic1+v0XdzdWW8ekDFrAiubuirH+dqtbuIDC/jUPRLhx4Ln4uW8BsXng/DtPQCD7BwDnTyc2HkF/0/1KH6r0hXTwsybuA4bzeGfsQzbmasyZvM9AarNXVivmkbcM9yFVGU4Qu6hf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKsnkHpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE53CC32782;
+	Mon, 12 Aug 2024 16:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479385;
-	bh=UFNucJrD7yoheXamSArJRS8TeAJGTc9W8ByPuWq/bac=;
+	s=korg; t=1723480201;
+	bh=tzycfB+wTbQ4UZ6sFrJYFY0pxpL2hypwg7YJYaGlCXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFDUC1y4tptDTBIjq4QnBVwssFBpBFmrsnVwXdhBoQCyyhCeltcIAuaiOrr3fiB6Y
-	 ZyPNKzFYCEsyHtgIIVWkG75RxM8FqXRskxg/3s7m/2LjtVD1KYUzmbAoMhi4767BNr
-	 y19TuTaT/nCOfJ6/RhAO2cUH+SBv0VGhsugjNE4g=
+	b=PKsnkHpXtYJ8T85NUJY7jXu1SXH0dgysHU7xizeFFoSyrQzaLuyhUp4Ja4ghd2DEG
+	 fbYLq0jaAYcODfIgA2yfTsuc0UUcngCgwyPP5socGoRfITkdQHnIRYkVYTlMttzG4w
+	 jr+1nyT6XxF1SjLpZ/HXUdX71old2TTd/YfdGJrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 6.6 071/189] irqchip/loongarch-cpu: Fix return value of lpic_gsi_to_irq()
+Subject: [PATCH 6.10 126/263] irqchip/loongarch-cpu: Fix return value of lpic_gsi_to_irq()
 Date: Mon, 12 Aug 2024 18:02:07 +0200
-Message-ID: <20240812160134.877167022@linuxfoundation.org>
+Message-ID: <20240812160151.374603171@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
