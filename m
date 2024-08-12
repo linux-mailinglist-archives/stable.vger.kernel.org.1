@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E7494F41F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD62B94F324
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 585D6280C3E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58C36B266A7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0935F186E34;
-	Mon, 12 Aug 2024 16:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2C5187341;
+	Mon, 12 Aug 2024 16:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcmtCqr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+xDpcvO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB027134AC;
-	Mon, 12 Aug 2024 16:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2A3187332;
+	Mon, 12 Aug 2024 16:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479979; cv=none; b=Db2qQTeALQFvi6Ug5BeT9DNTaz+D1xgPQjtyttHIDtQZIqxsUywnUZDP2gRIDDmWmDt26N4iJmeAHangl4mJaPaV/pxL+1ciDRxNV9Iw5RYbeosnhOmsStxVnWvfdsTDj5TWijefIA5hAS9OW9OcR1sNH7pnClK1BYqj0TVXGUg=
+	t=1723479250; cv=none; b=scJruX9DofIPkJH6r2XeSkSQb4vUiUja7DK3/VaB4JGs4UsfAIqZpYlso9nP3bbUs7Vm/lQ2ukHiYzIhTzGUiHR0ZNT7P9JQ4qk+Mr2bMvEJtKzcSyKMS7B+tF3Xv254vz3DuUoDTymfXWomOs+Sqmtr++5yZxILP+V0i9XlD3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479979; c=relaxed/simple;
-	bh=gCxdRtfsM3yJS2jgclgqrI/U/f3HaQRe4lhcvVMXjGI=;
+	s=arc-20240116; t=1723479250; c=relaxed/simple;
+	bh=rQoa9YVR5tnlULIa8Z5bgma87IUvfiNz+v5Osn6f8Xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IM6VDoZJp+8et9BYaZO4z5PFkavxbBMYvBHijP37F1Kaku9yzZor9+8r/e9trtgP3EdNiePDuGL7bxe4sKfPx0Xl5BahOPKMl3nEJUFByFO/hZKP/94acLwWi6du5/0JUcgrNOQdwd/gi31akw0q09tRDSWCNHxoJzDgJKEjKug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcmtCqr7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263F2C32782;
-	Mon, 12 Aug 2024 16:26:18 +0000 (UTC)
+	 MIME-Version; b=smz2HS7otIzflDYqHXOT4zRJFhh3+iIjwUhMIvDyxSsmsBNTbjEcyVxCfPSv+rv5a4c/vYF2NMFzxZQ0hK1MBeysK7qZ3MWPaOiP6ZSNqoDc0Qu5Gqh2Jmd8tpt3XX2RRbTx4EjoRBeLINgBDYHJ2H7xuxyHABNtfUtEMwhruc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+xDpcvO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13349C4AF0F;
+	Mon, 12 Aug 2024 16:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479979;
-	bh=gCxdRtfsM3yJS2jgclgqrI/U/f3HaQRe4lhcvVMXjGI=;
+	s=korg; t=1723479250;
+	bh=rQoa9YVR5tnlULIa8Z5bgma87IUvfiNz+v5Osn6f8Xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcmtCqr7t1sO6kuaWeG71GmGR4DQX0th5QNdJj58Nb+ki4COWa+PuoxhJcc+s9jUK
-	 IB8fK/xgHT3+QWTYi/0Yx87/xGvqMd16AZrO0FaCZCZJukoWAuoxSyxR75AWf4qWaR
-	 bhJxfU4kFUYQUo9Uh2g0L/tZn0nkSPy6UcZ3foZs=
+	b=O+xDpcvOXwAe9VabSoZcuYfDmbGf+Z71QgJsR0w9nWfqfYM03bsWysLaJaLNT9Qdm
+	 2syTQvPOyOzMnwKgwX9hY7QrQvdTpHTgdH0d7yH5hEdCw+KPeBkwHLzF/qRBFQ8RNy
+	 FJyBZPhHeYFSVLjsp87FGlJm9CN5EPkjA1Bk4qFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lefteris <eleftherios.giapitzakis@gmail.com>,
-	Tamim Khan <tamim@fusetak.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 060/263] ACPI: resource: Skip IRQ override on Asus Vivobook Pro N6506MU
-Date: Mon, 12 Aug 2024 18:01:01 +0200
-Message-ID: <20240812160148.842000884@linuxfoundation.org>
+Subject: [PATCH 6.6 006/189] x86/mm: Fix pti_clone_pgtable() alignment assumption
+Date: Mon, 12 Aug 2024 18:01:02 +0200
+Message-ID: <20240812160132.384648317@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamim Khan <tamim@fusetak.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit dc41751f9e07889d078e3f06adb6e892c80b7c10 ]
+[ Upstream commit 41e71dbb0e0a0fe214545fe64af031303a08524c ]
 
-Like various other Asus laptops, the Asus Vivobook Pro N6506MV has a
-DSDT table that describes IRQ 1 as ActiveLow while the kernel is overriding
-it to Edge_High. This prevents the internal keyboard from working. This patch
-prevents this issue by adding this laptop to the override table that prevents
-the kernel from overriding this IRQ
+Guenter reported dodgy crashes on an i386-nosmp build using GCC-11
+that had the form of endless traps until entry stack exhaust and then
+#DF from the stack guard.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218954
-Tested-by: Lefteris <eleftherios.giapitzakis@gmail.com>
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
-Link: https://patch.msgid.link/20240702125918.34683-1-tamim@fusetak.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+It turned out that pti_clone_pgtable() had alignment assumptions on
+the start address, notably it hard assumes start is PMD aligned. This
+is true on x86_64, but very much not true on i386.
+
+These assumptions can cause the end condition to malfunction, leading
+to a 'short' clone. Guess what happens when the user mapping has a
+short copy of the entry text?
+
+Use the correct increment form for addr to avoid alignment
+assumptions.
+
+Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20240731163105.GG33588@noisy.programming.kicks-ass.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/mm/pti.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index b5bf8b81a050a..b3ae5f9ac5510 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -524,6 +524,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "N6506MV"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook Pro N6506MU */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "N6506MU"),
-+		},
-+	},
- 	{
- 		/* LG Electronics 17U70P */
- 		.matches = {
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index 51b6b78e6b175..f7d1bbe76eb94 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -374,14 +374,14 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
+ 			 */
+ 			*target_pmd = *pmd;
+ 
+-			addr += PMD_SIZE;
++			addr = round_up(addr + 1, PMD_SIZE);
+ 
+ 		} else if (level == PTI_CLONE_PTE) {
+ 
+ 			/* Walk the page-table down to the pte level */
+ 			pte = pte_offset_kernel(pmd, addr);
+ 			if (pte_none(*pte)) {
+-				addr += PAGE_SIZE;
++				addr = round_up(addr + 1, PAGE_SIZE);
+ 				continue;
+ 			}
+ 
+@@ -401,7 +401,7 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
+ 			/* Clone the PTE */
+ 			*target_pte = *pte;
+ 
+-			addr += PAGE_SIZE;
++			addr = round_up(addr + 1, PAGE_SIZE);
+ 
+ 		} else {
+ 			BUG();
 -- 
 2.43.0
 
