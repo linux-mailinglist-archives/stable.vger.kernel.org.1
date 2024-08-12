@@ -1,136 +1,73 @@
-Return-Path: <stable+bounces-66726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3216F94F0E4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:56:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4380294F10D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE4881F211E3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:56:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2A471F221B2
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC96217F4FE;
-	Mon, 12 Aug 2024 14:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B514135417;
+	Mon, 12 Aug 2024 15:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grR+OPx+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8498Olq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF55B54724
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA539130AC8
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 15:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474544; cv=none; b=ftSdrGjGZ/AhqHUoWMc3W6iGpJeMpDe9jDwT5hk3nZcKdHlm1s4YYUSkDXBNmbBZAibPy1KvxSCwF/prc/uScWsbfHWTt9AGaMsCGU9sSmgtgXa4kP0ACNJ1TkdUiO+PpTc8a4GqFDeZ0/uvEFpQMJaocrDZuzXmz6Cw4ogxFhY=
+	t=1723474818; cv=none; b=DtNu9fkHhK+jgh+IG9hslG4QWIH78ef58VQnL7keD/nKEHzGkJI6A4Uii3QVyZx1NP2H2dLqJoTSbf3ML3HmasNCZ09RniE5FZ5PtunHg0sh/FxSFfFIjip7YL+8dc+OYY+tv8nTdmFEhp7cBs+RYd1kqUwOxwDMwwMF33TmaiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474544; c=relaxed/simple;
-	bh=QiUNaRJXKAAkLQcTzhiCtHPp+RRhFAe+AIhZSPA5XOw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=utFww4Yua2aIJQPa1CfZiX2syp64BCFh8rJLtkfz2A7iHwE29McfCbXk5ekEg4rSA6dMn3d7++YEw3BDYmTge0AdY0f0PfbeS5N1KSLqflcSXlIUGfkUW3JoR+mgP5fIHvg++9BAIVqHXabl8/UinefY9lHSxzVnereLe5SbThA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grR+OPx+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E525C32782;
-	Mon, 12 Aug 2024 14:55:43 +0000 (UTC)
+	s=arc-20240116; t=1723474818; c=relaxed/simple;
+	bh=sVrXZXI7CBoQfRqFkJa8UtNQF3Cbc1SAfjv8VFMOQpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=qB71zR4Z6+YoA4a7Ti5X5gvopOaxq2RZAgDwoG3fktpqQnGPN1z9xqE7p0osAMiCMB8qHqpVrJ3zLvbNUoV6Hhx3Mkb9Igxw1nZ2fEVuJ5D5CAJW+Dm4gkun7a6kiRHRQYYiJ6o4DrJhgTc1xG07n0pfIgwHrht32FNw8Pe/cYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8498Olq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADE4C4AF0F;
+	Mon, 12 Aug 2024 15:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474544;
-	bh=QiUNaRJXKAAkLQcTzhiCtHPp+RRhFAe+AIhZSPA5XOw=;
-	h=Subject:To:Cc:From:Date:From;
-	b=grR+OPx+4e1vT/ooTGR5FDnTx8YU/r9mcqqsZph4RPYrfmHouBg/usGDNqMWvFJul
-	 nZRBl+9pKfWTwZkwtw56jAFLcDcz0p4d3eW4/X0BWOvik7knY+TQq5ENTw1psjIpsE
-	 LfooA3u00qu+kzXosd+ONdBBh2gk+MwNOR9Q/jlM=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Defer handling mst up request in resume" failed to apply to 4.19-stable tree
-To: wayne.lin@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,hersenxs.wu@amd.com,mario.limonciello@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:53:52 +0200
-Message-ID: <2024081251-alienable-matador-3ea4@gregkh>
+	s=korg; t=1723474818;
+	bh=sVrXZXI7CBoQfRqFkJa8UtNQF3Cbc1SAfjv8VFMOQpQ=;
+	h=Date:From:To:Cc:Subject:From;
+	b=E8498OlqKtVNaJ0f+8w1tApZyKC+Mu7m43HcMdC/TdJ+a4sivYJ1XmS2zx+xLRQOz
+	 i03uBG7SkIzlpd69EA/SkbzbnZ/TvmGlF9lC/9V11DPQb4hcRRQt3249w2YzwDo+bM
+	 wxWHQ44XLSWD2z4kGIM++wB16oA4jViVLOMR8Xdo=
+Date: Mon, 12 Aug 2024 17:00:15 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: amd-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Subject: AMD drm patch workflow is broken for stable trees
+Message-ID: <2024081247-until-audacious-6383@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+Hi all,
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+As some of you have noticed, there's a TON of failure messages being
+sent out for AMD gpu driver commits that are tagged for stable
+backports.  In short, you all are doing something really wrong with how
+you are tagging these.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Please fix it up to NOT have duplicates in multiple branches that end up
+in Linus's tree at different times.  Or if you MUST do that, then give
+us a chance to figure out that it IS a duplicate.  As-is, it's not
+working at all, and I think I need to just drop all patches for this
+driver that are tagged for stable going forward and rely on you all to
+provide a proper set of backported fixes when you say they are needed.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 202dc359addab29451d3d18243c3d957da5392c8
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081251-alienable-matador-3ea4@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-202dc359adda ("drm/amd/display: Defer handling mst up request in resume")
-73c57a0aa7f6 ("drm/amd/display: Adjust the MST resume flow")
-1e5d4d8eb8c0 ("drm/amd/display: Ext displays with dock can't recognized after resume")
-028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
-d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
-94dfeaa46925 ("drm/amd/display: move dp phy related logic to link_dp_phy")
-630168a97314 ("drm/amd/display: move dp link training logic to link_dp_training")
-d144b40a4833 ("drm/amd/display: move dc_link_dpia logic to link_dp_dpia")
-a28d0bac0956 ("drm/amd/display: move dpcd logic from dc_link_dpcd to link_dpcd")
-a98cdd8c4856 ("drm/amd/display: refactor ddc logic from dc_link_ddc to link_ddc")
-4370f72e3845 ("drm/amd/display: refactor hpd logic from dc_link to link_hpd")
-0e8cf83a2b47 ("drm/amd/display: allow hpo and dio encoder switching during dp retrain test")
-7462475e3a06 ("drm/amd/display: move dccg programming from link hwss hpo dp to hwss")
-e85d59885409 ("drm/amd/display: use encoder type independent hwss instead of accessing enc directly")
-ebf13b72020a ("drm/amd/display: Revert Scaler HCBlank issue workaround")
-639f6ad6df7f ("drm/amd/display: Revert Reduce delay when sink device not able to ACK 00340h write")
-e3aa827e2ab3 ("drm/amd/display: Avoid setting pixel rate divider to N/A")
-180f33d27a55 ("drm/amd/display: Adjust DP 8b10b LT exit behavior")
-b7ada7ee61d3 ("drm/amd/display: Populate DP2.0 output type for DML pipe")
-ea192af507d9 ("drm/amd/display: Only update link settings after successful MST link train")
-
-thanks,
+Again, what you are doing today is NOT ok and is broken.  Please fix.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 202dc359addab29451d3d18243c3d957da5392c8 Mon Sep 17 00:00:00 2001
-From: Wayne Lin <wayne.lin@amd.com>
-Date: Mon, 15 Apr 2024 14:04:00 +0800
-Subject: [PATCH] drm/amd/display: Defer handling mst up request in resume
-
-[Why]
-Like commit ec5fa9fcdeca ("drm/amd/display: Adjust the MST resume flow"), we
-want to avoid handling mst topology changes before restoring the old state.
-If we enable DP_UP_REQ_EN before calling drm_atomic_helper_resume(), have
-changce to handle CSN event first and fire hotplug event before restoring the
-cached state.
-
-[How]
-Disable mst branch sending up request event before we restoring the cached state.
-DP_UP_REQ_EN will be set later when we call drm_dp_mst_topology_mgr_resume().
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Hersen Wu <hersenxs.wu@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index c863f400024b..ecf5752ef35f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2429,7 +2429,6 @@ static void resume_mst_branch_status(struct drm_dp_mst_topology_mgr *mgr)
- 
- 	ret = drm_dp_dpcd_writeb(mgr->aux, DP_MSTM_CTRL,
- 				 DP_MST_EN |
--				 DP_UP_REQ_EN |
- 				 DP_UPSTREAM_IS_SRC);
- 	if (ret < 0) {
- 		drm_dbg_kms(mgr->dev, "mst write failed - undocked during suspend?\n");
-
 
