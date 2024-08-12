@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-67083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC3C94F3D1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 859AB94F4EB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD8552811C5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C50B2690C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E51B186E34;
-	Mon, 12 Aug 2024 16:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C34183CD4;
+	Mon, 12 Aug 2024 16:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FIrf+Gp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBtqw7Ks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B393183CA6;
-	Mon, 12 Aug 2024 16:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBED186E5E;
+	Mon, 12 Aug 2024 16:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479751; cv=none; b=fIwvDGwbHAD9TC3JDrcjhFsH6mNTLtQ/PqsGJwqYi3di4b1YiPzcWwt1Uj4QtAVunrvKmJE2pdopgemKPVZvJPX8DIbMUqEgZoi1KyrSr/Nf6U2M8C0ggRRMJfZQvJFZNUcizqnUDilhosA+qwdlatwzGU0Fn+RGB8mG+zCPYuI=
+	t=1723480568; cv=none; b=UCGKzL/7h0mU9KxpjRyXgCOlCZYM0rk+gY4KtuORgsNEvWvA6QXoqE8ThMT2IYVxseaUpL+e5cAD4iq+FBNnDOB7UKffj+6pJkMJK8GNcTE7ltf7+LD5Akua1ZSO+lW/0K4q4g+8xVKviMbKW01igCChpE2+N6WSBza6U05346o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479751; c=relaxed/simple;
-	bh=oqr1o1Rk+kkLIjss6GWEzeCQStU1rJEK4hScVEtdBdc=;
+	s=arc-20240116; t=1723480568; c=relaxed/simple;
+	bh=larPktUZuJ13/XWMvfyiyQmWOnANMizyrfPOUok3dZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhHLUlI0JZwJf1yO/0qEIT+mxPiRWlaRMMFiHKg3mJI5zQkN7j8QgIJ5naGYi5F34aYSvKha0U88JikLccOovzSiUSO0CvpwjLbn4sthYqvp9L8G6z0fLHy24wUrCj8WAwhe4T5B198Y8js/TqMX2AB/HBkxe6em8JVwluEJCbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FIrf+Gp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E25CC32782;
-	Mon, 12 Aug 2024 16:22:30 +0000 (UTC)
+	 MIME-Version; b=ZL0AQd3y/uJV6hvhacAuMLNdc3DcMTHKYfEhS7iZSs0GEjfHlM9XIjQt4S2201uSYjrObzEAMdo+ynbgsZADvzSNWFGj5goUVxFZhtzZqfV3X0LDNqBrEZZRv8sXT6If3FL7uZ2Ez8odpYbh6/gqmAO/mw1bana+fPWnQ2zOQWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBtqw7Ks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D33AC32782;
+	Mon, 12 Aug 2024 16:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479751;
-	bh=oqr1o1Rk+kkLIjss6GWEzeCQStU1rJEK4hScVEtdBdc=;
+	s=korg; t=1723480567;
+	bh=larPktUZuJ13/XWMvfyiyQmWOnANMizyrfPOUok3dZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FIrf+GpsqZM1JJ2/StQ54OilIi8VZHlXdqfqBKVp4NXZGwnDs24LWjjpc/aipzsk
-	 xrwSFulTtNoDM5y/r0x34HpOHuk/JwAjZCHNGYvJYwnbyNCNnhRq/VOEy7LYK2bAz5
-	 gRdgTaDaRTf1PKAjRLeO2VwEJcjXyhfffRpzJkCM=
+	b=xBtqw7Ks0DjWIkvEYs+UJ6dWZoG0pg6FRiPr/BZF59JQwYdiBUG85dlISbmBXpl0N
+	 EXvovgrZOIV6PaGeIg6K32SsGNeIalTqOw+OxHGQmyrPEZSUp7jzdPbin08tcGVE+D
+	 UqN9khL9HiF5acMhtOETQbZBu1lhVP8K+HnrAsaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.6 180/189] nouveau: set placement to original placement on uvmm validate.
-Date: Mon, 12 Aug 2024 18:03:56 +0200
-Message-ID: <20240812160139.074719796@linuxfoundation.org>
+	Prem Nath Dey <prem.nath.dey@intel.com>,
+	Xiaoping Zhou <xiaoping.zhou@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.10 236/263] x86/paravirt: Fix incorrect virt spinlock setting on bare metal
+Date: Mon, 12 Aug 2024 18:03:57 +0200
+Message-ID: <20240812160155.569531968@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +66,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Chen Yu <yu.c.chen@intel.com>
 
-commit 9c685f61722d30a22d55bb8a48f7a48bb2e19bcc upstream.
+commit e639222a51196c69c70b49b67098ce2f9919ed08 upstream.
 
-When a buffer is evicted for memory pressure or TTM evict all,
-the placement is set to the eviction domain, this means the
-buffer never gets revalidated on the next exec to the correct domain.
+The kernel can change spinlock behavior when running as a guest. But this
+guest-friendly behavior causes performance problems on bare metal.
 
-I think this should be fine to use the initial domain from the
-object creation, as least with VM_BIND this won't change after
-init so this should be the correct answer.
+The kernel uses a static key to switch between the two modes.
 
-Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
-Cc: Danilo Krummrich <dakr@redhat.com>
-Cc: <stable@vger.kernel.org> # v6.6
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240515025542.2156774-1-airlied@gmail.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+In theory, the static key is enabled by default (run in guest mode) and
+should be disabled for bare metal (and in some guests that want native
+behavior or paravirt spinlock).
+
+A performance drop is reported when running encode/decode workload and
+BenchSEE cache sub-workload.
+
+Bisect points to commit ce0a1b608bfc ("x86/paravirt: Silence unused
+native_pv_lock_init() function warning"). When CONFIG_PARAVIRT_SPINLOCKS is
+disabled the virt_spin_lock_key is incorrectly set to true on bare
+metal. The qspinlock degenerates to test-and-set spinlock, which decreases
+the performance on bare metal.
+
+Set the default value of virt_spin_lock_key to false. If booting in a VM,
+enable this key. Later during the VM initialization, if other
+high-efficient spinlock is preferred (e.g. paravirt-spinlock), or the user
+wants the native qspinlock (via nopvspin boot commandline), the
+virt_spin_lock_key is disabled accordingly.
+
+This results in the following decision matrix:
+
+X86_FEATURE_HYPERVISOR         Y    Y       Y     N
+CONFIG_PARAVIRT_SPINLOCKS      Y    Y       N     Y/N
+PV spinlock                    Y    N       N     Y/N
+
+virt_spin_lock_key             N    Y/N     Y     N
+
+Fixes: ce0a1b608bfc ("x86/paravirt: Silence unused native_pv_lock_init() function warning")
+Reported-by: Prem Nath Dey <prem.nath.dey@intel.com>
+Reported-by: Xiaoping Zhou <xiaoping.zhou@intel.com>
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Suggested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Suggested-by: Nikolay Borisov <nik.borisov@suse.com>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240806112207.29792-1-yu.c.chen@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_uvmm.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/qspinlock.h |   12 +++++++-----
+ arch/x86/kernel/paravirt.c       |    7 +++----
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_uvmm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_uvmm.c
-@@ -1320,6 +1320,7 @@ nouveau_uvmm_bind_job_submit(struct nouv
+--- a/arch/x86/include/asm/qspinlock.h
++++ b/arch/x86/include/asm/qspinlock.h
+@@ -66,13 +66,15 @@ static inline bool vcpu_is_preempted(lon
  
- 		drm_gpuva_for_each_op(va_op, op->ops) {
- 			struct drm_gem_object *obj = op_gem_obj(va_op);
-+			struct nouveau_bo *nvbo;
+ #ifdef CONFIG_PARAVIRT
+ /*
+- * virt_spin_lock_key - enables (by default) the virt_spin_lock() hijack.
++ * virt_spin_lock_key - disables by default the virt_spin_lock() hijack.
+  *
+- * Native (and PV wanting native due to vCPU pinning) should disable this key.
+- * It is done in this backwards fashion to only have a single direction change,
+- * which removes ordering between native_pv_spin_init() and HV setup.
++ * Native (and PV wanting native due to vCPU pinning) should keep this key
++ * disabled. Native does not touch the key.
++ *
++ * When in a guest then native_pv_lock_init() enables the key first and
++ * KVM/XEN might conditionally disable it later in the boot process again.
+  */
+-DECLARE_STATIC_KEY_TRUE(virt_spin_lock_key);
++DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
  
- 			if (unlikely(!obj))
- 				continue;
-@@ -1330,8 +1331,9 @@ nouveau_uvmm_bind_job_submit(struct nouv
- 			if (unlikely(va_op->op == DRM_GPUVA_OP_UNMAP))
- 				continue;
+ /*
+  * Shortcut for the queued_spin_lock_slowpath() function that allows
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -51,13 +51,12 @@ DEFINE_ASM_FUNC(pv_native_irq_enable, "s
+ DEFINE_ASM_FUNC(pv_native_read_cr2, "mov %cr2, %rax", .noinstr.text);
+ #endif
  
--			ret = nouveau_bo_validate(nouveau_gem_object(obj),
--						  true, false);
-+			nvbo = nouveau_gem_object(obj);
-+			nouveau_bo_placement_set(nvbo, nvbo->valid_domains, 0);
-+			ret = nouveau_bo_validate(nvbo, true, false);
- 			if (ret) {
- 				op = list_last_op(&bind_job->ops);
- 				goto unwind;
+-DEFINE_STATIC_KEY_TRUE(virt_spin_lock_key);
++DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
+ 
+ void __init native_pv_lock_init(void)
+ {
+-	if (IS_ENABLED(CONFIG_PARAVIRT_SPINLOCKS) &&
+-	    !boot_cpu_has(X86_FEATURE_HYPERVISOR))
+-		static_branch_disable(&virt_spin_lock_key);
++	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
++		static_branch_enable(&virt_spin_lock_key);
+ }
+ 
+ static void native_tlb_remove_table(struct mmu_gather *tlb, void *table)
 
 
 
