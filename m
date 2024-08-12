@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-67068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F320094F3C0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9038D94F2D1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DE54B26062
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBB13B24843
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE553186E47;
-	Mon, 12 Aug 2024 16:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB70187341;
+	Mon, 12 Aug 2024 16:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnVUTrRE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/6cdsIY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4A61862BD;
-	Mon, 12 Aug 2024 16:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE8C1862B4;
+	Mon, 12 Aug 2024 16:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479699; cv=none; b=T8+flzq6Ka28TUDgEwr9r92BJPsWxRhvqzqj3gjhwXx8bEmm05bYDZGBqyyqOBbLsMEhCNuxlLUH5stz6j568pdXg2ZaHh18YDQ31YDN0XnOdMfBbkDwVX/lXPIh5uUbQ9vmDZPpsFqcY3RAWqbupggkc6pP5IRBi5Ze6TKyacM=
+	t=1723479028; cv=none; b=VgPM2UuUHYyQl19iBOAaCP4xh34Irne92ezZWqlu7zMAyctzpea8T0rDd6ErPfQfjJKbe4eWU3vsKZ4r6ZoiS5O9vjbm9PjPNNVuuNw9uXxm4LVzJGmDi7Zi5xvFgCPc/FMFM12jCxIT0zp54e3h9+9eNqjhRgPK4TEDdKUOMik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479699; c=relaxed/simple;
-	bh=UxJNu4unQz75rU0lGLkJzR6gaGSkpxmHCgPFsxXNPFg=;
+	s=arc-20240116; t=1723479028; c=relaxed/simple;
+	bh=jQsflMVP6GB3vFlm0vt5RrLF1BkhtatIZObXBz+NR3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=po2SvNdnG5+PX/GOqd+nCK4pBAYPuj93TYcJmSM0gjje+adltsqRLrorXqMik6jnoRXCTMVTfsCPDc0T8PlQN64BAadrsr42st9LqVQqsICTQw2VzjoQRSKIr/nyw6ZQrMrQLe4N6YQ2a5Kn4ou4/fkOa9QOfg9am3DvoGzkjjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnVUTrRE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC7FC32782;
-	Mon, 12 Aug 2024 16:21:38 +0000 (UTC)
+	 MIME-Version; b=Ud8cuMkMhyKmd97CGr5mpiiFzIniQziJSxA+5sqLXpj1k+3Rjk5PVnZLx3THW5JmdY82lgfBR6pDlL0aj6ZUZsYgbh5l2qmc0Iub07lItBTV7khfd7D/UYbwtfO+jKB3vhwBdmJNY6BWegnzen4c6sCLd4Yp3aq7GPQiuOvMFt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/6cdsIY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44645C32782;
+	Mon, 12 Aug 2024 16:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479699;
-	bh=UxJNu4unQz75rU0lGLkJzR6gaGSkpxmHCgPFsxXNPFg=;
+	s=korg; t=1723479028;
+	bh=jQsflMVP6GB3vFlm0vt5RrLF1BkhtatIZObXBz+NR3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnVUTrRE+3yoiS0edjbTSK8ggBNfIRHbTrp5rX+s+wnnrZ2ybATv2Or2v3Gec8XXQ
-	 If9Qddqu/FFp2otrN9tqZ3/DH2gIe/ENYyR4Qq07uiUeuO8PDiTPmEIMxDGwCEVfNN
-	 EL8+YjSf9V+fVeSS6QMja7p3pUrbLOcL3zapYl4M=
+	b=X/6cdsIYr9sqKb+ug/uMoZjrV3lSySnZod2uXjnMZjI65YZwMewk2VUgbM6pSwSLG
+	 ExFOqHWp0ZSdJ1O8tMfCcBxIAURO6kDZ+BbwQ4Rm5PkL5KUfz4wQzghHAeufEdkgUF
+	 pZiqwZonxRPaV7jwUJBs9j0FW2Y397KnxEclX0OE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 135/189] timekeeping: Fix bogus clock_was_set() invocation in do_adjtimex()
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 110/150] parisc: fix a possible DMA corruption
 Date: Mon, 12 Aug 2024 18:03:11 +0200
-Message-ID: <20240812160137.343170823@linuxfoundation.org>
+Message-ID: <20240812160129.406601927@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 5916be8a53de6401871bdd953f6c60237b47d6d3 upstream.
+commit 7ae04ba36b381bffe2471eff3a93edced843240f upstream.
 
-The addition of the bases argument to clock_was_set() fixed up all call
-sites correctly except for do_adjtimex(). This uses CLOCK_REALTIME
-instead of CLOCK_SET_WALL as argument. CLOCK_REALTIME is 0.
+ARCH_DMA_MINALIGN was defined as 16 - this is too small - it may be
+possible that two unrelated 16-byte allocations share a cache line. If
+one of these allocations is written using DMA and the other is written
+using cached write, the value that was written with DMA may be
+corrupted.
 
-As a result the effect of that clock_was_set() notification is incomplete
-and might result in timers expiring late because the hrtimer code does
-not re-evaluate the affected clock bases.
+This commit changes ARCH_DMA_MINALIGN to be 128 on PA20 and 32 on PA1.1 -
+that's the largest possible cache line size.
 
-Use CLOCK_SET_WALL instead of CLOCK_REALTIME to tell the hrtimers code
-which clock bases need to be re-evaluated.
+As different parisc microarchitectures have different cache line size, we
+define arch_slab_minalign(), cache_line_size() and
+dma_get_cache_alignment() so that the kernel may tune slab cache
+parameters dynamically, based on the detected cache line size.
 
-Fixes: 17a1b8826b45 ("hrtimer: Add bases argument to clock_was_set()")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/877ccx7igo.ffs@tglx
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timekeeping.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/Kconfig             |    1 +
+ arch/parisc/include/asm/cache.h |   11 ++++++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -2476,7 +2476,7 @@ int do_adjtimex(struct __kernel_timex *t
- 		clock_set |= timekeeping_advance(TK_ADV_FREQ);
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -18,6 +18,7 @@ config PARISC
+ 	select ARCH_SUPPORTS_HUGETLBFS if PA20
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+ 	select ARCH_STACKWALK
++	select ARCH_HAS_CACHE_LINE_SIZE
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select HAVE_RELIABLE_STACKTRACE
+ 	select DMA_OPS
+--- a/arch/parisc/include/asm/cache.h
++++ b/arch/parisc/include/asm/cache.h
+@@ -20,7 +20,16 @@
  
- 	if (clock_set)
--		clock_was_set(CLOCK_REALTIME);
-+		clock_was_set(CLOCK_SET_WALL);
+ #define SMP_CACHE_BYTES L1_CACHE_BYTES
  
- 	ntp_notify_cmos_timer();
+-#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
++#ifdef CONFIG_PA20
++#define ARCH_DMA_MINALIGN	128
++#else
++#define ARCH_DMA_MINALIGN	32
++#endif
++#define ARCH_KMALLOC_MINALIGN	16	/* ldcw requires 16-byte alignment */
++
++#define arch_slab_minalign()	((unsigned)dcache_stride)
++#define cache_line_size()	dcache_stride
++#define dma_get_cache_alignment cache_line_size
+ 
+ #define __read_mostly __section(".data..read_mostly")
  
 
 
