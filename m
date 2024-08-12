@@ -1,107 +1,103 @@
-Return-Path: <stable+bounces-66749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393D994F1A1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C5794F1C1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BB791C21EEC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:27:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2081C21FD5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E19184522;
-	Mon, 12 Aug 2024 15:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AE918951F;
+	Mon, 12 Aug 2024 15:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+Z9KHJZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UybtaNXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30645183087;
-	Mon, 12 Aug 2024 15:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89350185E7B;
+	Mon, 12 Aug 2024 15:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723476458; cv=none; b=hwzte54WaDwah3JHAQXntd2SiTMMzApDJfiz3Yoe+AKKmrIN9g7uxp5aPlIlecrZ/pT4WXkhkAyaCcgBGXccjwx7LMledrY+xWrnVA5S73D6TC+Y48w04C7rbt+Y/Np40NtZ29ZsXLXhTECkx66zt0xwJUw55fOtILkAAv+dqc4=
+	t=1723476657; cv=none; b=lV3CacEwZz+nNU3+iZFFtd16e9719P1hkzaAMA4OQ3KUCBMLrJEP93ODEZd1cM5Uiz0SL4MhjwJrqhnaaTKN3HqONUEOnvGNjUzC30jThpNmVEUcbL8Pmo0LaTXgNInHWYiSRMdbwBFs++DmIShLE3UUp3JuibowEffZPQC/kNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723476458; c=relaxed/simple;
-	bh=M/wMJjpZx6aJiSHtNxv7izRpHQehSQ8ZI6vFRVatl4I=;
+	s=arc-20240116; t=1723476657; c=relaxed/simple;
+	bh=j1KKsEv7LB1KVKKulCI9+b+USbdWMSFLg6h1Jham6AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9lMWs8HtR8BPnyrHLfpiiGd6OlVH2mNUoFRfCoGBmJRs5xAIlD+mNNywpFkVen00Pq875Xz7JBPmLMer4XJqVoOlzX43dMVnmKCKZC3TtrjTVeoVn/I9M2ERmo2fDa9OR6CyxVxDhtS+KILQ698dAtTkMXTPMydhkejS2rs4Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+Z9KHJZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DA0C32782;
-	Mon, 12 Aug 2024 15:27:36 +0000 (UTC)
+	 MIME-Version; b=NXZWkL5n+YEBpWYQcDWDyBry6+U0yYGTVckkEd2h9yCUg26ecj5vZP5ci7onENdtMyJuLa6T1MHvlzqFutq7P5D+nIv0QxuXXa3rArCM08jnKJ4GC32AE9G0JIiUmRXHZW6Jj+ug2DjeKZFdJ89pznSmWjCX/y/+oI5d7Z7ZEow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UybtaNXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D61CC32782;
+	Mon, 12 Aug 2024 15:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723476458;
-	bh=M/wMJjpZx6aJiSHtNxv7izRpHQehSQ8ZI6vFRVatl4I=;
+	s=k20201202; t=1723476657;
+	bh=j1KKsEv7LB1KVKKulCI9+b+USbdWMSFLg6h1Jham6AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a+Z9KHJZssX2jlCXg0ZtSgoZdggsSqFhkOBIi0hGoITJPF5TWmVHffmJTJc5hTQ+u
-	 n3ngPEO8es5ZmCdAHwJcsvWjCuX9ESNBoaVXVbBhEU6HKT+Hp0yBfPkcSSYSmS7NaV
-	 k7Ws2cnENHAxiGB2nrkjZes/Hbmlkx31lkfLpaxNnnXwyUQ6lwrRlwO/dlgvgXvkk/
-	 /xaFkezhSQlNtr4iF4kdQcTfCJVB93YSxVdX8F3F0Quxrrg5s35tdqk4o7+8Szj8Rf
-	 nf0+PCtN8HItALEgqKP3b4+0ddMpd3I3L00WRLlCjTl7AXwuizM77ERLMwyl7Yd+eX
-	 3V2cRy5msrZiw==
-From: fdmanana@kernel.org
-To: stable@vger.kernel.org
-Cc: linux-btrfs@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	Filipe Manana <fdmanana@suse.com>,
-	syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH for 5.15 stable] btrfs: fix double inode unlock for direct IO sync writes
-Date: Mon, 12 Aug 2024 16:27:33 +0100
-Message-ID: <363aee7827c9d6ff034b7e3ea2a5bf4959ff4905.1723046461.git.fdmanana@suse.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1723046461.git.fdmanana@suse.com>
-References: <cover.1723046461.git.fdmanana@suse.com>
+	b=UybtaNXpoDU/l+C4zt/6hvR7Jvxy4jDYdc7IZSQ67utjIXYy1865h5vA8RtvYYZr3
+	 InkI+w5RkvtgTSyfDez9odoRgT4zQLAKCTbhQgVtnZ2U0YFNgn6zCqipP9BHaGrnDh
+	 50u1Yj5pwcAfR4GNns3xycN1TGnTClOs0X/BFjlHXrORnDxvRH4ChPe7WIgYwkAwjD
+	 ShmrgaZS7Dgm6cO2Ijyi9p9pfaqe5HgIrKu58YAR5Ugkd1cbDe5FDuLC48OxoomhEa
+	 1NNsMYRCcOToDGtCqPfc6eVImslWNEXYEviAWZh+qID0+Qvs9fTdwCVDcKf13U6gUW
+	 E9CAV2XgetLRg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.6.y 0/5] Backport of "mptcp: pm: don't try to create sf if alloc failed" and more
+Date: Mon, 12 Aug 2024 17:30:51 +0200
+Message-ID: <20240812153050.573404-7-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024081244-uncertain-snarl-e4f6@gregkh>
+References: <2024081244-uncertain-snarl-e4f6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1512; i=matttbe@kernel.org; h=from:subject; bh=j1KKsEv7LB1KVKKulCI9+b+USbdWMSFLg6h1Jham6AE=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmuiqrrzvMfXRFBuRvr7myzcQKnqXVAibVSHOX/ Qt3RdnoR7iJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZroqqwAKCRD2t4JPQmmg c8nvEACRCZb/8u/6oGGNuyJKBMo1KMx57Edn17Ikq1VbbTkJNWToFQiX4j2vBfdGNr5YJ1MjgZz X2pyhAPnK6f//iOXXtP5eJcUqHAwRFt/xkxdevobIFQ+yYVYyEXBSbOv9B88zA94TfolsHnj+Sb dDC+T0vxCJ5A9zFU6t8/1BOoJ3CrJiXrYl4d9sgkIwwgz+q+KjtkPvPtlnPqAQ+9gVX5kIFPfMV ix96+QtCAq/c7YBacl+jd9eyRvG4zdt41A8prl12o4JLuYWoVgscZ0ogWG2UDPyDpy5sC5WYssa CYm/iF1AoCvLkUZmuTh75X24y7QtfYphcAipbGVV82FyrGnOA95QPwb5+NII6ninja4Jy7Ddi5j Rkx6YgkBFXPRQRkytpdGaeVlRo+VpLnEsggrmcegbXALxSkbV//9r3ysKlclzBDbXx051eLATIk C1kR+kH/FdYZeBeDSv0RBgUTGjnQpsYy7NZbtmhbCbLrvSLWBjj46tGkdID0DtMqwF0aEqH/y6p D+TbYpDTfQH6PXONWXLhkT0tri7wUpyr1HitMrUAU/4xDmQJmbqi1qv7Wyf0SEB32XdwG8ooj7g nJ3YVBK5FxxxFWsOJ7ZKdWQ9Ygs9FcE1+8RRBl/wnAJUypyHjIjlD3VwvZtN+EloPDBSqLzE9ct yTn0Mouq7WHY6eg==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+Patches "mptcp: pm: don't try to create sf if alloc failed" and "mptcp:
+pm: do not ignore 'subflow' if 'signal' flag is also set" depend on
+"mptcp: pm: reduce indentation blocks", a simple refactoring that can be
+picked to ease the backports. Including this patch avoids conflicts with
+the two other patches.
 
-commit e0391e92f9ab4fb3dbdeb139c967dcfa7ac4b115 upstream.
+While at it, also picked the modifications of the selftests to validate
+the other modifications.
 
-If we do a direct IO sync write, at btrfs_sync_file(), and we need to skip
-inode logging or we get an error starting a transaction or an error when
-flushing delalloc, we end up unlocking the inode when we shouldn't under
-the 'out_release_extents' label, and then unlock it again at
-btrfs_direct_write().
+If you prefer, feel free to backport these 5 commits to v6.6:
 
-Fix that by checking if we have to skip inode unlocking under that label.
+  c95eb32ced82 cd7c957f936f 85df533a787b bec1f3b119eb 4d2868b5d191
 
-Reported-by: syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/000000000000dfd631061eaeb4bc@google.com/
-Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
----
- fs/btrfs/file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+In this order, and thanks to c95eb32ced82, there are no conflicts.
 
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index 7ca49c02e8f8..c44dfb4370d7 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -2433,7 +2433,10 @@ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
- 
- out_release_extents:
- 	btrfs_release_log_ctx_extents(&ctx);
--	btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
-+	if (skip_ilock)
-+		up_write(&BTRFS_I(inode)->i_mmap_lock);
-+	else
-+		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
- 	goto out;
- }
- 
+Details:
+
+- c95eb32ced82 ("mptcp: pm: reduce indentation blocks")
+- cd7c957f936f ("mptcp: pm: don't try to create sf if alloc failed")
+- 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
+- bec1f3b119eb ("selftests: mptcp: join: ability to invert ADD_ADDR check")
+- 4d2868b5d191 ("selftests: mptcp: join: test both signal & subflow")
+
+
+Matthieu Baerts (NGI0) (5):
+  mptcp: pm: reduce indentation blocks
+  mptcp: pm: don't try to create sf if alloc failed
+  mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set
+  selftests: mptcp: join: ability to invert ADD_ADDR check
+  selftests: mptcp: join: test both signal & subflow
+
+ net/mptcp/pm_netlink.c                        | 43 ++++++++++-----
+ .../testing/selftests/net/mptcp/mptcp_join.sh | 55 ++++++++++++++-----
+ 2 files changed, 69 insertions(+), 29 deletions(-)
+
 -- 
-2.43.0
+2.45.2
 
 
