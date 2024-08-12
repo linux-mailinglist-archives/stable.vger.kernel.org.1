@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-66792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A45894F27C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B18694F33A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA382B2467F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 133BB1C21718
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78032186E51;
-	Mon, 12 Aug 2024 16:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75EE61862BD;
+	Mon, 12 Aug 2024 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSxFDJDz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6sKCOL7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AD0186295;
-	Mon, 12 Aug 2024 16:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A75136348;
+	Mon, 12 Aug 2024 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478800; cv=none; b=B4jO6RbmzddG3UQzleuCclTmfTzh6ZobEorBVXMKqzx6dgAU0THS4sCUjImTFAZJv2yJ49+IfRI4oxvIHqPrmdH9MwvM888+/cBTEGY9RYhmbnsqdu2TBYXXxHEzZDMoTQTr3Tav/GKSrVPed1V9wZTKJm1j6wLZo6r5GktxRPo=
+	t=1723479315; cv=none; b=gxxD1uUee8gl+hKLDDaMN92YA3gfNxtU216iJE7AhAtx56hZ+/la7FFGl1PiM23YwesInAr2Igs5gcZmq/LWRkSxq9Pt5ipMd2Exviovhtjr7pEt9U7b6J9GBgnlN+rYLR/kma8cYifnUypIMUMxJlHCpHCtIBs2b83PICJhp7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478800; c=relaxed/simple;
-	bh=4BdxxmfCXSe3q2EB9s504csBGPq8aDAYo+16vZLhqfk=;
+	s=arc-20240116; t=1723479315; c=relaxed/simple;
+	bh=H3o5M2TJyl6nC8vQBDecwX8UhgsIWUzI3vXVJR353ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H5DYPk4JJM0a7kE6+I93F1xPbz+B1c5rUuHl1xhCMe1a3IkPU0nnA7DoPH7W8rmn+nZx3qgW4HlhUO/isqICnM/T7pIuQvyf+VX2GTPYTfCkHPKxy0djBkPZQdFSSreEOaog6+k0spGTG0Zkl4yd7sWrBcb2YBCAHb67Th9225c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSxFDJDz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7C5C32782;
-	Mon, 12 Aug 2024 16:06:39 +0000 (UTC)
+	 MIME-Version; b=n95WcXxtRJjMnpVWaxwQswMfEESImBoDx3ass3T4uVr04z9vDcqEOsB0TyE4M4hUeuNDsf0p36MpIMvtYVrV9Zh+1OW9QOS0Zw3gvLgdlyaPPXqeQO5Cj7yQ0sX0a/QlAYaoPSDTRgfQBzQgf8CUfZGaX4MvyZGxwa5m/szXTQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6sKCOL7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9996FC32782;
+	Mon, 12 Aug 2024 16:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478800;
-	bh=4BdxxmfCXSe3q2EB9s504csBGPq8aDAYo+16vZLhqfk=;
+	s=korg; t=1723479315;
+	bh=H3o5M2TJyl6nC8vQBDecwX8UhgsIWUzI3vXVJR353ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSxFDJDz45bozI6/1Vs4l0LC0/5h11ArSEHwngjS7ozzjR/O3cJWlWXxTka622qWV
-	 kb+rjjwPMkgkWroiuGhfU4K7x67ja1zgHPTvLrM3L4UEsn1TSHJe6FNDTy2v9X3Y7u
-	 XmStEmK4olQGjyAf7igQcwV/dbgavicwIMasVDPs=
+	b=X6sKCOL7mNK35w8uYeaqR9tKxmm5iHonSP8eyKYhLS/QP/8RGEhuGKuf1OYuOx92a
+	 c+rkW6jwFZw9Vq/jrH+3r18IAA01L710R/ySbZOf1Ci9oo1PxEKEsY/qsr9+d+igHA
+	 tVNzgtm22AyAUwu4SwtZGPg/R0IX2Q7LNIQgw9TY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/150] ACPI: SBS: manage alarm sysfs attribute through psy core
+Subject: [PATCH 6.6 048/189] Bluetooth: btnxpuart: Shutdown timer and prevent rearming when driver unloading
 Date: Mon, 12 Aug 2024 18:01:44 +0200
-Message-ID: <20240812160126.056411681@linuxfoundation.org>
+Message-ID: <20240812160133.994634934@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-[ Upstream commit 6bad28cfc30988a845fb3f59a99f4b8a4ce8fe95 ]
+[ Upstream commit 0d0df1e750bac0fdaa77940e711c1625cff08d33 ]
 
-Let the power supply core register the attribute.
+When unload the btnxpuart driver, its associated timer will be deleted.
+If the timer happens to be modified at this moment, it leads to the
+kernel call this timer even after the driver unloaded, resulting in
+kernel panic.
+Use timer_shutdown_sync() instead of del_timer_sync() to prevent rearming.
 
-This ensures that the attribute is created before the device is
-announced to userspace, avoiding a race condition.
+panic log:
+  Internal error: Oops: 0000000086000007 [#1] PREEMPT SMP
+  Modules linked in: algif_hash algif_skcipher af_alg moal(O) mlan(O) crct10dif_ce polyval_ce polyval_generic   snd_soc_imx_card snd_soc_fsl_asoc_card snd_soc_imx_audmux mxc_jpeg_encdec v4l2_jpeg snd_soc_wm8962 snd_soc_fsl_micfil   snd_soc_fsl_sai flexcan snd_soc_fsl_utils ap130x rpmsg_ctrl imx_pcm_dma can_dev rpmsg_char pwm_fan fuse [last unloaded:   btnxpuart]
+  CPU: 5 PID: 723 Comm: memtester Tainted: G           O       6.6.23-lts-next-06207-g4aef2658ac28 #1
+  Hardware name: NXP i.MX95 19X19 board (DT)
+  pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : 0xffff80007a2cf464
+  lr : call_timer_fn.isra.0+0x24/0x80
+...
+  Call trace:
+   0xffff80007a2cf464
+   __run_timers+0x234/0x280
+   run_timer_softirq+0x20/0x40
+   __do_softirq+0x100/0x26c
+   ____do_softirq+0x10/0x1c
+   call_on_irq_stack+0x24/0x4c
+   do_softirq_own_stack+0x1c/0x2c
+   irq_exit_rcu+0xc0/0xdc
+   el0_interrupt+0x54/0xd8
+   __el0_irq_handler_common+0x18/0x24
+   el0t_64_irq_handler+0x10/0x1c
+   el0t_64_irq+0x190/0x194
+  Code: ???????? ???????? ???????? ???????? (????????)
+  ---[ end trace 0000000000000000 ]---
+  Kernel panic - not syncing: Oops: Fatal exception in interrupt
+  SMP: stopping secondary CPUs
+  Kernel Offset: disabled
+  CPU features: 0x0,c0000000,40028143,1000721b
+  Memory Limit: none
+  ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/sbs.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/bluetooth/btnxpuart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index e6a01a8df1b81..7c0eba1a37d87 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -77,7 +77,6 @@ struct acpi_battery {
- 	u16 spec;
- 	u8 id;
- 	u8 present:1;
--	u8 have_sysfs_alarm:1;
- };
+diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
+index 83e8e27a5ecec..b5d40e0e05f31 100644
+--- a/drivers/bluetooth/btnxpuart.c
++++ b/drivers/bluetooth/btnxpuart.c
+@@ -340,7 +340,7 @@ static void ps_cancel_timer(struct btnxpuart_dev *nxpdev)
+ 	struct ps_data *psdata = &nxpdev->psdata;
  
- #define to_acpi_battery(x) power_supply_get_drvdata(x)
-@@ -462,12 +461,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
- 	return count;
+ 	flush_work(&psdata->work);
+-	del_timer_sync(&psdata->ps_timer);
++	timer_shutdown_sync(&psdata->ps_timer);
  }
  
--static const struct device_attribute alarm_attr = {
-+static struct device_attribute alarm_attr = {
- 	.attr = {.name = "alarm", .mode = 0644},
- 	.show = acpi_battery_alarm_show,
- 	.store = acpi_battery_alarm_store,
- };
- 
-+static struct attribute *acpi_battery_attrs[] = {
-+	&alarm_attr.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(acpi_battery);
-+
- /* --------------------------------------------------------------------------
-                                  Driver Interface
-    -------------------------------------------------------------------------- */
-@@ -509,7 +514,10 @@ static int acpi_battery_read(struct acpi_battery *battery)
- static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
--	struct power_supply_config psy_cfg = { .drv_data = battery, };
-+	struct power_supply_config psy_cfg = {
-+		.drv_data = battery,
-+		.attr_grp = acpi_battery_groups,
-+	};
- 	int result;
- 
- 	battery->id = id;
-@@ -539,10 +547,6 @@ static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- 		goto end;
- 	}
- 
--	result = device_create_file(&battery->bat->dev, &alarm_attr);
--	if (result)
--		goto end;
--	battery->have_sysfs_alarm = 1;
-       end:
- 	pr_info("%s [%s]: Battery Slot [%s] (battery %s)\n",
- 	       ACPI_SBS_DEVICE_NAME, acpi_device_bid(sbs->device),
-@@ -554,11 +558,8 @@ static void acpi_battery_remove(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
- 
--	if (battery->bat) {
--		if (battery->have_sysfs_alarm)
--			device_remove_file(&battery->bat->dev, &alarm_attr);
-+	if (battery->bat)
- 		power_supply_unregister(battery->bat);
--	}
- }
- 
- static int acpi_charger_add(struct acpi_sbs *sbs)
+ static void ps_control(struct hci_dev *hdev, u8 ps_state)
 -- 
 2.43.0
 
