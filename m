@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-67095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2041194F3DD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92EFE94F2F5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02F32821FB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55A2C2853B0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7B5183CD9;
-	Mon, 12 Aug 2024 16:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89896187561;
+	Mon, 12 Aug 2024 16:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkGxk6f3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OY6szCsp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8FA134AC;
-	Mon, 12 Aug 2024 16:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C5D1EA8D;
+	Mon, 12 Aug 2024 16:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479791; cv=none; b=q42LdmVyFllXhiHgaKqUrowZ0sdKJ5MxVlsn/Ue/0r8lBVLGf/Pd1Lb/AFeLqupNBcA7pIDOwMSUpkqzwvJESFOjlRDaAZnqLZPSYabD6QoxrNAWfHP0V4kLXgjxpQVqD8uNel+8/WjFmZxWDm3umw7hDuKqtD/MYs9tapFThaM=
+	t=1723479121; cv=none; b=He3GOEhbZxTr01nSscslA2GqX9sxQEKydRfWk9B4Ww4shwz4mQLeGymuEM+oQYCN42NSPhkY62k8mYxQKn2FIMTQMfjuIqVOrRgbjBErECWh092D/jPhv6B3Q56B2hE1H4fq5YbT/SDkNtupijQVUm4ARH6LZQlYHgCIQbJAk8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479791; c=relaxed/simple;
-	bh=efMK0o+Cve7sbNSnvbcTcj1wrkELwC+1SyBT8d3twsw=;
+	s=arc-20240116; t=1723479121; c=relaxed/simple;
+	bh=UqkHympZqQw5qwM/zzEfLegopBJFnYbeS9DslSKxxQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8BWgo4G0QOTA9CpUxigg8b5j8bnDF2YNh1azqx176mvKBKRJTnAdAnmFKkmtnjPIxieDyUqcaCVg03mxeoAHDKaDT6RC1Dz0qJkkzhp4QuXZni/uUi6hm6zTGJbiGiYbZTd8AIJ82CSsAQBMx7facHbUouE5RvYr9yJkS9a71s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkGxk6f3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87018C32782;
-	Mon, 12 Aug 2024 16:23:10 +0000 (UTC)
+	 MIME-Version; b=JulaQbsAmSXzN5OA3WmmmJTy5DWGlPtTnLT7OzXkj7rACmJOQOaeZC92GpxyQb5uFQhblk4uZQ8OOv3V79cAoRArFY1kwe8spnV+8pzhMg9cwNcegnRmXa6qpElFZOXF4Ruzw7d3zbzxo1mHHlPi4jcN1Sy7GBSbqc006oM4I1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OY6szCsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528BAC32782;
+	Mon, 12 Aug 2024 16:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479791;
-	bh=efMK0o+Cve7sbNSnvbcTcj1wrkELwC+1SyBT8d3twsw=;
+	s=korg; t=1723479120;
+	bh=UqkHympZqQw5qwM/zzEfLegopBJFnYbeS9DslSKxxQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xkGxk6f3Q5qDD+DtwIonccmlG9CZiJofgyNVp0MHGwai5U5lDfgeLWTwtB+pqG94j
-	 DI8+2qOSCMouyHYhr3QYq1A65XP7SZ4eD26GtgYVkAvcKp55gPwzY17dDdzHh59daH
-	 XyaCrasT2KkaZPIPGQI4x2YvGVpspgXMt47dzbQg=
+	b=OY6szCspxTHS+SjDib6VkMlvT7goQxNLw/GCo4g7O+7PrKg4/Ryv/ZY9vxhYVz5vo
+	 fHnvLg+gzbx0x0TwRwRNpO0wXRvjC9uQJ95FCQgjEqJYNg6yJ3/et9fGpzR5fr+QoQ
+	 OZt19JeV+mKcH5yastH/QxrBY1vTP9M+DmWK82Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.6 165/189] drm/mgag200: Bind I2C lifetime to DRM device
+	Mark Rutland <mark.rutland@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Besar Wicaksono <bwicaksono@nvidia.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.1 140/150] tools headers arm64: Sync arm64s cputype.h with the kernel sources
 Date: Mon, 12 Aug 2024 18:03:41 +0200
-Message-ID: <20240812160138.496551479@linuxfoundation.org>
+Message-ID: <20240812160130.574430799@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +68,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit eb1ae34e48a09b7a1179c579aed042b032e408f4 upstream.
+commit dc6abbbde4b099e936cd5428e196d86a5e119aae upstream.
 
-Managed cleanup with devm_add_action_or_reset() will release the I2C
-adapter when the underlying Linux device goes away. But the connector
-still refers to it, so this cleanup leaves behind a stale pointer
-in struct drm_connector.ddc.
+To get the changes in:
 
-Bind the lifetime of the I2C adapter to the connector's lifetime by
-using DRM's managed release. When the DRM device goes away (after
-the Linux device) DRM will first clean up the connector and then
-clean up the I2C adapter.
+  0ce85db6c2141b7f ("arm64: cputype: Add Neoverse-V3 definitions")
+  02a0a04676fa7796 ("arm64: cputype: Add Cortex-X4 definitions")
+  f4d9d9dcc70b96b5 ("arm64: Add Neoverse-V2 part")
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: b279df242972 ("drm/mgag200: Switch I2C code to managed cleanup")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.0+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-3-tzimmermann@suse.de
+That makes this perf source code to be rebuilt:
+
+  CC      /tmp/build/perf-tools/util/arm-spe.o
+
+The changes in the above patch add MIDR_NEOVERSE_V[23] and
+MIDR_NEOVERSE_V1 is used in arm-spe.c, so probably we need to add those
+and perhaps MIDR_CORTEX_X4 to that array? Or maybe we need to leave this
+for later when this is all tested on those machines?
+
+  static const struct midr_range neoverse_spe[] = {
+          MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+          MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+          MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+          {},
+  };
+
+Mark Rutland recommended about arm-spe.c:
+
+"I would not touch this for now -- someone would have to go audit the
+TRMs to check that those other cores have the same encoding, and I think
+it'd be better to do that as a follow-up."
+
+That addresses this perf build warning:
+
+  Warning: Kernel ABI header differences:
+    diff -u tools/arch/arm64/include/asm/cputype.h arch/arm64/include/asm/cputype.h
+
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Besar Wicaksono <bwicaksono@nvidia.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/lkml/Zl8cYk0Tai2fs7aM@x1
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mgag200/mgag200_i2c.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/arch/arm64/include/asm/cputype.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
-@@ -31,6 +31,8 @@
- #include <linux/i2c.h>
- #include <linux/pci.h>
+--- a/tools/arch/arm64/include/asm/cputype.h
++++ b/tools/arch/arm64/include/asm/cputype.h
+@@ -83,6 +83,9 @@
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
++#define ARM_CPU_PART_NEOVERSE_V2	0xD4F
++#define ARM_CPU_PART_CORTEX_X4		0xD82
++#define ARM_CPU_PART_NEOVERSE_V3	0xD84
  
-+#include <drm/drm_managed.h>
-+
- #include "mgag200_drv.h"
+ #define APM_CPU_PART_POTENZA		0x000
  
- static int mga_i2c_read_gpio(struct mga_device *mdev)
-@@ -86,7 +88,7 @@ static int mga_gpio_getscl(void *data)
- 	return (mga_i2c_read_gpio(mdev) & i2c->clock) ? 1 : 0;
- }
- 
--static void mgag200_i2c_release(void *res)
-+static void mgag200_i2c_release(struct drm_device *dev, void *res)
- {
- 	struct mga_i2c_chan *i2c = res;
- 
-@@ -126,5 +128,5 @@ int mgag200_i2c_init(struct mga_device *
- 	if (ret)
- 		return ret;
- 
--	return devm_add_action_or_reset(dev->dev, mgag200_i2c_release, i2c);
-+	return drmm_add_action_or_reset(dev, mgag200_i2c_release, i2c);
- }
+@@ -145,6 +148,9 @@
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
++#define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
++#define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
++#define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 
 
 
