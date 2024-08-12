@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-66869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F6394F2D6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A51C994F3A6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8F51F21622
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DE8A1F2093F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49DC187842;
-	Mon, 12 Aug 2024 16:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE49B186E20;
+	Mon, 12 Aug 2024 16:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmnvzcfP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1AavnEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E22183CD9;
-	Mon, 12 Aug 2024 16:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8A429CA;
+	Mon, 12 Aug 2024 16:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479051; cv=none; b=idYmkd9Ri2YFsaP3FQOyKgpkIE1pJyjuJCQmPIUtvWdqgjbbs0/YE2imImSEjai1uQRzxgvDAYnbV0Smh9IyN0Lk7nkYz1V+op1k/ltBIPDgpMN4sYck2AlBVILWohm3oijehWcJuaWw/ngzrlhFoBEbt4XXr0u4r+IQo+mFmNQ=
+	t=1723479617; cv=none; b=sepc50O9Y/jEZWIyNr4owsw0Rt+SPzIV7KRYutsAtQNpF2qAd+M/gAkDiNF5vqZ9vP4qFej5GpySW1sL7Q4X9S4VwnjhKb4AhTBo0jT6FZwwJU3eNvz0w+TptVGCnyZHKz3vOWl+20kso6c93TSdCzaeBoE+lzZY4Do4JNqXwrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479051; c=relaxed/simple;
-	bh=RRfA8R2sM34Lt423xpxBx1WXj6YJeucCmrbhcWu4E8g=;
+	s=arc-20240116; t=1723479617; c=relaxed/simple;
+	bh=2S7wqsS9JmoHxdh4D/M+ZfTOAoybPNHqfjveBX1PkAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQ5bQlTcCFFUZ4/pstTIB1vCBpN6k5DbVNjzlKoqDRjnDjcplNRxlAMP2LYS3o+YC/+INJ04alxY05jz84OEoM6nvLYuKZTsu3GDDASRnl7OFbuAZDa5rEu34+rMr/ikZ+06JjH8tm9sFdYI3bXrXjA7aFDWdQtwxb6MM54eDu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmnvzcfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB523C32782;
-	Mon, 12 Aug 2024 16:10:50 +0000 (UTC)
+	 MIME-Version; b=Vmveyn0Ziq09t35il/O0hYhqbLxpHGCvsHsJRca71I+dMDL8w/UFF96fNQGnUMNHB1GK/cAL8qMRArJnM1rwA9c9nUIa+HmdyIjoWIlPvUawCm9nFPTJyNdNANIiiECaj1bz+ZMr49RWw+b6+1A5AVkPaXc5to2O5FFlfzvAla8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1AavnEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0C5C32782;
+	Mon, 12 Aug 2024 16:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479051;
-	bh=RRfA8R2sM34Lt423xpxBx1WXj6YJeucCmrbhcWu4E8g=;
+	s=korg; t=1723479617;
+	bh=2S7wqsS9JmoHxdh4D/M+ZfTOAoybPNHqfjveBX1PkAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TmnvzcfP9GTRq0rZC6/vgf59vhKajs1ZH0q8Ql6UKLzxfJsiDOtHAPM2FCW0xYvPL
-	 6QtYZpS76wkaFpYOdmfIUbJ09ilysdTkSDGPDKKYfx5sXcMhLaIfGPuHtgydb6scQn
-	 QjjNQwCs344UXieftINiO8+4fS2XlJTSONPJGkI0=
+	b=w1AavnEhjkZZWCioXIzMikbDln6tS0TZX2kf3wFODF0EHwuIrWOLQGGrGcboZFCOw
+	 nID4+LHAEHcsFWQIy/L3nfQMbblaso1Xn9CoIo8Op/KmfQoyXeS3tD/MyvXZhD6PMO
+	 5dTbI0lumqgRkUc20uSGVrOWpqTJ+7DR++GD9fnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
-	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 117/150] tracing: Fix overflow in get_free_elt()
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 142/189] irqchip/xilinx: Fix shift out of bounds
 Date: Mon, 12 Aug 2024 18:03:18 +0200
-Message-ID: <20240812160129.676355366@linuxfoundation.org>
+Message-ID: <20240812160137.607716650@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-commit bcf86c01ca4676316557dd482c8416ece8c2e143 upstream.
+commit d73f0f49daa84176c3beee1606e73c7ffb6af8b2 upstream.
 
-"tracing_map->next_elt" in get_free_elt() is at risk of overflowing.
+The device tree property 'xlnx,kind-of-intr' is sanity checked that the
+bitmask contains only set bits which are in the range of the number of
+interrupts supported by the controller.
 
-Once it overflows, new elements can still be inserted into the tracing_map
-even though the maximum number of elements (`max_elts`) has been reached.
-Continuing to insert elements after the overflow could result in the
-tracing_map containing "tracing_map->max_size" elements, leaving no empty
-entries.
-If any attempt is made to insert an element into a full tracing_map using
-`__tracing_map_insert()`, it will cause an infinite loop with preemption
-disabled, leading to a CPU hang problem.
+The check is done by shifting the mask right by the number of supported
+interrupts and checking the result for zero.
 
-Fix this by preventing any further increments to "tracing_map->next_elt"
-once it reaches "tracing_map->max_elt".
+The data type of the mask is u32 and the number of supported interrupts is
+up to 32. In case of 32 interrupts the shift is out of bounds, resulting in
+a mismatch warning. The out of bounds condition is also reported by UBSAN:
 
+  UBSAN: shift-out-of-bounds in irq-xilinx-intc.c:332:22
+  shift exponent 32 is too large for 32-bit type 'unsigned int'
+
+Fix it by promoting the mask to u64 for the test.
+
+Fixes: d50466c90724 ("microblaze: intc: Refactor DT sanity check")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Fixes: 08d43a5fa063e ("tracing: Add lock-free tracing_map")
-Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Link: https://lore.kernel.org/20240805055922.6277-1-Tze-nan.Wu@mediatek.com
-Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/all/1723186944-3571957-1-git-send-email-radhey.shyam.pandey@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/tracing_map.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-xilinx-intc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -454,7 +454,7 @@ static struct tracing_map_elt *get_free_
- 	struct tracing_map_elt *elt = NULL;
- 	int idx;
+--- a/drivers/irqchip/irq-xilinx-intc.c
++++ b/drivers/irqchip/irq-xilinx-intc.c
+@@ -189,7 +189,7 @@ static int __init xilinx_intc_of_init(st
+ 		irqc->intr_mask = 0;
+ 	}
  
--	idx = atomic_inc_return(&map->next_elt);
-+	idx = atomic_fetch_add_unless(&map->next_elt, 1, map->max_elts);
- 	if (idx < map->max_elts) {
- 		elt = *(TRACING_MAP_ELT(map->elts, idx));
- 		if (map->ops && map->ops->elt_init)
-@@ -699,7 +699,7 @@ void tracing_map_clear(struct tracing_ma
- {
- 	unsigned int i;
+-	if (irqc->intr_mask >> irqc->nr_irq)
++	if ((u64)irqc->intr_mask >> irqc->nr_irq)
+ 		pr_warn("irq-xilinx: mismatch in kind-of-intr param\n");
  
--	atomic_set(&map->next_elt, -1);
-+	atomic_set(&map->next_elt, 0);
- 	atomic64_set(&map->hits, 0);
- 	atomic64_set(&map->drops, 0);
- 
-@@ -783,7 +783,7 @@ struct tracing_map *tracing_map_create(u
- 
- 	map->map_bits = map_bits;
- 	map->max_elts = (1 << map_bits);
--	atomic_set(&map->next_elt, -1);
-+	atomic_set(&map->next_elt, 0);
- 
- 	map->map_size = (1 << (map_bits + 1));
- 	map->ops = ops;
+ 	pr_info("irq-xilinx: %pOF: num_irq=%d, edge=0x%x\n",
 
 
 
