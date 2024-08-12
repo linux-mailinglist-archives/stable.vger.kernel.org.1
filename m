@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-66947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B4C94F336
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA1A94F25E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7BB428678A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3A841F21896
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F2618734B;
-	Mon, 12 Aug 2024 16:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41956184551;
+	Mon, 12 Aug 2024 16:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWFDxoHD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1vVMis8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D83187343;
-	Mon, 12 Aug 2024 16:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0115C1EA8D;
+	Mon, 12 Aug 2024 16:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479302; cv=none; b=sN/ElapIsGP32ACtFcu3CCI8cVdqCF9KKealpL48gP2ESPKkQa16k3L9889e7XByxDIEjzjQAs25ut/Zx3tcqAPf939YUIsxANJgcCuVrJv0fJtL2VsdKAwBgOWHqzuoTkciopxOFXHBKWCKCNMp5VG5r+7cfUVA2A3l/a7g2y4=
+	t=1723478736; cv=none; b=YCMJaacJK9X5TRVC1EXib4IcRB/3bu01Fx8pCv9vMyUUseuA30w9uDB7WaLz6o2N0bXYnLSTBscPAyt8VgSEjHNeoXzmrc/yeyuEcWbEk+YFQNcayZ6QVbiGg0xpZqk9+qWF1wfKiwkIijMgHDAH27lMWR+BgdUnl+qrUW3yX/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479302; c=relaxed/simple;
-	bh=uScv1mny68jhCAJlVOOLH3HJOWEJJmBZsDeXzZcyrtA=;
+	s=arc-20240116; t=1723478736; c=relaxed/simple;
+	bh=eLdf2t6MQStkvQBX7Hllxss8uvOKSIkMp5O9FyGb43w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqrFohGuSdyzrD7/lU3pZUEUTjUxkpbgK61aNYlRC8L/LozhPx663YZmt8ayBuB5+9T3HeZ7QrEAOaUP1R+NuyNhForhiw9HDeLyTyPjLWhW1sKg4lzq5cLszSJ3G0Br13pj8q+kkVX5WWJiNRet30lQR90GtjvvMgLyNyL3mac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWFDxoHD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D943AC32782;
-	Mon, 12 Aug 2024 16:15:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZaEqlWXC6Z99fRkZk3BztT9aaDlr2x5ozcVGSRDxc0txHLiF8nQfshza3G0A/L1c5asdK5PuZVD5QU4TtZgRrqKE5YEea/09RFhr1AKA6BXB/j5EZKKutqC4PCrTGl2DFJ7sReKvtYT5wQS03XQTCOfiDkyERB4VSoXOP+4kxfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1vVMis8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642E8C32782;
+	Mon, 12 Aug 2024 16:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479302;
-	bh=uScv1mny68jhCAJlVOOLH3HJOWEJJmBZsDeXzZcyrtA=;
+	s=korg; t=1723478735;
+	bh=eLdf2t6MQStkvQBX7Hllxss8uvOKSIkMp5O9FyGb43w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWFDxoHDNsB5h2V86hPmzS3MbeONL7qbduHyiwJbhfe4S09Z1g298TAd+qk2eS2bU
-	 jnpgVNxacsKChHMYCuqaq+62z86OlSD/mUG7GoaSwxFZUbRkPgnfCf5f+KadkyiJzT
-	 O6hZk0Iz0BEa9U/WoJa/JU2XaUENCym5kRVfFK8E=
+	b=C1vVMis8DyyFydVx0MIIN+SRGwrBmN1TqaM9HO8T+S8xE0T4Ra+/Yyvm8+5xAggMn
+	 OixWvdzvIaqg7PYv4Wlaz62IXCNSYPINLmYnOKsjKBVJvj0HYiInEBD3dhfE5g2uFv
+	 6+q4ewGWVUSVb16LAEY3yxsbQw5mf7qRYG6IU/Uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jithu Joseph <jithu.joseph@intel.com>,
+	Ashok Raj <ashok.raj@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/189] md: do not delete safemode_timer in mddev_suspend
-Date: Mon, 12 Aug 2024 18:01:23 +0200
-Message-ID: <20240812160133.190533569@linuxfoundation.org>
+Subject: [PATCH 6.1 003/150] platform/x86/intel/ifs: Initialize union ifs_status to zero
+Date: Mon, 12 Aug 2024 18:01:24 +0200
+Message-ID: <20240812160125.280021245@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-[ Upstream commit a8768a134518e406d41799a3594aeb74e0889cf7 ]
+[ Upstream commit 3114f77e9453daa292ec0906f313a715c69b5943 ]
 
-The deletion of safemode_timer in mddev_suspend() is redundant and
-potentially harmful now. If timer is about to be woken up but gets
-deleted, 'in_sync' will remain 0 until the next write, causing array
-to stay in the 'active' state instead of transitioning to 'clean'.
+If the IFS scan test exits prematurely due to a timeout before
+completing a single run, the union ifs_status remains uninitialized,
+leading to incorrect test status reporting. To prevent this, always
+initialize the union ifs_status to zero.
 
-Commit 0d9f4f135eb6 ("MD: Add del_timer_sync to mddev_suspend (fix
-nasty panic))" introduced this deletion for dm, because if timer fired
-after dm is destroyed, the resource which the timer depends on might
-have been freed.
-
-However, commit 0dd84b319352 ("md: call __md_stop_writes in md_stop")
-added __md_stop_writes() to md_stop(), which is called before freeing
-resource. Timer is deleted in __md_stop_writes(), and the origin issue
-is resolved. Therefore, delete safemode_timer can be removed safely now.
-
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240508092053.1447930-1-linan666@huaweicloud.com
+Fixes: 2b40e654b73a ("platform/x86/intel/ifs: Add scan test support")
+Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jithu Joseph <jithu.joseph@intel.com>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Link: https://lore.kernel.org/r/20240730155930.1754744-1-sathyanarayanan.kuppuswamy@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/platform/x86/intel/ifs/runtest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index b5dea664f946d..35b003b83ef1b 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -456,7 +456,6 @@ void mddev_suspend(struct mddev *mddev)
- 	clear_bit_unlock(MD_ALLOW_SB_UPDATE, &mddev->flags);
- 	wait_event(mddev->sb_wait, !test_bit(MD_UPDATING_SB, &mddev->flags));
- 
--	del_timer_sync(&mddev->safemode_timer);
- 	/* restrict memory reclaim I/O during raid array is suspend */
- 	mddev->noio_flag = memalloc_noio_save();
- }
+diff --git a/drivers/platform/x86/intel/ifs/runtest.c b/drivers/platform/x86/intel/ifs/runtest.c
+index d6bc2f0b61a34..aeb6a3b7a8fd9 100644
+--- a/drivers/platform/x86/intel/ifs/runtest.c
++++ b/drivers/platform/x86/intel/ifs/runtest.c
+@@ -165,8 +165,8 @@ static int doscan(void *data)
+  */
+ static void ifs_test_core(int cpu, struct device *dev)
+ {
++	union ifs_status status = {};
+ 	union ifs_scan activate;
+-	union ifs_status status;
+ 	unsigned long timeout;
+ 	struct ifs_data *ifsd;
+ 	int to_start, to_stop;
 -- 
 2.43.0
 
