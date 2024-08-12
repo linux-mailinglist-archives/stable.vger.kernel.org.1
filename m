@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-67173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D99094F434
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F5494F320
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45C041F21996
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52D04B266A4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D838186E38;
-	Mon, 12 Aug 2024 16:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0D6183CD4;
+	Mon, 12 Aug 2024 16:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEGCvLpe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPpKRHI/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4AA183CD4;
-	Mon, 12 Aug 2024 16:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB561862B9;
+	Mon, 12 Aug 2024 16:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480048; cv=none; b=JaTUt369nXJv6cynGxJ7RK4OxqCYINR/Hziw9G4dTMsPxFGlqtatKMFrB9Il9rID/pDIzH3ObcQ22orJ0RTFwbEeaVcW5KpshKdnx6mSz/7O/FbLPR66EDO4hGgOLt8/iEKijEK1R4GY8BifzCn9G0VPOfU07AUVIFnkBenkJOk=
+	t=1723479237; cv=none; b=J3WmLKwLRFNxLZLbVZKuL5HJMRrNFduJAsE0sj0R85Wm3PS531jkKFDEvSQ1CD1h6qTupWUtUDeyPwPb7Q//ZfANX6eMjQJ2DS1nj5HT1gclLIL1phVnRCxGu4NORovXI+md+uSTG7F9s9RawJC2dbsRfbuxdguNPrrKoXRJquY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480048; c=relaxed/simple;
-	bh=ie4TIhnuZfbw2Toyovfd0uilNHDmH8XTSzzu557rurk=;
+	s=arc-20240116; t=1723479237; c=relaxed/simple;
+	bh=BQtdDMPUb5eAD74pntuFlLk8A15OyyRk5xqP91DE1dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqoZAXp/G6VvkA0iSy+OWJE0NJHy8JhgqIbdrfG6ElEIs3wQk+wBV4ifgGVPFKSgR7T+Blf7TgBMqgD9BXy2Pr0HH0zxPcNh7fUZ0p4BRrA8Jm01Nv8zGoY8xS1nxmtAw5wf8dOvFnZZjJxx9b2rmyISAWCMhX6QOaMeIGmofTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEGCvLpe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0C3C4AF0C;
-	Mon, 12 Aug 2024 16:27:27 +0000 (UTC)
+	 MIME-Version; b=FsCPYuNhI3997MYPfA6fG4OqgWkTFM7NttmDYkssj4cwfbJI9apewZF50V79mBLK8pRHnx8ZuZC52YvpS9yEmMd4kHSpyLXxAbebUfP/T/zYHCTR5ihF2rfsmo8UfpqNM59V9KXLW6MU6lG1IM20klmP9MF0+PFQjSCIg8sR89g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPpKRHI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41442C32782;
+	Mon, 12 Aug 2024 16:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480048;
-	bh=ie4TIhnuZfbw2Toyovfd0uilNHDmH8XTSzzu557rurk=;
+	s=korg; t=1723479237;
+	bh=BQtdDMPUb5eAD74pntuFlLk8A15OyyRk5xqP91DE1dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEGCvLpelyTSNspkGFEmbY/JgYt9J5xxckeU9+uLaG9Ny8CSCffwEgCqBNSWOtGQh
-	 R24E9eMkl3OIv3pnQEDly2v1PQVkk6YvU7AJvbEkCGRKUwsyQ9pzlDplg3yycaAk21
-	 gHq9Xzvfk18Dwwi4h8oElNxV7xXJzFxC2bwr1e5k=
+	b=EPpKRHI/ACHUPXEqofZVgqIDnx5JZZleEnawYwyWQCkJC6ZaA9Ys32JvGdUY1iXvM
+	 dd7/F9bG0PVcM5hZE1kTMvOwOOMu7StoenKY0DRxWa8y3cD4gUYCglXhez7glJ3/zr
+	 GMZgXKinAcqteY30Dj6sRRvM9TXKM9qQx4t2GcFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 079/263] mlxsw: pci: Lock configuration space of upstream bridge during reset
+Subject: [PATCH 6.6 024/189] gpio: prevent potential speculation leaks in gpio_device_get_desc()
 Date: Mon, 12 Aug 2024 18:01:20 +0200
-Message-ID: <20240812160149.569619078@linuxfoundation.org>
+Message-ID: <20240812160133.075904228@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit 0970836c348b6bc2ea77ce4348a136d6febfd440 ]
+[ Upstream commit d795848ecce24a75dfd46481aee066ae6fe39775 ]
 
-The driver triggers a "Secondary Bus Reset" (SBR) by calling
-__pci_reset_function_locked() which asserts the SBR bit in the "Bridge
-Control Register" in the configuration space of the upstream bridge for
-2ms. This is done without locking the configuration space of the
-upstream bridge port, allowing user space to access it concurrently.
+Userspace may trigger a speculative read of an address outside the gpio
+descriptor array.
+Users can do that by calling gpio_ioctl() with an offset out of range.
+Offset is copied from user and then used as an array index to get
+the gpio descriptor without sanitization in gpio_device_get_desc().
 
-Linux 6.11 will start warning about such unlocked resets [1][2]:
+This change ensures that the offset is sanitized by using
+array_index_nospec() to mitigate any possibility of speculative
+information leaks.
 
-pcieport 0000:00:01.0: unlocked secondary bus reset via: pci_reset_bus_function+0x51c/0x6a0
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-Avoid the warning and the concurrent access by locking the configuration
-space of the upstream bridge prior to the reset and unlocking it
-afterwards.
-
-[1] https://lore.kernel.org/all/171711746953.1628941.4692125082286867825.stgit@dwillia2-xfh.jf.intel.com/
-[2] https://lore.kernel.org/all/20240531213150.GA610983@bhelgaas/
-
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://patch.msgid.link/9937b0afdb50f2f2825945393c94c093c04a5897.1720447210.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240523085332.1801-1-hagarhem@amazon.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/pci.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpio/gpiolib.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/pci.c b/drivers/net/ethernet/mellanox/mlxsw/pci.c
-index c0ced4d315f3d..d92f640bae575 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/pci.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/pci.c
-@@ -1599,6 +1599,7 @@ static int mlxsw_pci_reset_at_pci_disable(struct mlxsw_pci *mlxsw_pci,
- {
- 	struct pci_dev *pdev = mlxsw_pci->pdev;
- 	char mrsr_pl[MLXSW_REG_MRSR_LEN];
-+	struct pci_dev *bridge;
- 	int err;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 1c512ed3fa6d9..5c0016c77d2ab 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -15,6 +15,7 @@
+ #include <linux/kernel.h>
+ #include <linux/list.h>
+ #include <linux/module.h>
++#include <linux/nospec.h>
+ #include <linux/of.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/seq_file.h>
+@@ -164,7 +165,7 @@ struct gpio_desc *gpiochip_get_desc(struct gpio_chip *gc,
+ 	if (hwnum >= gdev->ngpio)
+ 		return ERR_PTR(-EINVAL);
  
- 	if (!pci_reset_sbr_supported) {
-@@ -1615,6 +1616,9 @@ static int mlxsw_pci_reset_at_pci_disable(struct mlxsw_pci *mlxsw_pci,
- sbr:
- 	device_lock_assert(&pdev->dev);
- 
-+	bridge = pci_upstream_bridge(pdev);
-+	if (bridge)
-+		pci_cfg_access_lock(bridge);
- 	pci_cfg_access_lock(pdev);
- 	pci_save_state(pdev);
- 
-@@ -1624,6 +1628,8 @@ static int mlxsw_pci_reset_at_pci_disable(struct mlxsw_pci *mlxsw_pci,
- 
- 	pci_restore_state(pdev);
- 	pci_cfg_access_unlock(pdev);
-+	if (bridge)
-+		pci_cfg_access_unlock(bridge);
- 
- 	return err;
+-	return &gdev->descs[hwnum];
++	return &gdev->descs[array_index_nospec(hwnum, gdev->ngpio)];
  }
+ EXPORT_SYMBOL_GPL(gpiochip_get_desc);
+ 
 -- 
 2.43.0
 
