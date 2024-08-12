@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55AA94ECB6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:18:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4981494ECB8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 433E1B21824
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:18:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550C21C21B2F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1E017ADE2;
-	Mon, 12 Aug 2024 12:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B083D1E488;
+	Mon, 12 Aug 2024 12:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqLhbQbX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehrx6CKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6D517A931
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF1717ADF6
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723465067; cv=none; b=cxOpWKlPFgdEJnDnAYb2BmQK4wthWI3Wxtxx/GGEXwRPYZiSkI1b5uBfaWKUxRIrGjLXllqCgovev0b8mtWjADlqq5qr/nttwTih9HiKn7rhxfpOk10YgqAvDT4yxBgNNztFnwxLcFRMeGl6bmBbZp3xjM2lPRUjaC9uItdCiF8=
+	t=1723465069; cv=none; b=pF3DJ0h9cWfdrNlFNh/9shANs9Q59WFIcBLU8IVOpYP0hT/6czywrc+P8U/XhpYgb0ToGpUdItyhvWxLFRkpudTqxIJ7msSD/EBpzWkDhVCGba3samLlTLrkgymsSZ7PJy64qo8oG/y+ThWozNAXhMcrAW3K3Ou/1TZ/f61xZZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723465067; c=relaxed/simple;
-	bh=m1wFqRsc7kCzuCk1l3RzWDrOUNzN1Ybo40veFkOjZFE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RZSLfafUGPVPWj1u8XCAghtMpL3CEr2JGbf0L5iKfoOUOAaCCUxtJYM4b7lGDf2iIvg8s/g7JX3tuCzeaBSMwOko39Gai7MqU8vMUG7PYUIzxHIjW86iCMZB4p3cL7QmXyL1rJqeW62YgB2goVgnxUvW4P+xSxPi5m2wtRj3ARI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqLhbQbX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793A3C32782;
-	Mon, 12 Aug 2024 12:17:45 +0000 (UTC)
+	s=arc-20240116; t=1723465069; c=relaxed/simple;
+	bh=Txu5rR9d0b0wL1VUDUvTE8a+avJVh8Dv8qoRPZXE49w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VItW2YiFNaX3VgaZeFf7KM/NplsD1zCTQ4Ckk9E9AQLLEwkzpSlLnBzdA6Ozui91bbEkP3RIU3xifpY2VWXmQX8RYRG6OtdseNdWDPda6EZNggwoIcmQXF94cBAeugs9VMU0rmX5u8AthA980nAuyMywd2G7bOx/fDa+Vw5SGAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehrx6CKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88794C4AF11;
+	Mon, 12 Aug 2024 12:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723465065;
-	bh=m1wFqRsc7kCzuCk1l3RzWDrOUNzN1Ybo40veFkOjZFE=;
+	s=korg; t=1723465068;
+	bh=Txu5rR9d0b0wL1VUDUvTE8a+avJVh8Dv8qoRPZXE49w=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RqLhbQbXzear4fCI/OTWQgDFjHmel3ovX/J2jmFwW45NckAg7TgiEye1hzlUwNnKa
-	 87G0RvoXJMox4fFy5cMgL37OEgeMxjSWvshdxxFnfzZLMA4OGg86Ce1LX4SFwMXhNx
-	 itY894uL4rADVjITSl9GJUtXvHVKAn5Mtx7M6Mis=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: revert "take runtime pm reference when we attach" failed to apply to 6.1-stable tree
+	b=ehrx6CKQT+NSGZCv3/RThno+s7kPTZYdhoEt+1CxFQC67JoOWUIDVSDrhm88yq/YI
+	 3UJLTkOa4kF4hiQG88v8Dr2kX1gjISM21WqmkyNkNCPxWyeGCg3llDOLRuAJIpADK7
+	 dCtKVZ3FeDwdDoJ0Az6FoihxKoYXiW74GuiTvk5o=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: revert "take runtime pm reference when we attach" failed to apply to 5.15-stable tree
 To: christian.koenig@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 14:17:37 +0200
-Message-ID: <2024081237-geek-nag-bcd6@gregkh>
+Date: Mon, 12 Aug 2024 14:17:38 +0200
+Message-ID: <2024081238-circle-chug-01cb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 030631e97b209481edbac38000d2a60fd340f6b1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081237-geek-nag-bcd6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081238-circle-chug-01cb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 030631e97b20 ("drm/amdgpu: revert "take runtime pm reference when we attach a buffer" v2")
 425285d39afd ("drm/amdgpu: add amdgpu runpm usage trace for separate funcs")
+15fd09a05a66 ("drm/amdgpu: add reset register dump trace on GPU")
+21a6732f4648 ("drm/amdgpu: don't skip runtime pm get on A+A config")
 
 thanks,
 
