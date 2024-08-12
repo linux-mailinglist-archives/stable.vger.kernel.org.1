@@ -1,61 +1,88 @@
-Return-Path: <stable+bounces-67383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B22B94F7C0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 21:57:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756A294F7B7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 21:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD1EC1F22CB7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 19:57:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A86521C21EB3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 19:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BC81917DB;
-	Mon, 12 Aug 2024 19:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D25D190686;
+	Mon, 12 Aug 2024 19:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XS172KtA"
 X-Original-To: stable@vger.kernel.org
-Received: from 16.mo582.mail-out.ovh.net (16.mo582.mail-out.ovh.net [87.98.139.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A1F13BC02
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 19:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=87.98.139.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA7E142624;
+	Mon, 12 Aug 2024 19:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723492627; cv=none; b=m0qIcbts7yQv64ZLGBlnD8UXFTIw4+OEShxW6j6dPF7Gj+PamkgfbtEXXVlLaBjyzsq61M76DUQbDdPDx5K68S/4aUoytblTx8il8/9Uhjcfi9AR/+R5Zis+JD1evX4usoekM56A/OwkoYtVY4qpnJr/3V1fYiuj3OpCO30CfDE=
+	t=1723492296; cv=none; b=IUMnMYTY7E43UDvzXaOcJWMCKHGPeLhgILAvK+Vv6kWQL6G/IYqCuu3zzxsV8iBtmZ6u4IbU+vwlpufofvLJuB0brpVg+0yBToLOQ641btzfcm193/dhK8lb375bpgqFUCI28tq0Fo2rwakcjg2LXrlCByNqbOoiBjIk87yH1N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723492627; c=relaxed/simple;
-	bh=OwaYBx/xSKuijtieDU7h0nqtEahyb7C8n+PL7wBUgJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sONZCuUfHUlogHa4SPMPnm1bA0a9FhkTlEOHLKkFRMZDSxtEKh+U+nuZcPvlFhTN9ilfIk3X0D7IFLskQRkyzlxcPzL6kX6aJclVyuEGmoSHriepxJyC1qkackbuJS7Z97G4G0RSaMEYCZfgFPQ450c1Odx6SzG9IAY+WVZtrrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=etezian.org; arc=none smtp.client-ip=87.98.139.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etezian.org
-Received: from director1.ghost.mail-out.ovh.net (unknown [10.108.2.211])
-	by mo582.mail-out.ovh.net (Postfix) with ESMTP id 4WjPz44Pb6z1JLG
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 19:41:36 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-plhlz (unknown [10.110.118.244])
-	by director1.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 283651FE44;
-	Mon, 12 Aug 2024 19:41:34 +0000 (UTC)
-Received: from etezian.org ([37.59.142.101])
-	by ghost-submission-6684bf9d7b-plhlz with ESMTPSA
-	id ymM3Km5lumZkMCAAii7AHw
-	(envelope-from <andi@etezian.org>); Mon, 12 Aug 2024 19:41:34 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-101G00454ab9ec0-df5c-45fa-b21e-fd2114598578,
-                    664DA16141902EE5CF70331F943976485F5C157F) smtp.auth=andi@etezian.org
-X-OVh-ClientIp:188.155.229.193
-From: Andi Shyti <andi.shyti@kernel.org>
-To: linux-i2c <linux-i2c@vger.kernel.org>
-Cc: Andi Shyti <andi.shyti@kernel.org>,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	s=arc-20240116; t=1723492296; c=relaxed/simple;
+	bh=gP/bpLciLkpKGzlsU8ReLBZJrv7PGYAYC56gE4RpCC4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=REbG6mGhFQxQ1lXquiVEVhqACItmuAGIlm2SSl0KxsFhJw0++AI4BoO9xh55IVvhR/i+ygZmZJ49WJEXBIWfUcTBhwrn/MHu0lUIIs/00xbeS2R8VYMCAvSOr8N3Hq20iRZAkmcPTEzH8G9nJu6qsNhis0n0e8sDNKkogtFGLqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XS172KtA; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-710d0995e21so3002543b3a.1;
+        Mon, 12 Aug 2024 12:51:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723492295; x=1724097095; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mgYfPRF3ACLx0CsT/FH9HD8nnUJcsRM2/FyE/YVJdNI=;
+        b=XS172KtAGU6vUEFDhr9KXFu6prf3XjL4AFPsis1j8p6XPswYQWKq02YZJvb+TICabB
+         3NOpXs8/m+cFMbsxkLpRI0wHzxciQESYcH517TVzCNh+JsThyI64/b7SEggVRErfzzPZ
+         HOARkz8H6CWuh8bIpJKqhSNsjeTqOI4WkfEA7onYrJR3uKbbmb8kwGOwmtHmGmxwT82E
+         FE8DmOjtw7lvOvg6AKfCkgOOP6OSRDKXoltsQqTi0TvKET+BFvZpAMu9WZvLB9UYmNrv
+         GrQbpGd1tpOWUnJE9u472GF03AfS3hlMZ8dSCpbkD1RSgmUvHsRVuWYJE9xO0JcvYJWU
+         lMaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723492295; x=1724097095;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mgYfPRF3ACLx0CsT/FH9HD8nnUJcsRM2/FyE/YVJdNI=;
+        b=D3ZgeGEwGrLAYXsj2YNbsOAKUqoOO185pj8Jj1o4Vmno2Jz8YPSuOANvV54aKNvh13
+         RiRyZI4iexFtiAGEKOdLpLYqO3nFPuDTLX34TQW+ByoKWETvG+Of0iDPJn/mkxoZRzHB
+         ZIy2KripQlW9wo8WvNkiC5IIBPbhQxNxbzvtFP9e917RkquWWXlB0qkuWc82m1z0u/di
+         E8ljZNIMc0LbGokGK6avXFxPnH3Si8BGHRXzjjPUxoGU6llLN3xSs22+ZPnzBAafM5SU
+         NTprNx9J6v8aOurVV79uKD8jVwCf76b6iwBbTMs05bJT0aJ2Wy29smnYr0PK5R0RO/GJ
+         GZ1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXgiiSU+ECJVfJsVdnOdJhZMtIP18nBa3N5urGQg25+eWCvFKK3CeYbRh5JeWy0tSUjoSHdpUt42LgoUhC7PsDTF3SVlR96tOZrbqmfko504LZidTAFZHOJiztiOauZcmSpf3B4wujZpeSm4XymJHRv7yWjViN8lV4apTqAtXcZ
+X-Gm-Message-State: AOJu0YyfgAYzJOcEfmcx3VceOFkDX093hTPvF7TRe0qpE01Coc3WKBgq
+	XVhj+RTaAFWrdSjRCzglYYdfT3GzG5aOF4F8Bo+L7uMOLUKirc/c
+X-Google-Smtp-Source: AGHT+IHr2FUt5tB5Z8XWeM8c2KYnSWU7w9shzsRAxJkX4+Ub8pDm7QbwkM9TXEr1DXgbHPKFzk2v/g==
+X-Received: by 2002:a17:902:ec8f:b0:1fd:67a8:845f with SMTP id d9443c01a7336-201ca136e0fmr16415265ad.14.1723492294790;
+        Mon, 12 Aug 2024 12:51:34 -0700 (PDT)
+Received: from dev0.. ([2405:201:6803:30b3:3671:7e47:70c8:c710])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201cd1a947fsm595505ad.140.2024.08.12.12.51.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Aug 2024 12:51:34 -0700 (PDT)
+From: Abhinav Jain <jain.abhinav177@gmail.com>
+To: gregkh@linuxfoundation.org,
+	chandan.babu@oracle.com,
+	djwong@kernel.org
+Cc: jain.abhinav177@gmail.com,
+	leah.rumancik@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
 	stable@vger.kernel.org,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Subject: [PATCH 1/2] i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume
-Date: Mon, 12 Aug 2024 21:40:28 +0200
-Message-ID: <20240812194029.2222697-2-andi.shyti@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240812194029.2222697-1-andi.shyti@kernel.org>
-References: <20240812194029.2222697-1-andi.shyti@kernel.org>
+	syzbot+55fb1b7d909494fd520d@syzkaller.appspotmail.com
+Subject: Re: [PATCH 6.1.y] xfs: remove WARN when dquot cache insertion fails
+Date: Tue, 13 Aug 2024 01:21:28 +0530
+Message-Id: <20240812195128.1095045-1-jain.abhinav177@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2024081244-emit-starlit-dd23@gregkh>
+References: <2024081244-emit-starlit-dd23@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,47 +90,26 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 7309342197315013237
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddruddttddgudeflecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihdrshhhhihtiheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpefgudevjeetgeetlefhteeuteehgeefhefhkedtvdelheethfehveekudelueeuveenucfkphepuddvjedrtddrtddruddpudekkedrudehhedrvddvledrudelfedpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomheprghnughisegvthgviihirghnrdhorhhgpdhnsggprhgtphhtthhopedupdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehkedvpdhmohguvgepshhmthhpohhuth
 
-Add the missing geni_icc_disable() call before returning in the
-geni_i2c_runtime_resume() function.
+On Mon, 12 Aug 2024 16:40:13 +0200, Greg K-H wrote:
+> You lost all of the ownership and original signed-off-by attributes for
+> the commit :(
+>
 
-Commit 9ba48db9f77c ("i2c: qcom-geni: Add missing
-geni_icc_disable in geni_i2c_runtime_resume") by Gaosheng missed
-disabling the interconnect in one case.
+I will work on this to understand how to avoid such mistake moving forward.
 
-Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Cc: Gaosheng Cui <cuigaosheng1@huawei.com>
-Cc: <stable@vger.kernel.org> # v5.9+
+> Please work with the xfs developers if they wish to see this backported
+> or not, that's up to them.
+>
+> thanks,
+> 
+> greg k-h
+
+I am tagging XFS maintainers so that they can confirm the same. If there
+is a go ahead, only then I will submit a v2 retaining the original
+signed-off-by attributes.
+
+Thanks,
+Abhinav
 ---
-Cc: Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-
- drivers/i2c/busses/i2c-qcom-geni.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-index 365e37bba0f33..06e836e3e8773 100644
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -986,8 +986,10 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
- 		return ret;
- 
- 	ret = clk_prepare_enable(gi2c->core_clk);
--	if (ret)
-+	if (ret) {
-+		geni_icc_disable(&gi2c->se);
- 		return ret;
-+	}
- 
- 	ret = geni_se_resources_on(&gi2c->se);
- 	if (ret) {
--- 
-2.45.2
-
 
