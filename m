@@ -1,236 +1,240 @@
-Return-Path: <stable+bounces-66462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8ACA94EB28
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:32:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DCB94EB3E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ED29282C38
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 10:32:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072C51F22011
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 10:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099D117C7B2;
-	Mon, 12 Aug 2024 10:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB0E16F27E;
+	Mon, 12 Aug 2024 10:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aZfNzfcJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19659176FC5;
-	Mon, 12 Aug 2024 10:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723458573; cv=none; b=Y1b8xrciER10Wg8tPg5/HeCiQyxy//dK9PFiQrC/w1aVaWaQzCIry3jxIgmDC48OARsuvyStZKYm4GBpNa2vLp+l7Lu77nq+y2kEPCkxYkC2St3tPGdWfBbHulAtTt2lPTdQYZ5/9yd1G/YNJcq7RJZRlW0YTwowhqJ+jGlMzNs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723458573; c=relaxed/simple;
-	bh=I62CxZ40dmwRMBoKSaGxFWW09Zv1Nv5YxEMy3riuO6Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pB4ESk5/ynqd5K7R9v6nQNohxfwz9von/8sjVcWtSUB4QnisRhvvZlG4qqW16P+V4Q2bI9K7tFkg7nx7QezHEYOY7WVJkB98LHOe9ElPEY56PNsR2XLmSASXIxkB4HIbJvKWSCjcZJhV37S4hGPyOp2hH3xjJHSeJxDktTCWmJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH -stable,4.19.x 3/3] netfilter: nf_tables: prefer nft_chain_validate
-Date: Mon, 12 Aug 2024 12:29:25 +0200
-Message-Id: <20240812102925.394733-4-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240812102925.394733-1-pablo@netfilter.org>
-References: <20240812102925.394733-1-pablo@netfilter.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3074915C159;
+	Mon, 12 Aug 2024 10:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723458904; cv=fail; b=RY7U9pBI1U1cYtLM/uT+wQzYwuK1/zgL0F+C7OP6gmS16f4cMthmGjDVAyJUdyAZPChheSH59+mni3lSsKX8NaWe0yVjsdkcL6Y/WD8MAF2EwJkoST3AClSsKNPN4J8t+NKwNI2/vFNFIBvJ8B3hhTTE0Bqp6ReLqinVxa4N/Kk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723458904; c=relaxed/simple;
+	bh=a6A+dtPWYnYWUkGMVAuFoanm//8d52fXxg9Or7L3PSg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YHzloIMwyr/BVTar92DT8MiY+GXvWk7nOTHyJ2pu/j3XAkBiKwhJ3v1FWSTWO9KwV6+EwXMq76Lf67PjcOq2RPb7M5MDnh8XaRknwRANAe+oe2ZOQMFs8aS00+NPlxJvdFSePM97LEY5+EysCoxycAm9h+i0dDpuJyYX6IRNXBs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aZfNzfcJ; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723458903; x=1754994903;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=a6A+dtPWYnYWUkGMVAuFoanm//8d52fXxg9Or7L3PSg=;
+  b=aZfNzfcJgj1QujpKXyJvEWzlAhX6DhcORNkzogSOholQVJvC68DyleA9
+   xmOHZ3agp/Os2xuC2nMoF+KM7AnhiTt8s1HqV4K8dw8CPhaenoE0LNi8S
+   yr5A5aEwJ4L3JnAv1KeoEL4UPng6hJVlna13NUvAzjVQnu7Ckw8HpSE/c
+   GUvWZT7TYrjn8gj/KG5IomMc3fj1FWCQH9ZRZieSHao1GxPmgjwu9AqyG
+   AgNbwTPJmGgU2GQ45FYNuGohJfB9oFA38EsMezOyRGZSx1a2917eEtIf6
+   DjLVUTz9vwPnQyQHtgG1la+T3Yw69TBGZQMIFyz/iu2cm1R6IhVF3tCe+
+   A==;
+X-CSE-ConnectionGUID: wp+s8PWLTXCo2DtsEurpaw==
+X-CSE-MsgGUID: ulgjoMEbSVyfS1NHM2g7fQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11161"; a="21440505"
+X-IronPort-AV: E=Sophos;i="6.09,282,1716274800"; 
+   d="scan'208";a="21440505"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 03:35:02 -0700
+X-CSE-ConnectionGUID: U1MQNmnsQSGPmwCocBChiw==
+X-CSE-MsgGUID: Y3+Tp3dmR8+XS88reWAFMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,282,1716274800"; 
+   d="scan'208";a="89062436"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 12 Aug 2024 03:35:02 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 12 Aug 2024 03:35:01 -0700
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 12 Aug 2024 03:35:01 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Mon, 12 Aug 2024 03:35:01 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.41) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 12 Aug 2024 03:34:58 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SSCDCslO1i2gop/abiKYQUFOMVDo0bW9vCCbaNduw65iIuXdS95R54hnzwFmMTqk9FJx4QXpIu0r811ztarAjHgHx5TtnFsjAi/f1F+3Yp7lLWtcmlu3ux//a8wHGx15V7POwizt3hz/mM8hniFY10k5UnhJKf+GAYPYZabvkSaGTG8nHVnIEn3Rd+yKPXeoC4GvH3CZJWylEckMwVB+x5FIi7D9yc0KELtFFoHYCbQOs78N+PA17Q3y2f+QLZowUxesAT0PSIXNCeTWH29uwenqvwrjuGqGu685M/E8acuNUNhsHFHiTp+ds88p6qfokKZ5214d9a5qIGyVYUyvFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a6A+dtPWYnYWUkGMVAuFoanm//8d52fXxg9Or7L3PSg=;
+ b=MJRVQ+lCjFfunNFTjF9O7wti9QZO1k6TInqxBln5g2Fw6FPCFjYIJ1lLrisuqHZNi3TZFDP20bR0fCGITKy/Dsr0ZfJOZzsN/dsGWtxdxSwqZ9fj0tVqsSwz3C9ccR/JSyJTyP2Z17KkjkMymlNwyNhsMnRwE3IKcUKV0kLwI5LjPDCX2gfLIh8EVJf16nZaPvRdVPiMBiJ3CuaKhrj6Me1UDAWfnlZMkFL8KoTATZjxmgQBgo+mxp4JGk+7B6T6ydMtSGiKSytuYop3qF/aBrWDD44zdViJW3kSrXDfMwuRHnPqGn0InbKSIPzwKYkvARD0zgnGQeYBPdquz54dDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
+ by DS0PR11MB8113.namprd11.prod.outlook.com (2603:10b6:8:127::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.23; Mon, 12 Aug
+ 2024 10:34:56 +0000
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::fdb:309:3df9:a06b]) by BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::fdb:309:3df9:a06b%7]) with mapi id 15.20.7828.030; Mon, 12 Aug 2024
+ 10:34:55 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "Kuvaiskii, Dmitrii" <dmitrii.kuvaiskii@intel.com>
+CC: "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>, "Chatre, Reinette"
+	<reinette.chatre@intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Qin, Kailun" <kailun.qin@intel.com>,
+	"haitao.huang@linux.intel.com" <haitao.huang@linux.intel.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "Vij, Mona"
+	<mona.vij@intel.com>
+Subject: Re: [PATCH v4 3/3] x86/sgx: Resolve EREMOVE page vs EAUG page data
+ race
+Thread-Topic: [PATCH v4 3/3] x86/sgx: Resolve EREMOVE page vs EAUG page data
+ race
+Thread-Index: AQHazrB4mIMKrvC2y0eY2IQtmlLA9bIGxLIAgBgc0wCAAB0PAIAEiEaAgAAiTAA=
+Date: Mon, 12 Aug 2024 10:34:55 +0000
+Message-ID: <f722fd24bef96dc12500eaffb1d1e1f169a6dd9f.camel@intel.com>
+References: <8ab0f2d8aaf80e263796e18010e0fa0a4f0686a3.camel@intel.com>
+	 <20240812083207.3173402-1-dmitrii.kuvaiskii@intel.com>
+In-Reply-To: <20240812083207.3173402-1-dmitrii.kuvaiskii@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.3 (3.52.3-1.fc40) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|DS0PR11MB8113:EE_
+x-ms-office365-filtering-correlation-id: ea1c10b9-9fd2-4ba7-25dc-08dcbaba684e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?ZXZDUUFEclVCZFdlcXJjRmo2U01NdDd5QXo3a0xRUXBRcFdGamF5SFNOR1RL?=
+ =?utf-8?B?dEVpVmFYZmVGQlBFMmRtZGkxQmhEUUVIa01hMmpkaHROSzV0OWd4WitxRWFD?=
+ =?utf-8?B?SzdVOUs1T2srNVI5L240c1hEZFNhQkR1S1Fpc0l2ZSttNnNIaTU2bXJZQkZG?=
+ =?utf-8?B?ZUc5Q0RqNFpxT3Bua1YvcDQzTmo4bDVIZUdoeVFRdFQvNmFxRzV4ekJvMU5L?=
+ =?utf-8?B?WHVQNkN6MmVnbWNSUE5CRzRZN2daeVoyclhzV1Y0MnFzQkdwL2t2ajc0WDZ3?=
+ =?utf-8?B?aVR1Zk9FZER2emJqOHZIYW5CMVBySzQrVVRQVUtVeFN0UysyUFBDbDN3OFZm?=
+ =?utf-8?B?L1F4T2hRRWxTK2xxN2NSa2NzRXk5dm9Xd3RlclhZSTBmcDZCajdPSEo0NkZJ?=
+ =?utf-8?B?SFNFaWFzcjBoRG5lc01lazJUZTJPOFE5RWpIQ2JmT05hUDdLNXpDNmxRSUVX?=
+ =?utf-8?B?ck5MREtudGU0aXpvejc3cU9TblVjd0RrTVZsVnBIaEpvNVRJRE1tc0hjcWlW?=
+ =?utf-8?B?ZU5URGNOVmJMNVJTUEcxOHVWSFp3ZzZ3a3hjS2d3V1loVDJZZ25pVFpTNzFJ?=
+ =?utf-8?B?M0diQVNVSXhEemdHYWc1VkwvMDUxK2dnWU9MSEN0eUlZUTlXOXl4WjIrVXVL?=
+ =?utf-8?B?czZWS29HWUZ3bFlIWlJBL3VvUEM1bUEvU3A5ZThuZStPU3JJZDJibmJhZllN?=
+ =?utf-8?B?ZlpFREFiaTAzY2JtYUdGVG11YnF1eFNmN2dIOEJpa0ROckFsV2FveXFUcmp2?=
+ =?utf-8?B?WWtubjhrR2RqbkhSUG5OUFM2dlNEU0l0QWhsOGNNaldVd01NUTZ2ZE9hMXdL?=
+ =?utf-8?B?Qzh0blpsNkFxWEMxZUZPTWtESU0yb0NlSFBvaWZ4TTkxSGl4YXJDbWYyZzdP?=
+ =?utf-8?B?elhmOFd0VWhWanFGMnpDUFdXblJqRTE3VGRxMi82VEJub2F1b20xSnZENG5u?=
+ =?utf-8?B?SVllOWlnNmx5TURBbWs0bk8vQTRnTXFRWWViWTFHWndzSWxxWnZQczV6bTNw?=
+ =?utf-8?B?amZ3YUVmZDRXek85dUpYVnJQWVR6d1U1VkpCMitXbVJrMzhRWkRsRjN5aXkv?=
+ =?utf-8?B?ams5U1VDOEdiNllMM2ppSVdXMENYMlRQRkpscldzVCsrMHNjNXRDQW1EQzNl?=
+ =?utf-8?B?d0I3NlJmUFBJV2FtZ3JjcEFwYzM0bjZJMlNURXlKcXFpTlVmdkZCbU5jcXFv?=
+ =?utf-8?B?SzVkMytPRjdzSTBLd2dTUDBKS2lVQlQyTE9Na0tMeCtERFczSXZ0cUtQVDhz?=
+ =?utf-8?B?WTl4cXY4azllQkJyYUJqVlJlSXVPWlNHczNpbXUzMDdqUFVHTWQrYndUMUZT?=
+ =?utf-8?B?cHBJYkxwNU04b3lheUR0MVRpcXF1VWlnQm02Tk14aW9rWVk5UEw1NHZhcWs4?=
+ =?utf-8?B?TkxmcDdKakVndUJvVUtHajRPYmFoQ1FrSWRLSmpuM2hiMWxkZGpqc0hETDlQ?=
+ =?utf-8?B?Z0h3NFB6dUowM2tzSlJ1dWQ5WS83amFJbVV2MnA3b2RCWjVhdDEzR3NGM1BL?=
+ =?utf-8?B?aTJ6RmtuNXFYMmZLdHpOeDRnQkNkb0NLS2JzNlZEbmJRTmh1blYrcEpGZklE?=
+ =?utf-8?B?Zm44L0NnOXBnS2FFUmx5aW5PRWRPd1hiY1VtaXNEc3VvZDE2QVo5MkRRazcz?=
+ =?utf-8?B?eXplMUtRYURJWkUxUjZmakRIeGR0QzROdW5zNEwyRW8xdEt4SW5PQ3ZqeTd4?=
+ =?utf-8?B?ZlNrVzdVVHlQZjJ0UXJNUnBndmxaSXV0NXNldE1zU1RJMGY3RnRtcjFkK3Rj?=
+ =?utf-8?B?YVBuSUMrbXBZQ1pkWjZFQ0FaMzdXUExXSDJabFRqZDZLQU8yU3JYVzM1cGJS?=
+ =?utf-8?B?YW5qc3doYytIQWRjQTNib24xNC90dVRmUXFOYzRlaUJkY3Frd2VnQWpVNDhE?=
+ =?utf-8?B?ZndSNHlkUE5vMURkY25NdFNEN2ZXMVRsQkhZNU02SnFsOWc9PQ==?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YjdaZ0dLcmhDbEFia2V2OFdVcnV5OUc2cERiZE1mWEZrR1UwSW4wT3NRd2hT?=
+ =?utf-8?B?cityMUU5WWE3NVppTW9kblpzMFNvbWxhSFhZWXZZaHVkY1E0d3pxVXJLOWRY?=
+ =?utf-8?B?SUFDQlFneDhSSnd5c09kUDMvK3Z2NzNpbmY0SDd4aXJINXJySFBCS1Y0bWhO?=
+ =?utf-8?B?dEJmQ1VBaXVLZlV3RElxUzVoanN4c0JrK0lTK3pDakZrcWw5VnRJeDRHLzQy?=
+ =?utf-8?B?WG5LZDdtREtnZm53YXQrSk5FL3pPamEyOCt4SndiVWdGcGphcnp4YWN3WkJY?=
+ =?utf-8?B?bTZVajhtVEJnV1FSK1dnemlVQlBhTlBpWmhXZ1ZxSzJiVVVSU1pnZGpSb1RP?=
+ =?utf-8?B?b0FuMk5kejhZVkhsSUFJWkpIamNiOUF2cjdISWhDaU9aTENrVy9YT3puTDkv?=
+ =?utf-8?B?Z1lCYWJjeHNkRWNSMFduVkhLMW1hQmdtWlhvM2ppUW5MVDd5Qi9XaTNuOWgw?=
+ =?utf-8?B?Tzd2U3djek5yZGNpbThUVyswby9JQUVKV3l4T2RFWkU4T3NaTGt0WjVGY0N4?=
+ =?utf-8?B?cGkweEs2OVJ3dDhJY2poQkxFTDRJL1V5K1F5Sy9GWEZVZ05pZTl4YkVlMWhK?=
+ =?utf-8?B?eHV0dkZuRU1SQ3VPWWJ2eExOY0o1bC9oWFVTbm5KR1Q0R295SktpdEg4Z1JU?=
+ =?utf-8?B?cTd2VjZ2NnJCbFl4NDFYK2Q0M1hHWUlUNy9OM1FoaWpSZ0tVeXpHdE04SG40?=
+ =?utf-8?B?cnZ3V1ZDcEpTRXRBelhBaXRKMUt5RThIa2dVb1kwTnZ6WnpCb05TbGFYSU5r?=
+ =?utf-8?B?Rmc5ckl6UFBmdlVSOFp0eFhuc1VXSFc4cFpUTHR6anQyLzdYUVppVnY1TjF4?=
+ =?utf-8?B?eGNGbnBoSStoV3V6U1duQk8rekR0T0h2WmJ5a0F1YTBOWWFjNnJwaDZXZHda?=
+ =?utf-8?B?R0dhMmJNZzRObmNCUUVOWk9Pc05wemtJWFc3VktYMUZ2dlUzYWhVMmdFWGZ1?=
+ =?utf-8?B?YzU2M0tERm9CWlgzWWdacTArZnVPMTV3KzNnekRzeVMrMU1HaDBkbTVxY2I1?=
+ =?utf-8?B?dEVEMkhTT3M3ZEFJbW1IbkxzY285VmQ4NWZIdTRZNkZra0pEOEhWRE9BQk5Z?=
+ =?utf-8?B?cmtRK0tieEZQL0V4Q0NScTQ5YnBPSHUzVDFnR3Q0QU1VT0IrOE5veFZheXZl?=
+ =?utf-8?B?M0hCMXVGc2ZKRXNkZXNPeVpTSG5xSitIbTM4eStjSDRkN1dHTlltbHBSZFBC?=
+ =?utf-8?B?Q0JWT25yb3FWNXBYeUtWdjRBRDlaTXNKK2FpVVk4WkxVaWpFNVhPcUJDTWh6?=
+ =?utf-8?B?a0ZjZ2d1MDNUS1pJVUNKTmdBaE5VYXlJaHZsTUZzdis3QTBhdldTdTlrZ1dK?=
+ =?utf-8?B?MHZrNkM1aDhtRFpTMVpET1VtSkxuM3JZY1pJSmthNzFEUmEwZmpxZHpqdmZX?=
+ =?utf-8?B?NGxaYTZoZlBodHByUUo5cXZlWEE2aDN0SDFjSlZTL3ltakMzaG4zTFI5dVcw?=
+ =?utf-8?B?MTVHSVNpMGdjck1zOXNwZ1JxSVRlZ05JalczZjFQVXpBUnFPQmo0dzliS2c1?=
+ =?utf-8?B?Q0lIeHZJMWw4bDA2cERTdXBuM2VLdzVBVHlqWTZPTGRndEVkOEFjY1RFelRR?=
+ =?utf-8?B?eUprcGZvWVl5K3R5cHRzTVZGRDZ3YU5Gb0ZwTTR0MkNyUTFMaHczbEFUTlRC?=
+ =?utf-8?B?S1ZKMUN0RXRvOGdiTzU4T04yQXYrUlQ0OWVwdExkaXBXdys1aUJUNHhPTmhT?=
+ =?utf-8?B?alZsNzhUdm96cHVVR2VjQXZHcVlnTnpPd2NISDFJbUsvWDFuM1F4aVIyOWVP?=
+ =?utf-8?B?Z01ZT1BpYVJnL2h1ZzZZcEJUS1BhVXM4bkNVa2pCZi9yRDIrOG0vaXF4K3I2?=
+ =?utf-8?B?VlpINExHMDg5YURZTmZERTE3bDZ3WjJ2WjYrUzh6a05YdHVBbE9ET0hvMWNj?=
+ =?utf-8?B?bTRhWGxQOFRndTlZNWFFV3VoMDR4V0ZLK1Jld0k4NHBXZFZSdW8rNmpkVitC?=
+ =?utf-8?B?czluV0pJclRGQndUUnFHSjhjUGxFQzljRzliRjNTT245TTdkcHJUclVTRVJL?=
+ =?utf-8?B?MENhQVpKeVgyczg4QzljR3Z5WlJDMlErSEFDaXJDbXlkd2FHVGJ0eW9ZVzdP?=
+ =?utf-8?B?YnIrVnErVU9PSmtUN21ZNDhSREEyQU5heEdUdlZTMURGR0t5c1I2SmRUQS82?=
+ =?utf-8?Q?7WMTWUaiA2lGFzH0lgzmX98rH?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A9B5467A3B35AB418170FD213F674AFC@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea1c10b9-9fd2-4ba7-25dc-08dcbaba684e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2024 10:34:55.6009
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LlwgIyS/t+hT0aQR2nCZ9MCETrZEdAX5+U9ObvJcaKMId4PQyaDvm+s2gOQ5LGtQ5E5Tk0Jc4Xfk3lelClU9bg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8113
+X-OriginatorOrg: intel.com
 
-From: Florian Westphal <fw@strlen.de>
-
-commit cff3bd012a9512ac5ed858d38e6ed65f6391008c upstream
-
-nft_chain_validate already performs loop detection because a cycle will
-result in a call stack overflow (ctx->level >= NFT_JUMP_STACK_SIZE).
-
-It also follows maps via ->validate callback in nft_lookup, so there
-appears no reason to iterate the maps again.
-
-nf_tables_check_loops() and all its helper functions can be removed.
-This improves ruleset load time significantly, from 23s down to 12s.
-
-This also fixes a crash bug. Old loop detection code can result in
-unbounded recursion:
-
-BUG: TASK stack guard page was hit at ....
-Oops: stack guard page: 0000 [#1] PREEMPT SMP KASAN
-CPU: 4 PID: 1539 Comm: nft Not tainted 6.10.0-rc5+ #1
-[..]
-
-with a suitable ruleset during validation of register stores.
-
-I can't see any actual reason to attempt to check for this from
-nft_validate_register_store(), at this point the transaction is still in
-progress, so we don't have a full picture of the rule graph.
-
-For nf-next it might make sense to either remove it or make this depend
-on table->validate_state in case we could catch an error earlier
-(for improved error reporting to userspace).
-
-Fixes: 20a69341f2d0 ("netfilter: nf_tables: add netlink set API")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- net/netfilter/nf_tables_api.c | 114 ++++------------------------------
- 1 file changed, 13 insertions(+), 101 deletions(-)
-
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index c8a1f3f14384..a033c9baf58a 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2698,6 +2698,15 @@ static void nf_tables_rule_release(const struct nft_ctx *ctx,
- 	nf_tables_rule_destroy(ctx, rule);
- }
- 
-+/** nft_chain_validate - loop detection and hook validation
-+ *
-+ * @ctx: context containing call depth and base chain
-+ * @chain: chain to validate
-+ *
-+ * Walk through the rules of the given chain and chase all jumps/gotos
-+ * and set lookups until either the jump limit is hit or all reachable
-+ * chains have been validated.
-+ */
- int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
- {
- 	struct nft_expr *expr, *last;
-@@ -2716,6 +2725,9 @@ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
- 			if (!expr->ops->validate)
- 				continue;
- 
-+			/* This may call nft_chain_validate() recursively,
-+			 * callers that do so must increment ctx->level.
-+			 */
- 			err = expr->ops->validate(ctx, expr, &data);
- 			if (err < 0)
- 				return err;
-@@ -7418,106 +7430,6 @@ int nft_chain_validate_hooks(const struct nft_chain *chain,
- }
- EXPORT_SYMBOL_GPL(nft_chain_validate_hooks);
- 
--/*
-- * Loop detection - walk through the ruleset beginning at the destination chain
-- * of a new jump until either the source chain is reached (loop) or all
-- * reachable chains have been traversed.
-- *
-- * The loop check is performed whenever a new jump verdict is added to an
-- * expression or verdict map or a verdict map is bound to a new chain.
-- */
--
--static int nf_tables_check_loops(const struct nft_ctx *ctx,
--				 const struct nft_chain *chain);
--
--static int nf_tables_loop_check_setelem(const struct nft_ctx *ctx,
--					struct nft_set *set,
--					const struct nft_set_iter *iter,
--					struct nft_set_elem *elem)
--{
--	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
--	const struct nft_data *data;
--
--	if (nft_set_ext_exists(ext, NFT_SET_EXT_FLAGS) &&
--	    *nft_set_ext_flags(ext) & NFT_SET_ELEM_INTERVAL_END)
--		return 0;
--
--	data = nft_set_ext_data(ext);
--	switch (data->verdict.code) {
--	case NFT_JUMP:
--	case NFT_GOTO:
--		return nf_tables_check_loops(ctx, data->verdict.chain);
--	default:
--		return 0;
--	}
--}
--
--static int nf_tables_check_loops(const struct nft_ctx *ctx,
--				 const struct nft_chain *chain)
--{
--	const struct nft_rule *rule;
--	const struct nft_expr *expr, *last;
--	struct nft_set *set;
--	struct nft_set_binding *binding;
--	struct nft_set_iter iter;
--
--	if (ctx->chain == chain)
--		return -ELOOP;
--
--	list_for_each_entry(rule, &chain->rules, list) {
--		nft_rule_for_each_expr(expr, last, rule) {
--			struct nft_immediate_expr *priv;
--			const struct nft_data *data;
--			int err;
--
--			if (strcmp(expr->ops->type->name, "immediate"))
--				continue;
--
--			priv = nft_expr_priv(expr);
--			if (priv->dreg != NFT_REG_VERDICT)
--				continue;
--
--			data = &priv->data;
--			switch (data->verdict.code) {
--			case NFT_JUMP:
--			case NFT_GOTO:
--				err = nf_tables_check_loops(ctx,
--							data->verdict.chain);
--				if (err < 0)
--					return err;
--			default:
--				break;
--			}
--		}
--	}
--
--	list_for_each_entry(set, &ctx->table->sets, list) {
--		if (!nft_is_active_next(ctx->net, set))
--			continue;
--		if (!(set->flags & NFT_SET_MAP) ||
--		    set->dtype != NFT_DATA_VERDICT)
--			continue;
--
--		list_for_each_entry(binding, &set->bindings, list) {
--			if (!(binding->flags & NFT_SET_MAP) ||
--			    binding->chain != chain)
--				continue;
--
--			iter.genmask	= nft_genmask_next(ctx->net);
--			iter.skip 	= 0;
--			iter.count	= 0;
--			iter.err	= 0;
--			iter.fn		= nf_tables_loop_check_setelem;
--
--			set->ops->walk(ctx, set, &iter);
--			if (iter.err < 0)
--				return iter.err;
--		}
--	}
--
--	return 0;
--}
--
- /**
-  *	nft_parse_u32_check - fetch u32 attribute and check for maximum value
-  *
-@@ -7653,7 +7565,7 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
- 		if (data != NULL &&
- 		    (data->verdict.code == NFT_GOTO ||
- 		     data->verdict.code == NFT_JUMP)) {
--			err = nf_tables_check_loops(ctx, data->verdict.chain);
-+			err = nft_chain_validate(ctx, data->verdict.chain);
- 			if (err < 0)
- 				return err;
- 		}
--- 
-2.30.2
-
+T24gTW9uLCAyMDI0LTA4LTEyIGF0IDAxOjMyIC0wNzAwLCBLdXZhaXNraWksIERtaXRyaWkgd3Jv
+dGU6DQo+IE9uIEZyaSwgQXVnIDA5LCAyMDI0IGF0IDExOjE5OjIyQU0gKzAwMDAsIEh1YW5nLCBL
+YWkgd3JvdGU6DQo+IA0KPiA+ID4gVExEUjogSSBjYW4gYWRkIHNpbWlsYXIgaGFuZGxpbmcgdG8g
+c2d4X2VuY2xhdmVfbW9kaWZ5X3R5cGVzKCkgaWYNCj4gPiA+IHJldmlld2VycyBpbnNpc3QsIGJ1
+dCBJIGRvbid0IHNlZSBob3cgdGhpcyBkYXRhIHJhY2UgY2FuIGV2ZXIgYmUNCj4gPiA+IHRyaWdn
+ZXJlZCBieSBiZW5pZ24gcmVhbC13b3JsZCBTR1ggYXBwbGljYXRpb25zLg0KPiA+IA0KPiA+IFNv
+IGFzIG1lbnRpb25lZCBhYm92ZSwgSSBpbnRlbmQgdG8gc3VnZ2VzdCB0byBhbHNvIGFwcGx5IHRo
+ZSBCVVNZIGZsYWcgaGVyZS4gwqANCj4gPiBBbmQgd2UgY2FuIGhhdmUgYSBjb25zaXN0IHJ1bGUg
+aW4gdGhlIGtlcm5lbDoNCj4gPiANCj4gPiBJZiBhbiBlbmNsYXZlIHBhZ2UgaXMgdW5kZXIgY2Vy
+dGFpbmx5IG9wZXJhdGlvbiBieSB0aGUga2VybmVsIHdpdGggdGhlIG1hcHBpbmcNCj4gPiByZW1v
+dmVkLCBvdGhlciB0aHJlYWRzIHRyeWluZyB0byBhY2Nlc3MgdGhhdCBwYWdlIGFyZSB0ZW1wb3Jh
+cmlseSBibG9ja2VkIGFuZA0KPiA+IHNob3VsZCByZXRyeS4NCj4gDQo+IEkgYWdyZWUgd2l0aCB5
+b3VyIGFzc2Vzc21lbnQgb24gdGhlIGNvbnNlcXVlbmNlcyBvZiBzdWNoIGJ1ZyBpbg0KPiBzZ3hf
+ZW5jbGF2ZV9tb2RpZnlfdHlwZXMoKS4gVG8gbXkgdW5kZXJzdGFuZGluZywgdGhpcyBidWcgY2Fu
+IG9ubHkgYWZmZWN0DQo+IHRoZSBTR1ggZW5jbGF2ZSAoaS5lLiB0aGUgdXNlcnNwYWNlKSAtLSBl
+aXRoZXIgdGhlIFNHWCBlbmNsYXZlIHdpbGwgaGFuZw0KPiBvciB3aWxsIGJlIHRlcm1pbmF0ZWQu
+DQo+IA0KPiBBbnl3YXksIEkgd2lsbCBhcHBseSB0aGUgQlVTWSBmbGFnIGFsc28gaW4gc2d4X2Vu
+Y2xhdmVfbW9kaWZ5X3R5cGVzKCkgaW4NCj4gdGhlIG5leHQgaXRlcmF0aW9uIG9mIHRoaXMgcGF0
+Y2ggc2VyaWVzLg0KPiANCg0KVGhhbmtzLg0K
 
