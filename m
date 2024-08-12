@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-66770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C89094F25A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9DF94F335
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 490CD281442
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:05:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22E1C2866DE
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54324184524;
-	Mon, 12 Aug 2024 16:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCDF187324;
+	Mon, 12 Aug 2024 16:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0PpFF43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VYEsRV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E00D1EA8D;
-	Mon, 12 Aug 2024 16:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B41B130E27;
+	Mon, 12 Aug 2024 16:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478726; cv=none; b=JLpF225bpH5+323Dy++cODqXe3rKlWLhevZs2zwbCSWDsZBevF0CS2a1H9iQkHjYRpqxnkKic3KZqewatbbuff9sIDFw7J/5vKWG2P9tJwo6Gu9gKOC1UmLmqevCCByt3F1fr/u6hmCe5KQR7lwoffT28ScAfc3F1Uck8GgEk6w=
+	t=1723479299; cv=none; b=shVknhQlVnMKxGwYTt7siWnyo3Xi8mUJlemEplnVb17TeIQdUVSblvnvoRBvrWkWxWhNrrDHkP+CbOSECBLKaWyAgc+7u/KIq3ABMvph5PZDfC1j2iCKrSCFZ6KPPP6fi0TznQ0fbyaIlRwtSYcJ88MDonvQfaRE7mPDMk4qorg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478726; c=relaxed/simple;
-	bh=Hb+cqIWXW1zVdmmgPVoiooIQ6iMyFKb3LOYeYM1FNBY=;
+	s=arc-20240116; t=1723479299; c=relaxed/simple;
+	bh=0g2NIYDWZagrzo9wXQJPR1E/atEqMI1r/JlkKgnwz/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4K4vcuoX5R5ayaJ+VI2X0MsMXJZFriRs0HPYKYfKDb0X/XWYhoE9lX6pmrNeN23dE3NAqHd7ZnSRptyAZ8O73wirzzkitEp+QMW+ugWWQT/cdbHCXIlpzb/pBTgBp5g0q3lGglhVlTTiulGdQ00u//CQH2/oZkYTOUDaj95s4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0PpFF43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7530FC32782;
-	Mon, 12 Aug 2024 16:05:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lDtm1VyhTTW1oZlUulWrcqE9a+s7eaxNAwDZdc1LK4ZrHBLSWQob9oRA34NfWPNm3R53Do2TgAKBKCnm1MBbySEhmuiNiOV/NRSiiXuLOelzGCl5DY2W7rkaTlPjrvFWrqwQ5m1txz3BzsgPCvY5cDJsV/1Vo+lQpV0JYRpBHfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VYEsRV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2588C32782;
+	Mon, 12 Aug 2024 16:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478725;
-	bh=Hb+cqIWXW1zVdmmgPVoiooIQ6iMyFKb3LOYeYM1FNBY=;
+	s=korg; t=1723479299;
+	bh=0g2NIYDWZagrzo9wXQJPR1E/atEqMI1r/JlkKgnwz/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0PpFF43tMVabUo/zwcFr4hm4m1XASSXnvUPOXMnfhGvx0kPz5t6oV+5mfKTOxXHE
-	 V+t520BP+vM27ZBaaGULY2HwXjHyWjha7lZ/1z2C9B/3oTGu6/Q0xhFyeF+uVzwtOi
-	 C5BlFZTgRgYiaghjX5bPdqhtcwNm7NT9cNMFF61I=
+	b=1VYEsRV16gt7Jk+0+wpQvL23ME9Ncak0LH6FKuf2X/+cy/NbKzx49qXAe4S+WTfzs
+	 nOwyUnKdpdKvBIE9GmHti6eNW77aatUCAfJccEvJyqsfNUvKVA+B2+hs47VeXpn1/+
+	 e3Rofmn/HlLxbrr+pxfKJKUuP4UG/RXmnb4Deoes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/150] block: change rq_integrity_vec to respect the iterator
+Subject: [PATCH 6.6 044/189] can: mcp251xfd: tef: update workaround for erratum DS80000789E 6 of mcp2518fd
 Date: Mon, 12 Aug 2024 18:01:40 +0200
-Message-ID: <20240812160125.902961080@linuxfoundation.org>
+Message-ID: <20240812160133.842842062@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +61,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit cf546dd289e0f6d2594c25e2fb4e19ee67c6d988 ]
+[ Upstream commit 3a0a88fcbaf9e027ecca3fe8775be9700b4d6460 ]
 
-If we allocate a bio that is larger than NVMe maximum request size,
-attach integrity metadata to it and send it to the NVMe subsystem, the
-integrity metadata will be corrupted.
+This patch updates the workaround for a problem similar to erratum
+DS80000789E 6 of the mcp2518fd, the other variants of the chip
+family (mcp2517fd and mcp251863) are probably also affected.
 
-Splitting the bio works correctly. The function bio_split will clone the
-bio, trim the iterator of the first bio and advance the iterator of the
-second bio.
+Erratum DS80000789E 6 says "reading of the FIFOCI bits in the FIFOSTA
+register for an RX FIFO may be corrupted". However observation shows
+that this problem is not limited to RX FIFOs but also effects the TEF
+FIFO.
 
-However, the function rq_integrity_vec has a bug - it returns the first
-vector of the bio's metadata and completely disregards the metadata
-iterator that was advanced when the bio was split. Thus, the second bio
-uses the same metadata as the first bio and this leads to metadata
-corruption.
+In the bad case, the driver reads a too large head index. As the FIFO
+is implemented as a ring buffer, this results in re-handling old CAN
+transmit complete events.
 
-This commit changes rq_integrity_vec, so that it calls mp_bvec_iter_bvec
-instead of returning the first vector. mp_bvec_iter_bvec reads the
-iterator and uses it to build a bvec for the current position in the
-iterator.
+Every transmit complete event contains with a sequence number that
+equals to the sequence number of the corresponding TX request. This
+way old TX complete events can be detected.
 
-The "queue_max_integrity_segments(rq->q) > 1" check was removed, because
-the updated rq_integrity_vec function works correctly with multiple
-segments.
+If the original driver detects a non matching sequence number, it
+prints an info message and tries again later. As wrong sequence
+numbers can be explained by the erratum DS80000789E 6, demote the info
+message to debug level, streamline the code and update the comments.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/49d1afaa-f934-6ed2-a678-e0d428c63a65@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Keep the behavior: If an old CAN TX complete event is detected, abort
+the iteration and mark the number of valid CAN TX complete events as
+processed in the chip by incrementing the FIFO's tail index.
+
+Cc: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Cc: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c       |  6 +++---
- include/linux/blk-integrity.h | 14 +++++++-------
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 71 +++++++------------
+ 1 file changed, 27 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 27446fa847526..6f648b58cbd4d 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -873,9 +873,9 @@ static blk_status_t nvme_map_metadata(struct nvme_dev *dev, struct request *req,
- 		struct nvme_command *cmnd)
- {
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
-+	struct bio_vec bv = rq_integrity_vec(req);
- 
--	iod->meta_dma = dma_map_bvec(dev->dev, rq_integrity_vec(req),
--			rq_dma_dir(req), 0);
-+	iod->meta_dma = dma_map_bvec(dev->dev, &bv, rq_dma_dir(req), 0);
- 	if (dma_mapping_error(dev->dev, iod->meta_dma))
- 		return BLK_STS_IOERR;
- 	cmnd->rw.metadata = cpu_to_le64(iod->meta_dma);
-@@ -1016,7 +1016,7 @@ static __always_inline void nvme_pci_unmap_rq(struct request *req)
- 	        struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
- 
- 		dma_unmap_page(dev->dev, iod->meta_dma,
--			       rq_integrity_vec(req)->bv_len, rq_dma_dir(req));
-+			       rq_integrity_vec(req).bv_len, rq_dma_dir(req));
- 	}
- 
- 	if (blk_rq_nr_phys_segments(req))
-diff --git a/include/linux/blk-integrity.h b/include/linux/blk-integrity.h
-index 378b2459efe2d..69f73d0546118 100644
---- a/include/linux/blk-integrity.h
-+++ b/include/linux/blk-integrity.h
-@@ -105,14 +105,13 @@ static inline bool blk_integrity_rq(struct request *rq)
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+index b41fad3b37c06..5b0c7890d4b44 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -60,56 +60,39 @@ static int mcp251xfd_check_tef_tail(const struct mcp251xfd_priv *priv)
+ 	return 0;
  }
  
- /*
-- * Return the first bvec that contains integrity data.  Only drivers that are
-- * limited to a single integrity segment should use this helper.
-+ * Return the current bvec that contains the integrity data. bip_iter may be
-+ * advanced to iterate over the integrity data.
-  */
--static inline struct bio_vec *rq_integrity_vec(struct request *rq)
-+static inline struct bio_vec rq_integrity_vec(struct request *rq)
+-static int
+-mcp251xfd_handle_tefif_recover(const struct mcp251xfd_priv *priv, const u32 seq)
+-{
+-	const struct mcp251xfd_tx_ring *tx_ring = priv->tx;
+-	u32 tef_sta;
+-	int err;
+-
+-	err = regmap_read(priv->map_reg, MCP251XFD_REG_TEFSTA, &tef_sta);
+-	if (err)
+-		return err;
+-
+-	if (tef_sta & MCP251XFD_REG_TEFSTA_TEFOVIF) {
+-		netdev_err(priv->ndev,
+-			   "Transmit Event FIFO buffer overflow.\n");
+-		return -ENOBUFS;
+-	}
+-
+-	netdev_info(priv->ndev,
+-		    "Transmit Event FIFO buffer %s. (seq=0x%08x, tef_tail=0x%08x, tef_head=0x%08x, tx_head=0x%08x).\n",
+-		    tef_sta & MCP251XFD_REG_TEFSTA_TEFFIF ?
+-		    "full" : tef_sta & MCP251XFD_REG_TEFSTA_TEFNEIF ?
+-		    "not empty" : "empty",
+-		    seq, priv->tef->tail, priv->tef->head, tx_ring->head);
+-
+-	/* The Sequence Number in the TEF doesn't match our tef_tail. */
+-	return -EAGAIN;
+-}
+-
+ static int
+ mcp251xfd_handle_tefif_one(struct mcp251xfd_priv *priv,
+ 			   const struct mcp251xfd_hw_tef_obj *hw_tef_obj,
+ 			   unsigned int *frame_len_ptr)
  {
--	if (WARN_ON_ONCE(queue_max_integrity_segments(rq->q) > 1))
--		return NULL;
--	return rq->bio->bi_integrity->bip_vec;
-+	return mp_bvec_iter_bvec(rq->bio->bi_integrity->bip_vec,
-+				 rq->bio->bi_integrity->bip_iter);
- }
- #else /* CONFIG_BLK_DEV_INTEGRITY */
- static inline int blk_rq_count_integrity_sg(struct request_queue *q,
-@@ -178,7 +177,8 @@ static inline int blk_integrity_rq(struct request *rq)
+ 	struct net_device_stats *stats = &priv->ndev->stats;
++	u32 seq, tef_tail_masked, tef_tail;
+ 	struct sk_buff *skb;
+-	u32 seq, seq_masked, tef_tail_masked, tef_tail;
  
- static inline struct bio_vec *rq_integrity_vec(struct request *rq)
- {
--	return NULL;
-+	/* the optimizer will remove all calls to this function */
-+	return (struct bio_vec){ };
- }
- #endif /* CONFIG_BLK_DEV_INTEGRITY */
- #endif /* _LINUX_BLK_INTEGRITY_H */
+-	seq = FIELD_GET(MCP251XFD_OBJ_FLAGS_SEQ_MCP2518FD_MASK,
++	 /* Use the MCP2517FD mask on the MCP2518FD, too. We only
++	  * compare 7 bits, this is enough to detect old TEF objects.
++	  */
++	seq = FIELD_GET(MCP251XFD_OBJ_FLAGS_SEQ_MCP2517FD_MASK,
+ 			hw_tef_obj->flags);
+-
+-	/* Use the MCP2517FD mask on the MCP2518FD, too. We only
+-	 * compare 7 bits, this should be enough to detect
+-	 * net-yet-completed, i.e. old TEF objects.
+-	 */
+-	seq_masked = seq &
+-		field_mask(MCP251XFD_OBJ_FLAGS_SEQ_MCP2517FD_MASK);
+ 	tef_tail_masked = priv->tef->tail &
+ 		field_mask(MCP251XFD_OBJ_FLAGS_SEQ_MCP2517FD_MASK);
+-	if (seq_masked != tef_tail_masked)
+-		return mcp251xfd_handle_tefif_recover(priv, seq);
++
++	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
++	 * bits of a FIFOSTA register, here the TX FIFO tail index
++	 * might be corrupted and we might process past the TEF FIFO's
++	 * head into old CAN frames.
++	 *
++	 * Compare the sequence number of the currently processed CAN
++	 * frame with the expected sequence number. Abort with
++	 * -EBADMSG if an old CAN frame is detected.
++	 */
++	if (seq != tef_tail_masked) {
++		netdev_dbg(priv->ndev, "%s: chip=0x%02x ring=0x%02x\n", __func__,
++			   seq, tef_tail_masked);
++		stats->tx_fifo_errors++;
++
++		return -EBADMSG;
++	}
+ 
+ 	tef_tail = mcp251xfd_get_tef_tail(priv);
+ 	skb = priv->can.echo_skb[tef_tail];
+@@ -223,12 +206,12 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
+ 		unsigned int frame_len = 0;
+ 
+ 		err = mcp251xfd_handle_tefif_one(priv, &hw_tef_obj[i], &frame_len);
+-		/* -EAGAIN means the Sequence Number in the TEF
+-		 * doesn't match our tef_tail. This can happen if we
+-		 * read the TEF objects too early. Leave loop let the
+-		 * interrupt handler call us again.
++		/* -EBADMSG means we're affected by mcp2518fd erratum
++		 * DS80000789E 6., i.e. the Sequence Number in the TEF
++		 * doesn't match our tef_tail. Don't process any
++		 * further and mark processed frames as good.
+ 		 */
+-		if (err == -EAGAIN)
++		if (err == -EBADMSG)
+ 			goto out_netif_wake_queue;
+ 		if (err)
+ 			return err;
 -- 
 2.43.0
 
