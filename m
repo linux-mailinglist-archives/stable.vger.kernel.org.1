@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-67327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF9894F4EA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC3C94F3D1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93FBBB26B95
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD8552811C5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23859186E36;
-	Mon, 12 Aug 2024 16:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E51B186E34;
+	Mon, 12 Aug 2024 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fY8s73W3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FIrf+Gp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A63183CA6;
-	Mon, 12 Aug 2024 16:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B393183CA6;
+	Mon, 12 Aug 2024 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480564; cv=none; b=FXC7Sbdah98Bjmhra75eQBKTTyVGupXp3siN2hbhoTll0B8Ni7drFXWRKArTb08CQBLyIhIVvehbuQerDDwScF91YEwXA/Mh8OOhzzaaS4ITMxlvlXeeoHfCEovBRWXogry2z2sLPH62zsFmNghsIxIfZnhKbBX5XmC3aUlRi+k=
+	t=1723479751; cv=none; b=fIwvDGwbHAD9TC3JDrcjhFsH6mNTLtQ/PqsGJwqYi3di4b1YiPzcWwt1Uj4QtAVunrvKmJE2pdopgemKPVZvJPX8DIbMUqEgZoi1KyrSr/Nf6U2M8C0ggRRMJfZQvJFZNUcizqnUDilhosA+qwdlatwzGU0Fn+RGB8mG+zCPYuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480564; c=relaxed/simple;
-	bh=xnzNiaZS+KfZxEOv6maPm52YBqqozf2y4uMHgn2fb+I=;
+	s=arc-20240116; t=1723479751; c=relaxed/simple;
+	bh=oqr1o1Rk+kkLIjss6GWEzeCQStU1rJEK4hScVEtdBdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bo5g42ttDZXV2KSzFvx3cYpM5MZQFRN/LGWeOItROV//Hi7K6+g6kh8wXg4JC5D3BVRTbeBe1lC0l6FskvaFSmsWOCHmpzqh6dyA1+dvYl+lpaiatCkXfUMtCSAb7nx0bOgrg5oL9kBrZ7NJ+uNZ0eqCXJ9DdxcWrv+1Cj4cNNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fY8s73W3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADA5C32782;
-	Mon, 12 Aug 2024 16:36:04 +0000 (UTC)
+	 MIME-Version; b=DhHLUlI0JZwJf1yO/0qEIT+mxPiRWlaRMMFiHKg3mJI5zQkN7j8QgIJ5naGYi5F34aYSvKha0U88JikLccOovzSiUSO0CvpwjLbn4sthYqvp9L8G6z0fLHy24wUrCj8WAwhe4T5B198Y8js/TqMX2AB/HBkxe6em8JVwluEJCbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FIrf+Gp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E25CC32782;
+	Mon, 12 Aug 2024 16:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480564;
-	bh=xnzNiaZS+KfZxEOv6maPm52YBqqozf2y4uMHgn2fb+I=;
+	s=korg; t=1723479751;
+	bh=oqr1o1Rk+kkLIjss6GWEzeCQStU1rJEK4hScVEtdBdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fY8s73W3Lms53yculP8Z3peg6//5erafNeFe+sL9A+2F9IBxgdmyuWd0udlfvzqtd
-	 qNw27uqMe1Z3yRUIoZMVX+6eoeG3/RLHKMA6okpH2yjpy1jn0STX+51C4eWsH/2Kry
-	 PCq7nGcRDiLwscoNfJgm19+Pg+/EZVX12cNPb4Nk=
+	b=2FIrf+GpsqZM1JJ2/StQ54OilIi8VZHlXdqfqBKVp4NXZGwnDs24LWjjpc/aipzsk
+	 xrwSFulTtNoDM5y/r0x34HpOHuk/JwAjZCHNGYvJYwnbyNCNnhRq/VOEy7LYK2bAz5
+	 gRdgTaDaRTf1PKAjRLeO2VwEJcjXyhfffRpzJkCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam James <sam@gentoo.org>,
-	Alejandro Colomar <alx@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.10 235/263] btrfs: avoid using fixed char array size for tree names
+	Danilo Krummrich <dakr@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6 180/189] nouveau: set placement to original placement on uvmm validate.
 Date: Mon, 12 Aug 2024 18:03:56 +0200
-Message-ID: <20240812160155.530099513@linuxfoundation.org>
+Message-ID: <20240812160139.074719796@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Dave Airlie <airlied@redhat.com>
 
-commit 12653ec36112ab55fa06c01db7c4432653d30a8d upstream.
+commit 9c685f61722d30a22d55bb8a48f7a48bb2e19bcc upstream.
 
-[BUG]
-There is a bug report that using the latest trunk GCC 15, btrfs would cause
-unterminated-string-initialization warning:
+When a buffer is evicted for memory pressure or TTM evict all,
+the placement is set to the eviction domain, this means the
+buffer never gets revalidated on the next exec to the correct domain.
 
-  linux-6.6/fs/btrfs/print-tree.c:29:49: error: initializer-string for array of ‘char’ is too long [-Werror=unterminated-string-initialization]
-   29 |         { BTRFS_BLOCK_GROUP_TREE_OBJECTID,      "BLOCK_GROUP_TREE"      },
-      |
-      ^~~~~~~~~~~~~~~~~~
+I think this should be fine to use the initial domain from the
+object creation, as least with VM_BIND this won't change after
+init so this should be the correct answer.
 
-[CAUSE]
-To print tree names we have an array of root_name_map structure, which
-uses "char name[16];" to store the name string of a tree.
-
-But the following trees have names exactly at 16 chars length:
-- "BLOCK_GROUP_TREE"
-- "RAID_STRIPE_TREE"
-
-This means we will have no space for the terminating '\0', and can lead
-to unexpected access when printing the name.
-
-[FIX]
-Instead of "char name[16];" use "const char *" instead.
-
-Since the name strings are all read-only data, and are all NULL
-terminated by default, there is not much need to bother the length at
-all.
-
-Reported-by: Sam James <sam@gentoo.org>
-Reported-by: Alejandro Colomar <alx@kernel.org>
-Fixes: edde81f1abf29 ("btrfs: add raid stripe tree pretty printer")
-Fixes: 9c54e80ddc6bd ("btrfs: add code to support the block group root")
-CC: stable@vger.kernel.org # 6.1+
-Suggested-by: Alejandro Colomar <alx@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Alejandro Colomar <alx@kernel.org>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
+Cc: Danilo Krummrich <dakr@redhat.com>
+Cc: <stable@vger.kernel.org> # v6.6
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240515025542.2156774-1-airlied@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/print-tree.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_uvmm.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/print-tree.c
-+++ b/fs/btrfs/print-tree.c
-@@ -14,7 +14,7 @@
+--- a/drivers/gpu/drm/nouveau/nouveau_uvmm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_uvmm.c
+@@ -1320,6 +1320,7 @@ nouveau_uvmm_bind_job_submit(struct nouv
  
- struct root_name_map {
- 	u64 id;
--	char name[16];
-+	const char *name;
- };
+ 		drm_gpuva_for_each_op(va_op, op->ops) {
+ 			struct drm_gem_object *obj = op_gem_obj(va_op);
++			struct nouveau_bo *nvbo;
  
- static const struct root_name_map root_map[] = {
+ 			if (unlikely(!obj))
+ 				continue;
+@@ -1330,8 +1331,9 @@ nouveau_uvmm_bind_job_submit(struct nouv
+ 			if (unlikely(va_op->op == DRM_GPUVA_OP_UNMAP))
+ 				continue;
+ 
+-			ret = nouveau_bo_validate(nouveau_gem_object(obj),
+-						  true, false);
++			nvbo = nouveau_gem_object(obj);
++			nouveau_bo_placement_set(nvbo, nvbo->valid_domains, 0);
++			ret = nouveau_bo_validate(nvbo, true, false);
+ 			if (ret) {
+ 				op = list_last_op(&bind_job->ops);
+ 				goto unwind;
 
 
 
