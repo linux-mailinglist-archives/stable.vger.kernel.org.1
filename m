@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-66875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29BA294F2DD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB1894F3AC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBB95284BC8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A47D0B225F9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9ACD187855;
-	Mon, 12 Aug 2024 16:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA8F186E34;
+	Mon, 12 Aug 2024 16:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPUXo/VJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utRWqoRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874BD183CD9;
-	Mon, 12 Aug 2024 16:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE80B183CA6;
+	Mon, 12 Aug 2024 16:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479070; cv=none; b=NSkD2CYksWYMGXG0NLgvRVYGWdfq3yL9WSVR5zzMbDOzuetwXjX9zQqusDlVlAujv7tM4KHBkwMSq4sxU/IimYKxe2ZAvCNy+7cUMaKnCwxwXH4aQzbrUqBWZdxUykg6mbPFkuSsznaW7CZf6mSfPlPA2asZyYbuZv+CqnPbgL0=
+	t=1723479637; cv=none; b=L3kGilm8s76/1/h7IsIymTvu/bf/Mom+FkNzuU07ljHm2E8RXuIJz56aqdnDeG1xn9DHofjTU8nenyQCsV/zDsSdGEE9dyG9Nx+y2Cd5+wZWsj9NohtcXonIiSLSA85Ir71It9Oh58VfPNewVt2ZBIjRcNdkKFF39qXvrRDF1VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479070; c=relaxed/simple;
-	bh=eALYMivd+RmZ73Ux+EqL7ianBCtZeCB6vVwTFUg5u/w=;
+	s=arc-20240116; t=1723479637; c=relaxed/simple;
+	bh=Xskzmz831tAURcM9wpsceWQbnqBcD6oo3pfubNfEncU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIGrJ6KVxuBlg5hTwqlp9mt73zdjFHCHyK03WU4I7geXkEmuEj71NGeUy+PLHTAVl6oO94mzk+zXdAEhBorA6g6+vuQ7UpHRADn+6ZsVxo4rCaE5Q0KGVr2oTxBtf2RJWYGHmBB6snUbqM2w7ylgjznjF0L0nhZn73PeQcXdEhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPUXo/VJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030D0C32782;
-	Mon, 12 Aug 2024 16:11:09 +0000 (UTC)
+	 MIME-Version; b=T4Ia89SnvhNNDsaG/8hIlcwqLsFBgKd36w/YBH0flrHznowhsPXEgGHuEdBtbxMggvExESGL/osP1+EHaCXQisRoPRoPbBp9vrosFtYLBzTevJFiY6M+ON9qVQrJTSt+XAqNTSkfPJHtYVEApXjSmElAKdzLf7a1Hl8y9AscTI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utRWqoRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4210CC32782;
+	Mon, 12 Aug 2024 16:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479070;
-	bh=eALYMivd+RmZ73Ux+EqL7ianBCtZeCB6vVwTFUg5u/w=;
+	s=korg; t=1723479637;
+	bh=Xskzmz831tAURcM9wpsceWQbnqBcD6oo3pfubNfEncU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPUXo/VJusZ/gAvJatAhqBl8EbD/52WfRDyGdJAD5nAV/VuFP4HivT7OFsOtPppW3
-	 U+W9e9npOSDzH/bXGcl/i8JjC6i5qiey+bfkqaXxKUJ/U82XUpj1pq0hSt8gXK7kSz
-	 P138H1eZrV/Dk1YBFNn6nXgdkmy2JBoMYWJ9Esf0=
+	b=utRWqoRqXIeeC+4fB5CDFyUYngSUBJpPbb9mbAJZVYgLSFpDYq1DPhA6/q4D1eRga
+	 iO+EYHLPfp8ytPVz48s7AAefMEPNqhjgv3/E/IPp1L3QJexCH+awZeV5pjEG5Ie4Vv
+	 R11V5DHj5zfcttDByOPVWQzydCsMyEM+UFlMbYtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 122/150] sched/smt: Introduce sched_smt_present_inc/dec() helper
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.6 147/189] power: supply: axp288_charger: Round constant_charge_voltage writes down
 Date: Mon, 12 Aug 2024 18:03:23 +0200
-Message-ID: <20240812160129.871875732@linuxfoundation.org>
+Message-ID: <20240812160137.800526685@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 31b164e2e4af84d08d2498083676e7eeaa102493 upstream.
+commit 81af7f2342d162e24ac820c10e68684d9f927663 upstream.
 
-Introduce sched_smt_present_inc/dec() helper, so it can be called
-in normal or error path simply. No functional changed.
+Round constant_charge_voltage writes down to the first supported lower
+value, rather then rounding them up to the first supported higher value.
 
-Cc: stable@kernel.org
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240703031610.587047-2-yangyingliang@huaweicloud.com
+This fixes e.g. writing 4250000 resulting in a value of 4350000 which
+might be dangerous, instead writing 4250000 will now result in a safe
+4200000 value.
+
+Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240717200333.56669-2-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |   26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ drivers/power/supply/axp288_charger.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9398,6 +9398,22 @@ static int cpuset_cpu_inactive(unsigned
- 	return 0;
- }
+--- a/drivers/power/supply/axp288_charger.c
++++ b/drivers/power/supply/axp288_charger.c
+@@ -178,18 +178,18 @@ static inline int axp288_charger_set_cv(
+ 	u8 reg_val;
+ 	int ret;
  
-+static inline void sched_smt_present_inc(int cpu)
-+{
-+#ifdef CONFIG_SCHED_SMT
-+	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
-+		static_branch_inc_cpuslocked(&sched_smt_present);
-+#endif
-+}
-+
-+static inline void sched_smt_present_dec(int cpu)
-+{
-+#ifdef CONFIG_SCHED_SMT
-+	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
-+		static_branch_dec_cpuslocked(&sched_smt_present);
-+#endif
-+}
-+
- int sched_cpu_activate(unsigned int cpu)
- {
- 	struct rq *rq = cpu_rq(cpu);
-@@ -9409,13 +9425,10 @@ int sched_cpu_activate(unsigned int cpu)
- 	 */
- 	balance_push_set(cpu, false);
- 
--#ifdef CONFIG_SCHED_SMT
- 	/*
- 	 * When going up, increment the number of cores with SMT present.
- 	 */
--	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
--		static_branch_inc_cpuslocked(&sched_smt_present);
--#endif
-+	sched_smt_present_inc(cpu);
- 	set_cpu_active(cpu, true);
- 
- 	if (sched_smp_initialized) {
-@@ -9485,13 +9498,12 @@ int sched_cpu_deactivate(unsigned int cp
+-	if (cv <= CV_4100MV) {
+-		reg_val = CHRG_CCCV_CV_4100MV;
+-		cv = CV_4100MV;
+-	} else if (cv <= CV_4150MV) {
+-		reg_val = CHRG_CCCV_CV_4150MV;
+-		cv = CV_4150MV;
+-	} else if (cv <= CV_4200MV) {
++	if (cv >= CV_4350MV) {
++		reg_val = CHRG_CCCV_CV_4350MV;
++		cv = CV_4350MV;
++	} else if (cv >= CV_4200MV) {
+ 		reg_val = CHRG_CCCV_CV_4200MV;
+ 		cv = CV_4200MV;
++	} else if (cv >= CV_4150MV) {
++		reg_val = CHRG_CCCV_CV_4150MV;
++		cv = CV_4150MV;
+ 	} else {
+-		reg_val = CHRG_CCCV_CV_4350MV;
+-		cv = CV_4350MV;
++		reg_val = CHRG_CCCV_CV_4100MV;
++		cv = CV_4100MV;
  	}
- 	rq_unlock_irqrestore(rq, &rf);
  
--#ifdef CONFIG_SCHED_SMT
- 	/*
- 	 * When going down, decrement the number of cores with SMT present.
- 	 */
--	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
--		static_branch_dec_cpuslocked(&sched_smt_present);
-+	sched_smt_present_dec(cpu);
- 
-+#ifdef CONFIG_SCHED_SMT
- 	sched_core_cpu_deactivate(cpu);
- #endif
- 
+ 	reg_val = reg_val << CHRG_CCCV_CV_BIT_POS;
 
 
 
