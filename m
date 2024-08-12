@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-66975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BC894F356
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8DA94F469
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45A4C1F2172D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 027ED28164F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA568184527;
-	Mon, 12 Aug 2024 16:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90D9186E38;
+	Mon, 12 Aug 2024 16:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyCZcfBO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpJaoYqE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972582C1A5;
-	Mon, 12 Aug 2024 16:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BD52B9B5;
+	Mon, 12 Aug 2024 16:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479391; cv=none; b=sm5206G/r55tQGU/ZEpA6n7k8xAaXoC0552bdAl30/o+AVykiwAC3p1nH6FNyRTqtvHAiF8RW374emD3DfuLI4irAncPmOQsVckFyw2NwHNlB2UcETuU0EXtoiR2BBqeMkUUEsEgUcLbYenSG4nyAxANyJeAGgYqmIQSTi2+RGw=
+	t=1723480208; cv=none; b=DrHFWYw533Rdzf/xN27X9uuZtZ8rgFvFpSYdhaYB4dAcz4+TyYg/iSOmV+B4bcR63bToqBcbopc36vWpdWoR626/8UEU6MUgNme3kyD5PcuEtgXqViee2V5JbT+6RaSQG7V7gMyuLVb/Rgn5FdoVkb9Oc0bKDApEFGdPtLigBQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479391; c=relaxed/simple;
-	bh=E4bLVVW28nv9jlqYq+BC75q9LCPN/VFt3nHkg7o7YzQ=;
+	s=arc-20240116; t=1723480208; c=relaxed/simple;
+	bh=GeQmMdESGPobfQIrEGr1r5c0h7bnkhY+NqEHjS68e2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QDzxTCKa5nbXMrn5ypZZOGACA611NKYFVATocroUg9QDmoN87FltDBot8eCG5ZAEwtitZsyKpSlbsF2vePt1hKmHT6UDXJlUx05x71i52Np14UUy9duQxv3tM7fbFKjn3TiYgVwzL/UbZsoc6tMQGpFBUTSmlarPyMo57E8rOx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyCZcfBO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140B5C32782;
-	Mon, 12 Aug 2024 16:16:30 +0000 (UTC)
+	 MIME-Version; b=eEUkL6FOd7EKHXA58K5tfanXuTmTWAi459mn1SfqaBFhfQULVQmfE2LuOkvKRE5BWhKI+L+OW/X5OlShJlwfKZPE3khijZSB2I4BEfu0iVG+IBeynCcMqwCLzLSdbwIQtt1QRpMF6RLoW/hdkk5XwnqUgoW3gaRrQIogUAsKmko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpJaoYqE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE03CC32782;
+	Mon, 12 Aug 2024 16:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479391;
-	bh=E4bLVVW28nv9jlqYq+BC75q9LCPN/VFt3nHkg7o7YzQ=;
+	s=korg; t=1723480208;
+	bh=GeQmMdESGPobfQIrEGr1r5c0h7bnkhY+NqEHjS68e2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CyCZcfBOBY1IFNuZWtKySAXWs9LP/jymtrTqyz0mosZE9jmHGw7YaZCUkIW8l/9wX
-	 iA11F3uc+JxVHh3PtWykdiDMAUXSqx7UeAxOTsAxQfPQfUqbgwp5gBbP4XOxRwP/Ei
-	 15e9Ma1ygLszxIL/nHQYxzywtKI8nbBnXqgoFYik=
+	b=EpJaoYqEckkWalGLXHK0OPPkdWwzi1oCBMbKY1Q/4BHUVvbomQy8wW2ZKnw2d31G8
+	 s8nuYk1IIq+GvaGYg+U9XdKrhtyEtNIIP3C26k1o272+E6bV+xF7KFUktesWoJYIMF
+	 D9yDnA8zgo74lh6SSdy0XGHJ+GJqYHTy6ewSpqos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 073/189] net: drop bad gso csum_start and offset in virtio_net_hdr
+Subject: [PATCH 6.10 128/263] net: drop bad gso csum_start and offset in virtio_net_hdr
 Date: Mon, 12 Aug 2024 18:02:09 +0200
-Message-ID: <20240812160134.952739616@linuxfoundation.org>
+Message-ID: <20240812160151.450427252@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -184,7 +184,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		/* Kernel has a special handling for GSO_BY_FRAGS. */
 --- a/net/ipv4/tcp_offload.c
 +++ b/net/ipv4/tcp_offload.c
-@@ -73,6 +73,9 @@ struct sk_buff *tcp_gso_segment(struct s
+@@ -140,6 +140,9 @@ struct sk_buff *tcp_gso_segment(struct s
  	if (thlen < sizeof(*th))
  		goto out;
  
