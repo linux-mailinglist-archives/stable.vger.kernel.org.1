@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-66830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6BE94F2A8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D2594F492
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 790D6281588
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3A011F21AB4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C536184559;
-	Mon, 12 Aug 2024 16:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14984184527;
+	Mon, 12 Aug 2024 16:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUMjNYc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDr8aTkt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9D2183CD4;
-	Mon, 12 Aug 2024 16:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61752C1A5;
+	Mon, 12 Aug 2024 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478925; cv=none; b=Hx/J07dNR7YlgaFyIOK0co8PnOx4p1/aBS2SO6df3fHR8nu1iWikkcm+zle6oD0v8QbsPWnVu7XNZjsJP62CJ4Nr9hxrxoN+MIyhj0bhTjLOOOsJePhxYcdEAWwP67aGnr1wYs6hcvyLRYjkO0OPl/Ts0lBK8A42B/tvFNPbwfY=
+	t=1723480309; cv=none; b=sCa29S5XbScsIg8K59bWk4Z1xlxyKhMO2XEtsHNztLc7yyRlMpu1XagYPybpeyHYaMj5MlkfYQ+stHXh24hV9aFYZw0C6nK90XblHUusrXqLJNIjxJAD9DXzhT+GK8cO1VR32JZiJNyESMER2imlQ2gJcxIbgT0yE3qNzFsduas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478925; c=relaxed/simple;
-	bh=PXLSgpS/+F+/MwCCcN9G/r/VVYm47yPIN0vR+IltUTU=;
+	s=arc-20240116; t=1723480309; c=relaxed/simple;
+	bh=LsCaPVwE3QEcTNxwy/AmBVR8I1GRsvYFN7nMRezlY7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmymzXectax+BEiROhLjc98MX94fJdmuh54cFrsXb1d2sqaJ2jbzcW+lM2jDHjXOICatxkEKFGLRXuR0K4QEVng112cHjVtc/SNhXA73eM2qd20t777dQY54h4PrkxlcJAgcMPCIK9TYN1UJGdicMSoeHDfD/s0Rt4wiyhJ2vC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUMjNYc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45502C32782;
-	Mon, 12 Aug 2024 16:08:44 +0000 (UTC)
+	 MIME-Version; b=UdVFr1CzVbJOpo/u1QznU8OpdARwTUrKyFSCYlXLKlxSC+TsPWHQHqjOt8O26ZM+cCDqr+Tsx82y5Tmh1vXdWQNuIrk6VRIUA8XgLATYNy0cRO+LnqiOsqsjf9620iSLAQ9WlMRc8aDSn+/ifnd5+7PBmHVEjp0JzEyhHUABElA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDr8aTkt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC90C32782;
+	Mon, 12 Aug 2024 16:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478924;
-	bh=PXLSgpS/+F+/MwCCcN9G/r/VVYm47yPIN0vR+IltUTU=;
+	s=korg; t=1723480309;
+	bh=LsCaPVwE3QEcTNxwy/AmBVR8I1GRsvYFN7nMRezlY7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUMjNYc9CbtPl/n8C7aX3IB751vp4kCyfR/7wfstSSJ9Zol4DTK73zXCc8gOUfC5e
-	 /4mpBQks82wMKkf0fjINgmu1vVTi5mX0mBv5GigMsN2M0PeaeUIsCdvpjUwhSvqgtD
-	 Edm+X52X/f5fbQK1tsHh7Do+FsuhR+tW6zj4KW70=
+	b=rDr8aTkt0VotwdV8SnkTw9NJL3tyiggxsoGW5yn6uT9DPh+A5KEBU4C8tSv7QflwK
+	 KOslYBYaYdetMtLWGab9a3fVympRSDc6J45nm5wmcf6LyOa+Q8LqzYZ0opz+MFTFwJ
+	 t6tVQvgQF+v9o6y0voUxLEDxb84krPXRur+7PEpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	David Gow <david@davidgow.net>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/150] i2c: smbus: Send alert notifications to all devices if source not found
-Date: Mon, 12 Aug 2024 18:02:39 +0200
-Message-ID: <20240812160128.186090759@linuxfoundation.org>
+Subject: [PATCH 6.10 159/263] drm/i915: Attempt to get pages without eviction first
+Date: Mon, 12 Aug 2024 18:02:40 +0200
+Message-ID: <20240812160152.633348201@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: David Gow <david@davidgow.net>
 
-[ Upstream commit f6c29f710c1ff2590109f83be3e212b86c01e0f3 ]
+[ Upstream commit 787db3bb6ed5cee56fc97fecdd61517d89763f0a ]
 
-If a SMBus alert is received and the originating device is not found,
-the reason may be that the address reported on the SMBus alert address
-is corrupted, for example because multiple devices asserted alert and
-do not correctly implement SMBus arbitration.
+In commit a78a8da51b36 ("drm/ttm: replace busy placement with flags v6"),
+__i915_ttm_get_pages was updated to use flags instead of the separate
+'busy' placement list. However, the behaviour was subtly changed.
+Originally, the function would attempt to use the preferred placement
+without eviction, and give an opportunity to restart the operation
+before falling back to allowing eviction.
 
-If this happens, call alert handlers on all devices connected to the
-given I2C bus, in the hope that this cleans up the situation.
+This was unintentionally changed, as the preferred placement was not
+given the TTM_PL_FLAG_DESIRED flag, and so eviction could be triggered
+in that first pass. This caused thrashing, and a significant performance
+regression on DG2 systems with small BAR. For example, Minecraft and
+Team Fortress 2 would drop to single-digit framerates.
 
-This change reliably fixed the problem on a system with multiple devices
-on a single bus. Example log where the device on address 0x18 (ADM1021)
-and on address 0x4c (ADT7461A) both had the alert line asserted:
+Restore the original behaviour by marking the initial placement as
+desired on that first attempt. Also, rework this to use a separate
+struct ttm_palcement, as the individual placements are marked 'const',
+so hot-patching the flags is even more dodgy than before.
 
-smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
-smbus_alert 3-000c: no driver alert()!
-smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
-smbus_alert 3-000c: no driver alert()!
-lm90 3-0018: temp1 out of range, please check!
-lm90 3-0018: Disabling ALERT#
-lm90 3-0029: Everything OK
-lm90 3-002a: Everything OK
-lm90 3-004c: temp1 out of range, please check!
-lm90 3-004c: temp2 out of range, please check!
-lm90 3-004c: Disabling ALERT#
+Thanks to Justin Brewer for bisecting this.
 
-Fixes: b5527a7766f0 ("i2c: Add SMBus alert support")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-[wsa: fixed a typo in the commit message]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: a78a8da51b36 ("drm/ttm: replace busy placement with flags v6")
+Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11255
+Signed-off-by: David Gow <david@davidgow.net>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240804091851.122186-3-david@davidgow.net
+(cherry picked from commit 92653f2a572505adaf7f13f695c1907e71a1dc84)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-smbus.c | 38 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 35 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
-index 5f74978874691..8d0b520eb8e8d 100644
---- a/drivers/i2c/i2c-smbus.c
-+++ b/drivers/i2c/i2c-smbus.c
-@@ -65,6 +65,32 @@ static int smbus_do_alert(struct device *dev, void *addrp)
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+index fb848fd8ba15a..5c72462d1f57e 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+@@ -778,13 +778,16 @@ static int __i915_ttm_get_pages(struct drm_i915_gem_object *obj,
+ 		.interruptible = true,
+ 		.no_wait_gpu = false,
+ 	};
+-	int real_num_busy;
++	struct ttm_placement initial_placement;
++	struct ttm_place initial_place;
+ 	int ret;
  
-+/* Same as above, but call back all drivers with alert handler */
-+
-+static int smbus_do_alert_force(struct device *dev, void *addrp)
-+{
-+	struct i2c_client *client = i2c_verify_client(dev);
-+	struct alert_data *data = addrp;
-+	struct i2c_driver *driver;
-+
-+	if (!client || (client->flags & I2C_CLIENT_TEN))
-+		return 0;
-+
-+	/*
-+	 * Drivers should either disable alerts, or provide at least
-+	 * a minimal handler. Lock so the driver won't change.
-+	 */
-+	device_lock(dev);
-+	if (client->dev.driver) {
-+		driver = to_i2c_driver(client->dev.driver);
-+		if (driver->alert)
-+			driver->alert(client, data->type, data->data);
-+	}
-+	device_unlock(dev);
-+
-+	return 0;
-+}
-+
- /*
-  * The alert IRQ handler needs to hand work off to a task which can issue
-  * SMBus calls, because those sleeping calls can't be made in IRQ context.
-@@ -106,13 +132,19 @@ static irqreturn_t smbus_alert(int irq, void *d)
+ 	/* First try only the requested placement. No eviction. */
+-	real_num_busy = placement->num_placement;
+-	placement->num_placement = 1;
+-	ret = ttm_bo_validate(bo, placement, &ctx);
++	initial_placement.num_placement = 1;
++	memcpy(&initial_place, placement->placement, sizeof(struct ttm_place));
++	initial_place.flags |= TTM_PL_FLAG_DESIRED;
++	initial_placement.placement = &initial_place;
++	ret = ttm_bo_validate(bo, &initial_placement, &ctx);
+ 	if (ret) {
+ 		ret = i915_ttm_err_to_gem(ret);
  		/*
- 		 * If we read the same address more than once, and the alert
- 		 * was not handled by a driver, it won't do any good to repeat
--		 * the loop because it will never terminate.
--		 * Bail out in this case.
-+		 * the loop because it will never terminate. Try again, this
-+		 * time calling the alert handlers of all devices connected to
-+		 * the bus, and abort the loop afterwards. If this helps, we
-+		 * are all set. If it doesn't, there is nothing else we can do,
-+		 * so we might as well abort the loop.
- 		 * Note: This assumes that a driver with alert handler handles
- 		 * the alert properly and clears it if necessary.
+@@ -799,7 +802,6 @@ static int __i915_ttm_get_pages(struct drm_i915_gem_object *obj,
+ 		 * If the initial attempt fails, allow all accepted placements,
+ 		 * evicting if necessary.
  		 */
--		if (data.addr == prev_addr && status != -EBUSY)
-+		if (data.addr == prev_addr && status != -EBUSY) {
-+			device_for_each_child(&ara->adapter->dev, &data,
-+					      smbus_do_alert_force);
- 			break;
-+		}
- 		prev_addr = data.addr;
- 	}
- 
+-		placement->num_placement = real_num_busy;
+ 		ret = ttm_bo_validate(bo, placement, &ctx);
+ 		if (ret)
+ 			return i915_ttm_err_to_gem(ret);
 -- 
 2.43.0
 
