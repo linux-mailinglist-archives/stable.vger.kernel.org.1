@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E911494F084
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:51:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F9794F086
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26D0282C5E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:51:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08983280E92
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032CB184526;
-	Mon, 12 Aug 2024 14:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5996A153BF6;
+	Mon, 12 Aug 2024 14:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpHrsfxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6OE7pz0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93325336D
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1953517995B
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474246; cv=none; b=oajYUdpMnpM182dsuFa7kaGhe5KuwMK7iNMFePwEUSEbuZWoJXuBLHhT/m2kBBFEIBpO5SO4/Wi7ozpvWypdGSbTtf56Qg6dYvb2lT/xHOpGoP3Ug3YKQAwx1Hj1R4zuhTrVF984UDQF1MkuXNubE/e5CBJHjjMzNAgfz15Fqss=
+	t=1723474250; cv=none; b=LKFeow5r6ueGslje0oK5A70d8aH4pGEgBDNy83Tzxq0bpQLpYULzZFOhs7hlkC1pjOttpf8KBpdzBSRw9xrBlNn/G1nCfEu8pvkFKw0VIbxqMU6CffqrtUBCs1a3/XwKCXeyAQxTj9FZQ31YFFI/jV9cQQEyAYk2HUT2TPsFG7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474246; c=relaxed/simple;
-	bh=E6sgPAEpcepu0vkYuQt7UFprMT7Vo6gWrZMB3dOBomA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MEwUQitkfKyxz49x2uhk8+bicZYqcsYjT0Sz8TNzOvLhWzi1Q9MYdUKOi8v2St6vYeaLFbB5Z6eWMertSMpF4VAYr7M6Ktk2MKdECiujMMu7Hi/4aaithe+R73xKtUGJrOZ8LLJ3wtgx3jKQ+ocBADA0xaAozKS8USTUty9DgDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IpHrsfxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DF6C32782;
-	Mon, 12 Aug 2024 14:50:45 +0000 (UTC)
+	s=arc-20240116; t=1723474250; c=relaxed/simple;
+	bh=/FIQXMoQ0Ukcv0XjPizBi0s1rHxm88apbFeVI5itZhQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WExgnJJi6Nx4/IoOZJ6ePqFNnQuIP53FsKQlZcmR25DNCV8Zz//A3lb5veJI7dpaW5dTck1tZgAoTeZoD3wBYQ0FcZIB5OsgaaXbW2b4xrg3mAEiga8yUsmuFnTS9MsnWWotnyhc2trHsdnGAu0wy9DCk+Vt4sbqgkyx3HCFgN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6OE7pz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D69DC32782;
+	Mon, 12 Aug 2024 14:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474246;
-	bh=E6sgPAEpcepu0vkYuQt7UFprMT7Vo6gWrZMB3dOBomA=;
+	s=korg; t=1723474250;
+	bh=/FIQXMoQ0Ukcv0XjPizBi0s1rHxm88apbFeVI5itZhQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IpHrsfxQbv0ok0cArluW4LK3+L4J2LWakhOVgo6LTacf9SlHrtxYg25mzBZgmR0sK
-	 gIjgThZYiRLDCwqLl9ZgGZQKrB9CSzjoFXV51tvgH9oytKFxDTAbaFoUoCvrU1VJRf
-	 r0nU5LuWzB+7sagVMuHhXDI0/7SaEoPiDgpMvbss=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Use periodic detection for ipx/headless" failed to apply to 6.10-stable tree
+	b=l6OE7pz0Atf6NLLV6allHfp4kf28Oyyg4x75CCAEPbWMWZ5t8LVCO0j0LYj1Ol1r3
+	 kZDmvKpJSh6uwUlI1yzsLJnenKxspLYR6Ja82BbfBJ/d8NopwXzPJlVwMkLZgJistw
+	 j6mxFtYYW5q4+sELnjVcIAeVwbaSNpbhlQyOf3/U=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Use periodic detection for ipx/headless" failed to apply to 6.6-stable tree
 To: roman.li@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:48:57 +0200
-Message-ID: <2024081257-commute-zone-b217@gregkh>
+Date: Mon, 12 Aug 2024 16:48:58 +0200
+Message-ID: <2024081258-knee-fastness-2603@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9862ef7bae47b9292a38a0a1b30bff7f56d7815b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081257-commute-zone-b217@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081258-knee-fastness-2603@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,21 @@ Possible dependencies:
 afca033f10d3 ("drm/amd/display: Add periodic detection for IPS")
 05c5ffaac770 ("drm/amd/display: gpuvm handling in DML21")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
+e779f4587f61 ("drm/amd/display: Add handling for DC power mode")
+cc263c3a0c9f ("drm/amd/display: remove context->dml2 dependency from DML21 wrapper")
+d62d5551dd61 ("drm/amd/display: Backup and restore only on full updates")
+2d5bb791e24f ("drm/amd/display: Implement update_planes_and_stream_v3 sequence")
+4f5b8d78ca43 ("drm/amd/display: Init DPPCLK from SMU on dcn32")
+2728e9c7c842 ("drm/amd/display: add DC changes for DCN351")
+d2dea1f14038 ("drm/amd/display: Generalize new minimal transition path")
+0701117efd1e ("Revert "drm/amd/display: For FPO and SubVP/DRR configs program vmin/max sel"")
+a9b1a4f684b3 ("drm/amd/display: Add more checks for exiting idle in DC")
+13b3d6bdbeb4 ("drm/amd/display: add debugfs disallow edp psr")
+dcbf438d4834 ("drm/amd/display: Unify optimize_required flags and VRR adjustments")
+8457bddc266c ("drm/amd/display: Revert "Rework DC Z10 restore"")
+2a8e918f48bd ("drm/amd/display: add power_state and pme_pending flag")
+e6f82bd44b40 ("drm/amd/display: Rework DC Z10 restore")
+5950efe25ee0 ("drm/amd/display: Enable Panel Replay for static screen use case")
 
 thanks,
 
