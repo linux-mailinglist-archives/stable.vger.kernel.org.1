@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-67295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBD194F4C6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01EBD94F2C9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE0881F2136C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E24CB23FA7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B6E186E33;
-	Mon, 12 Aug 2024 16:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90128187342;
+	Mon, 12 Aug 2024 16:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xym+S++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wzv93lRH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838001494B8;
-	Mon, 12 Aug 2024 16:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4CE183CD9;
+	Mon, 12 Aug 2024 16:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480460; cv=none; b=n35zBcwJCsPAQkciaid9oFEuMU57DQ+7VqxcS0waKQmKU5zHsCgYrClIiD3S3ryMR9PW/x2RkUC7m+QGjq0aUApH+HokRjexrDJ6dgvGsWkYN1MipVPaK8KqupPWTxeBef7stCjXPnCyrEg4QfPoVWm6UOgZWRgOyIIIa4eOk0M=
+	t=1723479009; cv=none; b=k7yJrsM7XoGHfHwYe7mf3FfFcaXKCDOvxpI8Pj58OaAPGisq8XMiQfX7jK2g8gGS4GZSZTBfv+Fs1o+UgQlW3lp1wKc9IaBOTG85WmaxsxTOYv2vBAPpPBJVupt8fvXTzP3Qs3x0kdxYbhxtVKrV6J5syyc87/HcC6oCMlZYH8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480460; c=relaxed/simple;
-	bh=wjsMksbrt90KSprd65lgx4GVCsqMTJ2IJJ71hZy6c/M=;
+	s=arc-20240116; t=1723479009; c=relaxed/simple;
+	bh=dB2fTciNH7C99yeMCkwymMBnv0h1RnzHu+mZrclazpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TOJJoznc9HXzd5kIGv8oNkFrJ7hHUrwMZdX2vbHpe4oOLF6lQGDnK+RZNnHRNQ1VLuKqtRgmgbCZbjNMMZbAmRihgVIFAPmWfOG8etAEKic61Y3rTMW7nSDvJQn1qnCfCnt6nZuB+IVlQGfxomm5QRIjK83OBetAIljbfZm3nKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xym+S++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4368C32782;
-	Mon, 12 Aug 2024 16:34:19 +0000 (UTC)
+	 MIME-Version; b=Ewk/G/0PToW8eCWcrFWV51Rqa9HWCjV18VbAEZXCesb/4WJ6MOMb+3FN7eNCPfe6D5F+kcutNaXz1NPpIAn/SM4MXiJTH9JO0KpKg9pB2Yh8M+KwCXrhlMe0TRGMMrHIPHADI2m0o1SQ8zpsMOeeFlFNGn9SjKMmJPZhGF23z+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wzv93lRH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C326EC32782;
+	Mon, 12 Aug 2024 16:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480460;
-	bh=wjsMksbrt90KSprd65lgx4GVCsqMTJ2IJJ71hZy6c/M=;
+	s=korg; t=1723479009;
+	bh=dB2fTciNH7C99yeMCkwymMBnv0h1RnzHu+mZrclazpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xym+S++1Hrq0N+zGV8ZNglYW4ZyZLJvo31BDyBkDUKKcg8wbN5H+xOzCvs9bCUD3
-	 z3RktB5VRkHavgPgfMNRFcPAkyqjj6E6nO1Xck7mdJ+3wWDYfeztyJSIvBvJ4lgghP
-	 AqDrJHEuOixFpaaRaW6i8aH8RtTMHFCnVtc/igEE=
+	b=Wzv93lRHTaUCItg6Os87E7pK+V+yov7ezMj8bJGJJdWcg6TYFBb0LpfMweb0NiZze
+	 u5qe7HUuK96EqJMq5/xGq2JECB54BaoX4CsU8JGF7Xp+B/X1yjPmKbFkMvbOKgqn+A
+	 TOA5yl+Sxpbf+7MEKgT2TpOfy4fDEOC3CRvmIA/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 185/263] ALSA: hda/hdmi: Yet more pin fix for HP EliteDesk 800 G4
+	Borislav Petkov <bp@alien8.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/150] clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()
 Date: Mon, 12 Aug 2024 18:03:06 +0200
-Message-ID: <20240812160153.627959121@linuxfoundation.org>
+Message-ID: <20240812160129.214262378@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,35 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-commit 176fd1511dd9086ab4fa9323cb232177c6235288 upstream.
+[ Upstream commit f2655ac2c06a15558e51ed6529de280e1553c86e ]
 
-HP EliteDesk 800 G4 (PCI SSID 103c:83e2) is another Kabylake machine
-where BIOS misses the HDMI pin initializations.  Add the quirk entry.
+The current "nretries > 1 || nretries >= max_retries" check in
+cs_watchdog_read() will always evaluate to true, and thus pr_warn(), if
+nretries is greater than 1.  The intent is instead to never warn on the
+first try, but otherwise warn if the successful retry was the last retry.
 
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240806064918.11132-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Therefore, change that "||" to "&&".
+
+Fixes: db3a34e17433 ("clocksource: Retry clock read if long delays detected")
+Reported-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240802154618.4149953-2-paulmck@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_hdmi.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/clocksource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -1989,6 +1989,7 @@ static int hdmi_add_cvt(struct hda_codec
- }
- 
- static const struct snd_pci_quirk force_connect_list[] = {
-+	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
- 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
- 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 6d5a0fc98e398..cd9a59011dee9 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -235,7 +235,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow,
+ 		wd_delay = clocksource_cyc2ns(wd_delta, watchdog->mult,
+ 					      watchdog->shift);
+ 		if (wd_delay <= WATCHDOG_MAX_SKEW) {
+-			if (nretries > 1 || nretries >= max_retries) {
++			if (nretries > 1 && nretries >= max_retries) {
+ 				pr_warn("timekeeping watchdog on CPU%d: %s retried %d times before success\n",
+ 					smp_processor_id(), watchdog->name, nretries);
+ 			}
+-- 
+2.43.0
+
 
 
 
