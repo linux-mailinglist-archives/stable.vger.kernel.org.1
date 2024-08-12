@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-66836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A8DA94F2AF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D216E94F497
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20E9A1F20C27
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 897F41F21710
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4241418733D;
-	Mon, 12 Aug 2024 16:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4F3186E33;
+	Mon, 12 Aug 2024 16:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMhNA+ch"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhZlebeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F393018732A;
-	Mon, 12 Aug 2024 16:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF68716D9B8;
+	Mon, 12 Aug 2024 16:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478945; cv=none; b=paSgIFniYc4tc0NJSqugcVBykL4euYFRQ+pOR+aod4y+rQViaLbGdUfOm6V2JK9+DnC4kXeF+nkxzIDV4D/tvOwBzNpoa4BWHogPeSiDp+rTOOF1hghA8IHJGNf3+Jhqq5cuVESzTEKj0KYkSlO2TunCIOvJlHlLp2SPYSYjj4g=
+	t=1723480326; cv=none; b=n17k/rrUWPRa7Oe8LlMNFdWZF1iUzV9nQkMayR42VjdxSCMnQKd1K3GimzEn2Ldy1q2u0w1ylYSZeT4QLiuQ5PTd2Gq7lxNDWxjbp+YFpMcs38xgTfFEWlGsV4aOSdDiElMFn1ljfS3r4zedSwQieebB0wd3wj0iKy25tUjzEr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478945; c=relaxed/simple;
-	bh=Hn9thRNbujhyQ8t9kHn+xxUOB0Am9yNqPPhKAyqP6EM=;
+	s=arc-20240116; t=1723480326; c=relaxed/simple;
+	bh=ab/+02Ho2mHfH6TN8CT4Gu9w2F7P72NfNwunvzoJCwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDjIexa3BoYj7c6wZqcKbcEzDYL+Us1ZNjUN7D0CuJNCChFZXx/Po3vOkHOzzdlNd5sE8OXJmqlgHqhfhdZhjn7XNcv/ft3ucHJuy/+Zk+JYyIXhwN1nKQMwssiKKoEez2zPaF5AT87/8ljupjk2T9n2Ntb6zq/Rh9EW7F0CohI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMhNA+ch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18705C32782;
-	Mon, 12 Aug 2024 16:09:03 +0000 (UTC)
+	 MIME-Version; b=hHWVZz6CAnaBp703rXxFriQUX4oUU5nyuRY/ocqCKgO0TgxOo7ZY5ZsyIvBfhYGiMqJ5337GpMd+kyUMrJ10iCBTD9xU6W8gwzSaykSS0I/LWntlywxbOfAAnKU7Uvtz+LEHx32dIHZ1IGBYvub0eTrWX6UuupoYI7uxsiTR+fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhZlebeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A96C32782;
+	Mon, 12 Aug 2024 16:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478944;
-	bh=Hn9thRNbujhyQ8t9kHn+xxUOB0Am9yNqPPhKAyqP6EM=;
+	s=korg; t=1723480325;
+	bh=ab/+02Ho2mHfH6TN8CT4Gu9w2F7P72NfNwunvzoJCwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pMhNA+chIFzkoN5OZci++yicqOgkKEKvQGR+68rGddueeI7BdoaUeR0NwZ6OqdeQm
-	 oR5F5R2Dt0+NtEzzNtPbsuv6HOQHTPVupSyD5++ThrxHWwq/orIpOAMNVwMbqgJDYs
-	 UZ9JcXcHaaG9u9xdP2ktHmle2AiJQ6YA2Dwhn8Yg=
+	b=KhZlebeFnQIrP0jC4xpPttcR6Ce+H94z7vPNx/Ik5OcRLBu8eHuVXPUcAcqS40yRv
+	 53sqo9Iy14i7Q99UU64nwnvbZ/CYlSFiGVV43yeiLsiYPTz1Me5400jdc8tN9gWF7f
+	 wdcYwf/iJA9iYCXtB2qT/yiKrGgWEyJJUYX+JHcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Mark Brown <broonie@kernel.org>,
+	Paulo Zanoni <paulo.r.zanoni@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/150] spi: spi-fsl-lpspi: Fix scldiv calculation
+Subject: [PATCH 6.10 164/263] drm/xe: Use dma_fence_chain_free in chain fence unused as a sync
 Date: Mon, 12 Aug 2024 18:02:45 +0200
-Message-ID: <20240812160128.411923488@linuxfoundation.org>
+Message-ID: <20240812160152.824745126@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 730bbfaf7d4890bd99e637db7767dc68cfeb24e7 ]
+[ Upstream commit 4f854a8b1b85d46abd5ce206936d23f87ac5e0c9 ]
 
-The effective SPI clock frequency should never exceed speed_hz
-otherwise this might result in undefined behavior of the SPI device.
+A chain fence is uninitialized if not installed in a drm sync obj. Thus
+if xe_sync_entry_cleanup is called and sync->chain_fence is non-NULL the
+proper cleanup is dma_fence_chain_free rather than a dma-fence put.
 
-Currently the scldiv calculation could violate this constraint.
-For the example parameters perclk_rate = 24 MHz and speed_hz = 7 MHz,
-the function fsl_lpspi_set_bitrate will determine perscale = 0 and
-scldiv = 1, which is a effective SPI clock of 8 MHz.
-
-So fix this by rounding up the quotient of perclk_rate and speed_hz.
-While this never change within the loop, we can pull this out.
-
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://patch.msgid.link/20240804113611.83613-1-wahrenst@gmx.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2411
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2261
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240727012216.2118276-1-matthew.brost@intel.com
+(cherry picked from commit 7f7a2da3bf8bc0e0f6c239af495b7050056e889c)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_sync.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 9e324d72596af..dd2381ac27f67 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -297,7 +297,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
- static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	struct lpspi_config config = fsl_lpspi->config;
--	unsigned int perclk_rate, scldiv;
-+	unsigned int perclk_rate, scldiv, div;
- 	u8 prescale;
- 
- 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-@@ -308,8 +308,10 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 		return -EINVAL;
- 	}
- 
-+	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
-+
- 	for (prescale = 0; prescale < 8; prescale++) {
--		scldiv = perclk_rate / config.speed_hz / (1 << prescale) - 2;
-+		scldiv = div / (1 << prescale) - 2;
- 		if (scldiv < 256) {
- 			fsl_lpspi->config.prescale = prescale;
- 			break;
+diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
+index 65f1f16282356..2bfff998458ba 100644
+--- a/drivers/gpu/drm/xe/xe_sync.c
++++ b/drivers/gpu/drm/xe/xe_sync.c
+@@ -263,7 +263,7 @@ void xe_sync_entry_cleanup(struct xe_sync_entry *sync)
+ 	if (sync->fence)
+ 		dma_fence_put(sync->fence);
+ 	if (sync->chain_fence)
+-		dma_fence_put(&sync->chain_fence->base);
++		dma_fence_chain_free(sync->chain_fence);
+ 	if (sync->ufence)
+ 		user_fence_put(sync->ufence);
+ }
 -- 
 2.43.0
 
