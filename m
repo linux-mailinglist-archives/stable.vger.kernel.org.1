@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8F594F3D9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA62A94F4F3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA172281BB4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48526B26C83
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA35186E34;
-	Mon, 12 Aug 2024 16:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F74186E33;
+	Mon, 12 Aug 2024 16:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smd+3xjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhj8WGBE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B00134AC;
-	Mon, 12 Aug 2024 16:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721BC1494B8;
+	Mon, 12 Aug 2024 16:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479781; cv=none; b=XW7kbmZS42Y8KW3DczUJHXgXJ8L/+qRo/bW/p475wqd50hovQqENQDHVakailJ4M2On29lhsyO+rt/JCj4olzyNr3osi4l6WuiQloGkp2IwJ3GWqEKy3PhTWezWuS1K76AclB/Lz+g+OrmBB5NEi122iBEXAREHn4JaHWHTrG8Y=
+	t=1723480597; cv=none; b=jD3slWmmij5nBTjB/VRkSYLaqshbA8PMZHUGBPgljq1ug3/pAOGJVzeE7Mgp/YRG4jQEMCtEaqblgT0czt9bNb2Ub4TGe6TN9x6Q9OPBb+jWhQvWN0e8gnXZuPEqezFEh5ct6YfjMiy4vDpEHbncIk1pOeRompA5m1K0rjUh3Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479781; c=relaxed/simple;
-	bh=dC+BVcgaxH6rQDmEYfD7vElpk6Xc96MtXHLd14zJBK8=;
+	s=arc-20240116; t=1723480597; c=relaxed/simple;
+	bh=MpRKz/QqjFEuyYGn6TC/7n59Cc1zh65lZZXkWfQ7lzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RlVZnFQdSN8Wc+wt6cZMYLfvVk8idmSEYDaYc2Niwy+ZsuvLQGwYcCojxOHhDtad4yWR+G0tgFrxf41ANxopZAmXkyNRNet3EanxDoCuZdDi9oRP/XU8IPubwNiiwI8vyTGqHnfiPO4hXOv5UW8DjCYbG6kA8ljxtxj4UamRWjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smd+3xjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF148C32782;
-	Mon, 12 Aug 2024 16:23:00 +0000 (UTC)
+	 MIME-Version; b=thdwtb8x19sRxBU4Zm5f7ZE0y6opgLZttAOQGVcaI5BOw7n5xFGKFOupd9EKJ97nUZ9s7FSD6DiBHkx0yAjBeKwNSl3eusEIpMffd/ZkiG8cxX0gqjkJD/qrQrdLiYKRgHcETq3Tlq4638JxmQh+VTEODkn8iIUntjJmNUK+X2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhj8WGBE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2698C4AF0F;
+	Mon, 12 Aug 2024 16:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479781;
-	bh=dC+BVcgaxH6rQDmEYfD7vElpk6Xc96MtXHLd14zJBK8=;
+	s=korg; t=1723480597;
+	bh=MpRKz/QqjFEuyYGn6TC/7n59Cc1zh65lZZXkWfQ7lzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smd+3xjOfYDPjt4/qys8p5y8G2Bpe2odMefHi8yRCaS4ITpdxNsXZMfXQihNrmgLM
-	 Erq729pWKmd1+ka00jeBsVjzcv9m5SXl5Wus4U0e4UjKnPvBrIz6vK5nJidq/22bjp
-	 7F9lf3oS6WHfiCwzwElKhZBmrQh91xY2WuJL6zLQ=
+	b=jhj8WGBEK2YCTYO8NevJu6MfUu/J+jwa1hFwxHpOs+qBtMZ7iiwibJSu+j1/BBDZu
+	 BDINo/N6yYTCnFHLwixnlGFLlUSuxliCfnhuuItZJiW0m9lFI7uCvkOoPtUvWP3FAD
+	 wehjCn9HgoWa/X8gogJUR3cnvQrZvaSS1SbKUY/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 189/189] btrfs: fix double inode unlock for direct IO sync writes
+	Philip Muller <philm@manjaro.org>,
+	Oliver Smith <ollieparanoid@postmarketos.org>,
+	Daniel Smith <danct12@disroot.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Qiang Yu <yuq825@gmail.com>
+Subject: [PATCH 6.10 244/263] drm/lima: Mark simple_ondemand governor as softdep
 Date: Mon, 12 Aug 2024 18:04:05 +0200
-Message-ID: <20240812160139.427624371@linuxfoundation.org>
+Message-ID: <20240812160155.885143390@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Dragan Simic <dsimic@manjaro.org>
 
-commit e0391e92f9ab4fb3dbdeb139c967dcfa7ac4b115 upstream.
+commit 0c94f58cef319ad054fd909b3bf4b7d09c03e11c upstream.
 
-If we do a direct IO sync write, at btrfs_sync_file(), and we need to skip
-inode logging or we get an error starting a transaction or an error when
-flushing delalloc, we end up unlocking the inode when we shouldn't under
-the 'out_release_extents' label, and then unlock it again at
-btrfs_direct_write().
+Lima DRM driver uses devfreq to perform DVFS, while using simple_ondemand
+devfreq governor by default.  This causes driver initialization to fail on
+boot when simple_ondemand governor isn't built into the kernel statically,
+as a result of the missing module dependency and, consequently, the
+required governor module not being included in the initial ramdisk.  Thus,
+let's mark simple_ondemand governor as a softdep for Lima, to have its
+kernel module included in the initial ramdisk.
 
-Fix that by checking if we have to skip inode unlocking under that label.
+This is a rather longstanding issue that has forced distributions to build
+devfreq governors statically into their kernels, [1][2] or may have forced
+some users to introduce unnecessary workarounds.
 
-Reported-by: syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/000000000000dfd631061eaeb4bc@google.com/
-Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Having simple_ondemand marked as a softdep for Lima may not resolve this
+issue for all Linux distributions.  In particular, it will remain
+unresolved for the distributions whose utilities for the initial ramdisk
+generation do not handle the available softdep information [3] properly
+yet.  However, some Linux distributions already handle softdeps properly
+while generating their initial ramdisks, [4] and this is a prerequisite
+step in the right direction for the distributions that don't handle them
+properly yet.
+
+[1] https://gitlab.manjaro.org/manjaro-arm/packages/core/linux-pinephone/-/blob/6.7-megi/config?ref_type=heads#L5749
+[2] https://gitlab.com/postmarketOS/pmaports/-/blob/7f64e287e7732c9eaa029653e73ca3d4ba1c8598/main/linux-postmarketos-allwinner/config-postmarketos-allwinner.aarch64#L4654
+[3] https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
+[4] https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
+
+Cc: Philip Muller <philm@manjaro.org>
+Cc: Oliver Smith <ollieparanoid@postmarketos.org>
+Cc: Daniel Smith <danct12@disroot.org>
+Cc: stable@vger.kernel.org
+Fixes: 1996970773a3 ("drm/lima: Add optional devfreq and cooling device support")
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/fdaf2e41bb6a0c5118ff9cc21f4f62583208d885.1718655070.git.dsimic@manjaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/file.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/lima/lima_drv.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -2038,7 +2038,10 @@ out:
- 
- out_release_extents:
- 	btrfs_release_log_ctx_extents(&ctx);
--	btrfs_inode_unlock(BTRFS_I(inode), BTRFS_ILOCK_MMAP);
-+	if (skip_ilock)
-+		up_write(&BTRFS_I(inode)->i_mmap_lock);
-+	else
-+		btrfs_inode_unlock(BTRFS_I(inode), BTRFS_ILOCK_MMAP);
- 	goto out;
- }
- 
+--- a/drivers/gpu/drm/lima/lima_drv.c
++++ b/drivers/gpu/drm/lima/lima_drv.c
+@@ -501,3 +501,4 @@ module_platform_driver(lima_platform_dri
+ MODULE_AUTHOR("Lima Project Developers");
+ MODULE_DESCRIPTION("Lima DRM Driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_SOFTDEP("pre: governor_simpleondemand");
 
 
 
