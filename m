@@ -1,69 +1,116 @@
-Return-Path: <stable+bounces-66467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C9E94EBD7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:32:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C26E794EBDC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:33:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FC881C21282
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:32:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01AA41C21337
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27FA175D2B;
-	Mon, 12 Aug 2024 11:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA64175D2A;
+	Mon, 12 Aug 2024 11:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SgCLHkgX"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6621A3C0B
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE67130495;
+	Mon, 12 Aug 2024 11:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723462322; cv=none; b=mia/t6VLndEBNLSQ+MLm3w0uy7dGChXViYKPHsxVpR//zROD6pcUQRXJFQI2y6loQIVqgKo6XkSexxFAzK2YwNfjmbY6QjJIRlOfDMnBo9xLAn45AtZ/av3ecv3QxoH3ZKyY6wGY6wzWDRMdSWOZvacpQT1mRd5ia6WnRnzAA1E=
+	t=1723462386; cv=none; b=IUOQObOoMN9tTc0Yju3vaGhCqo/hW397xhF4+z0yge0fA19XjSXbqCiM77A3lCV4/4Sj/ABFfByqipxzBLNIWoLOYu1lnZFTtkwmJ36i/rrSt0iozPD9o0Of70VdZDzfybYmlHqf3M+uHPsgfsS80Wykjh3WqPEJ1wDQIdmuA1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723462322; c=relaxed/simple;
-	bh=uoJlGyT6RS5g4tugFxAAZ0/cr0rN7uyO1W/SSFWPNPk=;
+	s=arc-20240116; t=1723462386; c=relaxed/simple;
+	bh=y5L4okBvgLnBNb+NTAOKCQZPOdCYmHMWG+7QyCYNXbc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kNNOFhA3rpgNjzzuJvAlyp+O85SDpQNRIEIqqvpCaRmMDSpUvvxc30DDuz3saWvGIowK9gf/KxyPC5z/S00W+07rfSe1HwrDRZw82VHiuKZd3DVGhMASp/O3NxQIh5xEPzRUFee0Nca+j40T1lMbCHjx+8IZfgA4YE7/Zo70zxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4ADA8FEC;
-	Mon, 12 Aug 2024 04:32:25 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6027D3F6A8;
-	Mon, 12 Aug 2024 04:31:58 -0700 (PDT)
-Date: Mon, 12 Aug 2024 12:31:53 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, anshuman.khandual@arm.com,
-	catalin.marinas@arm.com, james.morse@arm.com, will@kernel.org
-Subject: Re: [PATCH 6.10.y 0/8] arm64: errata: Speculative SSBS workaround
-Message-ID: <ZrnyqZxR_0mjNFdZ@J2N7QTR9R3>
-References: <20240809095120.3475335-1-mark.rutland@arm.com>
- <ZrnxgS9RTDP4FDtK@sashalap>
+	 Content-Type:Content-Disposition:In-Reply-To; b=e0F7gTFv+raFQ3Sjm0AEY7mDX392M1Empi2Ueu1eofYCGMWC0RcLTiG/ijhBvBGGFBnaPRMfRCXShaQNpw5DIjq4eV8OkV+pYVzgT17qalobNWSi3xU5TncLKHP4VXo6MEIZGok2JNGJD1JghGbFXlreXDSWVOYQG0h9RDFMpjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SgCLHkgX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC57C32782;
+	Mon, 12 Aug 2024 11:33:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723462386;
+	bh=y5L4okBvgLnBNb+NTAOKCQZPOdCYmHMWG+7QyCYNXbc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SgCLHkgXqpatWupyfcMrUvlAecsBEwlH2YL+Kl7AT7cApk8DBByCMOh/+YRfaTmfL
+	 +ZVGVCKF4ZX1dAORDgx+9ZZjR8WTG9hIWDDlX10u1Iabqqu4FxLPZ0OgC9y9/iUWzq
+	 FUoV/mwpfM8dST9+yDnP+QxH91SLDXB3/HjKk+V80cX1N8u3tU7YQGVt1ndcSLCru8
+	 edyMXp15dV6OLfHUdlesbQK3CslVrXtCq/cjfHOfc9PoomucqNGAMVlw7m0EJV2trc
+	 Cz85vX358Vr2uNwR1Naq0F+dDi5N1odE1VSlDg8jru8W89diRRua21U0Nj2ZRaXHEL
+	 /SMzCfkLWmPAg==
+Date: Mon, 12 Aug 2024 07:33:04 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: Patch "net: Reference bpf_redirect_info via task_struct on
+ PREEMPT_RT." has been added to the 6.10-stable tree
+Message-ID: <Zrny8ML-LCIE7-5m@sashalap>
+References: <20240811125836.1264962-1-sashal@kernel.org>
+ <20240812061246.pOuivUqI@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ZrnxgS9RTDP4FDtK@sashalap>
+In-Reply-To: <20240812061246.pOuivUqI@linutronix.de>
 
-On Mon, Aug 12, 2024 at 07:26:57AM -0400, Sasha Levin wrote:
-> On Fri, Aug 09, 2024 at 10:51:12AM +0100, Mark Rutland wrote:
-> > Hi,
-> > 
-> > This series is a v6.10-only backport (based on v6.10.3) of the upstream
-> > workaround for SSBS errata on Arm Ltd CPUs, as affected parts are likely to be
-> > used with stable kernels. This does not apply to earlier stable trees, which
-> > will receive a separate backport.
-> 
-> I've queued up the backports for the various versions, thanks!
+On Mon, Aug 12, 2024 at 08:12:46AM +0200, Sebastian Andrzej Siewior wrote:
+>On 2024-08-11 08:58:35 [-0400], Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>     net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.
+>>
+>> to the 6.10-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>> The filename of the patch is:
+>>      net-reference-bpf_redirect_info-via-task_struct-on-p.patch
+>> and it can be found in the queue-6.10 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>
+>To quote Jakub:
+>
+>|On Sat, 27 Jul 2024 20:52:53 -0400 Sasha Levin wrote:
+>|> Subject: [PATCH AUTOSEL 6.10 10/27] net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.
+>|
+>|no no no, let's drop this one, it's not a fix, and there's a ton
+>|of fallout
+>
+>Please drop this one from the stable queue.
 
-Thanks; much appreciated!
+Already did, sorry - this was a mistake on my end and it was already
+fixed :)
 
-Mark.
+-- 
+Thanks,
+Sasha
 
