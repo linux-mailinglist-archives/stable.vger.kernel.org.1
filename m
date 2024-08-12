@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-67212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6D094F461
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:29:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0DE94F269
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:06:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60F5D1C20C54
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:29:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A628281392
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5293186E38;
-	Mon, 12 Aug 2024 16:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12779186E38;
+	Mon, 12 Aug 2024 16:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMdmiPb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sk4g+3lt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64473183CD4;
-	Mon, 12 Aug 2024 16:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EBF1EA8D;
+	Mon, 12 Aug 2024 16:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480181; cv=none; b=Jlz+tLza1mkPdfEToTPyaSwvZOa3OqDlekPfW3pBwVjUjUiy4j1uAeWwiSNg1JdTUyGNUVwujybGK9zrZSY9PUO93DZ9K7G0Xu44yFQowchkSCKNjlrg2cravfJTd7TE56PX+E62B/tBsOzkFWxT4jZzDXEpIuof7FE70b3L95A=
+	t=1723478755; cv=none; b=LRB77FLiRiMjTtin4RVoTXmIxTOJHDdHTJCMAyePFQCFgh2day/5jcvd97zb/4I9dFYs2mCbBH5iLc1kAK/7ECpDQ5Ju385k5009UObdrzULUbznWcRIdxk7niF3fdxKHxbfV38fW8j/9RDVF6vsNG+UHh+bKqOrfZweO788WCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480181; c=relaxed/simple;
-	bh=zqnbut42tQRkqsKvYt6gV+uFGWhdZ6q1sZ20OBp+IzI=;
+	s=arc-20240116; t=1723478755; c=relaxed/simple;
+	bh=8y37QS8atlPhWadaai0bDuooj1P8r3w62u1h85Qzht8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIrFWeuQle9PWFG6to8drqahmaYuSdmAyrTV9oN7BkiI2xQu+kqCmtvrC+aMrJShfQJ+q9m/mLudpXkIeWD805FU4XwsElM4TTYccRKoITRjSsh4m053cCar3+4PkAIGJar1mgqPANKkZpgBgTcl38NvpNKJNS+mI94PR16F7yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMdmiPb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EC8C32782;
-	Mon, 12 Aug 2024 16:29:40 +0000 (UTC)
+	 MIME-Version; b=txUpmGpzSjswuO7OVqgvJVmbvWl4Ks5eosc4sx75EUbtyTOLehshdjw5GrUdbPeNQs18cD1vLAarAU8xMkMJ17Veezf5VjqSEjmUj5DUDG2W1l93n4cIWPeA8b874KZ8ldO26HfkVTxRN0tPmktFXtt82ILbkANZt0NKY0+5MMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sk4g+3lt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEAFC32782;
+	Mon, 12 Aug 2024 16:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480181;
-	bh=zqnbut42tQRkqsKvYt6gV+uFGWhdZ6q1sZ20OBp+IzI=;
+	s=korg; t=1723478755;
+	bh=8y37QS8atlPhWadaai0bDuooj1P8r3w62u1h85Qzht8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pMdmiPb1s0Nipuu+JZ1cUXLrNmTWBf6W4y+rFbQit0+DI18PrCDjU6cAX1RuUdwL4
-	 1NqyADWT1s1taIBlCtkV7G3hhiPtyNERj09fhnGxQruSIuFIMSByOO4Yg09IKY0CZp
-	 6WjcK3AOBTf2sFl/kotdqDrORUt45c9iUesBEJPE=
+	b=sk4g+3lt6h6uMn3f9bg+HDLj9cU2tbBoB+4nCVs534z1O9iyTHXCTkjMLCq8G5lB2
+	 SH450RDC5dXnVthoEo0nixrDc6QncGYVfRJ/XSuObTPFYHZYBhi0H+v2/NkoM7h6dF
+	 J/pBMnmItDxxbj/4dK3c55LNBdtnIS1y61ux1tx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+263426984509be19c9a0@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 088/263] drm/amd/display: Add delay to improve LTTPR UHBR interop
-Date: Mon, 12 Aug 2024 18:01:29 +0200
-Message-ID: <20240812160149.914489992@linuxfoundation.org>
+Subject: [PATCH 6.1 009/150] net: bridge: mcast: wait for previous gc cycles when removing port
+Date: Mon, 12 Aug 2024 18:01:30 +0200
+Message-ID: <20240812160125.513197249@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 10839ee6a977ed1f7d0f4deb29f2d7e5d1f2a9dd ]
+[ Upstream commit 92c4ee25208d0f35dafc3213cdf355fbe449e078 ]
 
-[WHY]
-Avoid race condition which puts LTTPR into bad state during UHBR LT.
+syzbot hit a use-after-free[1] which is caused because the bridge doesn't
+make sure that all previous garbage has been collected when removing a
+port. What happens is:
+      CPU 1                   CPU 2
+ start gc cycle           remove port
+                         acquire gc lock first
+ wait for lock
+                         call br_multicasg_gc() directly
+ acquire lock now but    free port
+ the port can be freed
+ while grp timers still
+ running
 
-[HOW]
-Delay 30ms between starting UHBR TPS1 PHY output and sending TPS1 via DPCD.
+Make sure all previous gc cycles have finished by using flush_work before
+freeing the port.
 
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[1]
+  BUG: KASAN: slab-use-after-free in br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
+  Read of size 8 at addr ffff888071d6d000 by task syz.5.1232/9699
+
+  CPU: 1 PID: 9699 Comm: syz.5.1232 Not tainted 6.10.0-rc5-syzkaller-00021-g24ca36a562d6 #0
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
+  Call Trace:
+   <IRQ>
+   __dump_stack lib/dump_stack.c:88 [inline]
+   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
+   print_address_description mm/kasan/report.c:377 [inline]
+   print_report+0xc3/0x620 mm/kasan/report.c:488
+   kasan_report+0xd9/0x110 mm/kasan/report.c:601
+   br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
+   call_timer_fn+0x1a3/0x610 kernel/time/timer.c:1792
+   expire_timers kernel/time/timer.c:1843 [inline]
+   __run_timers+0x74b/0xaf0 kernel/time/timer.c:2417
+   __run_timer_base kernel/time/timer.c:2428 [inline]
+   __run_timer_base kernel/time/timer.c:2421 [inline]
+   run_timer_base+0x111/0x190 kernel/time/timer.c:2437
+
+Reported-by: syzbot+263426984509be19c9a0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=263426984509be19c9a0
+Fixes: e12cec65b554 ("net: bridge: mcast: destroy all entries via gc")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20240802080730.3206303-1-razor@blackwall.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c      | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/bridge/br_multicast.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c
-index 3e6c7be7e2786..5302d2c9c7607 100644
---- a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_fixed_vs_pe_retimer_dp.c
-@@ -165,7 +165,12 @@ static void set_hpo_fixed_vs_pe_retimer_dp_link_test_pattern(struct dc_link *lin
- 		link_res->hpo_dp_link_enc->funcs->set_link_test_pattern(
- 				link_res->hpo_dp_link_enc, tp_params);
- 	}
-+
- 	link->dc->link_srv->dp_trace_source_sequence(link, DPCD_SOURCE_SEQ_AFTER_SET_SOURCE_PATTERN);
-+
-+	// Give retimer extra time to lock before updating DP_TRAINING_PATTERN_SET to TPS1
-+	if (tp_params->dp_phy_pattern == DP_TEST_PATTERN_128b_132b_TPS1_TRAINING_MODE)
-+		msleep(30);
- }
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 9765f9f9bf7ff..3cd2b648408d6 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -1890,16 +1890,14 @@ void br_multicast_del_port(struct net_bridge_port *port)
+ {
+ 	struct net_bridge *br = port->br;
+ 	struct net_bridge_port_group *pg;
+-	HLIST_HEAD(deleted_head);
+ 	struct hlist_node *n;
  
- static void set_hpo_fixed_vs_pe_retimer_dp_lane_settings(struct dc_link *link,
+ 	/* Take care of the remaining groups, only perm ones should be left */
+ 	spin_lock_bh(&br->multicast_lock);
+ 	hlist_for_each_entry_safe(pg, n, &port->mglist, mglist)
+ 		br_multicast_find_del_pg(br, pg);
+-	hlist_move_list(&br->mcast_gc_list, &deleted_head);
+ 	spin_unlock_bh(&br->multicast_lock);
+-	br_multicast_gc(&deleted_head);
++	flush_work(&br->mcast_gc_work);
+ 	br_multicast_port_ctx_deinit(&port->multicast_ctx);
+ 	free_percpu(port->mcast_stats);
+ }
 -- 
 2.43.0
 
