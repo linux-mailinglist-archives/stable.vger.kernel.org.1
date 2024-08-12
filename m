@@ -1,175 +1,180 @@
-Return-Path: <stable+bounces-66533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69FE94EE9D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:47:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C08A794EECC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 939262829B3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:47:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C9B11F22D21
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6D317C7C1;
-	Mon, 12 Aug 2024 13:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA20F17BB18;
+	Mon, 12 Aug 2024 13:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ly77zGC+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cphgbrVt"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7F417A92F;
-	Mon, 12 Aug 2024 13:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB8911C92;
+	Mon, 12 Aug 2024 13:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723470384; cv=none; b=rB7algCKk/3ul4B7LBIGzOpLcusq3SzmkR6tE3WczgGIvi74GU4Gy/+YKS5OrJC6CoeB44ZgvJoZVCVUhPLzOlGJOuuSqhBONHmSOiwtc7HryhgyEBM7TYG7uVmBQbZzH/SH1S7HZNxbVPsAngIiErxnGtYb5BDJmpg0ntDmhvs=
+	t=1723470708; cv=none; b=l4nL4u7gERYmc8BZi0la6CRhlXowSaFASqvLXbui+h8MfIkq4zIlqFbS2At6dy5m/zOWQdVPXlNSwcxgjRuYsGT0n6QRoBWT1RZ298H5reom4ZzMGG80dIO5SV9AANojN8lnkNrbIuo0AMP1Tg2PL6F/xYomOmKITAi3ZJM+H6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723470384; c=relaxed/simple;
-	bh=RZbrLVmBjMhLipuy8GpOq0fJf7VHPNsfLcYAn3sksuw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iKmiQBKCbmEhl2m838ZFGz60E/ePxSJFVGHsRHG2qeb4UAe5OjPY6uzNfPcswcAXiWT2d3E24sNkymFJnbE1+2SJx4E4jdYrF9+Eqk6hlReKOlgqq0PjYXZyqYX6W4MeQZEsHOvkaxLfO+1Froa3t+BPsJSPf5DB/rujVkSPgs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ly77zGC+; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723470383; x=1755006383;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RZbrLVmBjMhLipuy8GpOq0fJf7VHPNsfLcYAn3sksuw=;
-  b=ly77zGC+PpB1BDZk5pA8dPu1QuOL+0D/007ajuIPfs881kWYH8uECe3l
-   g322wj6OjvhNQvEc4a+DWu3enhrvNtDm7qXbsNcjNjQcWMcLnaHx4TY5Y
-   9jUJswIbMUBL/HS4cJ7b3xnshAHhHQBhTCQuhOcniAGBsvmUdyFeLFCbV
-   6RxFCnCk4YwtnTIxzZh/h+7m9sv673UT9kQjeA/rNi9oJjrLu+n7jcT3b
-   5828vku3hDlVtqUUjmJTonEZ7lFrI2iuwwzx/90YMQt1N2S3gp/7/USGL
-   d+Nm5D4xvWCDTZm/064pSkTm9Vcz3MQ2xMCi7MOBADFL0kv/vv5Szl/s/
-   g==;
-X-CSE-ConnectionGUID: HB4buidXSeqmwNpL73jPUw==
-X-CSE-MsgGUID: EUN+m+JoSkC9OOwio8n1Nw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21439215"
-X-IronPort-AV: E=Sophos;i="6.09,283,1716274800"; 
-   d="scan'208";a="21439215"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 06:46:22 -0700
-X-CSE-ConnectionGUID: 8glDbEsrSvKWCJ8T2p/bRQ==
-X-CSE-MsgGUID: hWsnEHY6T0ShmeznxdUgsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,283,1716274800"; 
-   d="scan'208";a="62404963"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by fmviesa003.fm.intel.com with ESMTP; 12 Aug 2024 06:46:18 -0700
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: stable@vger.kernel.org
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Krishneil Singh <krishneil.k.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.10.y] idpf: fix memleak in vport interrupt configuration
-Date: Mon, 12 Aug 2024 15:44:55 +0200
-Message-ID: <20240812134455.2298021-1-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1723470708; c=relaxed/simple;
+	bh=NC4tazcis1jSVDgkpJprpwF0eRbJkaFqXwFdKxjDB4E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qpX45rv8aZnZDP5+YDotH+JEFccbFUvzCyFen/mYPqh3FWyDANCulScDGelZvFAQ7U5Lxx5GZtQavJ+Et4zti8S3YpVQDdRWYe6UV1fFlCAIbE0jmCDHkAEfISWtUW3L7cVAkTzJ5IVakTY5U2DaZN4nxchnYaCGtPAwHBo1Sag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cphgbrVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AB3C32782;
+	Mon, 12 Aug 2024 13:51:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723470708;
+	bh=NC4tazcis1jSVDgkpJprpwF0eRbJkaFqXwFdKxjDB4E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cphgbrVt1l435qTXWYs/HLQ/IuQzjPeAU0azb8Ce/+u9Hz8WjxpZDBgZVivdaN6J7
+	 EJu4bLeWqlTmeA72RgUSX+hHU9cKPD9T7c8wo0fwMauxf4bhBEzg1XxvMzNOqUTEwD
+	 sJcO1qIenQNuu/JnA0Wzd9BCGqgxsXNF6XOgck+D0YGvyu7Et7Y93LN4t0plCdCKYu
+	 PGuU2EchBmNtJpOEbcQt0OKqXJ5IoIarlqfudjDDwfeUIlU1Cp9qFM5GJjaOrU5pHx
+	 0/tkl1ACm9+Tauzbwn8rBB20pna6wRCN3tihEvRsmjWTluVsKmTIWZX6GlhogEVcva
+	 c7HPPK5Hj1XcQ==
+Message-ID: <7f38f5bc-6bd2-4e3a-92e6-c232761fafc6@kernel.org>
+Date: Mon, 12 Aug 2024 15:51:12 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH AUTOSEL 6.10 13/16] block: change rq_integrity_vec to
+ respect the iterator
+Content-Language: en-GB
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: Mikulas Patocka <mpatocka@redhat.com>, Anuj Gupta <anuj20.g@samsung.com>,
+ Kanchan Joshi <joshi.k@samsung.com>, Christoph Hellwig <hch@lst.de>,
+ Jens Axboe <axboe@kernel.dk>, kbusch@kernel.org, sagi@grimberg.me,
+ linux-nvme@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240728004739.1698541-1-sashal@kernel.org>
+ <20240728004739.1698541-13-sashal@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20240728004739.1698541-13-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+Hi Sasha, Greg,
 
-commit 3cc88e8405b8d55e0ff035e31971aadd6baee2b6 upstream.
+On 28/07/2024 02:47, Sasha Levin wrote:
+> From: Mikulas Patocka <mpatocka@redhat.com>
+> 
+> [ Upstream commit cf546dd289e0f6d2594c25e2fb4e19ee67c6d988 ]
+> 
+> If we allocate a bio that is larger than NVMe maximum request size,
+> attach integrity metadata to it and send it to the NVMe subsystem, the
+> integrity metadata will be corrupted.
 
-The initialization of vport interrupt consists of two functions:
- 1) idpf_vport_intr_init() where a generic configuration is done
- 2) idpf_vport_intr_req_irq() where the irq for each q_vector is
-   requested.
+(...)
 
-The first function used to create a base name for each interrupt using
-"kasprintf()" call. Unfortunately, although that call allocated memory
-for a text buffer, that memory was never released.
+> diff --git a/include/linux/blk-integrity.h b/include/linux/blk-integrity.h
+> index 7428cb43952da..d16dd24719841 100644
+> --- a/include/linux/blk-integrity.h
+> +++ b/include/linux/blk-integrity.h
+> @@ -100,14 +100,13 @@ static inline bool blk_integrity_rq(struct request *rq)
+>  }
+>  
+>  /*
+> - * Return the first bvec that contains integrity data.  Only drivers that are
+> - * limited to a single integrity segment should use this helper.
+> + * Return the current bvec that contains the integrity data. bip_iter may be
+> + * advanced to iterate over the integrity data.
+>   */
+> -static inline struct bio_vec *rq_integrity_vec(struct request *rq)
+> +static inline struct bio_vec rq_integrity_vec(struct request *rq)
+>  {
+> -	if (WARN_ON_ONCE(queue_max_integrity_segments(rq->q) > 1))
+> -		return NULL;
+> -	return rq->bio->bi_integrity->bip_vec;
+> +	return mp_bvec_iter_bvec(rq->bio->bi_integrity->bip_vec,
+> +				 rq->bio->bi_integrity->bip_iter);
+>  }
+>  #else /* CONFIG_BLK_DEV_INTEGRITY */
+>  static inline int blk_rq_count_integrity_sg(struct request_queue *q,
+> @@ -169,7 +168,8 @@ static inline int blk_integrity_rq(struct request *rq)
+>  
+>  static inline struct bio_vec *rq_integrity_vec(struct request *rq)
+>  {
+> -	return NULL;
+> +	/* the optimizer will remove all calls to this function */
+> +	return (struct bio_vec){ };
 
-Fix this by removing creating the interrupt base name in 1).
-Instead, always create a full interrupt name in the function 2), because
-there is no need to create a base name separately, considering that the
-function 2) is never called out of idpf_vport_intr_init() context.
+If CONFIG_BLK_DEV_INTEGRITY is not defined, there is a compilation error
+here in v6.10 with the recently queued patches because the signature has
+not been updated:
 
-Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
-Cc: stable@vger.kernel.org # 6.7
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20240806220923.3359860-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+> In file included from block/bdev.c:15:                                                                                                                                             
+> include/linux/blk-integrity.h: In function 'rq_integrity_vec':
+> include/linux/blk-integrity.h:172:16: error: incompatible types when returning type 'struct bio_vec' but 'struct bio_vec *' was expected
+>   172 |         return (struct bio_vec){ };                 
+>       |                ^
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index b023704bbbda..ed68c7baefa3 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3636,13 +3636,15 @@ void idpf_vport_intr_update_itr_ena_irq(struct idpf_q_vector *q_vector)
- /**
-  * idpf_vport_intr_req_irq - get MSI-X vectors from the OS for the vport
-  * @vport: main vport structure
-- * @basename: name for the vector
-  */
--static int idpf_vport_intr_req_irq(struct idpf_vport *vport, char *basename)
-+static int idpf_vport_intr_req_irq(struct idpf_vport *vport)
- {
- 	struct idpf_adapter *adapter = vport->adapter;
-+	const char *drv_name, *if_name, *vec_name;
- 	int vector, err, irq_num, vidx;
--	const char *vec_name;
-+
-+	drv_name = dev_driver_string(&adapter->pdev->dev);
-+	if_name = netdev_name(vport->netdev);
- 
- 	for (vector = 0; vector < vport->num_q_vectors; vector++) {
- 		struct idpf_q_vector *q_vector = &vport->q_vectors[vector];
-@@ -3659,8 +3661,8 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport, char *basename)
- 		else
- 			continue;
- 
--		q_vector->name = kasprintf(GFP_KERNEL, "%s-%s-%d",
--					   basename, vec_name, vidx);
-+		q_vector->name = kasprintf(GFP_KERNEL, "%s-%s-%s-%d", drv_name,
-+					   if_name, vec_name, vidx);
- 
- 		err = request_irq(irq_num, idpf_vport_intr_clean_queues, 0,
- 				  q_vector->name, q_vector);
-@@ -4170,7 +4172,6 @@ int idpf_vport_intr_alloc(struct idpf_vport *vport)
-  */
- int idpf_vport_intr_init(struct idpf_vport *vport)
- {
--	char *int_name;
- 	int err;
- 
- 	err = idpf_vport_intr_init_vec_idx(vport);
-@@ -4184,11 +4185,7 @@ int idpf_vport_intr_init(struct idpf_vport *vport)
- 	if (err)
- 		goto unroll_vectors_alloc;
- 
--	int_name = kasprintf(GFP_KERNEL, "%s-%s",
--			     dev_driver_string(&vport->adapter->pdev->dev),
--			     vport->netdev->name);
--
--	err = idpf_vport_intr_req_irq(vport, int_name);
-+	err = idpf_vport_intr_req_irq(vport);
- 	if (err)
- 		goto unroll_vectors_alloc;
- 
+Could it be possible to backport the following fix to v6.10 as well please?
+
+  69b6517687a4 ("block: use the right type for stub rq_integrity_vec()")
+
+It is also needed for v6.6 and v6.1.
+
+Cheers,
+Matt
 -- 
-2.46.0
+Sponsored by the NGI0 Core fund.
 
 
