@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-66810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FAB94F28D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE96694F33E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CFB41C21A93
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43A9BB26B62
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913F418756A;
-	Mon, 12 Aug 2024 16:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB351862B4;
+	Mon, 12 Aug 2024 16:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4gax3W6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgamG8gv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E629187348;
-	Mon, 12 Aug 2024 16:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3FB178CE4;
+	Mon, 12 Aug 2024 16:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478859; cv=none; b=SFMsH/WsKoRRB67i2iKIdlg/Bqktq3qISDLordV6BYXdQZAT4a5kIb30mdPyXZBlsIYeWaW9Qxz8OxOONzluSU/6nX/QeYlz3Rjzk5WaabwoQSpPP+twDx+asHs3IqoXewpLa9MouyfB9kNYT4QDxe6nOeivHn9cyuoupiuG13I=
+	t=1723479328; cv=none; b=GFkCEMB1N9wcBb+K29Y5RJvQ1z9WuKkTLX44PmX1NH9dxVvBjsHRTiTUpoSMOTlk40U5FkqHpC98vRIxOdJHee0MRlm7ftTxXCKX6VEFgsFV8vtkDm6sCC2D/A6kKIyOqWGjF701b5mrsR21UmIs+reCG3XUuvqDEAxz8j55yLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478859; c=relaxed/simple;
-	bh=ZnhAO2r2nd0m5Kj3HsCP0QD3X/dofwkuR08rDxdj/Ks=;
+	s=arc-20240116; t=1723479328; c=relaxed/simple;
+	bh=4vBZUHTKyVUTGYYl4jP4K4KW0VPtQKqvfxiKhx/3bpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qR+1Yx97o7PKr61J0fR+r3l5TLZZCCHru0OjHFMDuwFRevB761s3Gv+w6KSMPM76By9IH34YpUa8PAXF+/BwQTJRnw3PgbmwTkb5HGfAVDbCK6U0QW6RjCRB0R148cAP5egAS1bAA8xXChBA6YofxxcEZzrRLVcLnvkruSU4cHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4gax3W6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3869C32782;
-	Mon, 12 Aug 2024 16:07:38 +0000 (UTC)
+	 MIME-Version; b=OVHOKe8lqqidSHrEv4Dwjur1d/SxswUYPMe8Z2XpqjeNwZecy6K3tyGj/VtkO9oBLzOllf8IdhjfTyUbIvzs3FGA3pk3p5WaxMjAQUF2tv3gktt3kbTmZDrc94OamI9ZTDQeHBk9egbLEZbsTRuGiA3kG4EhedVLFMftINbd2YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgamG8gv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E62C32782;
+	Mon, 12 Aug 2024 16:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478859;
-	bh=ZnhAO2r2nd0m5Kj3HsCP0QD3X/dofwkuR08rDxdj/Ks=;
+	s=korg; t=1723479328;
+	bh=4vBZUHTKyVUTGYYl4jP4K4KW0VPtQKqvfxiKhx/3bpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4gax3W6KJiMyoaE4/8xEjwJas0u1q2GOjp8Y1rbJmhb5/SYkAYugjgYcf7TQ7WHF
-	 QdR1WxUS1YHDfTs5cjcbjYME56NGjHCs1CQTPsKP+UMNXWWXso/aoO/OqHtbYG6Coi
-	 Pw7ISblDt9USQxXKAqsxuyX/L2MmtwAdvC3eTyqQ=
+	b=vgamG8gvzHsZY5upiYsBPJW0mQbtka1d2p0jPx9wWjgKwqshomijiQ4X2DoqXgtWd
+	 SPxbYijmDlP59ty3irgFxjR5wZoMzWqQYbInDz9GipTzRnt6usBq6kSbNjY4yAEdi6
+	 TK5mUNDgol1jWVE4jIZxLD1VeILm3GrNYhWUy75k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/150] af_unix: Dont retry after unix_state_lock_nested() in unix_stream_connect().
+Subject: [PATCH 6.6 052/189] drm/amdgpu/pm: Fix the null pointer dereference for smu7
 Date: Mon, 12 Aug 2024 18:01:48 +0200
-Message-ID: <20240812160126.212446592@linuxfoundation.org>
+Message-ID: <20240812160134.147659558@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 1ca27e0c8c13ac50a4acf9cdf77069e2d94a547d ]
+[ Upstream commit c02c1960c93eede587576625a1221205a68a904f ]
 
-When a SOCK_(STREAM|SEQPACKET) socket connect()s to another one, we need
-to lock the two sockets to check their states in unix_stream_connect().
+optimize the code to avoid pass a null pointer (hwmgr->backend)
+to function smu7_update_edc_leakage_table.
 
-We use unix_state_lock() for the server and unix_state_lock_nested() for
-client with tricky sk->sk_state check to avoid deadlock.
-
-The possible deadlock scenario are the following:
-
-  1) Self connect()
-  2) Simultaneous connect()
-
-The former is simple, attempt to grab the same lock, and the latter is
-AB-BA deadlock.
-
-After the server's unix_state_lock(), we check the server socket's state,
-and if it's not TCP_LISTEN, connect() fails with -EINVAL.
-
-Then, we avoid the former deadlock by checking the client's state before
-unix_state_lock_nested().  If its state is not TCP_LISTEN, we can make
-sure that the client and the server are not identical based on the state.
-
-Also, the latter deadlock can be avoided in the same way.  Due to the
-server sk->sk_state requirement, AB-BA deadlock could happen only with
-TCP_LISTEN sockets.  So, if the client's state is TCP_LISTEN, we can
-give up the second lock to avoid the deadlock.
-
-  CPU 1                 CPU 2                  CPU 3
-  connect(A -> B)       connect(B -> A)        listen(A)
-  ---                   ---                    ---
-  unix_state_lock(B)
-  B->sk_state == TCP_LISTEN
-  READ_ONCE(A->sk_state) == TCP_CLOSE
-                            ^^^^^^^^^
-                            ok, will lock A    unix_state_lock(A)
-             .--------------'                  WRITE_ONCE(A->sk_state, TCP_LISTEN)
-             |                                 unix_state_unlock(A)
-             |
-             |          unix_state_lock(A)
-             |          A->sk_sk_state == TCP_LISTEN
-             |          READ_ONCE(B->sk_state) == TCP_LISTEN
-             v                                    ^^^^^^^^^^
-  unix_state_lock_nested(A)                       Don't lock B !!
-
-Currently, while checking the client's state, we also check if it's
-TCP_ESTABLISHED, but this is unlikely and can be checked after we know
-the state is not TCP_CLOSE.
-
-Moreover, if it happens after the second lock, we now jump to the restart
-label, but it's unlikely that the server is not found during the retry,
-so the jump is mostly to revist the client state check.
-
-Let's remove the retry logic and check the state against TCP_CLOSE first.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 34 +++++++++-------------------------
- 1 file changed, 9 insertions(+), 25 deletions(-)
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 50 +++++++++----------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index db71f35b67b86..7d59f9a6c9046 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1461,6 +1461,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	struct unix_sock *u = unix_sk(sk), *newu, *otheru;
- 	struct net *net = sock_net(sk);
- 	struct sk_buff *skb = NULL;
-+	unsigned char state;
- 	long timeo;
- 	int err;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index aa91730e4eaff..15515025d995b 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2957,6 +2957,7 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
  
-@@ -1505,7 +1506,6 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 		goto out;
- 	}
+ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ {
++	struct amdgpu_device *adev = hwmgr->adev;
+ 	struct smu7_hwmgr *data;
+ 	int result = 0;
  
--	/* Latch state of peer */
- 	unix_state_lock(other);
+@@ -2993,40 +2994,37 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 	/* Initalize Dynamic State Adjustment Rule Settings */
+ 	result = phm_initializa_dynamic_state_adjustment_rule_settings(hwmgr);
  
- 	/* Apparently VFS overslept socket death. Retry. */
-@@ -1535,37 +1535,21 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 		goto restart;
- 	}
+-	if (0 == result) {
+-		struct amdgpu_device *adev = hwmgr->adev;
++	if (result)
++		goto fail;
  
--	/* Latch our state.
+-		data->is_tlu_enabled = false;
++	data->is_tlu_enabled = false;
+ 
+-		hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
++	hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
+ 							SMU7_MAX_HARDWARE_POWERLEVELS;
+-		hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
+-		hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
++	hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
++	hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
+ 
+-		data->pcie_gen_cap = adev->pm.pcie_gen_mask;
+-		if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
+-			data->pcie_spc_cap = 20;
+-		else
+-			data->pcie_spc_cap = 16;
+-		data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
 -
--	   It is tricky place. We need to grab our state lock and cannot
--	   drop lock on peer. It is dangerous because deadlock is
--	   possible. Connect to self case and simultaneous
--	   attempt to connect are eliminated by checking socket
--	   state. other is TCP_LISTEN, if sk is TCP_LISTEN we
--	   check this before attempt to grab lock.
--
--	   Well, and we have to recheck the state after socket locked.
-+	/* self connect and simultaneous connect are eliminated
-+	 * by rejecting TCP_LISTEN socket to avoid deadlock.
- 	 */
--	switch (READ_ONCE(sk->sk_state)) {
--	case TCP_CLOSE:
--		/* This is ok... continue with connect */
--		break;
--	case TCP_ESTABLISHED:
--		/* Socket is already connected */
--		err = -EISCONN;
--		goto out_unlock;
--	default:
--		err = -EINVAL;
-+	state = READ_ONCE(sk->sk_state);
-+	if (unlikely(state != TCP_CLOSE)) {
-+		err = state == TCP_ESTABLISHED ? -EISCONN : -EINVAL;
- 		goto out_unlock;
- 	}
+-		hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
+-/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
+-		hwmgr->platform_descriptor.clockStep.engineClock = 500;
+-		hwmgr->platform_descriptor.clockStep.memoryClock = 500;
+-		smu7_thermal_parameter_init(hwmgr);
+-	} else {
+-		/* Ignore return value in here, we are cleaning up a mess. */
+-		smu7_hwmgr_backend_fini(hwmgr);
+-	}
++	data->pcie_gen_cap = adev->pm.pcie_gen_mask;
++	if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
++		data->pcie_spc_cap = 20;
++	else
++		data->pcie_spc_cap = 16;
++	data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
++
++	hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
++	/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
++	hwmgr->platform_descriptor.clockStep.engineClock = 500;
++	hwmgr->platform_descriptor.clockStep.memoryClock = 500;
++	smu7_thermal_parameter_init(hwmgr);
  
- 	unix_state_lock_nested(sk, U_LOCK_SECOND);
+ 	result = smu7_update_edc_leakage_table(hwmgr);
+-	if (result) {
+-		smu7_hwmgr_backend_fini(hwmgr);
+-		return result;
+-	}
++	if (result)
++		goto fail;
  
--	if (sk->sk_state != TCP_CLOSE) {
-+	if (unlikely(sk->sk_state != TCP_CLOSE)) {
-+		err = sk->sk_state == TCP_ESTABLISHED ? -EISCONN : -EINVAL;
- 		unix_state_unlock(sk);
--		unix_state_unlock(other);
--		sock_put(other);
--		goto restart;
-+		goto out_unlock;
- 	}
+ 	return 0;
++fail:
++	smu7_hwmgr_backend_fini(hwmgr);
++	return result;
+ }
  
- 	err = security_unix_stream_connect(sk, other, newsk);
+ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
 -- 
 2.43.0
 
