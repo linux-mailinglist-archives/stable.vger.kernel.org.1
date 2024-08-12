@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A0494F45A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:29:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5989894F347
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68AA1F21179
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:29:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B7591C2177C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CAF187321;
-	Mon, 12 Aug 2024 16:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A164186E47;
+	Mon, 12 Aug 2024 16:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjiUC5iK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIeVyba+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ACC183CD4;
-	Mon, 12 Aug 2024 16:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA509178CE4;
+	Mon, 12 Aug 2024 16:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480158; cv=none; b=ejqm3zxkOnHb7PODv6D2e8qy1HcsVR8hY5Vz0Hf5e6RttpNsZltUhGiteaCRvKgGPogKPSsXgpwb/j5FHZZV28FxlLme0CXymJRZBswKGzpfYoeywpqGUWwC56E9Vz6F84aSB+o+M0NT+rMZr2igroXqks0xhShmj/XOaNf0LCQ=
+	t=1723479347; cv=none; b=APx885GGK+IcrdJ4IUPODbOzlyZx8G2KkWWbnc6eUlOgQB8K2Cvsx8fWn0Pl8VzWcxE1KVde/5dcp66H/E4A6iJzOxxCleSss8Lf9qSiVkFkfpyI/l7X3JxQ8B49EYJoddUngawxZRILtdh68OyxGe3ZS8AY7hqNgSRDoFFveSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480158; c=relaxed/simple;
-	bh=nb2mpv8KF6u31meg6HQwqQL9m3dYdo75G/GttHQdv/s=;
+	s=arc-20240116; t=1723479347; c=relaxed/simple;
+	bh=pgkfcjhro5961CUmggmuaU+U3f14sxe3XkDuHBJX4/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+deCojzxuCb887F6NvVGQDD3oy1oMjgtSfyM61rggjbZhmHD7PwTr1BSAIcs0W0+jRUQIoXsYWse0Za7opfzLyuVRdYBjprmHAjl+lwxqumwWoqu0um65wfMhxMMYWktRB+RGKGSvphGk1nZE/h8WTtHBvI2EEW0Fh3IO2H2Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjiUC5iK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AD2C32782;
-	Mon, 12 Aug 2024 16:29:17 +0000 (UTC)
+	 MIME-Version; b=OkFuC0qebXeKyjVJI2M5D0i7lKqcmv8zKoGfCumU3yy4vOKxrHxNpS0XhbMo4Gt05G5wg9eP/Xz9N64Vt241u4xo6NP+XodFOHvYpKBCTAkDneJUuHFCiK1CC4Dw3ZGjV5UBHthOxcEqzxePl9gI9o0Xz2cYaAb2CzR6jQ6djrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIeVyba+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5DFC32782;
+	Mon, 12 Aug 2024 16:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480158;
-	bh=nb2mpv8KF6u31meg6HQwqQL9m3dYdo75G/GttHQdv/s=;
+	s=korg; t=1723479347;
+	bh=pgkfcjhro5961CUmggmuaU+U3f14sxe3XkDuHBJX4/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SjiUC5iKbV9hEo2/GxX8BytTh08A3e/T1Tc+ixkSQK+wHlzJzG2aKRAZlThRAiy6Q
-	 eeY+l3RTXlzSrsLre2VDxUTD/r4CexFwamXNa4eQMEapRBHGwchpAnOyThxw1SqJ2Q
-	 swQ3ZJdNQ2ID7HVQQE+menp4iYd6docpPyjhZPh4=
+	b=OIeVyba+rhuLdhS7AT6ZDsthUqfB6BOCnBhHnY1X+uJnJhs3GLrA3mezcYm3KDmue
+	 B+7STaEviDIV8CZuuHdrIK6LIbwrdJa6ABT/nypKUxeMgkjZioGMwF4qIq9OtbtyL2
+	 RrRpsgQi8FM2yG+zaWDskBCSCsDvlO8xTC0yQjwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chi Zhiling <chizhiling@kylinos.cn>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Bob Zhou <bob.zhou@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 111/263] media: xc2028: avoid use-after-free in load_firmware_cb()
-Date: Mon, 12 Aug 2024 18:01:52 +0200
-Message-ID: <20240812160150.795554984@linuxfoundation.org>
+Subject: [PATCH 6.6 057/189] drm/amd/pm: Fix the null pointer dereference for vega10_hwmgr
+Date: Mon, 12 Aug 2024 18:01:53 +0200
+Message-ID: <20240812160134.339855248@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chi Zhiling <chizhiling@kylinos.cn>
+From: Bob Zhou <bob.zhou@amd.com>
 
-[ Upstream commit 68594cec291ff9523b9feb3f43fd853dcddd1f60 ]
+[ Upstream commit 50151b7f1c79a09117837eb95b76c2de76841dab ]
 
-syzkaller reported use-after-free in load_firmware_cb() [1].
-The reason is because the module allocated a struct tuner in tuner_probe(),
-and then the module initialization failed, the struct tuner was released.
-A worker which created during module initialization accesses this struct
-tuner later, it caused use-after-free.
+Check return value and conduct null pointer handling to avoid null pointer dereference.
 
-The process is as follows:
-
-task-6504           worker_thread
-tuner_probe                             <= alloc dvb_frontend [2]
-...
-request_firmware_nowait                 <= create a worker
-...
-tuner_remove                            <= free dvb_frontend
-...
-                    request_firmware_work_func  <= the firmware is ready
-                    load_firmware_cb    <= but now the dvb_frontend has been freed
-
-To fix the issue, check the dvd_frontend in load_firmware_cb(), if it is
-null, report a warning and just return.
-
-[1]:
-    ==================================================================
-     BUG: KASAN: use-after-free in load_firmware_cb+0x1310/0x17a0
-     Read of size 8 at addr ffff8000d7ca2308 by task kworker/2:3/6504
-
-     Call trace:
-      load_firmware_cb+0x1310/0x17a0
-      request_firmware_work_func+0x128/0x220
-      process_one_work+0x770/0x1824
-      worker_thread+0x488/0xea0
-      kthread+0x300/0x430
-      ret_from_fork+0x10/0x20
-
-     Allocated by task 6504:
-      kzalloc
-      tuner_probe+0xb0/0x1430
-      i2c_device_probe+0x92c/0xaf0
-      really_probe+0x678/0xcd0
-      driver_probe_device+0x280/0x370
-      __device_attach_driver+0x220/0x330
-      bus_for_each_drv+0x134/0x1c0
-      __device_attach+0x1f4/0x410
-      device_initial_probe+0x20/0x30
-      bus_probe_device+0x184/0x200
-      device_add+0x924/0x12c0
-      device_register+0x24/0x30
-      i2c_new_device+0x4e0/0xc44
-      v4l2_i2c_new_subdev_board+0xbc/0x290
-      v4l2_i2c_new_subdev+0xc8/0x104
-      em28xx_v4l2_init+0x1dd0/0x3770
-
-     Freed by task 6504:
-      kfree+0x238/0x4e4
-      tuner_remove+0x144/0x1c0
-      i2c_device_remove+0xc8/0x290
-      __device_release_driver+0x314/0x5fc
-      device_release_driver+0x30/0x44
-      bus_remove_device+0x244/0x490
-      device_del+0x350/0x900
-      device_unregister+0x28/0xd0
-      i2c_unregister_device+0x174/0x1d0
-      v4l2_device_unregister+0x224/0x380
-      em28xx_v4l2_init+0x1d90/0x3770
-
-     The buggy address belongs to the object at ffff8000d7ca2000
-      which belongs to the cache kmalloc-2k of size 2048
-     The buggy address is located 776 bytes inside of
-      2048-byte region [ffff8000d7ca2000, ffff8000d7ca2800)
-     The buggy address belongs to the page:
-     page:ffff7fe00035f280 count:1 mapcount:0 mapping:ffff8000c001f000 index:0x0
-     flags: 0x7ff800000000100(slab)
-     raw: 07ff800000000100 ffff7fe00049d880 0000000300000003 ffff8000c001f000
-     raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
-     page dumped because: kasan: bad access detected
-
-     Memory state around the buggy address:
-      ffff8000d7ca2200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-      ffff8000d7ca2280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-     >ffff8000d7ca2300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                           ^
-      ffff8000d7ca2380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-      ffff8000d7ca2400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-     ==================================================================
-
-[2]
-    Actually, it is allocated for struct tuner, and dvb_frontend is inside.
-
-Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/tuners/xc2028.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 29 ++++++++++++++++---
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/tuners/xc2028.c b/drivers/media/tuners/xc2028.c
-index 5a967edceca93..352b8a3679b72 100644
---- a/drivers/media/tuners/xc2028.c
-+++ b/drivers/media/tuners/xc2028.c
-@@ -1361,9 +1361,16 @@ static void load_firmware_cb(const struct firmware *fw,
- 			     void *context)
- {
- 	struct dvb_frontend *fe = context;
--	struct xc2028_data *priv = fe->tuner_priv;
-+	struct xc2028_data *priv;
- 	int rc;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index 49c984f14e6b1..d43a530aba0e3 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3418,13 +3418,17 @@ static int vega10_find_dpm_states_clocks_in_dpm_table(struct pp_hwmgr *hwmgr, co
+ 	const struct vega10_power_state *vega10_ps =
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	struct vega10_single_dpm_table *sclk_table = &(data->dpm_table.gfx_table);
+-	uint32_t sclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].gfx_clock;
+ 	struct vega10_single_dpm_table *mclk_table = &(data->dpm_table.mem_table);
+-	uint32_t mclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].mem_clock;
++	uint32_t sclk, mclk;
+ 	uint32_t i;
  
-+	if (!fe) {
-+		pr_warn("xc2028: No frontend in %s\n", __func__);
++	if (vega10_ps == NULL)
++		return -EINVAL;
++	sclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].gfx_clock;
++	mclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].mem_clock;
++
+ 	for (i = 0; i < sclk_table->count; i++) {
+ 		if (sclk == sclk_table->dpm_levels[i].value)
+ 			break;
+@@ -3731,6 +3735,9 @@ static int vega10_generate_dpm_level_enable_mask(
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	int i;
+ 
++	if (vega10_ps == NULL)
++		return -EINVAL;
++
+ 	PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps),
+ 			"Attempt to Trim DPM States Failed!",
+ 			return -1);
+@@ -4998,6 +5005,8 @@ static int vega10_check_states_equal(struct pp_hwmgr *hwmgr,
+ 
+ 	vega10_psa = cast_const_phw_vega10_power_state(pstate1);
+ 	vega10_psb = cast_const_phw_vega10_power_state(pstate2);
++	if (vega10_psa == NULL || vega10_psb == NULL)
++		return -EINVAL;
+ 
+ 	/* If the two states don't even have the same number of performance levels
+ 	 * they cannot be the same state.
+@@ -5131,6 +5140,8 @@ static int vega10_set_sclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].gfx_clock =
+@@ -5182,6 +5193,8 @@ static int vega10_set_mclk_od(struct pp_hwmgr *hwmgr, uint32_t value)
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].mem_clock =
+@@ -5423,6 +5436,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
+ 		return;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
 +		return;
-+	}
 +
-+	priv = fe->tuner_priv;
+ 	max_level = vega10_ps->performance_level_count - 1;
+ 
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5445,6 +5461,9 @@ static void vega10_odn_update_power_state(struct pp_hwmgr *hwmgr)
+ 
+ 	ps = (struct pp_power_state *)((unsigned long)(hwmgr->ps) + hwmgr->ps_size * (hwmgr->num_ps - 1));
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return;
 +
- 	tuner_dbg("request_firmware_nowait(): %s\n", fw ? "OK" : "error");
- 	if (!fw) {
- 		tuner_err("Could not load firmware %s.\n", priv->fname);
+ 	max_level = vega10_ps->performance_level_count - 1;
+ 
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5635,6 +5654,8 @@ static int vega10_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_const_phw_vega10_power_state(state);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	i = index > vega10_ps->performance_level_count - 1 ?
+ 			vega10_ps->performance_level_count - 1 : index;
 -- 
 2.43.0
 
