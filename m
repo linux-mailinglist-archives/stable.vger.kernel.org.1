@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-67256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D216E94F497
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A073794F380
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 897F41F21710
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5733F1F21916
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4F3186E33;
-	Mon, 12 Aug 2024 16:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80B9186E20;
+	Mon, 12 Aug 2024 16:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhZlebeF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUgDviq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF68716D9B8;
-	Mon, 12 Aug 2024 16:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CC6183CA6;
+	Mon, 12 Aug 2024 16:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480326; cv=none; b=n17k/rrUWPRa7Oe8LlMNFdWZF1iUzV9nQkMayR42VjdxSCMnQKd1K3GimzEn2Ldy1q2u0w1ylYSZeT4QLiuQ5PTd2Gq7lxNDWxjbp+YFpMcs38xgTfFEWlGsV4aOSdDiElMFn1ljfS3r4zedSwQieebB0wd3wj0iKy25tUjzEr4=
+	t=1723479506; cv=none; b=NsdwInlZ9y5Ehum7tdIlx9+CHRF149aAaYtszcmXofU4A8P9wD38L+mSKnamlUYPyT5mkD4VoDlaPwqqt+QtjGLI6QiGVVrzqXGErVWCq1YsrbMrE+gUApkoLZKIz/5rcLJdusxGg2HM1wn9CMfUHG72ACWsrZTZFTnrx0TMmyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480326; c=relaxed/simple;
-	bh=ab/+02Ho2mHfH6TN8CT4Gu9w2F7P72NfNwunvzoJCwk=;
+	s=arc-20240116; t=1723479506; c=relaxed/simple;
+	bh=g3HhUCC2Xw2fVJMDpO6VQpmdyu1sHTzmM5U8DiSGpmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHWVZz6CAnaBp703rXxFriQUX4oUU5nyuRY/ocqCKgO0TgxOo7ZY5ZsyIvBfhYGiMqJ5337GpMd+kyUMrJ10iCBTD9xU6W8gwzSaykSS0I/LWntlywxbOfAAnKU7Uvtz+LEHx32dIHZ1IGBYvub0eTrWX6UuupoYI7uxsiTR+fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhZlebeF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A96C32782;
-	Mon, 12 Aug 2024 16:32:05 +0000 (UTC)
+	 MIME-Version; b=b1cvIBGCneFixkGD7CFniehXuVOuMntRLwOxfo99wCmy8zq94UYKKhxHJ/5x5AdCt4Zvt3VNTH4J7xIN0DsUg6CpSrWaBO8aO6cSgQNGCTyjBNPRj6Rz+TIf/sqlLa51vqMSOnQlwY3pbY/3Ds3lSEdJGO96rAmLllrVpGoPABY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUgDviq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13476C32782;
+	Mon, 12 Aug 2024 16:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480325;
-	bh=ab/+02Ho2mHfH6TN8CT4Gu9w2F7P72NfNwunvzoJCwk=;
+	s=korg; t=1723479506;
+	bh=g3HhUCC2Xw2fVJMDpO6VQpmdyu1sHTzmM5U8DiSGpmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhZlebeFnQIrP0jC4xpPttcR6Ce+H94z7vPNx/Ik5OcRLBu8eHuVXPUcAcqS40yRv
-	 53sqo9Iy14i7Q99UU64nwnvbZ/CYlSFiGVV43yeiLsiYPTz1Me5400jdc8tN9gWF7f
-	 wdcYwf/iJA9iYCXtB2qT/yiKrGgWEyJJUYX+JHcs=
+	b=RUgDviq3394II7bMihjUNGnx2s9eHxpiU6cWErl54TWqEMzVfXfDxj0vIWFqHJ08f
+	 u8/SiA4pg5U8JB89EFLhbRcLRoHWUNbRTbnIHVlm0+q+tEWBbBNTDt6M9ZDpWOMtS1
+	 Te1BLodcQBNXMTuT4DZH54Y7Kx++EzLM/MWAd7K4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Zanoni <paulo.r.zanoni@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 164/263] drm/xe: Use dma_fence_chain_free in chain fence unused as a sync
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 109/189] drm/amd/display: Skip Recompute DSC Params if no Stream on Link
 Date: Mon, 12 Aug 2024 18:02:45 +0200
-Message-ID: <20240812160152.824745126@linuxfoundation.org>
+Message-ID: <20240812160136.337453279@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Fangzhi Zuo <Jerry.Zuo@amd.com>
 
-[ Upstream commit 4f854a8b1b85d46abd5ce206936d23f87ac5e0c9 ]
+commit 50e376f1fe3bf571d0645ddf48ad37eb58323919 upstream.
 
-A chain fence is uninitialized if not installed in a drm sync obj. Thus
-if xe_sync_entry_cleanup is called and sync->chain_fence is non-NULL the
-proper cleanup is dma_fence_chain_free rather than a dma-fence put.
+[why]
+Encounter NULL pointer dereference uner mst + dsc setup.
 
-Reported-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2411
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2261
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240727012216.2118276-1-matthew.brost@intel.com
-(cherry picked from commit 7f7a2da3bf8bc0e0f6c239af495b7050056e889c)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+    PGD 0 P4D 0
+    Oops: 0000 [#1] PREEMPT SMP NOPTI
+    CPU: 4 PID: 917 Comm: sway Not tainted 6.3.9-arch1-1 #1 124dc55df4f5272ccb409f39ef4872fc2b3376a2
+    Hardware name: LENOVO 20NKS01Y00/20NKS01Y00, BIOS R12ET61W(1.31 ) 07/28/2022
+    RIP: 0010:drm_dp_atomic_find_time_slots+0x5e/0x260 [drm_display_helper]
+    Code: 01 00 00 48 8b 85 60 05 00 00 48 63 80 88 00 00 00 3b 43 28 0f 8d 2e 01 00 00 48 8b 53 30 48 8d 04 80 48 8d 04 c2 48 8b 40 18 <48> 8>
+    RSP: 0018:ffff960cc2df77d8 EFLAGS: 00010293
+    RAX: 0000000000000000 RBX: ffff8afb87e81280 RCX: 0000000000000224
+    RDX: ffff8afb9ee37c00 RSI: ffff8afb8da1a578 RDI: ffff8afb87e81280
+    RBP: ffff8afb83d67000 R08: 0000000000000001 R09: ffff8afb9652f850
+    R10: ffff960cc2df7908 R11: 0000000000000002 R12: 0000000000000000
+    R13: ffff8afb8d7688a0 R14: ffff8afb8da1a578 R15: 0000000000000224
+    FS:  00007f4dac35ce00(0000) GS:ffff8afe30b00000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 0000000000000008 CR3: 000000010ddc6000 CR4: 00000000003506e0
+    Call Trace:
+<TASK>
+     ? __die+0x23/0x70
+     ? page_fault_oops+0x171/0x4e0
+     ? plist_add+0xbe/0x100
+     ? exc_page_fault+0x7c/0x180
+     ? asm_exc_page_fault+0x26/0x30
+     ? drm_dp_atomic_find_time_slots+0x5e/0x260 [drm_display_helper 0e67723696438d8e02b741593dd50d80b44c2026]
+     ? drm_dp_atomic_find_time_slots+0x28/0x260 [drm_display_helper 0e67723696438d8e02b741593dd50d80b44c2026]
+     compute_mst_dsc_configs_for_link+0x2ff/0xa40 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
+     ? fill_plane_buffer_attributes+0x419/0x510 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
+     compute_mst_dsc_configs_for_state+0x1e1/0x250 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
+     amdgpu_dm_atomic_check+0xecd/0x1190 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
+     drm_atomic_check_only+0x5c5/0xa40
+     drm_mode_atomic_ioctl+0x76e/0xbc0
+
+[how]
+dsc recompute should be skipped if no mode change detected on the new
+request. If detected, keep checking whether the stream is already on
+current state or not.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8151a6c13111b465dbabe07c19f572f7cbd16fef)
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_sync.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
-index 65f1f16282356..2bfff998458ba 100644
---- a/drivers/gpu/drm/xe/xe_sync.c
-+++ b/drivers/gpu/drm/xe/xe_sync.c
-@@ -263,7 +263,7 @@ void xe_sync_entry_cleanup(struct xe_sync_entry *sync)
- 	if (sync->fence)
- 		dma_fence_put(sync->fence);
- 	if (sync->chain_fence)
--		dma_fence_put(&sync->chain_fence->base);
-+		dma_fence_chain_free(sync->chain_fence);
- 	if (sync->ufence)
- 		user_fence_put(sync->ufence);
- }
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1266,6 +1266,9 @@ static bool is_dsc_need_re_compute(
+ 		}
+ 	}
+ 
++	if (new_stream_on_link_num == 0)
++		return false;
++
+ 	/* check current_state if there stream on link but it is not in
+ 	 * new request state
+ 	 */
 
 
 
