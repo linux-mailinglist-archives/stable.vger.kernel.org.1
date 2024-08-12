@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-67251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D2594F492
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7B494F37D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3A011F21AB4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB8D0B22561
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14984184527;
-	Mon, 12 Aug 2024 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB23187328;
+	Mon, 12 Aug 2024 16:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDr8aTkt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBwdaKh+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61752C1A5;
-	Mon, 12 Aug 2024 16:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA81186E34;
+	Mon, 12 Aug 2024 16:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480309; cv=none; b=sCa29S5XbScsIg8K59bWk4Z1xlxyKhMO2XEtsHNztLc7yyRlMpu1XagYPybpeyHYaMj5MlkfYQ+stHXh24hV9aFYZw0C6nK90XblHUusrXqLJNIjxJAD9DXzhT+GK8cO1VR32JZiJNyESMER2imlQ2gJcxIbgT0yE3qNzFsduas=
+	t=1723479491; cv=none; b=e+cEmGs5wgnUCDGsE5vwbxxFwtSFsn1qCe1RMGM3tWefRafhHfabpqOAJLKsFesOOUGG9VULLe78LiFECEAdbLfOlmEbadHxjFyuUOV4rjVeTTIGoaONCI5h4kuxeHSFzqmRuFC6bpxxq6GQwu8vP5GdHA8I00C6VNwh816gKnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480309; c=relaxed/simple;
-	bh=LsCaPVwE3QEcTNxwy/AmBVR8I1GRsvYFN7nMRezlY7Q=;
+	s=arc-20240116; t=1723479491; c=relaxed/simple;
+	bh=DKW0HUdNifbaNccycnemhPUjj0cTOHPVPPgozvtwFCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdVFr1CzVbJOpo/u1QznU8OpdARwTUrKyFSCYlXLKlxSC+TsPWHQHqjOt8O26ZM+cCDqr+Tsx82y5Tmh1vXdWQNuIrk6VRIUA8XgLATYNy0cRO+LnqiOsqsjf9620iSLAQ9WlMRc8aDSn+/ifnd5+7PBmHVEjp0JzEyhHUABElA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDr8aTkt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC90C32782;
-	Mon, 12 Aug 2024 16:31:49 +0000 (UTC)
+	 MIME-Version; b=FEUibpkFWOPjbLMPhVR9ouuaQqQ/5DCxAUfkDSLXR3GBerO+A6/e6AkeOYb4Cl2zM4ue8QzVtI8ie+osUOBC+YpAB+RoqogTWN32g/8PKwy3wP/DhMZ1xW+wdV8pl8nHtYmZtk/TdwRb3gk2vMOgFQ/ppjlXwaqqMKwHPD2BDU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBwdaKh+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005C6C32782;
+	Mon, 12 Aug 2024 16:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480309;
-	bh=LsCaPVwE3QEcTNxwy/AmBVR8I1GRsvYFN7nMRezlY7Q=;
+	s=korg; t=1723479490;
+	bh=DKW0HUdNifbaNccycnemhPUjj0cTOHPVPPgozvtwFCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rDr8aTkt0VotwdV8SnkTw9NJL3tyiggxsoGW5yn6uT9DPh+A5KEBU4C8tSv7QflwK
-	 KOslYBYaYdetMtLWGab9a3fVympRSDc6J45nm5wmcf6LyOa+Q8LqzYZ0opz+MFTFwJ
-	 t6tVQvgQF+v9o6y0voUxLEDxb84krPXRur+7PEpc=
+	b=rBwdaKh+R08a3FRAt1kb0yAAw66jwdlHzSPoNCFdAaamqlAgOVjQLlwGfCtCIgqev
+	 xdTUP2dJFyBoAjE2z9QY6V7yeqtUIDyplgOovghleMtfFtqsRhJP2gShlcT89S0dJx
+	 ZOjB+8ech6o30cG83QbadxobVYmPxba5AYEu15ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <david@davidgow.net>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 159/263] drm/i915: Attempt to get pages without eviction first
+Subject: [PATCH 6.6 104/189] ASoC: meson: axg-fifo: fix irq scheduling issue with PREEMPT_RT
 Date: Mon, 12 Aug 2024 18:02:40 +0200
-Message-ID: <20240812160152.633348201@linuxfoundation.org>
+Message-ID: <20240812160136.145144580@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <david@davidgow.net>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 787db3bb6ed5cee56fc97fecdd61517d89763f0a ]
+[ Upstream commit 5003d0ce5c7da3a02c0aff771f516f99731e7390 ]
 
-In commit a78a8da51b36 ("drm/ttm: replace busy placement with flags v6"),
-__i915_ttm_get_pages was updated to use flags instead of the separate
-'busy' placement list. However, the behaviour was subtly changed.
-Originally, the function would attempt to use the preferred placement
-without eviction, and give an opportunity to restart the operation
-before falling back to allowing eviction.
+With PREEMPT_RT enabled a spinlock_t becomes a sleeping lock.
 
-This was unintentionally changed, as the preferred placement was not
-given the TTM_PL_FLAG_DESIRED flag, and so eviction could be triggered
-in that first pass. This caused thrashing, and a significant performance
-regression on DG2 systems with small BAR. For example, Minecraft and
-Team Fortress 2 would drop to single-digit framerates.
+This is usually not a problem with spinlocks used in IRQ context since
+IRQ handlers get threaded. However, if IRQF_ONESHOT is set, the primary
+handler won't be force-threaded and runs always in hardirq context. This is
+a problem because spinlock_t requires a preemptible context on PREEMPT_RT.
 
-Restore the original behaviour by marking the initial placement as
-desired on that first attempt. Also, rework this to use a separate
-struct ttm_palcement, as the individual placements are marked 'const',
-so hot-patching the flags is even more dodgy than before.
+In this particular instance, regmap mmio uses spinlock_t to protect the
+register access and IRQF_ONESHOT is set on the IRQ. In this case, it is
+actually better to do everything in threaded handler and it solves the
+problem with PREEMPT_RT.
 
-Thanks to Justin Brewer for bisecting this.
-
-Fixes: a78a8da51b36 ("drm/ttm: replace busy placement with flags v6")
-Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11255
-Signed-off-by: David Gow <david@davidgow.net>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240804091851.122186-3-david@davidgow.net
-(cherry picked from commit 92653f2a572505adaf7f13f695c1907e71a1dc84)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Reported-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Closes: https://lore.kernel.org/linux-amlogic/20240729131652.3012327-1-avkrasnov@salutedevices.com
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: b11d26660dff ("ASoC: meson: axg-fifo: use threaded irq to check periods")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20240807162705.4024136-1-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ sound/soc/meson/axg-fifo.c | 26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-index fb848fd8ba15a..5c72462d1f57e 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-@@ -778,13 +778,16 @@ static int __i915_ttm_get_pages(struct drm_i915_gem_object *obj,
- 		.interruptible = true,
- 		.no_wait_gpu = false,
- 	};
--	int real_num_busy;
-+	struct ttm_placement initial_placement;
-+	struct ttm_place initial_place;
- 	int ret;
+diff --git a/sound/soc/meson/axg-fifo.c b/sound/soc/meson/axg-fifo.c
+index 94b169a5493b5..5218e40aeb1bb 100644
+--- a/sound/soc/meson/axg-fifo.c
++++ b/sound/soc/meson/axg-fifo.c
+@@ -207,25 +207,18 @@ static irqreturn_t axg_fifo_pcm_irq_block(int irq, void *dev_id)
+ 	status = FIELD_GET(STATUS1_INT_STS, status);
+ 	axg_fifo_ack_irq(fifo, status);
  
- 	/* First try only the requested placement. No eviction. */
--	real_num_busy = placement->num_placement;
--	placement->num_placement = 1;
--	ret = ttm_bo_validate(bo, placement, &ctx);
-+	initial_placement.num_placement = 1;
-+	memcpy(&initial_place, placement->placement, sizeof(struct ttm_place));
-+	initial_place.flags |= TTM_PL_FLAG_DESIRED;
-+	initial_placement.placement = &initial_place;
-+	ret = ttm_bo_validate(bo, &initial_placement, &ctx);
- 	if (ret) {
- 		ret = i915_ttm_err_to_gem(ret);
- 		/*
-@@ -799,7 +802,6 @@ static int __i915_ttm_get_pages(struct drm_i915_gem_object *obj,
- 		 * If the initial attempt fails, allow all accepted placements,
- 		 * evicting if necessary.
- 		 */
--		placement->num_placement = real_num_busy;
- 		ret = ttm_bo_validate(bo, placement, &ctx);
- 		if (ret)
- 			return i915_ttm_err_to_gem(ret);
+-	/* Use the thread to call period elapsed on nonatomic links */
+-	if (status & FIFO_INT_COUNT_REPEAT)
+-		return IRQ_WAKE_THREAD;
++	if (status & ~FIFO_INT_COUNT_REPEAT)
++		dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
++			status);
+ 
+-	dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
+-		status);
++	if (status & FIFO_INT_COUNT_REPEAT) {
++		snd_pcm_period_elapsed(ss);
++		return IRQ_HANDLED;
++	}
+ 
+ 	return IRQ_NONE;
+ }
+ 
+-static irqreturn_t axg_fifo_pcm_irq_block_thread(int irq, void *dev_id)
+-{
+-	struct snd_pcm_substream *ss = dev_id;
+-
+-	snd_pcm_period_elapsed(ss);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ int axg_fifo_pcm_open(struct snd_soc_component *component,
+ 		      struct snd_pcm_substream *ss)
+ {
+@@ -251,8 +244,9 @@ int axg_fifo_pcm_open(struct snd_soc_component *component,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = request_threaded_irq(fifo->irq, axg_fifo_pcm_irq_block,
+-				   axg_fifo_pcm_irq_block_thread,
++	/* Use the threaded irq handler only with non-atomic links */
++	ret = request_threaded_irq(fifo->irq, NULL,
++				   axg_fifo_pcm_irq_block,
+ 				   IRQF_ONESHOT, dev_name(dev), ss);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
