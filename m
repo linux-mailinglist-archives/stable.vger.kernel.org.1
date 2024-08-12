@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-67146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359C194F419
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB93C94F3F4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E49E8280D3D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31506B21319
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1DD186E20;
-	Mon, 12 Aug 2024 16:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E8818733E;
+	Mon, 12 Aug 2024 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRo/zbNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrTDFCjE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1902134AC;
-	Mon, 12 Aug 2024 16:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196D2186E51;
+	Mon, 12 Aug 2024 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479960; cv=none; b=ASXASL4/Ruy7lCzXePqDliZTP6fMrIA2LQRjTjcNyFYG6gTdVoB0xASXW7W15wN04GCer0fcB96/tL2GVMrE8euHjB0NjUAoJtv3bhbQ+KrQ17r5LWibQPlZzHmjGGeRRSiu5jpMew2K01tzvBHaxqGGT9BGqLrLbGYI3HJUXI4=
+	t=1723479858; cv=none; b=Biq4u+76cbzG5RacWEI6luToiB8p0zLCM6+PNqE7375q2RRTg7j7CW0bk993yEBSKrTfCmmilhOCFVjYSUNTo1XU+nJ4GRpeiB+AIi5mZQBi2BvHiWmPrnlgLq905tnU9wM7rLp5os+dowLM+CcMS2Om0YGcUa832nzBKoeJGTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479960; c=relaxed/simple;
-	bh=1FHsjelaq+IOlb6hUbmDnhZFccBX9gALgsjSMfKj4tY=;
+	s=arc-20240116; t=1723479858; c=relaxed/simple;
+	bh=TPrOuDOGOvuWYcGjdfyDwoZV5byHWYTvpoa3s+F2wyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UZvGXSNccfWXJz4OboQv3IlcN/S+92z/URMe32Men2UDVHotZJlFyTjNQrIhpS3txk2bADFcvKIgBBvCKHANlW3rh3W1RNxtOOV3E3S19lbxX0ws8noFjdQIMUnz6QFJjPj8sP8lfZ7rND1Ylj8/JpJbzXmlU8zuVVtVT5KVzMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRo/zbNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649EBC4AF0C;
-	Mon, 12 Aug 2024 16:25:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ruG8dvNzB59mnBdtshtDfsLr+s3faFwH4jYgaTVFNcKViyBRbrWuMpkC2r7cZGGafrs136vSO1I3LuL0aRlnoVsYZze9phPRStm43LFpd1QKscPjrBijkb+ZiCibshQJwX76GxzZfalKnaWA8jokUTbA9ip++ZhLdghRoQ/OweE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrTDFCjE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95211C32782;
+	Mon, 12 Aug 2024 16:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479959;
-	bh=1FHsjelaq+IOlb6hUbmDnhZFccBX9gALgsjSMfKj4tY=;
+	s=korg; t=1723479858;
+	bh=TPrOuDOGOvuWYcGjdfyDwoZV5byHWYTvpoa3s+F2wyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRo/zbNiBYEgYF4UgIkYngZrX8Vr3fZQ2Pp6eG0BPcudPmjdQ+CltyzccV74aU3JR
-	 63wUs+JKySqK7zDhKkJQ9L3ubAl5lbLdfiVKmYxjgM/lAwICxAK+gy1DN0mxjvVS9T
-	 96Le1bPGrgQUrzbD1s7Csf+RyA8o/fp7qrYQyUrM=
+	b=mrTDFCjEeE3ySKCQ36dc6SLVzm3xV7++M0sSPtTMieAgqfcMRjXb1NGaAm6r+uWI6
+	 hEKJYbmKZd+emExjo0izbbe7EjeYRI/e7f8HUi2FBJmxM1kl8tnXkoL7mFjKHXdaG0
+	 uXezS6LHMQT+2xMp6glBeBiFzyQ0Nnrvne4edxvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 022/263] virtio-net: unbreak vq resizing when coalescing is not negotiated
-Date: Mon, 12 Aug 2024 18:00:23 +0200
-Message-ID: <20240812160147.391709548@linuxfoundation.org>
+Subject: [PATCH 6.10 023/263] net: usb: qmi_wwan: fix memory leak for not ip packets
+Date: Mon, 12 Aug 2024 18:00:24 +0200
+Message-ID: <20240812160147.429271587@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -70,50 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heng Qi <hengqi@linux.alibaba.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit 4ba8d97083707409822264fd1776aad7233f353e ]
+[ Upstream commit 7ab107544b777c3bd7feb9fe447367d8edd5b202 ]
 
-Don't break the resize action if the vq coalescing feature
-named VIRTIO_NET_F_VQ_NOTF_COAL is not negotiated.
+Free the unused skb when not ip packets arrive.
 
-Fixes: f61fe5f081cf ("virtio-net: fix the vq coalescing setting for vq resize")
-Signed-off-by: Heng Qi <hengqi@linux.alibaba.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Eugenio Pé rez <eperezma@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 5161e7efda2cb..f32e017b62e9b 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3257,7 +3257,11 @@ static int virtnet_set_ringparam(struct net_device *dev,
- 			err = virtnet_send_tx_ctrl_coal_vq_cmd(vi, i,
- 							       vi->intr_coal_tx.max_usecs,
- 							       vi->intr_coal_tx.max_packets);
--			if (err)
-+
-+			/* Don't break the tx resize action if the vq coalescing is not
-+			 * supported. The same is true for rx resize below.
-+			 */
-+			if (err && err != -EOPNOTSUPP)
- 				return err;
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 386d62769dedb..cfda32047cffb 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -201,6 +201,7 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			break;
+ 		default:
+ 			/* not ip - do not know what to do */
++			kfree_skb(skbn);
+ 			goto skip;
  		}
  
-@@ -3272,7 +3276,7 @@ static int virtnet_set_ringparam(struct net_device *dev,
- 							       vi->intr_coal_rx.max_usecs,
- 							       vi->intr_coal_rx.max_packets);
- 			mutex_unlock(&vi->rq[i].dim_lock);
--			if (err)
-+			if (err && err != -EOPNOTSUPP)
- 				return err;
- 		}
- 	}
 -- 
 2.43.0
 
