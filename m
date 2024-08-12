@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-67026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EBF94F390
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A72694F29F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB7231C216CF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE2771F2173C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF7A186E20;
-	Mon, 12 Aug 2024 16:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B2E187849;
+	Mon, 12 Aug 2024 16:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWYtG+WT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZd3IjT7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E156D183CA6;
-	Mon, 12 Aug 2024 16:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C931EA8D;
+	Mon, 12 Aug 2024 16:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479556; cv=none; b=rxdMZLiv5fZsmqUt6YH+m8rVapDc6vB/xgY+9kw0GoP+WVttY4ITajP+o+zhj3sMK/+X/2KDSPQVehMm0HgG5ui4pLvIfIN+h5lBm+O9SwL9fdWDYgoXzXa+84aNyWQ81iQe4L0VZ1OPp+8hs3fY9UNkdaxVeubVkoCfnaNVNcU=
+	t=1723478899; cv=none; b=MBnLpLkUHVIxIcshr55QDIipOMIV/6ClsWabaCHMaID8koD5ybjRv6FX0LLlPHnZjsv6wOR6i/K0fulIrRqy1SjAHRtVA9Q+dc00wd/dUcPHavYPM6rjEi0BDxp4HQYMWxRLrE9g1FDgf4CTteTXjLhyhFVzJQquBRkJQ1JEKyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479556; c=relaxed/simple;
-	bh=FDiepMl/UERA7eA7Mdl6XlrkWRzJA/HpwdMLCX0e6+w=;
+	s=arc-20240116; t=1723478899; c=relaxed/simple;
+	bh=aHKYwyy8MXyzZa5oNYqvqEe92UcMzUWI5quRMFcy5+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+UhPD6efJiltZSEGuCeJJ/Fxdq5YLzizJPZ5QZxgX7jmL2GPkoBI0cgSHPBz64L8S1BeL5Rok7oeK0QAi28pvHLoVlMuQI9okl7PecI7b6Da4gbvgfagMLtISmDP5FQFMfC4DnInXhpnqWcBl2A6L+MS21We4BmhVb3KRphqWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWYtG+WT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE50C4AF09;
-	Mon, 12 Aug 2024 16:19:15 +0000 (UTC)
+	 MIME-Version; b=b8pfsd1B6xC3K8M0h/CXlT8VyXvRZJ4NLkDk1KYr4abPdOaR4+puUnsrOu8HeIen2H/UsZnNy/Kw6KQq1wFrWKb2/+mpu1dBueJ3hlmcJCzxOPkVUych2C6SgO4sNl6rtBEWLozDWw+LzJ5eBEh/rCO4bVifmpV2TWjTWKng5L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZd3IjT7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506D6C32782;
+	Mon, 12 Aug 2024 16:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479555;
-	bh=FDiepMl/UERA7eA7Mdl6XlrkWRzJA/HpwdMLCX0e6+w=;
+	s=korg; t=1723478898;
+	bh=aHKYwyy8MXyzZa5oNYqvqEe92UcMzUWI5quRMFcy5+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zWYtG+WTZow2OsGRz+J/T5Z30xG0LfdIbS7L7snA48EC7CG09twVXZtT/SxgW1j7n
-	 phwGcIv302MhamKfBUwSJYxpGf7x0CeJAbGr9wKkl1sKJIAYpWN+XMZHctvaD4rx1Z
-	 d6A89cPen/DErCS7cbhrYlsgakz313wAUwOkGwAU=
+	b=OZd3IjT7uiCflBdUanFAVwlNFKM62dU5A3CsFXTvuzCCP1dLJvBGrVviRjaFgpzOW
+	 Mdsoi1EicLOQrIxC3eiqQUSOFjhWOU4trpyXqNT+i6gHTIst2BjmcgvWfTpcY4LXyY
+	 vodLgdZQupqdYc72cZ72lV+umU2R77u6LNYaPQ8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Malainey <cujomalainey@chromium.org>,
-	Wojciech Macek <wmacek@google.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/189] ASoC: SOF: Remove libraries from topology lookups
+Subject: [PATCH 6.1 071/150] i2c: smbus: Improve handling of stuck alerts
 Date: Mon, 12 Aug 2024 18:02:32 +0200
-Message-ID: <20240812160135.839057234@linuxfoundation.org>
+Message-ID: <20240812160127.915820734@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Curtis Malainey <cujomalainey@chromium.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 7354eb7f1558466e92e926802d36e69e42938ea9 ]
+[ Upstream commit 37c526f00bc1c4f847fc800085f8f009d2e11be6 ]
 
-Default firmware shipped in open source are not licensed for 3P
-libraries, therefore topologies should not reference them.
+The following messages were observed while testing alert functionality
+on systems with multiple I2C devices on a single bus if alert was active
+on more than one chip.
 
-If a OS wants to use 3P (that they have licensed) then they should use
-the appropriate topology override mechanisms.
+smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
+smbus_alert 3-000c: no driver alert()!
 
-Fixes: 8a7d5d85ed2161 ("ASoC: SOF: mediatek: mt8195: Add devicetree support to select topologies")
-Signed-off-by: Curtis Malainey <cujomalainey@chromium.org>
-Cc: Wojciech Macek <wmacek@google.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20240731212153.921327-1-cujomalainey@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+and:
+
+smbus_alert 3-000c: SMBALERT# from dev 0x28, flag 0
+
+Once it starts, this message repeats forever at high rate. There is no
+device at any of the reported addresses.
+
+Analysis shows that this is seen if multiple devices have the alert pin
+active. Apparently some devices do not support SMBus arbitration correctly.
+They keep sending address bits after detecting an address collision and
+handle the collision not at all or too late.
+Specifically, address 0x0c is seen with ADT7461A at address 0x4c and
+ADM1021 at address 0x18 if alert is active on both chips. Address 0x28 is
+seen with ADT7483 at address 0x2a and ADT7461 at address 0x4c if alert is
+active on both chips.
+
+Once the system is in bad state (alert is set by more than one chip),
+it often only recovers by power cycling.
+
+To reduce the impact of this problem, abort the endless loop in
+smbus_alert() if the same address is read more than once and not
+handled by a driver.
+
+Fixes: b5527a7766f0 ("i2c: Add SMBus alert support")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+[wsa: it also fixed an interrupt storm in one of my experiments]
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+[wsa: rebased, moved a comment as well, improved the 'invalid' value]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/mediatek/mt8195/mt8195.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/i2c-smbus.c | 32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/sof/mediatek/mt8195/mt8195.c b/sound/soc/sof/mediatek/mt8195/mt8195.c
-index 7d6a568556ea4..b5b4ea854da4b 100644
---- a/sound/soc/sof/mediatek/mt8195/mt8195.c
-+++ b/sound/soc/sof/mediatek/mt8195/mt8195.c
-@@ -624,7 +624,7 @@ static struct snd_sof_dsp_ops sof_mt8195_ops = {
- static struct snd_sof_of_mach sof_mt8195_machs[] = {
- 	{
- 		.compatible = "google,tomato",
--		.sof_tplg_filename = "sof-mt8195-mt6359-rt1019-rt5682-dts.tplg"
-+		.sof_tplg_filename = "sof-mt8195-mt6359-rt1019-rt5682.tplg"
- 	}, {
- 		.compatible = "mediatek,mt8195",
- 		.sof_tplg_filename = "sof-mt8195.tplg"
+diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
+index 07c92c8495a3c..5f74978874691 100644
+--- a/drivers/i2c/i2c-smbus.c
++++ b/drivers/i2c/i2c-smbus.c
+@@ -34,6 +34,7 @@ static int smbus_do_alert(struct device *dev, void *addrp)
+ 	struct i2c_client *client = i2c_verify_client(dev);
+ 	struct alert_data *data = addrp;
+ 	struct i2c_driver *driver;
++	int ret;
+ 
+ 	if (!client || client->addr != data->addr)
+ 		return 0;
+@@ -47,16 +48,21 @@ static int smbus_do_alert(struct device *dev, void *addrp)
+ 	device_lock(dev);
+ 	if (client->dev.driver) {
+ 		driver = to_i2c_driver(client->dev.driver);
+-		if (driver->alert)
++		if (driver->alert) {
++			/* Stop iterating after we find the device */
+ 			driver->alert(client, data->type, data->data);
+-		else
++			ret = -EBUSY;
++		} else {
+ 			dev_warn(&client->dev, "no driver alert()!\n");
+-	} else
++			ret = -EOPNOTSUPP;
++		}
++	} else {
+ 		dev_dbg(&client->dev, "alert with no driver\n");
++		ret = -ENODEV;
++	}
+ 	device_unlock(dev);
+ 
+-	/* Stop iterating after we find the device */
+-	return -EBUSY;
++	return ret;
+ }
+ 
+ /*
+@@ -67,6 +73,7 @@ static irqreturn_t smbus_alert(int irq, void *d)
+ {
+ 	struct i2c_smbus_alert *alert = d;
+ 	struct i2c_client *ara;
++	unsigned short prev_addr = I2C_CLIENT_END; /* Not a valid address */
+ 
+ 	ara = alert->ara;
+ 
+@@ -94,8 +101,19 @@ static irqreturn_t smbus_alert(int irq, void *d)
+ 			data.addr, data.data);
+ 
+ 		/* Notify driver for the device which issued the alert */
+-		device_for_each_child(&ara->adapter->dev, &data,
+-				      smbus_do_alert);
++		status = device_for_each_child(&ara->adapter->dev, &data,
++					       smbus_do_alert);
++		/*
++		 * If we read the same address more than once, and the alert
++		 * was not handled by a driver, it won't do any good to repeat
++		 * the loop because it will never terminate.
++		 * Bail out in this case.
++		 * Note: This assumes that a driver with alert handler handles
++		 * the alert properly and clears it if necessary.
++		 */
++		if (data.addr == prev_addr && status != -EBUSY)
++			break;
++		prev_addr = data.addr;
+ 	}
+ 
+ 	return IRQ_HANDLED;
 -- 
 2.43.0
 
