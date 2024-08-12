@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-67332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E7994F4EE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1DD94F3D5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86BA1C20ECD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08BBC28131C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214E9186E34;
-	Mon, 12 Aug 2024 16:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE65186E34;
+	Mon, 12 Aug 2024 16:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyuB7EXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xITZlxKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FA915C127;
-	Mon, 12 Aug 2024 16:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F9F183CA6;
+	Mon, 12 Aug 2024 16:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480580; cv=none; b=CIIR4OkFO6KPBZhVE0VvkSJfumWIwSrncDLVpU3mkBus43sImab3g5Avj7SUXd1/9UycQA7t6C2NTwMNO3VMmvqOOL4VElLnZwqIbGiB8+gQ5R8JJz2hkBREXvYA0Llo49aqRI8NVEWK7z3DuCSY5waAKCzyA/LDQ8jXqVgXyq0=
+	t=1723479764; cv=none; b=jj0USgvmrcB+Qfu1DJDS9KHBHbmMIAaYZPuUr3RlLZVmdlo422ApYJxVpcJyImN+nLfqGIn48GNmhMe45AuENf5x+nbv+dEQq05jmZX4mUTI7ZMf200HUpFYY1wY44KU8BV1OrvCVuTjNJcT4XcOV+eQPbXqef4dF7ObfP/hFmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480580; c=relaxed/simple;
-	bh=3sDICfwqOPc2774+Yw/bsYRwAjOjm+mDKDlIbZICblU=;
+	s=arc-20240116; t=1723479764; c=relaxed/simple;
+	bh=KUKzSs/oP1WC99t/t8DoP+lD5DPKotR1MaV63SLPe8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JeCNsYM95Q+qV2cosVyT6yq1baXd5qhbHI4wfWtlAfJktchOdU7AwMfnJ3ronxuuXVioJygRfblokr5snXu3esDVesM3k2zGFIFYSMyYPuV/tpfBq8mAK9QL87HNVp3Vkv+Ag6uOYTHOaFj3aMOwnAi/4oLY0JCBHzNmGzaKzyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyuB7EXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C70FC32782;
-	Mon, 12 Aug 2024 16:36:20 +0000 (UTC)
+	 MIME-Version; b=EWDoZ5JSfhoD8nfB1AATOLlMnQvKEundr4F3lgko0Bqi8db6jC9s44uoS1atoZfovB31XbHeXTCYw+UVBdvYtQpdbMKruCRaVcng6q5EUvcSutB223w67qLVAbyGz1wnWdadxqlxoK3j4timVtEK1yRlk8Spd4fMVXDMRdVpnXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xITZlxKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9859C32782;
+	Mon, 12 Aug 2024 16:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480580;
-	bh=3sDICfwqOPc2774+Yw/bsYRwAjOjm+mDKDlIbZICblU=;
+	s=korg; t=1723479764;
+	bh=KUKzSs/oP1WC99t/t8DoP+lD5DPKotR1MaV63SLPe8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyuB7EXEKl/MRWtwOGzzlTzgH1J3/a6DYJAl9lEmeUKLsk8gK7mc0s3xPj8PoHOu9
-	 mb1pspZCfuyxwl0gHEnJ+GyxYmWbRtJqQwCAxQlktMx4h05BK6z7CyxwAYIIM6GlF6
-	 93IBU4Y68kmm3tb/nO0UWi59s4dv4zJ0t1ANyKo8=
+	b=xITZlxKKxR5cjBMmzQi9TulQuB83vZOP9gD/tip1QXoIGwFsrBtb7ZHwxYIsT2Bn2
+	 KzsVQQebPVt9hsknvvnpwEzVXGq92prKJsFmn8JZ0vgqDD4R43vfYKO1USEDymDZ0T
+	 8rxqRY7MuxDy/RUA77zNB64TJqKbte8uR8juTQQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Chen Yu <yu.c.chen@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>
-Subject: [PATCH 6.10 239/263] sched/smt: Fix unbalance sched_smt_present dec/inc
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 184/189] mptcp: pm: dont try to create sf if alloc failed
 Date: Mon, 12 Aug 2024 18:04:00 +0200
-Message-ID: <20240812160155.684829713@linuxfoundation.org>
+Message-ID: <20240812160139.232387304@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit e22f910a26cc2a3ac9c66b8e935ef2a7dd881117 upstream.
+commit cd7c957f936f8cb80d03e5152f4013aae65bd986 upstream.
 
-I got the following warn report while doing stress test:
+It sounds better to avoid wasting cycles and / or put extreme memory
+pressure on the system by trying to create new subflows if it was not
+possible to add a new item in the announce list.
 
-jump label: negative count!
-WARNING: CPU: 3 PID: 38 at kernel/jump_label.c:263 static_key_slow_try_dec+0x9d/0xb0
-Call Trace:
- <TASK>
- __static_key_slow_dec_cpuslocked+0x16/0x70
- sched_cpu_deactivate+0x26e/0x2a0
- cpuhp_invoke_callback+0x3ad/0x10d0
- cpuhp_thread_fun+0x3f5/0x680
- smpboot_thread_fn+0x56d/0x8d0
- kthread+0x309/0x400
- ret_from_fork+0x41/0x70
- ret_from_fork_asm+0x1b/0x30
- </TASK>
+While at it, a warning is now printed if the entry was already in the
+list as it should not happen with the in-kernel path-manager. With this
+PM, mptcp_pm_alloc_anno_list() should only fail in case of memory
+pressure.
 
-Because when cpuset_cpu_inactive() fails in sched_cpu_deactivate(),
-the cpu offline failed, but sched_smt_present is decremented before
-calling sched_cpu_deactivate(), it leads to unbalanced dec/inc, so
-fix it by incrementing sched_smt_present in the error path.
-
-Fixes: c5511d03ec09 ("sched/smt: Make sched_smt_present track topology")
-Cc: stable@kernel.org
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Chen Yu <yu.c.chen@intel.com>
-Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240703031610.587047-3-yangyingliang@huaweicloud.com
+Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-4-c8a9b036493b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/pm_netlink.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9768,6 +9768,7 @@ int sched_cpu_deactivate(unsigned int cp
- 	sched_update_numa(cpu, false);
- 	ret = cpuset_cpu_inactive(cpu);
- 	if (ret) {
-+		sched_smt_present_inc(cpu);
- 		balance_push_set(cpu, false);
- 		set_cpu_active(cpu, true);
- 		sched_update_numa(cpu, true);
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -353,7 +353,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
+ 	add_entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
+ 
+ 	if (add_entry) {
+-		if (mptcp_pm_is_kernel(msk))
++		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
+ 			return false;
+ 
+ 		sk_reset_timer(sk, &add_entry->add_timer,
+@@ -563,8 +563,6 @@ static void mptcp_pm_create_subflow_or_s
+ 
+ 	/* check first for announce */
+ 	if (msk->pm.add_addr_signaled < add_addr_signal_max) {
+-		local = select_signal_address(pernet, msk);
+-
+ 		/* due to racing events on both ends we can reach here while
+ 		 * previous add address is still running: if we invoke now
+ 		 * mptcp_pm_announce_addr(), that will fail and the
+@@ -575,11 +573,15 @@ static void mptcp_pm_create_subflow_or_s
+ 		if (msk->pm.addr_signal & BIT(MPTCP_ADD_ADDR_SIGNAL))
+ 			return;
+ 
++		local = select_signal_address(pernet, msk);
+ 		if (!local)
+ 			goto subflow;
+ 
++		/* If the alloc fails, we are on memory pressure, not worth
++		 * continuing, and trying to create subflows.
++		 */
+ 		if (!mptcp_pm_alloc_anno_list(msk, &local->addr))
+-			goto subflow;
++			return;
+ 
+ 		__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
+ 		msk->pm.add_addr_signaled++;
 
 
 
