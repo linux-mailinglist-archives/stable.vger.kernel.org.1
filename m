@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-67002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA0C94F378
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BD694F48E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAD5BB24232
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E37211F21045
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D28186E47;
-	Mon, 12 Aug 2024 16:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D711187563;
+	Mon, 12 Aug 2024 16:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G//JUWSN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziMPa5Pi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4514E1494B8;
-	Mon, 12 Aug 2024 16:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C889187543;
+	Mon, 12 Aug 2024 16:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479477; cv=none; b=cX6ZiB7ndm9qsjmSfEzEGb8y6JNlgQ5vZScp7uWw+Nyg9TTEPXc3AVK1Kc6x2yAV3LGdKD5tQH6k3dwWsbSbzf8c3j86JpnLE+uUmb2gEpHbMcExmJgAxlMlr23WoUkDfJisJ1p99hCV7zyhJ5/tVy4UIEj5igPPWDuxKxBzPZk=
+	t=1723480297; cv=none; b=RYc1OIt00zRTu7uqdNa2/9S2G6XtN5RAZqw9Wfh3PUw2qPx/jAujn2DrnA2L8lJbQcd7jvlBPzJRJ30YKT1AQIlafLPiKHQ6/oBQooIMXR3loAB2DnMF7ZgZtsccg0ge/4ZsTyA9KV3B8zAcowxMldfIS9TmLuwhU7fE9fyMgEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479477; c=relaxed/simple;
-	bh=UNpLqEipmrSqSrSjsVNkSDx5vNKINU6yWtL40hoIkns=;
+	s=arc-20240116; t=1723480297; c=relaxed/simple;
+	bh=/O1nVAxHz1Rd7PVHtHfVJHkrzyr9+rEuKStsNy3NPzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSoSyuwfm2YEfHxzpsSbp5QTlaMQH91TeBMwt+jwNCBhUEU3FjBgWBrWalNFPomeEixbT5rwZ8eLaDXt0cSEBBzeAfO2BZX9uG17zTA5ps+A9+FuUQKCWfeBog6GgITDR/ekxLA1O7Obd18jl+AjN72eeNZi+zzBSb1zio9JgwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G//JUWSN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CEBC32782;
-	Mon, 12 Aug 2024 16:17:56 +0000 (UTC)
+	 MIME-Version; b=V2JCvphXtJ3Eka6wiUooWNfK+qMbfPNyeFlcS6RgW3ZsRPuIVlr7ULAxf6/MedVbRshgSTXmEmQHeYnQKZdr4FfVc2/5Bkp0TselNikxdqM7uVngFyb0vBnLIDPG9RE6IkeBkCzhGOObCIkqzEdh4iRI3v8JqZna4hQVWoPfpSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziMPa5Pi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D26C32782;
+	Mon, 12 Aug 2024 16:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479477;
-	bh=UNpLqEipmrSqSrSjsVNkSDx5vNKINU6yWtL40hoIkns=;
+	s=korg; t=1723480297;
+	bh=/O1nVAxHz1Rd7PVHtHfVJHkrzyr9+rEuKStsNy3NPzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G//JUWSNjFa77aUkiEQCbXVeyIwoyRJI8vlxqaRnV/B8lAbsS6/K33F2nbdgyh7yg
-	 XRyb1cU+Duh6Dg6aqMhGqmxIb2MA2T2fg7CBcG2FEbFigwDSyxbB1RUxea6Hv+B/q0
-	 0aJbki+vKttepjKgzhr5tLncznX+Bw0HOaU/cxIQ=
+	b=ziMPa5PiT44NxAhOxm+2kzQ6qy0VvpjMk1/P8lbUa4vuT/bd1vl+aPdCtJGOyIbnw
+	 fJaEKL+Tic5f0ohPqgix+/1OpPslNn68J8LIqSbMcLULYy4D8XfrEtLbET/tvvqjWB
+	 FNrSChTlTRSFVTmGZH86136APNubFpw/5RmQZ1PU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 068/189] profiling: remove profile=sleep support
+	Arnd Bergmann <arnd@arndb.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.10 123/263] media: ipu-bridge: fix ipu6 Kconfig dependencies
 Date: Mon, 12 Aug 2024 18:02:04 +0200
-Message-ID: <20240812160134.760803824@linuxfoundation.org>
+Message-ID: <20240812160151.256949033@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit b88f55389ad27f05ed84af9e1026aa64dbfabc9a upstream.
+commit d7b5f7537c8282e1e1919408d0b6c69877fd35f8 upstream.
 
-The kernel sleep profile is no longer working due to a recursive locking
-bug introduced by commit 42a20f86dc19 ("sched: Add wrapper for get_wchan()
-to keep task blocked")
+Commit 4670c8c3fb04 ("media: ipu-bridge: Fix Kconfig dependencies") changed
+how IPU_BRIDGE dependencies are handled for all drivers, but the IPU6
+variant was added the old way, which causes build time warnings when I2C is
+turned off:
 
-Booting with the 'profile=sleep' kernel command line option added or
-executing
+WARNING: unmet direct dependencies detected for IPU_BRIDGE
+  Depends on [n]: MEDIA_SUPPORT [=m] && PCI [=y] && MEDIA_PCI_SUPPORT [=y] && (ACPI [=y] || COMPILE_TEST [=y]) && I2C [=n]
+  Selected by [m]:
+  - VIDEO_INTEL_IPU6 [=m] && MEDIA_SUPPORT [=m] && PCI [=y] && MEDIA_PCI_SUPPORT [=y] && (ACPI [=y] || COMPILE_TEST [=y]) && VIDEO_DEV [=m] && X86 [=y] && X86_64 [=y] && HAS_DMA [=y]
 
-  # echo -n sleep > /sys/kernel/profiling
+To make it consistent with the other IPU drivers as well as avoid this
+warning, change the 'select' into 'depends on'.
 
-after boot causes the system to lock up.
-
-Lockdep reports
-
-  kthreadd/3 is trying to acquire lock:
-  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: get_wchan+0x32/0x70
-
-  but task is already holding lock:
-  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: try_to_wake_up+0x53/0x370
-
-with the call trace being
-
-   lock_acquire+0xc8/0x2f0
-   get_wchan+0x32/0x70
-   __update_stats_enqueue_sleeper+0x151/0x430
-   enqueue_entity+0x4b0/0x520
-   enqueue_task_fair+0x92/0x6b0
-   ttwu_do_activate+0x73/0x140
-   try_to_wake_up+0x213/0x370
-   swake_up_locked+0x20/0x50
-   complete+0x2f/0x40
-   kthread+0xfb/0x180
-
-However, since nobody noticed this regression for more than two years,
-let's remove 'profile=sleep' support based on the assumption that nobody
-needs this functionality.
-
-Fixes: 42a20f86dc19 ("sched: Add wrapper for get_wchan() to keep task blocked")
-Cc: stable@vger.kernel.org # v5.16+
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: c70281cc83d6 ("media: intel/ipu6: add Kconfig and Makefile")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+[Sakari Ailus: Alternatively depend on !IPU_BRIDGE.]
+Cc: stable@vger.kernel.org # for v6.10
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |    4 +---
- include/linux/profile.h                         |    1 -
- kernel/profile.c                                |   11 +----------
- kernel/sched/stats.c                            |   10 ----------
- 4 files changed, 2 insertions(+), 24 deletions(-)
+ drivers/media/pci/intel/ipu6/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4655,11 +4655,9 @@
- 
- 	profile=	[KNL] Enable kernel profiling via /proc/profile
- 			Format: [<profiletype>,]<number>
--			Param: <profiletype>: "schedule", "sleep", or "kvm"
-+			Param: <profiletype>: "schedule" or "kvm"
- 				[defaults to kernel profiling]
- 			Param: "schedule" - profile schedule points.
--			Param: "sleep" - profile D-state sleeping (millisecs).
--				Requires CONFIG_SCHEDSTATS
- 			Param: "kvm" - profile VM exits.
- 			Param: <number> - step/bucket size as a power of 2 for
- 				statistical time based profiling.
---- a/include/linux/profile.h
-+++ b/include/linux/profile.h
-@@ -11,7 +11,6 @@
- 
- #define CPU_PROFILING	1
- #define SCHED_PROFILING	2
--#define SLEEP_PROFILING	3
- #define KVM_PROFILING	4
- 
- struct proc_dir_entry;
---- a/kernel/profile.c
-+++ b/kernel/profile.c
-@@ -57,20 +57,11 @@ static DEFINE_MUTEX(profile_flip_mutex);
- int profile_setup(char *str)
- {
- 	static const char schedstr[] = "schedule";
--	static const char sleepstr[] = "sleep";
- 	static const char kvmstr[] = "kvm";
- 	const char *select = NULL;
- 	int par;
- 
--	if (!strncmp(str, sleepstr, strlen(sleepstr))) {
--#ifdef CONFIG_SCHEDSTATS
--		force_schedstat_enabled();
--		prof_on = SLEEP_PROFILING;
--		select = sleepstr;
--#else
--		pr_warn("kernel sleep profiling requires CONFIG_SCHEDSTATS\n");
--#endif /* CONFIG_SCHEDSTATS */
--	} else if (!strncmp(str, schedstr, strlen(schedstr))) {
-+	if (!strncmp(str, schedstr, strlen(schedstr))) {
- 		prof_on = SCHED_PROFILING;
- 		select = schedstr;
- 	} else if (!strncmp(str, kvmstr, strlen(kvmstr))) {
---- a/kernel/sched/stats.c
-+++ b/kernel/sched/stats.c
-@@ -92,16 +92,6 @@ void __update_stats_enqueue_sleeper(stru
- 
- 			trace_sched_stat_blocked(p, delta);
- 
--			/*
--			 * Blocking time is in units of nanosecs, so shift by
--			 * 20 to get a milliseconds-range estimation of the
--			 * amount of time that the task spent sleeping:
--			 */
--			if (unlikely(prof_on == SLEEP_PROFILING)) {
--				profile_hits(SLEEP_PROFILING,
--					     (void *)get_wchan(p),
--					     delta >> 20);
--			}
- 			account_scheduler_latency(p, delta >> 10, 0);
- 		}
- 	}
+diff --git a/drivers/media/pci/intel/ipu6/Kconfig b/drivers/media/pci/intel/ipu6/Kconfig
+index 154343080c82..b7ab24b89836 100644
+--- a/drivers/media/pci/intel/ipu6/Kconfig
++++ b/drivers/media/pci/intel/ipu6/Kconfig
+@@ -3,13 +3,13 @@ config VIDEO_INTEL_IPU6
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on VIDEO_DEV
+ 	depends on X86 && X86_64 && HAS_DMA
++	depends on IPU_BRIDGE || !IPU_BRIDGE
+ 	select DMA_OPS
+ 	select IOMMU_IOVA
+ 	select VIDEO_V4L2_SUBDEV_API
+ 	select MEDIA_CONTROLLER
+ 	select VIDEOBUF2_DMA_CONTIG
+ 	select V4L2_FWNODE
+-	select IPU_BRIDGE
+ 	help
+ 	  This is the 6th Gen Intel Image Processing Unit, found in Intel SoCs
+ 	  and used for capturing images and video from camera sensors.
+-- 
+2.46.0
+
 
 
 
