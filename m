@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C9094F04D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:49:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3C894F04E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4396282D54
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:49:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31CBC1F23AB3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4E9186298;
-	Mon, 12 Aug 2024 14:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED58183CC2;
+	Mon, 12 Aug 2024 14:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hAEBaQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRNBuFAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2735183CC2
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1A51862B4
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474102; cv=none; b=dckKwNXsPirpqSnrN2YG1eIUM7JU78zZQQAtiKdX1vmIwPRXg0y2QhecuY02Z8njTyspJHGr1SY8rcHmpsfPfUpsuEFQBHIfbdr+Ft+JIk70wYUn6zKNdhAxJJsZwIVSEI7llWUe3hq8xo7ItKUU7F3vvQl5+Vm4kaCQgOT2tRs=
+	t=1723474106; cv=none; b=LukebxYXXBQllgL4eerRbrUnXJMr6nJ7Gif/W+yeNQCw3K4XagQpal7vYchgo2u9m0MJtG0yE73uuFlT8JXheKTsPavDSIVca6aS/qfPgXPu5GQtuZH91r8UC2Ub6CIdCS20kxWZlJTk8jYysqEzta7K74VBnng/6YJm3a7i2i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474102; c=relaxed/simple;
-	bh=H9bul/POwUAXS3GHHBGeUwZUvs7NB7Urg+mHjCPr9Jg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ki1DLCSt100/BKIHtLRVA4BnHShowcphsfa1tKdApgEdIlSunwnOnDnvreJcsUO1zzVCvDx2t9A2LxGsb1sKRmkTVmTx0EffLI2/kk+SRcG2lUWB6xuc1kbyn6yUCZYybguJ1usfV0YQBHivYwr0L52106p4Dy0XpfmfiS5aFWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hAEBaQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4020EC32782;
-	Mon, 12 Aug 2024 14:48:22 +0000 (UTC)
+	s=arc-20240116; t=1723474106; c=relaxed/simple;
+	bh=olgBaKPWK9gh+Ctmy3vJkIfbySJKCeoqIXDxD/wb6AY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PGOnccuhLFF0PQCNHZ3R2pRSqY8ImjNjTY21WIBqelnVKZqXbnAIMatRWzbIm9MaWcqtV1ysLZdowGHXHK+0SZlq2OvabvTzbbbvSkLZLEGujqSapVRVJStr2PHNYtlfWNx+kTDkwMa67XJwxZYYJlX/lLIBmSf9eZjAq4iMzgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRNBuFAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86B6C32782;
+	Mon, 12 Aug 2024 14:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474102;
-	bh=H9bul/POwUAXS3GHHBGeUwZUvs7NB7Urg+mHjCPr9Jg=;
+	s=korg; t=1723474106;
+	bh=olgBaKPWK9gh+Ctmy3vJkIfbySJKCeoqIXDxD/wb6AY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1hAEBaQL/zx9OdC3i2ggqUzaVnZDDWHm57MF3hnNXxAVzJoOT1Przsw/bOORuo8e6
-	 L+15Jk7GV16dB7S8HwLpZhBtw74PqBs71lqZ+zzYCaPCo6ReqgGqLzAKHCtETiOsDe
-	 j5Fhk7ZCDWyNtLWG/TKusfjFlqy+HuEvRW9Od0z4=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Reset DSC memory status" failed to apply to 4.19-stable tree
-To: duncan.ma@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,nicholas.kazlauskas@amd.com
+	b=VRNBuFAvKVnru5smJw1KMsRnD8EDCkT30wTExajSwWTR7/x6ixiv/fkI8mKkaCN8P
+	 cLcdQpHlKRzcoj/mzDULaGQd8o5DqabqaR0uUUCbYogKuO0ecWj3CGtObnHONyy02z
+	 N+BOQck/EkotqpSyRifeO3CkrIJLW/MlJZ1bsceU=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Make DML2.1 P-State method force per stream" failed to apply to 6.10-stable tree
+To: dillon.varone@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:47:50 +0200
-Message-ID: <2024081250-patronize-lazy-718a@gregkh>
+Date: Mon, 12 Aug 2024 16:47:54 +0200
+Message-ID: <2024081254-munchkin-cadmium-1844@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7210195f1bc51ba02cffa45b27ddb5c962faa606
+git cherry-pick -x 020fccbe8fe7552e57804bba0c7578d227f561c2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081250-patronize-lazy-718a@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081254-munchkin-cadmium-1844@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-7210195f1bc5 ("drm/amd/display: Reset DSC memory status")
-176278d8bff2 ("drm/amd/display: reset DSC clock in post unlock update")
-0127f0445f7c ("drm/amd/display: Refactor input mode programming for DIG FIFO")
-e6a901a00822 ("drm/amd/display: use even ODM slice width for two pixels per container")
-532a0d2ad292 ("drm/amd/display: Revert "dc: Keep VBios pixel rate div setting util next mode set"")
-47745acc5e8d ("drm/amd/display: Add trigger FIFO resync path for DCN35")
-4d4d3ff16db2 ("drm/amd/display: Keep VBios pixel rate div setting util next mode set")
+020fccbe8fe7 ("drm/amd/display: Make DML2.1 P-State method force per stream")
+00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
+da87132f641e ("drm/amd/display: Add some DCN401 reg name to macro definitions")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
-9712b64d6f3f ("drm/amd/display: Remove MPC rate control logic from DCN30 and above")
-eed4edda910f ("drm/amd/display: Support long vblank feature")
-2d7f3d1a5866 ("drm/amd/display: Implement wait_for_odm_update_pending_complete")
-c7b33856139d ("drm/amd/display: Drop some unnecessary guards")
-6a068e64fb25 ("drm/amd/display: Update phantom pipe enable / disable sequence")
-db8391479f44 ("drm/amd/display: correct static screen event mask")
-4ba9ca63e696 ("drm/amd/display: Fix dcn35 8k30 Underflow/Corruption Issue")
-9af68235ad3d ("drm/amd/display: Fix static screen event mask definition change")
-f6154d8babbb ("drm/amd/display: Refactor INIT into component folder")
-a71e1310a43f ("drm/amd/display: Add more mechanisms for tests")
-85fce153995e ("drm/amd/display: change static screen wait frame_count for ips")
-09a4ec5da92c ("drm/amd/display: Refactor dc_state interface")
 
 thanks,
 
@@ -96,206 +80,76 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7210195f1bc51ba02cffa45b27ddb5c962faa606 Mon Sep 17 00:00:00 2001
-From: Duncan Ma <duncan.ma@amd.com>
-Date: Mon, 27 May 2024 16:59:59 -0400
-Subject: [PATCH] drm/amd/display: Reset DSC memory status
+From 020fccbe8fe7552e57804bba0c7578d227f561c2 Mon Sep 17 00:00:00 2001
+From: Dillon Varone <dillon.varone@amd.com>
+Date: Thu, 13 Jun 2024 12:08:16 -0400
+Subject: [PATCH] drm/amd/display: Make DML2.1 P-State method force per stream
 
-[WHY]
-When system exits idle state followed by enabling the display,
-DSC memory may still be forced in a deep sleep or shutdown state.
+[WHY & HOW]
+Currently the force only works for a single display, make it so it can
+be forced per stream.
 
-Intermittent DSC corruption is seen when display is visible.
-
-[HOW]
-When DSC is enabled, reset dsc memory to force and disable status.
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Duncan Ma <duncan.ma@amd.com>
+Signed-off-by: Dillon Varone <dillon.varone@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.c b/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.c
-index d6b2334d5364..75128fd34306 100644
---- a/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.c
-@@ -32,16 +32,6 @@
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index d0d1af451b64..e0334b573f2d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -1038,7 +1038,7 @@ struct dc_debug_options {
+ 	bool force_chroma_subsampling_1tap;
+ 	bool disable_422_left_edge_pixel;
+ 	bool dml21_force_pstate_method;
+-	uint32_t dml21_force_pstate_method_value;
++	uint32_t dml21_force_pstate_method_values[MAX_PIPES];
+ 	uint32_t dml21_disable_pstate_method_mask;
+ 	union dmub_fams2_global_feature_config fams2_config;
+ 	bool enable_legacy_clock_update;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
+index d5ead0205053..06387b8b0aee 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
+@@ -1000,7 +1000,7 @@ bool dml21_map_dc_state_into_dml_display_cfg(const struct dc *in_dc, struct dc_s
+ 				/* apply forced pstate policy */
+ 				if (dml_ctx->config.pmo.force_pstate_method_enable) {
+ 					dml_dispcfg->plane_descriptors[disp_cfg_plane_location].overrides.uclk_pstate_change_strategy =
+-							dml21_force_pstate_method_to_uclk_state_change_strategy(dml_ctx->config.pmo.force_pstate_method_value);
++							dml21_force_pstate_method_to_uclk_state_change_strategy(dml_ctx->config.pmo.force_pstate_method_values[stream_index]);
+ 				}
+ 			}
+ 		}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+index 9c28304568d2..c310354cd5fc 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+@@ -47,7 +47,8 @@ static void dml21_apply_debug_options(const struct dc *in_dc, struct dml2_contex
+ 	/* UCLK P-State options */
+ 	if (in_dc->debug.dml21_force_pstate_method) {
+ 		dml_ctx->config.pmo.force_pstate_method_enable = true;
+-		dml_ctx->config.pmo.force_pstate_method_value = in_dc->debug.dml21_force_pstate_method_value;
++		for (int i = 0; i < MAX_PIPES; i++)
++			dml_ctx->config.pmo.force_pstate_method_values[i] = in_dc->debug.dml21_force_pstate_method_values[i];
+ 	} else {
+ 		dml_ctx->config.pmo.force_pstate_method_enable = false;
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
+index 79bf2d757804..1e891a3297c2 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
+@@ -230,7 +230,7 @@ struct dml2_configuration_options {
+ 	struct socbb_ip_params_external *external_socbb_ip_params;
+ 	struct {
+ 		bool force_pstate_method_enable;
+-		enum dml2_force_pstate_methods force_pstate_method_value;
++		enum dml2_force_pstate_methods force_pstate_method_values[MAX_PIPES];
+ 	} pmo;
+ 	bool map_dc_pipes_with_callbacks;
  
- static void dsc_write_to_registers(struct display_stream_compressor *dsc, const struct dsc_reg_values *reg_vals);
- 
--/* Object I/F functions */
--static void dsc2_read_state(struct display_stream_compressor *dsc, struct dcn_dsc_state *s);
--static bool dsc2_validate_stream(struct display_stream_compressor *dsc, const struct dsc_config *dsc_cfg);
--static void dsc2_set_config(struct display_stream_compressor *dsc, const struct dsc_config *dsc_cfg,
--		struct dsc_optc_config *dsc_optc_cfg);
--static void dsc2_enable(struct display_stream_compressor *dsc, int opp_pipe);
--static void dsc2_disable(struct display_stream_compressor *dsc);
--static void dsc2_disconnect(struct display_stream_compressor *dsc);
--static void dsc2_wait_disconnect_pending_clear(struct display_stream_compressor *dsc);
--
- static const struct dsc_funcs dcn20_dsc_funcs = {
- 	.dsc_get_enc_caps = dsc2_get_enc_caps,
- 	.dsc_read_state = dsc2_read_state,
-@@ -156,7 +146,7 @@ void dsc2_get_enc_caps(struct dsc_enc_caps *dsc_enc_caps, int pixel_clock_100Hz)
- /* this function read dsc related register fields to be logged later in dcn10_log_hw_state
-  * into a dcn_dsc_state struct.
-  */
--static void dsc2_read_state(struct display_stream_compressor *dsc, struct dcn_dsc_state *s)
-+void dsc2_read_state(struct display_stream_compressor *dsc, struct dcn_dsc_state *s)
- {
- 	struct dcn20_dsc *dsc20 = TO_DCN20_DSC(dsc);
- 
-@@ -173,7 +163,7 @@ static void dsc2_read_state(struct display_stream_compressor *dsc, struct dcn_ds
- }
- 
- 
--static bool dsc2_validate_stream(struct display_stream_compressor *dsc, const struct dsc_config *dsc_cfg)
-+bool dsc2_validate_stream(struct display_stream_compressor *dsc, const struct dsc_config *dsc_cfg)
- {
- 	struct dsc_optc_config dsc_optc_cfg;
- 	struct dcn20_dsc *dsc20 = TO_DCN20_DSC(dsc);
-@@ -196,7 +186,7 @@ void dsc_config_log(struct display_stream_compressor *dsc, const struct dsc_conf
- 	DC_LOG_DSC("\tcolor_depth %d", config->color_depth);
- }
- 
--static void dsc2_set_config(struct display_stream_compressor *dsc, const struct dsc_config *dsc_cfg,
-+void dsc2_set_config(struct display_stream_compressor *dsc, const struct dsc_config *dsc_cfg,
- 		struct dsc_optc_config *dsc_optc_cfg)
- {
- 	bool is_config_ok;
-@@ -233,7 +223,7 @@ bool dsc2_get_packed_pps(struct display_stream_compressor *dsc, const struct dsc
- }
- 
- 
--static void dsc2_enable(struct display_stream_compressor *dsc, int opp_pipe)
-+void dsc2_enable(struct display_stream_compressor *dsc, int opp_pipe)
- {
- 	struct dcn20_dsc *dsc20 = TO_DCN20_DSC(dsc);
- 	int dsc_clock_en;
-@@ -258,7 +248,7 @@ static void dsc2_enable(struct display_stream_compressor *dsc, int opp_pipe)
- }
- 
- 
--static void dsc2_disable(struct display_stream_compressor *dsc)
-+void dsc2_disable(struct display_stream_compressor *dsc)
- {
- 	struct dcn20_dsc *dsc20 = TO_DCN20_DSC(dsc);
- 	int dsc_clock_en;
-@@ -277,14 +267,14 @@ static void dsc2_disable(struct display_stream_compressor *dsc)
- 		DSC_CLOCK_EN, 0);
- }
- 
--static void dsc2_wait_disconnect_pending_clear(struct display_stream_compressor *dsc)
-+void dsc2_wait_disconnect_pending_clear(struct display_stream_compressor *dsc)
- {
- 	struct dcn20_dsc *dsc20 = TO_DCN20_DSC(dsc);
- 
- 	REG_WAIT(DSCRM_DSC_FORWARD_CONFIG, DSCRM_DSC_DOUBLE_BUFFER_REG_UPDATE_PENDING, 0, 2, 50000);
- }
- 
--static void dsc2_disconnect(struct display_stream_compressor *dsc)
-+void dsc2_disconnect(struct display_stream_compressor *dsc)
- {
- 	struct dcn20_dsc *dsc20 = TO_DCN20_DSC(dsc);
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.h b/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.h
-index a136b26c914c..a23308a785bc 100644
---- a/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.h
-@@ -597,5 +597,14 @@ bool dsc2_get_packed_pps(struct display_stream_compressor *dsc,
- 		const struct dsc_config *dsc_cfg,
- 		uint8_t *dsc_packed_pps);
- 
-+void dsc2_read_state(struct display_stream_compressor *dsc, struct dcn_dsc_state *s);
-+bool dsc2_validate_stream(struct display_stream_compressor *dsc, const struct dsc_config *dsc_cfg);
-+void dsc2_set_config(struct display_stream_compressor *dsc, const struct dsc_config *dsc_cfg,
-+		struct dsc_optc_config *dsc_optc_cfg);
-+void dsc2_enable(struct display_stream_compressor *dsc, int opp_pipe);
-+void dsc2_disable(struct display_stream_compressor *dsc);
-+void dsc2_disconnect(struct display_stream_compressor *dsc);
-+void dsc2_wait_disconnect_pending_clear(struct display_stream_compressor *dsc);
-+
- #endif
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dsc/dcn35/dcn35_dsc.c b/drivers/gpu/drm/amd/display/dc/dsc/dcn35/dcn35_dsc.c
-index 71d2dff9986d..6f4f5a3c4861 100644
---- a/drivers/gpu/drm/amd/display/dc/dsc/dcn35/dcn35_dsc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/dcn35/dcn35_dsc.c
-@@ -27,6 +27,20 @@
- #include "dcn35_dsc.h"
- #include "reg_helper.h"
- 
-+static void dsc35_enable(struct display_stream_compressor *dsc, int opp_pipe);
-+
-+static const struct dsc_funcs dcn35_dsc_funcs = {
-+	.dsc_get_enc_caps = dsc2_get_enc_caps,
-+	.dsc_read_state = dsc2_read_state,
-+	.dsc_validate_stream = dsc2_validate_stream,
-+	.dsc_set_config = dsc2_set_config,
-+	.dsc_get_packed_pps = dsc2_get_packed_pps,
-+	.dsc_enable = dsc35_enable,
-+	.dsc_disable = dsc2_disable,
-+	.dsc_disconnect = dsc2_disconnect,
-+	.dsc_wait_disconnect_pending_clear = dsc2_wait_disconnect_pending_clear,
-+};
-+
- /* Macro definitios for REG_SET macros*/
- #define CTX \
- 	dsc20->base.ctx
-@@ -49,9 +63,47 @@ void dsc35_construct(struct dcn20_dsc *dsc,
- 		const struct dcn35_dsc_shift *dsc_shift,
- 		const struct dcn35_dsc_mask *dsc_mask)
- {
--	dsc2_construct(dsc, ctx, inst, dsc_regs,
--		(const struct dcn20_dsc_shift *)(dsc_shift),
--		(const struct dcn20_dsc_mask *)(dsc_mask));
-+	dsc->base.ctx = ctx;
-+	dsc->base.inst = inst;
-+	dsc->base.funcs = &dcn35_dsc_funcs;
-+
-+	dsc->dsc_regs = dsc_regs;
-+	dsc->dsc_shift = (const struct dcn20_dsc_shift *)(dsc_shift);
-+	dsc->dsc_mask = (const struct dcn20_dsc_mask *)(dsc_mask);
-+
-+	dsc->max_image_width = 5184;
-+}
-+
-+static void dsc35_enable(struct display_stream_compressor *dsc, int opp_pipe)
-+{
-+	struct dcn20_dsc *dsc20 = TO_DCN20_DSC(dsc);
-+	int dsc_clock_en;
-+	int dsc_fw_config;
-+	int enabled_opp_pipe;
-+
-+	DC_LOG_DSC("enable DSC %d at opp pipe %d", dsc->inst, opp_pipe);
-+
-+	// TODO: After an idle exit, the HW default values for power control
-+	// are changed intermittently due to unknown reasons. There are cases
-+	// when dscc memory are still in shutdown state during enablement.
-+	// Reset power control to hw default values.
-+	REG_UPDATE_2(DSCC_MEM_POWER_CONTROL,
-+		DSCC_MEM_PWR_FORCE, 0,
-+		DSCC_MEM_PWR_DIS, 0);
-+
-+	REG_GET(DSC_TOP_CONTROL, DSC_CLOCK_EN, &dsc_clock_en);
-+	REG_GET_2(DSCRM_DSC_FORWARD_CONFIG, DSCRM_DSC_FORWARD_EN, &dsc_fw_config, DSCRM_DSC_OPP_PIPE_SOURCE, &enabled_opp_pipe);
-+	if ((dsc_clock_en || dsc_fw_config) && enabled_opp_pipe != opp_pipe) {
-+		DC_LOG_DSC("ERROR: DSC %d at opp pipe %d already enabled!", dsc->inst, enabled_opp_pipe);
-+		ASSERT(0);
-+	}
-+
-+	REG_UPDATE(DSC_TOP_CONTROL,
-+		DSC_CLOCK_EN, 1);
-+
-+	REG_UPDATE_2(DSCRM_DSC_FORWARD_CONFIG,
-+		DSCRM_DSC_FORWARD_EN, 1,
-+		DSCRM_DSC_OPP_PIPE_SOURCE, opp_pipe);
- }
- 
- void dsc35_set_fgcg(struct dcn20_dsc *dsc20, bool enable)
 
 
