@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330DF94F270
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3120694F349
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3266B26292
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:06:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D70661F21558
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D28D18732E;
-	Mon, 12 Aug 2024 16:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C48187339;
+	Mon, 12 Aug 2024 16:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipvTUDc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fziH1Hk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3621422A8;
-	Mon, 12 Aug 2024 16:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAEE178CE4;
+	Mon, 12 Aug 2024 16:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478773; cv=none; b=XO2+tlQJGxHY+FqpCBmSgdYJZvUP4SE2xZO43OgV+3zMsMR9EuBdw6xR3L0mcaw8J/sBdM4ZzSatg3FGwo7UZ0YI3HQVhQx6CEzb2hf8gOREPP5iGLI2hTGbRsDWWAb/HY9xQZNhvqqW8cch183cIxqYM46zKvHzH05o1MD+HQY=
+	t=1723479350; cv=none; b=d4COVzc4Nq3haRchaN7zHb7vysIXncNCaAggY9b1iMES21U8oe9tEVOAwywkUNaYcn5G4XjOIfePg63q8WzxUunNB1jn89DPi01BuuPJgDQaqrs3/0fVmGMeJa1xu6Xb/yxxY/OBGqNz76yEWhI4NCZzri8YvQJGwZQSvHi+U40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478773; c=relaxed/simple;
-	bh=6d/siQZvcx9leu0zxTk1TuHMOY7PnoCX1Ijl3HlgqOc=;
+	s=arc-20240116; t=1723479350; c=relaxed/simple;
+	bh=1jgJYuE+wWlDh05ODolRNdYH/gHBuoJymtVGmtw70Ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SfKMs3BmP4KXwB2FOehXmHoB7SCEEDbRgf3FvYFv7cL2Orq+74HvljpTrr1huHDqGkaNl2zkn2dNhNDFCoOoZoUqkXpMJ4FzaJFeO5n6NmzfPhx4N8UN6hLPLO0bB91yqijA6aT+5I4kA6fJAZ4GN5LuDfbwd5W/zh0QytAXDNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipvTUDc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48587C32782;
-	Mon, 12 Aug 2024 16:06:13 +0000 (UTC)
+	 MIME-Version; b=Imlzbjc9brDjYDEzHEmU63wGuni0ckZhX1fSI+luHGfW1LJTvFccvqQy1iAIly5o7QuVq1Ojb+CqR/wrXKZmO4TBl8NrUvjFspUU+NHmxhr7qqt0HW19AseQUQSnVh5Txx4nO7w9hsnUDsc1L3TgIAIt9EQR4aN0XK80sGOfpcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fziH1Hk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33740C4AF0D;
+	Mon, 12 Aug 2024 16:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478773;
-	bh=6d/siQZvcx9leu0zxTk1TuHMOY7PnoCX1Ijl3HlgqOc=;
+	s=korg; t=1723479350;
+	bh=1jgJYuE+wWlDh05ODolRNdYH/gHBuoJymtVGmtw70Ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ipvTUDc1so1VqgFoZkXZ3XECgBgDQDn8YR3eFgQPOjUACXKyyyfrHMgPJy8hJVZ8r
-	 gtwzjpCZIxGz0+GJMkZsqCChkF0bJnBF6LyisiJjR3gyqG0CnCbNJZuFw55LMH8188
-	 5z3K7WuKB96ZLTpt7ui88RnxblMJv1BpMuXq1iOo=
+	b=fziH1Hk6YJFqsxF2y92lDkmPKrLFo7ExzUaWVXAFaxUq76/gOCY67lNMrDXG73fB4
+	 kglw6GSYtDb8QKc4LzUh43aZqoUic/MLPDVoGszITWmsDj9OkEzhz1CK/mrqm7o9v0
+	 1WVEEC5kGrWW4oRSfR43O1hF2l8fuQy/b0oEVRtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Ming Qian <ming.qian@nxp.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/150] btrfs: fix bitmap leak when loading free space cache on duplicate entry
+Subject: [PATCH 6.6 058/189] media: amphion: Remove lock in s_ctrl callback
 Date: Mon, 12 Aug 2024 18:01:54 +0200
-Message-ID: <20240812160126.444277146@linuxfoundation.org>
+Message-ID: <20240812160134.378191650@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ming Qian <ming.qian@nxp.com>
 
-[ Upstream commit 320d8dc612660da84c3b70a28658bb38069e5a9a ]
+[ Upstream commit 065927b51eb1f042c3e026cebfd55e72ccc26093 ]
 
-If we failed to link a free space entry because there's already a
-conflicting entry for the same offset, we free the free space entry but
-we don't free the associated bitmap that we had just allocated before.
-Fix that by freeing the bitmap before freeing the entry.
+There is no need to add a lock in s_ctrl callback, it has been
+synchronized by the ctrl_handler's lock, otherwise it may led to
+a deadlock if the driver calls v4l2_ctrl_s_ctrl().
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/free-space-cache.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/amphion/vdec.c | 2 --
+ drivers/media/platform/amphion/venc.c | 2 --
+ 2 files changed, 4 deletions(-)
 
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index 76d52d682b3b0..21d262da386d5 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -865,6 +865,7 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
- 				spin_unlock(&ctl->tree_lock);
- 				btrfs_err(fs_info,
- 					"Duplicate entries in free space cache, dumping");
-+				kmem_cache_free(btrfs_free_space_bitmap_cachep, e->bitmap);
- 				kmem_cache_free(btrfs_free_space_cachep, e);
- 				goto free_cache;
- 			}
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index 133d77d1ea0c3..4f438eaa7d385 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -195,7 +195,6 @@ static int vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
+ 	struct vdec_t *vdec = inst->priv;
+ 	int ret = 0;
+ 
+-	vpu_inst_lock(inst);
+ 	switch (ctrl->id) {
+ 	case V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE:
+ 		vdec->params.display_delay_enable = ctrl->val;
+@@ -207,7 +206,6 @@ static int vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
+ 		ret = -EINVAL;
+ 		break;
+ 	}
+-	vpu_inst_unlock(inst);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/media/platform/amphion/venc.c b/drivers/media/platform/amphion/venc.c
+index 4eb57d793a9c0..16ed4d21519cd 100644
+--- a/drivers/media/platform/amphion/venc.c
++++ b/drivers/media/platform/amphion/venc.c
+@@ -518,7 +518,6 @@ static int venc_op_s_ctrl(struct v4l2_ctrl *ctrl)
+ 	struct venc_t *venc = inst->priv;
+ 	int ret = 0;
+ 
+-	vpu_inst_lock(inst);
+ 	switch (ctrl->id) {
+ 	case V4L2_CID_MPEG_VIDEO_H264_PROFILE:
+ 		venc->params.profile = ctrl->val;
+@@ -579,7 +578,6 @@ static int venc_op_s_ctrl(struct v4l2_ctrl *ctrl)
+ 		ret = -EINVAL;
+ 		break;
+ 	}
+-	vpu_inst_unlock(inst);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
