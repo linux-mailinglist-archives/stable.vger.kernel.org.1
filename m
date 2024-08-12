@@ -1,72 +1,138 @@
-Return-Path: <stable+bounces-66555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7832594F01B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7ABC94F020
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EBDEB252F9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:47:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5971BB251D3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83AD186295;
-	Mon, 12 Aug 2024 14:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C7E186E36;
+	Mon, 12 Aug 2024 14:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOZjRMCt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0POMXnir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9678183CBB
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451CB186E33
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723473813; cv=none; b=mCvGBl48e4X0s2Q11ujPwFl2JIPvECQDIu72bScNf8NktJCdTGAa5iAq7xDeGdhkn3OnE1o8a04J9jptg5eLQjySSkvZaddVcmPVMmjLgJrdSMN2H9wf0Suw/DoxYwDNiyFZV8LB2mF4Z3O1jwN+YYz8xUlMyR6DXD4eExAYpJs=
+	t=1723473951; cv=none; b=YAWSE2g89WUf1DBOy4hEbZE1JcASlR/+e66VotbuaQBt++7WnD6lMLKfSuwSyy+vJCJ3uKmaqiuFtjInGbPlyluYysMHGiKo4CIWlXafsa4sD7bouNO/S1DrTQspSgMd+4ey8g/hfQefNtNTo5+vFmJ/Nqpn6c/LovLDzpgjxd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723473813; c=relaxed/simple;
-	bh=t6QUC9tIgvBcYvMGtWVayFupPRYkT+2aVMrDEGZd+3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i6BvJcPdPgNwVmlUJUD50Ewp9tnCBxKdmbEsrsid8hSMLULJgwLMAkRVanK6lprXeeVahAKQdIm+CTt0iFvq+oAO7O3pX6sQK2Po/jm2VIN8M0MDEw+/hg4u2yipkdK40IaeadtvEEerRGRM7UiCltb6NTgLGVYLLizd8BnzxUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOZjRMCt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEB2C32782;
-	Mon, 12 Aug 2024 14:43:32 +0000 (UTC)
+	s=arc-20240116; t=1723473951; c=relaxed/simple;
+	bh=kgXD+Pq8OdRJ93FwH2yCgjte9trxUnd7zaoJhHX2cEM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=av7TCT4KP4KjMZuAx00i8If03GlRbK4tzr22ea7jc0gJmxVoRBX1XMPlRCAxXlGcCEZ+mtxtkKXStFH28bG7vDVyz9b+OxvQXe9s+1Ec9dED0ElUfrGXsms7O547lBRUxM/MUJo05gekQDTJHc/tabCgAPph5HMsPvNcdKVqZrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0POMXnir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BFBC32782;
+	Mon, 12 Aug 2024 14:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723473813;
-	bh=t6QUC9tIgvBcYvMGtWVayFupPRYkT+2aVMrDEGZd+3U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aOZjRMCtoX2RA70D906ZVg3Q5QJhmuROVHwH/frSDh/ciCyTFK91HHIGDw+Pa8P/L
-	 ZtHbPHsfMBEc4KXxBzC3GRReTQ/8Lw3d67yNX4gIbIN+gSA6w/Y78GVtF7Gy6/+6J5
-	 6h7WoZS6XJqHDCv8D+yCqgfTQi5p08Mr8VljiBsY=
-Date: Mon, 12 Aug 2024 16:43:28 +0200
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: "Li, Yunxiang (Teddy)" <Yunxiang.Li@amd.com>
-Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-	"Koenig, Christian" <Christian.Koenig@amd.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: FAILED: patch "[PATCH] drm/amdgpu: fix locking scope when
- flushing tlb" failed to apply to 6.10-stable tree
-Message-ID: <2024081202-rework-childcare-3069@gregkh>
-References: <2024080738-tarmac-unproven-1f45@gregkh>
- <SA1PR12MB85999CF5386E2AADEA301076EDBA2@SA1PR12MB8599.namprd12.prod.outlook.com>
- <2024081132-sterling-serving-8b4f@gregkh>
- <SA1PR12MB859927992245170E20E489D9ED852@SA1PR12MB8599.namprd12.prod.outlook.com>
+	s=korg; t=1723473950;
+	bh=kgXD+Pq8OdRJ93FwH2yCgjte9trxUnd7zaoJhHX2cEM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=0POMXnirjL2LxXClndTPSIXDiuPnyMo9Yn3NGBvvk2xjL8WlRqsrOVawMLZIKebeD
+	 V1TRzJuiObSQtD5Fa0EZR8Q77Qm4X/L2Jp5zncsszblV2uUYL9vCG5Z/LHHMGvX4Kc
+	 +E3ISOB7bd4sHvhTU8dxNoJxDp5LY4chctFuw+Es=
+Subject: FAILED: patch "[PATCH] drm/amd: Fix shutdown (again) on some SMU v13.0.4/11" failed to apply to 6.10-stable tree
+To: mario.limonciello@amd.com,Tim.Huang@amd.com,alexander.deucher@amd.com,electrodexsnet@gmail.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 12 Aug 2024 16:45:47 +0200
+Message-ID: <2024081247-smolder-deputize-5350@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SA1PR12MB859927992245170E20E489D9ED852@SA1PR12MB8599.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 12, 2024 at 02:30:00PM +0000, Li, Yunxiang (Teddy) wrote:
-> >From what I can piece together with git history, it seems the patch was both in amd-drm-fixes-6.10-2024-06-19 and amd-drm-next-6.11-2024-06-22 and this caused the double commit. @Deucher, Alexander
 
-Again, PLEASE FIX YOUR BROKEN DEVELOPMENT PROCESS!
+The patch below does not apply to the 6.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-This isn't ok, and is wasting our time :(
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x ff4e49f446ed24772182c724e0ef1a5be23c622a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081247-smolder-deputize-5350@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+
+Possible dependencies:
+
+ff4e49f446ed ("drm/amd: Fix shutdown (again) on some SMU v13.0.4/11 platforms")
+b911505e6ba4 ("dm/amd/pm: Fix problems with reboot/shutdown for some SMU 13.0.4/13.0.11 users")
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ff4e49f446ed24772182c724e0ef1a5be23c622a Mon Sep 17 00:00:00 2001
+From: Mario Limonciello <mario.limonciello@amd.com>
+Date: Sun, 26 May 2024 07:59:08 -0500
+Subject: [PATCH] drm/amd: Fix shutdown (again) on some SMU v13.0.4/11
+ platforms
+
+commit cd94d1b182d2 ("dm/amd/pm: Fix problems with reboot/shutdown for
+some SMU 13.0.4/13.0.11 users") attempted to fix shutdown issues
+that were reported since commit 31729e8c21ec ("drm/amd/pm: fixes a
+random hang in S4 for SMU v13.0.4/11") but caused issues for some
+people.
+
+Adjust the workaround flow to properly only apply in the S4 case:
+-> For shutdown go through SMU_MSG_PrepareMp1ForUnload
+-> For S4 go through SMU_MSG_GfxDeviceDriverReset and
+   SMU_MSG_PrepareMp1ForUnload
+
+Reported-and-tested-by: lectrode <electrodexsnet@gmail.com>
+Closes: https://github.com/void-linux/void-packages/issues/50417
+Cc: stable@vger.kernel.org
+Fixes: cd94d1b182d2 ("dm/amd/pm: Fix problems with reboot/shutdown for some SMU 13.0.4/13.0.11 users")
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
+index dfc76f6b468f..b081ae3e8f43 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
+@@ -226,15 +226,17 @@ static int smu_v13_0_4_system_features_control(struct smu_context *smu, bool en)
+ 	struct amdgpu_device *adev = smu->adev;
+ 	int ret = 0;
+ 
+-	if (!en && adev->in_s4) {
+-		/* Adds a GFX reset as workaround just before sending the
+-		 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
+-		 * an invalid state.
+-		 */
+-		ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
+-						      SMU_RESET_MODE_2, NULL);
+-		if (ret)
+-			return ret;
++	if (!en && !adev->in_s0ix) {
++		if (adev->in_s4) {
++			/* Adds a GFX reset as workaround just before sending the
++			 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
++			 * an invalid state.
++			 */
++			ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
++							      SMU_RESET_MODE_2, NULL);
++			if (ret)
++				return ret;
++		}
+ 
+ 		ret = smu_cmn_send_smc_msg(smu, SMU_MSG_PrepareMp1ForUnload, NULL);
+ 	}
+
 
