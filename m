@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-66789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED41E94F279
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD4A94F373
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA5592814A4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A34C2813A0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670D9187FFD;
-	Mon, 12 Aug 2024 16:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB041862B4;
+	Mon, 12 Aug 2024 16:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgf4F6x7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0h0KO4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234CD186E36;
-	Mon, 12 Aug 2024 16:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF511494B8;
+	Mon, 12 Aug 2024 16:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478790; cv=none; b=HI53njx5DV2OVFs2uLEpMvlogKQYe1xhe/TV6KNzl16nJtBO+BwbsqUGJJcaRrRMkBY8xwNr69ki73t6bDyNVCJIACxlDOYRMv814YzqxO0Q6SJ7rCIvO75XgTmAwQ8yn5+ZJfM2pt6F6p7JdtZfiEcqnZpbmCM6VlwGrxrQIio=
+	t=1723479460; cv=none; b=Fc5oHLZgB5jzHrCO3jLvhJiaxswVMpa0SSCwobwX1wkHPnUjb/RIPB35aIxNfM2eRHjD63GicxWIArSdppoUCDVhwBoOSt/phyZaa1YmyEKaww++2i1jyZ+Ql62IasTwVrOxBrDjKrlqjo6Iqd4NEMQ48YZ8bsEBYIxpTD6n0kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478790; c=relaxed/simple;
-	bh=Qujtxlic1nY9rQUCMErFE3IRl90sdj3hQu6WQuFCf7o=;
+	s=arc-20240116; t=1723479460; c=relaxed/simple;
+	bh=je9/EGQwEZRXyqwJxC3L4Np/ZpQ4Pa2X5rLvhoL4EOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kiDPREdQ8XpRZt91VKTs44hG/Xg5Iyf+KFFUd4seoU79ngJSb8dyQEUOejkFRS3D3S1FNQeQzA8IUw9T2jtYC7gSmxphzu+darHvipJp40U4T6TY2GQ65YULVmFDdMgmt+Kwjw5BBWGwthD3ZM3FKoxdwma620ISUw6V3sxXxdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgf4F6x7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F2DC32782;
-	Mon, 12 Aug 2024 16:06:29 +0000 (UTC)
+	 MIME-Version; b=jUrLiTNBLZHyiXzctLbzC7zqKnKj3wsRS1GNbAqBifPiUNRIzPEgbZxZcznL+2doxQVT9+A3pzgVyOIZ9tqYDEJlQ0ns114KfK8q/ky7HwhDnYKvBqhotsLhCZctGI/lGAmvn7E5VAsL1kzSCeHu86eeEhKuValohAB9S7FlX5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0h0KO4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27064C32782;
+	Mon, 12 Aug 2024 16:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478789;
-	bh=Qujtxlic1nY9rQUCMErFE3IRl90sdj3hQu6WQuFCf7o=;
+	s=korg; t=1723479460;
+	bh=je9/EGQwEZRXyqwJxC3L4Np/ZpQ4Pa2X5rLvhoL4EOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgf4F6x783GNhDio0427otcLjaiCSK/f+ddSy6/J9dg5elc6lMr3IX+3UjyF6arDb
-	 D3ymmg2ypXBE+J+Nr6PEIPjOaoiS/NiE0J7efXNhJg+mx1KIfra+D/tJWxQl6sPsam
-	 Zuc/ewfe9XzRFzeeC1ERxq137oSVHE0kd93MMhAY=
+	b=t0h0KO4QigW1Zk/MBUwYhA0nISD2y4kpV1so3P2FxneQpjFTN/MU/aRflfL/AL80G
+	 Ba2aj8i758JXQbVTCWth4BCmwIXehIqnShg8F4PoFZmN8Pg1xnpOys7+a+FKO4bJmU
+	 4mpVBA4TqYsEA3i0KqowiBbwq8nsRBMsP468+e/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Skvortsov <victor.skvortsov@amd.com>,
-	Zhigang Luo <zhigang.luo@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chi Zhiling <chizhiling@kylinos.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/150] drm/amdgpu: Add lock around VF RLCG interface
+Subject: [PATCH 6.6 063/189] media: xc2028: avoid use-after-free in load_firmware_cb()
 Date: Mon, 12 Aug 2024 18:01:59 +0200
-Message-ID: <20240812160126.634974127@linuxfoundation.org>
+Message-ID: <20240812160134.567862010@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Skvortsov <victor.skvortsov@amd.com>
+From: Chi Zhiling <chizhiling@kylinos.cn>
 
-[ Upstream commit e864180ee49b4d30e640fd1e1d852b86411420c9 ]
+[ Upstream commit 68594cec291ff9523b9feb3f43fd853dcddd1f60 ]
 
-flush_gpu_tlb may be called from another thread while
-device_gpu_recover is running.
+syzkaller reported use-after-free in load_firmware_cb() [1].
+The reason is because the module allocated a struct tuner in tuner_probe(),
+and then the module initialization failed, the struct tuner was released.
+A worker which created during module initialization accesses this struct
+tuner later, it caused use-after-free.
 
-Both of these threads access registers through the VF
-RLCG interface during VF Full Access. Add a lock around this interface
-to prevent race conditions between these threads.
+The process is as follows:
 
-Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
-Reviewed-by: Zhigang Luo <zhigang.luo@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+task-6504           worker_thread
+tuner_probe                             <= alloc dvb_frontend [2]
+...
+request_firmware_nowait                 <= create a worker
+...
+tuner_remove                            <= free dvb_frontend
+...
+                    request_firmware_work_func  <= the firmware is ready
+                    load_firmware_cb    <= but now the dvb_frontend has been freed
+
+To fix the issue, check the dvd_frontend in load_firmware_cb(), if it is
+null, report a warning and just return.
+
+[1]:
+    ==================================================================
+     BUG: KASAN: use-after-free in load_firmware_cb+0x1310/0x17a0
+     Read of size 8 at addr ffff8000d7ca2308 by task kworker/2:3/6504
+
+     Call trace:
+      load_firmware_cb+0x1310/0x17a0
+      request_firmware_work_func+0x128/0x220
+      process_one_work+0x770/0x1824
+      worker_thread+0x488/0xea0
+      kthread+0x300/0x430
+      ret_from_fork+0x10/0x20
+
+     Allocated by task 6504:
+      kzalloc
+      tuner_probe+0xb0/0x1430
+      i2c_device_probe+0x92c/0xaf0
+      really_probe+0x678/0xcd0
+      driver_probe_device+0x280/0x370
+      __device_attach_driver+0x220/0x330
+      bus_for_each_drv+0x134/0x1c0
+      __device_attach+0x1f4/0x410
+      device_initial_probe+0x20/0x30
+      bus_probe_device+0x184/0x200
+      device_add+0x924/0x12c0
+      device_register+0x24/0x30
+      i2c_new_device+0x4e0/0xc44
+      v4l2_i2c_new_subdev_board+0xbc/0x290
+      v4l2_i2c_new_subdev+0xc8/0x104
+      em28xx_v4l2_init+0x1dd0/0x3770
+
+     Freed by task 6504:
+      kfree+0x238/0x4e4
+      tuner_remove+0x144/0x1c0
+      i2c_device_remove+0xc8/0x290
+      __device_release_driver+0x314/0x5fc
+      device_release_driver+0x30/0x44
+      bus_remove_device+0x244/0x490
+      device_del+0x350/0x900
+      device_unregister+0x28/0xd0
+      i2c_unregister_device+0x174/0x1d0
+      v4l2_device_unregister+0x224/0x380
+      em28xx_v4l2_init+0x1d90/0x3770
+
+     The buggy address belongs to the object at ffff8000d7ca2000
+      which belongs to the cache kmalloc-2k of size 2048
+     The buggy address is located 776 bytes inside of
+      2048-byte region [ffff8000d7ca2000, ffff8000d7ca2800)
+     The buggy address belongs to the page:
+     page:ffff7fe00035f280 count:1 mapcount:0 mapping:ffff8000c001f000 index:0x0
+     flags: 0x7ff800000000100(slab)
+     raw: 07ff800000000100 ffff7fe00049d880 0000000300000003 ffff8000c001f000
+     raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
+     page dumped because: kasan: bad access detected
+
+     Memory state around the buggy address:
+      ffff8000d7ca2200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+      ffff8000d7ca2280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+     >ffff8000d7ca2300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                           ^
+      ffff8000d7ca2380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+      ffff8000d7ca2400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+     ==================================================================
+
+[2]
+    Actually, it is allocated for struct tuner, and dvb_frontend is inside.
+
+Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   | 6 ++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h   | 2 ++
- 3 files changed, 9 insertions(+)
+ drivers/media/tuners/xc2028.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index d4faa489bd5fa..4d1c2eb63090f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3631,6 +3631,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	mutex_init(&adev->grbm_idx_mutex);
- 	mutex_init(&adev->mn_lock);
- 	mutex_init(&adev->virt.vf_errors.lock);
-+	mutex_init(&adev->virt.rlcg_reg_lock);
- 	hash_init(adev->mn_hash);
- 	mutex_init(&adev->psp.mutex);
- 	mutex_init(&adev->notifier_lock);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index 81549f1edfe01..5ee9211c503c4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -956,6 +956,9 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
- 	scratch_reg1 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg1;
- 	scratch_reg2 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg2;
- 	scratch_reg3 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg3;
-+
-+	mutex_lock(&adev->virt.rlcg_reg_lock);
-+
- 	if (reg_access_ctrl->spare_int)
- 		spare_int = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->spare_int;
+diff --git a/drivers/media/tuners/xc2028.c b/drivers/media/tuners/xc2028.c
+index 5a967edceca93..352b8a3679b72 100644
+--- a/drivers/media/tuners/xc2028.c
++++ b/drivers/media/tuners/xc2028.c
+@@ -1361,9 +1361,16 @@ static void load_firmware_cb(const struct firmware *fw,
+ 			     void *context)
+ {
+ 	struct dvb_frontend *fe = context;
+-	struct xc2028_data *priv = fe->tuner_priv;
++	struct xc2028_data *priv;
+ 	int rc;
  
-@@ -1009,6 +1012,9 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
- 	}
- 
- 	ret = readl(scratch_reg0);
++	if (!fe) {
++		pr_warn("xc2028: No frontend in %s\n", __func__);
++		return;
++	}
 +
-+	mutex_unlock(&adev->virt.rlcg_reg_lock);
++	priv = fe->tuner_priv;
 +
- 	return ret;
- }
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-index 2b9d806e23afb..dc6aaa4d67be7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-@@ -260,6 +260,8 @@ struct amdgpu_virt {
- 
- 	/* the ucode id to signal the autoload */
- 	uint32_t autoload_ucode_id;
-+
-+	struct mutex rlcg_reg_lock;
- };
- 
- struct amdgpu_video_codec_info;
+ 	tuner_dbg("request_firmware_nowait(): %s\n", fw ? "OK" : "error");
+ 	if (!fw) {
+ 		tuner_err("Could not load firmware %s.\n", priv->fname);
 -- 
 2.43.0
 
