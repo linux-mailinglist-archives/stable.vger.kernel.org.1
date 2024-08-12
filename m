@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-67321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCC394F4E2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4E994F305
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D9142823FE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1A1FB250E7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1EE8186E38;
-	Mon, 12 Aug 2024 16:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE9A186E51;
+	Mon, 12 Aug 2024 16:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4gTgSSO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bG4S93FK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80404183CD4;
-	Mon, 12 Aug 2024 16:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6E1183CA6;
+	Mon, 12 Aug 2024 16:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480545; cv=none; b=hN4UvaEXaEvKHkzaygbP3HZ0t84aQWDvj3taj6cdF5n+SGcGQriaZ7dZi5IwcJKHGWnvooQgwXpLa9rqaKKtDW6C9Ww5RD1ox3L++dwA0FGc0Tc78k4pan6rIvrCaJ6rtm30VK9Xq/Fv7VpftWeOnMxYaCzuNa+yup7jxg01oww=
+	t=1723479152; cv=none; b=d3iiCrlfsi6WH7X2NsLs//DA64f32hSF+bbjUGTI+JE2h8Gxa3OfGpiFdm7mzmGrVBiON7rdnxB9vRrTAtbQvP2SH/+Jdma8zMR7wg1Y2MaZWpeMLmCPsazdFEWRdpa4L3BcDu8wRpXkZH8szZR+FjwqW7VWoKRlmgwZrZCdjD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480545; c=relaxed/simple;
-	bh=gTQgmkfG68C4t7cdvxqMBivrv0jViU9MsCZCZWTJRNE=;
+	s=arc-20240116; t=1723479152; c=relaxed/simple;
+	bh=5lbgN162dv0nfYhpDxBC4QgG8fDtzqOfJdGwNEc3Pk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NEFOuPIHNFwu7Nqgz3U7cfC1vD+MmcCGuajWrjPT+Lsqp+4Pr0AscnA3TVKgBWsu3j7O2HIZqJSC9EiqwF4MRQZ4r3fZ+TJUBhFf0fSscuL4ylEYkgjHyds1+hGrygrnZGbrEomKaLNlq6zW+IzHUA8yDU7bCq7WDLDk4UCYHu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4gTgSSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E973DC32782;
-	Mon, 12 Aug 2024 16:35:44 +0000 (UTC)
+	 MIME-Version; b=R5iPnyzMOTVqmK4c02WXcW7yecdPgv6s/zsOYTpVScTd9878y0QFsKXAg4DvHtE9IHfTcAfIXcNvkylCfJGPv+y28lAMhnQWJcQxdTTkK/HP7wmcnEf6X0/eXqkytF+9LKx+ykVbIHHIFIo7QZdMiufLdZTW9TY2x3J8EtZN7oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bG4S93FK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466DCC32782;
+	Mon, 12 Aug 2024 16:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480545;
-	bh=gTQgmkfG68C4t7cdvxqMBivrv0jViU9MsCZCZWTJRNE=;
+	s=korg; t=1723479152;
+	bh=5lbgN162dv0nfYhpDxBC4QgG8fDtzqOfJdGwNEc3Pk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4gTgSSOVy6rIy38RcuYfPx9QlN8VN5ouvZHAA8bb6Y+zuqqXvfXR0GhHyVd3McDp
-	 c0pwYu49382ve83Y8ZWubsxSqB++fYgfjSAiyalqy1dqinONxpbk2I5YF1anjRw/bD
-	 mwvVEC0m0aS5q1Ofu25YOUzFIiNXQvwgIdSrqaVw=
+	b=bG4S93FKYCVq5LGm4re86faCu7duhUnMWmDxisMyav9bp6UULTGm25VSt5nSVbbcU
+	 kIDuWDLLgaxiU1Ml+ZlyY50X9q7t2y7wXwjNQhWeECAHmEdv+ozKBKG63hiYNYLU9B
+	 HjpOaI984OH2cg5Ru3kSIjMYNqs9vDaLidb7P8Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.10 229/263] smb3: fix setting SecurityFlags when encryption is required
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 6.1 149/150] i2c: qcom-geni: fix missing clk_disable_unprepare() and geni_se_resources_off()
 Date: Mon, 12 Aug 2024 18:03:50 +0200
-Message-ID: <20240812160155.303146055@linuxfoundation.org>
+Message-ID: <20240812160130.918897848@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit 1b5487aefb1ce7a6b1f15a33297d1231306b4122 upstream.
+commit 043465b66506e8c647cdd38a2db1f2ee0f369a1b upstream.
 
-Setting encryption as required in security flags was broken.
-For example (to require all mounts to be encrypted by setting):
+Add missing clk_disable_unprepare() and geni_se_resources_off() in the error
+path in geni_i2c_probe().
 
-  "echo 0x400c5 > /proc/fs/cifs/SecurityFlags"
-
-Would return "Invalid argument" and log "Unsupported security flags"
-This patch fixes that (e.g. allowing overriding the default for
-SecurityFlags  0x00c5, including 0x40000 to require seal, ie
-SMB3.1.1 encryption) so now that works and forces encryption
-on subsequent mounts.
-
-Acked-by: Bharath SM <bharathsm@microsoft.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 14d02fbadb5d ("i2c: qcom-geni: add desc struct to prepare support for I2C Master Hub variant")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/cifs/usage.rst |    2 +-
- fs/smb/client/cifs_debug.c               |    2 +-
- fs/smb/client/cifsglob.h                 |    8 ++++----
- fs/smb/client/smb2pdu.c                  |    3 +++
- 4 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/i2c/busses/i2c-qcom-geni.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/Documentation/admin-guide/cifs/usage.rst
-+++ b/Documentation/admin-guide/cifs/usage.rst
-@@ -742,7 +742,7 @@ SecurityFlags		Flags which control secur
- 			  may use NTLMSSP               		0x00080
- 			  must use NTLMSSP           			0x80080
- 			  seal (packet encryption)			0x00040
--			  must seal (not implemented yet)               0x40040
-+			  must seal                                     0x40040
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -859,6 +859,7 @@ static int geni_i2c_probe(struct platfor
+ 	ret = geni_se_resources_on(&gi2c->se);
+ 	if (ret) {
+ 		dev_err(dev, "Error turning on resources %d\n", ret);
++		clk_disable_unprepare(gi2c->core_clk);
+ 		return ret;
+ 	}
+ 	proto = geni_se_read_proto(&gi2c->se);
+@@ -878,8 +879,11 @@ static int geni_i2c_probe(struct platfor
+ 		/* FIFO is disabled, so we can only use GPI DMA */
+ 		gi2c->gpi_mode = true;
+ 		ret = setup_gpi_dma(gi2c);
+-		if (ret)
++		if (ret) {
++			geni_se_resources_off(&gi2c->se);
++			clk_disable_unprepare(gi2c->core_clk);
+ 			return dev_err_probe(dev, ret, "Failed to setup GPI DMA mode\n");
++		}
  
- cifsFYI			If set to non-zero value, additional debug information
- 			will be logged to the system error log.  This field
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -1072,7 +1072,7 @@ static int cifs_security_flags_proc_open
- static void
- cifs_security_flags_handle_must_flags(unsigned int *flags)
- {
--	unsigned int signflags = *flags & CIFSSEC_MUST_SIGN;
-+	unsigned int signflags = *flags & (CIFSSEC_MUST_SIGN | CIFSSEC_MUST_SEAL);
+ 		dev_dbg(dev, "Using GPI DMA mode for I2C\n");
+ 	} else {
+@@ -892,6 +896,8 @@ static int geni_i2c_probe(struct platfor
  
- 	if ((*flags & CIFSSEC_MUST_KRB5) == CIFSSEC_MUST_KRB5)
- 		*flags = CIFSSEC_MUST_KRB5;
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1901,7 +1901,7 @@ static inline bool is_replayable_error(i
- #define   CIFSSEC_MAY_SIGN	0x00001
- #define   CIFSSEC_MAY_NTLMV2	0x00004
- #define   CIFSSEC_MAY_KRB5	0x00008
--#define   CIFSSEC_MAY_SEAL	0x00040 /* not supported yet */
-+#define   CIFSSEC_MAY_SEAL	0x00040
- #define   CIFSSEC_MAY_NTLMSSP	0x00080 /* raw ntlmssp with ntlmv2 */
- 
- #define   CIFSSEC_MUST_SIGN	0x01001
-@@ -1911,11 +1911,11 @@ require use of the stronger protocol */
- #define   CIFSSEC_MUST_NTLMV2	0x04004
- #define   CIFSSEC_MUST_KRB5	0x08008
- #ifdef CONFIG_CIFS_UPCALL
--#define   CIFSSEC_MASK          0x8F08F /* flags supported if no weak allowed */
-+#define   CIFSSEC_MASK          0xCF0CF /* flags supported if no weak allowed */
- #else
--#define	  CIFSSEC_MASK          0x87087 /* flags supported if no weak allowed */
-+#define	  CIFSSEC_MASK          0xC70C7 /* flags supported if no weak allowed */
- #endif /* UPCALL */
--#define   CIFSSEC_MUST_SEAL	0x40040 /* not supported yet */
-+#define   CIFSSEC_MUST_SEAL	0x40040
- #define   CIFSSEC_MUST_NTLMSSP	0x80080 /* raw ntlmssp with ntlmv2 */
- 
- #define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP | CIFSSEC_MAY_SEAL)
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -82,6 +82,9 @@ int smb3_encryption_required(const struc
- 	if (tcon->seal &&
- 	    (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
- 		return 1;
-+	if (((global_secflags & CIFSSEC_MUST_SEAL) == CIFSSEC_MUST_SEAL) &&
-+	    (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
-+		return 1;
- 	return 0;
- }
+ 		if (!tx_depth) {
+ 			dev_err(dev, "Invalid TX FIFO depth\n");
++			geni_se_resources_off(&gi2c->se);
++			clk_disable_unprepare(gi2c->core_clk);
+ 			return -EINVAL;
+ 		}
  
 
 
