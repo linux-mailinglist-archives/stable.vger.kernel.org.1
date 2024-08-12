@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-67198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB48F94F451
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2C294F33C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 869B4281895
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72506286863
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006BB18733E;
-	Mon, 12 Aug 2024 16:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A3818735F;
+	Mon, 12 Aug 2024 16:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIToBXyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOZQjVOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FF2187328;
-	Mon, 12 Aug 2024 16:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B517E186E20;
+	Mon, 12 Aug 2024 16:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480130; cv=none; b=CF7OxF6J7qkfpS9XmpfabKLG0LQVZhjJv9VndwkOqFo7YNRaMuMFX4vc0EdAnkWiFuXqtb2hjIgCYVeay9MF5nmx/TH9h30l3w+xMVBJiW2uw198l27CrBPbawj4mr7P6d1LKsblBfRzmuKYd0mac9T9EXnI5lp7miExgEEnBSo=
+	t=1723479321; cv=none; b=JjdGKspMdI+ur+qbGJEbzegPBb4CdeW6HfSTNpJyK7ZmqTJCZcm9JZ60TaxbH4df7KueDViQyteDuycbwHByfryc+lXSXWzIqtH5DDRJvZ7OB7PAyM00p/1MQi2I/QIRQmTg+S+LE2Sea/OXJ1JvZ7okY7ZeWL1iNSoVSUmLeAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480130; c=relaxed/simple;
-	bh=YzY1nOOudOc526l1oU1QvFS9vAnizDNJbSRu41BWjGI=;
+	s=arc-20240116; t=1723479321; c=relaxed/simple;
+	bh=aHS5+CrPnCBL7QWhTl/mg8LIAVucJ/lkTWJAKlFpUdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fAtd79xp32NHWEoKgnwgg1iIAppO7eSVkO/6oJc5nQOrMTrcQ8kA1mv69/QlYFB7Dl2RGXFgzcWZ0hxWlFBgA4gYIyeeDlI0ls76Gl+N/nfbpnxnzvjOrjGWmGzAwQeTSX3QWxTce8yENqT5yM/7RKNH4UjcgjRs4zpdb4TS1Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIToBXyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3E0C32782;
-	Mon, 12 Aug 2024 16:28:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ndFBMrtgMoYzmx7QZIrywEivk/KZWfEI1i7oi5NlOb7EK9CIu+42F/L0YAOSOue4lzw4wusIUKsDsPUrnfi6vOURXKYxrA0IuJSkrj0FOMHrDKuH7XoITOTV2AFKw9xlrXl5fWyvkOHS8aYk6uA8opGnKYk0urvXru68x2GKNcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOZQjVOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC917C32782;
+	Mon, 12 Aug 2024 16:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480130;
-	bh=YzY1nOOudOc526l1oU1QvFS9vAnizDNJbSRu41BWjGI=;
+	s=korg; t=1723479321;
+	bh=aHS5+CrPnCBL7QWhTl/mg8LIAVucJ/lkTWJAKlFpUdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gIToBXyU47UuvmBxozRFTOftu2MMMopJqImsO52/tgGTd1mKpLYxghYinSRZOJDAQ
-	 c/gzRFkDmXVx6hgH5ABS6xz4J41Wljai7RFFzTcv74TFnjnrV4ph2PS4Cp263eO86m
-	 waH5Kfqvt0/A/PVJX0WIe1uUfVxVWbpg1/PemotA=
+	b=HOZQjVOJgLWisEBxioqydI4kjUjaBhpY/sOHw/gENxuJEms3e8Wq3Vz+DrhmuzHB5
+	 uyY1h9JMx5ngrLuXO5uKii9qS3b2dMOuGv/HkeDEdLYRZnxEqMzOyXO21zyhHonZgD
+	 xSgrk0EaNFDLlXH3jTaufSYtDMD2deYzFPKwlNFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 105/263] drm/amd/display: remove dpp pipes on failure to update pipe params
+Subject: [PATCH 6.6 050/189] drm/amdgpu: fix potential resource leak warning
 Date: Mon, 12 Aug 2024 18:01:46 +0200
-Message-ID: <20240812160150.563794252@linuxfoundation.org>
+Message-ID: <20240812160134.069786762@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjing Liu <wenjing.liu@amd.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 3ddd9c83ff7ac0ead38188425b14d03dc2f2c133 ]
+[ Upstream commit 22a5daaec0660dd19740c4c6608b78f38760d1e6 ]
 
-[why]
-There are cases where update pipe params could fail but dpp pipes are already
-added to the state. In this case, we should remove dpp pipes so dc state is
-restored back. If it is not restored, dc state is corrupted after calling this
-function, so if we call the same interface with the corrupted state again, we
-may end up programming pipe topology based on a corrupted dc state.
+Clear resource leak warning that when the prepare fails,
+the allocated amdgpu job object will never be released.
 
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm_sdma.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index a2ca66a268c2d..a51e5de6554ee 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -2701,6 +2701,7 @@ bool resource_append_dpp_pipes_for_plane_composition(
- 		struct dc_plane_state *plane_state)
- {
- 	bool success;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_sdma.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_sdma.c
+index 349416e176a12..1cf1498204678 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_sdma.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_sdma.c
+@@ -102,6 +102,11 @@ static int amdgpu_vm_sdma_prepare(struct amdgpu_vm_update_params *p,
+ 	if (!r)
+ 		r = amdgpu_sync_push_to_job(&sync, p->job);
+ 	amdgpu_sync_free(&sync);
 +
- 	if (otg_master_pipe->plane_state == NULL)
- 		success = add_plane_to_opp_head_pipes(otg_master_pipe,
- 				plane_state, new_ctx);
-@@ -2708,10 +2709,15 @@ bool resource_append_dpp_pipes_for_plane_composition(
- 		success = acquire_secondary_dpp_pipes_and_add_plane(
- 				otg_master_pipe, plane_state, new_ctx,
- 				cur_ctx, pool);
--	if (success)
-+	if (success) {
- 		/* when appending a plane mpc slice count changes from 0 to 1 */
- 		success = update_pipe_params_after_mpc_slice_count_change(
- 				plane_state, new_ctx, pool);
-+		if (!success)
-+			resource_remove_dpp_pipes_for_plane_composition(new_ctx,
-+					pool, plane_state);
++	if (r) {
++		p->num_dw_left = 0;
++		amdgpu_job_free(p->job);
 +	}
-+
- 	return success;
+ 	return r;
  }
- 
-@@ -2721,6 +2727,7 @@ void resource_remove_dpp_pipes_for_plane_composition(
- 		const struct dc_plane_state *plane_state)
- {
- 	int i;
-+
- 	for (i = pool->pipe_count - 1; i >= 0; i--) {
- 		struct pipe_ctx *pipe_ctx = &context->res_ctx.pipe_ctx[i];
  
 -- 
 2.43.0
