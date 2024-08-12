@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-66786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E413D94F272
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D0094F351
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142531C211F5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0ADA6B2528D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2BB187550;
-	Mon, 12 Aug 2024 16:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3B1187321;
+	Mon, 12 Aug 2024 16:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LniK+4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1CKbneP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3E1183CD9;
-	Mon, 12 Aug 2024 16:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A16E18733D;
+	Mon, 12 Aug 2024 16:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478780; cv=none; b=QfiBDx0x1/Xp4nmA6ZxzDzdHTs9sbRY+udXAH3MbJ90PIqS+vX+dhul8QBQV3CRGMVClManwtOWhZI5flkv9y8IvAz4qWjGHSz1pSMNdhSw5PMtqb7vmyc0UUeh6LYaR2BVUVrv0Lti43r0FZSq3mc8dmG+K+XIMc0rqiUcR8Ek=
+	t=1723479375; cv=none; b=oe6LFyjSifSY9zvCBe3bcMUOtHTyUK+vWApQolEOLy0hTJX/qKZKWlvqnK7O+RDNJTnQi533tqBi0JDqeTjogx3ZytNaG0hVrPWtNTuzGDB3XLwsV5WIQjGHZ4pEEUUhurTdUaeUr7A+5bJVZD9Q682eRh6w9/kWeFn31aOxqe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478780; c=relaxed/simple;
-	bh=/MrQlnrqDDO6IMZv9+fTsXPE5jSdJ/OVKfsgi34ZdZs=;
+	s=arc-20240116; t=1723479375; c=relaxed/simple;
+	bh=D6z5+0l2SPyTIFyqcjKykGPEq60sravBK3hd/P8D/Hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1BnA4WteiUMxCMnbviaRQq9s+spBerD4J305Exd0plI0ANdb3zAS7/el1A7I57/Cg3fgwdkXQ3KMZBj4dyT7HQCPmGhLwt/eeTGwo1huQNSmRdhiK6jisY61YV5R7GGmv6qKOmOi3OpSRYuxatjX82tFie+JOEoT7EtfXuw6p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LniK+4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8B9C4AF09;
-	Mon, 12 Aug 2024 16:06:19 +0000 (UTC)
+	 MIME-Version; b=uj0NNabO1tE6sCgcMfY9V6j/yPEvjLg2B8xv2UXvAS57YAO8j0wZeoI6cVxv3A1y1FSPs5ZAKR4Y/E7Zm7vbAXAih0uIZqCePb5O4kPSH7UVGgTvnVdc6s4tj3nXVcKAWO1La8CSnbMggF6jm+gMPxWe1T0NELOHWizkk2gPuTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1CKbneP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215CFC32782;
+	Mon, 12 Aug 2024 16:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478780;
-	bh=/MrQlnrqDDO6IMZv9+fTsXPE5jSdJ/OVKfsgi34ZdZs=;
+	s=korg; t=1723479375;
+	bh=D6z5+0l2SPyTIFyqcjKykGPEq60sravBK3hd/P8D/Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2LniK+4e8n08FPANUxGo4/qn7W+uHmgNUs4qhEtjQVrnCo7fQuJL25N/6FAVAeIpu
-	 iMeFbSgq73xwfbu7OK1cs/QfMJ/scPCvJawg+Crow3X8JK9fRs+viGp+O5Wn78ZLME
-	 M0/812gCF/ffCmlg/s9NiEdayNna+3f+cEFUTmys=
+	b=y1CKbnePw4DfZwi0VxXNdPNrmWtElpwxBMfQuvopT/aX+vE1Hw/6IO6IMhzGxW+gr
+	 N2SQs/9zuuZddyQBlcFj6HcOO8sjRrJFow6j0O9X/L/wrnKWWGQLtduml/yCNvqnSG
+	 HP9CRncFuDe6IHTIBAitUP2vuIZrj1IVrP3t8Hzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/150] drm/amdgpu/pm: Fix the null pointer dereference for smu7
+Subject: [PATCH 6.6 060/189] drm/amd/display: Add null checker before passing variables
 Date: Mon, 12 Aug 2024 18:01:56 +0200
-Message-ID: <20240812160126.519788510@linuxfoundation.org>
+Message-ID: <20240812160134.454324250@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit c02c1960c93eede587576625a1221205a68a904f ]
+[ Upstream commit 8092aa3ab8f7b737a34b71f91492c676a843043a ]
 
-optimize the code to avoid pass a null pointer (hwmgr->backend)
-to function smu7_update_edc_leakage_table.
+Checks null pointer before passing variables to functions.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+This fixes 3 NULL_RETURNS issues reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 50 +++++++++----------
- 1 file changed, 24 insertions(+), 26 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 5e9410117712c..9f2f3f6a79adb 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -2970,6 +2970,7 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 60db3800666ec..94059aef762be 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2628,7 +2628,8 @@ static int dm_suspend(void *handle)
  
- static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- {
-+	struct amdgpu_device *adev = hwmgr->adev;
- 	struct smu7_hwmgr *data;
- 	int result = 0;
+ 		dm->cached_dc_state = dc_copy_state(dm->dc->current_state);
  
-@@ -3006,40 +3007,37 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 	/* Initalize Dynamic State Adjustment Rule Settings */
- 	result = phm_initializa_dynamic_state_adjustment_rule_settings(hwmgr);
+-		dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
++		if (dm->cached_dc_state)
++			dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
  
--	if (0 == result) {
--		struct amdgpu_device *adev = hwmgr->adev;
-+	if (result)
-+		goto fail;
+ 		amdgpu_dm_commit_zero_streams(dm->dc);
  
--		data->is_tlu_enabled = false;
-+	data->is_tlu_enabled = false;
- 
--		hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
-+	hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
- 							SMU7_MAX_HARDWARE_POWERLEVELS;
--		hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
--		hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
-+	hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
-+	hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
- 
--		data->pcie_gen_cap = adev->pm.pcie_gen_mask;
--		if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
--			data->pcie_spc_cap = 20;
--		else
--			data->pcie_spc_cap = 16;
--		data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
--
--		hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
--/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
--		hwmgr->platform_descriptor.clockStep.engineClock = 500;
--		hwmgr->platform_descriptor.clockStep.memoryClock = 500;
--		smu7_thermal_parameter_init(hwmgr);
--	} else {
--		/* Ignore return value in here, we are cleaning up a mess. */
--		smu7_hwmgr_backend_fini(hwmgr);
--	}
-+	data->pcie_gen_cap = adev->pm.pcie_gen_mask;
-+	if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
-+		data->pcie_spc_cap = 20;
-+	else
-+		data->pcie_spc_cap = 16;
-+	data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
-+
-+	hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
-+	/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
-+	hwmgr->platform_descriptor.clockStep.engineClock = 500;
-+	hwmgr->platform_descriptor.clockStep.memoryClock = 500;
-+	smu7_thermal_parameter_init(hwmgr);
- 
- 	result = smu7_update_edc_leakage_table(hwmgr);
--	if (result) {
--		smu7_hwmgr_backend_fini(hwmgr);
--		return result;
--	}
-+	if (result)
-+		goto fail;
- 
- 	return 0;
-+fail:
-+	smu7_hwmgr_backend_fini(hwmgr);
-+	return result;
+@@ -6483,7 +6484,8 @@ static void create_eml_sink(struct amdgpu_dm_connector *aconnector)
+ 		aconnector->dc_sink = aconnector->dc_link->local_sink ?
+ 		aconnector->dc_link->local_sink :
+ 		aconnector->dc_em_sink;
+-		dc_sink_retain(aconnector->dc_sink);
++		if (aconnector->dc_sink)
++			dc_sink_retain(aconnector->dc_sink);
+ 	}
  }
  
- static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
+@@ -7296,7 +7298,8 @@ static int amdgpu_dm_connector_get_modes(struct drm_connector *connector)
+ 				drm_add_modes_noedid(connector, 1920, 1080);
+ 	} else {
+ 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
+-		amdgpu_dm_connector_add_common_modes(encoder, connector);
++		if (encoder)
++			amdgpu_dm_connector_add_common_modes(encoder, connector);
+ 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
+ 	}
+ 	amdgpu_dm_fbc_init(connector);
 -- 
 2.43.0
 
