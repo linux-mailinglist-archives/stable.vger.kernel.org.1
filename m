@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-66817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F27494F299
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E88C494F485
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FA40B20BBD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1937C1C20D10
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183211862BD;
-	Mon, 12 Aug 2024 16:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB708187552;
+	Mon, 12 Aug 2024 16:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwhxtDkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjttPvQ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EAB18455B;
-	Mon, 12 Aug 2024 16:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D3F16D9B8;
+	Mon, 12 Aug 2024 16:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478881; cv=none; b=c52kOpH7UorjnpZolaqhMXJ2in9WhM4dpYZ+X+Yo2CZ+ItY/55cNFGV4iGzkYE4l7v8Jt77jiFZAw02oiKGGM57fbIVUYV0xW2o2WYktoNyOwVjb/83QN2rrZDnrSj8D8PoHjKAUSoaJi+vcKYwvraXY5wZOSAdS8e2Gv8/Kj3c=
+	t=1723480274; cv=none; b=mMxQ/1i2Z+aRVYr0htxMyC7/8fCe8OOS+2wstVnlVljmRTMm67eXW3f81bjGRSqWXxH5qDmz5tI5qJUN+OFSMCtpCYngvoQKGhHJVufBtkGfTKTYNp1yG4wQbEwKiAkMk9Mf3Ojs5dyUiRqx7Z8GGxS71E7k72IRAGtjbyf23aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478881; c=relaxed/simple;
-	bh=zMVMgF6xRl/2zN7LMQr3mkGbV1zvR//W8zsohU/AiLk=;
+	s=arc-20240116; t=1723480274; c=relaxed/simple;
+	bh=1+XWjnwEDMch54EGfeMToZLhanLegxgowWFa0IjR4bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WuWzGJ/Vmwp9cMY17QV3I78yZROeXmnyx9SDEUd2rmkitPiYP88N7pS//5wWqd7CJFkby7Jv+L7crQIeWNT2Huia+dRYvgpSdLrEc4fFOllAUPO5yxwEjiSWCWOjXoaGAyROOVSKnytNX4upUOEuQvVEDLfKd7AwzLB8KAvy6qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwhxtDkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4C7C32782;
-	Mon, 12 Aug 2024 16:08:01 +0000 (UTC)
+	 MIME-Version; b=DLZTm/VGo1W4/G/kpj2bFJr1iUaaa/8xrhKkZdAHYgTEFvw5pQVXj6U5KYLQ9env92x4cVGVJuUbGXjzBS6PeDuzoMqmJx1TfyIDYnpZ29XvR01vn0iLstkL1vM/jz00emidgbogCiBleWVbO+dOcdJA/X5GhMVmbLB7mRCjMMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjttPvQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E953C4AF09;
+	Mon, 12 Aug 2024 16:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478881;
-	bh=zMVMgF6xRl/2zN7LMQr3mkGbV1zvR//W8zsohU/AiLk=;
+	s=korg; t=1723480274;
+	bh=1+XWjnwEDMch54EGfeMToZLhanLegxgowWFa0IjR4bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwhxtDkSy9rimIrVllFtkBxgHceRHdcl7URATIR+jVr9obi6Igbm1be8ycrblmHeI
-	 RTInRQd0vEKJDK+XcGw2delCZN9o42lz4ktxNcLh3QeXv8akvfhaFJe5HR8/mJpz33
-	 Sre0Tb6pCy2rGFuFmQSyxD4j4dCCBwTGp4EOctMI=
+	b=yjttPvQ3ICUAhy4AC+aFQaQih+/yOFsndjTeXRbYFnToPd/5MIa9zA6QuqFnonutV
+	 DBh6iRb6u6AAOSwYiPL7iWjFAduhJ+L+1mvoXb365+ek452IPM6m5YFMUhwPFxB8tO
+	 5Zj2eDdy7RNR9LqNsU7RKIWlFLvL+zLgQoaANxDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Jerome Audu <jau@free.fr>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/150] arm64: errata: Unify speculative SSBS errata logic
+Subject: [PATCH 6.10 146/263] ASoC: sti: add missing probe entry for player and reader
 Date: Mon, 12 Aug 2024 18:02:27 +0200
-Message-ID: <20240812160127.722470132@linuxfoundation.org>
+Message-ID: <20240812160152.137038373@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,143 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Jerome Audu <jau@free.fr>
 
-[ Upstream commit ec768766608092087dfb5c1fc45a16a6f524dee2 ]
+[ Upstream commit 6b99068d5ea0aa295f15f30afc98db74d056ec7b ]
 
-Cortex-X4 erratum 3194386 and Neoverse-V3 erratum 3312417 are identical,
-with duplicate Kconfig text and some unsightly ifdeffery. While we try
-to share code behind CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS, having
-separate options results in a fair amount of boilerplate code, and this
-will only get worse as we expand the set of affected CPUs.
+This patch addresses a regression in the ASoC STI drivers that was
+introduced in Linux version 6.6.y. The issue originated from a series of
+patches (see https://lore.kernel.org/all/87wmy5b0wt.wl-kuninori.morimoto.gx@renesas.com/)
+that unintentionally omitted necessary probe functions for the player
+and reader components.
 
-To reduce this boilerplate, unify the two behind a common Kconfig
-option. This removes the duplicate text and Kconfig logic, and removes
-the need for the intermediate ARM64_WORKAROUND_SPECULATIVE_SSBS option.
-The set of affected CPUs is described as a list so that this can easily
-be extended.
+Probe function in `sound/soc/sti/sti_uniperif.c:415` is being replaced
+by another probe function located at `sound/soc/sti/sti_uniperif.c:453`,
+which should instead be derived from the player and reader components.
+This patch correctly reinserts the missing probe entries,
+restoring the intended functionality.
 
-I've used ARM64_ERRATUM_3194386 (matching the Neoverse-V3 erratum ID) as
-the common option, matching the way we use ARM64_ERRATUM_1319367 to
-cover Cortex-A57 erratum 1319537 and Cortex-A72 erratum 1319367.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-5-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: fix conflicts & renames, drop unneeded cpucaps.h ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: 9f625f5e6cf9 ("ASoC: sti: merge DAI call back functions into ops")
+Signed-off-by: Jerome Audu <jau@free.fr>
+Link: https://patch.msgid.link/20240727-sti-audio-fix-v2-1-208bde546c3f@free.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arm64/silicon-errata.rst |  2 +-
- arch/arm64/Kconfig                     | 28 ++++----------------------
- arch/arm64/kernel/cpu_errata.c         |  8 ++------
- arch/arm64/kernel/proton-pack.c        |  2 +-
- 4 files changed, 8 insertions(+), 32 deletions(-)
+ sound/soc/sti/sti_uniperif.c    | 2 +-
+ sound/soc/sti/uniperif.h        | 1 +
+ sound/soc/sti/uniperif_player.c | 1 +
+ sound/soc/sti/uniperif_reader.c | 1 +
+ 4 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index 701ec95ebc5e3..1566cf898fc20 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -143,7 +143,7 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2253138        | ARM64_ERRATUM_2253138       |
- +----------------+-----------------+-----------------+-----------------------------+
--| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3312417       |
-+| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index cb9e16823fb2b..1a0eae0ced3f2 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1000,34 +1000,14 @@ config ARM64_ERRATUM_2966298
+diff --git a/sound/soc/sti/sti_uniperif.c b/sound/soc/sti/sti_uniperif.c
+index ba824f14a39cf..a7956e5a4ee5d 100644
+--- a/sound/soc/sti/sti_uniperif.c
++++ b/sound/soc/sti/sti_uniperif.c
+@@ -352,7 +352,7 @@ static int sti_uniperiph_resume(struct snd_soc_component *component)
+ 	return ret;
+ }
  
- 	  If unsure, say Y.
+-static int sti_uniperiph_dai_probe(struct snd_soc_dai *dai)
++int sti_uniperiph_dai_probe(struct snd_soc_dai *dai)
+ {
+ 	struct sti_uniperiph_data *priv = snd_soc_dai_get_drvdata(dai);
+ 	struct sti_uniperiph_dai *dai_data = &priv->dai_data;
+diff --git a/sound/soc/sti/uniperif.h b/sound/soc/sti/uniperif.h
+index 2a5de328501c1..74e51f0ff85c8 100644
+--- a/sound/soc/sti/uniperif.h
++++ b/sound/soc/sti/uniperif.h
+@@ -1380,6 +1380,7 @@ int uni_reader_init(struct platform_device *pdev,
+ 		    struct uniperif *reader);
  
--config ARM64_WORKAROUND_SPECULATIVE_SSBS
--	bool
--
- config ARM64_ERRATUM_3194386
--	bool "Cortex-X4: 3194386: workaround for MSR SSBS not self-synchronizing"
--	select ARM64_WORKAROUND_SPECULATIVE_SSBS
-+	bool "Cortex-X4/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
- 	default y
- 	help
--	  This option adds the workaround for ARM Cortex-X4 erratum 3194386.
--
--	  On affected cores "MSR SSBS, #0" instructions may not affect
--	  subsequent speculative instructions, which may permit unexepected
--	  speculative store bypassing.
--
--	  Work around this problem by placing a speculation barrier after
--	  kernel changes to SSBS. The presence of the SSBS special-purpose
--	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
--	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
--	  SSBS.
-+	  This option adds the workaround for the following errata:
+ /* common */
++int sti_uniperiph_dai_probe(struct snd_soc_dai *dai);
+ int sti_uniperiph_dai_set_fmt(struct snd_soc_dai *dai,
+ 			      unsigned int fmt);
  
--	  If unsure, say Y.
--
--config ARM64_ERRATUM_3312417
--	bool "Neoverse-V3: 3312417: workaround for MSR SSBS not self-synchronizing"
--	select ARM64_WORKAROUND_SPECULATIVE_SSBS
--	default y
--	help
--	  This option adds the workaround for ARM Neoverse-V3 erratum 3312417.
-+	  * ARM Cortex-X4 erratum 3194386
-+	  * ARM Neoverse-V3 erratum 3312417
- 
- 	  On affected cores "MSR SSBS, #0" instructions may not affect
- 	  subsequent speculative instructions, which may permit unexepected
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index c9d05f753829c..d098a2ea494e2 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -435,14 +435,10 @@ static struct midr_range broken_aarch32_aes[] = {
- };
- #endif /* CONFIG_ARM64_WORKAROUND_TRBE_WRITE_OUT_OF_RANGE */
- 
--#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
--static const struct midr_range erratum_spec_ssbs_list[] = {
- #ifdef CONFIG_ARM64_ERRATUM_3194386
-+static const struct midr_range erratum_spec_ssbs_list[] = {
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
--#endif
--#ifdef CONFIG_ARM64_ERRATUM_3312417
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
--#endif
- 	{}
- };
- #endif
-@@ -738,7 +734,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
- 		.cpu_enable = cpu_clear_bf16_from_user_emulation,
- 	},
- #endif
--#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
-+#ifdef CONFIG_ARM64_ERRATUM_3194386
- 	{
- 		.desc = "ARM errata 3194386, 3312417",
- 		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
-diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
-index e476692cea976..2df5e43ae4d14 100644
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -579,7 +579,7 @@ static enum mitigation_state spectre_v4_enable_hw_mitigation(void)
- 	 * Mitigate this with an unconditional speculation barrier, as CPUs
- 	 * could mis-speculate branches and bypass a conditional barrier.
- 	 */
--	if (IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS))
-+	if (IS_ENABLED(CONFIG_ARM64_ERRATUM_3194386))
- 		spec_bar();
- 
- 	return SPECTRE_MITIGATED;
+diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
+index dd9013c476649..6d1ce030963c6 100644
+--- a/sound/soc/sti/uniperif_player.c
++++ b/sound/soc/sti/uniperif_player.c
+@@ -1038,6 +1038,7 @@ static const struct snd_soc_dai_ops uni_player_dai_ops = {
+ 		.startup = uni_player_startup,
+ 		.shutdown = uni_player_shutdown,
+ 		.prepare = uni_player_prepare,
++		.probe = sti_uniperiph_dai_probe,
+ 		.trigger = uni_player_trigger,
+ 		.hw_params = sti_uniperiph_dai_hw_params,
+ 		.set_fmt = sti_uniperiph_dai_set_fmt,
+diff --git a/sound/soc/sti/uniperif_reader.c b/sound/soc/sti/uniperif_reader.c
+index 065c5f0d1f5f0..05ea2b794eb92 100644
+--- a/sound/soc/sti/uniperif_reader.c
++++ b/sound/soc/sti/uniperif_reader.c
+@@ -401,6 +401,7 @@ static const struct snd_soc_dai_ops uni_reader_dai_ops = {
+ 		.startup = uni_reader_startup,
+ 		.shutdown = uni_reader_shutdown,
+ 		.prepare = uni_reader_prepare,
++		.probe = sti_uniperiph_dai_probe,
+ 		.trigger = uni_reader_trigger,
+ 		.hw_params = sti_uniperiph_dai_hw_params,
+ 		.set_fmt = sti_uniperiph_dai_set_fmt,
 -- 
 2.43.0
 
