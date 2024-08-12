@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-66881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B10894F2E9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8135494F394
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6AB0B24F2B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13BE1283DC3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06FE187332;
-	Mon, 12 Aug 2024 16:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493D3187341;
+	Mon, 12 Aug 2024 16:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzHdyTgX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsGgTnHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E226186E47;
-	Mon, 12 Aug 2024 16:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DBD186E34;
+	Mon, 12 Aug 2024 16:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479089; cv=none; b=FhoZyzLgmdLGY1QQ+7kFxsmX03GxZoSFagF2GlXH/2bLyfLpWnJC2O/2kIurJh6l42uSID/x81NcKfYHZ1ymz+9EZSgBe5825FwR2n5vi8NTRSsgWI7BuVvo6XS3kRM/9IaorgxRmF3kh1vJ9kaTSBFpm5wQZ5CfzQnO1iO2aU8=
+	t=1723479559; cv=none; b=h+wAK65rrX7YowGFjpK34cnugqS1BRMbWh8xaP2TgGd3txon/YX8FZeXFCbvHlg5DDfciwcT79XqO1T5np/UA+UYUm1VHAotTrBbeoseT7juUI9WMGNCErZrsFnU8Zen7clYV6Z8tBve67DbX4d5amPDdWYFX7ham63Mr6eOAhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479089; c=relaxed/simple;
-	bh=EoXXmKfwKdVGvVfUrKHKW1vLuDsZ8TeR3JyoINcye6A=;
+	s=arc-20240116; t=1723479559; c=relaxed/simple;
+	bh=WEsIgVedHdwiW1V8tOQFRNUgseh9A756+hI4uqitE84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUFL8JlyPUzN8JHzcWI3Z/Rk5rAvanTy9EZp34J0j3HUKWRJmvDdLIiNJQwTkkpm2ZG8pRU/bWJI6ouuv0KoZcQPi5XbD0HKo0pgZXQ6Y8uZGtBUKc+J2TMd+6jCstKfB0hxPJYAzEpaahFt+KCRYDdfCpj8u/Mk55kslvG0Txw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzHdyTgX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01F1C32782;
-	Mon, 12 Aug 2024 16:11:28 +0000 (UTC)
+	 MIME-Version; b=PCr9/BVn9wRWJZDWYKR97wjCR8DPUnqhtvjhcBTj+F1pRqpK19wwBx5Q+HaWgbNdkc2f+85qECFIN6e6rhbVd8WUL0GJ/ycLi7NwwHZ8oXcqqgNnmEN9i9qpo6sawA4N5bJD+i6nusncvAu2gGOVHhIfj2IJznzsU89I0cO/bMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsGgTnHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBCDC4AF15;
+	Mon, 12 Aug 2024 16:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479089;
-	bh=EoXXmKfwKdVGvVfUrKHKW1vLuDsZ8TeR3JyoINcye6A=;
+	s=korg; t=1723479558;
+	bh=WEsIgVedHdwiW1V8tOQFRNUgseh9A756+hI4uqitE84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SzHdyTgX1u9XnmbzeZWZww5gO5oC8lW4Ub2dI8eJKFSJz5pzZGHYeVw/r+bjhhywC
-	 F34g9yB/YVQg5dsG8MMv1PWqsVuKrQPRXjUdr8Li7bdgcwplVRPQX+j9MKnWm5oGHo
-	 GTfUDRH56kMZwd11Uvo0q852n8Ey6Jti0AOUDj/Y=
+	b=lsGgTnHhcWrQJR/ZS8VYmp5XuYk0bGZi0YFiGFT+16eXl7uUYf+nL9GMXCrlCI+ih
+	 /JZbnPQNHQq2UVU0P8/dVJmLf7Q1l0ws78W1RRXGHThv4+ApfBmwYuV/iljI9l5a1V
+	 HClkZUFWqqYr++RKpAWpZEsyK/7Mjd3MUHBcLXME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Damien Le Moal <dlemoal@kernel.org>,
 	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 098/150] scsi: mpi3mr: Avoid IOMMU page faults on REPORT ZONES
+Subject: [PATCH 6.6 123/189] scsi: mpi3mr: Avoid IOMMU page faults on REPORT ZONES
 Date: Mon, 12 Aug 2024 18:02:59 +0200
-Message-ID: <20240812160128.942948810@linuxfoundation.org>
+Message-ID: <20240812160136.879656736@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -110,7 +110,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/scsi/mpi3mr/mpi3mr_os.c
 +++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -3389,6 +3389,17 @@ static int mpi3mr_prepare_sg_scmd(struct
+@@ -3447,6 +3447,17 @@ static int mpi3mr_prepare_sg_scmd(struct
  		    scmd->sc_data_direction);
  		priv->meta_sg_valid = 1; /* To unmap meta sg DMA */
  	} else {
