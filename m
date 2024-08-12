@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D5794F054
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:49:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7FC94F055
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35B031C21FDB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:49:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BA601F21B18
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7C4183CBA;
-	Mon, 12 Aug 2024 14:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C259183092;
+	Mon, 12 Aug 2024 14:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/N+sFm2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSJ+8la5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B491180032
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD13153BF6
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474125; cv=none; b=DBkvZqnSswwPODlXKWdVhCg9t5sA0ztbeacteXBkT7+LcsUP2qA5SRsZjlLYbQnskPwr2oevkNCA2KDEIBrIjpn6VvQMw25MItDh8G1vpRFjE2pLZM+NIhntvOvbfRoRA3M3+gznxCAuPDsYLnYm859oeoqYU6TB0+Uh8ysERNI=
+	t=1723474129; cv=none; b=bsjXEzVfnZPSA64fAHO/ptJNL969+fs0tNaL1SUcXreE/hbbH0UNQOzi8P+kAq1+/PlDYCeK0d1ZWDZXfiJKWTmw1p+fy+/lHlXns/KA8gQQKWeney9Pq72oUetLfBa+/f5ByGIT1Lf2aZX24P2zXQ3ggHyNFywPdCXnN7r9vxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474125; c=relaxed/simple;
-	bh=uqSxiY3OuxXDPaQk68TiYaRT84rfftrFZoZFqz/s9oA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RQ57CwCzVCiP3v/gMdVKeGMSoE/msXB3UCW3WSppINTGSqPaFEPlvn+vhQSFla+Hn2aHol5aCVccE7OFcyjieKzqtKqc/tvkH/ggJyBE6b205iflOSJRZuLvpUqOciu3qS8S5gWjHvl9E2Ena3ZtQpxsB6suJnDJbDxCnd5dmRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/N+sFm2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE7BC32782;
-	Mon, 12 Aug 2024 14:48:44 +0000 (UTC)
+	s=arc-20240116; t=1723474129; c=relaxed/simple;
+	bh=la/reKqI9ROuYIi+Ubm5zPHXZMexx45YL9zzC/FeQV8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SO7hwDMhxOzts0WdVVaKKMkRBH2PJzr/xWf6vtHMQb6M5E6xvh/WjAVXkC9NE/oTTrZIC1OYI620ZXjjjXM9vuPs+4me4EN2rUK1/OGf+WFMCGOPlSeQ/CdsWAZUv7TMelHQx8i/n3NWfnDDTlchVapx0L4PkTvf4IoFcjnbaMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSJ+8la5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D0A9C32782;
+	Mon, 12 Aug 2024 14:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474125;
-	bh=uqSxiY3OuxXDPaQk68TiYaRT84rfftrFZoZFqz/s9oA=;
+	s=korg; t=1723474128;
+	bh=la/reKqI9ROuYIi+Ubm5zPHXZMexx45YL9zzC/FeQV8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=A/N+sFm2rY+VdTkfFLYHqUMLWTdEsCsRZaX1vKC4PlgvNCR5hF/GBAtKVrkm/eh86
-	 YUQ3Kvsl8oL2zddW4SZKyVcyxyTKNgYevEe1HSIav1syQ0NXz/h2PmKsqS74OO3BVC
-	 c/oy1weVwfP1my+VLLJVfkUiplIIhufg+wIPtS7I=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Make DML2.1 P-State method force per stream" failed to apply to 5.4-stable tree
-To: dillon.varone@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
+	b=eSJ+8la5Weqid6MrPFhChjrnqm9pRC4ikJtGNnGCZTiCRDFWErcYbDABDfxt9H9j7
+	 krpNQIspbKo287Sppu+bsVsfOd4RNuBNhMJ+VF6tnH8IPfzA/vYi0N3zPqP91njQ67
+	 7l9dEH9c2YstHWWj2XugP8K6Jd6PZGC5f36hVa10=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Program CURSOR_DST_X_OFFSET in viewport" failed to apply to 6.10-stable tree
+To: alvin.lee2@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,nevenko.stupar@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:47:58 +0200
-Message-ID: <2024081257-viewing-accuracy-5a4b@gregkh>
+Date: Mon, 12 Aug 2024 16:48:04 +0200
+Message-ID: <2024081204-unplug-account-731a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 020fccbe8fe7552e57804bba0c7578d227f561c2
+git cherry-pick -x e1e75cf7334c0e31f4c37d715b964784d45685fa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081257-viewing-accuracy-5a4b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081204-unplug-account-731a@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-020fccbe8fe7 ("drm/amd/display: Make DML2.1 P-State method force per stream")
-00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
-da87132f641e ("drm/amd/display: Add some DCN401 reg name to macro definitions")
+e1e75cf7334c ("drm/amd/display: Program CURSOR_DST_X_OFFSET in viewport space")
+ee8287e068a3 ("drm/amd/display: Fix cursor issues with ODMs and HW rotations")
+319d4615518c ("drm/amd/display: mirror case cleanup for cursors")
+dd9d8c61ccff ("drm/amd/display: Minor cleanup for DCN401 cursor related code")
+ed79ab5a07c1 ("drm/amd/display: DCN401 cusor code update")
+827416d45476 ("drm/amd/display: Fix multiple cursors when using 4 displays on a contiguous large surface")
+c2edec1676ca ("drm/amd/display: Fix incorrect cursor position for dcn401")
+44b9a7cfc035 ("drm/amd/display: Fix ODM + underscan case with cursor")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
-ef319dff5475 ("drm/amd/display: add support for chroma offset")
-a41aa6a7d0a6 ("drm/amd/display: Add comments to improve the code readability")
-5324e2b205a2 ("drm/amd/display: Add driver support for future FAMS versions")
-f3736c0d979a ("drm/amd/display: Add code comments clock and encode code")
-8b2cb32cf0c6 ("drm/amd/display: FEC overhead should be checked once for mst slot nums")
-4df96ba66760 ("drm/amd/display: Add timing pixel encoding for mst mode validation")
-2dbe9c2b2685 ("drm/amd/display: add DCN 351 version for microcode load")
-1c5c36530a57 ("drm/amd/display: Set DCN351 BB and IP the same as DCN35")
-5034b935f62a ("drm/amd/display: Modify DHCUB waterwark structures and functions")
-9d43241953f7 ("drm/amd/display: Refactor DML2 interfaces")
-8cffa89bd5e2 ("drm/amd/display: Expand DML2 callbacks")
-2d5bb791e24f ("drm/amd/display: Implement update_planes_and_stream_v3 sequence")
-88867807564e ("drm/amd/display: Refactor DPP into a component directory")
-eed4edda910f ("drm/amd/display: Support long vblank feature")
-caef6c453cf2 ("drm/amd/display: Add DML2 folder to include path")
-2d7f3d1a5866 ("drm/amd/display: Implement wait_for_odm_update_pending_complete")
 
 thanks,
 
@@ -96,76 +85,58 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 020fccbe8fe7552e57804bba0c7578d227f561c2 Mon Sep 17 00:00:00 2001
-From: Dillon Varone <dillon.varone@amd.com>
-Date: Thu, 13 Jun 2024 12:08:16 -0400
-Subject: [PATCH] drm/amd/display: Make DML2.1 P-State method force per stream
+From e1e75cf7334c0e31f4c37d715b964784d45685fa Mon Sep 17 00:00:00 2001
+From: Alvin Lee <alvin.lee2@amd.com>
+Date: Thu, 13 Jun 2024 16:10:16 -0400
+Subject: [PATCH] drm/amd/display: Program CURSOR_DST_X_OFFSET in viewport
+ space
 
-[WHY & HOW]
-Currently the force only works for a single display, make it so it can
-be forced per stream.
+[WHAT & HOW]
+According to register specifications, the CURSOR_DST_X_OFFSET
+is relative to the start of the data viewport, not RECOUT space.
+In this case we must transform the cursor coordinates passed to
+hubp401_cursor_set_position into viewport space to program this
+register. This fixes an underflow issue that occurs in scaled
+mode with low refresh rate.
 
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index d0d1af451b64..e0334b573f2d 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -1038,7 +1038,7 @@ struct dc_debug_options {
- 	bool force_chroma_subsampling_1tap;
- 	bool disable_422_left_edge_pixel;
- 	bool dml21_force_pstate_method;
--	uint32_t dml21_force_pstate_method_value;
-+	uint32_t dml21_force_pstate_method_values[MAX_PIPES];
- 	uint32_t dml21_disable_pstate_method_mask;
- 	union dmub_fams2_global_feature_config fams2_config;
- 	bool enable_legacy_clock_update;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-index d5ead0205053..06387b8b0aee 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-@@ -1000,7 +1000,7 @@ bool dml21_map_dc_state_into_dml_display_cfg(const struct dc *in_dc, struct dc_s
- 				/* apply forced pstate policy */
- 				if (dml_ctx->config.pmo.force_pstate_method_enable) {
- 					dml_dispcfg->plane_descriptors[disp_cfg_plane_location].overrides.uclk_pstate_change_strategy =
--							dml21_force_pstate_method_to_uclk_state_change_strategy(dml_ctx->config.pmo.force_pstate_method_value);
-+							dml21_force_pstate_method_to_uclk_state_change_strategy(dml_ctx->config.pmo.force_pstate_method_values[stream_index]);
- 				}
- 			}
- 		}
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-index 9c28304568d2..c310354cd5fc 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-@@ -47,7 +47,8 @@ static void dml21_apply_debug_options(const struct dc *in_dc, struct dml2_contex
- 	/* UCLK P-State options */
- 	if (in_dc->debug.dml21_force_pstate_method) {
- 		dml_ctx->config.pmo.force_pstate_method_enable = true;
--		dml_ctx->config.pmo.force_pstate_method_value = in_dc->debug.dml21_force_pstate_method_value;
-+		for (int i = 0; i < MAX_PIPES; i++)
-+			dml_ctx->config.pmo.force_pstate_method_values[i] = in_dc->debug.dml21_force_pstate_method_values[i];
- 	} else {
- 		dml_ctx->config.pmo.force_pstate_method_enable = false;
- 	}
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
-index 79bf2d757804..1e891a3297c2 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
-@@ -230,7 +230,7 @@ struct dml2_configuration_options {
- 	struct socbb_ip_params_external *external_socbb_ip_params;
- 	struct {
- 		bool force_pstate_method_enable;
--		enum dml2_force_pstate_methods force_pstate_method_value;
-+		enum dml2_force_pstate_methods force_pstate_method_values[MAX_PIPES];
- 	} pmo;
- 	bool map_dc_pipes_with_callbacks;
+diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
+index a893160ae775..3f9ca9b40949 100644
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
+@@ -656,7 +656,9 @@ void hubp401_cursor_set_position(
+ 	int y_pos = pos->y - param->recout.y;
+ 	int rec_x_offset = x_pos - pos->x_hotspot;
+ 	int rec_y_offset = y_pos - pos->y_hotspot;
+-	uint32_t dst_x_offset;
++	int dst_x_offset;
++	int x_pos_viewport = x_pos * param->viewport.width / param->recout.width;
++	int x_hot_viewport = pos->x_hotspot * param->viewport.width / param->recout.width;
+ 	uint32_t cur_en = pos->enable ? 1 : 0;
+ 
+ 	hubp->curs_pos = *pos;
+@@ -668,7 +670,13 @@ void hubp401_cursor_set_position(
+ 	if (hubp->curs_attr.address.quad_part == 0)
+ 		return;
+ 
+-	dst_x_offset = (rec_x_offset >= 0) ? rec_x_offset : 0;
++	/* Translate the x position of the cursor from rect
++	 * space into viewport space. CURSOR_DST_X_OFFSET
++	 * is the offset relative to viewport start position.
++	 */
++	dst_x_offset = x_pos_viewport - x_hot_viewport *
++			(1 + hubp->curs_attr.attribute_flags.bits.ENABLE_MAGNIFICATION);
++	dst_x_offset = (dst_x_offset >= 0) ? dst_x_offset : 0;
+ 	dst_x_offset *= param->ref_clk_khz;
+ 	dst_x_offset /= param->pixel_clk_khz;
  
 
 
