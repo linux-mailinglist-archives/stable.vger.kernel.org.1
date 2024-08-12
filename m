@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-67100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08AE94F3E4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2F094F4D4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817411F2189E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC6271C20E78
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15759134AC;
-	Mon, 12 Aug 2024 16:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2424A16D9B8;
+	Mon, 12 Aug 2024 16:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvxEwISL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gb36B6uT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95E0183CA6;
-	Mon, 12 Aug 2024 16:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DC81494B8;
+	Mon, 12 Aug 2024 16:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479807; cv=none; b=tAKvDBzS25y8GQMjgbgJPbN8DecXEGTdIUGP8107IgAr0vm+em/jK9AqDKlBMe+0HzTZqC1dPTrO7czhBVS4g/R5nXSpVSCgv+ycBYtNrjJToVcipfdW7InIGvMWVMyVggKvy4QOxiA7xiArwJmngDtSutFxZY188wBY/9pU+Vw=
+	t=1723480504; cv=none; b=cSRIJT1BC/j7nv0iIOoiRvxRfWKAURo1us2MbebWW8b7aUpFORm12Aactu5Z24i2dvadrMvDgGesRySnOi2HRCr84l5boyiLtPQtX/O97I1JAlkXreqMZWIbTywvqDmszVQlYwnDwziyHkjN4TB1Q/M2KO+xGPet66976vm9SjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479807; c=relaxed/simple;
-	bh=Q95F1W2qq60hEXPla5iz6VrDQBmgPG3RL3Q+q3zcxRA=;
+	s=arc-20240116; t=1723480504; c=relaxed/simple;
+	bh=Kxiyg6k5nTwK+tUvJoGkws7w9XnHxM/6xz+8hfnywIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BjnAd1ke5vllbKA/jIyPD4oKgkDl4xLOc2rwo88K0Fru0bF6IXCrvAYeh9uxINxWnWlLrshJiqhrZuR7IZEWRlsMxJK9XoEkrjrE917ALfrBraGg4igQNauIasswAAyIfQ2pFOdjKMWR4Z9E8hMRl++GjZlp+eYGNBf3koxbDMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvxEwISL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BA6C32782;
-	Mon, 12 Aug 2024 16:23:26 +0000 (UTC)
+	 MIME-Version; b=nAXY96SfRcq+Wz9KD4MZlTgTWu965JwTbZSPsJAZ2wsSzVjR8EwOUypvRxq3ArrryMpqrk6c9uR51+oK/rSjHVxOc/ZmtkL4+TEmdCZWxC7L6QFTl1ttAQZWuek0HxKGxocJIT6xb1BtvsZGUFDcmcoplTd9XJJQ/Kzb6HeY034=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gb36B6uT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553D1C32782;
+	Mon, 12 Aug 2024 16:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479807;
-	bh=Q95F1W2qq60hEXPla5iz6VrDQBmgPG3RL3Q+q3zcxRA=;
+	s=korg; t=1723480504;
+	bh=Kxiyg6k5nTwK+tUvJoGkws7w9XnHxM/6xz+8hfnywIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EvxEwISLsX+DTs18069cyxmRsYj66+5QxMiupTqmsO5rtZAz4WJkoNbmQvk6t/ZzK
-	 WzIoQQFD9fmUg1JiecKxpZqBkLLbekzeYnMrVmX0IpW1h+5k1oLGUXVf5Rf7fk6cup
-	 T6Ix5HHRZ9RNiXmcV1gfQTBM1lK96DSKKVMJiyQo=
+	b=gb36B6uT0E45dMlRsUvoudUPuuxSMaQILY8ez1ejN+fify7Z6M6uuOr/xtl4zQDgY
+	 jALH11cNGpTbeAB26HHz7hldnSbLoryGnPeBFlQMCaIlO/gsAcF2TSOUu08hcnDQda
+	 SgZ29e+1cbNbyBAeU5qKG5eWSVCDsX5qVRuWuj0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.6 160/189] sched/core: Fix unbalance set_rq_online/offline() in sched_cpu_deactivate()
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.10 215/263] parisc: fix a possible DMA corruption
 Date: Mon, 12 Aug 2024 18:03:36 +0200
-Message-ID: <20240812160138.300787886@linuxfoundation.org>
+Message-ID: <20240812160154.774541840@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit fe7a11c78d2a9bdb8b50afc278a31ac177000948 upstream.
+commit 7ae04ba36b381bffe2471eff3a93edced843240f upstream.
 
-If cpuset_cpu_inactive() fails, set_rq_online() need be called to rollback.
+ARCH_DMA_MINALIGN was defined as 16 - this is too small - it may be
+possible that two unrelated 16-byte allocations share a cache line. If
+one of these allocations is written using DMA and the other is written
+using cached write, the value that was written with DMA may be
+corrupted.
 
-Fixes: 120455c514f7 ("sched: Fix hotplug vs CPU bandwidth control")
-Cc: stable@kernel.org
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240703031610.587047-5-yangyingliang@huaweicloud.com
+This commit changes ARCH_DMA_MINALIGN to be 128 on PA20 and 32 on PA1.1 -
+that's the largest possible cache line size.
+
+As different parisc microarchitectures have different cache line size, we
+define arch_slab_minalign(), cache_line_size() and
+dma_get_cache_alignment() so that the kernel may tune slab cache
+parameters dynamically, based on the detected cache line size.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/parisc/Kconfig             |    1 +
+ arch/parisc/include/asm/cache.h |   11 ++++++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9773,6 +9773,7 @@ int sched_cpu_deactivate(unsigned int cp
- 	ret = cpuset_cpu_inactive(cpu);
- 	if (ret) {
- 		sched_smt_present_inc(cpu);
-+		sched_set_rq_online(rq, cpu);
- 		balance_push_set(cpu, false);
- 		set_cpu_active(cpu, true);
- 		sched_update_numa(cpu, true);
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -20,6 +20,7 @@ config PARISC
+ 	select ARCH_SUPPORTS_HUGETLBFS if PA20
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+ 	select ARCH_STACKWALK
++	select ARCH_HAS_CACHE_LINE_SIZE
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select HAVE_RELIABLE_STACKTRACE
+ 	select DMA_OPS
+--- a/arch/parisc/include/asm/cache.h
++++ b/arch/parisc/include/asm/cache.h
+@@ -20,7 +20,16 @@
+ 
+ #define SMP_CACHE_BYTES L1_CACHE_BYTES
+ 
+-#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
++#ifdef CONFIG_PA20
++#define ARCH_DMA_MINALIGN	128
++#else
++#define ARCH_DMA_MINALIGN	32
++#endif
++#define ARCH_KMALLOC_MINALIGN	16	/* ldcw requires 16-byte alignment */
++
++#define arch_slab_minalign()	((unsigned)dcache_stride)
++#define cache_line_size()	dcache_stride
++#define dma_get_cache_alignment cache_line_size
+ 
+ #define __read_mostly __section(".data..read_mostly")
+ 
 
 
 
