@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-67170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E1094F431
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC9A94F436
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 109E71F21417
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D421F21187
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C44E186E20;
-	Mon, 12 Aug 2024 16:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9F5183CD9;
+	Mon, 12 Aug 2024 16:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3GF8Gwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JuYS1fU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AED0134AC;
-	Mon, 12 Aug 2024 16:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3547134AC;
+	Mon, 12 Aug 2024 16:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480038; cv=none; b=rczFipSLAQ/G4POLyEcW/dO3p3ymbTWn48z1HW1JRaUGiSy6z+eGNGvqtqvtDzSB8vD24mGBRo+WbpDAgWz113/ZOL0x6qIc+aaXymDghV/t/2927/6mdgnsn7V5NOZCunroKSDil0E37SrQlLHfjuDoAVE4ntbsAnSg2GEmRW4=
+	t=1723480055; cv=none; b=Dhs5mk3Ndy2ckGqemrPPnvOutLj+kuv7UZAZ7e0TG8AxGKdAGnMjDOcPWO3iPmQEY06NKStW5xz00TRY/5BS/8zi0oYtTiNzKJ/p/GRoIBSAABue6P+Mj0mgNlJ0HS+DqMsF1J22cBF+y2VpzLT+QxYeIEb0XQjyBudqZNSICzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480038; c=relaxed/simple;
-	bh=sKronyGZMbyPyjZM2OF9KXQ5w991eVZGrRaIBQB1KTo=;
+	s=arc-20240116; t=1723480055; c=relaxed/simple;
+	bh=M/mjjDBaV9PEI538eYsAY5CXcVFzcfFqQQ2L2yMNYcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjX5rpMjyXUOj4LznXkouy7sW5maDXZoFxjdoOgle4bu/kG7iAoLXsT8lwRqlgFBuZEpzZ2MVPzo0ER9Us+HYBTCwLsP/yAJQG3yzuavKQDsFw2zCXyrzDZWXKT7LiNN3MioSA529PR+NQh5jL6kkW0Qk0XnzG6oPSkWtwPDKDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3GF8Gwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97E7C4AF09;
-	Mon, 12 Aug 2024 16:27:17 +0000 (UTC)
+	 MIME-Version; b=tBPT6TibfC3JPu+0Wig/OP6RdzPKfbGl7jleLFCN7COcg+Ty7mjFlBhv2b5w28N1hgrGvyfh2sGjtSXJVLCVy23Ofztoqd0XGZCqg7mWCAU9GHwOIuta5f3WO0Xp/vjDwqegia8ZSeuzcCQVPBDjiJuJS7qqecnHUJZoFKIJ7CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JuYS1fU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52336C32782;
+	Mon, 12 Aug 2024 16:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480038;
-	bh=sKronyGZMbyPyjZM2OF9KXQ5w991eVZGrRaIBQB1KTo=;
+	s=korg; t=1723480054;
+	bh=M/mjjDBaV9PEI538eYsAY5CXcVFzcfFqQQ2L2yMNYcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u3GF8GweMuS+mJGvGchH/JFaVjIaXTMqb9v7Cbi6NWEvcHzuhHQN+25D8nRVJnSHP
-	 cWItNQRnRmQN8USW/LG2zDoVpvlIg5d4CoCQuHTBc2sUQgr+MWXiLo5Iw8T3dd1q27
-	 Ug1QvBp5Ho8hY4rtQORBVGrZ3nrwn7ETaFe44Qi8=
+	b=0JuYS1fUAiroziL143MM5fPg7squZ0vtsdKCnXjqxH/SYXb/G2Lo3dvWu5c0vyHqx
+	 2G/sBOaSEFlO5I9rwWz+eshr0AWjzpK2GU1EianA686d2ihVHqD3lEeym+Ss8hnhrT
+	 97be87V11ME+aL7cnu/ha/0vn8XaOFBzJujsrWKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Anuj Gupta <anuj20.g@samsung.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 050/263] nvme: apple: fix device reference counting
-Date: Mon, 12 Aug 2024 18:00:51 +0200
-Message-ID: <20240812160148.459619291@linuxfoundation.org>
+Subject: [PATCH 6.10 051/263] block: change rq_integrity_vec to respect the iterator
+Date: Mon, 12 Aug 2024 18:00:52 +0200
+Message-ID: <20240812160148.497665856@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -67,85 +69,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit b9ecbfa45516182cd062fecd286db7907ba84210 ]
+[ Upstream commit cf546dd289e0f6d2594c25e2fb4e19ee67c6d988 ]
 
-Drivers must call nvme_uninit_ctrl after a successful nvme_init_ctrl.
-Split the allocation side out to make the error handling boundary easier
-to navigate. The apple driver had been doing this wrong, leaking the
-controller device memory on a tagset failure.
+If we allocate a bio that is larger than NVMe maximum request size,
+attach integrity metadata to it and send it to the NVMe subsystem, the
+integrity metadata will be corrupted.
 
+Splitting the bio works correctly. The function bio_split will clone the
+bio, trim the iterator of the first bio and advance the iterator of the
+second bio.
+
+However, the function rq_integrity_vec has a bug - it returns the first
+vector of the bio's metadata and completely disregards the metadata
+iterator that was advanced when the bio was split. Thus, the second bio
+uses the same metadata as the first bio and this leads to metadata
+corruption.
+
+This commit changes rq_integrity_vec, so that it calls mp_bvec_iter_bvec
+instead of returning the first vector. mp_bvec_iter_bvec reads the
+iterator and uses it to build a bvec for the current position in the
+iterator.
+
+The "queue_max_integrity_segments(rq->q) > 1" check was removed, because
+the updated rq_integrity_vec function works correctly with multiple
+segments.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/r/49d1afaa-f934-6ed2-a678-e0d428c63a65@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/apple.c | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/nvme/host/pci.c       |  6 +++---
+ include/linux/blk-integrity.h | 14 +++++++-------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/nvme/host/apple.c b/drivers/nvme/host/apple.c
-index 0cfa39361d3b6..25ecc1a005c5a 100644
---- a/drivers/nvme/host/apple.c
-+++ b/drivers/nvme/host/apple.c
-@@ -1388,7 +1388,7 @@ static void devm_apple_nvme_mempool_destroy(void *data)
- 	mempool_destroy(data);
- }
- 
--static int apple_nvme_probe(struct platform_device *pdev)
-+static struct apple_nvme *apple_nvme_alloc(struct platform_device *pdev)
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 5a93f021ca4f1..7168ff4cc62bb 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -826,9 +826,9 @@ static blk_status_t nvme_map_metadata(struct nvme_dev *dev, struct request *req,
+ 		struct nvme_command *cmnd)
  {
- 	struct device *dev = &pdev->dev;
- 	struct apple_nvme *anv;
-@@ -1396,7 +1396,7 @@ static int apple_nvme_probe(struct platform_device *pdev)
+ 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
++	struct bio_vec bv = rq_integrity_vec(req);
  
- 	anv = devm_kzalloc(dev, sizeof(*anv), GFP_KERNEL);
- 	if (!anv)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
+-	iod->meta_dma = dma_map_bvec(dev->dev, rq_integrity_vec(req),
+-			rq_dma_dir(req), 0);
++	iod->meta_dma = dma_map_bvec(dev->dev, &bv, rq_dma_dir(req), 0);
+ 	if (dma_mapping_error(dev->dev, iod->meta_dma))
+ 		return BLK_STS_IOERR;
+ 	cmnd->rw.metadata = cpu_to_le64(iod->meta_dma);
+@@ -968,7 +968,7 @@ static __always_inline void nvme_pci_unmap_rq(struct request *req)
+ 	        struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
  
- 	anv->dev = get_device(dev);
- 	anv->adminq.is_adminq = true;
-@@ -1516,10 +1516,26 @@ static int apple_nvme_probe(struct platform_device *pdev)
- 		goto put_dev;
+ 		dma_unmap_page(dev->dev, iod->meta_dma,
+-			       rq_integrity_vec(req)->bv_len, rq_dma_dir(req));
++			       rq_integrity_vec(req).bv_len, rq_dma_dir(req));
  	}
  
-+	return anv;
-+put_dev:
-+	put_device(anv->dev);
-+	return ERR_PTR(ret);
-+}
-+
-+static int apple_nvme_probe(struct platform_device *pdev)
-+{
-+	struct apple_nvme *anv;
-+	int ret;
-+
-+	anv = apple_nvme_alloc(pdev);
-+	if (IS_ERR(anv))
-+		return PTR_ERR(anv);
-+
- 	anv->ctrl.admin_q = blk_mq_alloc_queue(&anv->admin_tagset, NULL, NULL);
- 	if (IS_ERR(anv->ctrl.admin_q)) {
- 		ret = -ENOMEM;
--		goto put_dev;
-+		anv->ctrl.admin_q = NULL;
-+		goto out_uninit_ctrl;
- 	}
- 
- 	nvme_reset_ctrl(&anv->ctrl);
-@@ -1527,8 +1543,9 @@ static int apple_nvme_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--put_dev:
--	put_device(anv->dev);
-+out_uninit_ctrl:
-+	nvme_uninit_ctrl(&anv->ctrl);
-+	nvme_put_ctrl(&anv->ctrl);
- 	return ret;
+ 	if (blk_rq_nr_phys_segments(req))
+diff --git a/include/linux/blk-integrity.h b/include/linux/blk-integrity.h
+index 7428cb43952da..d16dd24719841 100644
+--- a/include/linux/blk-integrity.h
++++ b/include/linux/blk-integrity.h
+@@ -100,14 +100,13 @@ static inline bool blk_integrity_rq(struct request *rq)
  }
  
+ /*
+- * Return the first bvec that contains integrity data.  Only drivers that are
+- * limited to a single integrity segment should use this helper.
++ * Return the current bvec that contains the integrity data. bip_iter may be
++ * advanced to iterate over the integrity data.
+  */
+-static inline struct bio_vec *rq_integrity_vec(struct request *rq)
++static inline struct bio_vec rq_integrity_vec(struct request *rq)
+ {
+-	if (WARN_ON_ONCE(queue_max_integrity_segments(rq->q) > 1))
+-		return NULL;
+-	return rq->bio->bi_integrity->bip_vec;
++	return mp_bvec_iter_bvec(rq->bio->bi_integrity->bip_vec,
++				 rq->bio->bi_integrity->bip_iter);
+ }
+ #else /* CONFIG_BLK_DEV_INTEGRITY */
+ static inline int blk_rq_count_integrity_sg(struct request_queue *q,
+@@ -169,7 +168,8 @@ static inline int blk_integrity_rq(struct request *rq)
+ 
+ static inline struct bio_vec *rq_integrity_vec(struct request *rq)
+ {
+-	return NULL;
++	/* the optimizer will remove all calls to this function */
++	return (struct bio_vec){ };
+ }
+ #endif /* CONFIG_BLK_DEV_INTEGRITY */
+ #endif /* _LINUX_BLK_INTEGRITY_H */
 -- 
 2.43.0
 
