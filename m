@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF6D94F06A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE5B94F06B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF29D282A8F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:50:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D34E281BB7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E9C18132A;
-	Mon, 12 Aug 2024 14:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102FE183094;
+	Mon, 12 Aug 2024 14:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7H2fYbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjD8JIX0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83941172773
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C481C172773
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474187; cv=none; b=N9yMUU44ZCnTV66K0exfz4rxDyu5c8lfQ+pupugK+mbvKFt+5fFp8bD+fRZ5KV6GIK+9q0VbyFaY6uxJALOE8+vI3V1/8y+fTEENrpVOuAto9NlXwTqi8ONRVsJ7rixtyaJOWkQhNkhYL2l3nTT7FUfo+3vAU6oAd/BWlgDt/ag=
+	t=1723474190; cv=none; b=INVAmdPMvYHRr2Dcc/cvGmtTwcgpTnzYAa8CEJyWqiFWbY/aqo3bw8w2J7kQC2Rziokb3iKVmu+vnjiFC54EbVVLnrGNQRoWLimttYgnXrXZxbm/U1p+CBZLp6o9eQRRNpfEkoyDc6GGNuhSWQzCDaNRO0sBQnb2Qq5uS4CVwwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474187; c=relaxed/simple;
-	bh=9nE2ldbr8gSyt9KvKC9RrY9oMwJ+RKSN2lst6gGVGgM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b1J2bW4amrw8oMxFDg8QsuaxevFa3HUr5k69CyhcOSA0VDIa5hvm9xA0qn1CDyAUE6t56XfUFNKCyO4XH3QvpbtwX68nWT7YxQPCF07r98odus1CxpHss+WHB9ym6qHVK6L6FJgI117PdYwevCWZH9MPOGyUxf8bLR/sa8Fz1mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7H2fYbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E790EC32782;
-	Mon, 12 Aug 2024 14:49:46 +0000 (UTC)
+	s=arc-20240116; t=1723474190; c=relaxed/simple;
+	bh=pAll9M/aelzL1e8RHN1W5A23+CMH+XexyFTu9SLGrhc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BFrofJJH2GEMU9nZdQWCfRIVEggSbEaIJKrYOgjXw5r0KouXhvR25etjcrrCQuOPErHCDgqWVqv3u73uKhC4sQdjKfemN8HoyTTYaLxJwQ+sXWyC6KwUEdTnOKKBqjBMKjMVF/rc0bSUVfNA8jfU631RGJjjUtcF+d3SoHLVfyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjD8JIX0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40827C32782;
+	Mon, 12 Aug 2024 14:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474187;
-	bh=9nE2ldbr8gSyt9KvKC9RrY9oMwJ+RKSN2lst6gGVGgM=;
+	s=korg; t=1723474190;
+	bh=pAll9M/aelzL1e8RHN1W5A23+CMH+XexyFTu9SLGrhc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=s7H2fYbUUSdstvek/8+jf+Z69ivfsC6l2dHHZzYX0rFU6xkFsszXJwWE+kBBJXMeg
-	 MfmFvUVSjgljjVZHd8ckRkXdicw24qI3YFWZcuWQlaT2HlS4QHAKcY6INkpvCyWYEs
-	 e7KeAJV1Aq0A+6oM7d2Otgn5Wl1kV53LLXxEnGr0=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix 1DLUT setting for NL SDR blending" failed to apply to 5.10-stable tree
+	b=xjD8JIX0vHsydgDHUZsP1xX/0ZgGepHSAtDH+mToRMu2Ly/gFXcEiqn1JN92WW8dR
+	 9YujCKJ3hX8mZZfL6fCdeYVnsMye7o0aMjySQuFKsOOcb1+WzRCmsCv3hf3DQEuLs+
+	 P/L4zX8e9iKd950x+IChuW7DKpqfUCFDgQQO/TcM=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix 1DLUT setting for NL SDR blending" failed to apply to 5.4-stable tree
 To: relja.vojvodic@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,ilya.bakoulin@amd.co,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:48:27 +0200
-Message-ID: <2024081227-reclining-trimness-bdb3@gregkh>
+Date: Mon, 12 Aug 2024 16:48:28 +0200
+Message-ID: <2024081228-starring-pavilion-bc20@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,41 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 58acedd7849a238d2d06430b030b365cf069cca8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081227-reclining-trimness-bdb3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081228-starring-pavilion-bc20@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 58acedd7849a ("drm/amd/display: Fix 1DLUT setting for NL SDR blending")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
 
 thanks,
