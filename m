@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3C894F04E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:49:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D5E94F050
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31CBC1F23AB3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:49:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0815C1C21F95
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED58183CC2;
-	Mon, 12 Aug 2024 14:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D5F1862BB;
+	Mon, 12 Aug 2024 14:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRNBuFAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUowB47F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1A51862B4
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59684184524
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474106; cv=none; b=LukebxYXXBQllgL4eerRbrUnXJMr6nJ7Gif/W+yeNQCw3K4XagQpal7vYchgo2u9m0MJtG0yE73uuFlT8JXheKTsPavDSIVca6aS/qfPgXPu5GQtuZH91r8UC2Ub6CIdCS20kxWZlJTk8jYysqEzta7K74VBnng/6YJm3a7i2i0=
+	t=1723474112; cv=none; b=UEqFVkkwxt8Az7j7D8TtTVHh143G9eTODulmutDIQGnHAInZhZyP/VO0KLVJsKde8RzmdVxVgyEHOCu+iyipBZUZioypvektgCoarFEW841YPXBMKJrpuvikPwYfMpoY09RX/phGq+SGr+XOdeap1iZM4wIcxEEsA9fJz5aoJwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474106; c=relaxed/simple;
-	bh=olgBaKPWK9gh+Ctmy3vJkIfbySJKCeoqIXDxD/wb6AY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PGOnccuhLFF0PQCNHZ3R2pRSqY8ImjNjTY21WIBqelnVKZqXbnAIMatRWzbIm9MaWcqtV1ysLZdowGHXHK+0SZlq2OvabvTzbbbvSkLZLEGujqSapVRVJStr2PHNYtlfWNx+kTDkwMa67XJwxZYYJlX/lLIBmSf9eZjAq4iMzgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRNBuFAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86B6C32782;
-	Mon, 12 Aug 2024 14:48:25 +0000 (UTC)
+	s=arc-20240116; t=1723474112; c=relaxed/simple;
+	bh=qym6KzCIoj5S2obFQDoKytTuQAUrxISCz7CvXfhnf8E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ij/1E1pYGCFZEg/7vw0PnTvSAg0++xrx6t41ntMFhnlpI/RtRAphhzVz2MvVa4s3l+ZyL/D4Z/1088TWGNBfB3TTWLslEmJ/x7LDPY21Yc8wc0qkfYsXIKcvIBgCAOIa1ZAgpacvM6e3LlKcmfbMN9P3oubmvvyZPtWSdgjU4fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUowB47F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2DEC32782;
+	Mon, 12 Aug 2024 14:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474106;
-	bh=olgBaKPWK9gh+Ctmy3vJkIfbySJKCeoqIXDxD/wb6AY=;
+	s=korg; t=1723474112;
+	bh=qym6KzCIoj5S2obFQDoKytTuQAUrxISCz7CvXfhnf8E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VRNBuFAvKVnru5smJw1KMsRnD8EDCkT30wTExajSwWTR7/x6ixiv/fkI8mKkaCN8P
-	 cLcdQpHlKRzcoj/mzDULaGQd8o5DqabqaR0uUUCbYogKuO0ecWj3CGtObnHONyy02z
-	 N+BOQck/EkotqpSyRifeO3CkrIJLW/MlJZ1bsceU=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Make DML2.1 P-State method force per stream" failed to apply to 6.10-stable tree
+	b=zUowB47FTlwNNw71GD4Vi6jEukFUay1sj4WCPMJkFd8Z1+88J4n7JmBN2LqWgBU4o
+	 aLZ7H506qIXVbZ4Fo82i987bWWwZNfS1svYbkr86ZNcZR3ThWtwxOsg7wWjx5G0k3m
+	 5CBgdOjRJA65lh/NjqHSSJoJVUU2JkHIIQ1+pk+E=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Make DML2.1 P-State method force per stream" failed to apply to 6.6-stable tree
 To: dillon.varone@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:47:54 +0200
-Message-ID: <2024081254-munchkin-cadmium-1844@gregkh>
+Date: Mon, 12 Aug 2024 16:47:55 +0200
+Message-ID: <2024081255-muscular-oversized-e436@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 020fccbe8fe7552e57804bba0c7578d227f561c2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081254-munchkin-cadmium-1844@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081255-muscular-oversized-e436@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,22 @@ Possible dependencies:
 00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
 da87132f641e ("drm/amd/display: Add some DCN401 reg name to macro definitions")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
+ef319dff5475 ("drm/amd/display: add support for chroma offset")
+a41aa6a7d0a6 ("drm/amd/display: Add comments to improve the code readability")
+5324e2b205a2 ("drm/amd/display: Add driver support for future FAMS versions")
+f3736c0d979a ("drm/amd/display: Add code comments clock and encode code")
+8b2cb32cf0c6 ("drm/amd/display: FEC overhead should be checked once for mst slot nums")
+4df96ba66760 ("drm/amd/display: Add timing pixel encoding for mst mode validation")
+2dbe9c2b2685 ("drm/amd/display: add DCN 351 version for microcode load")
+1c5c36530a57 ("drm/amd/display: Set DCN351 BB and IP the same as DCN35")
+5034b935f62a ("drm/amd/display: Modify DHCUB waterwark structures and functions")
+9d43241953f7 ("drm/amd/display: Refactor DML2 interfaces")
+8cffa89bd5e2 ("drm/amd/display: Expand DML2 callbacks")
+2d5bb791e24f ("drm/amd/display: Implement update_planes_and_stream_v3 sequence")
+88867807564e ("drm/amd/display: Refactor DPP into a component directory")
+eed4edda910f ("drm/amd/display: Support long vblank feature")
+caef6c453cf2 ("drm/amd/display: Add DML2 folder to include path")
+2d7f3d1a5866 ("drm/amd/display: Implement wait_for_odm_update_pending_complete")
 
 thanks,
 
