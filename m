@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-67309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2F094F4D4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC9E94F2F1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC6271C20E78
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B508BB252D8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2424A16D9B8;
-	Mon, 12 Aug 2024 16:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712A1186E36;
+	Mon, 12 Aug 2024 16:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gb36B6uT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fka7ThaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DC81494B8;
-	Mon, 12 Aug 2024 16:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9E31EA8D;
+	Mon, 12 Aug 2024 16:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480504; cv=none; b=cSRIJT1BC/j7nv0iIOoiRvxRfWKAURo1us2MbebWW8b7aUpFORm12Aactu5Z24i2dvadrMvDgGesRySnOi2HRCr84l5boyiLtPQtX/O97I1JAlkXreqMZWIbTywvqDmszVQlYwnDwziyHkjN4TB1Q/M2KO+xGPet66976vm9SjI=
+	t=1723479108; cv=none; b=IDneGfEEzny9P2cI8K5EpwYIrKg0Vau3VlPI3bEsCfaS/Fr3HWTamU1QeGiHEPvSNpZ2CMVdPcuMwgBUZLD0xvYcs0qf+irMnDDo1gvMYfTejJATloQi1MyDd0bDQQ0gBycmks36Sdaj0ia/EnB6GS2J3gcyJpnkOjtByMN+2Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480504; c=relaxed/simple;
-	bh=Kxiyg6k5nTwK+tUvJoGkws7w9XnHxM/6xz+8hfnywIc=;
+	s=arc-20240116; t=1723479108; c=relaxed/simple;
+	bh=bJbzYe1bB5opsLnAhYNlNDWYJ8qp4ujrggO/ow+QwhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nAXY96SfRcq+Wz9KD4MZlTgTWu965JwTbZSPsJAZ2wsSzVjR8EwOUypvRxq3ArrryMpqrk6c9uR51+oK/rSjHVxOc/ZmtkL4+TEmdCZWxC7L6QFTl1ttAQZWuek0HxKGxocJIT6xb1BtvsZGUFDcmcoplTd9XJJQ/Kzb6HeY034=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gb36B6uT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553D1C32782;
-	Mon, 12 Aug 2024 16:35:04 +0000 (UTC)
+	 MIME-Version; b=CS0Cdx9BXVQVUIxNJw6spezrr0nLF1LLuIN+BjNUsE1SpiiijX/6juywgCqoRoQA7YTZDuZdJkfE4cVHnlfb+t6N5almQdi3yvp+sU8L2P2sk46VanOZnRDBQPAr9DMcOPqvxTNcmsCPWWi9dLO1IG7qKJpQ5lofeHhRLTpGuuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fka7ThaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7CEC32782;
+	Mon, 12 Aug 2024 16:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480504;
-	bh=Kxiyg6k5nTwK+tUvJoGkws7w9XnHxM/6xz+8hfnywIc=;
+	s=korg; t=1723479108;
+	bh=bJbzYe1bB5opsLnAhYNlNDWYJ8qp4ujrggO/ow+QwhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gb36B6uT0E45dMlRsUvoudUPuuxSMaQILY8ez1ejN+fify7Z6M6uuOr/xtl4zQDgY
-	 jALH11cNGpTbeAB26HHz7hldnSbLoryGnPeBFlQMCaIlO/gsAcF2TSOUu08hcnDQda
-	 SgZ29e+1cbNbyBAeU5qKG5eWSVCDsX5qVRuWuj0E=
+	b=fka7ThaNu2m+ped8XY29HJhQJPlU0yq+dSkD7QNcDhKTI/YJ+QWvIMe9cI8sVZ2kA
+	 XPdB4o46mYKHKDtOacMaEGlajtpBJO2Braj5uuBRNWaLP1h73DssfbzGJJbUSf3YAC
+	 e85+1jyTmFMoggeTzOB1EXnDqbkHMMaDQJdhaYoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.10 215/263] parisc: fix a possible DMA corruption
-Date: Mon, 12 Aug 2024 18:03:36 +0200
-Message-ID: <20240812160154.774541840@linuxfoundation.org>
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	George Zhang <George.zhang@amd.com>,
+	Ivan Lipski <ivlipski@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 136/150] Revert "drm/amd/display: Add NULL check for afb before dereferencing in amdgpu_dm_plane_handle_cursor_update"
+Date: Mon, 12 Aug 2024 18:03:37 +0200
+Message-ID: <20240812160130.417288426@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Ivan Lipski <ivlipski@amd.com>
 
-commit 7ae04ba36b381bffe2471eff3a93edced843240f upstream.
+commit 778e3979c5dc9cbdb5d1b92afed427de6bc483b4 upstream.
 
-ARCH_DMA_MINALIGN was defined as 16 - this is too small - it may be
-possible that two unrelated 16-byte allocations share a cache line. If
-one of these allocations is written using DMA and the other is written
-using cached write, the value that was written with DMA may be
-corrupted.
+[WHY]
+This patch is a dupplicate implementation of 14bcf29b, which we
+are reverting due to a regression with kms_plane_cursor IGT tests.
 
-This commit changes ARCH_DMA_MINALIGN to be 128 on PA20 and 32 on PA1.1 -
-that's the largest possible cache line size.
+This reverts commit 38e6f715b02b572f74677eb2f29d3b4bc6f1ddff.
 
-As different parisc microarchitectures have different cache line size, we
-define arch_slab_minalign(), cache_line_size() and
-dma_get_cache_alignment() so that the kernel may tune slab cache
-parameters dynamically, based on the detected cache line size.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Tested-by: George Zhang <George.zhang@amd.com>
+Signed-off-by: Ivan Lipski <ivlipski@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Kconfig             |    1 +
- arch/parisc/include/asm/cache.h |   11 ++++++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -20,6 +20,7 @@ config PARISC
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
- 	select ARCH_STACKWALK
-+	select ARCH_HAS_CACHE_LINE_SIZE
- 	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select HAVE_RELIABLE_STACKTRACE
- 	select DMA_OPS
---- a/arch/parisc/include/asm/cache.h
-+++ b/arch/parisc/include/asm/cache.h
-@@ -20,7 +20,16 @@
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1225,22 +1225,14 @@ void handle_cursor_update(struct drm_pla
+ {
+ 	struct amdgpu_device *adev = drm_to_adev(plane->dev);
+ 	struct amdgpu_framebuffer *afb = to_amdgpu_framebuffer(plane->state->fb);
+-	struct drm_crtc *crtc;
+-	struct dm_crtc_state *crtc_state;
+-	struct amdgpu_crtc *amdgpu_crtc;
+-	u64 address;
++	struct drm_crtc *crtc = afb ? plane->state->crtc : old_plane_state->crtc;
++	struct dm_crtc_state *crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
++	struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
++	uint64_t address = afb ? afb->address : 0;
+ 	struct dc_cursor_position position = {0};
+ 	struct dc_cursor_attributes attributes;
+ 	int ret;
  
- #define SMP_CACHE_BYTES L1_CACHE_BYTES
- 
--#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
-+#ifdef CONFIG_PA20
-+#define ARCH_DMA_MINALIGN	128
-+#else
-+#define ARCH_DMA_MINALIGN	32
-+#endif
-+#define ARCH_KMALLOC_MINALIGN	16	/* ldcw requires 16-byte alignment */
-+
-+#define arch_slab_minalign()	((unsigned)dcache_stride)
-+#define cache_line_size()	dcache_stride
-+#define dma_get_cache_alignment cache_line_size
- 
- #define __read_mostly __section(".data..read_mostly")
+-	if (!afb)
+-		return;
+-
+-	crtc = plane->state->crtc ? plane->state->crtc : old_plane_state->crtc;
+-	crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
+-	amdgpu_crtc = to_amdgpu_crtc(crtc);
+-	address = afb->address;
+-
+ 	if (!plane->state->fb && !old_plane_state->fb)
+ 		return;
  
 
 
