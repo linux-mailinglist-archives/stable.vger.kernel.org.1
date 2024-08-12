@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-67159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6003894F426
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E1094F431
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16B601F2183A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 109E71F21417
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A972B183CD4;
-	Mon, 12 Aug 2024 16:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C44E186E20;
+	Mon, 12 Aug 2024 16:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MD+ewOa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3GF8Gwe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A9C134AC;
-	Mon, 12 Aug 2024 16:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AED0134AC;
+	Mon, 12 Aug 2024 16:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480003; cv=none; b=A5gWLCMlGzasoZk3W7jxgDxp21Nozmcj1QXbwHlIUxwwaVZzosxYXOlyGuZvW3PnWJYXd+jxwuoza+2LBoJIJIqt8x7lquzHTS3GmPVoQhLp60Yv7Bf9RgKc3jxZV67UGBGmGhS02OL/wlwHwS02RtV5LN99/pOwC5rz/ubfsB4=
+	t=1723480038; cv=none; b=rczFipSLAQ/G4POLyEcW/dO3p3ymbTWn48z1HW1JRaUGiSy6z+eGNGvqtqvtDzSB8vD24mGBRo+WbpDAgWz113/ZOL0x6qIc+aaXymDghV/t/2927/6mdgnsn7V5NOZCunroKSDil0E37SrQlLHfjuDoAVE4ntbsAnSg2GEmRW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480003; c=relaxed/simple;
-	bh=aovqduk0riAEEJmmc5hOZ1kX1i9klkgMJsKrEumcaBA=;
+	s=arc-20240116; t=1723480038; c=relaxed/simple;
+	bh=sKronyGZMbyPyjZM2OF9KXQ5w991eVZGrRaIBQB1KTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uo9aV5AqEyW8G7IJphrvV5NAdAcGpknkTzZVt/e4ZgpDtIOilK1sWqhb8kC/d1OnmrfG/PjsJzV6x0zq6W6B3RJrWq6zJPAYA94ekV5owaPaRMvbOEA2QhlvvDMpP+C6Mhl883cbt1uTancwcttoVQd6Yowok/RWmEuHjKGDRcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MD+ewOa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3934C32782;
-	Mon, 12 Aug 2024 16:26:42 +0000 (UTC)
+	 MIME-Version; b=fjX5rpMjyXUOj4LznXkouy7sW5maDXZoFxjdoOgle4bu/kG7iAoLXsT8lwRqlgFBuZEpzZ2MVPzo0ER9Us+HYBTCwLsP/yAJQG3yzuavKQDsFw2zCXyrzDZWXKT7LiNN3MioSA529PR+NQh5jL6kkW0Qk0XnzG6oPSkWtwPDKDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3GF8Gwe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97E7C4AF09;
+	Mon, 12 Aug 2024 16:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480003;
-	bh=aovqduk0riAEEJmmc5hOZ1kX1i9klkgMJsKrEumcaBA=;
+	s=korg; t=1723480038;
+	bh=sKronyGZMbyPyjZM2OF9KXQ5w991eVZGrRaIBQB1KTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MD+ewOa/kPrON9xRf5b2v/TCfa0fk4O/AnOUpS94jNFgtDuuNq0SWPFgIXsyxl4aJ
-	 rn7ZtieU/NUpOl9esUUwpbn1TD8dbYPhcVntAV3AKF4KY6VXAkOVaZFG4OSi92YcyI
-	 Gw/PqFU8VenUiy/VzPl1ueM3OLYn1Kg9BRZqtg60=
+	b=u3GF8GweMuS+mJGvGchH/JFaVjIaXTMqb9v7Cbi6NWEvcHzuhHQN+25D8nRVJnSHP
+	 cWItNQRnRmQN8USW/LG2zDoVpvlIg5d4CoCQuHTBc2sUQgr+MWXiLo5Iw8T3dd1q27
+	 Ug1QvBp5Ho8hY4rtQORBVGrZ3nrwn7ETaFe44Qi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 049/263] debugobjects: Annotate racy debug variables
-Date: Mon, 12 Aug 2024 18:00:50 +0200
-Message-ID: <20240812160148.421388548@linuxfoundation.org>
+Subject: [PATCH 6.10 050/263] nvme: apple: fix device reference counting
+Date: Mon, 12 Aug 2024 18:00:51 +0200
+Message-ID: <20240812160148.459619291@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -66,76 +67,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 5b5baba6222255d29626f63c41f101379ec5400b ]
+[ Upstream commit b9ecbfa45516182cd062fecd286db7907ba84210 ]
 
-KCSAN has identified a potential data race in debugobjects, where the
-global variable debug_objects_maxchain is accessed for both reading and
-writing simultaneously in separate and parallel data paths. This results in
-the following splat printed by KCSAN:
+Drivers must call nvme_uninit_ctrl after a successful nvme_init_ctrl.
+Split the allocation side out to make the error handling boundary easier
+to navigate. The apple driver had been doing this wrong, leaking the
+controller device memory on a tagset failure.
 
-  BUG: KCSAN: data-race in debug_check_no_obj_freed / debug_object_activate
-
-  write to 0xffffffff847ccfc8 of 4 bytes by task 734 on cpu 41:
-  debug_object_activate (lib/debugobjects.c:199 lib/debugobjects.c:564 lib/debugobjects.c:710)
-  call_rcu (kernel/rcu/rcu.h:227 kernel/rcu/tree.c:2719 kernel/rcu/tree.c:2838)
-  security_inode_free (security/security.c:1626)
-  __destroy_inode (./include/linux/fsnotify.h:222 fs/inode.c:287)
-  ...
-  read to 0xffffffff847ccfc8 of 4 bytes by task 384 on cpu 31:
-  debug_check_no_obj_freed (lib/debugobjects.c:1000 lib/debugobjects.c:1019)
-  kfree (mm/slub.c:2081 mm/slub.c:4280 mm/slub.c:4390)
-  percpu_ref_exit (lib/percpu-refcount.c:147)
-  css_free_rwork_fn (kernel/cgroup/cgroup.c:5357)
-  ...
-  value changed: 0x00000070 -> 0x00000071
-
-The data race is actually harmless as this is just used for debugfs
-statistics, as all other debug variables.
-
-Annotate all debug variables as racy explicitly, since these variables
-are known to be racy and harmless.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240611091813.1189860-1-leitao@debian.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/debugobjects.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/nvme/host/apple.c | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index fb12a9bacd2fa..7cea91e193a8f 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -78,16 +78,17 @@ static bool			obj_freeing;
- /* The number of objs on the global free list */
- static int			obj_nr_tofree;
+diff --git a/drivers/nvme/host/apple.c b/drivers/nvme/host/apple.c
+index 0cfa39361d3b6..25ecc1a005c5a 100644
+--- a/drivers/nvme/host/apple.c
++++ b/drivers/nvme/host/apple.c
+@@ -1388,7 +1388,7 @@ static void devm_apple_nvme_mempool_destroy(void *data)
+ 	mempool_destroy(data);
+ }
  
--static int			debug_objects_maxchain __read_mostly;
--static int __maybe_unused	debug_objects_maxchecked __read_mostly;
--static int			debug_objects_fixups __read_mostly;
--static int			debug_objects_warnings __read_mostly;
--static int			debug_objects_enabled __read_mostly
--				= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
--static int			debug_objects_pool_size __read_mostly
--				= ODEBUG_POOL_SIZE;
--static int			debug_objects_pool_min_level __read_mostly
--				= ODEBUG_POOL_MIN_LEVEL;
-+static int __data_racy			debug_objects_maxchain __read_mostly;
-+static int __data_racy __maybe_unused	debug_objects_maxchecked __read_mostly;
-+static int __data_racy			debug_objects_fixups __read_mostly;
-+static int __data_racy			debug_objects_warnings __read_mostly;
-+static int __data_racy			debug_objects_enabled __read_mostly
-+					= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
-+static int __data_racy			debug_objects_pool_size __read_mostly
-+					= ODEBUG_POOL_SIZE;
-+static int __data_racy			debug_objects_pool_min_level __read_mostly
-+					= ODEBUG_POOL_MIN_LEVEL;
+-static int apple_nvme_probe(struct platform_device *pdev)
++static struct apple_nvme *apple_nvme_alloc(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct apple_nvme *anv;
+@@ -1396,7 +1396,7 @@ static int apple_nvme_probe(struct platform_device *pdev)
+ 
+ 	anv = devm_kzalloc(dev, sizeof(*anv), GFP_KERNEL);
+ 	if (!anv)
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	anv->dev = get_device(dev);
+ 	anv->adminq.is_adminq = true;
+@@ -1516,10 +1516,26 @@ static int apple_nvme_probe(struct platform_device *pdev)
+ 		goto put_dev;
+ 	}
+ 
++	return anv;
++put_dev:
++	put_device(anv->dev);
++	return ERR_PTR(ret);
++}
 +
- static const struct debug_obj_descr *descr_test  __read_mostly;
- static struct kmem_cache	*obj_cache __ro_after_init;
++static int apple_nvme_probe(struct platform_device *pdev)
++{
++	struct apple_nvme *anv;
++	int ret;
++
++	anv = apple_nvme_alloc(pdev);
++	if (IS_ERR(anv))
++		return PTR_ERR(anv);
++
+ 	anv->ctrl.admin_q = blk_mq_alloc_queue(&anv->admin_tagset, NULL, NULL);
+ 	if (IS_ERR(anv->ctrl.admin_q)) {
+ 		ret = -ENOMEM;
+-		goto put_dev;
++		anv->ctrl.admin_q = NULL;
++		goto out_uninit_ctrl;
+ 	}
+ 
+ 	nvme_reset_ctrl(&anv->ctrl);
+@@ -1527,8 +1543,9 @@ static int apple_nvme_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ 
+-put_dev:
+-	put_device(anv->dev);
++out_uninit_ctrl:
++	nvme_uninit_ctrl(&anv->ctrl);
++	nvme_put_ctrl(&anv->ctrl);
+ 	return ret;
+ }
  
 -- 
 2.43.0
