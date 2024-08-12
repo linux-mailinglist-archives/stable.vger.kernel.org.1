@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-66837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5AE94F2B0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A1994F478
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5E4E1F218A0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 331231F212C7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEE7183CA6;
-	Mon, 12 Aug 2024 16:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32887187332;
+	Mon, 12 Aug 2024 16:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFz+yCNN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uWTNXIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E8E187341;
-	Mon, 12 Aug 2024 16:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4268183CD3;
+	Mon, 12 Aug 2024 16:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478948; cv=none; b=e2x3L4o3MGFwqufqyJ7PWXi5my1qhowdMo+kxoGJD1ezHZxXIMEYxQpj0ZnyBWlADIadoyGor6Ms4D3H0uvKlgxXkOYAkzhqPUaRh9mmWJ6ZMsZQvM1t9TFmpc+E1Hk95EYp0nBaDTAyZfmTDWNkvAGx1395acTpsDc1LUSZ4WM=
+	t=1723480245; cv=none; b=Ui29h6K6oYRg8Zjca2yeuko7vjMiam3tzBecOSpFwEEsvKuN4ockWRXUcOrYz3c33BaTKOj3KD0vk6JoPuJsVd/jd0/4okLrXRos6zCf2zq11Wq0mviCzYQv9ZhC/a6N9cYe0+876A6PzuWaUTtG0AXUy/ZXuuWfoh8TD+LoNz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478948; c=relaxed/simple;
-	bh=yhq0WovGllKkG1qSpNyukXoAgmy1NXNdNB2+fxzztb8=;
+	s=arc-20240116; t=1723480245; c=relaxed/simple;
+	bh=75AVoJJ9P49k3VBGF4d1WvYDYJ4gqNekoG1DOseByKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJqW3lR+CCQHztPcD5LXRNaipY9xcT4wdio88eb/e79hWrXjclmPVzcknGqPqDI0LuagIMX48tbImKaUB8sEKkW5WnFBd1WrwdBYxuQqYi/GEmFdaGlyo3MLr851PvVTfGy7FzLf3cWjAxUnMrEhjMt4s6vUosKyb1T18nns1yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFz+yCNN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FADC4AF09;
-	Mon, 12 Aug 2024 16:09:07 +0000 (UTC)
+	 MIME-Version; b=e0JGj6tHhOrDp4bpYeFgP9M/gruxKw1CRuiveYlLRVe5kSrUfF+nFaKjDUbr1IXITeule0MVY0a9Mj4m2DPPbXVWXQiXgfTTTn+qSXe+XatjHg6xz94rnXUzZRLNRAAKb1NPnqEhvOpYs827YBi/bJYS657/3MGLqMyLbuov53Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uWTNXIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02FEC32782;
+	Mon, 12 Aug 2024 16:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478947;
-	bh=yhq0WovGllKkG1qSpNyukXoAgmy1NXNdNB2+fxzztb8=;
+	s=korg; t=1723480244;
+	bh=75AVoJJ9P49k3VBGF4d1WvYDYJ4gqNekoG1DOseByKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFz+yCNN9LSDWE8vLrdGHKhT6igyv0yMXghWui7p56GI66dinCojSH4zphb3A2wBJ
-	 ddp3bYCyldUkXAyvFVJksomsbjHdiZSzGGqUpgewitK4M7IpMATyp+F61ZQStvO6+c
-	 reOPxcE8JDPN+NywX3r07Fi+nnIVAubFu3wQGRYk=
+	b=0uWTNXIvmtOiNAgfW8/MGtF5LR2EoBI6avCSQNQK4r+UYgs1nvdDzPYF74MubmwFb
+	 4KuVMlRaE0rgNHKowtepKMlu6spRGT4W3Vx9/AjiZovpGDLqEiWOY17x7F3fREuwe+
+	 SedCM23dY6cHdv4WBHyHLUTnRzOXTQga/5PmEcPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Besar Wicaksono <bwicaksono@nvidia.com>,
-	James Clark <james.clark@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/150] arm64: Add Neoverse-V2 part
+Subject: [PATCH 6.10 138/263] i2c: smbus: Improve handling of stuck alerts
 Date: Mon, 12 Aug 2024 18:02:19 +0200
-Message-ID: <20240812160127.412576983@linuxfoundation.org>
+Message-ID: <20240812160151.831587254@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Besar Wicaksono <bwicaksono@nvidia.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit f4d9d9dcc70b96b5e5d7801bd5fbf8491b07b13d ]
+[ Upstream commit 37c526f00bc1c4f847fc800085f8f009d2e11be6 ]
 
-Add the part number and MIDR for Neoverse-V2
+The following messages were observed while testing alert functionality
+on systems with multiple I2C devices on a single bus if alert was active
+on more than one chip.
 
-Signed-off-by: Besar Wicaksono <bwicaksono@nvidia.com>
-Reviewed-by: James Clark <james.clark@arm.com>
-Link: https://lore.kernel.org/r/20240109192310.16234-2-bwicaksono@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
+smbus_alert 3-000c: no driver alert()!
+
+and:
+
+smbus_alert 3-000c: SMBALERT# from dev 0x28, flag 0
+
+Once it starts, this message repeats forever at high rate. There is no
+device at any of the reported addresses.
+
+Analysis shows that this is seen if multiple devices have the alert pin
+active. Apparently some devices do not support SMBus arbitration correctly.
+They keep sending address bits after detecting an address collision and
+handle the collision not at all or too late.
+Specifically, address 0x0c is seen with ADT7461A at address 0x4c and
+ADM1021 at address 0x18 if alert is active on both chips. Address 0x28 is
+seen with ADT7483 at address 0x2a and ADT7461 at address 0x4c if alert is
+active on both chips.
+
+Once the system is in bad state (alert is set by more than one chip),
+it often only recovers by power cycling.
+
+To reduce the impact of this problem, abort the endless loop in
+smbus_alert() if the same address is read more than once and not
+handled by a driver.
+
+Fixes: b5527a7766f0 ("i2c: Add SMBus alert support")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+[wsa: it also fixed an interrupt storm in one of my experiments]
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+[wsa: rebased, moved a comment as well, improved the 'invalid' value]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/i2c-smbus.c | 32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index af3a678a76b3a..29fe8b5c938a4 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -85,6 +85,7 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
+index 97f338b123b11..1b4057e1bab09 100644
+--- a/drivers/i2c/i2c-smbus.c
++++ b/drivers/i2c/i2c-smbus.c
+@@ -34,6 +34,7 @@ static int smbus_do_alert(struct device *dev, void *addrp)
+ 	struct i2c_client *client = i2c_verify_client(dev);
+ 	struct alert_data *data = addrp;
+ 	struct i2c_driver *driver;
++	int ret;
  
- #define APM_CPU_PART_XGENE		0x000
- #define APM_CPU_VAR_POTENZA		0x00
-@@ -151,6 +152,7 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+ 	if (!client || client->addr != data->addr)
+ 		return 0;
+@@ -47,16 +48,21 @@ static int smbus_do_alert(struct device *dev, void *addrp)
+ 	device_lock(dev);
+ 	if (client->dev.driver) {
+ 		driver = to_i2c_driver(client->dev.driver);
+-		if (driver->alert)
++		if (driver->alert) {
++			/* Stop iterating after we find the device */
+ 			driver->alert(client, data->type, data->data);
+-		else
++			ret = -EBUSY;
++		} else {
+ 			dev_warn(&client->dev, "no driver alert()!\n");
+-	} else
++			ret = -EOPNOTSUPP;
++		}
++	} else {
+ 		dev_dbg(&client->dev, "alert with no driver\n");
++		ret = -ENODEV;
++	}
+ 	device_unlock(dev);
+ 
+-	/* Stop iterating after we find the device */
+-	return -EBUSY;
++	return ret;
+ }
+ 
+ /*
+@@ -67,6 +73,7 @@ static irqreturn_t smbus_alert(int irq, void *d)
+ {
+ 	struct i2c_smbus_alert *alert = d;
+ 	struct i2c_client *ara;
++	unsigned short prev_addr = I2C_CLIENT_END; /* Not a valid address */
+ 
+ 	ara = alert->ara;
+ 
+@@ -94,8 +101,19 @@ static irqreturn_t smbus_alert(int irq, void *d)
+ 			data.addr, data.data);
+ 
+ 		/* Notify driver for the device which issued the alert */
+-		device_for_each_child(&ara->adapter->dev, &data,
+-				      smbus_do_alert);
++		status = device_for_each_child(&ara->adapter->dev, &data,
++					       smbus_do_alert);
++		/*
++		 * If we read the same address more than once, and the alert
++		 * was not handled by a driver, it won't do any good to repeat
++		 * the loop because it will never terminate.
++		 * Bail out in this case.
++		 * Note: This assumes that a driver with alert handler handles
++		 * the alert properly and clears it if necessary.
++		 */
++		if (data.addr == prev_addr && status != -EBUSY)
++			break;
++		prev_addr = data.addr;
+ 	}
+ 
+ 	return IRQ_HANDLED;
 -- 
 2.43.0
 
