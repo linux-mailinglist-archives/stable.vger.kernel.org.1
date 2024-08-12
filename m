@@ -1,42 +1,43 @@
-Return-Path: <stable+bounces-67374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A9194F670
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 20:14:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8641894F66E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 20:14:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C18591C21B32
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F4E41F23AAD
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC6618C908;
-	Mon, 12 Aug 2024 18:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CC218C341;
+	Mon, 12 Aug 2024 18:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="NrsAl7JV"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="Gll6RLED"
 X-Original-To: stable@vger.kernel.org
 Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11020142.outbound.protection.outlook.com [52.101.61.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA31189BB9;
-	Mon, 12 Aug 2024 18:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97381189BB8;
+	Mon, 12 Aug 2024 18:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.142
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723486385; cv=fail; b=VXZ/hrfwfab73URvfb3zOJLWXQJBGaUHJAwX6wMmuo1pVyTZXGfUz0JXHDhjdEQ33XfGy0bnCBo1vVQfgK2dE94BSrbB/ZUpKWFTbFSzZDn4s7CXgjsj95u+yCdHgt90mH8deoiZj92RBHESF3GS+HJi3VSfpWxrAGKQFU5Spp8=
+	t=1723486382; cv=fail; b=tsbbJa25IuAeBNlLv7Fl54SEjmmt8zVu2hYxxl1L5h1zgKPKF+L9L/yx3PH+NjcmMwcr+YsZydTaUrA69vZbWzJtAnD0kB412BIOQd4if08wVSP5OvDzCcsdCnZplm1S8qXP2ie5/fPX6eIY0722/Zcm81vPrUzJwvp7uTjVybU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723486385; c=relaxed/simple;
-	bh=hFyIqRo/G1wetegzFzZyUqSemcRg53aLLkSclPFRvLQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dqHw8P91ac/p6ZTencfJIIKo5IL+RH/717ZCrzayozi4yNCIViE/rOABWLk8RaTg/L7cPSw8i1Fp1jkOw74jz+ewmXOcR3U2+3YVhzQvSQThbgwhXK4EF46A2sOoj8rsiDfcvNq54WinKgJiBe6VrWxBLDSiY4qFY8Mm+4WriZo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=NrsAl7JV; arc=fail smtp.client-ip=52.101.61.142
+	s=arc-20240116; t=1723486382; c=relaxed/simple;
+	bh=BFfvdApXv3FTYuJS4/kQM4o5ZpNHKnq5BGYQhi6gE3M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gvcHq2pLnnVOAz0K8DkTj1u+nRPOxLLk7v+tRqrcdwfKMURbyokWnvxMzfujYxW1fq1otEOSmnT2tFH9RRu0DI+XA+uWGfVGyDq+O3g4MNAuXvoiI8i1LE1sH69qZLEJCWNbab7Z/DhRSGSnrk0OPliLusBsKeyi5QI+vZG0MiY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=Gll6RLED; arc=fail smtp.client-ip=52.101.61.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Pahw+SAhBdevI6Sdb7mEz9upnVMUSBvPim9x013cUToMqir2wdXROdEG/goOwSZMXH6qu76AYheDaMGjT9tVM1fLZdVRFe4xemveH4pKt3HcB0AW17GfPpIRDW7EcvzR/PScqnB8KpmWjRt9AVRsZib0Brw8I17RPlf5V+iZmJI0UfGV/xJRCUcGPmu1EMpjKlFSSUxtv42KKMU5a1sLXl8vz2jvtXGbCcL0hBcL2GuR00UbRpL54D/6kM7lDfIlofFH/ij2q11T4gsCBK45CSkiIS0KhpSthYj0WN2VOe1W2HZv/YXntDsxWivcRPUrjylzVEhkn/gY6sS0OK79Rg==
+ b=a7cVgQe7ADDu+84LcywpA7/FX2f+ESfi2XQ6CZf58tXZGnjN/gw55MX0nnzZua9TUSwjWtV8WmwJIQVzruz8TNIrubmW/mA+mE+4mCQ3h5MuqzM/2Hp64+i7m6qbmu85M1Q1PbUutWdMCSdk+bM4hAgWol3pm27yc0byQjVubH/btlFiHSLG0oALq/bgiMAHN+AC83Wse5xIJx/imiP6PSm6mZxSScca1IMrKTa0zLosTKKSVHtW6KOm0/iwHw6Gifm52guHKEp4wkuBSQw5YXE0ygUaptYJ9VoIskId8yq+JYcLS9lWu0qzp9ytk2oKHG2Uqssbbl3q6JA1QUBPMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5VBa+SEIKYozsYohqHAmvD6dKMpfK6jluzkdaIAfajA=;
- b=KS289loQcfN9PTxk7vK04hEUOJF5JcxFzbORfjgesKKjcHJtRhwZHIMUOwq2lBpcPvgTdvT3Pu5e/2wmB4kQM5YiYIa4tTOc94lP0y/uxwM1jDRrmwD+iTHjz6l2VOLvnwkAXj+IdEnyDcBfjcr5w13FvZUIciZC5KxcRoNzzP0kUtOET3LpdXKLu1OrJ8XL0+0PTcd0E9FJc3ZGnD03xXuXWVJeTiOR+wH5YlPRCw4ThM2KdvxBGThIchpRc62aqlr1I3irLuLccfApmYk0gv9rOKINuE7Bt3GEQfgTkIBv1IWLeNieFKJ51mvRRu7Etz/9IEh0vfohmDx+2LgESQ==
+ bh=dPEms8Z1bDgizvpacUeELzkgZKoWowBQ2X13hk/icH8=;
+ b=vdO03+04RYAHcMCaBFE76ePwL5Q3S0ycD3BGHs9WIJQhnmD4Dz5Sz1fYAcWynysP9I0YwsbxdZItCrE++Sl60f4PhdxKoSA619b8zmQLKOB53xh2SWYA+a+mN70DHYAs42UVfPib5Yu6SWPzMqSzeqw36ImYBgUx48INR9NtnyaFmZeEZPMgJEyoylc0/0v860pIL3lM2THlAHO6/4sZotp/NSJRxQ3e8L/CwaMdgkUX2DzP70xVA7/KKGaKnc1TUMUhryQ2/mc/NSTghysAuVcRCfFDjG4IkarRzNVoijLzzXytK6O/KNlVNklMNQV4xhHHMMHdBfr7TR1Wdmzhvg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -44,18 +45,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5VBa+SEIKYozsYohqHAmvD6dKMpfK6jluzkdaIAfajA=;
- b=NrsAl7JVnx5y8qj/zEyao/AQVhsKCOMwxtbto4rRmE4X7qw7r0S9Jcfdt/tGzmTJWD5Hz8BCxj/KE/XUMmwCAngaR4cbslXkI0N9w1kK51TQkENiykOOmqjRvUPM5/1TPIiZ3QBt2FOZbCM3WiHBwDlxWjdSPrXwTLkIPfbzRn4=
+ bh=dPEms8Z1bDgizvpacUeELzkgZKoWowBQ2X13hk/icH8=;
+ b=Gll6RLEDSPVMITGkGJNGLFw6zfgQ4HIcJHvsDoECURvXZMHgFJybk7Vv5TqxHG00d3Tu5Jqz0GPd7LIJm1FePlaZcOh8F0AYkveLIfN0eEToTQfJ6Eg6eabGIpzBQJnj7SuEjNcxrSkFrABs3/jIBW46T1hrrnbHU1dcnzZ+btY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
 Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
  BN0PR01MB7133.prod.exchangelabs.com (2603:10b6:408:150::15) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7849.22; Mon, 12 Aug 2024 18:12:55 +0000
+ 15.20.7849.22; Mon, 12 Aug 2024 18:12:56 +0000
 Received: from CH0PR01MB6873.prod.exchangelabs.com
  ([fe80::3850:9112:f3bf:6460]) by CH0PR01MB6873.prod.exchangelabs.com
  ([fe80::3850:9112:f3bf:6460%4]) with mapi id 15.20.7849.021; Mon, 12 Aug 2024
- 18:12:55 +0000
+ 18:12:56 +0000
 From: Yang Shi <yang@os.amperecomputing.com>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org,
@@ -68,10 +69,12 @@ Cc: yang@os.amperecomputing.com,
 	linux-mm@kvack.org,
 	stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [v2 v6.6-stable PATCH] mm: gup: stop abusing try_grab_folio
-Date: Mon, 12 Aug 2024 11:12:37 -0700
-Message-ID: <20240812181238.1882310-1-yang@os.amperecomputing.com>
+Subject: [v2 v6.9-stable PATCH] mm: gup: stop abusing try_grab_folio
+Date: Mon, 12 Aug 2024 11:12:38 -0700
+Message-ID: <20240812181238.1882310-2-yang@os.amperecomputing.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240812181238.1882310-1-yang@os.amperecomputing.com>
+References: <20240812181238.1882310-1-yang@os.amperecomputing.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: BL1PR13CA0360.namprd13.prod.outlook.com
@@ -85,78 +88,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|BN0PR01MB7133:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70bdaac6-6367-4da9-7e13-08dcbafa631c
+X-MS-Office365-Filtering-Correlation-Id: 0082da78-1345-48a3-b1c0-08dcbafa6417
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?w5pELXQ1Dl+vmFfaFtHxN6PV/uluafwF2mdKi99wKeCADPTOI2KVBZaGtFlK?=
- =?us-ascii?Q?KTT2PwZ8+41QpqIKrQdt06NvG8xgEMVnh2pJmhOTP0oSHHD2yuBhhWVv7xPu?=
- =?us-ascii?Q?gYp12M7KPCGXxsEqn/ciBEWepj24KvbLKDQxP5N5Gsv/AemkE9ngpgmrFvy3?=
- =?us-ascii?Q?aMP7bWrksHBsqSBzHRFKMOm9VsaRa0GNGNjbdaXUTH8gyjSoDQtcvtlZARhH?=
- =?us-ascii?Q?mz/lZDFxXfBKyieH6+brmMXFkM6pek0v7yoWeSx4xcHoQq06gm0TI0Em+2J0?=
- =?us-ascii?Q?ANyNhJAE7ly8KZc0bYaO5H1I8aDkEbcWf8XN0CIMvJDudKPeZb7b6cVDxSTq?=
- =?us-ascii?Q?8jb1Gt4h5oG5fsNAYz+mj8TsUfgJR5XsD0ij80fFswJMLWgurQpaNDL2C30z?=
- =?us-ascii?Q?Kj10sc7VgUbExpr9mzqhMZZDr+4fV9DqysseT3dvBsX7BXjQtoZ35akt94P/?=
- =?us-ascii?Q?bGmn0GRfsiErf+mq5fIV2WtxCCFK+X/seyy46jnljtgmTVcBNDTSvurBQH2w?=
- =?us-ascii?Q?wN7uKtawnvqsszSdtLrK7hoUbcehEfj0FGNcm3tmXm+pAxuraZFcoJ+UagQh?=
- =?us-ascii?Q?zH76fVjAdaVrj8lNz+lY2bx30vmFnA4Gogh3dIs/ZLkr15eiaa44bs//BQTx?=
- =?us-ascii?Q?dL2wwH3AA0RDCYxBiKuhCCXrJn4WN5vRJAuabNW2FmiVVYHaTcSEaq+1VNHt?=
- =?us-ascii?Q?Fsp4oQ0YvhraQT1yxEg1nQCjFOwjecBaSXTCGN6G9YUo+6IU4bfTqZErNHlS?=
- =?us-ascii?Q?KlVxhgHXLJbFWzHWEkt1xYQQrqzoAO8IguM5ZwDB9MG2ghDE/KwawKQi3cDV?=
- =?us-ascii?Q?Ws8imFSt8TdKdpwyw9cCsJhg3T4R8KK+YnTr+LLDmFJWV30ub5oKZsgVeAST?=
- =?us-ascii?Q?Yf25wN4SwQdfuasU2dQYsQW97Zn0A5EECrsYQMB2q5DIqY7+gIKJ7wHr1dAb?=
- =?us-ascii?Q?istEK4A67nd/wliQE3D+j1MclxwX/hHr35Qpy+v87UGzVEkPxaz1PuQQmnH4?=
- =?us-ascii?Q?QXnYlbcfqP3uXrbEQXfS1OU1ujAHIY+qMwSx8ynXLRXQXDcVpK7yILxAHtnN?=
- =?us-ascii?Q?3bwHcN2A/9ER14uw8wTnxhZWFDt5E6mXmWL4fhxbN0y9gWynPnwZwsR9GXSm?=
- =?us-ascii?Q?/LEKeaEEdCHHzr2p+SHuBLuIMVycM9kfdAZPDmKvQkbfSpz/427KAdFTdyhs?=
- =?us-ascii?Q?eJsPuwf0mo7/TaDMnmFfJJToOkLJKAvc61GgX1tiw0kiJmOcinIFNis+YPRd?=
- =?us-ascii?Q?RRkhiM29gMaRDhNsPLSHzHgNHSRI7ruwi0eZ3k3FPWnw16L50ga3cTs6FNIp?=
- =?us-ascii?Q?s1xtjngm9gkWD+jI57JutbQ/an5t6g0RRURotqXD/llYQ47AtdTZxF9cFz0O?=
- =?us-ascii?Q?AbfFF9Y=3D?=
+	=?us-ascii?Q?Wxx8SNLZ86bWj+seBjTiiDbMUNxnP+6hOT02iAc2XcwUiscv3HWioRAJ3TAI?=
+ =?us-ascii?Q?wWQCdw6eo3IqcGhQO0fkkNusNwK4X0k9oDUWVoKh47+kv6JbF+m5/MUmGbqS?=
+ =?us-ascii?Q?bMMKdF6P7U/hwYNKUUmfPREH0uNbpdtgwSO7Lf8B/w+yw/QmLUget9Lxa220?=
+ =?us-ascii?Q?5o2R5UU5wv/isFLcpBy7pungqaPUvQNsvuucnTIGr7Ft3BJYh0JOBPWmkGXk?=
+ =?us-ascii?Q?yfCDpUdLpqr+gT8xslbs14pUByP9tH5i960NFX3zcrLsSzDXvoZkZiDc8ZH5?=
+ =?us-ascii?Q?YiMO+Ys4ab4a0cMTblpNfSs0loACpg3KEVf6y3f8n75Vs/PpsAkGWDTKVtx9?=
+ =?us-ascii?Q?1W6f5tHM75im4r8QsJjRPwzpw4CQXUKfB+oIExq1yV5iW3li4oXKgmCRd74B?=
+ =?us-ascii?Q?tJ5FhQzJP3v255sMGgWaPxQr6nMe9hQsI5bJ5HcBD5tEAf7hP1Seg+4h9AXB?=
+ =?us-ascii?Q?RG0IO4keztkNcOAUO+JVdReTfMeYgO1MkD6SpEquxmsLZ2NvY6VrLhwGkUMx?=
+ =?us-ascii?Q?BkaCevNN+UQnqBDy/XvRyo9WLC/A3Q3Qgr7grbyXdzmhNI9PYRcP6+7LAdFm?=
+ =?us-ascii?Q?ikaDZLbdD3ZA0kredNcBsFIN3M3PBb1IocwibTmHdRB+Vc/VRqLeh738Sy9J?=
+ =?us-ascii?Q?c93SBTzVGXsIQbW4ENh29/joVnNRFimlPqge4SxCxbiEVQ8YzraeJK1BUS6i?=
+ =?us-ascii?Q?KfQODH4+n8p7t5RV1eVNP0Gd31+YlPdKs8np7PmJIkxzCeqUFlTe5EQZ3cCQ?=
+ =?us-ascii?Q?RXevXIEwuX7D2DeWvQpktnkiV8LZWwImBThb2MlcbnMGCW9BHwVaDM8jPTsT?=
+ =?us-ascii?Q?9Kzx+y1CzwlWViTzeIsnwxx2ILSEYL4HrT6FwLHDhBzyPSJ3emsGRGaExCYL?=
+ =?us-ascii?Q?H3akDaS4da7YoBwCYHCP/JDn2eDHHjOyXflKp2PJvAmt8XR7CmVsbbQVRv1U?=
+ =?us-ascii?Q?wgRNNoxj2YpDniG8/7qMAoUk+A6osJMEa2EgTVcBNjcO3JIX3LI36SpUknCh?=
+ =?us-ascii?Q?Dkp3t02HO++y4QyWDageiWxLmrr0zPz4U/JczTmnsn42korOT+mEZx9EcFF1?=
+ =?us-ascii?Q?7rm7N1OPz0Uh6jua8fuSOwYL5YCLtR091P0PQePnUXiH8VdTjxHbfxhgb26x?=
+ =?us-ascii?Q?XOQDjgN54AWaeGRVMcoTGMawJGThQrjICL8MtnQNtkriPJo+cgmp8cyvm2jx?=
+ =?us-ascii?Q?siaHZuszW7j/ef5v0l4q0Pk1JUUxMAy5j6m+hNlbGJ3mOKWCJEvUnkD1+J5e?=
+ =?us-ascii?Q?/NdKHNcxGUbXiEdVm8HdnRCVPVspqeJVhURpiOGcztDyLkmEvm+uQGVVuXB7?=
+ =?us-ascii?Q?BKp5CMfTE+YTGGvFEhMVo+swzdO1DHKBPwCM09wFXy3b83cckfPnFTe2KkZX?=
+ =?us-ascii?Q?Y086W1M=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pNjKMDFCBEjuh8HDj+b59PqTQui4siYuoXX/RahkIt9jKkaUNFslPGXxJC65?=
- =?us-ascii?Q?M56VQ2Xl517LOsJ8KunFMBGMHkTIPEu7FOaUDQ1F2F3OeC2PAXqHhYXDKe9k?=
- =?us-ascii?Q?mOcHVQntUZx5pij/s5IufEYHlxf4VTc97IuTCdOVzbzfaH80ZB4SWkYiQkTj?=
- =?us-ascii?Q?QUKfM1d2XKfj998DnqhgkfHAvP3qjvd30nUxxasRJ54/DO0Wgrb7eXgH+ViY?=
- =?us-ascii?Q?Im4f9jg70HVPL1uSA3HgTPMwctel8zPtgmaLw4hOLSnZPttH8D3FUVzreFIK?=
- =?us-ascii?Q?vtaxOd0Vuj6Wes1sStBxuepM8xX1wRV08RKAJIS5UfzqQ1x3PSCoJJ2ZTpgp?=
- =?us-ascii?Q?nWAx0HF28L5oSX+fMlsv564al6j7e7fRoqrU1qiWxcPniF65gD+KL2FcNsYE?=
- =?us-ascii?Q?feQgdzcZe8OumPQuaQP7zVZKfJpDJlmZ5YCXIUZ0JK5qEhF056mv+z6In3Ae?=
- =?us-ascii?Q?KmdX8ZEk174esGgfXXEegCand6uWEkcYJk7YkRFqnM8hIIzBMs6Mrw8x7adZ?=
- =?us-ascii?Q?RT0C8of2Xlfq11v4o1x3/pp7UmEb95j+es2P5bpa7MKmqJRx74ag5xSNH1C3?=
- =?us-ascii?Q?U2sCBK7aZcS11C4xSRfO4DfEr3Y6FVkWkR0Exbm4MFALws7+KXc67s2SqGdC?=
- =?us-ascii?Q?uLDlQv4tRtkYYimSDW59DQkO/QPfQfOdJxEs01FVY6Z0Lg4HvCVqUJAnCNoR?=
- =?us-ascii?Q?ZwS27t2toem54lMb6JGwKzC/H45aY81MlbN0OpUF5nkIpHTYdoXRTIATpkdy?=
- =?us-ascii?Q?C13jlMl8HpdD0HkLA0KMrsWj6JyP4O6SGpSMdll+sDrTA2mUBZzSrG8lwF4T?=
- =?us-ascii?Q?MKAQ2BqL190dq9Pk81HHljuOrkhoAPOiEpc6tGrYbpi51HBF5s4kPuK3J/ah?=
- =?us-ascii?Q?NQazjpkO4KjU5t1GKIw6wUyvwUa50c2GCZQZXwjBqY1zKsVpJKkvJpuLUFQ7?=
- =?us-ascii?Q?iiWOo50lqkSJoHGQ0/TsxWN6pbCrsS+ieuhBwC7PeZIMegr3319jCSvpbx+U?=
- =?us-ascii?Q?snW3F35rcBlIcozJwkJ0oJvW1Tpc6R5e7G5SrjYDljuGRb9AxBexXjJMLMab?=
- =?us-ascii?Q?Fjzl9csP16BMszIYiKqGjKnomwjcPrGLxrtuAE3iArKDxMGWtDk9BJXg3ofW?=
- =?us-ascii?Q?DO8JTobqzqECBERaI0HGVrk7e7VE+PsRHGkoi5SqN4qeD9TXNiAlsgHfDN4Q?=
- =?us-ascii?Q?y79xBsZl5iE4piIH+2+P+YxNtnDFfbYBmBoxqfrEjjsEMTI23qbGV5+lqTFu?=
- =?us-ascii?Q?pi6zd8oO3FgfxP26QkPzcf4UoT0P4pyRYBpjQjhHdJe3RzzJ9Cd/VJd5CF30?=
- =?us-ascii?Q?0Wr2PbPC3vCvBMztgX7gA4x3BMsC/GkjVGleDURkSLD6CMaSTx6Va9Lcxh4Z?=
- =?us-ascii?Q?Osbn7ziAEDqCTfxmwvYY9mKTtaCmux4dkfqN7OW2cx4btb8mfyBI+jfKpKpo?=
- =?us-ascii?Q?iCbRVl812d3gp5i6EKA3Sm9yKtnp8nLGw/RXasEHrhEQ6EgeIy5dhwdeRH9L?=
- =?us-ascii?Q?Uq3SS/AKVltnEuVTnqvvKU6OF9CXaJqDGtdcGLCf9nrD69KKeHiFKoUkDQ1Y?=
- =?us-ascii?Q?lnK8t+dLmZ7/amoFmQjs/V5YeMgd6VfI3TKwr+fgUENXRPRFzilExD2ELyHk?=
- =?us-ascii?Q?4cuH2MEizPXTbZ7SS0SNP9E=3D?=
+	=?us-ascii?Q?2Sbq42EpzxBamHzgej8TaKGIgrqowlhJdc6HJfh7mfImHuP1wfoLGQ405Wrz?=
+ =?us-ascii?Q?MzTPNYR2e2YWEWR+tZjY3KHHylOeKcilDl9ZYis6o3fVFdx31YrOKhftuNIi?=
+ =?us-ascii?Q?pWZ7F7aU0LSEJVhlUeTbLB7eks2Ioclk0pKnMhCB68YKVSRJIiy02Pn13Rnp?=
+ =?us-ascii?Q?c00AvMSEJSAoOw7xVH46NgMRjPwgk6igGVM/hpfSn+qmg+x8MdnfIKBGTtVE?=
+ =?us-ascii?Q?Duco2jkRcc2kCpYYxkgqcevhxKM8/GCndpqLgM/IDfLdUWC7T5+yn+ilsnx3?=
+ =?us-ascii?Q?rvd1bGypUYlE6jtzIQAQ6xMeG4v3M4UyfEfJw5JlfEDwdH62ROm5Ob1gc5hu?=
+ =?us-ascii?Q?10j51WqVmUUHCoMLP3Pe6fZi9VekACRVmIP5n7dbHrzQUMheQtvk4dfouoWt?=
+ =?us-ascii?Q?u/FbD8UCO+pp0SZbjw+hAgdsN3puqQwbAe2gwghkdQNMm7F47KgZSU0haR/1?=
+ =?us-ascii?Q?CxZRrrsA18uvP6vc79iIsaeKZwmZLf2rsWvU8ly88vH9cB3pxgeL6Bzbakzw?=
+ =?us-ascii?Q?B3yXD6VGQgFydXtJMcDkxuSexntAa/4hh74zTyqllUkBucFQsDOzzxSAcqqY?=
+ =?us-ascii?Q?E8oXJyY4KTnLUSD15EHJQebiUG1lK+SnturGBuKc0F7BORNFlgH/BmFZuxlZ?=
+ =?us-ascii?Q?z2KOWqAx20KhFX9DozjkIYvtxlnFNlyXN8U2AEwXOVoK0HSqEuBp8h7Qfeiw?=
+ =?us-ascii?Q?CQzNtkA0LAHMEUiwi9aYVAirUaa4iHl8gi1+kVh5NsYpYMp99brGWTyPzF5G?=
+ =?us-ascii?Q?TFirussnkurvj7j9kNb70ckzCNrmuM8AzhTFHSRW4JCvEDBAw/x9zWOK4HZ2?=
+ =?us-ascii?Q?+YT+2gWpeHj1CWDVeBd84BRthCjh2i+qS3Qw0bEgEdPdZJ41buqsuGBQr+uR?=
+ =?us-ascii?Q?VVWl7TueD1dAaMmmfATAziMJFH3miHk1qJW4+xM51Tn3GdsGPfhAV553jeZ+?=
+ =?us-ascii?Q?wFbb/uMB/NOw2TQ6I/I8PxX+swz48GtpR1J1BfH00mcM6zVqa3sUGIBZharn?=
+ =?us-ascii?Q?PzPDL485ydnh0e/cyu/ZJOhs4YSSGCwHWVkcYk+L6RCRl6hUdwQtJrNeWEDf?=
+ =?us-ascii?Q?WYPXhVRsQ12L/nFsrUugZ16R7kynyf9tPAQ2E9Znl4iDfnJXtxs6Mwd4fe53?=
+ =?us-ascii?Q?YYf9NJPyeufezWcse4xyi6o2ejbNUiKhRfiiNZOtGGeqjRwTA+BAHAw5tLVf?=
+ =?us-ascii?Q?XPrbC+6PRdGZpxVGHHFiwRMzyXViOr36eJIqHuPouDlkz85eM4JyJZim61uW?=
+ =?us-ascii?Q?0Eouh8wEVSHxhOfH9Vr2hgolXLuN/kXYE7rHP/ZmGwK/8u6O/ezasaStMYQ2?=
+ =?us-ascii?Q?ArAD79x+K/DR04ZUTXaQ6aAINenuOsAenrSQFZYuPpXqzgWQfVLim/irDXwo?=
+ =?us-ascii?Q?kNS5aGEuiHJA44hxHMKGZwhwegXmvXLkY6ioEVI2NlwJYM1eDW9Je/gQm8B2?=
+ =?us-ascii?Q?/ewwSRoqq7q+wjszIqhhWJBAVt2oZIh1bpRl1ojOXChR95w+Mnas4qv6M/WM?=
+ =?us-ascii?Q?a74ZfszJuIddtcLpvrzvrZ3rH5bkHWxL705uvsdiChhvhngbKEEUxh7rfZJN?=
+ =?us-ascii?Q?TX2mc8QJP5qnUkxQhusJOBBYw+Q36s9pJi/i+O0FD2ATgx/j2OHJbX7XbF+q?=
+ =?us-ascii?Q?qbxNpwmjbj9v0vysGSdbXC8=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70bdaac6-6367-4da9-7e13-08dcbafa631c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0082da78-1345-48a3-b1c0-08dcbafa6417
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 18:12:55.0525
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 18:12:56.5200
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BlysaCnQ2uPUz5ciF8w89sAuS9TNr5Z4e+A0NxEQcYG+rsJ3zPJE54nXiQNsS+qZGlrzOzFz6Bds00SyH7nmVgRUOw/NBL0Ie+f/5NT31kI=
+X-MS-Exchange-CrossTenant-UserPrincipalName: P/yNccPuXPCj5nFi8ypNlYTGUgSgzMOpnI58Q5QUxc9cSPlel+xFZX33FPIe3s7EFlFC/0aw/iIfeIljiZNlKaFWDlQ6KFyvuWjuVaMh5jE=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR01MB7133
 
 commit f442fa6141379a20b48ae3efabee827a3d260787 upstream
@@ -246,7 +249,7 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 v2: Fixed a build failure
 
 diff --git a/mm/gup.c b/mm/gup.c
-index f50fe2219a13..fdd75384160d 100644
+index ec8570d25a6c..f8cab5c4c0fa 100644
 --- a/mm/gup.c
 +++ b/mm/gup.c
 @@ -97,95 +97,6 @@ static inline struct folio *try_get_folio(struct page *page, int refs)
@@ -333,7 +336,7 @@ index f50fe2219a13..fdd75384160d 100644
 -	/*
 -	 * Adjust the pincount before re-checking the PTE for changes.
 -	 * This is essentially a smp_mb() and is paired with a memory
--	 * barrier in page_try_share_anon_rmap().
+-	 * barrier in folio_try_share_anon_rmap_*().
 -	 */
 -	smp_mb__after_atomic();
 -
@@ -435,7 +438,7 @@ index f50fe2219a13..fdd75384160d 100644
  	if (unlikely(ret)) {
  		page = ERR_PTR(ret);
  		goto out;
-@@ -899,7 +811,7 @@ static int get_gate_page(struct mm_struct *mm, unsigned long address,
+@@ -901,7 +813,7 @@ static int get_gate_page(struct mm_struct *mm, unsigned long address,
  			goto unmap;
  		*page = pte_page(entry);
  	}
@@ -444,7 +447,7 @@ index f50fe2219a13..fdd75384160d 100644
  	if (unlikely(ret))
  		goto unmap;
  out:
-@@ -1302,20 +1214,19 @@ static long __get_user_pages(struct mm_struct *mm,
+@@ -1304,20 +1216,19 @@ static long __get_user_pages(struct mm_struct *mm,
  			 * pages.
  			 */
  			if (page_increm > 1) {
@@ -469,7 +472,7 @@ index f50fe2219a13..fdd75384160d 100644
  						      foll_flags);
  					ret = -EFAULT;
  					goto out;
-@@ -2541,6 +2452,102 @@ static void __maybe_unused undo_dev_pagemap(int *nr, int nr_start,
+@@ -2556,6 +2467,102 @@ static void __maybe_unused undo_dev_pagemap(int *nr, int nr_start,
  	}
  }
  
@@ -572,7 +575,7 @@ index f50fe2219a13..fdd75384160d 100644
  #ifdef CONFIG_ARCH_HAS_PTE_SPECIAL
  /*
   * Fast-gup relies on pte change detection to avoid concurrent pgtable
-@@ -2605,7 +2612,7 @@ static int gup_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+@@ -2620,7 +2627,7 @@ static int gup_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
  		VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
  		page = pte_page(pte);
  
@@ -581,7 +584,7 @@ index f50fe2219a13..fdd75384160d 100644
  		if (!folio)
  			goto pte_unmap;
  
-@@ -2699,7 +2706,7 @@ static int __gup_device_huge(unsigned long pfn, unsigned long addr,
+@@ -2714,7 +2721,7 @@ static int __gup_device_huge(unsigned long pfn, unsigned long addr,
  
  		SetPageReferenced(page);
  		pages[*nr] = page;
@@ -590,7 +593,7 @@ index f50fe2219a13..fdd75384160d 100644
  			undo_dev_pagemap(nr, nr_start, flags, pages);
  			break;
  		}
-@@ -2808,7 +2815,7 @@ static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
+@@ -2823,7 +2830,7 @@ static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
  	page = nth_page(pte_page(pte), (addr & (sz - 1)) >> PAGE_SHIFT);
  	refs = record_subpages(page, addr, end, pages + *nr);
  
@@ -599,7 +602,7 @@ index f50fe2219a13..fdd75384160d 100644
  	if (!folio)
  		return 0;
  
-@@ -2879,7 +2886,7 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+@@ -2894,7 +2901,7 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
  	page = nth_page(pmd_page(orig), (addr & ~PMD_MASK) >> PAGE_SHIFT);
  	refs = record_subpages(page, addr, end, pages + *nr);
  
@@ -608,7 +611,7 @@ index f50fe2219a13..fdd75384160d 100644
  	if (!folio)
  		return 0;
  
-@@ -2923,7 +2930,7 @@ static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
+@@ -2938,7 +2945,7 @@ static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
  	page = nth_page(pud_page(orig), (addr & ~PUD_MASK) >> PAGE_SHIFT);
  	refs = record_subpages(page, addr, end, pages + *nr);
  
@@ -617,7 +620,7 @@ index f50fe2219a13..fdd75384160d 100644
  	if (!folio)
  		return 0;
  
-@@ -2963,7 +2970,7 @@ static int gup_huge_pgd(pgd_t orig, pgd_t *pgdp, unsigned long addr,
+@@ -2978,7 +2985,7 @@ static int gup_huge_pgd(pgd_t orig, pgd_t *pgdp, unsigned long addr,
  	page = nth_page(pgd_page(orig), (addr & ~PGDIR_MASK) >> PAGE_SHIFT);
  	refs = record_subpages(page, addr, end, pages + *nr);
  
@@ -627,10 +630,10 @@ index f50fe2219a13..fdd75384160d 100644
  		return 0;
  
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 79fbd6ddec49..2e64897168bc 100644
+index 769e8a125f0c..c5c3bab8b9d0 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -1052,7 +1052,7 @@ struct page *follow_devmap_pmd(struct vm_area_struct *vma, unsigned long addr,
+@@ -1274,7 +1274,7 @@ struct page *follow_devmap_pmd(struct vm_area_struct *vma, unsigned long addr,
  	if (!*pgmap)
  		return ERR_PTR(-EFAULT);
  	page = pfn_to_page(pfn);
@@ -639,7 +642,7 @@ index 79fbd6ddec49..2e64897168bc 100644
  	if (ret)
  		page = ERR_PTR(ret);
  
-@@ -1210,7 +1210,7 @@ struct page *follow_devmap_pud(struct vm_area_struct *vma, unsigned long addr,
+@@ -1434,7 +1434,7 @@ struct page *follow_devmap_pud(struct vm_area_struct *vma, unsigned long addr,
  		return ERR_PTR(-EFAULT);
  	page = pfn_to_page(pfn);
  
@@ -648,7 +651,7 @@ index 79fbd6ddec49..2e64897168bc 100644
  	if (ret)
  		page = ERR_PTR(ret);
  
-@@ -1471,7 +1471,7 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
+@@ -1696,7 +1696,7 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
  	VM_BUG_ON_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
  			!PageAnonExclusive(page), page);
  
@@ -658,10 +661,10 @@ index 79fbd6ddec49..2e64897168bc 100644
  		return ERR_PTR(ret);
  
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index a480affd475b..ab040f8d1987 100644
+index c445e6fd8579..d3848f56038d 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -6532,7 +6532,7 @@ struct page *hugetlb_follow_page_mask(struct vm_area_struct *vma,
+@@ -6931,7 +6931,7 @@ struct page *hugetlb_follow_page_mask(struct vm_area_struct *vma,
  		 * try_grab_page() should always be able to get the page here,
  		 * because we hold the ptl lock and have verified pte_present().
  		 */
@@ -671,10 +674,10 @@ index a480affd475b..ab040f8d1987 100644
  		if (WARN_ON_ONCE(ret)) {
  			page = ERR_PTR(ret);
 diff --git a/mm/internal.h b/mm/internal.h
-index abed947f784b..ef8d787a510c 100644
+index 07ad2675a88b..cf9a54ef2641 100644
 --- a/mm/internal.h
 +++ b/mm/internal.h
-@@ -938,8 +938,8 @@ int migrate_device_coherent_page(struct page *page);
+@@ -1096,8 +1096,8 @@ int migrate_device_coherent_page(struct page *page);
  /*
   * mm/gup.c
   */
