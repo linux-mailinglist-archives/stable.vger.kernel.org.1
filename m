@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-66861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090F794F2CD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5227F94F4D8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82551F2184F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0746A1F2109B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F201E1EA8D;
-	Mon, 12 Aug 2024 16:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC35183CA6;
+	Mon, 12 Aug 2024 16:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSn7rJgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njnVr6Zq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE10C183CD9;
-	Mon, 12 Aug 2024 16:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEBA1494B8;
+	Mon, 12 Aug 2024 16:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479025; cv=none; b=EA3OtJ/f8wuIPqa/+ebRFiAzxBA6YKYPggKHQasj1GE/Xlyv/kxAfQpXHAoTrCSE5Nu0Vcf1SOZFBJtSDugQkjVuGEUyTY+IymCC+8CEHwMtM4q+qYTpx9988oluXx6iZMSSCjOwR2LpTN8TrmRs47k3f+RcprRcZdp+qCEtLeo=
+	t=1723480520; cv=none; b=eKNVMqz/QTKBigjBIKaZv92/T6h1FA5NsjiuemJxOPsxi3YS2dwuhIt7WZaop+EYIpLH2KLY+VWsgRGaSIaRsgx7Eq6HcwaRylB9du14FoXCHuLFBa+cVB/kxwtaSJtx7cZgDzGK6xg0mAX4Dj3g4Fq+Iqo7bX4K9DxIfWOSces=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479025; c=relaxed/simple;
-	bh=SDU/S3wgdUqzkpahDUc7z2PlEdsAtV5gM6gVF4XXimA=;
+	s=arc-20240116; t=1723480520; c=relaxed/simple;
+	bh=0wimM8+pB+Op2gw2bI3TWhNhdJ0RWg/M9LLfbzNs9Fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ahv81oS3fyxKOFvLi3JqZgZYnDWEwnggJmqxVm9u0SrV/lOcR+VV2tGoCycXAlLGtRQCVB812GhZ3rojSCnkRj95EtpirLumD12XQpjBm7VHn3uF1HHtsng/TVB+MwqthPGe0djBaeW3pfEcV0xCz5rIYYAkHs/2jE4dKE+SVKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSn7rJgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B01DC32782;
-	Mon, 12 Aug 2024 16:10:24 +0000 (UTC)
+	 MIME-Version; b=FccaERTz7+4eS4IjAnZM3zhH2fxrtqV+tbJE5j4Dmxrr2du9j7VpsrNlHjKTK25vEOiVj9AtEI6IKM/XruPjsW70/HSDQp3p3eLDEPJhEKcfr/FiRCN/NFkxHjSK/z22Um0TnGurFzDVzzUdGdW8pUCLuX06NdI34iLI7pQOd0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njnVr6Zq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A78C32782;
+	Mon, 12 Aug 2024 16:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479025;
-	bh=SDU/S3wgdUqzkpahDUc7z2PlEdsAtV5gM6gVF4XXimA=;
+	s=korg; t=1723480520;
+	bh=0wimM8+pB+Op2gw2bI3TWhNhdJ0RWg/M9LLfbzNs9Fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSn7rJgSW+8vXRg8sLNFywBWYKw7IkiHWz0/IBLRoD7HNKnpQE5+dqxFhZJlot50k
-	 Qt12Rh4uvHE/bDD4Kjw+nZNS90r4M0ft56Q7eJ7cM6PZDJ+47VN702JAciJRXWiAjf
-	 j+PNmaZ7FXpKp5wHy7RxN0VLSAbLNr5oItobEnLA=
+	b=njnVr6ZqpnabHCSqPIxWYxVyB79jv7M2/vbv8HzG+8fNTiMIIBY5Ni8R86QFdcseU
+	 hd4n8w512sGUynQ46lHj2bP+bcW78WXitzJTIm/LVh5PJaTl/rT+YCqx7D5uGCChm2
+	 6CPQDaZcu0VSL2CLwncstNyM91rygg0BK4omascc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	George Kennedy <george.kennedy@oracle.com>
-Subject: [PATCH 6.1 109/150] serial: core: check uartclk for zero to avoid divide by zero
+	Chris Wulff <crwulff@gmail.com>
+Subject: [PATCH 6.10 189/263] usb: gadget: core: Check for unset descriptor
 Date: Mon, 12 Aug 2024 18:03:10 +0200
-Message-ID: <20240812160129.367856327@linuxfoundation.org>
+Message-ID: <20240812160153.781718847@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Kennedy <george.kennedy@oracle.com>
+From: Chris Wulff <crwulff@gmail.com>
 
-commit 6eabce6608d6f3440f4c03aa3d3ef50a47a3d193 upstream.
+commit 973a57891608a98e894db2887f278777f564de18 upstream.
 
-Calling ioctl TIOCSSERIAL with an invalid baud_base can
-result in uartclk being zero, which will result in a
-divide by zero error in uart_get_divisor(). The check for
-uartclk being zero in uart_set_info() needs to be done
-before other settings are made as subsequent calls to
-ioctl TIOCSSERIAL for the same port would be impacted if
-the uartclk check was done where uartclk gets set.
+Make sure the descriptor has been set before looking at maxpacket.
+This fixes a null pointer panic in this case.
 
-Oops: divide error: 0000  PREEMPT SMP KASAN PTI
-RIP: 0010:uart_get_divisor (drivers/tty/serial/serial_core.c:580)
-Call Trace:
- <TASK>
-serial8250_get_divisor (drivers/tty/serial/8250/8250_port.c:2576
-    drivers/tty/serial/8250/8250_port.c:2589)
-serial8250_do_set_termios (drivers/tty/serial/8250/8250_port.c:502
-    drivers/tty/serial/8250/8250_port.c:2741)
-serial8250_set_termios (drivers/tty/serial/8250/8250_port.c:2862)
-uart_change_line_settings (./include/linux/spinlock.h:376
-    ./include/linux/serial_core.h:608 drivers/tty/serial/serial_core.c:222)
-uart_port_startup (drivers/tty/serial/serial_core.c:342)
-uart_startup (drivers/tty/serial/serial_core.c:368)
-uart_set_info (drivers/tty/serial/serial_core.c:1034)
-uart_set_info_user (drivers/tty/serial/serial_core.c:1059)
-tty_set_serial (drivers/tty/tty_io.c:2637)
-tty_ioctl (drivers/tty/tty_io.c:2647 drivers/tty/tty_io.c:2791)
-__x64_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:907
-    fs/ioctl.c:893 fs/ioctl.c:893)
-do_syscall_64 (arch/x86/entry/common.c:52
-    (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1))
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+This may happen if the gadget doesn't properly set up the endpoint
+for the current speed, or the gadget descriptors are malformed and
+the descriptor for the speed/endpoint are not found.
 
-Reported-by: syzkaller <syzkaller@googlegroups.com>
+No current gadget driver is known to have this problem, but this
+may cause a hard-to-find bug during development of new gadgets.
+
+Fixes: 54f83b8c8ea9 ("USB: gadget: Reject endpoints with 0 maxpacket value")
 Cc: stable@vger.kernel.org
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
-Rule: add
-Link: https://lore.kernel.org/stable/1721148848-9784-1-git-send-email-george.kennedy%40oracle.com
-Link: https://lore.kernel.org/r/1721219078-3209-1-git-send-email-george.kennedy@oracle.com
+Signed-off-by: Chris Wulff <crwulff@gmail.com>
+Link: https://lore.kernel.org/r/20240725010419.314430-2-crwulff@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/serial_core.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/usb/gadget/udc/core.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -846,6 +846,14 @@ static int uart_set_info(struct tty_stru
- 	new_flags = (__force upf_t)new_info->flags;
- 	old_custom_divisor = uport->custom_divisor;
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -118,12 +118,10 @@ int usb_ep_enable(struct usb_ep *ep)
+ 		goto out;
  
-+	if (!(uport->flags & UPF_FIXED_PORT)) {
-+		unsigned int uartclk = new_info->baud_base * 16;
-+		/* check needs to be done here before other settings made */
-+		if (uartclk == 0) {
-+			retval = -EINVAL;
-+			goto exit;
-+		}
-+	}
- 	if (!capable(CAP_SYS_ADMIN)) {
- 		retval = -EPERM;
- 		if (change_irq || change_port ||
+ 	/* UDC drivers can't handle endpoints with maxpacket size 0 */
+-	if (usb_endpoint_maxp(ep->desc) == 0) {
+-		/*
+-		 * We should log an error message here, but we can't call
+-		 * dev_err() because there's no way to find the gadget
+-		 * given only ep.
+-		 */
++	if (!ep->desc || usb_endpoint_maxp(ep->desc) == 0) {
++		WARN_ONCE(1, "%s: ep%d (%s) has %s\n", __func__, ep->address, ep->name,
++			  (!ep->desc) ? "NULL descriptor" : "maxpacket 0");
++
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
 
 
 
