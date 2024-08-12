@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-67254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559BF94F495
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D4B94F2AE
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5F47B22BCA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21792812A4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6349A184527;
-	Mon, 12 Aug 2024 16:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3E1187332;
+	Mon, 12 Aug 2024 16:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1un2hE8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHGYcjGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4CC2C1A5;
-	Mon, 12 Aug 2024 16:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE557183CA6;
+	Mon, 12 Aug 2024 16:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480319; cv=none; b=OFH4pCH59PseoHsJ+841zJZ8Hecq7XMZVYQNI2tV0pkSoQyj1s08aTJIsdqC3RUFuV2i/THa22wM4wGeoosT2NOuQZ7FQQ/0Sa8N6aojfS3yRSOVgei4H3y7ppXt6cp+ZYvgOBQxMtj1TRFDIIZ+BiadVRMT+cJn7p0HpciMkIo=
+	t=1723478942; cv=none; b=q8x/adoMXMfTT5DXnAbpaAhePCuBiiguz4zwYE8YUutrtMocV5QSBrf/Nikq6SkIldDXUB5j9KsPXdbfDVHIxd7kndtUJmo+4lbPzqTxetM9uwRKT4PX0XERBCZ6UFx1BdpX+TycL8v9j4MABy9ucOFZJGf9zb+kj63wn6n/bOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480319; c=relaxed/simple;
-	bh=GlzoEuqh5uJEd/qT3+AnapbB0gnq7XjROH6YECIelJ4=;
+	s=arc-20240116; t=1723478942; c=relaxed/simple;
+	bh=CYRQ7e4isLG5N/VMTY0RXIWnQYfsmforza1WVjKktRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgLrNWKDsTZCRbN+UrEfZmEmqv3XyMaxkRl/EdtqMLRqG9GaNSX4spb0UCuqvc51FlMDIM6GMXj17njBw49uMBZ1C6i2M0g9nEYBK+u4Lea42qgGvrPh+zjFTrJJgs+Q4mePhz6SCTvdbyVxHwXz7LFmyM/C/1V2tDEyS6TomzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1un2hE8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A06C32782;
-	Mon, 12 Aug 2024 16:31:58 +0000 (UTC)
+	 MIME-Version; b=LUqAzi7RWXyYbPAgrxuCi/GkFbqVpD8pWdZbTZ7E5SMjbmkJnvCQAsaohmFFIzom/LZaH3evWocIVpaFu/vT2xOzjRA/AOQciIttueTSDmiSI4WLp9H1I0lzaswEltAzjZDwvRB0oM5Yuxj07glSxc2btMQXEhUUDVsyjtYmEY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHGYcjGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BD0C32782;
+	Mon, 12 Aug 2024 16:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480319;
-	bh=GlzoEuqh5uJEd/qT3+AnapbB0gnq7XjROH6YECIelJ4=;
+	s=korg; t=1723478941;
+	bh=CYRQ7e4isLG5N/VMTY0RXIWnQYfsmforza1WVjKktRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1un2hE8LD7mL/FJUXr1BULzL6LDuyuCPwgRJkxDhp0geSrLvQd7/rKks3G/daRdnh
-	 MhSwVFkkQmq6ZTXLsxBz/eim0STO+04m7OIN25cUBdhajeyzU6DJvFN/Yiek6nyJE9
-	 f2pa5nn5dlYSsxvVNoLht9aDqPMCgjZnsELDMSQo=
+	b=vHGYcjGqGda/O2sqi5fLhGn4gY2ydqN7eDu6Nzsn+tpMl5OzHXdvh+y6guARsTMFW
+	 ZPyi2EICxsZua+87aHjV6BSM7472INVC4DWuk0t0MOCLFOxJkdIZQALTwLxEduc71p
+	 l5FKPgweEdpsgC0R3AC1CkoVvu04JOxnyfW4db7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 162/263] ALSA: usb-audio: Re-add ScratchAmp quirk entries
-Date: Mon, 12 Aug 2024 18:02:43 +0200
-Message-ID: <20240812160152.749052503@linuxfoundation.org>
+Subject: [PATCH 6.1 083/150] i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume
+Date: Mon, 12 Aug 2024 18:02:44 +0200
+Message-ID: <20240812160128.374227310@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 03898691d42e0170e7d00f07cbe21ce0e9f3a8fa ]
+[ Upstream commit 9ba48db9f77ce0001dbb882476fa46e092feb695 ]
 
-At the code refactoring of USB-audio quirk handling, I assumed that
-the quirk entries of Stanton ScratchAmp devices were only about the
-device name, and moved them completely into the rename table.
-But it seems that the device requires the quirk entry so that it's
-probed by the driver itself.
+Add the missing geni_icc_disable() before return in
+geni_i2c_runtime_resume().
 
-This re-adds back the quirk entries of ScratchAmp, but in a
-minimalistic manner.
-
-Fixes: 5436f59bc5bc ("ALSA: usb-audio: Move device rename and profile quirks to an internal table")
-Link: https://patch.msgid.link/20240808081803.22300-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/busses/i2c-qcom-geni.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 73abc38a54006..f13a8d63a019a 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -2594,6 +2594,10 @@ YAMAHA_DEVICE(0x7010, "UB99"),
+diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
+index 02eab8d5082ba..6dcc0951c3d6d 100644
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -990,6 +990,7 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
+ 	ret = geni_se_resources_on(&gi2c->se);
+ 	if (ret) {
+ 		clk_disable_unprepare(gi2c->core_clk);
++		geni_icc_disable(&gi2c->se);
+ 		return ret;
  	}
- },
  
-+/* Stanton ScratchAmp */
-+{ USB_DEVICE(0x103d, 0x0100) },
-+{ USB_DEVICE(0x103d, 0x0101) },
-+
- /* Novation EMS devices */
- {
- 	USB_DEVICE_VENDOR_SPEC(0x1235, 0x0001),
 -- 
 2.43.0
 
