@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-66767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4DF194F256
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C9AD94F443
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B7E41F21879
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:05:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 015741F218D3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E3F183CC9;
-	Mon, 12 Aug 2024 16:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7764E186E34;
+	Mon, 12 Aug 2024 16:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKXEoQ3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDwlLM1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1008C1EA8D;
-	Mon, 12 Aug 2024 16:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CB0134AC;
+	Mon, 12 Aug 2024 16:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478716; cv=none; b=CCM/tox0hT6eslm5XTTugYc/+7+xcg6EZW22CbWRCw6rB7JvBr0X0yS74CZvlhBCuIpLH4sZGvwuXV0LpQu1vzAGDV83BXtYB6HR/sVs1FaotJ3GOffAiKD+nSaM+0xYAz/EBDZnzHGf7vs9Xotl/WvMC+7H9ZoPhIg6BhplyxE=
+	t=1723480097; cv=none; b=X0+gqblc995/mCoOqr2lzPaz7JSZfONIZmnuPCG/Yhf41xeDP79ubdlU4Gw2ssJihxq8x1oniKDOjSCb4U0yGezB/Yq7s8ZIGz766+fo5jMUnlXnen0sBo0hyGhHzvqu57bTwUOXp6CXFEkGdJle+4n/ZveIBGbFxT9lRCiIzBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478716; c=relaxed/simple;
-	bh=LoIhXv3y+3Pi0dz+1owLDzeMAh3/Pew8Gs7q3eiYxxc=;
+	s=arc-20240116; t=1723480097; c=relaxed/simple;
+	bh=P/Gl/FzYAA//A1RMqUViVpLeFZHf4r8lHIH/bKRgMpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exKuwjbWwjbI1xYTiuBSWr6NFaY9ijRAQTzVS2HsON5ZuHnioqrkFfkNhPKkcJSD49erRuiqJN4U5ArVlZDGJm5UNvjbzQqJfLTbyaKyezuuuhOTRUP8Q/LEsO7em9t/pLkNrSFAhMDUJq6oPyDtRBZ5himi3mLzcaKVM3op+0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKXEoQ3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA479C32782;
-	Mon, 12 Aug 2024 16:05:14 +0000 (UTC)
+	 MIME-Version; b=du6K93AYQ5/UsCQW2s3O0ZlOQt4Da+Yue3JtvQ7O1N4v/aCd31tapzSby9+K39TGfp6L/uuIboXhrVofOtbJhpJMJmyTxijUBfMQzsQ6ZXfJ7LXOdhZL0VHfpTmmqkgZM6wG6ATshliFAeLYFLEvgWvaB2SEMQC5tu3lkvEmqvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDwlLM1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5E8C32782;
+	Mon, 12 Aug 2024 16:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478715;
-	bh=LoIhXv3y+3Pi0dz+1owLDzeMAh3/Pew8Gs7q3eiYxxc=;
+	s=korg; t=1723480097;
+	bh=P/Gl/FzYAA//A1RMqUViVpLeFZHf4r8lHIH/bKRgMpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKXEoQ3NvTlLkIPLGLvHsQaCCzjD3kCTPDzAmBcauavCo/0jNhV4qKIY5a0xflBlD
-	 7M2EvMP0paoJnT3ZwhyNcvj/NRYCepl+HKFUPVtapC0tAK6FbuQ7/BoaHXfUbiJtfH
-	 j1iumbPjjdSN/DcvH2AnjzHSd28bhFqubot/2Qic=
+	b=MDwlLM1uQIdyuKRrl1VfhdLReBJHj/kBOLmNXDa/HRaFp4HqNKdvS4fAamryGIN/B
+	 EI/KL4WmtfoyX6b0rDdyxmUoWy8nA1+5zy2kyyEWwinyoUZ+XGBh398kfkquLbYfr0
+	 QpbZf5FwUciEXEauDfXRFGEzjTGEZUNPhEcivNc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	kasan-dev@googlegroups.com,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/150] rcutorture: Fix rcu_torture_fwd_cb_cr() data race
+Subject: [PATCH 6.10 096/263] drm/admgpu: fix dereferencing null pointer context
 Date: Mon, 12 Aug 2024 18:01:37 +0200
-Message-ID: <20240812160125.786769750@linuxfoundation.org>
+Message-ID: <20240812160150.219923851@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 6040072f4774a575fa67b912efe7722874be337b ]
+[ Upstream commit 030ffd4d43b433bc6671d9ec34fc12c59220b95d ]
 
-On powerpc systems, spinlock acquisition does not order prior stores
-against later loads.  This means that this statement:
+When user space sets an invalid ta type, the pointer context will be empty.
+So it need to check the pointer context before using it
 
-	rfcp->rfc_next = NULL;
-
-Can be reordered to follow this statement:
-
-	WRITE_ONCE(*rfcpp, rfcp);
-
-Which is then a data race with rcu_torture_fwd_prog_cr(), specifically,
-this statement:
-
-	rfcpn = READ_ONCE(rfcp->rfc_next)
-
-KCSAN located this data race, which represents a real failure on powerpc.
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: <kasan-dev@googlegroups.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Suggested-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 8c45df910763a..c14517912cfaa 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -2547,7 +2547,7 @@ static void rcu_torture_fwd_cb_cr(struct rcu_head *rhp)
- 	spin_lock_irqsave(&rfp->rcu_fwd_lock, flags);
- 	rfcpp = rfp->rcu_fwd_cb_tail;
- 	rfp->rcu_fwd_cb_tail = &rfcp->rfc_next;
--	WRITE_ONCE(*rfcpp, rfcp);
-+	smp_store_release(rfcpp, rfcp);
- 	WRITE_ONCE(rfp->n_launders_cb, rfp->n_launders_cb + 1);
- 	i = ((jiffies - rfp->rcu_fwd_startat) / (HZ / FWD_CBS_HIST_DIV));
- 	if (i >= ARRAY_SIZE(rfp->n_launders_hist))
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
+index ca5c86e5f7cd6..8e8afbd237bcd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
+@@ -334,7 +334,7 @@ static ssize_t ta_if_invoke_debugfs_write(struct file *fp, const char *buf, size
+ 
+ 	set_ta_context_funcs(psp, ta_type, &context);
+ 
+-	if (!context->initialized) {
++	if (!context || !context->initialized) {
+ 		dev_err(adev->dev, "TA is not initialized\n");
+ 		ret = -EINVAL;
+ 		goto err_free_shared_buf;
 -- 
 2.43.0
 
