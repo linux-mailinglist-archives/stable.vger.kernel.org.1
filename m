@@ -1,89 +1,155 @@
-Return-Path: <stable+bounces-66758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4968E94F219
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:51:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0E394F24F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009961F22B3C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:51:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3404828181E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FB9184551;
-	Mon, 12 Aug 2024 15:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE42C183CD4;
+	Mon, 12 Aug 2024 16:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5lt6eeX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pg4CWbto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B03189BB8;
-	Mon, 12 Aug 2024 15:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4151EA8D;
+	Mon, 12 Aug 2024 16:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723477778; cv=none; b=HNCwvhTpAa+Nf/EGORpSGe4nOL/+Q4avwZlTJK3HKxAzgloX2+oJthzKeR3IgQ9Y+dtEncZgCyrc/mV0swB6UQPkSJEPCvcblaMCESenZgkkNo+FcQNJUFFBAZBm8qK1NcMh27Us7TUZf45IUSMtPSoQ7sBYUOzGQ7zBjLUv05o=
+	t=1723478691; cv=none; b=FdrFA5pxYpUp/rddB7FklC9cS9g2DStMUgFUIARrOlZWFUVZ+8ZnJfbhlrw7eWd7slD4Bb9hLPvTSdf+k0jIbEmguFgWayYS2gkdp8PV1pub4SnOXQq/NIe/tsujaIs+JeEUYdlkEJEysRb3J/rGYckR8TEOAxfb5Da3lGCG0gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723477778; c=relaxed/simple;
-	bh=nzR06YyvGvtd80JHGGq3C1hZ8fbhBI409yPPHQfBWwY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UWnx6cMwv6o5htxkZ2q8GwhVpti992k/dDVA938SAyDtmqQ8gyGV7LzCdZAcPf14Ur3tbUyv/inmm39GZICOltQhMarTHM3O+poDVvLy4ASaiYvnrgOwKCuDpyuNhVKnik8kFMxLDtDAHRo5r/wN70OmG6IyfFw+taMqMxAsljs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5lt6eeX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E33FC4AF0D;
-	Mon, 12 Aug 2024 15:49:37 +0000 (UTC)
+	s=arc-20240116; t=1723478691; c=relaxed/simple;
+	bh=6oY2SiwyjWyh17QtiAiqgAnA1JRt94S1ic/w2ghV8oo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q6Bk8yYdJzBzrcUkSfZ3sZucnl/CesdQ7r1gH9EIlmRiTv5BCHHSrfMZHXqIQ9xP0PkgLf9hnqy1ywSF+fU9hMEOB1ul6Z6o67yDJxbJ65VdC8YBAxXiVU61QtLYLB6RWXJgaTWEnnuglvcgeT33vpK0sV3gYoRXBqE4t7sbYtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pg4CWbto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F93C32782;
+	Mon, 12 Aug 2024 16:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723477777;
-	bh=nzR06YyvGvtd80JHGGq3C1hZ8fbhBI409yPPHQfBWwY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S5lt6eeXniZJxVrYt7RmQek0MlW9PQYBS2zQmBxS2yUTrPVgaYi+GNiLu1WB4i66w
-	 a10UpQv1uZ1zgN01Lfw66gbfn33G/sj1dv4o9deseE1jWaaeM2MJ7TCdHRKOIn6B4G
-	 nzI7zY7H3rUbqtplRjDZjb0wr37MhJzWc3A6Izjo=
-Date: Mon, 12 Aug 2024 17:49:34 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: fdmanana@kernel.org
-Cc: stable@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	Filipe Manana <fdmanana@suse.com>,
-	syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>
-Subject: Re: [PATCH for 5.15 stable] btrfs: fix double inode unlock for
- direct IO sync writes
-Message-ID: <2024081227-sister-matcher-73a2@gregkh>
-References: <cover.1723046461.git.fdmanana@suse.com>
- <363aee7827c9d6ff034b7e3ea2a5bf4959ff4905.1723046461.git.fdmanana@suse.com>
+	s=korg; t=1723478691;
+	bh=6oY2SiwyjWyh17QtiAiqgAnA1JRt94S1ic/w2ghV8oo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pg4CWbtofUdWhiMk1MYaw/BMCG6khXnhb/DBwIiFLCpjkIGOoi/Zgsy2zk+fP8e9Q
+	 uoNJ6uotJdI0v7om2MTa33PUFXCsGNit192zpk8bPOTj1GOJciNVDK4ZfkLTYW380W
+	 r9rX9VRqezTF75ozbiYg80lBK5jf66xiiFpN+93A=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Yipeng Zou <zouyipeng@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 001/150] irqchip/mbigen: Fix mbigen node address layout
+Date: Mon, 12 Aug 2024 18:01:22 +0200
+Message-ID: <20240812160125.203789707@linuxfoundation.org>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <363aee7827c9d6ff034b7e3ea2a5bf4959ff4905.1723046461.git.fdmanana@suse.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 12, 2024 at 04:27:33PM +0100, fdmanana@kernel.org wrote:
-> From: Filipe Manana <fdmanana@suse.com>
-> 
-> commit e0391e92f9ab4fb3dbdeb139c967dcfa7ac4b115 upstream.
-> 
-> If we do a direct IO sync write, at btrfs_sync_file(), and we need to skip
-> inode logging or we get an error starting a transaction or an error when
-> flushing delalloc, we end up unlocking the inode when we shouldn't under
-> the 'out_release_extents' label, and then unlock it again at
-> btrfs_direct_write().
-> 
-> Fix that by checking if we have to skip inode unlocking under that label.
-> 
-> Reported-by: syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com
-> Link: https://lore.kernel.org/linux-btrfs/000000000000dfd631061eaeb4bc@google.com/
-> Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
-> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: Filipe Manana <fdmanana@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> ---
->  fs/btrfs/file.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-All now queued up, thanks.
+------------------
 
-greg k-h
+From: Yipeng Zou <zouyipeng@huawei.com>
+
+[ Upstream commit 6be6cba9c4371d27f78d900ccfe34bb880d9ee20 ]
+
+The mbigen interrupt chip has its per node registers located in a
+contiguous region of page sized chunks. The code maps them into virtual
+address space as a contiguous region and determines the address of a node
+by using the node ID as index.
+
+                    mbigen chip
+       |-----------------|------------|--------------|
+   mgn_node_0         mgn_node_1     ...         mgn_node_i
+|--------------|   |--------------|       |----------------------|
+[0x0000, 0x0x0FFF] [0x1000, 0x1FFF]    [i*0x1000, (i+1)*0x1000 - 1]
+
+This works correctly up to 10 nodes, but then fails because the 11th's
+array slot is used for the MGN_CLEAR registers.
+
+                         mbigen chip
+    |-----------|--------|--------|---------------|--------|
+mgn_node_0  mgn_node_1  ...  mgn_clear_register  ...   mgn_node_i
+                            |-----------------|
+                             [0xA000, 0xAFFF]
+
+Skip the MGN_CLEAR register space when calculating the offset for node IDs
+greater than or equal to ten.
+
+Fixes: a6c2f87b8820 ("irqchip/mbigen: Implement the mbigen irq chip operation functions")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240730014400.1751530-1-zouyipeng@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/irqchip/irq-mbigen.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
+index f3faf5c997706..23117a30c6275 100644
+--- a/drivers/irqchip/irq-mbigen.c
++++ b/drivers/irqchip/irq-mbigen.c
+@@ -64,6 +64,20 @@ struct mbigen_device {
+ 	void __iomem		*base;
+ };
+ 
++static inline unsigned int get_mbigen_node_offset(unsigned int nid)
++{
++	unsigned int offset = nid * MBIGEN_NODE_OFFSET;
++
++	/*
++	 * To avoid touched clear register in unexpected way, we need to directly
++	 * skip clear register when access to more than 10 mbigen nodes.
++	 */
++	if (nid >= (REG_MBIGEN_CLEAR_OFFSET / MBIGEN_NODE_OFFSET))
++		offset += MBIGEN_NODE_OFFSET;
++
++	return offset;
++}
++
+ static inline unsigned int get_mbigen_vec_reg(irq_hw_number_t hwirq)
+ {
+ 	unsigned int nid, pin;
+@@ -72,8 +86,7 @@ static inline unsigned int get_mbigen_vec_reg(irq_hw_number_t hwirq)
+ 	nid = hwirq / IRQS_PER_MBIGEN_NODE + 1;
+ 	pin = hwirq % IRQS_PER_MBIGEN_NODE;
+ 
+-	return pin * 4 + nid * MBIGEN_NODE_OFFSET
+-			+ REG_MBIGEN_VEC_OFFSET;
++	return pin * 4 + get_mbigen_node_offset(nid) + REG_MBIGEN_VEC_OFFSET;
+ }
+ 
+ static inline void get_mbigen_type_reg(irq_hw_number_t hwirq,
+@@ -88,8 +101,7 @@ static inline void get_mbigen_type_reg(irq_hw_number_t hwirq,
+ 	*mask = 1 << (irq_ofst % 32);
+ 	ofst = irq_ofst / 32 * 4;
+ 
+-	*addr = ofst + nid * MBIGEN_NODE_OFFSET
+-		+ REG_MBIGEN_TYPE_OFFSET;
++	*addr = ofst + get_mbigen_node_offset(nid) + REG_MBIGEN_TYPE_OFFSET;
+ }
+ 
+ static inline void get_mbigen_clear_reg(irq_hw_number_t hwirq,
+-- 
+2.43.0
+
+
+
 
