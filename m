@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-67035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D456B94F39D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729E294F2A6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A5E31F2168C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8971D1C211FB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E169186E34;
-	Mon, 12 Aug 2024 16:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D963918756E;
+	Mon, 12 Aug 2024 16:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+ub1anb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlHWBiuf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0E4183CA6;
-	Mon, 12 Aug 2024 16:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E32183CA6;
+	Mon, 12 Aug 2024 16:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479585; cv=none; b=flqrgz2amsRHziyZOoqUNCg9vhrZR1jEYvjYmJt5QDmk2vrLnM4x/Cd9mOpzdQOw3ktO1uXpEETNSc7wOKN6s5e5sN5UUUMJjvtZGI3Qnj1tE57MBwuDaOm/Y/AcZRlenJARx4X3LdpC9uOM+k8g1VTXd8uj6B2q3za2T+kukZ4=
+	t=1723478918; cv=none; b=P1358o3bNnWU/sd00Shfrj8+xJauZK2yCLhWV1duC4EGg8rt16CvnqiLTuPkGGzDMj55uku4WjLs4gao5kj3t0oOLX2YK4U1jTVdqdE1gHC950nuGGzF4kkaDzN9OR2NDpjMmRGMUN88SC7ymiSwXB/024jHq1nv3fYOkYZ/CjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479585; c=relaxed/simple;
-	bh=ErY0mxZQ0NEeiPnB3oAV04Btyw/8JgYlE0ecFC2IeA4=;
+	s=arc-20240116; t=1723478918; c=relaxed/simple;
+	bh=XrBU8yjTwWOgOFpJQukV/XeR6Y7yaQgtCdwjxE3pKNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gO1c0PJERgTJu3nm0eAppIiTm36xlw2qFZl42ZMubQnOOPb8pD2PMhf+q4TDRHWoA3EMSg+LoerHJOlzIei0U36pTyj8cbu3ccOM7ADordF84fQQMVLLlmSeNU+Oew/r4PvL6ioQ7V9D9VKkLGXqHfCDco6JHJZfgTUg+uNj16M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+ub1anb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2717C32782;
-	Mon, 12 Aug 2024 16:19:44 +0000 (UTC)
+	 MIME-Version; b=T0dzecMHfp/fETaqESlG1qNZK8bFjpVFKnh235+6Y9KPCGmbXXoWTRjc4GgHDEwEr+29dc7hMvWadtaJLaVHySe6QtYAYgosefu2OcTI2gC8V/AWGHRIqiPGs26Hu0JyK62RcIPx81TQIhcVR/j6598w65YeomFTtg/6e++w7+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlHWBiuf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A53C32782;
+	Mon, 12 Aug 2024 16:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479585;
-	bh=ErY0mxZQ0NEeiPnB3oAV04Btyw/8JgYlE0ecFC2IeA4=;
+	s=korg; t=1723478918;
+	bh=XrBU8yjTwWOgOFpJQukV/XeR6Y7yaQgtCdwjxE3pKNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+ub1anbA7gfeWysG+xbeoL6O4m6gKbV6LgXMlVGYT/iedw2rfFCkJGD0sYowpHg4
-	 PqQAXxyqZMfY2SbAcDAI8GZSNGxTie16T9+IYeZR7IvwChzL4eUWDvdRmC/hNpgwnd
-	 DNCGwvE1iAubEb3IN1YFvK72HhXKLGMkFYYfRraA=
+	b=HlHWBiufQIuHelAXR2mA3JQ+LAaanyAwbk9sjK5WIZfqGkm8J4uxqLq2u7uPBfFXW
+	 0WSiAd/AbDs7wERaPkywEAnOh1fxwx3qtqKa2fp2s87woUj1EaLektul8xtI5UclmP
+	 QCJdrfWM1H/PYaAsoWczWTHRgF0mD0+R4Mk6pqgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/189] i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume
+Subject: [PATCH 6.1 076/150] spi: spidev: Add missing spi_device_id for bh2228fv
 Date: Mon, 12 Aug 2024 18:02:37 +0200
-Message-ID: <20240812160136.030329671@linuxfoundation.org>
+Message-ID: <20240812160128.108687530@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 9ba48db9f77ce0001dbb882476fa46e092feb695 ]
+[ Upstream commit e4c4638b6a10427d30e29d22351c375886025f47 ]
 
-Add the missing geni_icc_disable() before return in
-geni_i2c_runtime_resume().
+When the of_device_id entry for "rohm,bh2228fv" was added, the
+corresponding spi_device_id was forgotten, causing a warning message
+during boot-up:
 
-Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+    SPI driver spidev has no spi_device_id for rohm,bh2228fv
+
+Fix module autoloading and shut up the warning by adding the missing
+entry.
+
+Fixes: fc28d1c1fe3b3e2f ("spi: spidev: add correct compatible for Rohm BH2228FV")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/cb571d4128f41175f31319cd9febc829417ea167.1722346539.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-qcom-geni.c | 1 +
+ drivers/spi/spidev.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-index 5ed61cecd8d0e..b17411e97be68 100644
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -993,6 +993,7 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
- 	ret = geni_se_resources_on(&gi2c->se);
- 	if (ret) {
- 		clk_disable_unprepare(gi2c->core_clk);
-+		geni_icc_disable(&gi2c->se);
- 		return ret;
- 	}
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 00612efc2277f..477c3578e7d9e 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -692,6 +692,7 @@ static const struct file_operations spidev_fops = {
+ static struct class *spidev_class;
  
+ static const struct spi_device_id spidev_spi_ids[] = {
++	{ .name = "bh2228fv" },
+ 	{ .name = "dh2228fv" },
+ 	{ .name = "ltc2488" },
+ 	{ .name = "sx1301" },
 -- 
 2.43.0
 
