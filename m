@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-66873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D4F94F2DA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76F994F3A9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69475284BA0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECD3A1C21162
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DED18785F;
-	Mon, 12 Aug 2024 16:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F059C186E34;
+	Mon, 12 Aug 2024 16:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpTuqIqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9ChXCEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBB318757D;
-	Mon, 12 Aug 2024 16:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC1E29CA;
+	Mon, 12 Aug 2024 16:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479064; cv=none; b=mzhYuw5+tGl4mma4aerMkUI/8qJtrHbotbGqljokCoGRObSN/iKLCNQw+IfT9Jh/rXcEN0Fm7XKGaioO3CNBmLEMsF7e6j8rcOWlyULf5HG14M2/Yyqxhm2Dgxs6RGzfs1JxpVgi7fkOSQRzusTjzW5duwTSF+ZgbsgQFahbD1k=
+	t=1723479627; cv=none; b=TB5cNfIiv+kaFScQOTFYfhaHUqbtSlA4nw1nfpZ/BA7FU0vuS0Wa7OMBOowVw0n1rOkrITLMQFojK3/lfHLJjL6NHtHbDFqzNMmVXoy0OYyUqJ3Hd7bwGnIRTfIEODKlxPt7XQbXEwfE/LzDxmO7lq8/t9twW0qGC2Ax5zxpe3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479064; c=relaxed/simple;
-	bh=XfEOHCFebZTmbJCOdQYVK+wlO1myYGTdCNAm496giZI=;
+	s=arc-20240116; t=1723479627; c=relaxed/simple;
+	bh=KlT/s5i/q6M7oWa9lopUxeOe0fTKDTygzdxGpQ6JFd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TW8XQWGQEtsKLq4gO0awz1o8bnAr0xnGcRvHEpQgd+0wYwt90lXtgeL9M+i0aHU+gff9W6xNH/GL4I4Nw9mSjhG7BxPcuCbaXEuQd34RLrN0tuZimjT2pxd3loMbchfQnP+kU9L82zP8xqyJf3xrWQ/AKCg6SqlEAVTCFP0bYvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpTuqIqB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1664C32782;
-	Mon, 12 Aug 2024 16:11:03 +0000 (UTC)
+	 MIME-Version; b=NfKdBg0WujGqii0ZA441rSlkxPKS0CU9G9D5lFQvR/iGZcMPfhZsHYZjtjrDB01+dxgPrvyXc39Bg/zgRbudgywkSs0jEeljWWwWR6yP2EzMDWhRN1I11OlPehzgS/26SnAGIRAVJawb1WoyIISAXA/NPA39jpxunkoYPRRYiAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9ChXCEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D830C4AF0C;
+	Mon, 12 Aug 2024 16:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479064;
-	bh=XfEOHCFebZTmbJCOdQYVK+wlO1myYGTdCNAm496giZI=;
+	s=korg; t=1723479627;
+	bh=KlT/s5i/q6M7oWa9lopUxeOe0fTKDTygzdxGpQ6JFd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpTuqIqBRnYcPzKU2eZIbK9ii7LTUgRj8eiwy+QIgQmGhg4xunMNNlTalTP3wWRyp
-	 daqoZVOFXALnXFMIQA9Sza3Mo+iEKvZUJYi7+WZkyYlKhReUThf6mzmRux80PAiM19
-	 HvG7y99NqJZrm55MGHVfAselPgbiZVjZcuj6o6pA=
+	b=g9ChXCEMv9y2dIeIecJIxGrsM+APVmx/I/1PblwZal5VxeogN73ozaa5dfOhkklZK
+	 AdmYCX16IDVwmxv1AVxe2xRtU6uBIJRF4/JC/Hg+5Ed0T6zNhvPD1u+VjwWo4QiwKm
+	 RojadxFud3DWgVW81m1RpES/CJtQ+f+a0y6zrkAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam James <sam@gentoo.org>,
-	Alejandro Colomar <alx@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 120/150] btrfs: avoid using fixed char array size for tree names
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.6 145/189] power: supply: qcom_battmgr: return EAGAIN when firmware service is not up
 Date: Mon, 12 Aug 2024 18:03:21 +0200
-Message-ID: <20240812160129.794426672@linuxfoundation.org>
+Message-ID: <20240812160137.724250707@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-commit 12653ec36112ab55fa06c01db7c4432653d30a8d upstream.
+commit bf9d5cb588755ee41ac12a8976dccf44ae18281b upstream.
 
-[BUG]
-There is a bug report that using the latest trunk GCC 15, btrfs would cause
-unterminated-string-initialization warning:
+The driver returns -ENODEV when the firmware battmrg service hasn't
+started yet, while per-se -ENODEV is fine, we usually use -EAGAIN to
+tell the user to retry again later. And the power supply core uses
+-EGAIN when the device isn't initialized, let's use the same return.
 
-  linux-6.6/fs/btrfs/print-tree.c:29:49: error: initializer-string for array of ‘char’ is too long [-Werror=unterminated-string-initialization]
-   29 |         { BTRFS_BLOCK_GROUP_TREE_OBJECTID,      "BLOCK_GROUP_TREE"      },
-      |
-      ^~~~~~~~~~~~~~~~~~
+This notably causes an infinite spam of:
+thermal thermal_zoneXX: failed to read out thermal zone (-19)
+because the thermal core doesn't understand -ENODEV, but only
+considers -EAGAIN as a non-fatal error.
 
-[CAUSE]
-To print tree names we have an array of root_name_map structure, which
-uses "char name[16];" to store the name string of a tree.
+While it didn't appear until now, commit [1] fixes thermal core
+and no more ignores thermal zones returning an error at first
+temperature update.
 
-But the following trees have names exactly at 16 chars length:
-- "BLOCK_GROUP_TREE"
-- "RAID_STRIPE_TREE"
+[1] 5725f40698b9 ("thermal: core: Call monitor_thermal_zone() if zone temperature is invalid")
 
-This means we will have no space for the terminating '\0', and can lead
-to unexpected access when printing the name.
-
-[FIX]
-Instead of "char name[16];" use "const char *" instead.
-
-Since the name strings are all read-only data, and are all NULL
-terminated by default, there is not much need to bother the length at
-all.
-
-Reported-by: Sam James <sam@gentoo.org>
-Reported-by: Alejandro Colomar <alx@kernel.org>
-Fixes: edde81f1abf29 ("btrfs: add raid stripe tree pretty printer")
-Fixes: 9c54e80ddc6bd ("btrfs: add code to support the block group root")
-CC: stable@vger.kernel.org # 6.1+
-Suggested-by: Alejandro Colomar <alx@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Alejandro Colomar <alx@kernel.org>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://lore.kernel.org/all/2ed4c630-204a-4f80-a37f-f2ca838eb455@linaro.org/
+Cc: stable@vger.kernel.org
+Fixes: 29e8142b5623 ("power: supply: Introduce Qualcomm PMIC GLINK power supply")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20240715-topic-sm8x50-upstream-fix-battmgr-temp-tz-warn-v1-1-16e842ccead7@linaro.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/print-tree.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/qcom_battmgr.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/print-tree.c
-+++ b/fs/btrfs/print-tree.c
-@@ -9,7 +9,7 @@
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -486,7 +486,7 @@ static int qcom_battmgr_bat_get_property
+ 	int ret;
  
- struct root_name_map {
- 	u64 id;
--	char name[16];
-+	const char *name;
- };
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
  
- static const struct root_name_map root_map[] = {
+ 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
+ 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+@@ -683,7 +683,7 @@ static int qcom_battmgr_ac_get_property(
+ 	int ret;
+ 
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
+ 
+ 	ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+ 	if (ret)
+@@ -748,7 +748,7 @@ static int qcom_battmgr_usb_get_property
+ 	int ret;
+ 
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
+ 
+ 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
+ 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+@@ -867,7 +867,7 @@ static int qcom_battmgr_wls_get_property
+ 	int ret;
+ 
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
+ 
+ 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
+ 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
 
 
 
