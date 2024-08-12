@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE98294F48A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 018AF94F375
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13EE1C20EB9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F20E1F220A6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFF7187335;
-	Mon, 12 Aug 2024 16:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863D7186E5B;
+	Mon, 12 Aug 2024 16:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcm5386Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPuf7rxW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEA62C1A5;
-	Mon, 12 Aug 2024 16:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB9D183CD4;
+	Mon, 12 Aug 2024 16:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480291; cv=none; b=tPXDzy1mZZSO1Tb8XXIEGexmgzSQezlBj6A7P/GReJmx6wTyL1UXvCLtChTQkShAjRUMrvu0VWMma9jpeMIJlVZ3gq2Y3XjqFF6c58U03yhKBk0XcW8KzQU3npwkE6jN9/ZJwlpL/LMGGp/4KHGdbK4v1dYVBHNab+IZgxIx1To=
+	t=1723479474; cv=none; b=M7MV9UkJFXet1N6HFIknxmOAMHLrJw8xZcLuNt/Gnp5xYmRKlJIJ9+ZWvQ9Xtd1ctc+09GoJTQMXtGcUTRIKaSqHT0NAiLF9ObQdUbwGY7/rXhqy4xqzhdxcbhFOSGelLb9G+FEFt07GHBQDu+d92dXwuuDN9vT5Dy0VhtkLiRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480291; c=relaxed/simple;
-	bh=ojyDG1uCalYpHBwz1qK4XsDQXAUhG5V423fE2ITJ2vw=;
+	s=arc-20240116; t=1723479474; c=relaxed/simple;
+	bh=VNhK7i+uOwNVB9IkUfbKW8CZvAH0m7Tw/AQu6nqXvXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MemcrvM47Lw1ofdOLqe5NyI2VOZxMqPdzLDK1iKRS7MgHGoPuclgr0l6mAeDf1Icx05fAQiSjJEiYjTXKg/QtYIItqQFL8zRh8g30/7QGHv7Myrm/KorxZJWlW3ajw8l4mYEPEDxs+L9ZTPTMfZcycrlDc9XF3FTYYgbvjjAjsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcm5386Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DECEC32782;
-	Mon, 12 Aug 2024 16:31:30 +0000 (UTC)
+	 MIME-Version; b=nwRPMjmCpSfvsSe3l+4+bwSF5k68s9OkUGN38zGph8Xo4hSkwlQvRwKtqhDRIrYTp3o2yvrVgSVH/fdtbklpXHsZeOej1OHR6Qd2epBewPV8C22/YM76fRWyqXRPp121yvh1s9QT3dIz9HgFj+KW928m7VPkNesVnWEbs/33hno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPuf7rxW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA0EC32782;
+	Mon, 12 Aug 2024 16:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480290;
-	bh=ojyDG1uCalYpHBwz1qK4XsDQXAUhG5V423fE2ITJ2vw=;
+	s=korg; t=1723479473;
+	bh=VNhK7i+uOwNVB9IkUfbKW8CZvAH0m7Tw/AQu6nqXvXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tcm5386Z3x4X7v0+N80PDDEJrveEVL/ttVkpXtPw0ugmv2xNxPFvL1ZBKcxcY9Bb+
-	 mQI5YMO9XZ5Px0vxC5PH7wDzKSfwUWE925tuvTjcJqIijUHvO0KM4FiE2k2AWScgZd
-	 6MZ2r8sYWgjhFf2ooMcU3O0JuB4oUBIxS4ULCxDI=
+	b=jPuf7rxW1ZHXfz+NN/Ay64noi0nUKDc5Si0E0gQyU1vGOIvPx8H4AIvnsy6MXj+Gc
+	 JJRnFQhaVAAaj7KakAEvBRIxjWlE89e95nKUcj4Vz79kWMrWqkt9zhPDE6ukXFvX1t
+	 3sDd7X4PxavKSSrqhzBPII73V6eMORhyrVZcpMAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.10 121/263] scsi: Revert "scsi: sd: Do not repeat the starting disk message"
-Date: Mon, 12 Aug 2024 18:02:02 +0200
-Message-ID: <20240812160151.180502887@linuxfoundation.org>
+	Benjamin Coddington <bcodding@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 067/189] SUNRPC: Fix a race to wake a sync task
+Date: Mon, 12 Aug 2024 18:02:03 +0200
+Message-ID: <20240812160134.722392552@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-commit da3e19ef0b3de0aa4b25595bdc214c02a04f19b8 upstream.
+[ Upstream commit ed0172af5d6fc07d1b40ca82f5ca3979300369f7 ]
 
-This reverts commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4.
+We've observed NFS clients with sync tasks sleeping in __rpc_execute
+waiting on RPC_TASK_QUEUED that have not responded to a wake-up from
+rpc_make_runnable().  I suspect this problem usually goes unnoticed,
+because on a busy client the task will eventually be re-awoken by another
+task completion or xprt event.  However, if the state manager is draining
+the slot table, a sync task missing a wake-up can result in a hung client.
 
-The offending commit tried to suppress a double "Starting disk" message for
-some drivers, but instead started spamming the log with bogus messages
-every five seconds:
+We've been able to prove that the waker in rpc_make_runnable() successfully
+calls wake_up_bit() (ie- there's no race to tk_runstate), but the
+wake_up_bit() call fails to wake the waiter.  I suspect the waker is
+missing the load of the bit's wait_queue_head, so waitqueue_active() is
+false.  There are some very helpful comments about this problem above
+wake_up_bit(), prepare_to_wait(), and waitqueue_active().
 
-	[  311.798956] sd 0:0:0:0: [sda] Starting disk
-	[  316.919103] sd 0:0:0:0: [sda] Starting disk
-	[  322.040775] sd 0:0:0:0: [sda] Starting disk
-	[  327.161140] sd 0:0:0:0: [sda] Starting disk
-	[  332.281352] sd 0:0:0:0: [sda] Starting disk
-	[  337.401878] sd 0:0:0:0: [sda] Starting disk
-	[  342.521527] sd 0:0:0:0: [sda] Starting disk
-	[  345.850401] sd 0:0:0:0: [sda] Starting disk
-	[  350.967132] sd 0:0:0:0: [sda] Starting disk
-	[  356.090454] sd 0:0:0:0: [sda] Starting disk
-	...
+Fix this by inserting smp_mb__after_atomic() before the wake_up_bit(),
+which pairs with prepare_to_wait() calling set_current_state().
 
-on machines that do not actually stop the disk on runtime suspend (e.g.
-the Qualcomm sc8280xp CRD with UFS).
-
-Let's just revert for now to address the regression.
-
-Fixes: 7a6bbc2829d4 ("scsi: sd: Do not repeat the starting disk message")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240716161101.30692-1-johan+linaro@kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/sunrpc/sched.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -4119,6 +4119,8 @@ static int sd_resume(struct device *dev)
- {
- 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
+index 6debf4fd42d4e..cef623ea15060 100644
+--- a/net/sunrpc/sched.c
++++ b/net/sunrpc/sched.c
+@@ -369,8 +369,10 @@ static void rpc_make_runnable(struct workqueue_struct *wq,
+ 	if (RPC_IS_ASYNC(task)) {
+ 		INIT_WORK(&task->u.tk_work, rpc_async_schedule);
+ 		queue_work(wq, &task->u.tk_work);
+-	} else
++	} else {
++		smp_mb__after_atomic();
+ 		wake_up_bit(&task->tk_runstate, RPC_TASK_QUEUED);
++	}
+ }
  
-+	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
-+
- 	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
- 		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
- 		return -EIO;
-@@ -4135,13 +4137,12 @@ static int sd_resume_common(struct devic
- 	if (!sdkp)	/* E.g.: runtime resume at the start of sd_probe() */
- 		return 0;
- 
--	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
--
- 	if (!sd_do_start_stop(sdkp->device, runtime)) {
- 		sdkp->suspended = false;
- 		return 0;
- 	}
- 
-+	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
- 	ret = sd_start_stop_device(sdkp, 1);
- 	if (!ret) {
- 		sd_resume(dev);
+ /*
+-- 
+2.43.0
+
 
 
 
