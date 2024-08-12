@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-66552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6521394EFC8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:40:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D1394EFD4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:41:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D06E1C21FC9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:40:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5AF31F2361E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006DE183084;
-	Mon, 12 Aug 2024 14:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98649183CBA;
+	Mon, 12 Aug 2024 14:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zmdmMk68"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bivtU72P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A595D14C5A4;
-	Mon, 12 Aug 2024 14:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5806A183CB1
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723473616; cv=none; b=AkC9yCmr+4VwXOjXT+ooYdc5hVB7rFwioWIcbEB22cuP4qvTS4rGTerbIisn18qJtSDqUd0+0KJ1Uji0+O3kGPu2p1WJzNOeky4wmb22uGi27YDMMvA52ZynveDWBb4twpLbJPbZgWRMxaYaJrB3LXB1KaHnbMElbl5qT1MbwOs=
+	t=1723473692; cv=none; b=HW5Md9wXlshSLON8yuy6QdF5eG1Tqe87mV/C8NMFEJmVQVAiVNf2XOGp1kIqIfgNuEsvvf011e8nXecrbCQxy7djzJjRhN+gM95B23pDz7aiqPrYNhfj4k8DlvnJG+LrznH0vXU1Xs1fXLaZ/aoiskU4e6eyyIfnYVz4x4/lHTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723473616; c=relaxed/simple;
-	bh=WsXKvHOFF9lMM9NY1WrmXM2J8dm0GrqnAg/049yrL4o=;
+	s=arc-20240116; t=1723473692; c=relaxed/simple;
+	bh=CMlixNh8/YU3d3IVorxyqGf5YmpiVgk5zNwt19KJ/j8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XpPPJTwGSOWzfzTqccM8/rF9Pdy3yDgLTys7wwJZHwEZWL+tTz/OOzRkcHJOQimQo9oVZ6aarseSPhCucNaK2NSmWsqLLqBtgKWv7JQgsEEundILElhl2rAUXH9cEj3RoRabEqyuqcNEIb0/Cd1hWp9C9clfjoL8P9g+RkA2q9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zmdmMk68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5246C32782;
-	Mon, 12 Aug 2024 14:40:15 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=XfHrlN/RfuHN+oRvsFeoXM0NiL8l8pKYGxBtVOdr62sQI9lPdjpvEdmCKxtbJ6zLAVPFzqXm6Sjhqlj7dgsuTjSL1GZoosmvdtHrCH13EumvcFYP5hFTF+CvTdgKuEETVvqAfVmdK70/yRynT5KxNrv+DFH7r1WV5bqxzWQ1xXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bivtU72P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA72C4AF09;
+	Mon, 12 Aug 2024 14:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723473616;
-	bh=WsXKvHOFF9lMM9NY1WrmXM2J8dm0GrqnAg/049yrL4o=;
+	s=korg; t=1723473692;
+	bh=CMlixNh8/YU3d3IVorxyqGf5YmpiVgk5zNwt19KJ/j8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zmdmMk68l8jPq4BIXddoL80/+F1Nzq+IG0ybaJ2XFKcpgkF84ChoNu1UvU/8uHiQX
-	 fXSdEY7jEmPnLGYI9XAQOHmTwB3kuNX+sLyJs5zd5bwUNS5fLFPQZWxT4lNGkYEop1
-	 hHmHsCbHqPV1xEbZJ5Q6FgRssW1F0FkvEdijOZUg=
-Date: Mon, 12 Aug 2024 16:40:13 +0200
+	b=bivtU72P5n9fv0XDho7J0vxo7+rlVL8pPcMcTNu/TcQMPdMVIpG1c4svL7xN6I+Yu
+	 6x0JgXdJ1sFCtXAaVBGfHItLepJgSo2aFd4TN69xY8Akmis6+7grDnBVHLudXNjlMX
+	 M6t+UMC1xTJzPhuU3cuJ9JGsYNUsWXQrjYRUiHdM=
+Date: Mon, 12 Aug 2024 16:41:29 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Abhinav Jain <jain.abhinav177@gmail.com>
-Cc: leah.rumancik@gmail.com, djwong@kernel.org, linux-xfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	syzbot+55fb1b7d909494fd520d@syzkaller.appspotmail.com
-Subject: Re: [PATCH 6.1.y] xfs: remove WARN when dquot cache insertion fails
-Message-ID: <2024081244-emit-starlit-dd23@gregkh>
-References: <20240809015640.590433-1-jain.abhinav177@gmail.com>
+To: Kevin Berry <kpberry@google.com>
+Cc: stable@vger.kernel.org, ovt@google.com
+Subject: Re: [PATCH 0/1] xfs: fix log recovery buffer allocation for the
+Message-ID: <2024081203-striving-music-7e6a@gregkh>
+References: <20240810011646.3746457-1-kpberry@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,29 +53,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240809015640.590433-1-jain.abhinav177@gmail.com>
+In-Reply-To: <20240810011646.3746457-1-kpberry@google.com>
 
-On Fri, Aug 09, 2024 at 07:26:40AM +0530, Abhinav Jain wrote:
-> commit 4b827b3f305d ("xfs: remove WARN when dquot cache insertion fails")
+On Sat, Aug 10, 2024 at 01:16:45AM +0000, Kevin Berry wrote:
+> Hi folks, in order to fix CVE-2024-39472 in kernels 5.15, 6.1, and 6.6,
+> I have adapted the mainline patch 45cf976008dd (xfs: fix log recovery
+> buffer allocation for the legacy h_size fixup) to resolve conflicts
+> with those kernels. Specifically, the mainline patch uses kvfree, but
+> the amended patch uses kmem_free since kmem_free was used in xfs until
+> patch 49292576136f (xfs: convert kmem_free() for kvmalloc users to
+> kvfree()).
 > 
-> Disk quota cache insertion failure doesn't require this warning as
-> the system can still manage and track disk quotas without caching the
-> dquot object into memory. The failure doesn't imply any data loss or
-> corruption.
+> I tested the patch by applying it to the above kernels and recompiling
+> them. I also ran xfstests on the 6.6.43 kernel with the patch applied.
+> In my initial xfstests run, all xfs and generic tests passed except for
+> generic/082, generic/269, generic/627, and xfs/155, but those tests all
+> passed on a second run. I'm assuming those initial failures were
+> unrelated to this patch, unless someone more familiar with those tests
+> thinks otherwise.
 > 
-> Therefore, the WARN_ON in xfs_qm_dqget_cache_insert function is aggressive
-> and causes bot noise. I have confirmed there are no conflicts and also
-> tested the using the C repro from syzkaller:
-> https://syzkaller.appspot.com/text?tag=ReproC&x=15406772280000
-> 
-> Please do let me know if I missed out on anything as it's my first
-> backport patch.
+> I'd be more than happy to do any more verification or tests if they're
+> required. Thanks!
 
-You lost all of the ownership and original signed-off-by attributes for
-the commit :(
+Note, for xfs changes, you do need to actually cc: the xfs developers :(
 
-Please work with the xfs developers if they wish to see this backported
-or not, that's up to them.
+Please do so in the future...
 
 thanks,
 
