@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB0794F3C8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709DF94F4E0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F4671C21907
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 270161F211BA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDA2186E20;
-	Mon, 12 Aug 2024 16:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C706818754D;
+	Mon, 12 Aug 2024 16:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8AjG7lF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzaGz1v8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDF0183CA6;
-	Mon, 12 Aug 2024 16:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8473118733D;
+	Mon, 12 Aug 2024 16:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479719; cv=none; b=AapnN4dtOHdQHdnrDWIoSbH9BjQ6k0Ns3QfUEJ+TOlL9Y0/4hRR0PbgGh4b1ELxy8VtdyyGIXvEAV5qYiQWtaU66W/R+kwsgL0pNPEcRz4fhwol4SRJZpu0xBJuUyG3JubH3m/qZWLN0AoTUBJK23WbABYfEyA1ZgJHTqvNWDGY=
+	t=1723480539; cv=none; b=XWUC8h4yTZPC/cJ0OvuI6yA/vCf6I7jTJ8qZz28Rs91Z7r+cNYB6gjXHIN6djMpYSWhXHDriPFauvZ1L+Ti2jqzL1HMRH3jHTymaT/SbnMWTf8t6+UK3dbggXKCCDu5l0IrzQi16NoKYn+uNzeGjhlAZ2FCcYXjTZ2mLmjQJAWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479719; c=relaxed/simple;
-	bh=IiVRSicv+o5LUB3cuLQroKBf9PQjMTcmJrRz1S4uylI=;
+	s=arc-20240116; t=1723480539; c=relaxed/simple;
+	bh=QAGaOFOK6VinT+68vm1/3ig3YLsxWptow2YjbgNcmzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDeuTL2l81fsz1rzgS6xwo+krbXtHbUsxaE3xUfqOikCWPra1eLiGfcSn7ARg8kzyz6hxoowK7IQdVeauk2rzLW/ehALu9HjxcbSaphAtZth58idSCyjakEIFwrYShQJptnvGQrAZtZqaOMzM2FYWYcVmWQUs/2UeMswbRjLSU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8AjG7lF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEA5C32782;
-	Mon, 12 Aug 2024 16:21:58 +0000 (UTC)
+	 MIME-Version; b=OMtV/ogyXqcO55H5FUYUbOvkYpHdPwtBBcoYx7aE2YjWFqQpVDHkz0iXGGthi0+lDI75e6PzqWFC20oNLcwMXso3PZ5h4UI/PmH9Il5hlU/9l5e3d55xkbDoAt34quShKLyZOvccwKTIZkDOdNeBlnzP7b83L3y2HjhtnNhwZsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzaGz1v8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9D0C32782;
+	Mon, 12 Aug 2024 16:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479719;
-	bh=IiVRSicv+o5LUB3cuLQroKBf9PQjMTcmJrRz1S4uylI=;
+	s=korg; t=1723480539;
+	bh=QAGaOFOK6VinT+68vm1/3ig3YLsxWptow2YjbgNcmzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8AjG7lF+uHscZHZOkAqn/sVP5mVXIsC++PctL/1KueOVlV+yAxPLIygq4Wdyq44b
-	 yqKNhJ4aqpxJFtiZLhGmZwcFm+1ZVuKEryRljdsC6lHx47Ie9iwAsKILgJzpsm0qLJ
-	 SZDe3ZtMXh4sNXWjoSnBi66G2PL6iCDTHExvxd7k=
+	b=FzaGz1v8d7dUvf5Jjff3TCrtm+21l6NXJ/OSC5CDobaQwD8+h33XjxUbNShxLUK9L
+	 dt8HiV+g6zkJ5J8wD/b2gFi05U4P9aLGuhcChaelHlLeeUenr4VW/W8YNwsWb1fZYy
+	 cICFM4XtDn0tpXD23wZUS6y4saCxGcHLrtKzg/aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	George Zhang <George.zhang@amd.com>,
-	Ivan Lipski <ivlipski@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 172/189] Revert "drm/amd/display: Add NULL check for afb before dereferencing in amdgpu_dm_plane_handle_cursor_update"
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
+	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.10 227/263] tracing: Fix overflow in get_free_elt()
 Date: Mon, 12 Aug 2024 18:03:48 +0200
-Message-ID: <20240812160138.766796293@linuxfoundation.org>
+Message-ID: <20240812160155.228207347@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Lipski <ivlipski@amd.com>
+From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
 
-commit 778e3979c5dc9cbdb5d1b92afed427de6bc483b4 upstream.
+commit bcf86c01ca4676316557dd482c8416ece8c2e143 upstream.
 
-[WHY]
-This patch is a dupplicate implementation of 14bcf29b, which we
-are reverting due to a regression with kms_plane_cursor IGT tests.
+"tracing_map->next_elt" in get_free_elt() is at risk of overflowing.
 
-This reverts commit 38e6f715b02b572f74677eb2f29d3b4bc6f1ddff.
+Once it overflows, new elements can still be inserted into the tracing_map
+even though the maximum number of elements (`max_elts`) has been reached.
+Continuing to insert elements after the overflow could result in the
+tracing_map containing "tracing_map->max_size" elements, leaving no empty
+entries.
+If any attempt is made to insert an element into a full tracing_map using
+`__tracing_map_insert()`, it will cause an infinite loop with preemption
+disabled, leading to a CPU hang problem.
 
-Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Tested-by: George Zhang <George.zhang@amd.com>
-Signed-off-by: Ivan Lipski <ivlipski@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix this by preventing any further increments to "tracing_map->next_elt"
+once it reaches "tracing_map->max_elt".
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 08d43a5fa063e ("tracing: Add lock-free tracing_map")
+Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Link: https://lore.kernel.org/20240805055922.6277-1-Tze-nan.Wu@mediatek.com
+Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ kernel/trace/tracing_map.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -1225,22 +1225,14 @@ void amdgpu_dm_plane_handle_cursor_updat
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -454,7 +454,7 @@ static struct tracing_map_elt *get_free_
+ 	struct tracing_map_elt *elt = NULL;
+ 	int idx;
+ 
+-	idx = atomic_inc_return(&map->next_elt);
++	idx = atomic_fetch_add_unless(&map->next_elt, 1, map->max_elts);
+ 	if (idx < map->max_elts) {
+ 		elt = *(TRACING_MAP_ELT(map->elts, idx));
+ 		if (map->ops && map->ops->elt_init)
+@@ -699,7 +699,7 @@ void tracing_map_clear(struct tracing_ma
  {
- 	struct amdgpu_device *adev = drm_to_adev(plane->dev);
- 	struct amdgpu_framebuffer *afb = to_amdgpu_framebuffer(plane->state->fb);
--	struct drm_crtc *crtc;
--	struct dm_crtc_state *crtc_state;
--	struct amdgpu_crtc *amdgpu_crtc;
--	u64 address;
-+	struct drm_crtc *crtc = afb ? plane->state->crtc : old_plane_state->crtc;
-+	struct dm_crtc_state *crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
-+	struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
-+	uint64_t address = afb ? afb->address : 0;
- 	struct dc_cursor_position position = {0};
- 	struct dc_cursor_attributes attributes;
- 	int ret;
+ 	unsigned int i;
  
--	if (!afb)
--		return;
--
--	crtc = plane->state->crtc ? plane->state->crtc : old_plane_state->crtc;
--	crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
--	amdgpu_crtc = to_amdgpu_crtc(crtc);
--	address = afb->address;
--
- 	if (!plane->state->fb && !old_plane_state->fb)
- 		return;
+-	atomic_set(&map->next_elt, -1);
++	atomic_set(&map->next_elt, 0);
+ 	atomic64_set(&map->hits, 0);
+ 	atomic64_set(&map->drops, 0);
  
+@@ -783,7 +783,7 @@ struct tracing_map *tracing_map_create(u
+ 
+ 	map->map_bits = map_bits;
+ 	map->max_elts = (1 << map_bits);
+-	atomic_set(&map->next_elt, -1);
++	atomic_set(&map->next_elt, 0);
+ 
+ 	map->map_size = (1 << (map_bits + 1));
+ 	map->ops = ops;
 
 
 
