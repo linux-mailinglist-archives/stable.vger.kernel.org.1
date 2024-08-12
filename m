@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-67303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C671894F4CE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6070D94F3B4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FD4C1F21231
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1682728119D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2779186E33;
-	Mon, 12 Aug 2024 16:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD64186E20;
+	Mon, 12 Aug 2024 16:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwoC9bk1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/y2rhrn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5C51494B8;
-	Mon, 12 Aug 2024 16:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786E429CA;
+	Mon, 12 Aug 2024 16:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480486; cv=none; b=rRy5qltfk6JskPVC59buis7e06tsLc9YZ6oiMfh5DBs4gaQkMEXbbI5YZKz+bE93G2JjeFXzqSDfQi+thUyic+KfUwH3VF9zO1UUhJeILFClVcc9qds41aUFsEdE+gfr9BMPQ06yQAKh0AJqjR0IMDRYtgvqpRmoBCY9K7qHvEY=
+	t=1723479665; cv=none; b=iaWJw4isN9JictrdKu5ttE+Oud/wFJTHW/teuCGZyz6r8V0dOuB7Cq4mvIWCmc8xW79JgYz2HC3XUZp/+fxJbiR5zFdLfwYL/kPF3Jl9I7Lt0v/87UQPMagt1VZSVMfZbK+GFJHWlajlFP+OfhFfEAaZlPwj/VhpgnDf9eFqU40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480486; c=relaxed/simple;
-	bh=5MfL1MD6qAaHz2JejL/yyizEx4f6aiIPKs+bo56NXVk=;
+	s=arc-20240116; t=1723479665; c=relaxed/simple;
+	bh=ezbwSrbGTOfadoxqY/ndCcLL5IDu8K1mUnnMH2WDC+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbBPzWNMgbYYbRwQUzvE4881YO8PIeOOnlbOLRMLeLLZ+dGIE3Asv6wSEi1I4p3O7Kuydu2t1AogwRvx+dy8jAKuKFgBBsmz6Q0jbZ1q8zq7avTjss95oWMDYeCEpX6s494amtVyAESe19P6UmGcNIEUHEcyICRBMT6NPqzO2Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwoC9bk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA61C32782;
-	Mon, 12 Aug 2024 16:34:45 +0000 (UTC)
+	 MIME-Version; b=JVr7n28SYHBLAltnciY4ZTP7g2vZSSF1SOCQgNG8CGssQTEOQ4k5kv90//Tlz5qo5Ow1xTyD1ZNyNj2Y8feHcQggQEZAjTdBr2et1/c9ncIZeUCnKGjuftOzSEBwlLU74WqYP3nKyvrp234urbTO7iYL/OEQnlg+NRHJ9qvmET4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/y2rhrn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC3BC32782;
+	Mon, 12 Aug 2024 16:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480486;
-	bh=5MfL1MD6qAaHz2JejL/yyizEx4f6aiIPKs+bo56NXVk=;
+	s=korg; t=1723479665;
+	bh=ezbwSrbGTOfadoxqY/ndCcLL5IDu8K1mUnnMH2WDC+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UwoC9bk1fm+GMHJlxzkmlh3SXQLgoaz2URihOCyvjd/ubZM/ivkWZ245XcVoCko0l
-	 GWpn7g7KNXebH0tE8bmo0Fko2/fGiKmzsAMzjyhs21hPuMQrzF/ZSffNk9TVjZRiTj
-	 yL3VLJDM1mE6onNivKcpD62FhZ1a/pSx2mn5L8do=
+	b=e/y2rhrnDWj9nkQ9nWl3qrb6XmxOTwROZsx7KuTzShrNyQ/0+CgD5na13qpZY7vkQ
+	 qvI2SuF3LO3suiIHpb+GFp3Fmd9DyHrh1I+atQ0dN1L21IzJBBtd5CR0KZHDEG9afr
+	 EDHgZIrPvpTLFduiCTBMVUaAaZn0c4WI+mVOSLtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.10 210/263] serial: sc16is7xx: fix TX fifo corruption
+	Prem Nath Dey <prem.nath.dey@intel.com>,
+	Xiaoping Zhou <xiaoping.zhou@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 155/189] x86/paravirt: Fix incorrect virt spinlock setting on bare metal
 Date: Mon, 12 Aug 2024 18:03:31 +0200
-Message-ID: <20240812160154.584199099@linuxfoundation.org>
+Message-ID: <20240812160138.108590056@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,130 +66,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Chen Yu <yu.c.chen@intel.com>
 
-commit 133f4c00b8b2bfcacead9b81e7e8edfceb4b06c4 upstream.
+commit e639222a51196c69c70b49b67098ce2f9919ed08 upstream.
 
-Sometimes, when a packet is received on channel A at almost the same time
-as a packet is about to be transmitted on channel B, we observe with a
-logic analyzer that the received packet on channel A is transmitted on
-channel B. In other words, the Tx buffer data on channel B is corrupted
-with data from channel A.
+The kernel can change spinlock behavior when running as a guest. But this
+guest-friendly behavior causes performance problems on bare metal.
 
-The problem appeared since commit 4409df5866b7 ("serial: sc16is7xx: change
-EFR lock to operate on each channels"), which changed the EFR locking to
-operate on each channel instead of chip-wise.
+The kernel uses a static key to switch between the two modes.
 
-This commit has introduced a regression, because the EFR lock is used not
-only to protect the EFR registers access, but also, in a very obscure and
-undocumented way, to protect access to the data buffer, which is shared by
-the Tx and Rx handlers, but also by each channel of the IC.
+In theory, the static key is enabled by default (run in guest mode) and
+should be disabled for bare metal (and in some guests that want native
+behavior or paravirt spinlock).
 
-Fix this regression first by switching to kfifo_out_linear_ptr() in
-sc16is7xx_handle_tx() to eliminate the need for a shared Rx/Tx buffer.
+A performance drop is reported when running encode/decode workload and
+BenchSEE cache sub-workload.
 
-Secondly, replace the chip-wise Rx buffer with a separate Rx buffer for
-each channel.
+Bisect points to commit ce0a1b608bfc ("x86/paravirt: Silence unused
+native_pv_lock_init() function warning"). When CONFIG_PARAVIRT_SPINLOCKS is
+disabled the virt_spin_lock_key is incorrectly set to true on bare
+metal. The qspinlock degenerates to test-and-set spinlock, which decreases
+the performance on bare metal.
 
-Fixes: 4409df5866b7 ("serial: sc16is7xx: change EFR lock to operate on each channels")
+Set the default value of virt_spin_lock_key to false. If booting in a VM,
+enable this key. Later during the VM initialization, if other
+high-efficient spinlock is preferred (e.g. paravirt-spinlock), or the user
+wants the native qspinlock (via nopvspin boot commandline), the
+virt_spin_lock_key is disabled accordingly.
+
+This results in the following decision matrix:
+
+X86_FEATURE_HYPERVISOR         Y    Y       Y     N
+CONFIG_PARAVIRT_SPINLOCKS      Y    Y       N     Y/N
+PV spinlock                    Y    N       N     Y/N
+
+virt_spin_lock_key             N    Y/N     Y     N
+
+Fixes: ce0a1b608bfc ("x86/paravirt: Silence unused native_pv_lock_init() function warning")
+Reported-by: Prem Nath Dey <prem.nath.dey@intel.com>
+Reported-by: Xiaoping Zhou <xiaoping.zhou@intel.com>
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Suggested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Suggested-by: Nikolay Borisov <nik.borisov@suse.com>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240723125302.1305372-2-hugo@hugovil.com
+Link: https://lore.kernel.org/all/20240806112207.29792-1-yu.c.chen@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/include/asm/qspinlock.h |   12 +++++++-----
+ arch/x86/kernel/paravirt.c       |    7 +++----
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -326,6 +326,7 @@ struct sc16is7xx_one {
- 	struct kthread_work		reg_work;
- 	struct kthread_delayed_work	ms_work;
- 	struct sc16is7xx_one_config	config;
-+	unsigned char			buf[SC16IS7XX_FIFO_SIZE]; /* Rx buffer. */
- 	unsigned int			old_mctrl;
- 	u8				old_lcr; /* Value before EFR access. */
- 	bool				irda_mode;
-@@ -339,7 +340,6 @@ struct sc16is7xx_port {
- 	unsigned long			gpio_valid_mask;
+--- a/arch/x86/include/asm/qspinlock.h
++++ b/arch/x86/include/asm/qspinlock.h
+@@ -66,13 +66,15 @@ static inline bool vcpu_is_preempted(lon
+ 
+ #ifdef CONFIG_PARAVIRT
+ /*
+- * virt_spin_lock_key - enables (by default) the virt_spin_lock() hijack.
++ * virt_spin_lock_key - disables by default the virt_spin_lock() hijack.
+  *
+- * Native (and PV wanting native due to vCPU pinning) should disable this key.
+- * It is done in this backwards fashion to only have a single direction change,
+- * which removes ordering between native_pv_spin_init() and HV setup.
++ * Native (and PV wanting native due to vCPU pinning) should keep this key
++ * disabled. Native does not touch the key.
++ *
++ * When in a guest then native_pv_lock_init() enables the key first and
++ * KVM/XEN might conditionally disable it later in the boot process again.
+  */
+-DECLARE_STATIC_KEY_TRUE(virt_spin_lock_key);
++DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
+ 
+ /*
+  * Shortcut for the queued_spin_lock_slowpath() function that allows
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -71,13 +71,12 @@ DEFINE_PARAVIRT_ASM(pv_native_irq_enable
+ DEFINE_PARAVIRT_ASM(pv_native_read_cr2, "mov %cr2, %rax", .noinstr.text);
  #endif
- 	u8				mctrl_mask;
--	unsigned char			buf[SC16IS7XX_FIFO_SIZE];
- 	struct kthread_worker		kworker;
- 	struct task_struct		*kworker_task;
- 	struct sc16is7xx_one		p[];
-@@ -611,18 +611,18 @@ static int sc16is7xx_set_baud(struct uar
- static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
- 				unsigned int iir)
+ 
+-DEFINE_STATIC_KEY_TRUE(virt_spin_lock_key);
++DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
+ 
+ void __init native_pv_lock_init(void)
  {
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 	unsigned int lsr = 0, bytes_read, i;
- 	bool read_lsr = (iir == SC16IS7XX_IIR_RLSE_SRC) ? true : false;
- 	u8 ch, flag;
+-	if (IS_ENABLED(CONFIG_PARAVIRT_SPINLOCKS) &&
+-	    !boot_cpu_has(X86_FEATURE_HYPERVISOR))
+-		static_branch_disable(&virt_spin_lock_key);
++	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
++		static_branch_enable(&virt_spin_lock_key);
+ }
  
--	if (unlikely(rxlen >= sizeof(s->buf))) {
-+	if (unlikely(rxlen >= sizeof(one->buf))) {
- 		dev_warn_ratelimited(port->dev,
- 				     "ttySC%i: Possible RX FIFO overrun: %d\n",
- 				     port->line, rxlen);
- 		port->icount.buf_overrun++;
- 		/* Ensure sanity of RX level */
--		rxlen = sizeof(s->buf);
-+		rxlen = sizeof(one->buf);
- 	}
- 
- 	while (rxlen) {
-@@ -635,10 +635,10 @@ static void sc16is7xx_handle_rx(struct u
- 			lsr = 0;
- 
- 		if (read_lsr) {
--			s->buf[0] = sc16is7xx_port_read(port, SC16IS7XX_RHR_REG);
-+			one->buf[0] = sc16is7xx_port_read(port, SC16IS7XX_RHR_REG);
- 			bytes_read = 1;
- 		} else {
--			sc16is7xx_fifo_read(port, s->buf, rxlen);
-+			sc16is7xx_fifo_read(port, one->buf, rxlen);
- 			bytes_read = rxlen;
- 		}
- 
-@@ -671,7 +671,7 @@ static void sc16is7xx_handle_rx(struct u
- 		}
- 
- 		for (i = 0; i < bytes_read; ++i) {
--			ch = s->buf[i];
-+			ch = one->buf[i];
- 			if (uart_handle_sysrq_char(port, ch))
- 				continue;
- 
-@@ -689,10 +689,10 @@ static void sc16is7xx_handle_rx(struct u
- 
- static void sc16is7xx_handle_tx(struct uart_port *port)
- {
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
- 	struct tty_port *tport = &port->state->port;
- 	unsigned long flags;
- 	unsigned int txlen;
-+	unsigned char *tail;
- 
- 	if (unlikely(port->x_char)) {
- 		sc16is7xx_port_write(port, SC16IS7XX_THR_REG, port->x_char);
-@@ -717,8 +717,9 @@ static void sc16is7xx_handle_tx(struct u
- 		txlen = 0;
- 	}
- 
--	txlen = uart_fifo_out(port, s->buf, txlen);
--	sc16is7xx_fifo_write(port, s->buf, txlen);
-+	txlen = kfifo_out_linear_ptr(&tport->xmit_fifo, &tail, txlen);
-+	sc16is7xx_fifo_write(port, tail, txlen);
-+	uart_xmit_advance(port, txlen);
- 
- 	uart_port_lock_irqsave(port, &flags);
- 	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
+ static void native_tlb_remove_table(struct mmu_gather *tlb, void *table)
 
 
 
