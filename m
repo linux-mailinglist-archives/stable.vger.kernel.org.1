@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-66537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43D594EF1D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:03:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C15A794EF25
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A04E1F22292
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:03:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CEAF280E4F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E8117C7B9;
-	Mon, 12 Aug 2024 14:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA7517D35C;
+	Mon, 12 Aug 2024 14:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wgm4Y2Fy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXCKFhbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579CB11C92;
-	Mon, 12 Aug 2024 14:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CE017D354
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723471416; cv=none; b=dwf3/e9vnbKIEE2ADcMIH0+oN3sPumeJ9RKZzd/f7wpShyRAQegBGHQj8PvGfqMgldzacZoVktRZb8FCBh0njzpQu8UDcqurelaQBQ+I9ibc6GMOBnjFTazlZLStereaXyMQOZIaDkmjc+/KCFdqbfqJfeO3vlXKjN+wmoZ6klc=
+	t=1723471667; cv=none; b=ekkkzqDEHU+K8Oc0IPswLQu68Eh8vTpfKnURRqf2LL1nich60pKznvsd3xrGqoHajZETUuXH7/ZRQ8gzXL8tz+jGCIp+yBz61pJiDaz4pdqe3d06/418fz+CAb69n9DndhESZaJiQ8LYLWojZWBWO1VgSvS3H/WRHue4Kx56E7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723471416; c=relaxed/simple;
-	bh=mNhqE5gg6GonYn7gRji/mmpLvAAcv2kW3DdfCyvo6Ho=;
+	s=arc-20240116; t=1723471667; c=relaxed/simple;
+	bh=biIw/E+Scy4ea7tGR5kU/902hBqXlUOvhQQu0dppZTo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PApoJ8Egr4QREODT90SUaafGyXnY5j50GuYQhRmFE0GO79vAd38XkgQUSrm5rL1iI2DeYUsv1IA6RWaMcO/vGY9k++a1iXj+LkZYM5ywr2syAlaLSn1mktHLLzFHkVgx53/cuyu+bYCJLUc+HBrLBIdXpJ5OOF/66Qn4NmYct0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wgm4Y2Fy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B181C32782;
-	Mon, 12 Aug 2024 14:03:35 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=pUsX8CErM4CKf/DnZjmwskn5I6+PZ0fRzBjQtgCiNegBW+aIpV9Wh4a6scLZNlySOM86fDZ+cr68l34Tu5oyiZ1EzgYUHX/0YvWXx4YsYiPnJUnkc7j/sZU5XjlB7ZpF1X238DiMcxWXe7f7DpVACiBZ8iJzuZpyo8G+j5kIpnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXCKFhbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0CFC32782;
+	Mon, 12 Aug 2024 14:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723471415;
-	bh=mNhqE5gg6GonYn7gRji/mmpLvAAcv2kW3DdfCyvo6Ho=;
+	s=korg; t=1723471666;
+	bh=biIw/E+Scy4ea7tGR5kU/902hBqXlUOvhQQu0dppZTo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wgm4Y2FysWteo2f2FA8VsChMIfTIaW665HFPe5q6AS0d4dRMNus5+FbWVUYRDKwZI
-	 2hfUvBdUAQBBLK9ntiLtRTFDIeXCjax5mWaBX/M2f0FJ42WB0sTDqDxKp1gtsH/E2o
-	 Bpqct28A+N8kny87E1ijs+rk7SOpJIeAy069JMEY=
-Date: Mon, 12 Aug 2024 16:03:31 +0200
+	b=nXCKFhbTcfxzQ5s9lrGsOo/RDbD+iWsxmCZeQLYuj6tpsobM2z/13Zt/8JzQ60nO3
+	 ufAKFzDV3sHMBw4/C+QV9h4lzxXqBpA0KcN/Tw6UVfpCex23vLpp/XA76xahzWytUG
+	 8f1jSFXgMqutkYKEoTBaEdy625zAoYdfPuz2VigE=
+Date: Mon, 12 Aug 2024 16:07:43 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthieu Baerts <matttbe@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
 Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Kanchan Joshi <joshi.k@samsung.com>, Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>, kbusch@kernel.org, sagi@grimberg.me,
-	linux-nvme@lists.infradead.org, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.10 13/16] block: change rq_integrity_vec to
- respect the iterator
-Message-ID: <2024081223-thriving-yo-yo-0787@gregkh>
-References: <20240728004739.1698541-1-sashal@kernel.org>
- <20240728004739.1698541-13-sashal@kernel.org>
- <7f38f5bc-6bd2-4e3a-92e6-c232761fafc6@kernel.org>
+	anshuman.khandual@arm.com, catalin.marinas@arm.com,
+	james.morse@arm.com, will@kernel.org
+Subject: Re: [PATCH 6.10.y 0/8] arm64: errata: Speculative SSBS workaround
+Message-ID: <2024081239-repugnant-disaster-67b9@gregkh>
+References: <20240809095120.3475335-1-mark.rutland@arm.com>
+ <ZrnxgS9RTDP4FDtK@sashalap>
+ <ZrnyqZxR_0mjNFdZ@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,71 +57,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7f38f5bc-6bd2-4e3a-92e6-c232761fafc6@kernel.org>
+In-Reply-To: <ZrnyqZxR_0mjNFdZ@J2N7QTR9R3>
 
-On Mon, Aug 12, 2024 at 03:51:12PM +0200, Matthieu Baerts wrote:
-> Hi Sasha, Greg,
-> 
-> On 28/07/2024 02:47, Sasha Levin wrote:
-> > From: Mikulas Patocka <mpatocka@redhat.com>
+On Mon, Aug 12, 2024 at 12:31:53PM +0100, Mark Rutland wrote:
+> On Mon, Aug 12, 2024 at 07:26:57AM -0400, Sasha Levin wrote:
+> > On Fri, Aug 09, 2024 at 10:51:12AM +0100, Mark Rutland wrote:
+> > > Hi,
+> > > 
+> > > This series is a v6.10-only backport (based on v6.10.3) of the upstream
+> > > workaround for SSBS errata on Arm Ltd CPUs, as affected parts are likely to be
+> > > used with stable kernels. This does not apply to earlier stable trees, which
+> > > will receive a separate backport.
 > > 
-> > [ Upstream commit cf546dd289e0f6d2594c25e2fb4e19ee67c6d988 ]
-> > 
-> > If we allocate a bio that is larger than NVMe maximum request size,
-> > attach integrity metadata to it and send it to the NVMe subsystem, the
-> > integrity metadata will be corrupted.
+> > I've queued up the backports for the various versions, thanks!
 > 
-> (...)
-> 
-> > diff --git a/include/linux/blk-integrity.h b/include/linux/blk-integrity.h
-> > index 7428cb43952da..d16dd24719841 100644
-> > --- a/include/linux/blk-integrity.h
-> > +++ b/include/linux/blk-integrity.h
-> > @@ -100,14 +100,13 @@ static inline bool blk_integrity_rq(struct request *rq)
-> >  }
-> >  
-> >  /*
-> > - * Return the first bvec that contains integrity data.  Only drivers that are
-> > - * limited to a single integrity segment should use this helper.
-> > + * Return the current bvec that contains the integrity data. bip_iter may be
-> > + * advanced to iterate over the integrity data.
-> >   */
-> > -static inline struct bio_vec *rq_integrity_vec(struct request *rq)
-> > +static inline struct bio_vec rq_integrity_vec(struct request *rq)
-> >  {
-> > -	if (WARN_ON_ONCE(queue_max_integrity_segments(rq->q) > 1))
-> > -		return NULL;
-> > -	return rq->bio->bi_integrity->bip_vec;
-> > +	return mp_bvec_iter_bvec(rq->bio->bi_integrity->bip_vec,
-> > +				 rq->bio->bi_integrity->bip_iter);
-> >  }
-> >  #else /* CONFIG_BLK_DEV_INTEGRITY */
-> >  static inline int blk_rq_count_integrity_sg(struct request_queue *q,
-> > @@ -169,7 +168,8 @@ static inline int blk_integrity_rq(struct request *rq)
-> >  
-> >  static inline struct bio_vec *rq_integrity_vec(struct request *rq)
-> >  {
-> > -	return NULL;
-> > +	/* the optimizer will remove all calls to this function */
-> > +	return (struct bio_vec){ };
-> 
-> If CONFIG_BLK_DEV_INTEGRITY is not defined, there is a compilation error
-> here in v6.10 with the recently queued patches because the signature has
-> not been updated:
-> 
-> > In file included from block/bdev.c:15:                                                                                                                                             
-> > include/linux/blk-integrity.h: In function 'rq_integrity_vec':
-> > include/linux/blk-integrity.h:172:16: error: incompatible types when returning type 'struct bio_vec' but 'struct bio_vec *' was expected
-> >   172 |         return (struct bio_vec){ };                 
-> >       |                ^
-> 
-> Could it be possible to backport the following fix to v6.10 as well please?
-> 
->   69b6517687a4 ("block: use the right type for stub rq_integrity_vec()")
-> 
-> It is also needed for v6.6 and v6.1.
+> Thanks; much appreciated!
 
-Now queued up, thanks!
+Did you not backport commit adeec61a4723 ("arm64: errata: Expand
+speculative SSBS workaround (again)") on purpose?  Shouldn't we also be
+taking that one?
+
+thanks,
 
 greg k-h
 
