@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0DE94F269
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:06:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC3994F34E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A628281392
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:06:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E9081C21158
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12779186E38;
-	Mon, 12 Aug 2024 16:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D711418735F;
+	Mon, 12 Aug 2024 16:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sk4g+3lt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LG5Tcj9i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EBF1EA8D;
-	Mon, 12 Aug 2024 16:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF0A18733D;
+	Mon, 12 Aug 2024 16:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478755; cv=none; b=LRB77FLiRiMjTtin4RVoTXmIxTOJHDdHTJCMAyePFQCFgh2day/5jcvd97zb/4I9dFYs2mCbBH5iLc1kAK/7ECpDQ5Ju385k5009UObdrzULUbznWcRIdxk7niF3fdxKHxbfV38fW8j/9RDVF6vsNG+UHh+bKqOrfZweO788WCk=
+	t=1723479369; cv=none; b=eR5bwebnYTBheFoTq27b3ZBS0aZl+y2tXih1RrDuozNaezXEOwRDLhlLoWshImdiDGHgdhgiJEfSiEmDY9C8Bob6ZOX/6OSHIM4QIUm4a/HSzGPbHr+fxhp0NxBgAFRv2eqx4UhUrqaWoWe8A7ekBcf21fNC58FSCS0EQYN0/RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478755; c=relaxed/simple;
-	bh=8y37QS8atlPhWadaai0bDuooj1P8r3w62u1h85Qzht8=;
+	s=arc-20240116; t=1723479369; c=relaxed/simple;
+	bh=lCYih9PBtPVhg/ujxrIUxK93/lzx3wkFTylqwbi7GKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txUpmGpzSjswuO7OVqgvJVmbvWl4Ks5eosc4sx75EUbtyTOLehshdjw5GrUdbPeNQs18cD1vLAarAU8xMkMJ17Veezf5VjqSEjmUj5DUDG2W1l93n4cIWPeA8b874KZ8ldO26HfkVTxRN0tPmktFXtt82ILbkANZt0NKY0+5MMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sk4g+3lt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEAFC32782;
-	Mon, 12 Aug 2024 16:05:54 +0000 (UTC)
+	 MIME-Version; b=Ov07ltJiPL2TaUY6gWQ7Olg6o439VINmPBagmk4IG32QCR3AfRybCd/MAWj1JPj+hJQYzGYuZBTvo0Zy/NXJ2aRaT57D8rq+NDw/RW/C9oekU7/8ZQoFWudzBe1qJhpbOeQ3QC3bU/xD5hPBLSdsff3m0D/I3lxSTH5zRI1df5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LG5Tcj9i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A12AC32782;
+	Mon, 12 Aug 2024 16:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478755;
-	bh=8y37QS8atlPhWadaai0bDuooj1P8r3w62u1h85Qzht8=;
+	s=korg; t=1723479369;
+	bh=lCYih9PBtPVhg/ujxrIUxK93/lzx3wkFTylqwbi7GKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sk4g+3lt6h6uMn3f9bg+HDLj9cU2tbBoB+4nCVs534z1O9iyTHXCTkjMLCq8G5lB2
-	 SH450RDC5dXnVthoEo0nixrDc6QncGYVfRJ/XSuObTPFYHZYBhi0H+v2/NkoM7h6dF
-	 J/pBMnmItDxxbj/4dK3c55LNBdtnIS1y61ux1tx0=
+	b=LG5Tcj9iQ77s8BFendgDSwNNSu2fajjzP9lA8CsOc7jAnVAn5Y5g0VqQUdmS5/ums
+	 LvQ8k5c/5iX61pXh4uUadIv0FjR6QL5U9JWs9w0IbK++b1AEUSIGDJMQUvhA1BWJst
+	 C64gvlTUSmaZs/7UFGYyzTEiy24+VNV+evWHLjbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+263426984509be19c9a0@syzkaller.appspotmail.com,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/150] net: bridge: mcast: wait for previous gc cycles when removing port
+Subject: [PATCH 6.6 034/189] xen: privcmd: Switch from mutex to spinlock for irqfds
 Date: Mon, 12 Aug 2024 18:01:30 +0200
-Message-ID: <20240812160125.513197249@linuxfoundation.org>
+Message-ID: <20240812160133.458301944@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 92c4ee25208d0f35dafc3213cdf355fbe449e078 ]
+[ Upstream commit 1c682593096a487fd9aebc079a307ff7a6d054a3 ]
 
-syzbot hit a use-after-free[1] which is caused because the bridge doesn't
-make sure that all previous garbage has been collected when removing a
-port. What happens is:
-      CPU 1                   CPU 2
- start gc cycle           remove port
-                         acquire gc lock first
- wait for lock
-                         call br_multicasg_gc() directly
- acquire lock now but    free port
- the port can be freed
- while grp timers still
- running
+irqfd_wakeup() gets EPOLLHUP, when it is called by
+eventfd_release() by way of wake_up_poll(&ctx->wqh, EPOLLHUP), which
+gets called under spin_lock_irqsave(). We can't use a mutex here as it
+will lead to a deadlock.
 
-Make sure all previous gc cycles have finished by using flush_work before
-freeing the port.
+Fix it by switching over to a spin lock.
 
-[1]
-  BUG: KASAN: slab-use-after-free in br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
-  Read of size 8 at addr ffff888071d6d000 by task syz.5.1232/9699
-
-  CPU: 1 PID: 9699 Comm: syz.5.1232 Not tainted 6.10.0-rc5-syzkaller-00021-g24ca36a562d6 #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
-  Call Trace:
-   <IRQ>
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
-   print_address_description mm/kasan/report.c:377 [inline]
-   print_report+0xc3/0x620 mm/kasan/report.c:488
-   kasan_report+0xd9/0x110 mm/kasan/report.c:601
-   br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
-   call_timer_fn+0x1a3/0x610 kernel/time/timer.c:1792
-   expire_timers kernel/time/timer.c:1843 [inline]
-   __run_timers+0x74b/0xaf0 kernel/time/timer.c:2417
-   __run_timer_base kernel/time/timer.c:2428 [inline]
-   __run_timer_base kernel/time/timer.c:2421 [inline]
-   run_timer_base+0x111/0x190 kernel/time/timer.c:2437
-
-Reported-by: syzbot+263426984509be19c9a0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=263426984509be19c9a0
-Fixes: e12cec65b554 ("net: bridge: mcast: destroy all entries via gc")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20240802080730.3206303-1-razor@blackwall.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/a66d7a7a9001424d432f52a9fc3931a1f345464f.1718703669.git.viresh.kumar@linaro.org
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_multicast.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/xen/privcmd.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 9765f9f9bf7ff..3cd2b648408d6 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -1890,16 +1890,14 @@ void br_multicast_del_port(struct net_bridge_port *port)
- {
- 	struct net_bridge *br = port->br;
- 	struct net_bridge_port_group *pg;
--	HLIST_HEAD(deleted_head);
- 	struct hlist_node *n;
+diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
+index da88173bac432..923f064c7e3e9 100644
+--- a/drivers/xen/privcmd.c
++++ b/drivers/xen/privcmd.c
+@@ -841,7 +841,7 @@ static long privcmd_ioctl_mmap_resource(struct file *file,
+ #ifdef CONFIG_XEN_PRIVCMD_IRQFD
+ /* Irqfd support */
+ static struct workqueue_struct *irqfd_cleanup_wq;
+-static DEFINE_MUTEX(irqfds_lock);
++static DEFINE_SPINLOCK(irqfds_lock);
+ static LIST_HEAD(irqfds_list);
  
- 	/* Take care of the remaining groups, only perm ones should be left */
- 	spin_lock_bh(&br->multicast_lock);
- 	hlist_for_each_entry_safe(pg, n, &port->mglist, mglist)
- 		br_multicast_find_del_pg(br, pg);
--	hlist_move_list(&br->mcast_gc_list, &deleted_head);
- 	spin_unlock_bh(&br->multicast_lock);
--	br_multicast_gc(&deleted_head);
-+	flush_work(&br->mcast_gc_work);
- 	br_multicast_port_ctx_deinit(&port->multicast_ctx);
- 	free_percpu(port->mcast_stats);
+ struct privcmd_kernel_irqfd {
+@@ -905,9 +905,11 @@ irqfd_wakeup(wait_queue_entry_t *wait, unsigned int mode, int sync, void *key)
+ 		irqfd_inject(kirqfd);
+ 
+ 	if (flags & EPOLLHUP) {
+-		mutex_lock(&irqfds_lock);
++		unsigned long flags;
++
++		spin_lock_irqsave(&irqfds_lock, flags);
+ 		irqfd_deactivate(kirqfd);
+-		mutex_unlock(&irqfds_lock);
++		spin_unlock_irqrestore(&irqfds_lock, flags);
+ 	}
+ 
+ 	return 0;
+@@ -925,6 +927,7 @@ irqfd_poll_func(struct file *file, wait_queue_head_t *wqh, poll_table *pt)
+ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
+ {
+ 	struct privcmd_kernel_irqfd *kirqfd, *tmp;
++	unsigned long flags;
+ 	__poll_t events;
+ 	struct fd f;
+ 	void *dm_op;
+@@ -964,18 +967,18 @@ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
+ 	init_waitqueue_func_entry(&kirqfd->wait, irqfd_wakeup);
+ 	init_poll_funcptr(&kirqfd->pt, irqfd_poll_func);
+ 
+-	mutex_lock(&irqfds_lock);
++	spin_lock_irqsave(&irqfds_lock, flags);
+ 
+ 	list_for_each_entry(tmp, &irqfds_list, list) {
+ 		if (kirqfd->eventfd == tmp->eventfd) {
+ 			ret = -EBUSY;
+-			mutex_unlock(&irqfds_lock);
++			spin_unlock_irqrestore(&irqfds_lock, flags);
+ 			goto error_eventfd;
+ 		}
+ 	}
+ 
+ 	list_add_tail(&kirqfd->list, &irqfds_list);
+-	mutex_unlock(&irqfds_lock);
++	spin_unlock_irqrestore(&irqfds_lock, flags);
+ 
+ 	/*
+ 	 * Check if there was an event already pending on the eventfd before we
+@@ -1007,12 +1010,13 @@ static int privcmd_irqfd_deassign(struct privcmd_irqfd *irqfd)
+ {
+ 	struct privcmd_kernel_irqfd *kirqfd;
+ 	struct eventfd_ctx *eventfd;
++	unsigned long flags;
+ 
+ 	eventfd = eventfd_ctx_fdget(irqfd->fd);
+ 	if (IS_ERR(eventfd))
+ 		return PTR_ERR(eventfd);
+ 
+-	mutex_lock(&irqfds_lock);
++	spin_lock_irqsave(&irqfds_lock, flags);
+ 
+ 	list_for_each_entry(kirqfd, &irqfds_list, list) {
+ 		if (kirqfd->eventfd == eventfd) {
+@@ -1021,7 +1025,7 @@ static int privcmd_irqfd_deassign(struct privcmd_irqfd *irqfd)
+ 		}
+ 	}
+ 
+-	mutex_unlock(&irqfds_lock);
++	spin_unlock_irqrestore(&irqfds_lock, flags);
+ 
+ 	eventfd_ctx_put(eventfd);
+ 
+@@ -1069,13 +1073,14 @@ static int privcmd_irqfd_init(void)
+ static void privcmd_irqfd_exit(void)
+ {
+ 	struct privcmd_kernel_irqfd *kirqfd, *tmp;
++	unsigned long flags;
+ 
+-	mutex_lock(&irqfds_lock);
++	spin_lock_irqsave(&irqfds_lock, flags);
+ 
+ 	list_for_each_entry_safe(kirqfd, tmp, &irqfds_list, list)
+ 		irqfd_deactivate(kirqfd);
+ 
+-	mutex_unlock(&irqfds_lock);
++	spin_unlock_irqrestore(&irqfds_lock, flags);
+ 
+ 	destroy_workqueue(irqfd_cleanup_wq);
  }
 -- 
 2.43.0
