@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFD094EC87
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:13:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3F894EC88
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A6561C2173E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28B8D1F2203B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66BE17A585;
-	Mon, 12 Aug 2024 12:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B40178CC1;
+	Mon, 12 Aug 2024 12:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1elutS9B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2NV6dMm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A493217994F
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27D1175D3E
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723464771; cv=none; b=VHPMYbcKtOgrODJkNS5h8ytGLFrZJhqsDJZhikUyTBRtZJMbxosoSLLE4O8MVrSj2WxQj16VzxpuKxwQrgfi0UEC3rh2Cfm8Rz1yIlorRNOzcPSl5DDfcYBCOsTgLWqq6nWzNX2hjMhm/afFiotBMbYaN5SxNgyzah0fJQ+Qbbo=
+	t=1723464774; cv=none; b=d/KW70UzjxjwPEj6AdQFtaoZLN1/S8ncy/2uGlt2ZvxJCl+wjPrnX4BbBT8ob+khzderAaOrS2p4ZTemJp6Nf5wauW1YmJ8EIaKNXALd4+YYJsRdNZqOrRWQxO1hghX1TXkkwAt1hLdtPA8IPg5156Gx0PTbqXcyDA691yknc3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723464771; c=relaxed/simple;
-	bh=Zd5cCC9KGzQZg8nQziJ5kou4JMfjC7iWpjt/5LWvzq0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=onxCnch0VpEitDZhQOscCEVhNXSNFmPBXK9O0HQM4UNxOdJiZ9435IQ6Fu9wb00954UGssKOZ0SVxMSAj4Eo+5aJEmAg3xBYMUsYlkMc82YDeJre5jw1CWJLcGtr2r5IkA5uHhAMiIk6xCK1vUfsYJsaFW0ZoLJ9hgSt5VVHMFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1elutS9B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7B6C32782;
-	Mon, 12 Aug 2024 12:12:50 +0000 (UTC)
+	s=arc-20240116; t=1723464774; c=relaxed/simple;
+	bh=UxuOxATv/+xEXZWufWXlBWEd0v9r933clSXVZayzCEg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dNoN6mEADQQlgzygeY+MXNbClc0br8euVjbryzet01m/IQPbrEhpSrz5bgFOVasPE1PNrqi9ux+5OLnrKFlWkIHLVBlPGUlk8wSqV+3/QiHNRI8BVBpFxTblDEGv0UI0TGqozWrasKPx/xDJdcIyVAiYb01SEmeJBmy4iEvA+6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2NV6dMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4794C32782;
+	Mon, 12 Aug 2024 12:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723464771;
-	bh=Zd5cCC9KGzQZg8nQziJ5kou4JMfjC7iWpjt/5LWvzq0=;
+	s=korg; t=1723464774;
+	bh=UxuOxATv/+xEXZWufWXlBWEd0v9r933clSXVZayzCEg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1elutS9BeEFSMxDSZYB66XvoO5M8NjZX8K+4S0IPhRpbG57Hy1LxjSrwjzMhssu8B
-	 PXIELt+P0U48BhvElzAO+cdbIx8Say2dYZY1OKrAuGQGvcA/pMB6zALNLmNKK1sv5U
-	 bWLlioDHQKk1vPcdm/e1MUA/sQdzpJMNIDA2Dke0=
-Subject: FAILED: patch "[PATCH] sched/smt: Fix unbalance sched_smt_present dec/inc" failed to apply to 5.4-stable tree
+	b=J2NV6dMmOF5OzIAF+z60sPfyBPL0SqSmm8PvU5EEr4h+3+s/bW44ulBr++4ddpBiD
+	 G6RK2/rsLOsuvPLo4CSQfCOet3Mmt3yecuKTmEgzIBrCRJB6FVVr9if5jLKZbFMxpK
+	 u5QyEF+HsOlo3QfovpNo+KlTiczEP0h89bSmLYVo=
+Subject: FAILED: patch "[PATCH] sched/smt: Fix unbalance sched_smt_present dec/inc" failed to apply to 4.19-stable tree
 To: yangyingliang@huawei.com,peterz@infradead.org,tim.c.chen@linux.intel.com,yu.c.chen@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 14:12:40 +0200
-Message-ID: <2024081239-cubbyhole-wise-c8d1@gregkh>
+Date: Mon, 12 Aug 2024 14:12:41 +0200
+Message-ID: <2024081240-safeguard-refract-aef2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x e22f910a26cc2a3ac9c66b8e935ef2a7dd881117
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081239-cubbyhole-wise-c8d1@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081240-safeguard-refract-aef2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 e22f910a26cc ("sched/smt: Fix unbalance sched_smt_present dec/inc")
 2558aacff858 ("sched/hotplug: Ensure only per-cpu kthreads run during hotplug")
 565790d28b1e ("sched: Fix balance_callback()")
+c5511d03ec09 ("sched/smt: Make sched_smt_present track topology")
+1f351d7f7590 ("sched: sched.h: make rq locking and clock functions available in stats.h")
 
 thanks,
 
