@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-67050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB1894F3AC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C473994F4C5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A47D0B225F9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EDC81F2194C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA8F186E34;
-	Mon, 12 Aug 2024 16:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671ED187324;
+	Mon, 12 Aug 2024 16:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utRWqoRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jio3bZnS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE80B183CA6;
-	Mon, 12 Aug 2024 16:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BAA183CA6;
+	Mon, 12 Aug 2024 16:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479637; cv=none; b=L3kGilm8s76/1/h7IsIymTvu/bf/Mom+FkNzuU07ljHm2E8RXuIJz56aqdnDeG1xn9DHofjTU8nenyQCsV/zDsSdGEE9dyG9Nx+y2Cd5+wZWsj9NohtcXonIiSLSA85Ir71It9Oh58VfPNewVt2ZBIjRcNdkKFF39qXvrRDF1VU=
+	t=1723480457; cv=none; b=KOu1sIZ68zArkVEWCq27snoRZdgRtJpnvBSDcIrX8rg3+veEWN0AzdOcFL1SER74AHIx2Wo1FoPPThF0agPwlS/H01qLP+5B0/JfQMHbS+/VlCu6iZZUKjppFGrtmBBVKHnbFyx9e8gPmL0js0evEQ2NfTRDomVnjN/CZr4SmGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479637; c=relaxed/simple;
-	bh=Xskzmz831tAURcM9wpsceWQbnqBcD6oo3pfubNfEncU=;
+	s=arc-20240116; t=1723480457; c=relaxed/simple;
+	bh=QSu62jAzyDBLtLxTwPmVjP2v6Kw0Z+gDnO2L/DP5tEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4Ia89SnvhNNDsaG/8hIlcwqLsFBgKd36w/YBH0flrHznowhsPXEgGHuEdBtbxMggvExESGL/osP1+EHaCXQisRoPRoPbBp9vrosFtYLBzTevJFiY6M+ON9qVQrJTSt+XAqNTSkfPJHtYVEApXjSmElAKdzLf7a1Hl8y9AscTI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utRWqoRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4210CC32782;
-	Mon, 12 Aug 2024 16:20:37 +0000 (UTC)
+	 MIME-Version; b=ZqF1Q9DIp4nQikmGdVLv3/D11NpA0przBvoUBBp3nTyUAc3eB+okFlJB6WJ/CX7egK/MixEZ2260jght+jblb6Zsiu9NbejJB/tazrdNpuiDlET48+KrzgG6BMhMeBEhRN7YXmIGWzTPYk3xRl6YaxgToLW82eSRs1R8YdmYWxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jio3bZnS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A866C32782;
+	Mon, 12 Aug 2024 16:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479637;
-	bh=Xskzmz831tAURcM9wpsceWQbnqBcD6oo3pfubNfEncU=;
+	s=korg; t=1723480457;
+	bh=QSu62jAzyDBLtLxTwPmVjP2v6Kw0Z+gDnO2L/DP5tEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utRWqoRqXIeeC+4fB5CDFyUYngSUBJpPbb9mbAJZVYgLSFpDYq1DPhA6/q4D1eRga
-	 iO+EYHLPfp8ytPVz48s7AAefMEPNqhjgv3/E/IPp1L3QJexCH+awZeV5pjEG5Ie4Vv
-	 R11V5DHj5zfcttDByOPVWQzydCsMyEM+UFlMbYtg=
+	b=jio3bZnSZJYYmAj+Yp+CSARI5ZIShZ+oGDwBFwq0dE37BFT3NWqeCRHLAZddRCLNd
+	 kQOMXQkG74h3gexb80aWTh+7zLFbHhiS7Voix+Y+lLf7zsRqBz6dDYdUVI1Pp2276N
+	 HpnwNjbY9agExeyWTiDCB7ELuZqilYLG/TKV2wWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.6 147/189] power: supply: axp288_charger: Round constant_charge_voltage writes down
+	Justin Stitt <justinstitt@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miroslav Lichvar <mlichvar@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 202/263] ntp: Clamp maxerror and esterror to operating range
 Date: Mon, 12 Aug 2024 18:03:23 +0200
-Message-ID: <20240812160137.800526685@linuxfoundation.org>
+Message-ID: <20240812160154.282959278@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Justin Stitt <justinstitt@google.com>
 
-commit 81af7f2342d162e24ac820c10e68684d9f927663 upstream.
+[ Upstream commit 87d571d6fb77ec342a985afa8744bb9bb75b3622 ]
 
-Round constant_charge_voltage writes down to the first supported lower
-value, rather then rounding them up to the first supported higher value.
+Using syzkaller alongside the newly reintroduced signed integer overflow
+sanitizer spits out this report:
 
-This fixes e.g. writing 4250000 resulting in a value of 4350000 which
-might be dangerous, instead writing 4250000 will now result in a safe
-4200000 value.
+UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:461:16
+9223372036854775807 + 500 cannot be represented in type 'long'
+Call Trace:
+ handle_overflow+0x171/0x1b0
+ second_overflow+0x2d6/0x500
+ accumulate_nsecs_to_secs+0x60/0x160
+ timekeeping_advance+0x1fe/0x890
+ update_wall_time+0x10/0x30
 
-Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240717200333.56669-2-hdegoede@redhat.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+time_maxerror is unconditionally incremented and the result is checked
+against NTP_PHASE_LIMIT, but the increment itself can overflow, resulting
+in wrap-around to negative space.
+
+Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
+supplied value was sanity checked to be in the operating range. That change
+removed the sanity check and relied on clamping in handle_overflow() which
+does not work correctly when the user supplied value is in the overflow
+zone of the '+ 500' operation.
+
+The operation requires CAP_SYS_TIME and the side effect of the overflow is
+NTP getting out of sync.
+
+Miroslav confirmed that the input value should be clamped to the operating
+range and the same applies to time_esterror. The latter is not used by the
+kernel, but the value still should be in the operating range as it was
+before the sanity check got removed.
+
+Clamp them to the operating range.
+
+[ tglx: Changed it to clamping and included time_esterror ]
+
+Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miroslav Lichvar <mlichvar@redhat.com>
+Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-usec-v2-1-d539180f2b79@google.com
+Closes: https://github.com/KSPP/linux/issues/354
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/axp288_charger.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ kernel/time/ntp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/power/supply/axp288_charger.c
-+++ b/drivers/power/supply/axp288_charger.c
-@@ -178,18 +178,18 @@ static inline int axp288_charger_set_cv(
- 	u8 reg_val;
- 	int ret;
- 
--	if (cv <= CV_4100MV) {
--		reg_val = CHRG_CCCV_CV_4100MV;
--		cv = CV_4100MV;
--	} else if (cv <= CV_4150MV) {
--		reg_val = CHRG_CCCV_CV_4150MV;
--		cv = CV_4150MV;
--	} else if (cv <= CV_4200MV) {
-+	if (cv >= CV_4350MV) {
-+		reg_val = CHRG_CCCV_CV_4350MV;
-+		cv = CV_4350MV;
-+	} else if (cv >= CV_4200MV) {
- 		reg_val = CHRG_CCCV_CV_4200MV;
- 		cv = CV_4200MV;
-+	} else if (cv >= CV_4150MV) {
-+		reg_val = CHRG_CCCV_CV_4150MV;
-+		cv = CV_4150MV;
- 	} else {
--		reg_val = CHRG_CCCV_CV_4350MV;
--		cv = CV_4350MV;
-+		reg_val = CHRG_CCCV_CV_4100MV;
-+		cv = CV_4100MV;
+diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
+index 406dccb79c2b6..502e1e5b7f7f6 100644
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -727,10 +727,10 @@ static inline void process_adjtimex_modes(const struct __kernel_timex *txc,
  	}
  
- 	reg_val = reg_val << CHRG_CCCV_CV_BIT_POS;
+ 	if (txc->modes & ADJ_MAXERROR)
+-		time_maxerror = txc->maxerror;
++		time_maxerror = clamp(txc->maxerror, 0, NTP_PHASE_LIMIT);
+ 
+ 	if (txc->modes & ADJ_ESTERROR)
+-		time_esterror = txc->esterror;
++		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
+ 
+ 	if (txc->modes & ADJ_TIMECONST) {
+ 		time_constant = txc->constant;
+-- 
+2.43.0
+
 
 
 
