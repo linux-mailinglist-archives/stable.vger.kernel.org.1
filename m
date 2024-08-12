@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C709A94EA26
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 353DF94EA40
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8309E280F12
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:44:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E68BC28216B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9617416DEAB;
-	Mon, 12 Aug 2024 09:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6477916DC1A;
+	Mon, 12 Aug 2024 09:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5DsXaRz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0836zCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5708716DEA7
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2562616DC34
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723455844; cv=none; b=jYWTh/MLCn+n4o3GvWeRnsR7guKlwh9/9N/vHP8mvyNEA4Xq5dBW5Ca41IEwNExrdrq90hlcSQF5K1bA37WjxNDrjJmne+L0WA7/fb3o6sh6MzDUHEIz3QCxZKyLuwYz1sXc0q9K5dL5dZFcEc4/m/+QemHw6UOS0EkDM4mlFB4=
+	t=1723456088; cv=none; b=DbtXbLhcciFlJhJFp0sA/wP0VnZpv6VGVDwZnXO9JxCWR9PTGCrZhmMyasryl9nWMWqAgk+cuL6s3fvSfhAfpUt5tPR11tq7SPnGjBi15jaCbWwzjfHEgtEmrNaW+Sk99dEW15UrUfcPBxMf/cOhu7V3xiGdcPP+L1sW0xKdVcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723455844; c=relaxed/simple;
-	bh=E66xztRXCjy9IQqJL8n2h8i7lVYEo30Yxbl82s7RWok=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hi7e94swL8L+p+Xx/6aoYzizknn7gYDym52G3QaQD2ptgTmtanflKJLdKG1W8eVwkdZhNHY4C/3EdyPRKPX6fzS3XbDj72m1r0EC4dZyGHkzRIBr4h9BfbdPCBdvcRveBIr/jtqdjrkl7fajUTSH+0bed+wKCkD/So3YGy/tMR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5DsXaRz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D50C4AF0F;
-	Mon, 12 Aug 2024 09:44:03 +0000 (UTC)
+	s=arc-20240116; t=1723456088; c=relaxed/simple;
+	bh=PqqQxJaSDxGfJBbfe/WAHZpOYUeYpgVPMSopEzrPBfI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i88Whg2t86tqhObOy6Yy/DIX1P0jJSzqlOHT/ILzSWGBh27BmoQivFecrWNwMD2chSEBOoh5IPOGCQcucTgpZaY4OeFAERb2eUWzcGP3N9tc5f6jTj33qiWm70U3bv1fptuTXs2IiqbhpY9/yHNkcZKPnAYJvgnUN3WxwToOWSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0836zCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB02C32782;
+	Mon, 12 Aug 2024 09:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723455843;
-	bh=E66xztRXCjy9IQqJL8n2h8i7lVYEo30Yxbl82s7RWok=;
+	s=korg; t=1723456087;
+	bh=PqqQxJaSDxGfJBbfe/WAHZpOYUeYpgVPMSopEzrPBfI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=r5DsXaRz+cQqHrt4apBGQLObQBukYJ6IMnwJvQgFVpzncBCp5UMwvm5V8gVd/tT5o
-	 x+NP0AS5cNG/EKLs7rsZi6Rcc9lxb2Zv0D4A/7ioN6M3UdNQbJXYIwLCLu6bSkSPqm
-	 sRH76Uu1r+ug1Iq/mAA7SAYCmbpdOgtxd3IQiWT0=
-Subject: FAILED: patch "[PATCH] usb: gadget: u_audio: Check return codes from usb_ep_enable" failed to apply to 5.15-stable tree
-To: crwulff@gmail.com,gregkh@linuxfoundation.org
+	b=U0836zCsE41NlxPQN0klQEQTI/Eo3rmbxuSqSvIk5GbH6qSroziOwDlh/yWI9+Bth
+	 6Dm7VXdZDEbHXsDpk8tAF75QTv++3WWhhsQ3ucwUCYzTPcRFfTzTGc0NknuPezR1j1
+	 5ivUmJ/8YhTFRD0wHzadABriuNQ/izzbMxbltjzE=
+Subject: FAILED: patch "[PATCH] vhost-vdpa: switch to use vmf_insert_pfn() in the fault" failed to apply to 5.10-stable tree
+To: jasowang@redhat.com,dtatulea@nvidia.com,michal.kubiak@intel.com,mst@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 11:44:00 +0200
-Message-ID: <2024081259-emporium-sequence-80c6@gregkh>
+Date: Mon, 12 Aug 2024 11:48:04 +0200
+Message-ID: <2024081204-fraction-from-52aa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,27 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 76a7bfc445b8e9893c091e24ccfd4f51dfdc0a70
+git cherry-pick -x 0823dc64586ba5ea13a7d200a5d33e4c5fa45950
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081259-emporium-sequence-80c6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081204-fraction-from-52aa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-76a7bfc445b8 ("usb: gadget: u_audio: Check return codes from usb_ep_enable and config_ep_by_speed.")
-8722a949e62a ("usb: gadget: u_audio: Move dynamic srate from params to rtd")
-c565ad07ef35 ("usb: gadget: u_audio: Support multiple sampling rates")
-f2f69bf65df1 ("usb: gadget: u_audio: fix calculations for small bInterval")
-6fec018a7e70 ("usb: gadget: u_audio.c: Adding Playback Pitch ctl for sync playback")
+0823dc64586b ("vhost-vdpa: switch to use vmf_insert_pfn() in the fault handler")
+729ce5a5bd6f ("vdpa: Make use of PFN_PHYS/PFN_UP/PFN_DOWN helper macro")
 
 thanks,
 
@@ -81,108 +78,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 76a7bfc445b8e9893c091e24ccfd4f51dfdc0a70 Mon Sep 17 00:00:00 2001
-From: Chris Wulff <crwulff@gmail.com>
-Date: Sun, 21 Jul 2024 15:23:15 -0400
-Subject: [PATCH] usb: gadget: u_audio: Check return codes from usb_ep_enable
- and config_ep_by_speed.
+From 0823dc64586ba5ea13a7d200a5d33e4c5fa45950 Mon Sep 17 00:00:00 2001
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 1 Jul 2024 11:31:59 +0800
+Subject: [PATCH] vhost-vdpa: switch to use vmf_insert_pfn() in the fault
+ handler
 
-These functions can fail if descriptors are malformed, or missing,
-for the selected USB speed.
+remap_pfn_page() should not be called in the fault handler as it may
+change the vma->flags which may trigger lockdep warning since the vma
+write lock is not held. Actually there's no need to modify the
+vma->flags as it has been set in the mmap(). So this patch switches to
+use vmf_insert_pfn() instead.
 
-Fixes: eb9fecb9e69b ("usb: gadget: f_uac2: split out audio core")
-Fixes: 24f779dac8f3 ("usb: gadget: f_uac2/u_audio: add feedback endpoint support")
+Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
+Fixes: ddd89d0a059d ("vhost_vdpa: support doorbell mapping via mmap")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chris Wulff <crwulff@gmail.com>
-Link: https://lore.kernel.org/r/20240721192314.3532697-2-crwulff@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240701033159.18133-1-jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
 
-diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/function/u_audio.c
-index 89af0feb7512..24299576972f 100644
---- a/drivers/usb/gadget/function/u_audio.c
-+++ b/drivers/usb/gadget/function/u_audio.c
-@@ -592,16 +592,25 @@ int u_audio_start_capture(struct g_audio *audio_dev)
- 	struct usb_ep *ep, *ep_fback;
- 	struct uac_rtd_params *prm;
- 	struct uac_params *params = &audio_dev->params;
--	int req_len, i;
-+	int req_len, i, ret;
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index 63a53680a85c..6b9c12acf438 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -1483,13 +1483,7 @@ static vm_fault_t vhost_vdpa_fault(struct vm_fault *vmf)
  
- 	prm = &uac->c_prm;
- 	dev_dbg(dev, "start capture with rate %d\n", prm->srate);
- 	ep = audio_dev->out_ep;
--	config_ep_by_speed(gadget, &audio_dev->func, ep);
-+	ret = config_ep_by_speed(gadget, &audio_dev->func, ep);
-+	if (ret < 0) {
-+		dev_err(dev, "config_ep_by_speed for out_ep failed (%d)\n", ret);
-+		return ret;
-+	}
-+
- 	req_len = ep->maxpacket;
+ 	notify = ops->get_vq_notification(vdpa, index);
  
- 	prm->ep_enabled = true;
--	usb_ep_enable(ep);
-+	ret = usb_ep_enable(ep);
-+	if (ret < 0) {
-+		dev_err(dev, "usb_ep_enable failed for out_ep (%d)\n", ret);
-+		return ret;
-+	}
+-	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+-	if (remap_pfn_range(vma, vmf->address & PAGE_MASK,
+-			    PFN_DOWN(notify.addr), PAGE_SIZE,
+-			    vma->vm_page_prot))
+-		return VM_FAULT_SIGBUS;
+-
+-	return VM_FAULT_NOPAGE;
++	return vmf_insert_pfn(vma, vmf->address & PAGE_MASK, PFN_DOWN(notify.addr));
+ }
  
- 	for (i = 0; i < params->req_number; i++) {
- 		if (!prm->reqs[i]) {
-@@ -629,9 +638,18 @@ int u_audio_start_capture(struct g_audio *audio_dev)
- 		return 0;
- 
- 	/* Setup feedback endpoint */
--	config_ep_by_speed(gadget, &audio_dev->func, ep_fback);
-+	ret = config_ep_by_speed(gadget, &audio_dev->func, ep_fback);
-+	if (ret < 0) {
-+		dev_err(dev, "config_ep_by_speed in_ep_fback failed (%d)\n", ret);
-+		return ret; // TODO: Clean up out_ep
-+	}
-+
- 	prm->fb_ep_enabled = true;
--	usb_ep_enable(ep_fback);
-+	ret = usb_ep_enable(ep_fback);
-+	if (ret < 0) {
-+		dev_err(dev, "usb_ep_enable failed for in_ep_fback (%d)\n", ret);
-+		return ret; // TODO: Clean up out_ep
-+	}
- 	req_len = ep_fback->maxpacket;
- 
- 	req_fback = usb_ep_alloc_request(ep_fback, GFP_ATOMIC);
-@@ -687,13 +705,17 @@ int u_audio_start_playback(struct g_audio *audio_dev)
- 	struct uac_params *params = &audio_dev->params;
- 	unsigned int factor;
- 	const struct usb_endpoint_descriptor *ep_desc;
--	int req_len, i;
-+	int req_len, i, ret;
- 	unsigned int p_pktsize;
- 
- 	prm = &uac->p_prm;
- 	dev_dbg(dev, "start playback with rate %d\n", prm->srate);
- 	ep = audio_dev->in_ep;
--	config_ep_by_speed(gadget, &audio_dev->func, ep);
-+	ret = config_ep_by_speed(gadget, &audio_dev->func, ep);
-+	if (ret < 0) {
-+		dev_err(dev, "config_ep_by_speed for in_ep failed (%d)\n", ret);
-+		return ret;
-+	}
- 
- 	ep_desc = ep->desc;
- 	/*
-@@ -720,7 +742,11 @@ int u_audio_start_playback(struct g_audio *audio_dev)
- 	uac->p_residue_mil = 0;
- 
- 	prm->ep_enabled = true;
--	usb_ep_enable(ep);
-+	ret = usb_ep_enable(ep);
-+	if (ret < 0) {
-+		dev_err(dev, "usb_ep_enable failed for in_ep (%d)\n", ret);
-+		return ret;
-+	}
- 
- 	for (i = 0; i < params->req_number; i++) {
- 		if (!prm->reqs[i]) {
+ static const struct vm_operations_struct vhost_vdpa_vm_ops = {
 
 
