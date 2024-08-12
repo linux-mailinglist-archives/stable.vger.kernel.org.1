@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-66856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01EBD94F2C9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074D094F3B6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E24CB23FA7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87CECB25BA4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90128187342;
-	Mon, 12 Aug 2024 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0654F186E38;
+	Mon, 12 Aug 2024 16:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wzv93lRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4QDqVCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4CE183CD9;
-	Mon, 12 Aug 2024 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F8C29CA;
+	Mon, 12 Aug 2024 16:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479009; cv=none; b=k7yJrsM7XoGHfHwYe7mf3FfFcaXKCDOvxpI8Pj58OaAPGisq8XMiQfX7jK2g8gGS4GZSZTBfv+Fs1o+UgQlW3lp1wKc9IaBOTG85WmaxsxTOYv2vBAPpPBJVupt8fvXTzP3Qs3x0kdxYbhxtVKrV6J5syyc87/HcC6oCMlZYH8c=
+	t=1723479672; cv=none; b=as/4mAaQigSEczObega9STTStPtd2Fjk8RywLJek40nM0z7p9uFUVYMYYe7YCjw7DsWVGIuiJJrX1AOL92zTQKz6r6oDSTnSb5DjcwhxiWfFL+NTnTzCqoaQcOIsueAqiFMwJtRsEQrtlWlLRtu4PwtqzfkPkdD6g4JfR0bOFck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479009; c=relaxed/simple;
-	bh=dB2fTciNH7C99yeMCkwymMBnv0h1RnzHu+mZrclazpw=;
+	s=arc-20240116; t=1723479672; c=relaxed/simple;
+	bh=UQz1UnJXPsKu2HMt2KidjApKrGtsaAFJleZl8g/FN90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ewk/G/0PToW8eCWcrFWV51Rqa9HWCjV18VbAEZXCesb/4WJ6MOMb+3FN7eNCPfe6D5F+kcutNaXz1NPpIAn/SM4MXiJTH9JO0KpKg9pB2Yh8M+KwCXrhlMe0TRGMMrHIPHADI2m0o1SQ8zpsMOeeFlFNGn9SjKMmJPZhGF23z+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wzv93lRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C326EC32782;
-	Mon, 12 Aug 2024 16:10:08 +0000 (UTC)
+	 MIME-Version; b=nNiBOaxRnEDH7/GYy63XNfC/XheUvx0g34A7bCRR4Ci3fLUZF3pAj74Mwqp7ApTk1o2NYJJ3pUTFe6ngGBNer6qAXxAO/ea+LbhmjnsHFV3si1XzJ3he8Rm/evTQwz86ATG96XHoLi0Yz4Aq2Wuuk1g1CyqrtkjeLpbxiwlAlfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4QDqVCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ACEC32782;
+	Mon, 12 Aug 2024 16:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479009;
-	bh=dB2fTciNH7C99yeMCkwymMBnv0h1RnzHu+mZrclazpw=;
+	s=korg; t=1723479672;
+	bh=UQz1UnJXPsKu2HMt2KidjApKrGtsaAFJleZl8g/FN90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wzv93lRHTaUCItg6Os87E7pK+V+yov7ezMj8bJGJJdWcg6TYFBb0LpfMweb0NiZze
-	 u5qe7HUuK96EqJMq5/xGq2JECB54BaoX4CsU8JGF7Xp+B/X1yjPmKbFkMvbOKgqn+A
-	 TOA5yl+Sxpbf+7MEKgT2TpOfy4fDEOC3CRvmIA/Q=
+	b=r4QDqVCKDSGGLFoE/Q498v13PhnuTj88qznhBvm5pqoEdmLh6tbtQ/ktifhZ5s9pW
+	 zpQvURP5CxpmOpD4ktKXPqnd3k4XqaKGlT1okWnYLp1NM6lrv86lMAvIdZyT1uUyjm
+	 PbwC2fJ9GTjahlVsniPurvh55IBLMeZJOqjahUpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/150] clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()
+Subject: [PATCH 6.6 130/189] clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()
 Date: Mon, 12 Aug 2024 18:03:06 +0200
-Message-ID: <20240812160129.214262378@linuxfoundation.org>
+Message-ID: <20240812160137.148721790@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -90,10 +90,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 6d5a0fc98e398..cd9a59011dee9 100644
+index c95080f005dd4..3260bbe98894b 100644
 --- a/kernel/time/clocksource.c
 +++ b/kernel/time/clocksource.c
-@@ -235,7 +235,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow,
+@@ -238,7 +238,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow,
  		wd_delay = clocksource_cyc2ns(wd_delta, watchdog->mult,
  					      watchdog->shift);
  		if (wd_delay <= WATCHDOG_MAX_SKEW) {
