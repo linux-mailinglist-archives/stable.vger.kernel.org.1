@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-66778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC5A94F267
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:06:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C53194F34F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DDB3281448
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:06:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC690B2517A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A8B186295;
-	Mon, 12 Aug 2024 16:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33EB187346;
+	Mon, 12 Aug 2024 16:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="od4f+zK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OI7zt7va"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71011EA8D;
-	Mon, 12 Aug 2024 16:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2EC186E38;
+	Mon, 12 Aug 2024 16:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478752; cv=none; b=fziGJjLYiZolXyVzkt6Nx2yhiesx68jgBa8IxsvTr+4O20t17eHdmZn45MpWzi78CjKAML7sAokSEXV3Hh5SzbYfXV0g+7NIQACFxfFwqDE3NbWQBc+vwVvvU/GLbMVPTQR03SKkZx333j+mBygVc1m55yGomZNqBCYLzMnvQU8=
+	t=1723479366; cv=none; b=dANNHbDP/DgHEUEdMd37feBDx2PrSrS2pqnjQri1eOvgFsM/GtP616GCFHCTG17rNLs1sh4ZCr2CMTIHzRuawHJb2HrbKgqAs9kRTmEJt2b2GX4wFwpFh+sOvvez5SYInMiWt/Wj+alVQ7qWYMec3bshRoDT6hRO23fD6TZH1sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478752; c=relaxed/simple;
-	bh=ZUvohcobtlLU+sPVN2F/A80IIeXle2sThwfH5B7LKy8=;
+	s=arc-20240116; t=1723479366; c=relaxed/simple;
+	bh=ru1D+1ghLFROaiq38/84BXeNDT2QELhYAh92q3XWcv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q6Sbcan6UxwaepOUHhRazcFj9sIwE98P0j4dazUHDz1+3HqfuK0XZOAb6/nyqyC005Xi8oilEiWWqT5wwzYsePjzeE4Trp9CSiE409Tk8pppXL0jm0tgcME8alC8SVC1OsAUfneQYdgSS9Bg3/30DOCZAKVif+BM2MlRazh7kSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=od4f+zK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE74C32782;
-	Mon, 12 Aug 2024 16:05:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QGvHN1jWQ+aJ/8hE8iWvJY+1dnH9CtkVR6iEqqBCzgBqrUmUDMRIDD+z8FU4d+LyKealeBZ5oqBLvn4q86k+5zhTVuREZ//e9HfEUfPML/E/ftTH7YfU0J6yOGhYWDFbVgttT0S4YlqjKKXipKfpR0NqijNe89rkO9EITUQvB88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OI7zt7va; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13DAC32782;
+	Mon, 12 Aug 2024 16:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478752;
-	bh=ZUvohcobtlLU+sPVN2F/A80IIeXle2sThwfH5B7LKy8=;
+	s=korg; t=1723479366;
+	bh=ru1D+1ghLFROaiq38/84BXeNDT2QELhYAh92q3XWcv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=od4f+zK9K2oTytdBDjzbd7LCAuz59q7xYZJp2i46BMl+PnF/GpdwgzDYMJFcNnE0S
-	 ARZOBbek7ulU8bu44xQooucvk63eWxYpbqFzakFBxEqn8RX8hvxppfnNNS3/TUVi5/
-	 c95nrxDNjMwWcd61wYeveekao2WCrVH2gPnzDQAU=
+	b=OI7zt7vaY6R1T20kkXNtzypXxqGBMXlH2lyrlQQDEJIVFKAfPHLlMbrDs/exZmqru
+	 3nSitAZlxd4wEWsFxW2zk9dF9ZS8AWxDVcvh8javv82IHZof28TGNfU3hdghhD8tcL
+	 21eXgqQ/Kj+p//yoZ+GpRb9GsXt/RpUTVbvLZcM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	"David S. Miller" <davem@davemloft.net>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/150] net: usb: qmi_wwan: fix memory leak for not ip packets
+Subject: [PATCH 6.6 033/189] ACPI: SBS: manage alarm sysfs attribute through psy core
 Date: Mon, 12 Aug 2024 18:01:29 +0200
-Message-ID: <20240812160125.474195661@linuxfoundation.org>
+Message-ID: <20240812160133.419818452@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,37 +63,94 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 7ab107544b777c3bd7feb9fe447367d8edd5b202 ]
+[ Upstream commit 6bad28cfc30988a845fb3f59a99f4b8a4ce8fe95 ]
 
-Free the unused skb when not ip packets arrive.
+Let the power supply core register the attribute.
 
-Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This ensures that the attribute is created before the device is
+announced to userspace, avoiding a race condition.
+
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/sbs.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 46e0e1f1c20e0..ee0ea3d0f50ee 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -200,6 +200,7 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			break;
- 		default:
- 			/* not ip - do not know what to do */
-+			kfree_skb(skbn);
- 			goto skip;
- 		}
+diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
+index 94e3c000df2e1..fdeb46ed21d69 100644
+--- a/drivers/acpi/sbs.c
++++ b/drivers/acpi/sbs.c
+@@ -77,7 +77,6 @@ struct acpi_battery {
+ 	u16 spec;
+ 	u8 id;
+ 	u8 present:1;
+-	u8 have_sysfs_alarm:1;
+ };
  
+ #define to_acpi_battery(x) power_supply_get_drvdata(x)
+@@ -462,12 +461,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
+ 	return count;
+ }
+ 
+-static const struct device_attribute alarm_attr = {
++static struct device_attribute alarm_attr = {
+ 	.attr = {.name = "alarm", .mode = 0644},
+ 	.show = acpi_battery_alarm_show,
+ 	.store = acpi_battery_alarm_store,
+ };
+ 
++static struct attribute *acpi_battery_attrs[] = {
++	&alarm_attr.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(acpi_battery);
++
+ /* --------------------------------------------------------------------------
+                                  Driver Interface
+    -------------------------------------------------------------------------- */
+@@ -518,7 +523,10 @@ static int acpi_battery_read(struct acpi_battery *battery)
+ static int acpi_battery_add(struct acpi_sbs *sbs, int id)
+ {
+ 	struct acpi_battery *battery = &sbs->battery[id];
+-	struct power_supply_config psy_cfg = { .drv_data = battery, };
++	struct power_supply_config psy_cfg = {
++		.drv_data = battery,
++		.attr_grp = acpi_battery_groups,
++	};
+ 	int result;
+ 
+ 	battery->id = id;
+@@ -548,10 +556,6 @@ static int acpi_battery_add(struct acpi_sbs *sbs, int id)
+ 		goto end;
+ 	}
+ 
+-	result = device_create_file(&battery->bat->dev, &alarm_attr);
+-	if (result)
+-		goto end;
+-	battery->have_sysfs_alarm = 1;
+       end:
+ 	pr_info("%s [%s]: Battery Slot [%s] (battery %s)\n",
+ 	       ACPI_SBS_DEVICE_NAME, acpi_device_bid(sbs->device),
+@@ -563,11 +567,8 @@ static void acpi_battery_remove(struct acpi_sbs *sbs, int id)
+ {
+ 	struct acpi_battery *battery = &sbs->battery[id];
+ 
+-	if (battery->bat) {
+-		if (battery->have_sysfs_alarm)
+-			device_remove_file(&battery->bat->dev, &alarm_attr);
++	if (battery->bat)
+ 		power_supply_unregister(battery->bat);
+-	}
+ }
+ 
+ static int acpi_charger_add(struct acpi_sbs *sbs)
 -- 
 2.43.0
 
