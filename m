@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-66896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A75594F2FB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B8394F3E3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47A3D285470
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5425C1C216D1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174A1187845;
-	Mon, 12 Aug 2024 16:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41A3186E38;
+	Mon, 12 Aug 2024 16:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsX/pbgF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvbgEgzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3784186E52;
-	Mon, 12 Aug 2024 16:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7375C134AC;
+	Mon, 12 Aug 2024 16:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479136; cv=none; b=IrrRnCs1VKNl+zMbBc2hibyQkUZZGZ496o7u1alJYncIMZohqKc926U65VKQnADNq5gSqjMfQC8YqTzGlPpbxRivdJQl+VR8Hdm9EFDAUhC3jGSbOV6IZuwxNlIKQBMwLe1492gpwczKBekCmaKcpUBVWkLADHg6hVovz/mvhmg=
+	t=1723479804; cv=none; b=qwNn+6Zt0FvcFn6aac6QPSZMl3S2nILxGmTdVhX2IISlrDQKQQnCp9mNmpNJlJETdFkxj06OVpfiaq7LviiPvp7QYlk3NHgXrouaCRAyWDZsnzksS3liTyOyKTpMYJfPq2eBWhw2njnPbNW0X3SYi475KjT2KwjsBRUMuB80vzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479136; c=relaxed/simple;
-	bh=hgUX3355HK0LOxhWWtkjTQAIAIkZdMnweY6uuVSrao8=;
+	s=arc-20240116; t=1723479804; c=relaxed/simple;
+	bh=cUXqJPHHcIHtsUzDkPmUMhvMSoxh5oHxp9HLCgYPYW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=usfW1YGreoFw8u1K80Nm9AgccnIWtIoRfmfkK2coJuMzhVYou6ZJXCC5yfMHL7KjozAWWYShCpjjmca2D3BjhFhVjtgTGscBfQlWMPHU8ldWfX2X8pwocc7VTgbpsUni3GZaHp8qdweoUR0bv1SHG0r9nLv2MSywD8Wtd0naOJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsX/pbgF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0472DC32782;
-	Mon, 12 Aug 2024 16:12:15 +0000 (UTC)
+	 MIME-Version; b=lsVrE1oXCZQGM9RS7Tstt5hh5Aef341PQDLSovwESouRuJdNMsFB+/SmVbKpHxwgHYdOrV1/Gxq1WoW2gjCw4X/WBFBnv1mT9PcYPEAlAXla0r9FvDid5oAL4NEloqBgTjaIbmHRl5DzAj82z8mzd+3/Mm9AchjsUSrdnhJWLpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvbgEgzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4E3C32782;
+	Mon, 12 Aug 2024 16:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479136;
-	bh=hgUX3355HK0LOxhWWtkjTQAIAIkZdMnweY6uuVSrao8=;
+	s=korg; t=1723479804;
+	bh=cUXqJPHHcIHtsUzDkPmUMhvMSoxh5oHxp9HLCgYPYW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsX/pbgFZ5MySyn+sMzNAd2IUgyQG6yXw54DLozVNNiq9D3dRfuD2OLj1WoYhOZRP
-	 Ywkq4gKvfhBQoNSYTcnSzfjih1GnmJY5Jkd8mzrqJcVkuws22N/YYQIyv4aREyxW9H
-	 eFoYzcDM1KZ1WGHf9wVQzZ4Nhq1aJDNdfoLy0WGQ=
+	b=wvbgEgzrWgTBt8H+Ndcag14oJcR/avtmOd5z/Kvi6R/lV3UskuIWD7s+BDTJoin1j
+	 3YqhhzEBr6nVD/ZzW+i2WITMBC/DVh6Zd+XV6BB8CMrxBj+qZXsXk9reumwx6NHwlo
+	 RfNqUOt8mTNgapgTPY01RWnVqvh8KqkHpwLc1PPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Brian Foster <bfoster@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Kevin Berry <kpberry@google.com>
-Subject: [PATCH 6.1 144/150] xfs: fix log recovery buffer allocation for the legacy h_size fixup
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 169/189] selftests: mptcp: fix error path
 Date: Mon, 12 Aug 2024 18:03:45 +0200
-Message-ID: <20240812160130.727927459@linuxfoundation.org>
+Message-ID: <20240812160138.651889955@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 45cf976008ddef4a9c9a30310c9b4fb2a9a6602a upstream.
+commit 4a2f48992ddf4b8c2fba846c6754089edae6db5a upstream.
 
-Commit a70f9fe52daa ("xfs: detect and handle invalid iclog size set by
-mkfs") added a fixup for incorrect h_size values used for the initial
-umount record in old xfsprogs versions.  Later commit 0c771b99d6c9
-("xfs: clean up calculation of LR header blocks") cleaned up the log
-reover buffer calculation, but stoped using the fixed up h_size value
-to size the log recovery buffer, which can lead to an out of bounds
-access when the incorrect h_size does not come from the old mkfs
-tool, but a fuzzer.
+pm_nl_check_endpoint() currently calls an not existing helper
+to mark the test as failed. Fix the wrong call.
 
-Fix this by open coding xlog_logrec_hblks and taking the fixed h_size
-into account for this calculation.
-
-Fixes: 0c771b99d6c9 ("xfs: clean up calculation of LR header blocks")
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Kevin Berry <kpberry@google.com>
+Fixes: 03668c65d153 ("selftests: mptcp: join: rework detailed report")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ Conflicts in mptcp_join.sh because the context has changed in commit
+  571d79664a4a ("selftests: mptcp: join: update endpoint ops") which is
+  not in this version. This commit is unrelated to this modification. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_log_recover.c |   20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2960,7 +2960,7 @@ xlog_do_recovery_pass(
- 	int			error = 0, h_size, h_len;
- 	int			error2 = 0;
- 	int			bblks, split_bblks;
--	int			hblks, split_hblks, wrapped_hblks;
-+	int			hblks = 1, split_hblks, wrapped_hblks;
- 	int			i;
- 	struct hlist_head	rhash[XLOG_RHASH_SIZE];
- 	LIST_HEAD		(buffer_list);
-@@ -3016,14 +3016,22 @@ xlog_do_recovery_pass(
- 		if (error)
- 			goto bread_err1;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -812,7 +812,7 @@ pm_nl_check_endpoint()
+ 	done
  
--		hblks = xlog_logrec_hblks(log, rhead);
--		if (hblks != 1) {
--			kmem_free(hbp);
--			hbp = xlog_alloc_buffer(log, hblks);
-+		/*
-+		 * This open codes xlog_logrec_hblks so that we can reuse the
-+		 * fixed up h_size value calculated above.  Without that we'd
-+		 * still allocate the buffer based on the incorrect on-disk
-+		 * size.
-+		 */
-+		if (h_size > XLOG_HEADER_CYCLE_SIZE &&
-+		    (rhead->h_version & cpu_to_be32(XLOG_VERSION_2))) {
-+			hblks = DIV_ROUND_UP(h_size, XLOG_HEADER_CYCLE_SIZE);
-+			if (hblks > 1) {
-+				kmem_free(hbp);
-+				hbp = xlog_alloc_buffer(log, hblks);
-+			}
- 		}
- 	} else {
- 		ASSERT(log->l_sectBBsize == 1);
--		hblks = 1;
- 		hbp = xlog_alloc_buffer(log, 1);
- 		h_size = XLOG_BIG_RECORD_BSIZE;
- 	}
+ 	if [ -z "$id" ]; then
+-		test_fail "bad test - missing endpoint id"
++		fail_test "bad test - missing endpoint id"
+ 		return
+ 	fi
+ 
 
 
 
