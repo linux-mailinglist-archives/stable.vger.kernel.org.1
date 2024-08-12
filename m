@@ -1,80 +1,76 @@
-Return-Path: <stable+bounces-66422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B5094E9C1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:27:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0317494E9C2
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D4DD1F22EE2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:27:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36B751C215A4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1399616D4E2;
-	Mon, 12 Aug 2024 09:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575C416CD19;
+	Mon, 12 Aug 2024 09:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZheCxA2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8CgsBsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2EF20323
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F7620323
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723454846; cv=none; b=qYphXzbgXfQ78FmfHSeFt1NKhTq9SC+QtFlXyhzirBI1LQuTPwWimYKtxSLDqm5Ls1PdAZORki5ovzHTj93GaFprNR3Fpbq2Vbx1WpB2Pfr4V2QrEkiJDWvl51gmygij1BglQlrSe0QRFjvfY6dq6CuDLQlyM+pCxl6avlzePAo=
+	t=1723454875; cv=none; b=KgJCwFY7P3oaVsRh++U8iHxBC5juA2//Ot8jOkv41Cd3IW8eFu1oiWMnZn6YDlQtKH3t+O/2QPv/VwyZRtrOTul0S6TbnfSI9FhIn1pfGDYLDaRCWHbwg1XPnyp+qwA+ggUhgCnyJ/YmlNE11+cy+14rsR8q8DKZP44a8O26NaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723454846; c=relaxed/simple;
-	bh=JycqezXlaoXFWqcWngZBtCHYALzsexs/9+MBr5RTVbw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cnvSMhNdtlfkEqOwgdqlQgnpe1TVCtYCyQ8WoQHSxoaNz9ncmOvpEPw2/k2urQ2s9KCYDbmbXxvjt6u9gDogZSrvhH1c6ENCWEeJ6IZvf+6IMYOlaewYKWHz/1cCMt7O7EAfpnn4K6AOsHqqSK2g1dJrcESq7/+hMcdoABItVNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZheCxA2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9556C32782;
-	Mon, 12 Aug 2024 09:27:24 +0000 (UTC)
+	s=arc-20240116; t=1723454875; c=relaxed/simple;
+	bh=jKcxXpFHqeXVAm80BWkpkHdwbwKRgW7ztQv5k8zbYk8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eULCTVahJkMqM/VxnwmdUhFosXE7gd3bTMPw0Yh9m6ToIfXrRywglIpriW3IYQv+i0iV5r5JDlogCI8bR+m1zmUNauEgGzoAcrQ527aDrvG5jGGdpHs5DdZFd4k4V50zw5wSmHQ/JKAUzO2Xwd4TEeNkhnwC62gB/yZyk4Rcdfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8CgsBsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E549C32782;
+	Mon, 12 Aug 2024 09:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723454845;
-	bh=JycqezXlaoXFWqcWngZBtCHYALzsexs/9+MBr5RTVbw=;
+	s=korg; t=1723454875;
+	bh=jKcxXpFHqeXVAm80BWkpkHdwbwKRgW7ztQv5k8zbYk8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hZheCxA2WHxm59zF6KFVxhJ4/E1fNuBHvN6fk3RFrrqYCOzwyFpG1eJUjq1v6inTZ
-	 Yo7w+K1o8c578rxjPB0Cd4RfPdx9TSS3XQbj1ZUwmb1tPCmgUxtHzTS5UuOAT98gEZ
-	 QhrroCnUyVTQ3uuXenR/fSshywlM+Ei33t+XUXbc=
-Subject: FAILED: patch "[PATCH] drm/i915/gem: Adjust vma offset for framebuffer mmap offset" failed to apply to 4.19-stable tree
-To: andi.shyti@linux.intel.com,chris.p.wilson@linux.intel.com,jonathan.cavitt@intel.com,joonas.lahtinen@linux.intel.com,rodrigo.vivi@intel.com,stable@vger.kernel.org
+	b=c8CgsBsv8FeT2HYfxPoAKCB6ff7+H7sC8/Ced3fDZ3KTvJEhYt6j5LURiXQRip69/
+	 JK7HeME5J+HHIAunc+HCYxsbU5XmfkCUUzX45WOxVuiMjQLTqbWKWmubzNMeisRkwu
+	 iGKnlqX14+Np9YwVW8eYELJ8QHadxoCufvlH09gc=
+Subject: FAILED: patch "[PATCH] drm/xe: Fix NULL ptr dereference in devcoredump" failed to apply to 6.10-stable tree
+To: matthew.brost@intel.com,jose.souza@intel.com,rodrigo.vivi@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 11:27:13 +0200
-Message-ID: <2024081213-celibacy-groove-2bd0@gregkh>
+Date: Mon, 12 Aug 2024 11:27:51 +0200
+Message-ID: <2024081251-washhouse-liftoff-22e6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1ac5167b3a90c9820daa64cc65e319b2d958d686
+git cherry-pick -x f2bf9e95989c0163650dbeaede658d0fcf929063
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081213-celibacy-groove-2bd0@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081251-washhouse-liftoff-22e6@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-1ac5167b3a90 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
-274d4b96b12f ("drm/i915: Fix a NULL vs IS_ERR() bug")
-eaee1c085863 ("drm/i915: Add a function to mmap framebuffer obj")
-cf3e3e86d779 ("drm/i915: Use ttm mmap handling for ttm bo's.")
-213d50927763 ("drm/i915/ttm: Introduce a TTM i915 gem object backend")
-2a7005c8a398 ("Merge tag 'drm-intel-gt-next-2021-06-10' of git://anongit.freedesktop.org/drm/drm-intel into drm-next")
+f2bf9e95989c ("drm/xe: Fix NULL ptr dereference in devcoredump")
+b10d0c5e9df7 ("drm/xe: Add process name to devcoredump")
 
 thanks,
 
@@ -82,43 +78,37 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1ac5167b3a90c9820daa64cc65e319b2d958d686 Mon Sep 17 00:00:00 2001
-From: Andi Shyti <andi.shyti@linux.intel.com>
-Date: Fri, 2 Aug 2024 10:38:49 +0200
-Subject: [PATCH] drm/i915/gem: Adjust vma offset for framebuffer mmap offset
+From f2bf9e95989c0163650dbeaede658d0fcf929063 Mon Sep 17 00:00:00 2001
+From: Matthew Brost <matthew.brost@intel.com>
+Date: Thu, 30 May 2024 13:33:41 -0700
+Subject: [PATCH] drm/xe: Fix NULL ptr dereference in devcoredump
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When mapping a framebuffer object, the virtual memory area (VMA)
-offset ('vm_pgoff') should be adjusted by the start of the
-'vma_node' associated with the object. This ensures that the VMA
-offset is correctly aligned with the corresponding offset within
-the GGTT aperture.
+Kernel VM do not have an Xe file. Include a check for Xe file in the VM
+before trying to get pid from VM's Xe file when taking a devcoredump.
 
-Increment vm_pgoff by the start of the vma_node with the offset=
-provided by the user.
+Fixes: b10d0c5e9df7 ("drm/xe: Add process name to devcoredump")
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240530203341.1795181-1-matthew.brost@intel.com
 
-Suggested-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v4.9+
-[Joonas: Add Cc: stable]
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-2-andi.shyti@linux.intel.com
-(cherry picked from commit 60a2066c50058086510c91f404eb582029650970)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-index a2195e28b625..ce10dd259812 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -1084,6 +1084,8 @@ int i915_gem_fb_mmap(struct drm_i915_gem_object *obj, struct vm_area_struct *vma
- 		mmo = mmap_offset_attach(obj, mmap_type, NULL);
- 		if (IS_ERR(mmo))
- 			return PTR_ERR(mmo);
-+
-+		vma->vm_pgoff += drm_vma_node_start(&mmo->vma_node);
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
+index 1973bfaece40..d7f2d19a77c1 100644
+--- a/drivers/gpu/drm/xe/xe_devcoredump.c
++++ b/drivers/gpu/drm/xe/xe_devcoredump.c
+@@ -176,7 +176,7 @@ static void devcoredump_snapshot(struct xe_devcoredump *coredump,
+ 	ss->snapshot_time = ktime_get_real();
+ 	ss->boot_time = ktime_get_boottime();
  
- 	/*
+-	if (q->vm) {
++	if (q->vm && q->vm->xef) {
+ 		task = get_pid_task(q->vm->xef->drm->pid, PIDTYPE_PID);
+ 		if (task)
+ 			process_name = task->comm;
 
 
