@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C290594F065
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:50:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5464094F062
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48BB5B26D4F
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 861F31C22369
 	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B00F18453E;
-	Mon, 12 Aug 2024 14:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145C6184532;
+	Mon, 12 Aug 2024 14:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFMzMwfI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvHUoST9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A130184538
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C63183CC2
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474164; cv=none; b=LeoAQ6BumiBE/RNBXTQBVDerv8Os5g2r1lN1zLk1t1r8Ah+3H3N02J+DeeNHoGFxpIvfqMmyBaWBNkkkW2A2X40cfmRJz12pV3TzyjJTksdsRYc5oo6iXwWxeYzmjQePEQcaa3Orqol5/Tkh0m7UtuwEPJATCsshoOtLxynvfmI=
+	t=1723474167; cv=none; b=NLFJObWYGCmsLZECuGyR8PHQ80Dr5agMwZDThUSug5LU9phMGfES7NPOlIw1JsKivicakrAKsxw/14lGvsuUchv11DJtY1pHhHeLjrQgpi8eytzogOZmIcDyPv5NGBtzGPDPtAlrdwIIumTajeRB1xkSLOiqEnU7obrrekTRwwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474164; c=relaxed/simple;
-	bh=tIioqp1BxjQZOUgNrkAc556y2J2NxynpoXBRPNXFwE4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h2FBpEuhDI+W7IMksarO9FKgp1jWe4KfUVNJbaMXtFEs7OCtfTkpmUo70VlbAVbsGP3Nhev2wVcJ0mvPO97LuWeQ5Tez29UYWH9YbOO9iL/uDHONW6V41LCGOlms0Y6/fD5nRsCGbQsk/p4MPaY2Nrg2zn3FbNyIaFiDvjCEhFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFMzMwfI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE6DC32782;
-	Mon, 12 Aug 2024 14:49:23 +0000 (UTC)
+	s=arc-20240116; t=1723474167; c=relaxed/simple;
+	bh=dz2zADLQhZZ+cRqNjAX4fuIB5qE6FMMcY5roOKIJ6yY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VbfeYURuaIcs0I5UtoVSDkmfAvgU3OXWS2DfFmE/S9hG3DW1VGg0UDKjtx3ngzS1iBBwBAbbi/+r6fNzzfxcGjJVyfJFbTt4adcmtiEOBEYsnJ8VTEpwbnG49QrlbA6QNdwBEg2HKfjZgi7D/ZfEDHbNrYlhen4vWJThpGbdCZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvHUoST9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF769C4AF09;
+	Mon, 12 Aug 2024 14:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474164;
-	bh=tIioqp1BxjQZOUgNrkAc556y2J2NxynpoXBRPNXFwE4=;
+	s=korg; t=1723474167;
+	bh=dz2zADLQhZZ+cRqNjAX4fuIB5qE6FMMcY5roOKIJ6yY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=gFMzMwfIlWrcKtazjhu507H1LIXtoPbgeVJlK/fFEGx/uvjQjfuCq0RQkxVLIABZ9
-	 xjoOpBnd5HGfO+04HFkSr/hzDx8bGg20Zgh8UbQojm+124/jqgDU4xVXFWFHxJOe2e
-	 vccCqAUkXdYE81hTd4kOPFN+gyMJ9r75JQlVKITg=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix cursor size issues" failed to apply to 5.10-stable tree
+	b=jvHUoST9IxD2XmWGWdgi7bVqm2oaVHHixOA97HXJXB4VXVxn1ZKSWKgDUva75gUap
+	 h40fszbYiYmm6NxLg3yQW/pU9NhBFdHjqxlmc80cwxhgzyqlx/t3oOBxifKoSsydMd
+	 W/lGDnDlfusTcGVibWZoNAPMyvBI3/08WBcJ0r40=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix cursor size issues" failed to apply to 4.19-stable tree
 To: nevenko.stupar@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,sridevi.arvindekar@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:48:17 +0200
-Message-ID: <2024081217-drinkable-module-42d6@gregkh>
+Date: Mon, 12 Aug 2024 16:48:18 +0200
+Message-ID: <2024081218-unmasking-argue-ef03@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,41 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 51dbe0239b1fc7c435867ce28e5eb4394b6641e1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081217-drinkable-module-42d6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081218-unmasking-argue-ef03@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 51dbe0239b1f ("drm/amd/display: Fix cursor size issues")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
 
 thanks,
