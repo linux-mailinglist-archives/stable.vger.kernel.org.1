@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-67296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006B694F4C7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8E394F30C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 328371C20F56
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0E791C2129D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FBF186E5F;
-	Mon, 12 Aug 2024 16:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE983187346;
+	Mon, 12 Aug 2024 16:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddWKFUN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPTj/ng2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FF01494B8;
-	Mon, 12 Aug 2024 16:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B89A186295;
+	Mon, 12 Aug 2024 16:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480463; cv=none; b=OsYlBiA2ViIQvSr01rsAzpDfzRV4nBJc8oNekgwJcA5oDoQp4v7CP8I87EUyfasfn1q4+GYT/KUNW8USTD0I4a/JzypT0sjtHIFULSHPYLq/bpjNU529i4DSkFTK8ZwXsjpGqJQGXE1l8MzGcLjlvNRZgKBSY+vNnaBmKOBdOKY=
+	t=1723479182; cv=none; b=d65EyMEZaf5MBi1qash67f/xhmPSFNN4eXHNtBrfKDCEigBq1ISTo9rbUjLi4/TLR6UyMm5sWB1gjRzMYrvnHDPDCC5K/ICKCvkdSFwcHEm8hk1vCihO8EOla4qBu23gVmso4MjfHphhXRtgA4E8DNtWKnLBA8hAEKTL295y8Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480463; c=relaxed/simple;
-	bh=w7WguwXXAyiLxfF6jOvEVpCPcuBMvSkb3tfgwUYmOe4=;
+	s=arc-20240116; t=1723479182; c=relaxed/simple;
+	bh=MCtJFa6GHyTyNaktMbWIDTPDjnCON0l424VwO7vJBiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECSS6lld3Tbe78d1JabW7S+NfO7T/xqKp5LRyQihl83UmNJwI71oOjM7Nnqx4IEmJOGD7NqlV8UBVP0UHvZxsiu47kPEW94pCsMzT8AtCDa/j0s3fch+s/y6uIuV3SsbWzP3TefsKy3YLABA/ncXvfzB7UC9yej+rmsjskEYUe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddWKFUN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C827EC32782;
-	Mon, 12 Aug 2024 16:34:22 +0000 (UTC)
+	 MIME-Version; b=AUuczXRoQADVc0hUy3/N+MNPlfi7xtt7xv7BBpq5gV9fdnMRvROL7eILWtnI+kGnNNiRrRxhHJHoQx+WNZcTHqaD3Cqx0QDWe5J7Z5UVwjRwxD8FzbxNipxaEAB4lbwgd5dpPXxzfmn3oXk0OGyOL29vM7spAOdbH44WFHcLk9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPTj/ng2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF394C32782;
+	Mon, 12 Aug 2024 16:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480463;
-	bh=w7WguwXXAyiLxfF6jOvEVpCPcuBMvSkb3tfgwUYmOe4=;
+	s=korg; t=1723479182;
+	bh=MCtJFa6GHyTyNaktMbWIDTPDjnCON0l424VwO7vJBiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddWKFUN0RW37evq9mfSSSdP5eUD8dwoPiCz/MaDUr1qRp9/rtgcWINzkv9q4itz9T
-	 Vk5SW37qsTquqFXwkA5XNp7x6Ahun5ZY6/79fBtbaeko9nbuojOfNV+SAyZBcJJfy8
-	 QUGdbYwq1i5BqZa4DhV2VeiBQn7IDt/mYOZdnLFE=
+	b=wPTj/ng2RAcatFliKmZifoMDk2TQda+UnBJirGGuiL6axRa4qELzFLuEEIowHvfdS
+	 JLEz7x+rmGe15jbuL4oeaPnhv+yEjcwt2RIrVPxIP/b8sMGfjxwUA5fBu0TGqocqAh
+	 pqFyuKUlv4TSNmGgtWNHJdjhZvfVSuBDUNK/boBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.10 203/263] driver core: Fix uevent_show() vs driver detach race
+	stable@kernel.org,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>
+Subject: [PATCH 6.1 123/150] sched/smt: Fix unbalance sched_smt_present dec/inc
 Date: Mon, 12 Aug 2024 18:03:24 +0200
-Message-ID: <20240812160154.320737544@linuxfoundation.org>
+Message-ID: <20240812160129.909287082@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,162 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c upstream.
+commit e22f910a26cc2a3ac9c66b8e935ef2a7dd881117 upstream.
 
-uevent_show() wants to de-reference dev->driver->name. There is no clean
-way for a device attribute to de-reference dev->driver unless that
-attribute is defined via (struct device_driver).dev_groups. Instead, the
-anti-pattern of taking the device_lock() in the attribute handler risks
-deadlocks with code paths that remove device attributes while holding
-the lock.
+I got the following warn report while doing stress test:
 
-This deadlock is typically invisible to lockdep given the device_lock()
-is marked lockdep_set_novalidate_class(), but some subsystems allocate a
-local lockdep key for @dev->mutex to reveal reports of the form:
+jump label: negative count!
+WARNING: CPU: 3 PID: 38 at kernel/jump_label.c:263 static_key_slow_try_dec+0x9d/0xb0
+Call Trace:
+ <TASK>
+ __static_key_slow_dec_cpuslocked+0x16/0x70
+ sched_cpu_deactivate+0x26e/0x2a0
+ cpuhp_invoke_callback+0x3ad/0x10d0
+ cpuhp_thread_fun+0x3f5/0x680
+ smpboot_thread_fn+0x56d/0x8d0
+ kthread+0x309/0x400
+ ret_from_fork+0x41/0x70
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
 
- ======================================================
- WARNING: possible circular locking dependency detected
- 6.10.0-rc7+ #275 Tainted: G           OE    N
- ------------------------------------------------------
- modprobe/2374 is trying to acquire lock:
- ffff8c2270070de0 (kn->active#6){++++}-{0:0}, at: __kernfs_remove+0xde/0x220
+Because when cpuset_cpu_inactive() fails in sched_cpu_deactivate(),
+the cpu offline failed, but sched_smt_present is decremented before
+calling sched_cpu_deactivate(), it leads to unbalanced dec/inc, so
+fix it by incrementing sched_smt_present in the error path.
 
- but task is already holding lock:
- ffff8c22016e88f8 (&cxl_root_key){+.+.}-{3:3}, at: device_release_driver_internal+0x39/0x210
-
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #1 (&cxl_root_key){+.+.}-{3:3}:
-        __mutex_lock+0x99/0xc30
-        uevent_show+0xac/0x130
-        dev_attr_show+0x18/0x40
-        sysfs_kf_seq_show+0xac/0xf0
-        seq_read_iter+0x110/0x450
-        vfs_read+0x25b/0x340
-        ksys_read+0x67/0xf0
-        do_syscall_64+0x75/0x190
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #0 (kn->active#6){++++}-{0:0}:
-        __lock_acquire+0x121a/0x1fa0
-        lock_acquire+0xd6/0x2e0
-        kernfs_drain+0x1e9/0x200
-        __kernfs_remove+0xde/0x220
-        kernfs_remove_by_name_ns+0x5e/0xa0
-        device_del+0x168/0x410
-        device_unregister+0x13/0x60
-        devres_release_all+0xb8/0x110
-        device_unbind_cleanup+0xe/0x70
-        device_release_driver_internal+0x1c7/0x210
-        driver_detach+0x47/0x90
-        bus_remove_driver+0x6c/0xf0
-        cxl_acpi_exit+0xc/0x11 [cxl_acpi]
-        __do_sys_delete_module.isra.0+0x181/0x260
-        do_syscall_64+0x75/0x190
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The observation though is that driver objects are typically much longer
-lived than device objects. It is reasonable to perform lockless
-de-reference of a @driver pointer even if it is racing detach from a
-device. Given the infrequency of driver unregistration, use
-synchronize_rcu() in module_remove_driver() to close any potential
-races.  It is potentially overkill to suffer synchronize_rcu() just to
-handle the rare module removal racing uevent_show() event.
-
-Thanks to Tetsuo Handa for the debug analysis of the syzbot report [1].
-
-Fixes: c0a40097f0bc ("drivers: core: synchronize really_probe() and dev_uevent()")
-Reported-by: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Closes: http://lore.kernel.org/5aa5558f-90a4-4864-b1b1-5d6784c5607d@I-love.SAKURA.ne.jp [1]
-Link: http://lore.kernel.org/669073b8ea479_5fffa294c1@dwillia2-xfh.jf.intel.com.notmuch
-Cc: stable@vger.kernel.org
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/r/172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com
+Fixes: c5511d03ec09 ("sched/smt: Make sched_smt_present track topology")
+Cc: stable@kernel.org
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240703031610.587047-3-yangyingliang@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c   |   13 ++++++++-----
- drivers/base/module.c |    4 ++++
- 2 files changed, 12 insertions(+), 5 deletions(-)
+ kernel/sched/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -25,6 +25,7 @@
- #include <linux/mutex.h>
- #include <linux/pm_runtime.h>
- #include <linux/netdevice.h>
-+#include <linux/rcupdate.h>
- #include <linux/sched/signal.h>
- #include <linux/sched/mm.h>
- #include <linux/string_helpers.h>
-@@ -2640,6 +2641,7 @@ static const char *dev_uevent_name(const
- static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
- {
- 	const struct device *dev = kobj_to_dev(kobj);
-+	struct device_driver *driver;
- 	int retval = 0;
- 
- 	/* add device node properties if present */
-@@ -2668,8 +2670,12 @@ static int dev_uevent(const struct kobje
- 	if (dev->type && dev->type->name)
- 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
- 
--	if (dev->driver)
--		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
-+	/* Synchronize with module_remove_driver() */
-+	rcu_read_lock();
-+	driver = READ_ONCE(dev->driver);
-+	if (driver)
-+		add_uevent_var(env, "DRIVER=%s", driver->name);
-+	rcu_read_unlock();
- 
- 	/* Add common DT information about the device */
- 	of_device_uevent(dev, env);
-@@ -2739,11 +2745,8 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
- 
--	/* Synchronize with really_probe() */
--	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
--	device_unlock(dev);
- 	if (retval)
- 		goto out;
- 
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -7,6 +7,7 @@
- #include <linux/errno.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-+#include <linux/rcupdate.h>
- #include "base.h"
- 
- static char *make_driver_name(struct device_driver *drv)
-@@ -97,6 +98,9 @@ void module_remove_driver(struct device_
- 	if (!drv)
- 		return;
- 
-+	/* Synchronize with dev_uevent() */
-+	synchronize_rcu();
-+
- 	sysfs_remove_link(&drv->p->kobj, "module");
- 
- 	if (drv->owner)
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9513,6 +9513,7 @@ int sched_cpu_deactivate(unsigned int cp
+ 	sched_update_numa(cpu, false);
+ 	ret = cpuset_cpu_inactive(cpu);
+ 	if (ret) {
++		sched_smt_present_inc(cpu);
+ 		balance_push_set(cpu, false);
+ 		set_cpu_active(cpu, true);
+ 		sched_update_numa(cpu, true);
 
 
 
