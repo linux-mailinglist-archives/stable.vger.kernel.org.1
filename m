@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-67351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E370294F504
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:37:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB1094F3D0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9212D2825FA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:37:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C83181F2147C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7433187328;
-	Mon, 12 Aug 2024 16:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E93186E20;
+	Mon, 12 Aug 2024 16:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xD7ryuC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGvfKCuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C82183CD4;
-	Mon, 12 Aug 2024 16:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D97183CA6;
+	Mon, 12 Aug 2024 16:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480642; cv=none; b=LLK49nayhwri5f/585EPMF0Nyw2k/i8urZj8ts5p5f/tgwMWqA8KuKUxt8+FRqcA68y/dsJXx4vfOgAAoUAW7qvWjS7pB5bCGGsP0onJwJjJbcJHfW1qep5isFBGGZYALO3pHNTSJZt/6u2OE+wDHANPzsfoFIL7ZotSod2Vc0I=
+	t=1723479747; cv=none; b=u+my2SlTCbuUHlLr3aHGpHfiE6HnIoPG7tgs289OY0li4FvFsYGjDsAzTpYzXKO/u+I9YZAZ1eQyd/ign2DEedGDKtJg+fsf9ChvswczUD4zB5e70aaZw1w/1XNW/unih3bR63JB88bsHDoABy3+BN30HFxKlkp27+QEHWuJzdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480642; c=relaxed/simple;
-	bh=htZ/LVA03gAibF8FVBQBdNdfoe0vV5/azTwX/j5sGwo=;
+	s=arc-20240116; t=1723479747; c=relaxed/simple;
+	bh=m98K4kJW6FpTfkbhjP5Pmn/9xgnz+arxYKeIUJAD2CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMGWLfew5ygofv5RejQRofweAXe41DEVKglgUk41ukqITAYMmGGQoF5nvL5aIoX9+CGev8LTR/InK3dKb7HFn0DICIMAJQgBdT8FALk51ClivgeNNXaMyW5tzwPncHfgDG3cE1F5M0ExcI05HS73E/2vHn7smkTS6ZGqszhig8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xD7ryuC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0453CC32782;
-	Mon, 12 Aug 2024 16:37:21 +0000 (UTC)
+	 MIME-Version; b=O+sOC7WYxbqT4ywn80Npfe92NuqXkUiGSX/YzvkiXxzto0Uq3z7IGLlFc7O4i6mp3sjwtDLIsgeklFrV5RCqF4lZGjSVxk0Z8GwtxPZax3/GNDAH0SNyvUNuFM+9XIFPGJX30fxYuMmSa6ErcRQrJKf9j4Qj6NIZRjGQSzhYkto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGvfKCuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7CCC32782;
+	Mon, 12 Aug 2024 16:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480642;
-	bh=htZ/LVA03gAibF8FVBQBdNdfoe0vV5/azTwX/j5sGwo=;
+	s=korg; t=1723479746;
+	bh=m98K4kJW6FpTfkbhjP5Pmn/9xgnz+arxYKeIUJAD2CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xD7ryuC9c8uzDSDjWl4HmWQtTv7ee83+j9zZjiBff80crVDY3YbCNWKcB2fUt40Kq
-	 +yiRmg6evopvhkYZbq3FioJyXsAEQ+C7tv5SNL+0BMQrDVlpERX5QALOAf7XUuaMGV
-	 hoTBz5tjKPUb3iaoGl9Qi7CBn4Onc9/xo52GWYpA=
+	b=eGvfKCuC+jPXT1gOVb+JmktUXFspRrxw2D7eFeHkPivLz/iDIpklztx0Y/92+jUzf
+	 HUL1J0zT4f9z4u3DTPGY0BjVYVyS8+WL3vlPwnthfgS1Mvj7/1IRRb7vbSmEV6+DVH
+	 qVxuSEUb+2GvilIzLmc/PtXGW9npjRaV6YMeUfOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 217/263] spmi: pmic-arb: Pass the correct of_node to irq_domain_add_tree
+	Lyude Paul <lyude@redhat.com>,
+	Harry Wentland <hwentlan@amd.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Wayne Lin <Wayne.Lin@amd.com>
+Subject: [PATCH 6.6 162/189] drm/dp_mst: Skip CSN if topology probing is not done yet
 Date: Mon, 12 Aug 2024 18:03:38 +0200
-Message-ID: <20240812160154.850402141@linuxfoundation.org>
+Message-ID: <20240812160138.378092076@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit f38ba5459ced3441852f37f20fcfb7bd39d20f62 upstream.
+commit ddf983488c3e8d30d5c2e2b315ae7d9cd87096ed upstream.
 
-Currently, irqchips for all of the subnodes (which represent a given
-bus master) point to the parent wrapper node. This is no bueno, as
-no interrupts arrive, ever (because nothing references that node).
+[Why]
+During resume, observe that we receive CSN event before we start topology
+probing. Handling CSN at this moment based on uncertain topology is
+unnecessary.
 
-Fix that by passing a reference to the respective master's of_node.
+[How]
+Add checking condition in drm_dp_mst_handle_up_req() to skip handling CSN
+if the topology is yet to be probed.
 
-Worth noting, this is a NOP for devices with only a single master
-described.
-
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240522-topic-spmi_multi_master_irqfix-v2-1-7ec92a862b9f@linaro.org
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Fixes: 02922ccbb330 ("spmi: pmic-arb: Register controller for bus instead of arbiter")
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Harry Wentland <hwentlan@amd.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
 Cc: stable@vger.kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20240725164636.3362690-3-sboyd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240626084825.878565-3-Wayne.Lin@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spmi/spmi-pmic-arb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/spmi/spmi-pmic-arb.c b/drivers/spmi/spmi-pmic-arb.c
-index f240fcc5a4e1..b6880c13163c 100644
---- a/drivers/spmi/spmi-pmic-arb.c
-+++ b/drivers/spmi/spmi-pmic-arb.c
-@@ -1737,8 +1737,7 @@ static int spmi_pmic_arb_bus_init(struct platform_device *pdev,
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -4024,6 +4024,7 @@ static int drm_dp_mst_handle_up_req(stru
+ 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
+ 		const struct drm_dp_connection_status_notify *conn_stat =
+ 			&up_req->msg.u.conn_stat;
++		bool handle_csn;
  
- 	dev_dbg(&pdev->dev, "adding irq domain for bus %d\n", bus_index);
- 
--	bus->domain = irq_domain_add_tree(dev->of_node,
--					  &pmic_arb_irq_domain_ops, bus);
-+	bus->domain = irq_domain_add_tree(node, &pmic_arb_irq_domain_ops, bus);
- 	if (!bus->domain) {
- 		dev_err(&pdev->dev, "unable to create irq_domain\n");
- 		return -ENOMEM;
--- 
-2.46.0
-
+ 		drm_dbg_kms(mgr->dev, "Got CSN: pn: %d ldps:%d ddps: %d mcs: %d ip: %d pdt: %d\n",
+ 			    conn_stat->port_number,
+@@ -4032,6 +4033,16 @@ static int drm_dp_mst_handle_up_req(stru
+ 			    conn_stat->message_capability_status,
+ 			    conn_stat->input_port,
+ 			    conn_stat->peer_device_type);
++
++		mutex_lock(&mgr->probe_lock);
++		handle_csn = mgr->mst_primary->link_address_sent;
++		mutex_unlock(&mgr->probe_lock);
++
++		if (!handle_csn) {
++			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
++			kfree(up_req);
++			goto out;
++		}
+ 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
+ 		const struct drm_dp_resource_status_notify *res_stat =
+ 			&up_req->msg.u.resource_stat;
 
 
 
