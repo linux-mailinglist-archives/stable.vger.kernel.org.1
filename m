@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-66887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC9E94F2F1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C75494F3C5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B508BB252D8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4EE11F20FC3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712A1186E36;
-	Mon, 12 Aug 2024 16:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67077187335;
+	Mon, 12 Aug 2024 16:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fka7ThaN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSiHJpNa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9E31EA8D;
-	Mon, 12 Aug 2024 16:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B14186E51;
+	Mon, 12 Aug 2024 16:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479108; cv=none; b=IDneGfEEzny9P2cI8K5EpwYIrKg0Vau3VlPI3bEsCfaS/Fr3HWTamU1QeGiHEPvSNpZ2CMVdPcuMwgBUZLD0xvYcs0qf+irMnDDo1gvMYfTejJATloQi1MyDd0bDQQ0gBycmks36Sdaj0ia/EnB6GS2J3gcyJpnkOjtByMN+2Sc=
+	t=1723479709; cv=none; b=GYoYnvfOK6m8PQU3qBwLkE/4ZgXAQyNZLTggNa8S5Q7bMeE+bePNz29YYp052870OrY8Q8D6pCBkY8jYGiUZi2g7kfxdtjbx8BTeRDGSn3OoxVqw+h0jY2KDNq6mHtBBlqwdlKzbzo1oGClJPRNxuQA4bGQQyC/nZ5EpUEnsUvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479108; c=relaxed/simple;
-	bh=bJbzYe1bB5opsLnAhYNlNDWYJ8qp4ujrggO/ow+QwhM=;
+	s=arc-20240116; t=1723479709; c=relaxed/simple;
+	bh=eE3MMuByY53VucgdwmOhkS9MI/sF+k1qTUMd7zCMqt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CS0Cdx9BXVQVUIxNJw6spezrr0nLF1LLuIN+BjNUsE1SpiiijX/6juywgCqoRoQA7YTZDuZdJkfE4cVHnlfb+t6N5almQdi3yvp+sU8L2P2sk46VanOZnRDBQPAr9DMcOPqvxTNcmsCPWWi9dLO1IG7qKJpQ5lofeHhRLTpGuuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fka7ThaN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7CEC32782;
-	Mon, 12 Aug 2024 16:11:47 +0000 (UTC)
+	 MIME-Version; b=SGJL+TT/fBgxOyreNi8Tv3zDMoO1H25lXHatM8UihIxMx3S1PDdtCEQaPDdmi3jcmJCMXHhJQw3NYOC6yr9bTRczlo6anOkj/mlqXU5m+RxhQXpoWQRDL8Czo+zQUYrBfq0SytBM8G8og77jb1AMNLgYvD+G1+RhLeQSuaUYIuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSiHJpNa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C942C32782;
+	Mon, 12 Aug 2024 16:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479108;
-	bh=bJbzYe1bB5opsLnAhYNlNDWYJ8qp4ujrggO/ow+QwhM=;
+	s=korg; t=1723479709;
+	bh=eE3MMuByY53VucgdwmOhkS9MI/sF+k1qTUMd7zCMqt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fka7ThaNu2m+ped8XY29HJhQJPlU0yq+dSkD7QNcDhKTI/YJ+QWvIMe9cI8sVZ2kA
-	 XPdB4o46mYKHKDtOacMaEGlajtpBJO2Braj5uuBRNWaLP1h73DssfbzGJJbUSf3YAC
-	 e85+1jyTmFMoggeTzOB1EXnDqbkHMMaDQJdhaYoo=
+	b=BSiHJpNabvBIsrPmUQ8I015DL+22bdxrYivk6MYt8AybYrIn4NLVnEuoH/9V3NckH
+	 kHTRTg8IumEhmP6nCN4MSQ0oYjNTgIH9BZ/ewwgsZLtfbPrrWT2UZBkHtyVN0PQhtm
+	 BhxDCq/nIoGOhHogiNfnZhmV9w9P7JkOjsoURVBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	George Zhang <George.zhang@amd.com>,
-	Ivan Lipski <ivlipski@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 136/150] Revert "drm/amd/display: Add NULL check for afb before dereferencing in amdgpu_dm_plane_handle_cursor_update"
+	Lucas Stach <l.stach@pengutronix.de>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 6.6 161/189] drm/bridge: analogix_dp: properly handle zero sized AUX transactions
 Date: Mon, 12 Aug 2024 18:03:37 +0200
-Message-ID: <20240812160130.417288426@linuxfoundation.org>
+Message-ID: <20240812160138.339818403@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Lipski <ivlipski@amd.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-commit 778e3979c5dc9cbdb5d1b92afed427de6bc483b4 upstream.
+commit e82290a2e0e8ec5e836ecad1ca025021b3855c2d upstream.
 
-[WHY]
-This patch is a dupplicate implementation of 14bcf29b, which we
-are reverting due to a regression with kms_plane_cursor IGT tests.
+Address only transactions without any data are valid and should not
+be flagged as short transactions. Simply return the message size when
+no transaction errors occured.
 
-This reverts commit 38e6f715b02b572f74677eb2f29d3b4bc6f1ddff.
-
-Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Tested-by: George Zhang <George.zhang@amd.com>
-Signed-off-by: Ivan Lipski <ivlipski@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240318203925.2837689-1-l.stach@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -1225,22 +1225,14 @@ void handle_cursor_update(struct drm_pla
- {
- 	struct amdgpu_device *adev = drm_to_adev(plane->dev);
- 	struct amdgpu_framebuffer *afb = to_amdgpu_framebuffer(plane->state->fb);
--	struct drm_crtc *crtc;
--	struct dm_crtc_state *crtc_state;
--	struct amdgpu_crtc *amdgpu_crtc;
--	u64 address;
-+	struct drm_crtc *crtc = afb ? plane->state->crtc : old_plane_state->crtc;
-+	struct dm_crtc_state *crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
-+	struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
-+	uint64_t address = afb ? afb->address : 0;
- 	struct dc_cursor_position position = {0};
- 	struct dc_cursor_attributes attributes;
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
+@@ -1027,7 +1027,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 	u32 status_reg;
+ 	u8 *buffer = msg->buffer;
+ 	unsigned int i;
+-	int num_transferred = 0;
  	int ret;
  
--	if (!afb)
--		return;
--
--	crtc = plane->state->crtc ? plane->state->crtc : old_plane_state->crtc;
--	crtc_state = crtc ? to_dm_crtc_state(crtc->state) : NULL;
--	amdgpu_crtc = to_amdgpu_crtc(crtc);
--	address = afb->address;
--
- 	if (!plane->state->fb && !old_plane_state->fb)
- 		return;
+ 	/* Buffer size of AUX CH is 16 bytes */
+@@ -1079,7 +1078,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = buffer[i];
+ 			writel(reg, dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 			       4 * i);
+-			num_transferred++;
+ 		}
+ 	}
  
+@@ -1127,7 +1125,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = readl(dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 				    4 * i);
+ 			buffer[i] = (unsigned char)reg;
+-			num_transferred++;
+ 		}
+ 	}
+ 
+@@ -1144,7 +1141,7 @@ ssize_t analogix_dp_transfer(struct anal
+ 		 (msg->request & ~DP_AUX_I2C_MOT) == DP_AUX_NATIVE_READ)
+ 		msg->reply = DP_AUX_NATIVE_REPLY_ACK;
+ 
+-	return num_transferred > 0 ? num_transferred : -EBUSY;
++	return msg->size;
+ 
+ aux_error:
+ 	/* if aux err happen, reset aux */
 
 
 
