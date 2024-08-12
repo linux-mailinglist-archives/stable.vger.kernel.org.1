@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-67024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9678B94F38E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA57894F2E6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33D89B25748
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55F0BB24D42
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48FE186E20;
-	Mon, 12 Aug 2024 16:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0561891B9;
+	Mon, 12 Aug 2024 16:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uj8c+TkW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ac3Om4RV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D03183CA6;
-	Mon, 12 Aug 2024 16:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B23E1891A3;
+	Mon, 12 Aug 2024 16:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479549; cv=none; b=BkRWdpE+f7DzWo+nUQJXBrKgRpvf2nufN4pe3/DZqJmKgnlgAy9B7CMgtxFfxFRbIRb4rU5FTAETTmnRljMtrWDn4RlpVMZ7UdgKH481qb7MgimGMjhz7IQ8y9ha2AkDULuI7fF1PhgZVg48ecMeoRQwtekuZ1G7liAf4aqgoqE=
+	t=1723479083; cv=none; b=AUf+p6Gg0gSQOxPSQQWzuQUG7/ec9jcUvW+2Lb4fd//9lPwy2bCu+44EX3wq7pr8Vc4wB5/OkyXJR/OctWrmMUNh8HaqccDZRwWCDG47ogFZgJIjg2Sh+CfP7PL5OOkFTY898nIsWvK5gBVsooEujDpJ8FVkYJgDvZlPGWCwn0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479549; c=relaxed/simple;
-	bh=gbQO4hBM3jLqxhDHpTSOG/QpQz24IXn69SIXfY/IlEc=;
+	s=arc-20240116; t=1723479083; c=relaxed/simple;
+	bh=tF9MJoWQD6oV96SPMnBMOLetErAVoRBOZnVzP5DGCBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQ4313XdGNTjSUjjhxn76viuEpxYZ8jk7DVTdxSbsTXcT+T40InAi3BLXOKavH/T3elAIcLfFOW5zWrq1sSkzzFFwGPa3i0bFYlZ8JjZEyaIlpXmm4HVv0i5KgmCOsU5pLXtuC/qbjb58Ool3wurjIYkZj8dJiTtJXHMLVpVf5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uj8c+TkW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B28C32782;
-	Mon, 12 Aug 2024 16:19:08 +0000 (UTC)
+	 MIME-Version; b=dirxUpSvDzBv3oN+c94OYMFOIvhhrV7ZzRzE7B1xB548hwYqaPT4hs6eddoKK+u1uMjRBi8eiVLiWqCe1XmMZeIidSP2SF91y6WK8ick3Op4K9N5kfwIzPkN3AC507Epxp0vlIXc0z3GIHQToBaVz4vhcHSfvDIT7Wwp8Wv8t68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ac3Om4RV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAE6C4AF0D;
+	Mon, 12 Aug 2024 16:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479549;
-	bh=gbQO4hBM3jLqxhDHpTSOG/QpQz24IXn69SIXfY/IlEc=;
+	s=korg; t=1723479082;
+	bh=tF9MJoWQD6oV96SPMnBMOLetErAVoRBOZnVzP5DGCBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uj8c+TkWVCf6tLCi0Bg+n5Uwl46LybGeMAop2u4VppOXvbI/CFjtaQ2t45R/r59F9
-	 6YjZwS62AzV3ca/Jv155wSX8eIAWZqU1jz+cnKbyIEqwmK26y1oQs/8POL2clQ9HqS
-	 dj6FNPFyBviiPZyHw970Gv/REgt5a68zgIK7UY8o=
+	b=Ac3Om4RV0BtQa1vNqYik6+X1sH8qB6Y/FlLVwtFcZF6fwgbM/AUiVEUjENEEFDe1G
+	 njRlXGpcvQreUbHCm4gWmEU2zYXpGiTCteSyO2qdk6NpYWePjIPhn09MNLcQFOOL12
+	 CsZEXir+zxxkwjo8b4hjMnhMwQ0c0n2yikNjDkb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Prashanth K <quic_prashk@quicinc.com>
-Subject: [PATCH 6.6 121/189] usb: gadget: u_serial: Set start_delayed during suspend
+Subject: [PATCH 6.1 096/150] usb: gadget: u_serial: Set start_delayed during suspend
 Date: Mon, 12 Aug 2024 18:02:57 +0200
-Message-ID: <20240812160136.803829274@linuxfoundation.org>
+Message-ID: <20240812160128.867429946@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,7 +87,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/gadget/function/u_serial.c
 +++ b/drivers/usb/gadget/function/u_serial.c
-@@ -1441,6 +1441,7 @@ void gserial_suspend(struct gserial *gse
+@@ -1436,6 +1436,7 @@ void gserial_suspend(struct gserial *gse
  	spin_lock(&port->port_lock);
  	spin_unlock(&serial_port_lock);
  	port->suspended = true;
