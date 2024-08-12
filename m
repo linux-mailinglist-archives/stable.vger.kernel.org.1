@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-67098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D6694F3E2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A75594F2FB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 207DC1C21948
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47A3D285470
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870B2186E34;
-	Mon, 12 Aug 2024 16:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174A1187845;
+	Mon, 12 Aug 2024 16:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzKmLUY4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsX/pbgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D4C134AC;
-	Mon, 12 Aug 2024 16:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3784186E52;
+	Mon, 12 Aug 2024 16:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479801; cv=none; b=Z7fXDkKsuiY5CEktnE6Gxh6XcEedEMDxaHj3fTM8jenOoSeiK3NKku03vc/YFI/thDGqhpoTX5ks7MV1XKB2NLXRaXPQY2Yk4Qv2seAOCIemUf19ge90V6PnGL1sm2Xc24JUIXKXTvdTMwvM2E61xfJEL6PCj1qJYtjH9JRdCtQ=
+	t=1723479136; cv=none; b=IrrRnCs1VKNl+zMbBc2hibyQkUZZGZ496o7u1alJYncIMZohqKc926U65VKQnADNq5gSqjMfQC8YqTzGlPpbxRivdJQl+VR8Hdm9EFDAUhC3jGSbOV6IZuwxNlIKQBMwLe1492gpwczKBekCmaKcpUBVWkLADHg6hVovz/mvhmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479801; c=relaxed/simple;
-	bh=O/GuWgy0pLbgO/vd4G01rBABaCNxV5vhCUdaqU4RDfk=;
+	s=arc-20240116; t=1723479136; c=relaxed/simple;
+	bh=hgUX3355HK0LOxhWWtkjTQAIAIkZdMnweY6uuVSrao8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4958SEbhyj0hGjrhTQ6H8AMbjI/6APGnd8AetltR09vnkHFeT0gwTXxNTeuO9JNh3frNF4SgbjKrRmR9E8J502TmDYZpuB29+/MJrZwDtDY+vIT0mg20HDscZl3oQj7K3ZSK04Egx0XIB3frDSfqO0zDhMlrlSkyL0t7RS6RFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzKmLUY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F2AC32782;
-	Mon, 12 Aug 2024 16:23:20 +0000 (UTC)
+	 MIME-Version; b=usfW1YGreoFw8u1K80Nm9AgccnIWtIoRfmfkK2coJuMzhVYou6ZJXCC5yfMHL7KjozAWWYShCpjjmca2D3BjhFhVjtgTGscBfQlWMPHU8ldWfX2X8pwocc7VTgbpsUni3GZaHp8qdweoUR0bv1SHG0r9nLv2MSywD8Wtd0naOJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsX/pbgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0472DC32782;
+	Mon, 12 Aug 2024 16:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479801;
-	bh=O/GuWgy0pLbgO/vd4G01rBABaCNxV5vhCUdaqU4RDfk=;
+	s=korg; t=1723479136;
+	bh=hgUX3355HK0LOxhWWtkjTQAIAIkZdMnweY6uuVSrao8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzKmLUY4ZB3nU042xv3tUteZ7wbQrcHGYtAlSg1NsUDkJI8+aiRkfprY/BpvZTZ46
-	 WSxhhSMJUyKTzw4stWgaR0VtAH1yePC4iQxo6oyN90+I/4V/Hn5sXYryue+k+Y58kn
-	 +u1uRSn1GeormOT/7hQYsli8YncJ+pDouV5HKAvQ=
+	b=bsX/pbgFZ5MySyn+sMzNAd2IUgyQG6yXw54DLozVNNiq9D3dRfuD2OLj1WoYhOZRP
+	 Ywkq4gKvfhBQoNSYTcnSzfjih1GnmJY5Jkd8mzrqJcVkuws22N/YYQIyv4aREyxW9H
+	 eFoYzcDM1KZ1WGHf9wVQzZ4Nhq1aJDNdfoLy0WGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 168/189] mptcp: pm: fix backup support in signal endpoints
-Date: Mon, 12 Aug 2024 18:03:44 +0200
-Message-ID: <20240812160138.614096318@linuxfoundation.org>
+	Sam Sun <samsun1006219@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Kevin Berry <kpberry@google.com>
+Subject: [PATCH 6.1 144/150] xfs: fix log recovery buffer allocation for the legacy h_size fixup
+Date: Mon, 12 Aug 2024 18:03:45 +0200
+Message-ID: <20240812160130.727927459@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 6834097fc38c5416701c793da94558cea49c0a1f upstream.
+commit 45cf976008ddef4a9c9a30310c9b4fb2a9a6602a upstream.
 
-There was a support for signal endpoints, but only when the endpoint's
-flag was changed during a connection. If an endpoint with the signal and
-backup was already present, the MP_JOIN reply was not containing the
-backup flag as expected.
+Commit a70f9fe52daa ("xfs: detect and handle invalid iclog size set by
+mkfs") added a fixup for incorrect h_size values used for the initial
+umount record in old xfsprogs versions.  Later commit 0c771b99d6c9
+("xfs: clean up calculation of LR header blocks") cleaned up the log
+reover buffer calculation, but stoped using the fixed up h_size value
+to size the log recovery buffer, which can lead to an out of bounds
+access when the incorrect h_size does not come from the old mkfs
+tool, but a fuzzer.
 
-That's confusing to have this inconsistent behaviour. On the other hand,
-the infrastructure to set the backup flag in the SYN + ACK + MP_JOIN was
-already there, it was just never set before. Now when requesting the
-local ID from the path-manager, the backup status is also requested.
+Fix this by open coding xlog_logrec_hblks and taking the fixed h_size
+into account for this calculation.
 
-Note that when the userspace PM is used, the backup flag can be set if
-the local address was already used before with a backup flag, e.g. if
-the address was announced with the 'backup' flag, or a subflow was
-created with the 'backup' flag.
-
-Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/507
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in pm_userspace.c because the context has changed in commit
-  1e07938e29c5 ("net: mptcp: rename netlink handlers to
-  mptcp_pm_nl_<blah>_{doit,dumpit}") which is not in this version. This
-  commit is unrelated to this modification.
-  Conflicts in protocol.h because the context has changed in commit
-  9ae7846c4b6b ("mptcp: dump addrs in userspace pm list") which is not
-  in this version. This commit is unrelated to this modification. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 0c771b99d6c9 ("xfs: clean up calculation of LR header blocks")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Kevin Berry <kpberry@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c           |   12 ++++++++++++
- net/mptcp/pm_netlink.c   |   18 ++++++++++++++++++
- net/mptcp/pm_userspace.c |   18 ++++++++++++++++++
- net/mptcp/protocol.h     |    3 +++
- net/mptcp/subflow.c      |    3 +++
- 5 files changed, 54 insertions(+)
+ fs/xfs/xfs_log_recover.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -427,6 +427,18 @@ int mptcp_pm_get_local_id(struct mptcp_s
- 	return mptcp_pm_nl_get_local_id(msk, &skc_local);
- }
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2960,7 +2960,7 @@ xlog_do_recovery_pass(
+ 	int			error = 0, h_size, h_len;
+ 	int			error2 = 0;
+ 	int			bblks, split_bblks;
+-	int			hblks, split_hblks, wrapped_hblks;
++	int			hblks = 1, split_hblks, wrapped_hblks;
+ 	int			i;
+ 	struct hlist_head	rhash[XLOG_RHASH_SIZE];
+ 	LIST_HEAD		(buffer_list);
+@@ -3016,14 +3016,22 @@ xlog_do_recovery_pass(
+ 		if (error)
+ 			goto bread_err1;
  
-+bool mptcp_pm_is_backup(struct mptcp_sock *msk, struct sock_common *skc)
-+{
-+	struct mptcp_addr_info skc_local;
-+
-+	mptcp_local_address((struct sock_common *)skc, &skc_local);
-+
-+	if (mptcp_pm_is_userspace(msk))
-+		return mptcp_userspace_pm_is_backup(msk, &skc_local);
-+
-+	return mptcp_pm_nl_is_backup(msk, &skc_local);
-+}
-+
- int mptcp_pm_get_flags_and_ifindex_by_id(struct mptcp_sock *msk, unsigned int id,
- 					 u8 *flags, int *ifindex)
- {
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1109,6 +1109,24 @@ int mptcp_pm_nl_get_local_id(struct mptc
- 	return ret;
- }
- 
-+bool mptcp_pm_nl_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc)
-+{
-+	struct pm_nl_pernet *pernet = pm_nl_get_pernet_from_msk(msk);
-+	struct mptcp_pm_addr_entry *entry;
-+	bool backup = false;
-+
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list) {
-+		if (mptcp_addresses_equal(&entry->addr, skc, entry->addr.port)) {
-+			backup = !!(entry->flags & MPTCP_PM_ADDR_FLAG_BACKUP);
-+			break;
-+		}
-+	}
-+	rcu_read_unlock();
-+
-+	return backup;
-+}
-+
- #define MPTCP_PM_CMD_GRP_OFFSET       0
- #define MPTCP_PM_EV_GRP_OFFSET        1
- 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -157,6 +157,24 @@ int mptcp_userspace_pm_get_local_id(stru
- 	return mptcp_userspace_pm_append_new_local_addr(msk, &new_entry, true);
- }
- 
-+bool mptcp_userspace_pm_is_backup(struct mptcp_sock *msk,
-+				  struct mptcp_addr_info *skc)
-+{
-+	struct mptcp_pm_addr_entry *entry;
-+	bool backup = false;
-+
-+	spin_lock_bh(&msk->pm.lock);
-+	list_for_each_entry(entry, &msk->pm.userspace_pm_local_addr_list, list) {
-+		if (mptcp_addresses_equal(&entry->addr, skc, false)) {
-+			backup = !!(entry->flags & MPTCP_PM_ADDR_FLAG_BACKUP);
-+			break;
-+		}
-+	}
-+	spin_unlock_bh(&msk->pm.lock);
-+
-+	return backup;
-+}
-+
- int mptcp_nl_cmd_announce(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1032,6 +1032,9 @@ bool mptcp_pm_rm_addr_signal(struct mptc
- int mptcp_pm_get_local_id(struct mptcp_sock *msk, struct sock_common *skc);
- int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
- int mptcp_userspace_pm_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
-+bool mptcp_pm_is_backup(struct mptcp_sock *msk, struct sock_common *skc);
-+bool mptcp_pm_nl_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
-+bool mptcp_userspace_pm_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
- 
- static inline u8 subflow_get_local_id(const struct mptcp_subflow_context *subflow)
- {
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -100,6 +100,7 @@ static struct mptcp_sock *subflow_token_
- 		return NULL;
+-		hblks = xlog_logrec_hblks(log, rhead);
+-		if (hblks != 1) {
+-			kmem_free(hbp);
+-			hbp = xlog_alloc_buffer(log, hblks);
++		/*
++		 * This open codes xlog_logrec_hblks so that we can reuse the
++		 * fixed up h_size value calculated above.  Without that we'd
++		 * still allocate the buffer based on the incorrect on-disk
++		 * size.
++		 */
++		if (h_size > XLOG_HEADER_CYCLE_SIZE &&
++		    (rhead->h_version & cpu_to_be32(XLOG_VERSION_2))) {
++			hblks = DIV_ROUND_UP(h_size, XLOG_HEADER_CYCLE_SIZE);
++			if (hblks > 1) {
++				kmem_free(hbp);
++				hbp = xlog_alloc_buffer(log, hblks);
++			}
+ 		}
+ 	} else {
+ 		ASSERT(log->l_sectBBsize == 1);
+-		hblks = 1;
+ 		hbp = xlog_alloc_buffer(log, 1);
+ 		h_size = XLOG_BIG_RECORD_BSIZE;
  	}
- 	subflow_req->local_id = local_id;
-+	subflow_req->request_bkup = mptcp_pm_is_backup(msk, (struct sock_common *)req);
- 
- 	return msk;
- }
-@@ -601,6 +602,8 @@ static int subflow_chk_local_id(struct s
- 		return err;
- 
- 	subflow_set_local_id(subflow, err);
-+	subflow->request_bkup = mptcp_pm_is_backup(msk, (struct sock_common *)sk);
-+
- 	return 0;
- }
- 
 
 
 
