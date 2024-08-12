@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-66943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 520A294F331
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DF194F256
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B399286658
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B7E41F21879
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E434186E40;
-	Mon, 12 Aug 2024 16:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E3F183CC9;
+	Mon, 12 Aug 2024 16:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HA7ef3Rm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKXEoQ3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFFF186295;
-	Mon, 12 Aug 2024 16:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1008C1EA8D;
+	Mon, 12 Aug 2024 16:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479290; cv=none; b=H95TVQ1bPMAmmz6Gzu8EVLBik7F0n8c7Kb6sMyxqbTwZ/L/GaSbLOqGnY+HCqFmrzVcxOZw6ECypPLn2rjSf39M0dRBCJx5OLWDdxqyvjEuM47tuZq/OkFqWKchu2pGOmzBr6GjTIauIT/W6UFvo1CHbctxserq4A4OeTSa8MAY=
+	t=1723478716; cv=none; b=CCM/tox0hT6eslm5XTTugYc/+7+xcg6EZW22CbWRCw6rB7JvBr0X0yS74CZvlhBCuIpLH4sZGvwuXV0LpQu1vzAGDV83BXtYB6HR/sVs1FaotJ3GOffAiKD+nSaM+0xYAz/EBDZnzHGf7vs9Xotl/WvMC+7H9ZoPhIg6BhplyxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479290; c=relaxed/simple;
-	bh=SQmQgKBJhEMIXjgY84+QKGhbvUnWIdVxrKS5YoSp1U4=;
+	s=arc-20240116; t=1723478716; c=relaxed/simple;
+	bh=LoIhXv3y+3Pi0dz+1owLDzeMAh3/Pew8Gs7q3eiYxxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ns46qJzBNvR63frqoY1hFP6YJiNm37QzlUrb2QeubgdTDnpPO8lBJCp8ZvaHNZvilzW5mP52v8ZTtLNoqLcBFv4moMqLjKmAE9PPmlWpIwLYS2Z+XPARfa9LDy/nMOPPeqmzvD7GXwBNTSKhymqq/tdrGqhUxeA8eEB590FiKCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HA7ef3Rm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613DBC4AF09;
-	Mon, 12 Aug 2024 16:14:49 +0000 (UTC)
+	 MIME-Version; b=exKuwjbWwjbI1xYTiuBSWr6NFaY9ijRAQTzVS2HsON5ZuHnioqrkFfkNhPKkcJSD49erRuiqJN4U5ArVlZDGJm5UNvjbzQqJfLTbyaKyezuuuhOTRUP8Q/LEsO7em9t/pLkNrSFAhMDUJq6oPyDtRBZ5himi3mLzcaKVM3op+0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKXEoQ3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA479C32782;
+	Mon, 12 Aug 2024 16:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479289;
-	bh=SQmQgKBJhEMIXjgY84+QKGhbvUnWIdVxrKS5YoSp1U4=;
+	s=korg; t=1723478715;
+	bh=LoIhXv3y+3Pi0dz+1owLDzeMAh3/Pew8Gs7q3eiYxxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HA7ef3RmPmnS2vw7JrpsQGCpOZffL8/Vwro3/LrXdVrSNXybjSSsL17woaDOychvP
-	 v4wBmJHCapOy9xF9m99XmOnU2n3letqeH8h4Mj2FY2oDbOBIxooEtRW1Z2xBJwfF+x
-	 gpeVjXi3njC7Bulg289Upq/wWotoU1/X8GOsgbHY=
+	b=xKXEoQ3NvTlLkIPLGLvHsQaCCzjD3kCTPDzAmBcauavCo/0jNhV4qKIY5a0xflBlD
+	 7M2EvMP0paoJnT3ZwhyNcvj/NRYCepl+HKFUPVtapC0tAK6FbuQ7/BoaHXfUbiJtfH
+	 j1iumbPjjdSN/DcvH2AnjzHSd28bhFqubot/2Qic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.com>,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Jan Kara <jack@suse.cz>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	kasan-dev@googlegroups.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/189] udf: prevent integer overflow in udf_bitmap_free_blocks()
+Subject: [PATCH 6.1 016/150] rcutorture: Fix rcu_torture_fwd_cb_cr() data race
 Date: Mon, 12 Aug 2024 18:01:37 +0200
-Message-ID: <20240812160133.727306257@linuxfoundation.org>
+Message-ID: <20240812160125.786769750@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 56e69e59751d20993f243fb7dd6991c4e522424c ]
+[ Upstream commit 6040072f4774a575fa67b912efe7722874be337b ]
 
-An overflow may occur if the function is called with the last
-block and an offset greater than zero. It is necessary to add
-a check to avoid this.
+On powerpc systems, spinlock acquisition does not order prior stores
+against later loads.  This means that this statement:
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+	rfcp->rfc_next = NULL;
 
-[JK: Make test cover also unalloc table freeing]
+Can be reordered to follow this statement:
 
-Link: https://patch.msgid.link/20240620072413.7448-1-r.smirnov@omp.ru
-Suggested-by: Jan Kara <jack@suse.com>
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Signed-off-by: Jan Kara <jack@suse.cz>
+	WRITE_ONCE(*rfcpp, rfcp);
+
+Which is then a data race with rcu_torture_fwd_prog_cr(), specifically,
+this statement:
+
+	rfcpn = READ_ONCE(rfcp->rfc_next)
+
+KCSAN located this data race, which represents a real failure on powerpc.
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Marco Elver <elver@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: <kasan-dev@googlegroups.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/balloc.c | 36 +++++++++++++-----------------------
- 1 file changed, 13 insertions(+), 23 deletions(-)
+ kernel/rcu/rcutorture.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/udf/balloc.c b/fs/udf/balloc.c
-index 558ad046972ad..bb471ec364046 100644
---- a/fs/udf/balloc.c
-+++ b/fs/udf/balloc.c
-@@ -18,6 +18,7 @@
- #include "udfdecl.h"
- 
- #include <linux/bitops.h>
-+#include <linux/overflow.h>
- 
- #include "udf_i.h"
- #include "udf_sb.h"
-@@ -140,7 +141,6 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
- {
- 	struct udf_sb_info *sbi = UDF_SB(sb);
- 	struct buffer_head *bh = NULL;
--	struct udf_part_map *partmap;
- 	unsigned long block;
- 	unsigned long block_group;
- 	unsigned long bit;
-@@ -149,19 +149,9 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
- 	unsigned long overflow;
- 
- 	mutex_lock(&sbi->s_alloc_mutex);
--	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
--	if (bloc->logicalBlockNum + count < count ||
--	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
--		udf_debug("%u < %d || %u + %u > %u\n",
--			  bloc->logicalBlockNum, 0,
--			  bloc->logicalBlockNum, count,
--			  partmap->s_partition_len);
--		goto error_return;
--	}
--
-+	/* We make sure this cannot overflow when mounting the filesystem */
- 	block = bloc->logicalBlockNum + offset +
- 		(sizeof(struct spaceBitmapDesc) << 3);
--
- 	do {
- 		overflow = 0;
- 		block_group = block >> (sb->s_blocksize_bits + 3);
-@@ -391,7 +381,6 @@ static void udf_table_free_blocks(struct super_block *sb,
- 				  uint32_t count)
- {
- 	struct udf_sb_info *sbi = UDF_SB(sb);
--	struct udf_part_map *partmap;
- 	uint32_t start, end;
- 	uint32_t elen;
- 	struct kernel_lb_addr eloc;
-@@ -400,16 +389,6 @@ static void udf_table_free_blocks(struct super_block *sb,
- 	struct udf_inode_info *iinfo;
- 
- 	mutex_lock(&sbi->s_alloc_mutex);
--	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
--	if (bloc->logicalBlockNum + count < count ||
--	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
--		udf_debug("%u < %d || %u + %u > %u\n",
--			  bloc->logicalBlockNum, 0,
--			  bloc->logicalBlockNum, count,
--			  partmap->s_partition_len);
--		goto error_return;
--	}
--
- 	iinfo = UDF_I(table);
- 	udf_add_free_space(sb, sbi->s_partition, count);
- 
-@@ -684,6 +663,17 @@ void udf_free_blocks(struct super_block *sb, struct inode *inode,
- {
- 	uint16_t partition = bloc->partitionReferenceNum;
- 	struct udf_part_map *map = &UDF_SB(sb)->s_partmaps[partition];
-+	uint32_t blk;
-+
-+	if (check_add_overflow(bloc->logicalBlockNum, offset, &blk) ||
-+	    check_add_overflow(blk, count, &blk) ||
-+	    bloc->logicalBlockNum + count > map->s_partition_len) {
-+		udf_debug("Invalid request to free blocks: (%d, %u), off %u, "
-+			  "len %u, partition len %u\n",
-+			  partition, bloc->logicalBlockNum, offset, count,
-+			  map->s_partition_len);
-+		return;
-+	}
- 
- 	if (map->s_partition_flags & UDF_PART_FLAG_UNALLOC_BITMAP) {
- 		udf_bitmap_free_blocks(sb, map->s_uspace.s_bitmap,
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 8c45df910763a..c14517912cfaa 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -2547,7 +2547,7 @@ static void rcu_torture_fwd_cb_cr(struct rcu_head *rhp)
+ 	spin_lock_irqsave(&rfp->rcu_fwd_lock, flags);
+ 	rfcpp = rfp->rcu_fwd_cb_tail;
+ 	rfp->rcu_fwd_cb_tail = &rfcp->rfc_next;
+-	WRITE_ONCE(*rfcpp, rfcp);
++	smp_store_release(rfcpp, rfcp);
+ 	WRITE_ONCE(rfp->n_launders_cb, rfp->n_launders_cb + 1);
+ 	i = ((jiffies - rfp->rcu_fwd_startat) / (HZ / FWD_CBS_HIST_DIV));
+ 	if (i >= ARRAY_SIZE(rfp->n_launders_hist))
 -- 
 2.43.0
 
