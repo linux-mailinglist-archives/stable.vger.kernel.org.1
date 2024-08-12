@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-67275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B725A94F4AE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:33:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5672B94F2C6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 793682817A9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:33:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF9AEB23FA6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A47618754E;
-	Mon, 12 Aug 2024 16:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E40A187328;
+	Mon, 12 Aug 2024 16:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI0YK7lt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntBPStma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1372C1A5;
-	Mon, 12 Aug 2024 16:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA3D183CA6;
+	Mon, 12 Aug 2024 16:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480395; cv=none; b=MqyoaOJLQ5ttMDimEZ4Ekj0gtJliO40MRbDbfxkMzuAKQ74Ci/txuYFyCIMyzvfpLbOxiZ8YAeN8Fgkw184/IEqa9rwXy1lGPXlOMWJFlH5NkDYS862FRoQ3Wn70Zy20xL/hOqio8rmKLe61CxSp9AiUnCXR2jNhkV2PfXw0j80=
+	t=1723478996; cv=none; b=NG6vwcPv3pimT7QXUgd+1rpqct9kMiTX6H+fw0b1sLWBGTR942f+OjvETMRr0EnrwqIToMvv3H3t4oLZGObaYwaBa/v6zIdJ4yOka/Zf9L8e2LcdyELfkzPJftzFhVDnYX5ZFWFHVpO3MxrbfZMmu3MlNCe3X4wSnUT7JXpcWgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480395; c=relaxed/simple;
-	bh=f25LoB5zDNaHMAeOJPwWrErTrnODdy6dKRjfmtzPGI8=;
+	s=arc-20240116; t=1723478996; c=relaxed/simple;
+	bh=3Fqc7hRy4IjGtn4KWZmnNi+ec0BxMcjxpXfjT/Lxqh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1Yd1+/EbYIHOta1d3jVYkJ8ep0gCl9ZIqW0wIJkkQWtwUEcZZxL7M3+jbl+Mq5eLgpsm5oN3ZRaKDgaf81zrZAjVyk2rS4+qWBhuC8L7VA6oRr2jMkuvaJh0DITbNLcV304Y3ndafZzvKvAkExAdiQmQHuQMqpgprlPk23T/HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI0YK7lt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A715C32782;
-	Mon, 12 Aug 2024 16:33:13 +0000 (UTC)
+	 MIME-Version; b=RsIaW9VBr4JK+04DqlqgUZkxc3f96XeGyjpOLnevvYzynHYgLGmjh0GSbEPBcjrvDKgXDy7O/1GVoHWAuKoXNl2ZAFSDWpL1tyu/8oRatuu9dqdwWYu8wm8hsnxQv2qBCAXIE+Vvb0BMaa+GP51M01I3zDg7En0MQiZx6p0gnOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntBPStma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953A7C32782;
+	Mon, 12 Aug 2024 16:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480394;
-	bh=f25LoB5zDNaHMAeOJPwWrErTrnODdy6dKRjfmtzPGI8=;
+	s=korg; t=1723478996;
+	bh=3Fqc7hRy4IjGtn4KWZmnNi+ec0BxMcjxpXfjT/Lxqh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vI0YK7lt6ZsoduWCpP+596qmdcGBWQu3v9pRJN7CwDILWetC6vqlmv2mzVx2O5VvL
-	 Z8JECAwsmj0olHA9o6fdve/Ce/8rywM/JVBVX1wiXgOlZZOr27bRuBhRZ2CEjrUQ0g
-	 MWwIEsxY+gWBeB2R2KUQeYZm1HPfwkryUZ+gGgsQ=
+	b=ntBPStmaEIs/zRjTMmO+NAAPtLgVwC3Pgo3DK1tb6nf4830f5NVSZyLLtclwCIm1x
+	 ycc+S8CvB50KkmsLmlqU9oo1GiZehqppX3THF/uo5Gv/dpDTSv24ZzU1QWP2ZPULXi
+	 UpZlfemj6wJir5isqwvyfkOW2og44WZZ2EmF8cy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 181/263] io_uring/net: dont pick multiple buffers for non-bundle send
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Michal Kubiak <michal.kubiak@intel.com>
+Subject: [PATCH 6.1 101/150] vhost-vdpa: switch to use vmf_insert_pfn() in the fault handler
 Date: Mon, 12 Aug 2024 18:03:02 +0200
-Message-ID: <20240812160153.476746305@linuxfoundation.org>
+Message-ID: <20240812160129.058915362@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Jason Wang <jasowang@redhat.com>
 
-commit 8fe8ac24adcd76b12edbfdefa078567bfff117d4 upstream.
+commit 0823dc64586ba5ea13a7d200a5d33e4c5fa45950 upstream.
 
-If a send is issued marked with IOSQE_BUFFER_SELECT for selecting a
-buffer, unless it's a bundle, it should not select multiple buffers.
+remap_pfn_page() should not be called in the fault handler as it may
+change the vma->flags which may trigger lockdep warning since the vma
+write lock is not held. Actually there's no need to modify the
+vma->flags as it has been set in the mmap(). So this patch switches to
+use vmf_insert_pfn() instead.
 
+Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
+Fixes: ddd89d0a059d ("vhost_vdpa: support doorbell mapping via mmap")
 Cc: stable@vger.kernel.org
-Fixes: a05d1f625c7a ("io_uring/net: support bundles for send")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240701033159.18133-1-jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/vhost/vdpa.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -591,17 +591,18 @@ retry_bundle:
- 			.iovs = &kmsg->fast_iov,
- 			.max_len = INT_MAX,
- 			.nr_iovs = 1,
--			.mode = KBUF_MODE_EXPAND,
- 		};
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -1294,13 +1294,7 @@ static vm_fault_t vhost_vdpa_fault(struc
  
- 		if (kmsg->free_iov) {
- 			arg.nr_iovs = kmsg->free_iov_nr;
- 			arg.iovs = kmsg->free_iov;
--			arg.mode |= KBUF_MODE_FREE;
-+			arg.mode = KBUF_MODE_FREE;
- 		}
+ 	notify = ops->get_vq_notification(vdpa, index);
  
- 		if (!(sr->flags & IORING_RECVSEND_BUNDLE))
- 			arg.nr_iovs = 1;
-+		else
-+			arg.mode |= KBUF_MODE_EXPAND;
+-	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+-	if (remap_pfn_range(vma, vmf->address & PAGE_MASK,
+-			    PFN_DOWN(notify.addr), PAGE_SIZE,
+-			    vma->vm_page_prot))
+-		return VM_FAULT_SIGBUS;
+-
+-	return VM_FAULT_NOPAGE;
++	return vmf_insert_pfn(vma, vmf->address & PAGE_MASK, PFN_DOWN(notify.addr));
+ }
  
- 		ret = io_buffers_select(req, &arg, issue_flags);
- 		if (unlikely(ret < 0))
+ static const struct vm_operations_struct vhost_vdpa_vm_ops = {
 
 
 
