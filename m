@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-67162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5006C94F429
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4398894F312
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB021B20DF9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C7051F21067
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0692A186E34;
-	Mon, 12 Aug 2024 16:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7DF186E51;
+	Mon, 12 Aug 2024 16:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7qpIFt9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+klmxar"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A18134AC;
-	Mon, 12 Aug 2024 16:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A9F130E27;
+	Mon, 12 Aug 2024 16:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480012; cv=none; b=Y5g/5+UXQZKgHz6yMFeXEqMjZmjfA6RB7YhvWQ9xqgXAdauaq01Uxzctn0FM6QOgSUdvah/QbTBf57AqGKNh3xrrQxSMilZVcbng8iawjTBCJnvhtowKrmXFbg0Cwfqyjtwz89yg6IASP5JK2QwTFL9j+G3WdcohqI6sBKXR4r8=
+	t=1723479202; cv=none; b=YH1rOm8PsRCcmqT0H3Q4CuNNpvdRvQtEMm+jgP5j8/aJB32KBrfYP5m2P9SG0M5eE2ndWlWf8jrGSWCrpiO0OF5UbPwdUFuNZVlZV5Uouom4xWDPLM/uRyskRY7JzdRopdgChHteiStXg4/yVlXSRgLPKy2iJ/7GL/4A1tbOUhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480012; c=relaxed/simple;
-	bh=LjyPXRB7jQRwZqXjO+MH1VvyWh651vdbat1ZiIjvfh4=;
+	s=arc-20240116; t=1723479202; c=relaxed/simple;
+	bh=6MIRbxphhahE2iFpBbeOnMLJ8lRx8PVju6WswegBtB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCugNmkD+t4/RpXcPQIsUZOZUGRC83Cq0G8qxWXWQLBbOz/y0GxeO5tV14ojkQAz56RgAYnqycUVFXbVYL6F5tw8mNG8qx5bqtdGri9jHeEGaH2tKgeEvE+GyC0hfbanQF7wL8NILNd0srniaFTnEVXyissEOVGm3R99HlSJV4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7qpIFt9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D09FC32782;
-	Mon, 12 Aug 2024 16:26:51 +0000 (UTC)
+	 MIME-Version; b=HuIvAjilgnSnUt4mqxqrB4/EHphT36Hy+E+fewKsFp8DEFLCvpbes5xlP5HZcsJwXJLl1JU5V4YBdrmMnmHYbEp/bPmuFGfoZ7mdZOPzSoXqST+y3LmnXaS53+y9EfC/TLMktUztJAPKoQlo6VYay3Sr58+T7vgetkKA46ekt1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+klmxar; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB87C32782;
+	Mon, 12 Aug 2024 16:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480012;
-	bh=LjyPXRB7jQRwZqXjO+MH1VvyWh651vdbat1ZiIjvfh4=;
+	s=korg; t=1723479202;
+	bh=6MIRbxphhahE2iFpBbeOnMLJ8lRx8PVju6WswegBtB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7qpIFt96zlftz99nz2CYY94TrUn8rgWv/zAbSRY3oBt7+dTacVzXt62WaGDzBmqs
-	 EMw/2tIsKmr0LI5FQZAOaFt/NMMp2affOoeN89crUp/XgIYU/j8PJ6G4bxhJhka9VL
-	 XMchAn8D5bFdmntX0e5/h2AQ+rZtPbA8wwFtV3gI=
+	b=x+klmxarAf8wvdtQWwxzRbEEDdxQCJvq26myo8gmVehelZb5SclcgnJVKmmFxvfar
+	 o/4f3w5jB4Zro0UbRc4t+56ODmObl4yHpwn5ydvb6hC8mD3ZavTBp2IiF/RQ1O1I6R
+	 1UlMjXEztgNtKYYsUVSNncSKfQdfpwtgbYHKnlIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	syzbot+263426984509be19c9a0@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 069/263] wifi: rtw89: pci: fix RX tag race condition resulting in wrong RX length
+Subject: [PATCH 6.6 014/189] net: bridge: mcast: wait for previous gc cycles when removing port
 Date: Mon, 12 Aug 2024 18:01:10 +0200
-Message-ID: <20240812160149.185302929@linuxfoundation.org>
+Message-ID: <20240812160132.691132801@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 94298477f81a1701fc4e1b5a0ce9672acab5dcb2 ]
+[ Upstream commit 92c4ee25208d0f35dafc3213cdf355fbe449e078 ]
 
-Read 32 bits RX info to a local variable to fix race condition between
-reading RX length and RX tag.
+syzbot hit a use-after-free[1] which is caused because the bridge doesn't
+make sure that all previous garbage has been collected when removing a
+port. What happens is:
+      CPU 1                   CPU 2
+ start gc cycle           remove port
+                         acquire gc lock first
+ wait for lock
+                         call br_multicasg_gc() directly
+ acquire lock now but    free port
+ the port can be freed
+ while grp timers still
+ running
 
-Another solution is to get RX tag at first statement, but adopted solution
-can save some memory read, and also save 15 bytes binary code.
+Make sure all previous gc cycles have finished by using flush_work before
+freeing the port.
 
-RX tag, a sequence number, is used to ensure that RX data has been DMA to
-memory completely, so driver must check sequence number is expected before
-reading other data.
+[1]
+  BUG: KASAN: slab-use-after-free in br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
+  Read of size 8 at addr ffff888071d6d000 by task syz.5.1232/9699
 
-This potential problem happens only after enabling 36-bit DMA.
+  CPU: 1 PID: 9699 Comm: syz.5.1232 Not tainted 6.10.0-rc5-syzkaller-00021-g24ca36a562d6 #0
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
+  Call Trace:
+   <IRQ>
+   __dump_stack lib/dump_stack.c:88 [inline]
+   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
+   print_address_description mm/kasan/report.c:377 [inline]
+   print_report+0xc3/0x620 mm/kasan/report.c:488
+   kasan_report+0xd9/0x110 mm/kasan/report.c:601
+   br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
+   call_timer_fn+0x1a3/0x610 kernel/time/timer.c:1792
+   expire_timers kernel/time/timer.c:1843 [inline]
+   __run_timers+0x74b/0xaf0 kernel/time/timer.c:2417
+   __run_timer_base kernel/time/timer.c:2428 [inline]
+   __run_timer_base kernel/time/timer.c:2421 [inline]
+   run_timer_base+0x111/0x190 kernel/time/timer.c:2437
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240611021901.26394-2-pkshih@realtek.com
+Reported-by: syzbot+263426984509be19c9a0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=263426984509be19c9a0
+Fixes: e12cec65b554 ("net: bridge: mcast: destroy all entries via gc")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20240802080730.3206303-1-razor@blackwall.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/bridge/br_multicast.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index b36aa9a6bb3fc..312b57d7da642 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -183,14 +183,17 @@ static void rtw89_pci_sync_skb_for_device(struct rtw89_dev *rtwdev,
- static void rtw89_pci_rxbd_info_update(struct rtw89_dev *rtwdev,
- 				       struct sk_buff *skb)
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 38373b4fb7ddf..c38244d60ff86 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -2044,16 +2044,14 @@ void br_multicast_del_port(struct net_bridge_port *port)
  {
--	struct rtw89_pci_rxbd_info *rxbd_info;
- 	struct rtw89_pci_rx_info *rx_info = RTW89_PCI_RX_SKB_CB(skb);
-+	struct rtw89_pci_rxbd_info *rxbd_info;
-+	__le32 info;
+ 	struct net_bridge *br = port->br;
+ 	struct net_bridge_port_group *pg;
+-	HLIST_HEAD(deleted_head);
+ 	struct hlist_node *n;
  
- 	rxbd_info = (struct rtw89_pci_rxbd_info *)skb->data;
--	rx_info->fs = le32_get_bits(rxbd_info->dword, RTW89_PCI_RXBD_FS);
--	rx_info->ls = le32_get_bits(rxbd_info->dword, RTW89_PCI_RXBD_LS);
--	rx_info->len = le32_get_bits(rxbd_info->dword, RTW89_PCI_RXBD_WRITE_SIZE);
--	rx_info->tag = le32_get_bits(rxbd_info->dword, RTW89_PCI_RXBD_TAG);
-+	info = rxbd_info->dword;
-+
-+	rx_info->fs = le32_get_bits(info, RTW89_PCI_RXBD_FS);
-+	rx_info->ls = le32_get_bits(info, RTW89_PCI_RXBD_LS);
-+	rx_info->len = le32_get_bits(info, RTW89_PCI_RXBD_WRITE_SIZE);
-+	rx_info->tag = le32_get_bits(info, RTW89_PCI_RXBD_TAG);
+ 	/* Take care of the remaining groups, only perm ones should be left */
+ 	spin_lock_bh(&br->multicast_lock);
+ 	hlist_for_each_entry_safe(pg, n, &port->mglist, mglist)
+ 		br_multicast_find_del_pg(br, pg);
+-	hlist_move_list(&br->mcast_gc_list, &deleted_head);
+ 	spin_unlock_bh(&br->multicast_lock);
+-	br_multicast_gc(&deleted_head);
++	flush_work(&br->mcast_gc_work);
+ 	br_multicast_port_ctx_deinit(&port->multicast_ctx);
+ 	free_percpu(port->mcast_stats);
  }
- 
- static int rtw89_pci_validate_rx_tag(struct rtw89_dev *rtwdev,
 -- 
 2.43.0
 
