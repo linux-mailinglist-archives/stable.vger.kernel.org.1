@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-67282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4B194F4B6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:33:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535FE94F379
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30F6FB26179
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:33:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 853101C20F1E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEC5187552;
-	Mon, 12 Aug 2024 16:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B7818733D;
+	Mon, 12 Aug 2024 16:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4bhWHxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pp7mxjt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1E0187347;
-	Mon, 12 Aug 2024 16:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833B1183CB8;
+	Mon, 12 Aug 2024 16:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480417; cv=none; b=qnDP2jRgX6YvJwRWp7hJeqm/aA53m91SoQ9t7B/L4LDj45Qp0NdrDtj4JGX4IOSpMcgUQ6rLA8qdbNpRHX5JiLyxND7J4ypKkt8ja+rio7nv2b40Om72awh3bFMWMYF1k5yR4QOPk25fe1bC/8Nxmv+MxpkTM5CLeSMMNjWGvr8=
+	t=1723479487; cv=none; b=ckYmCVQXFrIanTT2Qkp0YiWs0r+d37iHj98/F2jKjlMG1oWQLErYpSNfTiKghEQ2lTq+LthBiWCsBbTLEy898Z+dx2G8mkEwx8yF1Or5Yr/kBRoTyHXhJKHyd2F7+42qX4o2DrQ2I7j9wmaJKaHDPqRd3Kap7zG884kBNWABXrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480417; c=relaxed/simple;
-	bh=jiv6dXq008CxpPSgLJDeuot7Ncn0r8jRR3BqE2kordY=;
+	s=arc-20240116; t=1723479487; c=relaxed/simple;
+	bh=k0onxOSHx6Xjfwz6FaRpPi5zKX1AJuLQ+YjarfB2YpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNn7tqgTjPZ9I9YFYmbtdMlqDUlFeomHFwP3AfwosD92ytu0oolmAr5oXP12POkcaNJ7pBO5CdND5a1TxwzSkzGSmoiji39Q6Y8+/BquOoZOEt0Ve/8ExXZMUI1GRF8Xg1iSj9GlSVbNDd+YHLvMpkU2ev722cZuKHYPDHreq7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4bhWHxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E544CC32782;
-	Mon, 12 Aug 2024 16:33:36 +0000 (UTC)
+	 MIME-Version; b=mdJ917uq48qXgdYMN2HEmJayCKgZDbSCePRxvVJxm1WvPqobQPOnKG5HTDNz5KcEj5DKBCNjaooXw8WSgo6ODB+M60GiZ8frZsSydlwWITC5on1xNSPSfbUvIenaJgH8a3Jm6INpC1nKyrrnkU1oJPjln1lyJ+9zk17iDAAMqiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pp7mxjt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1154C32782;
+	Mon, 12 Aug 2024 16:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480417;
-	bh=jiv6dXq008CxpPSgLJDeuot7Ncn0r8jRR3BqE2kordY=;
+	s=korg; t=1723479487;
+	bh=k0onxOSHx6Xjfwz6FaRpPi5zKX1AJuLQ+YjarfB2YpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4bhWHxNKB8XnfJrrbVG+pg9H8HYEE6XCP88FWNpTepL5+inuzyqxJKoBX/amc6mb
-	 5mzsoZzmUMAvcNeUSTQAq1LHBZROOlGkhGlav7XjcSHTUIgqE7VcRz9RvFt0hK8/CP
-	 HGA0Bh6fpQ/t1kPMacPJF9Yfc289Gy53ImJFj3q8=
+	b=pp7mxjt6DybhCIc1GQJjK6KWvRA4/DUMPVyxslRpjiobRBgc1lb9kWievq8IV+HaU
+	 SzTek1wZ44izRfOddA+ILwG6OifOLRfKuVB+k9bnO8ZDbbwpgHko6MmSXysyA3pB6b
+	 mNSP/l4EA84JGgQ3faZKj5Z0lXFv+v+ug7jGqVzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <david@davidgow.net>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 158/263] drm/i915: Allow evicting to use the requested placement
+Subject: [PATCH 6.6 103/189] ALSA: usb-audio: Re-add ScratchAmp quirk entries
 Date: Mon, 12 Aug 2024 18:02:39 +0200
-Message-ID: <20240812160152.595830322@linuxfoundation.org>
+Message-ID: <20240812160136.106332371@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <david@davidgow.net>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 264b5b5980061d8c6a6a30c031cdec1179fe2bae ]
+[ Upstream commit 03898691d42e0170e7d00f07cbe21ce0e9f3a8fa ]
 
-In commit a78a8da51b36 ("drm/ttm: replace busy placement with flags v6"),
-the old system of having a separate placement list (for placements
-which should be used without eviction) and a 'busy' placement list (for
-placements which should be attempted if eviction is required) was
-replaced with a new one where placements could be marked 'FALLBACK' (to
-be attempted if eviction is required) or 'DESIRED' (to be attempted
-first, but not if eviction is required).
+At the code refactoring of USB-audio quirk handling, I assumed that
+the quirk entries of Stanton ScratchAmp devices were only about the
+device name, and moved them completely into the rename table.
+But it seems that the device requires the quirk entry so that it's
+probed by the driver itself.
 
-i915 had always included the requested placement in the list of
-'busy' placements: i.e., the placement could be used either if eviction
-is required or not. But when the new system was put in place, the
-requested (first) placement was marked 'DESIRED', so would never be used
-if eviction became necessary. While a bug in the original commit
-prevented this flag from working, when this was fixed in
-4a0e7b3c ("drm/i915: fix applying placement flag"), it caused long hangs
-on DG2 systems with small BAR.
+This re-adds back the quirk entries of ScratchAmp, but in a
+minimalistic manner.
 
-Don't mark the requested placement DESIRED (or FALLBACK), allowing it to
-be used in both situations. This matches the old behaviour, and resolves
-the hangs.
-
-Thanks to Justin Brewer for bisecting the issue.
-
-Fixes: a78a8da51b36 ("drm/ttm: replace busy placement with flags v6")
-Fixes: 4a0e7b3c3753 ("drm/i915: fix applying placement flag")
-Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11255
-Signed-off-by: David Gow <david@davidgow.net>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240804091851.122186-2-david@davidgow.net
-(cherry picked from commit 54bf0af90844fbf18f5be3272eda69198dfdb622)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: 5436f59bc5bc ("ALSA: usb-audio: Move device rename and profile quirks to an internal table")
+Link: https://patch.msgid.link/20240808081803.22300-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/usb/quirks-table.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-index e6f177183c0fa..fb848fd8ba15a 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-@@ -165,7 +165,6 @@ i915_ttm_placement_from_obj(const struct drm_i915_gem_object *obj,
- 	i915_ttm_place_from_region(num_allowed ? obj->mm.placements[0] :
- 				   obj->mm.region, &places[0], obj->bo_offset,
- 				   obj->base.size, flags);
--	places[0].flags |= TTM_PL_FLAG_DESIRED;
+diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
+index 5d72dc8441cbb..af1b8cf5a9883 100644
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -2594,6 +2594,10 @@ YAMAHA_DEVICE(0x7010, "UB99"),
+ 	}
+ },
  
- 	/* Cache this on object? */
- 	for (i = 0; i < num_allowed; ++i) {
++/* Stanton ScratchAmp */
++{ USB_DEVICE(0x103d, 0x0100) },
++{ USB_DEVICE(0x103d, 0x0101) },
++
+ /* Novation EMS devices */
+ {
+ 	USB_DEVICE_VENDOR_SPEC(0x1235, 0x0001),
 -- 
 2.43.0
 
