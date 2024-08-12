@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-66813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF6794F297
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99EFE94F348
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A21CB1F21437
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D5E6B250DC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142E41862B4;
-	Mon, 12 Aug 2024 16:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89149186E20;
+	Mon, 12 Aug 2024 16:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6i0dJFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmvgFjO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EEF186E38;
-	Mon, 12 Aug 2024 16:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FE8183CB8;
+	Mon, 12 Aug 2024 16:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478868; cv=none; b=ur0WU5U1X1q0Y73iF6tIIHl1A8+lxO4fyp2lEXclFMCbQK2+ozA6BgBSun80nYpm6h/RYtKPcI5D1ixT3gf3v6slg4202sRFI2jFgUs8t2aA5AVZthH8mlPMc5WqKrUBUhtBzy2bZzGFmN0YTUhg+TVBG+4Gx+uoZr4g9UBa9fc=
+	t=1723479344; cv=none; b=pquGGKQyomi8PmFu9TXA8zbDboF5+tzU9aBKF5207QqwydTA2sw6YzSA5M7x3HzeAwMRka4nge5t634GmVNwkqyv/pPcPh34dl4WNkNwsP833Eyjt5XuGqKUDr89cTTN00hFw2eCephRrtrPSWZXLu+MBimEBIqQH8jbjpYS1WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478868; c=relaxed/simple;
-	bh=W/EN7Ay7Q8RU1H3emWcpBEYOaGLZYdgVpQOo6Dm6yB8=;
+	s=arc-20240116; t=1723479344; c=relaxed/simple;
+	bh=UGIvxuWtt1Se2uNtA/J2V4zvZc5c0VdJL93DI6NfFes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AM1eu1fd5BiQV/M2SMN6R4UgeBkvcqDaVgjaR9Mp7ERPgM3gPybm2m9SQrynom0ndk60FtMspmP6ZIA3Ozs06jZP2HvG5OkqeeHvTsHHDBN9e8AuY3ulw8ygulHoHoAjjbG8FxHY6JqrPGp6S84W7VoIUHG5XHiseOwr1JtqkTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6i0dJFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36664C32782;
-	Mon, 12 Aug 2024 16:07:48 +0000 (UTC)
+	 MIME-Version; b=GCdCqdEyc86zo0l/LDxcij7M0V6UUPNqvc7Pix9G8FZ2FnSJ5OI47CIaomFb+g8GVxMRd+MQrJaSBaRG4fl7m500I1BUH+rhby5ojGk6C4KMWtIo+FNNsqxIXEA01XIPVPsYZJ9Wn4gGsSfrrO64ng9fEvrLbJTI4hdsid3P0w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmvgFjO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE49C32782;
+	Mon, 12 Aug 2024 16:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478868;
-	bh=W/EN7Ay7Q8RU1H3emWcpBEYOaGLZYdgVpQOo6Dm6yB8=;
+	s=korg; t=1723479344;
+	bh=UGIvxuWtt1Se2uNtA/J2V4zvZc5c0VdJL93DI6NfFes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6i0dJFwvrN7Ldja1QgWnHyPIdnYcoN6P9ifLmSSULCc3ju6hPF3vVJkLlhIL38kq
-	 6N/ZnaGSTcuafnDbCFaY70ahcHTLGptKK8IosEiCxEd9cc3l/9NJ9fCd00x8fzV9oy
-	 nDH9CyfL8+zJuHsLxibZ22uh66BzfO3mszJyk+gI=
+	b=tmvgFjO5E/Q6UchKbj9I9siiXwe+FMSP2kd/S40ylJp5eKGlBvb6grlx0vVPvmZOW
+	 sVANPlp9FXAoRuzT6kx4JYETwDoSwlbu5u1ZrMcC1d+zLyh+ZnVKtW3M/+YJ/Y1txF
+	 cIuruMcG1tv748fOXPc/yJpx2ACrwVEyKShHQHSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Victor Skvortsov <victor.skvortsov@amd.com>,
+	Zhigang Luo <zhigang.luo@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/150] wifi: nl80211: dont give key data to userspace
-Date: Mon, 12 Aug 2024 18:01:51 +0200
-Message-ID: <20240812160126.328418424@linuxfoundation.org>
+Subject: [PATCH 6.6 056/189] drm/amdgpu: Add lock around VF RLCG interface
+Date: Mon, 12 Aug 2024 18:01:52 +0200
+Message-ID: <20240812160134.301682814@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Victor Skvortsov <victor.skvortsov@amd.com>
 
-[ Upstream commit a7e5793035792cc46a1a4b0a783655ffa897dfe9 ]
+[ Upstream commit e864180ee49b4d30e640fd1e1d852b86411420c9 ]
 
-When a key is requested by userspace, there's really no need
-to include the key data, the sequence counter is really what
-userspace needs in this case. The fact that it's included is
-just a historic quirk.
+flush_gpu_tlb may be called from another thread while
+device_gpu_recover is running.
 
-Remove the key data.
+Both of these threads access registers through the VF
+RLCG interface during VF Full Access. Add a lock around this interface
+to prevent race conditions between these threads.
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240627104411.b6a4f097e4ea.I7e6cc976cb9e8a80ef25a3351330f313373b4578@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
+Reviewed-by: Zhigang Luo <zhigang.luo@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   | 6 ++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h   | 2 ++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 603fcd921bd22..214eee6105c7f 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -4421,10 +4421,7 @@ static void get_key_callback(void *c, struct key_params *params)
- 	struct nlattr *key;
- 	struct get_key_cookie *cookie = c;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index ea1bce13db941..eb663eb811563 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3561,6 +3561,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	mutex_init(&adev->grbm_idx_mutex);
+ 	mutex_init(&adev->mn_lock);
+ 	mutex_init(&adev->virt.vf_errors.lock);
++	mutex_init(&adev->virt.rlcg_reg_lock);
+ 	hash_init(adev->mn_hash);
+ 	mutex_init(&adev->psp.mutex);
+ 	mutex_init(&adev->notifier_lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 96857ae7fb5bc..ff4f52e07cc0d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -1003,6 +1003,9 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
+ 	scratch_reg1 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg1;
+ 	scratch_reg2 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg2;
+ 	scratch_reg3 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg3;
++
++	mutex_lock(&adev->virt.rlcg_reg_lock);
++
+ 	if (reg_access_ctrl->spare_int)
+ 		spare_int = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->spare_int;
  
--	if ((params->key &&
--	     nla_put(cookie->msg, NL80211_ATTR_KEY_DATA,
--		     params->key_len, params->key)) ||
--	    (params->seq &&
-+	if ((params->seq &&
- 	     nla_put(cookie->msg, NL80211_ATTR_KEY_SEQ,
- 		     params->seq_len, params->seq)) ||
- 	    (params->cipher &&
-@@ -4436,10 +4433,7 @@ static void get_key_callback(void *c, struct key_params *params)
- 	if (!key)
- 		goto nla_put_failure;
+@@ -1058,6 +1061,9 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
+ 	}
  
--	if ((params->key &&
--	     nla_put(cookie->msg, NL80211_KEY_DATA,
--		     params->key_len, params->key)) ||
--	    (params->seq &&
-+	if ((params->seq &&
- 	     nla_put(cookie->msg, NL80211_KEY_SEQ,
- 		     params->seq_len, params->seq)) ||
- 	    (params->cipher &&
+ 	ret = readl(scratch_reg0);
++
++	mutex_unlock(&adev->virt.rlcg_reg_lock);
++
+ 	return ret;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+index fabb83e9d9aec..23b6efa9d25df 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+@@ -263,6 +263,8 @@ struct amdgpu_virt {
+ 
+ 	/* the ucode id to signal the autoload */
+ 	uint32_t autoload_ucode_id;
++
++	struct mutex rlcg_reg_lock;
+ };
+ 
+ struct amdgpu_video_codec_info;
 -- 
 2.43.0
 
