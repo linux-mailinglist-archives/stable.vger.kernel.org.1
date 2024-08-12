@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-67294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C473994F4C5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 006B694F4C7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EDC81F2194C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 328371C20F56
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671ED187324;
-	Mon, 12 Aug 2024 16:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FBF186E5F;
+	Mon, 12 Aug 2024 16:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jio3bZnS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddWKFUN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BAA183CA6;
-	Mon, 12 Aug 2024 16:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FF01494B8;
+	Mon, 12 Aug 2024 16:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480457; cv=none; b=KOu1sIZ68zArkVEWCq27snoRZdgRtJpnvBSDcIrX8rg3+veEWN0AzdOcFL1SER74AHIx2Wo1FoPPThF0agPwlS/H01qLP+5B0/JfQMHbS+/VlCu6iZZUKjppFGrtmBBVKHnbFyx9e8gPmL0js0evEQ2NfTRDomVnjN/CZr4SmGg=
+	t=1723480463; cv=none; b=OsYlBiA2ViIQvSr01rsAzpDfzRV4nBJc8oNekgwJcA5oDoQp4v7CP8I87EUyfasfn1q4+GYT/KUNW8USTD0I4a/JzypT0sjtHIFULSHPYLq/bpjNU529i4DSkFTK8ZwXsjpGqJQGXE1l8MzGcLjlvNRZgKBSY+vNnaBmKOBdOKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480457; c=relaxed/simple;
-	bh=QSu62jAzyDBLtLxTwPmVjP2v6Kw0Z+gDnO2L/DP5tEM=;
+	s=arc-20240116; t=1723480463; c=relaxed/simple;
+	bh=w7WguwXXAyiLxfF6jOvEVpCPcuBMvSkb3tfgwUYmOe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZqF1Q9DIp4nQikmGdVLv3/D11NpA0przBvoUBBp3nTyUAc3eB+okFlJB6WJ/CX7egK/MixEZ2260jght+jblb6Zsiu9NbejJB/tazrdNpuiDlET48+KrzgG6BMhMeBEhRN7YXmIGWzTPYk3xRl6YaxgToLW82eSRs1R8YdmYWxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jio3bZnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A866C32782;
-	Mon, 12 Aug 2024 16:34:16 +0000 (UTC)
+	 MIME-Version; b=ECSS6lld3Tbe78d1JabW7S+NfO7T/xqKp5LRyQihl83UmNJwI71oOjM7Nnqx4IEmJOGD7NqlV8UBVP0UHvZxsiu47kPEW94pCsMzT8AtCDa/j0s3fch+s/y6uIuV3SsbWzP3TefsKy3YLABA/ncXvfzB7UC9yej+rmsjskEYUe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddWKFUN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C827EC32782;
+	Mon, 12 Aug 2024 16:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480457;
-	bh=QSu62jAzyDBLtLxTwPmVjP2v6Kw0Z+gDnO2L/DP5tEM=;
+	s=korg; t=1723480463;
+	bh=w7WguwXXAyiLxfF6jOvEVpCPcuBMvSkb3tfgwUYmOe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jio3bZnSZJYYmAj+Yp+CSARI5ZIShZ+oGDwBFwq0dE37BFT3NWqeCRHLAZddRCLNd
-	 kQOMXQkG74h3gexb80aWTh+7zLFbHhiS7Voix+Y+lLf7zsRqBz6dDYdUVI1Pp2276N
-	 HpnwNjbY9agExeyWTiDCB7ELuZqilYLG/TKV2wWo=
+	b=ddWKFUN0RW37evq9mfSSSdP5eUD8dwoPiCz/MaDUr1qRp9/rtgcWINzkv9q4itz9T
+	 Vk5SW37qsTquqFXwkA5XNp7x6Ahun5ZY6/79fBtbaeko9nbuojOfNV+SAyZBcJJfy8
+	 QUGdbYwq1i5BqZa4DhV2VeiBQn7IDt/mYOZdnLFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miroslav Lichvar <mlichvar@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 202/263] ntp: Clamp maxerror and esterror to operating range
-Date: Mon, 12 Aug 2024 18:03:23 +0200
-Message-ID: <20240812160154.282959278@linuxfoundation.org>
+	syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.10 203/263] driver core: Fix uevent_show() vs driver detach race
+Date: Mon, 12 Aug 2024 18:03:24 +0200
+Message-ID: <20240812160154.320737544@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -67,75 +70,158 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 87d571d6fb77ec342a985afa8744bb9bb75b3622 ]
+commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c upstream.
 
-Using syzkaller alongside the newly reintroduced signed integer overflow
-sanitizer spits out this report:
+uevent_show() wants to de-reference dev->driver->name. There is no clean
+way for a device attribute to de-reference dev->driver unless that
+attribute is defined via (struct device_driver).dev_groups. Instead, the
+anti-pattern of taking the device_lock() in the attribute handler risks
+deadlocks with code paths that remove device attributes while holding
+the lock.
 
-UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:461:16
-9223372036854775807 + 500 cannot be represented in type 'long'
-Call Trace:
- handle_overflow+0x171/0x1b0
- second_overflow+0x2d6/0x500
- accumulate_nsecs_to_secs+0x60/0x160
- timekeeping_advance+0x1fe/0x890
- update_wall_time+0x10/0x30
+This deadlock is typically invisible to lockdep given the device_lock()
+is marked lockdep_set_novalidate_class(), but some subsystems allocate a
+local lockdep key for @dev->mutex to reveal reports of the form:
 
-time_maxerror is unconditionally incremented and the result is checked
-against NTP_PHASE_LIMIT, but the increment itself can overflow, resulting
-in wrap-around to negative space.
+ ======================================================
+ WARNING: possible circular locking dependency detected
+ 6.10.0-rc7+ #275 Tainted: G           OE    N
+ ------------------------------------------------------
+ modprobe/2374 is trying to acquire lock:
+ ffff8c2270070de0 (kn->active#6){++++}-{0:0}, at: __kernfs_remove+0xde/0x220
 
-Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
-supplied value was sanity checked to be in the operating range. That change
-removed the sanity check and relied on clamping in handle_overflow() which
-does not work correctly when the user supplied value is in the overflow
-zone of the '+ 500' operation.
+ but task is already holding lock:
+ ffff8c22016e88f8 (&cxl_root_key){+.+.}-{3:3}, at: device_release_driver_internal+0x39/0x210
 
-The operation requires CAP_SYS_TIME and the side effect of the overflow is
-NTP getting out of sync.
+ which lock already depends on the new lock.
 
-Miroslav confirmed that the input value should be clamped to the operating
-range and the same applies to time_esterror. The latter is not used by the
-kernel, but the value still should be in the operating range as it was
-before the sanity check got removed.
+ the existing dependency chain (in reverse order) is:
 
-Clamp them to the operating range.
+ -> #1 (&cxl_root_key){+.+.}-{3:3}:
+        __mutex_lock+0x99/0xc30
+        uevent_show+0xac/0x130
+        dev_attr_show+0x18/0x40
+        sysfs_kf_seq_show+0xac/0xf0
+        seq_read_iter+0x110/0x450
+        vfs_read+0x25b/0x340
+        ksys_read+0x67/0xf0
+        do_syscall_64+0x75/0x190
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-[ tglx: Changed it to clamping and included time_esterror ]
+ -> #0 (kn->active#6){++++}-{0:0}:
+        __lock_acquire+0x121a/0x1fa0
+        lock_acquire+0xd6/0x2e0
+        kernfs_drain+0x1e9/0x200
+        __kernfs_remove+0xde/0x220
+        kernfs_remove_by_name_ns+0x5e/0xa0
+        device_del+0x168/0x410
+        device_unregister+0x13/0x60
+        devres_release_all+0xb8/0x110
+        device_unbind_cleanup+0xe/0x70
+        device_release_driver_internal+0x1c7/0x210
+        driver_detach+0x47/0x90
+        bus_remove_driver+0x6c/0xf0
+        cxl_acpi_exit+0xc/0x11 [cxl_acpi]
+        __do_sys_delete_module.isra.0+0x181/0x260
+        do_syscall_64+0x75/0x190
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Miroslav Lichvar <mlichvar@redhat.com>
-Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-usec-v2-1-d539180f2b79@google.com
-Closes: https://github.com/KSPP/linux/issues/354
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The observation though is that driver objects are typically much longer
+lived than device objects. It is reasonable to perform lockless
+de-reference of a @driver pointer even if it is racing detach from a
+device. Given the infrequency of driver unregistration, use
+synchronize_rcu() in module_remove_driver() to close any potential
+races.  It is potentially overkill to suffer synchronize_rcu() just to
+handle the rare module removal racing uevent_show() event.
+
+Thanks to Tetsuo Handa for the debug analysis of the syzbot report [1].
+
+Fixes: c0a40097f0bc ("drivers: core: synchronize really_probe() and dev_uevent()")
+Reported-by: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Closes: http://lore.kernel.org/5aa5558f-90a4-4864-b1b1-5d6784c5607d@I-love.SAKURA.ne.jp [1]
+Link: http://lore.kernel.org/669073b8ea479_5fffa294c1@dwillia2-xfh.jf.intel.com.notmuch
+Cc: stable@vger.kernel.org
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://lore.kernel.org/r/172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/ntp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/core.c   |   13 ++++++++-----
+ drivers/base/module.c |    4 ++++
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
-index 406dccb79c2b6..502e1e5b7f7f6 100644
---- a/kernel/time/ntp.c
-+++ b/kernel/time/ntp.c
-@@ -727,10 +727,10 @@ static inline void process_adjtimex_modes(const struct __kernel_timex *txc,
- 	}
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -25,6 +25,7 @@
+ #include <linux/mutex.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/netdevice.h>
++#include <linux/rcupdate.h>
+ #include <linux/sched/signal.h>
+ #include <linux/sched/mm.h>
+ #include <linux/string_helpers.h>
+@@ -2640,6 +2641,7 @@ static const char *dev_uevent_name(const
+ static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
+ {
+ 	const struct device *dev = kobj_to_dev(kobj);
++	struct device_driver *driver;
+ 	int retval = 0;
  
- 	if (txc->modes & ADJ_MAXERROR)
--		time_maxerror = txc->maxerror;
-+		time_maxerror = clamp(txc->maxerror, 0, NTP_PHASE_LIMIT);
+ 	/* add device node properties if present */
+@@ -2668,8 +2670,12 @@ static int dev_uevent(const struct kobje
+ 	if (dev->type && dev->type->name)
+ 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
  
- 	if (txc->modes & ADJ_ESTERROR)
--		time_esterror = txc->esterror;
-+		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
+-	if (dev->driver)
+-		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
++	/* Synchronize with module_remove_driver() */
++	rcu_read_lock();
++	driver = READ_ONCE(dev->driver);
++	if (driver)
++		add_uevent_var(env, "DRIVER=%s", driver->name);
++	rcu_read_unlock();
  
- 	if (txc->modes & ADJ_TIMECONST) {
- 		time_constant = txc->constant;
--- 
-2.43.0
-
+ 	/* Add common DT information about the device */
+ 	of_device_uevent(dev, env);
+@@ -2739,11 +2745,8 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
+ 
+-	/* Synchronize with really_probe() */
+-	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
+-	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
+ 
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -7,6 +7,7 @@
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
++#include <linux/rcupdate.h>
+ #include "base.h"
+ 
+ static char *make_driver_name(struct device_driver *drv)
+@@ -97,6 +98,9 @@ void module_remove_driver(struct device_
+ 	if (!drv)
+ 		return;
+ 
++	/* Synchronize with dev_uevent() */
++	synchronize_rcu();
++
+ 	sysfs_remove_link(&drv->p->kobj, "module");
+ 
+ 	if (drv->owner)
 
 
 
