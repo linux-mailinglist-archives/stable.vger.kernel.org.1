@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-66857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DC094F2CA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F6794F3BE
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C72532847A5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9265B25D65
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC93C183CD4;
-	Mon, 12 Aug 2024 16:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8DF186E34;
+	Mon, 12 Aug 2024 16:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aN06c4Ud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAnOfRRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963E51EA8D;
-	Mon, 12 Aug 2024 16:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9171862BD;
+	Mon, 12 Aug 2024 16:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479012; cv=none; b=ptgON4hcuOn+2RPnlS3NH3nsYigE96ixSNGiFJKApai2StlPYTWyVKGEz0ZEYETrc09gedo0zOrT7s0O5tDbxRCGFr6l7eo/zE7w2E1lhif/WlBRaxVCZWhkkdeNSEwR4kXrQHLDzbOoXqE4MYjK6wuCzKyqmeHMheSlhnigk8Q=
+	t=1723479686; cv=none; b=PkkQpLX6xmndneDmg59lM15dAtwIDgJPe1EmnaH5soLCPTlHZ2fWHK6e5ZjXlBcV/jO2M0pxpULw1w/GJWigNUSpv2CgOduRj0RuZAF9VkqaM4Wus9Y16d2zSBhMwWg8ukypc2DTKXlO1gGqGQz/gAr0IlRYIE12XozLkzq6ocM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479012; c=relaxed/simple;
-	bh=geZeyPopT00Nez4zgIcGH0Aw2tmdagYrICxnpdj63tM=;
+	s=arc-20240116; t=1723479686; c=relaxed/simple;
+	bh=Sy3IhrzYsH12cNk3LBZRqgYbWyhHCWSB0o8YH0UQzgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKQZb/UfO9V0TnJATJZ49a0O+uXDu8d68+tqTSUT/xdyz2PquxvfcbqktjU7XPBy5Uq0k22DA+ekTbx8X732OP4ixr8MwYYXaL8eHHjyAEWFUuK2kpJjQrWS6u28gvJMXSCCbnX0Kfw0TfciseONvyQMzSKrFQL04442vNmWuCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aN06c4Ud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAECC32782;
-	Mon, 12 Aug 2024 16:10:11 +0000 (UTC)
+	 MIME-Version; b=YsF7B6zWAvi9lu+d+aSlvVYZzodi2XSEv19EejNTjQkI2Zx24UI9yiNjSabgw5U68MzS789BpUQCzl5Zd4YBQRcDXbFfRZRzUWA6i8MD6gO+7oFyMsUO8wMAKJ9CDBQRe9i+O8VOk/1Hh3kT6+uxluLNSiLcCxJv2QaoCOoTdlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAnOfRRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4974BC4AF09;
+	Mon, 12 Aug 2024 16:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479012;
-	bh=geZeyPopT00Nez4zgIcGH0Aw2tmdagYrICxnpdj63tM=;
+	s=korg; t=1723479685;
+	bh=Sy3IhrzYsH12cNk3LBZRqgYbWyhHCWSB0o8YH0UQzgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aN06c4UdxM66tGShZNYoZhXq6BBMlJpr6GPgbAgaF7bjbq2WYYa9PsphfXhdj5+mM
-	 GCp0bwHNdu4nAWQIXrCqYBkBF0wjpQ/w0i2YfFm0OKIoKGKn537eLUKpYfGTX2RAPN
-	 fldm9VTivOybHnUQU+645ihxtZMLoEybEyDg5lNc=
+	b=GAnOfRRFOaDNwx6EjvX7m4xLXOdFl60cj7r+z1vzXmm26L5utFTdz6UzplWjN/tYK
+	 MzW8A2I9O9olmOUHy+DHuTBTiRcO46GiGOpSeNXrbT2PEwmkAOLip3DY21f/grNrWd
+	 ENC3XwUb5fujsVA0kM/0R+XL7X2LwatJlhw6unhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dirk Behme <dirk.behme@de.bosch.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.1 106/150] driver core: Fix uevent_show() vs driver detach race
+Subject: [PATCH 6.6 131/189] driver core: Fix uevent_show() vs driver detach race
 Date: Mon, 12 Aug 2024 18:03:07 +0200
-Message-ID: <20240812160129.252202443@linuxfoundation.org>
+Message-ID: <20240812160137.186258579@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -166,16 +166,16 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +#include <linux/rcupdate.h>
  #include <linux/sched/signal.h>
  #include <linux/sched/mm.h>
- #include <linux/swiotlb.h>
-@@ -2558,6 +2559,7 @@ static const char *dev_uevent_name(struc
- static int dev_uevent(struct kobject *kobj, struct kobj_uevent_env *env)
+ #include <linux/string_helpers.h>
+@@ -2565,6 +2566,7 @@ static const char *dev_uevent_name(const
+ static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
  {
- 	struct device *dev = kobj_to_dev(kobj);
+ 	const struct device *dev = kobj_to_dev(kobj);
 +	struct device_driver *driver;
  	int retval = 0;
  
  	/* add device node properties if present */
-@@ -2586,8 +2588,12 @@ static int dev_uevent(struct kobject *ko
+@@ -2593,8 +2595,12 @@ static int dev_uevent(const struct kobje
  	if (dev->type && dev->type->name)
  		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
  
@@ -190,7 +190,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	/* Add common DT information about the device */
  	of_device_uevent(dev, env);
-@@ -2657,11 +2663,8 @@ static ssize_t uevent_show(struct device
+@@ -2664,11 +2670,8 @@ static ssize_t uevent_show(struct device
  	if (!env)
  		return -ENOMEM;
  
@@ -212,7 +212,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  #include "base.h"
  
  static char *make_driver_name(struct device_driver *drv)
-@@ -77,6 +78,9 @@ void module_remove_driver(struct device_
+@@ -97,6 +98,9 @@ void module_remove_driver(struct device_
  	if (!drv)
  		return;
  
