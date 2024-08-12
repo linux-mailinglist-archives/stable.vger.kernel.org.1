@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DF094F39C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BADE094F4B1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B5C5B25941
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:19:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 621A31F21A2E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13634187335;
-	Mon, 12 Aug 2024 16:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BCF187345;
+	Mon, 12 Aug 2024 16:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mG804j8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18Hxi7Jj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BBD186E34;
-	Mon, 12 Aug 2024 16:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D768E15C127;
+	Mon, 12 Aug 2024 16:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479575; cv=none; b=FhqNQH+SHVA4krfVCS8foi+SdOszUA7lv8X6/ZPNQUJMP5gxYpN5SzYfbUj0FMM8v/lalvnHYi4G8tvCZxebpmtjm3GaZfN5RUZApyplEWtKDukwwa62UHuodgxju2O0WmdT7H01t/c1nlj1LJDlMZovvgzb8rbhGzA0BZcNaEU=
+	t=1723480400; cv=none; b=bOxjchSN68LclY/fFJiQr6enUuXGynWL5Xb0uH3cGBxvPT/9FAdPt+Twt5lSIUWSV1w1QeGLg1vm+kmTaP4p9RNb/D8rKelBQFL0CGyeursVLrK2EkQDJGhwUJFNsFx4N9dmLtDXR3NX+FXXEqzAnVp3xG0zSiUgehR+Qc3n2mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479575; c=relaxed/simple;
-	bh=6V/argz9w+NNFpkCEhq6rA01sqpgeNfwAGDHeEbaT8k=;
+	s=arc-20240116; t=1723480400; c=relaxed/simple;
+	bh=HxGeVvGiYPfgzIPeX2MMMmz/uS9up5I3dCP0XU6EZhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tu4yPETx5HTZ+hxwjljjjeGri/Mxc0bHJ8MlXS/gVTqpvbQsowPFWrlQ6OaPl4JLksN/+gwO+AdYOLGvyFOTZKXwz63ql2jkrMeLPGddAJZ8HaAl59myQolydzoDTDwIH6/g6dl7D7udcvmYm4KChKa7kSqo3dvak7Aa70mG3Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mG804j8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B52EC32782;
-	Mon, 12 Aug 2024 16:19:35 +0000 (UTC)
+	 MIME-Version; b=falC9FCrJaehT01wQcv/G/QPbTLI9WxUKth5NYMOw79SAz2daE6cxGr2B9rMwzGFfqNLhsmqjjaBVyFjhBsSrCpyrVTc9EDFmApHLtc2ZVo0y7qFz9e6bsm4I7SBYUvMIcUEbehpRzKGHNLCe8vfaY7yRjsGui0CbaDeE251r8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18Hxi7Jj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6C6C4AF0F;
+	Mon, 12 Aug 2024 16:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479575;
-	bh=6V/argz9w+NNFpkCEhq6rA01sqpgeNfwAGDHeEbaT8k=;
+	s=korg; t=1723480400;
+	bh=HxGeVvGiYPfgzIPeX2MMMmz/uS9up5I3dCP0XU6EZhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mG804j8/u2gOE5udXmTCzMFL21CIpgTwLVYi54SOHsmHgJFVOItOZaeogFg6scWX/
-	 y3+8jfok9u77hYv0HO+owEkKO+OKv1kpqR0gNrt4CS/ZLwe7MqnHTtS/co5HVhjkLd
-	 cBgbfrIJMWqVRMoW2qulKzaIJaj8XgUju5ciAA9Y=
+	b=18Hxi7Jjr4lYBRczka/PNRK2dP8KK/oGGVnyrM8T2dF8BP37AWuU+F6UvPY0ryrjT
+	 7rwy0FdWe0fkd68x1kiBRSqlB/qB3f8fpmaf/5kBAvH9qNas8GLmt1Z/I1tu6I6Kw3
+	 n0LPdaM3escKDOx8bueTpWhiaNcP9ulQG+KyWMbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/189] bpf: kprobe: remove unused declaring of bpf_kprobe_override
+Subject: [PATCH 6.10 153/263] i2c: qcom-geni: Add missing clk_disable_unprepare in geni_i2c_runtime_resume
 Date: Mon, 12 Aug 2024 18:02:34 +0200
-Message-ID: <20240812160135.914885455@linuxfoundation.org>
+Message-ID: <20240812160152.403482895@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 0e8b53979ac86eddb3fd76264025a70071a25574 ]
+[ Upstream commit b93d16bee557302d4e588375ececd833cc048acc ]
 
-After the commit 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction
-pointer with original one"), "bpf_kprobe_override" is not used anywhere
-anymore, and we can remove it now.
+Add the missing clk_disable_unprepare() before return in
+geni_i2c_runtime_resume().
 
-Link: https://lore.kernel.org/all/20240710085939.11520-1-dongml2@chinatelecom.cn/
-
-Fixes: 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction pointer with original one")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 14d02fbadb5d ("i2c: qcom-geni: add desc struct to prepare support for I2C Master Hub variant")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/i2c/busses/i2c-qcom-geni.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 696f8dc4aa53c..cb8bd759e8005 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -869,7 +869,6 @@ do {									\
- struct perf_event;
+diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
+index 0a8b95ce35f79..78f43648e9f3a 100644
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -990,8 +990,10 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
+ 		return ret;
  
- DECLARE_PER_CPU(struct pt_regs, perf_trace_regs);
--DECLARE_PER_CPU(int, bpf_kprobe_override);
+ 	ret = geni_se_resources_on(&gi2c->se);
+-	if (ret)
++	if (ret) {
++		clk_disable_unprepare(gi2c->core_clk);
+ 		return ret;
++	}
  
- extern int  perf_trace_init(struct perf_event *event);
- extern void perf_trace_destroy(struct perf_event *event);
+ 	enable_irq(gi2c->irq);
+ 	gi2c->suspended = 0;
 -- 
 2.43.0
 
