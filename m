@@ -1,139 +1,156 @@
-Return-Path: <stable+bounces-66745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C88A94F176
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:15:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA6C94F24D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46B622827B5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:15:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7461F213CA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF11614F9F4;
-	Mon, 12 Aug 2024 15:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57C0183CBF;
+	Mon, 12 Aug 2024 16:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="noxVX+S1"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="fPs0LdW0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE8D450F2;
-	Mon, 12 Aug 2024 15:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2541EA8D
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 16:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723475726; cv=none; b=YtwK55XZhhN0WwKEQwmj/f6rLWNTAEjFH9ZuQe1Tx5H7nsk1EFbpsUKk4lY8+R41cQfXHrBJehPBe3lETI6krVjUcbOyq8D3GkszdcsfrOobCBP9X+h1Ve0/juIu2Ei3k9MuemhswupzhaVHPk7S6F5ax2RjaUcH0mo1Dc9CkW0=
+	t=1723478604; cv=none; b=p+ShC4JkQB64yCmxJMd+RguM7vMaZSHp923ig6WaNu437iyRbfE+7POlDTeY1Rb7Ujy0Uq4avKoZTGOf6LViWYO6j6KDmThXMRc5MbefDz8VGgLPFnzRhX+T+3T8GVBsky0iw88H++YiKFX9iqULCNprDvriqvDHTI+xvglksLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723475726; c=relaxed/simple;
-	bh=kn457Ewsy8AA119t2bKO1YiwRsCbIJH8Cmg6w7Ro4ZQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=go+HYmSMj1SPxQUBKRatCgSK5rw+waz+2ZHu/K8IoDS6utySCBAE6zSA5hBmO3XVeUMnOmDGScwLVnhyV1gio0FYq3fdlO+m7uiYNNuYMBt3pP59IVAORSz0OJ2cWOn8fweVgvuv/+DgRTM3x1F+5FteHpAZ6BZPePbd/5jqvN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=noxVX+S1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A31FC32782;
-	Mon, 12 Aug 2024 15:15:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723475726;
-	bh=kn457Ewsy8AA119t2bKO1YiwRsCbIJH8Cmg6w7Ro4ZQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=noxVX+S1vESBSCamSwIfUVgUD+jXE1W64LmLKxoB9fCI3d7qBHLDBTAHEQC8wRXZb
-	 wWJxzSQICfc7NxVt2zhAywINl6MrD3aoBfJBi/JieTeuIIkx1E7pnDOa3MJkmW8XPY
-	 8iC2IVyCDcHkrdzmoVu0NNjFqhtNO9SJw58ewlvzk0NQ7tWXH1QsgKhreSxF6aeWrO
-	 UDgkjIXS44h65K24dfV62fS7XlEWFHYQxz1IbXgtVjpSWcVpvw1mSAkldMJPShj1Wu
-	 C092g7qyqw2Y7/2Iv5HaJ2Y4mMGsdPb0sIdwjlmHywEx9bHAB+Hb0ZAc1qP+hQE51k
-	 MnKmH6EHcVQsQ==
-From: Niklas Cassel <cassel@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Igor Pylypiv <ipylypiv@google.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-	stable@vger.kernel.org,
-	Stephan Eisvogel <eisvogel@seitics.de>,
-	Christian Heusel <christian@heusel.eu>,
-	linux-ide@vger.kernel.org
-Subject: [PATCH] ata: libata-core: Return sense data in descriptor format by default
-Date: Mon, 12 Aug 2024 17:15:18 +0200
-Message-ID: <20240812151517.1162241-2-cassel@kernel.org>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1723478604; c=relaxed/simple;
+	bh=Ql7+am2Ck0wCso6wuEU37+t+6ceNVQr+Ab5i1HGsDQQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W0xMdm6nZblBqVkGwCUuu/nZLWw4hQKLbqY6qwFuA0T9+nvh142LRER8EKKlI/nseebUu/EUfYZr1XDEbu8WrEzHf/S2MoFZc1YPAo8zle2BKfx9EQyFq8zb6Wm3+5eIjXKhszyU5pl8xt0+3znetWl0r3hdlF63KuV0QbBLv2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=fPs0LdW0; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=W2tXrpivxXwyGj62CCSvbqkyUobzbnXp5Gf12/d9eXM=; b=fPs0LdW0pgBav7sxhgFjSuR9b2
+	m7LGASrNE2P7Zh9BA8HDpu+82OLvLq93LjmrFzfTxKQNfhdND8KogQMdHTgujXaFEmK7jBSdA9O6n
+	3LSSOUbbI5t+IWAFzKh1Odxe+XZcfPhFHH3GEnhlAMdK6wNCbFOF+pTNPkKVp9tcgnmeN0tGH+zCw
+	7qkEGCzq/lupxSmeCUMnpRMb9hhMGtNiqyVzZrs/Sp39ber8NJFn3XRz/4facNeuc5uYNxymYWHE6
+	GN3njGTjQUMko4HRNxPwxcKcmuuDUfCOXjIYhu5wEbgvOfnhJAqCNNnWtypEL8TIyXqRGKfOQeAnN
+	E0kh2wWw==;
+Received: from [187.36.213.55] (helo=[192.168.1.212])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1sdWsy-00BYqe-4J; Mon, 12 Aug 2024 17:23:04 +0200
+Message-ID: <b57d265e-3e46-4755-91d6-2cac86f48266@igalia.com>
+Date: Mon, 12 Aug 2024 12:22:59 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3233; i=cassel@kernel.org; h=from:subject; bh=kn457Ewsy8AA119t2bKO1YiwRsCbIJH8Cmg6w7Ro4ZQ=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNJ2qbMG5307s731B+fnZO6oliOlPWolE5e7TJ19o7/c2 +8y02bOjlIWBjEuBlkxRRbfHy77i7vdpxxXvGMDM4eVCWQIAxenAEyk9Cwjw23VPc//F92VWet9 6nhK0aF9pyInebvp5HzOyHry1KkklJHhv3/zyw2HPGb8bsmpE40tYdwlOu3mVpF9EzstXtrF//d cwAAA
-X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] drm/v3d: Disable preemption while updating GPU stats
+To: Tvrtko Ursulin <tursulin@igalia.com>, dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ stable@vger.kernel.org
+References: <20240812091218.70317-1-tursulin@igalia.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Autocrypt: addr=mcanal@igalia.com; keydata=
+ xjMEZIsaeRYJKwYBBAHaRw8BAQdAGU6aY8oojw61KS5rGGMrlcilFqR6p6ID45IZ6ovX0h3N
+ H01haXJhIENhbmFsIDxtY2FuYWxAaWdhbGlhLmNvbT7CjwQTFggANxYhBDMCqFtIvFKVRJZQ
+ hDSPnHLaGFVuBQJkixp5BQkFo5qAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQNI+cctoYVW5u
+ GAEAwpaC5rI3wD8zqETKwGVoXd6+AbmGfZuVD40xepy7z/8BAM5w95/oyPsHUqOsg/xUTlNp
+ rlbhA+WWoaOXA3XgR+wCzjgEZIsaeRIKKwYBBAGXVQEFAQEHQGoOK0jgh0IorMAacx6WUUWb
+ s3RLiJYWUU6iNrk5wWUbAwEIB8J+BBgWCAAmFiEEMwKoW0i8UpVEllCENI+cctoYVW4FAmSL
+ GnkFCQWjmoACGwwACgkQNI+cctoYVW6cqwD/Q9R98msvkhgRvi18fzUPFDwwogn+F+gQJJ6o
+ pwpgFkAA/R2zOfla3IT6G3SBoV5ucdpdCpnIXFpQLbmfHK7dXsAC
+In-Reply-To: <20240812091218.70317-1-tursulin@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Sense data can be in either fixed format or descriptor format.
+Hi Tvrtko,
 
-SAT-6 revision 1, 10.4.6 Control mode page, says that if the D_SENSE bit
-is set to zero (i.e., fixed format sense data), then the SATL should
-return fixed format sense data for ATA PASS-THROUGH commands.
+On 8/12/24 06:12, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> 
+> We forgot to disable preemption around the write_seqcount_begin/end() pair
+> while updating GPU stats:
+> 
+>    [ ] WARNING: CPU: 2 PID: 12 at include/linux/seqlock.h:221 __seqprop_assert.isra.0+0x128/0x150 [v3d]
+>    [ ] Workqueue: v3d_bin drm_sched_run_job_work [gpu_sched]
+>   <...snip...>
+>    [ ] Call trace:
+>    [ ]  __seqprop_assert.isra.0+0x128/0x150 [v3d]
+>    [ ]  v3d_job_start_stats.isra.0+0x90/0x218 [v3d]
+>    [ ]  v3d_bin_job_run+0x23c/0x388 [v3d]
+>    [ ]  drm_sched_run_job_work+0x520/0x6d0 [gpu_sched]
+>    [ ]  process_one_work+0x62c/0xb48
+>    [ ]  worker_thread+0x468/0x5b0
+>    [ ]  kthread+0x1c4/0x1e0
+>    [ ]  ret_from_fork+0x10/0x20
+> 
+> Fix it.
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Fixes: 6abe93b621ab ("drm/v3d: Fix race-condition between sysfs/fdinfo and interrupt handler")
+> Cc: Maíra Canal <mcanal@igalia.com>
+> Cc: <stable@vger.kernel.org> # v6.10+
+> ---
+>   drivers/gpu/drm/v3d/v3d_sched.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+> index 42d4f4a2dba2..cc2e5a89467b 100644
+> --- a/drivers/gpu/drm/v3d/v3d_sched.c
+> +++ b/drivers/gpu/drm/v3d/v3d_sched.c
+> @@ -136,6 +136,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
+>   	struct v3d_stats *local_stats = &file->stats[queue];
+>   	u64 now = local_clock();
+>   
+> +	preempt_disable();
+> +
+>   	write_seqcount_begin(&local_stats->lock);
+>   	local_stats->start_ns = now;
+>   	write_seqcount_end(&local_stats->lock);
+> @@ -143,6 +145,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
+>   	write_seqcount_begin(&global_stats->lock);
+>   	global_stats->start_ns = now;
+>   	write_seqcount_end(&global_stats->lock);
+> +
+> +	preempt_enable();
+>   }
+>   
+>   static void
+> @@ -164,8 +168,10 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
+>   	struct v3d_stats *local_stats = &file->stats[queue];
+>   	u64 now = local_clock();
+>   
+> +	preempt_disable();
+>   	v3d_stats_update(local_stats, now);
+>   	v3d_stats_update(global_stats, now);
+> +	preempt_enable();
 
-A lot of user space programs incorrectly assume that the sense data is in
-descriptor format, without checking the RESPONSE CODE field of the
-returned sense data (to see which format the sense data is in).
+Although `v3d_stats_update()` is only used here, shouldn't we move 
+`preempt_disable()` and `preempt_enable()` inside of the
+`v3d_stats_update()` function? This way, we can guarantee that any
+future uses will disable preemption.
 
-The libata SATL has always kept D_SENSE set to zero by default.
-(It is however possible to change the value using a MODE SELECT command.)
+With that, you can add my:
 
-For failed ATA PASS-THROUGH commands, we correctly generated sense data
-according to the D_SENSE bit. However, because of a bug, sense data for
-successful ATA PASS-THROUGH commands was always generated in the
-descriptor format.
+Acked-by: Maíra Canal <mcanal@igalia.com>
 
-This was fixed to consistently respect D_SENSE for both failed and
-successful ATA PASS-THROUGH commands in commit 28ab9769117c ("ata:
-libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error").
+Best Regards,
+- Maíra
 
-After commit 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for
-CK_COND=1 and no error"), we started receiving bug reports that we broke
-these user space programs (these user space programs must never have
-encountered a failing command, as the sense data for failing commands has
-always correctly respected D_SENSE, which by default meant fixed format).
-
-Since a lot of user space programs seem to assume that the sense data is
-in descriptor format (without checking the type), let's simply change the
-default to have D_SENSE set to one by default.
-
-That way:
--Broken user space programs will see no regression.
--Both failed and successful ATA PASS-THROUGH commands will respect D_SENSE,
- as per SAT-6 revision 1.
--Apparently it seems way more common for user space applications to assume
- that the sense data is in descriptor format, rather than fixed format.
- (A user space program should of course support both, and check the
- RESPONSE CODE field to see which format the returned sense data is in.)
-
-Cc: stable@vger.kernel.org # 4.19+
-Reported-by: Stephan Eisvogel <eisvogel@seitics.de>
-Reported-by: Christian Heusel <christian@heusel.eu>
-Closes: https://lore.kernel.org/linux-ide/0bf3f2f0-0fc6-4ba5-a420-c0874ef82d64@heusel.eu/
-Fixes: 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
----
- drivers/ata/libata-core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index c7752dc80028..590bebe1354d 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5368,6 +5368,13 @@ void ata_dev_init(struct ata_device *dev)
- 	 */
- 	spin_lock_irqsave(ap->lock, flags);
- 	dev->flags &= ~ATA_DFLAG_INIT_MASK;
-+
-+	/*
-+	 * A lot of user space programs incorrectly assume that the sense data
-+	 * is in descriptor format, without checking the RESPONSE CODE field of
-+	 * the returned sense data (to see which format the sense data is in).
-+	 */
-+	dev->flags |= ATA_DFLAG_D_SENSE;
- 	dev->horkage = 0;
- 	spin_unlock_irqrestore(ap->lock, flags);
- 
--- 
-2.46.0
-
+>   }
+>   
+>   static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
 
