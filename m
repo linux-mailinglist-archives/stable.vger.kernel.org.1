@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-67311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450D094F4D6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF9694F2CB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0133B282417
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B2A1284821
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41D3183CA6;
-	Mon, 12 Aug 2024 16:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F532186E5B;
+	Mon, 12 Aug 2024 16:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qo6S9KsI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRTgO/D7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639D21494B8;
-	Mon, 12 Aug 2024 16:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF220183CD9;
+	Mon, 12 Aug 2024 16:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480513; cv=none; b=r8YQDDYbfuSqnKQgh/yaPXWOf0yWDKwrcv3ghtJBc5BuUs1Y0urzj41ckwJNZ7sKYSPIN6s6zLfjc/YUiak4+jeSh/cBEVFMwRWp1b7S48E5XVv1o2Yf/2x4XfT8DaGFUKnlGfK7d3kTBU/91BAcLp8F65JvskT/33qFsE5l1nw=
+	t=1723479015; cv=none; b=nhr2bujdiFPwo+LaBwC8TylvWNRR5GCWprDI4mS2/Wj4QRtSO3W0LAaE1XE1+IIkHQbceBpTIQkjxALgm0iAwSmEbhmoAlYnJsRLs3Wta3CYv+f4OSTWscQRdKhnMkDAy8uW+ObId3911nORcOZwV+es0NjwGQs5G3I/j7fQFAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480513; c=relaxed/simple;
-	bh=mIwNm6SzEps4/7zLmm3EaI8zpLYM3+LON8lw5QtNraQ=;
+	s=arc-20240116; t=1723479015; c=relaxed/simple;
+	bh=C6luYDtuloErUbKDFI6l8kaq7vEpZGhNEm3F3UP6g7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ITOoUwbTvfqrccwS4RO0iKF0RGYhqTJSMV2OTVWbeiCqGGmVgi50BJVpcu/b+85NLJgavvqmOLL0jA99+c7O5nAm9NWRyJUDa+fXp9mObZdSMdRPEgHl6zA5hq7Ppq6tOJBKlhLUqEuYvLq893t8iOW7tUokSKbAW0f17JbQeU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qo6S9KsI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9EC6C32782;
-	Mon, 12 Aug 2024 16:35:12 +0000 (UTC)
+	 MIME-Version; b=oXN1Rq/FAdfsYnAbSTecOOdohwk4LvkhkNgxzO2OM6Tly/ZLLBwbiqhMcbO3tC5EqgTTdzipYLmsMUtKxIOWZ0vrf39+K6E4+gyeFgpPVcKIzX4IWrgrvGh3Ecib7SyhrLLLSvH+OPAZExcP6UxwWxOlv9hEZwD/7njg24BagCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRTgO/D7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29276C32782;
+	Mon, 12 Aug 2024 16:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480513;
-	bh=mIwNm6SzEps4/7zLmm3EaI8zpLYM3+LON8lw5QtNraQ=;
+	s=korg; t=1723479015;
+	bh=C6luYDtuloErUbKDFI6l8kaq7vEpZGhNEm3F3UP6g7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qo6S9KsI7sl3IJI2FHdQ76xwsp0KDOMgV/O9jcMfJzZ7Q3rjmpVwMTiZPr9thQCYM
-	 DY8Q0hsu1zP3F1ZnQBVj2ah/ND1YePZYhaFND3Ph3aiiOLRm4l3LRhbKQsM7JEr8/x
-	 CO/NDe0poe9HOKjoO/py52UYmriVeQ0wNMQe8h0s=
+	b=uRTgO/D7rFsa3/U1LEXB3UqBdFntXU+ws7vegl9uIBAjxqDMMzlIr3bBwcTwgkbZg
+	 vYLwmxxSS96qpc/jcJyMdXHYcIGQTsmC0mlEplGGg0VvoIilL3eT49CpuyaCKIMwrb
+	 bv+5wvtle3CE6tWPqGzg39ff3g569gPmo3qK43vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.10 187/263] USB: serial: debug: do not echo input by default
+	Justin Stitt <justinstitt@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miroslav Lichvar <mlichvar@redhat.com>
+Subject: [PATCH 6.1 107/150] ntp: Safeguard against time_constant overflow
 Date: Mon, 12 Aug 2024 18:03:08 +0200
-Message-ID: <20240812160153.704540456@linuxfoundation.org>
+Message-ID: <20240812160129.291318661@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+From: Justin Stitt <justinstitt@google.com>
 
-commit 00af4f3dda1461ec90d892edc10bec6d3c50c554 upstream.
+commit 06c03c8edce333b9ad9c6b207d93d3a5ae7c10c0 upstream.
 
-This driver is intended as a "client" end of the console connection.
-When connected to a host it's supposed to receive debug logs, and
-possibly allow to interact with whatever debug console is available
-there. Feeding messages back, depending on a configuration may cause log
-messages be executed as shell commands (which can be really bad if one
-is unlucky, imagine a log message like "prevented running `rm -rf
-/home`"). In case of Xen, it exposes sysrq-like debug interface, and
-feeding it its own logs will pretty quickly hit 'R' for "instant
-reboot".
+Using syzkaller with the recently reintroduced signed integer overflow
+sanitizer produces this UBSAN report:
 
-Contrary to a classic serial console, the USB one cannot be configured
-ahead of time, as the device shows up only when target OS is up. And at
-the time device is opened to execute relevant ioctl, it's already too
-late, especially when logs start flowing shortly after device is
-initialized.
-Avoid the issue by changing default to no echo for this type of devices.
+UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:738:18
+9223372036854775806 + 4 cannot be represented in type 'long'
+Call Trace:
+ handle_overflow+0x171/0x1b0
+ __do_adjtimex+0x1236/0x1440
+ do_adjtimex+0x2be/0x740
 
-Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-[ johan: amend summary; disable also ECHONL ]
+The user supplied time_constant value is incremented by four and then
+clamped to the operating range.
+
+Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
+supplied value was sanity checked to be in the operating range. That change
+removed the sanity check and relied on clamping after incrementing which
+does not work correctly when the user supplied value is in the overflow
+zone of the '+ 4' operation.
+
+The operation requires CAP_SYS_TIME and the side effect of the overflow is
+NTP getting out of sync.
+
+Similar to the fixups for time_maxerror and time_esterror, clamp the user
+space supplied value to the operating range.
+
+[ tglx: Switch to clamping ]
+
+Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miroslav Lichvar <mlichvar@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-c-v2-1-f3a80096f36f@google.com
+Closes: https://github.com/KSPP/linux/issues/352
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/usb_debug.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/time/ntp.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/serial/usb_debug.c
-+++ b/drivers/usb/serial/usb_debug.c
-@@ -76,6 +76,11 @@ static void usb_debug_process_read_urb(s
- 	usb_serial_generic_process_read_urb(urb);
- }
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -733,11 +733,10 @@ static inline void process_adjtimex_mode
+ 		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
  
-+static void usb_debug_init_termios(struct tty_struct *tty)
-+{
-+	tty->termios.c_lflag &= ~(ECHO | ECHONL);
-+}
-+
- static struct usb_serial_driver debug_device = {
- 	.driver = {
- 		.owner =	THIS_MODULE,
-@@ -85,6 +90,7 @@ static struct usb_serial_driver debug_de
- 	.num_ports =		1,
- 	.bulk_out_size =	USB_DEBUG_MAX_PACKET_SIZE,
- 	.break_ctl =		usb_debug_break_ctl,
-+	.init_termios =		usb_debug_init_termios,
- 	.process_read_urb =	usb_debug_process_read_urb,
- };
+ 	if (txc->modes & ADJ_TIMECONST) {
+-		time_constant = txc->constant;
++		time_constant = clamp(txc->constant, 0, MAXTC);
+ 		if (!(time_status & STA_NANO))
+ 			time_constant += 4;
+-		time_constant = min(time_constant, (long)MAXTC);
+-		time_constant = max(time_constant, 0l);
++		time_constant = clamp(time_constant, 0, MAXTC);
+ 	}
  
-@@ -96,6 +102,7 @@ static struct usb_serial_driver dbc_devi
- 	.id_table =		dbc_id_table,
- 	.num_ports =		1,
- 	.break_ctl =		usb_debug_break_ctl,
-+	.init_termios =		usb_debug_init_termios,
- 	.process_read_urb =	usb_debug_process_read_urb,
- };
- 
+ 	if (txc->modes & ADJ_TAI &&
 
 
 
