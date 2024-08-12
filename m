@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-67195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1393194F44E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3279994F26C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:06:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3CE628138C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E727B261E4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15166187553;
-	Mon, 12 Aug 2024 16:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F33818785C;
+	Mon, 12 Aug 2024 16:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5QslYDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10YcOs0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C15187342;
-	Mon, 12 Aug 2024 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F5218784E;
+	Mon, 12 Aug 2024 16:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480120; cv=none; b=RfDrby36VqXV8dp+HKZr14bbYiXRLsPP9k+Ms6wxTlhchSougQ0/CmbeuaFqwWK3sveTC6qSAfNDEtM6BEBeOQcMMXc1M9wKy/Fjb9041kU6Yv/IZrHzOuYLI0rXFQkxhJIZG/KBHgVAlWSO8zq+c1KBsNYqNwIG4jkbgiGuN0E=
+	t=1723478763; cv=none; b=eJ8eAw2U7AVb5batObhS9WgzYRL+KCCm9C3rRwfaN9LeZbB+d4AcBrj8nFEa/IVJoWrnlqqLu6hJTtnDsgoN5v1T0U5zNyCZybdP3+wsIKN0l8qYmFEDfCTbQowZXxUF3aOWj1gpIRo5FtvwABM6pFkKlvlHhzmHyPWPk0fQQSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480120; c=relaxed/simple;
-	bh=T1s1+ZR4mt8dAnw+JYADGWhoeYHKcuSUlUXAeGjNWCA=;
+	s=arc-20240116; t=1723478763; c=relaxed/simple;
+	bh=w0tnNhDp8EqXMnrZTItojCTlE7DxYgAzeVtD9pc0Yq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwa5FO/7WKhINzASvQfN7uSs6KHeR7xNPgN1cu2oHb86IrSem0F4ox4UYoe1I09XWu/ebhWe0r591L/LniQ0Jzzg3DvxxguQzFepsa2rQO9E04+T3Kc4Pzi5PO0NPzziOcjsWE10lXRaL1lzOUeglQ/tMT7MlEWbjm8dluw0aK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5QslYDQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA446C32782;
-	Mon, 12 Aug 2024 16:28:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tdZ2Lo2uetZLAirIOTfL2oUwTRNVCrdtxDR5VrTaxIAeR3hQ3ltNXM/mYIUU9pYscG/OvRs1PQuI98Tl3EzTfl0/oG7BuTedixquxFRtdfOPbYWvaptn7MHE0xTrsT6Q/f8+zqQEYHp1zU7paDpXNOmVFmO/Y5KsomPpEHetq/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10YcOs0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348D9C32782;
+	Mon, 12 Aug 2024 16:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480120;
-	bh=T1s1+ZR4mt8dAnw+JYADGWhoeYHKcuSUlUXAeGjNWCA=;
+	s=korg; t=1723478762;
+	bh=w0tnNhDp8EqXMnrZTItojCTlE7DxYgAzeVtD9pc0Yq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5QslYDQ0UwSXGfV563Se0Tj9X8F1eQ7mfbG8gnNu9HSZhwwMakFGPkTNN1jVCF+E
-	 5u6TK3fd3c6P4RxY+2f8QqTLmjv6KcCZs5nqEkTPFuzrTPAPv7H2hboY89pMgEADNj
-	 O+Cgdcx4drSpWN7triH4sGFhlwsxAI17WDTzeH2g=
+	b=10YcOs0WKEfkGu0tF6J74Dmhn3ilpE67E0CIMJEnoGcGp6Jxzb2cFVOJXgdsufrgP
+	 Orh/aT4lXBeso4XRV4f6N0YYQc3OaDuzZO6f+BUL2/W4K2O1cx1xsTRkn+M8i+eFO0
+	 DVWIcgmKgWJgBlqUBg802fdUiK1HVh60lnht4sUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 102/263] drm/amd/display: Wake DMCUB before sending a command for replay feature
+Subject: [PATCH 6.1 022/150] ACPI: battery: create alarm sysfs attribute atomically
 Date: Mon, 12 Aug 2024 18:01:43 +0200
-Message-ID: <20240812160150.448744874@linuxfoundation.org>
+Message-ID: <20240812160126.019023621@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 3601a35a2e9d640233f4bc3496f7603b93f9c143 ]
+[ Upstream commit a231eed10ed5a290129fda36ad7bcc263c53ff7d ]
 
-[Why]
-We can hang in place trying to send commands when the DMCUB isn't
-powered on.
+Let the power supply core register the attribute.
+This ensures that the attribute is created before the device is
+announced to userspace, avoid a race condition.
 
-[How]
-For functions that execute within a DC context or DC lock we can wrap
-the direct calls to dm_execute_dmub_cmd/list with code that exits idle
-power optimizations and reallows once we're done with the command
-submission on success.
-
-For DM direct submissions the DM will need to manage the enter/exit
-sequencing manually.
-
-We cannot invoke a DMCUB command directly within the DM execution helper
-or we can deadlock.
-
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/battery.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
-index 4f559a025cf00..f820647443d16 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_replay.c
-@@ -84,7 +84,7 @@ static void dmub_replay_enable(struct dmub_replay *dmub, bool enable, bool wait,
- 
- 	cmd.replay_enable.header.payload_bytes = sizeof(struct dmub_rb_cmd_replay_enable_data);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	/* Below loops 1000 x 500us = 500 ms.
- 	 *  Exit REPLAY may need to wait 1-2 frames to power up. Timeout after at
-@@ -127,7 +127,7 @@ static void dmub_replay_set_power_opt(struct dmub_replay *dmub, unsigned int pow
- 	cmd.replay_set_power_opt.replay_set_power_opt_data.power_opt = power_opt;
- 	cmd.replay_set_power_opt.replay_set_power_opt_data.panel_inst = panel_inst;
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 084f156bdfbc4..088740fdea355 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -667,12 +667,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
+ 	return count;
  }
  
- /*
-@@ -231,7 +231,7 @@ static void dmub_replay_set_coasting_vtotal(struct dmub_replay *dmub,
- 	cmd.replay_set_coasting_vtotal.header.payload_bytes = sizeof(struct dmub_cmd_replay_set_coasting_vtotal_data);
- 	cmd.replay_set_coasting_vtotal.replay_set_coasting_vtotal_data.coasting_vtotal = coasting_vtotal;
+-static const struct device_attribute alarm_attr = {
++static struct device_attribute alarm_attr = {
+ 	.attr = {.name = "alarm", .mode = 0644},
+ 	.show = acpi_battery_alarm_show,
+ 	.store = acpi_battery_alarm_store,
+ };
  
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
++static struct attribute *acpi_battery_attrs[] = {
++	&alarm_attr.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(acpi_battery);
++
+ /*
+  * The Battery Hooking API
+  *
+@@ -809,7 +815,10 @@ static void __exit battery_hook_exit(void)
+ 
+ static int sysfs_add_battery(struct acpi_battery *battery)
+ {
+-	struct power_supply_config psy_cfg = { .drv_data = battery, };
++	struct power_supply_config psy_cfg = {
++		.drv_data = battery,
++		.attr_grp = acpi_battery_groups,
++	};
+ 	bool full_cap_broken = false;
+ 
+ 	if (!ACPI_BATTERY_CAPACITY_VALID(battery->full_charge_capacity) &&
+@@ -854,7 +863,7 @@ static int sysfs_add_battery(struct acpi_battery *battery)
+ 		return result;
+ 	}
+ 	battery_hook_add_battery(battery);
+-	return device_create_file(&battery->bat->dev, &alarm_attr);
++	return 0;
  }
  
- /*
+ static void sysfs_remove_battery(struct acpi_battery *battery)
+@@ -865,7 +874,6 @@ static void sysfs_remove_battery(struct acpi_battery *battery)
+ 		return;
+ 	}
+ 	battery_hook_remove_battery(battery);
+-	device_remove_file(&battery->bat->dev, &alarm_attr);
+ 	power_supply_unregister(battery->bat);
+ 	battery->bat = NULL;
+ 	mutex_unlock(&battery->sysfs_lock);
 -- 
 2.43.0
 
