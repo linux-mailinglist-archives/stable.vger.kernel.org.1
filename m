@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-67155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149F094F422
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005F594F328
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4867B245C1
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7739B1F21005
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C395186E34;
-	Mon, 12 Aug 2024 16:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C9B187345;
+	Mon, 12 Aug 2024 16:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4UgPAVL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhmJdEIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED1A134AC;
-	Mon, 12 Aug 2024 16:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F235186E36;
+	Mon, 12 Aug 2024 16:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479990; cv=none; b=oA0VCH8N9Hl/5Ky3PxZ+ScE4yBSYq4PIygAxozEJvtYvRPxbN14ejrsCdWzBxZdgvuvW/tWQx8gnGfK6rC1t+4n04VLKtmgLilZcmpl+m9xM2819TTO50cooUNe24qGonoLwnJuQmxUgeEYmn59iMTYMlzrJwbCEIuYZB+GTeo4=
+	t=1723479257; cv=none; b=IiysR/+/H2ly7UlEWxuPxqCQ0fDK346lgFdJGqjEcSEIFv0DgMgiElRqSTEkQG0q7GS+Igyv2Dv/Y/7w/9HtHbXBy8Zgn4rqQfrQjdYOVZEtMosvErsQILmCvJ6ggj4JJdBPOF/VlXLIf4A8DARyqIGzIPlxTJxmR3Li+iW4hMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479990; c=relaxed/simple;
-	bh=ZUYaxRmcxPL/9KiNtqxQkqd3ttZZzPuddnN1YFIApuM=;
+	s=arc-20240116; t=1723479257; c=relaxed/simple;
+	bh=GWznM5V3p/P+GvEkcSCtRpBshFF4QPvodoH+p6hcGX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTZjOp27AjOTKj3YUjFwrKuyPoTJxj6bAkrjAidvdAYJN0gibWuvS/5izTm63R3Yzsf2v3lvufMOlLvBC/DN9GHNDllzNSJSc3F7UwlRfwFWH/DZ7coPsdZ0irp1KB1vZv/2wlBx2nrMV3IdMH52YoeXPHgpQ7g/K8PTOqEQ73U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4UgPAVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477DEC32782;
-	Mon, 12 Aug 2024 16:26:30 +0000 (UTC)
+	 MIME-Version; b=fMJaYZWQfWMV5LRLGilK5aWWsLDRFtJz7EpgjqNUILOihEGiT2hhKNSNsvmpxm2jdKOVsdiLXVdULdaZf3cG+A81VCKvs1Jd+hF+H7jeNvDuBcsQShOWQXNeHUV8Si+g5FkWfXRGlYiDSRuU57xK6XYwM4c4FuuCZI4QC0Efl2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhmJdEIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709AEC32782;
+	Mon, 12 Aug 2024 16:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479990;
-	bh=ZUYaxRmcxPL/9KiNtqxQkqd3ttZZzPuddnN1YFIApuM=;
+	s=korg; t=1723479256;
+	bh=GWznM5V3p/P+GvEkcSCtRpBshFF4QPvodoH+p6hcGX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4UgPAVLGiJa1TWpRTwm/Y+ubBOxxKg/k3SZYH02sGT20e0iNMKxJ5zYwn6GWKFB6
-	 CGRewhT3U1S4f4Nan/Y512tl45AlI7sWI45FX/hivGmBY9eM1QOiY0ioJtTC71rc6M
-	 ba2kSGHkjh9k+oRgXIsS8ujmIDLcbY0gQw4Votvw=
+	b=PhmJdEItUrgyyiSvqp7WEemj3yWEKFcQbudy+QPjMPVdFp6YzoC3Y/TTE/7JiVqRq
+	 wMiE2JAqemPw435vmw06F3v2L4kJUO58OZbD4bnUCAQNLT0urBiH5FJGh/smsaRnDJ
+	 BRLdNz4OZJXrYedVayUpQXXqYDT/uZ+yEmSubsNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bc0f5b92cc7091f45fb6@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+	Sebastian Steinbeisser <Sebastian.Steinbeisser@lrz.de>,
+	Tom Talpey <tom@talpey.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 063/263] wifi: nl80211: disallow setting special AP channel widths
+Subject: [PATCH 6.6 008/189] smb: client: handle lack of FSCTL_GET_REPARSE_POINT support
 Date: Mon, 12 Aug 2024 18:01:04 +0200
-Message-ID: <20240812160148.956372326@linuxfoundation.org>
+Message-ID: <20240812160132.459955293@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 23daf1b4c91db9b26f8425cc7039cf96d22ccbfe ]
+[ Upstream commit 4b96024ef2296b1d323af327cae5e52809b61420 ]
 
-Setting the AP channel width is meant for use with the normal
-20/40/... MHz channel width progression, and switching around
-in S1G or narrow channels isn't supported. Disallow that.
+As per MS-FSA 2.1.5.10.14, support for FSCTL_GET_REPARSE_POINT is
+optional and if the server doesn't support it,
+STATUS_INVALID_DEVICE_REQUEST must be returned for the operation.
 
-Reported-by: syzbot+bc0f5b92cc7091f45fb6@syzkaller.appspotmail.com
-Link: https://msgid.link/20240515141600.d4a9590bfe32.I19a32d60097e81b527eafe6b0924f6c5fbb2dc45@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+If we find files with reparse points and we can't read them due to
+lack of client or server support, just ignore it and then treat them
+as regular files or junctions.
+
+Fixes: 5f71ebc41294 ("smb: client: parse reparse point flag in create response")
+Reported-by: Sebastian Steinbeisser <Sebastian.Steinbeisser@lrz.de>
+Tested-by: Sebastian Steinbeisser <Sebastian.Steinbeisser@lrz.de>
+Acked-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ fs/smb/client/inode.c     | 17 +++++++++++++++--
+ fs/smb/client/reparse.c   |  4 ++++
+ fs/smb/client/reparse.h   | 19 +++++++++++++++++--
+ fs/smb/client/smb2inode.c |  2 ++
+ 4 files changed, 38 insertions(+), 4 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 0fd075238fc74..07538be6805ef 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -3422,6 +3422,33 @@ static int __nl80211_set_channel(struct cfg80211_registered_device *rdev,
- 			if (chandef.chan != cur_chan)
- 				return -EBUSY;
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 9cdbc3ccc1d14..e74ba047902d8 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1023,13 +1023,26 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 	}
  
-+			/* only allow this for regular channel widths */
-+			switch (wdev->links[link_id].ap.chandef.width) {
-+			case NL80211_CHAN_WIDTH_20_NOHT:
-+			case NL80211_CHAN_WIDTH_20:
-+			case NL80211_CHAN_WIDTH_40:
-+			case NL80211_CHAN_WIDTH_80:
-+			case NL80211_CHAN_WIDTH_80P80:
-+			case NL80211_CHAN_WIDTH_160:
-+			case NL80211_CHAN_WIDTH_320:
-+				break;
-+			default:
-+				return -EINVAL;
-+			}
+ 	rc = -EOPNOTSUPP;
+-	switch ((data->reparse.tag = tag)) {
+-	case 0: /* SMB1 symlink */
++	data->reparse.tag = tag;
++	if (!data->reparse.tag) {
+ 		if (server->ops->query_symlink) {
+ 			rc = server->ops->query_symlink(xid, tcon,
+ 							cifs_sb, full_path,
+ 							&data->symlink_target);
+ 		}
++		if (rc == -EOPNOTSUPP)
++			data->reparse.tag = IO_REPARSE_TAG_INTERNAL;
++	}
 +
-+			switch (chandef.width) {
-+			case NL80211_CHAN_WIDTH_20_NOHT:
-+			case NL80211_CHAN_WIDTH_20:
-+			case NL80211_CHAN_WIDTH_40:
-+			case NL80211_CHAN_WIDTH_80:
-+			case NL80211_CHAN_WIDTH_80P80:
-+			case NL80211_CHAN_WIDTH_160:
-+			case NL80211_CHAN_WIDTH_320:
-+				break;
-+			default:
-+				return -EINVAL;
-+			}
++	switch (data->reparse.tag) {
++	case 0: /* SMB1 symlink */
++		break;
++	case IO_REPARSE_TAG_INTERNAL:
++		rc = 0;
++		if (le32_to_cpu(data->fi.Attributes) & ATTR_DIRECTORY) {
++			cifs_create_junction_fattr(fattr, sb);
++			goto out;
++		}
+ 		break;
+ 	case IO_REPARSE_TAG_MOUNT_POINT:
+ 		cifs_create_junction_fattr(fattr, sb);
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index a0ffbda907331..689d8a506d459 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -505,6 +505,10 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 	}
+ 
+ 	switch (tag) {
++	case IO_REPARSE_TAG_INTERNAL:
++		if (!(fattr->cf_cifsattrs & ATTR_DIRECTORY))
++			return false;
++		fallthrough;
+ 	case IO_REPARSE_TAG_DFS:
+ 	case IO_REPARSE_TAG_DFSR:
+ 	case IO_REPARSE_TAG_MOUNT_POINT:
+diff --git a/fs/smb/client/reparse.h b/fs/smb/client/reparse.h
+index 6b55d1df9e2f8..2c0644bc4e65a 100644
+--- a/fs/smb/client/reparse.h
++++ b/fs/smb/client/reparse.h
+@@ -12,6 +12,12 @@
+ #include "fs_context.h"
+ #include "cifsglob.h"
+ 
++/*
++ * Used only by cifs.ko to ignore reparse points from files when client or
++ * server doesn't support FSCTL_GET_REPARSE_POINT.
++ */
++#define IO_REPARSE_TAG_INTERNAL ((__u32)~0U)
 +
- 			result = rdev_set_ap_chanwidth(rdev, dev, link_id,
- 						       &chandef);
- 			if (result)
+ static inline dev_t reparse_nfs_mkdev(struct reparse_posix_data *buf)
+ {
+ 	u64 v = le64_to_cpu(*(__le64 *)buf->DataBuffer);
+@@ -78,10 +84,19 @@ static inline u32 reparse_mode_wsl_tag(mode_t mode)
+ static inline bool reparse_inode_match(struct inode *inode,
+ 				       struct cifs_fattr *fattr)
+ {
++	struct cifsInodeInfo *cinode = CIFS_I(inode);
+ 	struct timespec64 ctime = inode_get_ctime(inode);
+ 
+-	return (CIFS_I(inode)->cifsAttrs & ATTR_REPARSE) &&
+-		CIFS_I(inode)->reparse_tag == fattr->cf_cifstag &&
++	/*
++	 * Do not match reparse tags when client or server doesn't support
++	 * FSCTL_GET_REPARSE_POINT.  @fattr->cf_cifstag should contain correct
++	 * reparse tag from query dir response but the client won't be able to
++	 * read the reparse point data anyway.  This spares us a revalidation.
++	 */
++	if (cinode->reparse_tag != IO_REPARSE_TAG_INTERNAL &&
++	    cinode->reparse_tag != fattr->cf_cifstag)
++		return false;
++	return (cinode->cifsAttrs & ATTR_REPARSE) &&
+ 		timespec64_equal(&ctime, &fattr->cf_ctime);
+ }
+ 
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 86f8c81791374..28031c7ba6b19 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -930,6 +930,8 @@ int smb2_query_path_info(const unsigned int xid,
+ 
+ 	switch (rc) {
+ 	case 0:
++		rc = parse_create_response(data, cifs_sb, &out_iov[0]);
++		break;
+ 	case -EOPNOTSUPP:
+ 		/*
+ 		 * BB TODO: When support for special files added to Samba
 -- 
 2.43.0
 
