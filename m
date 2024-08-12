@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8891494F0A9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:52:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4F694F0A7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:52:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2080BB2758F
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E7E8282CB2
 	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E5E17D354;
-	Mon, 12 Aug 2024 14:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4C217F4FE;
+	Mon, 12 Aug 2024 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0Iaa/kB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opOO63DN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4FA17BB03
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F26A172773
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474352; cv=none; b=C8ixljgioeP56mkVmtlFSg7wgWJ/meisW7vNE6wWeLa4zDhrZgv17tS0MZn5mot7b5RVgrN9cPiSjXtLdy2mE15eTkL/IHyWBkTUtQ+XNeBTWPFd50NiMSfjtC3E5GqxzmhIDjuLq+G+pW2UnWqs9VD/20FWAd6gaC7OghGamVI=
+	t=1723474355; cv=none; b=Uve9YFky89FfmHDc2z08l9OUbNr6ZPPZZZMvQBBB0qVxTG8or4NOaWrErYxbK8yHq1h4HJ1/jAuO5+A+Pyb8otBBoffxGsMQfttMkDU6KA86xybURFU9VGNZK0tmDcVLHPaMCL7UmW0qwGSo8xM8FZRrTP6/wydCO58EPTs6pFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474352; c=relaxed/simple;
-	bh=tD73d9ARz5tjFgb1yz2/IvqJ71Ox9AqNF0LxoABBVac=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MDq34UckAnmkUakA//xP+9jooxDh4lDrqueAuR0Dr1Fx4QXKItPkIFggAqnxQXKxXV4g6vD/SK7a2ItXJHfKkc/LJCEMX1pb35BbezQqrATnN6/tx5VWjqo0z5w5Eu20IheIdwZu3mJQxc5cZtv07REhHfanIJDrPIkfdEo2Fhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0Iaa/kB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9D4C32782;
-	Mon, 12 Aug 2024 14:52:31 +0000 (UTC)
+	s=arc-20240116; t=1723474355; c=relaxed/simple;
+	bh=NI3zGTUNWNTaR4zwphhWgELH1AKz/aIScSIr84lQXbM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BNpKnrNWBhHSaAqXRGo7/X50enj4iVurgVhYv2KJ4TFMtql5ad/zeb9swNv3iPbWiS4xi175oQTLy4ZdGA1lJZfcDsRespjkT5eKfRfd1dMEP/5u1SqkgjRxOfpdYUCcuul+ZiORbKvthzq1CQT/3p6xnHu7y+TntSQR883lFcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opOO63DN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F2FC32782;
+	Mon, 12 Aug 2024 14:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474352;
-	bh=tD73d9ARz5tjFgb1yz2/IvqJ71Ox9AqNF0LxoABBVac=;
+	s=korg; t=1723474355;
+	bh=NI3zGTUNWNTaR4zwphhWgELH1AKz/aIScSIr84lQXbM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=G0Iaa/kBylImWh+AQGoo8zSzbhcfX8Y8VKzHGcwfnmnph6IqN0qbSRoSg2dgtoiFY
-	 dWKf/fa9SqlMDXUxF/cb/2FFM/aPZH9ajjAUzmQGY0KGKnnzPWCVZYa4673ODd8OsN
-	 88WmP+uwYcGQotPvNQiRmNC6swf7JgPu2d+Mc14w=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Add null check to" failed to apply to 5.10-stable tree
+	b=opOO63DNfgvhNyxXT46cuSwufDRmV/iS2McjW4+4SWTUAzS4OR4Sh0VKk4WptDhYq
+	 lDITlKmEqULJOOYgHNszbFTg8zuaLOA4ilIfXHfyxxh/l4XoQp8thkUpOGWyp8VQzP
+	 eWgqUZkgEIHEY/eZzgyeZ5SeWmKkRYQe2bweYRWk=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Add null check to" failed to apply to 5.15-stable tree
 To: dillon.varone@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,hamza.mahfooz@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 12 Aug 2024 16:50:02 +0200
-Message-ID: <2024081202-lens-amniotic-72e8@gregkh>
+Message-ID: <2024081202-stonework-neurology-88df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x a157dcc521dcb8eb0acb50d66d1b0fc5efcea789
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081202-lens-amniotic-72e8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081202-stonework-neurology-88df@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
