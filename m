@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-66782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AF094F26D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:06:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A0494F45A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352181C20D02
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:06:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68AA1F21179
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C469187343;
-	Mon, 12 Aug 2024 16:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CAF187321;
+	Mon, 12 Aug 2024 16:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlzoSeiF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjiUC5iK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE072187339;
-	Mon, 12 Aug 2024 16:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ACC183CD4;
+	Mon, 12 Aug 2024 16:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478767; cv=none; b=LCPFrJWdkCtpzEwbcHLBSUVGKQckRBn5KXQnxskgvCF72ou4Cw8ZyGdTNT7BT+gaK07Xc7m3LNZ2rdBWzUoG8nAk8mE6rk+BMt/bbWUpqdCFVPoCkYBaPJHqaxvIKl9MnhU/ZhnFVKpUs3Xo2b0d3rGOMg5ly9RY5OI4tzlzUtU=
+	t=1723480158; cv=none; b=ejqm3zxkOnHb7PODv6D2e8qy1HcsVR8hY5Vz0Hf5e6RttpNsZltUhGiteaCRvKgGPogKPSsXgpwb/j5FHZZV28FxlLme0CXymJRZBswKGzpfYoeywpqGUWwC56E9Vz6F84aSB+o+M0NT+rMZr2igroXqks0xhShmj/XOaNf0LCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478767; c=relaxed/simple;
-	bh=+sy5nQ8F/+cbLQ/95P9GzFAhIZNk3VvssAMxwAUW8hE=;
+	s=arc-20240116; t=1723480158; c=relaxed/simple;
+	bh=nb2mpv8KF6u31meg6HQwqQL9m3dYdo75G/GttHQdv/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FXAfFlqb5Ntz27+pLA+Ykh9r/lnGF8YKDolk6g1sXWVV11Gn35pvRknQEnqzuCG+banSg7DavpxHfwnKHm7RQSdNkycS4q0HR/qIsBrSyXcbK9HyXzLBZaioq4wMOo5qJwx0DmIsJL8ckOSp6MdnQejeoFMkFtC6sSv3ZiNGJzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlzoSeiF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAB6C32782;
-	Mon, 12 Aug 2024 16:06:06 +0000 (UTC)
+	 MIME-Version; b=K+deCojzxuCb887F6NvVGQDD3oy1oMjgtSfyM61rggjbZhmHD7PwTr1BSAIcs0W0+jRUQIoXsYWse0Za7opfzLyuVRdYBjprmHAjl+lwxqumwWoqu0um65wfMhxMMYWktRB+RGKGSvphGk1nZE/h8WTtHBvI2EEW0Fh3IO2H2Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjiUC5iK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AD2C32782;
+	Mon, 12 Aug 2024 16:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478766;
-	bh=+sy5nQ8F/+cbLQ/95P9GzFAhIZNk3VvssAMxwAUW8hE=;
+	s=korg; t=1723480158;
+	bh=nb2mpv8KF6u31meg6HQwqQL9m3dYdo75G/GttHQdv/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GlzoSeiFt7TXQWl78KlYyn2en5WBMX7a9ccmjGx1Bbh66SffBNZX/P/PPLEqNwRPQ
-	 EOSeYenb5rCONZPPXlKCQuqjF9ZNc+gh97mmk1TfLtU6B0FNMWU9GWDZQxQrw4xi6E
-	 A02Oeg+7bxSzYvLQEpvU/6f7plQeK8gq+QGmlkck=
+	b=SjiUC5iKbV9hEo2/GxX8BytTh08A3e/T1Tc+ixkSQK+wHlzJzG2aKRAZlThRAiy6Q
+	 eeY+l3RTXlzSrsLre2VDxUTD/r4CexFwamXNa4eQMEapRBHGwchpAnOyThxw1SqJ2Q
+	 swQ3ZJdNQ2ID7HVQQE+menp4iYd6docpPyjhZPh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Chi Zhiling <chizhiling@kylinos.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/150] can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum
+Subject: [PATCH 6.10 111/263] media: xc2028: avoid use-after-free in load_firmware_cb()
 Date: Mon, 12 Aug 2024 18:01:52 +0200
-Message-ID: <20240812160126.366688377@linuxfoundation.org>
+Message-ID: <20240812160150.795554984@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,212 +60,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Chi Zhiling <chizhiling@kylinos.cn>
 
-[ Upstream commit b8e0ddd36ce9536ad7478dd27df06c9ae92370ba ]
+[ Upstream commit 68594cec291ff9523b9feb3f43fd853dcddd1f60 ]
 
-This is a preparatory patch to work around a problem similar to
-erratum DS80000789E 6 of the mcp2518fd, the other variants of the chip
-family (mcp2517fd and mcp251863) are probably also affected.
+syzkaller reported use-after-free in load_firmware_cb() [1].
+The reason is because the module allocated a struct tuner in tuner_probe(),
+and then the module initialization failed, the struct tuner was released.
+A worker which created during module initialization accesses this struct
+tuner later, it caused use-after-free.
 
-Erratum DS80000789E 6 says "reading of the FIFOCI bits in the FIFOSTA
-register for an RX FIFO may be corrupted". However observation shows
-that this problem is not limited to RX FIFOs but also effects the TEF
-FIFO.
+The process is as follows:
 
-When handling the TEF interrupt, the driver reads the FIFO header
-index from the TEF FIFO STA register of the chip.
+task-6504           worker_thread
+tuner_probe                             <= alloc dvb_frontend [2]
+...
+request_firmware_nowait                 <= create a worker
+...
+tuner_remove                            <= free dvb_frontend
+...
+                    request_firmware_work_func  <= the firmware is ready
+                    load_firmware_cb    <= but now the dvb_frontend has been freed
 
-In the bad case, the driver reads a too large head index. In the
-original code, the driver always trusted the read value, which caused
-old CAN transmit complete events that were already processed to be
-re-processed.
+To fix the issue, check the dvd_frontend in load_firmware_cb(), if it is
+null, report a warning and just return.
 
-Instead of reading and trusting the head index, read the head index
-and calculate the number of CAN frames that were supposedly received -
-replace mcp251xfd_tef_ring_update() with mcp251xfd_get_tef_len().
+[1]:
+    ==================================================================
+     BUG: KASAN: use-after-free in load_firmware_cb+0x1310/0x17a0
+     Read of size 8 at addr ffff8000d7ca2308 by task kworker/2:3/6504
 
-The mcp251xfd_handle_tefif() function reads the CAN transmit complete
-events from the chip, iterates over them and pushes them into the
-network stack. The original driver already contains code to detect old
-CAN transmit complete events, that will be updated in the next patch.
+     Call trace:
+      load_firmware_cb+0x1310/0x17a0
+      request_firmware_work_func+0x128/0x220
+      process_one_work+0x770/0x1824
+      worker_thread+0x488/0xea0
+      kthread+0x300/0x430
+      ret_from_fork+0x10/0x20
 
-Cc: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Cc: Thomas Kopp <thomas.kopp@microchip.com>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+     Allocated by task 6504:
+      kzalloc
+      tuner_probe+0xb0/0x1430
+      i2c_device_probe+0x92c/0xaf0
+      really_probe+0x678/0xcd0
+      driver_probe_device+0x280/0x370
+      __device_attach_driver+0x220/0x330
+      bus_for_each_drv+0x134/0x1c0
+      __device_attach+0x1f4/0x410
+      device_initial_probe+0x20/0x30
+      bus_probe_device+0x184/0x200
+      device_add+0x924/0x12c0
+      device_register+0x24/0x30
+      i2c_new_device+0x4e0/0xc44
+      v4l2_i2c_new_subdev_board+0xbc/0x290
+      v4l2_i2c_new_subdev+0xc8/0x104
+      em28xx_v4l2_init+0x1dd0/0x3770
+
+     Freed by task 6504:
+      kfree+0x238/0x4e4
+      tuner_remove+0x144/0x1c0
+      i2c_device_remove+0xc8/0x290
+      __device_release_driver+0x314/0x5fc
+      device_release_driver+0x30/0x44
+      bus_remove_device+0x244/0x490
+      device_del+0x350/0x900
+      device_unregister+0x28/0xd0
+      i2c_unregister_device+0x174/0x1d0
+      v4l2_device_unregister+0x224/0x380
+      em28xx_v4l2_init+0x1d90/0x3770
+
+     The buggy address belongs to the object at ffff8000d7ca2000
+      which belongs to the cache kmalloc-2k of size 2048
+     The buggy address is located 776 bytes inside of
+      2048-byte region [ffff8000d7ca2000, ffff8000d7ca2800)
+     The buggy address belongs to the page:
+     page:ffff7fe00035f280 count:1 mapcount:0 mapping:ffff8000c001f000 index:0x0
+     flags: 0x7ff800000000100(slab)
+     raw: 07ff800000000100 ffff7fe00049d880 0000000300000003 ffff8000c001f000
+     raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
+     page dumped because: kasan: bad access detected
+
+     Memory state around the buggy address:
+      ffff8000d7ca2200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+      ffff8000d7ca2280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+     >ffff8000d7ca2300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                           ^
+      ffff8000d7ca2380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+      ffff8000d7ca2400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+     ==================================================================
+
+[2]
+    Actually, it is allocated for struct tuner, and dvb_frontend is inside.
+
+Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  2 +
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 54 +++++++++++++------
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h     | 13 ++---
- 3 files changed, 43 insertions(+), 26 deletions(-)
+ drivers/media/tuners/xc2028.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-index bf3f0f150199d..4d0246a0779a6 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-@@ -475,6 +475,8 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
- 		clear_bit(MCP251XFD_FLAGS_FD_MODE, priv->flags);
- 	}
- 
-+	tx_ring->obj_num_shift_to_u8 = BITS_PER_TYPE(tx_ring->obj_num) -
-+		ilog2(tx_ring->obj_num);
- 	tx_ring->obj_size = tx_obj_size;
- 
- 	rem = priv->rx_obj_num;
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-index 237617b0c125f..b33192964cf7d 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -2,7 +2,7 @@
- //
- // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
- //
--// Copyright (c) 2019, 2020, 2021 Pengutronix,
-+// Copyright (c) 2019, 2020, 2021, 2023 Pengutronix,
- //               Marc Kleine-Budde <kernel@pengutronix.de>
- //
- // Based on:
-@@ -16,6 +16,11 @@
- 
- #include "mcp251xfd.h"
- 
-+static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
-+{
-+	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
-+}
-+
- static inline int
- mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
- 				 u8 *tef_tail)
-@@ -120,28 +125,44 @@ mcp251xfd_handle_tefif_one(struct mcp251xfd_priv *priv,
- 	return 0;
- }
- 
--static int mcp251xfd_tef_ring_update(struct mcp251xfd_priv *priv)
-+static int
-+mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
+diff --git a/drivers/media/tuners/xc2028.c b/drivers/media/tuners/xc2028.c
+index 5a967edceca93..352b8a3679b72 100644
+--- a/drivers/media/tuners/xc2028.c
++++ b/drivers/media/tuners/xc2028.c
+@@ -1361,9 +1361,16 @@ static void load_firmware_cb(const struct firmware *fw,
+ 			     void *context)
  {
- 	const struct mcp251xfd_tx_ring *tx_ring = priv->tx;
--	unsigned int new_head;
--	u8 chip_tx_tail;
-+	const u8 shift = tx_ring->obj_num_shift_to_u8;
-+	u8 chip_tx_tail, tail, len;
-+	u32 fifo_sta;
- 	int err;
+ 	struct dvb_frontend *fe = context;
+-	struct xc2028_data *priv = fe->tuner_priv;
++	struct xc2028_data *priv;
+ 	int rc;
  
--	err = mcp251xfd_tx_tail_get_from_chip(priv, &chip_tx_tail);
-+	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(priv->tx->fifo_nr),
-+			  &fifo_sta);
- 	if (err)
- 		return err;
- 
--	/* chip_tx_tail, is the next TX-Object send by the HW.
--	 * The new TEF head must be >= the old head, ...
-+	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
-+		*len_p = tx_ring->obj_num;
-+		return 0;
++	if (!fe) {
++		pr_warn("xc2028: No frontend in %s\n", __func__);
++		return;
 +	}
 +
-+	chip_tx_tail = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
++	priv = fe->tuner_priv;
 +
-+	err =  mcp251xfd_check_tef_tail(priv);
-+	if (err)
-+		return err;
-+	tail = mcp251xfd_get_tef_tail(priv);
-+
-+	/* First shift to full u8. The subtraction works on signed
-+	 * values, that keeps the difference steady around the u8
-+	 * overflow. The right shift acts on len, which is an u8.
- 	 */
--	new_head = round_down(priv->tef->head, tx_ring->obj_num) + chip_tx_tail;
--	if (new_head <= priv->tef->head)
--		new_head += tx_ring->obj_num;
-+	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(chip_tx_tail));
-+	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(tail));
-+	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
- 
--	/* ... but it cannot exceed the TX head. */
--	priv->tef->head = min(new_head, tx_ring->head);
-+	len = (chip_tx_tail << shift) - (tail << shift);
-+	*len_p = len >> shift;
- 
--	return mcp251xfd_check_tef_tail(priv);
-+	return 0;
- }
- 
- static inline int
-@@ -182,13 +203,12 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
- 	u8 tef_tail, len, l;
- 	int err, i;
- 
--	err = mcp251xfd_tef_ring_update(priv);
-+	err = mcp251xfd_get_tef_len(priv, &len);
- 	if (err)
- 		return err;
- 
- 	tef_tail = mcp251xfd_get_tef_tail(priv);
--	len = mcp251xfd_get_tef_len(priv);
--	l = mcp251xfd_get_tef_linear_len(priv);
-+	l = mcp251xfd_get_tef_linear_len(priv, len);
- 	err = mcp251xfd_tef_obj_read(priv, hw_tef_obj, tef_tail, l);
- 	if (err)
- 		return err;
-@@ -223,6 +243,8 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
- 		struct mcp251xfd_tx_ring *tx_ring = priv->tx;
- 		int offset;
- 
-+		ring->head += len;
-+
- 		/* Increment the TEF FIFO tail pointer 'len' times in
- 		 * a single SPI message.
- 		 *
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-index b98ded7098a5a..78d12dda08a05 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-@@ -519,6 +519,7 @@ struct mcp251xfd_tef_ring {
- 
- 	/* u8 obj_num equals tx_ring->obj_num */
- 	/* u8 obj_size equals sizeof(struct mcp251xfd_hw_tef_obj) */
-+	/* u8 obj_num_shift_to_u8 equals tx_ring->obj_num_shift_to_u8 */
- 
- 	union mcp251xfd_write_reg_buf irq_enable_buf;
- 	struct spi_transfer irq_enable_xfer;
-@@ -537,6 +538,7 @@ struct mcp251xfd_tx_ring {
- 	u8 nr;
- 	u8 fifo_nr;
- 	u8 obj_num;
-+	u8 obj_num_shift_to_u8;
- 	u8 obj_size;
- 
- 	struct mcp251xfd_tx_obj obj[MCP251XFD_TX_OBJ_NUM_MAX];
-@@ -843,17 +845,8 @@ static inline u8 mcp251xfd_get_tef_tail(const struct mcp251xfd_priv *priv)
- 	return priv->tef->tail & (priv->tx->obj_num - 1);
- }
- 
--static inline u8 mcp251xfd_get_tef_len(const struct mcp251xfd_priv *priv)
-+static inline u8 mcp251xfd_get_tef_linear_len(const struct mcp251xfd_priv *priv, u8 len)
- {
--	return priv->tef->head - priv->tef->tail;
--}
--
--static inline u8 mcp251xfd_get_tef_linear_len(const struct mcp251xfd_priv *priv)
--{
--	u8 len;
--
--	len = mcp251xfd_get_tef_len(priv);
--
- 	return min_t(u8, len, priv->tx->obj_num - mcp251xfd_get_tef_tail(priv));
- }
- 
+ 	tuner_dbg("request_firmware_nowait(): %s\n", fw ? "OK" : "error");
+ 	if (!fw) {
+ 		tuner_err("Could not load firmware %s.\n", priv->fname);
 -- 
 2.43.0
 
