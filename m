@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D5094EC4A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:04:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D12794EC4D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA395B2164B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:03:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91E51F228A8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF43D14B95B;
-	Mon, 12 Aug 2024 12:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AE0175D3E;
+	Mon, 12 Aug 2024 12:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KY+lUAaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jf/M6m5d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE201366
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E461366
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723464235; cv=none; b=SFyIP5/fXiyFiSsKILkxVRBMgjm5TsMvA63RwiIc4SbgnzPraFt15ekL0BcN5D1IIMgf1taYLNoAfZMfrTJ6k0GsQcSAUarKnhT5sr+8oLE06lK2xdfc3dnvcpbOcLS02SQ/SCoBrZ6CHpzeYL45UDWTkphE0TyW4xNLWxckrlk=
+	t=1723464244; cv=none; b=MY4sE34oTh4RyZQHsqX09tYzjWe52IEnL0BpN8ITVGDG5oW7P0MHPYxg8R5ueQg5P9EyZlz/FdHuxISXa9bw9EulNw+x4T0RMLWZ7Q0j09tkX9GFw5KHcooPpvsVNiZesKTzhtj2yrLh/Z8/Hom95Ng9lBQ/nWjktm036vJ3UUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723464235; c=relaxed/simple;
-	bh=XCb9PO7RoY8vZCfonXODrXaX1BLjJWMB9bwMwcd9aIY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nZftaM838b1nPuA9QrqRd+bmtMHUxgHsA/F6NM1nksGQ2+wb5+5szcLSikj8rkJC4YP17GglHqwYDQL+30z3Pvwk9ldX6DVlRFB00488naOv4CUPVihuWrFmOyq6oo9krqiF2o7GdtOWMbIwVxQVd/plGlRwj1GanMevN6kVotA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KY+lUAaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC45C32782;
-	Mon, 12 Aug 2024 12:03:54 +0000 (UTC)
+	s=arc-20240116; t=1723464244; c=relaxed/simple;
+	bh=077qRtEAhvlzETWCHOaZ0MjC2+h5ztR3qyOhtqGaBJE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Mn0Om95reyi+i40qsRBXXdzIccSnZnlzzna8NybxvTBQRWkJQM2K/icjPwsuVs0De9VWar+6LhJ+/ubw4MzGNBt3gWqZhTgJvSueVrZ4OwAZIPM+Ji9JP7LNlZRb7wIqqLFdJ4lMjnzjHptmCXesDHrkOoBZoLkEalyUisGpkBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jf/M6m5d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF78DC32782;
+	Mon, 12 Aug 2024 12:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723464235;
-	bh=XCb9PO7RoY8vZCfonXODrXaX1BLjJWMB9bwMwcd9aIY=;
+	s=korg; t=1723464244;
+	bh=077qRtEAhvlzETWCHOaZ0MjC2+h5ztR3qyOhtqGaBJE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KY+lUAaI9QwXYQF+HpR9BbtmAfBgUs0muWhuLenME12Z4hUNASuHJo4ifOjZZjM3N
-	 51vBj80OegNmgIjnWLmprXMmAJ696B3nvReZr94tlAnT4fDvdIzkEyrSP7LJg4PfUJ
-	 uccQ8PF2LDtcgzKA2iXxxIKlQnkrI/bOaOI2GZm8=
-Subject: FAILED: patch "[PATCH] smb3: fix setting SecurityFlags when encryption is required" failed to apply to 5.15-stable tree
+	b=Jf/M6m5dsejds76c4wJ0i1x5s6StWtUm/u9/qGT5KxHPbjAwO/KSe9APVIxdRBGpF
+	 epDcJVjFnbjFlhEMi0TBiq8t9Lr8NImZw0p36Nyr96EjN7isemZznV08gQHmRF+Zd1
+	 n7UDquGetbKSFvXtI2CpRm2wJDCFHybtY/OukQjI=
+Subject: FAILED: patch "[PATCH] smb3: fix setting SecurityFlags when encryption is required" failed to apply to 5.10-stable tree
 To: stfrench@microsoft.com,bharathsm@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 14:03:52 +0200
-Message-ID: <2024081252-boney-keenly-ca0f@gregkh>
+Date: Mon, 12 Aug 2024 14:03:53 +0200
+Message-ID: <2024081253-collie-hatless-bc0e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1b5487aefb1ce7a6b1f15a33297d1231306b4122
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081252-boney-keenly-ca0f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081253-collie-hatless-bc0e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 1b5487aefb1c ("smb3: fix setting SecurityFlags when encryption is required")
 d2346e283631 ("cifs: fix setting SecurityFlags to true")
 2ac7069ad764 ("Documentation, arch: Remove leftovers from CIFS_WEAK_PW_HASH")
+7cca308cfdc0 ("Merge tag 'powerpc-5.15-1' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux")
 
 thanks,
 
