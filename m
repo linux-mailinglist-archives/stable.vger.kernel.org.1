@@ -1,131 +1,148 @@
-Return-Path: <stable+bounces-67371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B9994F5F2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 19:41:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE56794F614
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 19:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4AE31C20FF2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:41:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DD23B21E4A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE754184540;
-	Mon, 12 Aug 2024 17:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EFA18951C;
+	Mon, 12 Aug 2024 17:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="AAPz6e+F"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lzqHcWYg"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DC813A3F2;
-	Mon, 12 Aug 2024 17:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2758418950A;
+	Mon, 12 Aug 2024 17:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723484475; cv=none; b=jjuBXQM6x2e7g73N1K3D38hiTa1jx4heKeN0P0xTl3qIZRllQFPJXwNYDUbZHaNPg3FA0cJvoHsG3MizOUtXdqUPkunn3RI0r+KASftaPZY95rqgJr1vuSFte4GApBMB+EzafcrEtpv4nUS+g+8PF07t5Pzllz0MXVaT+mWyuv4=
+	t=1723484981; cv=none; b=KvP9293938KsK8767LAHGIBfVl3aQUHQRxDkwCEae+gmHmRijQFGctpeZdxKMiZGpFYHmBEBFloK0Kd9N/ERjlsalZ/yipImr/I6/43zu3E5Bp7EDK1PT4Carly4v/VsVV4Y9D3IF0ZoAspA3Q+Cf2tpOsE20WPc90wwxAGjcCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723484475; c=relaxed/simple;
-	bh=VakPXC2M+vociIzuEJDlY2TRNwMRMDXnlBvDoQY/Ah4=;
+	s=arc-20240116; t=1723484981; c=relaxed/simple;
+	bh=u+oS+V/6h+7NxaHW/munhBTgt/CeDkNesLNfS4Yvo6E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ezjsja6ksjrOHEBPhddl97sw4jduUZ+3KdmTKZ5JOHpNQdoUuStJhV8YsiuTe2UZlkq0SKXqlzPBE2qGF91MwLzR33J6duMmfeAUpQfzMWtCVoCuKCPKyI3/4UwkGzR3sWxbU3aHyLE2WFNEQSQvkzg7vN7E4euZk42Y23kuggI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=AAPz6e+F; arc=none smtp.client-ip=212.227.17.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1723484442; x=1724089242; i=christian@heusel.eu;
-	bh=VakPXC2M+vociIzuEJDlY2TRNwMRMDXnlBvDoQY/Ah4=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=AAPz6e+Fxp6UBdJ8wQysLBuzhBKyprpcyNtDJIoGln6tmRWDPpj5GnOXszI9Gb28
-	 NIJa18LVQt129fO9aVYr8URgXLuBlsWjiSveCDdbjiNJHzI+HogV+tGIV2dmmzfj9
-	 10BEa7MuSKbUur4KTNKVlJLqE9sd/eli5DfoJs9t242ymCboS5u4etWRmFria3R9y
-	 1Nif7B/RBljgRWMjyCImux+Sr3ujaufwhpctpF8afQ0t0NdDBUB08FzMzQBo3U5kB
-	 aBl/aSUv3UjNBJm9xxBMehxMHtXqiYoL1vZaVsS/8aKvRufypANGkyRUPsQSVA6np
-	 4XGnsiSmhMcaM4IW0w==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([84.170.80.33]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MTiHb-1slV0p0Dc5-00YOIC; Mon, 12 Aug 2024 19:40:42 +0200
-Date: Mon, 12 Aug 2024 19:40:40 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Hannes Reinecke <hare@suse.de>, 
-	Igor Pylypiv <ipylypiv@google.com>, "Martin K . Petersen" <martin.petersen@oracle.com>, 
-	stable@vger.kernel.org, Stephan Eisvogel <eisvogel@seitics.de>, 
-	linux-ide@vger.kernel.org
-Subject: Re: [PATCH] ata: libata-core: Return sense data in descriptor format
- by default
-Message-ID: <e87e8463-acd8-4cbd-af87-3d65a179ee7f@heusel.eu>
-References: <20240812151517.1162241-2-cassel@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=jT69P1MboQPN5WLx0KSGaAUk8ReRPAmJK6rTx+DA1iGAy1aUQ1N7EklXY9OthHPHpVCLG7yLboGd5JHb93GdAGkVJpJajvs18QNzEbdBS6E9ZhPmAKKZESizacEA4Ia0cMwdJEgyTkqauKkmibJlvZ8BpPhGFkhLWNeIZDV5+Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lzqHcWYg; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2f025b94e07so54148571fa.0;
+        Mon, 12 Aug 2024 10:49:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723484977; x=1724089777; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KyV0shQA6TIAcqdzVYHe6tGzviGmCFol708Uq7iVvLw=;
+        b=lzqHcWYg5qIJ3lmc++b85EO4L9blcBlYplifW9jtv23kM2mT2FrvjkDpfbXfvgxUzp
+         g9mXOWbqutInQnQm8AZ+rNgfACpSu6FP6xtkOfaHEkiEWe8u0wZmY/sBnxQk3A+Wa6Xm
+         V6FQsO+3bk3xTTsL1HSA4eRCCN6pRGiflzhCd7y3Mdwo28EJNrewXjM2eNc6+NCa5ozY
+         UyUOV9e1uPlU4yYa84HKYPCX4MwemlXwMkuKieKThx4PBwdYoyj06U6bOTZTdB4y5/xC
+         JayG5Q06WpJqvGS9uVWoTZgWpBGIacv1Tp9yhLDS86gMsf9apmtZiJ/l7wo8n7q6BaP+
+         7Usg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723484977; x=1724089777;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KyV0shQA6TIAcqdzVYHe6tGzviGmCFol708Uq7iVvLw=;
+        b=ZMRSSfPFOHHZiPCWgJQOWfBR2knuL6ek8M+0bAypYM3xFSjlvf0UI+JAfOwi9B7GZG
+         garn2FvyZtVrJooJFlz6uCza3nOVhGAkOC5lDrjlGVKwOyABwurpRsdACLmoHgpPgQdI
+         9TOdiwSPJlWFQrpEa2TTbpdY2pWq9CIXi1N0UxRHQW8hNHXZBLyZoMV7Y8sw5LodpTwW
+         x+WtNhGZDAEEIZMKbb4WWxXptpgu83AQu3N/LVAfT6vm/jIslI0pK282wQrSaCP6zaJm
+         z1SIapLopIJBKmtTlheNO+hA98z/LZ3mRscjqjvKQUvukeM/0T/JpmAXQtVVUrFoW7sr
+         aCXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXyuvl+aHR7neYdQXYr1miRAbDInnqprKX1lSSsiowAcM8qA4A6bvaPpZnqNU6dRhXjLBn8WmmVs79X68QKBWYBGXzgLkpaYEeSgAvClvcHRvYeFwzTXqAzFpkBpm7dd05L
+X-Gm-Message-State: AOJu0YyLoTC1vENPclfaVi3z9xRXIrUByCWZYKXL0AL92IwuS9vn+ia1
+	Y4sx27a6lTqftwgmCfmPkFFcqM6ctai/Ayt6R6qfPO0gm4YfHuwNTwsFtd6NTnw=
+X-Google-Smtp-Source: AGHT+IGR4j+7/rR9G6erzkDK6bRBK0zlsxOfsHgs/YAAmuIyBC3SlXqLbYUIZS7yRBl6+Cx77mstfA==
+X-Received: by 2002:a2e:be8a:0:b0:2f0:2a55:8c4a with SMTP id 38308e7fff4ca-2f2b7280998mr9035951fa.49.1723484976749;
+        Mon, 12 Aug 2024 10:49:36 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c7a255csm197681945e9.41.2024.08.12.10.49.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Aug 2024 10:49:34 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 16FAEBE2DE0; Mon, 12 Aug 2024 19:49:34 +0200 (CEST)
+Date: Mon, 12 Aug 2024 19:49:34 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+	Akemi Yagi <toracat@elrepo.org>,
+	Hardik Garg <hargar@linux.microsoft.com>,
+	Quentin Monnet <qmo@kernel.org>, bpf@vger.kernel.org
+Subject: Re: [PATCH 6.1 00/86] 6.1.104-rc1 review
+Message-ID: <ZrpLLoQeag1Fe_3r@eldamar.lan>
+References: <20240807150039.247123516@linuxfoundation.org>
+ <ZrPafx6KUuhZZsci@eldamar.lan>
+ <2024081117-delusion-halved-9e9c@gregkh>
+ <ZrjS0V-tCQ1tGkRu@eldamar.lan>
+ <2024081143-grouped-blah-dd52@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="coeursx6zvw2qoic"
-Content-Disposition: inline
-In-Reply-To: <20240812151517.1162241-2-cassel@kernel.org>
-X-Provags-ID: V03:K1:SN7P2BJzN5ENTj0f8ZH4NNOxyMy9tv4E2gH61LKnPY6QLjKOu3P
- O16mZAuAl7uyrKZ49x9Jkv2annr8GHzWc+fWPRCck8l1U4A4uUAicUUC2gjG4zfPbxdXGWm
- xXX0Yxqs5suol/75nFpYhJ0llMVwq57nk/5YRC41R26q85bm59OLNairJ+5dhREjh2kViIi
- itzMDs6Tqbuy4Kd+gqJ4w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lxiJOM4Bl7U=;HiCloJ2PmtYqdS0IBF2qTBaxYXM
- mp/Wz/rbGaiwgNYDRCKKM+IcC/I34EhAAsjgBb/8Wi8v0kFTBbEv8NByO5Kb1AP4Esy4WiSn1
- dQifKqn9Mj1x58DtehQ3lfzL23DUSVrnGMnzGOR/1d8xuIoAaN7k2hDoE/NB222X4bVT2B4Uf
- K4TdMrkSLNZTlyUKgG0c6HklK7fH73cbQAVC/KG4ZmftpNYyGqx3deVICKlvsQOkO57xkS4PG
- k2Jn7B94orFqeT4Y5pvuj+9xUtmDgUQppsyI8+nR3BmoU25E1AC/RH+F1Tp4TrDYNxBI7Q/Ei
- b8BGcMlDTUiAMsTbMs2ClyFcygLN53zvqNMyHONgAthbFKhlI4BqVqoAo5If0wN9R6+XM2asn
- c/SgeoZ+UGJLoR7+Iqo1L37mxoKvXql/ry93HAFxlfFOAGZgC1n8N9/LC1ARGEGltESypM0hC
- ZKrE9eOFPxhyOsALx9EU+HX7Q/hWn9/SL85rLjn2Fp2NXSXYd0UAPkAEVPNsU00/YBsSRJ4WE
- a3b+8Mds9Z9WbI7MKHtxUfoaRwIHclAXh5dYKZcxIE1jpx5TZU+blYP378zfNZmEZZdmhbEQI
- m3sJl9X8I3oPryyz4HY0qv79rK7iA4JxF7X1bnlUyxsQ/dRA7b8jt+Ha9X5lRqZni7IdKANU9
- MYCQsyo2ghcPknOTtyIyC9XCttfYo0iwMngKDiUVu9jrLDe29evnbX4FEvbgWT3k0FRDjoQW+
- U2ybzG/dZjLc/yXoqbqPBi9wHvRxMZG7g==
-
-
---coeursx6zvw2qoic
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <2024081143-grouped-blah-dd52@gregkh>
 
-On 24/08/12 05:15PM, Niklas Cassel wrote:
-> Sense data can be in either fixed format or descriptor format.
->=20
-> SAT-6 revision 1, 10.4.6 Control mode page, says that if the D_SENSE bit
-> is set to zero (i.e., fixed format sense data), then the SATL should
-> return fixed format sense data for ATA PASS-THROUGH commands.
->=20
-> A lot of user space programs incorrectly assume that the sense data is in
-> descriptor format, without checking the RESPONSE CODE field of the
-> returned sense data (to see which format the sense data is in).
->=20
+Hi Greg,
 
-Tested-by: Christian Heusel <christian@heusel.eu>
+On Sun, Aug 11, 2024 at 05:40:58PM +0200, Greg Kroah-Hartman wrote:
+> On Sun, Aug 11, 2024 at 05:03:45PM +0200, Salvatore Bonaccorso wrote:
+> > Hi Greg,
+> > 
+> > On Sun, Aug 11, 2024 at 12:09:30PM +0200, Greg Kroah-Hartman wrote:
+> > > On Wed, Aug 07, 2024 at 10:35:11PM +0200, Salvatore Bonaccorso wrote:
+> > > > Hi Greg,
+> > > > 
+> > > > On Wed, Aug 07, 2024 at 04:59:39PM +0200, Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 6.1.104 release.
+> > > > > There are 86 patches in this series, all will be posted as a response
+> > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > let me know.
+> > > > > 
+> > > > > Responses should be made by Fri, 09 Aug 2024 15:00:24 +0000.
+> > > > > Anything received after that time might be too late.
+> > > > 
+> > > > 6.1.103 had the regression of bpftool not building, due to a missing
+> > > > backport:
+> > > > 
+> > > > https://lore.kernel.org/stable/v8lqgl$15bq$1@ciao.gmane.io/
+> > > > 
+> > > > The problem is that da5f8fd1f0d3 ("bpftool: Mount bpffs when pinmaps
+> > > > path not under the bpffs") was backported to 6.1.103 but there is no
+> > > > defintion of create_and_mount_bpffs_dir(). 
+> > > > 
+> > > > it was suggested to revert the commit completely.
+> > > 
+> > > Thanks for this, I'll fix it up after this release.
+> > 
+> > Thanks! Note today Quentin Monnet proposed another solution by
+> > cherry-picking two commits:
+> > 
+> > https://lore.kernel.org/stable/67bfcb8a-e00e-47b2-afe2-970a60e4a173@kernel.org/
+> 
+> They don't apply cleanly, so I'll just add a revert...
 
---coeursx6zvw2qoic
-Content-Type: application/pgp-signature; name="signature.asc"
+FYI: Just realized that the breaking commit was as well queued for
+older series 5.15.y, 5.10.y and 5.4.y, so that needs to be dropped
+from those queues as well.
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAma6SQ0ACgkQwEfU8yi1
-JYX5cQ/+NhGdxHEqx4Ga2VuNPVXIQvICXOEUKRQl3mjvWFgyT6EUSsi0oAi/wDDG
-P6+G9BWP0x5XAQGSO7ZcImDdDoy4LG/Y+PvyAj9CWB1fPViyG1PsnlUUfaUwU9kC
-qPgehvPDYYgh3PlEJEC1kqJ3/VV2S8/zFPEhmfz0bZAyoul2o88BHpwZrfCS7jJy
-n5HWI3iEUb1MGWy/2ov6vGjR3S0PyprLgA6LeqKg7D2S/7UUS1NcFEcoKkcmd5Wx
-Ln1YtbuOepIfnw449yMGEs3fiCTrdCzdkSjoVtLtX1Yl/cJuaG+3dDpgQ58g+t6P
-mRjbSuR4d2BgM/JE3sYS5fRg3iphNBT4hKkzaoGUM2OEB/wSX7f38rSTjdUGStI6
-+hb5ytRofPvg95acu1M3bC7MPix4XytOR9akoYxgFc6I2zgkzfpVJTi/I1uUCXCF
-JLFDtfdy3pSnM3LHuab5LbJtf3BBP3qlg/1K7k83lyOO8AncHRkNA894UAYwneQa
-Hc1aydKC6nQxjVQfCemDtUYstsrfKTYcBS81kaWyFTBqXKKABdLLC4JN/NHwyULo
-D/In/Yzo8QnAJjShtW/zBBnOr2mMzZPq6IvUYboX8h9L8maX1un0xGLrVAsS2zYk
-W3umhFfyOoeff+pD9BZq8OlHcGMnYSc/vqbpYpTInKko8CRUe68=
-=xqEI
------END PGP SIGNATURE-----
-
---coeursx6zvw2qoic--
+Regards,
+Salvatore
 
