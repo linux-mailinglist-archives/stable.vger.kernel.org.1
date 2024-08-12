@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-67140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C9A94F413
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:25:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5516394F43C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8D12B23D21
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:25:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10E81281EA3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B190A1862BD;
-	Mon, 12 Aug 2024 16:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4166186E5E;
+	Mon, 12 Aug 2024 16:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3E22jkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJz8JW3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2E4183CD4;
-	Mon, 12 Aug 2024 16:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BEB183CD4;
+	Mon, 12 Aug 2024 16:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479940; cv=none; b=Qtzt6NJZSMa4m4cTNkjBa3gXdtY+W6STKK4J8ux63wSsJVS0zsvMwCAN3vWOVmuXFpmYF2Ef8QKLk/EEwwSZyoH6n6RKAv7vacAixeXFthvxB50LXC6C5YaA3MDUUDLjcag/8TfTA8J6JinOWfWO4W50oVsO0TiByUr8BZ3KNYw=
+	t=1723480074; cv=none; b=JxxJAGHsmur/Jvof8rlpbQsWdxB7WoKFbE5cWCINqVZdyv6Rq88pGQjEmDyIqgaY81j8CEjmcFj490Z5ZU32t/PDwEKLyRrRvY8ZSWBk0QdNkHY5rKPe47ZmwWo2NrNRODvnnRD6h3rLZKcFyu/8uMn9xjiHxitvR2wE9GeziKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479940; c=relaxed/simple;
-	bh=8VJDOUMY5SuhauSFE9e6AfZ4XUDrFYEEXDOBFm2Ab2I=;
+	s=arc-20240116; t=1723480074; c=relaxed/simple;
+	bh=yr6Vc2Zr272Tf33vQiwOaVIujNN3W/Lm+qJ1z0eT1gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KS39J5kCvdjWwSb/D0zm1XwVkZLIN9Cr4I7EV91WHZM36lxpUuosLEnbNIEl05Tw1uYduetyNBIelPpKSWkmFm0MRFZJdlPVV+AtGtY+AVwpa+Jxr8Ixw8yz3Ey9HjnZexkxxQMJV0WDr2Efk4sohIyDNIoFzvzbY/tX7U8pOoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3E22jkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E694AC32782;
-	Mon, 12 Aug 2024 16:25:39 +0000 (UTC)
+	 MIME-Version; b=LYmV7AsRoe3evCv1o2J2svmLaMHmQSRyqkH1jd8gMUoPs+BVKsX+uafCXWbPe1diTiqIq+fvnsDNHU21j6CiM1fByIzakAUUtbhypy7mCehVWgP4KUpYLqyN8bxXJo2HVBRXamQsYXqQXZJDErO9DqkqtYB35zuAfdmxZVrkbOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJz8JW3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DF3C32782;
+	Mon, 12 Aug 2024 16:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479940;
-	bh=8VJDOUMY5SuhauSFE9e6AfZ4XUDrFYEEXDOBFm2Ab2I=;
+	s=korg; t=1723480074;
+	bh=yr6Vc2Zr272Tf33vQiwOaVIujNN3W/Lm+qJ1z0eT1gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3E22jkQiH1M6P0jERV3IeQgO+vNCrKqQvpHcYB79IV5ekYNpEYumd9s0OTPxnFSz
-	 OnhUn8PYd9GCAei1liDLHv/4QLvx40RL9TkQGyplDv9Cfzs+dBExiaFjuj+aUktALE
-	 AjTZx9f+WUB828YqznOXk27Y/ls38nQevO6u5hhg=
+	b=fJz8JW3tDIoB8bb8w3R+GbAkOzCWGLT6zX0dP1wvJ0uae67tee0P4MxRBU3vlZ0Rf
+	 cErchpIUp6TcxQrpa4sAX4iP4OhK126muXZHqbWa6UyLoDeBf5fej7IxhWfFmxRZTR
+	 aej8AxjEQ9ZDx5aIRSvb8MUTGeIC5pi1+84Y7NcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yu Kuai <yukuai3@huawei.com>,
 	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 046/263] md: do not delete safemode_timer in mddev_suspend
-Date: Mon, 12 Aug 2024 18:00:47 +0200
-Message-ID: <20240812160148.307832579@linuxfoundation.org>
+Subject: [PATCH 6.10 047/263] md: change the return value type of md_write_start to void
+Date: Mon, 12 Aug 2024 18:00:48 +0200
+Message-ID: <20240812160148.345614106@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -69,44 +69,121 @@ Content-Transfer-Encoding: 8bit
 
 From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit a8768a134518e406d41799a3594aeb74e0889cf7 ]
+[ Upstream commit 03e792eaf18ec2e93e2c623f9f1a4bdb97fe4126 ]
 
-The deletion of safemode_timer in mddev_suspend() is redundant and
-potentially harmful now. If timer is about to be woken up but gets
-deleted, 'in_sync' will remain 0 until the next write, causing array
-to stay in the 'active' state instead of transitioning to 'clean'.
-
-Commit 0d9f4f135eb6 ("MD: Add del_timer_sync to mddev_suspend (fix
-nasty panic))" introduced this deletion for dm, because if timer fired
-after dm is destroyed, the resource which the timer depends on might
-have been freed.
-
-However, commit 0dd84b319352 ("md: call __md_stop_writes in md_stop")
-added __md_stop_writes() to md_stop(), which is called before freeing
-resource. Timer is deleted in __md_stop_writes(), and the origin issue
-is resolved. Therefore, delete safemode_timer can be removed safely now.
+Commit cc27b0c78c79 ("md: fix deadlock between mddev_suspend() and
+md_write_start()") aborted md_write_start() with false when mddev is
+suspended, which fixed a deadlock if calling mddev_suspend() with
+holding reconfig_mutex(). Since mddev_suspend() now includes
+lockdep_assert_not_held(), it no longer holds the reconfig_mutex. This
+makes previous abort unnecessary. Now, remove unnecessary abort and
+change function return value to void.
 
 Signed-off-by: Li Nan <linan122@huawei.com>
 Reviewed-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240508092053.1447930-1-linan666@huaweicloud.com
+Link: https://lore.kernel.org/r/20240525185257.3896201-2-linan666@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/md/md.c     | 14 ++++----------
+ drivers/md/md.h     |  2 +-
+ drivers/md/raid1.c  |  3 +--
+ drivers/md/raid10.c |  3 +--
+ drivers/md/raid5.c  |  3 +--
+ 5 files changed, 8 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 9c5be016e5073..60a5fda7c8aea 100644
+index 60a5fda7c8aea..a5b5801baa9e8 100644
 --- a/drivers/md/md.c
 +++ b/drivers/md/md.c
-@@ -479,7 +479,6 @@ int mddev_suspend(struct mddev *mddev, bool interruptible)
- 	 */
- 	WRITE_ONCE(mddev->suspended, mddev->suspended + 1);
+@@ -8638,12 +8638,12 @@ EXPORT_SYMBOL(md_done_sync);
+  * A return value of 'false' means that the write wasn't recorded
+  * and cannot proceed as the array is being suspend.
+  */
+-bool md_write_start(struct mddev *mddev, struct bio *bi)
++void md_write_start(struct mddev *mddev, struct bio *bi)
+ {
+ 	int did_change = 0;
  
--	del_timer_sync(&mddev->safemode_timer);
- 	/* restrict memory reclaim I/O during raid array is suspend */
- 	mddev->noio_flag = memalloc_noio_save();
+ 	if (bio_data_dir(bi) != WRITE)
+-		return true;
++		return;
  
+ 	BUG_ON(mddev->ro == MD_RDONLY);
+ 	if (mddev->ro == MD_AUTO_READ) {
+@@ -8676,15 +8676,9 @@ bool md_write_start(struct mddev *mddev, struct bio *bi)
+ 	if (did_change)
+ 		sysfs_notify_dirent_safe(mddev->sysfs_state);
+ 	if (!mddev->has_superblocks)
+-		return true;
++		return;
+ 	wait_event(mddev->sb_wait,
+-		   !test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags) ||
+-		   is_md_suspended(mddev));
+-	if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags)) {
+-		percpu_ref_put(&mddev->writes_pending);
+-		return false;
+-	}
+-	return true;
++		   !test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags));
+ }
+ EXPORT_SYMBOL(md_write_start);
+ 
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index ca085ecad5044..487582058f741 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -785,7 +785,7 @@ extern void md_unregister_thread(struct mddev *mddev, struct md_thread __rcu **t
+ extern void md_wakeup_thread(struct md_thread __rcu *thread);
+ extern void md_check_recovery(struct mddev *mddev);
+ extern void md_reap_sync_thread(struct mddev *mddev);
+-extern bool md_write_start(struct mddev *mddev, struct bio *bi);
++extern void md_write_start(struct mddev *mddev, struct bio *bi);
+ extern void md_write_inc(struct mddev *mddev, struct bio *bi);
+ extern void md_write_end(struct mddev *mddev);
+ extern void md_done_sync(struct mddev *mddev, int blocks, int ok);
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 22bbd06ba6a29..5ea57b6748c53 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1688,8 +1688,7 @@ static bool raid1_make_request(struct mddev *mddev, struct bio *bio)
+ 	if (bio_data_dir(bio) == READ)
+ 		raid1_read_request(mddev, bio, sectors, NULL);
+ 	else {
+-		if (!md_write_start(mddev,bio))
+-			return false;
++		md_write_start(mddev,bio);
+ 		raid1_write_request(mddev, bio, sectors);
+ 	}
+ 	return true;
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index a4556d2e46bf9..f8d7c02c6ed56 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1836,8 +1836,7 @@ static bool raid10_make_request(struct mddev *mddev, struct bio *bio)
+ 	    && md_flush_request(mddev, bio))
+ 		return true;
+ 
+-	if (!md_write_start(mddev, bio))
+-		return false;
++	md_write_start(mddev, bio);
+ 
+ 	if (unlikely(bio_op(bio) == REQ_OP_DISCARD))
+ 		if (!raid10_handle_discard(mddev, bio))
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 1c6b58adec133..d600030c20f46 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -6097,8 +6097,7 @@ static bool raid5_make_request(struct mddev *mddev, struct bio * bi)
+ 		ctx.do_flush = bi->bi_opf & REQ_PREFLUSH;
+ 	}
+ 
+-	if (!md_write_start(mddev, bi))
+-		return false;
++	md_write_start(mddev, bi);
+ 	/*
+ 	 * If array is degraded, better not do chunk aligned read because
+ 	 * later we might have to read it again in order to reconstruct
 -- 
 2.43.0
 
