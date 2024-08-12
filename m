@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-67293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E59794F4C4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE9D94F3AA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108732821F0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDF471C2158A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A2415C127;
-	Mon, 12 Aug 2024 16:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3481862BD;
+	Mon, 12 Aug 2024 16:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InryaMXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EK0M3Vo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F3E187332;
-	Mon, 12 Aug 2024 16:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181FF29CA;
+	Mon, 12 Aug 2024 16:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480454; cv=none; b=VQ3gpOB2rdb94Yqr72j0IhC7jHxF56cveQH5hewr6JrPCA0H2Ri235X0ZgimxvcCdFKAe7P5NuruPM7Qe3bEe9nf6+ZfeECmbm4vJ5Cq3bDOdwbAF9qfE1q+EjEnPfHu3g2/gGjqGWxb9d3IbRnrx7GGUyx3RId/q6xPkaj0Wsk=
+	t=1723479631; cv=none; b=uCJkFQNXQEWm83J4g5LKzse1v5maBPY/ngVOvcoMuVoRxV4g/mOdZUUcV1fijKqiImNWl0stxijkNg+zmFeBKjXM3iUmFDqKG6nPT7FNiiNCDmzQlxtF+jrKN70uBBlG1csmaBu8r8uU77fvBDvAa9/SWmVYGa6j0W+YKhP0Q9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480454; c=relaxed/simple;
-	bh=qBHWYNtfztLra+93+UPWQ30zy0BIhKusgLOOhZo2OoA=;
+	s=arc-20240116; t=1723479631; c=relaxed/simple;
+	bh=7YFnXbha9sbcweEb/qh8AAmyN6Z/JknCyACA1/gi/jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pEhV8QtxTZiyXNC0xKZwcVtIiCLMLPqDCUI1ttWKTiJvoyh91L/xix0Uc5pfiqF8ifyj+dkVfNH9RCe1Y73fxOLvsFzdd6M7oQlub7yldauY+5dE/tffMDEjnGy0y/ptdYurZFc3rcyqVcgm3ua/2kAyOX+Iiw+YPbNYGMA7e5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InryaMXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BDAC32782;
-	Mon, 12 Aug 2024 16:34:12 +0000 (UTC)
+	 MIME-Version; b=q5a/aOqsbvZhQ1BN0Lwm7XKWav8jpHCLAym9g+jJkJCRr6RzGwTHfkRh7VZFn/2rHJsQplCfOncn9GTNG1HsgM/GrygOwn0tU7mnUzXRDDf6RxES6FzvJf4QxvFo+uFcuj3pitJGVbpWjeKEzVB9d4r2W7birkulNAgGx5icrk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EK0M3Vo0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C84C32782;
+	Mon, 12 Aug 2024 16:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480453;
-	bh=qBHWYNtfztLra+93+UPWQ30zy0BIhKusgLOOhZo2OoA=;
+	s=korg; t=1723479631;
+	bh=7YFnXbha9sbcweEb/qh8AAmyN6Z/JknCyACA1/gi/jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=InryaMXV/dSwpVG7qcSp3gs4dO2I1STY4s5qMP07j2PUfcz0awicCPb9Asmrv2wQO
-	 FnqSSFPCsbh9EZee5hNawFPT+ZYcpcnASzw3PcyYygWegZXwc6bavG86sBJa4LK9M/
-	 SS5HnxZjjGnHxsoslYly0hlZXIb0OV0/KAMTy0us=
+	b=EK0M3Vo01kwLEaNaMZT4vmBQijMwU9UDO9+DoUdDBMIJosGmyZaY6R0LtuZm6EbC3
+	 aGcOI7RkX/d5Uzey9zDgE8Hq1gp0LKksJ7+GhLkg/bVDMjHonuy/eUQOCzJXVAex9/
+	 FgaihwFOtlBBoqXn8jEyCY3gPsWuMfPkJaPyO0Bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Collins <quic_collinsd@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 201/263] spmi: pmic-arb: add missing newline in dev_err format strings
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.6 146/189] power: supply: axp288_charger: Fix constant_charge_voltage writes
 Date: Mon, 12 Aug 2024 18:03:22 +0200
-Message-ID: <20240812160154.244270708@linuxfoundation.org>
+Message-ID: <20240812160137.763290784@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Collins <quic_collinsd@quicinc.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ffcf2eb4bfa24f7256de53a95182c3e3e23fdc6c ]
+commit b34ce4a59cfe9cd0d6f870e6408e8ec88a964585 upstream.
 
-dev_err() format strings should end with '\n'.  Several such
-format strings in the spmi-pmic-arb driver are missing it.
-Add newlines where needed.
+info->max_cv is in millivolts, divide the microvolt value being written
+to constant_charge_voltage by 1000 *before* clamping it to info->max_cv.
 
-Fixes: 02922ccbb330 ("spmi: pmic-arb: Register controller for bus instead of arbiter")
-Signed-off-by: David Collins <quic_collinsd@quicinc.com>
-Link: https://lore.kernel.org/r/20240703221248.3640490-1-quic_collinsd@quicinc.com
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240725164636.3362690-4-sboyd@kernel.org
+Before this fix the code always tried to set constant_charge_voltage
+to max_cv / 1000 = 4 millivolt, which ends up in setting it to 4.1V
+which is the lowest supported value.
+
+Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240717200333.56669-1-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spmi/spmi-pmic-arb.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/power/supply/axp288_charger.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spmi/spmi-pmic-arb.c b/drivers/spmi/spmi-pmic-arb.c
-index 791cdc160c515..c408ded0c00f7 100644
---- a/drivers/spmi/spmi-pmic-arb.c
-+++ b/drivers/spmi/spmi-pmic-arb.c
-@@ -398,7 +398,7 @@ static int pmic_arb_fmt_read_cmd(struct spmi_pmic_arb_bus *bus, u8 opc, u8 sid,
- 
- 	*offset = rc;
- 	if (bc >= PMIC_ARB_MAX_TRANS_BYTES) {
--		dev_err(&bus->spmic->dev, "pmic-arb supports 1..%d bytes per trans, but:%zu requested",
-+		dev_err(&bus->spmic->dev, "pmic-arb supports 1..%d bytes per trans, but:%zu requested\n",
- 			PMIC_ARB_MAX_TRANS_BYTES, len);
- 		return  -EINVAL;
- 	}
-@@ -477,7 +477,7 @@ static int pmic_arb_fmt_write_cmd(struct spmi_pmic_arb_bus *bus, u8 opc,
- 
- 	*offset = rc;
- 	if (bc >= PMIC_ARB_MAX_TRANS_BYTES) {
--		dev_err(&bus->spmic->dev, "pmic-arb supports 1..%d bytes per trans, but:%zu requested",
-+		dev_err(&bus->spmic->dev, "pmic-arb supports 1..%d bytes per trans, but:%zu requested\n",
- 			PMIC_ARB_MAX_TRANS_BYTES, len);
- 		return  -EINVAL;
- 	}
-@@ -1702,7 +1702,7 @@ static int spmi_pmic_arb_bus_init(struct platform_device *pdev,
- 
- 	index = of_property_match_string(node, "reg-names", "cnfg");
- 	if (index < 0) {
--		dev_err(dev, "cnfg reg region missing");
-+		dev_err(dev, "cnfg reg region missing\n");
- 		return -EINVAL;
- 	}
- 
-@@ -1712,7 +1712,7 @@ static int spmi_pmic_arb_bus_init(struct platform_device *pdev,
- 
- 	index = of_property_match_string(node, "reg-names", "intr");
- 	if (index < 0) {
--		dev_err(dev, "intr reg region missing");
-+		dev_err(dev, "intr reg region missing\n");
- 		return -EINVAL;
- 	}
- 
--- 
-2.43.0
-
+--- a/drivers/power/supply/axp288_charger.c
++++ b/drivers/power/supply/axp288_charger.c
+@@ -337,8 +337,8 @@ static int axp288_charger_usb_set_proper
+ 		}
+ 		break;
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+-		scaled_val = min(val->intval, info->max_cv);
+-		scaled_val = DIV_ROUND_CLOSEST(scaled_val, 1000);
++		scaled_val = DIV_ROUND_CLOSEST(val->intval, 1000);
++		scaled_val = min(scaled_val, info->max_cv);
+ 		ret = axp288_charger_set_cv(info, scaled_val);
+ 		if (ret < 0) {
+ 			dev_warn(&info->pdev->dev, "set charge voltage failed\n");
 
 
 
