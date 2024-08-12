@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26A594F41C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:26:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C78494F31B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6C541C20C1E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:26:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABEDCB2663A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216CA186E20;
-	Mon, 12 Aug 2024 16:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCCA18757D;
+	Mon, 12 Aug 2024 16:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3/+k8dc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEkyr/6k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4764134AC;
-	Mon, 12 Aug 2024 16:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EEC130E27;
+	Mon, 12 Aug 2024 16:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479969; cv=none; b=qRqxVjeB8LdG0L1kci1JD2/9Yf9UHj33bSlJg9U21NKVljVF0qa2QHOSD56k7nJ1o2+RLZ27ZjTwzmHMqTwa+5XgSfByUsdq+ZN/TRoynPi6N9cwVgDnD0HbJQGR/AyHSXU6kNFkfv8dlddcdor0bpCFQIJr46MxxasD/0nireU=
+	t=1723479221; cv=none; b=Xah4GBR9D4OX3tHaJNJYy091V2bsksnRNHPGeMUhZD2mphMmPoGWsglnzF3L7IMYpHGGmOVjJK/K1rcH25KtfXRApjO2zejZa2wY9Sf4mCJ14H3FtMImNU6aYy/9yoBdHfJLnfIv9El2pS94uVSKbgtUtarQmmSmu4LRhHZb35Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479969; c=relaxed/simple;
-	bh=8n8a/rqK6aMAbpRRnvpuqfhQUvmKHHsyj2tPmhgwEP4=;
+	s=arc-20240116; t=1723479221; c=relaxed/simple;
+	bh=CYX5/52p5n8Wuhfig0DGe84oqkz7Vk2nBX/e4o9ri+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIpMbce6lyvtOHVIqu7Bum2CxKDdEc9fGNl+aLu2LvOdBOVTVCSepjP/xEClpX+SpLloGV020aqtJSKAE927QlA2zFdZFOPTjV0o2dsjzgPGeX0XOAqMRUaw9bEszW5ZW53mzC14THcIGe9OEb5XlUbCGoezclSng36zXu0q+Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3/+k8dc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAF1C32782;
-	Mon, 12 Aug 2024 16:26:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OU+fgIh4SxAWZMvtxF/okf+YJ7AjLuUw7qvEphKqewIhHpZhf+E0vdg55G+eUPEMGhRS96/PbOB53dPokvJAYVb9fvs9OgJlH6pSvQ2+pXcdcLFwH+bxO7L7pTIm/pbwcNm3nAkb5zCsy/DTROgfaKdkgkDXQSyYIAPCNyh1O5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEkyr/6k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B56C32782;
+	Mon, 12 Aug 2024 16:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479969;
-	bh=8n8a/rqK6aMAbpRRnvpuqfhQUvmKHHsyj2tPmhgwEP4=;
+	s=korg; t=1723479221;
+	bh=CYX5/52p5n8Wuhfig0DGe84oqkz7Vk2nBX/e4o9ri+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h3/+k8dcC5THhLaNx3WU49SKN3cHRNLXHURU8xEzXR9gHXij23LuE3WMfnTyNdxrt
-	 HZWX6ejEnYK0jaxQTK+gqxwqhbzW+zAAzeNbtGPKEedBsw7+a7Yzbd3yGTZyiLth3a
-	 cjgw5dsERy01dWAA6C8wDOO2nBvoSLT1hMSSHp+k=
+	b=kEkyr/6kdYQ6Q51yn3deUDVd30CbkBUN7rp5i/HP/i1mVUoEoGJA+sLom6ScD3Bxh
+	 q4QKx0d5RFJIksgjCT5xSN7jjpV0IsGcJ0iorXBTqSfqZfWyi/dtMBvxVQsY+DcLHY
+	 c+sRz2oQ4GAmHwWdZkBo4eBvgrhLyV7kkDFs7rZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Amuraritei <andamu@posteo.net>,
-	Perry Yuan <perry.yuan@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Jithu Joseph <jithu.joseph@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Pengfei Xu <pengfei.xu@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 057/263] cpufreq: amd-pstate: auto-load pstate driver by default
+Subject: [PATCH 6.6 002/189] platform/x86/intel/ifs: Store IFS generation number
 Date: Mon, 12 Aug 2024 18:00:58 +0200
-Message-ID: <20240812160148.726020594@linuxfoundation.org>
+Message-ID: <20240812160132.233522780@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +62,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Perry Yuan <perry.yuan@amd.com>
+From: Jithu Joseph <jithu.joseph@intel.com>
 
-[ Upstream commit 4e4f600ee750facedf6a5dc97e8ae0b627ab4573 ]
+[ Upstream commit 97a5e801b3045c1e800f76bc0fb544972538089d ]
 
-If the `amd-pstate` driver is not loaded automatically by default,
-it is because the kernel command line parameter has not been added.
-To resolve this issue, it is necessary to call the `amd_pstate_set_driver()`
-function to enable the desired mode (passive/active/guided) before registering
-the driver instance.
+IFS generation number is reported via MSR_INTEGRITY_CAPS.  As IFS
+support gets added to newer CPUs, some differences are expected during
+IFS image loading and test flows.
 
-This ensures that the driver is loaded correctly without relying on the kernel
-command line parameter.
+Define MSR bitmasks to extract and store the generation in driver data,
+so that driver can modify its MSR interaction appropriately.
 
-When there is no parameter added to command line, Kernel config will
-provide the default mode to load.
-
-Meanwhile, user can add driver mode in command line which will override
-the kernel config default option.
-
-Reported-by: Andrei Amuraritei <andamu@posteo.net>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218705
-Signed-off-by: Perry Yuan <perry.yuan@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/83301c4cea4f92fb19e14b23f2bac7facfd8bdbb.1718811234.git.perry.yuan@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Jithu Joseph <jithu.joseph@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Link: https://lore.kernel.org/r/20231005195137.3117166-2-jithu.joseph@intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 3114f77e9453 ("platform/x86/intel/ifs: Initialize union ifs_status to zero")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/msr-index.h      | 1 +
+ drivers/platform/x86/intel/ifs/core.c | 3 +++
+ drivers/platform/x86/intel/ifs/ifs.h  | 2 ++
+ 3 files changed, 6 insertions(+)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 874ee90b1cf10..67c4a6a0ef124 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -1764,8 +1764,13 @@ static int __init amd_pstate_init(void)
- 	/* check if this machine need CPPC quirks */
- 	dmi_check_system(amd_pstate_quirks_table);
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 621bac6b74011..24b7bd255e983 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -237,6 +237,7 @@
+ #define MSR_INTEGRITY_CAPS_ARRAY_BIST          BIT(MSR_INTEGRITY_CAPS_ARRAY_BIST_BIT)
+ #define MSR_INTEGRITY_CAPS_PERIODIC_BIST_BIT	4
+ #define MSR_INTEGRITY_CAPS_PERIODIC_BIST	BIT(MSR_INTEGRITY_CAPS_PERIODIC_BIST_BIT)
++#define MSR_INTEGRITY_CAPS_SAF_GEN_MASK	GENMASK_ULL(10, 9)
  
--	switch (cppc_state) {
--	case AMD_PSTATE_UNDEFINED:
-+	/*
-+	* determine the driver mode from the command line or kernel config.
-+	* If no command line input is provided, cppc_state will be AMD_PSTATE_UNDEFINED.
-+	* command line options will override the kernel config settings.
-+	*/
-+
-+	if (cppc_state == AMD_PSTATE_UNDEFINED) {
- 		/* Disable on the following configs by default:
- 		 * 1. Undefined platforms
- 		 * 2. Server platforms
-@@ -1777,15 +1782,20 @@ static int __init amd_pstate_init(void)
- 			pr_info("driver load is disabled, boot with specific mode to enable this\n");
- 			return -ENODEV;
- 		}
--		ret = amd_pstate_set_driver(CONFIG_X86_AMD_PSTATE_DEFAULT_MODE);
--		if (ret)
--			return ret;
--		break;
-+		/* get driver mode from kernel config option [1:4] */
-+		cppc_state = CONFIG_X86_AMD_PSTATE_DEFAULT_MODE;
-+	}
-+
-+	switch (cppc_state) {
- 	case AMD_PSTATE_DISABLE:
-+		pr_info("driver load is disabled, boot with specific mode to enable this\n");
- 		return -ENODEV;
- 	case AMD_PSTATE_PASSIVE:
- 	case AMD_PSTATE_ACTIVE:
- 	case AMD_PSTATE_GUIDED:
-+		ret = amd_pstate_set_driver(cppc_state);
-+		if (ret)
-+			return ret;
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -1806,7 +1816,7 @@ static int __init amd_pstate_init(void)
- 	/* enable amd pstate feature */
- 	ret = amd_pstate_enable(true);
- 	if (ret) {
--		pr_err("failed to enable with return %d\n", ret);
-+		pr_err("failed to enable driver mode(%d)\n", cppc_state);
- 		return ret;
- 	}
+ #define MSR_LBR_NHM_FROM		0x00000680
+ #define MSR_LBR_NHM_TO			0x000006c0
+diff --git a/drivers/platform/x86/intel/ifs/core.c b/drivers/platform/x86/intel/ifs/core.c
+index 306f886b52d20..4ff2aa4b484bc 100644
+--- a/drivers/platform/x86/intel/ifs/core.c
++++ b/drivers/platform/x86/intel/ifs/core.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /* Copyright(c) 2022 Intel Corporation. */
  
++#include <linux/bitfield.h>
+ #include <linux/module.h>
+ #include <linux/kdev_t.h>
+ #include <linux/semaphore.h>
+@@ -94,6 +95,8 @@ static int __init ifs_init(void)
+ 	for (i = 0; i < IFS_NUMTESTS; i++) {
+ 		if (!(msrval & BIT(ifs_devices[i].test_caps->integrity_cap_bit)))
+ 			continue;
++		ifs_devices[i].rw_data.generation = FIELD_GET(MSR_INTEGRITY_CAPS_SAF_GEN_MASK,
++							      msrval);
+ 		ret = misc_register(&ifs_devices[i].misc);
+ 		if (ret)
+ 			goto err_exit;
+diff --git a/drivers/platform/x86/intel/ifs/ifs.h b/drivers/platform/x86/intel/ifs/ifs.h
+index 93191855890f2..d666aeed20fc2 100644
+--- a/drivers/platform/x86/intel/ifs/ifs.h
++++ b/drivers/platform/x86/intel/ifs/ifs.h
+@@ -229,6 +229,7 @@ struct ifs_test_caps {
+  * @status: it holds simple status pass/fail/untested
+  * @scan_details: opaque scan status code from h/w
+  * @cur_batch: number indicating the currently loaded test file
++ * @generation: IFS test generation enumerated by hardware
+  */
+ struct ifs_data {
+ 	int	loaded_version;
+@@ -238,6 +239,7 @@ struct ifs_data {
+ 	int	status;
+ 	u64	scan_details;
+ 	u32	cur_batch;
++	u32	generation;
+ };
+ 
+ struct ifs_work {
 -- 
 2.43.0
 
