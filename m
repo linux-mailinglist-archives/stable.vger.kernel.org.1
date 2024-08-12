@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-66982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E736C94F35D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4373B94F28B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3B02286A62
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2E241F21848
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531C5183CD4;
-	Mon, 12 Aug 2024 16:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5561E187547;
+	Mon, 12 Aug 2024 16:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1cANoz4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAbDuGch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123D417C7C8;
-	Mon, 12 Aug 2024 16:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13465187356;
+	Mon, 12 Aug 2024 16:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479413; cv=none; b=LpPJu376n7iRj5TkrQ9XhP0OhFPjEflVIqef/VMAYyDmr3RlWiBK6OgEAF9VVonEyju+S/ML4dV6aWjOIios6GXA5De3cEZDEUC0vgASkQUBbZwnohthVhRSraI9k9HRL+CqAYf9dbLox0LEQVvfYQaqaLbjcbw0PP4LdrEooGI=
+	t=1723478849; cv=none; b=EjSVFoDukIsXOpfWRP+XoJ5C0yBwziTu/rgtHHD9/HRpWPIRwdP1CVdLg49uJ1ZmTGSLZCWsw2Q+nXBOv4444PZ9e5+dCkOBSdZslPuLPsRYuX/tVgHFVs3iBdLOYh/wsSSwwsBIepLXDywXkM8Uq0O9D+Byfhd15ffiwUrAN64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479413; c=relaxed/simple;
-	bh=6WptuNmXhO6Xy2PgOU3glFVs/iLL/HUmr5ds/zU7bSM=;
+	s=arc-20240116; t=1723478849; c=relaxed/simple;
+	bh=DXYCKroz83YlonsSrJFo8K3BFMzCtcVQm3nRn27VP60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFkFL6U2k2SeY2fovRWu5hbyHLhu2xVh6d1zdauuZgxHJAEf6VaA1utBO+NMK16/tZ9aQW7bTUhgps55DCRnoBP3IT7nzM5lpDKiqAhViJHbXNA7QxcCyIfrgzXVfvdF/vq2JoV3QNZZ6FWlH28EgWAZCxvfITpkO0uYRafrewg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1cANoz4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87601C32782;
-	Mon, 12 Aug 2024 16:16:52 +0000 (UTC)
+	 MIME-Version; b=up5E+t8WJE5J+SzdSsjVVZbZDLYbIUC18N/9gjDZRSJjdDTbSHhTEOGEJgudir1MsfbMuLoRQ4ppeH+fndQ/DmpY3SkiZza0zkv2C0ggOTZwV6mYf8SyJNOWrAYXWNDbFbzxRuO5nXh0T9lYxpHvBs44G4ovbtzr8FfRe+mK2jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAbDuGch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862E4C32782;
+	Mon, 12 Aug 2024 16:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479412;
-	bh=6WptuNmXhO6Xy2PgOU3glFVs/iLL/HUmr5ds/zU7bSM=;
+	s=korg; t=1723478848;
+	bh=DXYCKroz83YlonsSrJFo8K3BFMzCtcVQm3nRn27VP60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B1cANoz4OzRNh/92Vdvx7y5hV5/lDm/3b22dPQe/7jA5OH1GegWernPigHr5RI5u9
-	 FdimDWr9cQ/6SDuQzjEQosxK/AQrwmJzJR+7utXkEiQaNLQcwWecezh61U3xPMm7V4
-	 L+oI8PoXZiltvdxA4rn7/GLJB0HnzQdPrxlxe7oM=
+	b=hAbDuGchoiKA3Qg8YLrQJ6P/fVOlzc8GXKhH7ycOBc5H8m3rQUhfkeh+tk74S10YF
+	 Vo/lbviabyjZOz76GPJMA0r+v7WsqWeYwP9U/07KdIcoFFtsTOE+4kK2mx2NW28dQV
+	 YYJWemVJ41xgnkpbTctFqX+lIZoc2uvph0ttbzT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/189] arm64: cputype: Add Cortex-X3 definitions
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 054/150] irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock to raw_spinlock_t
 Date: Mon, 12 Aug 2024 18:02:15 +0200
-Message-ID: <20240812160135.180742397@linuxfoundation.org>
+Message-ID: <20240812160127.254419738@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-[ Upstream commit be5a6f238700f38b534456608588723fba96c5ab ]
+commit f872d4af79fe8c71ae291ce8875b477e1669a6c7 upstream.
 
-Add cputype definitions for Cortex-X3. These will be used for errata
-detection in subsequent patches.
+This lock is acquired under irq_desc::lock with interrupts disabled.
 
-These values can be found in Table A-263 ("MIDR_EL1 bit descriptions")
-in issue 07 of the Cortex-X3 TRM, which can be found at:
+When PREEMPT_RT is enabled, 'spinlock_t' becomes preemptible, which results
+in invalid lock acquire context;
 
-  https://developer.arm.com/documentation/101593/0102/?lang=en
+  [ BUG: Invalid wait context ]
+  swapper/0/1 is trying to lock:
+  ffff0000008fed30 (&ctl->lock){....}-{3:3}, at: meson_gpio_irq_update_bits0
+  other info that might help us debug this:
+  context-{5:5}
+  3 locks held by swapper/0/1:
+   #0: ffff0000003cd0f8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0x90c
+   #1: ffff000004714650 (&desc->request_mutex){+.+.}-{4:4}, at: __setup_irq0
+   #2: ffff0000047144c8 (&irq_desc_lock_class){-.-.}-{2:2}, at: __setup_irq0
+  stack backtrace:
+  CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.9-sdkernel #1
+  Call trace:
+   _raw_spin_lock_irqsave+0x60/0x88
+   meson_gpio_irq_update_bits+0x34/0x70
+   meson8_gpio_irq_set_type+0x78/0xc4
+   meson_gpio_irq_set_type+0x30/0x60
+   __irq_set_trigger+0x60/0x180
+   __setup_irq+0x30c/0x6e0
+   request_threaded_irq+0xec/0x1a4
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-2-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 215f4cc0fb20 ("irqchip/meson: Add support for gpio interrupt controller")
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240729131850.3015508-1-avkrasnov@salutedevices.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-meson-gpio.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 7b32b99023a21..72fe207403c83 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -86,6 +86,7 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_CORTEX_X3		0xD4E
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
-@@ -162,6 +163,7 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
--- 
-2.43.0
-
+--- a/drivers/irqchip/irq-meson-gpio.c
++++ b/drivers/irqchip/irq-meson-gpio.c
+@@ -168,7 +168,7 @@ struct meson_gpio_irq_controller {
+ 	void __iomem *base;
+ 	u32 channel_irqs[MAX_NUM_CHANNEL];
+ 	DECLARE_BITMAP(channel_map, MAX_NUM_CHANNEL);
+-	spinlock_t lock;
++	raw_spinlock_t lock;
+ };
+ 
+ static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
+@@ -177,14 +177,14 @@ static void meson_gpio_irq_update_bits(s
+ 	unsigned long flags;
+ 	u32 tmp;
+ 
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
+ 
+ 	tmp = readl_relaxed(ctl->base + reg);
+ 	tmp &= ~mask;
+ 	tmp |= val;
+ 	writel_relaxed(tmp, ctl->base + reg);
+ 
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ }
+ 
+ static void meson_gpio_irq_init_dummy(struct meson_gpio_irq_controller *ctl)
+@@ -234,12 +234,12 @@ meson_gpio_irq_request_channel(struct me
+ 	unsigned long flags;
+ 	unsigned int idx;
+ 
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
+ 
+ 	/* Find a free channel */
+ 	idx = find_first_zero_bit(ctl->channel_map, ctl->params->nr_channels);
+ 	if (idx >= ctl->params->nr_channels) {
+-		spin_unlock_irqrestore(&ctl->lock, flags);
++		raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ 		pr_err("No channel available\n");
+ 		return -ENOSPC;
+ 	}
+@@ -247,7 +247,7 @@ meson_gpio_irq_request_channel(struct me
+ 	/* Mark the channel as used */
+ 	set_bit(idx, ctl->channel_map);
+ 
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ 
+ 	/*
+ 	 * Setup the mux of the channel to route the signal of the pad
+@@ -557,7 +557,7 @@ static int meson_gpio_irq_of_init(struct
+ 	if (!ctl)
+ 		return -ENOMEM;
+ 
+-	spin_lock_init(&ctl->lock);
++	raw_spin_lock_init(&ctl->lock);
+ 
+ 	ctl->base = of_iomap(node, 0);
+ 	if (!ctl->base) {
 
 
 
