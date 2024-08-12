@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-66926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBDC94F31F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D99094F434
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDF3DB265DA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45C041F21996
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B87186E40;
-	Mon, 12 Aug 2024 16:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D838186E38;
+	Mon, 12 Aug 2024 16:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCHoqXdR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEGCvLpe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914F11862B9;
-	Mon, 12 Aug 2024 16:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4AA183CD4;
+	Mon, 12 Aug 2024 16:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479234; cv=none; b=AlK8jqi8WH4F3dHnFb++CZ1P+v+ECqymcYCtkutgKpRdc90aP54eQt2R57ECYYeSAEKmB1zKArDsVlmsnItguLoWg2elRHeLKpsyfFRzqWYy62AXBaCNmaUjquAiINLptvQqFUwCK0F/+cF+0qjPg27V7zgagwTp2FHQOIfnyj0=
+	t=1723480048; cv=none; b=JaTUt369nXJv6cynGxJ7RK4OxqCYINR/Hziw9G4dTMsPxFGlqtatKMFrB9Il9rID/pDIzH3ObcQ22orJ0RTFwbEeaVcW5KpshKdnx6mSz/7O/FbLPR66EDO4hGgOLt8/iEKijEK1R4GY8BifzCn9G0VPOfU07AUVIFnkBenkJOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479234; c=relaxed/simple;
-	bh=iPFhmMXbES1rP3eVCtBklbIL/0iFV0Lf7VdxWt1VWjo=;
+	s=arc-20240116; t=1723480048; c=relaxed/simple;
+	bh=ie4TIhnuZfbw2Toyovfd0uilNHDmH8XTSzzu557rurk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b42ii+jxGAMVybR3iSkeZIu3fX0qD6ylGUcG15PIUFbHGKK9Cy3haLeWFaTyrerNXe6BprRn+3j6RzJmKGKCOweNjIofGK0ECmY2WOk8/NmPWvZJZ3GX8CDGd2iOxzhxyg5OHK1NbGzELxjCkMVZ2EUyKWF3E0KoRntH2lwy8Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCHoqXdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D612BC32782;
-	Mon, 12 Aug 2024 16:13:53 +0000 (UTC)
+	 MIME-Version; b=NqoZAXp/G6VvkA0iSy+OWJE0NJHy8JhgqIbdrfG6ElEIs3wQk+wBV4ifgGVPFKSgR7T+Blf7TgBMqgD9BXy2Pr0HH0zxPcNh7fUZ0p4BRrA8Jm01Nv8zGoY8xS1nxmtAw5wf8dOvFnZZjJxx9b2rmyISAWCMhX6QOaMeIGmofTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEGCvLpe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0C3C4AF0C;
+	Mon, 12 Aug 2024 16:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479234;
-	bh=iPFhmMXbES1rP3eVCtBklbIL/0iFV0Lf7VdxWt1VWjo=;
+	s=korg; t=1723480048;
+	bh=ie4TIhnuZfbw2Toyovfd0uilNHDmH8XTSzzu557rurk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCHoqXdRUMmkm/mvFZmtasLQAQ3/ZHGetvvN0wcTZRreC2YSnobmZa40wcjhXhDa5
-	 mdgitww3FKgt0VzItEQuOkmKB+lAEXebbZRv4YU5xbE4RZKAu3uWiom8iJIVF0w6Zx
-	 E+MJ7KFEA98hkQI9ZwucixgUg5D+3jBvoyA37qow=
+	b=kEGCvLpelyTSNspkGFEmbY/JgYt9J5xxckeU9+uLaG9Ny8CSCffwEgCqBNSWOtGQh
+	 R24E9eMkl3OIv3pnQEDly2v1PQVkk6YvU7AJvbEkCGRKUwsyQ9pzlDplg3yycaAk21
+	 gHq9Xzvfk18Dwwi4h8oElNxV7xXJzFxC2bwr1e5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
-	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
+	patches@lists.linux.dev,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/189] net: fec: Stop PPS on driver remove
-Date: Mon, 12 Aug 2024 18:01:19 +0200
-Message-ID: <20240812160133.036690102@linuxfoundation.org>
+Subject: [PATCH 6.10 079/263] mlxsw: pci: Lock configuration space of upstream bridge during reset
+Date: Mon, 12 Aug 2024 18:01:20 +0200
+Message-ID: <20240812160149.569619078@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 8fee6d5ad5fa18c270eedb2a2cdf58dbadefb94b ]
+[ Upstream commit 0970836c348b6bc2ea77ce4348a136d6febfd440 ]
 
-PPS was not stopped in `fec_ptp_stop()`, called when
-the adapter was removed. Consequentially, you couldn't
-safely reload the driver with the PPS signal on.
+The driver triggers a "Secondary Bus Reset" (SBR) by calling
+__pci_reset_function_locked() which asserts the SBR bit in the "Bridge
+Control Register" in the configuration space of the upstream bridge for
+2ms. This is done without locking the configuration space of the
+upstream bridge port, allowing user space to access it concurrently.
 
-Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://lore.kernel.org/netdev/CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com/T/#m01dcb810bfc451a492140f6797ca77443d0cb79f
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240807080956.2556602-1-csokas.bence@prolan.hu
+Linux 6.11 will start warning about such unlocked resets [1][2]:
+
+pcieport 0000:00:01.0: unlocked secondary bus reset via: pci_reset_bus_function+0x51c/0x6a0
+
+Avoid the warning and the concurrent access by locking the configuration
+space of the upstream bridge prior to the reset and unlocking it
+afterwards.
+
+[1] https://lore.kernel.org/all/171711746953.1628941.4692125082286867825.stgit@dwillia2-xfh.jf.intel.com/
+[2] https://lore.kernel.org/all/20240531213150.GA610983@bhelgaas/
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://patch.msgid.link/9937b0afdb50f2f2825945393c94c093c04a5897.1720447210.git.petrm@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mellanox/mlxsw/pci.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index e32f6724f5681..2e4f3e1782a25 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -775,6 +775,9 @@ void fec_ptp_stop(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/pci.c b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+index c0ced4d315f3d..d92f640bae575 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/pci.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+@@ -1599,6 +1599,7 @@ static int mlxsw_pci_reset_at_pci_disable(struct mlxsw_pci *mlxsw_pci,
+ {
+ 	struct pci_dev *pdev = mlxsw_pci->pdev;
+ 	char mrsr_pl[MLXSW_REG_MRSR_LEN];
++	struct pci_dev *bridge;
+ 	int err;
  
-+	if (fep->pps_enable)
-+		fec_ptp_enable_pps(fep, 0);
-+
- 	cancel_delayed_work_sync(&fep->time_keep);
- 	hrtimer_cancel(&fep->perout_timer);
- 	if (fep->ptp_clock)
+ 	if (!pci_reset_sbr_supported) {
+@@ -1615,6 +1616,9 @@ static int mlxsw_pci_reset_at_pci_disable(struct mlxsw_pci *mlxsw_pci,
+ sbr:
+ 	device_lock_assert(&pdev->dev);
+ 
++	bridge = pci_upstream_bridge(pdev);
++	if (bridge)
++		pci_cfg_access_lock(bridge);
+ 	pci_cfg_access_lock(pdev);
+ 	pci_save_state(pdev);
+ 
+@@ -1624,6 +1628,8 @@ static int mlxsw_pci_reset_at_pci_disable(struct mlxsw_pci *mlxsw_pci,
+ 
+ 	pci_restore_state(pdev);
+ 	pci_cfg_access_unlock(pdev);
++	if (bridge)
++		pci_cfg_access_unlock(bridge);
+ 
+ 	return err;
+ }
 -- 
 2.43.0
 
