@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22BB94ED35
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:40:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A2694ED36
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 102441C21DB6
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B92A928425C
 	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97C417B4FC;
-	Mon, 12 Aug 2024 12:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA38B17A584;
+	Mon, 12 Aug 2024 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKM0CLIq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usKjqMnQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56273B7A8
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADC43B7A8
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723466401; cv=none; b=s7Tww4PDrCM3sbHK1ZKwhVLkq8CHHuH/uxSGefem7Jb52YeuTpqLY6zgtyfweJf5IRP+PxMIijlv1Y34QxsJnC/Ik0rs68kd6PckU7BZREPrS7WqOYbk/J4kUMl3TnRFoIvnwEFJBVBUcs/LlWAFpq1d+JbXmnZof3oNdiywyjQ=
+	t=1723466405; cv=none; b=HBSK4MIqjoQxEWTLQ3UdxPfuD5B4yjvIW4mnc4x0FKJK4AsTK5s31bEgNI6mIlZHMR+geOPu+7/qWEf7ssqcam4rp4p1P9JVd3OWY5sUQRq5FTMyswiIfaABEBaODVZXaBvf//NIeiPL9UkM/iZLNV8ib64QLM2BUpJ8+G1Aqh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723466401; c=relaxed/simple;
-	bh=JTOWcMXbOubXtiO2DgR6EwS/qsl4ELy+b/7Lwx/rM88=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=afyNeOp339uF23DR2JxJxUfTqS+lv2cChpre++E+oWEH5M0uE2/fNsNX6oRyKU/Ei3i8IxiYrcGdJ2or7CTQe9R5DVVO6y2smWGgI8N0v5/9+KRjhqoemuYaneG/zXfRKkqSrRwKvZA3wngShiyPcb+AK0fKWeLvM2+vDmD2KL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKM0CLIq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207ADC32782;
-	Mon, 12 Aug 2024 12:40:00 +0000 (UTC)
+	s=arc-20240116; t=1723466405; c=relaxed/simple;
+	bh=KzJNvgyjUK/f4y8mLExHHyhox/HUu5SoerCDCpcUILw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=p9g2mIQxyLr84Af9xFBAE5Qj/M0EZsrm9vCY4NLqVv4uy1FWbxbjET5hEFYhORGTQgLwdEZFmpPNK7KKiWee21HvBvM9aVtbiDAyicN5WB7MV79P2qIif6stHvFMFjB8xA+0oupNlZohkLQV6M1ozTBLBYUDdfFsYwwanAo6nsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usKjqMnQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9D9C32782;
+	Mon, 12 Aug 2024 12:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723466401;
-	bh=JTOWcMXbOubXtiO2DgR6EwS/qsl4ELy+b/7Lwx/rM88=;
+	s=korg; t=1723466405;
+	bh=KzJNvgyjUK/f4y8mLExHHyhox/HUu5SoerCDCpcUILw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dKM0CLIq1nWWhuZGihAzQek0cs377MqUcYukv8YrNjiNqbaBjr2bKN4OZr7gILtkc
-	 ZKbBzJsSI6zm0FsKNZfjeCnFtjjVEitqbwOBHfbGAwFmqYYsoXXUP5ckEeYG8dEKIW
-	 mnwLkZjm9OnmypVOjAeu5tW2IMepPZvZTo/KFv6A=
-Subject: FAILED: patch "[PATCH] mptcp: pm: don't try to create sf if alloc failed" failed to apply to 5.10-stable tree
+	b=usKjqMnQ0ABuktqt0JSBdhZc8wDCkKfCocrwTTtEjFrkes0dx2FTxY2uYLx3WaXTT
+	 9MUxhBkc/um30dKn+ztd0xeR+jIOnKPH06gaXGilFUYj/WOKkFwbBPy/OmOzhqufZ9
+	 x3eGdUDHCoE8NdOc7JzJLmiYUslxkP2JAY55YLxw=
+Subject: FAILED: patch "[PATCH] mptcp: pm: do not ignore 'subflow' if 'signal' flag is also" failed to apply to 6.10-stable tree
 To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 14:39:48 +0200
-Message-ID: <2024081248-exposable-uniformed-75e0@gregkh>
+Date: Mon, 12 Aug 2024 14:39:57 +0200
+Message-ID: <2024081257-budding-jeep-9fa3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,34 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x cd7c957f936f8cb80d03e5152f4013aae65bd986
+git cherry-pick -x 85df533a787bf07bf4367ce2a02b822ff1fba1a3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081248-exposable-uniformed-75e0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081257-budding-jeep-9fa3@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-cd7c957f936f ("mptcp: pm: don't try to create sf if alloc failed")
+85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
 c95eb32ced82 ("mptcp: pm: reduce indentation blocks")
-528cb5f2a1e8 ("mptcp: pass addr to mptcp_pm_alloc_anno_list")
-77e4b94a3de6 ("mptcp: update userspace pm infos")
-24430f8bf516 ("mptcp: add address into userspace pm list")
-fb00ee4f3343 ("mptcp: netlink: respect v4/v6-only sockets")
-80638684e840 ("mptcp: get sk from msk directly")
-5ccecaec5c1e ("mptcp: fix locking in mptcp_nl_cmd_sf_destroy()")
-76a13b315709 ("mptcp: invoke MP_FAIL response when needed")
-d9fb797046c5 ("mptcp: Do not traverse the subflow connection list without lock")
-d42f9e4e2384 ("mptcp: Check for orphaned subflow before handling MP_FAIL timer")
-d7e6f5836038 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
@@ -88,66 +78,99 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cd7c957f936f8cb80d03e5152f4013aae65bd986 Mon Sep 17 00:00:00 2001
+From 85df533a787bf07bf4367ce2a02b822ff1fba1a3 Mon Sep 17 00:00:00 2001
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 31 Jul 2024 13:05:56 +0200
-Subject: [PATCH] mptcp: pm: don't try to create sf if alloc failed
+Date: Wed, 31 Jul 2024 13:05:57 +0200
+Subject: [PATCH] mptcp: pm: do not ignore 'subflow' if 'signal' flag is also
+ set
 
-It sounds better to avoid wasting cycles and / or put extreme memory
-pressure on the system by trying to create new subflows if it was not
-possible to add a new item in the announce list.
+Up to the 'Fixes' commit, having an endpoint with both the 'signal' and
+'subflow' flags, resulted in the creation of a subflow and an address
+announcement using the address linked to this endpoint. After this
+commit, only the address announcement was done, ignoring the 'subflow'
+flag.
 
-While at it, a warning is now printed if the entry was already in the
-list as it should not happen with the in-kernel path-manager. With this
-PM, mptcp_pm_alloc_anno_list() should only fail in case of memory
-pressure.
+That's because the same bitmap is used for the two flags. It is OK to
+keep this single bitmap, the already selected local endpoint simply have
+to be re-used, but not via select_local_address() not to look at the
+just modified bitmap.
 
-Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Note that it is unusual to set the two flags together: creating a new
+subflow using a new local address will implicitly advertise it to the
+other peer. So in theory, no need to advertise it explicitly as well.
+Maybe there are use-cases -- the subflow might not reach the other peer
+that way, we can ask the other peer to try initiating the new subflow
+without delay -- or very likely the user is confused, and put both flags
+"just to be sure at least the right one is set". Still, if it is
+allowed, the kernel should do what has been asked: using this endpoint
+to announce the address and to create a new subflow from it.
+
+An alternative is to forbid the use of the two flags together, but
+that's probably too late, there are maybe use-cases, and it was working
+before. This patch will avoid people complaining subflows are not
+created using the endpoint they added with the 'subflow' and 'signal'
+flag.
+
+Note that with the current patch, the subflow might not be created in
+some corner cases, e.g. if the 'subflows' limit was reached when sending
+the ADD_ADDR, but changed later on. It is probably not worth splitting
+id_avail_bitmap per target ('signal', 'subflow'), which will add another
+large field to the msk "just" to track (again) endpoints. Anyway,
+currently when the limits are changed, the kernel doesn't check if new
+subflows can be created or removed, because we would need to keep track
+of the received ADD_ADDR, and more. It sounds OK to assume that the
+limits should be properly configured before establishing new
+connections.
+
+Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
 Cc: stable@vger.kernel.org
 Suggested-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-4-c8a9b036493b@kernel.org
+Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-5-c8a9b036493b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 780f4cca165c..2be7af377cda 100644
+index 2be7af377cda..4cae2aa7be5c 100644
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -348,7 +348,7 @@ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
- 	add_entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
+@@ -512,8 +512,8 @@ __lookup_addr(struct pm_nl_pernet *pernet, const struct mptcp_addr_info *info)
  
- 	if (add_entry) {
--		if (mptcp_pm_is_kernel(msk))
-+		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
- 			return false;
- 
- 		sk_reset_timer(sk, &add_entry->add_timer,
-@@ -555,8 +555,6 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 
- 	/* check first for announce */
- 	if (msk->pm.add_addr_signaled < add_addr_signal_max) {
--		local = select_signal_address(pernet, msk);
--
- 		/* due to racing events on both ends we can reach here while
- 		 * previous add address is still running: if we invoke now
- 		 * mptcp_pm_announce_addr(), that will fail and the
-@@ -567,11 +565,15 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 		if (msk->pm.addr_signal & BIT(MPTCP_ADD_ADDR_SIGNAL))
- 			return;
- 
-+		local = select_signal_address(pernet, msk);
- 		if (!local)
- 			goto subflow;
- 
-+		/* If the alloc fails, we are on memory pressure, not worth
-+		 * continuing, and trying to create subflows.
-+		 */
- 		if (!mptcp_pm_alloc_anno_list(msk, &local->addr))
--			goto subflow;
-+			return;
- 
- 		__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
+ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+ {
++	struct mptcp_pm_addr_entry *local, *signal_and_subflow = NULL;
+ 	struct sock *sk = (struct sock *)msk;
+-	struct mptcp_pm_addr_entry *local;
+ 	unsigned int add_addr_signal_max;
+ 	unsigned int local_addr_max;
+ 	struct pm_nl_pernet *pernet;
+@@ -579,6 +579,9 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
  		msk->pm.add_addr_signaled++;
+ 		mptcp_pm_announce_addr(msk, &local->addr, false);
+ 		mptcp_pm_nl_addr_send_ack(msk);
++
++		if (local->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)
++			signal_and_subflow = local;
+ 	}
+ 
+ subflow:
+@@ -589,9 +592,14 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+ 		bool fullmesh;
+ 		int i, nr;
+ 
+-		local = select_local_address(pernet, msk);
+-		if (!local)
+-			break;
++		if (signal_and_subflow) {
++			local = signal_and_subflow;
++			signal_and_subflow = NULL;
++		} else {
++			local = select_local_address(pernet, msk);
++			if (!local)
++				break;
++		}
+ 
+ 		fullmesh = !!(local->flags & MPTCP_PM_ADDR_FLAG_FULLMESH);
+ 
 
 
