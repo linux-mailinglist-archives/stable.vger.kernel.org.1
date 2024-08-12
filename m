@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-67264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774EF94F49F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA67994F38A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:19:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10F48B22DB4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75CF9B23E87
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768B9186E38;
-	Mon, 12 Aug 2024 16:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B926C186E20;
+	Mon, 12 Aug 2024 16:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrwJZzjG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0lTGP70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C2C16D9B8;
-	Mon, 12 Aug 2024 16:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78515183CA6;
+	Mon, 12 Aug 2024 16:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480352; cv=none; b=OhypPOjb8lssWr1nEAA5TgXD3iNspj9ybqDWOsuZVvIrCaUam2Y/b//zCluzRim5tJDUBhzbteMWnTLOxzTN7ub2/MoPn3eVP2l4aJlw++nvyYBD8eupLS+e5KEaWRLVHYJUOGQHAxtBILPv/95k0O3jwxo+81dJxBG6hrZrUHE=
+	t=1723479536; cv=none; b=gc+XASrma9q6JKsA90uE2YmUYQhHpLxhJ2SbLVR/nkaO0//elQgGWkVhwD++KvJ9DpNUGC2v46DmJhNWhrXjEL92nxbmw+rziR5Vm1TtK9cBRtZ23HTwB4qEBxkVHYwIHFooxf6N7TapBLzBf2SwmrxwvQwHfh0q6vvm9BpblNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480352; c=relaxed/simple;
-	bh=VIoWVf2TyQhojItDqtNhC3A1QrQWRI+wOcMArQytaUo=;
+	s=arc-20240116; t=1723479536; c=relaxed/simple;
+	bh=gKnC748HM8tdPffBhy6Ivf/XuTtyqIhod1X87Qjk80c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqQ8xR/nfd3viGadQpP/BJKPRrJ0triDCAxTElTPk9m32zHNLLKZfpvj2zyrJQd/7+PLTXJLkpyuVvSPB3VuMr8sKXffvINlD3OgNx/20idGxjtzk46bnRcCJEgIieia+XefPSWkCiUmLyh0g1/GIiPWFgrs2at2t3GznWjMbtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrwJZzjG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9504AC32782;
-	Mon, 12 Aug 2024 16:32:31 +0000 (UTC)
+	 MIME-Version; b=Xh9l/V9XHctkopz//sWv6wr4Eox1GorpXOSeXYiljXJxsV+0fDXjpnb8QxmW5qlvuSkOsDBr7ORpKgStIe561nO333PGHrXWRTlzHvESX2wITV5KXIp/VFj662jdFgovAu4tj9SCOv+gfZFLDGTeeteMmFIQxi+PuRwyDQm9iGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0lTGP70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47D0C4AF0C;
+	Mon, 12 Aug 2024 16:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480352;
-	bh=VIoWVf2TyQhojItDqtNhC3A1QrQWRI+wOcMArQytaUo=;
+	s=korg; t=1723479536;
+	bh=gKnC748HM8tdPffBhy6Ivf/XuTtyqIhod1X87Qjk80c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZrwJZzjGDlCNapx7kRuQFye+qOHZKOVtSJYED43WLCH0WCzRSLzLOqQL1n4YL9xWE
-	 1Xvt2UkgXSvpj0ZqEvNbS4ZVYVKrAg6jUO4hqr4qitGpsV16DjcmoaA9GMeYBalX0q
-	 GwtfYcCSkdWYbvlXmZU04wrLp/mjbdXqV3nJ989k=
+	b=e0lTGP70CEk6T+khifB0i5TFASA55lYeYr6t5jdF1KEWS2W+15IuXWWBTg6gSOgRM
+	 xzMmgOsmAzRqpzVmsIpGmJ8ctQbuTqTLlfG1MKHjAJn+CSs9HhIZDBh7Njgcj6TOQ5
+	 aDnUyZGc+pnPd2dIxRqHsqy7gJ67qmcf4E9mNQZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell King <linux@armlinux.org.uk>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 171/263] module: make waiting for a concurrent module loader interruptible
-Date: Mon, 12 Aug 2024 18:02:52 +0200
-Message-ID: <20240812160153.094583252@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.6 117/189] usb: vhci-hcd: Do not drop references before new references are gained
+Date: Mon, 12 Aug 2024 18:02:53 +0200
+Message-ID: <20240812160136.640960144@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 2124d84db293ba164059077944e6b429ba530495 ]
+commit afdcfd3d6fcdeca2735ca8d994c5f2d24a368f0a upstream.
 
-The recursive aes-arm-bs module load situation reported by Russell King
-is getting fixed in the crypto layer, but this in the meantime fixes the
-"recursive load hangs forever" by just making the waiting for the first
-module load be interruptible.
+At a few places the driver carries stale pointers
+to references that can still be used. Make sure that does not happen.
+This strictly speaking closes ZDI-CAN-22273, though there may be
+similar races in the driver.
 
-This should now match the old behavior before commit 9b9879fc0327
-("modules: catch concurrent module loads, treat them as idempotent"),
-which used the different "wait for module to be ready" code in
-module_patient_check_exists().
-
-End result: a recursive module load will still block, but now a signal
-will interrupt it and fail the second module load, at which point the
-first module will successfully complete loading.
-
-Fixes: 9b9879fc0327 ("modules: catch concurrent module loads, treat them as idempotent")
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240709113851.14691-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/module/main.c | 40 +++++++++++++++++++++++++---------------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+ drivers/usb/usbip/vhci_hcd.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 7445d27ce3cdc..3f9da537024a1 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -3101,7 +3101,7 @@ static bool idempotent(struct idempotent *u, const void *cookie)
- 	struct idempotent *existing;
- 	bool first;
- 
--	u->ret = 0;
-+	u->ret = -EINTR;
- 	u->cookie = cookie;
- 	init_completion(&u->complete);
- 
-@@ -3137,7 +3137,7 @@ static int idempotent_complete(struct idempotent *u, int ret)
- 	hlist_for_each_entry_safe(pos, next, head, entry) {
- 		if (pos->cookie != cookie)
- 			continue;
--		hlist_del(&pos->entry);
-+		hlist_del_init(&pos->entry);
- 		pos->ret = ret;
- 		complete(&pos->complete);
- 	}
-@@ -3145,6 +3145,28 @@ static int idempotent_complete(struct idempotent *u, int ret)
- 	return ret;
- }
- 
-+/*
-+ * Wait for the idempotent worker.
-+ *
-+ * If we get interrupted, we need to remove ourselves from the
-+ * the idempotent list, and the completion may still come in.
-+ *
-+ * The 'idem_lock' protects against the race, and 'idem.ret' was
-+ * initialized to -EINTR and is thus always the right return
-+ * value even if the idempotent work then completes between
-+ * the wait_for_completion and the cleanup.
-+ */
-+static int idempotent_wait_for_completion(struct idempotent *u)
-+{
-+	if (wait_for_completion_interruptible(&u->complete)) {
-+		spin_lock(&idem_lock);
-+		if (!hlist_unhashed(&u->entry))
-+			hlist_del(&u->entry);
-+		spin_unlock(&idem_lock);
-+	}
-+	return u->ret;
-+}
-+
- static int init_module_from_file(struct file *f, const char __user * uargs, int flags)
- {
- 	struct load_info info = { };
-@@ -3188,20 +3210,8 @@ static int idempotent_init_module(struct file *f, const char __user * uargs, int
- 
- 	/*
- 	 * Somebody else won the race and is loading the module.
--	 *
--	 * We have to wait for it forever, since our 'idem' is
--	 * on the stack and the list entry stays there until
--	 * completed (but we could fix it under the idem_lock)
--	 *
--	 * It's also unclear what a real timeout might be,
--	 * but we could maybe at least make this killable
--	 * and remove the idem entry in that case?
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -745,6 +745,7 @@ static int vhci_urb_enqueue(struct usb_h
+ 	 *
  	 */
--	for (;;) {
--		if (wait_for_completion_timeout(&idem.complete, 10*HZ))
--			return idem.ret;
--		pr_warn_once("module '%pD' taking a long time to load", f);
--	}
-+	return idempotent_wait_for_completion(&idem);
- }
+ 	if (usb_pipedevice(urb->pipe) == 0) {
++		struct usb_device *old;
+ 		__u8 type = usb_pipetype(urb->pipe);
+ 		struct usb_ctrlrequest *ctrlreq =
+ 			(struct usb_ctrlrequest *) urb->setup_packet;
+@@ -755,14 +756,15 @@ static int vhci_urb_enqueue(struct usb_h
+ 			goto no_need_xmit;
+ 		}
  
- SYSCALL_DEFINE3(finit_module, int, fd, const char __user *, uargs, int, flags)
--- 
-2.43.0
-
++		old = vdev->udev;
+ 		switch (ctrlreq->bRequest) {
+ 		case USB_REQ_SET_ADDRESS:
+ 			/* set_address may come when a device is reset */
+ 			dev_info(dev, "SetAddress Request (%d) to port %d\n",
+ 				 ctrlreq->wValue, vdev->rhport);
+ 
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 
+ 			spin_lock(&vdev->ud.lock);
+ 			vdev->ud.status = VDEV_ST_USED;
+@@ -781,8 +783,8 @@ static int vhci_urb_enqueue(struct usb_h
+ 				usbip_dbg_vhci_hc(
+ 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+ 
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 			goto out;
+ 
+ 		default:
+@@ -1067,6 +1069,7 @@ static void vhci_shutdown_connection(str
+ static void vhci_device_reset(struct usbip_device *ud)
+ {
+ 	struct vhci_device *vdev = container_of(ud, struct vhci_device, ud);
++	struct usb_device *old = vdev->udev;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&ud->lock, flags);
+@@ -1074,8 +1077,8 @@ static void vhci_device_reset(struct usb
+ 	vdev->speed  = 0;
+ 	vdev->devid  = 0;
+ 
+-	usb_put_dev(vdev->udev);
+ 	vdev->udev = NULL;
++	usb_put_dev(old);
+ 
+ 	if (ud->tcp_socket) {
+ 		sockfd_put(ud->tcp_socket);
 
 
 
