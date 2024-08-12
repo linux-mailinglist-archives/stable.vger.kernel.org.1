@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-67010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D7294F37F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AEB94F496
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31AC4B254FA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2833C281808
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0181862BD;
-	Mon, 12 Aug 2024 16:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6595186E5E;
+	Mon, 12 Aug 2024 16:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYsrE821"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="En9hfdol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B629183CA6;
-	Mon, 12 Aug 2024 16:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838522C1A5;
+	Mon, 12 Aug 2024 16:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479503; cv=none; b=e7VQ81OLKkXq6kgXwsYwOa2t5WHi0BmXpIEntfpEFpPM+WEY4JuLYiwvVAFgsCgkcBc3N/okcV9qa+2YGgrJPjO1Xk3qbUAdT2t0zcI2QawR0ANCCUiiKJ7INbu+YWCEnwlcZwzb3gTTLBXtYWkgG5fKeLmCkMboa3drg/oeupI=
+	t=1723480322; cv=none; b=GvSnd38zIZ7edhIjVK0nN/DHwky9PwnUkZ6TTPe9o3dw63E6OqtnKeZgyKJjrbA1Vz3ZAAIVdB4PhCOrVkVhxSX+o2FYkzrTttwWcBoq9Nz33LhpNNQaUZ+gGh9zjRCdwYx72V7WSlAVFCkyanCAvODEGLEE9zCXyNHbTMLKJek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479503; c=relaxed/simple;
-	bh=RKULDCp81j22hwOPkT8O69Q2JF7x9zxxkyvebAndiIM=;
+	s=arc-20240116; t=1723480322; c=relaxed/simple;
+	bh=WZJkkveFcDEoxLi4SrbWxM20aPg/DcYVFSszlAvkwNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VoEDZJih3zOeWPzchvgUYIdFwaEIRt8O6XXBvXLfmmbjZZK9+yeJMF/C7q5zgoSWll3W6OQuwgYdlcY+JFBcun5YDWRrrKcX5znr5FBbF/xErdO20x39EFWnWvMxor97SwM74Y39sZmBrNa6qeDVDtOpTqcuc9EwXkndlv0jRuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYsrE821; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23D5C32782;
-	Mon, 12 Aug 2024 16:18:22 +0000 (UTC)
+	 MIME-Version; b=D+b/yKfJU//PoaSbME0coMpShhMXanvDtnQw5HrMCbEj5hfa8stlYnL1NxyYnnBLCX2LAnB7A7mbUjkSLHCxooqh0fRq91yDlYcMX77rQ/MiStaJZcrHKV/FIYLVw1IsimYXl5vOQf/JN0mmSnnreDad4zB5yW5/MaYbFidL/BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=En9hfdol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4D9C32782;
+	Mon, 12 Aug 2024 16:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479503;
-	bh=RKULDCp81j22hwOPkT8O69Q2JF7x9zxxkyvebAndiIM=;
+	s=korg; t=1723480322;
+	bh=WZJkkveFcDEoxLi4SrbWxM20aPg/DcYVFSszlAvkwNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYsrE821/2wvtQ1YWz9q8ngKnHPeC4zGEZFbLJwmi3mQgh7CPD+KRGxIG/+Cfoz1y
-	 lP7r+pHUvb6f69D4qXNqESFskEMG6FHZXEzucS0Kv6IxK26lq0MR4kaI2cRE2KKMux
-	 Ppp14jQzxGNEHn8ruTOBhT8TyoFYxL9ZhAl2sTf8=
+	b=En9hfdoljYh/xODamJ2Q6moyU+ZSOrmdrloB4XMqnRQtxnfXAXCjBAHgRG/ZftTOX
+	 FJKTaAk+SjL1FOYLFSKecZ7W543R3UVCLtNFT002RBU+rZu7nZXBYFl7hRNqTn16md
+	 0t3UERF1/gfoY043+w7cOXcN+X1MUvuknCz2bzlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jonathan Cavitt <Jonathan.cavitt@intel.com>
-Subject: [PATCH 6.6 108/189] drm/i915/gem: Fix Virtual Memory mapping boundaries calculation
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 163/263] drm/xe/rtp: Fix off-by-one when processing rules
 Date: Mon, 12 Aug 2024 18:02:44 +0200
-Message-ID: <20240812160136.297240691@linuxfoundation.org>
+Message-ID: <20240812160152.787001479@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,131 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
+[ Upstream commit ae02c7b7fea3e034fbd724c21d88406f71ccc2f8 ]
 
-Calculating the size of the mapped area as the lesser value
-between the requested size and the actual size does not consider
-the partial mapping offset. This can cause page fault access.
+Gustavo noticed an odd "+ 2" in rtp_mark_active() while processing
+rtp rules and pointed that it should be "+ 1". In fact, while processing
+entries without actions (OOB workarounds), if the WA is activated and
+has OR rules, it will also inadvertently activate the very next
+workaround.
 
-Fix the calculation of the starting and ending addresses, the
-total size is now deduced from the difference between the end and
-start addresses.
+Test in a LNL B0 platform by moving 18024947630 on top of 16020292621,
+makes the latter become active:
 
-Additionally, the calculations have been rewritten in a clearer
-and more understandable form.
+	$ cat /sys/kernel/debug/dri/0/gt0/workarounds
+	...
+	OOB Workarounds
+		18024947630
+		16020292621
+		14018094691
+		16022287689
+		13011645652
+		22019338487_display
 
-Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
-Reported-by: Jann Horn <jannh@google.com>
-Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v4.9+
-Reviewed-by: Jann Horn <jannh@google.com>
-Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
-[Joonas: Add Requires: tag]
-Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
-(cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In future a kunit test will be added to cover the rtp checks for entries
+without actions.
+
+Fixes: fe19328b900c ("drm/xe/rtp: Add support for entries with no action")
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240726064337.797576-6-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit fd6797ec50c561f085bc94e3ee26f484a52af79e)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_mman.c |   53 +++++++++++++++++++++++++++----
- 1 file changed, 47 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/xe/xe_rtp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -290,6 +290,41 @@ out:
- 	return i915_error_to_vmf_fault(err);
+diff --git a/drivers/gpu/drm/xe/xe_rtp.c b/drivers/gpu/drm/xe/xe_rtp.c
+index fb44cc7521d8c..10326bd1bfa3b 100644
+--- a/drivers/gpu/drm/xe/xe_rtp.c
++++ b/drivers/gpu/drm/xe/xe_rtp.c
+@@ -200,7 +200,7 @@ static void rtp_mark_active(struct xe_device *xe,
+ 	if (first == last)
+ 		bitmap_set(ctx->active_entries, first, 1);
+ 	else
+-		bitmap_set(ctx->active_entries, first, last - first + 2);
++		bitmap_set(ctx->active_entries, first, last - first + 1);
  }
  
-+static void set_address_limits(struct vm_area_struct *area,
-+			       struct i915_vma *vma,
-+			       unsigned long obj_offset,
-+			       unsigned long *start_vaddr,
-+			       unsigned long *end_vaddr)
-+{
-+	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
-+	long start, end; /* memory boundaries */
-+
-+	/*
-+	 * Let's move into the ">> PAGE_SHIFT"
-+	 * domain to be sure not to lose bits
-+	 */
-+	vm_start = area->vm_start >> PAGE_SHIFT;
-+	vm_end = area->vm_end >> PAGE_SHIFT;
-+	vma_size = vma->size >> PAGE_SHIFT;
-+
-+	/*
-+	 * Calculate the memory boundaries by considering the offset
-+	 * provided by the user during memory mapping and the offset
-+	 * provided for the partial mapping.
-+	 */
-+	start = vm_start;
-+	start -= obj_offset;
-+	start += vma->gtt_view.partial.offset;
-+	end = start + vma_size;
-+
-+	start = max_t(long, start, vm_start);
-+	end = min_t(long, end, vm_end);
-+
-+	/* Let's move back into the "<< PAGE_SHIFT" domain */
-+	*start_vaddr = (unsigned long)start << PAGE_SHIFT;
-+	*end_vaddr = (unsigned long)end << PAGE_SHIFT;
-+}
-+
- static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
- {
- #define MIN_CHUNK_PAGES (SZ_1M >> PAGE_SHIFT)
-@@ -302,14 +337,18 @@ static vm_fault_t vm_fault_gtt(struct vm
- 	struct i915_ggtt *ggtt = to_gt(i915)->ggtt;
- 	bool write = area->vm_flags & VM_WRITE;
- 	struct i915_gem_ww_ctx ww;
-+	unsigned long obj_offset;
-+	unsigned long start, end; /* memory boundaries */
- 	intel_wakeref_t wakeref;
- 	struct i915_vma *vma;
- 	pgoff_t page_offset;
-+	unsigned long pfn;
- 	int srcu;
- 	int ret;
- 
--	/* We don't use vmf->pgoff since that has the fake offset */
-+	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
- 	page_offset = (vmf->address - area->vm_start) >> PAGE_SHIFT;
-+	page_offset += obj_offset;
- 
- 	trace_i915_gem_object_fault(obj, page_offset, true, write);
- 
-@@ -402,12 +441,14 @@ retry:
- 	if (ret)
- 		goto err_unpin;
- 
-+	set_address_limits(area, vma, obj_offset, &start, &end);
-+
-+	pfn = (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
-+	pfn += (start - area->vm_start) >> PAGE_SHIFT;
-+	pfn += obj_offset - vma->gtt_view.partial.offset;
-+
- 	/* Finally, remap it using the new GTT offset */
--	ret = remap_io_mapping(area,
--			       area->vm_start + (vma->gtt_view.partial.offset << PAGE_SHIFT),
--			       (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT,
--			       min_t(u64, vma->size, area->vm_end - area->vm_start),
--			       &ggtt->iomap);
-+	ret = remap_io_mapping(area, start, pfn, end - start, &ggtt->iomap);
- 	if (ret)
- 		goto err_fence;
- 
+ /**
+-- 
+2.43.0
+
 
 
 
