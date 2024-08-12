@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D7494F0C4
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:54:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ABD94F0C6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:54:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF6FA280F65
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:54:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12529280E11
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A67A17995B;
-	Mon, 12 Aug 2024 14:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26864153BF6;
+	Mon, 12 Aug 2024 14:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdwQtP1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3vNAFOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4944B5AE
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC14C4B5AE
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474449; cv=none; b=W517Asw+FA8r0SWsyw7jYwmF2HH6F2lMfi6M+jb/WOC8d0DntQ+GcswrSSoyA0exbPGBx5IjHMiSW8XIjJCI1uMove3wpwlvobbtV5317cs68LhhxEVWU1S2SQASmvF6hp4j3MC5K0I+yaa0Yaj5Hkf1fktbEOZgFRMYnG+Z0dg=
+	t=1723474452; cv=none; b=NbB8HQSSuwHD1JRxqanSDnnsTteP9D8S5v5aCRRtVxQ63MMCO5lcGJ3itQDJZ4zojRw+lp4s5jtRlB3BQ/ntX0Q+rKqrE2iMZYz27kO8VR5js0JnwfbAgm7mD+jr+8NYNeUoipsgjtAF3zTNN4W98m2uDiSp2aTINtOvovYFlHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474449; c=relaxed/simple;
-	bh=aN4U43Ua8OUwqCZn6PzSAF337DUFuoO7TEBERq/pr2s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ioyRuSSZnicMkTuDGky6iUc7jwFOw0GhOzbYNg/t7olyiNQy/mJgwnS9ucOSLaBLAiNyeq32+vjJditgV3eQj/CNglAPYxi4Mef+57VdDqCKwMg7okidWGnrXWFglXTqoZg6rzoXPKF8lXntNwEdkzvgZIm9xZhRkEBa2L/mXGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdwQtP1v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51407C32782;
-	Mon, 12 Aug 2024 14:54:08 +0000 (UTC)
+	s=arc-20240116; t=1723474452; c=relaxed/simple;
+	bh=Hnm/3mo2KUHOSyW5eSUGl7vg4KFrQsVpsWq8IxgIt7s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZMwIUqVqUMrDYt6LM85qxKhEnbS6BjkIvMaBiFbXiSN9avuavii90axim0rXxiwhorTVBmeat+Yn/4mHPmgbzn5bpCFE47HVkLHxCpFaH2qqwuYqqmU/PoGpOUzVbgajftIn2ZavxqPbPSIfE/BknvsqnKw4Oj2R7wc6W4+WfnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3vNAFOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD8AC32782;
+	Mon, 12 Aug 2024 14:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474448;
-	bh=aN4U43Ua8OUwqCZn6PzSAF337DUFuoO7TEBERq/pr2s=;
+	s=korg; t=1723474452;
+	bh=Hnm/3mo2KUHOSyW5eSUGl7vg4KFrQsVpsWq8IxgIt7s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=YdwQtP1vYqMIvgYdLRqj/+ePqIxy5qKDUCBvZXO0K/+EpkC5VDcYoG06uCAmItuOh
-	 kWUkhzr3FzdLL4opnsQHoT+JP3TVNZH6Nk/8+DYFu6emnGI2jbf6vpPw0aXcIdyLic
-	 8Q3Q5Zuis9hQrdjDdW9pAdoLXYUuXwIRUXZZnhUw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Send DP_TOTAL_LTTPR_CNT during detection if" failed to apply to 6.6-stable tree
+	b=z3vNAFOaA3usPPL7q0GS/bduXyhU9/0MKFPEf4XnzHYZVpoSAkh+gNG/n1oWGZtDt
+	 7sGG0iYFvIMB1eXg4NweZPVPBP6xuuI+s6+58DtDkqU2UFswxSxCrIhZzFcHr+TOXh
+	 gF5Ljh04HOpcQ5Ka4ouc00YWieATT7TgTaaRCXe8=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Send DP_TOTAL_LTTPR_CNT during detection if" failed to apply to 6.1-stable tree
 To: michael.strauss@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:51:23 +0200
-Message-ID: <2024081223-squatting-groove-e9a0@gregkh>
+Date: Mon, 12 Aug 2024 16:51:24 +0200
+Message-ID: <2024081224-encode-climate-495b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x d03415f60b3401914fabd27a20017f8056fd5e40
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081223-squatting-groove-e9a0@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081224-encode-climate-495b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 d03415f60b34 ("drm/amd/display: Send DP_TOTAL_LTTPR_CNT during detection if LTTPR is present")
+bc33f5e5f05b ("drm/amd/display: create accessories, hwss and protocols sub folders in link")
+028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
+603a521ec279 ("drm/amd/display: remove duplicate included header files")
+d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
+94dfeaa46925 ("drm/amd/display: move dp phy related logic to link_dp_phy")
+630168a97314 ("drm/amd/display: move dp link training logic to link_dp_training")
+d144b40a4833 ("drm/amd/display: move dc_link_dpia logic to link_dp_dpia")
+a28d0bac0956 ("drm/amd/display: move dpcd logic from dc_link_dpcd to link_dpcd")
+a98cdd8c4856 ("drm/amd/display: refactor ddc logic from dc_link_ddc to link_ddc")
+4370f72e3845 ("drm/amd/display: refactor hpd logic from dc_link to link_hpd")
+0e8cf83a2b47 ("drm/amd/display: allow hpo and dio encoder switching during dp retrain test")
+7462475e3a06 ("drm/amd/display: move dccg programming from link hwss hpo dp to hwss")
+e85d59885409 ("drm/amd/display: use encoder type independent hwss instead of accessing enc directly")
+ebf13b72020a ("drm/amd/display: Revert Scaler HCBlank issue workaround")
+639f6ad6df7f ("drm/amd/display: Revert Reduce delay when sink device not able to ACK 00340h write")
+e3aa827e2ab3 ("drm/amd/display: Avoid setting pixel rate divider to N/A")
+fe4e2662b2dd ("drm/amd/display: Phase 1 Add Bw Allocation source and header files")
+180f33d27a55 ("drm/amd/display: Adjust DP 8b10b LT exit behavior")
+b7ada7ee61d3 ("drm/amd/display: Populate DP2.0 output type for DML pipe")
 
 thanks,
 
