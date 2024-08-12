@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-66796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE57194F27F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E0694F352
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E14331C213AC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70040286A83
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128EE187323;
-	Mon, 12 Aug 2024 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE11183CB8;
+	Mon, 12 Aug 2024 16:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qv8w/DdJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYyq8hxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49B5186295;
-	Mon, 12 Aug 2024 16:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BA8184527;
+	Mon, 12 Aug 2024 16:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478812; cv=none; b=Oa7OjDRcIQVOOdy0XrwVGAm9UB/3iMClmZp/ERYQ1UiQ7FT0rhKbP3UxCaaR8g9Rp1nNpp+UH1Z8sf0+sQJH9qfJxEj11k3f6XOsOwvq3LheZhehn0lbHVi3abr/KHuf3xytj2SuhwrdZwZMmugEtCbGAWlkElUtQfvizA3trUE=
+	t=1723479381; cv=none; b=UZmto+lAu/S1eY2ge3CGIEIwHGUseNzw3+foI/pX385z5VgV8xBD1q2FFbVq6P/aK1wa9l2zqibQD0Kc+WDGpg7x8r80dhM51QTV0iCEorH9qAWHuYjQa3dcbOk3lrwsDRpllEuwDURuuAYRTa4XgRKfidVtWBcQrEpnD+pe1Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478812; c=relaxed/simple;
-	bh=l4RjxHvlqw4wsNv04P+2k9phZOvQFfS6tcxbepelE3M=;
+	s=arc-20240116; t=1723479381; c=relaxed/simple;
+	bh=PV0+Hj3pFfEby4Lj1NWWWML7x3cEMCwgljBzpqBoqc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SiIEh/hYl/A+cC5HslUNFh/VEUvx+fTDAvPPyQaBRP64/uV2h71bzd3UtQ3vNCPoVoHNfvInp9dPFaOoJgmArXmXbpsOoXHgnqO1sE45ykgZGV8AZdv/KSOmPKjWSdwarhY7BHd+Cqlwim8e138hweckfGi0beAPVmmnSCFwWJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qv8w/DdJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480E2C32782;
-	Mon, 12 Aug 2024 16:06:52 +0000 (UTC)
+	 MIME-Version; b=nDlEEI6SAgQ7uD/KG9cJaVe+rahq8yvUEXNeAQPD1jcXRmcQW78NQ+oBvUIHHMHZDw2p7TbQ1lAK8hE+KjcbmkaqFhxvLT/arlT1+Fl0R51+en1lIjGEsET33YevSEESU8FNeLD/aAuPJT1b9L0TiKvSdP1Q/9kRzi4pFP6rRKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYyq8hxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D869C32782;
+	Mon, 12 Aug 2024 16:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478812;
-	bh=l4RjxHvlqw4wsNv04P+2k9phZOvQFfS6tcxbepelE3M=;
+	s=korg; t=1723479381;
+	bh=PV0+Hj3pFfEby4Lj1NWWWML7x3cEMCwgljBzpqBoqc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qv8w/DdJgOvYu+QtkeO4G1NzYvNrPXnx5SzNeUZ6BE8sOHtsK6Ute1Zlxw7+9Gr8K
-	 1PfeUG8JPMFDECwbfljGRfDLdDgNlr6cbtRC9G9UIfgCw2ZaCKiFzMbLFkt/8hL+yZ
-	 cg/BQcOLrerIUKPi2DFGWJcHiWT0otIWQLzZlfyM=
+	b=rYyq8hxdc+hHwJAIyVqb+pMVZgrrKQMAVaxwat6aRhJCBeYP2t+2/fdk/y0/UVjA7
+	 M/kL1cEMDdmyZNGBEbCZIe/crtFcgOzgVvBh+7GmmYtBykHWAgDgWzxuz3ns0V/FdR
+	 pNNE2xuzk99xjzFf270Iw5Yx+eACVdbk3IidR5pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/150] media: uvcvideo: Fix the bandwdith quirk on USB 3.x
-Date: Mon, 12 Aug 2024 18:02:05 +0200
-Message-ID: <20240812160126.865955328@linuxfoundation.org>
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 070/189] irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock to raw_spinlock_t
+Date: Mon, 12 Aug 2024 18:02:06 +0200
+Message-ID: <20240812160134.839099337@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-[ Upstream commit 9e3d55fbd160b3ca376599a68b4cddfdc67d4153 ]
+commit f872d4af79fe8c71ae291ce8875b477e1669a6c7 upstream.
 
-The bandwidth fixup quirk doesn't know that SuperSpeed exists and has
-the same 8 service intervals per millisecond as High Speed, hence its
-calculations are wrong.
+This lock is acquired under irq_desc::lock with interrupts disabled.
 
-Assume that all speeds from HS up use 8 intervals per millisecond.
+When PREEMPT_RT is enabled, 'spinlock_t' becomes preemptible, which results
+in invalid lock acquire context;
 
-No further changes are needed, updated code has been confirmed to work
-with all speeds from FS to SS.
+  [ BUG: Invalid wait context ]
+  swapper/0/1 is trying to lock:
+  ffff0000008fed30 (&ctl->lock){....}-{3:3}, at: meson_gpio_irq_update_bits0
+  other info that might help us debug this:
+  context-{5:5}
+  3 locks held by swapper/0/1:
+   #0: ffff0000003cd0f8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0x90c
+   #1: ffff000004714650 (&desc->request_mutex){+.+.}-{4:4}, at: __setup_irq0
+   #2: ffff0000047144c8 (&irq_desc_lock_class){-.-.}-{2:2}, at: __setup_irq0
+  stack backtrace:
+  CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.9-sdkernel #1
+  Call trace:
+   _raw_spin_lock_irqsave+0x60/0x88
+   meson_gpio_irq_update_bits+0x34/0x70
+   meson8_gpio_irq_set_type+0x78/0xc4
+   meson_gpio_irq_set_type+0x30/0x60
+   __irq_set_trigger+0x60/0x180
+   __setup_irq+0x30c/0x6e0
+   request_threaded_irq+0xec/0x1a4
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240414190040.2255a0bc@foxbook
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 215f4cc0fb20 ("irqchip/meson: Add support for gpio interrupt controller")
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240729131850.3015508-1-avkrasnov@salutedevices.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-meson-gpio.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index 7ca0760574598..aa0a879a9c64a 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -212,13 +212,13 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
- 		 * Compute a bandwidth estimation by multiplying the frame
- 		 * size by the number of video frames per second, divide the
- 		 * result by the number of USB frames (or micro-frames for
--		 * high-speed devices) per second and add the UVC header size
--		 * (assumed to be 12 bytes long).
-+		 * high- and super-speed devices) per second and add the UVC
-+		 * header size (assumed to be 12 bytes long).
- 		 */
- 		bandwidth = frame->wWidth * frame->wHeight / 8 * format->bpp;
- 		bandwidth *= 10000000 / interval + 1;
- 		bandwidth /= 1000;
--		if (stream->dev->udev->speed == USB_SPEED_HIGH)
-+		if (stream->dev->udev->speed >= USB_SPEED_HIGH)
- 			bandwidth /= 8;
- 		bandwidth += 12;
+--- a/drivers/irqchip/irq-meson-gpio.c
++++ b/drivers/irqchip/irq-meson-gpio.c
+@@ -173,7 +173,7 @@ struct meson_gpio_irq_controller {
+ 	void __iomem *base;
+ 	u32 channel_irqs[MAX_NUM_CHANNEL];
+ 	DECLARE_BITMAP(channel_map, MAX_NUM_CHANNEL);
+-	spinlock_t lock;
++	raw_spinlock_t lock;
+ };
  
--- 
-2.43.0
-
+ static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
+@@ -182,14 +182,14 @@ static void meson_gpio_irq_update_bits(s
+ 	unsigned long flags;
+ 	u32 tmp;
+ 
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
+ 
+ 	tmp = readl_relaxed(ctl->base + reg);
+ 	tmp &= ~mask;
+ 	tmp |= val;
+ 	writel_relaxed(tmp, ctl->base + reg);
+ 
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ }
+ 
+ static void meson_gpio_irq_init_dummy(struct meson_gpio_irq_controller *ctl)
+@@ -239,12 +239,12 @@ meson_gpio_irq_request_channel(struct me
+ 	unsigned long flags;
+ 	unsigned int idx;
+ 
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
+ 
+ 	/* Find a free channel */
+ 	idx = find_first_zero_bit(ctl->channel_map, ctl->params->nr_channels);
+ 	if (idx >= ctl->params->nr_channels) {
+-		spin_unlock_irqrestore(&ctl->lock, flags);
++		raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ 		pr_err("No channel available\n");
+ 		return -ENOSPC;
+ 	}
+@@ -252,7 +252,7 @@ meson_gpio_irq_request_channel(struct me
+ 	/* Mark the channel as used */
+ 	set_bit(idx, ctl->channel_map);
+ 
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ 
+ 	/*
+ 	 * Setup the mux of the channel to route the signal of the pad
+@@ -562,7 +562,7 @@ static int meson_gpio_irq_of_init(struct
+ 	if (!ctl)
+ 		return -ENOMEM;
+ 
+-	spin_lock_init(&ctl->lock);
++	raw_spin_lock_init(&ctl->lock);
+ 
+ 	ctl->base = of_iomap(node, 0);
+ 	if (!ctl->base) {
 
 
 
