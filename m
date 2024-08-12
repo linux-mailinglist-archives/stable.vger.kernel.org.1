@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-66903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4590594F304
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:13:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFED94F3B0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07A792857CC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:13:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2D171C2133D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2187818732E;
-	Mon, 12 Aug 2024 16:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3AD186E38;
+	Mon, 12 Aug 2024 16:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zgt6K8EH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHJmKPfz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23EF186E34;
-	Mon, 12 Aug 2024 16:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2300183CA6;
+	Mon, 12 Aug 2024 16:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479159; cv=none; b=PPRORq08xtISjvM2ADL6wKq3CIvRVSkj7NDhUAdKbhbENJAN+q2EnzhfBcKkuN7UW4wITFe5Ft+8AZ5WQxy+o6mnzu9wsc7Jftw007lEghiodwT/cz6NgdVeo0XHjwz2UBUN7H4iMuEjzU/wJe62zG3UB9tsdF6tL/t/pS/MbAg=
+	t=1723479650; cv=none; b=tm0+oTRuPieppF5HRSOGQbuFVFsSTFT/exisi4kC9HRAz4QZ4yymRpdOD+JUYWvnRVQzXlLjdfNLbo3jWKM1NSOr/Sz55x2Qzyiy6d0dMusn3S5GyliKyYSE08w9FERiAaMeu+vnGz55w/KyOynntV/0azjwtrVjRoK24dlu5h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479159; c=relaxed/simple;
-	bh=zWRuBQNHu2CGfDnQcWArHU14oJVgdWEXZ36JHp61hJc=;
+	s=arc-20240116; t=1723479650; c=relaxed/simple;
+	bh=OfU9FIz0TlwR3T+7oPsStQAA0u5Z8/itsWbcjptYkwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nyxG4gBoy2L/IwrF5Bw7zcqjSmtd9sXCyEqf9tpWfibKMAl/+ijp6aZ5DTQ9Gsr2sIlFLqx8D+v6a4O2OtTmUeO467bOUOCf7jIg8lIws2xWe6ZSkpAEAFNmXKdVL8db4DqO0o2npYIVbhY0hJm1A/R5GbzSTcPAQPUIohWs8uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zgt6K8EH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC098C32782;
-	Mon, 12 Aug 2024 16:12:38 +0000 (UTC)
+	 MIME-Version; b=r+n/OsVCZst6NrjC9r7DEseBB83vjSzYGhaHTYm1ymvUmDmfKDl+dkn6hAa5hekY218lfGjI+a4jq9G8deQVIyu8ynVUlXXreq4VEAZ9CgNmZDFUczYhqMnjSoaC/4qHmmqy1wC1rMi1fMlafyLxJIuv5aNrxfBmBglXxaRioaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHJmKPfz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56094C32782;
+	Mon, 12 Aug 2024 16:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479159;
-	bh=zWRuBQNHu2CGfDnQcWArHU14oJVgdWEXZ36JHp61hJc=;
+	s=korg; t=1723479650;
+	bh=OfU9FIz0TlwR3T+7oPsStQAA0u5Z8/itsWbcjptYkwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zgt6K8EHNim7fsSK/2njE5Jn+8hq6320dDqEc5WLQf06R1sesFf+mfOSHRIp/2kzw
-	 TAnQzycE3qYFlPn+6hB6x3/a8qPecsGkHmcEhaDVycWDmoA7oBNOuXsixmRJ73poO1
-	 OAaf78ABNKIB8aeqpf7DZZDqBK3RNM1I7sT/0GCA=
+	b=dHJmKPfzfeGuvHlJdjaWv0lfTjikE7e3ecoEsecsGalakUPgF76xKMQo1jfGcuddv
+	 2oqoMhag+O0MQyq1BH3KJeJS0UcrTFuab+gKtGbjMUb5WtD4y0mFdM2l1077nKAV7E
+	 I5UgNMukqjdTDjj/FxFphPLuVpq2110KPCHYGSUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Muller <philm@manjaro.org>,
-	Oliver Smith <ollieparanoid@postmarketos.org>,
-	Daniel Smith <danct12@disroot.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Qiang Yu <yuq825@gmail.com>
-Subject: [PATCH 6.1 126/150] drm/lima: Mark simple_ondemand governor as softdep
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Mathias Krause <minipli@grsecurity.net>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 151/189] eventfs: Dont return NULL in eventfs_create_dir()
 Date: Mon, 12 Aug 2024 18:03:27 +0200
-Message-ID: <20240812160130.024646147@linuxfoundation.org>
+Message-ID: <20240812160137.954616181@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Mathias Krause <minipli@grsecurity.net>
 
-commit 0c94f58cef319ad054fd909b3bf4b7d09c03e11c upstream.
+commit 12c20c65d0460cf34f9a665d8f0c0d77d45a3829 upstream.
 
-Lima DRM driver uses devfreq to perform DVFS, while using simple_ondemand
-devfreq governor by default.  This causes driver initialization to fail on
-boot when simple_ondemand governor isn't built into the kernel statically,
-as a result of the missing module dependency and, consequently, the
-required governor module not being included in the initial ramdisk.  Thus,
-let's mark simple_ondemand governor as a softdep for Lima, to have its
-kernel module included in the initial ramdisk.
+Commit 77a06c33a22d ("eventfs: Test for ei->is_freed when accessing
+ei->dentry") added another check, testing if the parent was freed after
+we released the mutex. If so, the function returns NULL. However, all
+callers expect it to either return a valid pointer or an error pointer,
+at least since commit 5264a2f4bb3b ("tracing: Fix a NULL vs IS_ERR() bug
+in event_subsystem_dir()"). Returning NULL will therefore fail the error
+condition check in the caller.
 
-This is a rather longstanding issue that has forced distributions to build
-devfreq governors statically into their kernels, [1][2] or may have forced
-some users to introduce unnecessary workarounds.
+Fix this by substituting the NULL return value with a fitting error
+pointer.
 
-Having simple_ondemand marked as a softdep for Lima may not resolve this
-issue for all Linux distributions.  In particular, it will remain
-unresolved for the distributions whose utilities for the initial ramdisk
-generation do not handle the available softdep information [3] properly
-yet.  However, some Linux distributions already handle softdeps properly
-while generating their initial ramdisks, [4] and this is a prerequisite
-step in the right direction for the distributions that don't handle them
-properly yet.
-
-[1] https://gitlab.manjaro.org/manjaro-arm/packages/core/linux-pinephone/-/blob/6.7-megi/config?ref_type=heads#L5749
-[2] https://gitlab.com/postmarketOS/pmaports/-/blob/7f64e287e7732c9eaa029653e73ca3d4ba1c8598/main/linux-postmarketos-allwinner/config-postmarketos-allwinner.aarch64#L4654
-[3] https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
-[4] https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
-
-Cc: Philip Muller <philm@manjaro.org>
-Cc: Oliver Smith <ollieparanoid@postmarketos.org>
-Cc: Daniel Smith <danct12@disroot.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: stable@vger.kernel.org
-Fixes: 1996970773a3 ("drm/lima: Add optional devfreq and cooling device support")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/fdaf2e41bb6a0c5118ff9cc21f4f62583208d885.1718655070.git.dsimic@manjaro.org
+Fixes: 77a06c33a22d ("eventfs: Test for ei->is_freed when accessing ei->dentry")
+Link: https://lore.kernel.org/20240723122522.2724-1-minipli@grsecurity.net
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/lima/lima_drv.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/tracefs/event_inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/lima/lima_drv.c
-+++ b/drivers/gpu/drm/lima/lima_drv.c
-@@ -489,3 +489,4 @@ module_platform_driver(lima_platform_dri
- MODULE_AUTHOR("Lima Project Developers");
- MODULE_DESCRIPTION("Lima DRM Driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_SOFTDEP("pre: governor_simpleondemand");
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -806,7 +806,7 @@ struct eventfs_inode *eventfs_create_dir
+ 	/* Was the parent freed? */
+ 	if (list_empty(&ei->list)) {
+ 		cleanup_ei(ei);
+-		ei = NULL;
++		ei = ERR_PTR(-EBUSY);
+ 	}
+ 	return ei;
+ }
 
 
 
