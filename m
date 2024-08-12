@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AA394F052
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:49:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB66394F053
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C6CF281D92
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:49:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F062A1C220A5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6690184540;
-	Mon, 12 Aug 2024 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ABF184545;
+	Mon, 12 Aug 2024 14:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiZ3BN+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NU894C8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AF018132A
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FB618132A
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474118; cv=none; b=D0817hATR6Xr31WysGroC2VZckkcb8VaJDHdfYis0b/e8cXoWyJ8a6sdOMit+boX+C/mAZUy0EB3Hdmrx9wY/o4GKmYAZ6GUFlQ6YIDLB3mXjZQYUISYIchitZK90tvXqoKoqGE7TKXwrJMyaVE05yoFuf2CUAPWsie+JW5XfrQ=
+	t=1723474121; cv=none; b=gY6NrsK9+ogVAcU8mEa99Kulx1oNE/vo3p5UZbCd5Mq37qPzGo1SbzpR9ZONzGHRJ9WnMdqy7P1dhHsBUsRZyvSiP9aDBYQB73PLTl7E7cCaX7cLCQyGMWhxpC1GEsmbSWlEPFZwJfBI7SXZ6XbkrSJrlX9h2lzMVfi3vLnvSsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474118; c=relaxed/simple;
-	bh=C4ZvHaOLBWv9xtNtwVHuvbTpQr8aCpmZImhQsu39LWg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iaQLEwIaN4e5IzkpHgkMLtqOS99PMP3ysmp5lY0e0XYsN4i0ssHLxndCxoowS7rywnp84K3VrCqM/t9BqB/OMU0f1HHZEdkz/Miet5lDL8TutpfGQZoH0I0LCM9z0kMFEEaoiblGsQXBWeh1QSpFjwK4ME95qqbhQ89drEiwAzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiZ3BN+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CA2C32782;
-	Mon, 12 Aug 2024 14:48:37 +0000 (UTC)
+	s=arc-20240116; t=1723474121; c=relaxed/simple;
+	bh=uedNmLa/yoSeZ/rGYEBMF+pqQQ1oSiP/BLcOLM1E5j0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M6jMKVMeIgZ06NbaNojk0fd0BAPceTNsRUueanB0p6uzNu2BjKM1Kj4WSmf091tDD0Sl6ukw0Js3cICTnk7Jn7lyeHw5XzTjBSwkoEuBruOvn7icc6960bjaJgjeCv2TJLmtHmg2cYjHhfPBSvGUL5ymxpI03LKI+tSHBfUstP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NU894C8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326FFC32782;
+	Mon, 12 Aug 2024 14:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474118;
-	bh=C4ZvHaOLBWv9xtNtwVHuvbTpQr8aCpmZImhQsu39LWg=;
+	s=korg; t=1723474121;
+	bh=uedNmLa/yoSeZ/rGYEBMF+pqQQ1oSiP/BLcOLM1E5j0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TiZ3BN+1W+V6hSaw2DwbcrfU4DmKiSAuTtqb4fR7kGvHC+ixL9q+FEKi6tj+GTXC0
-	 WL5zOl0AP5Hmo+HPs83GMBjMwxBonuMxYZcJ0dc/oFFz1mXn1Qns+jGbC8scMwuTkH
-	 huk0Z9JB9RfifBAzb2eZkVmVIGddjdLcoysoBdcw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Make DML2.1 P-State method force per stream" failed to apply to 5.10-stable tree
+	b=NU894C8rJitKVuSWEdpxj7PCe7ElehnXsdYUgLtJdY0RrhKQ7Zum4HO+Nnc0+fqIw
+	 4RTjK6UIreE4OtP6fC5evHV7fBKQ0NzcuxfKMW6a5ioDRI3CFQlF1brdN6Efj1YxLF
+	 p5nwOh4hYWEI0PcqduY6qfXZxw8Uio9FSHDkdwyk=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Make DML2.1 P-State method force per stream" failed to apply to 4.19-stable tree
 To: dillon.varone@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:47:57 +0200
-Message-ID: <2024081257-citizen-palpitate-9e74@gregkh>
+Date: Mon, 12 Aug 2024 16:47:58 +0200
+Message-ID: <2024081258-nimbly-captivity-c191@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 020fccbe8fe7552e57804bba0c7578d227f561c2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081257-citizen-palpitate-9e74@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081258-nimbly-captivity-c191@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
