@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-67339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A151394F4F6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B10B94F4F9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59E632826A3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B8E9B26D68
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8D8186E33;
-	Mon, 12 Aug 2024 16:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7528F186E33;
+	Mon, 12 Aug 2024 16:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aW83FlKO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+kflAhn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D661494B8;
-	Mon, 12 Aug 2024 16:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350FD15C127;
+	Mon, 12 Aug 2024 16:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480603; cv=none; b=bsi9T5UTZjRjOOvbT9kWmJWP3OrkLWH1qxY+gzoDj9AvNacUW4ax8ZxGDVDa+vdHAdyBeYYNFIpiE2CYrgzmKqq0X8QSL+CFZbQLJ5COXhJnI06QR0orNXPN4kwOFVvfAWePS8COB1NcwnimAZ6l4X2qihOMsrdSgfZr8Oi0tPQ=
+	t=1723480610; cv=none; b=kyBZ87SLvg4rzIf7EKF1UlGgmCW/gxQiN165uFHe90UmlOY6HDdyzVxkOFch6fFOY7en+Khbm3MAKDSN+sRXM4+ViXbSBJ/u7I8EqSTwBMkl8wvyx26MQyXMtSu7QesVqHBD++bSQnlDVRVVJvKkN8JL+9aBkfGWIZ7yHSQOTrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480603; c=relaxed/simple;
-	bh=L0FbcHilDRDog6TkrAcGX9Uf2CEBTgkJnhOXWAP4ju8=;
+	s=arc-20240116; t=1723480610; c=relaxed/simple;
+	bh=ZNuUfSDfBV1LsV5gv+rGwPWPTZsGMHpR+PT+c7DKeHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBr57XOCVBqC4JTv1lf9QC+rRRimvThQ2aGMCp1OvGnDgW8jwZn94vqvQLvLzqS92T0QSjlkjYyR3OgwDfXczi5qNmZLVccrcCqaDUOWbW1YoQnqLoqilxU+b90VzaOa8yLkHxi4pi2/lE1O658m3eNiz5RNxRDysiuzfrP7ULg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aW83FlKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18171C32782;
-	Mon, 12 Aug 2024 16:36:42 +0000 (UTC)
+	 MIME-Version; b=Sz5lg6zfpLZjOGMwNXe5Y0uks+jljOhV6kpU2mQH6T0SnlWje4K9of7KPdLY+y96qjlkW6nAnagSq9x8/fIjb/YnsehMx9Al69EU6TzxmRiaXKOa/por2fwbKGsbdXuzEn0YMUdRGDqPdi4M20rJQtG7jxoiiiDZ1jFcrf3F5bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+kflAhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1165C4AF09;
+	Mon, 12 Aug 2024 16:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480603;
-	bh=L0FbcHilDRDog6TkrAcGX9Uf2CEBTgkJnhOXWAP4ju8=;
+	s=korg; t=1723480610;
+	bh=ZNuUfSDfBV1LsV5gv+rGwPWPTZsGMHpR+PT+c7DKeHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aW83FlKOqAQN8e1/eBz3hoVoTbZXKIvsiZk86NImhRPZ6UoZbzOXb5sYssZWi5J+T
-	 tz2iH2py1v4C2W5ZsYMA+QeCXnrCPjYCK+G0Et38zuxCQawFw89qpDc8D5BDwkFHgT
-	 BKE2C3+W7gufEi9sbFVIiGE9uE/D3O3l/NMHIr2s=
+	b=m+kflAhnIN/r8m7kKoBEAczSRqt7fDhGYnTPuac4noNmT5jpilXAQIG8BFsdi/eFq
+	 mYMnekiFmHUs6tZBzfwL1J3xXcxxDf6hdf0WBqp+vo+gEnKQFot1hS7xDmgrPTNxle
+	 0rljLqzr3HymBdd8qLVp5+CvDbGeTxu1YVfSbp3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.10 246/263] drm/mgag200: Bind I2C lifetime to DRM device
-Date: Mon, 12 Aug 2024 18:04:07 +0200
-Message-ID: <20240812160155.960579704@linuxfoundation.org>
+	Bill Wendling <morbo@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 247/263] drm/radeon: Remove __counted_by from StateArray.states[]
+Date: Mon, 12 Aug 2024 18:04:08 +0200
+Message-ID: <20240812160156.000769152@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -67,61 +66,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Bill Wendling <morbo@google.com>
 
-commit eb1ae34e48a09b7a1179c579aed042b032e408f4 upstream.
+commit 2bac084468847cfe5bbc7166082b2a208514bb1c upstream.
 
-Managed cleanup with devm_add_action_or_reset() will release the I2C
-adapter when the underlying Linux device goes away. But the connector
-still refers to it, so this cleanup leaves behind a stale pointer
-in struct drm_connector.ddc.
+Work for __counted_by on generic pointers in structures (not just
+flexible array members) has started landing in Clang 19 (current tip of
+tree). During the development of this feature, a restriction was added
+to __counted_by to prevent the flexible array member's element type from
+including a flexible array member itself such as:
 
-Bind the lifetime of the I2C adapter to the connector's lifetime by
-using DRM's managed release. When the DRM device goes away (after
-the Linux device) DRM will first clean up the connector and then
-clean up the I2C adapter.
+  struct foo {
+    int count;
+    char buf[];
+  };
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: b279df242972 ("drm/mgag200: Switch I2C code to managed cleanup")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.0+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-3-tzimmermann@suse.de
+  struct bar {
+    int count;
+    struct foo data[] __counted_by(count);
+  };
+
+because the size of data cannot be calculated with the standard array
+size formula:
+
+  sizeof(struct foo) * count
+
+This restriction was downgraded to a warning but due to CONFIG_WERROR,
+it can still break the build. The application of __counted_by on the
+states member of 'struct _StateArray' triggers this restriction,
+resulting in:
+
+  drivers/gpu/drm/radeon/pptable.h:442:5: error: 'counted_by' should not be applied to an array with element of unknown size because 'ATOM_PPLIB_STATE_V2' (aka 'struct _ATOM_PPLIB_STATE_V2') is a struct type with a flexible array member. This will be an error in a future compiler version [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
+    442 |     ATOM_PPLIB_STATE_V2 states[] __counted_by(ucNumEntries);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  1 error generated.
+
+Remove this use of __counted_by to fix the warning/error. However,
+rather than remove it altogether, leave it commented, as it may be
+possible to support this in future compiler releases.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2028
+Fixes: efade6fe50e7 ("drm/radeon: silence UBSAN warning (v3)")
+Signed-off-by: Bill Wendling <morbo@google.com>
+Co-developed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mgag200/mgag200_i2c.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/radeon/pptable.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
-@@ -31,6 +31,8 @@
- #include <linux/i2c.h>
- #include <linux/pci.h>
+--- a/drivers/gpu/drm/radeon/pptable.h
++++ b/drivers/gpu/drm/radeon/pptable.h
+@@ -439,7 +439,7 @@ typedef struct _StateArray{
+     //how many states we have 
+     UCHAR ucNumEntries;
+     
+-    ATOM_PPLIB_STATE_V2 states[] __counted_by(ucNumEntries);
++    ATOM_PPLIB_STATE_V2 states[] /* __counted_by(ucNumEntries) */;
+ }StateArray;
  
-+#include <drm/drm_managed.h>
-+
- #include "mgag200_drv.h"
  
- static int mga_i2c_read_gpio(struct mga_device *mdev)
-@@ -86,7 +88,7 @@ static int mga_gpio_getscl(void *data)
- 	return (mga_i2c_read_gpio(mdev) & i2c->clock) ? 1 : 0;
- }
- 
--static void mgag200_i2c_release(void *res)
-+static void mgag200_i2c_release(struct drm_device *dev, void *res)
- {
- 	struct mga_i2c_chan *i2c = res;
- 
-@@ -125,5 +127,5 @@ int mgag200_i2c_init(struct mga_device *
- 	if (ret)
- 		return ret;
- 
--	return devm_add_action_or_reset(dev->dev, mgag200_i2c_release, i2c);
-+	return drmm_add_action_or_reset(dev, mgag200_i2c_release, i2c);
- }
 
 
 
