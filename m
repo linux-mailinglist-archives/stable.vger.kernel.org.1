@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1A394F36A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48ED594F480
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C35D286A1D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:17:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 090072811AF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF49186E20;
-	Mon, 12 Aug 2024 16:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85551186E34;
+	Mon, 12 Aug 2024 16:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQwJedvo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZmkOrf5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EA91494B8;
-	Mon, 12 Aug 2024 16:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4147C186E38;
+	Mon, 12 Aug 2024 16:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479444; cv=none; b=a/LqYIorXcxfkIL70RX9oDp688BnftCrw48rcVvVD1pdcEP3439iYcZ4WclK9d4dLD8i4PMQUjVuBJHZSrEQL+UO713wM5muER5aXBYW1ecEbgBltI/rBauxe2v5Dz4KwhTmMsvKaaEHWGS4QIRdrHyr/GsJ1n7ygzuqPjzcGhs=
+	t=1723480268; cv=none; b=LLzwBFE2nzM9r34euI3RHOPvyeEjoxbWQnVEdT1O2iQrgJwtutlZP4vW7GjzEWuQyyvc6W+Hugj9znVPwyX08qAWSWiW5Br1shobMCvSRAy2M4vSx3229xu98I2Uc/yMXrVofvw7QrTCO72lm4ehpNS7LqjyjTDIcN///gvWE/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479444; c=relaxed/simple;
-	bh=bMbyHEMIf7Zv4WimT+cce7dtJ8EkNDmDxm9p48eo8iY=;
+	s=arc-20240116; t=1723480268; c=relaxed/simple;
+	bh=JdrSBIY3qROIfus+I8l2/8NLJ6y/RiLfkVb8bz6/des=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lU7cEsi9eynwjEaoNg6kzSHPqO5B+GxthYyCzdnnpTLt5hJYh/JhBHRIefJ8gJuPQoCm4R9K9CBCecC3t3XEsI4acGS7tbuUnaQnQ1xZKN9mdsNdFkWlh58TNGmaw5ygrxjQqlcs7dnqXujxQw58iWpuG/sllkB6kuKdRVzaUzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQwJedvo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC840C32782;
-	Mon, 12 Aug 2024 16:17:23 +0000 (UTC)
+	 MIME-Version; b=h9ljTJUZQR0w37CIlqjuev1cMyKd82fgHr3CtIESfoEWFGQ5OY1F2pKT7bzqIcwTSl2v6QIWE1yXaxWs4AS0Mf0h1zuAPqoOqSnatKRjJwQ4HyKmfnbvgcUGNuL70tkXGp/TKWJfFurI+CLKbqevL/ph7/BvMgGEv8QVABbo100=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZmkOrf5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B88FC4AF0C;
+	Mon, 12 Aug 2024 16:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479444;
-	bh=bMbyHEMIf7Zv4WimT+cce7dtJ8EkNDmDxm9p48eo8iY=;
+	s=korg; t=1723480268;
+	bh=JdrSBIY3qROIfus+I8l2/8NLJ6y/RiLfkVb8bz6/des=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQwJedvo+9+PHzquDM0AIcLBs2JHqD4Bh/jHqgKUSXucGI/Y/cLiCzjd4SN/ifrTo
-	 kjfpMQ2SDtRJUzYoPn1yzYqOjalgk+/nj5hTPDPnNLB2jpO6aRpmNw2uZDEgAen0PP
-	 dPk6SjElFGKlQ/JAcKL+2lJGlJqD0ten/8lOW5nA=
+	b=DZmkOrf5fMWT5rkrZwsB0LPk67K36hjao3rZGfnWoJ0phCt2EFGBJn9bi4B5jor6C
+	 kPwcTTY92otBSdU5r8pSmduWpqevNJBovUStN0jmT7fBuNe755RRoB0yGKopNT2mea
+	 Kxu49i3LepO+m6qUx7omkMnv9yv/2T3mbioX2cmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/189] media: uvcvideo: Fix the bandwdith quirk on USB 3.x
-Date: Mon, 12 Aug 2024 18:01:58 +0200
-Message-ID: <20240812160134.530076493@linuxfoundation.org>
+	Chris Mason <clm@meta.com>,
+	stable@kernel.org,
+	Rik van Riel <riel@surriel.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.10 118/263] mm, slub: do not call do_slab_free for kfence object
+Date: Mon, 12 Aug 2024 18:01:59 +0200
+Message-ID: <20240812160151.063794142@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 9e3d55fbd160b3ca376599a68b4cddfdc67d4153 ]
+commit a371d558e6f3aed977a8a7346350557de5d25190 upstream.
 
-The bandwidth fixup quirk doesn't know that SuperSpeed exists and has
-the same 8 service intervals per millisecond as High Speed, hence its
-calculations are wrong.
+In 782f8906f805 the freeing of kfence objects was moved from deep
+inside do_slab_free to the wrapper functions outside. This is a nice
+change, but unfortunately it missed one spot in __kmem_cache_free_bulk.
 
-Assume that all speeds from HS up use 8 intervals per millisecond.
+This results in a crash like this:
 
-No further changes are needed, updated code has been confirmed to work
-with all speeds from FS to SS.
+BUG skbuff_head_cache (Tainted: G S  B       E     ): Padding overwritten. 0xffff88907fea0f00-0xffff88907fea0fff @offset=3840
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240414190040.2255a0bc@foxbook
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+slab_err (mm/slub.c:1129)
+free_to_partial_list (mm/slub.c:? mm/slub.c:4036)
+slab_pad_check (mm/slub.c:864 mm/slub.c:1290)
+check_slab (mm/slub.c:?)
+free_to_partial_list (mm/slub.c:3171 mm/slub.c:4036)
+kmem_cache_alloc_bulk (mm/slub.c:? mm/slub.c:4495 mm/slub.c:4586 mm/slub.c:4635)
+napi_build_skb (net/core/skbuff.c:348 net/core/skbuff.c:527 net/core/skbuff.c:549)
+
+All the other callers to do_slab_free appear to be ok.
+
+Add a kfence_free check in __kmem_cache_free_bulk to avoid the crash.
+
+Reported-by: Chris Mason <clm@meta.com>
+Fixes: 782f8906f805 ("mm/slub: free KFENCE objects in slab_free_hook()")
+Cc: stable@kernel.org
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/slub.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index 3e9fdb9192540..91c350b254126 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -214,13 +214,13 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
- 		 * Compute a bandwidth estimation by multiplying the frame
- 		 * size by the number of video frames per second, divide the
- 		 * result by the number of USB frames (or micro-frames for
--		 * high-speed devices) per second and add the UVC header size
--		 * (assumed to be 12 bytes long).
-+		 * high- and super-speed devices) per second and add the UVC
-+		 * header size (assumed to be 12 bytes long).
- 		 */
- 		bandwidth = frame->wWidth * frame->wHeight / 8 * format->bpp;
- 		bandwidth *= 10000000 / interval + 1;
- 		bandwidth /= 1000;
--		if (stream->dev->udev->speed == USB_SPEED_HIGH)
-+		if (stream->dev->udev->speed >= USB_SPEED_HIGH)
- 			bandwidth /= 8;
- 		bandwidth += 12;
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4655,6 +4655,9 @@ static void __kmem_cache_free_bulk(struc
+ 		if (!df.slab)
+ 			continue;
  
--- 
-2.43.0
-
++		if (kfence_free(df.freelist))
++			continue;
++
+ 		do_slab_free(df.s, df.slab, df.freelist, df.tail, df.cnt,
+ 			     _RET_IP_);
+ 	} while (likely(size));
 
 
 
