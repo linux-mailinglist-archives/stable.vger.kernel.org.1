@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7E394E9BE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:27:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBEE94E9BF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 180FF280199
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:27:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93A801F22EBB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49FC16D4DE;
-	Mon, 12 Aug 2024 09:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2955716D4EF;
+	Mon, 12 Aug 2024 09:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="coqKc5y4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjcVvAyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7414620323
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD8C16D4E9
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723454836; cv=none; b=RgQiIIXdi0T6F4xDtfVHZK73yV7tmOKpcWL+GKbhwtqoUPn6x1E7EikcO/sfpuYJQDs255czSfOIyZppLU7FUhil8EkvLnsQAjGN0NdPSAtX3eETST9Ghj4paJZJh7mlBhSCRr2kB4IHDrQCfYGrNqOEiHuJFg2E2fnwGdDQuvE=
+	t=1723454839; cv=none; b=Nzh4SN7La3M2c9o6TdrGxBN/NpXTo5NYugZK4rFzNUIOfvLoWyaKqIMC1rW+PSYXUDJvT6i1l+KBzdQblsjknnSDgtcXk6t5Cv5IWIi9PYKQOcdCRRge+Sn9xqbl0QL4n1yRB9GNSg8icg8lrpo4aQMfbt4dyATO8ao26Oj3OLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723454836; c=relaxed/simple;
-	bh=aIEk823tEhszHngzKIbnVi/sCvOzWB+BdDx2Nwvt+uk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Sfbl0VtG5W2G/J+UHh8tDkAxv1d/kb91f2osJfNliPGUmDvRtOTU4dJ5REh0ZbKYUJ4p3kQ9nwZugz+DQ62/vkv/rdLbXTN2KWfbfwGXP6yd3SSyV34fQSwB8erJFAwvQGx9gos70M57u90CjXCgLkATIVfceS+s+XlpC+Eo1do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=coqKc5y4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FF9C32782;
-	Mon, 12 Aug 2024 09:27:15 +0000 (UTC)
+	s=arc-20240116; t=1723454839; c=relaxed/simple;
+	bh=h8rrK3yN9A+psDEjLfneUs/qd3FVhWzCYdYHc9RRb0I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XaSwrhqAXElU3svzUZlmkAQHEGBXBzza2HPszyeF2PGG559/ECyl15AAa4Usm/Ceol9MRecVLEISjx99cDeXl3+C/BnwJ65ftclJ1MzZvqZkBDIAwUjsby+uHXwYLP/kw69esXYgiRc1D4Wm2yKlcDU+l3FpXzGWEyz0vp65IN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjcVvAyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225A0C4AF0C;
+	Mon, 12 Aug 2024 09:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723454836;
-	bh=aIEk823tEhszHngzKIbnVi/sCvOzWB+BdDx2Nwvt+uk=;
+	s=korg; t=1723454839;
+	bh=h8rrK3yN9A+psDEjLfneUs/qd3FVhWzCYdYHc9RRb0I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=coqKc5y4AZmoKXVBJjpEbFQOAdZxpVL/Esjd6MxKu+3Z+CC21AJDy9zHhIeJaD+uj
-	 4nOGJ+knZZ8dt51opezEGvB4tpjGa4cjCihNkaPYc19lwzctd/FN1O5wJefRxiJlPh
-	 WbAsSFkdSb8yF4Ej7mG6EufCNuMNIXcumqx3t8yA=
-Subject: FAILED: patch "[PATCH] drm/i915/gem: Adjust vma offset for framebuffer mmap offset" failed to apply to 5.15-stable tree
+	b=gjcVvAytsEvXc0Zk6r6psHOvIO8aFLvAR9Xim0RyCKP9Qbc7wnqAJLlX/Ukyg/Xu9
+	 oDkfyRxxpEoUegzrsQs/qdlcBhKcWiX1XP3a4Jswpq19TN0Re28r6RJFIgT6U5H7vf
+	 nOXMl4aXXoBzNqJBDXbCarQAoHp7DswPrwyUMwjs=
+Subject: FAILED: patch "[PATCH] drm/i915/gem: Adjust vma offset for framebuffer mmap offset" failed to apply to 5.10-stable tree
 To: andi.shyti@linux.intel.com,chris.p.wilson@linux.intel.com,jonathan.cavitt@intel.com,joonas.lahtinen@linux.intel.com,rodrigo.vivi@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 11:27:10 +0200
-Message-ID: <2024081210-gathering-rocklike-26ad@gregkh>
+Date: Mon, 12 Aug 2024 11:27:11 +0200
+Message-ID: <2024081211-bonsai-riches-b3eb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1ac5167b3a90c9820daa64cc65e319b2d958d686
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081210-gathering-rocklike-26ad@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081211-bonsai-riches-b3eb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 1ac5167b3a90 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
 274d4b96b12f ("drm/i915: Fix a NULL vs IS_ERR() bug")
 eaee1c085863 ("drm/i915: Add a function to mmap framebuffer obj")
+cf3e3e86d779 ("drm/i915: Use ttm mmap handling for ttm bo's.")
+213d50927763 ("drm/i915/ttm: Introduce a TTM i915 gem object backend")
+2a7005c8a398 ("Merge tag 'drm-intel-gt-next-2021-06-10' of git://anongit.freedesktop.org/drm/drm-intel into drm-next")
 
 thanks,
 
