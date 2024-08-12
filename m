@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-66966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B532D94F34D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5525F94F460
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73A352868C9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6EE9B2492A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BB12C1A5;
-	Mon, 12 Aug 2024 16:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E55F187321;
+	Mon, 12 Aug 2024 16:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKamJzO2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZApFCUCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E873186E38;
-	Mon, 12 Aug 2024 16:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5B9183CD4;
+	Mon, 12 Aug 2024 16:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479363; cv=none; b=Wwfo1rafPjtJWo4wRF7m74OIdHE2iQiJRzeC82LBLkzBLA+tbaEyWzPCJv4ZgQSeIVMnKJgYUecuUterZmW5iCCSEQx1KEu7/axXkLShrImfGPT8rilQdlzDlv7PR74LMQ8UFkqIO0gfbWFybKICLBxceqQB3YQS+fU2oHfY9Q4=
+	t=1723480178; cv=none; b=p5qh33JfOIRWfc6LCAn05t/UBYO3l7b5SH8iaarotJ1CvHTKalt0M4F5yzj4gRGhkmRV05QtlsET+ofDcavvv0S901V9Rqn9tbOremWDkmxbwCtnP9hQLzc2ughhtIg/WtRDALq5xKY1d4mIXOerUPy6BAIuNd8y7UiKQcFmvGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479363; c=relaxed/simple;
-	bh=Vyw+c2pYEQzScmLKrL+h/mvS4ySSfFj+xeyDMon6L3s=;
+	s=arc-20240116; t=1723480178; c=relaxed/simple;
+	bh=iaaWBB4grooMxrMw4XvMEi8QlpD+6Zy5ihy3bGyDbNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lytFCMhI+UqlDJ+z+FQNP3EXBRn1MC3hh0qefltDb2ACd5T5LMV4teiruXx8BVxtGvZ/SRm5VnTPwTHaSZXXkLEnAc/AEC66JqMUsRWJU+3wN4Nrr+3ycGL6maTQgxpc2v9YgSmWcndYAamc3ZPAW60fwkPiwPhP8MhS3/tolRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKamJzO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97825C4AF09;
-	Mon, 12 Aug 2024 16:16:02 +0000 (UTC)
+	 MIME-Version; b=uuFt4PZ2K8SKwRkN2HB+7Mh/ml+clB6Bi8gRoN3uGNygycSB0GwYcLyYX1gVI6W2q1q7jGxmS8DhcJ6HRhLoEsZchJ2FUR7bSrfCtvWBk7Dy+N3GTv8JYaFZWSwge4/ypd0vatKcgp9boX1b1kZO1m1fimZ62tjlGAACNh6sEZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZApFCUCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80395C32782;
+	Mon, 12 Aug 2024 16:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479363;
-	bh=Vyw+c2pYEQzScmLKrL+h/mvS4ySSfFj+xeyDMon6L3s=;
+	s=korg; t=1723480178;
+	bh=iaaWBB4grooMxrMw4XvMEi8QlpD+6Zy5ihy3bGyDbNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKamJzO2JYaeDVCH8dg7uv3thpBQ/LFVHHJTtl+LaQoRfrqd8V9UdK4bpdOgoD+DN
-	 Bhcoxot7qx5vE7zS2djIKRG0gGlSwIdlQm64HkNl+b+Yqx2FXldLqFzculvin3V1Xl
-	 8Ey9CoSy+nU8e6viNZR7aTLwEVAXOYTCOV5vamqg=
+	b=ZApFCUCkOd0Y+ati9X4Dg3Cf9rb1befL+lweOvv5wlqYVpn8Z5lfhlrHMvELL4Ig7
+	 9bF6h7elQUYr2d+bx7W1SDj00YTH5IZ6T+ZyQNwNAvXrdoQ7KIW9AL15kzH5KBpst5
+	 GofwP5ueGqyXXTqDkp9sxLTJsYObrY8s4PoQ7b+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Robin Chen <robin.chen@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Sung-huai Wang <danny.wang@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/189] ACPI: battery: create alarm sysfs attribute atomically
+Subject: [PATCH 6.10 087/263] drm/amd/display: Handle HPD_IRQ for internal link
 Date: Mon, 12 Aug 2024 18:01:28 +0200
-Message-ID: <20240812160133.381821146@linuxfoundation.org>
+Message-ID: <20240812160149.876107459@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +63,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Sung-huai Wang <danny.wang@amd.com>
 
-[ Upstream commit a231eed10ed5a290129fda36ad7bcc263c53ff7d ]
+[ Upstream commit 239b31bd5c3fef3698440bf6436b2068c6bb08a3 ]
 
-Let the power supply core register the attribute.
-This ensures that the attribute is created before the device is
-announced to userspace, avoid a race condition.
+[Why]
+TCON data is corrupted after electro static discharge test.
+Once the TCON data get corrupted, they will get themselves
+reset and send HPD_IRQ to source side.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[How]
+Support HPD_IRQ for internal link, and restore the PSR/Replay setup.
+
+Reviewed-by: Robin Chen <robin.chen@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Sung-huai Wang <danny.wang@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/battery.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ .../dc/link/protocols/link_dp_irq_handler.c   | 25 ++++++++++++-------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 969bf81e8d546..7f7ad94f22b91 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -678,12 +678,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
- 	return count;
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_irq_handler.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_irq_handler.c
+index 0fcf0b8530acf..659b8064d3618 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_irq_handler.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_irq_handler.c
+@@ -373,6 +373,7 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 	union device_service_irq device_service_clear = {0};
+ 	enum dc_status result;
+ 	bool status = false;
++	bool allow_active = false;
  
--static const struct device_attribute alarm_attr = {
-+static struct device_attribute alarm_attr = {
- 	.attr = {.name = "alarm", .mode = 0644},
- 	.show = acpi_battery_alarm_show,
- 	.store = acpi_battery_alarm_store,
- };
+ 	if (out_link_loss)
+ 		*out_link_loss = false;
+@@ -427,12 +428,6 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 		return false;
+ 	}
  
-+static struct attribute *acpi_battery_attrs[] = {
-+	&alarm_attr.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(acpi_battery);
+-	if (handle_hpd_irq_psr_sink(link))
+-		/* PSR-related error was detected and handled */
+-		return true;
+-
+-	handle_hpd_irq_replay_sink(link);
+-
+ 	/* If PSR-related error handled, Main link may be off,
+ 	 * so do not handle as a normal sink status change interrupt.
+ 	 */
+@@ -454,9 +449,8 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 	 * If we got sink count changed it means
+ 	 * Downstream port status changed,
+ 	 * then DM should call DC to do the detection.
+-	 * NOTE: Do not handle link loss on eDP since it is internal link*/
+-	if ((link->connector_signal != SIGNAL_TYPE_EDP) &&
+-			dp_parse_link_loss_status(
++	 */
++	if (dp_parse_link_loss_status(
+ 					link,
+ 					&hpd_irq_dpcd_data)) {
+ 		/* Connectivity log: link loss */
+@@ -465,6 +459,11 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 					sizeof(hpd_irq_dpcd_data),
+ 					"Status: ");
+ 
++		if (link->psr_settings.psr_feature_enabled)
++			edp_set_psr_allow_active(link, &allow_active, true, false, NULL);
++		else if (link->replay_settings.replay_allow_active)
++			edp_set_replay_allow_active(link, &allow_active, true, false, NULL);
 +
- /*
-  * The Battery Hooking API
-  *
-@@ -823,7 +829,10 @@ static void __exit battery_hook_exit(void)
- 
- static int sysfs_add_battery(struct acpi_battery *battery)
- {
--	struct power_supply_config psy_cfg = { .drv_data = battery, };
-+	struct power_supply_config psy_cfg = {
-+		.drv_data = battery,
-+		.attr_grp = acpi_battery_groups,
-+	};
- 	bool full_cap_broken = false;
- 
- 	if (!ACPI_BATTERY_CAPACITY_VALID(battery->full_charge_capacity) &&
-@@ -868,7 +877,7 @@ static int sysfs_add_battery(struct acpi_battery *battery)
- 		return result;
+ 		if (defer_handling && has_left_work)
+ 			*has_left_work = true;
+ 		else
+@@ -477,6 +476,14 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
+ 		dp_trace_link_loss_increment(link);
  	}
- 	battery_hook_add_battery(battery);
--	return device_create_file(&battery->bat->dev, &alarm_attr);
-+	return 0;
- }
  
- static void sysfs_remove_battery(struct acpi_battery *battery)
-@@ -879,7 +888,6 @@ static void sysfs_remove_battery(struct acpi_battery *battery)
- 		return;
- 	}
- 	battery_hook_remove_battery(battery);
--	device_remove_file(&battery->bat->dev, &alarm_attr);
- 	power_supply_unregister(battery->bat);
- 	battery->bat = NULL;
- 	mutex_unlock(&battery->sysfs_lock);
++	if (*out_link_loss == false) {
++		if (handle_hpd_irq_psr_sink(link))
++			/* PSR-related error was detected and handled */
++			return true;
++
++		handle_hpd_irq_replay_sink(link);
++	}
++
+ 	if (link->type == dc_connection_sst_branch &&
+ 		hpd_irq_dpcd_data.bytes.sink_cnt.bits.SINK_COUNT
+ 			!= link->dpcd_sink_count)
 -- 
 2.43.0
 
