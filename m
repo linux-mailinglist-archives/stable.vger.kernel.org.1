@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0923694F4F8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2041194F3DD
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A716F1F2188C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02F32821FB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390C4183CA6;
-	Mon, 12 Aug 2024 16:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7B5183CD9;
+	Mon, 12 Aug 2024 16:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmGoEqUi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkGxk6f3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFF21494B8;
-	Mon, 12 Aug 2024 16:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8FA134AC;
+	Mon, 12 Aug 2024 16:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480607; cv=none; b=umrzduTo10PASQZZk4ZLWsqUjOg9gQUV7gvho//xTx9jn//R6TTtAeh2hecTf8WUU23HhnOyzN5iUpyQKId6v6i+jBCVF8GXuia68A4k+Z9793qlrv8QffwkmbZyy8lqbezu0TkgpTJYCwrCyrxYf/GKPdl1x4IQXml/jwc9uko=
+	t=1723479791; cv=none; b=q42LdmVyFllXhiHgaKqUrowZ0sdKJ5MxVlsn/Ue/0r8lBVLGf/Pd1Lb/AFeLqupNBcA7pIDOwMSUpkqzwvJESFOjlRDaAZnqLZPSYabD6QoxrNAWfHP0V4kLXgjxpQVqD8uNel+8/WjFmZxWDm3umw7hDuKqtD/MYs9tapFThaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480607; c=relaxed/simple;
-	bh=vhSjhNGIT7lmdxYAbd9X2TJLjpuZc/oizdtBY2FxHC8=;
+	s=arc-20240116; t=1723479791; c=relaxed/simple;
+	bh=efMK0o+Cve7sbNSnvbcTcj1wrkELwC+1SyBT8d3twsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fA8VD2AvTq4umSoj31CHQSYx67iFmaW7Bu7NLRzbMLWYSpiOOFXgB0KFTGjkFyiM5ziRNFAZLPICJf2P27nVNJV3iP746x1W0Y/Zq+UFQCFK2JJxevtk3JxyKNstukdYNl9+t9gxD/Q69uKdzyhfdzygpac1Aj0JEL+nerZyvPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmGoEqUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D486C32782;
-	Mon, 12 Aug 2024 16:36:46 +0000 (UTC)
+	 MIME-Version; b=A8BWgo4G0QOTA9CpUxigg8b5j8bnDF2YNh1azqx176mvKBKRJTnAdAnmFKkmtnjPIxieDyUqcaCVg03mxeoAHDKaDT6RC1Dz0qJkkzhp4QuXZni/uUi6hm6zTGJbiGiYbZTd8AIJ82CSsAQBMx7facHbUouE5RvYr9yJkS9a71s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkGxk6f3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87018C32782;
+	Mon, 12 Aug 2024 16:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480606;
-	bh=vhSjhNGIT7lmdxYAbd9X2TJLjpuZc/oizdtBY2FxHC8=;
+	s=korg; t=1723479791;
+	bh=efMK0o+Cve7sbNSnvbcTcj1wrkELwC+1SyBT8d3twsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UmGoEqUiP95wuI04eRrRU5X5v8wcd8CJ3GAbg664DrYc/Lbsy74x5Z8q/XiwRYww8
-	 iWsM6GSignk6G86jzP5wq5bYUjkhUe7ajTVrzMa0RIakDHHGL+eA+wgSvhmlvmJru4
-	 9KpLk2g5RgryWlCbKpHzSSIyPqiJbq1Mcxu85YDg=
+	b=xkGxk6f3Q5qDD+DtwIonccmlG9CZiJofgyNVp0MHGwai5U5lDfgeLWTwtB+pqG94j
+	 DI8+2qOSCMouyHYhr3QYq1A65XP7SZ4eD26GtgYVkAvcKp55gPwzY17dDdzHh59daH
+	 XyaCrasT2KkaZPIPGQI4x2YvGVpspgXMt47dzbQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vincent Chen <vincent.chen@sifive.com>,
-	Anup Patel <anup@brainfault.org>
-Subject: [PATCH 6.10 220/263] irqchip/riscv-aplic: Retrigger MSI interrupt on source configuration
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.6 165/189] drm/mgag200: Bind I2C lifetime to DRM device
 Date: Mon, 12 Aug 2024 18:03:41 +0200
-Message-ID: <20240812160154.961495199@linuxfoundation.org>
+Message-ID: <20240812160138.496551479@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 03f9885c60adf73488fe32aab628ee3d4a39598e upstream.
+commit eb1ae34e48a09b7a1179c579aed042b032e408f4 upstream.
 
-The section 4.5.2 of the RISC-V AIA specification says that "any write
-to a sourcecfg register of an APLIC might (or might not) cause the
-corresponding interrupt-pending bit to be set to one if the rectified
-input value is high (= 1) under the new source mode."
+Managed cleanup with devm_add_action_or_reset() will release the I2C
+adapter when the underlying Linux device goes away. But the connector
+still refers to it, so this cleanup leaves behind a stale pointer
+in struct drm_connector.ddc.
 
-When the interrupt type is changed in the sourcecfg register, the APLIC
-device might not set the corresponding pending bit, so the interrupt might
-never become pending.
+Bind the lifetime of the I2C adapter to the connector's lifetime by
+using DRM's managed release. When the DRM device goes away (after
+the Linux device) DRM will first clean up the connector and then
+clean up the I2C adapter.
 
-To handle sourcecfg register changes for level-triggered interrupts in MSI
-mode, manually set the pending bit for retriggering interrupt so it gets
-retriggered if it was already asserted.
-
-Fixes: ca8df97fe679 ("irqchip/riscv-aplic: Add support for MSI-mode")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Vincent Chen <vincent.chen@sifive.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240809071049.2454-1-yongxuan.wang@sifive.com
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: b279df242972 ("drm/mgag200: Switch I2C code to managed cleanup")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.0+
+Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-3-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-riscv-aplic-msi.c | 32 +++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/mgag200/mgag200_i2c.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-riscv-aplic-msi.c b/drivers/irqchip/irq-riscv-aplic-msi.c
-index 028444af48bd..d7773f76e5d0 100644
---- a/drivers/irqchip/irq-riscv-aplic-msi.c
-+++ b/drivers/irqchip/irq-riscv-aplic-msi.c
-@@ -32,15 +32,10 @@ static void aplic_msi_irq_unmask(struct irq_data *d)
- 	aplic_irq_unmask(d);
+--- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
++++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
+@@ -31,6 +31,8 @@
+ #include <linux/i2c.h>
+ #include <linux/pci.h>
+ 
++#include <drm/drm_managed.h>
++
+ #include "mgag200_drv.h"
+ 
+ static int mga_i2c_read_gpio(struct mga_device *mdev)
+@@ -86,7 +88,7 @@ static int mga_gpio_getscl(void *data)
+ 	return (mga_i2c_read_gpio(mdev) & i2c->clock) ? 1 : 0;
  }
  
--static void aplic_msi_irq_eoi(struct irq_data *d)
-+static void aplic_msi_irq_retrigger_level(struct irq_data *d)
+-static void mgag200_i2c_release(void *res)
++static void mgag200_i2c_release(struct drm_device *dev, void *res)
  {
- 	struct aplic_priv *priv = irq_data_get_irq_chip_data(d);
+ 	struct mga_i2c_chan *i2c = res;
  
--	/*
--	 * EOI handling is required only for level-triggered interrupts
--	 * when APLIC is in MSI mode.
--	 */
--
- 	switch (irqd_get_trigger_type(d)) {
- 	case IRQ_TYPE_LEVEL_LOW:
- 	case IRQ_TYPE_LEVEL_HIGH:
-@@ -59,6 +54,29 @@ static void aplic_msi_irq_eoi(struct irq_data *d)
- 	}
+@@ -126,5 +128,5 @@ int mgag200_i2c_init(struct mga_device *
+ 	if (ret)
+ 		return ret;
+ 
+-	return devm_add_action_or_reset(dev->dev, mgag200_i2c_release, i2c);
++	return drmm_add_action_or_reset(dev, mgag200_i2c_release, i2c);
  }
- 
-+static void aplic_msi_irq_eoi(struct irq_data *d)
-+{
-+	/*
-+	 * EOI handling is required only for level-triggered interrupts
-+	 * when APLIC is in MSI mode.
-+	 */
-+	aplic_msi_irq_retrigger_level(d);
-+}
-+
-+static int aplic_msi_irq_set_type(struct irq_data *d, unsigned int type)
-+{
-+	int rc = aplic_irq_set_type(d, type);
-+
-+	if (rc)
-+		return rc;
-+	/*
-+	 * Updating sourcecfg register for level-triggered interrupts
-+	 * requires interrupt retriggering when APLIC is in MSI mode.
-+	 */
-+	aplic_msi_irq_retrigger_level(d);
-+	return 0;
-+}
-+
- static void aplic_msi_write_msg(struct irq_data *d, struct msi_msg *msg)
- {
- 	unsigned int group_index, hart_index, guest_index, val;
-@@ -130,7 +148,7 @@ static const struct msi_domain_template aplic_msi_template = {
- 		.name			= "APLIC-MSI",
- 		.irq_mask		= aplic_msi_irq_mask,
- 		.irq_unmask		= aplic_msi_irq_unmask,
--		.irq_set_type		= aplic_irq_set_type,
-+		.irq_set_type		= aplic_msi_irq_set_type,
- 		.irq_eoi		= aplic_msi_irq_eoi,
- #ifdef CONFIG_SMP
- 		.irq_set_affinity	= irq_chip_set_affinity_parent,
--- 
-2.46.0
-
 
 
 
