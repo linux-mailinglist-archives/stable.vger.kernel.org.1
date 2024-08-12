@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-67284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A447B94F4BB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBD194F4C6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D78481C20E35
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE0881F2136C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDB4187FF3;
-	Mon, 12 Aug 2024 16:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B6E186E33;
+	Mon, 12 Aug 2024 16:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vObRVIsK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xym+S++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE07187FE9;
-	Mon, 12 Aug 2024 16:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838001494B8;
+	Mon, 12 Aug 2024 16:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480423; cv=none; b=FZV6WOvaSTY0KWwh775G11q8KspOFuh16plIGw/vEPkytw3lnYzmc7FYofJYHDNd4jVDAZOVsin25cM7DKZaZmJqbrDWVCK78vemtgnsiZWneKCdR6J6tIecpsC4ZNAep4EZMZmfullzUbgM5cX+JXVQKacXuZRSEJspF16j0PQ=
+	t=1723480460; cv=none; b=n35zBcwJCsPAQkciaid9oFEuMU57DQ+7VqxcS0waKQmKU5zHsCgYrClIiD3S3ryMR9PW/x2RkUC7m+QGjq0aUApH+HokRjexrDJ6dgvGsWkYN1MipVPaK8KqupPWTxeBef7stCjXPnCyrEg4QfPoVWm6UOgZWRgOyIIIa4eOk0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480423; c=relaxed/simple;
-	bh=Qjnls5N9pSpsF8Xl0QUORNTTON1vHuTpI/HeObLolow=;
+	s=arc-20240116; t=1723480460; c=relaxed/simple;
+	bh=wjsMksbrt90KSprd65lgx4GVCsqMTJ2IJJ71hZy6c/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8XMXYVIOmQrz3qEtJmKY88wb24MJsJ/QtDCnzwXGTioBZunnTPNu4JyUPWeYvibabf27zhw9RF2ZdUVM2DYXwL5M+AlZJcMGZH/jNy6mT8QSXDkP8+XC+8f0HN0Dfa9w/xM63TznZRXK1pwMayNAA/6+l2teRno51msKJLHVZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vObRVIsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8C6C32782;
-	Mon, 12 Aug 2024 16:33:42 +0000 (UTC)
+	 MIME-Version; b=TOJJoznc9HXzd5kIGv8oNkFrJ7hHUrwMZdX2vbHpe4oOLF6lQGDnK+RZNnHRNQ1VLuKqtRgmgbCZbjNMMZbAmRihgVIFAPmWfOG8etAEKic61Y3rTMW7nSDvJQn1qnCfCnt6nZuB+IVlQGfxomm5QRIjK83OBetAIljbfZm3nKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xym+S++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4368C32782;
+	Mon, 12 Aug 2024 16:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480423;
-	bh=Qjnls5N9pSpsF8Xl0QUORNTTON1vHuTpI/HeObLolow=;
+	s=korg; t=1723480460;
+	bh=wjsMksbrt90KSprd65lgx4GVCsqMTJ2IJJ71hZy6c/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vObRVIsKHaktkdK8KIMbDYwKIvytHwAOQ/S1l96gGxjKmU+45klzNGvHnly9B4PUu
-	 l46yrrwvvL+73wYtqowcYh6yEneqB60aTc46DBq2otWoJE3LXIozJb4svPdPNICfjW
-	 yTuhjixucRc/1wSzTtw6Gmv/mSX7dqu0DkbYoS0Q=
+	b=0xym+S++1Hrq0N+zGV8ZNglYW4ZyZLJvo31BDyBkDUKKcg8wbN5H+xOzCvs9bCUD3
+	 z3RktB5VRkHavgPgfMNRFcPAkyqjj6E6nO1Xck7mdJ+3wWDYfeztyJSIvBvJ4lgghP
+	 AqDrJHEuOixFpaaRaW6i8aH8RtTMHFCnVtc/igEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dustin L. Howett" <dustin@howett.net>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 184/263] ALSA: hda/realtek: Add Framework Laptop 13 (Intel Core Ultra) to quirks
-Date: Mon, 12 Aug 2024 18:03:05 +0200
-Message-ID: <20240812160153.590374063@linuxfoundation.org>
+Subject: [PATCH 6.10 185/263] ALSA: hda/hdmi: Yet more pin fix for HP EliteDesk 800 G4
+Date: Mon, 12 Aug 2024 18:03:06 +0200
+Message-ID: <20240812160153.627959121@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -65,33 +64,31 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dustin L. Howett <dustin@howett.net>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit eb91c456f3714c336f0812dccab422ec0e72bde4 upstream.
+commit 176fd1511dd9086ab4fa9323cb232177c6235288 upstream.
 
-The Framework Laptop 13 (Intel Core Ultra) has an ALC285 that ships in a
-similar configuration to the ALC295 in previous models. It requires the
-same quirk for headset detection.
+HP EliteDesk 800 G4 (PCI SSID 103c:83e2) is another Kabylake machine
+where BIOS misses the HDMI pin initializations.  Add the quirk entry.
 
-Signed-off-by: Dustin L. Howett <dustin@howett.net>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240806-alsa-hda-realtek-add-framework-laptop-13-intel-core-ultra-to-quirks-v1-1-42d6ce2dbf14@howett.net
+Link: https://patch.msgid.link/20240806064918.11132-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ sound/pci/hda/patch_hdmi.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10671,6 +10671,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x8086, 0x3038, "Intel NUC 13", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0006, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0xf111, 0x0009, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1989,6 +1989,7 @@ static int hdmi_add_cvt(struct hda_codec
+ }
  
- #if 0
- 	/* Below is a quirk table taken from the old code.
+ static const struct snd_pci_quirk force_connect_list[] = {
++	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
 
 
 
