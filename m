@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-67087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1DD94F3D5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C12194F4EF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08BBC28131C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D60A51F210F8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE65186E34;
-	Mon, 12 Aug 2024 16:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B161186E5E;
+	Mon, 12 Aug 2024 16:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xITZlxKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtwIL38h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F9F183CA6;
-	Mon, 12 Aug 2024 16:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AF5183CD4;
+	Mon, 12 Aug 2024 16:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479764; cv=none; b=jj0USgvmrcB+Qfu1DJDS9KHBHbmMIAaYZPuUr3RlLZVmdlo422ApYJxVpcJyImN+nLfqGIn48GNmhMe45AuENf5x+nbv+dEQq05jmZX4mUTI7ZMf200HUpFYY1wY44KU8BV1OrvCVuTjNJcT4XcOV+eQPbXqef4dF7ObfP/hFmM=
+	t=1723480584; cv=none; b=NuYZOnOH8OSosKnheWenjgCRWmU+Nth86UZtghqUJC4MzvXRq6yl3XGSrT642Re5Zx8VNNUlIG27zi2nTwGWkr6citJVArDyBl7sCyl9+4s0ZcSPwupOdqZQBt4zdWOn5DADxKCjqCl7+5KtOS9JZIfYFqj/9Yzy26IeK3YIgic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479764; c=relaxed/simple;
-	bh=KUKzSs/oP1WC99t/t8DoP+lD5DPKotR1MaV63SLPe8o=;
+	s=arc-20240116; t=1723480584; c=relaxed/simple;
+	bh=YLbBv7kKyR6NWr2I6H0tlrHdk8KSFA4dBdd1kw3FGVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EWDoZ5JSfhoD8nfB1AATOLlMnQvKEundr4F3lgko0Bqi8db6jC9s44uoS1atoZfovB31XbHeXTCYw+UVBdvYtQpdbMKruCRaVcng6q5EUvcSutB223w67qLVAbyGz1wnWdadxqlxoK3j4timVtEK1yRlk8Spd4fMVXDMRdVpnXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xITZlxKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9859C32782;
-	Mon, 12 Aug 2024 16:22:43 +0000 (UTC)
+	 MIME-Version; b=txQekCz9+qqiYOUS5DGdjLbJmuCaeSYB5pyzlpA/WfElvaHTki1068XC5y2hQPCXJsISsj0m0VvA7gGNSJd9TpVXLQ8sjzHQ2YTXStxyZW4KaRsthK5laStJihe5bsaPePiYgm52dGb42ollnyeAybtUAD7ReUc9T+xoG6cT+rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtwIL38h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86521C32782;
+	Mon, 12 Aug 2024 16:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479764;
-	bh=KUKzSs/oP1WC99t/t8DoP+lD5DPKotR1MaV63SLPe8o=;
+	s=korg; t=1723480584;
+	bh=YLbBv7kKyR6NWr2I6H0tlrHdk8KSFA4dBdd1kw3FGVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xITZlxKKxR5cjBMmzQi9TulQuB83vZOP9gD/tip1QXoIGwFsrBtb7ZHwxYIsT2Bn2
-	 KzsVQQebPVt9hsknvvnpwEzVXGq92prKJsFmn8JZ0vgqDD4R43vfYKO1USEDymDZ0T
-	 8rxqRY7MuxDy/RUA77zNB64TJqKbte8uR8juTQQ0=
+	b=HtwIL38hiKF0DfAM1XpZxfY8uIOzpmfLsyVwC6AXK6nFTyMbM2ONM23WllClFSIux
+	 ewv+jg5FT8mgrv+ysLi7ySTpr1Bn8dlfo5+jyqtN73joO4bq3KGtdc3AFt+cP2SScO
+	 +bocjlQOC9HT78EJ5OeJ+KY4iE2SNWd1LrQSMCUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 184/189] mptcp: pm: dont try to create sf if alloc failed
-Date: Mon, 12 Aug 2024 18:04:00 +0200
-Message-ID: <20240812160139.232387304@linuxfoundation.org>
+	stable@kernel.org,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.10 240/263] sched/core: Introduce sched_set_rq_on/offline() helper
+Date: Mon, 12 Aug 2024 18:04:01 +0200
+Message-ID: <20240812160155.722750958@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit cd7c957f936f8cb80d03e5152f4013aae65bd986 upstream.
+commit 2f027354122f58ee846468a6f6b48672fff92e9b upstream.
 
-It sounds better to avoid wasting cycles and / or put extreme memory
-pressure on the system by trying to create new subflows if it was not
-possible to add a new item in the announce list.
+Introduce sched_set_rq_on/offline() helper, so it can be called
+in normal or error path simply. No functional changed.
 
-While at it, a warning is now printed if the entry was already in the
-list as it should not happen with the in-kernel path-manager. With this
-PM, mptcp_pm_alloc_anno_list() should only fail in case of memory
-pressure.
-
-Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-4-c8a9b036493b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240703031610.587047-4-yangyingliang@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ kernel/sched/core.c |   40 ++++++++++++++++++++++++++--------------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -353,7 +353,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 	add_entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9604,6 +9604,30 @@ void set_rq_offline(struct rq *rq)
+ 	}
+ }
  
- 	if (add_entry) {
--		if (mptcp_pm_is_kernel(msk))
-+		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
- 			return false;
++static inline void sched_set_rq_online(struct rq *rq, int cpu)
++{
++	struct rq_flags rf;
++
++	rq_lock_irqsave(rq, &rf);
++	if (rq->rd) {
++		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
++		set_rq_online(rq);
++	}
++	rq_unlock_irqrestore(rq, &rf);
++}
++
++static inline void sched_set_rq_offline(struct rq *rq, int cpu)
++{
++	struct rq_flags rf;
++
++	rq_lock_irqsave(rq, &rf);
++	if (rq->rd) {
++		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
++		set_rq_offline(rq);
++	}
++	rq_unlock_irqrestore(rq, &rf);
++}
++
+ /*
+  * used to mark begin/end of suspend/resume:
+  */
+@@ -9673,7 +9697,6 @@ static inline void sched_smt_present_dec
+ int sched_cpu_activate(unsigned int cpu)
+ {
+ 	struct rq *rq = cpu_rq(cpu);
+-	struct rq_flags rf;
  
- 		sk_reset_timer(sk, &add_entry->add_timer,
-@@ -563,8 +563,6 @@ static void mptcp_pm_create_subflow_or_s
+ 	/*
+ 	 * Clear the balance_push callback and prepare to schedule
+@@ -9702,12 +9725,7 @@ int sched_cpu_activate(unsigned int cpu)
+ 	 * 2) At runtime, if cpuset_cpu_active() fails to rebuild the
+ 	 *    domains.
+ 	 */
+-	rq_lock_irqsave(rq, &rf);
+-	if (rq->rd) {
+-		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
+-		set_rq_online(rq);
+-	}
+-	rq_unlock_irqrestore(rq, &rf);
++	sched_set_rq_online(rq, cpu);
  
- 	/* check first for announce */
- 	if (msk->pm.add_addr_signaled < add_addr_signal_max) {
--		local = select_signal_address(pernet, msk);
--
- 		/* due to racing events on both ends we can reach here while
- 		 * previous add address is still running: if we invoke now
- 		 * mptcp_pm_announce_addr(), that will fail and the
-@@ -575,11 +573,15 @@ static void mptcp_pm_create_subflow_or_s
- 		if (msk->pm.addr_signal & BIT(MPTCP_ADD_ADDR_SIGNAL))
- 			return;
+ 	return 0;
+ }
+@@ -9715,7 +9733,6 @@ int sched_cpu_activate(unsigned int cpu)
+ int sched_cpu_deactivate(unsigned int cpu)
+ {
+ 	struct rq *rq = cpu_rq(cpu);
+-	struct rq_flags rf;
+ 	int ret;
  
-+		local = select_signal_address(pernet, msk);
- 		if (!local)
- 			goto subflow;
+ 	/*
+@@ -9746,12 +9763,7 @@ int sched_cpu_deactivate(unsigned int cp
+ 	 */
+ 	synchronize_rcu();
  
-+		/* If the alloc fails, we are on memory pressure, not worth
-+		 * continuing, and trying to create subflows.
-+		 */
- 		if (!mptcp_pm_alloc_anno_list(msk, &local->addr))
--			goto subflow;
-+			return;
+-	rq_lock_irqsave(rq, &rf);
+-	if (rq->rd) {
+-		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
+-		set_rq_offline(rq);
+-	}
+-	rq_unlock_irqrestore(rq, &rf);
++	sched_set_rq_offline(rq, cpu);
  
- 		__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
- 		msk->pm.add_addr_signaled++;
+ 	/*
+ 	 * When going down, decrement the number of cores with SMT present.
 
 
 
