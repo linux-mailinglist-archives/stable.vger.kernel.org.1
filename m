@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E8B94EBF8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:42:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F5394EBF7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0BEAB2093B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:42:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 412D228131C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA30176ADC;
-	Mon, 12 Aug 2024 11:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E32A176FA5;
+	Mon, 12 Aug 2024 11:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlEdmYNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdaM5aV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B80316A948
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D85416A948
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723462924; cv=none; b=CBDlzp0RkW3DTgkPUXYZ5AaGVBju/cLr79nr5czZSnJZvX0UW9Z036vTUzHrxavWzSFZRi1p7K+bW10QwRFjHOsZCh2DUJbNZtyZrB0TX33hRM9oI5q33OeaQOdRQe1OraMs2dRV7XqRcj0eJpvZ7Hu+jKY191T9j1Oh0DF/8PQ=
+	t=1723462929; cv=none; b=VK66sN967O4xcWipKrVzeN0roITQfAyb9iVpV/FnGcDyBjjtLFF5Tj4eFQlAVrdJ4V0pxvtKVKczCayuB17PQ8fsOspKx5Ann5pwwY1WWD1D8kxbmmNlFPtxgxVucRPDe/eoPDuoAOlpVG6Qdsu71XfQQOhbixH7DhQl3X2gNe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723462924; c=relaxed/simple;
-	bh=sw7jWB+w4VXpwy+SJGKBBeIXdBzkDT7Bl08q38/qKUQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dYDFwZO2Hb2LVplNHjGGOUvLzC+mwoIJWMjx5GdNnF+vOvbxtx+5wWBp1MM177yGag91T27FNqxAeK9d4iy88zyvQDd7JfTUnU1kJ4fWZ4neas002LJIHsOkCEcbFkovmFvEfJcxhaQ0myzMRrqz8PaTGvvMZHd8wGIOh/db+zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlEdmYNL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07664C4AF0F;
-	Mon, 12 Aug 2024 11:42:03 +0000 (UTC)
+	s=arc-20240116; t=1723462929; c=relaxed/simple;
+	bh=aotD6jDn3M29QhtMODqMBQtb4E0t9zgK99XGhJ0pXfc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LWKZG+WzaFMiUXaz8zXRccOHv2MVRTz5fgINV+ECw8W63jNrcnxhRzZ1XuBFeR2CKOT4+TeFBvr1+mkYHJYLHyJfbz8B6rSNr7Z106sKCwJZ4XV+8/DRWB9l6nby0CEf3XJNc8jq2q9z2DboSnbZRTHeoK8C0XtjNj3axC8B1I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdaM5aV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D684C32782;
+	Mon, 12 Aug 2024 11:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723462924;
-	bh=sw7jWB+w4VXpwy+SJGKBBeIXdBzkDT7Bl08q38/qKUQ=;
+	s=korg; t=1723462929;
+	bh=aotD6jDn3M29QhtMODqMBQtb4E0t9zgK99XGhJ0pXfc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TlEdmYNLx9Y+Nr3kg8BibB5TALdVqzpd0K2KJxUP7tq3Bb4al04gD0Xuui9UQrqSE
-	 7RzVMQKdjqrb6Tf3gpzDzcyGWl44vReBeUr+R6zXYA5BxpdeSTy6RdVpPnDVrK3BUw
-	 gU6ZKBTPVA9E4GbPr9QGNnvnXfrybU5DoHM+4bCU=
-Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix invalid FIFO access with special" failed to apply to 6.6-stable tree
+	b=BdaM5aV8vXLZHys4yeg0tldRbpBlFWwqzKYAL96npILoIoG6U/dXvD68wZZqbFplp
+	 2sBLBWDmoZhYUbyHKzOszJ3E7OkgEN7MaIB2V5xSOIT9ILyZ3jLq5NBvFxnZnwPoTe
+	 mH1IOIXB4UdBhX/SI1DTxpVtJowmra2GZukcgpU4=
+Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix invalid FIFO access with special" failed to apply to 6.1-stable tree
 To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 13:42:01 +0200
-Message-ID: <2024081200-disorder-styling-e89d@gregkh>
+Date: Mon, 12 Aug 2024 13:42:05 +0200
+Message-ID: <2024081204-deserving-flanked-a918@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7d3b793faaab1305994ce568b59d61927235f57b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081200-disorder-styling-e89d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081204-deserving-flanked-a918@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,10 @@ Possible dependencies:
 4409df5866b7 ("serial: sc16is7xx: change EFR lock to operate on each channels")
 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
 22a048b07493 ("serial: sc16is7xx: remove unused to_sc16is7xx_port macro")
+b4a778303ea0 ("serial: sc16is7xx: add missing support for rs485 devicetree properties")
+049994292834 ("serial: sc16is7xx: fix regression with GPIO configuration")
+dabc54a45711 ("serial: sc16is7xx: remove obsolete out_thread label")
+c8f71b49ee4d ("serial: sc16is7xx: setup GPIO controller later in probe")
 
 thanks,
 
