@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-67298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC93594F4C9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BCD94F3AF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97DC31F2110A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:34:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99C271F21A53
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A20183CD4;
-	Mon, 12 Aug 2024 16:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE32186E34;
+	Mon, 12 Aug 2024 16:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yR7jneLz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTTz6isV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8451494B8;
-	Mon, 12 Aug 2024 16:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70AA29CA;
+	Mon, 12 Aug 2024 16:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480470; cv=none; b=hg9oQtnhXAL8byMvEdhLDUcwVLiaaqu23cOb1v8qgq7Sa8JIwf0cPPKbrVBJaMIK0txhStSG3Bdhac/Mt4t1pNO4OwKzHiZ1s1FJw4S5QeysgbUAGhlWXnYwQBXGL4YTaylh4lDm869fwgpXv2J0j9JMykHq2Oga60VF50770oY=
+	t=1723479647; cv=none; b=l0iti+J0ud/FoGO6iENPusi4rF+oyksJjK3dqQhwL9scA2ux9+bLJqUQ5SL+gzKWXP9ywP/DxbnCRUYynNztfBtXaDKMN2joFhqu+JU7wBrn35MZimtljqIn4Ll1z3YkA+KWY+8PNNx68VxS5e53dea/F2F9teQaDvRG9S/d9r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480470; c=relaxed/simple;
-	bh=nFfmkbIO3qwvUGoh9Qu0GWI9mkF+d6Bp46uYvNYgHtM=;
+	s=arc-20240116; t=1723479647; c=relaxed/simple;
+	bh=+WypOlvp5qtTWERsLKg4mEywDLFpnc0dAFDXX5PTC0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TrgCYvCKzSQfloAqby0/0W+6Ac98P9LHlQhms1AMoRk/2x3gAVVLGO9XanDlXEX4in2M9xfo7XfPgS9F6PwLDOECGBLpCILfUmSv7eOReDAM63Fa0S768m9I506vW99tKNI/Nn4BIf7N1l12Oy3g/PzFdAQidE5mV1DrHDqHBHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yR7jneLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48138C32782;
-	Mon, 12 Aug 2024 16:34:29 +0000 (UTC)
+	 MIME-Version; b=BDbMka4bVMCP7qfjJlvEXiUKjr5dReqPl0cGSzREjQvJkpJVL3x7PpQXstoT2U9DFsAPIN9tQIDcRXNDiJFm/ofHY3VHC76SOjbzwa0DeHjO9oWSRxgn9qglqGxshjrckB1fkEpWVzt+s6yI0hPezTj2UsxKaFa6QWRGzA+3OSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTTz6isV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D3FC32782;
+	Mon, 12 Aug 2024 16:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480469;
-	bh=nFfmkbIO3qwvUGoh9Qu0GWI9mkF+d6Bp46uYvNYgHtM=;
+	s=korg; t=1723479647;
+	bh=+WypOlvp5qtTWERsLKg4mEywDLFpnc0dAFDXX5PTC0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yR7jneLzva/7qi2OZLVGoObotlQVduHe3suBLQpTmyWBF6qxy8fvhRChpuHZy8oGH
-	 BbcpbEkD+Ry1qqs46ap87eje6Ek18FG8mS6WXiQZwkvkgccehwRKRQrnmFXKNk4CYs
-	 XZyBUqcjFCjXenXKcHZBRI4MQw6pjtDR3nwajMIg=
+	b=mTTz6isVIfeBZF6p6NOeDQoto/Eetzyxn6ws7hYTs9D67w7G0t+Nh/U0fGXd+ASin
+	 uwH+I1yp3GKizcL59T79uTCn/K16T07s/TXyKNlzNccxe7hUBXce6sdkKI/YiGXi4d
+	 PNl+WeLAyC1i220DgMo++P7GzFTfIL88DJiRvTrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Mathias Krause <minipli@grsecurity.net>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.10 205/263] tracefs: Fix inode allocation
+	Bharath SM <bharathsm@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 150/189] smb3: fix setting SecurityFlags when encryption is required
 Date: Mon, 12 Aug 2024 18:03:26 +0200
-Message-ID: <20240812160154.396753504@linuxfoundation.org>
+Message-ID: <20240812160137.916724855@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Krause <minipli@grsecurity.net>
+From: Steve French <stfrench@microsoft.com>
 
-commit 0df2ac59bebfac221463ef57ed3554899b41d75f upstream.
+commit 1b5487aefb1ce7a6b1f15a33297d1231306b4122 upstream.
 
-The leading comment above alloc_inode_sb() is pretty explicit about it:
+Setting encryption as required in security flags was broken.
+For example (to require all mounts to be encrypted by setting):
 
-  /*
-   * This must be used for allocating filesystems specific inodes to set
-   * up the inode reclaim context correctly.
-   */
+  "echo 0x400c5 > /proc/fs/cifs/SecurityFlags"
 
-Switch tracefs over to alloc_inode_sb() to make sure inodes are properly
-linked.
+Would return "Invalid argument" and log "Unsupported security flags"
+This patch fixes that (e.g. allowing overriding the default for
+SecurityFlags  0x00c5, including 0x40000 to require seal, ie
+SMB3.1.1 encryption) so now that works and forces encryption
+on subsequent mounts.
 
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
+Acked-by: Bharath SM <bharathsm@microsoft.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20240807115143.45927-2-minipli@grsecurity.net
-Fixes: ba37ff75e04b ("eventfs: Implement tracefs_inode_cache")
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/admin-guide/cifs/usage.rst |    2 +-
+ fs/smb/client/cifs_debug.c               |    2 +-
+ fs/smb/client/cifsglob.h                 |    8 ++++----
+ fs/smb/client/smb2pdu.c                  |    3 +++
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -42,7 +42,7 @@ static struct inode *tracefs_alloc_inode
- 	struct tracefs_inode *ti;
- 	unsigned long flags;
+--- a/Documentation/admin-guide/cifs/usage.rst
++++ b/Documentation/admin-guide/cifs/usage.rst
+@@ -741,7 +741,7 @@ SecurityFlags		Flags which control secur
+ 			  may use NTLMSSP               		0x00080
+ 			  must use NTLMSSP           			0x80080
+ 			  seal (packet encryption)			0x00040
+-			  must seal (not implemented yet)               0x40040
++			  must seal                                     0x40040
  
--	ti = kmem_cache_alloc(tracefs_inode_cachep, GFP_KERNEL);
-+	ti = alloc_inode_sb(sb, tracefs_inode_cachep, GFP_KERNEL);
- 	if (!ti)
- 		return NULL;
+ cifsFYI			If set to non-zero value, additional debug information
+ 			will be logged to the system error log.  This field
+--- a/fs/smb/client/cifs_debug.c
++++ b/fs/smb/client/cifs_debug.c
+@@ -1072,7 +1072,7 @@ static int cifs_security_flags_proc_open
+ static void
+ cifs_security_flags_handle_must_flags(unsigned int *flags)
+ {
+-	unsigned int signflags = *flags & CIFSSEC_MUST_SIGN;
++	unsigned int signflags = *flags & (CIFSSEC_MUST_SIGN | CIFSSEC_MUST_SEAL);
+ 
+ 	if ((*flags & CIFSSEC_MUST_KRB5) == CIFSSEC_MUST_KRB5)
+ 		*flags = CIFSSEC_MUST_KRB5;
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1922,7 +1922,7 @@ static inline bool is_replayable_error(i
+ #define   CIFSSEC_MAY_SIGN	0x00001
+ #define   CIFSSEC_MAY_NTLMV2	0x00004
+ #define   CIFSSEC_MAY_KRB5	0x00008
+-#define   CIFSSEC_MAY_SEAL	0x00040 /* not supported yet */
++#define   CIFSSEC_MAY_SEAL	0x00040
+ #define   CIFSSEC_MAY_NTLMSSP	0x00080 /* raw ntlmssp with ntlmv2 */
+ 
+ #define   CIFSSEC_MUST_SIGN	0x01001
+@@ -1932,11 +1932,11 @@ require use of the stronger protocol */
+ #define   CIFSSEC_MUST_NTLMV2	0x04004
+ #define   CIFSSEC_MUST_KRB5	0x08008
+ #ifdef CONFIG_CIFS_UPCALL
+-#define   CIFSSEC_MASK          0x8F08F /* flags supported if no weak allowed */
++#define   CIFSSEC_MASK          0xCF0CF /* flags supported if no weak allowed */
+ #else
+-#define	  CIFSSEC_MASK          0x87087 /* flags supported if no weak allowed */
++#define	  CIFSSEC_MASK          0xC70C7 /* flags supported if no weak allowed */
+ #endif /* UPCALL */
+-#define   CIFSSEC_MUST_SEAL	0x40040 /* not supported yet */
++#define   CIFSSEC_MUST_SEAL	0x40040
+ #define   CIFSSEC_MUST_NTLMSSP	0x80080 /* raw ntlmssp with ntlmv2 */
+ 
+ #define   CIFSSEC_DEF (CIFSSEC_MAY_SIGN | CIFSSEC_MAY_NTLMV2 | CIFSSEC_MAY_NTLMSSP | CIFSSEC_MAY_SEAL)
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -80,6 +80,9 @@ int smb3_encryption_required(const struc
+ 	if (tcon->seal &&
+ 	    (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
+ 		return 1;
++	if (((global_secflags & CIFSSEC_MUST_SEAL) == CIFSSEC_MUST_SEAL) &&
++	    (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
++		return 1;
+ 	return 0;
+ }
  
 
 
