@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D4294F381
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3B494F498
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BA251C21183
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2A3E281AFD
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4941862BD;
-	Mon, 12 Aug 2024 16:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539EE186E38;
+	Mon, 12 Aug 2024 16:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ju6FjUO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MobRpce7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1E4183CA6;
-	Mon, 12 Aug 2024 16:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F79E16D9B8;
+	Mon, 12 Aug 2024 16:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479510; cv=none; b=ifkFmBcmxSN/1Fs6TjYAyNrYc4jhhfhnQ0+/oKUnNRYJsRaHWHJBxh79wS7ec1mAVF7oDTJfmUKTlMTefBt0RfEi7N5VbxqqoBvVTEEYarGJMfIZ5s9cMq/pSWchFN9/LssaUT+7CbgADnwY/Qfw5SRXYxhB2s1YdgXUzoV8J0U=
+	t=1723480329; cv=none; b=qevvVcPzozxYheZYQKM7E8UtFC3y8hvRDol48fbT6c0dev+/BfJGJ0ATU2BswA3giO4k4ao6bHjooqabm2WZpx+2l20f91bS2yUQ6/YBi+dkY+gJvSkr/DugBSXtpNU3ysBPhCoUoTDyrfiOeX2Vdbtgib3+Imc11wxRKA5VXbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479510; c=relaxed/simple;
-	bh=j+6gWFIwypOv+jwmlVB7tUy5HSntSPjPIlTSYAoqkYs=;
+	s=arc-20240116; t=1723480329; c=relaxed/simple;
+	bh=taAEyJbjwokAM9a675V93UUrs3cs5gvq+lQdKzlx9ZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KHUkdp/nbrCY7H4VmaIVgU//bLOWTsGycb+UcpxoW5j5GfE+8JoqEb4RRQLAfps3xkJA3hk0MlSQEK1WjDWTuetJEpdEyZlV5rYFK9PpYSQFebw5h5C6b7prfrYw5kog4zeCMl4DELhDVseDSv9+pwOeLUmAI7OF2WdC0t6FXF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ju6FjUO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536B5C32782;
-	Mon, 12 Aug 2024 16:18:29 +0000 (UTC)
+	 MIME-Version; b=DXeuBDpC+OLjbTQvhAk1A/fon9NHObtrQrm4M44IrQQ2MvOEmVz/b2Ts95w3lb+f0YPXKDEeWju/gF0FLlNpRF1WPp4byIQAJHRMDWjhq5qwkQbWzOx9TWPGvyFrjXL76ZoLzm4YsWfuIh7NWcgpmkGFzfF6panNx15P68PFV+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MobRpce7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEE4C32782;
+	Mon, 12 Aug 2024 16:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479509;
-	bh=j+6gWFIwypOv+jwmlVB7tUy5HSntSPjPIlTSYAoqkYs=;
+	s=korg; t=1723480328;
+	bh=taAEyJbjwokAM9a675V93UUrs3cs5gvq+lQdKzlx9ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ju6FjUO1rNRAZlP/53sSil0wKfmQ4wnIb41RFVIdeC3oo/323RJYiV4Nml3sUPpsC
-	 SAbMRCYEzQujINIdn/x/kNv/S5FVav8pjM8G7JzLtaOtyDe8A28jhLv7OjOcEjfsDh
-	 IsZeVjapvDNCJoA8hYPo9kgA0D3FvPwoGCLjW+qg=
+	b=MobRpce7EWD7WLEej+OA/Ozw1HZ1UOzEmhs6ZTMg/jW39UP1EzYw6F/5PykQp+7mV
+	 kAq2p7UWE3P6if8zWmNXyJoTSZzV6iF77yCkhHB1lWknKxgfPp2FwdEiVbNbnqt+CT
+	 jckUhoiA5y5PcmtTfMpG2iZ6RFZ/iOdW6sB/DPyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Ashton <joshua@froggi.es>,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 110/189] drm/amdgpu: Forward soft recovery errors to userspace
+	Karthik Poosa <karthik.poosa@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 165/263] drm/xe/hwmon: Fix PL1 disable flow in xe_hwmon_power_max_write
 Date: Mon, 12 Aug 2024 18:02:46 +0200
-Message-ID: <20240812160136.376277658@linuxfoundation.org>
+Message-ID: <20240812160152.863198387@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Ashton <joshua@froggi.es>
+From: Karthik Poosa <karthik.poosa@intel.com>
 
-commit 829798c789f567ef6ba4b084c15b7b5f3bd98d51 upstream.
+[ Upstream commit ac3191c5cf47e2d5220a1ed7353a2e498a1f415e ]
 
-As we discussed before[1], soft recovery should be
-forwarded to userspace, or we can get into a really
-bad state where apps will keep submitting hanging
-command buffers cascading us to a hard reset.
+In xe_hwmon_power_max_write, for PL1 disable supported case, instead of
+returning after PL1 disable, PL1 enable path was also being run.
+Fixed it by returning after disable.
 
-1: https://lore.kernel.org/all/bf23d5ed-9a6b-43e7-84ee-8cbfd0d60f18@froggi.es/
-Signed-off-by: Joshua Ashton <joshua@froggi.es>
-Reviewed-by: Marek Olšák <marek.olsak@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 434967aadbbbe3ad9103cc29e9a327de20fdba01)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v2: Correct typo and grammar in commit message. (Jonathan)
+
+Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+Fixes: fef6dd12b45a ("drm/xe/hwmon: Protect hwmon rw attributes with hwmon_lock")
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240801112424.1841766-1-karthik.poosa@intel.com
+(cherry picked from commit 146458645e505f5eac498759bcd865cf7c0dfd9a)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_job.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_hwmon.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-@@ -258,9 +258,8 @@ amdgpu_job_prepare_job(struct drm_sched_
- 	struct dma_fence *fence = NULL;
- 	int r;
+diff --git a/drivers/gpu/drm/xe/xe_hwmon.c b/drivers/gpu/drm/xe/xe_hwmon.c
+index 453e601ddd5e6..d37f1dea9f8b8 100644
+--- a/drivers/gpu/drm/xe/xe_hwmon.c
++++ b/drivers/gpu/drm/xe/xe_hwmon.c
+@@ -200,9 +200,10 @@ static int xe_hwmon_power_max_write(struct xe_hwmon *hwmon, int channel, long va
+ 				     PKG_PWR_LIM_1_EN, 0, channel);
  
--	/* Ignore soft recovered fences here */
- 	r = drm_sched_entity_error(s_entity);
--	if (r && r != -ENODATA)
-+	if (r)
- 		goto error;
+ 		if (reg_val & PKG_PWR_LIM_1_EN) {
++			drm_warn(&gt_to_xe(hwmon->gt)->drm, "PL1 disable is not supported!\n");
+ 			ret = -EOPNOTSUPP;
+-			goto unlock;
+ 		}
++		goto unlock;
+ 	}
  
- 	if (!fence && job->gang_submit)
+ 	/* Computation in 64-bits to avoid overflow. Round to nearest. */
+-- 
+2.43.0
+
 
 
 
