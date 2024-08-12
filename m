@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1799894EBF5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:41:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E8B94EBF8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 13:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7958AB21BF3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:41:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0BEAB2093B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE733176FA4;
-	Mon, 12 Aug 2024 11:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA30176ADC;
+	Mon, 12 Aug 2024 11:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9aRoHrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlEdmYNL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC55B16A948
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B80316A948
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 11:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723462899; cv=none; b=GpvIk0haJepTPzmIXGCIN+oIFMpapuddeRjzyCmxYmxyXN5QZMmnDgTtkyGDxs/S8LeGjkU2JGOZM77voySgbhdaVMnFz53MU6/pP2d/f9Hsrpq0QVU8YDAoOHQEn4ribuVlCyCZgvQs6E6n1ceR0Jc9gpuRk8oLvfCm1R17qZs=
+	t=1723462924; cv=none; b=CBDlzp0RkW3DTgkPUXYZ5AaGVBju/cLr79nr5czZSnJZvX0UW9Z036vTUzHrxavWzSFZRi1p7K+bW10QwRFjHOsZCh2DUJbNZtyZrB0TX33hRM9oI5q33OeaQOdRQe1OraMs2dRV7XqRcj0eJpvZ7Hu+jKY191T9j1Oh0DF/8PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723462899; c=relaxed/simple;
-	bh=wZoafBOyH9jGCnVzpBLFn6se1h0uq5tS4uf0eytdULk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gF2Y8rsDUa9wvsaSHNRd1FpYOnLVnMi56h+pQP7aSxyx8hD/XQOd07I8RdnjpG7IvbG+urE35O4e1diY2aT6+rU9A3WPg1zp989/v0aulSgRCptglfrh9t2Jzhf9iahniL+cxwB7jmD9wuRbR0HtB5/9PVXbrmU+JXTu07cKbEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9aRoHrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF95BC32782;
-	Mon, 12 Aug 2024 11:41:38 +0000 (UTC)
+	s=arc-20240116; t=1723462924; c=relaxed/simple;
+	bh=sw7jWB+w4VXpwy+SJGKBBeIXdBzkDT7Bl08q38/qKUQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dYDFwZO2Hb2LVplNHjGGOUvLzC+mwoIJWMjx5GdNnF+vOvbxtx+5wWBp1MM177yGag91T27FNqxAeK9d4iy88zyvQDd7JfTUnU1kJ4fWZ4neas002LJIHsOkCEcbFkovmFvEfJcxhaQ0myzMRrqz8PaTGvvMZHd8wGIOh/db+zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlEdmYNL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07664C4AF0F;
+	Mon, 12 Aug 2024 11:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723462899;
-	bh=wZoafBOyH9jGCnVzpBLFn6se1h0uq5tS4uf0eytdULk=;
+	s=korg; t=1723462924;
+	bh=sw7jWB+w4VXpwy+SJGKBBeIXdBzkDT7Bl08q38/qKUQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=d9aRoHrGF8VhKaEY6DMfiqn1S2jop39WwRA258Zqk9YaeEB99tucmDNGiiFmUZbBN
-	 u/M+PifD8rkz+A7wpitQFBn+f5XJ+aQQa7ojG9l+7yixbBYC9437zgbtCg74bcHsLV
-	 8t0f5b6VgeekDe+w5iJZZB85vtySpekEy9LNFvIo=
-Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix TX fifo corruption" failed to apply to 6.6-stable tree
+	b=TlEdmYNLx9Y+Nr3kg8BibB5TALdVqzpd0K2KJxUP7tq3Bb4al04gD0Xuui9UQrqSE
+	 7RzVMQKdjqrb6Tf3gpzDzcyGWl44vReBeUr+R6zXYA5BxpdeSTy6RdVpPnDVrK3BUw
+	 gU6ZKBTPVA9E4GbPr9QGNnvnXfrybU5DoHM+4bCU=
+Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix invalid FIFO access with special" failed to apply to 6.6-stable tree
 To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 13:41:36 +0200
-Message-ID: <2024081235-guzzler-tubeless-8a2c@gregkh>
+Date: Mon, 12 Aug 2024 13:42:01 +0200
+Message-ID: <2024081200-disorder-styling-e89d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,19 +62,21 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 133f4c00b8b2bfcacead9b81e7e8edfceb4b06c4
+git cherry-pick -x 7d3b793faaab1305994ce568b59d61927235f57b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081235-guzzler-tubeless-8a2c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081200-disorder-styling-e89d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-133f4c00b8b2 ("serial: sc16is7xx: fix TX fifo corruption")
-1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
-f8fef2fa419f ("tty: msm_serial: use dmaengine_prep_slave_sg()")
-9054605ab846 ("tty: 8250_omap: use dmaengine_prep_slave_sg()")
-8192fabb0db2 ("tty: 8250_dma: use dmaengine_prep_slave_sg()")
-3bcb0bf65c2b ("Merge tag 'tty-6.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty")
+7d3b793faaab ("serial: sc16is7xx: fix invalid FIFO access with special register set")
+8492bd91aa05 ("serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler")
+0c84bea0cabc ("serial: sc16is7xx: refactor EFR lock")
+2de8a1b46756 ("serial: sc16is7xx: reorder code to remove prototype declarations")
+2e57cefc4477 ("serial: sc16is7xx: replace hardcoded divisor value with BIT() macro")
+4409df5866b7 ("serial: sc16is7xx: change EFR lock to operate on each channels")
+3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+22a048b07493 ("serial: sc16is7xx: remove unused to_sc16is7xx_port macro")
 
 thanks,
 
@@ -82,125 +84,58 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 133f4c00b8b2bfcacead9b81e7e8edfceb4b06c4 Mon Sep 17 00:00:00 2001
+From 7d3b793faaab1305994ce568b59d61927235f57b Mon Sep 17 00:00:00 2001
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Tue, 23 Jul 2024 08:53:00 -0400
-Subject: [PATCH] serial: sc16is7xx: fix TX fifo corruption
+Date: Tue, 23 Jul 2024 08:53:01 -0400
+Subject: [PATCH] serial: sc16is7xx: fix invalid FIFO access with special
+ register set
 
-Sometimes, when a packet is received on channel A at almost the same time
-as a packet is about to be transmitted on channel B, we observe with a
-logic analyzer that the received packet on channel A is transmitted on
-channel B. In other words, the Tx buffer data on channel B is corrupted
-with data from channel A.
+When enabling access to the special register set, Receiver time-out and
+RHR interrupts can happen. In this case, the IRQ handler will try to read
+from the FIFO thru the RHR register at address 0x00, but address 0x00 is
+mapped to DLL register, resulting in erroneous FIFO reading.
 
-The problem appeared since commit 4409df5866b7 ("serial: sc16is7xx: change
-EFR lock to operate on each channels"), which changed the EFR locking to
-operate on each channel instead of chip-wise.
+Call graph example:
+    sc16is7xx_startup(): entry
+    sc16is7xx_ms_proc(): entry
+    sc16is7xx_set_termios(): entry
+    sc16is7xx_set_baud(): DLH/DLL = $009C --> access special register set
+    sc16is7xx_port_irq() entry            --> IIR is 0x0C
+    sc16is7xx_handle_rx() entry
+    sc16is7xx_fifo_read(): --> unable to access FIFO (RHR) because it is
+                               mapped to DLL (LCR=LCR_CONF_MODE_A)
+    sc16is7xx_set_baud(): exit --> Restore access to general register set
 
-This commit has introduced a regression, because the EFR lock is used not
-only to protect the EFR registers access, but also, in a very obscure and
-undocumented way, to protect access to the data buffer, which is shared by
-the Tx and Rx handlers, but also by each channel of the IC.
+Fix the problem by claiming the efr_lock mutex when accessing the Special
+register set.
 
-Fix this regression first by switching to kfifo_out_linear_ptr() in
-sc16is7xx_handle_tx() to eliminate the need for a shared Rx/Tx buffer.
-
-Secondly, replace the chip-wise Rx buffer with a separate Rx buffer for
-each channel.
-
-Fixes: 4409df5866b7 ("serial: sc16is7xx: change EFR lock to operate on each channels")
+Fixes: dfeae619d781 ("serial: sc16is7xx")
 Cc: stable@vger.kernel.org
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240723125302.1305372-2-hugo@hugovil.com
+Link: https://lore.kernel.org/r/20240723125302.1305372-3-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index c79dcd7c8d1a..58696e05492c 100644
+index 58696e05492c..b4c1798a1df2 100644
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -327,6 +327,7 @@ struct sc16is7xx_one {
- 	struct kthread_work		reg_work;
- 	struct kthread_delayed_work	ms_work;
- 	struct sc16is7xx_one_config	config;
-+	unsigned char			buf[SC16IS7XX_FIFO_SIZE]; /* Rx buffer. */
- 	unsigned int			old_mctrl;
- 	u8				old_lcr; /* Value before EFR access. */
- 	bool				irda_mode;
-@@ -340,7 +341,6 @@ struct sc16is7xx_port {
- 	unsigned long			gpio_valid_mask;
- #endif
- 	u8				mctrl_mask;
--	unsigned char			buf[SC16IS7XX_FIFO_SIZE];
- 	struct kthread_worker		kworker;
- 	struct task_struct		*kworker_task;
- 	struct sc16is7xx_one		p[];
-@@ -612,18 +612,18 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
- 				unsigned int iir)
- {
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 	unsigned int lsr = 0, bytes_read, i;
- 	bool read_lsr = (iir == SC16IS7XX_IIR_RLSE_SRC) ? true : false;
- 	u8 ch, flag;
+@@ -592,6 +592,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 			      SC16IS7XX_MCR_CLKSEL_BIT,
+ 			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
  
--	if (unlikely(rxlen >= sizeof(s->buf))) {
-+	if (unlikely(rxlen >= sizeof(one->buf))) {
- 		dev_warn_ratelimited(port->dev,
- 				     "ttySC%i: Possible RX FIFO overrun: %d\n",
- 				     port->line, rxlen);
- 		port->icount.buf_overrun++;
- 		/* Ensure sanity of RX level */
--		rxlen = sizeof(s->buf);
-+		rxlen = sizeof(one->buf);
- 	}
++	mutex_lock(&one->efr_lock);
++
+ 	/* Backup LCR and access special register set (DLL/DLH) */
+ 	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+@@ -606,6 +608,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	/* Restore LCR and access to general register set */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
  
- 	while (rxlen) {
-@@ -636,10 +636,10 @@ static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
- 			lsr = 0;
++	mutex_unlock(&one->efr_lock);
++
+ 	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
+ }
  
- 		if (read_lsr) {
--			s->buf[0] = sc16is7xx_port_read(port, SC16IS7XX_RHR_REG);
-+			one->buf[0] = sc16is7xx_port_read(port, SC16IS7XX_RHR_REG);
- 			bytes_read = 1;
- 		} else {
--			sc16is7xx_fifo_read(port, s->buf, rxlen);
-+			sc16is7xx_fifo_read(port, one->buf, rxlen);
- 			bytes_read = rxlen;
- 		}
- 
-@@ -672,7 +672,7 @@ static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
- 		}
- 
- 		for (i = 0; i < bytes_read; ++i) {
--			ch = s->buf[i];
-+			ch = one->buf[i];
- 			if (uart_handle_sysrq_char(port, ch))
- 				continue;
- 
-@@ -690,10 +690,10 @@ static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
- 
- static void sc16is7xx_handle_tx(struct uart_port *port)
- {
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
- 	struct tty_port *tport = &port->state->port;
- 	unsigned long flags;
- 	unsigned int txlen;
-+	unsigned char *tail;
- 
- 	if (unlikely(port->x_char)) {
- 		sc16is7xx_port_write(port, SC16IS7XX_THR_REG, port->x_char);
-@@ -718,8 +718,9 @@ static void sc16is7xx_handle_tx(struct uart_port *port)
- 		txlen = 0;
- 	}
- 
--	txlen = uart_fifo_out(port, s->buf, txlen);
--	sc16is7xx_fifo_write(port, s->buf, txlen);
-+	txlen = kfifo_out_linear_ptr(&tport->xmit_fifo, &tail, txlen);
-+	sc16is7xx_fifo_write(port, tail, txlen);
-+	uart_xmit_advance(port, txlen);
- 
- 	uart_port_lock_irqsave(port, &flags);
- 	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
 
 
