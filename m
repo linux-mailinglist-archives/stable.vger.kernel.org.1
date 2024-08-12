@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-67017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD2C94F387
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D9294F49E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA089B256AC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4FE11F21A07
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510AC1862BD;
-	Mon, 12 Aug 2024 16:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192B7186E34;
+	Mon, 12 Aug 2024 16:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHY2xvRh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swiF7xIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8A3183CA6;
-	Mon, 12 Aug 2024 16:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4D016D9B8;
+	Mon, 12 Aug 2024 16:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479526; cv=none; b=qt/hlsyZQPbTF28fqBC74SqtKsVktWEe+UUrUwaO+JZLdJ3jdZ4rAn6TsLk0oiFDdJE+UZ17pZTMHYSLOcVq3pn2uInENC+e8pszYepE1LXkilviTyZPoeeJ+3/tXGKVbPgULcwMwS7cyFKujhC6XSiUEx1uXnGGWQpHGs64XAc=
+	t=1723480348; cv=none; b=NdX9VKtXRvtdveC97gAOH7u0iRJ7VGRDuG2NsxqoZs4oE1VYyrjLk1/IXhfdbC7iUcpEcvugBGhxw8YfUq9BWK3vTj0lgp3livDyRD6LaGBssopnJ1tCczgBKHwYbRZ9HzPEq2Vp+p5WRGk/aTZCl7CBvfcjCRSzWb4A0m5CjFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479526; c=relaxed/simple;
-	bh=7lolnTzV/PbN92yGV+DmaA0maEkrDiJiONs/c4aO7SA=;
+	s=arc-20240116; t=1723480348; c=relaxed/simple;
+	bh=7HZ3rlYEA+kSBQ7xvEjo+VvIcXEp4RvXbAu0ouThhSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDmGByyTuHXTkPmE9ijd8aYZNri+Twvt4EFH/U+rQmS1MLD5eff82Iwd37d2hKJDJcB5AEKYCVzI0xbSMFJ6oJ8dMW8TyR9n0zWh9o77C892Sxu2JWbFzZd5s7I1BvPwR1Ja1Ah+XNBzl4wogWtNq32LhfglDLGAsgUTUC4sP8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHY2xvRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC17C4AF0C;
-	Mon, 12 Aug 2024 16:18:45 +0000 (UTC)
+	 MIME-Version; b=sXOMSU9myvUeV3EkKY6uoaMUwm9WuQG8H4oFUarSVCiZqBsmnveeR+Jw8YwyKmgxBLTermLMdTr0sI7XZFd+C0YxXXi/TqfdN8IiKFVhVQZe2IDmyk75GW/lcYbU2UMiSrtsB5i44e2xwPdYiayeiwXJyyC9fKBuJHO+QU2urqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swiF7xIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A1FC32782;
+	Mon, 12 Aug 2024 16:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479525;
-	bh=7lolnTzV/PbN92yGV+DmaA0maEkrDiJiONs/c4aO7SA=;
+	s=korg; t=1723480348;
+	bh=7HZ3rlYEA+kSBQ7xvEjo+VvIcXEp4RvXbAu0ouThhSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHY2xvRhi1kfzn4Eo3bZhuvz1cJhhm3Foy9KjmVW9vxvd8WpfoBUjIFFn2ZQn/chE
-	 des6r3mMM30hBqCCI/moUVtfH+lUhpQ8hRx05YidIUVRewUGOI3tkefZigNK2DhOj8
-	 DROUJdGX/hwnz++O26XuS2IJuNUSTUBFUskt3zRA=
+	b=swiF7xIPjE5mUA5nZVa6WsNIdUm1NDCYEUq5OICXUOQfX5JU3FVf7FyH3uzZnojL9
+	 vcYDb1CuDFuYCtEqS7WpHmc1bmE5wwYHZnbe8JQ8aKBxWd375I4PX3p32vaMhJAYRa
+	 n1jcLnDddRftcjvcGuof0HkNk4/fwX5KYjUSHoCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Steve Kendall <skend@chromium.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 114/189] ALSA: hda: Add HP MP9 G4 Retail System AMS to force connect list
-Date: Mon, 12 Aug 2024 18:02:50 +0200
-Message-ID: <20240812160136.528154630@linuxfoundation.org>
+	Russell King <linux@armlinux.org.uk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.10 170/263] module: warn about excessively long module waits
+Date: Mon, 12 Aug 2024 18:02:51 +0200
+Message-ID: <20240812160153.056274139@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven 'Steve' Kendall <skend@chromium.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 7e1e206b99f4b3345aeb49d94584a420b7887f1d upstream.
+[ Upstream commit cb5b81bc9a448f8db817566f60f92e2ea788ea0f ]
 
-In recent HP UEFI firmware (likely v2.15 and above, tested on 2.27),
-these pins are incorrectly set for HDMI/DP audio. Tested on
-HP MP9 G4 Retail System AMS. Tested audio with two monitors connected
-via DisplayPort.
+Russell King reported that the arm cbc(aes) crypto module hangs when
+loaded, and Herbert Xu bisected it to commit 9b9879fc0327 ("modules:
+catch concurrent module loads, treat them as idempotent"), and noted:
 
-Link: https://forum.manjaro.org/t/intel-cannon-lake-pch-cavs-conexant-cx20632-no-sound-at-hdmi-or-displayport/133494
-Link: https://bbs.archlinux.org/viewtopic.php?id=270523
-Signed-off-by: Steven 'Steve' Kendall <skend@chromium.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240806-hdmi-audio-hp-wrongpins-v2-1-d9eb4ad41043@chromium.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ "So what's happening here is that the first modprobe tries to load a
+  fallback CBC implementation, in doing so it triggers a load of the
+  exact same module due to module aliases.
+
+  IOW we're loading aes-arm-bs which provides cbc(aes). However, this
+  needs a fallback of cbc(aes) to operate, which is made out of the
+  generic cbc module + any implementation of aes, or ecb(aes). The
+  latter happens to also be provided by aes-arm-cb so that's why it
+  tries to load the same module again"
+
+So loading the aes-arm-bs module ends up wanting to recursively load
+itself, and the recursive load then ends up waiting for the original
+module load to complete.
+
+This is a regression, in that it used to be that we just tried to load
+the module multiple times, and then as we went on to install it the
+second time we would instead just error out because the module name
+already existed.
+
+That is actually also exactly what the original "catch concurrent loads"
+patch did in commit 9828ed3f695a ("module: error out early on concurrent
+load of the same module file"), but it turns out that it ends up being
+racy, in that erroring out before the module has been fully initialized
+will cause failures in dependent module loading.
+
+See commit ac2263b588df (which was the revert of that "error out early")
+commit for details about why erroring out before the module has been
+initialized is actually fundamentally racy.
+
+Now, for the actual recursive module load (as opposed to just
+concurrently loading the same module twice), the race is not an issue.
+
+At the same time it's hard for the kernel to see that this is recursion,
+because the module load is always done from a usermode helper, so the
+recursion is not some simple callchain within the kernel.
+
+End result: this is not the real fix, but this at least adds a warning
+for the situation (admittedly much too late for all the debugging pain
+that Russell and Herbert went through) and if we can come to a
+resolution on how to detect the recursion properly, this re-organizes
+the code to make that easier.
+
+Link: https://lore.kernel.org/all/ZrFHLqvFqhzykuYw@shell.armlinux.org.uk/
+Reported-by: Russell King <linux@armlinux.org.uk>
+Debugged-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 2124d84db293 ("module: make waiting for a concurrent module loader interruptible")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_hdmi.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/module/main.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -1989,6 +1989,7 @@ static int hdmi_add_cvt(struct hda_codec
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index d18a94b973e10..7445d27ce3cdc 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -3180,15 +3180,28 @@ static int idempotent_init_module(struct file *f, const char __user * uargs, int
+ 	if (!f || !(f->f_mode & FMODE_READ))
+ 		return -EBADF;
+ 
+-	/* See if somebody else is doing the operation? */
+-	if (idempotent(&idem, file_inode(f))) {
+-		wait_for_completion(&idem.complete);
+-		return idem.ret;
++	/* Are we the winners of the race and get to do this? */
++	if (!idempotent(&idem, file_inode(f))) {
++		int ret = init_module_from_file(f, uargs, flags);
++		return idempotent_complete(&idem, ret);
+ 	}
+ 
+-	/* Otherwise, we'll do it and complete others */
+-	return idempotent_complete(&idem,
+-		init_module_from_file(f, uargs, flags));
++	/*
++	 * Somebody else won the race and is loading the module.
++	 *
++	 * We have to wait for it forever, since our 'idem' is
++	 * on the stack and the list entry stays there until
++	 * completed (but we could fix it under the idem_lock)
++	 *
++	 * It's also unclear what a real timeout might be,
++	 * but we could maybe at least make this killable
++	 * and remove the idem entry in that case?
++	 */
++	for (;;) {
++		if (wait_for_completion_timeout(&idem.complete, 10*HZ))
++			return idem.ret;
++		pr_warn_once("module '%pD' taking a long time to load", f);
++	}
  }
  
- static const struct snd_pci_quirk force_connect_list[] = {
-+	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
- 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
+ SYSCALL_DEFINE3(finit_module, int, fd, const char __user *, uargs, int, flags)
+-- 
+2.43.0
+
 
 
 
