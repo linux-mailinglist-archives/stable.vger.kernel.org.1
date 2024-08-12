@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-67313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5227F94F4D8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2472294F3BF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0746A1F2109B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56F301C2180D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC35183CA6;
-	Mon, 12 Aug 2024 16:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302A5187339;
+	Mon, 12 Aug 2024 16:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njnVr6Zq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J4NIN5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEBA1494B8;
-	Mon, 12 Aug 2024 16:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1297186E38;
+	Mon, 12 Aug 2024 16:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480520; cv=none; b=eKNVMqz/QTKBigjBIKaZv92/T6h1FA5NsjiuemJxOPsxi3YS2dwuhIt7WZaop+EYIpLH2KLY+VWsgRGaSIaRsgx7Eq6HcwaRylB9du14FoXCHuLFBa+cVB/kxwtaSJtx7cZgDzGK6xg0mAX4Dj3g4Fq+Iqo7bX4K9DxIfWOSces=
+	t=1723479697; cv=none; b=YHvttAHXbR8gBkpFMFE8ULzS8bJh40tX6FbuJiXx2LyGDHiISSkQk7ib5yQwzF0GMPJcKZv122h/rZkmtKHljIeFyRHO3bWadjPW3CDmp7yjinR5VwJOEXOwOqXFJfaWgMRBALj4kCfrPE6u4Gl7qYSISzon8JPOdjx7xx2/4/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480520; c=relaxed/simple;
-	bh=0wimM8+pB+Op2gw2bI3TWhNhdJ0RWg/M9LLfbzNs9Fc=;
+	s=arc-20240116; t=1723479697; c=relaxed/simple;
+	bh=EP+IXVgDL6rG8NktUsNxDwaB3YEx6i6VpjD2N5zs4wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FccaERTz7+4eS4IjAnZM3zhH2fxrtqV+tbJE5j4Dmxrr2du9j7VpsrNlHjKTK25vEOiVj9AtEI6IKM/XruPjsW70/HSDQp3p3eLDEPJhEKcfr/FiRCN/NFkxHjSK/z22Um0TnGurFzDVzzUdGdW8pUCLuX06NdI34iLI7pQOd0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njnVr6Zq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A78C32782;
-	Mon, 12 Aug 2024 16:35:18 +0000 (UTC)
+	 MIME-Version; b=CTQeXOmO0LZE7eXfqXz3BnfSjkoerl7TDMIef4iQz4uo75HrjcumVYjTDnUqkUve+JFrdD/7C/Hmg6YIFnrAbPrwPuYDlJFKIfeB7Hj9ZRFe0jp7I8nWKd2Ulp1pmKywT0jx140yFXHJMaILYfDIiuAoveNfe1KoSkHREBt54Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J4NIN5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36D0C32782;
+	Mon, 12 Aug 2024 16:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480520;
-	bh=0wimM8+pB+Op2gw2bI3TWhNhdJ0RWg/M9LLfbzNs9Fc=;
+	s=korg; t=1723479696;
+	bh=EP+IXVgDL6rG8NktUsNxDwaB3YEx6i6VpjD2N5zs4wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njnVr6ZqpnabHCSqPIxWYxVyB79jv7M2/vbv8HzG+8fNTiMIIBY5Ni8R86QFdcseU
-	 hd4n8w512sGUynQ46lHj2bP+bcW78WXitzJTIm/LVh5PJaTl/rT+YCqx7D5uGCChm2
-	 6CPQDaZcu0VSL2CLwncstNyM91rygg0BK4omascc=
+	b=1J4NIN5DkFulOdtKOuE+QpLpE7dx6tvTP8Om7yTY95O0IUadTILXPUcRRwZc4uqv+
+	 JHLueizqLE466q3IeBB6Ibow9Sog6FQxyJgm667adSg2k/GkS/bZeSskZADUp31sFj
+	 rSLODrjFVieFhg9R0cskNrUQsO6G83JMtdYg6w0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wulff <crwulff@gmail.com>
-Subject: [PATCH 6.10 189/263] usb: gadget: core: Check for unset descriptor
+	Justin Stitt <justinstitt@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miroslav Lichvar <mlichvar@redhat.com>
+Subject: [PATCH 6.6 134/189] ntp: Safeguard against time_constant overflow
 Date: Mon, 12 Aug 2024 18:03:10 +0200
-Message-ID: <20240812160153.781718847@linuxfoundation.org>
+Message-ID: <20240812160137.303986486@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wulff <crwulff@gmail.com>
+From: Justin Stitt <justinstitt@google.com>
 
-commit 973a57891608a98e894db2887f278777f564de18 upstream.
+commit 06c03c8edce333b9ad9c6b207d93d3a5ae7c10c0 upstream.
 
-Make sure the descriptor has been set before looking at maxpacket.
-This fixes a null pointer panic in this case.
+Using syzkaller with the recently reintroduced signed integer overflow
+sanitizer produces this UBSAN report:
 
-This may happen if the gadget doesn't properly set up the endpoint
-for the current speed, or the gadget descriptors are malformed and
-the descriptor for the speed/endpoint are not found.
+UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:738:18
+9223372036854775806 + 4 cannot be represented in type 'long'
+Call Trace:
+ handle_overflow+0x171/0x1b0
+ __do_adjtimex+0x1236/0x1440
+ do_adjtimex+0x2be/0x740
 
-No current gadget driver is known to have this problem, but this
-may cause a hard-to-find bug during development of new gadgets.
+The user supplied time_constant value is incremented by four and then
+clamped to the operating range.
 
-Fixes: 54f83b8c8ea9 ("USB: gadget: Reject endpoints with 0 maxpacket value")
+Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
+supplied value was sanity checked to be in the operating range. That change
+removed the sanity check and relied on clamping after incrementing which
+does not work correctly when the user supplied value is in the overflow
+zone of the '+ 4' operation.
+
+The operation requires CAP_SYS_TIME and the side effect of the overflow is
+NTP getting out of sync.
+
+Similar to the fixups for time_maxerror and time_esterror, clamp the user
+space supplied value to the operating range.
+
+[ tglx: Switch to clamping ]
+
+Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miroslav Lichvar <mlichvar@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Chris Wulff <crwulff@gmail.com>
-Link: https://lore.kernel.org/r/20240725010419.314430-2-crwulff@gmail.com
+Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-c-v2-1-f3a80096f36f@google.com
+Closes: https://github.com/KSPP/linux/issues/352
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ kernel/time/ntp.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -118,12 +118,10 @@ int usb_ep_enable(struct usb_ep *ep)
- 		goto out;
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -733,11 +733,10 @@ static inline void process_adjtimex_mode
+ 		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
  
- 	/* UDC drivers can't handle endpoints with maxpacket size 0 */
--	if (usb_endpoint_maxp(ep->desc) == 0) {
--		/*
--		 * We should log an error message here, but we can't call
--		 * dev_err() because there's no way to find the gadget
--		 * given only ep.
--		 */
-+	if (!ep->desc || usb_endpoint_maxp(ep->desc) == 0) {
-+		WARN_ONCE(1, "%s: ep%d (%s) has %s\n", __func__, ep->address, ep->name,
-+			  (!ep->desc) ? "NULL descriptor" : "maxpacket 0");
-+
- 		ret = -EINVAL;
- 		goto out;
+ 	if (txc->modes & ADJ_TIMECONST) {
+-		time_constant = txc->constant;
++		time_constant = clamp(txc->constant, 0, MAXTC);
+ 		if (!(time_status & STA_NANO))
+ 			time_constant += 4;
+-		time_constant = min(time_constant, (long)MAXTC);
+-		time_constant = max(time_constant, 0l);
++		time_constant = clamp(time_constant, 0, MAXTC);
  	}
+ 
+ 	if (txc->modes & ADJ_TAI &&
 
 
 
