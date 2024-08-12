@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-66895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BFF94F2FA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D210494F4FF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 135761F2184E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE981F212EB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155DF18757D;
-	Mon, 12 Aug 2024 16:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97627186E36;
+	Mon, 12 Aug 2024 16:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqCwrwV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egT5oMEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EF3186E52;
-	Mon, 12 Aug 2024 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554741494B8;
+	Mon, 12 Aug 2024 16:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479133; cv=none; b=IaMjNZp0zNUCmnFzvyk3Bv4+FtwesStOBOGPGIisk4s4FMXTDJMh1omdtbU//9jOq/d55f7v1X5V1FtZayN6H2M80XYOxphqNF786EemXpPJ2xN8nUPpPZz/jCLy/7/JeodQAZObEwUZohiiiPCJNkbpQpuegq59rzOS7MH+ycw=
+	t=1723480630; cv=none; b=FpOc32E/XzvMKvzH8vzjy09k2khRycQarN18iKJP4LrhYgqbTJmUs3RXCAmLdZJeX+4Mo5BjYuNBhTMD8YaA55klr1ljf7ysLjsI2WFnc0kKQpPU0BYORDaLBIJNMKUZg+rKbij1cePZsWwyHVt8KJE/F4FxcQPhUWdrhFveCqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479133; c=relaxed/simple;
-	bh=+6VkzSI3LMtUJ0k3jqUe4TUg9YrUAXp1Ym1AlAcJRi4=;
+	s=arc-20240116; t=1723480630; c=relaxed/simple;
+	bh=5BBTj+0Y622aLd7m8V59zRSSRfuEdKFlQeciW4xYLhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ly9UsQhzmr8TeGvpeEhdFN/di17Xu+G9aGqw0fvw3+QfNjuNE0gQn0V3Pznc1XIM9iUB9aEFvdPHrQGVGcPYWJYldMMWu3ltm9O8aH7NbGZ7Y2txxc+sgK3blEhjosSmqZm4lNKw/cvGAlYoyRGfYMyqOXDHqP4gonUVCmDxRXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqCwrwV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A32C32782;
-	Mon, 12 Aug 2024 16:12:12 +0000 (UTC)
+	 MIME-Version; b=bUKH6vpD8qJEZHabX58s0v10vg4GDOpeFa5xK6gqIPzrJc3aAiOT5F8tvucQrNSwkXKaHTBbUfkWIma86uxrlvtBHjL/fv3byHjXY2yVrz4eF+YR21ncIATb8gmx1dTHFSqs4rFryFtKxAMl8zFpGi5cVKmF7HPIAqoR6O356dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egT5oMEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E869C32782;
+	Mon, 12 Aug 2024 16:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479133;
-	bh=+6VkzSI3LMtUJ0k3jqUe4TUg9YrUAXp1Ym1AlAcJRi4=;
+	s=korg; t=1723480629;
+	bh=5BBTj+0Y622aLd7m8V59zRSSRfuEdKFlQeciW4xYLhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqCwrwV8S3MV+y8FSXmlO9ziOQIKZwQbA+EhCsoPy3q6dNLk1aNjhr6hIc8y6rpy4
-	 EV9EkferIqyOY0hmeN+6wFeYkPxDDAEo/+MYkMTxVUd1VDVl/2Vh+myDLOGeDav3gV
-	 31GNDC4CR4nV2tw0nAeb6tCSzu06PeqiSWxa/4XI=
+	b=egT5oMEajvPLLCDFf/Dj3Cs0IUcv2q85tSnJKS/usJleA5xQ9inC9FoQW0vKLY2uZ
+	 BIGTHcKyv9CKbeY03g0U5fSd9vvW3JAGn8Mtr0uQdaVV2Hsdn1s77X30IrsPdvhyKL
+	 PXN6IcE3DouteJsPadjQgi4bu3vwThKKrDuTRu/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 143/150] block/mq-deadline: Fix the tag reservation code
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.10 223/263] power: supply: qcom_battmgr: return EAGAIN when firmware service is not up
 Date: Mon, 12 Aug 2024 18:03:44 +0200
-Message-ID: <20240812160130.689648366@linuxfoundation.org>
+Message-ID: <20240812160155.074995657@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-commit 39823b47bbd40502632ffba90ebb34fff7c8b5e8 upstream.
+commit bf9d5cb588755ee41ac12a8976dccf44ae18281b upstream.
 
-The current tag reservation code is based on a misunderstanding of the
-meaning of data->shallow_depth. Fix the tag reservation code as follows:
-* By default, do not reserve any tags for synchronous requests because
-  for certain use cases reserving tags reduces performance. See also
-  Harshit Mogalapalli, [bug-report] Performance regression with fio
-  sequential-write on a multipath setup, 2024-03-07
-  (https://lore.kernel.org/linux-block/5ce2ae5d-61e2-4ede-ad55-551112602401@oracle.com/)
-* Reduce min_shallow_depth to one because min_shallow_depth must be less
-  than or equal any shallow_depth value.
-* Scale dd->async_depth from the range [1, nr_requests] to [1,
-  bits_per_sbitmap_word].
+The driver returns -ENODEV when the firmware battmrg service hasn't
+started yet, while per-se -ENODEV is fine, we usually use -EAGAIN to
+tell the user to retry again later. And the power supply core uses
+-EGAIN when the device isn't initialized, let's use the same return.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Fixes: 07757588e507 ("block/mq-deadline: Reserve 25% of scheduler tags for synchronous requests")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240509170149.7639-3-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This notably causes an infinite spam of:
+thermal thermal_zoneXX: failed to read out thermal zone (-19)
+because the thermal core doesn't understand -ENODEV, but only
+considers -EAGAIN as a non-fatal error.
+
+While it didn't appear until now, commit [1] fixes thermal core
+and no more ignores thermal zones returning an error at first
+temperature update.
+
+[1] 5725f40698b9 ("thermal: core: Call monitor_thermal_zone() if zone temperature is invalid")
+
+Link: https://lore.kernel.org/all/2ed4c630-204a-4f80-a37f-f2ca838eb455@linaro.org/
+Cc: stable@vger.kernel.org
+Fixes: 29e8142b5623 ("power: supply: Introduce Qualcomm PMIC GLINK power supply")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20240715-topic-sm8x50-upstream-fix-battmgr-temp-tz-warn-v1-1-16e842ccead7@linaro.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/mq-deadline.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/power/supply/qcom_battmgr.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -598,6 +598,20 @@ unlock:
- }
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -486,7 +486,7 @@ static int qcom_battmgr_bat_get_property
+ 	int ret;
  
- /*
-+ * 'depth' is a number in the range 1..INT_MAX representing a number of
-+ * requests. Scale it with a factor (1 << bt->sb.shift) / q->nr_requests since
-+ * 1..(1 << bt->sb.shift) is the range expected by sbitmap_get_shallow().
-+ * Values larger than q->nr_requests have the same effect as q->nr_requests.
-+ */
-+static int dd_to_word_depth(struct blk_mq_hw_ctx *hctx, unsigned int qdepth)
-+{
-+	struct sbitmap_queue *bt = &hctx->sched_tags->bitmap_tags;
-+	const unsigned int nrr = hctx->queue->nr_requests;
-+
-+	return ((qdepth << bt->sb.shift) + nrr - 1) / nrr;
-+}
-+
-+/*
-  * Called by __blk_mq_alloc_request(). The shallow_depth value set by this
-  * function is used by __blk_mq_get_tag().
-  */
-@@ -613,7 +627,7 @@ static void dd_limit_depth(blk_opf_t opf
- 	 * Throttle asynchronous requests and writes such that these requests
- 	 * do not block the allocation of synchronous requests.
- 	 */
--	data->shallow_depth = dd->async_depth;
-+	data->shallow_depth = dd_to_word_depth(data->hctx, dd->async_depth);
- }
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
  
- /* Called by blk_mq_update_nr_requests(). */
-@@ -623,9 +637,9 @@ static void dd_depth_updated(struct blk_
- 	struct deadline_data *dd = q->elevator->elevator_data;
- 	struct blk_mq_tags *tags = hctx->sched_tags;
+ 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
+ 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+@@ -683,7 +683,7 @@ static int qcom_battmgr_ac_get_property(
+ 	int ret;
  
--	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
-+	dd->async_depth = q->nr_requests;
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
  
--	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
-+	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, 1);
- }
+ 	ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+ 	if (ret)
+@@ -748,7 +748,7 @@ static int qcom_battmgr_usb_get_property
+ 	int ret;
  
- /* Called by blk_mq_init_hctx() and blk_mq_init_sched(). */
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
+ 
+ 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
+ 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
+@@ -867,7 +867,7 @@ static int qcom_battmgr_wls_get_property
+ 	int ret;
+ 
+ 	if (!battmgr->service_up)
+-		return -ENODEV;
++		return -EAGAIN;
+ 
+ 	if (battmgr->variant == QCOM_BATTMGR_SC8280XP)
+ 		ret = qcom_battmgr_bat_sc8280xp_update(battmgr, psp);
 
 
 
