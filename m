@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-67071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C75494F3C5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCF794F4D5
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4EE11F20FC3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4AA21F20F8D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67077187335;
-	Mon, 12 Aug 2024 16:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0637C183CA6;
+	Mon, 12 Aug 2024 16:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSiHJpNa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLZG+nMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B14186E51;
-	Mon, 12 Aug 2024 16:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92F61494B8;
+	Mon, 12 Aug 2024 16:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479709; cv=none; b=GYoYnvfOK6m8PQU3qBwLkE/4ZgXAQyNZLTggNa8S5Q7bMeE+bePNz29YYp052870OrY8Q8D6pCBkY8jYGiUZi2g7kfxdtjbx8BTeRDGSn3OoxVqw+h0jY2KDNq6mHtBBlqwdlKzbzo1oGClJPRNxuQA4bGQQyC/nZ5EpUEnsUvQ=
+	t=1723480508; cv=none; b=EzBDqRF8PbVHEsKycxWDlmVQOTDtr4odVsRXl22RJF32LhrxmPe1GVcWEyM94R0gwsGlYkUYGpLic89GeSQe5WyzYvxewfOXJpINHUk/SqNVQ9FAV7CV1ZEI8JYzEzAQuK7fH1mpQiWScqCLNdHPMzcHHgyKyQLDVossDGsKdDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479709; c=relaxed/simple;
-	bh=eE3MMuByY53VucgdwmOhkS9MI/sF+k1qTUMd7zCMqt0=;
+	s=arc-20240116; t=1723480508; c=relaxed/simple;
+	bh=+nI3x7x5whr9zJ6J32I6BORZBL4BUMG8OnTqmk9Al3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGJL+TT/fBgxOyreNi8Tv3zDMoO1H25lXHatM8UihIxMx3S1PDdtCEQaPDdmi3jcmJCMXHhJQw3NYOC6yr9bTRczlo6anOkj/mlqXU5m+RxhQXpoWQRDL8Czo+zQUYrBfq0SytBM8G8og77jb1AMNLgYvD+G1+RhLeQSuaUYIuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSiHJpNa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C942C32782;
-	Mon, 12 Aug 2024 16:21:48 +0000 (UTC)
+	 MIME-Version; b=j9yBiNnfrWDXCnjvv9h0KcD8mWzOk1hg7tU+dxGaJgwyGwlt0HjYizmjnw0m4oBSUCwmgMIWNKmN+VU5hj2aGLCkdXqsbVBX8ZWMiB4t+39mOye1jQafBwgFd0zycYSXS0EuR5MmySH/38JbbHIsVJ/Ujj2ySvFFVkpDQxE+nx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLZG+nMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70F5C32782;
+	Mon, 12 Aug 2024 16:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479709;
-	bh=eE3MMuByY53VucgdwmOhkS9MI/sF+k1qTUMd7zCMqt0=;
+	s=korg; t=1723480508;
+	bh=+nI3x7x5whr9zJ6J32I6BORZBL4BUMG8OnTqmk9Al3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSiHJpNabvBIsrPmUQ8I015DL+22bdxrYivk6MYt8AybYrIn4NLVnEuoH/9V3NckH
-	 kHTRTg8IumEhmP6nCN4MSQ0oYjNTgIH9BZ/ewwgsZLtfbPrrWT2UZBkHtyVN0PQhtm
-	 BhxDCq/nIoGOhHogiNfnZhmV9w9P7JkOjsoURVBA=
+	b=kLZG+nMjY3bRRibNrZfyPFyEXrb5DXrNOVla1MraFAlTTMlPa5Kx772s6wY/njBuc
+	 3s/XAfJkSVlJP5Zr+Sn0psj2g5qrgkuVZ/kcht9Zj4Ym0/yHGEAUTv94ijY21WQRvj
+	 7TqlBEhm4UP0f7owgo1aUbN0exZOCsppU1X0hTXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Robert Foss <rfoss@kernel.org>
-Subject: [PATCH 6.6 161/189] drm/bridge: analogix_dp: properly handle zero sized AUX transactions
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.10 216/263] ASoC: amd: yc: Add quirk entry for OMEN by HP Gaming Laptop 16-n0xxx
 Date: Mon, 12 Aug 2024 18:03:37 +0200
-Message-ID: <20240812160138.339818403@linuxfoundation.org>
+Message-ID: <20240812160154.812604626@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit e82290a2e0e8ec5e836ecad1ca025021b3855c2d upstream.
+commit 6675e76a5c441b52b1b983ebb714122087020ebe upstream.
 
-Address only transactions without any data are valid and should not
-be flagged as short transactions. Simply return the message size when
-no transaction errors occured.
+Fix the missing mic on OMEN by HP Gaming Laptop 16-n0xxx by adding the
+quirk entry with the board ID 8A44.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240318203925.2837689-1-l.stach@pengutronix.de
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1227182
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20240807170249.16490-1-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
-@@ -1027,7 +1027,6 @@ ssize_t analogix_dp_transfer(struct anal
- 	u32 status_reg;
- 	u8 *buffer = msg->buffer;
- 	unsigned int i;
--	int num_transferred = 0;
- 	int ret;
- 
- 	/* Buffer size of AUX CH is 16 bytes */
-@@ -1079,7 +1078,6 @@ ssize_t analogix_dp_transfer(struct anal
- 			reg = buffer[i];
- 			writel(reg, dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
- 			       4 * i);
--			num_transferred++;
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -413,6 +413,13 @@ static const struct dmi_system_id yc_acp
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
++			DMI_MATCH(DMI_BOARD_NAME, "8A44"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "8A22"),
  		}
- 	}
- 
-@@ -1127,7 +1125,6 @@ ssize_t analogix_dp_transfer(struct anal
- 			reg = readl(dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
- 				    4 * i);
- 			buffer[i] = (unsigned char)reg;
--			num_transferred++;
- 		}
- 	}
- 
-@@ -1144,7 +1141,7 @@ ssize_t analogix_dp_transfer(struct anal
- 		 (msg->request & ~DP_AUX_I2C_MOT) == DP_AUX_NATIVE_READ)
- 		msg->reply = DP_AUX_NATIVE_REPLY_ACK;
- 
--	return num_transferred > 0 ? num_transferred : -EBUSY;
-+	return msg->size;
- 
- aux_error:
- 	/* if aux err happen, reset aux */
+ 	},
 
 
 
