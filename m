@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE31294EC3D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:01:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C508194EC3E
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 765691F22606
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81B33282630
 	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 12:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EB03715E;
-	Mon, 12 Aug 2024 12:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B238C17276D;
+	Mon, 12 Aug 2024 12:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWstx4dP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4gZ0dUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2469A1537DD
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738AE1366
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 12:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723464090; cv=none; b=UUgzXdeMV+JHPa6LxzhEW3jMVG1f6+HBEQqnAet5sRTOiAZzdKPvSJ+qqKSxqVC5XDM810oPvQsUIm/11AScMAVtCtlk4WHt6MXznmH//XcOSbnjw8H/KwlZgR92sDt8WzsQkEAhfXtr1Uk0Csqrja1uHp+9ygodgZfCJNDQcLw=
+	t=1723464099; cv=none; b=XBgMXWHVhiiJsO1LT6LXlkDl0k13ILaHBzVxbgu0GtzWrCB3rBBd4JBCgtrFgcYZEI51cRx5tUuVX0jIbYkj7wfe8aV6pyrlX18m8DCEeVJDywIVLFVErhDxPTu7WVhwKGl34K8WHY5SOPbS1T7pZcqlyUaQhAkyrWGBgImbSsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723464090; c=relaxed/simple;
-	bh=7hDJOn9pNwe8iACKLFrZ43lCJaYR/tNH6n4f2CF+0T8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZIkiNsAzILjmivQEnRHL94ujPhDvVwUpYCHw1CRv4iR+w18pumR9Dz4lJO8Gogg0m2WokXX9Za+Dg9awGeKuQurfOufGsWx7kc0wmenQB/grVzuZ4dkWKCsSHE+tVjc+d3dpztB1R051AwpgnxmdzndrKZrhU28PnYHMeIhBh8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWstx4dP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A33C4AF0D;
-	Mon, 12 Aug 2024 12:01:28 +0000 (UTC)
+	s=arc-20240116; t=1723464099; c=relaxed/simple;
+	bh=P4X+iBpcdIeIKkezOMJvko1maAM4rIcAOst63LFVGKE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YX/P60vFmz9sCPwCgT/D6Rb3tnuX6MCmytw6bVY5lgYUXhnXlHOeErQRDolIbKiQkhZgfGUoXcs1wxk8Zsi7T7A6J+xU5q26F4P8jnQqctPxjC4H7FjJSBMamdFof3M17+hJ4GIQF1RN3WivZfEe9r7Ii9E8O69W8bTkLrwdDG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4gZ0dUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737E4C32782;
+	Mon, 12 Aug 2024 12:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723464089;
-	bh=7hDJOn9pNwe8iACKLFrZ43lCJaYR/tNH6n4f2CF+0T8=;
+	s=korg; t=1723464098;
+	bh=P4X+iBpcdIeIKkezOMJvko1maAM4rIcAOst63LFVGKE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=oWstx4dPCpIlTya92JVFEtLQ2dhYhRv3a/XTF0ajMwvztDri5jSAaJV3Dz/aqTeej
-	 wHyG9qC5AvWzTl8pmUJ2wzTo7JEywmfYaeBaevw1fDDcacLRta4/KfKG8hvmmHAnbL
-	 E+zRyecKQ5XfeNCpy39++ESDKGqirorWDHSMdS40=
-Subject: FAILED: patch "[PATCH] irqchip/xilinx: Fix shift out of bounds" failed to apply to 5.4-stable tree
+	b=g4gZ0dUKrqi8n1ZocNU4SAkaAXU0Xv0LhWPrZgSad6QJPX09iYseP1NzouHQFDSO1
+	 GvIcAk224b4f+hWkKS2dpWtYuLoI9Tc73Fbd9bqV3gYbkVRatUnMYZJj7/dLr8giJ+
+	 EyuCq18VghGaWE3weR6Jvf6DjaquaJ3mh+pOVDSs=
+Subject: FAILED: patch "[PATCH] irqchip/xilinx: Fix shift out of bounds" failed to apply to 4.19-stable tree
 To: radhey.shyam.pandey@amd.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 14:01:21 +0200
-Message-ID: <2024081221-shortage-arrogance-0fc6@gregkh>
+Date: Mon, 12 Aug 2024 14:01:27 +0200
+Message-ID: <2024081227-gnarly-unplug-a067@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x d73f0f49daa84176c3beee1606e73c7ffb6af8b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081221-shortage-arrogance-0fc6@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081227-gnarly-unplug-a067@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
