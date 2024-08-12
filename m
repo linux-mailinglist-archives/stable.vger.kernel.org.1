@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-67094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8AA94F3DC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 282D994F4E9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A7FA1F212D3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8A642824DC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099911862BD;
-	Mon, 12 Aug 2024 16:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8380187347;
+	Mon, 12 Aug 2024 16:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqrWrl4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3Ohm3LM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB196134AC;
-	Mon, 12 Aug 2024 16:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CF1186E5E;
+	Mon, 12 Aug 2024 16:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479787; cv=none; b=BTF+/YeJpff8JZnkSwwwstuo3Xe1POoSFNsQ7K/R4eHRefNHxzwOvL9XHdltc5V/6iP34r+5D4W0VXhAoQpf6LOorpO3S5eitGbuK/SjtL5HQxk1XZS0SnYuDDty+BYAMJ6lJIsfjGbBLS4pA0qLa8QgJUUb/bC++ceTeivOM5I=
+	t=1723480571; cv=none; b=eTjSGvxCj8WFNS6VNfj/BbXJYl0q0JtujwKWL0mOWIbH70JEFzcajEA+LagRHe9tvLAYW17xz5csEIfKeC8GOwMYgfpsFaWwReyduRo/hg1ALfYfknoKZZaraW2gaqKQQhK/Rt5DZimi4m2H7s6DLmT4k2s6dTufTLzMpMYmbE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479787; c=relaxed/simple;
-	bh=BS5J1MDa3EAoXS/UpQ+j5b3TdaN6azO0mLgs2S/1ms4=;
+	s=arc-20240116; t=1723480571; c=relaxed/simple;
+	bh=3f/SAynW2Qc7OgJHbCiuxIP/ig6inyDMzUfRA8uOiss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIPawd9BKE4Q7QnlBGtNNZe6Ql+9Qrc3SlUIaAf1cqm993luHcWz24wIa0zlDci5xHnNbY6QVDEpJR0cVYGxAw8QT751jV+1siyBhVDCnWnVCl19Mlcss2jQnmCkNMJ/ibCYk5Xc9ZyKDAj7Ue8afBECoOBSmQ/gLSYA/uzyq6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqrWrl4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB85C32782;
-	Mon, 12 Aug 2024 16:23:07 +0000 (UTC)
+	 MIME-Version; b=Q4nYoMWPIizq8VfNxUQUvtIofeXZq74e/oERd8arHOq0sEjugxSzt1SUXpY53avO4O2FaYgarQ3F9Saj4lVZlaIBbevFc+XX9Tg4hxy5eWnTDdITuwjeAR5c+mrYo5h9s3u0OR9u0bufxzgb0Z1IENDlSaUQHBeSYRJGSN/9Ask=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3Ohm3LM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ACAC32782;
+	Mon, 12 Aug 2024 16:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479787;
-	bh=BS5J1MDa3EAoXS/UpQ+j5b3TdaN6azO0mLgs2S/1ms4=;
+	s=korg; t=1723480571;
+	bh=3f/SAynW2Qc7OgJHbCiuxIP/ig6inyDMzUfRA8uOiss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vqrWrl4Je884r8BQl/03l1wmvTmTPb16efiMu/piEs9iDPMihRYbu9lQ+xzmr9Ufi
-	 3ayPsfaXTNMjwRIt4euyBH+qQv1p5rfDFchYj+3zUscMQycKTEhOpr7uUzDrpTEFRA
-	 WxPoKz3WYs9DeRp+MDoSPQ9H96EWhTGIRKcM31rg=
+	b=J3Ohm3LMPQtf4u9YGVn4QSlqgAEWuYJDk/U7l98zaJOhHjqkrPiyqbRKkndIX8STO
+	 QAomdPwiyHTwcvnr4nECHkZzA7nBaTAbU5RaPO25+HSfeyrG7b32C7l91C7suYWM8I
+	 2hJEWm3FULtTqmrR8W6l2x5aMdXzOmleylMFMVac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.6 164/189] drm/mgag200: Set DDC timeout in milliseconds
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.10 219/263] irqchip/xilinx: Fix shift out of bounds
 Date: Mon, 12 Aug 2024 18:03:40 +0200
-Message-ID: <20240812160138.456578699@linuxfoundation.org>
+Message-ID: <20240812160154.925173751@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-commit ecde5db1598aecab54cc392282c15114f526f05f upstream.
+commit d73f0f49daa84176c3beee1606e73c7ffb6af8b2 upstream.
 
-Compute the i2c timeout in jiffies from a value in milliseconds. The
-original values of 2 jiffies equals 2 milliseconds if HZ has been
-configured to a value of 1000. This corresponds to 2.2 milliseconds
-used by most other DRM drivers. Update mgag200 accordingly.
+The device tree property 'xlnx,kind-of-intr' is sanity checked that the
+bitmask contains only set bits which are in the range of the number of
+interrupts supported by the controller.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-2-tzimmermann@suse.de
+The check is done by shifting the mask right by the number of supported
+interrupts and checking the result for zero.
+
+The data type of the mask is u32 and the number of supported interrupts is
+up to 32. In case of 32 interrupts the shift is out of bounds, resulting in
+a mismatch warning. The out of bounds condition is also reported by UBSAN:
+
+  UBSAN: shift-out-of-bounds in irq-xilinx-intc.c:332:22
+  shift exponent 32 is too large for 32-bit type 'unsigned int'
+
+Fix it by promoting the mask to u64 for the test.
+
+Fixes: d50466c90724 ("microblaze: intc: Refactor DT sanity check")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/1723186944-3571957-1-git-send-email-radhey.shyam.pandey@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mgag200/mgag200_i2c.c |    2 +-
+ drivers/irqchip/irq-xilinx-intc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
-@@ -115,7 +115,7 @@ int mgag200_i2c_init(struct mga_device *
- 	i2c->adapter.algo_data = &i2c->bit;
+--- a/drivers/irqchip/irq-xilinx-intc.c
++++ b/drivers/irqchip/irq-xilinx-intc.c
+@@ -189,7 +189,7 @@ static int __init xilinx_intc_of_init(st
+ 		irqc->intr_mask = 0;
+ 	}
  
- 	i2c->bit.udelay = 10;
--	i2c->bit.timeout = 2;
-+	i2c->bit.timeout = usecs_to_jiffies(2200);
- 	i2c->bit.data = i2c;
- 	i2c->bit.setsda		= mga_gpio_setsda;
- 	i2c->bit.setscl		= mga_gpio_setscl;
+-	if (irqc->intr_mask >> irqc->nr_irq)
++	if ((u64)irqc->intr_mask >> irqc->nr_irq)
+ 		pr_warn("irq-xilinx: mismatch in kind-of-intr param\n");
+ 
+ 	pr_info("irq-xilinx: %pOF: num_irq=%d, edge=0x%x\n",
 
 
 
