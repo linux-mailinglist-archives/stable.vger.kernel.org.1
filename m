@@ -1,103 +1,130 @@
-Return-Path: <stable+bounces-66539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F3194EF36
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6F994EF4B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1362C283433
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:11:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CAEB1C21863
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9437C17DE16;
-	Mon, 12 Aug 2024 14:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C830F18133E;
+	Mon, 12 Aug 2024 14:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8so9v+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6K2wy+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491D317D354;
-	Mon, 12 Aug 2024 14:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849CD17F374;
+	Mon, 12 Aug 2024 14:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723471903; cv=none; b=cIPSEg+yBVMooeTIIx9JY5rNaIfcgJ80dEpJKB8oa1144Q3k6Lv+BrPr/pb7sWmrYJEpKe6g+znyVL88P1260bBchYAHQvjokAKvNZBu+X8hAeKOdpT57CabcLMpnQzo5+cicTHBKIbOJlh76GAwDnAFS3/zJLdtRafgIl+j8Eg=
+	t=1723472100; cv=none; b=Vpo/muQMxky4utbSSt/KMj3v3Dop5JKmUXjwgfmlrOLUN1bpHpp//9+xHIFQ/F56SA789rw/JwRShS9MY+yRYcTPSfsWZLDHj8sxpWfj8mIyyRI9gbhC9heU2bw0erOStsdurSZqERktVkZ7F+tp7JmgxfmpsMo4PmSd80QWmdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723471903; c=relaxed/simple;
-	bh=gKJvIG9hbJBYPQKEZrJUxeBcBJnzTBvTuXGF+X5/AcY=;
+	s=arc-20240116; t=1723472100; c=relaxed/simple;
+	bh=Mf9MWhFyYbzVINlzv6FKeHPyHTmdX3u5SbDSoZNTbcg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S/w4JUzhr/AUd2c2NyRugniC6uY1Girg5F37YMENJvooY25/j5XNOQsiYGl6+0tPmejtcumiEJO0H2ZckRPImBYW9trFrXOXCLTgisjGKSYWuihNeGhR6rNz+odbBfkNyH0P+y58Ey6Oh5oNA9Z828RLVjV2L8wfeqYGG2oSYzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8so9v+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4612FC4AF0D;
-	Mon, 12 Aug 2024 14:11:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=uklM85HJV0fCwmQbZbwXpMYusFeWJxgwNZRqxtOYpkUQRzNFKEH5HV2zZ3Kc4E20auPrIa5+QtBg6z8yQngCeKPx/YMFle5w5xbQy4ibhRJi1RX/uEhhLSsWVGEalzew9oTahvGkzpLVKaU/tuCXhclSOTmswgqksNJDD7sUlEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6K2wy+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6988EC4AF09;
+	Mon, 12 Aug 2024 14:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723471902;
-	bh=gKJvIG9hbJBYPQKEZrJUxeBcBJnzTBvTuXGF+X5/AcY=;
+	s=korg; t=1723472100;
+	bh=Mf9MWhFyYbzVINlzv6FKeHPyHTmdX3u5SbDSoZNTbcg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=z8so9v+2zqO7LZvSRu33YPAG1N39VT/VdTyRosPCjMk6pycW3bchMHsDXMDeXA+v7
-	 63scewEZ3+2RohR4qF1146VbplLd9R5P10Icj+PjNpXA8+i1TC03kE+D9OMM7eSf3M
-	 Ca7wFNlfPPjEvb8HqYf8vNo+xsHdi74r4iKmyd1g=
-Date: Mon, 12 Aug 2024 16:11:40 +0200
+	b=c6K2wy+rQqVrEa/c5Oh0ml+VhsrGEJRwt0p/R7TDip+BGbiVGXMDMmkTBsVz5f25b
+	 mzeU674AV8b9uIuwMaHJtkaOUT1i0Knuqw0tC5hgQQTXKoUhIE68AHqPnSzpQtGN1U
+	 1s0TfH1kTsWm6BPLnzoojQAmYDas5SETQM04ZusA=
+Date: Mon, 12 Aug 2024 16:14:57 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Vitaly Chikunov <vt@altlinux.org>
-Cc: Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>, lgirdwood@gmail.com,
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.9 17/40] ASoC: topology: Fix route memory
- corruption
-Message-ID: <2024081227-wrangle-overlabor-cf31@gregkh>
-References: <czx7na7qfoacihuxcalowdosncubkqatf7gkd3snrb63wvpsdb@mncryvo4iiep>
- <14e54a89-5c62-41b2-8205-d69ddf75e7c7@linux.intel.com>
- <e95a876a-b4b4-4a9d-9608-ec27a9db3e0c@leemhuis.info>
- <210a825d-ace3-4873-ba72-2c15347f9812@linux.intel.com>
- <2024081225-finally-grandma-011d@gregkh>
- <20240812103842.p7mcx7iyb5oyj7ly@altlinux.org>
+To: Ben Hutchings <ben@decadent.org.uk>
+Cc: stable@vger.kernel.org, cve@kernel.org, patches@lists.linux.dev,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yves-Alexis Perez <corsac@debian.org>,
+	David Hildenbrand <david@redhat.com>,
+	Christoph Lameter <cl@linux.com>, Jiri Slaby <jirislaby@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Rik van Riel <riel@surriel.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.10 534/809] mm: huge_memory: use !CONFIG_64BIT to relax
+ huge page alignment on 32 bit machines
+Message-ID: <2024081236-cane-protract-7ea8@gregkh>
+References: <20240730151724.637682316@linuxfoundation.org>
+ <20240730151745.829576651@linuxfoundation.org>
+ <d294468326cb036ca5f47697e28860530de12ce7.camel@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240812103842.p7mcx7iyb5oyj7ly@altlinux.org>
+In-Reply-To: <d294468326cb036ca5f47697e28860530de12ce7.camel@decadent.org.uk>
 
-On Mon, Aug 12, 2024 at 01:38:42PM +0300, Vitaly Chikunov wrote:
-> Greg,
-> 
-> On Mon, Aug 12, 2024 at 12:25:54PM +0200, Greg Kroah-Hartman wrote:
-> > On Mon, Aug 12, 2024 at 12:01:48PM +0200, Amadeusz Sławiński wrote:
-> > > I guess that for completeness you need to apply both patches:
-> > > 
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=97ab304ecd95c0b1703ff8c8c3956dc6e2afe8e1
+On Sun, Aug 04, 2024 at 01:46:45AM +0200, Ben Hutchings wrote:
+> On Tue, 2024-07-30 at 17:46 +0200, Greg Kroah-Hartman wrote:
+> > 6.10-stable review patch.  If anyone has any objections, please let me know.
 > > 
-> > This is already in the tree.
+> > ------------------
 > > 
-> > > was an incorrect fix which was later fixed by:
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=0298f51652be47b79780833e0b63194e1231fa34
+> > From: Yang Shi <yang@os.amperecomputing.com>
 > > 
-> > This commit will not apply :(
+> > commit d9592025000b3cf26c742f3505da7b83aedc26d5 upstream.
+> > 
+> > Yves-Alexis Perez reported commit 4ef9ad19e176 ("mm: huge_memory: don't
+> > force huge page alignment on 32 bit") didn't work for x86_32 [1].  It is
+> > because x86_32 uses CONFIG_X86_32 instead of CONFIG_32BIT.
+> > 
+> > !CONFIG_64BIT should cover all 32 bit machines.
+> > 
+> > [1] https://lore.kernel.org/linux-mm/CAHbLzkr1LwH3pcTgM+aGQ31ip2bKqiqEQ8=FQB+t2c3dhNKNHA@mail.gmail.com/
+> > 
+> > Link: https://lkml.kernel.org/r/20240712155855.1130330-1-yang@os.amperecomputing.com
+> > Fixes: 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment on 32 bit")
+> [...]
 > 
-> It depends upon e0e7bc2cbee9 ("ASoC: topology: Clean up route loading"),
-> which was in the same patchset that didn't get applied.
->   
->   https://lore.kernel.org/stable/?q=ASoC%3A+topology%3A+Clean+up+route+loading
+> The original breakage actually occurred in 5.18 with this commit:
 > 
-> I see, Mark Brown said it's not suitable material for stable kernels
-> (since it's code cleanup), and Sasha Levin dropped it, and the dependent
-> commit with real fix.
+> commit 1854bc6e2420472676c5c90d3d6b15f6cd640e40
+> Author: William Kucharski <william.kucharski@oracle.com>
+> Date:   Sun Sep 22 08:43:15 2019 -0400
+>  
+>     mm/readahead: Align file mappings for non-DAX
+> 
+> The previous fix referred to above (commit 4ef9ad19e176) was already
+> backported to 6.1 and 6.7, and CVE-2024-26621 was assigned to the bug.
+> 
+> This new fix also needs to be applied to 6.1.  *Both* fixes need to be
+> applied to 6.6 since the previous fix missed this branch.
+> 
+> I believe a new CVE ID also needs to be assigned to cover the
+> architectures missed in the previous fix.  So far as I can see, the
+> only architectures supporting huge pages on 32-bit CPUs (as of
+> 6.11-rc1) are arc, arm, mips, and x86.  Of those only mips defines
+> CONFIG_32BIT in 32-bit configurations, and was covered by the previous
+> fix.  The other three are covered by the new fix.
+> 
+> To summarise:
+> 
+> CVE-2024-26621:
+> - covers 64-bit compat and mips32 native
+> - fixed by commit 4ef9ad19e176
+> - fix is needed in 6.6
 
-Ok, then someone needs to provide a working backport please...
+Now queued up for 6.6.y, thanks.
 
-thanks,
+> CVE ID to be assigned:
+> - covers arc, arm, and x86_32 native
+> - fixed by commit d9592025000b
+> - fix is needed in 6.1 and 6.6
+
+Now queued up, I'll go assign a CVE now, thanks!
 
 greg k-h
 
