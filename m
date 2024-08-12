@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C20994F445
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539CA94F333
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D35FB220A9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7734B1C208EF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E34186E47;
-	Mon, 12 Aug 2024 16:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACB5186E47;
+	Mon, 12 Aug 2024 16:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NOHyjif"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EvVUwu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AED134AC;
-	Mon, 12 Aug 2024 16:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78082130E27;
+	Mon, 12 Aug 2024 16:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480100; cv=none; b=PyhMlN7rsWfwvUcWaL0E9pD5ffUca58xzVwQs/x/Nv5VRmcVlJXfMGZIrAmnh1kqCtM2l89iW7SJNWFEzPvfVLtcKA0Jl55336s/dBrXCx5QyF5LxK9h2FBG1Mz04dXa3CnG8jpnwLYOshEZFLkJiO4O2fITWT7FvzFsyaVh36M=
+	t=1723479296; cv=none; b=CMdHvCanV1gKS86xzLSlWyLMDu1VchwMTLhrxXJkXng3QjY4yvUDM+X+3LMVPsNAL18GrffdeB3yp08pFMyk+Ew1oIZIHp/+npD28QIoPgsSO9yeSEFPqybgK6X0RUftvxlhxpQaGIZ8P341XMOJr5WIB20adPAp5kEF0GjZG8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480100; c=relaxed/simple;
-	bh=Yz0K633YbEyLqK6bozzCK61Ti0W/wmcUtrG/107J6HQ=;
+	s=arc-20240116; t=1723479296; c=relaxed/simple;
+	bh=UKh9g9kJ2kSpTvazVxkxDV8mnKPk+1Ec1BC2h7N2V1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huTOAw7jDmv9izY2FB6Oun9ES/MHNeZQ3DASXceVrkMLecJjkTue8FJRhYhm6VweJB40F5sY7vv4upc57fN6IMaYvcFgphdAwtLW3wq5ZMqIlJU1Ooi3hhoF9lXdDs92rRoUVaWmeyIvkJyJfjZP5lOt+uNF/E787BYfsSjxGaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NOHyjif; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C18CC32782;
-	Mon, 12 Aug 2024 16:28:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Vj65OUwJRwq35f7ruBSPSKcvykpik7Av54drowJrvWLGf5FU9Tjrdt0GLD92ypYsk335rjvi+OXKGvguKMPU7JAXrtctuv9sB9/u9KY/uBOHBvhJNOU+9Qmx9iCf7o7UfF4RK6lxwvNl/f7u8XcH9Rec1EJNgLl7toLHe+fHSLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EvVUwu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E8EC32782;
+	Mon, 12 Aug 2024 16:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480100;
-	bh=Yz0K633YbEyLqK6bozzCK61Ti0W/wmcUtrG/107J6HQ=;
+	s=korg; t=1723479296;
+	bh=UKh9g9kJ2kSpTvazVxkxDV8mnKPk+1Ec1BC2h7N2V1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NOHyjifRuvfwKF6xfwcIt3IiuTWhJqugPzIRuaAK4SwF8DpE1BdxwRLewPk18an0
-	 k6UWszGsyV86lh9c2BUj8KeMg76HlTMtVqVBEoSbZZ36O8gbq++oMCzNczFKklt7Bk
-	 qknrcixQwMIskiHXbiFYJBLCDTYvffKxM28wyZvU=
+	b=1EvVUwu4gPzBQipCqL5wllSkCKwzEiKGeG20mUbYrrJ0DvFeuH4eLXrDjW4Rk8wh5
+	 XGgLIk3PuY8EnC9+k22G8fl6Ghtw/De2ONlfFTs/dj7etkZb8M8D7y7TG/G4gcDDYb
+	 5J11UyNNfXhrNcTuDtS1dqyrYSSwKzuwHq3MoiW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Skvortsov <victor.skvortsov@amd.com>,
-	Zhigang Luo <zhigang.luo@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 097/263] drm/amdgpu: Add lock around VF RLCG interface
-Date: Mon, 12 Aug 2024 18:01:38 +0200
-Message-ID: <20240812160150.257824437@linuxfoundation.org>
+Subject: [PATCH 6.6 043/189] can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum
+Date: Mon, 12 Aug 2024 18:01:39 +0200
+Message-ID: <20240812160133.804708467@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,212 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Skvortsov <victor.skvortsov@amd.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit e864180ee49b4d30e640fd1e1d852b86411420c9 ]
+[ Upstream commit b8e0ddd36ce9536ad7478dd27df06c9ae92370ba ]
 
-flush_gpu_tlb may be called from another thread while
-device_gpu_recover is running.
+This is a preparatory patch to work around a problem similar to
+erratum DS80000789E 6 of the mcp2518fd, the other variants of the chip
+family (mcp2517fd and mcp251863) are probably also affected.
 
-Both of these threads access registers through the VF
-RLCG interface during VF Full Access. Add a lock around this interface
-to prevent race conditions between these threads.
+Erratum DS80000789E 6 says "reading of the FIFOCI bits in the FIFOSTA
+register for an RX FIFO may be corrupted". However observation shows
+that this problem is not limited to RX FIFOs but also effects the TEF
+FIFO.
 
-Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
-Reviewed-by: Zhigang Luo <zhigang.luo@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+When handling the TEF interrupt, the driver reads the FIFO header
+index from the TEF FIFO STA register of the chip.
+
+In the bad case, the driver reads a too large head index. In the
+original code, the driver always trusted the read value, which caused
+old CAN transmit complete events that were already processed to be
+re-processed.
+
+Instead of reading and trusting the head index, read the head index
+and calculate the number of CAN frames that were supposedly received -
+replace mcp251xfd_tef_ring_update() with mcp251xfd_get_tef_len().
+
+The mcp251xfd_handle_tefif() function reads the CAN transmit complete
+events from the chip, iterates over them and pushes them into the
+network stack. The original driver already contains code to detect old
+CAN transmit complete events, that will be updated in the next patch.
+
+Cc: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Cc: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   | 6 ++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h   | 2 ++
- 3 files changed, 9 insertions(+)
+ .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  2 +
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 54 +++++++++++++------
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h     | 13 ++---
+ 3 files changed, 43 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index ee7df1d84e028..89cf9ac6da174 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4048,6 +4048,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	mutex_init(&adev->grbm_idx_mutex);
- 	mutex_init(&adev->mn_lock);
- 	mutex_init(&adev->virt.vf_errors.lock);
-+	mutex_init(&adev->virt.rlcg_reg_lock);
- 	hash_init(adev->mn_hash);
- 	mutex_init(&adev->psp.mutex);
- 	mutex_init(&adev->notifier_lock);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index 54ab51a4ada77..972a58f0f4924 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -980,6 +980,9 @@ u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v, u32 f
- 	scratch_reg1 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg1;
- 	scratch_reg2 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg2;
- 	scratch_reg3 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg3;
-+
-+	mutex_lock(&adev->virt.rlcg_reg_lock);
-+
- 	if (reg_access_ctrl->spare_int)
- 		spare_int = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->spare_int;
- 
-@@ -1036,6 +1039,9 @@ u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v, u32 f
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index bfe4caa0c99d4..4cb79a4f24612 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -485,6 +485,8 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
+ 		clear_bit(MCP251XFD_FLAGS_FD_MODE, priv->flags);
  	}
  
- 	ret = readl(scratch_reg0);
++	tx_ring->obj_num_shift_to_u8 = BITS_PER_TYPE(tx_ring->obj_num) -
++		ilog2(tx_ring->obj_num);
+ 	tx_ring->obj_size = tx_obj_size;
+ 
+ 	rem = priv->rx_obj_num;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+index e5bd57b65aafe..b41fad3b37c06 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2019, 2020, 2021 Pengutronix,
++// Copyright (c) 2019, 2020, 2021, 2023 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ // Based on:
+@@ -16,6 +16,11 @@
+ 
+ #include "mcp251xfd.h"
+ 
++static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
++{
++	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++}
 +
-+	mutex_unlock(&adev->virt.rlcg_reg_lock);
-+
- 	return ret;
+ static inline int
+ mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
+ 				 u8 *tef_tail)
+@@ -120,28 +125,44 @@ mcp251xfd_handle_tefif_one(struct mcp251xfd_priv *priv,
+ 	return 0;
  }
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-index 642f1fd287d83..0ec246c74570c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-@@ -272,6 +272,8 @@ struct amdgpu_virt {
+-static int mcp251xfd_tef_ring_update(struct mcp251xfd_priv *priv)
++static int
++mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
+ {
+ 	const struct mcp251xfd_tx_ring *tx_ring = priv->tx;
+-	unsigned int new_head;
+-	u8 chip_tx_tail;
++	const u8 shift = tx_ring->obj_num_shift_to_u8;
++	u8 chip_tx_tail, tail, len;
++	u32 fifo_sta;
+ 	int err;
  
- 	/* the ucode id to signal the autoload */
- 	uint32_t autoload_ucode_id;
+-	err = mcp251xfd_tx_tail_get_from_chip(priv, &chip_tx_tail);
++	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(priv->tx->fifo_nr),
++			  &fifo_sta);
+ 	if (err)
+ 		return err;
+ 
+-	/* chip_tx_tail, is the next TX-Object send by the HW.
+-	 * The new TEF head must be >= the old head, ...
++	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
++		*len_p = tx_ring->obj_num;
++		return 0;
++	}
 +
-+	struct mutex rlcg_reg_lock;
- };
++	chip_tx_tail = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
++
++	err =  mcp251xfd_check_tef_tail(priv);
++	if (err)
++		return err;
++	tail = mcp251xfd_get_tef_tail(priv);
++
++	/* First shift to full u8. The subtraction works on signed
++	 * values, that keeps the difference steady around the u8
++	 * overflow. The right shift acts on len, which is an u8.
+ 	 */
+-	new_head = round_down(priv->tef->head, tx_ring->obj_num) + chip_tx_tail;
+-	if (new_head <= priv->tef->head)
+-		new_head += tx_ring->obj_num;
++	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(chip_tx_tail));
++	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(tail));
++	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
  
- struct amdgpu_video_codec_info;
+-	/* ... but it cannot exceed the TX head. */
+-	priv->tef->head = min(new_head, tx_ring->head);
++	len = (chip_tx_tail << shift) - (tail << shift);
++	*len_p = len >> shift;
+ 
+-	return mcp251xfd_check_tef_tail(priv);
++	return 0;
+ }
+ 
+ static inline int
+@@ -182,13 +203,12 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
+ 	u8 tef_tail, len, l;
+ 	int err, i;
+ 
+-	err = mcp251xfd_tef_ring_update(priv);
++	err = mcp251xfd_get_tef_len(priv, &len);
+ 	if (err)
+ 		return err;
+ 
+ 	tef_tail = mcp251xfd_get_tef_tail(priv);
+-	len = mcp251xfd_get_tef_len(priv);
+-	l = mcp251xfd_get_tef_linear_len(priv);
++	l = mcp251xfd_get_tef_linear_len(priv, len);
+ 	err = mcp251xfd_tef_obj_read(priv, hw_tef_obj, tef_tail, l);
+ 	if (err)
+ 		return err;
+@@ -223,6 +243,8 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
+ 		struct mcp251xfd_tx_ring *tx_ring = priv->tx;
+ 		int offset;
+ 
++		ring->head += len;
++
+ 		/* Increment the TEF FIFO tail pointer 'len' times in
+ 		 * a single SPI message.
+ 		 *
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+index b35bfebd23f29..4628bf847bc9b 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+@@ -524,6 +524,7 @@ struct mcp251xfd_tef_ring {
+ 
+ 	/* u8 obj_num equals tx_ring->obj_num */
+ 	/* u8 obj_size equals sizeof(struct mcp251xfd_hw_tef_obj) */
++	/* u8 obj_num_shift_to_u8 equals tx_ring->obj_num_shift_to_u8 */
+ 
+ 	union mcp251xfd_write_reg_buf irq_enable_buf;
+ 	struct spi_transfer irq_enable_xfer;
+@@ -542,6 +543,7 @@ struct mcp251xfd_tx_ring {
+ 	u8 nr;
+ 	u8 fifo_nr;
+ 	u8 obj_num;
++	u8 obj_num_shift_to_u8;
+ 	u8 obj_size;
+ 
+ 	struct mcp251xfd_tx_obj obj[MCP251XFD_TX_OBJ_NUM_MAX];
+@@ -861,17 +863,8 @@ static inline u8 mcp251xfd_get_tef_tail(const struct mcp251xfd_priv *priv)
+ 	return priv->tef->tail & (priv->tx->obj_num - 1);
+ }
+ 
+-static inline u8 mcp251xfd_get_tef_len(const struct mcp251xfd_priv *priv)
++static inline u8 mcp251xfd_get_tef_linear_len(const struct mcp251xfd_priv *priv, u8 len)
+ {
+-	return priv->tef->head - priv->tef->tail;
+-}
+-
+-static inline u8 mcp251xfd_get_tef_linear_len(const struct mcp251xfd_priv *priv)
+-{
+-	u8 len;
+-
+-	len = mcp251xfd_get_tef_len(priv);
+-
+ 	return min_t(u8, len, priv->tx->obj_num - mcp251xfd_get_tef_tail(priv));
+ }
+ 
 -- 
 2.43.0
 
