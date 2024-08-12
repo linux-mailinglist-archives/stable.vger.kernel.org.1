@@ -1,109 +1,51 @@
-Return-Path: <stable+bounces-66542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9AFC94EF63
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390A094EF66
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 920D8282DAE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:20:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B6D41C21290
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B859517DE36;
-	Mon, 12 Aug 2024 14:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E8717DE2D;
+	Mon, 12 Aug 2024 14:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="Jgbil5AK";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YoVpxfTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVzJ8oUk"
 X-Original-To: stable@vger.kernel.org
-Received: from flow3-smtp.messagingengine.com (flow3-smtp.messagingengine.com [103.168.172.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A423F16B38D;
-	Mon, 12 Aug 2024 14:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B97174EEB;
+	Mon, 12 Aug 2024 14:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723472406; cv=none; b=GAdZe57T8+RTc4//imnP3/eDA8OVUXDwA1faspArni69w7BzaGGNJG6O58QSrWnGOSTKyekla4GOZePr6FHHTlFaYwdLZxemAyByd+oimmY7PTCWyqyKwIJq1hVXsHNOVg7x+Ny7qnTgaFUMnvt2AM6pdX7eYYBoLwp+ERx2/Ac=
+	t=1723472449; cv=none; b=Yr4zt3e9Ev+2WbmhCnGRlXO9JEKtZJs/1Ds21/jny9R4sZKXpD7hgLLm5tvMVk/gvJxDuPHzmaac2hdYfE+GCIYv9AKSvd9EeyDWx9sMBfvicmMktVjUAnWb8JCPdQ2DNND9O/PxEPebv8JLpn6oId6ei9G8Y4RXULrBO9IL+Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723472406; c=relaxed/simple;
-	bh=cVkHBiwDL71VAbFCe3luGFmIFIgP7wC1OfFcmy9JLoo=;
+	s=arc-20240116; t=1723472449; c=relaxed/simple;
+	bh=1I5YVmdb8Z6Uv3WAQk31KYXQ9KuPWkc9M7SBNqqVF8E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VQ3G8h9Rj0GlGZUU943AVidmspsCuEBYAgnaq1/k4Pd4k3LV3k7Te2mztcJU+cbqeu2JOuygfXFCNffLt4NCfT00k988pi04ixVmqQjCTuX75kG4DOZj907WKTot66d3qZkxGWXjnf1ydQUxCBSxflYoPoBNdB3dHsRchLzxqjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=Jgbil5AK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YoVpxfTN; arc=none smtp.client-ip=103.168.172.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-01.internal (phl-compute-01.nyi.internal [10.202.2.41])
-	by mailflow.nyi.internal (Postfix) with ESMTP id A9969200DE8;
-	Mon, 12 Aug 2024 10:20:03 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 12 Aug 2024 10:20:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1723472403; x=1723479603; bh=uCDj2ND5nE
-	8inw/UhtR4NteFMYiUan8kp+SXKAFbsaQ=; b=Jgbil5AKeanZIvWttmxLqpKCsG
-	cesbBek8ICenp01vbRpzfnsqvCEeqYZDrJFOGmG4pyUGj8ycXV278ntTSqpCYfj+
-	CT8mV9XiUNoZJXSI2E0gI5eWrDDMPq3amAq6JVPK99glkO718BJvjEtqdwLV8/d0
-	aXX0nAulrrgPlE1uWsdyJyXFrHieiEnRfE96SJRQhvhxUPcKbPyosTyJe6BnQniF
-	uBfkae4CprmvGdqvRNUslYuZzWV8KN0sSPuEJZOaOdLRUg8sX/Btn33nk1si8JWu
-	BwaqA9R1Rp8yYoK6gZOIv1rVHIY2N82u2NWrDBs+siwcqSxL9Yg7mh5gh67g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1723472403; x=1723479603; bh=uCDj2ND5nE8inw/UhtR4NteFMYiU
-	an8kp+SXKAFbsaQ=; b=YoVpxfTN+n/d3TpfgC2wVhmVD01+o/XbiBE+IjP5hfZU
-	LawS8HVlgD9HbX6Y0ZVfYbgMdSpuh6jqcuDIe2nArfz8tR+jM4q+oGkLdB6MaFHV
-	PaYFhq4TEN/Ge6nm+xerlm6USso7J/EdCiOB2kq9KpgAfI2O16tNEWjNbTqM0Gr6
-	ZNubXp7L65W9gsuDjWi9Ww32m2JiWP0MXmpdfMrwXfYjXaX6m2iXQRXqsVcLSXup
-	WbSkBzFWq8h0JtI2n9s2jnsutu8TDCTffV+yJEgMSJyUkG6wrs+8IU+4IWEmx1hK
-	JRlz2B773b4Hwub2EfGGht4DduJvUVHWsVS/KI9hcQ==
-X-ME-Sender: <xms:Exq6ZgCsslAOYbRYLyk4RFsaAA_5noMhx7QlvMfy9lP9IQ25BicfMQ>
-    <xme:Exq6ZihYkboEyO7RB17bKCXc-PCd42161nfETWrJP6i8aNPgUjuLZW4gzzfislGzz
-    PWhHiFgXBQKsg>
-X-ME-Received: <xmr:Exq6ZjnRVvHGeGII-0PWSXqBeaCWn2mSC6OPVh-An03T6IlwKYokAQ7YI7hQYfp5HExQxU65BTHV1WBjMErQfDRJQEkyLcIwXue_Wg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddttddgjeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepjeetueehteekuefhleehkeffffeiffeftedtieegkedviefggfefueff
-    kefgueffnecuffhomhgrihhnpehmshhgihgurdhlihhnkhenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdp
-    nhgspghrtghpthhtohepvdegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrlh
-    gvkhhsrghnuggvrhdrlhhosggrkhhinhesihhnthgvlhdrtghomhdprhgtphhtthhopehs
-    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgrlh
-    drkhhusghirghksehinhhtvghlrdgtohhmpdhrtghpthhtohepphgrvhgrnhdrkhhumhgr
-    rhdrlhhinhhgrgesihhnthgvlhdrtghomhdprhgtphhtthhopehhohhrmhhssehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopehkrhhishhhnhgvihhlrdhkrdhsihhnghhhsehinhht
-    vghlrdgtohhmpdhrtghpthhtoheprghnthhhohhnhidrlhdrnhhguhihvghnsehinhhtvg
-    hlrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehnvgigrdhsfidrnhgtihhsrdhoshguthdrihhtphdruhhpshhtrhgvrghmihhnghesih
-    hnthgvlhdrtghomh
-X-ME-Proxy: <xmx:Exq6Zmy3X1VnAW_1lPaiJxzKQ-UP_SiNDCExMkCxvjtafQVM-Qy8qw>
-    <xmx:Exq6ZlTlX1TOeDFFsO7iMjQYzkLxbH5blhS932bNWzcR7C63qMuzsg>
-    <xmx:Exq6Zha5NNeI5JszU0ddiZ7Bn4EaEDipsqK9z6bmGCyRTyUw-8Qx5w>
-    <xmx:Exq6ZuQjoiZOpsLnOrJtUKKcC-WEM0Y4MdPzuEJTiKai0QmqdSNnUw>
-    <xmx:Exq6ZhLc_69r2TVkE3UXEtNW4rS_XWSYOgbz5EkrZbJJQNQRneNUUaEP>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 12 Aug 2024 10:20:02 -0400 (EDT)
-Date: Mon, 12 Aug 2024 16:20:00 +0200
-From: Greg KH <greg@kroah.com>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: stable@vger.kernel.org, Michal Kubiak <michal.kubiak@intel.com>,
-	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Krishneil Singh <krishneil.k.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.10.y] idpf: fix memleak in vport interrupt configuration
-Message-ID: <2024081251-eggshell-down-d665@gregkh>
-References: <20240812134455.2298021-1-aleksander.lobakin@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=aWjtLuDKMvhBxmJFZEWFDRW6hrUIy70Dxc1+5z4YpWpRDHNhCDBzl12pEWzYYw7aY+J5ckGf8/hgtyBak19OKREHeQmi/1ouig1LYpxTEnbP9pLBSQ+Vou1sbqVLPctHIVr3Q4qzXrTTfdPblIR4R+6t02IMy2ZlPVY6pb47asU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVzJ8oUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB555C32782;
+	Mon, 12 Aug 2024 14:20:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723472448;
+	bh=1I5YVmdb8Z6Uv3WAQk31KYXQ9KuPWkc9M7SBNqqVF8E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bVzJ8oUkDg0ibE4YBYyDRUPwwK3zxf6xftkQCLwoSELxliHym0mHQIq05ZgKpQtr5
+	 7QPR/BcYcigJxXImyaLNHJ6Qs3dMo+U5X8UpAzMyhtcKfYmrE5VqZ0ZHy4TKV74nia
+	 /+Iv4QSxqqdf5Jmz4OX+fAINoq21roUt4b60X7BQ=
+Date: Mon, 12 Aug 2024 16:20:45 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH -stable,6.6.x 0/1] Netfilter fixes for -stable
+Message-ID: <2024081240-freeway-tricky-4625@gregkh>
+References: <20240812102159.350058-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -112,40 +54,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240812134455.2298021-1-aleksander.lobakin@intel.com>
+In-Reply-To: <20240812102159.350058-1-pablo@netfilter.org>
 
-On Mon, Aug 12, 2024 at 03:44:55PM +0200, Alexander Lobakin wrote:
-> From: Michal Kubiak <michal.kubiak@intel.com>
+On Mon, Aug 12, 2024 at 12:21:58PM +0200, Pablo Neira Ayuso wrote:
+> Hi Greg, Sasha,
 > 
-> commit 3cc88e8405b8d55e0ff035e31971aadd6baee2b6 upstream.
+> This batch contains a backport for recent fixes already upstream for 6.6.x.
 > 
-> The initialization of vport interrupt consists of two functions:
->  1) idpf_vport_intr_init() where a generic configuration is done
->  2) idpf_vport_intr_req_irq() where the irq for each q_vector is
->    requested.
+> The following list shows the backported patch, I am using original commit
+> IDs for reference:
 > 
-> The first function used to create a base name for each interrupt using
-> "kasprintf()" call. Unfortunately, although that call allocated memory
-> for a text buffer, that memory was never released.
+> 1) cff3bd012a95 ("netfilter: nf_tables: prefer nft_chain_validate")
 > 
-> Fix this by removing creating the interrupt base name in 1).
-> Instead, always create a full interrupt name in the function 2), because
-> there is no need to create a base name separately, considering that the
-> function 2) is never called out of idpf_vport_intr_init() context.
+> Only one patch for this -stable branch.
 > 
-> Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
-> Cc: stable@vger.kernel.org # 6.7
-> Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-> Reviewed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
-> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-> Link: https://patch.msgid.link/20240806220923.3359860-3-anthony.l.nguyen@intel.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c | 19 ++++++++-----------
->  1 file changed, 8 insertions(+), 11 deletions(-)
+> Please, apply,
+> Thanks.
+> 
+> Florian Westphal (1):
+>   netfilter: nf_tables: prefer nft_chain_validate
+> 
+>  net/netfilter/nf_tables_api.c | 154 +++-------------------------------
+>  1 file changed, 13 insertions(+), 141 deletions(-)
+> 
+> -- 
+> 2.30.2
+> 
 > 
 
 Now queued up, thanks.
