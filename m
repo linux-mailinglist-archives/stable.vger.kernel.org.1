@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-67169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3053794F430
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7094A94F31D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3F771F219BA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3ADBB26578
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539D5186E34;
-	Mon, 12 Aug 2024 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F086186E38;
+	Mon, 12 Aug 2024 16:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHGxMT7P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2Eugl+6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE17134AC;
-	Mon, 12 Aug 2024 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBCD1862B4;
+	Mon, 12 Aug 2024 16:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480035; cv=none; b=qev+eBCgscYSIxdunQKTkOgZrKz6G+78mNyHSqB5CeaYnBavI99M26kgKbzz9daHwD7UC52bQFqK8WtzDok0xrqfv/fOTG5GMkaq6v0Za2/Cj/CTm0Zovuk0VMEBVKRgznZ35zGOzFz6Bne9F8zmfTg+Nc4+rFmhbeNtw9TbMC8=
+	t=1723479228; cv=none; b=T5VLwwcJ+SQFuD9d+hfJCf/f7nGOguj/5ON/Zxax/bJBMfwfiZRG/cVkuqURDsNxZbkILqdiW+ykzym1q3gBJ6CR0o4dWL1DXfGMNVK8tDY/1WBDwhzdQyfrSNLh14nGPG9U5A7hqvXWO75ACWhJHGHi06d9GWVgVepXmBD67Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480035; c=relaxed/simple;
-	bh=74dbIOAXwinkn1nTZi2bSeqfZGxIChRaoXBDNvQu2rM=;
+	s=arc-20240116; t=1723479228; c=relaxed/simple;
+	bh=/CMQtKXP8NPccNX7QqvqaxrfT3bJ+D5WQeUaNFFPKEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n+i+vwWo0wVgsx6cajUQsr6v3RNczx8CoDGqD60ebCr6Eu4Wv5uDkZnCXK8vub7bNcOPpk2lXrlIsUa/v3zVpx84Wx1Aw0EBQrGX2BdBVQoKZyQk1lHuGHYwoHEJf9JsX9RGQTi4NNwgHzjUTMwCqFIcD1Y8f7iNqSZb2ZADkL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHGxMT7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848F2C4AF09;
-	Mon, 12 Aug 2024 16:27:14 +0000 (UTC)
+	 MIME-Version; b=shNPfpRJgFUtcb7xYaCfMJNuA0HIuf2Ccxtgk29OXeEZzurRwsF98d1j20kem6gIf2OBx+BpOlWVaiY6zmT6bjNOvtUyJiL2Rvhezlj29J2YcWBDSFzExHKuM6gsqKPYxrlIVnRCix7ti+jvGvtF1xsUHGbOmgO2ARxDJcXGOPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2Eugl+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3E0C4AF0D;
+	Mon, 12 Aug 2024 16:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480034;
-	bh=74dbIOAXwinkn1nTZi2bSeqfZGxIChRaoXBDNvQu2rM=;
+	s=korg; t=1723479227;
+	bh=/CMQtKXP8NPccNX7QqvqaxrfT3bJ+D5WQeUaNFFPKEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHGxMT7P1DOBi/PbJWbqJe13StIpCvO/kvEISt2s8AgsJfZByOeTRt38S8aGH4XfR
-	 f/9SY0LmwxAeoMtrP+cl8+4+zJQ/5gDi35UXhTmrUjoAX2jK6RmfgBxtLcmROI4Un+
-	 TB7KXDPL2a7qDPJU+LuIJ69i/Vs/lyVwq9OfxJuk=
+	b=X2Eugl+6wNgA4O/3z/8nsv5kQJZaNbbt5FBRzVU7/VC16VQNj4rameGJz6ZahNLK4
+	 inpoKvHaX9OEY+RbqZGYXBEZKCptLVUrphBZCXoKiSXGnopW2MPOenlqP9GYAlENfX
+	 VKKHjaD9LVXlgTV8tAA0zf27qFDVDA+D1PBIVFTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Eric Dumazet <edumazet@google.com>,
+	syzbot+6acef9e0a4d1f46c83d4@syzkaller.appspotmail.com,
+	gnault@redhat.com,
+	cong.wang@bytedance.com,
+	James Chapman <jchapman@katalix.com>,
+	Tom Parkin <tparkin@katalix.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 076/263] can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum
+Subject: [PATCH 6.6 021/189] l2tp: fix lockdep splat
 Date: Mon, 12 Aug 2024 18:01:17 +0200
-Message-ID: <20240812160149.453429758@linuxfoundation.org>
+Message-ID: <20240812160132.959340221@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,212 +65,220 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: James Chapman <jchapman@katalix.com>
 
-[ Upstream commit b8e0ddd36ce9536ad7478dd27df06c9ae92370ba ]
+[ Upstream commit 86a41ea9fd79ddb6145cb8ebf5aeafceabca6f7d ]
 
-This is a preparatory patch to work around a problem similar to
-erratum DS80000789E 6 of the mcp2518fd, the other variants of the chip
-family (mcp2517fd and mcp251863) are probably also affected.
+When l2tp tunnels use a socket provided by userspace, we can hit
+lockdep splats like the below when data is transmitted through another
+(unrelated) userspace socket which then gets routed over l2tp.
 
-Erratum DS80000789E 6 says "reading of the FIFOCI bits in the FIFOSTA
-register for an RX FIFO may be corrupted". However observation shows
-that this problem is not limited to RX FIFOs but also effects the TEF
-FIFO.
+This issue was previously discussed here:
+https://lore.kernel.org/netdev/87sfialu2n.fsf@cloudflare.com/
 
-When handling the TEF interrupt, the driver reads the FIFO header
-index from the TEF FIFO STA register of the chip.
+The solution is to have lockdep treat socket locks of l2tp tunnel
+sockets separately than those of standard INET sockets. To do so, use
+a different lockdep subclass where lock nesting is possible.
 
-In the bad case, the driver reads a too large head index. In the
-original code, the driver always trusted the read value, which caused
-old CAN transmit complete events that were already processed to be
-re-processed.
+  ============================================
+  WARNING: possible recursive locking detected
+  6.10.0+ #34 Not tainted
+  --------------------------------------------
+  iperf3/771 is trying to acquire lock:
+  ffff8881027601d8 (slock-AF_INET/1){+.-.}-{2:2}, at: l2tp_xmit_skb+0x243/0x9d0
 
-Instead of reading and trusting the head index, read the head index
-and calculate the number of CAN frames that were supposedly received -
-replace mcp251xfd_tef_ring_update() with mcp251xfd_get_tef_len().
+  but task is already holding lock:
+  ffff888102650d98 (slock-AF_INET/1){+.-.}-{2:2}, at: tcp_v4_rcv+0x1848/0x1e10
 
-The mcp251xfd_handle_tefif() function reads the CAN transmit complete
-events from the chip, iterates over them and pushes them into the
-network stack. The original driver already contains code to detect old
-CAN transmit complete events, that will be updated in the next patch.
+  other info that might help us debug this:
+   Possible unsafe locking scenario:
 
-Cc: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Cc: Thomas Kopp <thomas.kopp@microchip.com>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+         CPU0
+         ----
+    lock(slock-AF_INET/1);
+    lock(slock-AF_INET/1);
+
+   *** DEADLOCK ***
+
+   May be due to missing lock nesting notation
+
+  10 locks held by iperf3/771:
+   #0: ffff888102650258 (sk_lock-AF_INET){+.+.}-{0:0}, at: tcp_sendmsg+0x1a/0x40
+   #1: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x4b/0xbc0
+   #2: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x17a/0x1130
+   #3: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: process_backlog+0x28b/0x9f0
+   #4: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_local_deliver_finish+0xf9/0x260
+   #5: ffff888102650d98 (slock-AF_INET/1){+.-.}-{2:2}, at: tcp_v4_rcv+0x1848/0x1e10
+   #6: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x4b/0xbc0
+   #7: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x17a/0x1130
+   #8: ffffffff822ac1e0 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0xcc/0x1450
+   #9: ffff888101f33258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock#2){+...}-{2:2}, at: __dev_queue_xmit+0x513/0x1450
+
+  stack backtrace:
+  CPU: 2 UID: 0 PID: 771 Comm: iperf3 Not tainted 6.10.0+ #34
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  Call Trace:
+   <IRQ>
+   dump_stack_lvl+0x69/0xa0
+   dump_stack+0xc/0x20
+   __lock_acquire+0x135d/0x2600
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   lock_acquire+0xc4/0x2a0
+   ? l2tp_xmit_skb+0x243/0x9d0
+   ? __skb_checksum+0xa3/0x540
+   _raw_spin_lock_nested+0x35/0x50
+   ? l2tp_xmit_skb+0x243/0x9d0
+   l2tp_xmit_skb+0x243/0x9d0
+   l2tp_eth_dev_xmit+0x3c/0xc0
+   dev_hard_start_xmit+0x11e/0x420
+   sch_direct_xmit+0xc3/0x640
+   __dev_queue_xmit+0x61c/0x1450
+   ? ip_finish_output2+0xf4c/0x1130
+   ip_finish_output2+0x6b6/0x1130
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __ip_finish_output+0x217/0x380
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __ip_finish_output+0x217/0x380
+   ip_output+0x99/0x120
+   __ip_queue_xmit+0xae4/0xbc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? tcp_options_write.constprop.0+0xcb/0x3e0
+   ip_queue_xmit+0x34/0x40
+   __tcp_transmit_skb+0x1625/0x1890
+   __tcp_send_ack+0x1b8/0x340
+   tcp_send_ack+0x23/0x30
+   __tcp_ack_snd_check+0xa8/0x530
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   tcp_rcv_established+0x412/0xd70
+   tcp_v4_do_rcv+0x299/0x420
+   tcp_v4_rcv+0x1991/0x1e10
+   ip_protocol_deliver_rcu+0x50/0x220
+   ip_local_deliver_finish+0x158/0x260
+   ip_local_deliver+0xc8/0xe0
+   ip_rcv+0xe5/0x1d0
+   ? __pfx_ip_rcv+0x10/0x10
+   __netif_receive_skb_one_core+0xce/0xe0
+   ? process_backlog+0x28b/0x9f0
+   __netif_receive_skb+0x34/0xd0
+   ? process_backlog+0x28b/0x9f0
+   process_backlog+0x2cb/0x9f0
+   __napi_poll.constprop.0+0x61/0x280
+   net_rx_action+0x332/0x670
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? find_held_lock+0x2b/0x80
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   handle_softirqs+0xda/0x480
+   ? __dev_queue_xmit+0xa2c/0x1450
+   do_softirq+0xa1/0xd0
+   </IRQ>
+   <TASK>
+   __local_bh_enable_ip+0xc8/0xe0
+   ? __dev_queue_xmit+0xa2c/0x1450
+   __dev_queue_xmit+0xa48/0x1450
+   ? ip_finish_output2+0xf4c/0x1130
+   ip_finish_output2+0x6b6/0x1130
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __ip_finish_output+0x217/0x380
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __ip_finish_output+0x217/0x380
+   ip_output+0x99/0x120
+   __ip_queue_xmit+0xae4/0xbc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? tcp_options_write.constprop.0+0xcb/0x3e0
+   ip_queue_xmit+0x34/0x40
+   __tcp_transmit_skb+0x1625/0x1890
+   tcp_write_xmit+0x766/0x2fb0
+   ? __entry_text_end+0x102ba9/0x102bad
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __might_fault+0x74/0xc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __tcp_push_pending_frames+0x56/0x190
+   tcp_push+0x117/0x310
+   tcp_sendmsg_locked+0x14c1/0x1740
+   tcp_sendmsg+0x28/0x40
+   inet_sendmsg+0x5d/0x90
+   sock_write_iter+0x242/0x2b0
+   vfs_write+0x68d/0x800
+   ? __pfx_sock_write_iter+0x10/0x10
+   ksys_write+0xc8/0xf0
+   __x64_sys_write+0x3d/0x50
+   x64_sys_call+0xfaf/0x1f50
+   do_syscall_64+0x6d/0x140
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f4d143af992
+  Code: c3 8b 07 85 c0 75 24 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> e9 01 cc ff ff 41 54 b8 02 00 00 0
+  RSP: 002b:00007ffd65032058 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+  RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f4d143af992
+  RDX: 0000000000000025 RSI: 00007f4d143f3bcc RDI: 0000000000000005
+  RBP: 00007f4d143f2b28 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f4d143f3bcc
+  R13: 0000000000000005 R14: 0000000000000000 R15: 00007ffd650323f0
+   </TASK>
+
+Fixes: 0b2c59720e65 ("l2tp: close all race conditions in l2tp_tunnel_register()")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot+6acef9e0a4d1f46c83d4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6acef9e0a4d1f46c83d4
+CC: gnault@redhat.com
+CC: cong.wang@bytedance.com
+Signed-off-by: James Chapman <jchapman@katalix.com>
+Signed-off-by: Tom Parkin <tparkin@katalix.com>
+Link: https://patch.msgid.link/20240806160626.1248317-1-jchapman@katalix.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  2 +
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 54 +++++++++++++------
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h     | 13 ++---
- 3 files changed, 43 insertions(+), 26 deletions(-)
+ net/l2tp/l2tp_core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-index bfe4caa0c99d4..4cb79a4f24612 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-@@ -485,6 +485,8 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
- 		clear_bit(MCP251XFD_FLAGS_FD_MODE, priv->flags);
- 	}
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 8d21ff25f1602..70da78ab95202 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -88,6 +88,11 @@
+ /* Default trace flags */
+ #define L2TP_DEFAULT_DEBUG_FLAGS	0
  
-+	tx_ring->obj_num_shift_to_u8 = BITS_PER_TYPE(tx_ring->obj_num) -
-+		ilog2(tx_ring->obj_num);
- 	tx_ring->obj_size = tx_obj_size;
- 
- 	rem = priv->rx_obj_num;
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-index e5bd57b65aafe..b41fad3b37c06 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -2,7 +2,7 @@
- //
- // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
- //
--// Copyright (c) 2019, 2020, 2021 Pengutronix,
-+// Copyright (c) 2019, 2020, 2021, 2023 Pengutronix,
- //               Marc Kleine-Budde <kernel@pengutronix.de>
- //
- // Based on:
-@@ -16,6 +16,11 @@
- 
- #include "mcp251xfd.h"
- 
-+static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
-+{
-+	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
-+}
++#define L2TP_DEPTH_NESTING		2
++#if L2TP_DEPTH_NESTING == SINGLE_DEPTH_NESTING
++#error "L2TP requires its own lockdep subclass"
++#endif
 +
- static inline int
- mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
- 				 u8 *tef_tail)
-@@ -120,28 +125,44 @@ mcp251xfd_handle_tefif_one(struct mcp251xfd_priv *priv,
- 	return 0;
+ /* Private data stored for received packets in the skb.
+  */
+ struct l2tp_skb_cb {
+@@ -1041,7 +1046,13 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
+ 	IPCB(skb)->flags &= ~(IPSKB_XFRM_TUNNEL_SIZE | IPSKB_XFRM_TRANSFORMED | IPSKB_REROUTED);
+ 	nf_reset_ct(skb);
+ 
+-	bh_lock_sock_nested(sk);
++	/* L2TP uses its own lockdep subclass to avoid lockdep splats caused by
++	 * nested socket calls on the same lockdep socket class. This can
++	 * happen when data from a user socket is routed over l2tp, which uses
++	 * another userspace socket.
++	 */
++	spin_lock_nested(&sk->sk_lock.slock, L2TP_DEPTH_NESTING);
++
+ 	if (sock_owned_by_user(sk)) {
+ 		kfree_skb(skb);
+ 		ret = NET_XMIT_DROP;
+@@ -1093,7 +1104,7 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
+ 	ret = l2tp_xmit_queue(tunnel, skb, &inet->cork.fl);
+ 
+ out_unlock:
+-	bh_unlock_sock(sk);
++	spin_unlock(&sk->sk_lock.slock);
+ 
+ 	return ret;
  }
- 
--static int mcp251xfd_tef_ring_update(struct mcp251xfd_priv *priv)
-+static int
-+mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
- {
- 	const struct mcp251xfd_tx_ring *tx_ring = priv->tx;
--	unsigned int new_head;
--	u8 chip_tx_tail;
-+	const u8 shift = tx_ring->obj_num_shift_to_u8;
-+	u8 chip_tx_tail, tail, len;
-+	u32 fifo_sta;
- 	int err;
- 
--	err = mcp251xfd_tx_tail_get_from_chip(priv, &chip_tx_tail);
-+	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(priv->tx->fifo_nr),
-+			  &fifo_sta);
- 	if (err)
- 		return err;
- 
--	/* chip_tx_tail, is the next TX-Object send by the HW.
--	 * The new TEF head must be >= the old head, ...
-+	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
-+		*len_p = tx_ring->obj_num;
-+		return 0;
-+	}
-+
-+	chip_tx_tail = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
-+
-+	err =  mcp251xfd_check_tef_tail(priv);
-+	if (err)
-+		return err;
-+	tail = mcp251xfd_get_tef_tail(priv);
-+
-+	/* First shift to full u8. The subtraction works on signed
-+	 * values, that keeps the difference steady around the u8
-+	 * overflow. The right shift acts on len, which is an u8.
- 	 */
--	new_head = round_down(priv->tef->head, tx_ring->obj_num) + chip_tx_tail;
--	if (new_head <= priv->tef->head)
--		new_head += tx_ring->obj_num;
-+	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(chip_tx_tail));
-+	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(tail));
-+	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
- 
--	/* ... but it cannot exceed the TX head. */
--	priv->tef->head = min(new_head, tx_ring->head);
-+	len = (chip_tx_tail << shift) - (tail << shift);
-+	*len_p = len >> shift;
- 
--	return mcp251xfd_check_tef_tail(priv);
-+	return 0;
- }
- 
- static inline int
-@@ -182,13 +203,12 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
- 	u8 tef_tail, len, l;
- 	int err, i;
- 
--	err = mcp251xfd_tef_ring_update(priv);
-+	err = mcp251xfd_get_tef_len(priv, &len);
- 	if (err)
- 		return err;
- 
- 	tef_tail = mcp251xfd_get_tef_tail(priv);
--	len = mcp251xfd_get_tef_len(priv);
--	l = mcp251xfd_get_tef_linear_len(priv);
-+	l = mcp251xfd_get_tef_linear_len(priv, len);
- 	err = mcp251xfd_tef_obj_read(priv, hw_tef_obj, tef_tail, l);
- 	if (err)
- 		return err;
-@@ -223,6 +243,8 @@ int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv)
- 		struct mcp251xfd_tx_ring *tx_ring = priv->tx;
- 		int offset;
- 
-+		ring->head += len;
-+
- 		/* Increment the TEF FIFO tail pointer 'len' times in
- 		 * a single SPI message.
- 		 *
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-index b35bfebd23f29..4628bf847bc9b 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-@@ -524,6 +524,7 @@ struct mcp251xfd_tef_ring {
- 
- 	/* u8 obj_num equals tx_ring->obj_num */
- 	/* u8 obj_size equals sizeof(struct mcp251xfd_hw_tef_obj) */
-+	/* u8 obj_num_shift_to_u8 equals tx_ring->obj_num_shift_to_u8 */
- 
- 	union mcp251xfd_write_reg_buf irq_enable_buf;
- 	struct spi_transfer irq_enable_xfer;
-@@ -542,6 +543,7 @@ struct mcp251xfd_tx_ring {
- 	u8 nr;
- 	u8 fifo_nr;
- 	u8 obj_num;
-+	u8 obj_num_shift_to_u8;
- 	u8 obj_size;
- 
- 	struct mcp251xfd_tx_obj obj[MCP251XFD_TX_OBJ_NUM_MAX];
-@@ -861,17 +863,8 @@ static inline u8 mcp251xfd_get_tef_tail(const struct mcp251xfd_priv *priv)
- 	return priv->tef->tail & (priv->tx->obj_num - 1);
- }
- 
--static inline u8 mcp251xfd_get_tef_len(const struct mcp251xfd_priv *priv)
-+static inline u8 mcp251xfd_get_tef_linear_len(const struct mcp251xfd_priv *priv, u8 len)
- {
--	return priv->tef->head - priv->tef->tail;
--}
--
--static inline u8 mcp251xfd_get_tef_linear_len(const struct mcp251xfd_priv *priv)
--{
--	u8 len;
--
--	len = mcp251xfd_get_tef_len(priv);
--
- 	return min_t(u8, len, priv->tx->obj_num - mcp251xfd_get_tef_tail(priv));
- }
- 
 -- 
 2.43.0
 
