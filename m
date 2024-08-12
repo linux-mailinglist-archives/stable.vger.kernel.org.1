@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FDA94F42F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:27:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D9C94F31C
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FD301F21A22
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:27:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22176B26651
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E51186E47;
-	Mon, 12 Aug 2024 16:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84BD187849;
+	Mon, 12 Aug 2024 16:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4Sa3syz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHa49xaD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E86134AC;
-	Mon, 12 Aug 2024 16:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A624E130E27;
+	Mon, 12 Aug 2024 16:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480031; cv=none; b=CE6zl7a2cWtdVXW6rSsier+btQkUdQbeI4cgwjUV6ce6CltbAYg72wCQ4TcaSKiEJaySc8zQWn4NWAn3vWOwXjq4y55iu3CJsrwB3hIzUnh7j5js1CI55/XL5p7hVZVygOdGZ4TEs2L4YL+ssRpaFQ1yXf1NO7aNuBywCY8ytxU=
+	t=1723479224; cv=none; b=lLDwDFj/r2JYrsfBHI4GDnIN3hKIf5trHmGbAdJGeymJuL7v3DARFyHa0OtOGiT6+HQIEQ/ptj//ejtYIMqmpoxD2oBR/vF3zMxs4IMmt6VWBmrM1An1m/SgbwbGP2DYtUl57qAP0GUIeZr6Haagw91SaCMDoof6E/BWtp7fAhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480031; c=relaxed/simple;
-	bh=W8F7T/4JKJatPdiXEBt9CSGXhrpmCswJXBMb+RPhZh0=;
+	s=arc-20240116; t=1723479224; c=relaxed/simple;
+	bh=LzeWhdaQnuDBC0Y6RxMx89oJ24ChruO05dzNBO55SaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2UQxgjYGAvR07E7v/skeYm/dBpCDQZDVAU4gVOoIZjQ42f+crQ/Isj82WF8+7IF+GnqLJkjFPH2ld4olKDsudNinEb72r0myyVq5wdVcTwG8hv22q7VA6C294fUs0eQ+WK9hyHzH9juDQYYJbCC1wnOQnPZ6YaYT6pUY2IZYMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4Sa3syz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570CDC32782;
-	Mon, 12 Aug 2024 16:27:11 +0000 (UTC)
+	 MIME-Version; b=U2NjC5jEM2ldK0uDL3hWx6WcNgKM/YPjkxyEzNszchEfAM0cen5PIeuinD7B0d452TGJQUyv4kjN753goyatr/Js5PIhyd4MV+RlnI6PfgyAcqowfLDX8FmXbGLY/fiPIMJ9xUEe5zhYWZXY5/3UxsEfV3Emy3vVWoJaWGePOwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHa49xaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10956C32782;
+	Mon, 12 Aug 2024 16:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480031;
-	bh=W8F7T/4JKJatPdiXEBt9CSGXhrpmCswJXBMb+RPhZh0=;
+	s=korg; t=1723479224;
+	bh=LzeWhdaQnuDBC0Y6RxMx89oJ24ChruO05dzNBO55SaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4Sa3syzLPDiSuAkv3oMc7BxtEO9GnuNx0hrFkYj9AFplw5w5y/GXjM25X8iPYJFP
-	 OZ2a3oIM0gBUWIZCO8f2xxajufTkrGygMftOw9nEYgc55aefPkVVc9TeHqGN8b5POg
-	 9fGmhWzdBmaMAf/slfT2vR//T4h2PSh3xm/EHQ2M=
+	b=XHa49xaDm36pKjKZw3JKcTQNRi4m6gcCZMzdIM1eX6AQeLEzp5iuOWs4a4AGjVZlz
+	 ejA25FtKvXs2BpQ09+RLrOkFt3R/ueW0P5rT4ZwLuGzg6yKHuOm0b9TVbHvFGr8s+8
+	 P1vU/s0K53ShLsFqNFxagFV15oMu/uKYQ8qPk8Ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 075/263] wifi: nl80211: dont give key data to userspace
+Subject: [PATCH 6.6 020/189] net: dsa: bcm_sf2: Fix a possible memory leak in bcm_sf2_mdio_register()
 Date: Mon, 12 Aug 2024 18:01:16 +0200
-Message-ID: <20240812160149.414710229@linuxfoundation.org>
+Message-ID: <20240812160132.921071168@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit a7e5793035792cc46a1a4b0a783655ffa897dfe9 ]
+[ Upstream commit e3862093ee93fcfbdadcb7957f5f8974fffa806a ]
 
-When a key is requested by userspace, there's really no need
-to include the key data, the sequence counter is really what
-userspace needs in this case. The fact that it's included is
-just a historic quirk.
+bcm_sf2_mdio_register() calls of_phy_find_device() and then
+phy_device_remove() in a loop to remove existing PHY devices.
+of_phy_find_device() eventually calls bus_find_device(), which calls
+get_device() on the returned struct device * to increment the refcount.
+The current implementation does not decrement the refcount, which causes
+memory leak.
 
-Remove the key data.
+This commit adds the missing phy_device_free() call to decrement the
+refcount via put_device() to balance the refcount.
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240627104411.b6a4f097e4ea.I7e6cc976cb9e8a80ef25a3351330f313373b4578@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 771089c2a485 ("net: dsa: bcm_sf2: Ensure that MDIO diversion is used")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240806011327.3817861-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/net/dsa/bcm_sf2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 07538be6805ef..c2829d673bc76 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -4485,10 +4485,7 @@ static void get_key_callback(void *c, struct key_params *params)
- 	struct nlattr *key;
- 	struct get_key_cookie *cookie = c;
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index cd1f240c90f39..257df16768750 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -678,8 +678,10 @@ static int bcm_sf2_mdio_register(struct dsa_switch *ds)
+ 			of_remove_property(child, prop);
  
--	if ((params->key &&
--	     nla_put(cookie->msg, NL80211_ATTR_KEY_DATA,
--		     params->key_len, params->key)) ||
--	    (params->seq &&
-+	if ((params->seq &&
- 	     nla_put(cookie->msg, NL80211_ATTR_KEY_SEQ,
- 		     params->seq_len, params->seq)) ||
- 	    (params->cipher &&
-@@ -4500,10 +4497,7 @@ static void get_key_callback(void *c, struct key_params *params)
- 	if (!key)
- 		goto nla_put_failure;
+ 		phydev = of_phy_find_device(child);
+-		if (phydev)
++		if (phydev) {
+ 			phy_device_remove(phydev);
++			phy_device_free(phydev);
++		}
+ 	}
  
--	if ((params->key &&
--	     nla_put(cookie->msg, NL80211_KEY_DATA,
--		     params->key_len, params->key)) ||
--	    (params->seq &&
-+	if ((params->seq &&
- 	     nla_put(cookie->msg, NL80211_KEY_SEQ,
- 		     params->seq_len, params->seq)) ||
- 	    (params->cipher &&
+ 	err = mdiobus_register(priv->slave_mii_bus);
 -- 
 2.43.0
 
