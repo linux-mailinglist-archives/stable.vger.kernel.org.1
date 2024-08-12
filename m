@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-67114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2235794F3F3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:24:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C90494F401
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D38B82830C3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:24:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA9E1C219B7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B58187335;
-	Mon, 12 Aug 2024 16:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640F4186E47;
+	Mon, 12 Aug 2024 16:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5LPyUNZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEV5ZE1I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CF1186E47;
-	Mon, 12 Aug 2024 16:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CE9186E34;
+	Mon, 12 Aug 2024 16:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479855; cv=none; b=ippJQnppGx35QEDxEzzH5vbQt45GdGLq+Q++XW8CYA1pvi6/5RXh9qIKTlciT0123NlsWTDwBOmTpRMuPkttGa6YC796hAmShkaGIPU4ckGDpf2ZgQtMFNMg0A07kzRbpPzRcnGME9rB+p8tSezrxZBcr85dp7UuMu3GhQgFItk=
+	t=1723479891; cv=none; b=ehTZPc29J0yDDRsMBTyXtgE3YAD7yVzU1IuPge100n1GT3yK0f48+pvF70RWaeQunOAlVTFDitO+RCuQzA57UlEKQJsnzJ7tWGs2hTpq4T9/Pgc+vqqoITD9FxRoMenX89bC3fqh3ns2z8bknIXlxgmJjC5/kE5Rzi+AsBVDfBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479855; c=relaxed/simple;
-	bh=Hyh7DkvJKdFCR5PBJ2oNncnnbLeiR4R6kwPMhDH57ik=;
+	s=arc-20240116; t=1723479891; c=relaxed/simple;
+	bh=6r5Ehxv0Cf4UjT0MYhSW0hTe6mkRDyk9qvpfx0X6oAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PuWomO5N5VrOPCnkwwXxUVS7AVp/yAwLMNN825BlNEuCozXJh5MEZZ6MKLO7LoTXDQebn2otoNVnBrhCmQDI73YK36KDOyIz8aepevY3CtAPoTSupeQJTazabsOADGW2Fe+8ZtUbKkm0w13RSNvpWBZG/cqTvt5EvjXk+4Sg+r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5LPyUNZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA02C4AF09;
-	Mon, 12 Aug 2024 16:24:14 +0000 (UTC)
+	 MIME-Version; b=HF1UxOxyw/QCEiZ1w3mtYGu2ve9gvR5FkZ9kCQ1Z7Ks45yCI0wEfIVmOxxAnY3eWX71s4/jrzZDuIjLfngxZSAjROZV8+QHO15L9/V7rTazCHuX/cT6hZN6Mki8kSqm931rRf0dM6ethjlDcbCAyyp4meTAaNX3VtLZL+dhaKpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEV5ZE1I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDECC32782;
+	Mon, 12 Aug 2024 16:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479854;
-	bh=Hyh7DkvJKdFCR5PBJ2oNncnnbLeiR4R6kwPMhDH57ik=;
+	s=korg; t=1723479891;
+	bh=6r5Ehxv0Cf4UjT0MYhSW0hTe6mkRDyk9qvpfx0X6oAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5LPyUNZYtp2nmHtO5izT15/ICFaWOHSTgHYzwd4OqB+8c6SqYQZgH6b7rLdtTrtj
-	 nw2dwmeLuD48Gf6o0zJ7EOBH7da0K50BKu2/Yo1GXT2atRM7k74aDBtcIfqKPy0TL9
-	 XL+v5lx+wLvXVbOvSziYxp1x81HrSOAdQpRyDSDA=
+	b=IEV5ZE1Iks4922bjX7bZDRhOYhCxiMJ4VqgqLEN9ab4P5ekQ0dO0RleZ6Yr+bXUEW
+	 WZo4P+c1KGN88ELyGyUCETGgsZywR2QSuANh6+soRo34zG8wuk6IsxvH6GnRGrU+wW
+	 Apz7nLEbVTJysxQcO98wDF1s3p6fVsOCMUJgxIIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Laura Nao <laura.nao@collabora.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 014/263] selftests: ksft: Fix finished() helper exit code on skipped tests
-Date: Mon, 12 Aug 2024 18:00:15 +0200
-Message-ID: <20240812160147.086631856@linuxfoundation.org>
+Subject: [PATCH 6.10 015/263] x86/mm: Fix pti_clone_pgtable() alignment assumption
+Date: Mon, 12 Aug 2024 18:00:16 +0200
+Message-ID: <20240812160147.124968119@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -62,45 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laura Nao <laura.nao@collabora.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 170c966cbe274e664288cfc12ee919d5e706dc50 ]
+[ Upstream commit 41e71dbb0e0a0fe214545fe64af031303a08524c ]
 
-The Python finished() helper currently exits with KSFT_FAIL when there
-are only passed and skipped tests. Fix the logic to exit with KSFT_PASS
-instead, making it consistent with its C and bash counterparts
-(ksft_finished() and ktap_finished() respectively).
+Guenter reported dodgy crashes on an i386-nosmp build using GCC-11
+that had the form of endless traps until entry stack exhaust and then
+#DF from the stack guard.
 
-Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Fixes: dacf1d7a78bf ("kselftest: Add test to verify probe of devices from discoverable buses")
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+It turned out that pti_clone_pgtable() had alignment assumptions on
+the start address, notably it hard assumes start is PMD aligned. This
+is true on x86_64, but very much not true on i386.
+
+These assumptions can cause the end condition to malfunction, leading
+to a 'short' clone. Guess what happens when the user mapping has a
+short copy of the entry text?
+
+Use the correct increment form for addr to avoid alignment
+assumptions.
+
+Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20240731163105.GG33588@noisy.programming.kicks-ass.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/devices/ksft.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/mm/pti.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/devices/ksft.py b/tools/testing/selftests/devices/ksft.py
-index cd89fb2bc10e7..bf215790a89d7 100644
---- a/tools/testing/selftests/devices/ksft.py
-+++ b/tools/testing/selftests/devices/ksft.py
-@@ -70,7 +70,7 @@ def test_result(condition, description=""):
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index 2e69abf4f852a..48c503208c794 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -374,14 +374,14 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
+ 			 */
+ 			*target_pmd = *pmd;
  
+-			addr += PMD_SIZE;
++			addr = round_up(addr + 1, PMD_SIZE);
  
- def finished():
--    if ksft_cnt["pass"] == ksft_num_tests:
-+    if ksft_cnt["pass"] + ksft_cnt["skip"] == ksft_num_tests:
-         exit_code = KSFT_PASS
-     else:
-         exit_code = KSFT_FAIL
+ 		} else if (level == PTI_CLONE_PTE) {
+ 
+ 			/* Walk the page-table down to the pte level */
+ 			pte = pte_offset_kernel(pmd, addr);
+ 			if (pte_none(*pte)) {
+-				addr += PAGE_SIZE;
++				addr = round_up(addr + 1, PAGE_SIZE);
+ 				continue;
+ 			}
+ 
+@@ -401,7 +401,7 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
+ 			/* Clone the PTE */
+ 			*target_pte = *pte;
+ 
+-			addr += PAGE_SIZE;
++			addr = round_up(addr + 1, PAGE_SIZE);
+ 
+ 		} else {
+ 			BUG();
 -- 
 2.43.0
 
