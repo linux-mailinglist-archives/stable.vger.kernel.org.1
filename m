@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC0D94F037
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA66F94F039
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 110801F25F8F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DD86B217D0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F547184547;
-	Mon, 12 Aug 2024 14:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC25318454A;
+	Mon, 12 Aug 2024 14:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inaz8BlW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLTHGLcB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDCB184541
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD305153BF6
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474028; cv=none; b=U8NAWSe5IcJdF0w6WjEQ92D2s35u5DOlpUlR7ls/GWQEJ9E5oaZeh3t7KiofGHNHcImLCM32UsLr/p6Moi8NjE3GM7U39lAP2NNZAt6q4cjjd89c0sBb3hcHAbXBdHwp7RSVXhJM76dRDpONvczHWeSQkAlSc/Ttz/FjefTV9OI=
+	t=1723474033; cv=none; b=juXU6uyVhmSEwkrKs772Uogw4oC3ZSa7CgQg6K1RIoi2Zaxs77VDw6YEhq+3dkwJJDnagJnetN3dut/x+/gIHWh1+70xwu595z7k33IwWRwKnjfcp18aSGnXp21LTeqM153ksEqA5ll4+bXBooi5wr8+VS8wJoamcRU6p1zlK98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474028; c=relaxed/simple;
-	bh=h9CbbmPWY2FSD9zxh9iG2uzBBSClxuvZ2SasieHR9M4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ksToyAPmknO/eShVrabMOENlmLUwNV1RKB5cy/c9pexLFdOoxcyfrSqy4mc6SPfWN2JVl1C7SkhBbNRjfHWcDecJPoZ4eE/KoQpdnf5B/RGVfZUqWjjTFfUwsY31u95FpNLHKE6cWqBQHKDYi+9ALmfITYiFYgNARTp1CJare8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inaz8BlW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77612C4AF0F;
-	Mon, 12 Aug 2024 14:47:07 +0000 (UTC)
+	s=arc-20240116; t=1723474033; c=relaxed/simple;
+	bh=XQAqv5uFRrJ8UzKxOcAY3O2USWTp7Smngn6v0VNQ/hE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HL8cmkZx4WbR7m0SB3kKhZ97ac5tQd8PSGwchh7BEKi0p9Vg53gJOX4368PsToctwDooZthUYP59q8QR67BILNq/OnkTuFodtxk+xdJNDFoIwV11SxfTSg7XNCwlcsC8YZTL+J+agYzOBH+aQ9uxDlK23DjXqh8bAhrj+Q1tOeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLTHGLcB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CD9C32782;
+	Mon, 12 Aug 2024 14:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474027;
-	bh=h9CbbmPWY2FSD9zxh9iG2uzBBSClxuvZ2SasieHR9M4=;
+	s=korg; t=1723474033;
+	bh=XQAqv5uFRrJ8UzKxOcAY3O2USWTp7Smngn6v0VNQ/hE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=inaz8BlWtIvm0L+y2WkqjQEt65VkTk86pN/GorNQ1hNeX+F3rKbMX0ESxPew6N/xs
-	 brHuV7lzcrcCEoEFTEHosDvpf7QRhLU+lSCRjJ6wq8SUbur/H9fl4Hb3N+BvWsQZE2
-	 78Dcpk7Qxft0Wt7pAjloXEbV2cpXlhEJgzYe6IPI=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Solve mst monitors blank out problem after" failed to apply to 6.10-stable tree
-To: Wayne.Lin@amd.com,alexander.deucher@amd.com,jerry.zuo@amd.com
+	b=JLTHGLcB+XSbQ5PjEwPhRxMofX9HymLLX8oT+qENi+zSB9wxNVqYBI0VyTA1XNRBf
+	 /C8nh2K4aDOOwFAC0eI/6moY0SnHHz/uYRiFWpcD1faJPWZs9hPfdyXjlNAvWYP6nW
+	 TTSmcUQdRyWMPD6iVg8Wc31hY70RGEvqKzu5FkPE=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Adjust reg field for DSC wait for disconnect" failed to apply to 6.10-stable tree
+To: ryanseto@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:46:58 +0200
-Message-ID: <2024081258-femur-antonym-2836@gregkh>
+Date: Mon, 12 Aug 2024 16:47:10 +0200
+Message-ID: <2024081209-condiment-kick-c449@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,16 +62,21 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x e33697141bac18906345ea46533a240f1ad3cd21
+git cherry-pick -x 569d7db70e5dcf13fbf072f10e9096577ac1e565
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081258-femur-antonym-2836@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081209-condiment-kick-c449@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-e33697141bac ("drm/amd/display: Solve mst monitors blank out problem after resume")
-1ff6631baeb1 ("drm/amd/display: Prevent IPX From Link Detect and Set Mode")
-f63f86b5affc ("drm/amd/display: Separate setting and programming of cursor")
+569d7db70e5d ("drm/amd/display: Adjust reg field for DSC wait for disconnect")
+176278d8bff2 ("drm/amd/display: reset DSC clock in post unlock update")
+0127f0445f7c ("drm/amd/display: Refactor input mode programming for DIG FIFO")
+e6a901a00822 ("drm/amd/display: use even ODM slice width for two pixels per container")
+532a0d2ad292 ("drm/amd/display: Revert "dc: Keep VBios pixel rate div setting util next mode set"")
+47745acc5e8d ("drm/amd/display: Add trigger FIFO resync path for DCN35")
+4d4d3ff16db2 ("drm/amd/display: Keep VBios pixel rate div setting util next mode set")
+70839da63605 ("drm/amd/display: Add new DCN401 sources")
 
 thanks,
 
@@ -79,47 +84,67 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e33697141bac18906345ea46533a240f1ad3cd21 Mon Sep 17 00:00:00 2001
-From: Wayne Lin <Wayne.Lin@amd.com>
-Date: Thu, 23 May 2024 12:18:07 +0800
-Subject: [PATCH] drm/amd/display: Solve mst monitors blank out problem after
- resume
+From 569d7db70e5dcf13fbf072f10e9096577ac1e565 Mon Sep 17 00:00:00 2001
+From: Ryan Seto <ryanseto@amd.com>
+Date: Fri, 14 Jun 2024 14:56:15 -0400
+Subject: [PATCH] drm/amd/display: Adjust reg field for DSC wait for disconnect
 
-[Why]
-In dm resume, we firstly restore dc state and do the mst resume for topology
-probing thereafter. If we change dpcd DP_MSTM_CTRL value after LT in mst reume,
-it will cause light up problem on the hub.
+[WHY]
+DSC was waiting for the wrong field to disconnect cleanly.
 
-[How]
-Revert commit 202dc359adda ("drm/amd/display: Defer handling mst up request in resume").
-And adjust the reason to trigger dc_link_detect by DETECT_REASON_RESUMEFROMS3S4.
+[HOW]
+Changed field the DSC disconnect was waiting on.
 
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 202dc359adda ("drm/amd/display: Defer handling mst up request in resume")
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Reviewed-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Ryan Seto <ryanseto@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 98cf523a629e..29af22ddccc9 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2583,6 +2583,7 @@ static void resume_mst_branch_status(struct drm_dp_mst_topology_mgr *mgr)
+diff --git a/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.h b/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.h
+index a23308a785bc..1fb90b52b814 100644
+--- a/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.h
++++ b/drivers/gpu/drm/amd/display/dc/dsc/dcn20/dcn20_dsc.h
+@@ -454,7 +454,9 @@
+ 	type DSCCIF_UPDATE_TAKEN_ACK; \
+ 	type DSCRM_DSC_FORWARD_EN; \
+ 	type DSCRM_DSC_OPP_PIPE_SOURCE; \
+-	type DSCRM_DSC_DOUBLE_BUFFER_REG_UPDATE_PENDING
++	type DSCRM_DSC_DOUBLE_BUFFER_REG_UPDATE_PENDING; \
++	type DSCRM_DSC_FORWARD_EN_STATUS
++
  
- 	ret = drm_dp_dpcd_writeb(mgr->aux, DP_MSTM_CTRL,
- 				 DP_MST_EN |
-+				 DP_UP_REQ_EN |
- 				 DP_UPSTREAM_IS_SRC);
- 	if (ret < 0) {
- 		drm_dbg_kms(mgr->dev, "mst write failed - undocked during suspend?\n");
-@@ -3186,7 +3187,7 @@ static int dm_resume(void *handle)
- 		} else {
- 			mutex_lock(&dm->dc_lock);
- 			dc_exit_ips_for_hw_access(dm->dc);
--			dc_link_detect(aconnector->dc_link, DETECT_REASON_HPD);
-+			dc_link_detect(aconnector->dc_link, DETECT_REASON_RESUMEFROMS3S4);
- 			mutex_unlock(&dm->dc_lock);
- 		}
+ struct dcn20_dsc_registers {
+ 	uint32_t DSC_TOP_CONTROL;
+diff --git a/drivers/gpu/drm/amd/display/dc/dsc/dcn401/dcn401_dsc.c b/drivers/gpu/drm/amd/display/dc/dsc/dcn401/dcn401_dsc.c
+index 52f23bb554af..6acb6699f146 100644
+--- a/drivers/gpu/drm/amd/display/dc/dsc/dcn401/dcn401_dsc.c
++++ b/drivers/gpu/drm/amd/display/dc/dsc/dcn401/dcn401_dsc.c
+@@ -208,7 +208,7 @@ static void dsc401_wait_disconnect_pending_clear(struct display_stream_compresso
+ {
+ 	struct dcn401_dsc *dsc401 = TO_DCN401_DSC(dsc);
  
+-	REG_WAIT(DSCRM_DSC_FORWARD_CONFIG, DSCRM_DSC_DOUBLE_BUFFER_REG_UPDATE_PENDING, 0, 2, 50000);
++	REG_WAIT(DSCRM_DSC_FORWARD_CONFIG, DSCRM_DSC_FORWARD_EN_STATUS, 0, 2, 50000);
+ }
+ 
+ static void dsc401_disconnect(struct display_stream_compressor *dsc)
+diff --git a/drivers/gpu/drm/amd/display/dc/dsc/dcn401/dcn401_dsc.h b/drivers/gpu/drm/amd/display/dc/dsc/dcn401/dcn401_dsc.h
+index 2143e81ca22a..3c9fa8988974 100644
+--- a/drivers/gpu/drm/amd/display/dc/dsc/dcn401/dcn401_dsc.h
++++ b/drivers/gpu/drm/amd/display/dc/dsc/dcn401/dcn401_dsc.h
+@@ -196,7 +196,8 @@
+ 	DSC2_SF(DSCCIF0, DSCCIF_CONFIG0__BITS_PER_COMPONENT, mask_sh), \
+ 	DSC_SF(DSCCIF0_DSCCIF_CONFIG0, DOUBLE_BUFFER_REG_UPDATE_PENDING, mask_sh), \
+ 	DSC_SF(DSCRM0_DSCRM_DSC_FORWARD_CONFIG, DSCRM_DSC_FORWARD_EN, mask_sh), \
+-	DSC_SF(DSCRM0_DSCRM_DSC_FORWARD_CONFIG, DSCRM_DSC_OPP_PIPE_SOURCE, mask_sh)
++	DSC_SF(DSCRM0_DSCRM_DSC_FORWARD_CONFIG, DSCRM_DSC_OPP_PIPE_SOURCE, mask_sh), \
++	DSC_SF(DSCRM0_DSCRM_DSC_FORWARD_CONFIG, DSCRM_DSC_FORWARD_EN_STATUS, mask_sh)
+ 
+ struct dcn401_dsc_registers {
+ 	uint32_t DSC_TOP_CONTROL;
 
 
