@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-67222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFCB94F46B
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:30:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092D394F359
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93F021F21682
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:30:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BA411C21319
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCA1186E24;
-	Mon, 12 Aug 2024 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4170186E20;
+	Mon, 12 Aug 2024 16:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvuk5L1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yox48pEd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE513130E27;
-	Mon, 12 Aug 2024 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29292C1A5;
+	Mon, 12 Aug 2024 16:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480215; cv=none; b=ELWb67oY3c72dVqVpZnUIAJCqmowKKLyG2HkyW0bJ3qDVmIWeLV/+Of2nJRLg/4R+q0cB9T+ExEKcmIxD/zfcLa6+8Km7MfGIZMfdFkPN3+T8Z92jaJyypv0YvlID0cKnMVuvhdpPe+nOEmeur7zH9T2YIgP2EMXPoByDDNkVCg=
+	t=1723479397; cv=none; b=pYiqG9w1TODeRIO49g/Lbest+F6WT+gk97UztXctPIwV//nH9ZbAwHaE5t7RjA3h95ISk91QPY1Tsq7B80PUr5+UtZrzEFt7nj6ctMORhZTbqiWUjCQlmv57oH/UjbOaTam8xiYxkXmfLtyjkMC+3QBgDQxgYlOTPiyUh/R1Twc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480215; c=relaxed/simple;
-	bh=nUVz1zxJx32IStlJ460dgd0YiMU6xfWnK4PU+wAbOWE=;
+	s=arc-20240116; t=1723479397; c=relaxed/simple;
+	bh=FSoGIVz9GpZSyNftuho6qufpIUb1EjA8fZRAjd9Z5HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lshlXXyNG2cnUuz0qXrmKeRHAUkNhwRFSupzsrUHqOR5o3g3SkSNbTlgDVm5I7qL68gFJfDPWIN59n0dz+wt1iLBokQQHCPfPboUKu7zhKCbnG0mSqKWwo7b70+YEIf9XZbQ5qlyPceCoQSo6yThxOrWEaubVWa0Ykuv3uHyFek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvuk5L1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE19C4AF15;
-	Mon, 12 Aug 2024 16:30:14 +0000 (UTC)
+	 MIME-Version; b=bHPdzmDa56IwRfzZXrdD8v0F1yOJV4sjrydIAGplMrrkGuTH/3TCbPBf4vriu/QL21tICbUggHVgK3yPJ5SX3Dj4+6c9cVfaJ+yfyQG4/kLHILbOTTYv/drD8nhyKyhWLHZl6KWN0zvZKyfSpwp7T/QVuVGpQwb4nywe1c/Mu9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yox48pEd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C157C32782;
+	Mon, 12 Aug 2024 16:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480214;
-	bh=nUVz1zxJx32IStlJ460dgd0YiMU6xfWnK4PU+wAbOWE=;
+	s=korg; t=1723479397;
+	bh=FSoGIVz9GpZSyNftuho6qufpIUb1EjA8fZRAjd9Z5HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvuk5L1/oXKuB2GWYIrf3Rf5kq6fkrbPlLdmyCWTG7jqO3dDl/a/R6uYyn1aaMI/4
-	 tAGwC98u8v9VP/cgIOocqKl2QD+9SDuwAib5puHpH4pT9NwYEXGqfQW22C+ZPrWY8C
-	 0/E9G/YFQtv9XD27BMaGLvLIe7W12gkmOzAG3hq4=
+	b=yox48pEdYet6ojSfRsXDS+w9p4ZWBsv6LzMW0GCMkAhgKuj5g8khkCPZzwNKW3j/C
+	 iaBFlegU57VxVPoXHWhBCZlPcyPU0GbnsQvBUfMprsL5hpDPylXvQHsWAmj7H+z2az
+	 NUym0+SkltGA5JA6xgXgE67vjjpncQnPz+zaRJtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	James Morse <james.morse@arm.com>,
 	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 130/263] arm64: cputype: Add Cortex-A720 definitions
+Subject: [PATCH 6.6 075/189] arm64: barrier: Restore spec_bar() macro
 Date: Mon, 12 Aug 2024 18:02:11 +0200
-Message-ID: <20240812160151.525764978@linuxfoundation.org>
+Message-ID: <20240812160135.028839965@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit add332c40328cf06fe35e4b3cde8ec315c4629e5 ]
+[ Upstream commit ebfc726eae3f31bdb5fae1bbd74ef235d71046ca ]
 
-Add cputype definitions for Cortex-A720. These will be used for errata
-detection in subsequent patches.
+Upcoming errata workarounds will need to use SB from C code. Restore the
+spec_bar() macro so that we can use SB.
 
-These values can be found in Table A-186 ("MIDR_EL1 bit descriptions")
-in issue 0002-05 of the Cortex-A720 TRM, which can be found at:
+This is effectively a revert of commit:
 
-  https://developer.arm.com/documentation/102530/0002/?lang=en
+  4f30ba1cce36d413 ("arm64: barrier: Remove spec_bar() macro")
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: James Morse <james.morse@arm.com>
 Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-3-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20240508081400.235362-2-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 [ Mark: trivial backport ]
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/include/asm/barrier.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 72fe207403c83..dcbac1ce6c25c 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -88,6 +88,7 @@
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
- #define ARM_CPU_PART_CORTEX_X3		0xD4E
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
-+#define ARM_CPU_PART_CORTEX_A720	0xD81
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+diff --git a/arch/arm64/include/asm/barrier.h b/arch/arm64/include/asm/barrier.h
+index cf2987464c186..1ca947d5c9396 100644
+--- a/arch/arm64/include/asm/barrier.h
++++ b/arch/arm64/include/asm/barrier.h
+@@ -40,6 +40,10 @@
+  */
+ #define dgh()		asm volatile("hint #6" : : : "memory")
  
-@@ -165,6 +166,7 @@
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
- #define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
-+#define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
++#define spec_bar()	asm volatile(ALTERNATIVE("dsb nsh\nisb\n",		\
++						 SB_BARRIER_INSN"nop\n",	\
++						 ARM64_HAS_SB))
++
+ #ifdef CONFIG_ARM64_PSEUDO_NMI
+ #define pmr_sync()						\
+ 	do {							\
 -- 
 2.43.0
 
