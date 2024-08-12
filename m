@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDEB94F332
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36A294F442
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B53311F2130C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A081C20D6A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DBB186E34;
-	Mon, 12 Aug 2024 16:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6501D186E38;
+	Mon, 12 Aug 2024 16:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgDSXA8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UFnrCcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0160130E27;
-	Mon, 12 Aug 2024 16:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245E5134AC;
+	Mon, 12 Aug 2024 16:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479286; cv=none; b=uz0+drSoGAjArTe1E0djomfdZ7uO+LH8cEcFbZFSHdhtmtyjncH7C38/HuhNNlNQZPwBr/RqZUkWQ7KALtUuMTJSEE0sLEDELNALH5npq2ncJG51z87wGXS/KyZhLcbzVftV0GCQ+ByXkBaGlueNecDWSw8cHPrIDDe75M1sg9s=
+	t=1723480094; cv=none; b=aeyAS4mMJtX+i6+upX/YJRDw3PUoEiPUPuVJ+4rNjUUYIzVFcOz+RjWlYBZS9bIv30lnOKyCouiLr9EIcEqnmODFwiZeHthKgbP7JgUZwgD2fQR7xlKZcGHGqB95ip05PdK3qF1bE1osyf1aUGEUqk4QGH0rRoYxW3D5OuBcgNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479286; c=relaxed/simple;
-	bh=ctWrwB8s8wghcJdVioPkzm0RnbFVprqebZ0PbMVU37k=;
+	s=arc-20240116; t=1723480094; c=relaxed/simple;
+	bh=jwNR6gxxpU1+3qYg05HnXbAFgdZpfGZd7kWyCj28hBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvDXvbkMGl6MTGV3erj8nmsTl/2QA84NkHTX5fU+mn2dc849jMeoBpRWjAQczjS+CxQaupQ30FnUqgFdo5Gav6bV8kNgm7VNCLi4XrtUQjcUcA8WJ4QHvZEi80OXwbUPymbYrLfuvCln0zKsKndretXFiYrCsf+unx9PKLUdVwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgDSXA8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D58EC32782;
-	Mon, 12 Aug 2024 16:14:45 +0000 (UTC)
+	 MIME-Version; b=E3RAZ1SqmCOXn71qgWqsXqKb37PzlFtaRIeXiZnieqxAwoco9pC8NqIX08mMiZJyIhnvX2LtcNXcs/WktPhjem+XRbl4Sk2qmiJNwOYOEM8rArjDqhkP49XS82y3AD4uLNQIm2gQnGqhx6znEpemaWPo+DGiTYaVW+NRmLNjXIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UFnrCcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A8DC32782;
+	Mon, 12 Aug 2024 16:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479286;
-	bh=ctWrwB8s8wghcJdVioPkzm0RnbFVprqebZ0PbMVU37k=;
+	s=korg; t=1723480094;
+	bh=jwNR6gxxpU1+3qYg05HnXbAFgdZpfGZd7kWyCj28hBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgDSXA8twu8FryqhPdrPHfV2dUbfT+6farcdc/F9vUVelQmWdFo0+M8S5LbHYH7LO
-	 s3XaZ2EC3tMMomeeOWLHsHlvq3chWtU5cw++QNgbal/XFou9tzCHRif+MxzadMnMtm
-	 x1G+KkaNkpH3aVaHNK2dIcaYKY57pul8UYcOm0II=
+	b=0UFnrCcun6FJteYUqCBvZF2hpj1iE5x/M1g6Om4z2c5gU51a05iixq0Z/rOPpn8MR
+	 GVBB5fmFPyBUHrvnR923eQuMikZ5ktWN+JbWhAHVev4CcP7u5tp4O66WdB52l0n34g
+	 StK6uCo8wlt8P3VxasHvFTB9CqJfWfd9wHsNK3ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/189] PCI: Add Edimax Vendor ID to pci_ids.h
+Subject: [PATCH 6.10 095/263] drm/amdgpu/pm: Fix the null pointer dereference in apply_state_adjust_rules
 Date: Mon, 12 Aug 2024 18:01:36 +0200
-Message-ID: <20240812160133.689534301@linuxfoundation.org>
+Message-ID: <20240812160150.182021335@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit eee5528890d54b22b46f833002355a5ee94c3bb4 ]
+[ Upstream commit d19fb10085a49b77578314f69fff21562f7cd054 ]
 
-Add the Edimax Vendor ID (0x1432) for an ethernet driver for Tehuti
-Networks TN40xx chips. This ID can be used for Realtek 8180 and Ralink
-rt28xx wireless drivers.
+Check the pointer value to fix potential null pointer
+dereference
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20240623235507.108147-2-fujita.tomonori@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Yang Wang<kevinyang.wang@amd.com>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci_ids.h | 2 ++
- 1 file changed, 2 insertions(+)
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c    |  7 +++++--
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c    | 14 ++++++++------
+ .../gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c  |  7 +++++--
+ 3 files changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 0a85ff5c8db3c..abff4e3b6a58b 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2124,6 +2124,8 @@
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 5d0c281f2378c..f1c369945ac5d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -3314,8 +3314,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 			const struct pp_power_state *current_ps)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+-	struct smu7_power_state *smu7_ps =
+-				cast_phw_smu7_power_state(&request_ps->hardware);
++	struct smu7_power_state *smu7_ps;
+ 	uint32_t sclk;
+ 	uint32_t mclk;
+ 	struct PP_Clocks minimum_clocks = {0};
+@@ -3332,6 +3331,10 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 	uint32_t latency;
+ 	bool latency_allowed = false;
  
- #define PCI_VENDOR_ID_CHELSIO		0x1425
- 
-+#define PCI_VENDOR_ID_EDIMAX		0x1432
++	smu7_ps = cast_phw_smu7_power_state(&request_ps->hardware);
++	if (!smu7_ps)
++		return -EINVAL;
 +
- #define PCI_VENDOR_ID_ADLINK		0x144a
+ 	data->battery_state = (PP_StateUILabel_Battery ==
+ 			request_ps->classification.ui_label);
+ 	data->mclk_ignore_signal = false;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+index b015a601b385a..eb744401e0567 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+@@ -1065,16 +1065,18 @@ static int smu8_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 				struct pp_power_state  *prequest_ps,
+ 			const struct pp_power_state *pcurrent_ps)
+ {
+-	struct smu8_power_state *smu8_ps =
+-				cast_smu8_power_state(&prequest_ps->hardware);
+-
+-	const struct smu8_power_state *smu8_current_ps =
+-				cast_const_smu8_power_state(&pcurrent_ps->hardware);
+-
++	struct smu8_power_state *smu8_ps;
++	const struct smu8_power_state *smu8_current_ps;
+ 	struct smu8_hwmgr *data = hwmgr->backend;
+ 	struct PP_Clocks clocks = {0, 0, 0, 0};
+ 	bool force_high;
  
- #define PCI_VENDOR_ID_SAMSUNG		0x144d
++	smu8_ps = cast_smu8_power_state(&prequest_ps->hardware);
++	smu8_current_ps = cast_const_smu8_power_state(&pcurrent_ps->hardware);
++
++	if (!smu8_ps || !smu8_current_ps)
++		return -EINVAL;
++
+ 	smu8_ps->need_dfs_bypass = true;
+ 
+ 	data->battery_state = (PP_StateUILabel_Battery == prequest_ps->classification.ui_label);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index 9f5bd998c6bff..8d7dc0e5417ed 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3259,8 +3259,7 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 			const struct pp_power_state *current_ps)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+-	struct vega10_power_state *vega10_ps =
+-				cast_phw_vega10_power_state(&request_ps->hardware);
++	struct vega10_power_state *vega10_ps;
+ 	uint32_t sclk;
+ 	uint32_t mclk;
+ 	struct PP_Clocks minimum_clocks = {0};
+@@ -3278,6 +3277,10 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 	uint32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
+ 	uint32_t latency;
+ 
++	vega10_ps = cast_phw_vega10_power_state(&request_ps->hardware);
++	if (!vega10_ps)
++		return -EINVAL;
++
+ 	data->battery_state = (PP_StateUILabel_Battery ==
+ 			request_ps->classification.ui_label);
+ 
 -- 
 2.43.0
 
