@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-67072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760CF94F3C6
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544BB94F502
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 106FAB20EEE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 871B11C20E78
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E652186E20;
-	Mon, 12 Aug 2024 16:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8836186E34;
+	Mon, 12 Aug 2024 16:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDOc7/ot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdAjYh/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEB7183CA6;
-	Mon, 12 Aug 2024 16:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B091494B8;
+	Mon, 12 Aug 2024 16:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479713; cv=none; b=LgV5zxgAZFR+/qiruGXUMH2iFicg+Kvy36q6rd0FsWlxzrB2ZOVnqdxiXF6fpKfe4nCiSgSsxgvPZveFLk9M1BufMbTvj+B5+KQy2df3qZ4JxLCJolGQVrRmn7uAYJGM8vshQuhjcJmOr8yIXFp4kX9JgTEdOpZbRmtv/GzPJbc=
+	t=1723480636; cv=none; b=PVG0R3s7TNN1e5SE7BkFBuFnqNOR761HTTLBtGZjKqDxa5lEesJaSsV/ALZk5mLqDZD70I7QRBbBABpMefN2dOXrtBnuhd+0TCJDjz6iNVRzMdqlGHv5PB182xzfCvwPkpDNrOVCj5A9QeBzOVX/7Uuj5a1KHdhUYBD7ESPEPiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479713; c=relaxed/simple;
-	bh=tM4XvpW+hgZrfwWEEl6AnA8ZoTaASyyDxrS2I2SGCiM=;
+	s=arc-20240116; t=1723480636; c=relaxed/simple;
+	bh=6pGFNfdV2pkIJfVh16vLNlbeabLQe60uMPbFyCXThkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hd5bFYneskY6rh3RrplSD8WXSWBdP5i1Vf6hhoH24BJGVZqQvCtnM0r4zmkkGDPZToeWtuPZqvVS8ZBIpeV0ljWN5yJ+eOAzHMup9yUqbVE7Sa2WXN/wztCa9EaUQJDuy0jtCizZmnI9SgBEWoBMG1rBZFspbAM88bFuxJud9u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDOc7/ot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB45FC32782;
-	Mon, 12 Aug 2024 16:21:51 +0000 (UTC)
+	 MIME-Version; b=g/b+MtWwDPonBUMFQNxdE7vxTARo1M4ZWbHTGft40eBbDubSxATaBPXSiNCnVbChc3ZsY/9/1EGLApSoTg/k6dcAdZyqzstPDW9r7VIJ8u5MqwObHPuteQIB9OeuincUqU5MBXPk6B2CT22chcY8vQFd/e2oz3eHIlanWEuaLCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdAjYh/1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC21AC32782;
+	Mon, 12 Aug 2024 16:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479712;
-	bh=tM4XvpW+hgZrfwWEEl6AnA8ZoTaASyyDxrS2I2SGCiM=;
+	s=korg; t=1723480636;
+	bh=6pGFNfdV2pkIJfVh16vLNlbeabLQe60uMPbFyCXThkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lDOc7/otDwOk2x3SPw7GQI4TRD0fmjQLXpOKsmGlOHktIW+gmtGdZR4CcxgRDD/Il
-	 4EGj2Sr9vcQcYdbLxwqpHTdRBmmxQWallTxE577LDRikTTj/zTwyrNVM61PVOHEuA3
-	 2h3FjDFeDbAEEugSIXgbC0j+sgX5u9pKwSoVrTjM=
+	b=vdAjYh/1BME/hBis5XOq47UbDGCDE7XfskvMgWzdGleq9Lutw1ad9wUf2T4gNUc9w
+	 dS8pYuSHAVGS6SZqCfYNdASNUHO/vItDm+alEjTagH6y3TZx8IDPzzz1bNHLZuL8H5
+	 LAUd7PsHwV4zzxKhZe7Bzagd+KxQ4ZMOsUtkbnKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 170/189] mptcp: pm: deny endp with signal + subflow + port
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.10 225/263] power: supply: axp288_charger: Round constant_charge_voltage writes down
 Date: Mon, 12 Aug 2024 18:03:46 +0200
-Message-ID: <20240812160138.689706851@linuxfoundation.org>
+Message-ID: <20240812160155.151280554@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 8af1f11865f259c882cce71d32f85ee9004e2660 upstream.
+commit 81af7f2342d162e24ac820c10e68684d9f927663 upstream.
 
-As mentioned in the 'Fixes' commit, the port flag is only supported by
-the 'signal' flag, and not by the 'subflow' one. Then if both the
-'signal' and 'subflow' flags are set, the problem is the same: the
-feature cannot work with the 'subflow' flag.
+Round constant_charge_voltage writes down to the first supported lower
+value, rather then rounding them up to the first supported higher value.
 
-Technically, if both the 'signal' and 'subflow' flags are set, it will
-be possible to create the listening socket, but not to establish a
-subflow using this source port. So better to explicitly deny it, not to
-create some confusions because the expected behaviour is not possible.
+This fixes e.g. writing 4250000 resulting in a value of 4350000 which
+might be dangerous, instead writing 4250000 will now result in a safe
+4200000 value.
 
-Fixes: 09f12c3ab7a5 ("mptcp: allow to use port and non-signal in set_flags")
+Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-2-c8a9b036493b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240717200333.56669-2-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/supply/axp288_charger.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1359,8 +1359,8 @@ static int mptcp_nl_cmd_add_addr(struct
- 	if (ret < 0)
- 		return ret;
+--- a/drivers/power/supply/axp288_charger.c
++++ b/drivers/power/supply/axp288_charger.c
+@@ -178,18 +178,18 @@ static inline int axp288_charger_set_cv(
+ 	u8 reg_val;
+ 	int ret;
  
--	if (addr.addr.port && !(addr.flags & MPTCP_PM_ADDR_FLAG_SIGNAL)) {
--		GENL_SET_ERR_MSG(info, "flags must have signal when using port");
-+	if (addr.addr.port && !address_use_port(&addr)) {
-+		GENL_SET_ERR_MSG(info, "flags must have signal and not subflow when using port");
- 		return -EINVAL;
+-	if (cv <= CV_4100MV) {
+-		reg_val = CHRG_CCCV_CV_4100MV;
+-		cv = CV_4100MV;
+-	} else if (cv <= CV_4150MV) {
+-		reg_val = CHRG_CCCV_CV_4150MV;
+-		cv = CV_4150MV;
+-	} else if (cv <= CV_4200MV) {
++	if (cv >= CV_4350MV) {
++		reg_val = CHRG_CCCV_CV_4350MV;
++		cv = CV_4350MV;
++	} else if (cv >= CV_4200MV) {
+ 		reg_val = CHRG_CCCV_CV_4200MV;
+ 		cv = CV_4200MV;
++	} else if (cv >= CV_4150MV) {
++		reg_val = CHRG_CCCV_CV_4150MV;
++		cv = CV_4150MV;
+ 	} else {
+-		reg_val = CHRG_CCCV_CV_4350MV;
+-		cv = CV_4350MV;
++		reg_val = CHRG_CCCV_CV_4100MV;
++		cv = CV_4100MV;
  	}
  
+ 	reg_val = reg_val << CHRG_CCCV_CV_BIT_POS;
 
 
 
