@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-67063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C3794F3BB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0912794F2EF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F6F41F2189E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 980DC1F20E7A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A893187550;
-	Mon, 12 Aug 2024 16:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BC6187356;
+	Mon, 12 Aug 2024 16:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbEXbZfi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHEnGgC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588FF18734F;
-	Mon, 12 Aug 2024 16:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A3E1EA8D;
+	Mon, 12 Aug 2024 16:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479682; cv=none; b=S5GoBkbk1uOm1Xc0z0Ev9pOIwli18lEmGXCqZ1wlzNIosGhvHW0v+/ch/mOv5Rmwdl75chb/QGHUVJlLl+tKx6nhNV6YWbEOMIszczfs2kJU+PXTtCTM7P+wsWg0X6vdNqgOs/jQJnl6WJ2ZfnMI66cOCTg5OVagvDMvGS0rUVc=
+	t=1723479105; cv=none; b=dPTJ7PjXonuV8Cd70cLoRsfGmGUuGUItrcCQbHf+Ys4Zah9+mF1Ud4IdFxlrwqHvKD4lf/njFC/0xP4EXGKbBBPK+aVKVERDH6KeBrUHbtBUGQ5bBRWHgs4PibGUxq1os6n3XwwYKF+qskEk7H9R4yzM0CFPJwVpoe9+IVnZWBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479682; c=relaxed/simple;
-	bh=aBWXgHqoMDILUReSXU27UiSJuHGGPBuTlfmRnO0RBus=;
+	s=arc-20240116; t=1723479105; c=relaxed/simple;
+	bh=QGWrqx6QFrNp8KcWVq2lxqaGtKZxHk+tV+S2c4Y7N90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSMxvCbCReSBViT3XSiHmaL51/xrjP68fOrfZ3lb/bPN/RmZp/meHua16R1Xzp9Qt9uIeOL+VHF20f/ZdrgS6bWv8O92O/EbluH3x4YR4BI4qihvadRNnFBpnMh1vjahkYPW17TPhAhmluzG6h2z777mtEpSfXjSRKEiPgkrT8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbEXbZfi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC73C4AF09;
-	Mon, 12 Aug 2024 16:21:21 +0000 (UTC)
+	 MIME-Version; b=UhC973jpsULcs2F1QhEx2QrlZ3tB5BzB4QB5OBEHT7nY+CHON0K5hxFReO29aZoUjQJLFtfSOyNlKg9cRW5WmcWfOnSJAI//MkEKaXIFXdPbwoXgZ2cJ7s/1lVPYtvvMr6AbyB8/GPGdMjq73uPJggU+qOBNwHJ9QaGCxKdCbsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHEnGgC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A63AC4AF09;
+	Mon, 12 Aug 2024 16:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479682;
-	bh=aBWXgHqoMDILUReSXU27UiSJuHGGPBuTlfmRnO0RBus=;
+	s=korg; t=1723479105;
+	bh=QGWrqx6QFrNp8KcWVq2lxqaGtKZxHk+tV+S2c4Y7N90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbEXbZfiu8Ik7OoG71iUyQ5oXgwV8+Qv3kgCWiisb6I2Iitep6FBuN5qVlH4yZrPV
-	 A/hupT+813Whp2zZJAtZEmv3FYbrcGmM5+Nk28JKybBhcIbQNP/k9INNHVyhKqrWLi
-	 JZIyvsJCWLO0Ts+qjwdi0z22bv05BcYfINrnfi+U=
+	b=ZHEnGgC0BGu0oaEYwQV5cZvpNR7HDTPhjvckx9GGPg4FXaS3f6ma0Cb2KuD4KtOVo
+	 vKJdu8q4LosH+dhio1Bcqg+U5h5kAR+BVgSVTxnq71P3bk0sBfimapR8iknUpgDm//
+	 2nUJvz49Qt3LZDHW8JH3w/ToK0rhR6YcxOGG9gAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.6 159/189] sched/core: Introduce sched_set_rq_on/offline() helper
-Date: Mon, 12 Aug 2024 18:03:35 +0200
-Message-ID: <20240812160138.261905228@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>,
+	Matthieu Baerts <matttbe@kernel.org>
+Subject: [PATCH 6.1 135/150] block: use the right type for stub rq_integrity_vec()
+Date: Mon, 12 Aug 2024 18:03:36 +0200
+Message-ID: <20240812160130.380106105@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 2f027354122f58ee846468a6f6b48672fff92e9b upstream.
+commit 69b6517687a4b1fb250bd8c9c193a0a304c8ba17 upstream.
 
-Introduce sched_set_rq_on/offline() helper, so it can be called
-in normal or error path simply. No functional changed.
+For !CONFIG_BLK_DEV_INTEGRITY, rq_integrity_vec() wasn't updated
+properly. Fix it up.
 
-Cc: stable@kernel.org
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240703031610.587047-4-yangyingliang@huaweicloud.com
+Fixes: cf546dd289e0 ("block: change rq_integrity_vec to respect the iterator")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: Matthieu Baerts <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |   40 ++++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+ include/linux/blk-integrity.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9596,6 +9596,30 @@ void set_rq_offline(struct rq *rq)
- 	}
- }
- 
-+static inline void sched_set_rq_online(struct rq *rq, int cpu)
-+{
-+	struct rq_flags rf;
-+
-+	rq_lock_irqsave(rq, &rf);
-+	if (rq->rd) {
-+		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
-+		set_rq_online(rq);
-+	}
-+	rq_unlock_irqrestore(rq, &rf);
-+}
-+
-+static inline void sched_set_rq_offline(struct rq *rq, int cpu)
-+{
-+	struct rq_flags rf;
-+
-+	rq_lock_irqsave(rq, &rf);
-+	if (rq->rd) {
-+		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
-+		set_rq_offline(rq);
-+	}
-+	rq_unlock_irqrestore(rq, &rf);
-+}
-+
- /*
-  * used to mark begin/end of suspend/resume:
-  */
-@@ -9665,7 +9689,6 @@ static inline void sched_smt_present_dec
- int sched_cpu_activate(unsigned int cpu)
- {
- 	struct rq *rq = cpu_rq(cpu);
--	struct rq_flags rf;
- 
- 	/*
- 	 * Clear the balance_push callback and prepare to schedule
-@@ -9694,12 +9717,7 @@ int sched_cpu_activate(unsigned int cpu)
- 	 * 2) At runtime, if cpuset_cpu_active() fails to rebuild the
- 	 *    domains.
- 	 */
--	rq_lock_irqsave(rq, &rf);
--	if (rq->rd) {
--		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
--		set_rq_online(rq);
--	}
--	rq_unlock_irqrestore(rq, &rf);
-+	sched_set_rq_online(rq, cpu);
- 
+--- a/include/linux/blk-integrity.h
++++ b/include/linux/blk-integrity.h
+@@ -175,7 +175,7 @@ static inline int blk_integrity_rq(struc
  	return 0;
  }
-@@ -9707,7 +9725,6 @@ int sched_cpu_activate(unsigned int cpu)
- int sched_cpu_deactivate(unsigned int cpu)
+ 
+-static inline struct bio_vec *rq_integrity_vec(struct request *rq)
++static inline struct bio_vec rq_integrity_vec(struct request *rq)
  {
- 	struct rq *rq = cpu_rq(cpu);
--	struct rq_flags rf;
- 	int ret;
- 
- 	/*
-@@ -9738,12 +9755,7 @@ int sched_cpu_deactivate(unsigned int cp
- 	 */
- 	synchronize_rcu();
- 
--	rq_lock_irqsave(rq, &rf);
--	if (rq->rd) {
--		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
--		set_rq_offline(rq);
--	}
--	rq_unlock_irqrestore(rq, &rf);
-+	sched_set_rq_offline(rq, cpu);
- 
- 	/*
- 	 * When going down, decrement the number of cores with SMT present.
+ 	/* the optimizer will remove all calls to this function */
+ 	return (struct bio_vec){ };
 
 
 
