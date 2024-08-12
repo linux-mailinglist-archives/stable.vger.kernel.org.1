@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2637A94E9B5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:26:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DB294E9B6
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D060C2808BE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:26:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC121F21258
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB7A16CD19;
-	Mon, 12 Aug 2024 09:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49B416D4DE;
+	Mon, 12 Aug 2024 09:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNMtfphB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRDEksXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283B020323
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC6A20323
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723454782; cv=none; b=jPVBLIqqD1QxnMYx8TE8Kdftc+Py8VKU6sLPmpnBw2bS0lV5FAapVaVm+2q3fJIgqW5b2WFpz/i4d11bd5L2yIDmGyNPnZlyOrX0h7ARnZLMyXJD01CNjajt3qblmqrp4/zejpcoI2s+DJMzlpQznkt0BkKZRCBLdsUJkSH7Xqc=
+	t=1723454786; cv=none; b=g2JoehbBMLeeY+FlzXXETbMndStHSDc/AS8MDHqQFIsbz7x7+QWmCRCz7V9rdB88MMcLvBdHR+BwyKgC7Ar0ovhTfKqELS0vD8sH2rMyKLYI+QyWlgEtHvgnDaK8PX3/k8sQI7qgZd4nz8rJS4hB5RJm8FOzrOcUE+S8RacJCoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723454782; c=relaxed/simple;
-	bh=YF8gMpEADvbrRWGuQ63S5xbb59e4leJei69UDVEPaAY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A4dBpHAEoMoqPEnhAl0KESjn+w4n1GU7G+xbP2M2/Kd6nf5RmaGbvs7g2GsYSslbAocvOM7bfAIXZLrxSkBpvQDn0mz8dqU+Z3nPBDVjvYgx8fnSqzU0GHDnUZAswXFFnI2zjGFxxUtY0XPY2Al1Il1N+0+qAPF9KN0qrLdH+n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNMtfphB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45821C32782;
-	Mon, 12 Aug 2024 09:26:21 +0000 (UTC)
+	s=arc-20240116; t=1723454786; c=relaxed/simple;
+	bh=FbZBsXDVDqMAkK2osAfCawVwGHLGsGO5ku8MmmN9gsE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m9PDxgJhWQDybUucMBEkhMj0mkDYs6sod3ASQkkLiP7uHEsr9M5l/C3ggAQqpR0FhLxB5YC7/Gou+eJQazm5LxqP1HlwpwYv1KWFkSdcZNMZ62Y6qBK6c467d+2devgJpgrTa+5VVPb34547hA+hb9FrOPmUXEgx4pU7jlZi6ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRDEksXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6AAC32782;
+	Mon, 12 Aug 2024 09:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723454781;
-	bh=YF8gMpEADvbrRWGuQ63S5xbb59e4leJei69UDVEPaAY=;
+	s=korg; t=1723454786;
+	bh=FbZBsXDVDqMAkK2osAfCawVwGHLGsGO5ku8MmmN9gsE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nNMtfphBmgI6WmM/j0rACR56U4PKEL9FAEPZMp4pzKcGXa1iDQg6Ehlcn1e85svgw
-	 a9teCetqLQwDEfdRX5uCUSBkhG/duyqVAK3KWD3863pBTNhw1h046eAtnHFsysXjQv
-	 mKCZvdn9qe9hcvXCKuLQuaSr1K8E/ps+DQAeUnLs=
-Subject: FAILED: patch "[PATCH] drm/i915/gem: Fix Virtual Memory mapping boundaries" failed to apply to 6.1-stable tree
+	b=qRDEksXkP7/UINHz6o1/+jHhkBkcKwbLjBzlIqhkF8TsJD6XVJAh7TQ2pa5BRD807
+	 0cd/+j7TIKqWz8rUMwX8khMWc2342zHlIiIsGST01HgyNARu/LpOs9s9EF4enmA4of
+	 wqAzyGhKD9bsL3AZr1SiY8iFJVl0+xecPHuYeWcY=
+Subject: FAILED: patch "[PATCH] drm/i915/gem: Fix Virtual Memory mapping boundaries" failed to apply to 5.15-stable tree
 To: andi.shyti@linux.intel.com,Jonathan.cavitt@intel.com,chris.p.wilson@linux.intel.com,jannh@google.com,joonas.lahtinen@linux.intel.com,matthew.auld@intel.com,rodrigo.vivi@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 11:26:18 +0200
-Message-ID: <2024081218-quotation-thud-f8b0@gregkh>
+Date: Mon, 12 Aug 2024 11:26:19 +0200
+Message-ID: <2024081219-scenic-profound-0b37@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,35 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081218-quotation-thud-f8b0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081219-scenic-profound-0b37@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 8bdd9ef7e9b1 ("drm/i915/gem: Fix Virtual Memory mapping boundaries calculation")
 8e4ee5e87ce6 ("drm/i915: Wrap all access to i915_vma.node.start|size")
+3bb6a44251b4 ("drm/i915: Rename ggtt_view as gtt_view")
+d976521a995a ("drm/i915: extend i915_vma_pin_iomap()")
+d63ddca7c581 ("drm/i915: Update tiled blits selftest")
+a0ed9c95cce6 ("drm/i915/gt: Use XY_FAST_COLOR_BLT to clear obj on graphics ver 12+")
+fd5803e5eebe ("drm/i915/gt: use engine instance directly for offset")
+892bfb8a604d ("drm/i915/fbdev: fixup setting screen_size")
+c674c5b9342e ("drm/i915/xehp: CCS should use RCS setup functions")
+30b9d1b3ef37 ("drm/i915: add I915_BO_ALLOC_GPU_ONLY")
+3312a4ac8a46 ("drm/i915/ttm: require mappable by default")
+8fbf28934acf ("drm/i915/ttm: fixup the mock_bo")
+db927686e43f ("Merge drm/drm-next into drm-intel-gt-next")
 
 thanks,
 
