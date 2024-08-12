@@ -1,101 +1,102 @@
-Return-Path: <stable+bounces-66728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83EAE94F115
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA93294F12F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 302DE1F21EAE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:01:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66BB81F22186
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC969136344;
-	Mon, 12 Aug 2024 15:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACD017E8E5;
+	Mon, 12 Aug 2024 15:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1JSbnAr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s/mUz6oD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1AE7F6;
-	Mon, 12 Aug 2024 15:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1807B183CA5;
+	Mon, 12 Aug 2024 15:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474868; cv=none; b=KNIAPNdsMIKHVQOogCaLQzzynpCEOBEyvjlQv1Jov6rvMf8XmPEvtg+8sI08RpC4Ir5Z9SINxJFdIGrnH4HSZ6KyLCEd6IlQpGaxHU45X+689xF+hioYYWSw00W77zOefiCOtHdZmaghzVz9iOTZC7BQe5fLrhg2yMuUsqaoOH8=
+	t=1723474958; cv=none; b=SHgZIIWCpOiohe6C+JhPt4I5pt5YtQC3rE3Vt26NunbfQcuDD+tAIGZH8YS/DEoogKX4ozewEhL6kXdd6+XDGPBCg0zPkeNTEpWqM7TA//qay4rpFqch5X7XAPAbkhWzMFKDEVLGHHIKmIHnTV6orJV1rRP4krTKfA9zr/Q69WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474868; c=relaxed/simple;
-	bh=jFXwuHnHZvX9TUcpQkYawiiGZfBsAuGXkFiTH1tSLt0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G/TkoR1dp7FD4CZLdJcWtmsey0bfeoPpSl3gt2I9T1UVm402leE+3Pq1NxO1kqbBdFU5lGU8ELyN+dw6kt48zTh+cdK0YSZr2pzEKzGsMK6wN2QX1ko/ocP10zYeHtC4wgBgUud6hWCmUozoxIzwzULIp58AaEmZvNpbsz1xDV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1JSbnAr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A6BC32782;
-	Mon, 12 Aug 2024 15:01:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474868;
-	bh=jFXwuHnHZvX9TUcpQkYawiiGZfBsAuGXkFiTH1tSLt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q1JSbnArerenmBslahulEIYEaSli2Gj+u5MsWwpiUiht0iYRtY4IRY0KLCeE7Ye4d
-	 YuVeGaXriyYNVXW5gHvUr+LzkuzBWVpXrC2TyuJQtEssvSdjOO1BUS57lJIxqo9deq
-	 dJpWOXoFtRaQeoZJrbkiCiDopNNujkrIieYXZjg8=
-Date: Mon, 12 Aug 2024 17:01:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, sashal@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH -stable,6.1.x 0/3] Netfilter fixes for -stable
-Message-ID: <2024081256-growl-avert-8e3e@gregkh>
-References: <20240812102320.359247-1-pablo@netfilter.org>
+	s=arc-20240116; t=1723474958; c=relaxed/simple;
+	bh=FEw403kKLcXlCijFEs5f5Y9/0D/vtM11tHHmkCfoy1o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oYmGoga1GIKgZZgQkhJR2Stz/o9T7Z9+Q4GAuvMEPwJ41jw+zLTzy4hFZVv6zwaIYlUoPgh1Zp3WOdt0YLQGmVd2PFmMn1omYA7EPaJOteXSEwFn/Gah06Q3jNGIW9k3SCfFoToXRIhTEkiF3+HOkYVWCnoh/tTd9Q8f28gre9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s/mUz6oD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802CDC4AF0D;
+	Mon, 12 Aug 2024 15:02:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723474957;
+	bh=FEw403kKLcXlCijFEs5f5Y9/0D/vtM11tHHmkCfoy1o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=s/mUz6oDiEp8EFNzpVm5K2ibyVvUS6E7t2r82xQiCzdNnaRwPy2Z+avMgn8BhtYof
+	 Jw6DuCHzMrZyIyJMIs6KlHumjtobNBcRZa1RSi/HO3+frZo7VahKMr5bPWuNO+tPGh
+	 VLVajG9938d0IKMrvgWMO1bbxkB3KAkg80uUuCoVMy+DEuY5m1HZ1JCgLsHGmUVbwz
+	 Css+1j+Cq7QuAMOthJCmBI3UwRNY26COJU+oCr3eigi68QTeF0s1NMl1LnTJ+Y0Oov
+	 gnqlGD0JM2whABjPyEYRhUR44Nkxy+NmZ5pwRLKmZLLvfskMgaK3fDO5T4LtWj7QS6
+	 XLQc7017D4a0Q==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.10.y 0/5] Backport of "mptcp: pm: don't try to create sf if alloc failed" and more
+Date: Mon, 12 Aug 2024 17:02:14 +0200
+Message-ID: <20240812150213.489098-7-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024081244-smock-nearest-c09a@gregkh>
+References: <2024081244-smock-nearest-c09a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240812102320.359247-1-pablo@netfilter.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1511; i=matttbe@kernel.org; h=from:subject; bh=FEw403kKLcXlCijFEs5f5Y9/0D/vtM11tHHmkCfoy1o=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmuiP14nthapHV7DxdVNsoE+9Mwk2TaUWe1rVkY psNugcmZuKJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZroj9QAKCRD2t4JPQmmg c+2RD/0VsFyvoMGetMaHBTmDnu5yDgL2GkHrS1OocGuHKCMFluK1k1DoRo53svt9ZOMWIEF5k7f zC9vjDwZ5wSVa7dz6TEYnyiojuQ7hCzAU94g2H2cTkkMsRx61f35rAAVyrm16NZAhGVfNczsmyF rt419iZtIDo9u+feL6p7HnlwxLtsruyIpjO/AHgZTHLDnFP7juXY7Vyjc6M3LtLWYMD6UCdVedE Esou8WnJ+LGCPNTajmo54CaekzaRN/mzIGOyAAE5HPvsBnCNL8sVyQDaSkFKcIuvPqLN/V12vj8 TDAl8FX3d2N83URKBrboh7Ec+PQMGymjADpQFCbF8b6Ujay7MbEvYQM2y4fJYzteVqSTOKlnXlU cG/yJRlxdSZiLtUtIyVnjD4boic7aEEWCSHQ3Gn6ywqG8DWkbicLCwdAbAWh5bPI7tSK8OOVWSE 9S/0IqqmRhRr7nufWMUokjcdxPlPb6QhUk7qa3ICNE5Mdej/EXc3JYINqRNtcJuDdgJuQ90/CbN rNMElG4KPFK1hvm8DJBQ4xainlj0HA+R5KwmIoqsAO3jXwQ+mNt9dy4SOT3hA6j1VjQLMNbaP5n 7HvdXBwcSkgKcDt/TtUhj8Cg3+ycShGSOBIm4cELFkPikXm8HXDL4Zf0wLpZKfemj9YTqHI9T/2 Apt90yvhernhWyA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 12, 2024 at 12:23:17PM +0200, Pablo Neira Ayuso wrote:
-> Hi Greg, Sasha,
-> 
-> This batch contains a backport for recent fixes already upstream for 6.1.x.
-> 
-> The following list shows the backported patches, I am using original commit
-> IDs for reference:
-> 
-> 1) 3c13725f43dc ("netfilter: nf_tables: bail out if stateful expression provides no .clone")
-> 
-> 2) fa23e0d4b756 ("netfilter: nf_tables: allow clone callbacks to sleep")
-> 
-> 3) cff3bd012a95 ("netfilter: nf_tables: prefer nft_chain_validate")
-> 
-> Please, apply,
-> Thanks
-> 
-> Florian Westphal (2):
->   netfilter: nf_tables: allow clone callbacks to sleep
->   netfilter: nf_tables: prefer nft_chain_validate
-> 
-> Pablo Neira Ayuso (1):
->   netfilter: nf_tables: bail out if stateful expression provides no .clone
-> 
->  include/net/netfilter/nf_tables.h |   4 +-
->  net/netfilter/nf_tables_api.c     | 172 ++++--------------------------
->  net/netfilter/nft_connlimit.c     |   4 +-
->  net/netfilter/nft_counter.c       |   4 +-
->  net/netfilter/nft_dynset.c        |   2 +-
->  net/netfilter/nft_last.c          |   4 +-
->  net/netfilter/nft_limit.c         |  14 +--
->  net/netfilter/nft_quota.c         |   4 +-
->  8 files changed, 42 insertions(+), 166 deletions(-)
-> 
-> -- 
-> 2.30.2
-> 
-> 
+Patches "mptcp: pm: don't try to create sf if alloc failed" and "mptcp:
+pm: do not ignore 'subflow' if 'signal' flag is also set" depend on
+"mptcp: pm: reduce indentation blocks", a simple refactoring that can be
+picked to ease the backports. Including this patch avoids conflicts with
+the two other patches.
 
-All now queued up, thanks!
+While at it, also picked the modifications of the selftests to validate
+the other modifications.
 
-greg k-h
+If you prefer, feel free to backport these 5 commits to v6.10:
+
+  c95eb32ced82 cd7c957f936f 85df533a787b bec1f3b119eb 4d2868b5d191
+
+In this order, and thanks to c95eb32ced82, there are no conflicts.
+
+Details:
+
+- c95eb32ced82 ("mptcp: pm: reduce indentation blocks")
+- cd7c957f936f ("mptcp: pm: don't try to create sf if alloc failed")
+- 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
+- bec1f3b119eb ("selftests: mptcp: join: ability to invert ADD_ADDR check")
+- 4d2868b5d191 ("selftests: mptcp: join: test both signal & subflow")
+
+Matthieu Baerts (NGI0) (5):
+  mptcp: pm: reduce indentation blocks
+  mptcp: pm: don't try to create sf if alloc failed
+  mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set
+  selftests: mptcp: join: ability to invert ADD_ADDR check
+  selftests: mptcp: join: test both signal & subflow
+
+ net/mptcp/pm_netlink.c                        | 43 ++++++++++-----
+ .../testing/selftests/net/mptcp/mptcp_join.sh | 55 ++++++++++++++-----
+ 2 files changed, 69 insertions(+), 29 deletions(-)
+
+-- 
+2.45.2
+
 
