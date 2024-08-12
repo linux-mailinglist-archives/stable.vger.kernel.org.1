@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-66855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27D494F2C8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C771B94F3AB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1660CB23FA9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568FE1F2178F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBC0187335;
-	Mon, 12 Aug 2024 16:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DF6186E38;
+	Mon, 12 Aug 2024 16:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoGdB4KO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="po1VsRMm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADA1183CD9;
-	Mon, 12 Aug 2024 16:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE8129CA;
+	Mon, 12 Aug 2024 16:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479006; cv=none; b=Nij03LVxJTsr8YATlDIi4jSQOrCirdRTf+MBPXIxkjLyvJVK0yS7Z+2TPOdLNNgiVCs+eAiC9HEeMGRKCUSkN1uCoIvdeUA0qFXg/vEjmGLawS0MtH4+xwejZXi5ldbXXFMTPfFh8458hSRY6Ve4wb6eeKKrnCXg5SljkarM/t8=
+	t=1723479634; cv=none; b=gSgkzeN0PWl/S6PTVBs5+irxOq6GOIBDr5AmgHZl6XRuOA7XBNMvNzWC41Emu3Myo4y5KZRAUQQyFvLNgmIBct+IEMQYyf4BOPXAOvIfMOefSxAVIpFbeh7MR5f/pCx00UZ5gs3A6st56bPWM3/IeF6hMzz4d8JkBbrnADRvZ4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479006; c=relaxed/simple;
-	bh=xp2akxgmvGug2Yx5FV2YUJEEpiQOwfCzmvL0KvYD7ok=;
+	s=arc-20240116; t=1723479634; c=relaxed/simple;
+	bh=JSWeqskncFQHT2BU2rInslFJB/J4mtEiRXyM9tjhqBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fx9PrDJDMO7WfRCvGqMHM6Zp+HnaH0A5xXBqteSsdAoo6KJ31K0CFUFCzIHtcTCeSG/DzHtJFefAwoiD8BEhyYsZ8yCwW7wrbmfmbLfHrlT9KD5tqfHYzMSIEhLaToNeFxpxlqYwal1eYo8fCiTVMbkyPXzXPO3dJ6ukm00wAn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FoGdB4KO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DF7C32782;
-	Mon, 12 Aug 2024 16:10:05 +0000 (UTC)
+	 MIME-Version; b=liK24wjghboYLHzpK89iZD/RmfvMiJNnF2BfhiBl1Gvh7IgSkI6jW4LTcG7C72PWojqs503e6f8LxGeKuHf4OccM2nkpeAfwElTf5g2L3p1t2zdiBs0PYhzuUNgVqfMeycTOeRrMWkOHbeZmLuF6bMvqImDt0sHipLKHTeHRn6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=po1VsRMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE14C4AF0C;
+	Mon, 12 Aug 2024 16:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479006;
-	bh=xp2akxgmvGug2Yx5FV2YUJEEpiQOwfCzmvL0KvYD7ok=;
+	s=korg; t=1723479634;
+	bh=JSWeqskncFQHT2BU2rInslFJB/J4mtEiRXyM9tjhqBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FoGdB4KOcmWnnzr9NURGLw+OHm0kHBgV+1Dxq3xqfpTU2kmr7WLAgEktVx0sg7E1y
-	 e5qLh5fnOiZhZpsaH1zN6e6jnx8UZUDBWY/4OdnkrzIJ1/rZR4FjYsS3sYWBcWpeMu
-	 GZravoA1SkZ7wVOxxF1OoNjBrkWcqjseAltFm8bs=
+	b=po1VsRMmfz2ClfAHR6tzgMEpgNGVNXzaFYUcBXf5O0U1erVoC6Q6PCAC/6iYZfqfP
+	 nVwhqZZNQwVGAlXybjh9ueRrwLXc7ctbmaj/EtYilz909toQ0Sd5EWj5n1NrXIIfy7
+	 ld7yZ2JbUTM0DsHoe8Su5obUfIcYRhZ7CnYt+ug8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	Waiman Long <longman@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/150] clocksource: Scale the watchdog read retries automatically
+Subject: [PATCH 6.6 129/189] clocksource: Scale the watchdog read retries automatically
 Date: Mon, 12 Aug 2024 18:03:05 +0200
-Message-ID: <20240812160129.175005012@linuxfoundation.org>
+Message-ID: <20240812160137.111246430@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -124,10 +124,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  5 files changed, 25 insertions(+), 20 deletions(-)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a29ff7a773c7c..8df4c1c5c6197 100644
+index 83b1795335e53..a7fe113897361 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -637,12 +637,6 @@
+@@ -664,12 +664,6 @@
  			loops can be debugged more effectively on production
  			systems.
  
@@ -205,10 +205,10 @@ index df922f49d171b..d06185e054ea2 100644
  		wdtest_ktime_clocksource_reset();
  	}
 diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index cc6db3bce1b2f..6d5a0fc98e398 100644
+index 3052b1f1168e2..c95080f005dd4 100644
 --- a/kernel/time/clocksource.c
 +++ b/kernel/time/clocksource.c
-@@ -207,9 +207,6 @@ void clocksource_mark_unstable(struct clocksource *cs)
+@@ -210,9 +210,6 @@ void clocksource_mark_unstable(struct clocksource *cs)
  	spin_unlock_irqrestore(&watchdog_lock, flags);
  }
  
@@ -218,7 +218,7 @@ index cc6db3bce1b2f..6d5a0fc98e398 100644
  static int verify_n_cpus = 8;
  module_param(verify_n_cpus, int, 0644);
  
-@@ -221,11 +218,12 @@ enum wd_read_status {
+@@ -224,11 +221,12 @@ enum wd_read_status {
  
  static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow, u64 *wdnow)
  {
@@ -233,7 +233,7 @@ index cc6db3bce1b2f..6d5a0fc98e398 100644
  		local_irq_disable();
  		*wdnow = watchdog->read(watchdog);
  		*csnow = cs->read(cs);
-@@ -237,7 +235,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow,
+@@ -240,7 +238,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow,
  		wd_delay = clocksource_cyc2ns(wd_delta, watchdog->mult,
  					      watchdog->shift);
  		if (wd_delay <= WATCHDOG_MAX_SKEW) {
@@ -243,10 +243,10 @@ index cc6db3bce1b2f..6d5a0fc98e398 100644
  					smp_processor_id(), watchdog->name, nretries);
  			}
 diff --git a/tools/testing/selftests/rcutorture/bin/torture.sh b/tools/testing/selftests/rcutorture/bin/torture.sh
-index 91bca30e8587c..483f22f5abd7c 100755
+index 12b50a4a881ac..89a82f6f140ef 100755
 --- a/tools/testing/selftests/rcutorture/bin/torture.sh
 +++ b/tools/testing/selftests/rcutorture/bin/torture.sh
-@@ -408,7 +408,7 @@ then
+@@ -567,7 +567,7 @@ then
  	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 tsc=watchdog"
  	torture_set "clocksourcewd-1" tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration 45s --configs TREE03 --kconfig "CONFIG_TEST_CLOCKSOURCE_WATCHDOG=y" --trust-make
  
