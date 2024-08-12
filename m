@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-67080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B18B94F3CE
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4DD94F4E7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CCC9B212DF
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF2C2B26A21
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E42F186E38;
-	Mon, 12 Aug 2024 16:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E56B187347;
+	Mon, 12 Aug 2024 16:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uV/ScJoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4AeApCy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE407183CA6;
-	Mon, 12 Aug 2024 16:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6F7187324;
+	Mon, 12 Aug 2024 16:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479739; cv=none; b=WwoiUeOb7ic2FAvpk+QsM2QTD9ucJcDE/7tqhylPMBcLDYBolzFGLIKhyt+AuKQQS8xT2kJfUL0BbmiHUF5LOj+8KJHZDrzdWVzX8Bj/eMrZHHSLXAQZF+bEsafZDlnnl2XPzdQwNIF7x387YCBhqpg+yKagZHiOMN/UAyW30Ug=
+	t=1723480558; cv=none; b=llm7+hv9tFJnK206Bn0nM/7D4AltpA6MSoktqtoiwh4BOKICHDKNyg6t/LYIySlft6NIBTRv9gUSFlR55uFxhY5aEdo/HxSFSYLAtTUttAi63amfENBZluqWBnehuwr56WKtZwZ773XRe8qkbTE+0bM4cturjBratOjs+UBUmRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479739; c=relaxed/simple;
-	bh=kPR9MZJHXP39iL8vtEfMQPiPfwrygOYltlGWh4xziKA=;
+	s=arc-20240116; t=1723480558; c=relaxed/simple;
+	bh=SvVcrLoF/5Oh248bZaKp3nxBAi+iOhV9f4lCs9Cl89k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TdxTZZan3CyiO/o9VqQZeTqdoONE3VSp5HejSD9/LChpEPvdVnDJW97nLgBUGNR3H9RUPBHHOX0c2xYr1cC/LxyxZUVAzop1f6W01OxYGFcZYywoD4SSiZ+s4NkrrTIGekHdhODARLY7m17JZnUj5jaZ+AgGpt74ucukSRXQ3p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uV/ScJoW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EDBC32782;
-	Mon, 12 Aug 2024 16:22:18 +0000 (UTC)
+	 MIME-Version; b=bBChbLN+gn58Zej0IY+PYk+J22NxuQ9QHIu6Ajru20midks/kMpUfdIknm4qRK+XEUHhu5KqXOFztLO2eXcW07eZYRJV47rMsLo+cNZjKP/pOj69+DdKUu5eXoAwRjRqvkuZj/x5GbpS03YbryPfbr61yL1ZyTIMJf59f3xj/rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4AeApCy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E5BC32782;
+	Mon, 12 Aug 2024 16:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479739;
-	bh=kPR9MZJHXP39iL8vtEfMQPiPfwrygOYltlGWh4xziKA=;
+	s=korg; t=1723480558;
+	bh=SvVcrLoF/5Oh248bZaKp3nxBAi+iOhV9f4lCs9Cl89k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uV/ScJoWvMkgnCY+Ynyr49++J+MAs6kHD6QrkRs3vjnF5oCd5biIda8ci6OQWDX4I
-	 By+IG7jhXKLWuBM7PvWN4K2Lxs2UznkThP8htuWrZW0iqS19ZDN+Qr9o4vG87na3XU
-	 Db1SVISZdHun1a5SpLjYSxUVbjtrdoEu3gXYy3C0=
+	b=H4AeApCyRscXQCuahTXNdtWEOPrCEqwXdQaBUGgOCe8rDvQQXzVY/imhNB7uX1FEE
+	 J2ugjgHHn4Jdg0EgwYeX8UyFrXLuW70fSVOUI+xoFrsqX802MRAy7SZhyegATkjTdb
+	 5xh3NwuqwL1wbxUNos2R5+WXV2392fgRc1F45twQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Besar Wicaksono <bwicaksono@nvidia.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.6 178/189] tools headers arm64: Sync arm64s cputype.h with the kernel sources
+	Muchun Song <songmuchun@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 233/263] mm: list_lru: fix UAF for memory cgroup
 Date: Mon, 12 Aug 2024 18:03:54 +0200
-Message-ID: <20240812160138.999317751@linuxfoundation.org>
+Message-ID: <20240812160155.454116053@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Muchun Song <songmuchun@bytedance.com>
 
-commit dc6abbbde4b099e936cd5428e196d86a5e119aae upstream.
+commit 5161b48712dcd08ec427c450399d4d1483e21dea upstream.
 
-To get the changes in:
+The mem_cgroup_from_slab_obj() is supposed to be called under rcu lock or
+cgroup_mutex or others which could prevent returned memcg from being
+freed.  Fix it by adding missing rcu read lock.
 
-  0ce85db6c2141b7f ("arm64: cputype: Add Neoverse-V3 definitions")
-  02a0a04676fa7796 ("arm64: cputype: Add Cortex-X4 definitions")
-  f4d9d9dcc70b96b5 ("arm64: Add Neoverse-V2 part")
+Found by code inspection.
 
-That makes this perf source code to be rebuilt:
-
-  CC      /tmp/build/perf-tools/util/arm-spe.o
-
-The changes in the above patch add MIDR_NEOVERSE_V[23] and
-MIDR_NEOVERSE_V1 is used in arm-spe.c, so probably we need to add those
-and perhaps MIDR_CORTEX_X4 to that array? Or maybe we need to leave this
-for later when this is all tested on those machines?
-
-  static const struct midr_range neoverse_spe[] = {
-          MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
-          MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-          MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
-          {},
-  };
-
-Mark Rutland recommended about arm-spe.c:
-
-"I would not touch this for now -- someone would have to go audit the
-TRMs to check that those other cores have the same encoding, and I think
-it'd be better to do that as a follow-up."
-
-That addresses this perf build warning:
-
-  Warning: Kernel ABI header differences:
-    diff -u tools/arch/arm64/include/asm/cputype.h arch/arm64/include/asm/cputype.h
-
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Besar Wicaksono <bwicaksono@nvidia.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/lkml/Zl8cYk0Tai2fs7aM@x1
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+[songmuchun@bytedance.com: only grab rcu lock when necessary, per Vlastimil]
+  Link: https://lkml.kernel.org/r/20240801024603.1865-1-songmuchun@bytedance.com
+Link: https://lkml.kernel.org/r/20240718083607.42068-1-songmuchun@bytedance.com
+Fixes: 0a97c01cd20b ("list_lru: allow explicit memcg and NUMA node selection")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/arch/arm64/include/asm/cputype.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/list_lru.c |   28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
---- a/tools/arch/arm64/include/asm/cputype.h
-+++ b/tools/arch/arm64/include/asm/cputype.h
-@@ -84,6 +84,9 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_NEOVERSE_V2	0xD4F
-+#define ARM_CPU_PART_CORTEX_X4		0xD82
-+#define ARM_CPU_PART_NEOVERSE_V3	0xD84
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -85,6 +85,7 @@ list_lru_from_memcg_idx(struct list_lru
+ }
+ #endif /* CONFIG_MEMCG_KMEM */
  
- #define APM_CPU_PART_POTENZA		0x000
++/* The caller must ensure the memcg lifetime. */
+ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
+ 		    struct mem_cgroup *memcg)
+ {
+@@ -109,14 +110,22 @@ EXPORT_SYMBOL_GPL(list_lru_add);
  
-@@ -153,6 +156,9 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
-+#define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
-+#define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+ bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
+ {
++	bool ret;
+ 	int nid = page_to_nid(virt_to_page(item));
+-	struct mem_cgroup *memcg = list_lru_memcg_aware(lru) ?
+-		mem_cgroup_from_slab_obj(item) : NULL;
+ 
+-	return list_lru_add(lru, item, nid, memcg);
++	if (list_lru_memcg_aware(lru)) {
++		rcu_read_lock();
++		ret = list_lru_add(lru, item, nid, mem_cgroup_from_slab_obj(item));
++		rcu_read_unlock();
++	} else {
++		ret = list_lru_add(lru, item, nid, NULL);
++	}
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(list_lru_add_obj);
+ 
++/* The caller must ensure the memcg lifetime. */
+ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
+ 		    struct mem_cgroup *memcg)
+ {
+@@ -139,11 +148,18 @@ EXPORT_SYMBOL_GPL(list_lru_del);
+ 
+ bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
+ {
++	bool ret;
+ 	int nid = page_to_nid(virt_to_page(item));
+-	struct mem_cgroup *memcg = list_lru_memcg_aware(lru) ?
+-		mem_cgroup_from_slab_obj(item) : NULL;
+ 
+-	return list_lru_del(lru, item, nid, memcg);
++	if (list_lru_memcg_aware(lru)) {
++		rcu_read_lock();
++		ret = list_lru_del(lru, item, nid, mem_cgroup_from_slab_obj(item));
++		rcu_read_unlock();
++	} else {
++		ret = list_lru_del(lru, item, nid, NULL);
++	}
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(list_lru_del_obj);
+ 
 
 
 
