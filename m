@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-66977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092D394F359
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D807A94F288
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BA411C21319
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56392B2254B
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4170186E20;
-	Mon, 12 Aug 2024 16:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9E0187347;
+	Mon, 12 Aug 2024 16:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yox48pEd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyJse4uV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29292C1A5;
-	Mon, 12 Aug 2024 16:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8881422A8;
+	Mon, 12 Aug 2024 16:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479397; cv=none; b=pYiqG9w1TODeRIO49g/Lbest+F6WT+gk97UztXctPIwV//nH9ZbAwHaE5t7RjA3h95ISk91QPY1Tsq7B80PUr5+UtZrzEFt7nj6ctMORhZTbqiWUjCQlmv57oH/UjbOaTam8xiYxkXmfLtyjkMC+3QBgDQxgYlOTPiyUh/R1Twc=
+	t=1723478839; cv=none; b=mHX1jKcu5l0ObQfGVM1QMgU1yy4ADaTk0J/Dz+XnjazjcPiqtxFze3JsOiilvV3/l0Il8xUjnbQZDY/22ILsq2yf6g7JWIRRdQOI9hHOxYaQyhbWCwxQ/frw9bTLPm8zPV33QGLFcnHofP600u169vsSUVpqg47jKeRUfjpjBx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479397; c=relaxed/simple;
-	bh=FSoGIVz9GpZSyNftuho6qufpIUb1EjA8fZRAjd9Z5HA=;
+	s=arc-20240116; t=1723478839; c=relaxed/simple;
+	bh=We13SJTMEsCgd7v3K4dK51ye7voYZEAgDR3lQ7n7eIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHPdzmDa56IwRfzZXrdD8v0F1yOJV4sjrydIAGplMrrkGuTH/3TCbPBf4vriu/QL21tICbUggHVgK3yPJ5SX3Dj4+6c9cVfaJ+yfyQG4/kLHILbOTTYv/drD8nhyKyhWLHZl6KWN0zvZKyfSpwp7T/QVuVGpQwb4nywe1c/Mu9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yox48pEd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C157C32782;
-	Mon, 12 Aug 2024 16:16:36 +0000 (UTC)
+	 MIME-Version; b=Iy437YRsmlQBLrJWCWk71acuh0IxRZyld+a7bdJbhcrg171W2s8f8sBDTjEV8oNdSzzqhqlyIbla7SqOEkn55PnnfrLk1iR2A1xsf5lwHtJ3F1AL3nl3n5npU6bLEhhvwbNm0cqsv9dFWSI7+mDa5AnW+93ZqTQuI2EGGMCOLBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyJse4uV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DC6C32782;
+	Mon, 12 Aug 2024 16:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479397;
-	bh=FSoGIVz9GpZSyNftuho6qufpIUb1EjA8fZRAjd9Z5HA=;
+	s=korg; t=1723478839;
+	bh=We13SJTMEsCgd7v3K4dK51ye7voYZEAgDR3lQ7n7eIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yox48pEdYet6ojSfRsXDS+w9p4ZWBsv6LzMW0GCMkAhgKuj5g8khkCPZzwNKW3j/C
-	 iaBFlegU57VxVPoXHWhBCZlPcyPU0GbnsQvBUfMprsL5hpDPylXvQHsWAmj7H+z2az
-	 NUym0+SkltGA5JA6xgXgE67vjjpncQnPz+zaRJtU=
+	b=RyJse4uVAUquI/lwORZxrTsXEBhSBX60GBEEylB+0Eymrya/PK3jHxh0Km/Oh7i9B
+	 9j+E2/2slwVEuZkr90KeqRj7S28gICdHwBfQW3M19FJPIPp3rzGD9pOqu+pM7sKGXU
+	 SP3dP9JRVbkaGgvNIbPQ9KtFfe6ru1cgaJtc3PKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Tao Chen <chen.dylane@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/189] arm64: barrier: Restore spec_bar() macro
-Date: Mon, 12 Aug 2024 18:02:11 +0200
-Message-ID: <20240812160135.028839965@linuxfoundation.org>
+Subject: [PATCH 6.1 051/150] Revert "bpftool: Mount bpffs when pinmaps path not under the bpffs"
+Date: Mon, 12 Aug 2024 18:02:12 +0200
+Message-ID: <20240812160127.136239973@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit ebfc726eae3f31bdb5fae1bbd74ef235d71046ca ]
+This reverts commit 65dd9cbafec2f6f7908cebcab0386f750fc352af which is
+commit da5f8fd1f0d393d5eaaba9ad8c22d1c26bb2bf9b upstream.
 
-Upcoming errata workarounds will need to use SB from C code. Restore the
-spec_bar() macro so that we can use SB.
+It breaks the build, so should be dropped.
 
-This is effectively a revert of commit:
-
-  4f30ba1cce36d413 ("arm64: barrier: Remove spec_bar() macro")
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240508081400.235362-2-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Link: https://lore.kernel.org/r/ZrSe8gZ_GyFv1knq@eldamar.lan
+Cc: Tao Chen <chen.dylane@gmail.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Quentin Monnet <qmo@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/barrier.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/bpf/bpftool/prog.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/barrier.h b/arch/arm64/include/asm/barrier.h
-index cf2987464c186..1ca947d5c9396 100644
---- a/arch/arm64/include/asm/barrier.h
-+++ b/arch/arm64/include/asm/barrier.h
-@@ -40,6 +40,10 @@
-  */
- #define dgh()		asm volatile("hint #6" : : : "memory")
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -1707,10 +1707,6 @@ static int load_with_options(int argc, c
+ 	}
  
-+#define spec_bar()	asm volatile(ALTERNATIVE("dsb nsh\nisb\n",		\
-+						 SB_BARRIER_INSN"nop\n",	\
-+						 ARM64_HAS_SB))
-+
- #ifdef CONFIG_ARM64_PSEUDO_NMI
- #define pmr_sync()						\
- 	do {							\
--- 
-2.43.0
-
+ 	if (pinmaps) {
+-		err = create_and_mount_bpffs_dir(pinmaps);
+-		if (err)
+-			goto err_unpin;
+-
+ 		err = bpf_object__pin_maps(obj, pinmaps);
+ 		if (err) {
+ 			p_err("failed to pin all maps");
 
 
 
