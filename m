@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-67075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C00994F3C9
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6383394F4E1
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B63441F21909
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20BB72823EF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5B7186E47;
-	Mon, 12 Aug 2024 16:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16CF187547;
+	Mon, 12 Aug 2024 16:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUYutvYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYDhrakY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB0F183CD9;
-	Mon, 12 Aug 2024 16:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803AD186E33;
+	Mon, 12 Aug 2024 16:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479723; cv=none; b=H2JNLCjUWQ4o9/3Co0qmvFJFGesUtC2sJRIVex1+qpYsJ8jf+NpxGMGmAuGWCl/R/vRpj7qRjaOBJxpQYZiAktQPdKJ7BRaBzAU7DVxvRBvMogbZggn4hr9KWKz/k5gb7haNQIFlQPELlQxsn6jC/Kl3NO5AahJ4LskSbmUI85o=
+	t=1723480542; cv=none; b=nOcAlosv28+Aq0FB5Pg2QVhD4ypkT3M9+bPK7rnuveME/GQZg13391HLp7jS4Jzd/x/fS+Ou0ix78vgpP2wBrmebZQC/S6OnhfGSjmDY92GZQtZDMWb4zpdZAtNcDPa5ECsYUKZ/tdqybFfzb6OIyRhQbB8qI49es2lnCLFCa1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479723; c=relaxed/simple;
-	bh=DHfLNkDCE97ItS3hSwz/4Vz8+cNi57K356UuPNOh1qs=;
+	s=arc-20240116; t=1723480542; c=relaxed/simple;
+	bh=uSmYhowr3VLNeGZk22vf9DNSWLb5+f8dnAlCbvsBFXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qw/JnMQTPhvnoO3n/s1zmhMsJSJMlpIg0HW/kpeYKlCHBMFkXsTXTJK8X79RSj+wqTtN8UTZIgFCerCq+tBmjJvdRXTs3k3NPBzGr/ak5cxJzJCZAMDUdKOKu3VKtXqJ3efDpQq8P6BIdPO9RZyq6kxDCTHj+jOLsesGU1vMy9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUYutvYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6CFC32782;
-	Mon, 12 Aug 2024 16:22:02 +0000 (UTC)
+	 MIME-Version; b=ZvAQuXoYk+a/jjuzlvDz7CdTttcJWlPAbnapw2XDty40UGJYpTJWeTEhWE82Gfb+kJwhll5DTkXIM0YPTwyT2WNr2v4KBzo0O3SgrvSPHxySiuRRmTV7rss481wCdQ9pnME9Kc4SpxcFlwLY2JIlEc0MmofG/6vQeNqD27NPxKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYDhrakY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED115C32782;
+	Mon, 12 Aug 2024 16:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479722;
-	bh=DHfLNkDCE97ItS3hSwz/4Vz8+cNi57K356UuPNOh1qs=;
+	s=korg; t=1723480542;
+	bh=uSmYhowr3VLNeGZk22vf9DNSWLb5+f8dnAlCbvsBFXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUYutvYACfx07Jluz1Vn7LGlbdj+F4Xc7gYH4DoRm7QbPEh7ui0ixDag1Nnr7NGu+
-	 bOz2NFQBZ1/9K9ZMvPNg1p9TtrcQJ4HZcwG08xx9ZughMjCMgRMKR88f47Cr+JlP74
-	 9gxh8l5Y20SsqU7I/hiOJLrpP052qcj+6pUlBa1U=
+	b=cYDhrakYLnqjGbWCov19+khWfcVitvLnshk4Yc9NMwZWAy+pYFi4aTzRR+wK0nSNT
+	 Zvl7o/LT527GMWQAfIr21fW6Q3tggkCE53+iL1FTUfbxFKXD08phgxKP1FlOdj95fN
+	 SXVVVHgFKPyJvEAwiiY7AlpSgF2y2dXdCsEN6R4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Rik van Riel <riel@surriel.com>,
-	Christopher Lameter <cl@linux.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Hutchings <ben@decadent.org.uk>
-Subject: [PATCH 6.6 173/189] mm: huge_memory: dont force huge page alignment on 32 bit
+	Waiman Long <longman@redhat.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 228/263] padata: Fix possible divide-by-0 panic in padata_mt_helper()
 Date: Mon, 12 Aug 2024 18:03:49 +0200
-Message-ID: <20240812160138.804793648@linuxfoundation.org>
+Message-ID: <20240812160155.265458738@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Waiman Long <longman@redhat.com>
 
-commit 4ef9ad19e17676b9ef071309bc62020e2373705d upstream.
+commit 6d45e1c948a8b7ed6ceddb14319af69424db730c upstream.
 
-commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
-boundaries") caused two issues [1] [2] reported on 32 bit system or compat
-userspace.
+We are hit with a not easily reproducible divide-by-0 panic in padata.c at
+bootup time.
 
-It doesn't make too much sense to force huge page alignment on 32 bit
-system due to the constrained virtual address space.
+  [   10.017908] Oops: divide error: 0000 1 PREEMPT SMP NOPTI
+  [   10.017908] CPU: 26 PID: 2627 Comm: kworker/u1666:1 Not tainted 6.10.0-15.el10.x86_64 #1
+  [   10.017908] Hardware name: Lenovo ThinkSystem SR950 [7X12CTO1WW]/[7X12CTO1WW], BIOS [PSE140J-2.30] 07/20/2021
+  [   10.017908] Workqueue: events_unbound padata_mt_helper
+  [   10.017908] RIP: 0010:padata_mt_helper+0x39/0xb0
+    :
+  [   10.017963] Call Trace:
+  [   10.017968]  <TASK>
+  [   10.018004]  ? padata_mt_helper+0x39/0xb0
+  [   10.018084]  process_one_work+0x174/0x330
+  [   10.018093]  worker_thread+0x266/0x3a0
+  [   10.018111]  kthread+0xcf/0x100
+  [   10.018124]  ret_from_fork+0x31/0x50
+  [   10.018138]  ret_from_fork_asm+0x1a/0x30
+  [   10.018147]  </TASK>
 
-[1] https://lore.kernel.org/linux-mm/d0a136a0-4a31-46bc-adf4-2db109a61672@kernel.org/
-[2] https://lore.kernel.org/linux-mm/CAJuCfpHXLdQy1a2B6xN2d7quTYwg2OoZseYPZTRpU0eHHKD-sQ@mail.gmail.com/
+Looking at the padata_mt_helper() function, the only way a divide-by-0
+panic can happen is when ps->chunk_size is 0.  The way that chunk_size is
+initialized in padata_do_multithreaded(), chunk_size can be 0 when the
+min_chunk in the passed-in padata_mt_job structure is 0.
 
-Link: https://lkml.kernel.org/r/20240118180505.2914778-1-shy828301@gmail.com
-Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Reported-by: Suren Baghdasaryan <surenb@google.com>
-Tested-by: Jiri Slaby <jirislaby@kernel.org>
-Tested-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Christopher Lameter <cl@linux.com>
+Fix this divide-by-0 panic by making sure that chunk_size will be at least
+1 no matter what the input parameters are.
+
+Link: https://lkml.kernel.org/r/20240806174647.1050398-1-longman@redhat.com
+Fixes: 004ed42638f4 ("padata: add basic support for multithreaded jobs")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Cc: Daniel Jordan <daniel.m.jordan@oracle.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ben Hutchings <ben@decadent.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/padata.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -37,6 +37,7 @@
- #include <linux/page_owner.h>
- #include <linux/sched/sysctl.h>
- #include <linux/memory-tiers.h>
-+#include <linux/compat.h>
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -517,6 +517,13 @@ void __init padata_do_multithreaded(stru
+ 	ps.chunk_size = max(ps.chunk_size, job->min_chunk);
+ 	ps.chunk_size = roundup(ps.chunk_size, job->align);
  
- #include <asm/tlb.h>
- #include <asm/pgalloc.h>
-@@ -601,6 +602,9 @@ static unsigned long __thp_get_unmapped_
- 	loff_t off_align = round_up(off, size);
- 	unsigned long len_pad, ret;
- 
-+	if (IS_ENABLED(CONFIG_32BIT) || in_compat_syscall())
-+		return 0;
++	/*
++	 * chunk_size can be 0 if the caller sets min_chunk to 0. So force it
++	 * to at least 1 to prevent divide-by-0 panic in padata_mt_helper().`
++	 */
++	if (!ps.chunk_size)
++		ps.chunk_size = 1U;
 +
- 	if (off_end <= off_align || (off_end - off_align) < size)
- 		return 0;
- 
+ 	list_for_each_entry(pw, &works, pw_list)
+ 		if (job->numa_aware) {
+ 			int old_node = atomic_read(&last_used_nid);
 
 
 
