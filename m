@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-66871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6615D94F2D8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FB794F4A0
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 105D91F2189E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EB1FB23EFF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D9F18784E;
-	Mon, 12 Aug 2024 16:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C17186E34;
+	Mon, 12 Aug 2024 16:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qenkEgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXtHh5nC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9283E183CD9;
-	Mon, 12 Aug 2024 16:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A739716D9B8;
+	Mon, 12 Aug 2024 16:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479058; cv=none; b=XyjVNVJWHUY/f1ZsVcansTsaZe5FDSHeTgw6Q7ALJ9vbs1Xz2/jQe8RlCYtNCw4EC1oHAttn7oilgcVtIZ+q49w+rbztS9Q7O2XVkUQ68VC1NpeyqPg0M9C/5aa0pe/q/QIzEjOcce+dNxBu8lHiTBW7DOgP0YlqDbr7L6eHbr0=
+	t=1723480355; cv=none; b=h7cnV/i1nmBBGfbKEiZPfwxRmKbzjiNsvYSqiD0v+B/7p2FYxY/U7bvyHz0OgS86w4yj42hDVeR0fsz6VJYnqH5HbWhqMM0FmOTsJ+c5BWnz+rsTWOS5Tl6gE0Z8/aFqIe0jKHzfINT6HaMq3TSup0h4lndLCsjZ/9Uqdi0so/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479058; c=relaxed/simple;
-	bh=VtD0MlGSKGT7lKOLOdo1EaZNVx5aIfYG+Ub05wH57jk=;
+	s=arc-20240116; t=1723480355; c=relaxed/simple;
+	bh=OroJP+kmB4ANraxsv8cGQ2V007qNc/gUfAPzJ2MuvrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ou01yUKcCZkg4VUBu4MsAQN0DBMzmxpPYIT3PaKE/+mAnNQ3053BSqIs10Xo1z8Ligny0/v6eksZEhZispqW8kMbrWFMg1wf6Zos6lWPGGk52Of1YPRkwz5VHACSJH29+CBX8zjTVzsSguSMMDQpYRrxSTQ/OGkwCw0645de32A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qenkEgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED525C32782;
-	Mon, 12 Aug 2024 16:10:57 +0000 (UTC)
+	 MIME-Version; b=PGFcms7HWnq0LA9zrdVOXfqLy7rdUBiYDEPFCLVTZot/hqzJ9apg24o207IFZbi0mGksEsvPhZCTOXL++UhpPoj/sZor2vx78zPGYncAfUob5vBp4jo0ACk2yNAqHE1FDo29i12BeS0YQy9jg6NHM4jyOzklxe5eHrV7ZaltW84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXtHh5nC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16001C32782;
+	Mon, 12 Aug 2024 16:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479058;
-	bh=VtD0MlGSKGT7lKOLOdo1EaZNVx5aIfYG+Ub05wH57jk=;
+	s=korg; t=1723480355;
+	bh=OroJP+kmB4ANraxsv8cGQ2V007qNc/gUfAPzJ2MuvrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0qenkEgk1WnbNrJcenx8vyglcGTJudLD9ZORZJwkTXA1HHFMsNsLKT5qnSTwr8WNm
-	 9RYeDtgZpTrG+gLYjd6wOb67jvI5/SXqsjbW+QRN6KHx3Ef9xM8Um8+zZVUz7v74s5
-	 KFKxOC5JpksYGh9yiKM7R6n8iNMCXBijOntv848k=
+	b=EXtHh5nCA2MvEE03O6Jw/mibiMMmPON0zESPTTg1alPdd+I5T/FvDk4XzhnR+aRQy
+	 JTE3beJSBxT5ywe5MbXRBQvSaBAU1H8wRGwdl5pqYtk7jefSPlBg3Y2zleQsbdBetW
+	 +j38zcWyuOJnw12esion2Z6dqwL6diKYPjPjEDh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 092/150] ALSA: hda/hdmi: Yet more pin fix for HP EliteDesk 800 G4
+	Jann Horn <jannh@google.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Jonathan Cavitt <Jonathan.cavitt@intel.com>
+Subject: [PATCH 6.10 172/263] drm/i915/gem: Fix Virtual Memory mapping boundaries calculation
 Date: Mon, 12 Aug 2024 18:02:53 +0200
-Message-ID: <20240812160128.714185454@linuxfoundation.org>
+Message-ID: <20240812160153.133997656@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,35 +66,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-commit 176fd1511dd9086ab4fa9323cb232177c6235288 upstream.
+commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
 
-HP EliteDesk 800 G4 (PCI SSID 103c:83e2) is another Kabylake machine
-where BIOS misses the HDMI pin initializations.  Add the quirk entry.
+Calculating the size of the mapped area as the lesser value
+between the requested size and the actual size does not consider
+the partial mapping offset. This can cause page fault access.
 
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240806064918.11132-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix the calculation of the starting and ending addresses, the
+total size is now deduced from the difference between the end and
+start addresses.
+
+Additionally, the calculations have been rewritten in a clearer
+and more understandable form.
+
+Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
+Reported-by: Jann Horn <jannh@google.com>
+Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: <stable@vger.kernel.org> # v4.9+
+Reviewed-by: Jann Horn <jannh@google.com>
+Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
+[Joonas: Add Requires: tag]
+Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
+(cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_hdmi.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c |   53 +++++++++++++++++++++++++++----
+ 1 file changed, 47 insertions(+), 6 deletions(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -1989,6 +1989,7 @@ static int hdmi_add_cvt(struct hda_codec
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -290,6 +290,41 @@ out:
+ 	return i915_error_to_vmf_fault(err);
  }
  
- static const struct snd_pci_quirk force_connect_list[] = {
-+	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
- 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
- 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
++static void set_address_limits(struct vm_area_struct *area,
++			       struct i915_vma *vma,
++			       unsigned long obj_offset,
++			       unsigned long *start_vaddr,
++			       unsigned long *end_vaddr)
++{
++	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
++	long start, end; /* memory boundaries */
++
++	/*
++	 * Let's move into the ">> PAGE_SHIFT"
++	 * domain to be sure not to lose bits
++	 */
++	vm_start = area->vm_start >> PAGE_SHIFT;
++	vm_end = area->vm_end >> PAGE_SHIFT;
++	vma_size = vma->size >> PAGE_SHIFT;
++
++	/*
++	 * Calculate the memory boundaries by considering the offset
++	 * provided by the user during memory mapping and the offset
++	 * provided for the partial mapping.
++	 */
++	start = vm_start;
++	start -= obj_offset;
++	start += vma->gtt_view.partial.offset;
++	end = start + vma_size;
++
++	start = max_t(long, start, vm_start);
++	end = min_t(long, end, vm_end);
++
++	/* Let's move back into the "<< PAGE_SHIFT" domain */
++	*start_vaddr = (unsigned long)start << PAGE_SHIFT;
++	*end_vaddr = (unsigned long)end << PAGE_SHIFT;
++}
++
+ static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
+ {
+ #define MIN_CHUNK_PAGES (SZ_1M >> PAGE_SHIFT)
+@@ -302,14 +337,18 @@ static vm_fault_t vm_fault_gtt(struct vm
+ 	struct i915_ggtt *ggtt = to_gt(i915)->ggtt;
+ 	bool write = area->vm_flags & VM_WRITE;
+ 	struct i915_gem_ww_ctx ww;
++	unsigned long obj_offset;
++	unsigned long start, end; /* memory boundaries */
+ 	intel_wakeref_t wakeref;
+ 	struct i915_vma *vma;
+ 	pgoff_t page_offset;
++	unsigned long pfn;
+ 	int srcu;
+ 	int ret;
+ 
+-	/* We don't use vmf->pgoff since that has the fake offset */
++	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
+ 	page_offset = (vmf->address - area->vm_start) >> PAGE_SHIFT;
++	page_offset += obj_offset;
+ 
+ 	trace_i915_gem_object_fault(obj, page_offset, true, write);
+ 
+@@ -402,12 +441,14 @@ retry:
+ 	if (ret)
+ 		goto err_unpin;
+ 
++	set_address_limits(area, vma, obj_offset, &start, &end);
++
++	pfn = (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
++	pfn += (start - area->vm_start) >> PAGE_SHIFT;
++	pfn += obj_offset - vma->gtt_view.partial.offset;
++
+ 	/* Finally, remap it using the new GTT offset */
+-	ret = remap_io_mapping(area,
+-			       area->vm_start + (vma->gtt_view.partial.offset << PAGE_SHIFT),
+-			       (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT,
+-			       min_t(u64, vma->size, area->vm_end - area->vm_start),
+-			       &ggtt->iomap);
++	ret = remap_io_mapping(area, start, pfn, end - start, &ggtt->iomap);
+ 	if (ret)
+ 		goto err_fence;
+ 
 
 
 
