@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786FA94F0BC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:53:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 542EB94F0BF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB91F1C20D5E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:53:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2072B233BB
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C48417BB03;
-	Mon, 12 Aug 2024 14:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5F854724;
+	Mon, 12 Aug 2024 14:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Glo+F3yk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdT1cPpk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A8D17995B
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22158153BF6
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474422; cv=none; b=C3lIHxhvdf5bh/yBAsWcn5Ht6oCJ+IDA4i85r0X7YzLNgLdm/I2wGxD317erBT3RtbOi5Eo399HrtzlPo/wjinOBVdivVnd+mD5tcvp19P40vz2J5sOnZIx/CxlJ9AxMeezjvGipX9D4YmYNa/0phk2EipAFLf2t8nqSLTnFfks=
+	t=1723474426; cv=none; b=r7RvX+abP4vO/BbbV08J49/wRwx5ruxZDS7yPIHa/cUx6D9NCvbcJ0wEHBgl5kfjcyO/8PPIe6fvNqR7VrBz4cRMecRyJHCIgbBaFyikKK2knAp8vt853S63OIFhIn7SX1VkuJXyQ/RuezHIobXJysi8/wEodA0X3+N9vprt0QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474422; c=relaxed/simple;
-	bh=ogNcvnsugB5L3Ve1Gvm6A6tRQs5hpPTGRUYc0/n8lVw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c5+mtMb8iNNbJ//VpfBqmHydVoUF+5xtQN71+9XdqXHhtpiEX+gGlr4fbtz9sHDDIeZPx/YYzJWGfgIWYW9hvfPbssyTIZgfU2NMzvb3lp+ThslCiC439pFt1z+ZusrLk5rva+wAEpmCHoxEO1WoB+8AHjO8khXix8nNCsrNr1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Glo+F3yk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5552FC4AF09;
-	Mon, 12 Aug 2024 14:53:42 +0000 (UTC)
+	s=arc-20240116; t=1723474426; c=relaxed/simple;
+	bh=GchTE/pcM9K5cBx/GOqnQC2jrwV6DRjCLnR/G4XXIPY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q3z6LoZDiocTnSTjOH28G4sNy9QWqqBmIjmrIQ+4141l/pdmJTS1FLfHC272O9/fS5DEA3umam5gDOnh+SuInIaxW5suJ7QGMAlAcGSKJsik20upqgNUlQ0oDW74RDPmamEa8uk/JoyPh2l0QGrXKagrypHC3QqOdR3laax4Ir0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdT1cPpk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929CAC32782;
+	Mon, 12 Aug 2024 14:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474422;
-	bh=ogNcvnsugB5L3Ve1Gvm6A6tRQs5hpPTGRUYc0/n8lVw=;
+	s=korg; t=1723474426;
+	bh=GchTE/pcM9K5cBx/GOqnQC2jrwV6DRjCLnR/G4XXIPY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Glo+F3yksN61FobakMTuCOYpd454AmJZnXUkN/MRgx13xWNbgOmx5pdkScs3IFLmN
-	 nuILptSH/eQTGgh4VUesN7kHwW35NeVAGvyS2AIB3g70M4NoPOn6ROnAFtknWAMSFl
-	 /k+liDRgoYSDenCpBuNsDvmcTiC3oVNfiKTcI/3A=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix FEC_READY write on DP LT" failed to apply to 6.1-stable tree
+	b=mdT1cPpkqHf7kM2uCVVl8JDW41hOO5y23hHoRXfkPBMKdJzjEkg0HbHjX+QIRIQ4l
+	 cE2R6gLHEe6vebWSaNxWUkwthK1LieE3LV3IrQflB1KXXbbiSkETxiiRAMe2ohRNXi
+	 7HbBCvK4ESYVk8VfObbPvqOQyvKaBAmzSmqhyK1c=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix FEC_READY write on DP LT" failed to apply to 6.6-stable tree
 To: ilya.bakoulin@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,wayne.lin@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 12 Aug 2024 16:51:11 +0200
-Message-ID: <2024081211-atypical-data-320c@gregkh>
+Message-ID: <2024081210-collie-staunch-198a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x a8baec4623aedf36d50767627f6eae5ebf07c6fb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081211-atypical-data-320c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081210-collie-staunch-198a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 a8baec4623ae ("drm/amd/display: Fix FEC_READY write on DP LT")
 a8ac994cf069 ("drm/amd/display: Disable error correction if it's not supported")
-788c6e2ce5c7 ("drm/amd/display: replace all dc_link function call in link with link functions")
-c69fc3d0de6c ("drm/amd/display: Reduce CPU busy-waiting for long delays")
-8e5cfe547bf3 ("drm/amd/display: upstream link_dp_dpia_bw.c")
-54618888d1ea ("drm/amd/display: break down dc_link.c")
-71d7e8904d54 ("drm/amd/display: Add HDMI manufacturer OUI and device id read")
-65a4cfb45e0e ("drm/amdgpu/display: remove duplicate include header in files")
-e322843e5e33 ("drm/amd/display: fix linux dp link lost handled only one time")
-0c2bfcc338eb ("drm/amd/display: Add Function declaration in dc_link")
-6ca7415f11af ("drm/amd/display: merge dc_link_dp into dc_link")
-de3fb390175b ("drm/amd/display: move dp cts functions from dc_link_dp to link_dp_cts")
-c5a31f178e35 ("drm/amd/display: move dp irq handler functions from dc_link_dp to link_dp_irq_handler")
-0078c924e733 ("drm/amd/display: move eDP panel control logic to link_edp_panel_control")
-bc33f5e5f05b ("drm/amd/display: create accessories, hwss and protocols sub folders in link")
-2daeb74b7d66 ("drm/amdgpu/display/mst: update mst_mgr relevant variable when long HPD")
-028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
-603a521ec279 ("drm/amd/display: remove duplicate included header files")
-bd3149014dff ("drm/amd/display: Decrease messaging about DP alt mode state to debug")
-d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
 
 thanks,
 
