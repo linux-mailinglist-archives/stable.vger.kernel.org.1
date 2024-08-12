@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D839E94F06C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:50:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEB394F06D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66A001F212C2
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FE80281DD3
 	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E35172773;
-	Mon, 12 Aug 2024 14:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFDA183CC8;
+	Mon, 12 Aug 2024 14:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtuRDmhY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvEaDkJ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38563181B80
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FE0183CBE
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474194; cv=none; b=mY/Z4WFtq0AXneQL5mAHrrUJ2SYyMdUUbrvm3SV+XdMPZb7n/KZHXzWeeoZ31gn0pBOywgBW4siUUkV/j9+9okCAbVuREktKJZ+Aj2kWTZXpJkCAOvG2xittJJmNUAAoEHfnGM0gcKzHqu0uRfTOS7c9AY7ecwpYuC/5fQh/ChI=
+	t=1723474198; cv=none; b=ZPw2+eyXIgetjvrYSM2KOjy4qGkcV2kxaN3MiCsi1vO2uc0Fnp/4O8wX081WZnVByJfMIjbtyrkeYM72Zlr3zGK7bV/HXI3sXDbYo+UKbZO/hO+K62zFLUazInG9l0I8NpVubn1fpBeVt11k90wqm3hzQhVy2L0CORkCJuEyU5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474194; c=relaxed/simple;
-	bh=dx+Vgh/fRqd4w/E6yctxPmB78yQXp3VdmLNn6dtPSG4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dqVtI0+ZabA/4lYWDJekLwtrZFdRO4aFVzvbj8Bqp8A42PXcVAA8W3IBIiIyDOTR1bQAscB2QYstRsI9Cr9xD4Pp+P7EyXkv3/j0UBZ5JdoqqEPLe6lboSUh4N+T4GgyPFkzNL8uFWF4vTHIaEnGws5Wx6yA8yTxN9BV35xoyxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtuRDmhY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9367CC4AF09;
-	Mon, 12 Aug 2024 14:49:53 +0000 (UTC)
+	s=arc-20240116; t=1723474198; c=relaxed/simple;
+	bh=u3N0udQCM4rMjLI3iSSzxpOKYL3Q6Vg+6KDm1ZbpsaA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=n/bsI94uE8+rDKxwOAKGAoYT5Iuta1vecDiEfwjiHg288fnc4zvrQlFlhNS26Lrp1Z/DLP9TzkDUHPOPDx0btnGK8LIrYKjO7yj7FfL0McW+gVXiNBevRrfapDAIxrLnbFq5Hh6OwiK47U7XW9CTW6vSFzcx3CqRjopv7NRTGCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvEaDkJ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0040C4AF09;
+	Mon, 12 Aug 2024 14:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474194;
-	bh=dx+Vgh/fRqd4w/E6yctxPmB78yQXp3VdmLNn6dtPSG4=;
+	s=korg; t=1723474197;
+	bh=u3N0udQCM4rMjLI3iSSzxpOKYL3Q6Vg+6KDm1ZbpsaA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KtuRDmhYB3EJ/PEugMpyQyb6YOCWlba6X0jO5RYDBfrHuUe4X8wS4IHLFZrWpzPp5
-	 JYUTfT9cJox/VSDy9IO8wTvmitpL6Tx0+5L4prax1WlFAdYzl3RwxEkw7dwQZWmdj1
-	 K1kxAAjWFML2+KYNX6Uua9VmvdSrhcjzCF24atJc=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix 1DLUT setting for NL SDR blending" failed to apply to 4.19-stable tree
-To: relja.vojvodic@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,ilya.bakoulin@amd.co,mario.limonciello@amd.com
+	b=yvEaDkJ6Djmhj8HbgFUcZc8ZPjxIJV3xR+ePYth7bWeSM5B+TtTXDNeLHhgC335hd
+	 31GuOEnypGHDmVLS8TjX51KumcGDD9MNIMBw83unfGRnuzVgte0hk/kLldl0wrpZSx
+	 6o7MN5QrMdcyXMdK2EFuKNG9HKUJhTrVK1F1XRKk=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix cursor issues with ODMs and" failed to apply to 6.6-stable tree
+To: nevenko.stupar@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,sridevi.arvindekar@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:48:29 +0200
-Message-ID: <2024081229-emphasize-affection-fa30@gregkh>
+Date: Mon, 12 Aug 2024 16:48:34 +0200
+Message-ID: <2024081234-streak-spectator-8acc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,41 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 58acedd7849a238d2d06430b030b365cf069cca8
+git cherry-pick -x adcd67e0bbea5fb504d6de50e5ccf74ebf96bc29
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081229-emphasize-affection-fa30@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081234-streak-spectator-8acc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-58acedd7849a ("drm/amd/display: Fix 1DLUT setting for NL SDR blending")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
+adcd67e0bbea ("drm/amd/display: Fix cursor issues with ODMs and magnification")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
 
 thanks,
@@ -96,54 +78,44 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 58acedd7849a238d2d06430b030b365cf069cca8 Mon Sep 17 00:00:00 2001
-From: Relja Vojvodic <relja.vojvodic@amd.com>
-Date: Fri, 14 Jun 2024 16:49:44 -0400
-Subject: [PATCH] drm/amd/display: Fix 1DLUT setting for NL SDR blending
+From adcd67e0bbea5fb504d6de50e5ccf74ebf96bc29 Mon Sep 17 00:00:00 2001
+From: Nevenko Stupar <nevenko.stupar@amd.com>
+Date: Thu, 13 Jun 2024 17:19:42 -0400
+Subject: [PATCH] drm/amd/display: Fix cursor issues with ODMs and
+ magnification
 
-[WHY]
-Enabling NL SDR blending caused the 1D LUTs to be set/populated in two
-different functions. This caused flickering as the LUT was set differently
-by the two functions, one of which should only have been modifying the 1D
-LUT if 3D LUT was enabled.
+[WHY & HOW]
+Adjust hot spot positions between ODM slices when cursor
+magnification is used.
 
-[HOW]
-Added check to only modify the 1D LUT in populate_mcm if 3D LUT was
-enabled.
-
-Added blend_tf function update for non-main planes if the 3D LUT path
-was taken.
-
-Reviewed-by: Ilya Bakoulin <ilya.bakoulin@amd.co>
+Reviewed-by: Sridevi Arvindekar <sridevi.arvindekar@amd.com>
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Relja Vojvodic <relja.vojvodic@amd.com>
+Signed-off-by: Nevenko Stupar <nevenko.stupar@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
 diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-index 5306c8c170c5..b5a02a8fc9d8 100644
+index 79a911e1a09a..5306c8c170c5 100644
 --- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
 +++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -502,7 +502,7 @@ void dcn401_populate_mcm_luts(struct dc *dc,
- 	dcn401_get_mcm_lut_xable_from_pipe_ctx(dc, pipe_ctx, &shaper_xable, &lut3d_xable, &lut1d_xable);
+@@ -1177,6 +1177,15 @@ void dcn401_set_cursor_position(struct pipe_ctx *pipe_ctx)
  
- 	/* 1D LUT */
--	if (mcm_luts.lut1d_func) {
-+	if (mcm_luts.lut1d_func && lut3d_xable != MCM_LUT_DISABLE) {
- 		memset(&m_lut_params, 0, sizeof(m_lut_params));
- 		if (mcm_luts.lut1d_func->type == TF_TYPE_HWPWL)
- 			m_lut_params.pwl = &mcm_luts.lut1d_func->pwl;
-@@ -674,7 +674,7 @@ bool dcn401_set_mcm_luts(struct pipe_ctx *pipe_ctx,
- 	mpc->funcs->set_movable_cm_location(mpc, MPCC_MOVABLE_CM_LOCATION_BEFORE, mpcc_id);
- 	pipe_ctx->plane_state->mcm_location = MPCC_MOVABLE_CM_LOCATION_BEFORE;
- 	// 1D LUT
--	if (!plane_state->mcm_lut1d_enable) {
-+	if (plane_state->mcm_shaper_3dlut_setting == DC_CM2_SHAPER_3DLUT_SETTING_BYPASS_ALL) {
- 		if (plane_state->blend_tf.type == TF_TYPE_HWPWL)
- 			lut_params = &plane_state->blend_tf.pwl;
- 		else if (plane_state->blend_tf.type == TF_TYPE_DISTRIBUTED_POINTS) {
+ 	if (x_pos < 0) {
+ 		pos_cpy.x_hotspot -= x_pos;
++		if ((odm_combine_on) && (hubp->curs_attr.attribute_flags.bits.ENABLE_MAGNIFICATION)) {
++			if (hubp->curs_attr.width <= 128) {
++				pos_cpy.x_hotspot /= 2;
++				pos_cpy.x_hotspot += 1;
++			} else {
++				pos_cpy.x_hotspot /= 2;
++				pos_cpy.x_hotspot += 2;
++			}
++		}
+ 		x_pos = 0;
+ 	}
+ 
 
 
