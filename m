@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB23094F4B5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:33:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561A394F2A7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1EF1C20D3F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:33:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 879341C211BD
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A8A187324;
-	Mon, 12 Aug 2024 16:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2573186E3D;
+	Mon, 12 Aug 2024 16:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNrjex1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMFYfWix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2729C187347;
-	Mon, 12 Aug 2024 16:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD39E183CA6;
+	Mon, 12 Aug 2024 16:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480414; cv=none; b=sezhJYu6J8MmsD6yBtp85PK3Pz2CsULWTavfDCcSNSSZSPa04YTER3Ojhthi5GdfkUEkyn9YY4+SGQNn19bnkf6ZPrfvRzUZG3FzvtElPfPCWhr5GVx44jRsnM/L4qTwyiBgAnWeQ5G+eXHXePZKJu8SPMtdoJFwsgHy2fKFnoY=
+	t=1723478921; cv=none; b=T0+K1DRASU7oNk2hxmwfyJxpC1mDyp+4amnFuVWcRx1Jcama6Is6/u5TP/cxkxD6KfeY4EYr64pwMnMZiQ9ATS91MP+X3Au1Zxs9DuPeVutul1aoZZg/jetR9uaDXNVDReoGy3vmKb1EOcc/QQzasR535NKheEv3yHALsLmQdVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480414; c=relaxed/simple;
-	bh=3LgyD0gkT55QUh2aHBFmL/fz905xIshsbgFXmwdF5mY=;
+	s=arc-20240116; t=1723478921; c=relaxed/simple;
+	bh=nSCGLv+hEr1enn6ZdkHMxhTfM/IlZBmz5W/+M9oUH3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8+qHgvB8+AD4p/QdJrEq9WoQ7i/DZvo0swUhnUOz5Eplzj+omJgomPJ+cKkDbwW9yROH5JJGQZc59NwWu/8gZ5yJwZ8MnP2Ewbbx5J4MEtXLb4YD4bRGiuyQ3WLdqWGnhlAP2Fe9j8/Zcbqtth7VmeBomhEsfVKd9mhBmqXcp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNrjex1o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DA1C32782;
-	Mon, 12 Aug 2024 16:33:33 +0000 (UTC)
+	 MIME-Version; b=nZ9xeepPpBNhfcjxYhumFuIexqOlBn2SLGXD2oHhIjk8vc5dq1MRmwGsvuK+bpulRbM2wJiyi91rNJdO8IQ8zdI+qCc55GOwHpjjA1orkciaUxaXNSm4cAw2Ef56W9P46TXMCvZkH0kwsvVOenx1UcW1E/7mFuCL8SYgN6aIwxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMFYfWix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D52DC4AF0D;
+	Mon, 12 Aug 2024 16:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480414;
-	bh=3LgyD0gkT55QUh2aHBFmL/fz905xIshsbgFXmwdF5mY=;
+	s=korg; t=1723478921;
+	bh=nSCGLv+hEr1enn6ZdkHMxhTfM/IlZBmz5W/+M9oUH3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNrjex1ozg4+mTJy1yNTEVoUx311P6Wl/HV1jYxeIwVuUTmNmmCdzPjy4b61iZelT
-	 4x+3mjF77lwmV0n/zW2bQrb+neh0DHpYDw5XdUHO6c91VolPfDuDmNAhnhrbxBk+F+
-	 egRtAPmo58oNmE5AF6vWUuKtNpOPDfPE20SGpfQk=
+	b=WMFYfWixGjx3GVnrzn2Cgi9weq14FzcdzQ2jSN7XN9RE9N8X5KlwC32zAovLsVidh
+	 AilpwerJS7CP/ZIfCBeIrF+bdOAk3lqQtaWePvSu2EroC6+ZjaiQCUydm0tWpZtSDW
+	 KkyOwFMnYZ1dlBaDKXvYVLKWngF6J9FXVL9/zOwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Curtis Malainey <cujomalainey@chromium.org>,
+	Wojciech Macek <wmacek@google.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 157/263] i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume
+Subject: [PATCH 6.1 077/150] ASoC: SOF: Remove libraries from topology lookups
 Date: Mon, 12 Aug 2024 18:02:38 +0200
-Message-ID: <20240812160152.557792378@linuxfoundation.org>
+Message-ID: <20240812160128.146904363@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Curtis Malainey <cujomalainey@chromium.org>
 
-[ Upstream commit 9ba48db9f77ce0001dbb882476fa46e092feb695 ]
+[ Upstream commit 7354eb7f1558466e92e926802d36e69e42938ea9 ]
 
-Add the missing geni_icc_disable() before return in
-geni_i2c_runtime_resume().
+Default firmware shipped in open source are not licensed for 3P
+libraries, therefore topologies should not reference them.
 
-Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+If a OS wants to use 3P (that they have licensed) then they should use
+the appropriate topology override mechanisms.
+
+Fixes: 8a7d5d85ed2161 ("ASoC: SOF: mediatek: mt8195: Add devicetree support to select topologies")
+Signed-off-by: Curtis Malainey <cujomalainey@chromium.org>
+Cc: Wojciech Macek <wmacek@google.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20240731212153.921327-1-cujomalainey@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-qcom-geni.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/sof/mediatek/mt8195/mt8195.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-index 78f43648e9f3a..365e37bba0f33 100644
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -992,6 +992,7 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
- 	ret = geni_se_resources_on(&gi2c->se);
- 	if (ret) {
- 		clk_disable_unprepare(gi2c->core_clk);
-+		geni_icc_disable(&gi2c->se);
- 		return ret;
- 	}
- 
+diff --git a/sound/soc/sof/mediatek/mt8195/mt8195.c b/sound/soc/sof/mediatek/mt8195/mt8195.c
+index 3c81e84fcecfa..53cadbe8a05cc 100644
+--- a/sound/soc/sof/mediatek/mt8195/mt8195.c
++++ b/sound/soc/sof/mediatek/mt8195/mt8195.c
+@@ -662,7 +662,7 @@ static struct snd_sof_dsp_ops sof_mt8195_ops = {
+ static struct snd_sof_of_mach sof_mt8195_machs[] = {
+ 	{
+ 		.compatible = "google,tomato",
+-		.sof_tplg_filename = "sof-mt8195-mt6359-rt1019-rt5682-dts.tplg"
++		.sof_tplg_filename = "sof-mt8195-mt6359-rt1019-rt5682.tplg"
+ 	}, {
+ 		.compatible = "mediatek,mt8195",
+ 		.sof_tplg_filename = "sof-mt8195.tplg"
 -- 
 2.43.0
 
