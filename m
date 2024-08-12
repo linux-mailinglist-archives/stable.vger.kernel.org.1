@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-66940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E0794F32F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:15:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8108B94F440
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7168286624
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:15:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3F6A1C20DF7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542A018754D;
-	Mon, 12 Aug 2024 16:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18910186E34;
+	Mon, 12 Aug 2024 16:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoSwq45z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAa85TRZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DD7186E20;
-	Mon, 12 Aug 2024 16:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC57E134AC;
+	Mon, 12 Aug 2024 16:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479280; cv=none; b=t2jiGtgCpctdi2toBzXIXKaao25x7e+T9ADSko9TWvpvSfo8GMpRk1Nwqh87+qj63NK7Nywl44Lu9se9hPgRYQsvRp2Q06/rrhMDWiwMd2sYAm3SMhFQlfetb7ApwAsVZ2tXn63zrdL2Un3EQjYS/0N+zKDmtI6MKQ+xD3VQrt8=
+	t=1723480087; cv=none; b=SjmaGD1ApBP2GkrkE0dAmRfrLpREkikC84coTKrNRTG/gn5p69ClORGrc7+4nca08z8k/ug25W6aoaDMw8eefbX6bHAT7sB17oWwZLEQYVGXlMn7TkOj4bKmtbszRQj/Hx07XEkPnjGHpjSffemyMyX/J9+R2KtTkOCvl607u7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479280; c=relaxed/simple;
-	bh=LgesOqzH2O5iHTX/jjhtwT+EZJNrYIqKo+FWE6TC6NU=;
+	s=arc-20240116; t=1723480087; c=relaxed/simple;
+	bh=TwxSjojvqDsnQerN933zO147Kj2x9cXt9vmEUK2/dq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPsf0IzVXGQwqIW+epmuQQ0OGItIuJuDjKsmNkbKKygfkmAtuFw3+nTQFzYFVpfhHCL7df6imFD9++L+zIIEqnIqPCikpTKFo5EmBvE7tzO5pwCpjBPPeZrFbNkD7s1cDAVJgkzIANkc+Yvjt4CLSoOhcKcX0fpN94YinsG/mHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoSwq45z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7DBC32782;
-	Mon, 12 Aug 2024 16:14:39 +0000 (UTC)
+	 MIME-Version; b=rgUdb4DFG/ik0nb2Ia0uC8Yk3gIHn1YBVEo0zA8qubfJ2eefMW8jWooO+pjHFcvnCmjkxhKu7+PEn5TQAlmFPZb2XvBpnUR6Law581pV0dS3MTTKuYVwnIGN014fgmNFGf6wTgB8wcJip6biRcEI21YuNbCul44W4NNmOc52w04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAa85TRZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53789C32782;
+	Mon, 12 Aug 2024 16:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479279;
-	bh=LgesOqzH2O5iHTX/jjhtwT+EZJNrYIqKo+FWE6TC6NU=;
+	s=korg; t=1723480087;
+	bh=TwxSjojvqDsnQerN933zO147Kj2x9cXt9vmEUK2/dq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DoSwq45zSQ478oSIYfXjCWHLBt3GKWiN1FgbtrGmX0sDtKqujyvHKTgRFqgrsVQWa
-	 AzrK9cj1mmQ+377i/asThg5WSTtgtaf1RNe1W23asJys6rqRjK47OLudALGhUGGfHn
-	 QSrshz+AbdkUA7WPl61DcdRTBPUK7D8J60XBODrU=
+	b=hAa85TRZwhepTOv34ak5JizCfaK7KfRv2spcx2AL42esdiL+iOrzCsE2mJkSzuK5W
+	 HVkSdAyX5/zfYdTFdtMFkD5OFYzyDwWxQi+73/MV02q3HBWFFplE69AyUboGzf/4MK
+	 oQUxCYJF4efWXJKYTnjsDb8Ayazxuf4FXzgAIrjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/189] selftests/bpf: Fix send_signal test with nested CONFIG_PARAVIRT
+Subject: [PATCH 6.10 093/263] drm/amdgpu/pm: Fix the null pointer dereference for smu7
 Date: Mon, 12 Aug 2024 18:01:34 +0200
-Message-ID: <20240812160133.613430691@linuxfoundation.org>
+Message-ID: <20240812160150.105246361@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 7015843afcaf68c132784c89528dfddc0005e483 ]
+[ Upstream commit c02c1960c93eede587576625a1221205a68a904f ]
 
-Alexei reported that send_signal test may fail with nested CONFIG_PARAVIRT
-configs. In this particular case, the base VM is AMD with 166 cpus, and I
-run selftests with regular qemu on top of that and indeed send_signal test
-failed. I also tried with an Intel box with 80 cpus and there is no issue.
+optimize the code to avoid pass a null pointer (hwmgr->backend)
+to function smu7_update_edc_leakage_table.
 
-The main qemu command line includes:
-
-  -enable-kvm -smp 16 -cpu host
-
-The failure log looks like:
-
-  $ ./test_progs -t send_signal
-  [   48.501588] watchdog: BUG: soft lockup - CPU#9 stuck for 26s! [test_progs:2225]
-  [   48.503622] Modules linked in: bpf_testmod(O)
-  [   48.503622] CPU: 9 PID: 2225 Comm: test_progs Tainted: G           O       6.9.0-08561-g2c1713a8f1c9-dirty #69
-  [   48.507629] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014
-  [   48.511635] RIP: 0010:handle_softirqs+0x71/0x290
-  [   48.511635] Code: [...] 10 0a 00 00 00 31 c0 65 66 89 05 d5 f4 fa 7e fb bb ff ff ff ff <49> c7 c2 cb
-  [   48.518527] RSP: 0018:ffffc90000310fa0 EFLAGS: 00000246
-  [   48.519579] RAX: 0000000000000000 RBX: 00000000ffffffff RCX: 00000000000006e0
-  [   48.522526] RDX: 0000000000000006 RSI: ffff88810791ae80 RDI: 0000000000000000
-  [   48.523587] RBP: ffffc90000fabc88 R08: 00000005a0af4f7f R09: 0000000000000000
-  [   48.525525] R10: 0000000561d2f29c R11: 0000000000006534 R12: 0000000000000280
-  [   48.528525] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-  [   48.528525] FS:  00007f2f2885cd00(0000) GS:ffff888237c40000(0000) knlGS:0000000000000000
-  [   48.531600] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [   48.535520] CR2: 00007f2f287059f0 CR3: 0000000106a28002 CR4: 00000000003706f0
-  [   48.537538] Call Trace:
-  [   48.537538]  <IRQ>
-  [   48.537538]  ? watchdog_timer_fn+0x1cd/0x250
-  [   48.539590]  ? lockup_detector_update_enable+0x50/0x50
-  [   48.539590]  ? __hrtimer_run_queues+0xff/0x280
-  [   48.542520]  ? hrtimer_interrupt+0x103/0x230
-  [   48.544524]  ? __sysvec_apic_timer_interrupt+0x4f/0x140
-  [   48.545522]  ? sysvec_apic_timer_interrupt+0x3a/0x90
-  [   48.547612]  ? asm_sysvec_apic_timer_interrupt+0x1a/0x20
-  [   48.547612]  ? handle_softirqs+0x71/0x290
-  [   48.547612]  irq_exit_rcu+0x63/0x80
-  [   48.551585]  sysvec_apic_timer_interrupt+0x75/0x90
-  [   48.552521]  </IRQ>
-  [   48.553529]  <TASK>
-  [   48.553529]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-  [   48.555609] RIP: 0010:finish_task_switch.isra.0+0x90/0x260
-  [   48.556526] Code: [...] 9f 58 0a 00 00 48 85 db 0f 85 89 01 00 00 4c 89 ff e8 53 d9 bd 00 fb 66 90 <4d> 85 ed 74
-  [   48.562524] RSP: 0018:ffffc90000fabd38 EFLAGS: 00000282
-  [   48.563589] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff83385620
-  [   48.563589] RDX: ffff888237c73ae4 RSI: 0000000000000000 RDI: ffff888237c6fd00
-  [   48.568521] RBP: ffffc90000fabd68 R08: 0000000000000000 R09: 0000000000000000
-  [   48.569528] R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881009d0000
-  [   48.573525] R13: ffff8881024e5400 R14: ffff88810791ae80 R15: ffff888237c6fd00
-  [   48.575614]  ? finish_task_switch.isra.0+0x8d/0x260
-  [   48.576523]  __schedule+0x364/0xac0
-  [   48.577535]  schedule+0x2e/0x110
-  [   48.578555]  pipe_read+0x301/0x400
-  [   48.579589]  ? destroy_sched_domains_rcu+0x30/0x30
-  [   48.579589]  vfs_read+0x2b3/0x2f0
-  [   48.579589]  ksys_read+0x8b/0xc0
-  [   48.583590]  do_syscall_64+0x3d/0xc0
-  [   48.583590]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  [   48.586525] RIP: 0033:0x7f2f28703fa1
-  [   48.587592] Code: [...] 00 00 00 0f 1f 44 00 00 f3 0f 1e fa 80 3d c5 23 14 00 00 74 13 31 c0 0f 05 <48> 3d 00 f0
-  [   48.593534] RSP: 002b:00007ffd90f8cf88 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-  [   48.595589] RAX: ffffffffffffffda RBX: 00007ffd90f8d5e8 RCX: 00007f2f28703fa1
-  [   48.595589] RDX: 0000000000000001 RSI: 00007ffd90f8cfb0 RDI: 0000000000000006
-  [   48.599592] RBP: 00007ffd90f8d2f0 R08: 0000000000000064 R09: 0000000000000000
-  [   48.602527] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  [   48.603589] R13: 00007ffd90f8d608 R14: 00007f2f288d8000 R15: 0000000000f6bdb0
-  [   48.605527]  </TASK>
-
-In the test, two processes are communicating through pipe. Further debugging
-with strace found that the above splat is triggered as read() syscall could
-not receive the data even if the corresponding write() syscall in another
-process successfully wrote data into the pipe.
-
-The failed subtest is "send_signal_perf". The corresponding perf event has
-sample_period 1 and config PERF_COUNT_SW_CPU_CLOCK. sample_period 1 means every
-overflow event will trigger a call to the BPF program. So I suspect this may
-overwhelm the system. So I increased the sample_period to 100,000 and the test
-passed. The sample_period 10,000 still has the test failed.
-
-In other parts of selftest, e.g., [1], sample_freq is used instead. So I
-decided to use sample_freq = 1,000 since the test can pass as well.
-
-  [1] https://lore.kernel.org/bpf/20240604070700.3032142-1-song@kernel.org/
-
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240605201203.2603846-1-yonghong.song@linux.dev
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/send_signal.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 50 +++++++++----------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/send_signal.c b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-index b15b343ebb6b1..9adcda7f1fedc 100644
---- a/tools/testing/selftests/bpf/prog_tests/send_signal.c
-+++ b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-@@ -156,7 +156,8 @@ static void test_send_signal_tracepoint(bool signal_thread)
- static void test_send_signal_perf(bool signal_thread)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 1fcd4451001fa..5d0c281f2378c 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2957,6 +2957,7 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
+ 
+ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
  {
- 	struct perf_event_attr attr = {
--		.sample_period = 1,
-+		.freq = 1,
-+		.sample_freq = 1000,
- 		.type = PERF_TYPE_SOFTWARE,
- 		.config = PERF_COUNT_SW_CPU_CLOCK,
- 	};
++	struct amdgpu_device *adev = hwmgr->adev;
+ 	struct smu7_hwmgr *data;
+ 	int result = 0;
+ 
+@@ -2993,40 +2994,37 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 	/* Initalize Dynamic State Adjustment Rule Settings */
+ 	result = phm_initializa_dynamic_state_adjustment_rule_settings(hwmgr);
+ 
+-	if (0 == result) {
+-		struct amdgpu_device *adev = hwmgr->adev;
++	if (result)
++		goto fail;
+ 
+-		data->is_tlu_enabled = false;
++	data->is_tlu_enabled = false;
+ 
+-		hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
++	hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
+ 							SMU7_MAX_HARDWARE_POWERLEVELS;
+-		hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
+-		hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
++	hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
++	hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
+ 
+-		data->pcie_gen_cap = adev->pm.pcie_gen_mask;
+-		if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
+-			data->pcie_spc_cap = 20;
+-		else
+-			data->pcie_spc_cap = 16;
+-		data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
+-
+-		hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
+-/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
+-		hwmgr->platform_descriptor.clockStep.engineClock = 500;
+-		hwmgr->platform_descriptor.clockStep.memoryClock = 500;
+-		smu7_thermal_parameter_init(hwmgr);
+-	} else {
+-		/* Ignore return value in here, we are cleaning up a mess. */
+-		smu7_hwmgr_backend_fini(hwmgr);
+-	}
++	data->pcie_gen_cap = adev->pm.pcie_gen_mask;
++	if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
++		data->pcie_spc_cap = 20;
++	else
++		data->pcie_spc_cap = 16;
++	data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
++
++	hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
++	/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
++	hwmgr->platform_descriptor.clockStep.engineClock = 500;
++	hwmgr->platform_descriptor.clockStep.memoryClock = 500;
++	smu7_thermal_parameter_init(hwmgr);
+ 
+ 	result = smu7_update_edc_leakage_table(hwmgr);
+-	if (result) {
+-		smu7_hwmgr_backend_fini(hwmgr);
+-		return result;
+-	}
++	if (result)
++		goto fail;
+ 
+ 	return 0;
++fail:
++	smu7_hwmgr_backend_fini(hwmgr);
++	return result;
+ }
+ 
+ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
 -- 
 2.43.0
 
