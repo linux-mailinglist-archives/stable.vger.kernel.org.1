@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-67013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BFC194F382
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A9394F49A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13B9FB255CA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCCE21F21A07
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B466186E34;
-	Mon, 12 Aug 2024 16:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E617E187324;
+	Mon, 12 Aug 2024 16:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAIuqrHm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQL1/UUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A879183CC4;
-	Mon, 12 Aug 2024 16:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DA92C1A5;
+	Mon, 12 Aug 2024 16:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479513; cv=none; b=EcPJhwirlZN7tmZi30tPq+OgCr1Bso8gWyh8Km9JaUpHpAJakZ4nneYFhbes8kX02DRap2Ekoo2VNeyZSppIxeX5hwUSvUffwsT5KK/aShn8G4TRTTDlRz7iTc59uHKYIqJT+0cTRXrZbCsMEjNVmzrQGblb/hoLq2u2j8Ph/tU=
+	t=1723480335; cv=none; b=IevfvoJ9g9bDW3M91aFa2g+vP33Z4ji/rcM4R8/4vI92UN0pyGJmbcOBUgNwnXpUA8Ahn7jaUiNa6HrPNJkxKEJ9Eui3dEaXetsKzBpzrzxXJVq5nm7wUYG8RVo/ojOp5/FM8r9uaalTsXCx1QJ7Akiw3RFFp/n8cz1y5TCeDJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479513; c=relaxed/simple;
-	bh=iuM2L/ZSWQlaPWJz/i8ot/uRxNKti77mtZ14Ah+wb3Q=;
+	s=arc-20240116; t=1723480335; c=relaxed/simple;
+	bh=SZ+3FSK9IbgDl7XeTUgwQ8wQHXJupELMSJFe8EVbyB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bk+0ESjdcyKj5OqKC/5Z6qqBrtOHLps9OtHYf05CMnTh3eUNF+ALJ9L9utk+i6h6cpxBHmQoN0j6yjwANGJ6NIWgLqYJkcan82oFKUmrawDMts8lVSnYB+3ksTZFh9YEsd9wVjdJIBIz6P+uB87/oC+pfJjLP7p2F4Gkb4G3a3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAIuqrHm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B450AC32782;
-	Mon, 12 Aug 2024 16:18:32 +0000 (UTC)
+	 MIME-Version; b=P2ujGn8oSizP4Gntqf30ERcYVX+oQgxEG6cUoyz5EBIcvyiNfnKGuenKKlAumUJMG8jPHpfU8mlCc4EsnsYg6NzdN+LwaG5qqwARgCqN+JddPxoRNfvdy7sghQeWrFldvYwn9kdfKulpPB2MJ+Llm+HipsJK5/9ghmzU2AA2ni0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQL1/UUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9B1C32782;
+	Mon, 12 Aug 2024 16:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479513;
-	bh=iuM2L/ZSWQlaPWJz/i8ot/uRxNKti77mtZ14Ah+wb3Q=;
+	s=korg; t=1723480335;
+	bh=SZ+3FSK9IbgDl7XeTUgwQ8wQHXJupELMSJFe8EVbyB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MAIuqrHmerXKuQIuWNwxt+JAFjZr6d9bymCL7WnhoUUX/76FRLVhzqORuJWnxZCyq
-	 TK0uOkDA6blFTzWus7ZUTupI55d66Ci25KKXr/x4orugpzLVGxYcKz8DRzeBKROme1
-	 3V80FYSzFqxk5+xZHC6ZsLPut0r5S8RzWhkYgyy4=
+	b=OQL1/UUr64EfQNFf+ZRr8OsXi1Fwm4QU2AwSgU2sqGeIV9bst2+aTsM5aksKCUX+J
+	 ZqHFqKOmtw3CmgkH4qykdcOelhBzegvzgK1BsSIkiHol8I5No46jzofUZGU1ATOSg0
+	 NH7BWuDnL659wEUezXTeUKZvdoCwvRbLeT60qc6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	Jonathan Cavitt <jonathan.cavitt@intel.com>,
 	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.6 111/189] drm/i915/gem: Adjust vma offset for framebuffer mmap offset
-Date: Mon, 12 Aug 2024 18:02:47 +0200
-Message-ID: <20240812160136.414248564@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 167/263] drm/xe: Take ref to VM in delayed snapshot
+Date: Mon, 12 Aug 2024 18:02:48 +0200
+Message-ID: <20240812160152.940628056@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit 1ac5167b3a90c9820daa64cc65e319b2d958d686 upstream.
+[ Upstream commit 642dfc9d5964b26f66fa6c28ce2861e11f9232aa ]
 
-When mapping a framebuffer object, the virtual memory area (VMA)
-offset ('vm_pgoff') should be adjusted by the start of the
-'vma_node' associated with the object. This ensures that the VMA
-offset is correctly aligned with the corresponding offset within
-the GGTT aperture.
+Kernel BO's don't take a ref to the VM, we need the VM for the
+delayed snapshot, so take a ref to the VM in delayed snapshot.
 
-Increment vm_pgoff by the start of the vma_node with the offset=
-provided by the user.
+v2:
+ - Check for lrc_bo before taking a VM ref (CI)
+ - Check lrc_bo->vm before taking / dropping a VM ref (CI)
+ - Drop VM in xe_lrc_snapshot_free
+v5:
+ - Fix commit message wording (Johnathan)
 
-Suggested-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Fixes: 47058633d9c5 ("drm/xe: Move lrc snapshot capturing to xe_lrc.c")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v4.9+
-[Joonas: Add Cc: stable]
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-2-andi.shyti@linux.intel.com
-(cherry picked from commit 60a2066c50058086510c91f404eb582029650970)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240801154118.2547543-2-matthew.brost@intel.com
+(cherry picked from commit c3bc97d2f102ddd5a8341eeb2dbae2a3e98bb46a)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_mman.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/xe/xe_lrc.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -1129,6 +1129,8 @@ int i915_gem_fb_mmap(struct drm_i915_gem
- 		mmo = mmap_offset_attach(obj, mmap_type, NULL);
- 		if (IS_ERR(mmo))
- 			return PTR_ERR(mmo);
-+
-+		vma->vm_pgoff += drm_vma_node_start(&mmo->vma_node);
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
+index 760f38992ff07..d7bf7bc9dc145 100644
+--- a/drivers/gpu/drm/xe/xe_lrc.c
++++ b/drivers/gpu/drm/xe/xe_lrc.c
+@@ -1354,6 +1354,9 @@ struct xe_lrc_snapshot *xe_lrc_snapshot_capture(struct xe_lrc *lrc)
+ 	if (!snapshot)
+ 		return NULL;
  
- 	/*
++	if (lrc->bo && lrc->bo->vm)
++		xe_vm_get(lrc->bo->vm);
++
+ 	snapshot->context_desc = xe_lrc_ggtt_addr(lrc);
+ 	snapshot->head = xe_lrc_ring_head(lrc);
+ 	snapshot->tail.internal = lrc->ring.tail;
+@@ -1370,12 +1373,14 @@ struct xe_lrc_snapshot *xe_lrc_snapshot_capture(struct xe_lrc *lrc)
+ void xe_lrc_snapshot_capture_delayed(struct xe_lrc_snapshot *snapshot)
+ {
+ 	struct xe_bo *bo;
++	struct xe_vm *vm;
+ 	struct iosys_map src;
+ 
+ 	if (!snapshot)
+ 		return;
+ 
+ 	bo = snapshot->lrc_bo;
++	vm = bo->vm;
+ 	snapshot->lrc_bo = NULL;
+ 
+ 	snapshot->lrc_snapshot = kvmalloc(snapshot->lrc_size, GFP_KERNEL);
+@@ -1395,6 +1400,8 @@ void xe_lrc_snapshot_capture_delayed(struct xe_lrc_snapshot *snapshot)
+ 	dma_resv_unlock(bo->ttm.base.resv);
+ put_bo:
+ 	xe_bo_put(bo);
++	if (vm)
++		xe_vm_put(vm);
+ }
+ 
+ void xe_lrc_snapshot_print(struct xe_lrc_snapshot *snapshot, struct drm_printer *p)
+@@ -1440,7 +1447,13 @@ void xe_lrc_snapshot_free(struct xe_lrc_snapshot *snapshot)
+ 		return;
+ 
+ 	kvfree(snapshot->lrc_snapshot);
+-	if (snapshot->lrc_bo)
++	if (snapshot->lrc_bo) {
++		struct xe_vm *vm;
++
++		vm = snapshot->lrc_bo->vm;
+ 		xe_bo_put(snapshot->lrc_bo);
++		if (vm)
++			xe_vm_put(vm);
++	}
+ 	kfree(snapshot);
+ }
+-- 
+2.43.0
+
 
 
 
