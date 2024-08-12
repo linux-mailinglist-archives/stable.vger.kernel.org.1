@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-67091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DA894F3DA
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:23:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AB594F4F2
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2291B211DC
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:23:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E130B1F218EC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD111862BD;
-	Mon, 12 Aug 2024 16:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C86183CA6;
+	Mon, 12 Aug 2024 16:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4qiJMez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBi0s/BZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C0A134AC;
-	Mon, 12 Aug 2024 16:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BB01494B8;
+	Mon, 12 Aug 2024 16:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479778; cv=none; b=MNodRSC4cDy5vfiOumWTwnopCJvNFV5LPDzvu9c80UbzPFCTOiL1wmyN0MDcmi+IXxpbBpE05e664AY00KdVOMA/p3DPu8IVFFCOUCEE+Q7COxuTYduC/K0K9gjBGUyUz1CSD9wGRRPPtlThnPICqsNMgu5pE17eXTHulch+jKo=
+	t=1723480594; cv=none; b=IKIfnwv9P1qmj4zqIagB6/ErOr/bNxVv2ljriP7lnhdd4A/X6L8HZmu1YhS6uki7hM5Bi1pzER6fgjaoj3FLf5hhr9awUUcEcJWaWQrosu0c6OuBBY2XLIZAI8In1jTR4212QAbmA/eDZ1E60DLMFBkvS4R9nkxRkxLWXL2i7SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479778; c=relaxed/simple;
-	bh=0yye+fSGPH2VkI48ZEJDTsu1SkHIFbVhkRiCej7l4IU=;
+	s=arc-20240116; t=1723480594; c=relaxed/simple;
+	bh=YLUYXgMRyzc86B8fauXS79i3x94fyTqnnMB3r6SmnVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=roUascWnFPrJjRZOz6dhFkMRt1yFSvpU2GlZPicjHAY1YmTB19DJQXDvVP4IQwZ6YgWPgfP6+aXBd9xXohktZrycjpTPeSIDlpFHV80iQrBhWja5WbKgBwxx34P6qTcrjgNohMpWPTou5FRZ3S4JL0/eSHgkDATUa4JnaDzcxJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4qiJMez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68521C32782;
-	Mon, 12 Aug 2024 16:22:57 +0000 (UTC)
+	 MIME-Version; b=dqPz2HhlJr51Ur2zYJ11gKkHrAByTbB98QnZvL+QNuvmn++BfafotSz0Tcjv3txlWHT5pdHnywUk8TzT5CRNiphkOFmWBqfsB3oe4D1X10+u2P5I2LI0YGjv0jwiFzEtmqUuzjWVJwvOBVYeLxcb4cVJq//49uw/ZyYqih6aqt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBi0s/BZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762D0C32782;
+	Mon, 12 Aug 2024 16:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479777;
-	bh=0yye+fSGPH2VkI48ZEJDTsu1SkHIFbVhkRiCej7l4IU=;
+	s=korg; t=1723480593;
+	bh=YLUYXgMRyzc86B8fauXS79i3x94fyTqnnMB3r6SmnVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4qiJMezqp8qWqIiGcCKN384/Qw5vR/qtUkBoWIphaJ0egYxq4u30sg8dqw0Ie2t3
-	 xiK+eZYPwDO6a+mnIkuzGlJaQFw8YY60Xw3c3RawmoW6SHeVnxJaBQiEkCMHwdiBeg
-	 BCqbo1l0cOvd7yD0zBGp7nmFfZXCXP0OzvGuG3O4=
+	b=XBi0s/BZm5ITcegjFVbWH9/Fbi6rXbdPHvHO/7BLJ/BRZMSfTicrN4ZBu1vJ4bzMu
+	 Or7YlLVQgZAkizSTY/QzvQFwLcAGcQ7qbQ4BJ0qrqKFqRItYezralBwkSfB8McrAe3
+	 QNRerP75c/KtKnX/KWq61cS9XuWEDRMMfoPKNU6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.6 188/189] Revert "selftests: mptcp: simult flows: mark unbalanced tests as flaky"
+	Lyude Paul <lyude@redhat.com>,
+	Harry Wentland <hwentlan@amd.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Wayne Lin <Wayne.Lin@amd.com>
+Subject: [PATCH 6.10 243/263] drm/dp_mst: Skip CSN if topology probing is not done yet
 Date: Mon, 12 Aug 2024 18:04:04 +0200
-Message-ID: <20240812160139.389555996@linuxfoundation.org>
+Message-ID: <20240812160155.836931521@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-This reverts commit 052c9f0c140c78e5d6826688b5d2f33e19db0ae7.
+commit ddf983488c3e8d30d5c2e2b315ae7d9cd87096ed upstream.
 
-If the test doesn't pass, we can get this error:
+[Why]
+During resume, observe that we receive CSN event before we start topology
+probing. Handling CSN at this moment based on uncertain topology is
+unnecessary.
 
-  # ./simult_flows.sh: line 275: mptcp_lib_subtest_is_flaky: command not found
+[How]
+Add checking condition in drm_dp_mst_handle_up_req() to skip handling CSN
+if the topology is yet to be probed.
 
-This patch is not needed in v6.6: it is there to mark a test as "flaky",
-but the MPTCP selftests infrastructure in v6.6 doesn't support them. So
-it looks better to revert this patch.
-
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Harry Wentland <hwentlan@amd.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240626084825.878565-3-Wayne.Lin@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/simult_flows.sh |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/simult_flows.sh
-+++ b/tools/testing/selftests/net/mptcp/simult_flows.sh
-@@ -262,7 +262,7 @@ run_test()
- 	do_transfer $small $large $time
- 	lret=$?
- 	mptcp_lib_result_code "${lret}" "${msg}"
--	if [ $lret -ne 0 ] && ! mptcp_lib_subtest_is_flaky; then
-+	if [ $lret -ne 0 ]; then
- 		ret=$lret
- 		[ $bail -eq 0 ] || exit $ret
- 	fi
-@@ -272,7 +272,7 @@ run_test()
- 	do_transfer $large $small $time
- 	lret=$?
- 	mptcp_lib_result_code "${lret}" "${msg}"
--	if [ $lret -ne 0 ] && ! mptcp_lib_subtest_is_flaky; then
-+	if [ $lret -ne 0 ]; then
- 		ret=$lret
- 		[ $bail -eq 0 ] || exit $ret
- 	fi
-@@ -305,7 +305,7 @@ run_test 10 10 0 0 "balanced bwidth"
- run_test 10 10 1 25 "balanced bwidth with unbalanced delay"
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -4069,6 +4069,7 @@ static int drm_dp_mst_handle_up_req(stru
+ 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
+ 		const struct drm_dp_connection_status_notify *conn_stat =
+ 			&up_req->msg.u.conn_stat;
++		bool handle_csn;
  
- # we still need some additional infrastructure to pass the following test-cases
--MPTCP_LIB_SUBTEST_FLAKY=1 run_test 10 3 0 0 "unbalanced bwidth"
-+run_test 10 3 0 0 "unbalanced bwidth"
- run_test 10 3 1 25 "unbalanced bwidth with unbalanced delay"
- run_test 10 3 25 1 "unbalanced bwidth with opposed, unbalanced delay"
- 
+ 		drm_dbg_kms(mgr->dev, "Got CSN: pn: %d ldps:%d ddps: %d mcs: %d ip: %d pdt: %d\n",
+ 			    conn_stat->port_number,
+@@ -4077,6 +4078,16 @@ static int drm_dp_mst_handle_up_req(stru
+ 			    conn_stat->message_capability_status,
+ 			    conn_stat->input_port,
+ 			    conn_stat->peer_device_type);
++
++		mutex_lock(&mgr->probe_lock);
++		handle_csn = mgr->mst_primary->link_address_sent;
++		mutex_unlock(&mgr->probe_lock);
++
++		if (!handle_csn) {
++			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
++			kfree(up_req);
++			goto out;
++		}
+ 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
+ 		const struct drm_dp_resource_status_notify *res_stat =
+ 			&up_req->msg.u.resource_stat;
 
 
 
