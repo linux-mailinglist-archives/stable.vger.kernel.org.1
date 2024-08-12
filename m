@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-66834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138D994F2AD
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:09:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559BF94F495
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B572F1F2129E
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:09:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5F47B22BCA
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88113187324;
-	Mon, 12 Aug 2024 16:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6349A184527;
+	Mon, 12 Aug 2024 16:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py+JoUdr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1un2hE8L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440BB183CA6;
-	Mon, 12 Aug 2024 16:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4CC2C1A5;
+	Mon, 12 Aug 2024 16:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478938; cv=none; b=UkyJd9CgLcopFhHI0Z3/3kBvrCw7l2tBh/+0AwrFPZX4bB1nRf/y6Giz2TBLUM4yI3y3xogxx30vO2UD69Ub1uzXB2xvjIaJxw6//tO81AEQ8hl3IR9/YTKAz7/QJq9LblZDQwu1NWZ9v6RSPane4AIuvF9bAP3iu0v2Xzbu8G4=
+	t=1723480319; cv=none; b=OFH4pCH59PseoHsJ+841zJZ8Hecq7XMZVYQNI2tV0pkSoQyj1s08aTJIsdqC3RUFuV2i/THa22wM4wGeoosT2NOuQZ7FQQ/0Sa8N6aojfS3yRSOVgei4H3y7ppXt6cp+ZYvgOBQxMtj1TRFDIIZ+BiadVRMT+cJn7p0HpciMkIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478938; c=relaxed/simple;
-	bh=zq+WJUFsDUAECxZa5ntf+I5mW50QHzqF0AHRftuhIiQ=;
+	s=arc-20240116; t=1723480319; c=relaxed/simple;
+	bh=GlzoEuqh5uJEd/qT3+AnapbB0gnq7XjROH6YECIelJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIB7v6KyBw6Nb6WVTVc22sGmRrafYQ/tceN1HSYFm+IwnBDQ6boyZxucrXrni/WDHMiL1rpAmaxWcskIfI8dEzH8L+jZWFbM1JglJcZ89Z/x4BtriKNZ2vUaoP1U2DUxATe4nCgMsuXdSbrqK/AnHbVfAfgloWQ/dwEyBX1US4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py+JoUdr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE35C32782;
-	Mon, 12 Aug 2024 16:08:57 +0000 (UTC)
+	 MIME-Version; b=cgLrNWKDsTZCRbN+UrEfZmEmqv3XyMaxkRl/EdtqMLRqG9GaNSX4spb0UCuqvc51FlMDIM6GMXj17njBw49uMBZ1C6i2M0g9nEYBK+u4Lea42qgGvrPh+zjFTrJJgs+Q4mePhz6SCTvdbyVxHwXz7LFmyM/C/1V2tDEyS6TomzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1un2hE8L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A06C32782;
+	Mon, 12 Aug 2024 16:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478938;
-	bh=zq+WJUFsDUAECxZa5ntf+I5mW50QHzqF0AHRftuhIiQ=;
+	s=korg; t=1723480319;
+	bh=GlzoEuqh5uJEd/qT3+AnapbB0gnq7XjROH6YECIelJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=py+JoUdrKk+yIqBOznEPqKpUWBbupUb+46w+9nbSgd+WWbfMdGi1Bkj7A2Je/rBlS
-	 hvqNhHnnkb27q8XRQeAVUDJr1o1l66tnZRo3blu8XThwqqT5XMVbSUL7QiACqobLFv
-	 JUIlvS0p3mQxvMvhx3k45JE6kP+nltpir8J4DacQ=
+	b=1un2hE8LD7mL/FJUXr1BULzL6LDuyuCPwgRJkxDhp0geSrLvQd7/rKks3G/daRdnh
+	 MhSwVFkkQmq6ZTXLsxBz/eim0STO+04m7OIN25cUBdhajeyzU6DJvFN/Yiek6nyJE9
+	 f2pa5nn5dlYSsxvVNoLht9aDqPMCgjZnsELDMSQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/150] i2c: qcom-geni: Add missing clk_disable_unprepare in geni_i2c_runtime_resume
+Subject: [PATCH 6.10 162/263] ALSA: usb-audio: Re-add ScratchAmp quirk entries
 Date: Mon, 12 Aug 2024 18:02:43 +0200
-Message-ID: <20240812160128.338041191@linuxfoundation.org>
+Message-ID: <20240812160152.749052503@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit b93d16bee557302d4e588375ececd833cc048acc ]
+[ Upstream commit 03898691d42e0170e7d00f07cbe21ce0e9f3a8fa ]
 
-Add the missing clk_disable_unprepare() before return in
-geni_i2c_runtime_resume().
+At the code refactoring of USB-audio quirk handling, I assumed that
+the quirk entries of Stanton ScratchAmp devices were only about the
+device name, and moved them completely into the rename table.
+But it seems that the device requires the quirk entry so that it's
+probed by the driver itself.
 
-Fixes: 14d02fbadb5d ("i2c: qcom-geni: add desc struct to prepare support for I2C Master Hub variant")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Stable-dep-of: 9ba48db9f77c ("i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume")
+This re-adds back the quirk entries of ScratchAmp, but in a
+minimalistic manner.
+
+Fixes: 5436f59bc5bc ("ALSA: usb-audio: Move device rename and profile quirks to an internal table")
+Link: https://patch.msgid.link/20240808081803.22300-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-qcom-geni.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/usb/quirks-table.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-index 67bf0a27d37ed..02eab8d5082ba 100644
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -988,8 +988,10 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
- 		return ret;
+diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
+index 73abc38a54006..f13a8d63a019a 100644
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -2594,6 +2594,10 @@ YAMAHA_DEVICE(0x7010, "UB99"),
+ 	}
+ },
  
- 	ret = geni_se_resources_on(&gi2c->se);
--	if (ret)
-+	if (ret) {
-+		clk_disable_unprepare(gi2c->core_clk);
- 		return ret;
-+	}
- 
- 	enable_irq(gi2c->irq);
- 	gi2c->suspended = 0;
++/* Stanton ScratchAmp */
++{ USB_DEVICE(0x103d, 0x0100) },
++{ USB_DEVICE(0x103d, 0x0101) },
++
+ /* Novation EMS devices */
+ {
+ 	USB_DEVICE_VENDOR_SPEC(0x1235, 0x0001),
 -- 
 2.43.0
 
