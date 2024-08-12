@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE29794F035
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC0D94F037
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:48:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5E802812B5
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 110801F25F8F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 14:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27A2187341;
-	Mon, 12 Aug 2024 14:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F547184547;
+	Mon, 12 Aug 2024 14:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcizDY7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inaz8BlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3089184541
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDCB184541
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 14:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474024; cv=none; b=UzBTW9+hRO+rXdsK5yPVKBC03YBsbGAWyINSOwp9FUPbwPVCA2QmSuPv7KrXgoB59LgeB9mQUCAimhgDAQ4i/maqb21ck7jKxkv0fCLsxZmuIi56aAOyc7qoyhLNQAd72UHILJZ6jCX2MFaRwwmdAkr5lnvdTTJ1LqbWVYFayIE=
+	t=1723474028; cv=none; b=U8NAWSe5IcJdF0w6WjEQ92D2s35u5DOlpUlR7ls/GWQEJ9E5oaZeh3t7KiofGHNHcImLCM32UsLr/p6Moi8NjE3GM7U39lAP2NNZAt6q4cjjd89c0sBb3hcHAbXBdHwp7RSVXhJM76dRDpONvczHWeSQkAlSc/Ttz/FjefTV9OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474024; c=relaxed/simple;
-	bh=Ee6feQK5MrEXk/tHUSHJEMMTlDMJSR+fSzNvS5UTneQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kUs6XmulbJ0eMfC+ZTLv3SwVYvd9DujZKbdG4uBkBeJtcnAm0J19ySiWGWh4zmvPCT7lPlV38V0ej4N6WQ8A2YZcqyahgev19aNFVIk9NjMAr8W55pDyK8q2hJJZ90XzUdDPR24IY7F4TJvD4zojZzsYCi8m+vkHiLVXUT2HZJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcizDY7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBFFC32782;
-	Mon, 12 Aug 2024 14:47:03 +0000 (UTC)
+	s=arc-20240116; t=1723474028; c=relaxed/simple;
+	bh=h9CbbmPWY2FSD9zxh9iG2uzBBSClxuvZ2SasieHR9M4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ksToyAPmknO/eShVrabMOENlmLUwNV1RKB5cy/c9pexLFdOoxcyfrSqy4mc6SPfWN2JVl1C7SkhBbNRjfHWcDecJPoZ4eE/KoQpdnf5B/RGVfZUqWjjTFfUwsY31u95FpNLHKE6cWqBQHKDYi+9ALmfITYiFYgNARTp1CJare8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inaz8BlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77612C4AF0F;
+	Mon, 12 Aug 2024 14:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474024;
-	bh=Ee6feQK5MrEXk/tHUSHJEMMTlDMJSR+fSzNvS5UTneQ=;
+	s=korg; t=1723474027;
+	bh=h9CbbmPWY2FSD9zxh9iG2uzBBSClxuvZ2SasieHR9M4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UcizDY7W+BIqxF+pwtxRPuhoYNYN74lJTZccePo6AoTRShnSFdH/Mub+ECt2t/7pF
-	 YSybHEcgk0pv9UBISUyy5aXcxaSdz6jHinrp62nOKooZ+nPHHLDEhCTMlZcDJMT2uZ
-	 1b4/ok2+dkoEn/c/vFKqTykhygg/Ky+oleXDJeGA=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Call dpmm when checking mode support" failed to apply to 4.19-stable tree
-To: george.shen@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,chaitanya.dhere@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
+	b=inaz8BlWtIvm0L+y2WkqjQEt65VkTk86pN/GorNQ1hNeX+F3rKbMX0ESxPew6N/xs
+	 brHuV7lzcrcCEoEFTEHosDvpf7QRhLU+lSCRjJ6wq8SUbur/H9fl4Hb3N+BvWsQZE2
+	 78Dcpk7Qxft0Wt7pAjloXEbV2cpXlhEJgzYe6IPI=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Solve mst monitors blank out problem after" failed to apply to 6.10-stable tree
+To: Wayne.Lin@amd.com,alexander.deucher@amd.com,jerry.zuo@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 16:46:41 +0200
-Message-ID: <2024081241-pencil-parka-345c@gregkh>
+Date: Mon, 12 Aug 2024 16:46:58 +0200
+Message-ID: <2024081258-femur-antonym-2836@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x a42e74391783603b28f266fc7bbfc1011eb0a151
+git cherry-pick -x e33697141bac18906345ea46533a240f1ad3cd21
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081241-pencil-parka-345c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081258-femur-antonym-2836@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-a42e74391783 ("drm/amd/display: Call dpmm when checking mode support")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
-70839da63605 ("drm/amd/display: Add new DCN401 sources")
+e33697141bac ("drm/amd/display: Solve mst monitors blank out problem after resume")
+1ff6631baeb1 ("drm/amd/display: Prevent IPX From Link Detect and Set Mode")
+f63f86b5affc ("drm/amd/display: Separate setting and programming of cursor")
 
 thanks,
 
@@ -96,93 +79,47 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a42e74391783603b28f266fc7bbfc1011eb0a151 Mon Sep 17 00:00:00 2001
-From: George Shen <george.shen@amd.com>
-Date: Tue, 4 Jun 2024 10:11:23 -0400
-Subject: [PATCH] drm/amd/display: Call dpmm when checking mode support
+From e33697141bac18906345ea46533a240f1ad3cd21 Mon Sep 17 00:00:00 2001
+From: Wayne Lin <Wayne.Lin@amd.com>
+Date: Thu, 23 May 2024 12:18:07 +0800
+Subject: [PATCH] drm/amd/display: Solve mst monitors blank out problem after
+ resume
 
-[WHY]
-In check_mode_supported, we should validate that the required clocks
-can be successfully mapped to DPM levels.
+[Why]
+In dm resume, we firstly restore dc state and do the mst resume for topology
+probing thereafter. If we change dpcd DP_MSTM_CTRL value after LT in mst reume,
+it will cause light up problem on the hub.
 
-This ensures we only apply dynamic ODM optimizations to modes that
-are supported without dynamic ODM optimizations to begin with.
+[How]
+Revert commit 202dc359adda ("drm/amd/display: Defer handling mst up request in resume").
+And adjust the reason to trigger dc_link_detect by DETECT_REASON_RESUMEFROMS3S4.
 
-[HOW]
-Call dpmm to check that the display config can successfully be
-mapped to a DPM level.
-
-Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Fixes: 202dc359adda ("drm/amd/display: Defer handling mst up request in resume")
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Fangzhi Zuo <jerry.zuo@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-index b442e1f9f204..9c28304568d2 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-@@ -257,6 +257,7 @@ static bool dml21_check_mode_support(const struct dc *in_dc, struct dc_state *co
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 98cf523a629e..29af22ddccc9 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2583,6 +2583,7 @@ static void resume_mst_branch_status(struct drm_dp_mst_topology_mgr *mgr)
  
- 	mode_support->dml2_instance = dml_init->dml2_instance;
- 	dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
-+	dml_ctx->v21.mode_programming.dml2_instance->scratch.build_mode_programming_locals.mode_programming_params.programming = dml_ctx->v21.mode_programming.programming;
- 	is_supported = dml2_check_mode_supported(mode_support);
- 	if (!is_supported)
- 		return false;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_top/dml_top.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_top/dml_top.c
-index 6f334fdc6eb8..2fb3e2f45e07 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_top/dml_top.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_top/dml_top.c
-@@ -96,10 +96,15 @@ bool dml2_check_mode_supported(struct dml2_check_mode_supported_in_out *in_out)
- {
- 	struct dml2_instance *dml = (struct dml2_instance *)in_out->dml2_instance;
- 	struct dml2_check_mode_supported_locals *l = &dml->scratch.check_mode_supported_locals;
-+	/* Borrow the build_mode_programming_locals programming struct for DPMM call. */
-+	struct dml2_display_cfg_programming *dpmm_programming = dml->scratch.build_mode_programming_locals.mode_programming_params.programming;
+ 	ret = drm_dp_dpcd_writeb(mgr->aux, DP_MSTM_CTRL,
+ 				 DP_MST_EN |
++				 DP_UP_REQ_EN |
+ 				 DP_UPSTREAM_IS_SRC);
+ 	if (ret < 0) {
+ 		drm_dbg_kms(mgr->dev, "mst write failed - undocked during suspend?\n");
+@@ -3186,7 +3187,7 @@ static int dm_resume(void *handle)
+ 		} else {
+ 			mutex_lock(&dm->dc_lock);
+ 			dc_exit_ips_for_hw_access(dm->dc);
+-			dc_link_detect(aconnector->dc_link, DETECT_REASON_HPD);
++			dc_link_detect(aconnector->dc_link, DETECT_REASON_RESUMEFROMS3S4);
+ 			mutex_unlock(&dm->dc_lock);
+ 		}
  
- 	bool result = false;
- 	bool mcache_success = false;
- 
-+	if (dpmm_programming)
-+		memset(dpmm_programming, 0, sizeof(struct dml2_display_cfg_programming));
-+
- 	setup_unoptimized_display_config_with_meta(dml, &l->base_display_config_with_meta, in_out->display_config);
- 
- 	l->mode_support_params.instance = &dml->core_instance;
-@@ -122,6 +127,18 @@ bool dml2_check_mode_supported(struct dml2_check_mode_supported_in_out *in_out)
- 		mcache_success = dml2_top_optimization_perform_optimization_phase(&l->optimization_phase_locals, &mcache_phase);
- 	}
- 
-+	/*
-+	 * Call DPMM to map all requirements to minimum clock state
-+	 */
-+	if (result && dpmm_programming) {
-+		l->dppm_map_mode_params.min_clk_table = &dml->min_clk_table;
-+		l->dppm_map_mode_params.display_cfg = &l->base_display_config_with_meta;
-+		l->dppm_map_mode_params.programming = dpmm_programming;
-+		l->dppm_map_mode_params.soc_bb = &dml->soc_bbox;
-+		l->dppm_map_mode_params.ip = &dml->core_instance.clean_me_up.mode_lib.ip;
-+		result = dml->dpmm_instance.map_mode_to_soc_dpm(&l->dppm_map_mode_params);
-+	}
-+
- 	in_out->is_supported = mcache_success;
- 	result = result && in_out->is_supported;
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/inc/dml2_internal_shared_types.h b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/inc/dml2_internal_shared_types.h
-index dd90c5df5a5a..5632cdacb7f4 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/inc/dml2_internal_shared_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/inc/dml2_internal_shared_types.h
-@@ -870,6 +870,7 @@ struct dml2_check_mode_supported_locals {
- 	struct dml2_optimization_phase_locals optimization_phase_locals;
- 	struct display_configuation_with_meta base_display_config_with_meta;
- 	struct display_configuation_with_meta optimized_display_config_with_meta;
-+	struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out dppm_map_mode_params;
- };
- 
- struct optimization_init_function_params {
 
 
