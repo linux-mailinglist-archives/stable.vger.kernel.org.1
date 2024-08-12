@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-67325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4DD94F4E7
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:36:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F02A94F3CF
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:22:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF2C2B26A21
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:36:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0CF11C2129F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E56B187347;
-	Mon, 12 Aug 2024 16:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D215186E47;
+	Mon, 12 Aug 2024 16:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4AeApCy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGt1aAl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6F7187324;
-	Mon, 12 Aug 2024 16:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDFE183CA6;
+	Mon, 12 Aug 2024 16:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480558; cv=none; b=llm7+hv9tFJnK206Bn0nM/7D4AltpA6MSoktqtoiwh4BOKICHDKNyg6t/LYIySlft6NIBTRv9gUSFlR55uFxhY5aEdo/HxSFSYLAtTUttAi63amfENBZluqWBnehuwr56WKtZwZ773XRe8qkbTE+0bM4cturjBratOjs+UBUmRI=
+	t=1723479743; cv=none; b=mB9gOW4pRR6vX5dKIZnOnGi7WPn0tYdJiWOOCQRCoR4hr6C5uVrOT553sHtcsf2TO7FJRchcxlScHNmix1Y8dJTPPDIBb5VWini72Ws+z4pU+fcJVizuQ+dA33gWUlX0YuMGq7J2T+S92ASlVGtPOYfcL2EKHkavMZwrNWewydM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480558; c=relaxed/simple;
-	bh=SvVcrLoF/5Oh248bZaKp3nxBAi+iOhV9f4lCs9Cl89k=;
+	s=arc-20240116; t=1723479743; c=relaxed/simple;
+	bh=5EbgAV3bjjBWfqPYxblcSthcVdvg6AXDg/KRVF+W8SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBChbLN+gn58Zej0IY+PYk+J22NxuQ9QHIu6Ajru20midks/kMpUfdIknm4qRK+XEUHhu5KqXOFztLO2eXcW07eZYRJV47rMsLo+cNZjKP/pOj69+DdKUu5eXoAwRjRqvkuZj/x5GbpS03YbryPfbr61yL1ZyTIMJf59f3xj/rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4AeApCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E5BC32782;
-	Mon, 12 Aug 2024 16:35:57 +0000 (UTC)
+	 MIME-Version; b=mzyNfOdKTtZMIrq1hztj+YVB9sTSl3YZ6RvxpCor+dKUudfH8xGDwjHvnIlLeA7Kl8sv/A5kC181O/rT4/NoJAKWnJjFfMPW8sMrLqSAGjrvxqVyNe0CcCo2rVSDaaILfWqLUnqiGt5yLaKW3z1tHygGs3lbcVDiWRkwWGFhUZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGt1aAl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679EFC32782;
+	Mon, 12 Aug 2024 16:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480558;
-	bh=SvVcrLoF/5Oh248bZaKp3nxBAi+iOhV9f4lCs9Cl89k=;
+	s=korg; t=1723479742;
+	bh=5EbgAV3bjjBWfqPYxblcSthcVdvg6AXDg/KRVF+W8SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4AeApCyRscXQCuahTXNdtWEOPrCEqwXdQaBUGgOCe8rDvQQXzVY/imhNB7uX1FEE
-	 J2ugjgHHn4Jdg0EgwYeX8UyFrXLuW70fSVOUI+xoFrsqX802MRAy7SZhyegATkjTdb
-	 5xh3NwuqwL1wbxUNos2R5+WXV2392fgRc1F45twQ=
+	b=DGt1aAl5Rkl/jeylVMUl1S2XTBFVAQnJQ903S8qgR/lh92OBSCtqNP5rLppkrepxx
+	 6ftLxQYRxomHhI84c5PEjhw1Ngm0quQFVEMcQIQRqPShHxphTsCuemuh1VVz5ratov
+	 7XO3nHzC+cZr12p0+SiN7yQwKNGSNCQl4GgTS9dI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muchun Song <songmuchun@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 233/263] mm: list_lru: fix UAF for memory cgroup
-Date: Mon, 12 Aug 2024 18:03:54 +0200
-Message-ID: <20240812160155.454116053@linuxfoundation.org>
+Subject: [PATCH 6.6 179/189] mm/hugetlb: fix potential race in __update_and_free_hugetlb_folio()
+Date: Mon, 12 Aug 2024 18:03:55 +0200
+Message-ID: <20240812160139.036711671@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-commit 5161b48712dcd08ec427c450399d4d1483e21dea upstream.
+commit 5596d9e8b553dacb0ac34bcf873cbbfb16c3ba3e upstream.
 
-The mem_cgroup_from_slab_obj() is supposed to be called under rcu lock or
-cgroup_mutex or others which could prevent returned memcg from being
-freed.  Fix it by adding missing rcu read lock.
+There is a potential race between __update_and_free_hugetlb_folio() and
+try_memory_failure_hugetlb():
 
-Found by code inspection.
+ CPU1					CPU2
+ __update_and_free_hugetlb_folio	try_memory_failure_hugetlb
+					 folio_test_hugetlb
+					  -- It's still hugetlb folio.
+  folio_clear_hugetlb_hwpoison
+  					  spin_lock_irq(&hugetlb_lock);
+					   __get_huge_page_for_hwpoison
+					    folio_set_hugetlb_hwpoison
+					  spin_unlock_irq(&hugetlb_lock);
+  spin_lock_irq(&hugetlb_lock);
+  __folio_clear_hugetlb(folio);
+   -- Hugetlb flag is cleared but too late.
+  spin_unlock_irq(&hugetlb_lock);
 
-[songmuchun@bytedance.com: only grab rcu lock when necessary, per Vlastimil]
-  Link: https://lkml.kernel.org/r/20240801024603.1865-1-songmuchun@bytedance.com
-Link: https://lkml.kernel.org/r/20240718083607.42068-1-songmuchun@bytedance.com
-Fixes: 0a97c01cd20b ("list_lru: allow explicit memcg and NUMA node selection")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
+When the above race occurs, raw error page info will be leaked.  Even
+worse, raw error pages won't have hwpoisoned flag set and hit
+pcplists/buddy.  Fix this issue by deferring
+folio_clear_hugetlb_hwpoison() until __folio_clear_hugetlb() is done.  So
+all raw error pages will have hwpoisoned flag set.
+
+Link: https://lkml.kernel.org/r/20240708025127.107713-1-linmiaohe@huawei.com
+Fixes: 32c877191e02 ("hugetlb: do not clear hugetlb dtor until allocating vmemmap")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/list_lru.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ mm/hugetlb.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/mm/list_lru.c
-+++ b/mm/list_lru.c
-@@ -85,6 +85,7 @@ list_lru_from_memcg_idx(struct list_lru
- }
- #endif /* CONFIG_MEMCG_KMEM */
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1770,13 +1770,6 @@ static void __update_and_free_hugetlb_fo
+ 	}
  
-+/* The caller must ensure the memcg lifetime. */
- bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
- 		    struct mem_cgroup *memcg)
- {
-@@ -109,14 +110,22 @@ EXPORT_SYMBOL_GPL(list_lru_add);
+ 	/*
+-	 * Move PageHWPoison flag from head page to the raw error pages,
+-	 * which makes any healthy subpages reusable.
+-	 */
+-	if (unlikely(folio_test_hwpoison(folio)))
+-		folio_clear_hugetlb_hwpoison(folio);
+-
+-	/*
+ 	 * If vmemmap pages were allocated above, then we need to clear the
+ 	 * hugetlb destructor under the hugetlb lock.
+ 	 */
+@@ -1787,6 +1780,13 @@ static void __update_and_free_hugetlb_fo
+ 	}
  
- bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
- {
-+	bool ret;
- 	int nid = page_to_nid(virt_to_page(item));
--	struct mem_cgroup *memcg = list_lru_memcg_aware(lru) ?
--		mem_cgroup_from_slab_obj(item) : NULL;
- 
--	return list_lru_add(lru, item, nid, memcg);
-+	if (list_lru_memcg_aware(lru)) {
-+		rcu_read_lock();
-+		ret = list_lru_add(lru, item, nid, mem_cgroup_from_slab_obj(item));
-+		rcu_read_unlock();
-+	} else {
-+		ret = list_lru_add(lru, item, nid, NULL);
-+	}
+ 	/*
++	 * Move PageHWPoison flag from head page to the raw error pages,
++	 * which makes any healthy subpages reusable.
++	 */
++	if (unlikely(folio_test_hwpoison(folio)))
++		folio_clear_hugetlb_hwpoison(folio);
 +
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(list_lru_add_obj);
- 
-+/* The caller must ensure the memcg lifetime. */
- bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
- 		    struct mem_cgroup *memcg)
- {
-@@ -139,11 +148,18 @@ EXPORT_SYMBOL_GPL(list_lru_del);
- 
- bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
- {
-+	bool ret;
- 	int nid = page_to_nid(virt_to_page(item));
--	struct mem_cgroup *memcg = list_lru_memcg_aware(lru) ?
--		mem_cgroup_from_slab_obj(item) : NULL;
- 
--	return list_lru_del(lru, item, nid, memcg);
-+	if (list_lru_memcg_aware(lru)) {
-+		rcu_read_lock();
-+		ret = list_lru_del(lru, item, nid, mem_cgroup_from_slab_obj(item));
-+		rcu_read_unlock();
-+	} else {
-+		ret = list_lru_del(lru, item, nid, NULL);
-+	}
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(list_lru_del_obj);
- 
++	/*
+ 	 * Non-gigantic pages demoted from CMA allocated gigantic pages
+ 	 * need to be given back to CMA in free_gigantic_folio.
+ 	 */
 
 
 
