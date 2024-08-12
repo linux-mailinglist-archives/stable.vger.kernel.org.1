@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-67040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA69694F3A2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:20:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85ECE94F2D2
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FA711F20FC3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:20:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7E021C214A4
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126AE186E20;
-	Mon, 12 Aug 2024 16:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD24187347;
+	Mon, 12 Aug 2024 16:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1JzBC5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDU0on64"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAF2183CA6;
-	Mon, 12 Aug 2024 16:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1141862B4;
+	Mon, 12 Aug 2024 16:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479602; cv=none; b=jo9ke5xgdyx9/VNAL0yIMgO/NnIxT/YlOPHwi/4q85Bq/zTaiYTzCPMwNFbBrav9LZVKtykoHSKl+WRLItxzChs1dhe0JASagRtoNMWojv9Drt22lQ4w6oEIvv/koseTJcMIh9xY+jZSxrB63qnsRPLDiGtPEQvbloy5+/R8IXc=
+	t=1723479039; cv=none; b=ZZghgFIvQTUWZIHqyS3BQDHH24XZnwYZUz1LU62NUgRbz/ZM35G5H7Gke2R4NiGX6mb/uDfTqopk0XTM8w7n2KuVoZ597o1Da9hnVRBkHLZJK52pBGRrh32Kyt8V1SOIY6NizAHUhrL5+c5Vd5t/FfriKDnrXTduelybrBI6pKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479602; c=relaxed/simple;
-	bh=dFAP2XTMaFDWtgunsGHatrPVAqTjpj4aXHVo6ZkFg58=;
+	s=arc-20240116; t=1723479039; c=relaxed/simple;
+	bh=Q5PGwCH3LZNhj//MlzvuTT9abCL52ofYuRlrh5IXYCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bt+c9dmSMnecLd0ubpYDyLAbsl3fDHItDV/GZ6915q/u1of4oSjQxEVK0BoBVup8Lc1W2PYz8OC4lXosqdrwfqQ2+bFDOg6jjooyNTwl/zTb4y1ENyl417rcmz1CeqPKzECP6rz8jd9mEVGJQ7SD/3Xdev1V05QaGQwW5yNNQ1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1JzBC5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1330C4AF0C;
-	Mon, 12 Aug 2024 16:20:01 +0000 (UTC)
+	 MIME-Version; b=Oq/gFI4MBac4Fs6gK8UX5WjKeXdf8wuizWYjgKmS+HNxlo6X3x/A5WbUBK4AutadAwCuoXHMtOwNV5mJecX0Bx/A5ml4wGGKeBwvOgLnL8whmtpRpnaEZCQEBEqm5UcGdbIU+0C4p9jBQHaxByNNI/ciyvFq9jAs31JvAnwbC6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDU0on64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A15DC32782;
+	Mon, 12 Aug 2024 16:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479602;
-	bh=dFAP2XTMaFDWtgunsGHatrPVAqTjpj4aXHVo6ZkFg58=;
+	s=korg; t=1723479038;
+	bh=Q5PGwCH3LZNhj//MlzvuTT9abCL52ofYuRlrh5IXYCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1JzBC5tTqxVjOSqk8BLA/yv1jJM1syIXUn6+vUPJojSWAld4mk1xh2S/vIo8DBPg
-	 VgDyaVO0L9IdMyhhNLrwLG7ENoYX5vHk/XeQGLcptMFpUGOk2P3lQaMJ71lpm+LfGV
-	 dHvUVk9g7za6kR7NVxhq+rXKu2p5XAOhDjmFy1Y8=
+	b=tDU0on64IXVOzBB/Nwm9vM25BA8Qru2DDHqT2kFkd8Wljq+UPB7KeUE8GNzr6a0Ij
+	 1Fm0wyuqzuAGtu0ewdCvyYPrCU/+h6LgnD26qC6bbtx4O7xZzLJLrHaJiGtADy+KAO
+	 x9YidK6bJ828b3A/JOFaJ1Rz0X6t+dLW2rx5GbQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 138/189] parisc: fix unaligned accesses in BPF
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 113/150] irqchip/xilinx: Fix shift out of bounds
 Date: Mon, 12 Aug 2024 18:03:14 +0200
-Message-ID: <20240812160137.455587880@linuxfoundation.org>
+Message-ID: <20240812160129.522703557@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-References: <20240812160132.135168257@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-commit 1fd2c10acb7b35d72101a4619ee5b2cddb9efd3a upstream.
+commit d73f0f49daa84176c3beee1606e73c7ffb6af8b2 upstream.
 
-There were spurious unaligned access warnings when calling BPF code.
-Sometimes, the warnings were triggered with any incoming packet, making
-the machine hard to use.
+The device tree property 'xlnx,kind-of-intr' is sanity checked that the
+bitmask contains only set bits which are in the range of the number of
+interrupts supported by the controller.
 
-The reason for the warnings is this: on parisc64, pointers to functions
-are not really pointers to functions, they are pointers to 16-byte
-descriptor. The first 8 bytes of the descriptor is a pointer to the
-function and the next 8 bytes of the descriptor is the content of the
-"dp" register. This descriptor is generated in the function
-bpf_jit_build_prologue.
+The check is done by shifting the mask right by the number of supported
+interrupts and checking the result for zero.
 
-The problem is that the function bpf_int_jit_compile advertises 4-byte
-alignment when calling bpf_jit_binary_alloc, bpf_jit_binary_alloc
-randomizes the returned array and if the array happens to be not aligned
-on 8-byte boundary, the descriptor generated in bpf_jit_build_prologue is
-also not aligned and this triggers the unaligned access warning.
+The data type of the mask is u32 and the number of supported interrupts is
+up to 32. In case of 32 interrupts the shift is out of bounds, resulting in
+a mismatch warning. The out of bounds condition is also reported by UBSAN:
 
-Fix this by advertising 8-byte alignment on parisc64 when calling
-bpf_jit_binary_alloc.
+  UBSAN: shift-out-of-bounds in irq-xilinx-intc.c:332:22
+  shift exponent 32 is too large for 32-bit type 'unsigned int'
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fix it by promoting the mask to u64 for the test.
+
+Fixes: d50466c90724 ("microblaze: intc: Refactor DT sanity check")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Link: https://lore.kernel.org/all/1723186944-3571957-1-git-send-email-radhey.shyam.pandey@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/net/bpf_jit_core.c |    2 +-
+ drivers/irqchip/irq-xilinx-intc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/net/bpf_jit_core.c
-+++ b/arch/parisc/net/bpf_jit_core.c
-@@ -114,7 +114,7 @@ struct bpf_prog *bpf_int_jit_compile(str
- 			jit_data->header =
- 				bpf_jit_binary_alloc(prog_size + extable_size,
- 						     &jit_data->image,
--						     sizeof(u32),
-+						     sizeof(long),
- 						     bpf_fill_ill_insns);
- 			if (!jit_data->header) {
- 				prog = orig_prog;
+--- a/drivers/irqchip/irq-xilinx-intc.c
++++ b/drivers/irqchip/irq-xilinx-intc.c
+@@ -189,7 +189,7 @@ static int __init xilinx_intc_of_init(st
+ 		irqc->intr_mask = 0;
+ 	}
+ 
+-	if (irqc->intr_mask >> irqc->nr_irq)
++	if ((u64)irqc->intr_mask >> irqc->nr_irq)
+ 		pr_warn("irq-xilinx: mismatch in kind-of-intr param\n");
+ 
+ 	pr_info("irq-xilinx: %pOF: num_irq=%d, edge=0x%x\n",
 
 
 
