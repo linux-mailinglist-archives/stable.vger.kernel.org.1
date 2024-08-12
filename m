@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-66776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAD794F260
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B532D94F34D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99D5EB25E7C
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:05:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73A352868C9
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275E4186E40;
-	Mon, 12 Aug 2024 16:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BB12C1A5;
+	Mon, 12 Aug 2024 16:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vR/Rvbfw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKamJzO2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A59186295;
-	Mon, 12 Aug 2024 16:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E873186E38;
+	Mon, 12 Aug 2024 16:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723478745; cv=none; b=jpu32KDzECoSVoxmfe99tVEezq9bqKdxMTBaEwIV4SxKxwRMLOikgmceMdXxPgs7Zv41hX06LHquotTBiYGXOtG8GNr25d5sTcnbqtiBu4vE8ypLAbqCTORJQ6xba1nDuU7Ojux7oqWLN5SXjo8DfSc1/dtTdB5xj3VQpeMSMKs=
+	t=1723479363; cv=none; b=Wwfo1rafPjtJWo4wRF7m74OIdHE2iQiJRzeC82LBLkzBLA+tbaEyWzPCJv4ZgQSeIVMnKJgYUecuUterZmW5iCCSEQx1KEu7/axXkLShrImfGPT8rilQdlzDlv7PR74LMQ8UFkqIO0gfbWFybKICLBxceqQB3YQS+fU2oHfY9Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723478745; c=relaxed/simple;
-	bh=5VqxpUjNMQpqdX20A3/7bV2ZlFqw091uBVBk2MfSZME=;
+	s=arc-20240116; t=1723479363; c=relaxed/simple;
+	bh=Vyw+c2pYEQzScmLKrL+h/mvS4ySSfFj+xeyDMon6L3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsoM5yk5nXT84EfjIBxrp1OmIY6vb8QPT3GLNDdUDV5wM+vpTm2ArKGaJNJjCL7mIJeiZfHmnt/rOsFgHvWso9VKvl5Qg3MQBb+Zjln7IJvSoS2K7+WmplHA+H1DhUiCskswjEiAoWQYUnw32xdkjYPNc2KepMJYXJrQp1qJbm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vR/Rvbfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53352C32782;
-	Mon, 12 Aug 2024 16:05:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lytFCMhI+UqlDJ+z+FQNP3EXBRn1MC3hh0qefltDb2ACd5T5LMV4teiruXx8BVxtGvZ/SRm5VnTPwTHaSZXXkLEnAc/AEC66JqMUsRWJU+3wN4Nrr+3ycGL6maTQgxpc2v9YgSmWcndYAamc3ZPAW60fwkPiwPhP8MhS3/tolRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKamJzO2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97825C4AF09;
+	Mon, 12 Aug 2024 16:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723478745;
-	bh=5VqxpUjNMQpqdX20A3/7bV2ZlFqw091uBVBk2MfSZME=;
+	s=korg; t=1723479363;
+	bh=Vyw+c2pYEQzScmLKrL+h/mvS4ySSfFj+xeyDMon6L3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vR/RvbfwX2DDkEL/qhr3u9nYDlucmWwqRtLAOZQ+g+GNQb4/OvtmM83tflmKZrz47
-	 SFg4ed7RQhki+S2IB1emKXpOS4IYzEK1z+sbJKqXVLdSnLoMlwIj1AOL7uUcxwLh85
-	 1cOx5Zvbj/B6GsWbHZubAEW9zbhoIEwxKHIBtQ7g=
+	b=LKamJzO2JYaeDVCH8dg7uv3thpBQ/LFVHHJTtl+LaQoRfrqd8V9UdK4bpdOgoD+DN
+	 Bhcoxot7qx5vE7zS2djIKRG0gGlSwIdlQm64HkNl+b+Yqx2FXldLqFzculvin3V1Xl
+	 8Ey9CoSy+nU8e6viNZR7aTLwEVAXOYTCOV5vamqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/150] x86/mm: Fix pti_clone_entry_text() for i386
-Date: Mon, 12 Aug 2024 18:01:27 +0200
-Message-ID: <20240812160125.396462533@linuxfoundation.org>
+Subject: [PATCH 6.6 032/189] ACPI: battery: create alarm sysfs attribute atomically
+Date: Mon, 12 Aug 2024 18:01:28 +0200
+Message-ID: <20240812160133.381821146@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 3db03fb4995ef85fc41e86262ead7b4852f4bcf0 ]
+[ Upstream commit a231eed10ed5a290129fda36ad7bcc263c53ff7d ]
 
-While x86_64 has PMD aligned text sections, i386 does not have this
-luxery. Notably ALIGN_ENTRY_TEXT_END is empty and _etext has PAGE
-alignment.
+Let the power supply core register the attribute.
+This ensures that the attribute is created before the device is
+announced to userspace, avoid a race condition.
 
-This means that text on i386 can be page granular at the tail end,
-which in turn means that the PTI text clones should consistently
-account for this.
-
-Make pti_clone_entry_text() consistent with pti_clone_kernel_text().
-
-Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/pti.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/battery.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 2c4037174ed22..7b804c34c0201 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -496,7 +496,7 @@ static void pti_clone_entry_text(void)
- {
- 	pti_clone_pgtable((unsigned long) __entry_text_start,
- 			  (unsigned long) __entry_text_end,
--			  PTI_CLONE_PMD);
-+			  PTI_LEVEL_KERNEL_IMAGE);
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 969bf81e8d546..7f7ad94f22b91 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -678,12 +678,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
+ 	return count;
  }
  
+-static const struct device_attribute alarm_attr = {
++static struct device_attribute alarm_attr = {
+ 	.attr = {.name = "alarm", .mode = 0644},
+ 	.show = acpi_battery_alarm_show,
+ 	.store = acpi_battery_alarm_store,
+ };
+ 
++static struct attribute *acpi_battery_attrs[] = {
++	&alarm_attr.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(acpi_battery);
++
  /*
+  * The Battery Hooking API
+  *
+@@ -823,7 +829,10 @@ static void __exit battery_hook_exit(void)
+ 
+ static int sysfs_add_battery(struct acpi_battery *battery)
+ {
+-	struct power_supply_config psy_cfg = { .drv_data = battery, };
++	struct power_supply_config psy_cfg = {
++		.drv_data = battery,
++		.attr_grp = acpi_battery_groups,
++	};
+ 	bool full_cap_broken = false;
+ 
+ 	if (!ACPI_BATTERY_CAPACITY_VALID(battery->full_charge_capacity) &&
+@@ -868,7 +877,7 @@ static int sysfs_add_battery(struct acpi_battery *battery)
+ 		return result;
+ 	}
+ 	battery_hook_add_battery(battery);
+-	return device_create_file(&battery->bat->dev, &alarm_attr);
++	return 0;
+ }
+ 
+ static void sysfs_remove_battery(struct acpi_battery *battery)
+@@ -879,7 +888,6 @@ static void sysfs_remove_battery(struct acpi_battery *battery)
+ 		return;
+ 	}
+ 	battery_hook_remove_battery(battery);
+-	device_remove_file(&battery->bat->dev, &alarm_attr);
+ 	power_supply_unregister(battery->bat);
+ 	battery->bat = NULL;
+ 	mutex_unlock(&battery->sysfs_lock);
 -- 
 2.43.0
 
