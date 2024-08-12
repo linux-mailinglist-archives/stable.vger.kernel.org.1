@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-66882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5EF94F2E8
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFAB94F49D
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C418285122
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 860C5B23925
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB5D186E34;
-	Mon, 12 Aug 2024 16:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD392C1A5;
+	Mon, 12 Aug 2024 16:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyq95Ize"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/oeqLxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF87183CA6;
-	Mon, 12 Aug 2024 16:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E4A16D9B8;
+	Mon, 12 Aug 2024 16:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479092; cv=none; b=kEh2pCGVylaZ8bMXX/6epniUQyzBuV5PK+I6vd0nkiMxKsxlyktAc7TNb2bhAZfhNgkJFz+AR/ljT75BUJp6FnZ2XCItjmIZFdgsZFYZNwcWx2OWzwPM5ym3uVS3TiRTVxme7cGB55lBiPJ+lo5NAff9wwmW3eys2VmkaXJHX04=
+	t=1723480345; cv=none; b=kpzf7EkLbziN8zpFRcs5nuI2uSg7VzsEw7XWYnu3Bw8m1Xwh20QFRcU61SymXJbTyyrMI/TaugGz03jRLUKpKMrg685/MnAmGd/9EXeElbIUqn6LYf5112YfUM268Tn4QsOjO/HSAtjo/bQajgTLX/EbYN0bmTBE4QkRSSilOy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479092; c=relaxed/simple;
-	bh=gJyi/tkCJosgJmf6jwNTYQ2JDLzCkpgTNQUQUjm80qo=;
+	s=arc-20240116; t=1723480345; c=relaxed/simple;
+	bh=nwN0YQzBYaVfIQFhJEblqE2kKPNRFayqkdMlQGzkbig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ht70SCeVFowtVoh13A23qckzzMSzMT0ZFSwfzEFuo/Bn11Dzg+KIxYH54YraKoqsbxJbZaSuIvE2io8ecjVC+lGm9NgVJ0rQ4oMi44zZfA8Vkzlv+jbP2k8sK98FWIwsiyh0oVVci+rOWvYrqERamE+fVt8et17WeZSzREQ8Kis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyq95Ize; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E0FC4AF0D;
-	Mon, 12 Aug 2024 16:11:31 +0000 (UTC)
+	 MIME-Version; b=Rb+5JigemPMIwDP7rhOKYPnsiPXTm/E+Ie0qqd6r+rTYpY88zVwFh7s6v1jeH5J1gSQhWGNRWbd7wvTEBZTObMMay3yofVNdTkLatt7tayYTqp0DasVgcKFvWrS8SogWfa3eoyllBjLF3CYSItP6f516E8BFHIYzsdGdJz2PutQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/oeqLxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184E8C32782;
+	Mon, 12 Aug 2024 16:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479092;
-	bh=gJyi/tkCJosgJmf6jwNTYQ2JDLzCkpgTNQUQUjm80qo=;
+	s=korg; t=1723480345;
+	bh=nwN0YQzBYaVfIQFhJEblqE2kKPNRFayqkdMlQGzkbig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tyq95IzeslpO+RpAM6K5pc8f5O7mjXaogbK0OLFJ/hP1a8YwKX6b9WdzdiTqnml58
-	 dPsazbez2a3EkqDOZrnJd/I9gXmUCfNBWgmSJ0f2Kf3k67xPL43loApsZb6GE/AUxz
-	 aGGmrM6ZGNnRo0DohUlITu/WHzE6oq4THYeL+FUI=
+	b=L/oeqLxbXh0IlLbduDXSr8/dNO62KWlHfdVSdE9yoDZ9wqN1qqcSJ/LK4aERtZ1pW
+	 g9LskQzYiItuc4bVod8OZbFderxLhrhG8fYmCrP8Hh0i6tNONOmD0/buMTQOQK8+sD
+	 5iSzP4R47IC5KqGFsykDSvJ9BlDEmERH0zluQv34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 089/150] ALSA: line6: Fix racy access to midibuf
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Gleb Korobeynikov <gkorobeynikov@astralinux.ru>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 169/263] cifs: cifs_inval_name_dfs_link_error: correct the check for fullpath
 Date: Mon, 12 Aug 2024 18:02:50 +0200
-Message-ID: <20240812160128.601471828@linuxfoundation.org>
+Message-ID: <20240812160153.017516350@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+References: <20240812160146.517184156@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Gleb Korobeynikov <gkorobeynikov@astralinux.ru>
 
-commit 15b7a03205b31bc5623378c190d22b7ff60026f1 upstream.
+[ Upstream commit 36bb22a08a69d9984a8399c07310d18b115eae20 ]
 
-There can be concurrent accesses to line6 midibuf from both the URB
-completion callback and the rawmidi API access.  This could be a cause
-of KMSAN warning triggered by syzkaller below (so put as reported-by
-here).
+Replace the always-true check tcon->origin_fullpath with
+check of server->leaf_fullpath
 
-This patch protects the midibuf call of the former code path with a
-spinlock for avoiding the possible races.
+See https://bugzilla.kernel.org/show_bug.cgi?id=219083
 
-Reported-by: syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/00000000000000949c061df288c5@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240805130129.10872-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The check of the new @tcon will always be true during mounting,
+since @tcon->origin_fullpath will only be set after the tree is
+connected to the latest common resource, as well as checking if
+the prefix paths from it are fully accessible.
+
+Fixes: 3ae872de4107 ("smb: client: fix shared DFS root mounts with different prefixes")
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Gleb Korobeynikov <gkorobeynikov@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/line6/driver.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/smb/client/misc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/sound/usb/line6/driver.c
-+++ b/sound/usb/line6/driver.c
-@@ -286,12 +286,14 @@ static void line6_data_received(struct u
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index 07c468ddb88a8..65d4b72b4d51a 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -1288,6 +1288,7 @@ int cifs_inval_name_dfs_link_error(const unsigned int xid,
+ 				   const char *full_path,
+ 				   bool *islink)
  {
- 	struct usb_line6 *line6 = (struct usb_line6 *)urb->context;
- 	struct midi_buffer *mb = &line6->line6midi->midibuf_in;
-+	unsigned long flags;
- 	int done;
++	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_ses *ses = tcon->ses;
+ 	size_t len;
+ 	char *path;
+@@ -1304,12 +1305,12 @@ int cifs_inval_name_dfs_link_error(const unsigned int xid,
+ 	    !is_tcon_dfs(tcon))
+ 		return 0;
  
- 	if (urb->status == -ESHUTDOWN)
- 		return;
+-	spin_lock(&tcon->tc_lock);
+-	if (!tcon->origin_fullpath) {
+-		spin_unlock(&tcon->tc_lock);
++	spin_lock(&server->srv_lock);
++	if (!server->leaf_fullpath) {
++		spin_unlock(&server->srv_lock);
+ 		return 0;
+ 	}
+-	spin_unlock(&tcon->tc_lock);
++	spin_unlock(&server->srv_lock);
  
- 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
-+		spin_lock_irqsave(&line6->line6midi->lock, flags);
- 		done =
- 			line6_midibuf_write(mb, urb->transfer_buffer, urb->actual_length);
- 
-@@ -300,12 +302,15 @@ static void line6_data_received(struct u
- 			dev_dbg(line6->ifcdev, "%d %d buffer overflow - message skipped\n",
- 				done, urb->actual_length);
- 		}
-+		spin_unlock_irqrestore(&line6->line6midi->lock, flags);
- 
- 		for (;;) {
-+			spin_lock_irqsave(&line6->line6midi->lock, flags);
- 			done =
- 				line6_midibuf_read(mb, line6->buffer_message,
- 						   LINE6_MIDI_MESSAGE_MAXLEN,
- 						   LINE6_MIDIBUF_READ_RX);
-+			spin_unlock_irqrestore(&line6->line6midi->lock, flags);
- 
- 			if (done <= 0)
- 				break;
+ 	/*
+ 	 * Slow path - tcon is DFS and @full_path has prefix path, so attempt
+-- 
+2.43.0
+
 
 
 
