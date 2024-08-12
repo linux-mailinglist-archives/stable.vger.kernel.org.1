@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0505C94F489
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:31:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6566494F27A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:07:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B07181F20E38
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:31:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22E66281E31
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FDC187346;
-	Mon, 12 Aug 2024 16:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5A8186E38;
+	Mon, 12 Aug 2024 16:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvXIXNpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z39+ndPz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3DB183CD4;
-	Mon, 12 Aug 2024 16:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFB0186295;
+	Mon, 12 Aug 2024 16:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480287; cv=none; b=hCHQB/nM0yUkENtGgb8kVuqPGhLvbZOWk+2RYLcLn/BPwfjbLOtq1kZwG8vT8ykqEe6ElHM0V2qkMUQWzl/mX2ffAET1zV5I/TsfiU+IfxTrZr1mp8zjXYSzTtWquoDjhPAsr8IzuGXyXPwKgT30t8noD2g54VnX1n6kGuFIOzA=
+	t=1723478797; cv=none; b=hH5S/0yLGtHR0HM29XeUtynwF4ph4x12YUJ6hNYJFilmL4ENcOobv2rehcsqs39WEVqoi8KhrQ7LnyDaR7PDS73v+XCEX/0ogJF+SUy0CfSEMHDWQ5pMscNYciLghQQDlrApedq9GsKpgM7wcnCpE02NaRO/sBTn3P6/nx2mLOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480287; c=relaxed/simple;
-	bh=YZDgHrq9o+3dCcHJF117eTtkfkVmQbmyTItz+wx3IWA=;
+	s=arc-20240116; t=1723478797; c=relaxed/simple;
+	bh=P5EHO6njLgsFXTB9qjWAj5+GAfxOZvkVJMW8PKVOe0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBcuUzMzR+Mip0W02/7eIo+tAkzuDnRYzq1kZuBGu9ZBRT0/zTZRmsRYL/LdrU8lUPvNnSI4cKHjN+vp3eiPYisbL/uRqY87MNP0HnZdoMJ9jfu12uIh7rLYGPleeSywxBUW9D0WwvDKJC/sp5RZ4levIGUef7s1IWiwIxcKMK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvXIXNpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48ED6C32782;
-	Mon, 12 Aug 2024 16:31:27 +0000 (UTC)
+	 MIME-Version; b=inbR03lQpGS7cp7+7LcniTFenU5x/srLsB6IjfcRsFnD7lWHhCaooaD7hTWjBbBWcld/6GNwjryOAeJZQ6I5e2IgXArzplBdGxID3vpNoCu+qZT98kKkAiUWvEgEWw+bKqbFVEH1N4FIsteVfA4OhelTlPBgMM+JGoy732tl9CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z39+ndPz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398D0C32782;
+	Mon, 12 Aug 2024 16:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480287;
-	bh=YZDgHrq9o+3dCcHJF117eTtkfkVmQbmyTItz+wx3IWA=;
+	s=korg; t=1723478796;
+	bh=P5EHO6njLgsFXTB9qjWAj5+GAfxOZvkVJMW8PKVOe0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvXIXNpdd2GU2aAT1d/SpOxzP28HsLoA85r7V6eTiLj1nwy8vK8gHni4AWIDASdwk
-	 q39prq9cXrPVpLNr2dQkF6LCSBcqfHlVyqAw6fIWlDVcZKkMCCAva8exBWx6iqmUyC
-	 s3+5obbAJL49MvT5e8IBWhHoVtZJ+C7zKN1kdPNw=
+	b=z39+ndPztREF/aF05Ja7Vb4oM/hcaswBRjiyx4x+HEzploiDwU680m8vbF4/ogOd9
+	 yOHh/OGkYh/tJsi6IPx50Ct3GbeWekuuq58tOZzjduqr5FRjizIGHUjjKNAcw4MsII
+	 Kw04vbZa5inX8oo3nPVAQS6WoyHgpMBNEV5Oaq88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.10 120/263] clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()
+	Ming Qian <ming.qian@nxp.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/150] media: amphion: Remove lock in s_ctrl callback
 Date: Mon, 12 Aug 2024 18:02:01 +0200
-Message-ID: <20240812160151.142400612@linuxfoundation.org>
+Message-ID: <20240812160126.711144856@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Ming Qian <ming.qian@nxp.com>
 
-commit f2655ac2c06a15558e51ed6529de280e1553c86e upstream.
+[ Upstream commit 065927b51eb1f042c3e026cebfd55e72ccc26093 ]
 
-The current "nretries > 1 || nretries >= max_retries" check in
-cs_watchdog_read() will always evaluate to true, and thus pr_warn(), if
-nretries is greater than 1.  The intent is instead to never warn on the
-first try, but otherwise warn if the successful retry was the last retry.
+There is no need to add a lock in s_ctrl callback, it has been
+synchronized by the ctrl_handler's lock, otherwise it may led to
+a deadlock if the driver calls v4l2_ctrl_s_ctrl().
 
-Therefore, change that "||" to "&&".
-
-Fixes: db3a34e17433 ("clocksource: Retry clock read if long delays detected")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240802154618.4149953-2-paulmck@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/clocksource.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/amphion/vdec.c | 2 --
+ drivers/media/platform/amphion/venc.c | 2 --
+ 2 files changed, 4 deletions(-)
 
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -246,7 +246,7 @@ static enum wd_read_status cs_watchdog_r
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index dc35a87e628ec..2bfab4467b81c 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -145,7 +145,6 @@ static int vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
+ 	struct vdec_t *vdec = inst->priv;
+ 	int ret = 0;
  
- 		wd_delay = cycles_to_nsec_safe(watchdog, *wdnow, wd_end);
- 		if (wd_delay <= WATCHDOG_MAX_SKEW) {
--			if (nretries > 1 || nretries >= max_retries) {
-+			if (nretries > 1 && nretries >= max_retries) {
- 				pr_warn("timekeeping watchdog on CPU%d: %s retried %d times before success\n",
- 					smp_processor_id(), watchdog->name, nretries);
- 			}
+-	vpu_inst_lock(inst);
+ 	switch (ctrl->id) {
+ 	case V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE:
+ 		vdec->params.display_delay_enable = ctrl->val;
+@@ -157,7 +156,6 @@ static int vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
+ 		ret = -EINVAL;
+ 		break;
+ 	}
+-	vpu_inst_unlock(inst);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/media/platform/amphion/venc.c b/drivers/media/platform/amphion/venc.c
+index 1df2b35c1a240..c9cfef16c5b92 100644
+--- a/drivers/media/platform/amphion/venc.c
++++ b/drivers/media/platform/amphion/venc.c
+@@ -528,7 +528,6 @@ static int venc_op_s_ctrl(struct v4l2_ctrl *ctrl)
+ 	struct venc_t *venc = inst->priv;
+ 	int ret = 0;
+ 
+-	vpu_inst_lock(inst);
+ 	switch (ctrl->id) {
+ 	case V4L2_CID_MPEG_VIDEO_H264_PROFILE:
+ 		venc->params.profile = ctrl->val;
+@@ -589,7 +588,6 @@ static int venc_op_s_ctrl(struct v4l2_ctrl *ctrl)
+ 		ret = -EINVAL;
+ 		break;
+ 	}
+-	vpu_inst_unlock(inst);
+ 
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
