@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-66884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69CEF94F2EB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6284294F3B8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BC6F2851B0
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:12:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EC22281107
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474E2183CA6;
-	Mon, 12 Aug 2024 16:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3715186E34;
+	Mon, 12 Aug 2024 16:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LblySNrB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8CZw8bI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F151EA8D;
-	Mon, 12 Aug 2024 16:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826A829CA;
+	Mon, 12 Aug 2024 16:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479099; cv=none; b=OzrUToCy8uQ5YLpFcV3puE7/L9UOvFYSQzIFLImxNvpUSSS+orFwVIq0lUO9kaYMzaulYKzCvRqQWB3iX/DguQDZtrMI/Gp+QenxNEk+2ekjO0UuDGRJCdIkVuri+xeRZVz/6w/9CRo+e8idenDUepTBbuP7qCJIBQESfLhOu+Q=
+	t=1723479679; cv=none; b=ZPWj8is26vumTzVR0xnfeCT4IuC9DTiXuixy4U1erMTZulMbHqim5gLLXZznmIcl93CPIOPYpPIAGp//EGVCQ/ayqUO1WAmbuwbMmlMhZTu0f1yScGLkzVV5jATZ8awYVcqFO7LDjvfiPks3gLTsjNpy5x5iIH3Qgp9adkPGOJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479099; c=relaxed/simple;
-	bh=5et3lvq2qn9mmMtMcg6NzHzED7gRKvkraHKGsT5p9H0=;
+	s=arc-20240116; t=1723479679; c=relaxed/simple;
+	bh=cWBQPjrjnbJvHFyahClwqe/b09UKUFQPJXceU1S/DdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcselUUBqww4ewWZzOjDScMbgQr7LQOr1ZW4yoVSh8faB+ON/sFHTdS2vSCksRX83K490TtmGIIX5nEVeohvcpSQRYr4mDKOvaAJcU9Nkkh4qneVTnFgwngFV/qRuZD4AplByg0+LOSefiN2nyOQs2lja/g5c5QZe/B6bYQwSoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LblySNrB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2B6C32782;
-	Mon, 12 Aug 2024 16:11:38 +0000 (UTC)
+	 MIME-Version; b=RpUE+ZpFTBu5eLp/e7urltV7TzOhgXVVqSU0vDTbo5OYgnMHkAHn0LJsVcHBXId2I6HNkQynoiVTe5toO3btDptX5MUJJiNyNsJu6BVE0R9KOrl/uzr9wFH6Lq6sF3fbP0aL/popN65lzLGDXI43DhlU2VSnuMFh+GgTsLhESW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8CZw8bI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9901AC32782;
+	Mon, 12 Aug 2024 16:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479098;
-	bh=5et3lvq2qn9mmMtMcg6NzHzED7gRKvkraHKGsT5p9H0=;
+	s=korg; t=1723479679;
+	bh=cWBQPjrjnbJvHFyahClwqe/b09UKUFQPJXceU1S/DdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LblySNrBIdo2pYWQWr2KOTYozmRSxW1d8jv3inUlhCWsNxYsrlUX8SLnSDlAws1WG
-	 eDE0/XtWnl/dDFZiKONsB7LwN2h1J/Hhw0UkSb8wKjs+GbmMoVJ9whnXVF6D+VG1Dj
-	 i9o1owsD4Sij3iUnJ06VU/rVgU27j8p07jOBnRLg=
+	b=Y8CZw8bI6IEyGvvtIxOtMQZr0TIuwdWOfiGJC7Z/jPtqkVgjS4Rfr3v4GLIpDS5BD
+	 /m5oshZRCsaLuYxejlgvGQ4+Xch+mnUxlnrJszkDaIyWMpRvUz9iMsmmzbP62b13zh
+	 4AdOjtnBDA5jKwlEdoOJ6Oajsf1D23ltRo9iXa68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 133/150] selftests: mptcp: join: check backup support in signal endp
+	stable@kernel.org,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>
+Subject: [PATCH 6.6 158/189] sched/smt: Fix unbalance sched_smt_present dec/inc
 Date: Mon, 12 Aug 2024 18:03:34 +0200
-Message-ID: <20240812160130.301430254@linuxfoundation.org>
+Message-ID: <20240812160138.224370509@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
-References: <20240812160125.139701076@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit f833470c27832136d4416d8fc55d658082af0989 upstream.
+commit e22f910a26cc2a3ac9c66b8e935ef2a7dd881117 upstream.
 
-Before the previous commit, 'signal' endpoints with the 'backup' flag
-were ignored when sending the MP_JOIN.
+I got the following warn report while doing stress test:
 
-The MPTCP Join selftest has then been modified to validate this case:
-the "single address, backup" test, is now validating the MP_JOIN with a
-backup flag as it is what we expect it to do with such name. The
-previous version has been kept, but renamed to "single address, switch
-to backup" to avoid confusions.
+jump label: negative count!
+WARNING: CPU: 3 PID: 38 at kernel/jump_label.c:263 static_key_slow_try_dec+0x9d/0xb0
+Call Trace:
+ <TASK>
+ __static_key_slow_dec_cpuslocked+0x16/0x70
+ sched_cpu_deactivate+0x26e/0x2a0
+ cpuhp_invoke_callback+0x3ad/0x10d0
+ cpuhp_thread_fun+0x3f5/0x680
+ smpboot_thread_fn+0x56d/0x8d0
+ kthread+0x309/0x400
+ ret_from_fork+0x41/0x70
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
 
-The "single address with port, backup" test is also now validating the
-MPJ with a backup flag, which makes more sense than checking the switch
-to backup with an MP_PRIO.
+Because when cpuset_cpu_inactive() fails in sched_cpu_deactivate(),
+the cpu offline failed, but sched_smt_present is decremented before
+calling sched_cpu_deactivate(), it leads to unbalanced dec/inc, so
+fix it by incrementing sched_smt_present in the error path.
 
-The "mpc backup both sides" test is now validating that the backup flag
-is also set in MP_JOIN from and to the addresses used in the initial
-subflow, using the special ID 0.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in mptcp_join.sh because 'run_tests' helper has been
-  modified in multiple commits that are not in this version, e.g. commit
-  e571fb09c893 ("selftests: mptcp: add speed env var"). Adaptations
-  have been made to use the old way, similar to what is done around. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: c5511d03ec09 ("sched/smt: Make sched_smt_present track topology")
+Cc: stable@kernel.org
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240703031610.587047-3-yangyingliang@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   33 +++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 6 deletions(-)
+ kernel/sched/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2666,6 +2666,18 @@ backup_tests()
- 	if reset "single address, backup" &&
- 	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 1
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
-+		pm_nl_set_limits $ns2 1 1
-+		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow nobackup
-+		chk_join_nr 1 1 1
-+		chk_add_nr 1 1
-+		chk_prio_nr 1 0 0 1
-+	fi
-+
-+	# single address, switch to backup
-+	if reset "single address, switch to backup" &&
-+	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		pm_nl_set_limits $ns1 0 1
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
- 		pm_nl_set_limits $ns2 1 1
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow backup
-@@ -2678,12 +2690,12 @@ backup_tests()
- 	if reset "single address with port, backup" &&
- 	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 1
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal port 10100
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup port 10100
- 		pm_nl_set_limits $ns2 1 1
--		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow backup
-+		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow nobackup
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
--		chk_prio_nr 1 1 0 0
-+		chk_prio_nr 1 0 0 1
- 	fi
- 
- 	if reset "mpc backup" &&
-@@ -2696,11 +2708,20 @@ backup_tests()
- 
- 	if reset "mpc backup both sides" &&
- 	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
--		pm_nl_add_endpoint $ns1 10.0.1.1 flags subflow,backup
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 1 2
-+		pm_nl_add_endpoint $ns1 10.0.1.1 flags signal,backup
- 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,backup
-+
-+		# 10.0.2.2 (non-backup) -> 10.0.1.1 (backup)
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
-+		# 10.0.1.2 (backup) -> 10.0.2.1 (non-backup)
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		ip -net "$ns2" route add 10.0.2.1 via 10.0.1.1 dev ns2eth1 # force this path
-+
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow
--		chk_join_nr 0 0 0
--		chk_prio_nr 1 1 0 0
-+		chk_join_nr 2 2 2
-+		chk_prio_nr 1 1 1 1
- 	fi
- 
- 	if reset "mpc switch to backup" &&
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9760,6 +9760,7 @@ int sched_cpu_deactivate(unsigned int cp
+ 	sched_update_numa(cpu, false);
+ 	ret = cpuset_cpu_inactive(cpu);
+ 	if (ret) {
++		sched_smt_present_inc(cpu);
+ 		balance_push_set(cpu, false);
+ 		set_cpu_active(cpu, true);
+ 		sched_update_numa(cpu, true);
 
 
 
