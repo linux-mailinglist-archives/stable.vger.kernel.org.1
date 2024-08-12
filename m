@@ -1,49 +1,51 @@
-Return-Path: <stable+bounces-66727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4380294F10D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83EAE94F115
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 17:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2A471F221B2
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:00:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 302DE1F21EAE
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 15:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B514135417;
-	Mon, 12 Aug 2024 15:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC969136344;
+	Mon, 12 Aug 2024 15:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8498Olq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1JSbnAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA539130AC8
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 15:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1AE7F6;
+	Mon, 12 Aug 2024 15:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474818; cv=none; b=DtNu9fkHhK+jgh+IG9hslG4QWIH78ef58VQnL7keD/nKEHzGkJI6A4Uii3QVyZx1NP2H2dLqJoTSbf3ML3HmasNCZ09RniE5FZ5PtunHg0sh/FxSFfFIjip7YL+8dc+OYY+tv8nTdmFEhp7cBs+RYd1kqUwOxwDMwwMF33TmaiU=
+	t=1723474868; cv=none; b=KNIAPNdsMIKHVQOogCaLQzzynpCEOBEyvjlQv1Jov6rvMf8XmPEvtg+8sI08RpC4Ir5Z9SINxJFdIGrnH4HSZ6KyLCEd6IlQpGaxHU45X+689xF+hioYYWSw00W77zOefiCOtHdZmaghzVz9iOTZC7BQe5fLrhg2yMuUsqaoOH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474818; c=relaxed/simple;
-	bh=sVrXZXI7CBoQfRqFkJa8UtNQF3Cbc1SAfjv8VFMOQpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=qB71zR4Z6+YoA4a7Ti5X5gvopOaxq2RZAgDwoG3fktpqQnGPN1z9xqE7p0osAMiCMB8qHqpVrJ3zLvbNUoV6Hhx3Mkb9Igxw1nZ2fEVuJ5D5CAJW+Dm4gkun7a6kiRHRQYYiJ6o4DrJhgTc1xG07n0pfIgwHrht32FNw8Pe/cYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8498Olq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADE4C4AF0F;
-	Mon, 12 Aug 2024 15:00:17 +0000 (UTC)
+	s=arc-20240116; t=1723474868; c=relaxed/simple;
+	bh=jFXwuHnHZvX9TUcpQkYawiiGZfBsAuGXkFiTH1tSLt0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G/TkoR1dp7FD4CZLdJcWtmsey0bfeoPpSl3gt2I9T1UVm402leE+3Pq1NxO1kqbBdFU5lGU8ELyN+dw6kt48zTh+cdK0YSZr2pzEKzGsMK6wN2QX1ko/ocP10zYeHtC4wgBgUud6hWCmUozoxIzwzULIp58AaEmZvNpbsz1xDV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1JSbnAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A6BC32782;
+	Mon, 12 Aug 2024 15:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723474818;
-	bh=sVrXZXI7CBoQfRqFkJa8UtNQF3Cbc1SAfjv8VFMOQpQ=;
-	h=Date:From:To:Cc:Subject:From;
-	b=E8498OlqKtVNaJ0f+8w1tApZyKC+Mu7m43HcMdC/TdJ+a4sivYJ1XmS2zx+xLRQOz
-	 i03uBG7SkIzlpd69EA/SkbzbnZ/TvmGlF9lC/9V11DPQb4hcRRQt3249w2YzwDo+bM
-	 wxWHQ44XLSWD2z4kGIM++wB16oA4jViVLOMR8Xdo=
-Date: Mon, 12 Aug 2024 17:00:15 +0200
+	s=korg; t=1723474868;
+	bh=jFXwuHnHZvX9TUcpQkYawiiGZfBsAuGXkFiTH1tSLt0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q1JSbnArerenmBslahulEIYEaSli2Gj+u5MsWwpiUiht0iYRtY4IRY0KLCeE7Ye4d
+	 YuVeGaXriyYNVXW5gHvUr+LzkuzBWVpXrC2TyuJQtEssvSdjOO1BUS57lJIxqo9deq
+	 dJpWOXoFtRaQeoZJrbkiCiDopNNujkrIieYXZjg8=
+Date: Mon, 12 Aug 2024 17:01:02 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: amd-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: AMD drm patch workflow is broken for stable trees
-Message-ID: <2024081247-until-audacious-6383@gregkh>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH -stable,6.1.x 0/3] Netfilter fixes for -stable
+Message-ID: <2024081256-growl-avert-8e3e@gregkh>
+References: <20240812102320.359247-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,22 +54,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240812102320.359247-1-pablo@netfilter.org>
 
-Hi all,
+On Mon, Aug 12, 2024 at 12:23:17PM +0200, Pablo Neira Ayuso wrote:
+> Hi Greg, Sasha,
+> 
+> This batch contains a backport for recent fixes already upstream for 6.1.x.
+> 
+> The following list shows the backported patches, I am using original commit
+> IDs for reference:
+> 
+> 1) 3c13725f43dc ("netfilter: nf_tables: bail out if stateful expression provides no .clone")
+> 
+> 2) fa23e0d4b756 ("netfilter: nf_tables: allow clone callbacks to sleep")
+> 
+> 3) cff3bd012a95 ("netfilter: nf_tables: prefer nft_chain_validate")
+> 
+> Please, apply,
+> Thanks
+> 
+> Florian Westphal (2):
+>   netfilter: nf_tables: allow clone callbacks to sleep
+>   netfilter: nf_tables: prefer nft_chain_validate
+> 
+> Pablo Neira Ayuso (1):
+>   netfilter: nf_tables: bail out if stateful expression provides no .clone
+> 
+>  include/net/netfilter/nf_tables.h |   4 +-
+>  net/netfilter/nf_tables_api.c     | 172 ++++--------------------------
+>  net/netfilter/nft_connlimit.c     |   4 +-
+>  net/netfilter/nft_counter.c       |   4 +-
+>  net/netfilter/nft_dynset.c        |   2 +-
+>  net/netfilter/nft_last.c          |   4 +-
+>  net/netfilter/nft_limit.c         |  14 +--
+>  net/netfilter/nft_quota.c         |   4 +-
+>  8 files changed, 42 insertions(+), 166 deletions(-)
+> 
+> -- 
+> 2.30.2
+> 
+> 
 
-As some of you have noticed, there's a TON of failure messages being
-sent out for AMD gpu driver commits that are tagged for stable
-backports.  In short, you all are doing something really wrong with how
-you are tagging these.
-
-Please fix it up to NOT have duplicates in multiple branches that end up
-in Linus's tree at different times.  Or if you MUST do that, then give
-us a chance to figure out that it IS a duplicate.  As-is, it's not
-working at all, and I think I need to just drop all patches for this
-driver that are tagged for stable going forward and rely on you all to
-provide a proper set of backported fixes when you say they are needed.
-
-Again, what you are doing today is NOT ok and is broken.  Please fix.
+All now queued up, thanks!
 
 greg k-h
 
