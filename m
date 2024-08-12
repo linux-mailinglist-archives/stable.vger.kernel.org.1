@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-67223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4197F94F46F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:30:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF35694F289
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750A81C20E58
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:30:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B71AB224B8
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D558018756A;
-	Mon, 12 Aug 2024 16:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C8818734B;
+	Mon, 12 Aug 2024 16:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asRnnTbl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aS9kFJoA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95873187552;
-	Mon, 12 Aug 2024 16:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765C7183CC9;
+	Mon, 12 Aug 2024 16:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480218; cv=none; b=UPufGZVkf3myxXMt1tFh07wudhpQjB+zIAPY2n0+pGtUEJccSy0VvrtHgV9ZVfVfrb8BIvDbf3M8wsGIrzhFpRqK/ayL2HohccN6OUFG99Xw8p3WNmUZPHmMbfQzmXwpI4T2zU6R4DyQUGaD3Khv0zhyHoS51Dvcj+B4H/euaek=
+	t=1723478842; cv=none; b=A+SBXG4IMv4MXxBey7nK4RokNZdO++G73HgwmX8mfQpNJlFpSi8KwFtYcdAEz8kFZmQCBysswLEXeTvh9Ix7u5ZF97u989HVxo0Ib869wDWo5lCe9aorQA0U0UKcWyPte3mWRAlPUlMgjKUASRlR8vwXhV3KrINC/jaRFj7+2is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480218; c=relaxed/simple;
-	bh=qSey0zZmViPT4CjspvTMJzCqPG2i4j2lAybcdOYGsJs=;
+	s=arc-20240116; t=1723478842; c=relaxed/simple;
+	bh=6Taz2mqp1n1AF9xXY99taCwtKLREbYdTQvxZtYFtkF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5I+0JrGRqsSWuQvFdjtJm6vatldd39ysp6gA+aFff+unTJdrUlfSSx2B8We6oz1e9bh6r8TA0q8Bdz6gvjf0aCob1jE5O2HW3RfSaucI2VjEhwtJbye4RaC1AwHRos8JGRz2B5LUdIztNCfpzQrflr2OdOJy1g0K1pDNS7T23s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asRnnTbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3535C32782;
-	Mon, 12 Aug 2024 16:30:17 +0000 (UTC)
+	 MIME-Version; b=dJW1V45Fwaes4bZQODkD4QWid+5yvmaIel9A2mvERoz/xNsv0xRAHTsoY4kgAbu5e4a9ac7TMZrUcNqokVzifkHAOB5v6/KeBLtdrSjieGfL5dsEZVW4zBn8sOWE8HsLGN9QaI4wdWzhN1YOLollUv3Zq1anNf3ZMVLLZLMyFFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aS9kFJoA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0D4C32782;
+	Mon, 12 Aug 2024 16:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480218;
-	bh=qSey0zZmViPT4CjspvTMJzCqPG2i4j2lAybcdOYGsJs=;
+	s=korg; t=1723478842;
+	bh=6Taz2mqp1n1AF9xXY99taCwtKLREbYdTQvxZtYFtkF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asRnnTblSEtwSQdu0LTxSslyJTnFUoBXSjXIARvdiEu3Rdq5WegQxLLu2Q/UDt/0I
-	 jJ58x7HuRHAtTWux330oCRAToXroQ2UKgdsdZx0XPpvBoex+zSernnzqmLvcr32n6l
-	 ZoPF89TQRA8nG5dWE4RNTGyFW2MaVaE65Fg2ffhc=
+	b=aS9kFJoAjGZ4gj7AGp6tnceME+pBvejeu7EObtS7hEETvjcLNSXOHITdc3GB26+Ql
+	 CTVkNG9ywDhKoMoWfVd+P/zHkxOFv/NiM5GUGSySbdIRVdOstgOl+LpZZa5WKCb7P6
+	 yVG+4G89vL/3oEI5h7lzgTkJGx20/4fo1+wQdpTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 131/263] arm64: cputype: Add Cortex-X925 definitions
-Date: Mon, 12 Aug 2024 18:02:12 +0200
-Message-ID: <20240812160151.563889971@linuxfoundation.org>
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 052/150] profiling: remove profile=sleep support
+Date: Mon, 12 Aug 2024 18:02:13 +0200
+Message-ID: <20240812160127.174126079@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit fd2ff5f0b320f418288e7a1f919f648fbc8a0dfc ]
+commit b88f55389ad27f05ed84af9e1026aa64dbfabc9a upstream.
 
-Add cputype definitions for Cortex-X925. These will be used for errata
-detection in subsequent patches.
+The kernel sleep profile is no longer working due to a recursive locking
+bug introduced by commit 42a20f86dc19 ("sched: Add wrapper for get_wchan()
+to keep task blocked")
 
-These values can be found in Table A-285 ("MIDR_EL1 bit descriptions")
-in issue 0001-05 of the Cortex-X925 TRM, which can be found at:
+Booting with the 'profile=sleep' kernel command line option added or
+executing
 
-  https://developer.arm.com/documentation/102807/0001/?lang=en
+  # echo -n sleep > /sys/kernel/profiling
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-4-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+after boot causes the system to lock up.
+
+Lockdep reports
+
+  kthreadd/3 is trying to acquire lock:
+  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: get_wchan+0x32/0x70
+
+  but task is already holding lock:
+  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: try_to_wake_up+0x53/0x370
+
+with the call trace being
+
+   lock_acquire+0xc8/0x2f0
+   get_wchan+0x32/0x70
+   __update_stats_enqueue_sleeper+0x151/0x430
+   enqueue_entity+0x4b0/0x520
+   enqueue_task_fair+0x92/0x6b0
+   ttwu_do_activate+0x73/0x140
+   try_to_wake_up+0x213/0x370
+   swake_up_locked+0x20/0x50
+   complete+0x2f/0x40
+   kthread+0xfb/0x180
+
+However, since nobody noticed this regression for more than two years,
+let's remove 'profile=sleep' support based on the assumption that nobody
+needs this functionality.
+
+Fixes: 42a20f86dc19 ("sched: Add wrapper for get_wchan() to keep task blocked")
+Cc: stable@vger.kernel.org # v5.16+
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt |    4 +---
+ include/linux/profile.h                         |    1 -
+ kernel/profile.c                                |   11 +----------
+ kernel/sched/stats.c                            |   10 ----------
+ 4 files changed, 2 insertions(+), 24 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index dcbac1ce6c25c..1cb0704c6163f 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -91,6 +91,7 @@
- #define ARM_CPU_PART_CORTEX_A720	0xD81
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
-+#define ARM_CPU_PART_CORTEX_X925	0xD85
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4556,11 +4556,9 @@
  
- #define APM_CPU_PART_XGENE		0x000
- #define APM_CPU_VAR_POTENZA		0x00
-@@ -169,6 +170,7 @@
- #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
-+#define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
--- 
-2.43.0
-
+ 	profile=	[KNL] Enable kernel profiling via /proc/profile
+ 			Format: [<profiletype>,]<number>
+-			Param: <profiletype>: "schedule", "sleep", or "kvm"
++			Param: <profiletype>: "schedule" or "kvm"
+ 				[defaults to kernel profiling]
+ 			Param: "schedule" - profile schedule points.
+-			Param: "sleep" - profile D-state sleeping (millisecs).
+-				Requires CONFIG_SCHEDSTATS
+ 			Param: "kvm" - profile VM exits.
+ 			Param: <number> - step/bucket size as a power of 2 for
+ 				statistical time based profiling.
+--- a/include/linux/profile.h
++++ b/include/linux/profile.h
+@@ -11,7 +11,6 @@
+ 
+ #define CPU_PROFILING	1
+ #define SCHED_PROFILING	2
+-#define SLEEP_PROFILING	3
+ #define KVM_PROFILING	4
+ 
+ struct proc_dir_entry;
+--- a/kernel/profile.c
++++ b/kernel/profile.c
+@@ -57,20 +57,11 @@ static DEFINE_MUTEX(profile_flip_mutex);
+ int profile_setup(char *str)
+ {
+ 	static const char schedstr[] = "schedule";
+-	static const char sleepstr[] = "sleep";
+ 	static const char kvmstr[] = "kvm";
+ 	const char *select = NULL;
+ 	int par;
+ 
+-	if (!strncmp(str, sleepstr, strlen(sleepstr))) {
+-#ifdef CONFIG_SCHEDSTATS
+-		force_schedstat_enabled();
+-		prof_on = SLEEP_PROFILING;
+-		select = sleepstr;
+-#else
+-		pr_warn("kernel sleep profiling requires CONFIG_SCHEDSTATS\n");
+-#endif /* CONFIG_SCHEDSTATS */
+-	} else if (!strncmp(str, schedstr, strlen(schedstr))) {
++	if (!strncmp(str, schedstr, strlen(schedstr))) {
+ 		prof_on = SCHED_PROFILING;
+ 		select = schedstr;
+ 	} else if (!strncmp(str, kvmstr, strlen(kvmstr))) {
+--- a/kernel/sched/stats.c
++++ b/kernel/sched/stats.c
+@@ -92,16 +92,6 @@ void __update_stats_enqueue_sleeper(stru
+ 
+ 			trace_sched_stat_blocked(p, delta);
+ 
+-			/*
+-			 * Blocking time is in units of nanosecs, so shift by
+-			 * 20 to get a milliseconds-range estimation of the
+-			 * amount of time that the task spent sleeping:
+-			 */
+-			if (unlikely(prof_on == SLEEP_PROFILING)) {
+-				profile_hits(SLEEP_PROFILING,
+-					     (void *)get_wchan(p),
+-					     delta >> 20);
+-			}
+ 			account_scheduler_latency(p, delta >> 10, 0);
+ 		}
+ 	}
 
 
 
