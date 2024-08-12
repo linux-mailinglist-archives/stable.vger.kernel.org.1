@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36A294F442
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:28:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B2E94F255
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A081C20D6A
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:28:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2C2BB208C7
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6501D186E38;
-	Mon, 12 Aug 2024 16:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C67C183CD4;
+	Mon, 12 Aug 2024 16:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UFnrCcu"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mm1xDKBr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245E5134AC;
-	Mon, 12 Aug 2024 16:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8781EA8D;
+	Mon, 12 Aug 2024 16:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480094; cv=none; b=aeyAS4mMJtX+i6+upX/YJRDw3PUoEiPUPuVJ+4rNjUUYIzVFcOz+RjWlYBZS9bIv30lnOKyCouiLr9EIcEqnmODFwiZeHthKgbP7JgUZwgD2fQR7xlKZcGHGqB95ip05PdK3qF1bE1osyf1aUGEUqk4QGH0rRoYxW3D5OuBcgNA=
+	t=1723478711; cv=none; b=SoyHCPsxQMKHtHlH8p5TAfGD0c8oW3ann8wWQpawCeu+rcroSltgOFoy0pAV4DV40e7Ka8zjJhU7lx3IPcyJScBu8wVytK7ITx9jK9m/WqH7OLDqWooI42cuOFFKiMTr1Q0ZW/ZKVIVOuOcsdFcSDoNB/I/moA8dAAPA9tWOpuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480094; c=relaxed/simple;
-	bh=jwNR6gxxpU1+3qYg05HnXbAFgdZpfGZd7kWyCj28hBA=;
+	s=arc-20240116; t=1723478711; c=relaxed/simple;
+	bh=Ly06PjFnvHQYZdltpS6EJ6TOKrMpK7OB29sBP+pnZio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3RAZ1SqmCOXn71qgWqsXqKb37PzlFtaRIeXiZnieqxAwoco9pC8NqIX08mMiZJyIhnvX2LtcNXcs/WktPhjem+XRbl4Sk2qmiJNwOYOEM8rArjDqhkP49XS82y3AD4uLNQIm2gQnGqhx6znEpemaWPo+DGiTYaVW+NRmLNjXIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UFnrCcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A8DC32782;
-	Mon, 12 Aug 2024 16:28:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l0yCt6jSPQBNwwJNiPbvPVJbcZVcbpMLL41BiUyxk7YBAVlqyK+tzsGjDkFFiC8trklyBLX0EINoHV0evjkMLEsI/DeBgpFoi6aHS8Z7E7AXCGhmym+I6iTe1MYafTj/GKBuhNs1QPIY0xOZKiTa1dxSgE6zM9Z+bTYnVvMsy2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mm1xDKBr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99516C32782;
+	Mon, 12 Aug 2024 16:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480094;
-	bh=jwNR6gxxpU1+3qYg05HnXbAFgdZpfGZd7kWyCj28hBA=;
+	s=korg; t=1723478711;
+	bh=Ly06PjFnvHQYZdltpS6EJ6TOKrMpK7OB29sBP+pnZio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UFnrCcun6FJteYUqCBvZF2hpj1iE5x/M1g6Om4z2c5gU51a05iixq0Z/rOPpn8MR
-	 GVBB5fmFPyBUHrvnR923eQuMikZ5ktWN+JbWhAHVev4CcP7u5tp4O66WdB52l0n34g
-	 StK6uCo8wlt8P3VxasHvFTB9CqJfWfd9wHsNK3ko=
+	b=Mm1xDKBrUU1nVvJcwz3N2L7Z5ATmIHg9qc9JA+eEPQe2yFsCFme6sllRI31EHoo7y
+	 1FFhWPm/tPQTOXMSFPEk8iDXxUZhVGY0o5AJaOQuVUSaQXy34MlklevnRu3DpW0pvJ
+	 KagDqnLHvupVZL2Q5ipaqRtrwu5fweQWCxX+1//4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	patches@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
+	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 095/263] drm/amdgpu/pm: Fix the null pointer dereference in apply_state_adjust_rules
+Subject: [PATCH 6.1 015/150] net: fec: Stop PPS on driver remove
 Date: Mon, 12 Aug 2024 18:01:36 +0200
-Message-ID: <20240812160150.182021335@linuxfoundation.org>
+Message-ID: <20240812160125.744837804@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit d19fb10085a49b77578314f69fff21562f7cd054 ]
+[ Upstream commit 8fee6d5ad5fa18c270eedb2a2cdf58dbadefb94b ]
 
-Check the pointer value to fix potential null pointer
-dereference
+PPS was not stopped in `fec_ptp_stop()`, called when
+the adapter was removed. Consequentially, you couldn't
+safely reload the driver with the PPS signal on.
 
-Acked-by: Yang Wang<kevinyang.wang@amd.com>
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://lore.kernel.org/netdev/CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com/T/#m01dcb810bfc451a492140f6797ca77443d0cb79f
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20240807080956.2556602-1-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c    |  7 +++++--
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c    | 14 ++++++++------
- .../gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c  |  7 +++++--
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 5d0c281f2378c..f1c369945ac5d 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -3314,8 +3314,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 			const struct pp_power_state *current_ps)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
--	struct smu7_power_state *smu7_ps =
--				cast_phw_smu7_power_state(&request_ps->hardware);
-+	struct smu7_power_state *smu7_ps;
- 	uint32_t sclk;
- 	uint32_t mclk;
- 	struct PP_Clocks minimum_clocks = {0};
-@@ -3332,6 +3331,10 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 	uint32_t latency;
- 	bool latency_allowed = false;
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index e0393dc159fc7..37d83ff5b30be 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -635,6 +635,9 @@ void fec_ptp_stop(struct platform_device *pdev)
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
  
-+	smu7_ps = cast_phw_smu7_power_state(&request_ps->hardware);
-+	if (!smu7_ps)
-+		return -EINVAL;
++	if (fep->pps_enable)
++		fec_ptp_enable_pps(fep, 0);
 +
- 	data->battery_state = (PP_StateUILabel_Battery ==
- 			request_ps->classification.ui_label);
- 	data->mclk_ignore_signal = false;
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-index b015a601b385a..eb744401e0567 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-@@ -1065,16 +1065,18 @@ static int smu8_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 				struct pp_power_state  *prequest_ps,
- 			const struct pp_power_state *pcurrent_ps)
- {
--	struct smu8_power_state *smu8_ps =
--				cast_smu8_power_state(&prequest_ps->hardware);
--
--	const struct smu8_power_state *smu8_current_ps =
--				cast_const_smu8_power_state(&pcurrent_ps->hardware);
--
-+	struct smu8_power_state *smu8_ps;
-+	const struct smu8_power_state *smu8_current_ps;
- 	struct smu8_hwmgr *data = hwmgr->backend;
- 	struct PP_Clocks clocks = {0, 0, 0, 0};
- 	bool force_high;
- 
-+	smu8_ps = cast_smu8_power_state(&prequest_ps->hardware);
-+	smu8_current_ps = cast_const_smu8_power_state(&pcurrent_ps->hardware);
-+
-+	if (!smu8_ps || !smu8_current_ps)
-+		return -EINVAL;
-+
- 	smu8_ps->need_dfs_bypass = true;
- 
- 	data->battery_state = (PP_StateUILabel_Battery == prequest_ps->classification.ui_label);
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index 9f5bd998c6bff..8d7dc0e5417ed 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -3259,8 +3259,7 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 			const struct pp_power_state *current_ps)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
--	struct vega10_power_state *vega10_ps =
--				cast_phw_vega10_power_state(&request_ps->hardware);
-+	struct vega10_power_state *vega10_ps;
- 	uint32_t sclk;
- 	uint32_t mclk;
- 	struct PP_Clocks minimum_clocks = {0};
-@@ -3278,6 +3277,10 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 	uint32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
- 	uint32_t latency;
- 
-+	vega10_ps = cast_phw_vega10_power_state(&request_ps->hardware);
-+	if (!vega10_ps)
-+		return -EINVAL;
-+
- 	data->battery_state = (PP_StateUILabel_Battery ==
- 			request_ps->classification.ui_label);
- 
+ 	cancel_delayed_work_sync(&fep->time_keep);
+ 	if (fep->ptp_clock)
+ 		ptp_clock_unregister(fep->ptp_clock);
 -- 
 2.43.0
 
