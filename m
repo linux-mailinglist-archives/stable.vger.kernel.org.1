@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-67262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFAB94F49D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD2C94F387
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 860C5B23925
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:32:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA089B256AC
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD392C1A5;
-	Mon, 12 Aug 2024 16:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510AC1862BD;
+	Mon, 12 Aug 2024 16:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/oeqLxb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHY2xvRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E4A16D9B8;
-	Mon, 12 Aug 2024 16:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8A3183CA6;
+	Mon, 12 Aug 2024 16:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480345; cv=none; b=kpzf7EkLbziN8zpFRcs5nuI2uSg7VzsEw7XWYnu3Bw8m1Xwh20QFRcU61SymXJbTyyrMI/TaugGz03jRLUKpKMrg685/MnAmGd/9EXeElbIUqn6LYf5112YfUM268Tn4QsOjO/HSAtjo/bQajgTLX/EbYN0bmTBE4QkRSSilOy8=
+	t=1723479526; cv=none; b=qt/hlsyZQPbTF28fqBC74SqtKsVktWEe+UUrUwaO+JZLdJ3jdZ4rAn6TsLk0oiFDdJE+UZ17pZTMHYSLOcVq3pn2uInENC+e8pszYepE1LXkilviTyZPoeeJ+3/tXGKVbPgULcwMwS7cyFKujhC6XSiUEx1uXnGGWQpHGs64XAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480345; c=relaxed/simple;
-	bh=nwN0YQzBYaVfIQFhJEblqE2kKPNRFayqkdMlQGzkbig=;
+	s=arc-20240116; t=1723479526; c=relaxed/simple;
+	bh=7lolnTzV/PbN92yGV+DmaA0maEkrDiJiONs/c4aO7SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rb+5JigemPMIwDP7rhOKYPnsiPXTm/E+Ie0qqd6r+rTYpY88zVwFh7s6v1jeH5J1gSQhWGNRWbd7wvTEBZTObMMay3yofVNdTkLatt7tayYTqp0DasVgcKFvWrS8SogWfa3eoyllBjLF3CYSItP6f516E8BFHIYzsdGdJz2PutQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/oeqLxb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184E8C32782;
-	Mon, 12 Aug 2024 16:32:24 +0000 (UTC)
+	 MIME-Version; b=kDmGByyTuHXTkPmE9ijd8aYZNri+Twvt4EFH/U+rQmS1MLD5eff82Iwd37d2hKJDJcB5AEKYCVzI0xbSMFJ6oJ8dMW8TyR9n0zWh9o77C892Sxu2JWbFzZd5s7I1BvPwR1Ja1Ah+XNBzl4wogWtNq32LhfglDLGAsgUTUC4sP8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHY2xvRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC17C4AF0C;
+	Mon, 12 Aug 2024 16:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480345;
-	bh=nwN0YQzBYaVfIQFhJEblqE2kKPNRFayqkdMlQGzkbig=;
+	s=korg; t=1723479525;
+	bh=7lolnTzV/PbN92yGV+DmaA0maEkrDiJiONs/c4aO7SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/oeqLxbXh0IlLbduDXSr8/dNO62KWlHfdVSdE9yoDZ9wqN1qqcSJ/LK4aERtZ1pW
-	 g9LskQzYiItuc4bVod8OZbFderxLhrhG8fYmCrP8Hh0i6tNONOmD0/buMTQOQK8+sD
-	 5iSzP4R47IC5KqGFsykDSvJ9BlDEmERH0zluQv34=
+	b=tHY2xvRhi1kfzn4Eo3bZhuvz1cJhhm3Foy9KjmVW9vxvd8WpfoBUjIFFn2ZQn/chE
+	 des6r3mMM30hBqCCI/moUVtfH+lUhpQ8hRx05YidIUVRewUGOI3tkefZigNK2DhOj8
+	 DROUJdGX/hwnz++O26XuS2IJuNUSTUBFUskt3zRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Gleb Korobeynikov <gkorobeynikov@astralinux.ru>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 169/263] cifs: cifs_inval_name_dfs_link_error: correct the check for fullpath
+	Steven Steve Kendall <skend@chromium.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 114/189] ALSA: hda: Add HP MP9 G4 Retail System AMS to force connect list
 Date: Mon, 12 Aug 2024 18:02:50 +0200
-Message-ID: <20240812160153.017516350@linuxfoundation.org>
+Message-ID: <20240812160136.528154630@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gleb Korobeynikov <gkorobeynikov@astralinux.ru>
+From: Steven 'Steve' Kendall <skend@chromium.org>
 
-[ Upstream commit 36bb22a08a69d9984a8399c07310d18b115eae20 ]
+commit 7e1e206b99f4b3345aeb49d94584a420b7887f1d upstream.
 
-Replace the always-true check tcon->origin_fullpath with
-check of server->leaf_fullpath
+In recent HP UEFI firmware (likely v2.15 and above, tested on 2.27),
+these pins are incorrectly set for HDMI/DP audio. Tested on
+HP MP9 G4 Retail System AMS. Tested audio with two monitors connected
+via DisplayPort.
 
-See https://bugzilla.kernel.org/show_bug.cgi?id=219083
-
-The check of the new @tcon will always be true during mounting,
-since @tcon->origin_fullpath will only be set after the tree is
-connected to the latest common resource, as well as checking if
-the prefix paths from it are fully accessible.
-
-Fixes: 3ae872de4107 ("smb: client: fix shared DFS root mounts with different prefixes")
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Gleb Korobeynikov <gkorobeynikov@astralinux.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://forum.manjaro.org/t/intel-cannon-lake-pch-cavs-conexant-cx20632-no-sound-at-hdmi-or-displayport/133494
+Link: https://bbs.archlinux.org/viewtopic.php?id=270523
+Signed-off-by: Steven 'Steve' Kendall <skend@chromium.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240806-hdmi-audio-hp-wrongpins-v2-1-d9eb4ad41043@chromium.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/misc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_hdmi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index 07c468ddb88a8..65d4b72b4d51a 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -1288,6 +1288,7 @@ int cifs_inval_name_dfs_link_error(const unsigned int xid,
- 				   const char *full_path,
- 				   bool *islink)
- {
-+	struct TCP_Server_Info *server = tcon->ses->server;
- 	struct cifs_ses *ses = tcon->ses;
- 	size_t len;
- 	char *path;
-@@ -1304,12 +1305,12 @@ int cifs_inval_name_dfs_link_error(const unsigned int xid,
- 	    !is_tcon_dfs(tcon))
- 		return 0;
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1989,6 +1989,7 @@ static int hdmi_add_cvt(struct hda_codec
+ }
  
--	spin_lock(&tcon->tc_lock);
--	if (!tcon->origin_fullpath) {
--		spin_unlock(&tcon->tc_lock);
-+	spin_lock(&server->srv_lock);
-+	if (!server->leaf_fullpath) {
-+		spin_unlock(&server->srv_lock);
- 		return 0;
- 	}
--	spin_unlock(&tcon->tc_lock);
-+	spin_unlock(&server->srv_lock);
- 
- 	/*
- 	 * Slow path - tcon is DFS and @full_path has prefix path, so attempt
--- 
-2.43.0
-
+ static const struct snd_pci_quirk force_connect_list[] = {
++	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
 
 
 
