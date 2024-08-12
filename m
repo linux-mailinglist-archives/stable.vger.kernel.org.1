@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-66431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D6E94EA15
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:40:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C709A94EA26
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 11:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE696281316
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:40:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8309E280F12
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 09:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75E216D9CC;
-	Mon, 12 Aug 2024 09:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9617416DEAB;
+	Mon, 12 Aug 2024 09:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmQ5Adhj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5DsXaRz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878F916D9AB
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5708716DEA7
+	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 09:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723455618; cv=none; b=qk1r+RnGQLe3s0Amg76DYy8CgdfzGCKeIJ1jdaYGdqk4bE+jZppsvXRuoUrPQmGxGdaAlBosx4MOO4kM3wPFns8CVl9oGP0+QXFWkNSmNcfrhY1p/Sj3JDQI3ooN4lbKRWEP+LKGeE95/w2TyyoEkefUyxPnkBq5ubXWsvxIFz8=
+	t=1723455844; cv=none; b=jYWTh/MLCn+n4o3GvWeRnsR7guKlwh9/9N/vHP8mvyNEA4Xq5dBW5Ca41IEwNExrdrq90hlcSQF5K1bA37WjxNDrjJmne+L0WA7/fb3o6sh6MzDUHEIz3QCxZKyLuwYz1sXc0q9K5dL5dZFcEc4/m/+QemHw6UOS0EkDM4mlFB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723455618; c=relaxed/simple;
-	bh=sz+N1O+WavzBT3VyEdKYXt7bcQYk809dLQRqlqkBgiM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ceWIl0hJ3+FY1GHifz30HgJnVEn5Dx48x9tr25Rm0Dylulp1lndcUKEDSFHC5K8mKWD2v9uCCbdoKGtF2hYdlfbxKulh6ElvSH3RAU/5MebROvMLT1diXXTj7xHDsrGFfXj9ygMGItD4qL9NU2+sqVulLJIu0TiL4aOA0Anh7z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmQ5Adhj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF48C32782;
-	Mon, 12 Aug 2024 09:40:17 +0000 (UTC)
+	s=arc-20240116; t=1723455844; c=relaxed/simple;
+	bh=E66xztRXCjy9IQqJL8n2h8i7lVYEo30Yxbl82s7RWok=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hi7e94swL8L+p+Xx/6aoYzizknn7gYDym52G3QaQD2ptgTmtanflKJLdKG1W8eVwkdZhNHY4C/3EdyPRKPX6fzS3XbDj72m1r0EC4dZyGHkzRIBr4h9BfbdPCBdvcRveBIr/jtqdjrkl7fajUTSH+0bed+wKCkD/So3YGy/tMR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5DsXaRz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D50C4AF0F;
+	Mon, 12 Aug 2024 09:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723455618;
-	bh=sz+N1O+WavzBT3VyEdKYXt7bcQYk809dLQRqlqkBgiM=;
+	s=korg; t=1723455843;
+	bh=E66xztRXCjy9IQqJL8n2h8i7lVYEo30Yxbl82s7RWok=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fmQ5AdhjwXiCZi5lUGvPUS1/dXA3HjTQNcVHHuLKUkDeZ2BrM3UKN82xidPfzh/B6
-	 AxiuYL/LGViP2INQbKzGrbip5WsorOmv6kYBGvHjSVFengrFuufmUd0wBWKZ95D0IN
-	 aes4rENqHewCZPB5eX+sFByl/UYQWwuuKOBLHaeo=
-Subject: FAILED: patch "[PATCH] usb: typec: fsa4480: Check if the chip is really there" failed to apply to 6.1-stable tree
-To: konrad.dybcio@linaro.org,dmitry.baryshkov@linaro.org,gregkh@linuxfoundation.org,stable@kernel.org
+	b=r5DsXaRz+cQqHrt4apBGQLObQBukYJ6IMnwJvQgFVpzncBCp5UMwvm5V8gVd/tT5o
+	 x+NP0AS5cNG/EKLs7rsZi6Rcc9lxb2Zv0D4A/7ioN6M3UdNQbJXYIwLCLu6bSkSPqm
+	 sRH76Uu1r+ug1Iq/mAA7SAYCmbpdOgtxd3IQiWT0=
+Subject: FAILED: patch "[PATCH] usb: gadget: u_audio: Check return codes from usb_ep_enable" failed to apply to 5.15-stable tree
+To: crwulff@gmail.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Aug 2024 11:40:07 +0200
-Message-ID: <2024081206-aqua-obscure-d702@gregkh>
+Date: Mon, 12 Aug 2024 11:44:00 +0200
+Message-ID: <2024081259-emporium-sequence-80c6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x e885f5f1f2b43575aa8e4e31404132d77d6663d1
+git cherry-pick -x 76a7bfc445b8e9893c091e24ccfd4f51dfdc0a70
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081206-aqua-obscure-d702@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081259-emporium-sequence-80c6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-e885f5f1f2b4 ("usb: typec: fsa4480: Check if the chip is really there")
-cf07c55f9922 ("usb: typec: fsa4480: Add support to swap SBU orientation")
-c7054c31c1c9 ("usb: typec: fsa4480: rework mux & switch setup to handle more states")
+76a7bfc445b8 ("usb: gadget: u_audio: Check return codes from usb_ep_enable and config_ep_by_speed.")
+8722a949e62a ("usb: gadget: u_audio: Move dynamic srate from params to rtd")
+c565ad07ef35 ("usb: gadget: u_audio: Support multiple sampling rates")
+f2f69bf65df1 ("usb: gadget: u_audio: fix calculations for small bInterval")
+6fec018a7e70 ("usb: gadget: u_audio.c: Adding Playback Pitch ctl for sync playback")
 
 thanks,
 
@@ -79,69 +81,108 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e885f5f1f2b43575aa8e4e31404132d77d6663d1 Mon Sep 17 00:00:00 2001
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Date: Mon, 29 Jul 2024 10:42:58 +0200
-Subject: [PATCH] usb: typec: fsa4480: Check if the chip is really there
+From 76a7bfc445b8e9893c091e24ccfd4f51dfdc0a70 Mon Sep 17 00:00:00 2001
+From: Chris Wulff <crwulff@gmail.com>
+Date: Sun, 21 Jul 2024 15:23:15 -0400
+Subject: [PATCH] usb: gadget: u_audio: Check return codes from usb_ep_enable
+ and config_ep_by_speed.
 
-Currently, the driver will happily register the switch/mux devices, and
-so long as the i2c master doesn't complain, the user would never know
-there's something wrong.
+These functions can fail if descriptors are malformed, or missing,
+for the selected USB speed.
 
-Add a device id check (based on [1]) and return -ENODEV if the read
-fails or returns nonsense.
-
-Checking the value on a Qualcomm SM6115P-based Lenovo Tab P11 tablet,
-the ID mentioned in the datasheet does indeed show up:
- fsa4480 1-0042: Found FSA4480 v1.1 (Vendor ID = 0)
-
-[1] https://www.onsemi.com/pdf/datasheet/fsa4480-d.pdf
-
-Fixes: 1dc246320c6b ("usb: typec: mux: Add On Semi fsa4480 driver")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240729-topic-fs4480_check-v3-1-f5bf732d3424@kernel.org
+Fixes: eb9fecb9e69b ("usb: gadget: f_uac2: split out audio core")
+Fixes: 24f779dac8f3 ("usb: gadget: f_uac2/u_audio: add feedback endpoint support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chris Wulff <crwulff@gmail.com>
+Link: https://lore.kernel.org/r/20240721192314.3532697-2-crwulff@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/typec/mux/fsa4480.c b/drivers/usb/typec/mux/fsa4480.c
-index cb7cdf90cb0a..cd235339834b 100644
---- a/drivers/usb/typec/mux/fsa4480.c
-+++ b/drivers/usb/typec/mux/fsa4480.c
-@@ -13,6 +13,10 @@
- #include <linux/usb/typec_dp.h>
- #include <linux/usb/typec_mux.h>
+diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/function/u_audio.c
+index 89af0feb7512..24299576972f 100644
+--- a/drivers/usb/gadget/function/u_audio.c
++++ b/drivers/usb/gadget/function/u_audio.c
+@@ -592,16 +592,25 @@ int u_audio_start_capture(struct g_audio *audio_dev)
+ 	struct usb_ep *ep, *ep_fback;
+ 	struct uac_rtd_params *prm;
+ 	struct uac_params *params = &audio_dev->params;
+-	int req_len, i;
++	int req_len, i, ret;
  
-+#define FSA4480_DEVICE_ID	0x00
-+ #define FSA4480_DEVICE_ID_VENDOR_ID	GENMASK(7, 6)
-+ #define FSA4480_DEVICE_ID_VERSION_ID	GENMASK(5, 3)
-+ #define FSA4480_DEVICE_ID_REV_ID	GENMASK(2, 0)
- #define FSA4480_SWITCH_ENABLE	0x04
- #define FSA4480_SWITCH_SELECT	0x05
- #define FSA4480_SWITCH_STATUS1	0x07
-@@ -251,6 +255,7 @@ static int fsa4480_probe(struct i2c_client *client)
- 	struct typec_switch_desc sw_desc = { };
- 	struct typec_mux_desc mux_desc = { };
- 	struct fsa4480 *fsa;
-+	int val = 0;
- 	int ret;
- 
- 	fsa = devm_kzalloc(dev, sizeof(*fsa), GFP_KERNEL);
-@@ -268,6 +273,15 @@ static int fsa4480_probe(struct i2c_client *client)
- 	if (IS_ERR(fsa->regmap))
- 		return dev_err_probe(dev, PTR_ERR(fsa->regmap), "failed to initialize regmap\n");
- 
-+	ret = regmap_read(fsa->regmap, FSA4480_DEVICE_ID, &val);
-+	if (ret || !val)
-+		return dev_err_probe(dev, -ENODEV, "FSA4480 not found\n");
+ 	prm = &uac->c_prm;
+ 	dev_dbg(dev, "start capture with rate %d\n", prm->srate);
+ 	ep = audio_dev->out_ep;
+-	config_ep_by_speed(gadget, &audio_dev->func, ep);
++	ret = config_ep_by_speed(gadget, &audio_dev->func, ep);
++	if (ret < 0) {
++		dev_err(dev, "config_ep_by_speed for out_ep failed (%d)\n", ret);
++		return ret;
++	}
 +
-+	dev_dbg(dev, "Found FSA4480 v%lu.%lu (Vendor ID = %lu)\n",
-+		FIELD_GET(FSA4480_DEVICE_ID_VERSION_ID, val),
-+		FIELD_GET(FSA4480_DEVICE_ID_REV_ID, val),
-+		FIELD_GET(FSA4480_DEVICE_ID_VENDOR_ID, val));
+ 	req_len = ep->maxpacket;
+ 
+ 	prm->ep_enabled = true;
+-	usb_ep_enable(ep);
++	ret = usb_ep_enable(ep);
++	if (ret < 0) {
++		dev_err(dev, "usb_ep_enable failed for out_ep (%d)\n", ret);
++		return ret;
++	}
+ 
+ 	for (i = 0; i < params->req_number; i++) {
+ 		if (!prm->reqs[i]) {
+@@ -629,9 +638,18 @@ int u_audio_start_capture(struct g_audio *audio_dev)
+ 		return 0;
+ 
+ 	/* Setup feedback endpoint */
+-	config_ep_by_speed(gadget, &audio_dev->func, ep_fback);
++	ret = config_ep_by_speed(gadget, &audio_dev->func, ep_fback);
++	if (ret < 0) {
++		dev_err(dev, "config_ep_by_speed in_ep_fback failed (%d)\n", ret);
++		return ret; // TODO: Clean up out_ep
++	}
 +
- 	/* Safe mode */
- 	fsa->cur_enable = FSA4480_ENABLE_DEVICE | FSA4480_ENABLE_USB;
- 	fsa->mode = TYPEC_STATE_SAFE;
+ 	prm->fb_ep_enabled = true;
+-	usb_ep_enable(ep_fback);
++	ret = usb_ep_enable(ep_fback);
++	if (ret < 0) {
++		dev_err(dev, "usb_ep_enable failed for in_ep_fback (%d)\n", ret);
++		return ret; // TODO: Clean up out_ep
++	}
+ 	req_len = ep_fback->maxpacket;
+ 
+ 	req_fback = usb_ep_alloc_request(ep_fback, GFP_ATOMIC);
+@@ -687,13 +705,17 @@ int u_audio_start_playback(struct g_audio *audio_dev)
+ 	struct uac_params *params = &audio_dev->params;
+ 	unsigned int factor;
+ 	const struct usb_endpoint_descriptor *ep_desc;
+-	int req_len, i;
++	int req_len, i, ret;
+ 	unsigned int p_pktsize;
+ 
+ 	prm = &uac->p_prm;
+ 	dev_dbg(dev, "start playback with rate %d\n", prm->srate);
+ 	ep = audio_dev->in_ep;
+-	config_ep_by_speed(gadget, &audio_dev->func, ep);
++	ret = config_ep_by_speed(gadget, &audio_dev->func, ep);
++	if (ret < 0) {
++		dev_err(dev, "config_ep_by_speed for in_ep failed (%d)\n", ret);
++		return ret;
++	}
+ 
+ 	ep_desc = ep->desc;
+ 	/*
+@@ -720,7 +742,11 @@ int u_audio_start_playback(struct g_audio *audio_dev)
+ 	uac->p_residue_mil = 0;
+ 
+ 	prm->ep_enabled = true;
+-	usb_ep_enable(ep);
++	ret = usb_ep_enable(ep);
++	if (ret < 0) {
++		dev_err(dev, "usb_ep_enable failed for in_ep (%d)\n", ret);
++		return ret;
++	}
+ 
+ 	for (i = 0; i < params->req_number; i++) {
+ 		if (!prm->reqs[i]) {
 
 
