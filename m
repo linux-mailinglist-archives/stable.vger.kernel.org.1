@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-67135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948AF94F40D
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:25:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDCE794F411
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C758C1C219D3
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:25:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BF50B23CB3
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243B4187335;
-	Mon, 12 Aug 2024 16:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020911862BD;
+	Mon, 12 Aug 2024 16:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nV+XF14/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eC7zBMzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D545518732C;
-	Mon, 12 Aug 2024 16:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ABB17C7C8;
+	Mon, 12 Aug 2024 16:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723479923; cv=none; b=ktkI2YBuYhTQY6V84Pi1wXzA8NTI6Gr/g+oR08VmwVaGohwWg1iUrNLvw9Pw5DKzPztJHHS73tI+eGzYB8zTstOvTewgPzLca12fIZH4y6X3WxAQgimBcpjnDr26+Cerf7DrbNcEcjJ2TpwNBSka+UHn/PObXk2/yttRAXQcxgY=
+	t=1723479930; cv=none; b=qMtrD5ALwx3AsiWt9m1A+92rdLVqkLr0AgsoaLHt7l5rTsilcUMK2VATcRYfUXf0+dECUJEMtl2mbLLdKHy3WXsfAdjMaTAapRu6zwM9w1rRA6aP4y3hMnNTNtrEo7/WMcG1GrE1fKk0zPuNrvydpW9dIV49EwU1suIoHdGtlL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723479923; c=relaxed/simple;
-	bh=LHHdRNtQx3NHRcPUNg4Qf+WAJL9IQPW21r/6weLtfOI=;
+	s=arc-20240116; t=1723479930; c=relaxed/simple;
+	bh=OXHT3DKSVbBjor2XfeoCGaZzrBPmJub/aaJtrdikwB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gCXwKWsJZ7ltxH2RYJNX+2VszNvxhDpVfjmQpKAU9p8vn02j17IiP9w2yS2QK/C4OjJjsgW2m12VMwkd96tTuEF3UIz/1dbiFAWITCd8qB9g6D7lB/ojX1v7nuc03TLVKXbbP0m5HUZtkop2GRQB0FNy1dZRaKyytz7Y7Wegz7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nV+XF14/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595A2C32782;
-	Mon, 12 Aug 2024 16:25:23 +0000 (UTC)
+	 MIME-Version; b=UeLaklIHlzAucIdK1lLNdDbUOblohCK809uFXVZwCkHTXB3NdYvf/ltDVPsCTSaq2FNc1pGWRmrBJcpdZFthsKGgRCLNhRxiFgYCEWgZhYFO0Q+wcETR7zxO8j5Nsj3RSXo2wvF6GnGwS08+hcXSNqYyMH/QsAVCVtwhvGNZ6dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eC7zBMzw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CBBC32782;
+	Mon, 12 Aug 2024 16:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723479923;
-	bh=LHHdRNtQx3NHRcPUNg4Qf+WAJL9IQPW21r/6weLtfOI=;
+	s=korg; t=1723479930;
+	bh=OXHT3DKSVbBjor2XfeoCGaZzrBPmJub/aaJtrdikwB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nV+XF14/PmCBb8uhbwFi7QxxfkVnLFKv6SHHlW0Wn2B6JPRa2vvY8sF51BBk54hxY
-	 YDe8dcoHBnlYVJbQGX40gBXN69ExMjd2noxRVPMmSVn5EJ1ZAqMdn/2oZomlUcefop
-	 5LTTcyNjeUWBnHMpeR8AXhh6jtP9mHAcPN42azIo=
+	b=eC7zBMzwX1sIUGXTfOEbNybGiG8lm0wlDDiZGOEquGiJYAx2iIXiY0N2YEdYEVAZj
+	 pYm2c97whWVWWmKDp9Xe55am6xW6EBjStDzX6nsO0rKuhj2DruL66u8d8YpMBgMivs
+	 9B8JRfGMPTQY+1PjPFJ5SsshmArqawatTeXKJrBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wilken Gottwalt <wilken.gottwalt@posteo.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 042/263] hwmon: corsair-psu: add USB id of HX1200i Series 2023 psu
-Date: Mon, 12 Aug 2024 18:00:43 +0200
-Message-ID: <20240812160148.154585759@linuxfoundation.org>
+Subject: [PATCH 6.10 043/263] Revert "rcu-tasks: Fix synchronize_rcu_tasks() VS zap_pid_ns_processes()"
+Date: Mon, 12 Aug 2024 18:00:44 +0200
+Message-ID: <20240812160148.193804354@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
 References: <20240812160146.517184156@linuxfoundation.org>
@@ -66,67 +67,127 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wilken Gottwalt <wilken.gottwalt@posteo.net>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit b9c15c96ccb47ad860af2e075c5f3c90c4cd1730 ]
+[ Upstream commit 9855c37edf0009cc276cecfee09f7e76e2380212 ]
 
-Add the usb id of the HX1200i Series 2023. Update the documentation
-accordingly. Also fix the version comments, there are no Series 2022
-products. That are legacy or first version products going back many
-many years.
+This reverts commit 28319d6dc5e2ffefa452c2377dd0f71621b5bff0. The race
+it fixed was subject to conditions that don't exist anymore since:
 
-Signed-off-by: Wilken Gottwalt <wilken.gottwalt@posteo.net>
-Link: https://lore.kernel.org/r/ZlAZs4u0dU7JxtDf@monster.localdomain
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+	1612160b9127 ("rcu-tasks: Eliminate deadlocks involving do_exit() and RCU tasks")
+
+This latter commit removes the use of SRCU that used to cover the
+RCU-tasks blind spot on exit between the tasklist's removal and the
+final preemption disabling. The task is now placed instead into a
+temporary list inside which voluntary sleeps are accounted as RCU-tasks
+quiescent states. This would disarm the deadlock initially reported
+against PID namespace exit.
+
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/hwmon/corsair-psu.rst | 6 +++---
- drivers/hwmon/corsair-psu.c         | 7 ++++---
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ include/linux/rcupdate.h |  2 --
+ kernel/pid_namespace.c   | 17 -----------------
+ kernel/rcu/tasks.h       | 16 +++-------------
+ 3 files changed, 3 insertions(+), 32 deletions(-)
 
-diff --git a/Documentation/hwmon/corsair-psu.rst b/Documentation/hwmon/corsair-psu.rst
-index 16db34d464dd6..7ed794087f848 100644
---- a/Documentation/hwmon/corsair-psu.rst
-+++ b/Documentation/hwmon/corsair-psu.rst
-@@ -15,11 +15,11 @@ Supported devices:
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index dfd2399f2cde0..61cb3de236af1 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -209,7 +209,6 @@ void synchronize_rcu_tasks_rude(void);
  
-   Corsair HX850i
+ #define rcu_note_voluntary_context_switch(t) rcu_tasks_qs(t, false)
+ void exit_tasks_rcu_start(void);
+-void exit_tasks_rcu_stop(void);
+ void exit_tasks_rcu_finish(void);
+ #else /* #ifdef CONFIG_TASKS_RCU_GENERIC */
+ #define rcu_tasks_classic_qs(t, preempt) do { } while (0)
+@@ -218,7 +217,6 @@ void exit_tasks_rcu_finish(void);
+ #define call_rcu_tasks call_rcu
+ #define synchronize_rcu_tasks synchronize_rcu
+ static inline void exit_tasks_rcu_start(void) { }
+-static inline void exit_tasks_rcu_stop(void) { }
+ static inline void exit_tasks_rcu_finish(void) { }
+ #endif /* #else #ifdef CONFIG_TASKS_RCU_GENERIC */
  
--  Corsair HX1000i (Series 2022 and 2023)
-+  Corsair HX1000i (Legacy and Series 2023)
+diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
+index 25f3cf679b358..bdf0087d64423 100644
+--- a/kernel/pid_namespace.c
++++ b/kernel/pid_namespace.c
+@@ -249,24 +249,7 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 		if (pid_ns->pid_allocated == init_pids)
+ 			break;
+-		/*
+-		 * Release tasks_rcu_exit_srcu to avoid following deadlock:
+-		 *
+-		 * 1) TASK A unshare(CLONE_NEWPID)
+-		 * 2) TASK A fork() twice -> TASK B (child reaper for new ns)
+-		 *    and TASK C
+-		 * 3) TASK B exits, kills TASK C, waits for TASK A to reap it
+-		 * 4) TASK A calls synchronize_rcu_tasks()
+-		 *                   -> synchronize_srcu(tasks_rcu_exit_srcu)
+-		 * 5) *DEADLOCK*
+-		 *
+-		 * It is considered safe to release tasks_rcu_exit_srcu here
+-		 * because we assume the current task can not be concurrently
+-		 * reaped at this point.
+-		 */
+-		exit_tasks_rcu_stop();
+ 		schedule();
+-		exit_tasks_rcu_start();
+ 	}
+ 	__set_current_state(TASK_RUNNING);
  
--  Corsair HX1200i
-+  Corsair HX1200i (Legacy and Series 2023)
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index 098e82bcc427f..ba3440a45b6dd 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -858,7 +858,7 @@ static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
+ //	not know to synchronize with this RCU Tasks grace period) have
+ //	completed exiting.  The synchronize_rcu() in rcu_tasks_postgp()
+ //	will take care of any tasks stuck in the non-preemptible region
+-//	of do_exit() following its call to exit_tasks_rcu_stop().
++//	of do_exit() following its call to exit_tasks_rcu_finish().
+ // check_all_holdout_tasks(), repeatedly until holdout list is empty:
+ //	Scans the holdout list, attempting to identify a quiescent state
+ //	for each task on the list.  If there is a quiescent state, the
+@@ -1220,7 +1220,7 @@ void exit_tasks_rcu_start(void)
+  * Remove the task from the "yet another list" because do_exit() is now
+  * non-preemptible, allowing synchronize_rcu() to wait beyond this point.
+  */
+-void exit_tasks_rcu_stop(void)
++void exit_tasks_rcu_finish(void)
+ {
+ 	unsigned long flags;
+ 	struct rcu_tasks_percpu *rtpcp;
+@@ -1231,22 +1231,12 @@ void exit_tasks_rcu_stop(void)
+ 	raw_spin_lock_irqsave_rcu_node(rtpcp, flags);
+ 	list_del_init(&t->rcu_tasks_exit_list);
+ 	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
+-}
  
--  Corsair HX1500i (Series 2022 and 2023)
-+  Corsair HX1500i (Legacy and Series 2023)
+-/*
+- * Contribute to protect against tasklist scan blind spot while the
+- * task is exiting and may be removed from the tasklist. See
+- * corresponding synchronize_srcu() for further details.
+- */
+-void exit_tasks_rcu_finish(void)
+-{
+-	exit_tasks_rcu_stop();
+-	exit_tasks_rcu_finish_trace(current);
++	exit_tasks_rcu_finish_trace(t);
+ }
  
-   Corsair RM550i
+ #else /* #ifdef CONFIG_TASKS_RCU */
+ void exit_tasks_rcu_start(void) { }
+-void exit_tasks_rcu_stop(void) { }
+ void exit_tasks_rcu_finish(void) { exit_tasks_rcu_finish_trace(current); }
+ #endif /* #else #ifdef CONFIG_TASKS_RCU */
  
-diff --git a/drivers/hwmon/corsair-psu.c b/drivers/hwmon/corsair-psu.c
-index 2c7c92272fe39..f8f22b8a67cdf 100644
---- a/drivers/hwmon/corsair-psu.c
-+++ b/drivers/hwmon/corsair-psu.c
-@@ -875,15 +875,16 @@ static const struct hid_device_id corsairpsu_idtable[] = {
- 	{ HID_USB_DEVICE(0x1b1c, 0x1c04) }, /* Corsair HX650i */
- 	{ HID_USB_DEVICE(0x1b1c, 0x1c05) }, /* Corsair HX750i */
- 	{ HID_USB_DEVICE(0x1b1c, 0x1c06) }, /* Corsair HX850i */
--	{ HID_USB_DEVICE(0x1b1c, 0x1c07) }, /* Corsair HX1000i Series 2022 */
--	{ HID_USB_DEVICE(0x1b1c, 0x1c08) }, /* Corsair HX1200i */
-+	{ HID_USB_DEVICE(0x1b1c, 0x1c07) }, /* Corsair HX1000i Legacy */
-+	{ HID_USB_DEVICE(0x1b1c, 0x1c08) }, /* Corsair HX1200i Legacy */
- 	{ HID_USB_DEVICE(0x1b1c, 0x1c09) }, /* Corsair RM550i */
- 	{ HID_USB_DEVICE(0x1b1c, 0x1c0a) }, /* Corsair RM650i */
- 	{ HID_USB_DEVICE(0x1b1c, 0x1c0b) }, /* Corsair RM750i */
- 	{ HID_USB_DEVICE(0x1b1c, 0x1c0c) }, /* Corsair RM850i */
- 	{ HID_USB_DEVICE(0x1b1c, 0x1c0d) }, /* Corsair RM1000i */
- 	{ HID_USB_DEVICE(0x1b1c, 0x1c1e) }, /* Corsair HX1000i Series 2023 */
--	{ HID_USB_DEVICE(0x1b1c, 0x1c1f) }, /* Corsair HX1500i Series 2022 and 2023 */
-+	{ HID_USB_DEVICE(0x1b1c, 0x1c1f) }, /* Corsair HX1500i Legacy and Series 2023 */
-+	{ HID_USB_DEVICE(0x1b1c, 0x1c23) }, /* Corsair HX1200i Series 2023 */
- 	{ },
- };
- MODULE_DEVICE_TABLE(hid, corsairpsu_idtable);
 -- 
 2.43.0
 
