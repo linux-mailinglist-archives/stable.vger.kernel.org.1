@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-67201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-66811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2A994F454
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:29:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C01494F28F
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 18:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC00B2814AB
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:29:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE8F71C2115A
+	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 16:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DEE18732C;
-	Mon, 12 Aug 2024 16:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9574C18756E;
+	Mon, 12 Aug 2024 16:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWC6pi1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7lZGWgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A222D186E47;
-	Mon, 12 Aug 2024 16:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548EF186E3D;
+	Mon, 12 Aug 2024 16:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723480145; cv=none; b=evMvVH4YiJNYyhk5isrT673ZcL2SdgRXv1Hp/6TQFso7dzv2oJwDo1kro7XlN8Ga4zQxwajMyIm3bXwXZahwAbCAvPdMpAH6eBa91Zdfbdk2TYZ2IO7Ca9TmSvAS0Oz1M9fPSRIWAtU863mjDnuPD4GYtcB3kzK7bxCBjoZ4IMc=
+	t=1723478862; cv=none; b=Ut2DDOhos70GBbgZIH5rG/YIAVMp7LQeEg8eeZW0E2rPS3f03dFpA3py+hgWUIM8NLusVF33oYUPMWRjhmKXKnhO9CmAHEvj+JJdMUukOILkSBF4uc5eXStEFwbH/J3V7040W63EQgcADUUebq2Zc+HYd8SO+LM3dNBhTn0Afn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723480145; c=relaxed/simple;
-	bh=M14+GhXuG6mUPJqde1wTj9LzbVJ6UjnIAB3dmiHhIDg=;
+	s=arc-20240116; t=1723478862; c=relaxed/simple;
+	bh=uuo3jUDk9YdZ/lo33LYw5SKz4w0TNHPcDh8g+omoDqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKHLXOs1r6aG9sp/LYLFNSeVno5OGiqOAd3bgOc9bIZUiHf/i+HiVa485ODCwiuVX3r5j3/ydLNTYa7A0jkj7DVv5rnwL/1Sj1srD+seEXl9kUPtYYbeF+pOTUOxnmkN3VrMvLSg6oi0lW519FiwTPQoUm2neKycV+4uZqPR0Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWC6pi1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29B7C4AF0D;
-	Mon, 12 Aug 2024 16:29:04 +0000 (UTC)
+	 MIME-Version; b=SU8ki05+cfiwKe6XeoW63Sd+MaNkZXiZq+V7gH/CW3UcFcV7qx16537ELwXXNPVYnjdgD6GzFn/f999fL1/BnczF9yTIOlAHNbS65iL86p3iiQ9qCINv0L6qpl0MCHAWC2h5lxSOiYCYYa/9jA3159Y1ftleVjeuRnYwYlesNvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7lZGWgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC129C4AF0D;
+	Mon, 12 Aug 2024 16:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723480145;
-	bh=M14+GhXuG6mUPJqde1wTj9LzbVJ6UjnIAB3dmiHhIDg=;
+	s=korg; t=1723478862;
+	bh=uuo3jUDk9YdZ/lo33LYw5SKz4w0TNHPcDh8g+omoDqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mWC6pi1yizWBBmN5grmOdiGZPEtWkPg2mw/CmLM+GWvhSQGMWyhPLG47TGNjyu+7Y
-	 J3K9XwjdjeDc1NtTlV4NmQQIr9AgSAZlLblJ1TS8mu5H8yOlvRr8aGfWG52Igq5NJF
-	 OMHKjpRpXl3nOhpIzenAtOt8CY8biWTQZ4HFTw7A=
+	b=e7lZGWgJqA3d34acKPII8IiygOfwDWoE6SmjMm8rQpLhGWgY7G0RQmS5TlcAkXG0V
+	 M5PboIqTUvuP7v01NfMxCvGMrYIrGI0jMP19J3AuHH6/LHq+2EvIy2c8cl8oFHatSv
+	 eE6mIeXwrf+MhNYGJt3DEHtYzLQKNgCNJZxxfkRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	HungNien Chen <hn.chen@sunplusit.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 108/263] media: uvcvideo: Ignore empty TS packets
+Subject: [PATCH 6.1 028/150] PCI: Add Edimax Vendor ID to pci_ids.h
 Date: Mon, 12 Aug 2024 18:01:49 +0200
-Message-ID: <20240812160150.679376305@linuxfoundation.org>
+Message-ID: <20240812160126.252113075@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-References: <20240812160146.517184156@linuxfoundation.org>
+In-Reply-To: <20240812160125.139701076@linuxfoundation.org>
+References: <20240812160125.139701076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,131 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-[ Upstream commit 5cd7c25f6f0576073b3d03bc4cfb1e8ca63a1195 ]
+[ Upstream commit eee5528890d54b22b46f833002355a5ee94c3bb4 ]
 
-Some SunplusIT cameras took a borderline interpretation of the UVC 1.5
-standard, and fill the PTS and SCR fields with invalid data if the
-package does not contain data.
+Add the Edimax Vendor ID (0x1432) for an ethernet driver for Tehuti
+Networks TN40xx chips. This ID can be used for Realtek 8180 and Ralink
+rt28xx wireless drivers.
 
-"STC must be captured when the first video data of a video frame is put
-on the USB bus."
-
-Some SunplusIT devices send, e.g.,
-
-buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
-buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
-buffer: 0xa7755c00 len 000668 header:0x8c stc 73779dba sof 070c pts 7376d37a
-
-While the UVC specification meant that the first two packets shouldn't
-have had the SCR bit set in the header.
-
-This borderline/buggy interpretation has been implemented in a variety
-of devices, from directly SunplusIT and from other OEMs that rebrand
-SunplusIT products. So quirking based on VID:PID will be problematic.
-
-All the affected modules have the following extension unit:
-VideoControl Interface Descriptor:
-  guidExtensionCode         {82066163-7050-ab49-b8cc-b3855e8d221d}
-
-But the vendor plans to use that GUID in the future and fix the bug,
-this means that we should use heuristic to figure out the broken
-packets.
-
-This patch takes care of this.
-
-lsusb of one of the affected cameras:
-
-Bus 001 Device 003: ID 1bcf:2a01 Sunplus Innovation Technology Inc.
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.01
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 ?
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x1bcf Sunplus Innovation Technology Inc.
-  idProduct          0x2a01
-  bcdDevice            0.02
-  iManufacturer           1 SunplusIT Inc
-  iProduct                2 HanChen Wise Camera
-  iSerial                 3 01.00.00
-  bNumConfigurations      1
-
-Tested-by: HungNien Chen <hn.chen@sunplusit.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Tomasz Figa <tfiga@chromium.org>
-Link: https://lore.kernel.org/r/20240323-resend-hwtimestamp-v10-2-b08e590d97c7@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20240623235507.108147-2-fujita.tomonori@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ include/linux/pci_ids.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index 51f4f653b983d..0055a05470c47 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -478,6 +478,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	ktime_t time;
- 	u16 host_sof;
- 	u16 dev_sof;
-+	u32 dev_stc;
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 2c1371320c295..f680897794fa2 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2109,6 +2109,8 @@
  
- 	switch (data[1] & (UVC_STREAM_PTS | UVC_STREAM_SCR)) {
- 	case UVC_STREAM_PTS | UVC_STREAM_SCR:
-@@ -526,6 +527,34 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	if (dev_sof == stream->clock.last_sof)
- 		return;
+ #define PCI_VENDOR_ID_CHELSIO		0x1425
  
-+	dev_stc = get_unaligned_le32(&data[header_size - 6]);
++#define PCI_VENDOR_ID_EDIMAX		0x1432
 +
-+	/*
-+	 * STC (Source Time Clock) is the clock used by the camera. The UVC 1.5
-+	 * standard states that it "must be captured when the first video data
-+	 * of a video frame is put on the USB bus". This is generally understood
-+	 * as requiring devices to clear the payload header's SCR bit before
-+	 * the first packet containing video data.
-+	 *
-+	 * Most vendors follow that interpretation, but some (namely SunplusIT
-+	 * on some devices) always set the `UVC_STREAM_SCR` bit, fill the SCR
-+	 * field with 0's,and expect that the driver only processes the SCR if
-+	 * there is data in the packet.
-+	 *
-+	 * Ignore all the hardware timestamp information if we haven't received
-+	 * any data for this frame yet, the packet contains no data, and both
-+	 * STC and SOF are zero. This heuristics should be safe on compliant
-+	 * devices. This should be safe with compliant devices, as in the very
-+	 * unlikely case where a UVC 1.1 device would send timing information
-+	 * only before the first packet containing data, and both STC and SOF
-+	 * happen to be zero for a particular frame, we would only miss one
-+	 * clock sample from many and the clock recovery algorithm wouldn't
-+	 * suffer from this condition.
-+	 */
-+	if (buf && buf->bytesused == 0 && len == header_size &&
-+	    dev_stc == 0 && dev_sof == 0)
-+		return;
-+
- 	stream->clock.last_sof = dev_sof;
+ #define PCI_VENDOR_ID_ADLINK		0x144a
  
- 	host_sof = usb_get_current_frame_number(stream->dev->udev);
-@@ -575,7 +604,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	spin_lock_irqsave(&stream->clock.lock, flags);
- 
- 	sample = &stream->clock.samples[stream->clock.head];
--	sample->dev_stc = get_unaligned_le32(&data[header_size - 6]);
-+	sample->dev_stc = dev_stc;
- 	sample->dev_sof = dev_sof;
- 	sample->host_sof = host_sof;
- 	sample->host_time = time;
+ #define PCI_VENDOR_ID_SAMSUNG		0x144d
 -- 
 2.43.0
 
