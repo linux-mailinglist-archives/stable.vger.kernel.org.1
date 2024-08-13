@@ -1,120 +1,96 @@
-Return-Path: <stable+bounces-67529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E81950B7F
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 19:33:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F70950B8D
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 19:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B3C928712E
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:33:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFE11285E7D
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D841A2C06;
-	Tue, 13 Aug 2024 17:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6152E19D06C;
+	Tue, 13 Aug 2024 17:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bj6qz1Wr"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="gK62B3vn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F00225D9;
-	Tue, 13 Aug 2024 17:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE0D37E
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 17:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723570404; cv=none; b=Pb2jI1TWzpYykUzXKSr92rDqGo/jpb44suEkbNBKYdOyzD+/WuEvNNZcoUlAn19EDzjzrwd8m/IqO1jBtLBzmCFn3Zwqvr0vRLgtzohPzVmOSAVHtWte4G/BHAIQNjKwyU3Avf+PFbv1IfRSZ+jWKWRT5qcmZ9xAXeeskThhOqA=
+	t=1723570851; cv=none; b=N440A2xrKt2W3Za4t1/oQPWCpCy998x9iFnrT/YG7H6aWx+vwMLLJYOYqCUIhTKcpHoxHcQ/alHDcYmnVn4E2sm6TLAbLVUdWBjgJJKuEjYDXjQX0CbdgaG9a1mVspygm7CpZmz76Jd4kUjQSNIaW228KGMbKujv4oCdX9RE090=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723570404; c=relaxed/simple;
-	bh=NippkUP8S8P6tmv9MWO/YV21PyZxIiRkf0vTLiatWHU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r3fnRUEePV0h9sSAHaqmjSlbpQ75h+8Ut20m7robjGRR02dpJVeNyEp8yxBrd0Cd2t6I6wIZ3E5EsMAItlyPNfIovPWeDILYCzFRUYW6lFYMEb1PDVDT14r7H/3Mz/Mrfjj8ot8h11kbh+jvKWX3XvCbUR30erpXtD/p9Tlahwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bj6qz1Wr; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-7a0e8b76813so3843433a12.3;
-        Tue, 13 Aug 2024 10:33:22 -0700 (PDT)
+	s=arc-20240116; t=1723570851; c=relaxed/simple;
+	bh=GgufDS8O1v7BR5tsZE+aldeple21s1USye3EdwP6M/4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R+Y5eC3nJLXk59C3pRB0Vx8Wfxft2jZEf29B8WMF5tsy1bK+zNiDIVjpmDIKOIpw+/pjMnDQJjUKWMueps4afQQXgWlqSxfZs6l7pSP4lP3MicygdElkNqikGsBSF2y64RO63vxezm293fpMfCJiZ+J1QVn+jyXJSiUD+PylN+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=gK62B3vn; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e03caab48a2so105830276.1
+        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 10:40:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723570402; x=1724175202; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1HHxSyDfeWbCkXYqvZXREN7pKpypD1FMvFzppC390k0=;
-        b=bj6qz1WrXW86YIcbNKAqUeLOpT44cfFgiwDvn1OPAyLMxHSmMruBiUPhVWEQ9abkj6
-         64QnC8Xzqo0O9w6MliKmoiCOdAH+apu0EJHRrYw8skH/yraoFZahmFm/Iye4+ic9ug/F
-         noMKbNlyil8EdX7wU92Tkunn6fIDVBxl0kflDMAWBr+3N27QHIe4m/s4uN6hmgAUiApt
-         QGW2EyTHq8J56MKcmIVyGnE4pmmRao+aKiUyweD1Rb0OOzT+FqX0Qd2KtcOE4y29J3FJ
-         ycSod6Fh9PnfDAEALramw/lhzhrPdttvHQ9D5+n+LEEr7DbAiDaY0UnhTfPm+2Ys81od
-         avQg==
+        d=broadcom.com; s=google; t=1723570848; x=1724175648; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GgufDS8O1v7BR5tsZE+aldeple21s1USye3EdwP6M/4=;
+        b=gK62B3vngZ4y9Fu5W0XHTDOk//Wb/CocmvymVil9b7NExHnjDzjs+FmNvyEIt4hmLt
+         fn1tyME0VJRVb91q7RQhy3ArWth7N1qZaP4+4ZIR8WJ9wAuW5tDwuZjHXQzOmaYp1hv8
+         c3n+1YaZ/TfO9cBTJb3pjZpsxrn14Uets8avY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723570402; x=1724175202;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1HHxSyDfeWbCkXYqvZXREN7pKpypD1FMvFzppC390k0=;
-        b=Bx/Ok3ws0CboQMmjIyN/JedHEszqhSk7TOwI8UMerqxqdRUC91x9owFqfDNHHE6Mue
-         N6oWeT+c4mbRk6nkW6KbRDv6MeQQBIoo6oGqUFRuS8iKVKBnDLHXAipA6ahaHkTv/zt1
-         yLnT+NFFaw9lwQsk4ngxtzOLmmcgzDISavaiDwL/FZu1xoPIUGiVi2pyE7XM3W/yeRQW
-         IzjUJqiHTmLqMhsez3OHEdF/YWjubHUaRefQMj5n8Mn2u+Ym82MqkNBoM1v0Z7wRE1yo
-         0xyp3Kq6bPLQejjDja5bvOtzjeaJX7EcCsPjYENU9eAZN2WwvOJA72X0qGAvaqj2FPpw
-         zRWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVJFPT16unXJS19AkJ9wSQOPJOOdXZXVRRzhTUr1jTZ/ZF1Oi60xRi1PFR5eVFWQVudYA5VZ5KmXFOk3or22N4aG5w8vtZZ6AqyF2G/oXGlLThgNYmTCNJT97HsY3zMHMqmvcl
-X-Gm-Message-State: AOJu0YyuVbCiiT+/VqZ3XZ3FXM61ra0LWcyKPu1rzqwYZ+ChTdvuKew7
-	QWlAmrPjD8DCselPWNTMy1OGmrL5DYdJ4dY8I0ppQcZ16c8K//ur
-X-Google-Smtp-Source: AGHT+IGa1SaY3ln0jbsWCZAx6W6HgJvu5yyS++HH3R4q3AxSmm4MUhbWEhhkRTsOCJ/F6m27oShQaA==
-X-Received: by 2002:a05:6a21:3a81:b0:1c8:b10d:eadb with SMTP id adf61e73a8af0-1c8eae81196mr594808637.17.1723570402320;
-        Tue, 13 Aug 2024 10:33:22 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-710e5a43948sm5986814b3a.122.2024.08.13.10.33.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Aug 2024 10:33:21 -0700 (PDT)
-Message-ID: <e2f49750-5b64-4adc-9989-e9155fe2a729@gmail.com>
-Date: Tue, 13 Aug 2024 10:33:19 -0700
+        d=1e100.net; s=20230601; t=1723570848; x=1724175648;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GgufDS8O1v7BR5tsZE+aldeple21s1USye3EdwP6M/4=;
+        b=TsGHO6GtJqy1DDW9IM4KQzgUmV/uW4kDHCWQQ6z70nRmARvFeORo2RrXVh9VIBQeBJ
+         ikeHoxuPJEz+jNRjovi+jZ7bbvkGD5Z0T+CJDHqlQK22hwNXTbw2bmaHWJPu074E7UlX
+         wzD0tzU95CXwYSRoQxKjQYABvkfBEcGNx1955EhndL99H2KotPh0GEL7wR0JU/k9FcK+
+         R/nTamF5IJi0quWcXE5KVqKnZPPhlffMy7SaY9MqXvPau8apytXy30YtuWKuwDx+N2xH
+         o0jMjfKYHHhG8BsyEBUpw1IoVqiPZ1ev6cvth5FDY3F5fHl9OZGq4NnTwqBV5pC5tAs7
+         kPTA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2SEZ7H2txPnfv7BKv7ZY3UvzSrwVhEDnOPsbRYtup4FUjYoihrvnI8HTcpjY73T/Syvc0W9PcHdJiGOd/B9TotIxoDF16
+X-Gm-Message-State: AOJu0Yy56QjmhLLMyvzK+xc4JFf3ZM0XPPaNtYDg+0G7UGBCEeOWYZDf
+	2wfg/V20yuJKJjBnxTphPd6FuOHBsztLXGHnZrA8vngx2GKSa2ZJj0sYDWlzqt+IHtTej10VgHr
+	i3We1obTTficuR7jaPfGPXoqgOrTIKEg+WMjd
+X-Google-Smtp-Source: AGHT+IE8psTnghl+RGcXVtPTE07/3VNV/5PqLY1f9KAHCym7306ApXTEvMy/9rFaV7ye+4ns11fLC2PuIxeNCBSeU40=
+X-Received: by 2002:a05:6902:2e8a:b0:e0b:ddd8:cd90 with SMTP id
+ 3f1490d57ef6-e1140ebffd3mr3618391276.24.1723570848659; Tue, 13 Aug 2024
+ 10:40:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.10 000/263] 6.10.5-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240812160146.517184156@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240801175548.17185-1-zack.rusin@broadcom.com> <CAO6MGtg7MJ8fujgkA5vEk5gU9vdxV3pzO9X2jrraqHcAnOJOZA@mail.gmail.com>
+In-Reply-To: <CAO6MGtg7MJ8fujgkA5vEk5gU9vdxV3pzO9X2jrraqHcAnOJOZA@mail.gmail.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
+Date: Tue, 13 Aug 2024 13:40:37 -0400
+Message-ID: <CABQX2QOeWoVcJJxyQOhgO5XrsLRiUMko+Q6yUMhQbCYHY44LYQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] drm/vmwgfx: Prevent unmapping active read buffers
+To: Ian Forbes <ian.forbes@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, martin.krastev@broadcom.com, 
+	maaz.mombasawala@broadcom.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/12/24 09:00, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.10.5 release.
-> There are 263 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 14 Aug 2024 16:00:26 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.5-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, Aug 13, 2024 at 1:29=E2=80=AFPM Ian Forbes <ian.forbes@broadcom.com=
+> wrote:
+>
+> Remove `busy_places` now that it's unused. There's also probably a
+> better place to put `map_count` in the struct layout to avoid false
+> sharing with `cpu_writers`. I'd repack the whole struct if we're going
+> to be adding and removing fields.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Those are not related to this change. They'd be two seperate changes.
+One to remove other unused members and third to relayout the struct.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
-
+z
 
