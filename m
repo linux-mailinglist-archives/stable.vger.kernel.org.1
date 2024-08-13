@@ -1,101 +1,163 @@
-Return-Path: <stable+bounces-67509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018EE9508A7
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:13:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443A695088A
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE5DA284773
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 15:13:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 974BAB21113
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 15:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859A819EEBF;
-	Tue, 13 Aug 2024 15:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A9419EEA4;
+	Tue, 13 Aug 2024 15:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VZErF4m+"
 X-Original-To: stable@vger.kernel.org
-Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6CF19E838
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 15:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.254.214
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3137A1E4A4
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 15:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723562002; cv=none; b=Od2JWV/JBBf8TpmFcf635eYPyMTj4JL/AAry83vNOWkHGvnizFE8tMtQyApws7pPQfGppUrq/vRm7M8qsevNfdUQZAST45WilLzUP/0uI1NmGUyB8ymq6A52NAABd5ScrkVZfFyqZmk/FOpWRcLBgTrVTcX8+LCNptT20omB4Bo=
+	t=1723561734; cv=none; b=U5Z+LLiw7cD/JEdG8rUGztV9K7Y1CGkZUdslA3RIRQba6SmgsKsyic6dZFL5fdVxbR6B1dlXGJdGZ0aRYDIGo34Aj1U4wgVvbArpN/1hrC97CABguT2E2HwPdKuda5KP8VbDgcOOs40mTWhX9Oez0NcbJQgNChRZT3rperBW3gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723562002; c=relaxed/simple;
-	bh=VM6sfRtZqM1zaLgM5XSUYFHXOa2Q/+uyjTIeD++/nXE=;
-	h=To:From:Subject:Date:Message-ID:References:Mime-Version:
-	 Content-Type:In-Reply-To:Cc; b=cFkxKD93e1dLZqwcCMk0kNFIqjRLnUSKTqGxDsVtCxl22PIsLZ/dGManVBhb8CAAZg3y5X+BXuvJh0DQxLsOcYgOy+9cTFriONNMJHRNkV5yGvxKgTc9wiEt8TsDJwvqgpJh9FlKgnxG7J92/dv/TlnpboWhIG3VDSCFv4I7ea0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=m.gmane-mx.org; arc=none smtp.client-ip=116.202.254.214
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.gmane-mx.org
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-	(envelope-from <glks-stable4@m.gmane-mx.org>)
-	id 1sdt88-00008k-Ah
-	for stable@vger.kernel.org; Tue, 13 Aug 2024 17:08:12 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To: stable@vger.kernel.org
-From: Ian Pilcher <arequipeno@gmail.com>
-Subject: Re: [PATCH] Revert "ata: libata-scsi: Honor the D_SENSE bit for
- CK_COND=1 and no error"
-Date: Tue, 13 Aug 2024 10:08:07 -0500
-Message-ID: <v9fssn$13au$1@ciao.gmane.io>
-References: <20240813131900.1285842-2-cassel@kernel.org>
+	s=arc-20240116; t=1723561734; c=relaxed/simple;
+	bh=/aFOSunKY4cAr+gPK0RzKG2+tAOexUZ8Sc0slBjK688=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KgIaZEdxuZe+G53SbZ44+P8j54UHI0TmzFk54skJ0u8BvbadakHQpBVpMtFboOVBwjg7Mferk7RWXF8fESopVdRmoyp92azyEXKPo/cI9NNKIyLDovBDM7QyIaQ2EN0dEt8Ee3OOITxDd4ys8zPZCa51OHR4on9xHmghOw5AYJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VZErF4m+; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723561732;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pKrrT/7S5wbSyPZ1x9NUafoaRV+So0xiopVs8EC6c1M=;
+	b=VZErF4m+9qd8A/WcXeCPLMzUUqr+Ix7fxznzaABUErbcvZVH9RScXIY/bUIRbQFZFl975A
+	HZhDMc+6a5q09kz2AvdAmQF4uSipHl8DHdCFz/tMYiHr13fymVqkt/yDTw5ElkvXntlpkU
+	1crMtZMdc/hFFQMTHaFiNoI1EMjp70w=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-145-I0TSCTnEPOqvA25bNTrd3w-1; Tue, 13 Aug 2024 11:08:50 -0400
+X-MC-Unique: I0TSCTnEPOqvA25bNTrd3w-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-42816aacabcso41391975e9.1
+        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 08:08:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723561730; x=1724166530;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pKrrT/7S5wbSyPZ1x9NUafoaRV+So0xiopVs8EC6c1M=;
+        b=is0vEd9ejlA54rxZUX4CpoLDRX7+zlTJkZLgO6tUirWJkmJ9cZGo9IlQ72T1vebpx3
+         LLWHBrXE4Fqg/+bk6vtNpXlaG9B7Azuj2+c3yxA0zxWRe8+xab1uo8dS/f3adMT4W0Bc
+         qe8nn1bX0yDnBhw9a+MJjO011a/U+eMoBLyH3PadFlerBBmlzEAX1YG6oxFMuVj5L/be
+         RydR6fHr9x2qisXmMRqeeRxJkH+qyML8OP5hT1p3TcAuSnIuSrzmyQOIL9gQ3ORzglTh
+         lANIwkBfyj9K2Ci8YL/FuL7nf+gLfIjPycrGrPEFUnYC7BLzsI3sKCbdteI/0ZdYgpPH
+         8b+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVzS+lUyE3sTsMkE22ZjxZa8vAb4bEDKFsq5f7sarK6U/ETFX0mNcDLOJtge3Wk0YE2NkH0ya2uW/5mUvPD8bW+8t9UhLxG
+X-Gm-Message-State: AOJu0YwoKcdVyo9n7aARuzp4Up7PQyXIlHanduAtrFlE9TF8wi2ZK9Gh
+	0Oc0kkhKqOQ+rW+pCmKC2VTq5ThSQjk9SqlFXVpZx+d0ohVeKTufEVotxVdQnF7jYftCpdWjKrL
+	a6IPGRfPnfXBESPuFCfx03o+sUL/iEba1OsK669KlTPNC51ThDkR7Xw==
+X-Received: by 2002:a05:600c:358a:b0:426:593c:935f with SMTP id 5b1f17b1804b1-429d47f425emr28623375e9.1.1723561729573;
+        Tue, 13 Aug 2024 08:08:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOT44Oa6xbbMALe2SjF6Po9x6pcvKvF+My0TM6/JIT53x8QKH/Ijr1Kw5GHekr6Hd7OSqCFQ==
+X-Received: by 2002:a05:600c:358a:b0:426:593c:935f with SMTP id 5b1f17b1804b1-429d47f425emr28623155e9.1.1723561729111;
+        Tue, 13 Aug 2024 08:08:49 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f09:3f00:d228:bd67:7baa:d604? (p200300d82f093f00d228bd677baad604.dip0.t-ipconnect.de. [2003:d8:2f09:3f00:d228:bd67:7baa:d604])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c738e0csm234790085e9.16.2024.08.13.08.08.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Aug 2024 08:08:48 -0700 (PDT)
+Message-ID: <30a2d98d-6f72-4a88-8d90-8a5861b0b2c6@redhat.com>
+Date: Tue, 13 Aug 2024 17:08:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] alloc_tag: introduce clear_page_tag_ref() helper
+ function
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, vbabka@suse.cz, pasha.tatashin@soleen.com,
+ souravpanda@google.com, keescook@chromium.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20240813150758.855881-1-surenb@google.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240813150758.855881-1-surenb@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-In-Reply-To: <20240813131900.1285842-2-cassel@kernel.org>
-Cc: linux-ide@vger.kernel.org
 
-On 8/13/24 8:19 AM, Niklas Cassel wrote:
-> This reverts commit 28ab9769117ca944cb6eb537af5599aa436287a4.
+On 13.08.24 17:07, Suren Baghdasaryan wrote:
+> In several cases we are freeing pages which were not allocated using
+> common page allocators. For such cases, in order to keep allocation
+> accounting correct, we should clear the page tag to indicate that the
+> page being freed is expected to not have a valid allocation tag.
+> Introduce clear_page_tag_ref() helper function to be used for this.
 > 
-> Sense data can be in either fixed format or descriptor format.
-> 
-> SAT-6 revision 1, "10.4.6 Control mode page", defines the D_SENSE bit:
-> "The SATL shall support this bit as defined in SPC-5 with the following
-> exception: if the D_ SENSE bit is set to zero (i.e., fixed format sense
-> data), then the SATL should return fixed format sense data for ATA
-> PASS-THROUGH commands."
-> 
-> The libata SATL has always kept D_SENSE set to zero by default. (It is
-> however possible to change the value using a MODE SELECT SG_IO command.)
-> 
-> Failed ATA PASS-THROUGH commands correctly respected the D_SENSE bit,
-> however, successful ATA PASS-THROUGH commands incorrectly returned the
-> sense data in descriptor format (regardless of the D_SENSE bit).
-> 
-> Commit 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for
-> CK_COND=1 and no error") fixed this bug for successful ATA PASS-THROUGH
-> commands.
-> 
-> However, after commit 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE
-> bit for CK_COND=1 and no error"), there were bug reports that hdparm,
-> hddtemp, and udisks were no longer working as expected.
-> 
-> These applications incorrectly assume the returned sense data is in
-> descriptor format, without even looking at the RESPONSE CODE field in the
-> returned sense data (to see which format the returned sense data is in).
-> 
-> Considering that there will be broken versions of these applications around
-> roughly forever, we are stuck with being bug compatible with older kernels.
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Cc: stable@vger.kernel.org # v6.10
+> ---
 
-I suppose it's a small quibble, but I don't think it's fair to say that
-the applications are behaving incorrectly.  They assume that the
-returned sense data is in descriptor format because it always was.  That
-doesn't seem unreasonable.
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
-========================================================================
-Google                                      Where SkyNet meets Idiocracy
-========================================================================
+Cheers,
 
+David / dhildenb
 
 
