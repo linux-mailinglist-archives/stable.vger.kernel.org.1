@@ -1,139 +1,146 @@
-Return-Path: <stable+bounces-67490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583F4950649
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 15:19:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E061950656
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 15:22:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCC5E1F21F9F
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 13:19:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF855281DE8
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 13:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2060719CD05;
-	Tue, 13 Aug 2024 13:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDE019AD6E;
+	Tue, 13 Aug 2024 13:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A54MgT4M"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VMskW5VP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q1f+zuZx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA5619AD6E;
-	Tue, 13 Aug 2024 13:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B13418953E;
+	Tue, 13 Aug 2024 13:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723555146; cv=none; b=bzdPXqzcsbUEG5wYDYNJ+neKQKcf6sA2HflaO/5GitcJQ7p6PhrhWTT1OJixCFX+XgzNalL5j3hc1rpXktxowG+pzXNwZa/pcpR7mFPbsF1LJWdC6LIyaCt3n6ZAi5xsW94o5OT08JpOYjCvBihYeQRkDBxRrgjcN6+dKOjETD8=
+	t=1723555315; cv=none; b=Q5Xu4XCsb6PaAx3h88NTJPS07k5jcNreEOyP9yVDYQ9iVAFZ48yETelTwMppkiKkNZ5wYq19p9VPmskJHkvl6gxh3m4f2IlSun8PFsONO8AcfZQ7piufRmRBmm103Sm++8YhoXSZ0Y7jzaPbKnMT3qTLZJNJU8myXPr9/5ZQkZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723555146; c=relaxed/simple;
-	bh=k6UmuWWU+5OWpY/TlzGbBpOY05z+pfvzbhKtMvZXl8Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kWwK2yJdeDTh1DXaXKWkpj+yhFm8MO+XXkR+I4X6BCPW0bjrM8NEoCtqTvaPv8AHp9ATCYGWChdFsoS9flZXGoH6upueyINIfCg6R/Knxiu+V/q0KW7GknYMp65H7ErsIPiXcmQBBZyWpmSX9vxcg8tw2IOkTAH/PtdX92aG7Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A54MgT4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1871FC4AF12;
-	Tue, 13 Aug 2024 13:19:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723555146;
-	bh=k6UmuWWU+5OWpY/TlzGbBpOY05z+pfvzbhKtMvZXl8Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=A54MgT4M/2Az7iWALCzHuDsIf9jTu8C3bRwzpy/+VEPhuZQWBLVofbN2HYQvpTfGa
-	 bCjg8Wnmq3t6vf/HKgrniAdkiKeOsobx1qkBlq0U+tT+qt1yicuecvpZogKR3PBExF
-	 OZ6TjMFdsQRFH20KYaJCspsejgdP2N77jIOUAlRBuLhbUiK+7S2OlH6LPT0I09Rw4F
-	 c8NAevThN23ANtFLRUsaWwhf3mOnODgRAmUftlcnoL2s4/JOSnzoMZdgc60j5KltjE
-	 LD3oDhOTNuHUMNBgPlxXWbkfWKff9ltbPCnR4gSL9jmCfqmKk2/jHFmDND88iTMurH
-	 5KylqTeD4Eilw==
-From: Niklas Cassel <cassel@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Hannes Reinecke <hare@suse.de>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	stable@vger.kernel.org,
-	Stephan Eisvogel <eisvogel@seitics.de>,
-	Christian Heusel <christian@heusel.eu>,
-	linux-ide@vger.kernel.org
-Subject: [PATCH] Revert "ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error"
-Date: Tue, 13 Aug 2024 15:19:01 +0200
-Message-ID: <20240813131900.1285842-2-cassel@kernel.org>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1723555315; c=relaxed/simple;
+	bh=qjciSgQ2Z2/btL6BUOx5r0H3tDQdvYHDVFVLweiVy1s=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=H60/dic0clGSRtLl3pysVfCXh71/o3LvuEyruHqtFPmyxFBTkdLg9MgK/YT/GkEAyvUIZCtutJVGs7vih7udzwGtyOwPpxOsPg+aqSGZwaSMFQpAeifwPel4GuYwjp3QMOMmz9ACdoJoqlQFf/AGGJIOSznwniOdyTDAGSFxdfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VMskW5VP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q1f+zuZx; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 13 Aug 2024 13:21:51 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1723555312;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=diMymUXX9xUr86i3YOydYUTNUH8eprm2HE7Tgl/c2Hk=;
+	b=VMskW5VPPfvYUf4HH54t4DZVdyxlP9HCHG28Fptb16wIFxzTnaYruL54UM4cZncUvWmMoX
+	63KbNizQ4jD0TJQbxFNX0TijZrXtfX05Bc/xGRqlu1JIUdxzx3WFmZxb2TLrp6fig3JgRT
+	J5We4YiTrqWGptv1YCelzIVh9Yya9drC4r/+fsDSalYnP9ncwcOHwMbL7JuQLUS5c02s/h
+	qM2v2cF/1+agu5mP0Xk6Xaps0HVt6d+Uwa2gBmgOC4gM2Oo/zEebqdwXwX3QOARWjvZYF7
+	ks1HR0tuxrz59bjfpMX2CEPt9M7u85A3LOGY/ZR8nGHcQ0nov936A+UwlPSm4g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1723555312;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=diMymUXX9xUr86i3YOydYUTNUH8eprm2HE7Tgl/c2Hk=;
+	b=Q1f+zuZxUPlQyJ4x1ubnPLQ5yVDF1lBc7el9GYu8iyewR9ZxvXYgc3+i8QdOadjdrhXCcA
+	vwhcsWWPpXDoQRAw==
+From: "tip-bot2 for Yuntao Wang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/apic: Make x2apic_disable() work correctly
+Cc: Yuntao Wang <yuntao.wang@linux.dev>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240813014827.895381-1-yuntao.wang@linux.dev>
+References: <20240813014827.895381-1-yuntao.wang@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3145; i=cassel@kernel.org; h=from:subject; bh=k6UmuWWU+5OWpY/TlzGbBpOY05z+pfvzbhKtMvZXl8Y=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNJ2x7ooRnscTSgN7E95VW+y8Ew8b3qVDt+PZT3yLifW9 mkrfa7sKGVhEONikBVTZPH94bK/uNt9ynHFOzYwc1iZQIYwcHEKwESitBj+SkizeBwpfJk0M/nO vMSFxRmdkp95DLi3XOp/0iKXnCGty8iw89daMSuxJ7NqxTf9nV51Mu+8vUbXB4dZl99XGrdxbWh nAwA=
-X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
-Content-Transfer-Encoding: 8bit
+Message-ID: <172355531145.2215.1265281947968550641.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-This reverts commit 28ab9769117ca944cb6eb537af5599aa436287a4.
+The following commit has been merged into the x86/urgent branch of tip:
 
-Sense data can be in either fixed format or descriptor format.
+Commit-ID:     0ecc5be200c84e67114f3640064ba2bae3ba2f5a
+Gitweb:        https://git.kernel.org/tip/0ecc5be200c84e67114f3640064ba2bae3ba2f5a
+Author:        Yuntao Wang <yuntao.wang@linux.dev>
+AuthorDate:    Tue, 13 Aug 2024 09:48:27 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 13 Aug 2024 15:15:19 +02:00
 
-SAT-6 revision 1, "10.4.6 Control mode page", defines the D_SENSE bit:
-"The SATL shall support this bit as defined in SPC-5 with the following
-exception: if the D_ SENSE bit is set to zero (i.e., fixed format sense
-data), then the SATL should return fixed format sense data for ATA
-PASS-THROUGH commands."
+x86/apic: Make x2apic_disable() work correctly
 
-The libata SATL has always kept D_SENSE set to zero by default. (It is
-however possible to change the value using a MODE SELECT SG_IO command.)
+x2apic_disable() clears x2apic_state and x2apic_mode unconditionally, even
+when the state is X2APIC_ON_LOCKED, which prevents the kernel to disable
+it thereby creating inconsistent state.
 
-Failed ATA PASS-THROUGH commands correctly respected the D_SENSE bit,
-however, successful ATA PASS-THROUGH commands incorrectly returned the
-sense data in descriptor format (regardless of the D_SENSE bit).
+Due to the early state check for X2APIC_ON, the code path which warns about
+a locked X2APIC cannot be reached.
 
-Commit 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for
-CK_COND=1 and no error") fixed this bug for successful ATA PASS-THROUGH
-commands.
+Test for state < X2APIC_ON instead and move the clearing of the state and
+mode variables to the place which actually disables X2APIC.
 
-However, after commit 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE
-bit for CK_COND=1 and no error"), there were bug reports that hdparm,
-hddtemp, and udisks were no longer working as expected.
+[ tglx: Massaged change log. Added Fixes tag. Moved clearing so it's at the
+  	right place for back ports ]
 
-These applications incorrectly assume the returned sense data is in
-descriptor format, without even looking at the RESPONSE CODE field in the
-returned sense data (to see which format the returned sense data is in).
+Fixes: a57e456a7b28 ("x86/apic: Fix fallout from x2apic cleanup")
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240813014827.895381-1-yuntao.wang@linux.dev
 
-Considering that there will be broken versions of these applications around
-roughly forever, we are stuck with being bug compatible with older kernels.
-
-Cc: stable@vger.kernel.org # 4.19+
-Reported-by: Stephan Eisvogel <eisvogel@seitics.de>
-Reported-by: Christian Heusel <christian@heusel.eu>
-Closes: https://lore.kernel.org/linux-ide/0bf3f2f0-0fc6-4ba5-a420-c0874ef82d64@heusel.eu/
-Fixes: 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
 ---
- drivers/ata/libata-scsi.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/x86/kernel/apic/apic.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index d6f5e25e1ed8..473e00a58a8b 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -951,8 +951,19 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
- 				   &sense_key, &asc, &ascq);
- 		ata_scsi_set_sense(qc->dev, cmd, sense_key, asc, ascq);
- 	} else {
--		/* ATA PASS-THROUGH INFORMATION AVAILABLE */
--		ata_scsi_set_sense(qc->dev, cmd, RECOVERED_ERROR, 0, 0x1D);
-+		/*
-+		 * ATA PASS-THROUGH INFORMATION AVAILABLE
-+		 *
-+		 * Note: we are supposed to call ata_scsi_set_sense(), which
-+		 * respects the D_SENSE bit, instead of unconditionally
-+		 * generating the sense data in descriptor format. However,
-+		 * because hdparm, hddtemp, and udisks incorrectly assume sense
-+		 * data in descriptor format, without even looking at the
-+		 * RESPONSE CODE field in the returned sense data (to see which
-+		 * format the returned sense data is in), we are stuck with
-+		 * being bug compatible with older kernels.
-+		 */
-+		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
- 	}
- }
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 66fd4b2..3736386 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1775,12 +1775,9 @@ static __init void apic_set_fixmap(bool read_apic);
  
--- 
-2.46.0
-
+ static __init void x2apic_disable(void)
+ {
+-	u32 x2apic_id, state = x2apic_state;
++	u32 x2apic_id;
+ 
+-	x2apic_mode = 0;
+-	x2apic_state = X2APIC_DISABLED;
+-
+-	if (state != X2APIC_ON)
++	if (x2apic_state < X2APIC_ON)
+ 		return;
+ 
+ 	x2apic_id = read_apic_id();
+@@ -1793,6 +1790,10 @@ static __init void x2apic_disable(void)
+ 	}
+ 
+ 	__x2apic_disable();
++
++	x2apic_mode = 0;
++	x2apic_state = X2APIC_DISABLED;
++
+ 	/*
+ 	 * Don't reread the APIC ID as it was already done from
+ 	 * check_x2apic() and the APIC driver still is a x2APIC variant,
 
