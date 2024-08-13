@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-67453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E8F95027E
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:31:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0EB6950280
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:32:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76001C20D18
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 10:31:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FC6AB21EBC
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 10:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184A218A95E;
-	Tue, 13 Aug 2024 10:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AC318A95E;
+	Tue, 13 Aug 2024 10:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SRXCbmuN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OoTaMblr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7261208AD;
-	Tue, 13 Aug 2024 10:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8A2208AD;
+	Tue, 13 Aug 2024 10:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723545096; cv=none; b=i+aKDWB5TJxCTPzjFpToLkYG2CKBfSfuNDf3AcJa4oAPf6jqOsych0MqI3F1JCDvsIrnohMpb8MR0X5zNstXdW8PIGhU6aYN6Ckgw6QDdKN8Iy/9ys5xROS2Ep6epP3F4aIeODa1Fpe5uXXOb0eyg76jMRvN9vFVEwO5o/c9RVs=
+	t=1723545132; cv=none; b=Bo6Cwf+fzEvQr9Zr/+eFedld9MHrobg4+DysRVIU+aCL/YJx6esKZ92l0hlL3hU3RnPvf6JO1ipIHjwPZB+UoUTudSNUDahUReGYOCt8tIf/MZ8Z1oIP2Il2OqLA0uautgZ+GrluwRGWVx4cKI/JmUHr5QUpJ7CJ+mvLmMmIKxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723545096; c=relaxed/simple;
-	bh=kGDIRO6JhY0g/fBCon73pGpfQROXPRDw//1cENqFzLE=;
+	s=arc-20240116; t=1723545132; c=relaxed/simple;
+	bh=ZjmBenwS6BE1vjuT8B0LhNFfM95R5DZMbadPgpteiw0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eAtUaS/QvzpdB0xzosvbPB40lqV+8JZTT9No6xptJCRDgfwJVJ+Tg0owG/iHdg7MnjSuqf/hQp2JqMc9glkL46r6Sx7Gcpr1MzDvSneYvOn1VR2Wd6epdP1VFnofLXbzJN/GiEmpmTQsJNyeXF0AgGHijPrs/lp8Z2bWTqOZ3Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SRXCbmuN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB9DC4AF0B;
-	Tue, 13 Aug 2024 10:31:33 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=pjnZYfMUeEcf0XVF0vntpvUBTyhkhH6Y/CDgZgnGUIr/lTLKjZj8XUVbto5jJ/8TKhzeHuxtWHhevc39C9koujQsTuErwMXj0Lq9FwxjCpx4uA0IYAfdkzdLbST1k9XKR4Oj07FfN5WBeHzDVL9yEFQeCcheXzDxuykGUvMODdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OoTaMblr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5EDC4AF0B;
+	Tue, 13 Aug 2024 10:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723545096;
-	bh=kGDIRO6JhY0g/fBCon73pGpfQROXPRDw//1cENqFzLE=;
+	s=k20201202; t=1723545132;
+	bh=ZjmBenwS6BE1vjuT8B0LhNFfM95R5DZMbadPgpteiw0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SRXCbmuNnr/gZknpTcyE6e5PXIsoSrlsqUmrjaij1eyImv+BHj4/iWNO+ZAgAVN9r
-	 AYCWNIfASAHQr3NFDku43h55g8Erou/uqObuVkMXpMx2NiZzeTUr2siCyvFNx/ZKsz
-	 07zwzHDZcOk6XPf8QC+ue6FYmVU+gDxszlv2Sz83MBT4kXrbaWWw8iIdOp7nbMARft
-	 mJCW15q+Sk4l30yosV4kkFSwMvohGhV3YTsTOccNa4R7Jo9UIfCGrxPnfRIJM1BmCy
-	 1hfW6pq9WKPSnsnNPlME2wx5oMtQHiMceDikdVzmNw1ag3a532YDBPqXnEcOGeG/eJ
-	 CTHSvhzpPfNLw==
-Message-ID: <85ddc853-b64d-4be9-8cd4-3d86e61b32d1@kernel.org>
-Date: Tue, 13 Aug 2024 12:31:31 +0200
+	b=OoTaMblrYSNYJaHsYW0moA3A5aJiP3LDO0VGTrx6HhMoaUnyg86chcbv8AN/AnAVc
+	 3doU81OkV0dk5FM2KFND0cxaowJ3EEDzTzUbv8GRtt3VAADKbtrVzLICvNxLmPBGLV
+	 FJ80nWFomK46sf6/rIw/OewsFmFCCSqVD3FYXRKmxeojLo3+pJ8aeo0sWwHT3DX+gc
+	 pXzjYS1dqaAcpAmDsOv1dtc+HTtPYaxvgRgX+oGf+XsvnaZcbwUMZaAB4suLDtoOnK
+	 oV3C16RqQ0G/fD8Ku8qyV7B1aL8sYsUOZ1Fcu3rFhjkAXpNGKVW8gSqWu2QVqbaiEF
+	 WEJacLzx6FHPA==
+Message-ID: <91d546ca-41b8-40dc-be6b-92737a3c3f19@kernel.org>
+Date: Tue, 13 Aug 2024 12:32:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,12 +51,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
 Subject: Re: FAILED: patch "[PATCH] mptcp: pm: don't try to create sf if alloc
- failed" failed to apply to 5.15-stable tree
+ failed" failed to apply to 5.10-stable tree
 Content-Language: en-GB
 To: gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org, kuba@kernel.org, martineau@kernel.org,
  pabeni@redhat.com, MPTCP Linux <mptcp@lists.linux.dev>
-References: <2024081246-rinse-rockslide-346f@gregkh>
+References: <2024081248-exposable-uniformed-75e0@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -102,7 +102,7 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024081246-rinse-rockslide-346f@gregkh>
+In-Reply-To: <2024081248-exposable-uniformed-75e0@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -110,19 +110,19 @@ Hi Greg,
 
 On 12/08/2024 14:39, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 5.15-stable tree.
+> The patch below does not apply to the 5.10-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
 > 
 > To reproduce the conflict and resubmit, you may use the following commands:
 > 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 > git checkout FETCH_HEAD
 > git cherry-pick -x cd7c957f936f8cb80d03e5152f4013aae65bd986
 > # <resolve conflicts, build, test, etc.>
 > git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081246-rinse-rockslide-346f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081248-exposable-uniformed-75e0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 > 
 > Possible dependencies:
 > 
@@ -153,8 +153,7 @@ On 12/08/2024 14:39, gregkh@linuxfoundation.org wrote:
 > It sounds better to avoid wasting cycles and / or put extreme memory
 > pressure on the system by trying to create new subflows if it was not
 > possible to add a new item in the announce list.
-
-I think it is better not to backport this patch to v5.15: the
+I think it is better not to backport this patch to v5.10: the
 dependencies list is quite big, and the fix is probably not worth it: in
 case of memory pressure, we don't try to do more actions (because they
 will fail as well).
