@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-67416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC5794FD1F
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 07:14:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE5E94FD22
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 07:14:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19E32280FA4
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 05:14:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07B02B2303C
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 05:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D09219F3;
-	Tue, 13 Aug 2024 05:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F152261D;
+	Tue, 13 Aug 2024 05:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LG9GHIwm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHos+eJh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49772261D;
-	Tue, 13 Aug 2024 05:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECAA219EB;
+	Tue, 13 Aug 2024 05:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723526048; cv=none; b=euQppDBePJrxlq9d0ThyUnhhI5aP0sUwAP6Gc8aVilKEItMM8b3BNSWIosoRISEAeLzbRdNKbyAUWWIn2dhPcMOX4o52A/2VSQs5mNrR9YzrCTE9kW+X1CWjxXk5EIDkVGMJkhj02zMlDkJJ5ndml7wYjLytfZKEhfhd1W3l/KQ=
+	t=1723526088; cv=none; b=mC8y26akcJFwrvOGsjUUd1FAl/MPEqdFZc/vEu89tEDFIq8/swFGiG9tzP3g2QjT/xom4MFhPJCKJCGkacP1D8+J05p/2iRmTO1IRokVlLTmxokZUTcCy+iaLZLNIAk0U1pPiB4TqEZVD5zvfZeSNxmPd7aKPw6Cwk5a5850Qdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723526048; c=relaxed/simple;
-	bh=VShyZtWO+Mfwh+7GhcuW9kE6yHwTk+tzCdlsYo6JH4M=;
+	s=arc-20240116; t=1723526088; c=relaxed/simple;
+	bh=Zy3d+CQ+9kwcPHjJ2TpBkbN91nBgsNVclVWu2IJOqrA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A0gtWvDVqgpe3SHXTH71imz7k03lX4cKYtahL64NgmkN35OBrg5kqnnWhbQ2nlJCjYltaqe0Zv+WUmimbUqThyLNMTGUvvnasIKaRSrX+FqVmPRs4lvwQ7ffhc74CYaXobxNaI+iBA0qcsZP62RBIlozmktqu4Iuur1/z0bzsdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LG9GHIwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BB8C4AF0B;
-	Tue, 13 Aug 2024 05:14:06 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=PgnBpxQc2nOPIzRueyYBgRp+xrWL1C25eNV0FKpL6Jo4t4od4nPna5v8Z9IWT3EqETcU071asPQkdKBXb2R0pSXIDtNukR/zmjV+RKkuYD8y6wI7/AbEv4KCqug2VsYH7sleFkNMPHSoPIvW26A/mZ3xexu0SAm1pQ8va+A0u1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHos+eJh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A76C4AF09;
+	Tue, 13 Aug 2024 05:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723526047;
-	bh=VShyZtWO+Mfwh+7GhcuW9kE6yHwTk+tzCdlsYo6JH4M=;
+	s=korg; t=1723526088;
+	bh=Zy3d+CQ+9kwcPHjJ2TpBkbN91nBgsNVclVWu2IJOqrA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LG9GHIwmwPa8eTvAz1eVCVuP2Pzg2ZLpMXAvADAniXa4SWchuzBo9o22njvBa3fAm
-	 wwD/weN/pXgV5UiBVGpWnkjAZRYYjhxt7SfU9bnUkbxaZhFevNUs1rU11bMpJ+TIB7
-	 KX7uNGhRoqhQvbButebbmthX0Nd9feYouqdehGMY=
-Date: Tue, 13 Aug 2024 07:14:04 +0200
+	b=qHos+eJhM/ztgA3THGVPR4X6ogA5gmE+adasiNA1C+Zy3uZDJ7yitXObzc3bDICw8
+	 43nvJiqh4ZajCO5RoSzjbN8t7m111DwEavd2iqgHrjQ4b8Dq5QoaZEudWrwSCpM/gy
+	 DR7RuhoyzacBNYUK7IS+S1o8wLMwlO9BOTkQEpCk=
+Date: Tue, 13 Aug 2024 07:14:45 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: levymitchell0@gmail.com
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	stable@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-	linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCH v3] x86/fpu: Avoid writing LBR bit to IA32_XSS unless
- supported
-Message-ID: <2024081339-duchess-demeanor-171a@gregkh>
-References: <20240812-xsave-lbr-fix-v3-1-95bac1bf62f4@gmail.com>
+To: Yihang Li <liyihang9@huawei.com>
+Cc: James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
+	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bvanassche@acm.org, linuxarm@huawei.com, prime.zeng@huawei.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] scsi: sd: retry command SYNC CACHE if format in
+ progress
+Message-ID: <2024081338-trance-precinct-bfa6@gregkh>
+References: <20240813011747.3643577-1-liyihang9@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,19 +57,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240812-xsave-lbr-fix-v3-1-95bac1bf62f4@gmail.com>
+In-Reply-To: <20240813011747.3643577-1-liyihang9@huawei.com>
 
-On Mon, Aug 12, 2024 at 01:44:12PM -0700, Mitchell Levy via B4 Relay wrote:
-> Fixes: f0dccc9da4c0 ("x86/fpu/xstate: Support dynamic supervisor feature for LBR")
-> Cc: stable@vger.kernel.org
+On Tue, Aug 13, 2024 at 09:17:47AM +0800, Yihang Li wrote:
+> If formatting a suspended disk (such as formatting with different DIF
+> type), the disk will be resuming first, and then the format command will
+> submit to the disk through SG_IO ioctl.
 > 
-> Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+> When the disk is processing the format command, the system does not submit
+> other commands to the disk. Therefore, the system attempts to suspend the
+> disk again and sends the SYNC CACHE command. However, the SYNC CACHE
+> command will fail because the disk is in the formatting process, which
+> will cause the runtime_status of the disk to error and it is difficult
+> for user to recover it. Error info like:
 > 
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+> [  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
+> [  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
+> [  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
+> [  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
+> 
+> To solve the issue, retry the command until format command is finished.
+> 
+> Signed-off-by: Yihang Li <liyihang9@huawei.com>
+> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>  drivers/scsi/sd.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+> index adeaa8ab9951..5cd88a8eea73 100644
+> --- a/drivers/scsi/sd.c
+> +++ b/drivers/scsi/sd.c
+> @@ -1823,6 +1823,11 @@ static int sd_sync_cache(struct scsi_disk *sdkp)
+>  			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
+>  				/* this is no error here */
+>  				return 0;
+> +
+> +			/* retry if format in progress */
+> +			if (sshdr.asc == 0x4 && sshdr.ascq == 0x4)
+> +				return -EBUSY;
+> +
+>  			/*
+>  			 * This drive doesn't support sync and there's not much
+>  			 * we can do because this is called during shutdown
+> -- 
+> 2.33.0
+> 
+> 
 
-Please remove the blank lines here.
+<formletter>
 
-thanks,
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-greg k-h
+</formletter>
 
