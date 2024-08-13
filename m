@@ -1,137 +1,149 @@
-Return-Path: <stable+bounces-67550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262A8950E3D
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 23:00:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6900F950E5B
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 23:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0F81F2394B
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 21:00:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2488B281971
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 21:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D57B1A76A4;
-	Tue, 13 Aug 2024 20:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5D01A76B8;
+	Tue, 13 Aug 2024 21:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vshsCTUu"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JIqPnVif"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEADC1A705B
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 20:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E091A706A;
+	Tue, 13 Aug 2024 21:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723582796; cv=none; b=AWPk3FDKuI0Ymj61hu3HdTe5ZlY3G49aZWClqwleNb/OV3wnX0ZYoKYKS/BIus/1FtWgbrL9+lc5QENCNb9CXmmYfgn9eZTlgs2qki1LOYLkhHgV+4p80JGQ/6pzQWGiNPSRz9dFvPhDY10YBn4GkmCJCiAcuWKzFU79Bla7Xhk=
+	t=1723583335; cv=none; b=iEOrRXzERbVl7ZnfUaZ9S7bSI2cseZFr2tej2T+YqZz4KNVCHhu1cpn70BhIRqj5Uate1u195Y0x+Dt8hr/55EgtnZcEXOXSRQ7NaMDQgiVbq87qWnzbefrHFLGHL65vAl2nunL2Ls7U4Ap9m/3oRgo6Jn94y8AIlBke0l1mkN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723582796; c=relaxed/simple;
-	bh=hlBe3bO5nqL/9JxUsPJ41ih8e91oO5SDAycqip8w3t0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N/rjdKgPhq7V7wygLhcQZB7560PA6gZ6ySqBu5R+BPtbSTZiTRLW6nrAic0OEGTnXa5MZ8tZePE8YzFk0UP3YYdsRYZQrGQAjQcqJYgUthKivdnBBCZC8UMjpzujQ2Il13wgwnRmM6Owrq0QbXlNf64IDZzN++3uf0RGoYPpsu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vshsCTUu; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1fd657c9199so10595ad.1
-        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 13:59:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723582794; x=1724187594; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RhgGYVMx+jW9NS5avNe3UcbWXP3uzGmp3M9nSD5W+Bo=;
-        b=vshsCTUuNNTZL2oqksGKcyE19bjvuZRnBweL8t6iC2HOt88hS5++QZ3fxDxME+nF5d
-         xVWcAlSt+0dtb64fUT/EXa6kZkRy9STOC9ITpu+5f3iTYx1hSAfABAKfshQAn4+kj6j9
-         2umV+ES7ZYtp5AzSM8a1I3t/F/VFcDhOhC5hScwAn3N8WSgo5YRyG3FUGbH+OhidqvKg
-         AMoFTSus2uAivEhqEfsudgcytpJQKn4w/U3fk8jSxAU48eEzoSM38wjHzbI+LtlCjiBG
-         z0T+hUCuS2Wbf1bib/sYJv5OZ14Mod95q0EaXDZSoOWO17yc92Pay/hDs561h0q3Jowh
-         MeuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723582794; x=1724187594;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RhgGYVMx+jW9NS5avNe3UcbWXP3uzGmp3M9nSD5W+Bo=;
-        b=KP6YcbgA+mmsLx4UQapskQyG1WriQFe8F5OWARWQ+bAas2MUV8/PfKPQGD5ybtUR1h
-         l+yZ7LDXFI0icUgtIycccTquWd2vwczz4km+TfIXwky08Yv67xqpo+8gBlayRRaaLg2G
-         nuIsvRzhiCEUiLlddg12OpWhLAZ9sCG6paHMPysUN8sjmVmTfReB4Pt9N8YZwPhpOFKj
-         UugWGfYGtpRGa1Ojz8MohFIoUVtrUdS17zDi1D8IsRUdvGPOVFU8W00I87LinM7mZ4Ma
-         iLeiCzNUJc4Twx9BwlW6ePuC8v7E9/FFvOfq1LzhLZbpOA8bagKWAJ20pS5zGKqqxBPk
-         c4tQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWGywfdc+dbBwybQsuzb8jsg+hzQra+oxVK32wNexyphcrlrxFe0BlNJezNR4yenPRpQ2/IjPjBwIxdy3hEgojhva22cOZx
-X-Gm-Message-State: AOJu0YyAUKXUtQlZR32PUGJSWSvE4fVdroLG8CKDDY+FPRCgNxUgrghG
-	MNzLbE8GAEPpSogUEeVrpG3WAU6fn0w4xS3/O6SsuPyWduLWqUG31VczSqlTRTp0PyTrFqpH4cW
-	OUrmzeBaa77IMNni5Hm1xJYHjUENnIMxQhigGvdFflOhp1+C2qQ==
-X-Google-Smtp-Source: AGHT+IE7evxZcY5Q1trGPNN8QB7kOuoEiJu2YVj+e1IaKF5gw6xisj04CQzafN0peuVm9S/Q8W+/NmStPFUsjWgQGzQ=
-X-Received: by 2002:a17:902:c949:b0:1fd:d0c0:1a69 with SMTP id
- d9443c01a7336-201d9261633mr66975ad.9.1723582793740; Tue, 13 Aug 2024 13:59:53
- -0700 (PDT)
+	s=arc-20240116; t=1723583335; c=relaxed/simple;
+	bh=gWuO5hezVV8kXnzUe6XCJo5DwhOnTZS07C3P9XDvlb0=;
+	h=Date:To:From:Subject:Message-Id; b=lacQRCg5YCvGucp8MsVGFiKGGA/gwrn6r5+HrzMnl0KtxI+kYnlBGeK215KnPKMRMBHW3qJhl4bzfcn81r3xU9q1HgG2gmbuo55MNTLWuPtDhPJl4i+05sVAKGYF5uTTdenCHBWnMooMHmvAUNfNc0mSwsElV7uZ4fKbm5oAb+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JIqPnVif; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A743C32782;
+	Tue, 13 Aug 2024 21:08:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1723583334;
+	bh=gWuO5hezVV8kXnzUe6XCJo5DwhOnTZS07C3P9XDvlb0=;
+	h=Date:To:From:Subject:From;
+	b=JIqPnVifbgpE1yPoxXcpI5MRCfzaPyWBiLruo/O0KamThW6xkTS/KMf2fDbkUTQKw
+	 Wj14L1Gl7z1KAp7FnUcqB1fXq3lTt9t4p5YH6PUIjjKVH3eKw2TwqD4KKN1zXqOvgp
+	 nAffsnNK/4jMjkN0Bm9vhuKboIQIypKn1D67Js2E=
+Date: Tue, 13 Aug 2024 14:08:54 -0700
+To: mm-commits@vger.kernel.org,zhaoyang.huang@unisoc.com,urezki@gmail.com,tglx@linutronix.de,stable@vger.kernel.org,lstoakes@gmail.com,hch@infradead.org,hailong.liu@oppo.com,bhe@redhat.com,will@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vmalloc-ensure-vmap_block-is-initialised-before-adding-to-queue.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240813210854.9A743C32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240813002932.3373935-1-andrii@kernel.org> <20240813002932.3373935-2-andrii@kernel.org>
-In-Reply-To: <20240813002932.3373935-2-andrii@kernel.org>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 13 Aug 2024 22:59:14 +0200
-Message-ID: <CAG48ez1oUas3ZMsDdJSxbZoFK0xfsLFiEZjJmOryzkURPPBeBA@mail.gmail.com>
-Subject: Re: [PATCH v5 bpf-next 01/10] lib/buildid: harden build ID parsing logic
-To: Andrii Nakryiko <andrii@kernel.org>
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	adobriyan@gmail.com, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
-	ak@linux.intel.com, osandov@osandov.com, song@kernel.org, 
-	linux-fsdevel@vger.kernel.org, willy@infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 13, 2024 at 2:29=E2=80=AFAM Andrii Nakryiko <andrii@kernel.org>=
- wrote:
-> Harden build ID parsing logic, adding explicit READ_ONCE() where it's
-> important to have a consistent value read and validated just once.
->
-> Also, as pointed out by Andi Kleen, we need to make sure that entire ELF
-> note is within a page bounds, so move the overflow check up and add an
-> extra note_size boundaries validation.
->
-> Fixes tag below points to the code that moved this code into
-> lib/buildid.c, and then subsequently was used in perf subsystem, making
-> this code exposed to perf_event_open() users in v5.12+.
 
-Sorry, I missed some things in previous review rounds:
+The patch titled
+     Subject: mm: vmalloc: ensure vmap_block is initialised before adding to queue
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vmalloc-ensure-vmap_block-is-initialised-before-adding-to-queue.patch
 
-[...]
-> @@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *build_id=
-,
-[...]
->                 if (nhdr->n_type =3D=3D BUILD_ID &&
-> -                   nhdr->n_namesz =3D=3D sizeof("GNU") &&
-> -                   !strcmp((char *)(nhdr + 1), "GNU") &&
-> -                   nhdr->n_descsz > 0 &&
-> -                   nhdr->n_descsz <=3D BUILD_ID_SIZE_MAX) {
-> -                       memcpy(build_id,
-> -                              note_start + note_offs +
-> -                              ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhd=
-r),
-> -                              nhdr->n_descsz);
-> -                       memset(build_id + nhdr->n_descsz, 0,
-> -                              BUILD_ID_SIZE_MAX - nhdr->n_descsz);
-> +                   name_sz =3D=3D note_name_sz &&
-> +                   strcmp((char *)(nhdr + 1), note_name) =3D=3D 0 &&
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-ensure-vmap_block-is-initialised-before-adding-to-queue.patch
 
-Please change this to something like "memcmp((char *)(nhdr + 1),
-note_name, note_name_sz) =3D=3D 0" to ensure that we can't run off the end
-of the page if there are no null bytes in the rest of the page.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-[...]
-> @@ -90,8 +97,8 @@ static int get_build_id_32(const void *page_addr, unsig=
-ned char *build_id,
->         for (i =3D 0; i < ehdr->e_phnum; ++i) {
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Please change this to "for (i =3D 0; i < phnum; ++i) {" like in the
-64-bit version.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-With these two changes applied:
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Reviewed-by: Jann Horn <jannh@google.com>
+------------------------------------------------------
+From: Will Deacon <will@kernel.org>
+Subject: mm: vmalloc: ensure vmap_block is initialised before adding to queue
+Date: Mon, 12 Aug 2024 18:16:06 +0100
+
+Commit 8c61291fd850 ("mm: fix incorrect vbq reference in
+purge_fragmented_block") extended the 'vmap_block' structure to contain a
+'cpu' field which is set at allocation time to the id of the initialising
+CPU.
+
+When a new 'vmap_block' is being instantiated by new_vmap_block(), the
+partially initialised structure is added to the local 'vmap_block_queue'
+xarray before the 'cpu' field has been initialised.  If another CPU is
+concurrently walking the xarray (e.g.  via vm_unmap_aliases()), then it
+may perform an out-of-bounds access to the remote queue thanks to an
+uninitialised index.
+
+This has been observed as UBSAN errors in Android:
+
+ | Internal error: UBSAN: array index out of bounds: 00000000f2005512 [#1] PREEMPT SMP
+ |
+ | Call trace:
+ |  purge_fragmented_block+0x204/0x21c
+ |  _vm_unmap_aliases+0x170/0x378
+ |  vm_unmap_aliases+0x1c/0x28
+ |  change_memory_common+0x1dc/0x26c
+ |  set_memory_ro+0x18/0x24
+ |  module_enable_ro+0x98/0x238
+ |  do_init_module+0x1b0/0x310
+
+Move the initialisation of 'vb->cpu' in new_vmap_block() ahead of the
+addition to the xarray.
+
+Link: https://lkml.kernel.org/r/20240812171606.17486-1-will@kernel.org
+Fixes: 8c61291fd850 ("mm: fix incorrect vbq reference in purge_fragmented_block")
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Cc: Hailong.Liu <hailong.liu@oppo.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vmalloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/vmalloc.c~mm-vmalloc-ensure-vmap_block-is-initialised-before-adding-to-queue
++++ a/mm/vmalloc.c
+@@ -2626,6 +2626,7 @@ static void *new_vmap_block(unsigned int
+ 	vb->dirty_max = 0;
+ 	bitmap_set(vb->used_map, 0, (1UL << order));
+ 	INIT_LIST_HEAD(&vb->free_list);
++	vb->cpu = raw_smp_processor_id();
+ 
+ 	xa = addr_to_vb_xa(va->va_start);
+ 	vb_idx = addr_to_vb_idx(va->va_start);
+@@ -2642,7 +2643,6 @@ static void *new_vmap_block(unsigned int
+ 	 * integrity together with list_for_each_rcu from read
+ 	 * side.
+ 	 */
+-	vb->cpu = raw_smp_processor_id();
+ 	vbq = per_cpu_ptr(&vmap_block_queue, vb->cpu);
+ 	spin_lock(&vbq->lock);
+ 	list_add_tail_rcu(&vb->free_list, &vbq->free);
+_
+
+Patches currently in -mm which might be from will@kernel.org are
+
+mm-vmalloc-ensure-vmap_block-is-initialised-before-adding-to-queue.patch
+
 
