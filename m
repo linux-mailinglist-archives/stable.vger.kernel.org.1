@@ -1,136 +1,174 @@
-Return-Path: <stable+bounces-67515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C556C9509D3
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 18:07:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C669509DC
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 18:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 022101C20C66
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:07:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D31FB28A8C
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEBE1A2572;
-	Tue, 13 Aug 2024 16:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA521A0715;
+	Tue, 13 Aug 2024 16:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hcPeNyLZ"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="L3MhIT8f";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MEtDz2O/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB7A61FCF
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 16:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24D91A08B1
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 16:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723565177; cv=none; b=W55tP0aaPgAKiZ2ZL9JWD0UmU3perq4b8+QaXDJcFQWd5Imdoihm/Tc0dtOnoxCwQADBUsWdHIknVCFhYfuw2wSiqxll0DRKgeFks/+RCOC4I6ALvMAUX4nQvwXFZgs3zisP9v8DBVT2MPONBfF2c7h1blLSRv95ShOpEO1kgGw=
+	t=1723565350; cv=none; b=AywOTJQp2e+IhDS+eu+Yi3RzI4PsaZHPikfi2pt11sSkDPXcJoI1wLuQ+VmwtakKl1ismkfmATGEE1rF4YFoYgridYHM8DfTxYJlUeaszd2+d8VkivIuQxZIb7sdJZ18fq9bHawcxt4GILgHKxQknbxZd5jmx8iezSgeqWKbW60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723565177; c=relaxed/simple;
-	bh=2aKDjXMzkzZwy+w6/tkYsoHzsVEy5hXUwzS2g5555oc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sytjV/wkAXssfg6vLLpGxP6xUdydHarM5yP/ynrQKnSpaTh8EnP3z34MVIymzPM+k5xEei7ciyKygcj83H2qqTSP1D8G7PfEvji+Nx4g84NOQd66oZ3rgJHSQG2VYJY4b2EARP6CK6yRl7ZuHZUeIq7srYtkwsjNvg8Q1u2PCXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hcPeNyLZ; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6512866fa87so50589657b3.2
-        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 09:06:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723565174; x=1724169974; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a3nOqROZS7f0NGTQPLW29HPt15nh8yqYVB7M2yR1RNM=;
-        b=hcPeNyLZtXMUFI8j1L3mO55uW0erKcFZSbsf4ljj6qfXKu7eqNoaFhA3px9Fij/RiH
-         S4Eloc4GpRm5OyRLm4qdo1mEhPnZmo4rrL5YHA9r4MUdF0SQik86YRVxdmnB5FgjSGFT
-         HDfJrq6Ns5m8+kr1SbYBD5+WH4h7IX1oU73bLn8xG4qKG5Fvh7abr5z9utM1R/5IzZoA
-         7Adv5Bx+DZmcwg2VVarNAbhIfEzkI5Pbp0yqS2bxCKTYC+Qpzc/xYPLQar6bbJyE86Fk
-         GZbXrdXcv7RssnWYz2P611IhvnYDfGcrtrBrhiKLec27ZNX7Xa9JDyIR5dwGpkUtHHfX
-         tsPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723565174; x=1724169974;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a3nOqROZS7f0NGTQPLW29HPt15nh8yqYVB7M2yR1RNM=;
-        b=ZIlkZ7hEQ5cDrDfCOLuE40dsHOiFtG4t6kITHRcFGosMC7dU3eD2LejzNb8jBFoJS8
-         JR35S1HBUXIaulsMimmgxR79Ru1AYY7PUWSE3/3aP204JHrj5OiPKWBDKbQLTJUxSH/j
-         hvuUTF+JjPZX2HWHYagies8mU/G4bxUelSgs+gFnB8R6a5kkn63abUFrQBw8Bm5LEDHr
-         r0neJs4dowUjxzXIjgoA/WAnWGt+GF20O5OwZo7SvT91lZaERms67bDxA3/XGybeUTXV
-         L3jbhNbX9rDNuEDP9G7XoKMRWVxqEuGYe/vyKxVWMmFEsDPQqToC9MdHgATq9+clFbyg
-         mbZg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/WAr5fIl9I8lgqo8Ak6JEBz7R/21iNWd1xBvqLc7mmWY+TkcDKRFashx+jW1+2ltb8Xu6uIDqWZn4j0rIkncqxihjGmHW
-X-Gm-Message-State: AOJu0Yz1s1y08I4ncDfNQhoQ38BLMlFiwm7m8lANARcw7ULVBihLgft8
-	H+PZpN56Sgeutmsi2v7HL9f6iUAGyaZBC5Gn3rTSGFoPrt3wVaauiRaB7bIH1Bj89DuESJZN519
-	//WZ7ffW/1WIBgQErUcglXb0BdZQGptqufawk
-X-Google-Smtp-Source: AGHT+IHMiOhzYAxqia21srgICMd3bpU5d8vj06kU3XcprkI21PIrBAy/i3gJkmKJKshgio8q/XkY77UHu8DFNnuWNYY=
-X-Received: by 2002:a05:690c:250b:b0:651:6888:9fee with SMTP id
- 00721157ae682-6a9726719d7mr43641887b3.18.1723565174221; Tue, 13 Aug 2024
- 09:06:14 -0700 (PDT)
+	s=arc-20240116; t=1723565350; c=relaxed/simple;
+	bh=TRPOkyKTSLUjnj2ODFD3qzWODwOdF7bMQREryKOeJmE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K3fVRDNk2JT98e3DPlHyyVQHCJzx4zGfjjGo+516LjbJgJr7Dd+aftQVmwwA7VbUhuN+0Ef5ZqbjIltFYzRFpRKwNNO1//R7o7rAaIBmrLWOG+6J1hKp04ICBvXi+1kG6ILTlW000hosd/njWleBRhpeBXYoRCOFDSWd8F0b6EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=L3MhIT8f; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MEtDz2O/; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-05.internal (phl-compute-05.nyi.internal [10.202.2.45])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id B0BBE1147F84;
+	Tue, 13 Aug 2024 12:09:07 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 13 Aug 2024 12:09:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1723565347;
+	 x=1723651747; bh=7QhfKOsAc2RqBWQH/nA6BButSzfA2NR4xsYNa5PB1Sk=; b=
+	L3MhIT8finr3je4VjUVe2kZYPXSQFl+tlnJUKsF1H22Rbvg8DFT7wV0n+UaXZxY1
+	Z/bf3iPTMSft9if0ubtRXZNzAXw6LI3gJi0CgYrSoLqAaqc4l5+IqbJKmUnQAa5P
+	RGHjq8GdJmpF4xf181y8ku0sKE/i/k+9eBnbBrvkI2erpORjFkc6uukFeAG4BKeh
+	qYYgPzTndzX4Cx0mV/yjD+OW05ckPPbDodWK8vMf3aa65zWe7K+MMKtkOhAa9MWf
+	c2F9GrFkxn7R1joMfghcR3ZS5qQGSXt78vPtJvQZrr1dbbGWiuZeaBvc3JLT5IWU
+	T/FEbn7qe+Xur6nItHttOw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723565347; x=
+	1723651747; bh=7QhfKOsAc2RqBWQH/nA6BButSzfA2NR4xsYNa5PB1Sk=; b=M
+	EtDz2O/GdXz/11zPrTxIuQMiVPBNCdlbHoRFH1PEtU3WxJmvrK4y8NOIKO3377JN
+	wuTwryyZcZvY/LzeP/novdmRvvrFdvXU0N4pPtT4tF2WFfrhcYygeGjAErGgVEKp
+	Fbcl8RXk9SUT9zV4Nc/A99C0JZcvV6korHB+ZPg4iVA7Ec2lF5MgtOmNypirwFeJ
+	DxLOXch7guaOrUtOzLfd6KOZxsJUqvVxbCu5rjz/aBaS6xT5KhnIQDTJq+SFThn6
+	GfECjF2N1XjlhsvtlHK7M+2h9cUIivMo1yqQQr7/2jmllQ2Vu9QhHGBVAPydhpK1
+	Xza6L2h/K8HvcQhp+bYOg==
+X-ME-Sender: <xms:I4W7ZtBxWCIxcQeAhPAd_Af4TmDyVxeLVl0jG5gSPhPN9lLkXqEcUw>
+    <xme:I4W7Zrhxn6mb18uadFKLv0UT3_98p-yQIuyukni6A8aQlsdzrzg0LVcq0Zcnfa_mf
+    sua0CIK_RJAzQ>
+X-ME-Received: <xmr:I4W7ZokTD9ZUsAjxvVo--KSphZvC_POkQ7ZyxLttOQpGVIqy1JY4Qpb8uTkFrkHGJdHX8QucGEhs0bGF2BkAJz4i5muQS6PsAXyUHw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddtvddgleejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
+    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeevteeggeeuhfeufedvvdfhieeilefhleeguddvfefgvddugeethefg
+    heevtdfgleenucffohhmrghinhepfhhrvggvuggvshhkthhophdrohhrghenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgr
+    hhdrtghomhdpnhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopegrnhguihdrshhhhihtiheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphht
+    thhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjrg
+    hnnhhhsehgohhoghhlvgdrtghomhdprhgtphhtthhopegthhhrihhsrdhprdifihhlshho
+    nheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehjohhonhgrshdrlhgrhh
+    htihhnvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepmhgrthhthhgv
+    fidrrghulhgusehinhhtvghlrdgtohhmpdhrtghpthhtoheprhhoughrihhgohdrvhhivh
+    hisehinhhtvghlrdgtohhmpdhrtghpthhtohepjhhonhgrthhhrghnrdgtrghvihhtthes
+    ihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:I4W7ZnzTJ8VAbrDwmOF7h_2WM0Q4QVaXbyKqyFR6jBrb3IPHpWk8mw>
+    <xmx:I4W7ZiQ4inTmfrAize-oua38G6GGNmv1zEmGKSbGmPa-COn_s5nMMg>
+    <xmx:I4W7ZqbbYEey8qpKL1mZ9zd_bnafWoNAgFxZhz0GD0t0AKCKyvzXpA>
+    <xmx:I4W7ZjQ7Ok3b4csjbIBlMQK81wTOSsImszYa6Kx3X5wFGKHEEya6JA>
+    <xmx:I4W7ZrCzGYYNA8lKk8M0HRLdQvAZWa7ZkKPGPUb7el0BTJ4sfJ3M_yrM>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 13 Aug 2024 12:09:06 -0400 (EDT)
+Date: Tue, 13 Aug 2024 18:09:04 +0200
+From: Greg KH <greg@kroah.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: stable@vger.kernel.org, Jann Horn <jannh@google.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Jonathan Cavitt <Jonathan.cavitt@intel.com>
+Subject: Re: [PATCH 4.19.y] drm/i915/gem: Fix Virtual Memory mapping
+ boundaries calculation
+Message-ID: <2024081308-olive-fondness-db98@gregkh>
+References: <2024081222-process-suspect-d983@gregkh>
+ <20240813141436.25278-1-andi.shyti@linux.intel.com>
+ <2024081306-tasty-spoof-62c6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240813150758.855881-1-surenb@google.com> <20240813150758.855881-2-surenb@google.com>
- <be75dbc3-3137-44a2-af45-5454728c98a2@redhat.com>
-In-Reply-To: <be75dbc3-3137-44a2-af45-5454728c98a2@redhat.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 13 Aug 2024 09:06:00 -0700
-Message-ID: <CAJuCfpHSp9Jt02qiJATj3H0=oBSUmF3JW_w5w7TNQJ6Vk9gVXA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] alloc_tag: mark pages reserved during CMA
- activation as not tagged
-To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, vbabka@suse.cz, 
-	pasha.tatashin@soleen.com, souravpanda@google.com, keescook@chromium.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024081306-tasty-spoof-62c6@gregkh>
 
-On Tue, Aug 13, 2024 at 8:09=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 13.08.24 17:07, Suren Baghdasaryan wrote:
-> > During CMA activation, pages in CMA area are prepared and then freed
-> > without being allocated. This triggers warnings when memory allocation
-> > debug config (CONFIG_MEM_ALLOC_PROFILING_DEBUG) is enabled. Fix this
-> > by marking these pages not tagged before freeing them.
-> >
-> > Fixes: d224eb0287fb ("codetag: debug: mark codetags for reserved pages =
-as empty")
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > Cc: stable@vger.kernel.org # v6.10
+On Tue, Aug 13, 2024 at 05:28:15PM +0200, Greg KH wrote:
+> On Tue, Aug 13, 2024 at 04:14:36PM +0200, Andi Shyti wrote:
+> > Commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
+> > 
+> > Calculating the size of the mapped area as the lesser value
+> > between the requested size and the actual size does not consider
+> > the partial mapping offset. This can cause page fault access.
+> > 
+> > Fix the calculation of the starting and ending addresses, the
+> > total size is now deduced from the difference between the end and
+> > start addresses.
+> > 
+> > Additionally, the calculations have been rewritten in a clearer
+> > and more understandable form.
+> > 
+> > Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
+> > Reported-by: Jann Horn <jannh@google.com>
+> > Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+> > Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+> > Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> > Cc: Matthew Auld <matthew.auld@intel.com>
+> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > Cc: <stable@vger.kernel.org> # v4.9+
+> > Reviewed-by: Jann Horn <jannh@google.com>
+> > Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
+> > [Joonas: Add Requires: tag]
+> > Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
+> > Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> > Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
+> > (cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
+> > Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 > > ---
-> > Changes since v2 [1]:
-> > - Add and use clear_page_tag_ref helper, per David Hildenbrand
-> >
-> > https://lore.kernel.org/all/20240812192428.151825-1-surenb@google.com/
-> >
-> >   mm/mm_init.c | 2 ++
-> >   1 file changed, 2 insertions(+)
-> >
-> > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> > index 907c46b0773f..13c4060bb01a 100644
-> > --- a/mm/mm_init.c
-> > +++ b/mm/mm_init.c
-> > @@ -2245,6 +2245,8 @@ void __init init_cma_reserved_pageblock(struct pa=
-ge *page)
-> >
-> >       set_pageblock_migratetype(page, MIGRATE_CMA);
-> >       set_page_refcounted(page);
-> > +     /* pages were reserved and not allocated */
-> > +     clear_page_tag_ref(page);
-> >       __free_pages(page, pageblock_order);
-> >
-> >       adjust_managed_page_count(page, pageblock_nr_pages);
->
-> Acked-by: David Hildenbrand <david@redhat.com>
+> >  drivers/gpu/drm/i915/i915_gem.c | 48 +++++++++++++++++++++++++++++----
+> >  1 file changed, 43 insertions(+), 5 deletions(-)
+> 
+> Both now applied, thanks.
 
-Thanks!
+Wait, did you build this?  I get the following error:
 
->
-> --
-> Cheers,
->
-> David / dhildenb
->
+  CC [M]  drivers/gpu/drm/i915/i915_gem.o
+drivers/gpu/drm/i915/i915_gem.c: In function ‘set_address_limits’:
+drivers/gpu/drm/i915/i915_gem.c:2034:18: error: ‘obj_offset’ undeclared (first use in this function); did you mean ‘iova_offset’?
+ 2034 |         start -= obj_offset;
+      |                  ^~~~~~~~~~
+      |                  iova_offset
+
+
+I'll drop this now.
+
+Can you fix this up and provide a working version?
+
+thanks,
+
+greg k-h
 
