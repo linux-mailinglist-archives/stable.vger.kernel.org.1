@@ -1,96 +1,236 @@
-Return-Path: <stable+bounces-67406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014D094FA58
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 01:35:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 294B394FAA8
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 02:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33EF21C2223F
-	for <lists+stable@lfdr.de>; Mon, 12 Aug 2024 23:35:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5C862827F3
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 00:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9180118455E;
-	Mon, 12 Aug 2024 23:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80594C81;
+	Tue, 13 Aug 2024 00:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s5VOG/At"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKQzHeWL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com [209.85.167.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A087E0E8
-	for <stable@vger.kernel.org>; Mon, 12 Aug 2024 23:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2854A23;
+	Tue, 13 Aug 2024 00:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723505727; cv=none; b=U17oh9b79YimkGh2BDojSmsaMLolKfBHQc/ThpIuvU8dQXo6a52Ui7pydZBpn2WhZa/rTzKZYmN6zSKoq+8eOOA8CrVXgvSm3pXtXeysqa/1FQl0zRHctWwmgrtJtZ7Y3UD/a/tqPK0WyiwpUSPdpnYuV9plbk5ubd8o7cCg2h0=
+	t=1723508978; cv=none; b=ZtE5TnhxLh5N+P+YQiQjaS/1fP2S5JndTGj5qb7qdKpoMD7YrHDLfB3hVJhXuNXAfu5Y0x5lc/GXSCZLnctzYFCqjlM5pejORcggs+Kt2go1ByUJLf5DpVAAVqjPnvIwB4j/OItdqAyaipQCTal/ekpAnTJLaX/BLUVAUT36ZdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723505727; c=relaxed/simple;
-	bh=Hy0ZvmapsHnKQsjI2/9Kuh7dY0hLrow3eJAbXthoyh8=;
-	h=MIME-Version:In-Reply-To:Message-ID:Date:Subject:From:To:Cc:
-	 Content-Type; b=e3OHMvLjP7T12eWnYcm1SbwC+E/zPZIm61hmnbyQs+/y2lUTRFZFXHW1KkL1XyKpJpb8KVxIfy/ojcPrRPVcd5hiuiIi4QGhr7o3c1QLx71+rGNZ8goBl6w7VM19SHPOdmNAUoP9lkypvq10SxVij0EQoY5bUz+pUCq5tyc/HPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=cros-rc-feedback.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s5VOG/At; arc=none smtp.client-ip=209.85.167.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cros-rc-feedback.bounces.google.com
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-52efd4afebeso5618858e87.2
-        for <stable@vger.kernel.org>; Mon, 12 Aug 2024 16:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723505724; x=1724110524; darn=vger.kernel.org;
-        h=cc:to:from:subject:date:message-id:in-reply-to:mime-version:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Hy0ZvmapsHnKQsjI2/9Kuh7dY0hLrow3eJAbXthoyh8=;
-        b=s5VOG/At8ETWbB3/1b6nOsOCOWh2oJ+27W3lmGhPe+pAGfgOye42x6IxU0vjqpy6qK
-         Kqpu99BhZ2vcoztIDXHqTfBo7KfZgwxX1BHoh2y/TjFMkTu7Wr1+d7DK9TtKpuEIUPsb
-         3dApBCHKW+kyYs9dr285o+TxBA9cejhqdUA4b/9NE9VmtVDAAxDf8587qPD750CijkeK
-         pbVJTufuM213vORo4OaWPccKQkswlGC2B6UzzHXXqUkqyVDtBxGXvtzIDU6fU2pvHl2o
-         AmzM2o7YZA4qci7IQnZP5ZCm7sefjwRUEUwYHZyVEIsNnXZCzkOcPfoCycpC6yxNfvkJ
-         va6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723505724; x=1724110524;
-        h=cc:to:from:subject:date:message-id:in-reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hy0ZvmapsHnKQsjI2/9Kuh7dY0hLrow3eJAbXthoyh8=;
-        b=tdBAzX4ILg6Djxu6/eQZbCfWilG+RmzklKPIj9c3mnZs1ccKnS0qNSTV7B8n4PLO09
-         WVyTAzSlIq/0LSx4htNoShhMyzTiX44M+43Bsg/PyZwsUwtzcbSqS3FlDInTGwy1rtPF
-         38crTen8L5l9GJVKpVHDmWaWZBeQbLi5qdNPmzTjcvp1Ee9WLqkeg9EdHz0IyI0uBaHa
-         foein/2DL+JoRzJXHxL5x2VxB+S55+Yd0UTsIJR1rj66Evc4DPNjnFwiA8TG9++fb7+M
-         2Drzl5p2sfSPrlfCyJzjbiBZpr++Mio+dd63VIsePx8HykePllRRC3l0O8IvZ19T5fVO
-         eYHw==
-X-Gm-Message-State: AOJu0YyPZlMeeLjdy0BMFYw+9u87gkJF76dxDkC6olK+WJWh0TTLw+ff
-	cBxdJJHGheAzHlVcDuVOZnDY8c2mnfbcG9P0NY0VlifgJ0MpgDCxtdY3LYvty+oWVhqbll/lq+X
-	HfcXf7Z446rA3vcoanPPYLL7aejkWTSmV1WSwElY3/RMD+/75CnG7BjYzZXEp5rUPcJ689ZBLsn
-	rQGzTuQ0Gdnj65KMFhL9ToP6hhbidk
-X-Google-Smtp-Source: AGHT+IGEp+AwdpeFm4dxHYRCCnoilgVvaClqAM29tGqqDOKna6lHdwZJdY1EXP7H5dtHO2HUltCC1HJ6Z63/LBHkMWlKRjtPdAWISN57IgE25B2mOg==
+	s=arc-20240116; t=1723508978; c=relaxed/simple;
+	bh=d6OgdgeHC+wk/lu9I8MQmLFJs8ltuhWEZxsTMlHyPcE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EOw+3k39L8q+2cS/2hKlo41ccbqjNpY2pmMqCbQHywwPBO2qYV2WTcgjg/jcp6kcQXj4FB+/wAfRzmG4F/Zll6JsC/ilRyr6XRQdcpf0yffxe7UqE3/PZpWOpR2tpw7dyFslptQtH6CqJ/2XzUId77iTypuPqL1uci7/ZuYQD+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKQzHeWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE5EC4AF0D;
+	Tue, 13 Aug 2024 00:29:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723508978;
+	bh=d6OgdgeHC+wk/lu9I8MQmLFJs8ltuhWEZxsTMlHyPcE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gKQzHeWLGEXSBj28UKOhogBjjfgKREy89e3zbQHdc2ymmXrDkkZ8QFoKEIxLfi08u
+	 9jEXKq6AMG/wgO3jx720R9CpQKXK7rYYZMZnWYF7a6gocNP8PbvovNE2mtUbZtD08n
+	 gXHs5QykOrm6BmEfFA7Y7vFYzbd8xYM14VnDtNgf/YkykOiy+lEvv2OLzj5Igo9TjD
+	 kjC0VnPbEZboUpV83Pnzwvt17tMEAUvu8yDMMmkUbgmt9hdoRZk2aIzApO1MJ4rc8Y
+	 dyWswqg+Bstkrrkw4GynQVlIwnwmKW2a8KKed3vMTPfb+u7CHjaWHpu1zd76r5wrkc
+	 isglTPPnF42og==
+From: Andrii Nakryiko <andrii@kernel.org>
+To: bpf@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	adobriyan@gmail.com,
+	shakeel.butt@linux.dev,
+	hannes@cmpxchg.org,
+	ak@linux.intel.com,
+	osandov@osandov.com,
+	song@kernel.org,
+	jannh@google.com,
+	linux-fsdevel@vger.kernel.org,
+	willy@infradead.org,
+	Andrii Nakryiko <andrii@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 bpf-next 01/10] lib/buildid: harden build ID parsing logic
+Date: Mon, 12 Aug 2024 17:29:23 -0700
+Message-ID: <20240813002932.3373935-2-andrii@kernel.org>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20240813002932.3373935-1-andrii@kernel.org>
+References: <20240813002932.3373935-1-andrii@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6512:1291:b0:52f:384:1a1d with SMTP id
- 2adb3069b0e04-532136a5aa1mr3029e87.11.1723505723801; Mon, 12 Aug 2024
- 16:35:23 -0700 (PDT)
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-Message-ID: <0000000000006fd56f061f84f2f3@google.com>
-Date: Mon, 12 Aug 2024 23:35:23 +0000
-Subject: Re: [PATCH 6.6 000/189] 6.6.46-rc1 review
-From: ChromeOS Kernel Stable Merge <mdb.chromeos-kernel-auto-merge+noreply@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, chromeos-kernel-stable-merge@google.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Harden build ID parsing logic, adding explicit READ_ONCE() where it's
+important to have a consistent value read and validated just once.
 
-This rc kernel passed ChromeOS CQ tests:
-https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/5782321/1?tab=checks
+Also, as pointed out by Andi Kleen, we need to make sure that entire ELF
+note is within a page bounds, so move the overflow check up and add an
+extra note_size boundaries validation.
 
-Thanks,
+Fixes tag below points to the code that moved this code into
+lib/buildid.c, and then subsequently was used in perf subsystem, making
+this code exposed to perf_event_open() users in v5.12+.
 
-Tested-by: ChromeOS CQ Test <chromeos-kernel-stable-merge@google.com>
+Cc: stable@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>
+Suggested-by: Andi Kleen <ak@linux.intel.com>
+Fixes: bd7525dacd7e ("bpf: Move stack_map_get_build_id into lib")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+---
+ lib/buildid.c | 74 ++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 43 insertions(+), 31 deletions(-)
+
+diff --git a/lib/buildid.c b/lib/buildid.c
+index e02b5507418b..61bc5b767064 100644
+--- a/lib/buildid.c
++++ b/lib/buildid.c
+@@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *build_id,
+ 			      const void *note_start,
+ 			      Elf32_Word note_size)
+ {
+-	Elf32_Word note_offs = 0, new_offs;
+-
+-	while (note_offs + sizeof(Elf32_Nhdr) < note_size) {
+-		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_offs);
++	const char note_name[] = "GNU";
++	const size_t note_name_sz = sizeof(note_name);
++	u64 note_off = 0, new_off, name_sz, desc_sz;
++	const char *data;
++
++	while (note_off + sizeof(Elf32_Nhdr) < note_size &&
++	       note_off + sizeof(Elf32_Nhdr) > note_off /* overflow */) {
++		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_off);
++
++		name_sz = READ_ONCE(nhdr->n_namesz);
++		desc_sz = READ_ONCE(nhdr->n_descsz);
++
++		new_off = note_off + sizeof(Elf32_Nhdr);
++		if (check_add_overflow(new_off, ALIGN(name_sz, 4), &new_off) ||
++		    check_add_overflow(new_off, ALIGN(desc_sz, 4), &new_off) ||
++		    new_off > note_size)
++			break;
+ 
+ 		if (nhdr->n_type == BUILD_ID &&
+-		    nhdr->n_namesz == sizeof("GNU") &&
+-		    !strcmp((char *)(nhdr + 1), "GNU") &&
+-		    nhdr->n_descsz > 0 &&
+-		    nhdr->n_descsz <= BUILD_ID_SIZE_MAX) {
+-			memcpy(build_id,
+-			       note_start + note_offs +
+-			       ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhdr),
+-			       nhdr->n_descsz);
+-			memset(build_id + nhdr->n_descsz, 0,
+-			       BUILD_ID_SIZE_MAX - nhdr->n_descsz);
++		    name_sz == note_name_sz &&
++		    strcmp((char *)(nhdr + 1), note_name) == 0 &&
++		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
++			data = note_start + note_off + ALIGN(note_name_sz, 4);
++			memcpy(build_id, data, desc_sz);
++			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
+ 			if (size)
+-				*size = nhdr->n_descsz;
++				*size = desc_sz;
+ 			return 0;
+ 		}
+-		new_offs = note_offs + sizeof(Elf32_Nhdr) +
+-			ALIGN(nhdr->n_namesz, 4) + ALIGN(nhdr->n_descsz, 4);
+-		if (new_offs <= note_offs)  /* overflow */
+-			break;
+-		note_offs = new_offs;
++
++		note_off = new_off;
+ 	}
+ 
+ 	return -EINVAL;
+@@ -71,7 +77,7 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
+ {
+ 	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)page_addr;
+ 	Elf32_Phdr *phdr;
+-	int i;
++	__u32 i, phnum;
+ 
+ 	/*
+ 	 * FIXME
+@@ -80,9 +86,10 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
+ 	 */
+ 	if (ehdr->e_phoff != sizeof(Elf32_Ehdr))
+ 		return -EINVAL;
++
++	phnum = READ_ONCE(ehdr->e_phnum);
+ 	/* only supports phdr that fits in one page */
+-	if (ehdr->e_phnum >
+-	    (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
++	if (phnum > (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
+ 		return -EINVAL;
+ 
+ 	phdr = (Elf32_Phdr *)(page_addr + sizeof(Elf32_Ehdr));
+@@ -90,8 +97,8 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
+ 	for (i = 0; i < ehdr->e_phnum; ++i) {
+ 		if (phdr[i].p_type == PT_NOTE &&
+ 		    !parse_build_id(page_addr, build_id, size,
+-				    page_addr + phdr[i].p_offset,
+-				    phdr[i].p_filesz))
++				    page_addr + READ_ONCE(phdr[i].p_offset),
++				    READ_ONCE(phdr[i].p_filesz)))
+ 			return 0;
+ 	}
+ 	return -EINVAL;
+@@ -103,7 +110,7 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
+ {
+ 	Elf64_Ehdr *ehdr = (Elf64_Ehdr *)page_addr;
+ 	Elf64_Phdr *phdr;
+-	int i;
++	__u32 i, phnum;
+ 
+ 	/*
+ 	 * FIXME
+@@ -112,18 +119,19 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
+ 	 */
+ 	if (ehdr->e_phoff != sizeof(Elf64_Ehdr))
+ 		return -EINVAL;
++
++	phnum = READ_ONCE(ehdr->e_phnum);
+ 	/* only supports phdr that fits in one page */
+-	if (ehdr->e_phnum >
+-	    (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
++	if (phnum > (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
+ 		return -EINVAL;
+ 
+ 	phdr = (Elf64_Phdr *)(page_addr + sizeof(Elf64_Ehdr));
+ 
+-	for (i = 0; i < ehdr->e_phnum; ++i) {
++	for (i = 0; i < phnum; ++i) {
+ 		if (phdr[i].p_type == PT_NOTE &&
+ 		    !parse_build_id(page_addr, build_id, size,
+-				    page_addr + phdr[i].p_offset,
+-				    phdr[i].p_filesz))
++				    page_addr + READ_ONCE(phdr[i].p_offset),
++				    READ_ONCE(phdr[i].p_filesz)))
+ 			return 0;
+ 	}
+ 	return -EINVAL;
+@@ -152,6 +160,10 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+ 	page = find_get_page(vma->vm_file->f_mapping, 0);
+ 	if (!page)
+ 		return -EFAULT;	/* page not mapped */
++	if (!PageUptodate(page)) {
++		put_page(page);
++		return -EFAULT;
++	}
+ 
+ 	ret = -EINVAL;
+ 	page_addr = kmap_local_page(page);
+-- 
+2.43.5
+
 
