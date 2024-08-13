@@ -1,66 +1,98 @@
-Return-Path: <stable+bounces-67481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E199504BE
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:16:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EA69504D7
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6EA31F223B7
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:16:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F79A1C20CA2
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC765199250;
-	Tue, 13 Aug 2024 12:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F37E1993B8;
+	Tue, 13 Aug 2024 12:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qfBALhrz"
 X-Original-To: stable@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52DC1991C2;
-	Tue, 13 Aug 2024 12:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0121CF9A;
+	Tue, 13 Aug 2024 12:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723551355; cv=none; b=UWeFKwiceG4dsP/PRrPh2CJmWweZKp4ppOiGFBr5wJsdZyRrYop/NFwtmMtzSTWo1EzDdBDSjJhcvDRgh0Q0rImDKGNQuaOiffbI7C/bKwV/+n53xMb8b4vIe6TFLyMpueN0B1hgLGjyLhlXvUJbJ5L+k4ulZtad2GbKBNwJBCM=
+	t=1723551801; cv=none; b=SjsmifJx3gJUVA6XQt3fIuxa1LcN9Eqbkn8EwMjmk+3ccFYD28ZW/C5omXFEb5yiuLiJItVa3+PIdjcCEUUFA3W8j3my9qnaMUoNQeq2FB6/CD/vgpyiNg5nx/0wGJKmkHTX32Ag6Sarvh0l6cwuNpkNEP/eAiji60DuWHGhbZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723551355; c=relaxed/simple;
-	bh=wns1s25YuH5WzQooGp/ZYkEe0h4ZGBi5Ab73N8l3vm0=;
+	s=arc-20240116; t=1723551801; c=relaxed/simple;
+	bh=ymSonT8T6qomlnFRfpcE9r9zqEqxNIAluUl4XMBE18E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wv+24U8v+f8UmWevT7qpdXY1O4tZO4V87ci8MM4aecaMiy4z3ZpzqJMvLFrXxb/SRSnRQVkhCZUiY2+plakDmJ66p2a3jo4tXS79M9myYlD8qUk+duJrTRHNENJWe0lU2u2ndIFWGzreKhsGM13yFOUyNSSI77PnEIjszS2Aaq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 96B1B227A87; Tue, 13 Aug 2024 14:15:49 +0200 (CEST)
-Date: Tue, 13 Aug 2024 14:15:49 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Hannes Reinecke <hare@suse.de>, Damien Le Moal <dlemoal@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	stable@vger.kernel.org, Stephan Eisvogel <eisvogel@seitics.de>,
-	Christian Heusel <christian@heusel.eu>, linux-ide@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] ata: libata-core: Return sense data in descriptor
- format by default
-Message-ID: <20240813121549.GB4559@lst.de>
-References: <20240812151517.1162241-2-cassel@kernel.org> <ZrpXu_vfI-wpCFVc@ryzen.lan> <3d3beb8d-4c93-4eef-b3ee-c92eb9df9009@suse.de> <ZrsqSA7P30vss6b9@x1-carbon.wireless.wdc>
+	 Content-Type:Content-Disposition:In-Reply-To; b=C6VJeTvOw3eZGvbO37ASEQBJ9rwum2jhGSTGoPLpFSEYNZ8iGXN81U+uCF3QqXIlQGsxfv2jrHtIarBoGKge0UV7rBUKFnbjJft6JepDsV5hDCINu2WrnVt4NaT4CiiYnIw3DgE0p5FxJedbD2+MxQcMIRaIpF7eqB+cLtfOxw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qfBALhrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9BDC4AF0B;
+	Tue, 13 Aug 2024 12:23:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723551800;
+	bh=ymSonT8T6qomlnFRfpcE9r9zqEqxNIAluUl4XMBE18E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qfBALhrztV7ruJdh1AhNrvVzvM0seKVY+EhP2TCpwhZtexCRdFP/H3QzEtEYMFoct
+	 IV83B52/LOe5vZXpLdsAQs2ZjoL1elMjjesXdBA81+g/rm1WItGHeSHzTZKByAePo0
+	 eKptQf6aV222R4S4i7aLfAFbuQ0bWUEAo6T4mkqSAaYDmhJOZaGbnh8zSfrzQ+dm7Q
+	 VOdkijGWkm5+CPbm0dDiDMfFCq02oJxoUSNBW01K9axJKFsXDmrcRNPxjJzNEvBoAu
+	 T2cTU170ahuPw2AY8eY8sUXwrGB7wiHQnfvONlLCorQ5fPERsiOVFMZvoe8RnPkyqB
+	 IfndqVJtiZ7Fw==
+Date: Tue, 13 Aug 2024 13:23:13 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.10 000/263] 6.10.5-rc1 review
+Message-ID: <c66f9da0-8be6-4e41-a297-69312edc694a@sirena.org.uk>
+References: <20240812160146.517184156@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="T95vhYXTCHZKL4E3"
+Content-Disposition: inline
+In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
+X-Cookie: Say no, then negotiate.
+
+
+--T95vhYXTCHZKL4E3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZrsqSA7P30vss6b9@x1-carbon.wireless.wdc>
-User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Tue, Aug 13, 2024 at 11:41:28AM +0200, Niklas Cassel wrote:
-> Perhaps we could re-visit this code to be spec compliant again in the
-> future (after the bad programs have been fixed).
+On Mon, Aug 12, 2024 at 06:00:01PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.5 release.
+> There are 263 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-I doubt it.  They are part of the core low-level userspace suite and
-even when they are fixed the old version will be around roughly forever.
-So I think we are (unfortunately) stuck here.
+Tested-by: Mark Brown <broonie@kernel.org>
 
+--T95vhYXTCHZKL4E3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAma7UDAACgkQJNaLcl1U
+h9DhYgf+MenCIPT4aj76h6dnttqLNQPQiaNw9np66ECIzhDzDqizNyzmFbnpeVZg
+9upy3BrItyxsMqQ6A8ht5THSz4K4a9g5S4bCGElK3dA323A1qKTq8MAa7moj6Goi
+htIB7KMl1Bh4TTP0BZd5zlJw/ksys0t34Ro1D7cp2eLKrF3VEg9Akm00Jy5GRS4x
+A/jyFoIYpbBG+JN8beGMezVse//HFiNbst6BQY42EKevbVLPQsxPhoHYPzyAtZXl
+CRs+wAGytzJcKhDQsn1PM/0M9TooL4MJA4cZHRyvhUpgSBBKL9kkPYuB9IwDc9qF
+9YvMOmwpr8DFL5zGqzxVDzfwN9mPSQ==
+=6YIB
+-----END PGP SIGNATURE-----
+
+--T95vhYXTCHZKL4E3--
 
