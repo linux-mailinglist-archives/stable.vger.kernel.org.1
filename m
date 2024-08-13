@@ -1,119 +1,197 @@
-Return-Path: <stable+bounces-67536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1487950C69
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 20:40:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8EFE950C6E
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 20:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F018A1C2101F
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 18:40:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FDE6285502
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 18:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E701A3BA8;
-	Tue, 13 Aug 2024 18:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD411A3BC4;
+	Tue, 13 Aug 2024 18:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mcAX3i8t"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="t6sJerDw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2069.outbound.protection.outlook.com [40.107.223.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D92F282E5;
-	Tue, 13 Aug 2024 18:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723574405; cv=none; b=j406Jk3HoryPZ+cjGbAUQ/Frim0FG4CmoVwk2hD4x9TVMZbEFyrsSA7vabKJgWt0MyoLgSSm3OPBYWxhw8ifjfG/GYROa6Rm5Ml67DBjfDa6dhMGNEdJj5XSH/EWER2ZIgebJdQII5qYrDnFNpPX00XojRLLOllBHXucG9zJ8E0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723574405; c=relaxed/simple;
-	bh=XLjTxUm+HNyPlSMAn/vrQca+RTGNf/xSV+RySCqVtvc=;
-	h=Date:To:From:Subject:Message-Id; b=g/CdIImVYhnIF7oV2MMc+fN/vfyGKk7cI3tJnii7DC9jPFZeYa4yLS3bLrtlpmaFjymPsPBK7Nlzfbpirz7C+4a0Ql9HM/G+Uj5+lAlXWn+co6j93R8DfrrcR4OWjIgvgYv2XgbFNhG96OPVh10eHH9bgKgZsCRMHSLNU2y3Fxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mcAX3i8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5E7C32782;
-	Tue, 13 Aug 2024 18:40:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1723574404;
-	bh=XLjTxUm+HNyPlSMAn/vrQca+RTGNf/xSV+RySCqVtvc=;
-	h=Date:To:From:Subject:From;
-	b=mcAX3i8tNh6rglDMHzEaNnT1oouyPsSzVYVKf8iMAZl2O14Z4PMfSAjAUaAUyE5n3
-	 ChOU2N/y+i3ALq0mzPy1crMzj8nMt8A2rAWwYBE4mUlRMssTIJGGDS4T9vxj167xMi
-	 sQNBrP6cGGlcHGEHtxzxC2oTq3XRZQuuqsUyjoRg=
-Date: Tue, 13 Aug 2024 11:40:04 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,souravpanda@google.com,pasha.tatashin@soleen.com,kent.overstreet@linux.dev,keescook@chromium.org,david@redhat.com,surenb@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + alloc_tag-mark-pages-reserved-during-cma-activation-as-not-tagged.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240813184004.9D5E7C32782@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2E6A3D;
+	Tue, 13 Aug 2024 18:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723574433; cv=fail; b=AZ4XK1GAQ4120ASZFbQnXELgwToHwFv7kQRQfDVvAJ5N4994qAGAw7vr/BKuIfMcxGboEn2p2737SFDEPB+ZDL5FyHOaetM2V4sGLnXpuerhVA4Wkma84JRGuPAKRzhUXMeNeMcB+qADeR9z3uHHT8mxjqdEqYO13KagIt8w+y0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723574433; c=relaxed/simple;
+	bh=ykZx7HvibJLciWyjI/k7/9U4wIu61goflXkRDLOVCDw=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=oLwXUU+LeOBG3Ygi+nW0oAZ8/gBHTQOrygcON21gwc+k+19NOgV0t0Ba1rnBhg+jnIfiL8qID3ItMf4dgS/NVLJHzJyW8bi+0Qok+F+qKQ5+OHZDs61cE5/Ctmhv6f2sHDNr77dLbiCUAEKF5gUbGGciGIAwm28mt3X8R/e3p9E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=t6sJerDw; arc=fail smtp.client-ip=40.107.223.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HU4CqZ/dpIT/uOv0FbMaKiMCb0jtbdXc8Pnr/D9PjE7/YkfCaMQqJCXJKmWdSmvwdIWbX1WIJgicr+zPrb9ZFX3sG1C4mCqzUTfgfhcDqmj1qiouaHJBB6Cg6XJm3exv0vOe0BmdRc/Y8rzj1KBi4JJUnU3GR/I4JaTMCz30/CF1/qlsZhd25iEGY8rRsrAN55jXiNEiGaB6He02nvqYKdIbWH3279AXnfi75bp0o9zmgYqTwaCOf5GgIobcs8b/7tRowBno8BuJzG0LaBM8+aXJz9Vr6x3UA064Gqn/bTy+lFwSvCJ7pprueLYlmSb09C7OAfWV3GlqJ5WJVtK+Cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U/1PCcrEegkt/+igFl9ilK8o7cxVo+jBD4e4lV8msMU=;
+ b=LnhiV2rVfoJRmf36krNhnGWHJzlXp8G1aU1RXJ+uKlhD6QuXYo9j42HLrPolzcK1E051mImKZvGrwkj9YbHRAsy3UT+WyBgSVHTEBghMJAHnQL15i/3pMCeLpIK5vpvqYT/vCBLPd/T1yDP7ECCnngN1aYiqIyye+3bd1DKR5X1WgoTHgbGyXyUlSZDZ8waphl91wAaWKcQJtrI/8Oph8hWkz/7PjQEFVeSZK+bgCKFNAlMY9vWCPbp2+SXvsD3YVB/0doL4OXpGpq4FI+O8ET3BlaYCwdYVouzF+tJGMGQXzMH3E08REbN6fIgIJd4oMWp/UnPfe6vmt0TkTE2OCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U/1PCcrEegkt/+igFl9ilK8o7cxVo+jBD4e4lV8msMU=;
+ b=t6sJerDwWFXL3akwPEwv0CuqwvxgcuVOB6DHwnrCGwaxdQ4cck2Q3P85a7MWMFHQDopGgPju+lBr+sMwpicmi5tt8O3dCqvjNwc7N6EGnsmVkzr/rj0SypMwFYKGdx2Sslza13cj7s7xMamsyB2xo/wvHUbEYai7JAeKRRip1eOkqjr1c/YRekxvwrzs0NRlP6wY68JY4eNeVifvoblfMuMoCsUH8e0gxyDaUkRpkgSvxbDaOJndVREdQSlmwzUzSMsNdp3yrqiShpUU84hHPrG7s82k3Mz5+uQhrZ0KdTJHrDloZSi6Zwhx2rkJX+UTEq8det9bhffV6D6+naa3DQ==
+Received: from CH0PR03CA0245.namprd03.prod.outlook.com (2603:10b6:610:e5::10)
+ by SJ2PR12MB9005.namprd12.prod.outlook.com (2603:10b6:a03:53d::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Tue, 13 Aug
+ 2024 18:40:26 +0000
+Received: from DS3PEPF0000C381.namprd04.prod.outlook.com
+ (2603:10b6:610:e5:cafe::ef) by CH0PR03CA0245.outlook.office365.com
+ (2603:10b6:610:e5::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.33 via Frontend
+ Transport; Tue, 13 Aug 2024 18:40:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ DS3PEPF0000C381.mail.protection.outlook.com (10.167.23.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7849.8 via Frontend Transport; Tue, 13 Aug 2024 18:40:25 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 13 Aug
+ 2024 11:40:07 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 13 Aug
+ 2024 11:40:07 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Tue, 13 Aug 2024 11:40:07 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.6 000/189] 6.6.46-rc1 review
+In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
+References: <20240812160132.135168257@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <601ad07d-1bed-4b39-8e59-96552fd072a9@rnnvmail205.nvidia.com>
+Date: Tue, 13 Aug 2024 11:40:07 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF0000C381:EE_|SJ2PR12MB9005:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99b2b628-b7ae-4111-97dc-08dcbbc765c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dnA0Z0crUTd5SWluTzVSQksrbzV4OUFpRHFjWnB3aUI3TERiMnM0aml2bVJP?=
+ =?utf-8?B?b29uVGxqdGNWUUEyUGdzVWhhVnRvOTNxbnVmK0ZYWkdtRk5tRlVZaGVjOUcx?=
+ =?utf-8?B?UkEwUkJ6NnJXUVVEVy9wU2RmM1dMSHlFRWFGaWU0K2xWbGFwOFV4N2dBMFlC?=
+ =?utf-8?B?MjQ2VVFQNzVOMGRGdzQyQVg4cE5nWFJNeWFTdGY2WllEWXY1a3ROVXZtUHAx?=
+ =?utf-8?B?UDFHelFuK2ttV3lwUTg2RUVIWW5ZMnBCZWZHRjZHU0xNZkFlcGppMmVJQlJ6?=
+ =?utf-8?B?b3NDS0x3VDc0K1RhTmdoQ2NzU3V5RnNRMVBhSGpscFM3cWo0VWpkME5YWWR4?=
+ =?utf-8?B?cUcybEpWb1Yvc3VkU0FDcHdUVUZNWlNSclhwTHo5T3pmWW5NWGhjS2lEUlh0?=
+ =?utf-8?B?czY1RzMyUDl5VTI5SllxeGRMNGdjU0lxazdPTEo1enFhTXpKUnRGaUprUDZh?=
+ =?utf-8?B?V3EyNVlETWpITFlVSW9MRnEzbURHTHdyS3p3WEN6K2EwSnVEL2poY0tNeURm?=
+ =?utf-8?B?K05abHJ1MEhyeExzVkZXQ3FUOFgvYXNVZkxLV1pIaW95cFJXSUZFSkU2bWJw?=
+ =?utf-8?B?bWhMK3JaVnNUa0pUVWNjY1VFL0FtZ3labDdnSzUrOVRvaGxkQlVoTXFhWEN0?=
+ =?utf-8?B?RG9MejJva2FmUktZTzZDaHMzSUJQRzJ3WmkvaXlGOUdGMWt1VFRObFpBdzU2?=
+ =?utf-8?B?SlhYQ0VkTENGYjB6RlhZZkkyaHQyK25XS0ZVVlFYeVltaERpb2NhVVM3UVZu?=
+ =?utf-8?B?ZllseFZFZDZ5VmtFL0NXMWFRRktFd2VFMjA5MmgzZlV1STE5Z0hNeXJqKzBO?=
+ =?utf-8?B?T3BMRG54eHdobEhCOVA5NFpheW1BTExhMlZ1ZG1lOWFPZDVnUXZ6S3VkakxW?=
+ =?utf-8?B?ZmFIQmFMT3drMGtBWE0wRWVKUVNleVdYSXBFNlp6L3dMRlNCaUNrSXJOV3BM?=
+ =?utf-8?B?YVE4Uk80NTFBcTlnN2ZTUytLWXBnZHJpYnpCR3h2cUsxbS9MM3FFVHJiUksw?=
+ =?utf-8?B?Z084YlRPMWRiWHA4ZG1abEN3VlhHa0dKZktMR05HdWM1SFUvTlZqejFvbk9Y?=
+ =?utf-8?B?SEQzYVVCSmhobjFjSUZUR0o4QnV1UFY3cFJ3R0tONmZ6ejlyKy9xL2plVk5x?=
+ =?utf-8?B?YnFqUytkNWlRL0d2NkMwSFlGTVpLNXdBMzRqaGlQUkg4S2NXTEw3VkdLRnBD?=
+ =?utf-8?B?MXhtLzQ5Mk93MnNVRXVGUnoxNmxBS3FKZ3hRY1dkMXF6Y0E5c2Vmbmh1cW5S?=
+ =?utf-8?B?eFFOL2lqRUJhZGx2QzQveFhsaG0xUlFuaHRpNndyR3VCV3FXWEM2ZUFNV0tw?=
+ =?utf-8?B?OGtEUVNSOGJiT1hNMEY4Tkh0QTdDdUVVWFlCblEyY2p3TVF0bXYxbXQwWWp5?=
+ =?utf-8?B?UDNzZ1JMVW4yQUM0ZUpwdzJEMlhXUVptWnhvbHIyRkpmeWJuSTNTVDBOcjVI?=
+ =?utf-8?B?SXB5N3VDaDJuK1dVSHBoaG9Kbi9RMUdrSkRudTZGYlBpNzlabERNbThJa0xQ?=
+ =?utf-8?B?bmN3RzBRNFpHc3gvRDZyUWwvMWJoVWNlOE94R0FXMW1DNVpSeW5VR0RhK3Jv?=
+ =?utf-8?B?d1RBYnk4aXpneDhZcGVGUEtxekNTMUxINi8vRGx0eUVISHhjWWRmRVFIZDFa?=
+ =?utf-8?B?eTJScWU4ZldwWjdkMUE3eU9MWm5lRmJER3Q4QWIweHhIbGlwTEJGcmFRdkdH?=
+ =?utf-8?B?TjdSaFNLZ2cxQ25yRkJVWHhrdlg3OFBCaXRzSzhXRHZiRE5uaGtJYTg1SnVH?=
+ =?utf-8?B?WkMvLzhXd2RCbFhlVGZrdU4xTWt3VkVoWkNGNVFCM3ZlaVhYbEFiT2J4MVJa?=
+ =?utf-8?B?dUFHc2NxWktTNzhpSjcxRmp3Y1lIekRHOHpxbEVvRGJrL0JCbVJlU0FxRitZ?=
+ =?utf-8?B?UGsrbEJYaGdEeEZqUnFVN0FmclVROEx5Ky9Sdjg3djhCS2c9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2024 18:40:25.8474
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99b2b628-b7ae-4111-97dc-08dcbbc765c4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF0000C381.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9005
 
+On Mon, 12 Aug 2024 18:00:56 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.46 release.
+> There are 189 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 14 Aug 2024 16:00:26 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.46-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The patch titled
-     Subject: alloc_tag: mark pages reserved during CMA activation as not tagged
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     alloc_tag-mark-pages-reserved-during-cma-activation-as-not-tagged.patch
+All tests passing for Tegra ...
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/alloc_tag-mark-pages-reserved-during-cma-activation-as-not-tagged.patch
+Test results for stable-v6.6:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    116 tests:	116 pass, 0 fail
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Linux version:	6.6.46-rc1-ga67ef85bc6ce
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: alloc_tag: mark pages reserved during CMA activation as not tagged
-Date: Tue, 13 Aug 2024 08:07:57 -0700
-
-During CMA activation, pages in CMA area are prepared and then freed
-without being allocated.  This triggers warnings when memory allocation
-debug config (CONFIG_MEM_ALLOC_PROFILING_DEBUG) is enabled.  Fix this by
-marking these pages not tagged before freeing them.
-
-Link: https://lkml.kernel.org/r/20240813150758.855881-2-surenb@google.com
-Fixes: d224eb0287fb ("codetag: debug: mark codetags for reserved pages as empty")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[6.10]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mm_init.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/mm/mm_init.c~alloc_tag-mark-pages-reserved-during-cma-activation-as-not-tagged
-+++ a/mm/mm_init.c
-@@ -2244,6 +2244,8 @@ void __init init_cma_reserved_pageblock(
- 
- 	set_pageblock_migratetype(page, MIGRATE_CMA);
- 	set_page_refcounted(page);
-+	/* pages were reserved and not allocated */
-+	clear_page_tag_ref(page);
- 	__free_pages(page, pageblock_order);
- 
- 	adjust_managed_page_count(page, pageblock_nr_pages);
-_
-
-Patches currently in -mm which might be from surenb@google.com are
-
-alloc_tag-introduce-clear_page_tag_ref-helper-function.patch
-alloc_tag-mark-pages-reserved-during-cma-activation-as-not-tagged.patch
-
+Jon
 
