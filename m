@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-67434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05C7950121
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 11:25:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEF595012F
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 11:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD7F71C210AE
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 09:25:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA01D1F21E3A
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 09:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9831917B43F;
-	Tue, 13 Aug 2024 09:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586E116BE2A;
+	Tue, 13 Aug 2024 09:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bWQeLvXt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KSmnlmbu"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A35914D42C
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 09:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9038F16D33F
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 09:27:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723541127; cv=none; b=XEId17YrJl9GCS4vIJ2lzjzE+gbdLvq3ldW8SPmV9SjXw0C5+VZBCSw6HQm01CEc4eXfiXe3xZSu1Ungh50sJeEftJ37Eh/+oFxHg3yBea1Phddzd6k0AqSl0n139rLvvl+017OOhNcJoyj5W6EsJpuJGqetaeUImaGlMPaztPY=
+	t=1723541280; cv=none; b=gZ0Als6ewnkAQhK1ogU2/HB59NcR32gptIIvRHMvkjq76dxkL68Y+kXiNDycw3jJeIVb6vaUPdCMSbAg5oAUjcUfxHFuW+Xy/lLO/JxGCJATeuuM6zD/9eyOO8BSE939urAdsDFC+r4qABGfGpjyRANq1eOKqzsLWT1h35AYvmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723541127; c=relaxed/simple;
-	bh=DbZ0wZSRnMMYewpbZV7hcFD2tQTCIeyXImBJMTREptk=;
+	s=arc-20240116; t=1723541280; c=relaxed/simple;
+	bh=6pCeCYIk2vao5UPJVdUhjSfijenTKq264bviOrajOIM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OtRPJBTtJ9uD5SEE7M3Thi20kPiYw1Dx5giaZjbDczTsXfBo8ntfKaOtMMVD+XUDU1+2DzUD29Umdnw5aSlz9FQ4u+ilM9FgOmU6l78gBmPergYA5POYoADYhw6HPK9/WJ5ShAcFN510vk2voU0+DbDHERXsc4bDYmuXuY+Cvus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bWQeLvXt; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=UvyKoH/bZVn9DHECsCnP8EquLWjnRwK3Nb9zEcfVn+GObTDWtT2Xy3Fz5A8w+ua6Absq2CCx7xPeYIr+Z6Y9IJJyibs1+P1sJnweyl4RzLDoAjSN/kFEPO7O46LeHneoHv+AqtSlDdd8RyEYsNTjkVnWgUVrSoaT/GmNJvPY/r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KSmnlmbu; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723541124;
+	s=mimecast20190719; t=1723541277;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/Sw+Mc2t+6eXwT6xt1L1ljV7cdp2IkgMruryZxwvVX4=;
-	b=bWQeLvXtHNs3ntMhzg67oSESHw7qd5zQ1z3LAutbLuoeavav9WX++SI0nTZisJgkCOoz7f
-	EXIyMCCR1neMPxcqB4W1YhwQ8dOVw9urV9FGtDf07/913hB9h+hCVe/QmWvC0+eOJ/yhZG
-	s3qL9nGW/ZFsqf/qausuJ1HJp+MUX0M=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=MQA5cVwtWToXA0wdI+64PRoVzDTe1GQqMDVZb8yFTdg=;
+	b=KSmnlmbuLNcnkOraSmdizMjNT6o0oWc/nfAhNer/bDgV/WtLQJ1TKgzPEjnAUn9woMW0dH
+	zZUMKDnM9X/Q6QWVQ0KWT5qFJt8vJ90musJQWTxfskU7cBNfEFbdtHXLQXB9ptqsJn5nCF
+	2oc5pDSkTaHKPVOstUcYF4HsIbVds7w=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-527-9F2Ak17wNiWTIJbxZAKksg-1; Tue, 13 Aug 2024 05:25:22 -0400
-X-MC-Unique: 9F2Ak17wNiWTIJbxZAKksg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-428076fef5dso39097525e9.2
-        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 02:25:22 -0700 (PDT)
+ us-mta-552-WyYdpkY7NoeY-L-JNFq9IA-1; Tue, 13 Aug 2024 05:27:55 -0400
+X-MC-Unique: WyYdpkY7NoeY-L-JNFq9IA-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3685e0df024so3054548f8f.0
+        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 02:27:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723541121; x=1724145921;
+        d=1e100.net; s=20230601; t=1723541274; x=1724146074;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=/Sw+Mc2t+6eXwT6xt1L1ljV7cdp2IkgMruryZxwvVX4=;
-        b=QMQD+kpueWRGmlsiiGSib1YEuiUece348O9LUDNPiFlCJbHRe4n0zrVolj4nRHU5un
-         NfuCTck3UdtZcDaSnLFiNHPyuOo8C8fwyDhXc9FJRIHgd+UvVUgm+XBRsC3HnGsihtcA
-         +bRESmj67HBjpFUoXpZX2XITFeklf4rKuCsdI7Y6uGiL+CIDfdbX7Zy2Arlb3cul42Z+
-         2Ti/8w17otSFf1m8iHNSOmzxKBwekF13fiw1K8HkidsZEeGYAXcK67etUm9JvZVuqh0O
-         8n/CWl6R5iq32cbN5AL8IoT26+GCDChyXYWeN6pwF4u/f9Q6r7gGWwpSUhjNq9Pglods
-         ttTg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7hfP7FtneYDOLzZSTg73PLftxniS5R+UMuA52QVmbF0phXV0QJG/dFvAcIAqVVO2c/LOALUiJV/N9I7v3rnAUPs+hqioL
-X-Gm-Message-State: AOJu0YySrMryy/6lGaM1u8J8ySIsH4b7RBpVzLG5PBUIwGxcOv6T+d3k
-	uXJqPEH3flvkSFmuFcYgS7IYH3IfnIAZAIGl2hMi5PoZxy3ImuFWotSLXyH8uaO/cLwKDMmBcKz
-	CIMQAxna4cmwT8xIinjTeVvrQXS1ntMAryKohAeJFyeYHKGHhE8MDMA==
-X-Received: by 2002:a05:600c:310c:b0:428:10d7:a4b1 with SMTP id 5b1f17b1804b1-429d48736e3mr21245985e9.25.1723541121294;
-        Tue, 13 Aug 2024 02:25:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHBxteN7SWDtiCUL3jeHX4PpQ4G1qTpWADiDYhX5ACMmGGBqxeMswt2HTwf3rOoBRlQElOaZg==
-X-Received: by 2002:a05:600c:310c:b0:428:10d7:a4b1 with SMTP id 5b1f17b1804b1-429d48736e3mr21245755e9.25.1723541120741;
-        Tue, 13 Aug 2024 02:25:20 -0700 (PDT)
+        bh=MQA5cVwtWToXA0wdI+64PRoVzDTe1GQqMDVZb8yFTdg=;
+        b=p5FIXC1uSk394057hLSLaQKTfyqmX+GfwDRDetfZond89MqAHBTbbaEUbt/OI8IhT7
+         pVslkPfdu4QgXk49ebOPH4bLsdEBxITOVEIOV1w5EuENpAAbLOJl9E9KkhJAtTTP59d3
+         Wi4Fn1nP2AVNoek5AKfWOwBbbCoZK2Y5TBbUqksvuS2lRMmO9dC64Cp1Fr4yqXPwFb0g
+         oKcxGbZTwVQXJTb/pZG5l7/dRdphvJOxvDImv8muIxFVbbidkiAFS7KSCorY9SeUmMxR
+         iZbLR1Uz2uDQmZ7wS7pVjg1k2E9RI6jVvfQjqFB7sxbUvh6XU3wWN/N0gj+VhZssjAU+
+         8lwg==
+X-Forwarded-Encrypted: i=1; AJvYcCVk/6bZ+CLRlUvUgYNcb9rmF/uIYVV7n+PJ1nAbc7gxEY/rOPEjb+xQSC/k2KbjF1RBE5E1JFCvExDxT7ChC7p6oeEMCv5j
+X-Gm-Message-State: AOJu0YzPPyXLg8xDBFivm25NfBbhQ2KC9uG88knKRapYUr2SRdw/9LHA
+	fqp0DFewfgIFi8SmzwL1mZLUvgZo1bMMYoH8Q9jvoz4B4xFmSjQIbLb3wSNjmGkJyn2VhZeiBCq
+	4T6HVSZ9RGxYw0TCwKysFn3z55f1SonJnI+2XswWr7elikXmVxRyftA==
+X-Received: by 2002:adf:8b1e:0:b0:36b:a404:500b with SMTP id ffacd0b85a97d-3716cd25187mr2505273f8f.51.1723541274534;
+        Tue, 13 Aug 2024 02:27:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFkaiYC4aV7+4PrXE2fyCwg+bp3r/cQMr845MDzOG0bwz6PKEJpViC1cTHDPaNW3mBNCbUvIQ==
+X-Received: by 2002:adf:8b1e:0:b0:36b:a404:500b with SMTP id ffacd0b85a97d-3716cd25187mr2505253f8f.51.1723541274021;
+        Tue, 13 Aug 2024 02:27:54 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f09:3f00:d228:bd67:7baa:d604? (p200300d82f093f00d228bd677baad604.dip0.t-ipconnect.de. [2003:d8:2f09:3f00:d228:bd67:7baa:d604])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429c776074asm130978685e9.48.2024.08.13.02.25.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36e4cfee31fsm9640140f8f.47.2024.08.13.02.27.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Aug 2024 02:25:20 -0700 (PDT)
-Message-ID: <471af0a8-92fc-4fe0-85e4-193d713d4e57@redhat.com>
-Date: Tue, 13 Aug 2024 11:25:19 +0200
+        Tue, 13 Aug 2024 02:27:53 -0700 (PDT)
+Message-ID: <5d7059b0-9e2f-4f50-9316-f2cd63d0d909@redhat.com>
+Date: Tue, 13 Aug 2024 11:27:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,13 +83,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] alloc_tag: mark pages reserved during CMA
- activation as not tagged
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, vbabka@suse.cz, pasha.tatashin@soleen.com,
- souravpanda@google.com, keescook@chromium.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20240812192428.151825-1-surenb@google.com>
+Subject: Re: [PATCH 2/2] userfaultfd: Don't BUG_ON() if khugepaged yanks our
+ page table
+To: Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Pavel Emelyanov <xemul@parallels.com>, Andrea Arcangeli
+ <aarcange@redhat.com>, Hugh Dickins <hughd@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240812-uffd-thp-flip-fix-v1-0-4fc1db7ccdd0@google.com>
+ <20240812-uffd-thp-flip-fix-v1-2-4fc1db7ccdd0@google.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -137,49 +138,48 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240812192428.151825-1-surenb@google.com>
+In-Reply-To: <20240812-uffd-thp-flip-fix-v1-2-4fc1db7ccdd0@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12.08.24 21:24, Suren Baghdasaryan wrote:
-> During CMA activation, pages in CMA area are prepared and then freed
-> without being allocated. This triggers warnings when memory allocation
-> debug config (CONFIG_MEM_ALLOC_PROFILING_DEBUG) is enabled. Fix this
-> by marking these pages not tagged before freeing them.
+On 12.08.24 18:42, Jann Horn wrote:
+> Since khugepaged was changed to allow retracting page tables in file
+> mappings without holding the mmap lock, these BUG_ON()s are wrong - get rid
+> of them.
 > 
-> Fixes: d224eb0287fb ("codetag: debug: mark codetags for reserved pages as empty")
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Cc: stable@vger.kernel.org # v6.10
+> We could also remove the preceding "if (unlikely(...))" block, but then
+> we could reach pte_offset_map_lock() with transhuge pages not just for file
+> mappings but also for anonymous mappings - which would probably be fine but
+> I think is not necessarily expected.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
+> Signed-off-by: Jann Horn <jannh@google.com>
 > ---
-> changes since v1 [1]
-> - Added Fixes tag
-> - CC'ed stable
+>   mm/userfaultfd.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
 > 
-> [1] https://lore.kernel.org/all/20240812184455.86580-1-surenb@google.com/
-> 
->   mm/mm_init.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 75c3bd42799b..ec9324653ad9 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2245,6 +2245,16 @@ void __init init_cma_reserved_pageblock(struct page *page)
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index ec3750467aa5..0dfa97db6feb 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -806,9 +806,10 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+>   			err = -EFAULT;
+>   			break;
+>   		}
+> -
+> -		BUG_ON(pmd_none(*dst_pmd));
+> -		BUG_ON(pmd_trans_huge(*dst_pmd));
+> +		/*
+> +		 * For shmem mappings, khugepaged is allowed to remove page
+> +		 * tables under us; pte_offset_map_lock() will deal with that.
+> +		 */
 >   
->   	set_pageblock_migratetype(page, MIGRATE_CMA);
->   	set_page_refcounted(page);
-> +
-> +	/* pages were reserved and not allocated */
-> +	if (mem_alloc_profiling_enabled()) {
-> +		union codetag_ref *ref = get_page_tag_ref(page);
-> +
-> +		if (ref) {
-> +			set_codetag_empty(ref);
-> +			put_page_tag_ref(ref);
-> +		}
-> +	}
+>   		err = mfill_atomic_pte(dst_pmd, dst_vma, dst_addr,
+>   				       src_addr, flags, &folio);
+> 
 
-Should we have a helper like clear_page_tag_ref() that wraps this?
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
