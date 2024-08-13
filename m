@@ -1,130 +1,97 @@
-Return-Path: <stable+bounces-67466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6E1950303
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:56:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB61950310
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6B411F22830
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 10:56:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C5471C22548
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 10:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5C019CCE6;
-	Tue, 13 Aug 2024 10:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157D519ADB6;
+	Tue, 13 Aug 2024 10:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JK4aDaMr"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5B219AD6A;
-	Tue, 13 Aug 2024 10:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEBD76025;
+	Tue, 13 Aug 2024 10:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723546387; cv=none; b=qO+onkX93I2DLXrE79OgD0PwWK2TFXsCfKRMi+3jmnAmil/QzH4YV2iGicqwCcx/ahIzTK808Hhww/gi3g/V6+CdoLoTcc5xhgO0xLmwZNsqULbl/uUxg/MlyauB/l9o3QJFeWUOckRnNZjTnwUTon6HzlAXiu8K7p37PiM4erQ=
+	t=1723546547; cv=none; b=sbs6xSfQvYvum6VuKYJQKorV5Fz93bZ9oUaxMKqhLMJi6OOfbve2JdyU+GfNnDA5SPjFUqiR0u5XwiOm2CIO9scDNh91Rux3CihBZRx+wu0QizVwCW9FYdX5JsQAugSFxjyYS3tncMd9Y6V5ZzIaRQ7IK47LXaNKFA3tNNL5xCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723546387; c=relaxed/simple;
-	bh=T6g62YpEekCI1rH9Nwkq3kpgd4jTgMz2DiZupGh+tNQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=P6gsjtgsx0kf35zCR71TuXH9AMpYahKqlO8fXF3DINQr5uZ96+LVs1d8rzNXJiM3RLLA8DsjcfCMevVSaLRmrvwR4XMCRIOXB4rJqwJK6O/eKtUyllBD3qmsRUXWIYXfIvxdTHC6J31eBda8qPZEUJi7kADvGzhPofNY62FfLQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Wjp5M6jz1z20l3s;
-	Tue, 13 Aug 2024 18:48:23 +0800 (CST)
-Received: from kwepemi100008.china.huawei.com (unknown [7.221.188.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id C49DE1401E9;
-	Tue, 13 Aug 2024 18:52:56 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- kwepemi100008.china.huawei.com (7.221.188.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 13 Aug 2024 18:52:56 +0800
-Message-ID: <71736d6d-a218-185b-4dab-e8c0cd1e8a9d@huawei.com>
-Date: Tue, 13 Aug 2024 18:52:55 +0800
+	s=arc-20240116; t=1723546547; c=relaxed/simple;
+	bh=TygILqStMFbqo7N5dGU4tGf4JOrPwnNO6bj+bLsD50Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GSSTIFJ9fuq1PdkTOE8F6XYywLDUAZrLesdcd5xE5ElalyxFR7Q82V2v/crVTSIvy2N7gilyXrg57uZyLvVG5mD8zIQrPjh4kBavWFMvylI94dJpfTYv0Z59OqsBET1AXVrhxiNWEBLAwfSXacHjVKCuF9XNkisUTPxL3+hI1TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JK4aDaMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0851C4AF09;
+	Tue, 13 Aug 2024 10:55:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723546547;
+	bh=TygILqStMFbqo7N5dGU4tGf4JOrPwnNO6bj+bLsD50Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JK4aDaMrrGakKDW8SF02QAC3T2BVUw4pPqkOPRfVUdMGsBD5XLNCObY7TWwG4cZ4h
+	 zu4L80pJv/Wg5jV2aX9YPewb1RiJ0NWuZwdHKu8WbzFcpMNzc/VRr6hNvC9YTnxjmP
+	 ePuo6fk2EQZPcTzwF6oM2IKN9bx6T6PZAxwHJmxc=
+Date: Tue, 13 Aug 2024 12:55:44 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 5.15.y] mptcp: fully established after ADD_ADDR echo on
+ MPJ
+Message-ID: <2024081337-device-cesspool-071d@gregkh>
+References: <2024081209-wrongly-zen-35f3@gregkh>
+ <20240813104642.1210553-2-matttbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH v5.10 v2] powerpc: Avoid nmi_enter/nmi_exit in real mode
- interrupt.
-Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <dennis@kernel.org>, <tj@kernel.org>, <cl@linux.com>,
-	<mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
-	<christophe.leroy@csgroup.eu>, <mahesh@linux.ibm.com>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-References: <20240806071616.1671691-1-ruanjinjie@huawei.com>
- <2024081318-onion-record-fdc7@gregkh>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <2024081318-onion-record-fdc7@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemi100008.china.huawei.com (7.221.188.57)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240813104642.1210553-2-matttbe@kernel.org>
 
-
-
-On 2024/8/13 18:47, Greg KH wrote:
-> On Tue, Aug 06, 2024 at 07:16:16AM +0000, Jinjie Ruan wrote:
->> From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->>
->> [ Upstream commit 0db880fc865ffb522141ced4bfa66c12ab1fbb70 ]
->>
->> nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
->> crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
->> interrupt handler) if percpu allocation comes from vmalloc area.
->>
->> Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
->> wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
->> percpu allocation is from the embedded first chunk. However with
->> CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
->> allocation can come from the vmalloc area.
->>
->> With kernel command line "percpu_alloc=page" we can force percpu allocation
->> to come from vmalloc area and can see kernel crash in machine_check_early:
->>
->> [    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
->> [    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
->> [    1.215719] --- interrupt: 200
->> [    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
->> [    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
->> [    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
->>
->> Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
->> first chunk is not embedded.
->>
->> CVE-2024-42126
->> Cc: stable@vger.kernel.org#5.10.x
->> Cc: gregkh@linuxfoundation.org
->> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
->> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->> Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
->> [ Conflicts in arch/powerpc/include/asm/interrupt.h
->>   because machine_check_early() and machine_check_exception()
->>   has been refactored. ]
->> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
->> ---
->> v2:
->> - Also fix for CONFIG_PPC_BOOK3S_64 not enabled.
->> - Add Upstream.
->> - Cc stable@vger.kernel.org.
+On Tue, Aug 13, 2024 at 12:46:43PM +0200, Matthieu Baerts (NGI0) wrote:
+> commit d67c5649c1541dc93f202eeffc6f49220a4ed71d upstream.
 > 
-> You forgot a 5.15.y version, which is of course required if we were to
-> take a 5.10.y version :(
+> Before this patch, receiving an ADD_ADDR echo on the just connected
+> MP_JOIN subflow -- initiator side, after the MP_JOIN 3WHS -- was
+> resulting in an MP_RESET. That's because only ACKs with a DSS or
+> ADD_ADDRs without the echo bit were allowed.
 > 
-> Please resubmit both.
+> Not allowing the ADD_ADDR echo after an MP_CAPABLE 3WHS makes sense, as
+> we are not supposed to send an ADD_ADDR before because it requires to be
+> in full established mode first. For the MP_JOIN 3WHS, that's different:
+> the ADD_ADDR can be sent on a previous subflow, and the ADD_ADDR echo
+> can be received on the recently created one. The other peer will already
+> be in fully established, so it is allowed to send that.
+> 
+> We can then relax the conditions here to accept the ADD_ADDR echo for
+> MPJ subflows.
+> 
+> Fixes: 67b12f792d5e ("mptcp: full fully established support after ADD_ADDR")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Mat Martineau <martineau@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-1-c8a9b036493b@kernel.org
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> [ Conflicts in options.c, because the context has changed in commit
+>   b3ea6b272d79 ("mptcp: consolidate initial ack seq generation"), which
+>   is not in this version. This commit is unrelated to this
+>   modification. ]
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> ---
+>  net/mptcp/options.c | 3 ++-
 
-Sorry for forgetting the 5.15.y, I'll resend it sooner, thank you!
+Now queued up, thanks.
 
-> 
-> thanks,
-> 
-> greg k-h
+greg k-h
 
