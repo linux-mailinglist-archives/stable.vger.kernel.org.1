@@ -1,113 +1,115 @@
-Return-Path: <stable+bounces-67485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25FB950584
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:48:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF979505B2
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:57:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751B11F23360
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:48:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9306D1C20B60
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A3D19ADAD;
-	Tue, 13 Aug 2024 12:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D82A19ADAA;
+	Tue, 13 Aug 2024 12:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9jbhGYG"
+	dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b="pmq5kQIO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA07E2B9DB;
-	Tue, 13 Aug 2024 12:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515F5199392
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 12:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723553297; cv=none; b=LYHXED+NXGhfuv19WehDU1c15HzZt22lY7c/yxirs7gAcZq/Ek5cw+68yUey18iUKG7BwTxZLJla8deKIzuY2Qy7RolM8wv+fzY7Gx3JNgVRSRt/QsSI6ajPgUhNnPpjnHHvIgIDtHx29ORC6XZNcSYgo9DBKLMAzhFZrnI94Hk=
+	t=1723553788; cv=none; b=OFzax/pF958N/Xi0BFyEXlBoB/jTzfKYqUuTtcBm4zNymh4sD0xaAMXhElsap2lQ7/9DbATIm0XvZtOjOzd7gPmbTmJqd7izakOA84hHyRtg8tu0lmULbHVW9QgA5rRvo5fDtSW2gjl2GZnN7foWDUmzyPIMAahJtiXa3dR+6yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723553297; c=relaxed/simple;
-	bh=RziWQbGPcphT0DheUuaZXAysq9JFjHQrRNJwB3unbyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PVJLqfT+LhXo+4zXfP6nF21ymaC//0dd2W1KwyeF8VnL6+UcjG/ZM+W/ZFANv4Zln5l5j4BUg1pOaR2Fu712MMcSGIsgufYTABG31OxJaiKRKtYVS5Cl1Kf4SyU6YzY0MCP3s0+mkMRMZXsSN9rIRORkBaaYBi5F1MViWA0+S2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9jbhGYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9137CC4AF0B;
-	Tue, 13 Aug 2024 12:48:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723553297;
-	bh=RziWQbGPcphT0DheUuaZXAysq9JFjHQrRNJwB3unbyg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C9jbhGYG344AISh8pnaHlo0ATw6yrcbWL9eCLADvEQNpV+Ov7YmTCCHT6jxxyWxW6
-	 arz9IojhXJYtNzh6LVpNWDMgoO3ctvmNg9s2FLGl9BLYMh6S7eVGM+9m4r6t4l+qop
-	 y+tIY9N90Rd2Fx6lJ1v4WhLxzawiJI64uxlFNlBc=
-Date: Tue, 13 Aug 2024 14:48:14 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: dennis@kernel.org, tj@kernel.org, cl@linux.com, mpe@ellerman.id.au,
-	benh@kernel.crashing.org, paulus@samba.org,
-	christophe.leroy@csgroup.eu, mahesh@linux.ibm.com,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v5.10 v2 RESEND] powerpc: Avoid nmi_enter/nmi_exit in
- real mode interrupt.
-Message-ID: <2024081306-pointless-pacemaker-32b2@gregkh>
-References: <20240813113344.1837556-1-ruanjinjie@huawei.com>
+	s=arc-20240116; t=1723553788; c=relaxed/simple;
+	bh=Vp8CkJbR2Oxr6i4hruj52WJzN1ov+xKRpH8VHWMRVXg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cUZs8mgOjnfPxjGzLbZBKQ2Xgx0R3Od3Am1QjVzMytNZHDhA+nUZUXSHaVGbYrVxyEbVbsF4SVt4bCFIFz4tTvtvmAo3Q37/D2AW00kKB2mLXAFqg7EVnsnjODOrHV4Py24w6QiOimTf2iwogXBm5UZql85RC56O6c/qV6452o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev; spf=pass smtp.mailfrom=holm.dev; dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b=pmq5kQIO; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holm.dev
+Message-ID: <235aa62e-271e-4e2b-b308-e29b561d6419@holm.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=holm.dev; s=key1;
+	t=1723553782;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Vp8CkJbR2Oxr6i4hruj52WJzN1ov+xKRpH8VHWMRVXg=;
+	b=pmq5kQIOTU06psOfBIhKu7R8UVPxbfXBvkbpVXmkJW8lno3/8LrntoGPqQSux4IgmYPz6C
+	zjfLIcs3ZZKrki3tlPTRfKNgiuvN1vstNnEwLc99snW2X47KjZ4S1j0RGUrVjt1LtP//O3
+	QamcoRxaLMd9/5V9vTuZ7nMk2pR4xOT/Nf3m82ZNGIIFzRmqbRKmjz6gZdwiBWbKtA5bsu
+	jLyU+b+VhgSGDZQG7CtXhaUqfnVGNUCVubub056Rv5A8FY9T4iAmr39AxkvvuYozqT27o8
+	vh+x7oW+1Za4xyUYck6BBMB8JYJOaOAKUjt0Agc8em7lKH0dKDqFC42uGLF4Lw==
+Date: Tue, 13 Aug 2024 14:56:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240813113344.1837556-1-ruanjinjie@huawei.com>
+Subject: Re: [PATCH 6.10 257/263] drm/amd/display: Defer handling mst up
+ request in resume
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Mario Limonciello <mario.limonciello@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Hersen Wu <hersenxs.wu@amd.com>,
+ Wayne Lin <wayne.lin@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>
+References: <20240812160146.517184156@linuxfoundation.org>
+ <20240812160156.489958533@linuxfoundation.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kevin Holm <kevin@holm.dev>
+In-Reply-To: <20240812160156.489958533@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Aug 13, 2024 at 11:33:44AM +0000, Jinjie Ruan wrote:
-> From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> 
-> [ Upstream commit 0db880fc865ffb522141ced4bfa66c12ab1fbb70 ]
-> 
-> nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
-> crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
-> interrupt handler) if percpu allocation comes from vmalloc area.
-> 
-> Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
-> wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
-> percpu allocation is from the embedded first chunk. However with
-> CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
-> allocation can come from the vmalloc area.
-> 
-> With kernel command line "percpu_alloc=page" we can force percpu allocation
-> to come from vmalloc area and can see kernel crash in machine_check_early:
-> 
-> [    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
-> [    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
-> [    1.215719] --- interrupt: 200
-> [    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
-> [    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
-> [    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
-> 
-> Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
-> first chunk is not embedded.
-> 
-> CVE-2024-42126
-> Cc: stable@vger.kernel.org#5.10.x
-> Cc: gregkh@linuxfoundation.org
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
-> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
-> [ Conflicts in arch/powerpc/include/asm/interrupt.h
->   because machine_check_early() and machine_check_exception()
->   has been refactored. ]
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> ---
-> v2:
-> - Also fix for CONFIG_PPC_BOOK3S_64 not enabled.
-> - Add Upstream.
-> - Cc stable@vger.kernel.org.
-> ---
-
-Both now queued up, thanks.
-
-greg k-h
+DQpPbiA4LzEyLzI0IDE4OjA0LCBHcmVnIEtyb2FoLUhhcnRtYW4gd3JvdGU6DQo+IDYuMTAt
+c3RhYmxlIHJldmlldyBwYXRjaC4gIElmIGFueW9uZSBoYXMgYW55IG9iamVjdGlvbnMsIHBs
+ZWFzZSBsZXQgbWUga25vdy4NClRoaXMgcGF0Y2ggc2VlbXMgdG8gY2F1c2UgcHJvYmxlbXMg
+d2l0aCBteSBleHRlcm5hbCBzY3JlZW5zIG5vdCBnZXR0aW5nIGEgc2lnbmFsDQphZnRlciBt
+eSBsYXB0b3Agd2FrZXMgdXAgZnJvbSBzbGVlcC4NCg0KVGhlIHByb2JsZW0gb2NjdXJzIG9u
+IG15IExlbm92byBQMTRzIEdlbiAyICh0eXBlIDIxQTApIGNvbm5lY3RlZCB0byBhIGxlbm92
+bw0KdXNiLWMgZG9jayAodHlwZSA0MEFTKSB3aXRoIHR3byA0ayBkaXNwbGF5IHBvcnQgc2Ny
+ZWVucyBjb25uZWN0ZWQuIE15IExhcHRvcA0Kc2NyZWVuIHdha2VzIHVwIG5vcm1hbGx5LCB0
+aGUgdHdvIGV4dGVybmFsIGRpc3BsYXlzIGFyZSBzdGlsbCBkZXRlY3RlZCBieSBteQ0Kc3lz
+dGVtIGFuZCBzaG93biBpbiB0aGUga2RlIHN5c3RlbSBzZXR0aW5ncywgYnV0IHRoZXkgc2hv
+dyBubyBpbWFnZS4NCg0KVGhlIHByb2JsZW0gb25seSBvY2N1cnMgYWZ0ZXIgcHV0dGluZyBt
+eSBzeXN0ZW0gdG8gc2xlZXAsIG5vdCBvbiBmaXJzdCBib290Lg0KDQpJIGRpZG4ndCBkbyBh
+IGZ1bGwgZ2l0IGJpc2VjdCwgSSBvbmx5IHRlc3RlZCB0aGUgZnVsbCByYyBhbmQgdGhlbiBh
+IGJ1aWxkIGENCmtlcm5lbCB3aXRoIHRoaXMgcGF0Y2ggcmV2ZXJ0ZWQsIHJldmVydGluZyBv
+bmx5IHRoaXMgcGF0Y2ggc29sdmVkIHRoZSBwcm9ibGVtLg0KDQp+a2V2aW4NCj4gDQo+IC0t
+LS0tLS0tLS0tLS0tLS0tLQ0KPiANCj4gRnJvbTogV2F5bmUgTGluIDx3YXluZS5saW5AYW1k
+LmNvbT4NCj4gDQo+IGNvbW1pdCAyMDJkYzM1OWFkZGFiMjk0NTFkM2QxODI0M2MzZDk1N2Rh
+NTM5MmM4IHVwc3RyZWFtLg0KPiANCj4gW1doeV0NCj4gTGlrZSBjb21taXQgZWM1ZmE5ZmNk
+ZWNhICgiZHJtL2FtZC9kaXNwbGF5OiBBZGp1c3QgdGhlIE1TVCByZXN1bWUgZmxvdyIpLCB3
+ZQ0KPiB3YW50IHRvIGF2b2lkIGhhbmRsaW5nIG1zdCB0b3BvbG9neSBjaGFuZ2VzIGJlZm9y
+ZSByZXN0b3JpbmcgdGhlIG9sZCBzdGF0ZS4NCj4gSWYgd2UgZW5hYmxlIERQX1VQX1JFUV9F
+TiBiZWZvcmUgY2FsbGluZyBkcm1fYXRvbWljX2hlbHBlcl9yZXN1bWUoKSwgaGF2ZQ0KPiBj
+aGFuZ2NlIHRvIGhhbmRsZSBDU04gZXZlbnQgZmlyc3QgYW5kIGZpcmUgaG90cGx1ZyBldmVu
+dCBiZWZvcmUgcmVzdG9yaW5nIHRoZQ0KPiBjYWNoZWQgc3RhdGUuDQo+IA0KPiBbSG93XQ0K
+PiBEaXNhYmxlIG1zdCBicmFuY2ggc2VuZGluZyB1cCByZXF1ZXN0IGV2ZW50IGJlZm9yZSB3
+ZSByZXN0b3JpbmcgdGhlIGNhY2hlZCBzdGF0ZS4NCj4gRFBfVVBfUkVRX0VOIHdpbGwgYmUg
+c2V0IGxhdGVyIHdoZW4gd2UgY2FsbCBkcm1fZHBfbXN0X3RvcG9sb2d5X21ncl9yZXN1bWUo
+KS4NCj4gDQo+IENjOiBNYXJpbyBMaW1vbmNpZWxsbyA8bWFyaW8ubGltb25jaWVsbG9AYW1k
+LmNvbT4NCj4gQ2M6IEFsZXggRGV1Y2hlciA8YWxleGFuZGVyLmRldWNoZXJAYW1kLmNvbT4N
+Cj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gUmV2aWV3ZWQtYnk6IEhlcnNlbiBX
+dSA8aGVyc2VueHMud3VAYW1kLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogV2F5bmUgTGluIDx3
+YXluZS5saW5AYW1kLmNvbT4NCj4gVGVzdGVkLWJ5OiBEYW5pZWwgV2hlZWxlciA8ZGFuaWVs
+LndoZWVsZXJAYW1kLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogQWxleCBEZXVjaGVyIDxhbGV4
+YW5kZXIuZGV1Y2hlckBhbWQuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBHcmVnIEtyb2FoLUhh
+cnRtYW4gPGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnPg0KPiAtLS0NCj4gICBkcml2ZXJz
+L2dwdS9kcm0vYW1kL2Rpc3BsYXkvYW1kZ3B1X2RtL2FtZGdwdV9kbS5jIHwgICAgMSAtDQo+
+ICAgMSBmaWxlIGNoYW5nZWQsIDEgZGVsZXRpb24oLSkNCj4gDQo+IC0tLSBhL2RyaXZlcnMv
+Z3B1L2RybS9hbWQvZGlzcGxheS9hbWRncHVfZG0vYW1kZ3B1X2RtLmMNCj4gKysrIGIvZHJp
+dmVycy9ncHUvZHJtL2FtZC9kaXNwbGF5L2FtZGdwdV9kbS9hbWRncHVfZG0uYw0KPiBAQCAt
+MjQxOCw3ICsyNDE4LDYgQEAgc3RhdGljIHZvaWQgcmVzdW1lX21zdF9icmFuY2hfc3RhdHVz
+KHN0cg0KPiAgIA0KPiAgIAlyZXQgPSBkcm1fZHBfZHBjZF93cml0ZWIobWdyLT5hdXgsIERQ
+X01TVE1fQ1RSTCwNCj4gICAJCQkJIERQX01TVF9FTiB8DQo+IC0JCQkJIERQX1VQX1JFUV9F
+TiB8DQo+ICAgCQkJCSBEUF9VUFNUUkVBTV9JU19TUkMpOw0KPiAgIAlpZiAocmV0IDwgMCkg
+ew0KPiAgIAkJZHJtX2RiZ19rbXMobWdyLT5kZXYsICJtc3Qgd3JpdGUgZmFpbGVkIC0gdW5k
+b2NrZWQgZHVyaW5nIHN1c3BlbmQ/XG4iKTsNCj4gDQo+IA0KPiANCg0K
 
