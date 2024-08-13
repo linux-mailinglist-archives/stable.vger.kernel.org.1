@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-67493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8498995073D
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:11:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66086950757
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C9CD283460
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:11:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A6D51C22E08
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63BE19B3DD;
-	Tue, 13 Aug 2024 14:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9631D17A583;
+	Tue, 13 Aug 2024 14:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UIZoYOgx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IQhW0tJm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDB53A8CE
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 14:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A501719D064
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 14:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723558310; cv=none; b=cj3eN8GYqEDWmANRabqWwj9B5jBIROZUeMHFkRFJNRWZ3UMhyXmXLo8dOYc6bdfDLnSRBnCAHhigM8DgUViT6Brm7BBh2cT1NRaulS0wo4r8jL3lXxL6huWk0NnrtsmITZtJ3LgrQjhQW1ZOb0NjDWK9PFZUCrUCnjscBEIaeV0=
+	t=1723558496; cv=none; b=kjkQJ96iYDfRd3iOTgfl3Rc2iZiMoqvkPf5ZuJSk85Y8fZymK+488mG8kV5piiciKmuqke4E2nE+UIeeitgYWynqbA9pyNXErATRzMnlQXWFK1CrgK58b4Dv8ebaXNEcC3QzEg5DCSAmCokeIShQudB0XC3KodtQ4L68aLUHtlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723558310; c=relaxed/simple;
-	bh=qmDTKDrBnKCOG9en881x7qpNLaU5Au7Aj5HyXMVWqts=;
+	s=arc-20240116; t=1723558496; c=relaxed/simple;
+	bh=S4wJhBLWBjzh315Civm2opr6BrCG0ASI4T+Ol1OYXoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tgt1zp91WTnl7EihBen7KOKMEp+YKcfHoGfkpz9yviRy6MBMRTKwu4Ee/jZLT57m7/JvfUpXCey/wGFzrXXnOInKbBWXaP4OEy5JBFt7MJcwv1E9nqW9+5Ex4NiVkQAwDgDcI21fPPmWZz408itHtST2fiRxuRRPe2F7viGXFU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UIZoYOgx; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=qKkziLvUojci5W14puA6ryR54Rleq7MurgIwIVEp+88CGH5qu/OL3zQMsUxhga5RcDKPZrwqdRFV178oSEj5iTeL/OX97LPj/2fQwmTcGyIgq+L3JpC0EekvmfzlwQF0+Vxx+YCyRx5WNelbr2GWhItP0B/DtV2WaQUOaHFRGbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IQhW0tJm; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723558308; x=1755094308;
+  t=1723558494; x=1755094494;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qmDTKDrBnKCOG9en881x7qpNLaU5Au7Aj5HyXMVWqts=;
-  b=UIZoYOgxZpPI/Nghkb7w2v017SXJaSM5ofDRcqc4R/wCtvevDuRmkYa+
-   0EfqSJ6MkD3rgvYgLP6cpgdee6ioerCgeRJd1hL6csYRvUTOHd7dn7Qrf
-   WNgOmAJcglL47AP0mHAnjb84EUtU3NGwajpNT8KLomKmDMMCSj4nK7IbX
-   IGD+whO9eG/w9Vt5SDfNGq3n46VhLFkFn2TInaB0j3kazN3ivpJGjtnTZ
-   kUYGWkwys746vhjIDWsoprNy058ItVYuTX8HjsNGR++98AOC8IOgUK0fv
-   IGJ5+EyDJuLRmGXfF26sYvqHmhdK9lYOP5hPhwrMGov+Hvulvnll79lX0
-   Q==;
-X-CSE-ConnectionGUID: LHv7IpYNSP2Ki4merL/rJA==
-X-CSE-MsgGUID: xaI1iitdQ6mHv9MhoA0rXQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="33128710"
+  bh=S4wJhBLWBjzh315Civm2opr6BrCG0ASI4T+Ol1OYXoE=;
+  b=IQhW0tJmv334n/Vbqk2d8hYofQTH0r1Bi5e04a+NoHY4t1DKowkGHhJe
+   J7HM+TkyrWZH9MRmssrQ97rLk4rmOV3lQHDtyJq+MzhyFDhgD/mTaFr80
+   8IIieHyxuccqcvioqDk1eOHt4D/wli7Vk6yBg48MUgGrmkvnP7i/69Mwv
+   R0t8Pcq1SJBphAAYzAMN6RlwPrE9bpc1i5pLXkfcMNDbvaHl7r/lkX2PV
+   AozWTXOo+VdNDbzCqVKRk7a8Zpr+nvUHYddA6EVGmSn2D9y85ACG0euvG
+   hg3d2KSnEFpFN8UCP4FvxR/FUaej91PY6CN9VzaLYW+eNZDmrbRmcX6/p
+   g==;
+X-CSE-ConnectionGUID: fIhFr6plQeyGgeYl7uvZBw==
+X-CSE-MsgGUID: 5evWg67uQ3GUKrmomRwsuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="21281745"
 X-IronPort-AV: E=Sophos;i="6.09,286,1716274800"; 
-   d="scan'208";a="33128710"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 07:11:48 -0700
-X-CSE-ConnectionGUID: JT3hbogpTTOMV4DgZnwiRA==
-X-CSE-MsgGUID: BULwqVsuR/eEPPoXY9P3nQ==
+   d="scan'208";a="21281745"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 07:14:53 -0700
+X-CSE-ConnectionGUID: R3HaACckQ+m0Bs4ctjn0FQ==
+X-CSE-MsgGUID: rFHM/gSzQgumeaC1QmpP9A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,286,1716274800"; 
-   d="scan'208";a="58764822"
+   d="scan'208";a="59237713"
 Received: from mwiniars-desk2.ger.corp.intel.com (HELO intel.com) ([10.245.246.4])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 07:11:45 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 07:14:50 -0700
 From: Andi Shyti <andi.shyti@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: Andi Shyti <andi.shyti@linux.intel.com>,
@@ -67,12 +67,12 @@ Cc: Andi Shyti <andi.shyti@linux.intel.com>,
 	Matthew Auld <matthew.auld@intel.com>,
 	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Jonathan Cavitt <Jonathan.cavitt@intel.com>
-Subject: [PATCH 5.4.y] drm/i915/gem: Fix Virtual Memory mapping boundaries calculation
-Date: Tue, 13 Aug 2024 16:11:17 +0200
-Message-ID: <20240813141117.25002-1-andi.shyti@linux.intel.com>
+Subject: [PATCH 4.19.y] drm/i915/gem: Fix Virtual Memory mapping boundaries calculation
+Date: Tue, 13 Aug 2024 16:14:36 +0200
+Message-ID: <20240813141436.25278-1-andi.shyti@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024081221-moisture-vaseline-cb8b@gregkh>
-References: <2024081221-moisture-vaseline-cb8b@gregkh>
+In-Reply-To: <2024081222-process-suspect-d983@gregkh>
+References: <2024081222-process-suspect-d983@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -112,21 +112,21 @@ Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi
 (cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
 Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_mman.c | 47 +++++++++++++++++++++---
- 1 file changed, 42 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/i915_gem.c | 48 +++++++++++++++++++++++++++++----
+ 1 file changed, 43 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-index 876f59098f7e..b6cc358adc2c 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -196,6 +196,39 @@ compute_partial_view(const struct drm_i915_gem_object *obj,
+diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
+index 5b0d6d8b3ab8..d9cdd351caa4 100644
+--- a/drivers/gpu/drm/i915/i915_gem.c
++++ b/drivers/gpu/drm/i915/i915_gem.c
+@@ -2009,6 +2009,40 @@ compute_partial_view(struct drm_i915_gem_object *obj,
  	return view;
  }
  
 +static void set_address_limits(struct vm_area_struct *area,
-+			       struct i915_vma *vma,
-+			       unsigned long *start_vaddr,
-+			       unsigned long *end_vaddr)
++                              struct i915_vma *vma,
++                              unsigned long *start_vaddr,
++                              unsigned long *end_vaddr)
 +{
 +	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
 +	long start, end; /* memory boundaries */
@@ -145,6 +145,7 @@ index 876f59098f7e..b6cc358adc2c 100644
 +	 * provided for the partial mapping.
 +	 */
 +	start = vm_start;
++	start -= obj_offset;
 +	start += vma->ggtt_view.partial.offset;
 +	end = start + vma_size;
 +
@@ -159,19 +160,18 @@ index 876f59098f7e..b6cc358adc2c 100644
  /**
   * i915_gem_fault - fault a page into the GTT
   * @vmf: fault info
-@@ -224,9 +257,11 @@ vm_fault_t i915_gem_fault(struct vm_fault *vmf)
- 	struct intel_runtime_pm *rpm = &i915->runtime_pm;
- 	struct i915_ggtt *ggtt = &i915->ggtt;
- 	bool write = area->vm_flags & VM_WRITE;
+@@ -2036,8 +2070,10 @@ vm_fault_t i915_gem_fault(struct vm_fault *vmf)
+ 	struct drm_i915_private *dev_priv = to_i915(dev);
+ 	struct i915_ggtt *ggtt = &dev_priv->ggtt;
+ 	bool write = !!(vmf->flags & FAULT_FLAG_WRITE);
 +	unsigned long start, end; /* memory boundaries */
- 	intel_wakeref_t wakeref;
  	struct i915_vma *vma;
  	pgoff_t page_offset;
 +	unsigned long pfn;
- 	int srcu;
  	int ret;
  
-@@ -295,12 +330,14 @@ vm_fault_t i915_gem_fault(struct vm_fault *vmf)
+ 	/* Sanity check that we allow writing into this object */
+@@ -2119,12 +2155,14 @@ vm_fault_t i915_gem_fault(struct vm_fault *vmf)
  	if (ret)
  		goto err_unpin;
  
