@@ -1,153 +1,227 @@
-Return-Path: <stable+bounces-67513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F8195091A
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:28:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A2F9509CF
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 18:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0FD328723F
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 15:28:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62F3F1F27944
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4281A01DB;
-	Tue, 13 Aug 2024 15:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1D21A2561;
+	Tue, 13 Aug 2024 16:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="DxR74xw6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FefB+oWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8U+7K0u"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EB11A01B3
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 15:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C27E1A0708
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 16:05:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723562901; cv=none; b=UKzYiFo9HpAz2NqD6oEHCXaChD2XkOvmREBwqFHGKdSgSo/4VE6JgZYeFLkV9+8Mp5bHExEGkl8PPSxTW1IiAo5aruq/9fnHPsimgnLV41UXIn2x+WlVOAweyxaGl5bfVRg/P7ID/hhlYceAKC1dyEi+QFB4xUsojB0MujruMsQ=
+	t=1723565126; cv=none; b=OY6PWWqwMC3dROVIQA9h47mhxUVLGVFOonSwurWjmHrMgr1Hq+nRZLfmgVwwwPYhvtU2hc9FAXyPh3QK6sw80J0V1NEDatgjB8gnTEzeqfe4WQ3eKasKJvj7tMBKfAl/9Fb1TBnYamgn2ICOauPACxSTTZOOl2raxsq+p22eUNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723562901; c=relaxed/simple;
-	bh=o5rKS1JZCXCwex4bZU2m6KylqOPHR/tQInOEs7DNVhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hErVuTgOpuNpoBn2jAUQTFu5rcsAWIvP8B36lwecPEZYT6bqNdYozLFuYauyLyIqC5QQN/u6C3ZRj4NA2Vn/jVNaN85PaoUEgKvw+iBlu0gcl+iUh/KJ0/rKJB38MXgXB4Jpqv5qbYcZxe8zYBQus7iqaDQpPqAr40phZMii30I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=DxR74xw6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FefB+oWc; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-03.internal (phl-compute-03.nyi.internal [10.202.2.43])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id EBFB11151AA6;
-	Tue, 13 Aug 2024 11:28:17 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 13 Aug 2024 11:28:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1723562897; x=1723649297; bh=1KJ/VPWMEZ
-	RV0HlBd/G9KbUrArDOLhZr5VCLoCYC9/U=; b=DxR74xw65W37WVfWfnQfpNuysO
-	vHVc1STZixtkLoD2A2Ac+Dzp+gDgfqI5eG2HOXv3p8lQTPEArNqpK4/ASZ9+/0iq
-	GvXRBO6YomCjJFOmw+hGs/yxrc/kFeZ9Nu7orx/EuG8wGmoS97xsejLgwhmFRNEx
-	j2Ncj5f1Xr4bqmKt8NsscM/Am1r8l/A05+dim+lVInJhuPAOP9d2l2OrBMkf5/R2
-	4xAqVvTe/eaDpVG+F74WqjX7SZex3sN/DNnCJYJUyspKggu3cWIae61LIT6pRr4b
-	Tm3fYbwbT+mqaIcpaPyK9Z+lOZz/kPsWYMfvtau9jCj8hDtt8e+s4KNRcXng==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1723562897; x=1723649297; bh=1KJ/VPWMEZRV0HlBd/G9KbUrArDO
-	LhZr5VCLoCYC9/U=; b=FefB+oWcuP9yISQGX2sBPHVn8f+reYk3yrVQ85Nm9vl7
-	91SDiX4QUDGkzdUSfSkWckQ5814ev7tJ/uJVOkxmzkz9EF3fmwYMxiX1p2gBC9X9
-	VU0w7L0mHOKjz+OapGsqkQRBgzp73DCc5PxCI6ZO4qguVV94cx3exBMw7YuN9XaS
-	XPViZNiTrCVkufjoEaOvwRv1PyUH2x65tgb5U6gl1ZFHgYoAgJsI/OhHBJL1Amm9
-	4OafLCbLhE4pKGUY7kubAYV9loh+Exav4KoX+CkGQyMBE/2x4m4tqNvCtxBIcjrH
-	8jZO7M+nVccfPo2J4J4h+gCOLLd4SrF9DYGee/h3mg==
-X-ME-Sender: <xms:kXu7ZhQJlVPHjXWH3RC6BovA4mLi09pxdUJexADuOd9eJ-AXQaJk5g>
-    <xme:kXu7ZqzxAnuz0lVJYPAtwm-quK6XGGPf_jq2BRFH8EMHkXnxzR6tE6c1Jn5b-ddN-
-    brKUEUaPGt-VA>
-X-ME-Received: <xmr:kXu7Zm3GUe_eMojF1Mi7xVBOjn1T-uZ4RIwhrVj1C4CEuvbYpwTwSkSg5bvAXqQxw7QlEtcpSSNR0QHx2niPrNYDkOtgeRYXAYzBIQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddtvddgkeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepleeiteevieefteelfeehveegvdetveehgffhvdejffdvleevhfffgeff
-    ffejlefgnecuffhomhgrihhnpehfrhgvvgguvghskhhtohhprdhorhhgnecuvehluhhsth
-    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghh
-    rdgtohhmpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheprghnughirdhshhihthhisehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthht
-    ohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrnh
-    hnhhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheptghhrhhishdrphdrfihilhhsohhn
-    sehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepjhhoohhnrghsrdhlrghhth
-    hinhgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehmrghtthhhvgif
-    rdgruhhlugesihhnthgvlhdrtghomhdprhgtphhtthhopehrohgurhhighhordhvihhvih
-    esihhnthgvlhdrtghomhdprhgtphhtthhopehjohhnrghthhgrnhdrtggrvhhithhtsehi
-    nhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:kXu7ZpDWdhXEaVJ1ebyhc9_KtE99ikGhRMJVVIUiittIBYwRITWHlw>
-    <xmx:kXu7Zqh_YtGhPtJzkXQyTnOnwbzX8xx90ir-T6SrjEA4ms2WBlCXJg>
-    <xmx:kXu7ZtrmZ4Uu10raMJyJzAmDgztfyqUtpTUrBtRoRb9kWLZ4nwCNNg>
-    <xmx:kXu7Zli4Ona27Blz1H96BUN7TwQUGmivBpBHakGIh2AqdAlBc76tVw>
-    <xmx:kXu7ZhQAlJDxIEcXZ3CZMMEGUDQvTW_U_NJQ5L5Oe1QQrmlhKoEhXgOh>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 13 Aug 2024 11:28:17 -0400 (EDT)
-Date: Tue, 13 Aug 2024 17:28:15 +0200
-From: Greg KH <greg@kroah.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: stable@vger.kernel.org, Jann Horn <jannh@google.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jonathan Cavitt <Jonathan.cavitt@intel.com>
-Subject: Re: [PATCH 4.19.y] drm/i915/gem: Fix Virtual Memory mapping
- boundaries calculation
-Message-ID: <2024081306-tasty-spoof-62c6@gregkh>
-References: <2024081222-process-suspect-d983@gregkh>
- <20240813141436.25278-1-andi.shyti@linux.intel.com>
+	s=arc-20240116; t=1723565126; c=relaxed/simple;
+	bh=f4neqbdTbz6x4T+DClWRr7Gdzq9i79hWZFp33yNcf3w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Prv+VMA+7paOPNrWgyP1eIoqn3sfsTA8s/O8N1jvePx/U1JOcSw0p4OWgTv89iVskLkTYt70+F8pliZ1U3YRXrm7jjs6Qf8rlb4lqI8kwzdBwTNDr9Vxap15CvDWWyaL5l8GsXVQmMwybf8Rd37o1hA5UA7kWgI31dBDsqi9+lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8U+7K0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2933FC4AF16;
+	Tue, 13 Aug 2024 16:05:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723565125;
+	bh=f4neqbdTbz6x4T+DClWRr7Gdzq9i79hWZFp33yNcf3w=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Y8U+7K0uoC48JX2FkxA/yhT+vhfqsIvLIRT0khIozBRIr3Jdw+jwSY6nwZpcdhaer
+	 3TyM7aamDHhWoJG3Kt89/ZscppjH3jblwhm7+s8qB9dVSqehQsKKsxI50wfnDcszlP
+	 07u+do5ZKFd57Q050YyxhC7KGz/6k5Cg1fqioiuo=
+Subject: FAILED: patch "[PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr" failed to apply to 5.15-stable tree
+To: willemb@google.com,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 13 Aug 2024 18:05:22 +0200
+Message-ID: <2024081322-yoyo-proving-7a44@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240813141436.25278-1-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 13, 2024 at 04:14:36PM +0200, Andi Shyti wrote:
-> Commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
-> 
-> Calculating the size of the mapped area as the lesser value
-> between the requested size and the actual size does not consider
-> the partial mapping offset. This can cause page fault access.
-> 
-> Fix the calculation of the starting and ending addresses, the
-> total size is now deduced from the difference between the end and
-> start addresses.
-> 
-> Additionally, the calculations have been rewritten in a clearer
-> and more understandable form.
-> 
-> Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
-> Reported-by: Jann Horn <jannh@google.com>
-> Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: <stable@vger.kernel.org> # v4.9+
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
-> [Joonas: Add Requires: tag]
-> Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
-> Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
-> (cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
-> Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> ---
->  drivers/gpu/drm/i915/i915_gem.c | 48 +++++++++++++++++++++++++++++----
->  1 file changed, 43 insertions(+), 5 deletions(-)
 
-Both now applied, thanks.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 89add40066f9ed9abe5f7f886fe5789ff7e0c50e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081322-yoyo-proving-7a44@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
+fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
+9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
+cf9acc90c80e ("net: virtio_net_hdr_to_skb: count transport header in UFO")
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 89add40066f9ed9abe5f7f886fe5789ff7e0c50e Mon Sep 17 00:00:00 2001
+From: Willem de Bruijn <willemb@google.com>
+Date: Mon, 29 Jul 2024 16:10:12 -0400
+Subject: [PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr
+
+Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
+for GSO packets.
+
+The function already checks that a checksum requested with
+VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
+this might not hold for segs after segmentation.
+
+Syzkaller demonstrated to reach this warning in skb_checksum_help
+
+	offset = skb_checksum_start_offset(skb);
+	ret = -EINVAL;
+	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
+
+By injecting a TSO packet:
+
+WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
+ ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
+ ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
+ __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
+ iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
+ ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
+ __gre_xmit net/ipv4/ip_gre.c:469 [inline]
+ ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
+ __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4864 [inline]
+ xmit_one net/core/dev.c:3595 [inline]
+ dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
+ __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
+ packet_snd net/packet/af_packet.c:3073 [inline]
+
+The geometry of the bad input packet at tcp_gso_segment:
+
+[   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
+[   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
+[   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
+[   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
+ip_summed=3 complete_sw=0 valid=0 level=0)
+
+Mitigate with stricter input validation.
+
+csum_offset: for GSO packets, deduce the correct value from gso_type.
+This is already done for USO. Extend it to TSO. Let UFO be:
+udp[46]_ufo_fragment ignores these fields and always computes the
+checksum in software.
+
+csum_start: finding the real offset requires parsing to the transport
+header. Do not add a parser, use existing segmentation parsing. Thanks
+to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
+Again test both TSO and USO. Do not test UFO for the above reason, and
+do not test UDP tunnel offload.
+
+GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
+CHECKSUM_NONE since commit 10154dbded6d6 ("udp: Allow GSO transmit
+from devices with no checksum offload"), but then still these fields
+are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
+need to test for ip_summed == CHECKSUM_PARTIAL first.
+
+This revises an existing fix mentioned in the Fixes tag, which broke
+small packets with GSO offload, as detected by kselftests.
+
+Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
+Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
+Fixes: e269d79c7d35 ("net: missing check virtio")
+Cc: stable@vger.kernel.org
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240729201108.1615114-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index d1d7825318c3..6c395a2600e8 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -56,7 +56,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 	unsigned int thlen = 0;
+ 	unsigned int p_off = 0;
+ 	unsigned int ip_proto;
+-	u64 ret, remainder, gso_size;
+ 
+ 	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+ 		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
+@@ -99,16 +98,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
+ 		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
+ 
+-		if (hdr->gso_size) {
+-			gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
+-			ret = div64_u64_rem(skb->len, gso_size, &remainder);
+-			if (!(ret && (hdr->gso_size > needed) &&
+-						((remainder > needed) || (remainder == 0)))) {
+-				return -EINVAL;
+-			}
+-			skb_shinfo(skb)->tx_flags |= SKBFL_SHARED_FRAG;
+-		}
+-
+ 		if (!pskb_may_pull(skb, needed))
+ 			return -EINVAL;
+ 
+@@ -182,6 +171,11 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 			if (gso_type != SKB_GSO_UDP_L4)
+ 				return -EINVAL;
+ 			break;
++		case SKB_GSO_TCPV4:
++		case SKB_GSO_TCPV6:
++			if (skb->csum_offset != offsetof(struct tcphdr, check))
++				return -EINVAL;
++			break;
+ 		}
+ 
+ 		/* Kernel has a special handling for GSO_BY_FRAGS. */
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 4b791e74529e..e4ad3311e148 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -140,6 +140,9 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	if (thlen < sizeof(*th))
+ 		goto out;
+ 
++	if (unlikely(skb_checksum_start(skb) != skb_transport_header(skb)))
++		goto out;
++
+ 	if (!pskb_may_pull(skb, thlen))
+ 		goto out;
+ 
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index aa2e0a28ca61..bc8a9da750fe 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -278,6 +278,10 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 	if (gso_skb->len <= sizeof(*uh) + mss)
+ 		return ERR_PTR(-EINVAL);
+ 
++	if (unlikely(skb_checksum_start(gso_skb) !=
++		     skb_transport_header(gso_skb)))
++		return ERR_PTR(-EINVAL);
++
+ 	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
+ 		/* Packet is from an untrusted source, reset gso_segs. */
+ 		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh),
+
 
