@@ -1,116 +1,128 @@
-Return-Path: <stable+bounces-67413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E31194FC13
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 05:06:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E944494FC18
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 05:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 243321C223CA
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 03:06:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A65592831E9
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 03:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D5B1AACA;
-	Tue, 13 Aug 2024 03:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MK2AdNSr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61741A716;
+	Tue, 13 Aug 2024 03:08:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157058F5A;
-	Tue, 13 Aug 2024 03:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF341862A;
+	Tue, 13 Aug 2024 03:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723518401; cv=none; b=HOsX2mDZOkjw7/gdFAYM/WxB8ZaUHdk+IJxB78esLfeD67W0wLGkUCWLbGR3F44CJaQRih/NcM9nW9ToFaVcJiFOmV013Qe9Qgkl8MeTzYlUySXJIY7ni8S7WKgqg7KhVK+ilRMXKPsWOPlPyJprfuOUguTns5IjIDZG9obnywY=
+	t=1723518506; cv=none; b=jkTwFnKTk6bHZ4EIk1yv+ICwVEA825ovvhJabNbStvED9ShA7xxaUiNEhM9Sxu6/OFX2y3/CRs/rPxSs+q7N8DvUOUroyMzfnOtMi51CLrwtCzJFyToE+s+wffKxik+fuIZjhpoMojJQFtKdi83Q5LfZJAsMR3iV/R2KMRrn3s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723518401; c=relaxed/simple;
-	bh=qLgp+FDIk5aX+U95eCZREPh/C34i0ltAR44kl+Z1Hvw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GwX3MumE2wfCBDQAoplI1S90rCZ2tUAGfnhKasnDnELL0/bANggFX2781/xfjUdRtp/b0qPQCHL8YtUTh4BTKorK3Xy0yUWjzlWl0rdFGUyKPeTSIPKgqPjhOxeQtVEcE9Cd/mX67TNnGZWG7EAcuk+EgC84RVhPnhQwtoPQmB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MK2AdNSr; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7107b16be12so4158913b3a.3;
-        Mon, 12 Aug 2024 20:06:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723518399; x=1724123199; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PoKhZzfJJfzz5NYdN/8JKDEU39D5A8RsoqhUzJC6Q7w=;
-        b=MK2AdNSrBa1q4PxGq0RHox7rHgOFsoIVFeboz6rcaVyUeqhmgVAKevaoQGIrfLkRAr
-         LrUAs7XMPCoPMm7jJNBEBFzIHi476EP2+Kh3e73drdivEytZ14T4KalY/DvfcIGHaJ3l
-         Lp1IAWLkGS0UmWLEt9Tdc3a6dM+cOD+9/nKcStwmbrQ/+ACrUvnVD3CZHQ+AN20mbYBk
-         1S1utkNJYvVOrMbEpu/kPLTz1flDYGhg+JijNotaJ3EmFhx0o3Rzr0zku5CNBH1ZJXfl
-         G+7LmFX/lPXF2Fl/HQLZ9I8fg5sf4L5okYO+y8zU624NGxovWSNTAJ8RkIofONbWYRO0
-         Qwcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723518399; x=1724123199;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PoKhZzfJJfzz5NYdN/8JKDEU39D5A8RsoqhUzJC6Q7w=;
-        b=F615EP02j7ioyow+lL6yezhwCTEkZcQYGjjtQ4sIlgd6TCvkIFZpIas0vxVBL2S9Ir
-         +ziB+ybC2svu01N1KJd0jo/AD4kenQhrBjnLPBkmcuDGDNXRg8Uemjy4jXrnZ/xjaxdQ
-         hoDwiCE8M3h8d1pkkhl0y+kS4/GHC/SoU94hmiqD0OxrbbeQKHKDspYcIRXh1f2T3h6J
-         DxdzlqsIlMSMbzIRNJZRVpl7NqAV9x7GyPJD0+H5kqar0UpIFWE5nxZN6fzXV1UEzS96
-         4SdNBySbTLAJdufAh1b7rH2cj4c2o013i2nsi+eZnPdi81Zyl5/CiVgGnYeus7KjTfvL
-         d95w==
-X-Forwarded-Encrypted: i=1; AJvYcCVUd0Kqb3GLA8jq/p0zusZ3OFHA43JrGr/99Ey9e2soLjij8mVjUZZPjD3cspYPQL+KSHiYzhEaj3FulVceCY1HmaBbajVo7ZUx4fcpj5OzRBBne5dXZ7sb9DDoYJdg6P3VL9SlJOxQwk8j/6zNcNX2/5e9ztY9UqvCVA==
-X-Gm-Message-State: AOJu0YyvGB1Et+YOQPBdLuFOix3AksIT2ttk9/sOvnsxZplIs1bGyogw
-	OqNimhf920E65kFM3Vmjp1ZRnnrQNJJe1nh5gkkj8NDg+Nj1q3yHHsCzQXKz9tUN5gkou0wiNmW
-	UXadOlKmJVHBVtF5UDM/fFQntXgo=
-X-Google-Smtp-Source: AGHT+IHX8wZ/bPU/GlY6AQHbS7k7uR+QrtnEQNfEaBVgSMhUvVXsqF1j4Vx8qbOq3HDY0vOjZUETY+EVV21p/TXBeu0=
-X-Received: by 2002:a05:6a21:1813:b0:1c4:d8ec:b59f with SMTP id
- adf61e73a8af0-1c8d74c5a2dmr2691569637.25.1723518399241; Mon, 12 Aug 2024
- 20:06:39 -0700 (PDT)
+	s=arc-20240116; t=1723518506; c=relaxed/simple;
+	bh=G8mlqUI4Vj75JSRSXWP8BhfuW8A9ZPbv9FEMFDs01nw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IBUi/rCRfKk4PhcabIhCUaX7QPx8g+NLYMq5KuteubPvUY8VD8EJ+31u4EmqBE0PvskgZ9AZLDi/gFbT/5n8BO8O82/SUZrF19/SD2pY0EwF4I5q+hNk8mPzliYsLQ/bvXz4xhzXpDEuZZV+831hKYUHVkMquO0F0fqTDdJXRf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAA3XQARzrpmFDniBQ--.21605S2;
+	Tue, 13 Aug 2024 11:08:10 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: giometti@enneenne.com,
+	christophe.jaillet@wanadoo.fr,
+	linux@treblig.org,
+	gregkh@linuxfoundation.org,
+	sudipm.mukherjee@gmail.com,
+	make24@iscas.ac.cn,
+	akpm@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] pps: add an error check in parport_attach
+Date: Tue, 13 Aug 2024 11:08:00 +0800
+Message-Id: <20240813030800.3949400-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240813002932.3373935-1-andrii@kernel.org> <20240813002932.3373935-2-andrii@kernel.org>
- <ZrquMOQc8vAjYxIB@tassilo>
-In-Reply-To: <ZrquMOQc8vAjYxIB@tassilo>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Mon, 12 Aug 2024 20:06:27 -0700
-Message-ID: <CAEf4BzZPUJCqdtnhKNW=fJ7DDGvGFsARN0JXM_DnbPCRqrXZag@mail.gmail.com>
-Subject: Re: [PATCH v5 bpf-next 01/10] lib/buildid: harden build ID parsing logic
-To: Andi Kleen <ak@linux.intel.com>
-Cc: Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, adobriyan@gmail.com, shakeel.butt@linux.dev, 
-	hannes@cmpxchg.org, osandov@osandov.com, song@kernel.org, jannh@google.com, 
-	linux-fsdevel@vger.kernel.org, willy@infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAA3XQARzrpmFDniBQ--.21605S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zw1fZw4xGFWxCrW5uryrXrb_yoW8Ww17pF
+	WkuFyYqrZ7Xayqkws7Z3Z5WFyrCw1xta1xuFWUK34ak3W3KryFyFW293409F18Jr4DAa45
+	CFsxKayvkF47AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
+	WxJr0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
+	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r
+	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
+	YI8I648v4I1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUQvtAUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Mon, Aug 12, 2024 at 5:52=E2=80=AFPM Andi Kleen <ak@linux.intel.com> wro=
-te:
->
-> > @@ -152,6 +160,10 @@ int build_id_parse(struct vm_area_struct *vma, uns=
-igned char *build_id,
-> >       page =3D find_get_page(vma->vm_file->f_mapping, 0);
-> >       if (!page)
-> >               return -EFAULT; /* page not mapped */
-> > +     if (!PageUptodate(page)) {
-> > +             put_page(page);
-> > +             return -EFAULT;
-> > +     }
->
-> That change is not described. As I understand it might prevent reading
-> previous data in the page or maybe junk under an IO error? Anyways I gues=
-s it's a
-> good change.
+In parport_attach, the return value of ida_alloc is unchecked, witch leads
+to the use of an invalid index value.
 
-From what I understood, one can get a valid page from the
-find_get_page() (same for folio), but it might not be yet completely
-filled out. PageUptodate() is supposed to detect this and prevent the
-use of incomplete page data.
+To address this issue, index should be checked. When the index value is
+abnormal, the device should be freed.
 
->
-> Reviewed-by: Andi Kleen <ak@linux.intel.com>
->
-> -Andi
+Found by code review, compile tested only.
+
+Cc: stable@vger.kernel.org
+Fixes: 55dbc5b5174d ("pps: remove usage of the deprecated ida_simple_xx() API")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/pps/clients/pps_parport.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pps/clients/pps_parport.c b/drivers/pps/clients/pps_parport.c
+index 63d03a0df5cc..9ab7f6961e42 100644
+--- a/drivers/pps/clients/pps_parport.c
++++ b/drivers/pps/clients/pps_parport.c
+@@ -149,6 +149,11 @@ static void parport_attach(struct parport *port)
+ 	}
+ 
+ 	index = ida_alloc(&pps_client_index, GFP_KERNEL);
++	if (index < 0) {
++		pr_err("failed to get index\n");
++		goto err_free_device;
++	}
++
+ 	memset(&pps_client_cb, 0, sizeof(pps_client_cb));
+ 	pps_client_cb.private = device;
+ 	pps_client_cb.irq_func = parport_irq;
+@@ -159,7 +164,7 @@ static void parport_attach(struct parport *port)
+ 						    index);
+ 	if (!device->pardev) {
+ 		pr_err("couldn't register with %s\n", port->name);
+-		goto err_free;
++		goto err_free_ida;
+ 	}
+ 
+ 	if (parport_claim_or_block(device->pardev) < 0) {
+@@ -187,8 +192,9 @@ static void parport_attach(struct parport *port)
+ 	parport_release(device->pardev);
+ err_unregister_dev:
+ 	parport_unregister_device(device->pardev);
+-err_free:
++err_free_ida:
+ 	ida_free(&pps_client_index, index);
++err_free_device:
+ 	kfree(device);
+ }
+ 
+-- 
+2.25.1
+
 
