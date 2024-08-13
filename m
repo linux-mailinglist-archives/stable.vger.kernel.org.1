@@ -1,118 +1,189 @@
-Return-Path: <stable+bounces-67443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03863950152
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 11:37:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9798B950163
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 11:41:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 283351C21B12
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 09:37:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 194581F23DF5
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 09:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9C217C7CC;
-	Tue, 13 Aug 2024 09:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA31A187554;
+	Tue, 13 Aug 2024 09:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="BFeCMpYF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6WxzItL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6618BF3;
-	Tue, 13 Aug 2024 09:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931A117C7C2;
+	Tue, 13 Aug 2024 09:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723541832; cv=none; b=r/nNn26vNdz+ZKZEyUy5np2/nMWKoBkSENyk6ZDDD+Y/JW8Q1SdhqnKL/zU/Qmzjr+NmwQzERlhlooZ285QnBEuN7/JBQkvqyrCEAkhzsrLG6pYKnJnDQp+VVL8nNh5l4dSdz6K/uYMC2WJvn/KkyQonUo9pnUgonTLlLRgp/p4=
+	t=1723542094; cv=none; b=EEFnt3blIIiZLptIe1Ikkp9eFQMLpq+7O9dwlIYfeRKsEqfruvX7T+pRLh93vALFLkcJQPEcssiGmeztMgoqanDWfIdab0LAUx5xZEg/1M97ihiHa5/334s7nLIhYXRIhVoUS+TNDIW10Vvfjp5eMOcT5rNg6hHijdvEevZ+dSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723541832; c=relaxed/simple;
-	bh=wCyOeoKe9u+sJD0iMFdk6GI4anN9adrDopq3IECouso=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FNAMEVgDllZn2LeWyGOUyL+0WltZNbpdpRMbKWEvVp/00BLcmqrkJR1UFYb/mn9hGw90P1XW+F8kLyuUbk+XjiJtJqDr/L2o1wbCcQ2Fx0d6+akGVWJFq3JqwgQBNfdCfnKg/D9D84wH94pmLuZm7uRYHGrOVaBIx/xIPsvMCeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=BFeCMpYF; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52f04150796so6807060e87.3;
-        Tue, 13 Aug 2024 02:37:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1723541829; x=1724146629; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JE37tF2wmw4c/jkkN2/rwSonuOgWb2m/+qCDds7vhx4=;
-        b=BFeCMpYF3amveCphQFdyxt2OymtYc01Y/+XQubhgfaqDz0qXyV+Vcq9Vy//uBSPHaV
-         18Aorp63zpIKnHqokwRwW64CukcZRhgyVXRMIMjRttScytAYZtI6w2NxlHP9uj/baivV
-         RIQz5B2cBMrjEbsOU8xeUfPzCmK4yx4A4Fl2dsUUQFgBOVt5C7oCB58Os85eg2Zrz2jF
-         MUcdTafkrH9VXtQn3MTVepa8dLWDK7IXeaKaDwOkRvq7GTlP/zBXAJpN6u8/I+aBl12v
-         lZtQrp2n6UmblrLHRljrPNuCCeW12xDlOmDtNwGUw//3AniLbXj3z9h4C977wAcMvDCG
-         t7cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723541829; x=1724146629;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JE37tF2wmw4c/jkkN2/rwSonuOgWb2m/+qCDds7vhx4=;
-        b=nmTqwrlKGYt8vknv0ySXOZllQWorfn035auSMonUrdzV6vgDaG0u6pCXxbleXsGKAR
-         7jkOIBLFqhldOsAagKwCmXXxX8sCQkMoL9qAJhE0pO4EhmyaucHI0UZUL5ruYp1mlexA
-         iO4b05QPJb2u6JnCrngsDlYRshOqx9osX5Q/q6CapAeeTS2Wj4hsNq/Gb73uQzVQj+xK
-         SxcZpMGR+yI9AwyFHhY+JSrQnWDB871RLeFFGsL8ycFvIJIpiHUdx3fONc6qL6enCrZS
-         lRsFtppQDYK/ZXIwUGgEA2mX8NqvMGjzKFiyBuOTeMTX6+V9mYRiy/70fodATwv7ywOh
-         MbEA==
-X-Forwarded-Encrypted: i=1; AJvYcCUhjLtLR/14f6CAYH383UN56b4wcgnaWhXJWZXxEHttuYFPDreidGMrejNhTS2wltE3bI4ppKJEOHQeMAlDtnLDQLNJt0tok3Yyzsp1MOUzOv6b5XGd5O08TpWG3XhXhOcdEOfL
-X-Gm-Message-State: AOJu0YxN2hgEUo9u4XS4A7Eu8A85Q8eh3zrDQ9MKhU9nM3dstkKTzOPj
-	ZCNW/F09OPFHudhexpjA9vHmi/t89G7Zq8SrA1lL8o/aYQ5nomE=
-X-Google-Smtp-Source: AGHT+IFBMdzCkN1pfeNXsSOgKOTPTbLurD1G96vui642G+9uzDO80cyO1+j8cXtp04kUD3RJI3658Q==
-X-Received: by 2002:a05:6512:131b:b0:52c:df6d:e52e with SMTP id 2adb3069b0e04-53213657bd1mr1976632e87.16.1723541828126;
-        Tue, 13 Aug 2024 02:37:08 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ac34a.dip0.t-ipconnect.de. [91.42.195.74])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c777017sm216251795e9.35.2024.08.13.02.37.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Aug 2024 02:37:07 -0700 (PDT)
-Message-ID: <8114fea9-74e2-46e8-bece-9118fffd3983@googlemail.com>
-Date: Tue, 13 Aug 2024 11:37:05 +0200
+	s=arc-20240116; t=1723542094; c=relaxed/simple;
+	bh=NCGCn0f/k1kMXI1ZHWQh2En1c2YY4FaEGdxpfvUv04A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J63VqHSaj5LiRFSXPiKgGH5OyftJ7G1X15Pc8QXlIbOr/iy5lS5DzQN1A+HQGt6dUbmekymFHu34rulVQLb0QPiQodqRW9PDfzhU6e1GWMFJZEFwCS32Zgpz6H8c4U4cZJBDiQXjx3md1b4VOleRSkw8eGxelF1fr7UriUGQwzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6WxzItL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADE5C4AF0B;
+	Tue, 13 Aug 2024 09:41:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723542094;
+	bh=NCGCn0f/k1kMXI1ZHWQh2En1c2YY4FaEGdxpfvUv04A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m6WxzItLFZM4yKGMikPRuYhUlgBe21AHfONkK/fjrmvEeuF5gUnUus2gurw6f+sSA
+	 N3JSrH8sLiKxSdm+zVv7DcUQu6ejhHEj1pgB38Px2ru5bErF/fFHD6WW3ldKC6BeFT
+	 2pcgg9zgyQdnhM1EMNiwwFR7cx9BCfvq7NDq9uFTvmZYtF1wzmy1fguZTzpVIfpdOi
+	 QNilMH5s1ViwuX9COXG8K/FvVsRW1eS/3oSiGs2Y/pLYV8LwDMXr8U+cmE/flP0pNk
+	 bK5RuwMQctb+zfLm5mF6BgI67xCz78r5DetodGN4SqkdiwED91xBVHT+bx0lwtguvw
+	 pFJ2OS9PNU1gg==
+Date: Tue, 13 Aug 2024 11:41:28 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Hannes Reinecke <hare@suse.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Igor Pylypiv <ipylypiv@google.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	stable@vger.kernel.org, Stephan Eisvogel <eisvogel@seitics.de>,
+	Christian Heusel <christian@heusel.eu>, linux-ide@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH] ata: libata-core: Return sense data in descriptor format
+ by default
+Message-ID: <ZrsqSA7P30vss6b9@x1-carbon.wireless.wdc>
+References: <20240812151517.1162241-2-cassel@kernel.org>
+ <ZrpXu_vfI-wpCFVc@ryzen.lan>
+ <3d3beb8d-4c93-4eef-b3ee-c92eb9df9009@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.1 000/149] 6.1.105-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240813061957.925312455@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20240813061957.925312455@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3d3beb8d-4c93-4eef-b3ee-c92eb9df9009@suse.de>
 
-Am 13.08.2024 um 08:28 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.1.105 release.
-> There are 149 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Aug 13, 2024 at 08:37:42AM +0200, Hannes Reinecke wrote:
+> On 8/12/24 20:43, Niklas Cassel wrote:
+> > On Mon, Aug 12, 2024 at 05:15:18PM +0200, Niklas Cassel wrote:
+> > > Sense data can be in either fixed format or descriptor format.
+> > > 
+> > > SAT-6 revision 1, 10.4.6 Control mode page, says that if the D_SENSE bit
+> > > is set to zero (i.e., fixed format sense data), then the SATL should
+> > > return fixed format sense data for ATA PASS-THROUGH commands.
+> > > 
+> > > A lot of user space programs incorrectly assume that the sense data is in
+> > > descriptor format, without checking the RESPONSE CODE field of the
+> > > returned sense data (to see which format the sense data is in).
+> > > 
+> > > The libata SATL has always kept D_SENSE set to zero by default.
+> > > (It is however possible to change the value using a MODE SELECT command.)
+> > > 
+> > > For failed ATA PASS-THROUGH commands, we correctly generated sense data
+> > > according to the D_SENSE bit. However, because of a bug, sense data for
+> > > successful ATA PASS-THROUGH commands was always generated in the
+> > > descriptor format.
+> > > 
+> > > This was fixed to consistently respect D_SENSE for both failed and
+> > > successful ATA PASS-THROUGH commands in commit 28ab9769117c ("ata:
+> > > libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error").
+> > > 
+> > > After commit 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for
+> > > CK_COND=1 and no error"), we started receiving bug reports that we broke
+> > > these user space programs (these user space programs must never have
+> > > encountered a failing command, as the sense data for failing commands has
+> > > always correctly respected D_SENSE, which by default meant fixed format).
+> > > 
+> > > Since a lot of user space programs seem to assume that the sense data is
+> > > in descriptor format (without checking the type), let's simply change the
+> > > default to have D_SENSE set to one by default.
+> > > 
+> > > That way:
+> > > -Broken user space programs will see no regression.
+> > > -Both failed and successful ATA PASS-THROUGH commands will respect D_SENSE,
+> > >   as per SAT-6 revision 1.
+> > > -Apparently it seems way more common for user space applications to assume
+> > >   that the sense data is in descriptor format, rather than fixed format.
+> > >   (A user space program should of course support both, and check the
+> > >   RESPONSE CODE field to see which format the returned sense data is in.)
+> > > 
+> > > Cc: stable@vger.kernel.org # 4.19+
+> > > Reported-by: Stephan Eisvogel <eisvogel@seitics.de>
+> > > Reported-by: Christian Heusel <christian@heusel.eu>
+> > > Closes: https://lore.kernel.org/linux-ide/0bf3f2f0-0fc6-4ba5-a420-c0874ef82d64@heusel.eu/
+> > > Fixes: 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error")
+> > > Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> > > ---
+> > >   drivers/ata/libata-core.c | 7 +++++++
+> > >   1 file changed, 7 insertions(+)
+> > > 
+> > > diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+> > > index c7752dc80028..590bebe1354d 100644
+> > > --- a/drivers/ata/libata-core.c
+> > > +++ b/drivers/ata/libata-core.c
+> > > @@ -5368,6 +5368,13 @@ void ata_dev_init(struct ata_device *dev)
+> > >   	 */
+> > >   	spin_lock_irqsave(ap->lock, flags);
+> > >   	dev->flags &= ~ATA_DFLAG_INIT_MASK;
+> > > +
+> > > +	/*
+> > > +	 * A lot of user space programs incorrectly assume that the sense data
+> > > +	 * is in descriptor format, without checking the RESPONSE CODE field of
+> > > +	 * the returned sense data (to see which format the sense data is in).
+> > > +	 */
+> > > +	dev->flags |= ATA_DFLAG_D_SENSE;
+> > >   	dev->horkage = 0;
+> > >   	spin_unlock_irqrestore(ap->lock, flags);
+> > > -- 
+> > > 2.46.0
+> > > 
+> > 
+> > This patch will change so that the sense data will be generated in descriptor
+> > format (by default) for passthrough (SG_IO) commands, not just SG_IO ATA
+> > PASS-THROUGH commands.
+> > 
+> > Non-passthrough (SG_IO) commands are not relavant, as they will go via
+> > scsi_finish_command(), which calls scsi_normalize_sense() before interpreting
+> > the sense data, and for non-passthrough commands, the sense data is not
+> > propagated to the user. (The SK/ASC/ASCQ is only printed to the log, and this
+> > print will be the same as before.)
+> > 
+> > However, it is possible to send any command as passthrough (SG_IO), not only
+> > ATA PASS-THROUGH (ATA-16 / ATA-12 commands).
+> > 
+> > So there will be a difference (by default) for SG_IO (passthrough) commands
+> > that are not ATA PASS-THROUGH commands (ATA-16 / ATA-12 commands).
+> > (E.g. if you send a regular SCSI read/write command via SG_IO to an ATA device,
+> > and if that command generates sense data, the default sense data format would
+> > be different.)
+> > 
+> > Is this a concern?
+> > 
+> > I have a feeling that some user space program that blindly assumes that the
+> > sense data will be in fixed format (for e.g. a command that does an invalid
+> > read) using SG_IO will start to complain because of a "regression".
+> > 
+> I really hate it when people start generalising which in fact was an
+> occurrence with a single program, namely hdparm.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+It is actually multiple programs, namely hdparm, hddtemp and udisks.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+It is unfortunate that these applications do not handle sense data correctly,
+and they would break even on older kernels if your do a MODE SELECT to change
+the D_SENSE bit to one.
+
+However, right now I don't see any other option than to revert commit
+28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and
+no error"), so that we are no longer spec compliant with SAT-6. This commit
+got backported to stable, so now there is a bunch of users complaining that
+hddtemp etc. is no longer working.
+
+Perhaps we could re-visit this code to be spec compliant again in the
+future (after the bad programs have been fixed).
 
 
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Kind regards,
+Niklas
 
