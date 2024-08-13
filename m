@@ -1,219 +1,129 @@
-Return-Path: <stable+bounces-67499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD22950802
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C67950804
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38521287B6C
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:41:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8598B287CB2
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329D719D07D;
-	Tue, 13 Aug 2024 14:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A0919E822;
+	Tue, 13 Aug 2024 14:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ofUQ0CL4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="egosHgS9"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2070.outbound.protection.outlook.com [40.107.223.70])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E80125AC
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 14:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723560100; cv=fail; b=HykrOE1+gK7Nnnm1J8C863wCijXMaZR5g1CfCikPI39vkE3xz6KMaZFonUSdCm5WHTdDYC8GXduq/Kk4mqpQqiarKCpHFSpN6KkWalKzgbTgN3uFBfrzxhcoBTnkCVqrEn5ca0u1oi9GuCdSdqS2/of8BUCiorP4VKa/9rMsgdQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723560100; c=relaxed/simple;
-	bh=Pqo25cWeQVe+ZkGUSse7rYcnGVKq5NXe2aeVt4OkfM0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=h29+CRE5wDTonDSHb3fDnmgw3NHXGXH6eu0GqykU3cesbOgio+0cJcy71lyexexcei5jkS6vdfsBY0qI2akooniR0cDgqA6LKFvIGhUwGSFbkHyLfdzHhC4wsHlDbooZwq4T6NJniGjzw5AAR1LNM53t+79VXFVlJy5S5yjMsWc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ofUQ0CL4; arc=fail smtp.client-ip=40.107.223.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KO5FG88cph1qog+hxGy4ni8jt7Oo355j3b5k2u3HoUrsRbKFwMrdrJXMc4tNxtvTbMWSBkal+T9xUjKLsv5mjQEZVMBLClNHX+1olePVMYzF25W6JK0SL3plepdO5KVQMTGtzF9L1W5MgIF2154DTwOsGAVDIgjo4GUsJBBKgkS2Ga0dm9a1nnVLy1gJX9heOl54DsZFoBTXU/ZViT+4p4cMOc6b7uNuGyCrQVvlNXdo7FlK2sGvRQ7p5Dxv5A81fT+VrVqqfy+TULQGtc3sNcVLqYuzSn9p57Rp4gOo5eVEbHNK77dtFb+wa+xeZtMdn36fhra/BvVymcYCI1/bdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AV3lG1sGiUmhNWPeBxHOSFzkzSAiXhaRF22BG7Kjrh0=;
- b=FWO6bYelsi1f/G+RGUIIbgDpmPhIWAFVDNJjWy7LesN0sAI6mgUHgDgreot+7ktygeqFgjBnnkAQhbmvZ1GTggO7ezGMn5YUmWzN7L67KuMHjYeDxEG7oOvR/lW5SDnc3vdgu1R25Gdz/5BUGG2TDyD38BBhfmpW0tvTmIY/PKgc/myRzrHvVxAGTDgX7C3VLx8cKTMddARCFH/0CVBvCBpy+6UNkwGp3OS+0PYQmynvo6zAjcPA5h/K4JUVL0smtkIsC41+9nSnlFSwW7mwUprqHtuG5+iK0bJ4s/TPyWBeArGKXOWRO6xACq0dDVMiS4Wer1PO7zD4SjTLwuL3IQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AV3lG1sGiUmhNWPeBxHOSFzkzSAiXhaRF22BG7Kjrh0=;
- b=ofUQ0CL4HmQ0HLdtHDvaYq1dgQF9yAP1B4KdA/0KV5TyaUgSZxewpcf/+C3RKxm53xIwoL+LSTtjVXTxIb1irJI5RSr8MSbRoaHLYmA7cuqCrtSL6hVS+gNB+3uwyWp722sZ4xIc1hAX3SokeGla5TFSBgLA5ler7ldBOT9BBzg=
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com (2603:10b6:303:139::18)
- by IA1PR12MB6090.namprd12.prod.outlook.com (2603:10b6:208:3ee::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.23; Tue, 13 Aug
- 2024 14:41:34 +0000
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::5f4:a2a9:3d28:3282]) by CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::5f4:a2a9:3d28:3282%4]) with mapi id 15.20.7849.023; Tue, 13 Aug 2024
- 14:41:34 +0000
-From: "Lin, Wayne" <Wayne.Lin@amd.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kevin Holm
-	<kevin@holm.dev>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, "Limonciello, Mario"
-	<Mario.Limonciello@amd.com>, "Deucher, Alexander"
-	<Alexander.Deucher@amd.com>, "Wu, Hersen" <hersenxs.wu@amd.com>, "Wheeler,
- Daniel" <Daniel.Wheeler@amd.com>
-Subject: RE: [PATCH 6.10 257/263] drm/amd/display: Defer handling mst up
- request in resume
-Thread-Topic: [PATCH 6.10 257/263] drm/amd/display: Defer handling mst up
- request in resume
-Thread-Index: AQHa7NX/g7R4aKYVR0O8DBBXNlU0BbIlJrQAgAAXrACAAANjsA==
-Date: Tue, 13 Aug 2024 14:41:34 +0000
-Message-ID:
- <CO6PR12MB5489A767C7E0B1CFAEB069A0FC862@CO6PR12MB5489.namprd12.prod.outlook.com>
-References: <20240812160146.517184156@linuxfoundation.org>
- <20240812160156.489958533@linuxfoundation.org>
- <235aa62e-271e-4e2b-b308-e29b561d6419@holm.dev>
- <2024081345-eggnog-unease-7b3c@gregkh>
-In-Reply-To: <2024081345-eggnog-unease-7b3c@gregkh>
-Accept-Language: en-US, zh-TW
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ActionId=20eeae5b-bb83-4c97-9cac-400d86b3df2b;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=0;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=true;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Method=Standard;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
- Internal Distribution
- Only;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2024-08-13T14:33:08Z;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO6PR12MB5489:EE_|IA1PR12MB6090:EE_
-x-ms-office365-filtering-correlation-id: ca57fc82-b641-48f0-9c58-08dcbba6077e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?BMt6aEtbPSMID23gBIT8WsHjn+Vkc7VIq2VjxEIZIT0yRA1MWKMlwVpbG9pc?=
- =?us-ascii?Q?vpGrCX595NkTRuClUqgID7ijj2xBVcliZ4t8E4kRC5cWJb9apMa/jObBlwJT?=
- =?us-ascii?Q?D2Tfu8D/USk9sioDIeDqNO9M/3wwOpIB9u2vEDWXuehV8Eph2nNgV7dFsGVP?=
- =?us-ascii?Q?HiMxSwWATh4n4ca7pWlrIihcRPVz9arroE2KagKE33E9+TGTMw11yZQHE+wF?=
- =?us-ascii?Q?mBqP8UfPYtPEmCo5vBq+w+OUKvIy5bJcA1W0zTjPBbdCP2SOXLmaDUhoxdYi?=
- =?us-ascii?Q?QImdA87Xx31gOvdmfoAizMV5xvpm67nfZazj6ByY6Ta3Rq8QdM9VBoDLprsX?=
- =?us-ascii?Q?w/8KWpXnHGO+tQ4MkgkjCfi7raif4IpkwB/cVubmKhTRkA3d9fjEbKkyRDAl?=
- =?us-ascii?Q?lZtZzEqZUculpBO4vUjjvAiinkWsqkQeVYEyVI2qUengqqlyEmZE3vU7dbrY?=
- =?us-ascii?Q?5Tk2RmHhBQrO6nEP7WGfu9R+/LSn6eyEx8M1MagfTq6zhxsw66u9G01S31bK?=
- =?us-ascii?Q?r/nZ7/3D1OecdGvmrZgC+r6oB6qIzXFphsBM1Yk+0Yr/FvrZ3mORPHIbwXbD?=
- =?us-ascii?Q?kDZ9ZEbqyn3HvXIjZNOFPdatzVwH++5ysbjJs3HwSOS5ewCqL7tYcnJ+HdAK?=
- =?us-ascii?Q?uH0BvMolvOhNfg+0UH29iVxlrn3/WhMQ231lSvrisT0yFikl4HUC0gupzmcz?=
- =?us-ascii?Q?YWxmAEal0V/+k/cbYwG6J9mdi6OxfMGxjEw0PesSXGf2m8xeDVHV+LboY9B7?=
- =?us-ascii?Q?ftQAyK85kVzuVNrYFUJeNEzi6TbXnidgT9ouvdGITpuINgqKuufcGuEofW5g?=
- =?us-ascii?Q?tvRsHTp2McdqO+g5TPoFH+9gSULhLDxPl06uQxkR/c/16Uo5evEzaJXtiYjc?=
- =?us-ascii?Q?311TBvzRB4wNG7Qcz1bJwwRxf1X21jNeg0oX7YbcM7Bu5e/R2xCmybe5Mwyj?=
- =?us-ascii?Q?MWbc7puTctwIhjl8EVOPv7GHvzLAudgWi6tDkRpYMj97f2OWvCztE+IXTi3c?=
- =?us-ascii?Q?kpQCm97SMJWxF2WqF5gizmjmLZ1ZwzPvy87egMoSUfUR9VPp4vmt2hIlIGC4?=
- =?us-ascii?Q?jcy3WIQl7QjV2goxSG9shTlu65OCs3LSO7KrRFxV0DLLvH0uyV92/IpeqYPm?=
- =?us-ascii?Q?V8Ia+rk+NYS2y7YH5GAsgatzw64j+B8/Eq+V3lMX6kMGT//7xtCbyMkbHNuY?=
- =?us-ascii?Q?xHr7O2dY03jRXb6NaaizOjvjsg87/Cd1SBe5Zzh4inenxuyU3pljZL8Fz22C?=
- =?us-ascii?Q?swX4b+xZDzabGHDC7CBROacV5/oUhG148XIcsmACWO9iUcShd2hn2eWjuVAc?=
- =?us-ascii?Q?kNP3p1BIR6rW2p6qLZRzNKChUfi307sU30U/IVZ5Cv1jb5ORefZtvUWVDF4k?=
- =?us-ascii?Q?Y9hCWBpt9a4SMMqk63CHDM18q4vvLqkIWAakiWU5c1yZf1VFfA=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5489.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?1z9BDE6X3n6Y0yvAVgkmK8TXEVnhgfUN12aicPMKcquQcQn/5Ndu81Dr7YkB?=
- =?us-ascii?Q?ozkQ/ungRqybuqQESjzrEuqaoXCeQXY6ZdIRzBcOvv0s3WVjvKdEwQV+UMsH?=
- =?us-ascii?Q?fR08SH4cyf6b0APMgH4ubqEfvwvLxqUDCHbXmAqICQJD0o0esEU3819PM/QR?=
- =?us-ascii?Q?YyULPGREXdxlkCJkGU/Nu6l6sa9atg9DthKqe40jDwc10lQVRdWCtinpRzEj?=
- =?us-ascii?Q?iSlwF3paYgUEKSx0PXM46PafhnBhGDarMiOxHEAX8hNbPMX83CxygYrUl9Lv?=
- =?us-ascii?Q?VbWndo1EJ3JLkUbGQphfW44SiJymLzsSD3XtX3BMv+LG8cV3Vg2ZI826o16N?=
- =?us-ascii?Q?L4DBJl5I+uIcUsoDmVqgDeY3fZTu37PBk+JeWND8WqFi8ySLDZ9PkK/y3gsW?=
- =?us-ascii?Q?L6a7uX/hSiBn4LiAROrJQmU66O7ytO2EyfJgfL6RRgWY9JQMO6q1hoMBl0mQ?=
- =?us-ascii?Q?WrBRQSS5icmgUyQyX1RfR5vDQOvlYTwWk/C8JPIAxKwW4KgSzqgi/j36LeFO?=
- =?us-ascii?Q?KylfkR73zhLScrt/0d/XV7OYJklX/fy4Yaa7+yktJsa8JVzskjWcbAcC503W?=
- =?us-ascii?Q?8SS8GDOTam//3pBdaaNZooxLAOSae7GaRqwQJb4Ok9mqXXVIJGIUa2Rc+gzs?=
- =?us-ascii?Q?bEW+00t+paeN859k4rvKcoRMd3dVP3JOf35hgNrVu5LoBMXWbc3jllyHJnu3?=
- =?us-ascii?Q?k9ysaIqcdN7gSuu1+MGlI6aIhG9Bm5S51TRpdiXgvNkyYMN6BUajeexiy0xW?=
- =?us-ascii?Q?KaXFxej8kC8OstpSLg4XLN6ilm9gghWdDgEJhfFoZEGMyNhuqaS31YIoS5P3?=
- =?us-ascii?Q?dMkIMT29OfUszkDk5nt2recFPJt2n0rve9gpTvDAAN0lai5k9PI+siiHt7gR?=
- =?us-ascii?Q?i51IzyWqb7xDvONkxKCSCMBIG0fVeUWfB+xXuxYPFVPDgLjdn1M3soCUziqN?=
- =?us-ascii?Q?E2chnt6O2+aqLWzjZ/A7oJiFLwVUZms8IDVFqya19g9Lta0gQ52nP2g1axwL?=
- =?us-ascii?Q?MKZ5UUpbT+e/edAHj8QrSAX9cvx1h3F//lKrjWa0rv464zyRTygsmUqnKwtF?=
- =?us-ascii?Q?9a4q8y6wIMLpizpOq8XCnJLlxWzPACn90myCgbEtZ0AFsaA5wCbeE54SIAh6?=
- =?us-ascii?Q?441wGpGKktsFaIHMi4HgZzTNtEovDG9QSCwWeUfYit94OPp1nEnbYYzFXcqG?=
- =?us-ascii?Q?JzaqzsAQRZzpstVLKloFnskbP7Nf4dN2JTF5VNpjmYecePgoCieVzoHTVHeM?=
- =?us-ascii?Q?x/ThabIvHDJUqWNAoJynU4iRTQwQF7945RLfuuKst9/BuSyjWBCGE2oSFM+V?=
- =?us-ascii?Q?bvlGh6J4gOCUW6OHZIoiHm5/kpR4l7uvpG+SY1uCNcAGdsbGqiOscz0pM882?=
- =?us-ascii?Q?W/bt4mT191m9jPSVc1ukSy6AfAPoNbSLAYFgQTVlhJlIKvqID1J1zeur/IkQ?=
- =?us-ascii?Q?PETgvZDV/Jygxk9zMwVPEkIHeviP1eMbeaQBUAPOZW8zMy7dVYVUYKRzJr0b?=
- =?us-ascii?Q?CNhna4HD9DZMCBSc8NWdKHpsJrcamSK2/Zlnj2VertMorxvRG1mhZLLryOXp?=
- =?us-ascii?Q?J9V3RJ0xe1VCo8F/k6s=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583DD26AE8;
+	Tue, 13 Aug 2024 14:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723560134; cv=none; b=ui5+CNPH/dzHnMUoE8cnPYZCseZSqJhJr1bTzcuTP7Z+mL6t59kz+qlJkmjbmME6cKEAkSW2ocoFHIChzx78CfMv9k0H1Cj+P5dw8KIDx4HuKcullogv1PhoPFFlORbOlfDG7Z89C5Iljc39liffac28vyY0QnlzWf6nw057hzw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723560134; c=relaxed/simple;
+	bh=t/3sn+zJb5soHCGFSsLi8+AAfVQY4IzOjU0MFJj9U0s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hcULs/UJ9Kpn+BRHwbf3NG6vaNHxWqovEShKeACj2ezS4GPRAks9dgDmfKmQ8XHaS1/F2cunfqOrkHF6IKTyLUkYePYfW5ffPT2qB4wI6KghyU/hi0WV81VraLNFK8vYFxnkU43CJz7A68kFN9saX6Djeq/2j1spJJSrcwvZyVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=egosHgS9; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723560133; x=1755096133;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=t/3sn+zJb5soHCGFSsLi8+AAfVQY4IzOjU0MFJj9U0s=;
+  b=egosHgS9cgUnogsT3oDKXkVGZxReD6D+UFjVsooG6zgXBv2j0PLG7U+z
+   3LhBSjqtfRcd29E1jzaXAmugQCA2K5s8Pzmx6w4Grspj5mY/G/FAd7hwu
+   /Z8Q091fZAWBh+RGK39ax4mKRNnoN6HdGI+gPeU1IKzS1c+O3PtgnNib7
+   OM/nXVjSriczjMQKgumXVbNRwGvEHdfggjgGAgSqGzqmAC0efhLi5tDhU
+   uL1zPvQxw6BimPFu60DLTcim54lKPAzGGbxZLB0Q5ou2roGNQMV3/4Ko/
+   ZQo17kofVC869Juw1f3NIfVHri3XHXOk6IIK9CEFs6RctEV3Evg1wddb/
+   A==;
+X-CSE-ConnectionGUID: Ovur+fP7Q6OmKDeHqM+QSA==
+X-CSE-MsgGUID: WA1Gr4b0S9+yQdP02AAeog==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25518836"
+X-IronPort-AV: E=Sophos;i="6.09,286,1716274800"; 
+   d="scan'208";a="25518836"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 07:42:12 -0700
+X-CSE-ConnectionGUID: 6ft7ySktRo2/qjTJZk4hFg==
+X-CSE-MsgGUID: 5sMOjk9aSR+hZ5XsGoH20w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,286,1716274800"; 
+   d="scan'208";a="63110132"
+Received: from aslawinx-mobl.ger.corp.intel.com (HELO [10.94.0.53]) ([10.94.0.53])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 07:42:06 -0700
+Message-ID: <53ab1511-b79c-4378-b2b5-ea9e19e8f65b@linux.intel.com>
+Date: Tue, 13 Aug 2024 16:42:04 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5489.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca57fc82-b641-48f0-9c58-08dcbba6077e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Aug 2024 14:41:34.4292
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jufvd2W9u1QqW4w00w5pGNSq8a5IlIAZqMZwBAk/Y2+f6XdhT7IOfVnMzzK+WcxL29God3EdbG14fMxDGFGT8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6090
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.9 17/40] ASoC: topology: Fix route memory
+ corruption
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Vitaly Chikunov <vt@altlinux.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+ Mark Brown <broonie@kernel.org>, lgirdwood@gmail.com, perex@perex.cz,
+ tiwai@suse.com, linux-sound@vger.kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ stable@vger.kernel.org
+References: <czx7na7qfoacihuxcalowdosncubkqatf7gkd3snrb63wvpsdb@mncryvo4iiep>
+ <14e54a89-5c62-41b2-8205-d69ddf75e7c7@linux.intel.com>
+ <e95a876a-b4b4-4a9d-9608-ec27a9db3e0c@leemhuis.info>
+ <210a825d-ace3-4873-ba72-2c15347f9812@linux.intel.com>
+ <2024081225-finally-grandma-011d@gregkh>
+ <20240812103842.p7mcx7iyb5oyj7ly@altlinux.org>
+ <2024081227-wrangle-overlabor-cf31@gregkh>
+From: =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>
+In-Reply-To: <2024081227-wrangle-overlabor-cf31@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-[AMD Official Use Only - AMD Internal Distribution Only]
+On 8/12/2024 4:11 PM, Greg Kroah-Hartman wrote:
+> On Mon, Aug 12, 2024 at 01:38:42PM +0300, Vitaly Chikunov wrote:
+>> Greg,
+>>
+>> On Mon, Aug 12, 2024 at 12:25:54PM +0200, Greg Kroah-Hartman wrote:
+>>> On Mon, Aug 12, 2024 at 12:01:48PM +0200, Amadeusz Sławiński wrote:
+>>>> I guess that for completeness you need to apply both patches:
+>>>>
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=97ab304ecd95c0b1703ff8c8c3956dc6e2afe8e1
+>>>
+>>> This is already in the tree.
+>>>
+>>>> was an incorrect fix which was later fixed by:
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=0298f51652be47b79780833e0b63194e1231fa34
+>>>
+>>> This commit will not apply :(
+>>
+>> It depends upon e0e7bc2cbee9 ("ASoC: topology: Clean up route loading"),
+>> which was in the same patchset that didn't get applied.
+>>    
+>>    https://lore.kernel.org/stable/?q=ASoC%3A+topology%3A+Clean+up+route+loading
+>>
+>> I see, Mark Brown said it's not suitable material for stable kernels
+>> (since it's code cleanup), and Sasha Levin dropped it, and the dependent
+>> commit with real fix.
+> 
+> Ok, then someone needs to provide a working backport please...
+> 
 
-Hi Greg and Kevin,
-
-Sorry for inconvenience, but this one should be reverted by another backpor=
-t patch:
-"drm/amd/display: Solve mst monitors blank out problem after resume"
-
-Thanks,
-Wayne Lin
-> -----Original Message-----
-> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Sent: Tuesday, August 13, 2024 10:21 PM
-> To: Kevin Holm <kevin@holm.dev>
-> Cc: stable@vger.kernel.org; patches@lists.linux.dev; Limonciello, Mario
-> <Mario.Limonciello@amd.com>; Deucher, Alexander
-> <Alexander.Deucher@amd.com>; Wu, Hersen <hersenxs.wu@amd.com>; Lin,
-> Wayne <Wayne.Lin@amd.com>; Wheeler, Daniel <Daniel.Wheeler@amd.com>
-> Subject: Re: [PATCH 6.10 257/263] drm/amd/display: Defer handling mst up
-> request in resume
->
-> On Tue, Aug 13, 2024 at 02:56:18PM +0200, Kevin Holm wrote:
-> >
-> > On 8/12/24 18:04, Greg Kroah-Hartman wrote:
-> > > 6.10-stable review patch.  If anyone has any objections, please let m=
-e
-> know.
-> > This patch seems to cause problems with my external screens not
-> > getting a signal after my laptop wakes up from sleep.
-> >
-> > The problem occurs on my Lenovo P14s Gen 2 (type 21A0) connected to a
-> > lenovo usb-c dock (type 40AS) with two 4k display port screens
-> > connected. My Laptop screen wakes up normally, the two external
-> > displays are still detected by my system and shown in the kde system
-> settings, but they show no image.
-> >
-> > The problem only occurs after putting my system to sleep, not on first =
-boot.
-> >
-> > I didn't do a full git bisect, I only tested the full rc and then a
-> > build a kernel with this patch reverted, reverting only this patch solv=
-ed the
-> problem.
->
-> Is this also an issue in 6.11-rc3?
->
-> thanks,
->
-> greg k-h
+Should this be cherry-pick of both (they should apply cleanly):
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=e0e7bc2cbee93778c4ad7d9a792d425ffb5af6f7
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=0298f51652be47b79780833e0b63194e1231fa34
+or just the second one adjusted to apply for stable trees?
 
