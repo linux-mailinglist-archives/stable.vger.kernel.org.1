@@ -1,98 +1,207 @@
-Return-Path: <stable+bounces-67482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EA69504D7
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:23:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769D9950517
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 14:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F79A1C20CA2
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:23:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBB92B28E12
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F37E1993B8;
-	Tue, 13 Aug 2024 12:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CA819412F;
+	Tue, 13 Aug 2024 12:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qfBALhrz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jRStKCbq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0121CF9A;
-	Tue, 13 Aug 2024 12:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC13B19AD6A
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 12:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723551801; cv=none; b=SjsmifJx3gJUVA6XQt3fIuxa1LcN9Eqbkn8EwMjmk+3ccFYD28ZW/C5omXFEb5yiuLiJItVa3+PIdjcCEUUFA3W8j3my9qnaMUoNQeq2FB6/CD/vgpyiNg5nx/0wGJKmkHTX32Ag6Sarvh0l6cwuNpkNEP/eAiji60DuWHGhbZE=
+	t=1723552339; cv=none; b=XHTOReP1Q77VVmhIIAWWssTHr3R4qaU2vgA3nQXELgiCqJsijuQU3jc1AVbqB5Nn1WZv/IscWsxsh4uhOnwPppHhQ0sQKHgsRPnmnJUTY3Gb9Tif5lfD+UE3ZioW77X1VBUvzjz6xbJNHHKvZ4R/iqLOHHB3IETFPixpm5UJuv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723551801; c=relaxed/simple;
-	bh=ymSonT8T6qomlnFRfpcE9r9zqEqxNIAluUl4XMBE18E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C6VJeTvOw3eZGvbO37ASEQBJ9rwum2jhGSTGoPLpFSEYNZ8iGXN81U+uCF3QqXIlQGsxfv2jrHtIarBoGKge0UV7rBUKFnbjJft6JepDsV5hDCINu2WrnVt4NaT4CiiYnIw3DgE0p5FxJedbD2+MxQcMIRaIpF7eqB+cLtfOxw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qfBALhrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9BDC4AF0B;
-	Tue, 13 Aug 2024 12:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723551800;
-	bh=ymSonT8T6qomlnFRfpcE9r9zqEqxNIAluUl4XMBE18E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qfBALhrztV7ruJdh1AhNrvVzvM0seKVY+EhP2TCpwhZtexCRdFP/H3QzEtEYMFoct
-	 IV83B52/LOe5vZXpLdsAQs2ZjoL1elMjjesXdBA81+g/rm1WItGHeSHzTZKByAePo0
-	 eKptQf6aV222R4S4i7aLfAFbuQ0bWUEAo6T4mkqSAaYDmhJOZaGbnh8zSfrzQ+dm7Q
-	 VOdkijGWkm5+CPbm0dDiDMfFCq02oJxoUSNBW01K9axJKFsXDmrcRNPxjJzNEvBoAu
-	 T2cTU170ahuPw2AY8eY8sUXwrGB7wiHQnfvONlLCorQ5fPERsiOVFMZvoe8RnPkyqB
-	 IfndqVJtiZ7Fw==
-Date: Tue, 13 Aug 2024 13:23:13 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.10 000/263] 6.10.5-rc1 review
-Message-ID: <c66f9da0-8be6-4e41-a297-69312edc694a@sirena.org.uk>
-References: <20240812160146.517184156@linuxfoundation.org>
+	s=arc-20240116; t=1723552339; c=relaxed/simple;
+	bh=fRm9kV9I35nU4vQID5VZiERzDXNvLV86IQXM9uxB0t8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HRyPHGV5DCiLo9CxWj5ct27miA10MnJQWK4NXn5+i8uY6k0zTJsUdQz8Xryz6h8kZSmbNzYgjoF+lkKlBCL2ZNYGL1VbFdYe4+H2LCEmUh06o1fQGEPbSISft+1WlFoKwFp4niZG46dFqX+lPmw+aJDMHwke1QH26qYU+pnSdhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jRStKCbq; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723552337; x=1755088337;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=fRm9kV9I35nU4vQID5VZiERzDXNvLV86IQXM9uxB0t8=;
+  b=jRStKCbqtQHa9lOIOhJDq+lW2YvPxkWVo2sbnuIgy9ue8x+at9N6oiDV
+   w+xoFiCn7fBw2E9HKwYtkIA0iElLYrotfLFBJFvkemFjHolV/IpOxdbIF
+   aA7lmEWCZiiMiL5Okb8BKrJqkPK5w3yaTOlXJmqTyxSuyq5IIxZy5/Kzd
+   /OiEr4Sw9a0DlKIHYs2YEPjEA88yDO7U8WM/ByHU9myN6k6H7Oc80l1kQ
+   a3krT8CI9qzwDk9xVPpGhQdUiRSmydpQbOfq8x0Qib9EQau440YJKmRQX
+   cWWXxo+64DGU6Gtr26i59t1V7gWdEQliZ9yew5V0yDz+n7CllS+Xh2SCI
+   Q==;
+X-CSE-ConnectionGUID: qNg4P7j3QQSMzP3Rn/teGQ==
+X-CSE-MsgGUID: GE9TyCeORZGP9XG86/vkZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="12984023"
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; 
+   d="scan'208";a="12984023"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 05:32:16 -0700
+X-CSE-ConnectionGUID: /jl+wvPBQ1+dlVhjsO56aQ==
+X-CSE-MsgGUID: k91nuHFYRnGvcKXRIkcn5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; 
+   d="scan'208";a="58595966"
+Received: from mwiniars-desk2.ger.corp.intel.com (HELO intel.com) ([10.245.246.4])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 05:32:13 -0700
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+	Jann Horn <jannh@google.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Jonathan Cavitt <Jonathan.cavitt@intel.com>
+Subject: [PATCH 5.10.y] drm/i915/gem: Fix Virtual Memory mapping boundaries calculation
+Date: Tue, 13 Aug 2024 14:31:53 +0200
+Message-ID: <20240813123153.20546-1-andi.shyti@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024081220-brethren-diagnoses-2569@gregkh>
+References: <2024081220-brethren-diagnoses-2569@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="T95vhYXTCHZKL4E3"
-Content-Disposition: inline
-In-Reply-To: <20240812160146.517184156@linuxfoundation.org>
-X-Cookie: Say no, then negotiate.
+Content-Transfer-Encoding: 8bit
 
+Commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
 
---T95vhYXTCHZKL4E3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Calculating the size of the mapped area as the lesser value
+between the requested size and the actual size does not consider
+the partial mapping offset. This can cause page fault access.
 
-On Mon, Aug 12, 2024 at 06:00:01PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.10.5 release.
-> There are 263 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Fix the calculation of the starting and ending addresses, the
+total size is now deduced from the difference between the end and
+start addresses.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Additionally, the calculations have been rewritten in a clearer
+and more understandable form.
 
---T95vhYXTCHZKL4E3
-Content-Type: application/pgp-signature; name="signature.asc"
+Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
+Reported-by: Jann Horn <jannh@google.com>
+Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: <stable@vger.kernel.org> # v4.9+
+Reviewed-by: Jann Horn <jannh@google.com>
+Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
+[Joonas: Add Requires: tag]
+Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
+(cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+---
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c | 53 +++++++++++++++++++++---
+ 1 file changed, 47 insertions(+), 6 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+index 01a88b03bc6d..0021b039b72b 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -273,6 +273,41 @@ static vm_fault_t vm_fault_cpu(struct vm_fault *vmf)
+ 	return i915_error_to_vmf_fault(err);
+ }
+ 
++static void set_address_limits(struct vm_area_struct *area,
++			       struct i915_vma *vma,
++			       unsigned long obj_offset,
++			       unsigned long *start_vaddr,
++			       unsigned long *end_vaddr)
++{
++	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
++	long start, end; /* memory boundaries */
++
++	/*
++	 * Let's move into the ">> PAGE_SHIFT"
++	 * domain to be sure not to lose bits
++	 */
++	vm_start = area->vm_start >> PAGE_SHIFT;
++	vm_end = area->vm_end >> PAGE_SHIFT;
++	vma_size = vma->size >> PAGE_SHIFT;
++
++	/*
++	 * Calculate the memory boundaries by considering the offset
++	 * provided by the user during memory mapping and the offset
++	 * provided for the partial mapping.
++	 */
++	start = vm_start;
++	start -= obj_offset;
++	start += vma->ggtt_view.partial.offset;
++	end = start + vma_size;
++
++	start = max_t(long, start, vm_start);
++	end = min_t(long, end, vm_end);
++
++	/* Let's move back into the "<< PAGE_SHIFT" domain */
++	*start_vaddr = (unsigned long)start << PAGE_SHIFT;
++	*end_vaddr = (unsigned long)end << PAGE_SHIFT;
++}
++
+ static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
+ {
+ #define MIN_CHUNK_PAGES (SZ_1M >> PAGE_SHIFT)
+@@ -285,14 +320,18 @@ static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
+ 	struct i915_ggtt *ggtt = &i915->ggtt;
+ 	bool write = area->vm_flags & VM_WRITE;
+ 	struct i915_gem_ww_ctx ww;
++	unsigned long obj_offset;
++	unsigned long start, end; /* memory boundaries */
+ 	intel_wakeref_t wakeref;
+ 	struct i915_vma *vma;
+ 	pgoff_t page_offset;
++	unsigned long pfn;
+ 	int srcu;
+ 	int ret;
+ 
+-	/* We don't use vmf->pgoff since that has the fake offset */
++	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
+ 	page_offset = (vmf->address - area->vm_start) >> PAGE_SHIFT;
++	page_offset += obj_offset;
+ 
+ 	trace_i915_gem_object_fault(obj, page_offset, true, write);
+ 
+@@ -363,12 +402,14 @@ static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
+ 	if (ret)
+ 		goto err_unpin;
+ 
++	set_address_limits(area, vma, obj_offset, &start, &end);
++
++	pfn = (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
++	pfn += (start - area->vm_start) >> PAGE_SHIFT;
++	pfn += obj_offset - vma->ggtt_view.partial.offset;
++
+ 	/* Finally, remap it using the new GTT offset */
+-	ret = remap_io_mapping(area,
+-			       area->vm_start + (vma->ggtt_view.partial.offset << PAGE_SHIFT),
+-			       (ggtt->gmadr.start + vma->node.start) >> PAGE_SHIFT,
+-			       min_t(u64, vma->size, area->vm_end - area->vm_start),
+-			       &ggtt->iomap);
++	ret = remap_io_mapping(area, start, pfn, end - start, &ggtt->iomap);
+ 	if (ret)
+ 		goto err_fence;
+ 
+-- 
+2.45.2
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAma7UDAACgkQJNaLcl1U
-h9DhYgf+MenCIPT4aj76h6dnttqLNQPQiaNw9np66ECIzhDzDqizNyzmFbnpeVZg
-9upy3BrItyxsMqQ6A8ht5THSz4K4a9g5S4bCGElK3dA323A1qKTq8MAa7moj6Goi
-htIB7KMl1Bh4TTP0BZd5zlJw/ksys0t34Ro1D7cp2eLKrF3VEg9Akm00Jy5GRS4x
-A/jyFoIYpbBG+JN8beGMezVse//HFiNbst6BQY42EKevbVLPQsxPhoHYPzyAtZXl
-CRs+wAGytzJcKhDQsn1PM/0M9TooL4MJA4cZHRyvhUpgSBBKL9kkPYuB9IwDc9qF
-9YvMOmwpr8DFL5zGqzxVDzfwN9mPSQ==
-=6YIB
------END PGP SIGNATURE-----
-
---T95vhYXTCHZKL4E3--
 
