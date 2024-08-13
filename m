@@ -1,128 +1,297 @@
-Return-Path: <stable+bounces-67553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6297C950F2A
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 23:32:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E077950FBE
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 00:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 778E61C21AA6
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 21:32:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEF65285815
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 22:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7C61AAE20;
-	Tue, 13 Aug 2024 21:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8471AB516;
+	Tue, 13 Aug 2024 22:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LltE6ePF"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IODBnvVC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B29A1AAE10;
-	Tue, 13 Aug 2024 21:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CCD1A7054
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 22:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723584764; cv=none; b=gmuf4XsqBybhpngJ1UnE5Y+kkBuonIolia0S4ZAwEH3j/pqvOxDHQRc/RN4eALf15TcDRs4RAAUb2emEO0MOSrYYh6Ay9Q33FRg9hfoHeSPmQB7dMoUepSYn4k73LqzW98AGkLy4Q+Qu3a53oAdta+vm0stjYK3W1NM1G5L2WkA=
+	t=1723588170; cv=none; b=ijzrqAdjjt2/z6/valhBQ8IAMU4AvtRwSQJdB9jLDRZ0moxJ9WUacH+jQuX4bA1Aud5Ta1I9BETZXmTMJRV6khSO/u37Xo3aJD8KPEbCmJ60BCfl7xDs74LZhcBPP+udrD0IX9kCU7zWTwoc9Dm1Y3y+Dt0t9c3d09wLyb0eCOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723584764; c=relaxed/simple;
-	bh=Eh1AfJGoCff66D+hMQ28lVVRYQb3I2KauSOTKfmmVgA=;
-	h=Date:To:From:Subject:Message-Id; b=GmvVOxug5zWbrmq5ZgRoKVIr+SdUdf9Uh1KZcKDzA9MUmeY7Uu4XoeSjgpcveedZ5pITbDIiadP1Oug0+oT74etL3cj8S1sdCJR5W5PPKe65rdeUxtyYg5+q8WPPsBXvR+Bej3beesxsrIPP/FiASe9wgUXkfyz/PMyNBWMCb0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LltE6ePF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FACC4AF11;
-	Tue, 13 Aug 2024 21:32:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1723584763;
-	bh=Eh1AfJGoCff66D+hMQ28lVVRYQb3I2KauSOTKfmmVgA=;
-	h=Date:To:From:Subject:From;
-	b=LltE6ePF23nNsRUKojsXZi/tT3HNva7Mu1K+3n4sbZVhkDzdTd9TFJRs1/vJtZ3pv
-	 G/3c9KoqZ5/v8OPjqgxQEqceQP0+dBev3+AN4JAd6mkkd3NSWos0kuBAtgrf6u3LdT
-	 9TmTITY6wsgdbcl1LafDdIC1tSTW+L0UvaDPnJZw=
-Date: Tue, 13 Aug 2024 14:32:43 -0700
-To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,xemul@virtuozzo.com,stable@vger.kernel.org,hughd@google.com,david@redhat.com,aarcange@redhat.com,jannh@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + userfaultfd-dont-bug_on-if-khugepaged-yanks-our-page-table.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240813213243.B9FACC4AF11@smtp.kernel.org>
+	s=arc-20240116; t=1723588170; c=relaxed/simple;
+	bh=DeBM2Jzf7ccIDFSZ1n1rUvgA11CE3Kqq+U6VPxsqQLI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UoAV0AQLhzCDLYj3CU4wmLAvwnJ4+XDxTqTlVSLmGLc53LCRFrQC4gV+Nk0XNy+DrAbJ7UOz34EbZcZENV2CMPF9xoXk3G9hdkioqIpQRhZLF/M+hyXIZEe1qlTMHffdEhI3gnwI/jViUUJhYSClu55x3UlOTpzGNfAbw7+Uk3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IODBnvVC; arc=none smtp.client-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-268daf61e8bso2527949fac.0
+        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 15:29:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1723588168; x=1724192968; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ykgogzbyK4rVzg7RHnLmQ4IP974gSr6UIGGUTaoRMNw=;
+        b=IODBnvVCtIc/6qEKMLXKfXeo8Chb30o+j1ThuKPSovT3Xc/QgcQmYhDfEpNLz2iSyM
+         oS4lG5LMsYSy8cmJRarF0gGV1ptzPpXnh+I3qVThJpqdgkHsGyB8oTI3l0CwqfpKREfg
+         sskjDOWrxYluAo+Ot0iffxKHnQ4C/2PULlSkk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723588168; x=1724192968;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ykgogzbyK4rVzg7RHnLmQ4IP974gSr6UIGGUTaoRMNw=;
+        b=W4qVBz8qxfVGiJ3pJj68OGxTxJMlVZXyC9x4eLKH33Cu980qVggnOsnsRoeraxLX3X
+         UTtQJXdeUVzmrva0rwOzGSljWJRgWdKuecS6uV7UjxpReYr2XhPqkzxwxFJPdVJgPEsv
+         Gq0O7d2rqRpeat39cEwBCg8/S+mih3FOakL7qAeMdL8WviTFwqgXZ9eWtCyS06gNDT9S
+         K4wZs5pAMkw/JmCrx3KLlKHWNZpgiUUw09p0xrAhjFI90bs40ODZWIcfyhpo2ZLm7RE6
+         E2iRjgx+sxK7+PqmAT6I0dsMsMQfU/4it4h0StfT4Ahc7K37zkOssHBULK2If3nrdVaX
+         vrTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQO8+AhZjecV7/iP7X+zgJAVXvzWdHkTnUMAmw4YU+/VdpcW6QX1gKKgEv4P4FMj/9V9g4UjeKvl0doszIYo41YBHVtCnd
+X-Gm-Message-State: AOJu0Yxwy6hYK25xT0A3GvfjjpjWqiATeRsxANEq/SEqec15j4i1xvMt
+	FHLD+ZKRgrp+jOSEm7v4LXWR4+SAvfcGITxkzKp0QfPIpvUsg5kOoaXNLoHhvEfma8S9jr/TOu/
+	Vi381qMFzegRNEwimr9ir+qxIWy/o8VSrNYFc
+X-Google-Smtp-Source: AGHT+IGXHIA4OWX84r+ntsCxm1tIJRtPKmOxukETI3Iw8Kz6QgOTU2Exfj1kzAPmWxXmkmIxn7Epu9zjwMbuYGkdACw=
+X-Received: by 2002:a05:6870:56a1:b0:260:ff24:fb32 with SMTP id
+ 586e51a60fabf-26fe59dc7a3mr1176459fac.1.1723588168189; Tue, 13 Aug 2024
+ 15:29:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240809082511.497266-1-usama.anjum@collabora.com>
+In-Reply-To: <20240809082511.497266-1-usama.anjum@collabora.com>
+From: Jeff Xu <jeffxu@chromium.org>
+Date: Tue, 13 Aug 2024 15:29:16 -0700
+Message-ID: <CABi2SkWgPoWJY_CMxDru7FPjtQBgv61PA2VoCumd3T8Xq3fjbg@mail.gmail.com>
+Subject: Re: [PATCH] selftests: mm: Fix build errors on armhf
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Kees Cook <kees@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, kernel@collabora.com, 
+	stable@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Muhammad
+
+On Fri, Aug 9, 2024 at 1:25=E2=80=AFAM Muhammad Usama Anjum
+<usama.anjum@collabora.com> wrote:
+>
+> The __NR_mmap isn't found on armhf. The mmap() is commonly available
+> system call and its wrapper is presnet on all architectures. So it
+> should be used directly. It solves problem for armhf and doesn't create
+> problem for architectures as well. Remove sys_mmap() functions as they
+> aren't doing anything else other than calling mmap(). There is no need
+> to set errno =3D 0 manually as glibc always resets it.
+>
+The mseal_test should't have dependency on libc, and mmap() is
+implemented by glibc, right ?
+
+I just fixed a bug to switch mremap() to sys_mremap to address an
+issue that different glibc version's behavior is slightly different
+for mremap().
+
+What is the reason that __NR_mmap not available in armhf ? (maybe it
+is another name ?)  there must be a way to call syscall directly on
+armhf, can we use that instead ?
+
+Thanks
+-Jeff
 
 
-The patch titled
-     Subject: userfaultfd: don't BUG_ON() if khugepaged yanks our page table
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     userfaultfd-dont-bug_on-if-khugepaged-yanks-our-page-table.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/userfaultfd-dont-bug_on-if-khugepaged-yanks-our-page-table.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Jann Horn <jannh@google.com>
-Subject: userfaultfd: don't BUG_ON() if khugepaged yanks our page table
-Date: Tue, 13 Aug 2024 22:25:22 +0200
-
-Since khugepaged was changed to allow retracting page tables in file
-mappings without holding the mmap lock, these BUG_ON()s are wrong - get
-rid of them.
-
-We could also remove the preceding "if (unlikely(...))" block, but then we
-could reach pte_offset_map_lock() with transhuge pages not just for file
-mappings but also for anonymous mappings - which would probably be fine
-but I think is not necessarily expected.
-
-Link: https://lkml.kernel.org/r/20240813-uffd-thp-flip-fix-v2-2-5efa61078a41@google.com
-Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Pavel Emelyanov <xemul@virtuozzo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/userfaultfd.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
---- a/mm/userfaultfd.c~userfaultfd-dont-bug_on-if-khugepaged-yanks-our-page-table
-+++ a/mm/userfaultfd.c
-@@ -807,9 +807,10 @@ retry:
- 			err = -EFAULT;
- 			break;
- 		}
--
--		BUG_ON(pmd_none(*dst_pmd));
--		BUG_ON(pmd_trans_huge(*dst_pmd));
-+		/*
-+		 * For shmem mappings, khugepaged is allowed to remove page
-+		 * tables under us; pte_offset_map_lock() will deal with that.
-+		 */
- 
- 		err = mfill_atomic_pte(dst_pmd, dst_vma, dst_addr,
- 				       src_addr, flags, &folio);
-_
-
-Patches currently in -mm which might be from jannh@google.com are
-
-userfaultfd-fix-checks-for-huge-pmds.patch
-userfaultfd-dont-bug_on-if-khugepaged-yanks-our-page-table.patch
-mm-fix-harmless-type-confusion-in-lock_vma_under_rcu.patch
-
+> For reference errors are as following:
+>
+>   CC       seal_elf
+> seal_elf.c: In function 'sys_mmap':
+> seal_elf.c:39:33: error: '__NR_mmap' undeclared (first use in this functi=
+on)
+>    39 |         sret =3D (void *) syscall(__NR_mmap, addr, len, prot,
+>       |                                 ^~~~~~~~~
+>
+> mseal_test.c: In function 'sys_mmap':
+> mseal_test.c:90:33: error: '__NR_mmap' undeclared (first use in this func=
+tion)
+>    90 |         sret =3D (void *) syscall(__NR_mmap, addr, len, prot,
+>       |                                 ^~~~~~~~~
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 4926c7a52de7 ("selftest mm/mseal memory sealing")
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+>  tools/testing/selftests/mm/mseal_test.c | 37 +++++++++----------------
+>  tools/testing/selftests/mm/seal_elf.c   | 13 +--------
+>  2 files changed, 14 insertions(+), 36 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/self=
+tests/mm/mseal_test.c
+> index a818f010de479..bfcea5cf9a484 100644
+> --- a/tools/testing/selftests/mm/mseal_test.c
+> +++ b/tools/testing/selftests/mm/mseal_test.c
+> @@ -81,17 +81,6 @@ static int sys_mprotect_pkey(void *ptr, size_t size, u=
+nsigned long orig_prot,
+>         return sret;
+>  }
+>
+> -static void *sys_mmap(void *addr, unsigned long len, unsigned long prot,
+> -       unsigned long flags, unsigned long fd, unsigned long offset)
+> -{
+> -       void *sret;
+> -
+> -       errno =3D 0;
+> -       sret =3D (void *) syscall(__NR_mmap, addr, len, prot,
+> -               flags, fd, offset);
+> -       return sret;
+> -}
+> -
+>  static int sys_munmap(void *ptr, size_t size)
+>  {
+>         int sret;
+> @@ -172,7 +161,7 @@ static void setup_single_address(int size, void **ptr=
+Out)
+>  {
+>         void *ptr;
+>
+> -       ptr =3D sys_mmap(NULL, size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVA=
+TE, -1, 0);
+> +       ptr =3D mmap(NULL, size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, =
+-1, 0);
+>         *ptrOut =3D ptr;
+>  }
+>
+> @@ -181,7 +170,7 @@ static void setup_single_address_rw(int size, void **=
+ptrOut)
+>         void *ptr;
+>         unsigned long mapflags =3D MAP_ANONYMOUS | MAP_PRIVATE;
+>
+> -       ptr =3D sys_mmap(NULL, size, PROT_READ | PROT_WRITE, mapflags, -1=
+, 0);
+> +       ptr =3D mmap(NULL, size, PROT_READ | PROT_WRITE, mapflags, -1, 0)=
+;
+>         *ptrOut =3D ptr;
+>  }
+>
+> @@ -205,7 +194,7 @@ bool seal_support(void)
+>         void *ptr;
+>         unsigned long page_size =3D getpagesize();
+>
+> -       ptr =3D sys_mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_=
+PRIVATE, -1, 0);
+> +       ptr =3D mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIV=
+ATE, -1, 0);
+>         if (ptr =3D=3D (void *) -1)
+>                 return false;
+>
+> @@ -481,8 +470,8 @@ static void test_seal_zero_address(void)
+>         int prot;
+>
+>         /* use mmap to change protection. */
+> -       ptr =3D sys_mmap(0, size, PROT_NONE,
+> -                       MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +       ptr =3D mmap(0, size, PROT_NONE,
+> +                  MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+>         FAIL_TEST_IF_FALSE(ptr =3D=3D 0);
+>
+>         size =3D get_vma_size(ptr, &prot);
+> @@ -1209,8 +1198,8 @@ static void test_seal_mmap_overwrite_prot(bool seal=
+)
+>         }
+>
+>         /* use mmap to change protection. */
+> -       ret2 =3D sys_mmap(ptr, size, PROT_NONE,
+> -                       MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +       ret2 =3D mmap(ptr, size, PROT_NONE,
+> +                   MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+>         if (seal) {
+>                 FAIL_TEST_IF_FALSE(ret2 =3D=3D MAP_FAILED);
+>                 FAIL_TEST_IF_FALSE(errno =3D=3D EPERM);
+> @@ -1240,8 +1229,8 @@ static void test_seal_mmap_expand(bool seal)
+>         }
+>
+>         /* use mmap to expand. */
+> -       ret2 =3D sys_mmap(ptr, size, PROT_READ,
+> -                       MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +       ret2 =3D mmap(ptr, size, PROT_READ,
+> +                   MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+>         if (seal) {
+>                 FAIL_TEST_IF_FALSE(ret2 =3D=3D MAP_FAILED);
+>                 FAIL_TEST_IF_FALSE(errno =3D=3D EPERM);
+> @@ -1268,8 +1257,8 @@ static void test_seal_mmap_shrink(bool seal)
+>         }
+>
+>         /* use mmap to shrink. */
+> -       ret2 =3D sys_mmap(ptr, 8 * page_size, PROT_READ,
+> -                       MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +       ret2 =3D mmap(ptr, 8 * page_size, PROT_READ,
+> +                   MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+>         if (seal) {
+>                 FAIL_TEST_IF_FALSE(ret2 =3D=3D MAP_FAILED);
+>                 FAIL_TEST_IF_FALSE(errno =3D=3D EPERM);
+> @@ -1650,7 +1639,7 @@ static void test_seal_discard_ro_anon_on_filebacked=
+(bool seal)
+>         ret =3D fallocate(fd, 0, 0, size);
+>         FAIL_TEST_IF_FALSE(!ret);
+>
+> -       ptr =3D sys_mmap(NULL, size, PROT_READ, mapflags, fd, 0);
+> +       ptr =3D mmap(NULL, size, PROT_READ, mapflags, fd, 0);
+>         FAIL_TEST_IF_FALSE(ptr !=3D MAP_FAILED);
+>
+>         if (seal) {
+> @@ -1680,7 +1669,7 @@ static void test_seal_discard_ro_anon_on_shared(boo=
+l seal)
+>         int ret;
+>         unsigned long mapflags =3D MAP_ANONYMOUS | MAP_SHARED;
+>
+> -       ptr =3D sys_mmap(NULL, size, PROT_READ, mapflags, -1, 0);
+> +       ptr =3D mmap(NULL, size, PROT_READ, mapflags, -1, 0);
+>         FAIL_TEST_IF_FALSE(ptr !=3D (void *)-1);
+>
+>         if (seal) {
+> diff --git a/tools/testing/selftests/mm/seal_elf.c b/tools/testing/selfte=
+sts/mm/seal_elf.c
+> index 7aa1366063e4e..d9f8ba8d5050b 100644
+> --- a/tools/testing/selftests/mm/seal_elf.c
+> +++ b/tools/testing/selftests/mm/seal_elf.c
+> @@ -30,17 +30,6 @@ static int sys_mseal(void *start, size_t len)
+>         return sret;
+>  }
+>
+> -static void *sys_mmap(void *addr, unsigned long len, unsigned long prot,
+> -       unsigned long flags, unsigned long fd, unsigned long offset)
+> -{
+> -       void *sret;
+> -
+> -       errno =3D 0;
+> -       sret =3D (void *) syscall(__NR_mmap, addr, len, prot,
+> -               flags, fd, offset);
+> -       return sret;
+> -}
+> -
+>  static inline int sys_mprotect(void *ptr, size_t size, unsigned long pro=
+t)
+>  {
+>         int sret;
+> @@ -56,7 +45,7 @@ static bool seal_support(void)
+>         void *ptr;
+>         unsigned long page_size =3D getpagesize();
+>
+> -       ptr =3D sys_mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_=
+PRIVATE, -1, 0);
+> +       ptr =3D mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIV=
+ATE, -1, 0);
+>         if (ptr =3D=3D (void *) -1)
+>                 return false;
+>
+> --
+> 2.39.2
+>
 
