@@ -1,120 +1,153 @@
-Return-Path: <stable+bounces-67522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63EE8950AFA
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 19:01:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22EFE950B33
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 19:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D105284C8B
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:01:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A24591F2335E
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608F822612;
-	Tue, 13 Aug 2024 17:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEA11A2C3A;
+	Tue, 13 Aug 2024 17:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nAoUerj2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LSWMfKR6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD06614D42C;
-	Tue, 13 Aug 2024 17:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2EF1A01C5;
+	Tue, 13 Aug 2024 17:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723568417; cv=none; b=SLDLazXDX/jx5Y6gK7KZgTpabN8P4Dy/q4cAvvwA94nvceTdEjOEsCX70VEsn4B7CMqGwh38ALb/KhcBG6Qf/Gv55UB0Ks3NKYTBVerfsmKwx5hUtX2QdzM0S3FisP7K+KPvrOXtEkTDn9EhkxVFI4x96nlMRuxpmZZeo6A7tKc=
+	t=1723568861; cv=none; b=M9+2FR2lUwTsuCG486Tuv/S4VXQMiTX3VCcn1sQcAO5VwJNp42TqkBAeZ3RBoAGcR9jW7dZmGXcbDpsCjZp74P7FpsezoG59iDHgp3O2kTFWuuTJxXDE7jL58mSdpeX84s43RuzzXbcPReri4ehymtacWpgZpMfBStulRbOlkOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723568417; c=relaxed/simple;
-	bh=XIrCPo883vIf29bWB8QanLy2xFIBQjXDszmwWGqlqVs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AO7aba1FgauNfT0telvgg9cJBM9RJC8DZCQSJxr4lGN1GCtlwYqbqvXtiUmVMnAx23Hvv6GZJrRvAMd0q57RkwfSDMTysG5TENPcxTqIRftoaCDq6QCFTmtEdRTWBoa//RiY9zk9Y2TsGFuW1Yo1aG2zN/0MsBz2PgG8FF9bBoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nAoUerj2; arc=none smtp.client-ip=209.85.210.171
+	s=arc-20240116; t=1723568861; c=relaxed/simple;
+	bh=2UTRpyixsnI2Mt3H9E3lwr3skLjqQavuwS+t2Y5B5ZU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aquWXHSTXhVy0+iHmzW+gUfXYZ8tbVWWtJb8J5WGArEJpJEZSooObR2A5jZ/mOsDsF/8M/DxrHJuWlEY/c3a6/wtd3xgqkqwg4fEcM1mPGJggEhndvBxnLQyAqejvQbtGvEvsc7cHwEZ78TlRF7MVLHkdNleXmrxSocXnd6nH8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LSWMfKR6; arc=none smtp.client-ip=209.85.210.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70d2b921c48so4391297b3a.1;
-        Tue, 13 Aug 2024 10:00:15 -0700 (PDT)
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7093efbade6so3872816a34.2;
+        Tue, 13 Aug 2024 10:07:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723568415; x=1724173215; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nuc5EsBkWIMusrD6s2rE9U/6OjYd0kLjzG4He9KIV6E=;
-        b=nAoUerj2NUkWqyc27VoUuidZFlc/KsTo+aUAwF78ag6RsM2v+sKDuUc6Si3j7VkoDv
-         C3oW+qdF8azIVAi6bwKGE3M49IVlUnrAj5/54O15dDiwLtcmGhvFruc6E7onGJ7BcMc7
-         o/KfFoE9yGaM5MyT/2uEZ1SoB33pkgvaOiQUDgK3HrCcdt+JBhPpZUglFEiloe7ngEGa
-         rSYxaWg0142UYB3/s7q7KpVWwXm29UC24uvbSvYUkXq/P6cdjEgZyWY1hCNB4cQUZ46R
-         hbGbVzWZz2LK9IvMBCtQYKblhuVpd1anBIMEhrkhheAturPw16ZfT5E9Ky3sa0GF65Xo
-         LHjA==
+        d=gmail.com; s=20230601; t=1723568859; x=1724173659; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kqDQdMqa6edkrhtgWmvvQHLQOD3Y1jZC7HmcMHP1B7Y=;
+        b=LSWMfKR6TO0cQN3x6ScNmj3uvtJUXvzP1czlaGX3XKPUQcRq9uyIvkrq9tWXVePZs3
+         YZGFjuBIotwHzzp3NJCqRUGtv2Oopj3aIPX5oE3Gk4nmnwuM7XN2tOla6ixIFHCNalrs
+         UnF98INbkkP3Ze+ChqVFOhim5tzKw/ARVdEBEcj+/mFCrogwzoqaX7TWS6/jvimjtkyO
+         UJIEp5gEECr7U8tmGIZkrGRqQauWYg5pZr1nVubGkfuHcSpOQ1G68EF3T+rVqwdkFAGl
+         WS2ZPYePybqjnv6rLcDdlobEM0UTwhOlWhnk2v/7fhHgGgOvNLZI/rQ6p7BpdyQEQctA
+         /Svg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723568415; x=1724173215;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nuc5EsBkWIMusrD6s2rE9U/6OjYd0kLjzG4He9KIV6E=;
-        b=HhqGM1HvL9eFOadMFDFVGCLB1F9fzOF+bBuEhT8ONcO53/ZCfkWQw0d7qAHedxLxGZ
-         CHjJU4EqrTMiWMdoToVmPBqUCZzt3jOwGPG/LRiRXV0pDdreG/TZFBhJChrPskKe5r+8
-         UzyFs4qZDMJg6DXW3TOURok3lgOShkDypP8mHVGPTbPH4X2OsCbAP3xkEKlFlcxIpMfQ
-         /K1ua10c2xdzSAdyqdFtsEZ5FSOY8WJf+niaYev84YOhHmCLBYESth2xbFT9nYQyChUk
-         59EBiucwrpMws8wBJpr06ev3eiQ5vFnEZ2W0E48dskzraJltBG/9gvDjDMa5jXPLS8Jl
-         6XOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcEqFLavKyaTuDubH2femlSgADHQ166UjaD7goW/I08eBkLWIA1XI6rr8FflruTpeRyzEQaAy2zsDegKkun6nimOO5gHbcpk8RshZl4IcG4QsFjl9yi7sn7XOmgOxEwdRbjoIZ
-X-Gm-Message-State: AOJu0Yz9f1pbV3hH4Za8W7HXKRhcDvWOvdQdD6Nse0zr+xv0rQ9gJ94T
-	6jk+nCYNE/1c3VkYzXN4wGhraRBVulbBgUvHnqPZulny9r0eKvQpEvNHfQ==
-X-Google-Smtp-Source: AGHT+IGWbE9/Lv1hgrChzLrTS1+FSO3IGgIpwHA3XWmcPnMqO2SvNyb5132iSQqtT1xL/ONfqI7NlQ==
-X-Received: by 2002:a05:6a00:10d5:b0:70d:2368:d8b7 with SMTP id d2e1a72fcca58-7126711863emr268087b3a.13.1723568414784;
-        Tue, 13 Aug 2024 10:00:14 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-710e58ae59esm5987898b3a.74.2024.08.13.10.00.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Aug 2024 10:00:13 -0700 (PDT)
-Message-ID: <8a34ab5c-00ce-4adf-86b1-e55ec2342b94@gmail.com>
-Date: Tue, 13 Aug 2024 10:00:11 -0700
+        d=1e100.net; s=20230601; t=1723568859; x=1724173659;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kqDQdMqa6edkrhtgWmvvQHLQOD3Y1jZC7HmcMHP1B7Y=;
+        b=gsfYm7lYly/uSCs1/hSd0eHECYtAgsAYi41vCTuYBuAicUmSLZ8WoSHiY7GjgmAsn7
+         vjZE7RQmB58DgSXRFkXGOYshbqy6BSsF10KZl4xiqiU4P9xbKm2dElB+Ev941P2vQkrc
+         DVR2Ox7ZR7KKVnwrfmdTOCcTnxjy04bFLSoRHjsHVB52AxERKddMuFHQXorrv4u7ejC9
+         gBqXwy4cr018AoDl+A+4yrVv+Jl6UjON8Wfk68swBShMVFUTJb3CD2yJoW2x6BQYh91E
+         iHzLrbhYDVQ8W5WTwa98SXus/OkZr4Rb99/wee6fEYBeM/PrxaTG2d/Exz803zqdTSUP
+         v6HA==
+X-Forwarded-Encrypted: i=1; AJvYcCW6LcDQF+zMWpZTacuUkLR4vUwUmuddX8JAs7gEL+o/pRlzmciquhH+lLQ9rzoaG1mkkyy/h1ZyCfA4A6/AlQxTqnbXKEj2jYSPq7tPWiv2jXVCW2xg6aP6gFZvHnUc9FFqsDboBM6w8doPq/WQbC9J0XXUIj1cuYP2
+X-Gm-Message-State: AOJu0YwKWjMBFJ2deErCqVun/ZBW8NitSo69AWlEJDvIsg7EIgyftQlO
+	CyqNKvXs240s0SqvWiO1pWOq9I+P/ynLrzGPnAed0UelKdLva4B9hpcCdaYwcXyLeZeG3iniH6P
+	GrG6zl8vB8wkhLV2ikSWLNlpH6+9NtITh
+X-Google-Smtp-Source: AGHT+IHbYc4Q+YiQBykiM0mnghoF6UZNPJpC/R2FJZoiqWDI4lIHR+ADHM5+gVZ6JC123rB3oqYm4s/9Xh1rty1ofbg=
+X-Received: by 2002:a17:90a:c84:b0:2c9:7219:1db0 with SMTP id
+ 98e67ed59e1d1-2d3aaa7af67mr200689a91.3.1723568847980; Tue, 13 Aug 2024
+ 10:07:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/149] 6.1.105-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240813061957.925312455@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240813061957.925312455@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240813151727.28797-1-jdamato@fastly.com>
+In-Reply-To: <20240813151727.28797-1-jdamato@fastly.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Tue, 13 Aug 2024 10:07:15 -0700
+Message-ID: <CAEf4Bza1C1X+t7xbU1rRAMG1+oy=UoZyyGPaBkFJ4_tVQMJQsw@mail.gmail.com>
+Subject: Re: [PATCH v2] perf/bpf: Don't call bpf_overflow_handler() for
+ tracing events
+To: Joe Damato <jdamato@fastly.com>
+Cc: linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, peterz@infradead.org, andrii@kernel.org, 
+	mhiramat@kernel.org, olsajiri@gmail.com, me@kylehuey.com, 
+	Kyle Huey <khuey@kylehuey.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/12/24 23:28, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.105 release.
-> There are 149 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 15 Aug 2024 06:19:25 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.105-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, Aug 13, 2024 at 8:17=E2=80=AFAM Joe Damato <jdamato@fastly.com> wro=
+te:
+>
+> From: Kyle Huey <me@kylehuey.com>
+>
+> The regressing commit is new in 6.10. It assumed that anytime event->prog
+> is set bpf_overflow_handler() should be invoked to execute the attached b=
+pf
+> program. This assumption is false for tracing events, and as a result the
+> regressing commit broke bpftrace by invoking the bpf handler with garbage
+> inputs on overflow.
+>
+> Prior to the regression the overflow handlers formed a chain (of length 0=
+,
+> 1, or 2) and perf_event_set_bpf_handler() (the !tracing case) added
+> bpf_overflow_handler() to that chain, while perf_event_attach_bpf_prog()
+> (the tracing case) did not. Both set event->prog. The chain of overflow
+> handlers was replaced by a single overflow handler slot and a fixed call =
+to
+> bpf_overflow_handler() when appropriate. This modifies the condition ther=
+e
+> to check event->prog->type =3D=3D BPF_PROG_TYPE_PERF_EVENT, restoring the
+> previous behavior and fixing bpftrace.
+>
+> Signed-off-by: Kyle Huey <khuey@kylehuey.com>
+> Suggested-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+> Reported-by: Joe Damato <jdamato@fastly.com>
+> Closes: https://lore.kernel.org/lkml/ZpFfocvyF3KHaSzF@LQ3V64L9R2/
+> Fixes: f11f10bfa1ca ("perf/bpf: Call BPF handler directly, not through ov=
+erflow machinery")
+> Cc: stable@vger.kernel.org
+> Tested-by: Joe Damato <jdamato@fastly.com> # bpftrace
+> ---
+> v2:
+>   - Update patch based on Andrii's suggestion
+>   - Update commit message
+>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+LGTM, thanks.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
 
+>  kernel/events/core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index aa3450bdc227..c973e3c11e03 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -9706,7 +9706,8 @@ static int __perf_event_overflow(struct perf_event =
+*event,
+>
+>         ret =3D __perf_event_account_interrupt(event, throttle);
+>
+> -       if (event->prog && !bpf_overflow_handler(event, data, regs))
+> +       if (event->prog && event->prog->type =3D=3D BPF_PROG_TYPE_PERF_EV=
+ENT &&
+> +           !bpf_overflow_handler(event, data, regs))
+>                 return ret;
+>
+>         /*
+> --
+> 2.25.1
+>
 
