@@ -1,153 +1,205 @@
-Return-Path: <stable+bounces-67523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22EFE950B33
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 19:08:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA48A950B38
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 19:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A24591F2335E
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:08:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5120CB26935
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEA11A2C3A;
-	Tue, 13 Aug 2024 17:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3356198A3D;
+	Tue, 13 Aug 2024 17:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LSWMfKR6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GgOAAjBk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2EF1A01C5;
-	Tue, 13 Aug 2024 17:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA18A26AC6
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 17:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723568861; cv=none; b=M9+2FR2lUwTsuCG486Tuv/S4VXQMiTX3VCcn1sQcAO5VwJNp42TqkBAeZ3RBoAGcR9jW7dZmGXcbDpsCjZp74P7FpsezoG59iDHgp3O2kTFWuuTJxXDE7jL58mSdpeX84s43RuzzXbcPReri4ehymtacWpgZpMfBStulRbOlkOs=
+	t=1723568989; cv=none; b=MUAJ+nTiA5jeD4Xo4AA2hMGuIdQ50Kr/MAifaU8gKwTrbmUZjRIueHp1PfDG6PdIU39REybTAcEBuar4Yi+0OfufECusLWBl7thBeDXuYgP89WChLt+rNI01pB7z+3L4S2+FtQGsMAPui/IrqLwhENPCxv00oOu22dXSn8fxE5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723568861; c=relaxed/simple;
-	bh=2UTRpyixsnI2Mt3H9E3lwr3skLjqQavuwS+t2Y5B5ZU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aquWXHSTXhVy0+iHmzW+gUfXYZ8tbVWWtJb8J5WGArEJpJEZSooObR2A5jZ/mOsDsF/8M/DxrHJuWlEY/c3a6/wtd3xgqkqwg4fEcM1mPGJggEhndvBxnLQyAqejvQbtGvEvsc7cHwEZ78TlRF7MVLHkdNleXmrxSocXnd6nH8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LSWMfKR6; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7093efbade6so3872816a34.2;
-        Tue, 13 Aug 2024 10:07:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723568859; x=1724173659; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kqDQdMqa6edkrhtgWmvvQHLQOD3Y1jZC7HmcMHP1B7Y=;
-        b=LSWMfKR6TO0cQN3x6ScNmj3uvtJUXvzP1czlaGX3XKPUQcRq9uyIvkrq9tWXVePZs3
-         YZGFjuBIotwHzzp3NJCqRUGtv2Oopj3aIPX5oE3Gk4nmnwuM7XN2tOla6ixIFHCNalrs
-         UnF98INbkkP3Ze+ChqVFOhim5tzKw/ARVdEBEcj+/mFCrogwzoqaX7TWS6/jvimjtkyO
-         UJIEp5gEECr7U8tmGIZkrGRqQauWYg5pZr1nVubGkfuHcSpOQ1G68EF3T+rVqwdkFAGl
-         WS2ZPYePybqjnv6rLcDdlobEM0UTwhOlWhnk2v/7fhHgGgOvNLZI/rQ6p7BpdyQEQctA
-         /Svg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723568859; x=1724173659;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kqDQdMqa6edkrhtgWmvvQHLQOD3Y1jZC7HmcMHP1B7Y=;
-        b=gsfYm7lYly/uSCs1/hSd0eHECYtAgsAYi41vCTuYBuAicUmSLZ8WoSHiY7GjgmAsn7
-         vjZE7RQmB58DgSXRFkXGOYshbqy6BSsF10KZl4xiqiU4P9xbKm2dElB+Ev941P2vQkrc
-         DVR2Ox7ZR7KKVnwrfmdTOCcTnxjy04bFLSoRHjsHVB52AxERKddMuFHQXorrv4u7ejC9
-         gBqXwy4cr018AoDl+A+4yrVv+Jl6UjON8Wfk68swBShMVFUTJb3CD2yJoW2x6BQYh91E
-         iHzLrbhYDVQ8W5WTwa98SXus/OkZr4Rb99/wee6fEYBeM/PrxaTG2d/Exz803zqdTSUP
-         v6HA==
-X-Forwarded-Encrypted: i=1; AJvYcCW6LcDQF+zMWpZTacuUkLR4vUwUmuddX8JAs7gEL+o/pRlzmciquhH+lLQ9rzoaG1mkkyy/h1ZyCfA4A6/AlQxTqnbXKEj2jYSPq7tPWiv2jXVCW2xg6aP6gFZvHnUc9FFqsDboBM6w8doPq/WQbC9J0XXUIj1cuYP2
-X-Gm-Message-State: AOJu0YwKWjMBFJ2deErCqVun/ZBW8NitSo69AWlEJDvIsg7EIgyftQlO
-	CyqNKvXs240s0SqvWiO1pWOq9I+P/ynLrzGPnAed0UelKdLva4B9hpcCdaYwcXyLeZeG3iniH6P
-	GrG6zl8vB8wkhLV2ikSWLNlpH6+9NtITh
-X-Google-Smtp-Source: AGHT+IHbYc4Q+YiQBykiM0mnghoF6UZNPJpC/R2FJZoiqWDI4lIHR+ADHM5+gVZ6JC123rB3oqYm4s/9Xh1rty1ofbg=
-X-Received: by 2002:a17:90a:c84:b0:2c9:7219:1db0 with SMTP id
- 98e67ed59e1d1-2d3aaa7af67mr200689a91.3.1723568847980; Tue, 13 Aug 2024
- 10:07:27 -0700 (PDT)
+	s=arc-20240116; t=1723568989; c=relaxed/simple;
+	bh=A8aorxU2ldzeh6vZgDB/h5NIi8W+07cm8HALCjPBgaA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eBj/rf/keFyvA6J3WKNK/RCw2TAnJotvlndbiNbFdWAdUPKGav60Wrq5Wfq/JZwMcw/UwULZvYLtizZOmHrAK+KjdCk+ZeBom4BtlL+spKS9jy628JyWIDtrjEFFkNT7kkUt/iIZ3Njg/DV/stafFhHIdfD3DA7AJyUo/9LPrHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GgOAAjBk; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723568988; x=1755104988;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=A8aorxU2ldzeh6vZgDB/h5NIi8W+07cm8HALCjPBgaA=;
+  b=GgOAAjBkuTOggU6XHfisGBJ7PNFm1B+qEFq6cyYQymb40Sdvw8S2kNbs
+   mfWSbE8C0IRtQtlz8vk2ap7QQa4XeBVEh0pGibatkcVvm4XxStxggBoGZ
+   Z3VU5W94jQY/I6cSf2C69pwu/XyMHK9DtevwFHlreuk/G/2IXDIHKK4df
+   yyUiuTSXl7OVmPFK3K8nqZUq0y3jWEJdRwjL+dZ1G9FzeHdTJUlTrKfL/
+   WQOtKDb0HYSM5OHqXHQy7a6ZDNX1xu2/5cvzzvZI6n1S8bRUgSfN9apzD
+   CZ+y6ruhSVtN/LxTLf+QBpRpgX4jX+/OYmws/e4BXeYcvj5whMWNDjAWQ
+   g==;
+X-CSE-ConnectionGUID: zYrokfuFSiaG1DknQCiq+Q==
+X-CSE-MsgGUID: 8EObCh4BQ/atfaqRWOKRdw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="21395772"
+X-IronPort-AV: E=Sophos;i="6.09,286,1716274800"; 
+   d="scan'208";a="21395772"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 10:09:47 -0700
+X-CSE-ConnectionGUID: XZHhy80jQFW8EoF07Lk2/w==
+X-CSE-MsgGUID: Oj3ZPZmrTLGgdTsQhE6uiQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,286,1716274800"; 
+   d="scan'208";a="59499289"
+Received: from mwiniars-desk2.ger.corp.intel.com (HELO intel.com) ([10.245.246.4])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 10:09:45 -0700
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+	Jann Horn <jannh@google.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Jonathan Cavitt <Jonathan.cavitt@intel.com>
+Subject: [PATCH 4.19.y v2] drm/i915/gem: Fix Virtual Memory mapping boundaries calculation
+Date: Tue, 13 Aug 2024 19:09:30 +0200
+Message-ID: <20240813170930.75663-1-andi.shyti@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024081222-process-suspect-d983@gregkh>
+References: <2024081222-process-suspect-d983@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240813151727.28797-1-jdamato@fastly.com>
-In-Reply-To: <20240813151727.28797-1-jdamato@fastly.com>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Tue, 13 Aug 2024 10:07:15 -0700
-Message-ID: <CAEf4Bza1C1X+t7xbU1rRAMG1+oy=UoZyyGPaBkFJ4_tVQMJQsw@mail.gmail.com>
-Subject: Re: [PATCH v2] perf/bpf: Don't call bpf_overflow_handler() for
- tracing events
-To: Joe Damato <jdamato@fastly.com>
-Cc: linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org, peterz@infradead.org, andrii@kernel.org, 
-	mhiramat@kernel.org, olsajiri@gmail.com, me@kylehuey.com, 
-	Kyle Huey <khuey@kylehuey.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 13, 2024 at 8:17=E2=80=AFAM Joe Damato <jdamato@fastly.com> wro=
-te:
->
-> From: Kyle Huey <me@kylehuey.com>
->
-> The regressing commit is new in 6.10. It assumed that anytime event->prog
-> is set bpf_overflow_handler() should be invoked to execute the attached b=
-pf
-> program. This assumption is false for tracing events, and as a result the
-> regressing commit broke bpftrace by invoking the bpf handler with garbage
-> inputs on overflow.
->
-> Prior to the regression the overflow handlers formed a chain (of length 0=
-,
-> 1, or 2) and perf_event_set_bpf_handler() (the !tracing case) added
-> bpf_overflow_handler() to that chain, while perf_event_attach_bpf_prog()
-> (the tracing case) did not. Both set event->prog. The chain of overflow
-> handlers was replaced by a single overflow handler slot and a fixed call =
-to
-> bpf_overflow_handler() when appropriate. This modifies the condition ther=
-e
-> to check event->prog->type =3D=3D BPF_PROG_TYPE_PERF_EVENT, restoring the
-> previous behavior and fixing bpftrace.
->
-> Signed-off-by: Kyle Huey <khuey@kylehuey.com>
-> Suggested-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-> Reported-by: Joe Damato <jdamato@fastly.com>
-> Closes: https://lore.kernel.org/lkml/ZpFfocvyF3KHaSzF@LQ3V64L9R2/
-> Fixes: f11f10bfa1ca ("perf/bpf: Call BPF handler directly, not through ov=
-erflow machinery")
-> Cc: stable@vger.kernel.org
-> Tested-by: Joe Damato <jdamato@fastly.com> # bpftrace
-> ---
-> v2:
->   - Update patch based on Andrii's suggestion
->   - Update commit message
->
+Commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
 
-LGTM, thanks.
+Calculating the size of the mapped area as the lesser value
+between the requested size and the actual size does not consider
+the partial mapping offset. This can cause page fault access.
 
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Fix the calculation of the starting and ending addresses, the
+total size is now deduced from the difference between the end and
+start addresses.
 
->  kernel/events/core.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index aa3450bdc227..c973e3c11e03 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -9706,7 +9706,8 @@ static int __perf_event_overflow(struct perf_event =
-*event,
->
->         ret =3D __perf_event_account_interrupt(event, throttle);
->
-> -       if (event->prog && !bpf_overflow_handler(event, data, regs))
-> +       if (event->prog && event->prog->type =3D=3D BPF_PROG_TYPE_PERF_EV=
-ENT &&
-> +           !bpf_overflow_handler(event, data, regs))
->                 return ret;
->
->         /*
-> --
-> 2.25.1
->
+Additionally, the calculations have been rewritten in a clearer
+and more understandable form.
+
+Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
+Reported-by: Jann Horn <jannh@google.com>
+Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: <stable@vger.kernel.org> # v4.9+
+Reviewed-by: Jann Horn <jannh@google.com>
+Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
+[Joonas: Add Requires: tag]
+Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
+(cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+---
+Hi,
+
+sorry for sending this v2 after I submitted a patch with a
+compilation error. It slipped off a variable (obj_offset) that
+was removed for kernel 4.19.
+
+Thanks,
+Andi
+
+ drivers/gpu/drm/i915/i915_gem.c | 47 +++++++++++++++++++++++++++++----
+ 1 file changed, 42 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
+index 5b0d6d8b3ab8..478d989a2369 100644
+--- a/drivers/gpu/drm/i915/i915_gem.c
++++ b/drivers/gpu/drm/i915/i915_gem.c
+@@ -2009,6 +2009,39 @@ compute_partial_view(struct drm_i915_gem_object *obj,
+ 	return view;
+ }
+ 
++static void set_address_limits(struct vm_area_struct *area,
++                              struct i915_vma *vma,
++                              unsigned long *start_vaddr,
++                              unsigned long *end_vaddr)
++{
++	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
++	long start, end; /* memory boundaries */
++
++	/*
++	 * Let's move into the ">> PAGE_SHIFT"
++	 * domain to be sure not to lose bits
++	 */
++	vm_start = area->vm_start >> PAGE_SHIFT;
++	vm_end = area->vm_end >> PAGE_SHIFT;
++	vma_size = vma->size >> PAGE_SHIFT;
++
++	/*
++	 * Calculate the memory boundaries by considering the offset
++	 * provided by the user during memory mapping and the offset
++	 * provided for the partial mapping.
++	 */
++	start = vm_start;
++	start += vma->ggtt_view.partial.offset;
++	end = start + vma_size;
++
++	start = max_t(long, start, vm_start);
++	end = min_t(long, end, vm_end);
++
++	/* Let's move back into the "<< PAGE_SHIFT" domain */
++	*start_vaddr = (unsigned long)start << PAGE_SHIFT;
++	*end_vaddr = (unsigned long)end << PAGE_SHIFT;
++}
++
+ /**
+  * i915_gem_fault - fault a page into the GTT
+  * @vmf: fault info
+@@ -2036,8 +2069,10 @@ vm_fault_t i915_gem_fault(struct vm_fault *vmf)
+ 	struct drm_i915_private *dev_priv = to_i915(dev);
+ 	struct i915_ggtt *ggtt = &dev_priv->ggtt;
+ 	bool write = !!(vmf->flags & FAULT_FLAG_WRITE);
++	unsigned long start, end; /* memory boundaries */
+ 	struct i915_vma *vma;
+ 	pgoff_t page_offset;
++	unsigned long pfn;
+ 	int ret;
+ 
+ 	/* Sanity check that we allow writing into this object */
+@@ -2119,12 +2154,14 @@ vm_fault_t i915_gem_fault(struct vm_fault *vmf)
+ 	if (ret)
+ 		goto err_unpin;
+ 
++	set_address_limits(area, vma, &start, &end);
++
++	pfn = (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
++	pfn += (start - area->vm_start) >> PAGE_SHIFT;
++	pfn -= vma->ggtt_view.partial.offset;
++
+ 	/* Finally, remap it using the new GTT offset */
+-	ret = remap_io_mapping(area,
+-			       area->vm_start + (vma->ggtt_view.partial.offset << PAGE_SHIFT),
+-			       (ggtt->gmadr.start + vma->node.start) >> PAGE_SHIFT,
+-			       min_t(u64, vma->size, area->vm_end - area->vm_start),
+-			       &ggtt->iomap);
++	ret = remap_io_mapping(area, start, pfn, end - start, &ggtt->iomap);
+ 	if (ret)
+ 		goto err_fence;
+ 
+-- 
+2.45.2
+
 
