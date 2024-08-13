@@ -1,98 +1,99 @@
-Return-Path: <stable+bounces-67472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05CF95038A
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 13:25:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36599503A0
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 13:30:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D18F2863C7
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 11:25:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A980B1F255E8
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 11:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5634194AE6;
-	Tue, 13 Aug 2024 11:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5BE1990C4;
+	Tue, 13 Aug 2024 11:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijN4iZxD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOCT/6Ks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0904C8C;
-	Tue, 13 Aug 2024 11:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA85518B480;
+	Tue, 13 Aug 2024 11:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723548302; cv=none; b=VaFw3U9bi4rtnnx/GuHx5qcPM0e7ZQnXO5Od8XYT5VyeBpsF2MCbHXEB7XU3Jb/lMZ5C4Mj0kf8yquHeVyg4xhNcjpsrhfPYWjbdInKhrSZFkgLMwkI4Qm0o2t38VA4ROCzjUZXq6EpHtLnrg7WF7FtiggFxDJiVCBlSPJUb728=
+	t=1723548630; cv=none; b=OJ7feyqhrIAuwkZAB0cVOvAi8VJ+FiFR08CZwRDqYftLJEDAlpICBiDhtKifFfVjp2Qvk5fxdl3f2+M6gohbfjm4SHsLLLM4e9sExrb4dG7S248GvPTIM0QUk40K23bBuKnSRwsbUnOA9r3bLIAbRCPajk0BCdS2bJu/qBzRAwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723548302; c=relaxed/simple;
-	bh=N+g7lc8Xa1A6Kj1evZnr2KHyt2B7R02xTzreXYe3rqo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uZEwDCtftuxRRSYeMXe96JblxYL6V/84Q0x+jWuNy0l+LdgeHS8i4+dNnq+czeBA6dBVxGZB1PxZUfjcG8GdHPgs5tIjIQviTIeDHvTQg7w20d2SmfXXpsxKenHwdWtcn1kcbIIZXQ7pUAz/RJJzAipA6u7Plf0q6Bt+fg5PncU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijN4iZxD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2957C4AF09;
-	Tue, 13 Aug 2024 11:24:58 +0000 (UTC)
+	s=arc-20240116; t=1723548630; c=relaxed/simple;
+	bh=kiwXUxfjx4OtcKC14SZI8xUFCU5QGPX4eXEN8CbXRLM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=sShtepDCZRwFfuBZ0rmg1akSWDaMsw0J9jjFZhJYEB2qTteieBBeu1AP1a/Fg5V/xbAKthCALi1npdWnBa3+McaKs4afDvyKily+28coPyNZUiAk3Vc5/aJa8/FP7VzCkjNLpDcj1TSBwtKrRwOTjOhT6Fbl3L6yJaf/m3ps1t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOCT/6Ks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C097C4AF0B;
+	Tue, 13 Aug 2024 11:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723548302;
-	bh=N+g7lc8Xa1A6Kj1evZnr2KHyt2B7R02xTzreXYe3rqo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ijN4iZxDMBDy6zIGKP3DZuwvKGfDfwzBcgubmWdK22iiGpAhK00Fcmn2r4lq3sziX
-	 J4cYGMHcVonwWKD7EzYuRZ5Buc0YNjE9jF+q8eKk9XLVISDHbwgDOybtOUVbmQxs9j
-	 pNUXqc6FtJVgUj12wZc1Uknl6bTe50UFj90ZJexK7gtphJFmbiL37nyE0H+e+HmEDg
-	 ThDqd8ak/3/PX3QYYhrgT2d2ZU11iJMhMoNPc4OtfphilB+llHTb0tixT5uYO2G0EA
-	 7iELZpmWJlYwJJW4hIei1f5NkOML6i4Y+dk0zcN66LzWz31vBLggvrbOdh1XFQYn9U
-	 wUcRnnwULmHbw==
-Date: Tue, 13 Aug 2024 12:24:55 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/189] 6.6.46-rc1 review
-Message-ID: <2dd8306d-7edc-491e-9924-ca4f51dd286b@sirena.org.uk>
-References: <20240812160132.135168257@linuxfoundation.org>
+	s=k20201202; t=1723548630;
+	bh=kiwXUxfjx4OtcKC14SZI8xUFCU5QGPX4eXEN8CbXRLM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=HOCT/6Ks9SESeseIvikOwerpDR78YS4ROZoV5WqO9XHA9EokNr5d3KulKwHsxH9Vm
+	 +lIwOH4EXJkWrf+/cmvX6AX2jhSiOdHyFtxIhtTjGxLxx/CHYhCPLesXAMmh7ucSmg
+	 gAZmQt7mDq6wbgHQDvtGGfhyQS3bXxrouzAsn5uE/G/dKD5EfQIixWoUDsKucnupEp
+	 0JLll8NdhvHt6P+8nyURKE5n9Qc9DbH/xtBpYT5vVjYk8Ys9fakAj1q97Hy8w1MEjO
+	 3gkVR+z+iXhQQBTr9RlOzQcj9ip7YOiAkqP5153xDUJ3Rb+QC/xbOiqgLD7FECOA49
+	 qv3Z8t3nAEMAA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70EB83823327;
+	Tue, 13 Aug 2024 11:30:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="L4/AKvU2S5bv/I6p"
-Content-Disposition: inline
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-X-Cookie: Say no, then negotiate.
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net] net: mana: Fix doorbell out of order violation and
+ avoid unnecessary doorbell rings
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172354862926.1604273.6519840713233454447.git-patchwork-notify@kernel.org>
+Date: Tue, 13 Aug 2024 11:30:29 +0000
+References: <1723219138-29887-1-git-send-email-longli@linuxonhyperv.com>
+In-Reply-To: <1723219138-29887-1-git-send-email-longli@linuxonhyperv.com>
+To: Long Li <longli@linuxonhyperv.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shradhagupta@linux.microsoft.com,
+ horms@kernel.org, kotaranov@microsoft.com, schakrabarti@linux.microsoft.com,
+ erick.archer@outlook.com, paulros@microsoft.com,
+ linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ longli@microsoft.com, stable@vger.kernel.org
+
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri,  9 Aug 2024 08:58:58 -0700 you wrote:
+> From: Long Li <longli@microsoft.com>
+> 
+> After napi_complete_done() is called when NAPI is polling in the current
+> process context, another NAPI may be scheduled and start running in
+> softirq on another CPU and may ring the doorbell before the current CPU
+> does. When combined with unnecessary rings when there is no need to arm
+> the CQ, it triggers error paths in the hardware.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v3,net] net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings
+    https://git.kernel.org/netdev/net/c/58a63729c957
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
---L4/AKvU2S5bv/I6p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Aug 12, 2024 at 06:00:56PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.46 release.
-> There are 189 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Tested-by: Mark Brown <broonie@kernel.org>
-
---L4/AKvU2S5bv/I6p
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAma7QoYACgkQJNaLcl1U
-h9C1tAf8Ch3dW1rtYMMZbu2K+0nb1nktqbVYbeKtqlxa0/vVSJ5NkxrEYxX6pp3w
-wLo1YWVmgsVFYeuJQBVM+vxGwTkrEWRncEv6CeaBFgMOsmaLz8DEIlzrTUBicm02
-29+vk9K7HLfFCW9ZXosgSEVz29YMPpMXfoCF4KZMkBPkZ9vrGOFyytQU+B2E26vZ
-Rgm2QFH0+uFbFBdFyeeN2dEnNZITyn8xR2rZLzSM/e3SXWJZEHFoGz1r2MuLmkSz
-+sgQ5BriZ4s0mZXOGOt/Uw0ZsikRSiYnmy3rjn1oDeQI5bX1KLECuX6TQF41HDfB
-1rbbb0djt1OI5Jpn/PialabdkyqbnA==
-=qE5E
------END PGP SIGNATURE-----
-
---L4/AKvU2S5bv/I6p--
 
