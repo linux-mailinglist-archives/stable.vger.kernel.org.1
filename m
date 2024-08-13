@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-67461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736A69502AE
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAC79502B9
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 269AA285310
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 10:43:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5700D284E10
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 10:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97DC1991AF;
-	Tue, 13 Aug 2024 10:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BED1946C1;
+	Tue, 13 Aug 2024 10:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZM1am94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rZF9sV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2F3193094;
-	Tue, 13 Aug 2024 10:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAC419B589;
+	Tue, 13 Aug 2024 10:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723545792; cv=none; b=pjgTAmaxVF8ebmtTk9Edo0kShqp4FL6cHWqW1lfeYAPaBEODp96uOUZlebTnofVMAhegrNHzaNeppN0/6vuKGoZWGRAHyY83woLJSI2w0LY6DtSslfTAwO3BZr9ahjZXBLeFYTM3VMKD8P+XAqgPHstXCThg3bWaIEBfw+DUAq8=
+	t=1723545860; cv=none; b=DGAEbMdRRkzDnY/wYA8Ngc+nnv5qxzbTdYYGfJD30enh6P/toWXoRsTT9On+Sd1LRwFyz8IwZxfWU26NdvcYyfLYO6wCXrpq6thyogp/2hwTmrQreEe0UDgCPD38HMdkS2V+x+1QKfjdcwhQtzDrX01YwE1/8ygqs/9pM1yfLXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723545792; c=relaxed/simple;
-	bh=dfRrtZidWVRY9wKIsKcb/ugq5TUhW2b+/SDBUkLcZjg=;
+	s=arc-20240116; t=1723545860; c=relaxed/simple;
+	bh=y+siaIvmE7cpofe8TFpPKN00mxWqNzAe8QsJ7RJ4Dag=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YZjU7GbZ726qDp/LC4859cw5M+AYMztrYhz8IZku73Ylr4DjSSR5sy+ZGXp8RPtVFb4FLTKVcKh4tmeIl9QWTTq6xws46bHJwnBwxHVe3PmNb0DfJ8/SMLFjETbTt8U5vzqF3+N7f61qVxxVsnfJlcrflw6IeBvK+Gw0pz0ztjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZM1am94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4E9C4AF09;
-	Tue, 13 Aug 2024 10:43:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sriVxBI9WEtqHNm47us7NJCP/AuJXAASbC4eQEd4UzeWyNiYtg1DYMg6beaB6ZtNAT0mpEDBkvmqCo1+n/zI64LICsJU82pT/HKV3H/2W20gXYaE2s0wrqbJ4zw3Bh1oSklxYRX1sA5UGlqMdUEKR2TRwA1Z91fBx4dp+d6A8KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rZF9sV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5074C4AF09;
+	Tue, 13 Aug 2024 10:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723545792;
-	bh=dfRrtZidWVRY9wKIsKcb/ugq5TUhW2b+/SDBUkLcZjg=;
+	s=korg; t=1723545859;
+	bh=y+siaIvmE7cpofe8TFpPKN00mxWqNzAe8QsJ7RJ4Dag=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BZM1am94AGGOkSmRq7iuu/bRoPcBp8CVX3uXvi+cZQU0mw99908rOkDBlzIHNiC98
-	 nI4ChF4nd3LpwBRgXk9Ustrq91kIKMSCdDz42x8kBzq8JrmqBVfP8i+s36+CIItGlU
-	 vrM7LhbMXd8fTnMxfaSZhU6kkeG4YY8zlN5rZ4zo=
-Date: Tue, 13 Aug 2024 12:43:09 +0200
+	b=2rZF9sV2lLZfunGbvxtZ/kk3QuIA94jTmQAr/33k5uxqlPIFDmcTdpY+meKsd/Z9p
+	 E3Xw8sAoq5Wv08qkP2QfTm0dPWdAoKUyzoVW+3BYoA99sfKhfpaqQV7btJ/okA2MOL
+	 gMIE348K+ptmAPFJ86PAXxyM7tNwXHKqKJcp/x98=
+Date: Tue, 13 Aug 2024 12:44:16 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Pablo Neira Ayuso <pablo@netfilter.org>
 Cc: netfilter-devel@vger.kernel.org, sashal@kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH -stable,5.4.x 0/3] Netfilter fixes for -stable
-Message-ID: <2024081302-abreast-unvocal-0935@gregkh>
-References: <20240812102848.392437-1-pablo@netfilter.org>
+Subject: Re: [PATCH -stable,4.19.x 0/3] Netfilter fixes for -stable
+Message-ID: <2024081306-oozy-open-a7ea@gregkh>
+References: <20240812102925.394733-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,12 +54,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240812102848.392437-1-pablo@netfilter.org>
+In-Reply-To: <20240812102925.394733-1-pablo@netfilter.org>
 
-On Mon, Aug 12, 2024 at 12:28:45PM +0200, Pablo Neira Ayuso wrote:
+On Mon, Aug 12, 2024 at 12:29:22PM +0200, Pablo Neira Ayuso wrote:
 > Hi Greg, Sasha,
 > 
-> This batch contains a backport for recent fixes already upstream for 5.4.x.
+> This batch contains a backport for recent fixes already upstream for 4.19.x.
 > 
 > The following list shows the backported patches, I am using original commit
 > IDs for reference:
