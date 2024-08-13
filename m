@@ -1,236 +1,100 @@
-Return-Path: <stable+bounces-67407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294B394FAA8
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 02:29:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428CE94FADA
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 02:52:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5C862827F3
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 00:29:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2BCB1F22279
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 00:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80594C81;
-	Tue, 13 Aug 2024 00:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFE54A23;
+	Tue, 13 Aug 2024 00:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKQzHeWL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jZzkx2SI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2854A23;
-	Tue, 13 Aug 2024 00:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53834EDB;
+	Tue, 13 Aug 2024 00:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723508978; cv=none; b=ZtE5TnhxLh5N+P+YQiQjaS/1fP2S5JndTGj5qb7qdKpoMD7YrHDLfB3hVJhXuNXAfu5Y0x5lc/GXSCZLnctzYFCqjlM5pejORcggs+Kt2go1ByUJLf5DpVAAVqjPnvIwB4j/OItdqAyaipQCTal/ekpAnTJLaX/BLUVAUT36ZdE=
+	t=1723510324; cv=none; b=WHRDbNyAkFFlY1Uglx6gbo84tgmiMEB1sCEQLXZ5wZRj02GGHd68SsJMorC0ISpoDgdmM4KiCR77eBSTzDw97Pncq8ghPWy/i2Cg5rMRdmkI/N7NfepsZoa07patQQfmsHJamj+G7QUKmTuY2dj6AymYnjwFD6xYoxrx+edNDFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723508978; c=relaxed/simple;
-	bh=d6OgdgeHC+wk/lu9I8MQmLFJs8ltuhWEZxsTMlHyPcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EOw+3k39L8q+2cS/2hKlo41ccbqjNpY2pmMqCbQHywwPBO2qYV2WTcgjg/jcp6kcQXj4FB+/wAfRzmG4F/Zll6JsC/ilRyr6XRQdcpf0yffxe7UqE3/PZpWOpR2tpw7dyFslptQtH6CqJ/2XzUId77iTypuPqL1uci7/ZuYQD+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKQzHeWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE5EC4AF0D;
-	Tue, 13 Aug 2024 00:29:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723508978;
-	bh=d6OgdgeHC+wk/lu9I8MQmLFJs8ltuhWEZxsTMlHyPcE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gKQzHeWLGEXSBj28UKOhogBjjfgKREy89e3zbQHdc2ymmXrDkkZ8QFoKEIxLfi08u
-	 9jEXKq6AMG/wgO3jx720R9CpQKXK7rYYZMZnWYF7a6gocNP8PbvovNE2mtUbZtD08n
-	 gXHs5QykOrm6BmEfFA7Y7vFYzbd8xYM14VnDtNgf/YkykOiy+lEvv2OLzj5Igo9TjD
-	 kjC0VnPbEZboUpV83Pnzwvt17tMEAUvu8yDMMmkUbgmt9hdoRZk2aIzApO1MJ4rc8Y
-	 dyWswqg+Bstkrrkw4GynQVlIwnwmKW2a8KKed3vMTPfb+u7CHjaWHpu1zd76r5wrkc
-	 isglTPPnF42og==
-From: Andrii Nakryiko <andrii@kernel.org>
-To: bpf@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	adobriyan@gmail.com,
-	shakeel.butt@linux.dev,
-	hannes@cmpxchg.org,
-	ak@linux.intel.com,
-	osandov@osandov.com,
-	song@kernel.org,
-	jannh@google.com,
-	linux-fsdevel@vger.kernel.org,
-	willy@infradead.org,
-	Andrii Nakryiko <andrii@kernel.org>,
+	s=arc-20240116; t=1723510324; c=relaxed/simple;
+	bh=d/Aryoz0Lafm8CF1eAjXQtm5vquj+UBZ29XRVxr9V0k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dTteHSNOWj04iZAC11dCrCXS42tsUlvV0MSbYo+XPJ0GVo8CzIrcTh6u3Y9GIR0rEf9GwIx3X+5ewVzpvQf4oYmgNrGmMXi2g1Lll675Mhg312gFxgwBLW3lvJu7GUHQkWN9QbysEPKTd5lRWzLf58uMTaUUGzHLNIiScAtGzQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jZzkx2SI; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723510323; x=1755046323;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d/Aryoz0Lafm8CF1eAjXQtm5vquj+UBZ29XRVxr9V0k=;
+  b=jZzkx2SIdrphFiS/mrgWX+2++LrsbOeaMWalYnEnF2acpMvBTRiMNkvA
+   Qd8CZBuScYUMWEap+YMHq+uRb+YfsyaRLRSz1Yphz2lzQpVX8goCYq5/U
+   AvhvkjR4MJAbb0srXLLoeXWXWTkLMyDZYRD7d2WjUGPUjv79E8bp2JDhT
+   MtUEi/+9dImj+rsZIviXs8YsJt4xB5frRjUIvNcv5HHBWS7jy3f7Bv1ju
+   eB4pApqB+H3nIhfAxCcMhTIx31E5uLYvbknWC41gyXoBcIUCZ7F6ChNeg
+   XAD3IqwNOh6X/IoJjf1PLDtd3z5oB48RRL85hXmDmAA0+v4S8goqO28hc
+   g==;
+X-CSE-ConnectionGUID: QtV+1z2wTVqN1JaiMUSoUw==
+X-CSE-MsgGUID: LI54Pp50ScGNHhgtILcv0g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="47054924"
+X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; 
+   d="scan'208";a="47054924"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 17:52:02 -0700
+X-CSE-ConnectionGUID: bXTSqLZ8QxGfl/VLt+XTNg==
+X-CSE-MsgGUID: PhRyyA1jTveb1w25hrwHnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; 
+   d="scan'208";a="62643654"
+Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 17:52:01 -0700
+Date: Mon, 12 Aug 2024 17:52:00 -0700
+From: Andi Kleen <ak@linux.intel.com>
+To: Andrii Nakryiko <andrii@kernel.org>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
+	adobriyan@gmail.com, shakeel.butt@linux.dev, hannes@cmpxchg.org,
+	osandov@osandov.com, song@kernel.org, jannh@google.com,
+	linux-fsdevel@vger.kernel.org, willy@infradead.org,
 	stable@vger.kernel.org
-Subject: [PATCH v5 bpf-next 01/10] lib/buildid: harden build ID parsing logic
-Date: Mon, 12 Aug 2024 17:29:23 -0700
-Message-ID: <20240813002932.3373935-2-andrii@kernel.org>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20240813002932.3373935-1-andrii@kernel.org>
+Subject: Re: [PATCH v5 bpf-next 01/10] lib/buildid: harden build ID parsing
+ logic
+Message-ID: <ZrquMOQc8vAjYxIB@tassilo>
 References: <20240813002932.3373935-1-andrii@kernel.org>
+ <20240813002932.3373935-2-andrii@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240813002932.3373935-2-andrii@kernel.org>
 
-Harden build ID parsing logic, adding explicit READ_ONCE() where it's
-important to have a consistent value read and validated just once.
+> @@ -152,6 +160,10 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+>  	page = find_get_page(vma->vm_file->f_mapping, 0);
+>  	if (!page)
+>  		return -EFAULT;	/* page not mapped */
+> +	if (!PageUptodate(page)) {
+> +		put_page(page);
+> +		return -EFAULT;
+> +	}
 
-Also, as pointed out by Andi Kleen, we need to make sure that entire ELF
-note is within a page bounds, so move the overflow check up and add an
-extra note_size boundaries validation.
+That change is not described. As I understand it might prevent reading
+previous data in the page or maybe junk under an IO error? Anyways I guess it's a
+good change.
 
-Fixes tag below points to the code that moved this code into
-lib/buildid.c, and then subsequently was used in perf subsystem, making
-this code exposed to perf_event_open() users in v5.12+.
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
 
-Cc: stable@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>
-Suggested-by: Andi Kleen <ak@linux.intel.com>
-Fixes: bd7525dacd7e ("bpf: Move stack_map_get_build_id into lib")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
----
- lib/buildid.c | 74 ++++++++++++++++++++++++++++++---------------------
- 1 file changed, 43 insertions(+), 31 deletions(-)
-
-diff --git a/lib/buildid.c b/lib/buildid.c
-index e02b5507418b..61bc5b767064 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *build_id,
- 			      const void *note_start,
- 			      Elf32_Word note_size)
- {
--	Elf32_Word note_offs = 0, new_offs;
--
--	while (note_offs + sizeof(Elf32_Nhdr) < note_size) {
--		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_offs);
-+	const char note_name[] = "GNU";
-+	const size_t note_name_sz = sizeof(note_name);
-+	u64 note_off = 0, new_off, name_sz, desc_sz;
-+	const char *data;
-+
-+	while (note_off + sizeof(Elf32_Nhdr) < note_size &&
-+	       note_off + sizeof(Elf32_Nhdr) > note_off /* overflow */) {
-+		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_off);
-+
-+		name_sz = READ_ONCE(nhdr->n_namesz);
-+		desc_sz = READ_ONCE(nhdr->n_descsz);
-+
-+		new_off = note_off + sizeof(Elf32_Nhdr);
-+		if (check_add_overflow(new_off, ALIGN(name_sz, 4), &new_off) ||
-+		    check_add_overflow(new_off, ALIGN(desc_sz, 4), &new_off) ||
-+		    new_off > note_size)
-+			break;
- 
- 		if (nhdr->n_type == BUILD_ID &&
--		    nhdr->n_namesz == sizeof("GNU") &&
--		    !strcmp((char *)(nhdr + 1), "GNU") &&
--		    nhdr->n_descsz > 0 &&
--		    nhdr->n_descsz <= BUILD_ID_SIZE_MAX) {
--			memcpy(build_id,
--			       note_start + note_offs +
--			       ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhdr),
--			       nhdr->n_descsz);
--			memset(build_id + nhdr->n_descsz, 0,
--			       BUILD_ID_SIZE_MAX - nhdr->n_descsz);
-+		    name_sz == note_name_sz &&
-+		    strcmp((char *)(nhdr + 1), note_name) == 0 &&
-+		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
-+			data = note_start + note_off + ALIGN(note_name_sz, 4);
-+			memcpy(build_id, data, desc_sz);
-+			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
- 			if (size)
--				*size = nhdr->n_descsz;
-+				*size = desc_sz;
- 			return 0;
- 		}
--		new_offs = note_offs + sizeof(Elf32_Nhdr) +
--			ALIGN(nhdr->n_namesz, 4) + ALIGN(nhdr->n_descsz, 4);
--		if (new_offs <= note_offs)  /* overflow */
--			break;
--		note_offs = new_offs;
-+
-+		note_off = new_off;
- 	}
- 
- 	return -EINVAL;
-@@ -71,7 +77,7 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
- {
- 	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)page_addr;
- 	Elf32_Phdr *phdr;
--	int i;
-+	__u32 i, phnum;
- 
- 	/*
- 	 * FIXME
-@@ -80,9 +86,10 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
- 	 */
- 	if (ehdr->e_phoff != sizeof(Elf32_Ehdr))
- 		return -EINVAL;
-+
-+	phnum = READ_ONCE(ehdr->e_phnum);
- 	/* only supports phdr that fits in one page */
--	if (ehdr->e_phnum >
--	    (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
-+	if (phnum > (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
- 		return -EINVAL;
- 
- 	phdr = (Elf32_Phdr *)(page_addr + sizeof(Elf32_Ehdr));
-@@ -90,8 +97,8 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
- 	for (i = 0; i < ehdr->e_phnum; ++i) {
- 		if (phdr[i].p_type == PT_NOTE &&
- 		    !parse_build_id(page_addr, build_id, size,
--				    page_addr + phdr[i].p_offset,
--				    phdr[i].p_filesz))
-+				    page_addr + READ_ONCE(phdr[i].p_offset),
-+				    READ_ONCE(phdr[i].p_filesz)))
- 			return 0;
- 	}
- 	return -EINVAL;
-@@ -103,7 +110,7 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
- {
- 	Elf64_Ehdr *ehdr = (Elf64_Ehdr *)page_addr;
- 	Elf64_Phdr *phdr;
--	int i;
-+	__u32 i, phnum;
- 
- 	/*
- 	 * FIXME
-@@ -112,18 +119,19 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
- 	 */
- 	if (ehdr->e_phoff != sizeof(Elf64_Ehdr))
- 		return -EINVAL;
-+
-+	phnum = READ_ONCE(ehdr->e_phnum);
- 	/* only supports phdr that fits in one page */
--	if (ehdr->e_phnum >
--	    (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
-+	if (phnum > (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
- 		return -EINVAL;
- 
- 	phdr = (Elf64_Phdr *)(page_addr + sizeof(Elf64_Ehdr));
- 
--	for (i = 0; i < ehdr->e_phnum; ++i) {
-+	for (i = 0; i < phnum; ++i) {
- 		if (phdr[i].p_type == PT_NOTE &&
- 		    !parse_build_id(page_addr, build_id, size,
--				    page_addr + phdr[i].p_offset,
--				    phdr[i].p_filesz))
-+				    page_addr + READ_ONCE(phdr[i].p_offset),
-+				    READ_ONCE(phdr[i].p_filesz)))
- 			return 0;
- 	}
- 	return -EINVAL;
-@@ -152,6 +160,10 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
- 	page = find_get_page(vma->vm_file->f_mapping, 0);
- 	if (!page)
- 		return -EFAULT;	/* page not mapped */
-+	if (!PageUptodate(page)) {
-+		put_page(page);
-+		return -EFAULT;
-+	}
- 
- 	ret = -EINVAL;
- 	page_addr = kmap_local_page(page);
--- 
-2.43.5
-
+-Andi
 
