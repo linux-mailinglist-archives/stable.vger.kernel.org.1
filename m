@@ -1,94 +1,167 @@
-Return-Path: <stable+bounces-67452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F92C95027B
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:30:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E8F95027E
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 12:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C467B20FCD
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 10:30:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76001C20D18
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 10:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B33189BAD;
-	Tue, 13 Aug 2024 10:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184A218A95E;
+	Tue, 13 Aug 2024 10:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oA9v2HJg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SRXCbmuN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2862C42AB9;
-	Tue, 13 Aug 2024 10:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7261208AD;
+	Tue, 13 Aug 2024 10:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723545030; cv=none; b=W80SF4LaxtbEBkvmnUSPHkdFlVqjeWe/0lLQhOlr4Npj5TfYlSbHXlWQCKlOrWEjQNrJyIghTGbJdQWquimeDkaJvk0bFDZELUNOkxssoEfsJfp1+9/8fCY9nIdtEuU6DzLL4P8E1LCWQ4J+Chef71nZZCtSzjT/uLlAztiUA0U=
+	t=1723545096; cv=none; b=i+aKDWB5TJxCTPzjFpToLkYG2CKBfSfuNDf3AcJa4oAPf6jqOsych0MqI3F1JCDvsIrnohMpb8MR0X5zNstXdW8PIGhU6aYN6Ckgw6QDdKN8Iy/9ys5xROS2Ep6epP3F4aIeODa1Fpe5uXXOb0eyg76jMRvN9vFVEwO5o/c9RVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723545030; c=relaxed/simple;
-	bh=+t7C/2rh1InitL4i9dbhLiuiWL7fjqkvIlgMRG+19yQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UEDUyxVP1o5j0Mg9x7BYhAUu+RZ2+QZaxaypfYe2orR+bl7nwKbI+aLuP78xZjURORxVjQWUBDdzIHJUixJ5/MaCjdvKi41eXTQkWkGMs2koIzSepZCpgwHc5QYXhAmLuKL9SOYVG/IoNHyr+JVIMaof0l1vKkLjGW2v//eOtBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oA9v2HJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D6EC4AF09;
-	Tue, 13 Aug 2024 10:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723545029;
-	bh=+t7C/2rh1InitL4i9dbhLiuiWL7fjqkvIlgMRG+19yQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oA9v2HJgp6O7zYH7GN5Ku19yyRqjCBlsLOaWGxZu1k7o9g9ag1MEAB5XWxXPNRPNX
-	 sCh4Cctlm9iP5whvOxIeYHMB4pGGEPxgnGtZKEw9Tf3V09Y/N2tokuA3JVwOt8xKA1
-	 2wzUtYO15zX57S6o97k3ISelL7JelmngiGxEesjg=
-Date: Tue, 13 Aug 2024 12:30:22 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: cel@kernel.org
-Cc: amir73il@gmail.com, krisman@collabora.com, jack@suse.cz,
-	sashal@kernel.org, stable@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, tytso@mit.edu,
-	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com,
-	florian.fainelli@broadcom.com, Chuck Lever <chuck.lever@oracle.com>
-Subject: Re: [PATCH v5.10.y 0/3] Apply fanotify-related documentation changes
-Message-ID: <2024081313-shallot-nursing-6023@gregkh>
-References: <20240725153229.13407-1-cel@kernel.org>
+	s=arc-20240116; t=1723545096; c=relaxed/simple;
+	bh=kGDIRO6JhY0g/fBCon73pGpfQROXPRDw//1cENqFzLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eAtUaS/QvzpdB0xzosvbPB40lqV+8JZTT9No6xptJCRDgfwJVJ+Tg0owG/iHdg7MnjSuqf/hQp2JqMc9glkL46r6Sx7Gcpr1MzDvSneYvOn1VR2Wd6epdP1VFnofLXbzJN/GiEmpmTQsJNyeXF0AgGHijPrs/lp8Z2bWTqOZ3Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SRXCbmuN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB9DC4AF0B;
+	Tue, 13 Aug 2024 10:31:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723545096;
+	bh=kGDIRO6JhY0g/fBCon73pGpfQROXPRDw//1cENqFzLE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SRXCbmuNnr/gZknpTcyE6e5PXIsoSrlsqUmrjaij1eyImv+BHj4/iWNO+ZAgAVN9r
+	 AYCWNIfASAHQr3NFDku43h55g8Erou/uqObuVkMXpMx2NiZzeTUr2siCyvFNx/ZKsz
+	 07zwzHDZcOk6XPf8QC+ue6FYmVU+gDxszlv2Sz83MBT4kXrbaWWw8iIdOp7nbMARft
+	 mJCW15q+Sk4l30yosV4kkFSwMvohGhV3YTsTOccNa4R7Jo9UIfCGrxPnfRIJM1BmCy
+	 1hfW6pq9WKPSnsnNPlME2wx5oMtQHiMceDikdVzmNw1ag3a532YDBPqXnEcOGeG/eJ
+	 CTHSvhzpPfNLw==
+Message-ID: <85ddc853-b64d-4be9-8cd4-3d86e61b32d1@kernel.org>
+Date: Tue, 13 Aug 2024 12:31:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240725153229.13407-1-cel@kernel.org>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: FAILED: patch "[PATCH] mptcp: pm: don't try to create sf if alloc
+ failed" failed to apply to 5.15-stable tree
+Content-Language: en-GB
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org, kuba@kernel.org, martineau@kernel.org,
+ pabeni@redhat.com, MPTCP Linux <mptcp@lists.linux.dev>
+References: <2024081246-rinse-rockslide-346f@gregkh>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <2024081246-rinse-rockslide-346f@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 25, 2024 at 11:32:26AM -0400, cel@kernel.org wrote:
-> From: Chuck Lever <chuck.lever@oracle.com>
-> 
-> These extra commits were requested by Amir Goldstein
-> <amir73il@gmail.com>. Note that c0baf9ac0b05 ("docs: Document the
-> FAN_FS_ERROR event") is already applied to v5.10.y.
-> 
-> Gabriel Krisman Bertazi (2):
->   samples: Add fs error monitoring example
->   samples: Make fs-monitor depend on libc and headers
-> 
-> Linus Torvalds (1):
->   Add gitignore file for samples/fanotify/ subdirectory
-> 
->  samples/Kconfig               |   8 ++
->  samples/Makefile              |   1 +
->  samples/fanotify/.gitignore   |   1 +
->  samples/fanotify/Makefile     |   5 ++
->  samples/fanotify/fs-monitor.c | 142 ++++++++++++++++++++++++++++++++++
->  5 files changed, 157 insertions(+)
->  create mode 100644 samples/fanotify/.gitignore
->  create mode 100644 samples/fanotify/Makefile
->  create mode 100644 samples/fanotify/fs-monitor.c
-> 
-> -- 
-> 2.45.2
-> 
-> 
+Hi Greg,
 
-Now queued up, thanks.
+On 12/08/2024 14:39, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x cd7c957f936f8cb80d03e5152f4013aae65bd986
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081246-rinse-rockslide-346f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> cd7c957f936f ("mptcp: pm: don't try to create sf if alloc failed")
+> c95eb32ced82 ("mptcp: pm: reduce indentation blocks")
+> 528cb5f2a1e8 ("mptcp: pass addr to mptcp_pm_alloc_anno_list")
+> 77e4b94a3de6 ("mptcp: update userspace pm infos")
+> 24430f8bf516 ("mptcp: add address into userspace pm list")
+> fb00ee4f3343 ("mptcp: netlink: respect v4/v6-only sockets")
+> 80638684e840 ("mptcp: get sk from msk directly")
+> 5ccecaec5c1e ("mptcp: fix locking in mptcp_nl_cmd_sf_destroy()")
+> 76a13b315709 ("mptcp: invoke MP_FAIL response when needed")
+> d9fb797046c5 ("mptcp: Do not traverse the subflow connection list without lock")
+> d42f9e4e2384 ("mptcp: Check for orphaned subflow before handling MP_FAIL timer")
+> d7e6f5836038 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From cd7c957f936f8cb80d03e5152f4013aae65bd986 Mon Sep 17 00:00:00 2001
+> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+> Date: Wed, 31 Jul 2024 13:05:56 +0200
+> Subject: [PATCH] mptcp: pm: don't try to create sf if alloc failed
+> 
+> It sounds better to avoid wasting cycles and / or put extreme memory
+> pressure on the system by trying to create new subflows if it was not
+> possible to add a new item in the announce list.
 
-greg k-h
+I think it is better not to backport this patch to v5.15: the
+dependencies list is quite big, and the fix is probably not worth it: in
+case of memory pressure, we don't try to do more actions (because they
+will fail as well).
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
 
