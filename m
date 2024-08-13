@@ -1,102 +1,176 @@
-Return-Path: <stable+bounces-67504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FB4950873
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:05:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BFA950885
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 17:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AD84B2354B
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 15:05:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 426411F21873
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 15:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E5119F46C;
-	Tue, 13 Aug 2024 15:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F130219EEA4;
+	Tue, 13 Aug 2024 15:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b="WTq/3soM"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ce9dziyi"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA02C19EEA4
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 15:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492B919EED6
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 15:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723561536; cv=none; b=r2uOMvY0CqjoSIFTCe1UJzD92bB3M9Qag7EVV2QQzlebt1gR1+OKOvCGOdLEYYccvZU7m1uuMmPCJH60UYKexuxNl2utmCQLj3l/vujNJDIKKyuomYlrYXmDl+pvV4LDEGNyOjfVEX8OT+G2fwqD+7t79UghAPnqzDD4rCnMAmE=
+	t=1723561683; cv=none; b=qaEhMRfmXT+PREeCrOUh1Z5mW9wkuZ1/4iDwkdfyJU/N4YTn/x8gpeMnjVP9WzP31WKtbiN90JqtCvlKgMUm6QMFj1N9U2oHjdcOIbvto7t+W8WU2pIZnTmuEParT3MDwMHhbjw2ybENFKilgCkHyO0/dlv5ijsaG+9VlbWEc1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723561536; c=relaxed/simple;
-	bh=kTpXdxzroFSgbIsFrE360Owkl7seIditzzIjeuS4eho=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dx7FBQESw8odTAwsivBisS7qGqDN+o+sn03+JncRTeGzqG4BSoIPLsMR2oE/VW0nimxNd8V0fszHmflrhwjJTsmUGnJFAVrDSnAfl2nZLibvGvTDukPxtcpV6aktgtG+AZFYP2hBK5D0HdtacsRX2jdDfUYZZ3GoPl5WZMHWdqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev; spf=pass smtp.mailfrom=holm.dev; dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b=WTq/3soM; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holm.dev
-Message-ID: <ef63bf73-18fc-471a-a8a0-c1eedcc47491@holm.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=holm.dev; s=key1;
-	t=1723561530;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JnHW7TTDdCA8zU1Z5ULCGl64SaCeP5gQoJdh/7OfhBI=;
-	b=WTq/3soMD9ONG+ZTvK6rBkip13UXkb3KiYVeGtA8fphk2tqsmqxyJV2ibtmX8UN4qutHBM
-	JayfQfX+qZgFZFLl4+Y5u3w7Ym/23aCMj/LhHtwNhXlHtidgigCEhpuqyz8HHR9bKtymon
-	CCQ7z3ZhibT09g2e8KstuFmidy47V7OF+GE0chywTAGmDCf++EgpO5rg52EDjnUL1LLGWq
-	Mpbdi0VqqHTlC6eQsw33p37P18A59gMM8YkPBMDm7IxjdrltnZkIHiaN0KjrnJYCS/tepg
-	sjs6iJZ5wMPGwkwwaLSrUI4grnRy8UxBA0Ty5xJNZQRiOvSFaWHp6uysPKwCUA==
-Date: Tue, 13 Aug 2024 17:05:26 +0200
+	s=arc-20240116; t=1723561683; c=relaxed/simple;
+	bh=qC3XQWCCu1rctIzw6y3siLeysb9QkV1chjdq8hOhrEs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=W5nH5QAVJU0vS35EzRw8dkmcdlfQpE6NMqRHNFc0p+iS8lI+bwpFVdgGHSSINOD9trq1w/t2nwjCXJ6VhKDXbOU1dMuEZAfKd4bXcxao3EbrMykGFOhAEfwP52VUcvtkqs6ys777r5IcWW+qR1LOr0vxbJDan47dcwdQQ4MZkC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ce9dziyi; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e0e8826e03bso9230430276.3
+        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 08:08:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723561681; x=1724166481; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1x8HY6pqVTVF5kQzcpH4Ucp1zz0s1gAq4xU9MqMd/wE=;
+        b=ce9dziyi9vKY8MxR0ZIhBgdof4vxT4DQRAqkbDkKn/qLQQsmlfboZL6d9z8sv4+w5V
+         8QfoSAKz2picIJ0Xd7UwMSuYkhH6vzstRMZkj3EoN0DoODQPjaJ57SbU4vVSaQt2jI8v
+         p3wt+C+lnfaw40p3SUtbn05OdX0gXPaNIll8I1r53hrsBCMxbfjTFy/eU53mPsAaxcZW
+         SZuTnKCPRgJoslFXVLW/JuxJKuBruVSkQq7iQxyIewYmlpr2Bi1rgMPIJ0ouFKB1mZxW
+         Qhez39/8JscTd5ZVKGMOR96KUClD14cF76euboR/keHxAdq0i82MpQN7AfUjdWNT4pVo
+         Tmww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723561681; x=1724166481;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1x8HY6pqVTVF5kQzcpH4Ucp1zz0s1gAq4xU9MqMd/wE=;
+        b=X4YSuJtal3V4NE4aYchpQ133dBZ/NIdE93VvZ03jnoy2RkpL6UKs4YI+SFvI+///sQ
+         sF2eeqs//ZZFsZwaJAPxhhiJjB9JonVr/nvrm90YmIdzD3j5ce0mMEyIVWGOWrs/VPoi
+         Cds0htYh+AUwvkQ89flZ1tdHGTT3a6HthaGNJhwEKqKu9jnKF9v8MqqGMW/n7pVfwxNd
+         js0Kp5JysDLADDotQu74p42Fay+Q+gVkZPmNGmW6tXUn6MJLAhWmsmYJeUwj3fsRUGh8
+         A3JkI8vsqcVjR8ubd8D9F3wuv5JDJg5trqW4qEWIdaTMQl9taCb7uQ9VW0IQYABqy9q6
+         shdw==
+X-Forwarded-Encrypted: i=1; AJvYcCXZi8XSB/M9dhvOp8Z0/ifcOMSGFNNFwLzJjAEK1LxxSBPL6Uu3M1XPDH6QXOh804gK7Wd9HdwbfBfoT+8LKQyb2dO2Mhil
+X-Gm-Message-State: AOJu0YwEJzzH/CJ4eMo4Dnqdqt/NeSe6HGM+CyrAFTC+p03l2a88i69z
+	r3tzHfkP1xaOTydN1rCdTcsOBtMXscNEWuvv1EaYZYHdFcOc8GAPfouuuYJj1ysuOVGaRR+R0cW
+	9AA==
+X-Google-Smtp-Source: AGHT+IEz36OwLmoBcnEL1WUUu6fUVYlI+FT85j7U+cB0aTgWoq2vINT4jdflqp8Za9uby33WBDXFm+7GRew=
+X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:b416:2d8c:d850:78])
+ (user=surenb job=sendgmr) by 2002:a25:4844:0:b0:e05:eb99:5f84 with SMTP id
+ 3f1490d57ef6-e113e9066d6mr4889276.4.1723561681199; Tue, 13 Aug 2024 08:08:01
+ -0700 (PDT)
+Date: Tue, 13 Aug 2024 08:07:56 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH 6.10 257/263] drm/amd/display: Defer handling mst up
- request in resume
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- Mario Limonciello <mario.limonciello@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Hersen Wu <hersenxs.wu@amd.com>,
- Wayne Lin <wayne.lin@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>
-References: <20240812160146.517184156@linuxfoundation.org>
- <20240812160156.489958533@linuxfoundation.org>
- <235aa62e-271e-4e2b-b308-e29b561d6419@holm.dev>
- <2024081345-eggnog-unease-7b3c@gregkh>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kevin Holm <kevin@holm.dev>
-In-Reply-To: <2024081345-eggnog-unease-7b3c@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.0.76.ge559c4bf1a-goog
+Message-ID: <20240813150758.855881-1-surenb@google.com>
+Subject: [PATCH v3 1/2] alloc_tag: introduce clear_page_tag_ref() helper function
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, david@redhat.com, vbabka@suse.cz, 
+	pasha.tatashin@soleen.com, souravpanda@google.com, keescook@chromium.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, surenb@google.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/13/24 16:21, Greg Kroah-Hartman wrote:
-> On Tue, Aug 13, 2024 at 02:56:18PM +0200, Kevin Holm wrote:
->>
->> On 8/12/24 18:04, Greg Kroah-Hartman wrote:
->>> 6.10-stable review patch.  If anyone has any objections, please let me know.
->> This patch seems to cause problems with my external screens not getting a signal
->> after my laptop wakes up from sleep.
->>
->> The problem occurs on my Lenovo P14s Gen 2 (type 21A0) connected to a lenovo
->> usb-c dock (type 40AS) with two 4k display port screens connected. My Laptop
->> screen wakes up normally, the two external displays are still detected by my
->> system and shown in the kde system settings, but they show no image.
->>
->> The problem only occurs after putting my system to sleep, not on first boot.
->>
->> I didn't do a full git bisect, I only tested the full rc and then a build a
->> kernel with this patch reverted, reverting only this patch solved the problem.
-> 
-> Is this also an issue in 6.11-rc3?
+In several cases we are freeing pages which were not allocated using
+common page allocators. For such cases, in order to keep allocation
+accounting correct, we should clear the page tag to indicate that the
+page being freed is expected to not have a valid allocation tag.
+Introduce clear_page_tag_ref() helper function to be used for this.
 
-No, with 6.11-rc3 my monitors work as expected both on boot and when waking up
-from sleep.
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org # v6.10
+---
+ include/linux/pgalloc_tag.h | 13 +++++++++++++
+ mm/mm_init.c                | 10 +---------
+ mm/page_alloc.c             |  9 +--------
+ 3 files changed, 15 insertions(+), 17 deletions(-)
 
-~kevin
+diff --git a/include/linux/pgalloc_tag.h b/include/linux/pgalloc_tag.h
+index 18cd0c0c73d9..207f0c83c8e9 100644
+--- a/include/linux/pgalloc_tag.h
++++ b/include/linux/pgalloc_tag.h
+@@ -43,6 +43,18 @@ static inline void put_page_tag_ref(union codetag_ref *ref)
+ 	page_ext_put(page_ext_from_codetag_ref(ref));
+ }
+ 
++static inline void clear_page_tag_ref(struct page *page)
++{
++	if (mem_alloc_profiling_enabled()) {
++		union codetag_ref *ref = get_page_tag_ref(page);
++
++		if (ref) {
++			set_codetag_empty(ref);
++			put_page_tag_ref(ref);
++		}
++	}
++}
++
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 				   unsigned int nr)
+ {
+@@ -126,6 +138,7 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
+ 
+ static inline union codetag_ref *get_page_tag_ref(struct page *page) { return NULL; }
+ static inline void put_page_tag_ref(union codetag_ref *ref) {}
++static inline void clear_page_tag_ref(struct page *page) {}
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 				   unsigned int nr) {}
+ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 75c3bd42799b..907c46b0773f 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2460,15 +2460,7 @@ void __init memblock_free_pages(struct page *page, unsigned long pfn,
+ 	}
+ 
+ 	/* pages were reserved and not allocated */
+-	if (mem_alloc_profiling_enabled()) {
+-		union codetag_ref *ref = get_page_tag_ref(page);
+-
+-		if (ref) {
+-			set_codetag_empty(ref);
+-			put_page_tag_ref(ref);
+-		}
+-	}
+-
++	clear_page_tag_ref(page);
+ 	__free_pages_core(page, order, MEMINIT_EARLY);
+ }
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 28f80daf5c04..3f80e94a0b66 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5821,14 +5821,7 @@ unsigned long free_reserved_area(void *start, void *end, int poison, const char
+ 
+ void free_reserved_page(struct page *page)
+ {
+-	if (mem_alloc_profiling_enabled()) {
+-		union codetag_ref *ref = get_page_tag_ref(page);
+-
+-		if (ref) {
+-			set_codetag_empty(ref);
+-			put_page_tag_ref(ref);
+-		}
+-	}
++	clear_page_tag_ref(page);
+ 	ClearPageReserved(page);
+ 	init_page_count(page);
+ 	__free_page(page);
 
-> thanks,
-> 
-> greg k-h
+base-commit: d74da846046aeec9333e802f5918bd3261fb5509
+-- 
+2.46.0.76.ge559c4bf1a-goog
 
 
