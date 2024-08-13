@@ -1,234 +1,256 @@
-Return-Path: <stable+bounces-67425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1B694FDED
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 08:37:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CAF94FDF0
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 08:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 310532814A6
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 06:37:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F52C1F22D71
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 06:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C3D3A8D8;
-	Tue, 13 Aug 2024 06:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CE84207D;
+	Tue, 13 Aug 2024 06:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zalPNQyd"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GowQ6281";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NuvAkG0M";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GowQ6281";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NuvAkG0M"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81ED8433DF
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 06:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F06C446AC;
+	Tue, 13 Aug 2024 06:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723531061; cv=none; b=YsG5qODCKqgh44IruNc3SRMY6xPRXPe2vHl7P0VgP6hOu1CVtd3/G/2GvOvc7/mtW9izpeeMjj7bvHoI3vbsoUjw+SdWTX+/G6KXBj4/e04zG4p1QNEjp36uH3ktQxktQPaMiQUa35w9I9WwjW9Z48XfMZ+IG592GQ1HZeEGKx8=
+	t=1723531067; cv=none; b=tVLS4bZRIO/8gcpNAvHReLaohbFlHnQ8Ybr3K24xoOa5cp4ZqULWxKVhN3/c74t9oviE7OUODn57/vi+Ie8Rx876QS9Og/Z7VVcWuhUxxymSStXsTPdRv7KPldExcmkJdhaAj7EGOVlAA2VNlfj0tvHpj79BjQj+mNBacIDk3f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723531061; c=relaxed/simple;
-	bh=575e9iWW7nVzsNnISGsVET3xlrP7uHg5pfRLkBr0wKs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kjAf7vkiQdRlOV3ORg1GGl/yjImSFwJ62IKbGZ6+5vbTHV8Kd74eVtw5jyXbiNq981d4TeEJtyvV9ph4BEtGFEhTjLMjAIL0nX6DEqsqMNdGEYHjIph2y4+OXq4HcUfyEhi3Cl+FKALXVIr8KtoxT9FJ6M3HyatqXYCmg7e6ZYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zalPNQyd; arc=none smtp.client-ip=209.85.217.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-492a8333cb1so2044706137.3
-        for <stable@vger.kernel.org>; Mon, 12 Aug 2024 23:37:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723531058; x=1724135858; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7Uz2Jmkcns8d749Zb3uEheyiW3HdBXWgL66GZJZE6ys=;
-        b=zalPNQydwUQhZc2NPVV2lUFrfBWJ0CBbv0J5AYk0yMCrygVxumbbipMXTzy3D8FBL7
-         x0ZeWJHgdUJ5f+i64cEFdZyi+khKObCPPMtulFD6wAkzXdr5yeSzc18QeHZUWMCmmxdk
-         FcWDs82OtdVbKixH8WaqCM10wW2zAVVdxAGzCOQOHTGjmSCYLaI0kbDfZCGI/I2HsKKf
-         Uwxs4Agkbsdn+ODhVgLy1X5Eit1HzLnP7yAbuzbT2njDUJZryRjSAOQWyjgCDclub6MU
-         AZzPAt4SnXVtrGxYQrzYZdJyLFGqkp2u8GERIuCmkPJxDwztR/DRrHI/L+HBatY7xi7E
-         gN3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723531058; x=1724135858;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7Uz2Jmkcns8d749Zb3uEheyiW3HdBXWgL66GZJZE6ys=;
-        b=Rw6w5oorJO6fWwGQ5bttg84Tg9qewTQW6kpTYBHT13snFvPaZ4mi6siYwPmR20rfUJ
-         ysQqISfXRK0reLwx0s70QQL3CmaxRRQyvu6pFLB/GFfYZtlI2GHinZfizVkzTHZmqW0r
-         NMWR9hNCwSEecyEwscwAU3UlK8Sgo43ssKUMzYxRqU9F4b4Pu5y0EZZCfE5PmdZIA/8l
-         iL7f5cDnbrvvBpjOmk7ZnPSllVM6jqJawGLKImK1iNgkwh7PazsjwvLE+U3hXiYmkBqi
-         JsR8Fa56Bu+e9kGWxqp4zkgYari79LuDTe+RQuiMwXX0tlnqtjawt/rlMNF7RQ7L8+vc
-         fnYw==
-X-Gm-Message-State: AOJu0Ywt7RvB7Gzo6ngU1Vv5PdQHSpnvT0IBPChaUgpxWeI3dnt0ni//
-	7pXVouLhCxfMV1xATPe07GnnM+kdEjyq1S6Bg2UJm86Hjy5uObL/awhOIAsr3+n0vgtXp9YiUmU
-	VLT87i/G4dOlTGtJFScc4JMKUCbr3HcIn6Sh2lA==
-X-Google-Smtp-Source: AGHT+IG2ESwnitTYkOo+FWcD0VMQpDANASDmAv4xD5kcE/eORlZ/8BV827KZrPu2hYKcoCO7M7t0/kYVHpLcMQxKyfU=
-X-Received: by 2002:a05:6102:f0a:b0:493:e66f:6bac with SMTP id
- ada2fe7eead31-497439bd960mr3103700137.11.1723531058330; Mon, 12 Aug 2024
- 23:37:38 -0700 (PDT)
+	s=arc-20240116; t=1723531067; c=relaxed/simple;
+	bh=QHR9RFxhpBK0vD9dN13r8p1jl/KFtC86FRnfcArIgr0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=anewoiYDJcs8zYLcFZgc5b5rIL7hZ0Z6WpvVp/DbDGj0jo51j/ijC4ndMw1ywfs6eMaYs3sF9jzN0o5EFGK8wkYGJXuQSVqMiKcXCerXEhI37TOg+yLiPIF1s59quStvVjC/JbMwWWydDHuKNaITdbQOKDERj1Eo3STCO7yFxdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GowQ6281; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NuvAkG0M; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GowQ6281; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NuvAkG0M; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A50292271D;
+	Tue, 13 Aug 2024 06:37:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1723531063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VtcsQP50M+SyqiRobCTEbdbc8sXyaH7I1S6C1UBBr88=;
+	b=GowQ6281RwEl7DBBHsoFTg+5l+tPwC1HU8DIVx0lgVJYdl5pH8X9t/nCR1G2QMtXFpc7uw
+	6SLR10F0B+d8NJuvU58q+wRWp/BO8Rzw87WrLYtITHcqa9YOTzVdbycTT0DVE4UzksKBwO
+	0CRVY2qgN0O8hAw4PIjRgXPeBnlI784=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1723531063;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VtcsQP50M+SyqiRobCTEbdbc8sXyaH7I1S6C1UBBr88=;
+	b=NuvAkG0MLyEeL5WK8AhRl+kHToAOgEPKq31Q3OadNDkfrNnCvZyfe2SPTL4QFlzmf4HR3m
+	OrQoZX7/+yEvekDg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1723531063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VtcsQP50M+SyqiRobCTEbdbc8sXyaH7I1S6C1UBBr88=;
+	b=GowQ6281RwEl7DBBHsoFTg+5l+tPwC1HU8DIVx0lgVJYdl5pH8X9t/nCR1G2QMtXFpc7uw
+	6SLR10F0B+d8NJuvU58q+wRWp/BO8Rzw87WrLYtITHcqa9YOTzVdbycTT0DVE4UzksKBwO
+	0CRVY2qgN0O8hAw4PIjRgXPeBnlI784=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1723531063;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VtcsQP50M+SyqiRobCTEbdbc8sXyaH7I1S6C1UBBr88=;
+	b=NuvAkG0MLyEeL5WK8AhRl+kHToAOgEPKq31Q3OadNDkfrNnCvZyfe2SPTL4QFlzmf4HR3m
+	OrQoZX7/+yEvekDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 68E4713983;
+	Tue, 13 Aug 2024 06:37:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id j3d0Fzf/umb0EwAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 13 Aug 2024 06:37:43 +0000
+Message-ID: <3d3beb8d-4c93-4eef-b3ee-c92eb9df9009@suse.de>
+Date: Tue, 13 Aug 2024 08:37:42 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240812160132.135168257@linuxfoundation.org>
-In-Reply-To: <20240812160132.135168257@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 13 Aug 2024 12:07:26 +0530
-Message-ID: <CA+G9fYsPJQ_fFjrr3tXCeByq+jHG9yHbwC6W66eo_+J8vmuiyw@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/189] 6.6.46-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ata: libata-core: Return sense data in descriptor format
+ by default
+Content-Language: en-US
+To: Niklas Cassel <cassel@kernel.org>, Damien Le Moal <dlemoal@kernel.org>,
+ Igor Pylypiv <ipylypiv@google.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+ stable@vger.kernel.org, Stephan Eisvogel <eisvogel@seitics.de>,
+ Christian Heusel <christian@heusel.eu>, linux-ide@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>
+References: <20240812151517.1162241-2-cassel@kernel.org>
+ <ZrpXu_vfI-wpCFVc@ryzen.lan>
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <ZrpXu_vfI-wpCFVc@ryzen.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Mon, 12 Aug 2024 at 21:44, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.46 release.
-> There are 189 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 14 Aug 2024 16:00:26 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.46-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 8/12/24 20:43, Niklas Cassel wrote:
+> On Mon, Aug 12, 2024 at 05:15:18PM +0200, Niklas Cassel wrote:
+>> Sense data can be in either fixed format or descriptor format.
+>>
+>> SAT-6 revision 1, 10.4.6 Control mode page, says that if the D_SENSE bit
+>> is set to zero (i.e., fixed format sense data), then the SATL should
+>> return fixed format sense data for ATA PASS-THROUGH commands.
+>>
+>> A lot of user space programs incorrectly assume that the sense data is in
+>> descriptor format, without checking the RESPONSE CODE field of the
+>> returned sense data (to see which format the sense data is in).
+>>
+>> The libata SATL has always kept D_SENSE set to zero by default.
+>> (It is however possible to change the value using a MODE SELECT command.)
+>>
+>> For failed ATA PASS-THROUGH commands, we correctly generated sense data
+>> according to the D_SENSE bit. However, because of a bug, sense data for
+>> successful ATA PASS-THROUGH commands was always generated in the
+>> descriptor format.
+>>
+>> This was fixed to consistently respect D_SENSE for both failed and
+>> successful ATA PASS-THROUGH commands in commit 28ab9769117c ("ata:
+>> libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error").
+>>
+>> After commit 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for
+>> CK_COND=1 and no error"), we started receiving bug reports that we broke
+>> these user space programs (these user space programs must never have
+>> encountered a failing command, as the sense data for failing commands has
+>> always correctly respected D_SENSE, which by default meant fixed format).
+>>
+>> Since a lot of user space programs seem to assume that the sense data is
+>> in descriptor format (without checking the type), let's simply change the
+>> default to have D_SENSE set to one by default.
+>>
+>> That way:
+>> -Broken user space programs will see no regression.
+>> -Both failed and successful ATA PASS-THROUGH commands will respect D_SENSE,
+>>   as per SAT-6 revision 1.
+>> -Apparently it seems way more common for user space applications to assume
+>>   that the sense data is in descriptor format, rather than fixed format.
+>>   (A user space program should of course support both, and check the
+>>   RESPONSE CODE field to see which format the returned sense data is in.)
+>>
+>> Cc: stable@vger.kernel.org # 4.19+
+>> Reported-by: Stephan Eisvogel <eisvogel@seitics.de>
+>> Reported-by: Christian Heusel <christian@heusel.eu>
+>> Closes: https://lore.kernel.org/linux-ide/0bf3f2f0-0fc6-4ba5-a420-c0874ef82d64@heusel.eu/
+>> Fixes: 28ab9769117c ("ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error")
+>> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+>> ---
+>>   drivers/ata/libata-core.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+>> index c7752dc80028..590bebe1354d 100644
+>> --- a/drivers/ata/libata-core.c
+>> +++ b/drivers/ata/libata-core.c
+>> @@ -5368,6 +5368,13 @@ void ata_dev_init(struct ata_device *dev)
+>>   	 */
+>>   	spin_lock_irqsave(ap->lock, flags);
+>>   	dev->flags &= ~ATA_DFLAG_INIT_MASK;
+>> +
+>> +	/*
+>> +	 * A lot of user space programs incorrectly assume that the sense data
+>> +	 * is in descriptor format, without checking the RESPONSE CODE field of
+>> +	 * the returned sense data (to see which format the sense data is in).
+>> +	 */
+>> +	dev->flags |= ATA_DFLAG_D_SENSE;
+>>   	dev->horkage = 0;
+>>   	spin_unlock_irqrestore(ap->lock, flags);
+>>   
+>> -- 
+>> 2.46.0
+>>
+> 
+> This patch will change so that the sense data will be generated in descriptor
+> format (by default) for passthrough (SG_IO) commands, not just SG_IO ATA
+> PASS-THROUGH commands.
+> 
+> Non-passthrough (SG_IO) commands are not relavant, as they will go via
+> scsi_finish_command(), which calls scsi_normalize_sense() before interpreting
+> the sense data, and for non-passthrough commands, the sense data is not
+> propagated to the user. (The SK/ASC/ASCQ is only printed to the log, and this
+> print will be the same as before.)
+> 
+> However, it is possible to send any command as passthrough (SG_IO), not only
+> ATA PASS-THROUGH (ATA-16 / ATA-12 commands).
+> 
+> So there will be a difference (by default) for SG_IO (passthrough) commands
+> that are not ATA PASS-THROUGH commands (ATA-16 / ATA-12 commands).
+> (E.g. if you send a regular SCSI read/write command via SG_IO to an ATA device,
+> and if that command generates sense data, the default sense data format would
+> be different.)
+> 
+> Is this a concern?
+> 
+> I have a feeling that some user space program that blindly assumes that the
+> sense data will be in fixed format (for e.g. a command that does an invalid
+> read) using SG_IO will start to complain because of a "regression".
+> 
+I really hate it when people start generalising which in fact was an 
+occurrence with a single program, namely hdparm.
 
+Which indeed is ancient, and I'm only slightly surprised that things
+broke here.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+But all other programs I know of do attempt to handle sense codes, so
+really I don't have an issue with this change.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Cheers,
 
-## Build
-* kernel: 6.6.46-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: a67ef85bc6ceebaf7fd3d7159f070b823d1dfdae
-* git describe: v6.6.45-190-ga67ef85bc6ce
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.4=
-5-190-ga67ef85bc6ce
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
-## Test Regressions (compared to v6.6.44-122-g272b28faf61f)
-
-## Metric Regressions (compared to v6.6.44-122-g272b28faf61f)
-
-## Test Fixes (compared to v6.6.44-122-g272b28faf61f)
-
-## Metric Fixes (compared to v6.6.44-122-g272b28faf61f)
-
-## Test result summary
-total: 188519, pass: 163267, fail: 2264, skip: 22632, xfail: 356
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 129 total, 129 passed, 0 failed
-* arm64: 38 total, 38 passed, 0 failed
-* i386: 28 total, 28 passed, 0 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 35 passed, 1 failed
-* riscv: 19 total, 19 passed, 0 failed
-* s390: 14 total, 13 passed, 1 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 33 total, 33 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
