@@ -1,74 +1,75 @@
-Return-Path: <stable+bounces-67422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A8094FDC3
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 08:19:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F9B94FDC7
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 08:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEAE71F21052
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 06:19:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DA52284718
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 06:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7E542077;
-	Tue, 13 Aug 2024 06:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1256245BEF;
+	Tue, 13 Aug 2024 06:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="fEc+60W3"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ijkW4jmA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D409541C63
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 06:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E253218B
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 06:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723529952; cv=none; b=HFoDkm3X0pfq+9WmwSHv2OT5BIVEDyiY5uM/25biju0tJVWzEQhxZGhsSrg1ITVm0Zm/V+zYwquEOZO7hzwMOGpZcUVn+ojdsKPck/2Cema/4gdj9pYzkBrZY/hRmCjYxM+sJHISk+lJKmY7EjB8NzhVobSVLMqHwoOKSKJ4xdk=
+	t=1723530296; cv=none; b=XG6ldjyrGAU7fdANm/zPwCkGgp+iODB3jP6xq7w5y5BS7+kgQUFOGRZgaXevqEKMHIf95LqLrkmx5pmT2K1hVLLTxJtBqmwFYjQ1JBtT9G2ldF0OmujviKNrXAkdAOEpaS0mW3AlqclraTtcbgVfmuss9SgmvmI5x47YkIwD4+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723529952; c=relaxed/simple;
-	bh=r5fTpr76zvhVkX7Maf/chSQx966AEmRYTENMUBVUsKI=;
+	s=arc-20240116; t=1723530296; c=relaxed/simple;
+	bh=fFPDK9uODTdbP123Jk+JZHmmGHkJEY5S7b14fP2b+LI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FvkhBopdT60tT04PWo2W5ok0Dwj8PZ1Nsf162UM1IOBuHFR31cKebQW+tjQxHKch7/zC98nkpOzZgpGgmgkFFbbnJBo2lL3agqAZrORAkQj4xBKqdEpa7ZuGhp3fBxtwFd6EPhbAAzannJ9L7S0tEu70QwtUSTfQNrrxA+T+IoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=fEc+60W3; arc=none smtp.client-ip=209.85.167.176
+	 In-Reply-To:Content-Type; b=fPzx9kozemHf2EHlnleAe1dxtRH/gMgvZq+XGqiRywDDTgwoFIj037PnI4+lgXaBvs/EOU6aucPn0rwwb4yLQZBUHow7f+j0lceqX/Wt+N7NaGPtzkvcQwVQU1rkPZMTxHDsfVmwe4vInAVmQBchbq/HrGs//UpUQyWdOK5Ay5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ijkW4jmA; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3db199ec527so440698b6e.0
-        for <stable@vger.kernel.org>; Mon, 12 Aug 2024 23:19:10 -0700 (PDT)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1fc71a8a340so2138405ad.1
+        for <stable@vger.kernel.org>; Mon, 12 Aug 2024 23:24:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1723529950; x=1724134750; darn=vger.kernel.org;
+        d=bytedance.com; s=google; t=1723530293; x=1724135093; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=+o8W6KPeD+G2pxc/u4nbSNGQ5xQMtPGfIV7k0oCYAhI=;
-        b=fEc+60W3gVai8wbM3w89gsITBYBTVBIMdQNyabzeCDQqxo8Z81lDlUOAa/oiScCfbE
-         CaO9VGK3M99a2vcucO3SakAy53i5YFXY9CG0SoX3WBcQuoTeDiOBBh+8//S7cJpiKgcc
-         EHw0ODf5dOgCUIfraYwOfWmg5A5vkjKe2WAgStOsJj6azMUgihVUOJjxCh1lF9CuDT3v
-         y38ik/Y4ydOhvhFiNPMWkSB5pTnPMtFsQSbrWASU8lvKnhJSjGdN1B8l03y3RMhoAi5B
-         w9DAqZE/yfsWd2YevHH7NMLb1Ztd5RSQGf6yGLJZkHXuZAjh7Va/PSKHqgsIaas1JWTX
-         CCtA==
+        bh=vN9jGf+FzsTUtxDf0ZgtKIKQnEYaRw8xfXIl0VTvbOI=;
+        b=ijkW4jmALYd0Y+GbPxLwcqpBY0U4is6lJSUxevIajJsSAlkU8ref31TgGcxHMu6Pv2
+         5xjc3W5dMyZgVzmw7QCTAAay+FYYOrZmQz43qLpwiupESr6zLseY3KDRIuEseC7Hclnw
+         6JGcoKOQScf1PSsy4Tjbo41v4TdBLabyHepOu+X+y1z5jHrev0OyOgozMvPxKyj62X45
+         Y1S27wUBYmoZoViq3yaa5HqoTJAtz9re800mCWoKurj4TW+QniNjn5529TGZXHNSSmhs
+         FcI7h61QiTos9wB17hJfVANWpr3URq0hkD3CZk8qKL9/8lmCJIkTHm32BlocKZ1Ta9Cp
+         sw2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723529950; x=1724134750;
+        d=1e100.net; s=20230601; t=1723530293; x=1724135093;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+o8W6KPeD+G2pxc/u4nbSNGQ5xQMtPGfIV7k0oCYAhI=;
-        b=G1mUN69AwVpfx+NZp2ZoKomfc94ZjAub5jgvev9699VaZZ0MdO3t8kcAL3+awRXfZN
-         UFFWOPx3i34Oc5Hta2qrzSwb3Y1HghqNO17OXXigAWb90zgy9f/xZ9jVuHfXpFSR8Fu1
-         05rLoQTx8lG+mObq7xwGyR38VIy0Iwh2JcsZOsEtaPY0yFICfDMN/su/Wxj0wa+qH5jf
-         vNGMsjfi7e1H0UcZwms6nxXDLjEV9EphWKoDK6SV7n7TqVQSos2iAg7IIZ0fckITkDqA
-         lyt2dRegA9cOatp/n3GZ2HQ73SrGtRv8rSyhyy4/DCFHLFtYuWbXy63/GKjFjjXZidpC
-         Jtvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSQ/GbJfXhe/Hp2KKUgm66wSFg3Me3iAo3KBugWozaIFMaHQIV+xwQMDxlODrm+Anku4vcU4a18n2wsMwR7ZxOcpeTZSZe
-X-Gm-Message-State: AOJu0Yyyg3XlSwybNVYKv64wp2L/iJv1j7BWKCWs8dN/9QKgyA6CxWsh
-	faVgk81zc91iG/D59mpdGEUvqj8JM+I2vyTCdftmR0d/3Dk2JRf3TCg+M6jfrOk=
-X-Google-Smtp-Source: AGHT+IHGJ1A9lPbrXqyoEtuy+hO00+nCxFh6Lqpl29dwj8QJ4q9buu50xBdbJQRHjMyls0g/qp3ZqQ==
-X-Received: by 2002:a05:6808:981:b0:3db:15b9:f29b with SMTP id 5614622812f47-3dd22ce96bfmr672305b6e.5.1723529949825;
-        Mon, 12 Aug 2024 23:19:09 -0700 (PDT)
+        bh=vN9jGf+FzsTUtxDf0ZgtKIKQnEYaRw8xfXIl0VTvbOI=;
+        b=h7MLSiK6sXpj8I9QPCVz02kpQgHQs97PDiVmao+yigYicvrrdtON5HAvnqnSJu40S4
+         A3qK6P4aMQ1tb+USZ+j5bwFMKthD1CsSplp0fWjwh1gdTGUACtgIELHdnuKu1U9HcY4S
+         DrtGE/Cs1FmwRVxCn3sZdBQBfT2qtzlUlKvqnQ0kS5cVXftprmDwwHRPAku2G8d93mXF
+         dLLSvLw5Bsi7xEnO7uce4Z/DMxNSlQcNl/z9wG9EaaeCSOrcaqwM7LYSL3rl6a3v5EIh
+         cKjqhTRQuwwDSZm3fDQWrp510frSgnMDWEUEopy+sZxVBkq3khED5H0j2LksrxDnr5Fp
+         hW1A==
+X-Forwarded-Encrypted: i=1; AJvYcCV2Q6zcl6SfVHDds6dIMi5KBzBNmDBo2K8Nda8EAngEbh16VHaBLK6mb9fD79wlxZYrOqi7hLYj1+GU9QvSmXy/19q5yk9+
+X-Gm-Message-State: AOJu0Yy/OSP30s9Nw1O/Lwjd6K/KcDWmUftcJ1HsqcIU3D1ej6Pg4xfl
+	2OOyTaSkJ71b64JoZTO/JNBoNIkYx4LldMvhXpGOOJPGHo3AxdTp55DcFVbNbicQqxLW7jfnHZS
+	x
+X-Google-Smtp-Source: AGHT+IGMaDQJcFaiMoUsAvyc0AB9V8jR85MFjaQIdtfZGEbu5FCnuEU1OAJjBP/S1GY+KHqszA20LQ==
+X-Received: by 2002:a17:902:f212:b0:1fc:5b41:bac9 with SMTP id d9443c01a7336-201cdaf70a6mr8682985ad.7.1723530293345;
+        Mon, 12 Aug 2024 23:24:53 -0700 (PDT)
 Received: from [10.4.217.215] ([139.177.225.242])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7c697a6c6e4sm691042a12.80.2024.08.12.23.19.06
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201cd14d0a9sm6392935ad.116.2024.08.12.23.24.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Aug 2024 23:19:09 -0700 (PDT)
-Message-ID: <59bf3c2e-d58b-41af-ab10-3e631d802229@bytedance.com>
-Date: Tue, 13 Aug 2024 14:19:03 +0800
+        Mon, 12 Aug 2024 23:24:52 -0700 (PDT)
+Message-ID: <2d8c7ddf-17be-4b09-ad99-98597d54bc3c@bytedance.com>
+Date: Tue, 13 Aug 2024 14:24:46 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,7 +77,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] userfaultfd: Fix pmd_trans_huge() recheck race
+Subject: Re: [PATCH 2/2] userfaultfd: Don't BUG_ON() if khugepaged yanks our
+ page table
 Content-Language: en-US
 To: Jann Horn <jannh@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -84,66 +86,51 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  <aarcange@redhat.com>, Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20240812-uffd-thp-flip-fix-v1-0-4fc1db7ccdd0@google.com>
- <20240812-uffd-thp-flip-fix-v1-1-4fc1db7ccdd0@google.com>
+ <20240812-uffd-thp-flip-fix-v1-2-4fc1db7ccdd0@google.com>
 From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <20240812-uffd-thp-flip-fix-v1-1-4fc1db7ccdd0@google.com>
+In-Reply-To: <20240812-uffd-thp-flip-fix-v1-2-4fc1db7ccdd0@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi Jann,
+
 
 On 2024/8/13 00:42, Jann Horn wrote:
-> The following race can occur:
+> Since khugepaged was changed to allow retracting page tables in file
+> mappings without holding the mmap lock, these BUG_ON()s are wrong - get rid
+> of them.
 > 
->    mfill_atomic                other thread
->    ============                ============
->                                <zap PMD>
->    pmdp_get_lockless() [reads none pmd]
->    <bail if trans_huge>
->    <if none:>
->                                <pagefault creates transhuge zeropage>
->      __pte_alloc [no-op]
->                                <zap PMD>
->    <bail if pmd_trans_huge(*dst_pmd)>
->    BUG_ON(pmd_none(*dst_pmd))
-> 
-> I have experimentally verified this in a kernel with extra mdelay() calls;
-> the BUG_ON(pmd_none(*dst_pmd)) triggers.
-> 
-> On kernels newer than commit 0d940a9b270b ("mm/pgtable: allow
-> pte_offset_map[_lock]() to fail"), this can't lead to anything worse than
-> a BUG_ON(), since the page table access helpers are actually designed to
-> deal with page tables concurrently disappearing; but on older kernels
-> (<=6.4), I think we could probably theoretically race past the two BUG_ON()
-> checks and end up treating a hugepage as a page table.
+> We could also remove the preceding "if (unlikely(...))" block, but then
+> we could reach pte_offset_map_lock() with transhuge pages not just for file
+> mappings but also for anonymous mappings - which would probably be fine but
+> I think is not necessarily expected.
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: c1a4de99fada ("userfaultfd: mcopy_atomic|mfill_zeropage: UFFDIO_COPY|UFFDIO_ZEROPAGE preparation")
+> Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
 > Signed-off-by: Jann Horn <jannh@google.com>
 > ---
->   mm/userfaultfd.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   mm/userfaultfd.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+
+Reviewed-by: Qi Zheng <zhengqi.arch@bytedance.com>
+
 > 
 > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index e54e5c8907fa..ec3750467aa5 100644
+> index ec3750467aa5..0dfa97db6feb 100644
 > --- a/mm/userfaultfd.c
 > +++ b/mm/userfaultfd.c
-> @@ -801,7 +801,8 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
->   			break;
->   		}
->   		/* If an huge pmd materialized from under us fail */
-> -		if (unlikely(pmd_trans_huge(*dst_pmd))) {
-> +		dst_pmdval = pmdp_get_lockless(dst_pmd);
-> +		if (unlikely(pmd_none(dst_pmdval) || pmd_trans_huge(dst_pmdval))) {
-
-Before commit 0d940a9b270b, should we also check for
-is_pmd_migration_entry(), pmd_devmap() and pmd_bad() here?
-
-Thanks,
-Qi
-
+> @@ -806,9 +806,10 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
 >   			err = -EFAULT;
 >   			break;
 >   		}
+> -
+> -		BUG_ON(pmd_none(*dst_pmd));
+> -		BUG_ON(pmd_trans_huge(*dst_pmd));
+> +		/*
+> +		 * For shmem mappings, khugepaged is allowed to remove page
+> +		 * tables under us; pte_offset_map_lock() will deal with that.
+> +		 */
+>   
+>   		err = mfill_atomic_pte(dst_pmd, dst_vma, dst_addr,
+>   				       src_addr, flags, &folio);
 > 
 
