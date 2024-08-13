@@ -1,159 +1,234 @@
-Return-Path: <stable+bounces-67520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282DC950AC2
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 18:50:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E35B3950A27
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 18:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A66FBB2601F
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:50:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 407E7282863
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D971A2548;
-	Tue, 13 Aug 2024 16:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405E81CA9F;
+	Tue, 13 Aug 2024 16:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ans.pl header.i=@ans.pl header.b="f17/iu+2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nWreRup1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.emenem.pl (cmyk.emenem.pl [217.79.154.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E28E1EA84;
-	Tue, 13 Aug 2024 16:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.79.154.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D691EA84
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 16:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723567805; cv=none; b=UzQ2ycveQq6dizyBtVzlx+QvQZlunIBlaROn4q0c8NQ+oKsjmELLSbOBR6pgYEHScBj5AS2uPmOPEpawHHJ2vpNx0TeMiYFxPolFDtTowdHCALuiN0uxNl07GJA9yWeiK8NCmQ1+Y76ug118+WOM5l/d723m8YdwI4yLcffSDu4=
+	t=1723566637; cv=none; b=tk/4zdbtGuoqmBq5+gaognE35NN17IEuDTJcoYXU0VrCMM1K4LyNMiDj1I4Qro71PEeWaLdTkKKLkJRZFb9JtcAQP925L3igoEkGCAoBh43oJ0YRNE/c8npRKX+PWXjYyvAARpx9KSZiQ6k9d2mlFtBhFqgkSHq1LMHMRhiWodw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723567805; c=relaxed/simple;
-	bh=7FlvYxm1sHKssvEviLrXCVI4tO2CdU5hnY4jPFNEJ1w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M67scf+k4q4g2vHcBQtXxHhsqv22nSkjJE/qW3hfA4pkhzqcSCLJC3QtZfXSaenQfLRBVfN6LA02gdxpP+Lm6XNi1HloieDVR8C/NKTtTZ4d0O9H9Nvw6IOrtvN3sCrPl6ftTVmgDOGf/rFY2DBcD4N6Jn/AD6BVFRbDPgT3FG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ans.pl; spf=none smtp.mailfrom=ans.pl; dkim=pass (1024-bit key) header.d=ans.pl header.i=@ans.pl header.b=f17/iu+2; arc=none smtp.client-ip=217.79.154.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ans.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ans.pl
-X-Virus-Scanned: amavisd-new at emenem.pl
-Received: from [192.168.1.10] (c-98-45-176-131.hsd1.ca.comcast.net [98.45.176.131])
-	(authenticated bits=0)
-	by cmyk.emenem.pl (8.17.1.9/8.17.1.9) with ESMTPSA id 47DGSkN1013361
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 13 Aug 2024 18:28:48 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ans.pl; s=20190507;
-	t=1723566531; bh=u/YKptwkKOxxpGKP2ofGDqmwMq4DvqlrFcaZ5HKAMeM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=f17/iu+2VneCVljPaWJBKMjd+pKkkGXP7pZbtGarKFGJxwnzi2P+LNG6dzfxQTuGo
-	 LeLQ0ZE4ytKGtETliwD69hA2xQLz+wsRuN2Cl6uoN1n69p4jJv1ZAQ7qRJ5hSduotw
-	 T8lDgmnv7xgJAL1e2hTndnA1FkhYyYztAmErhI8U=
-Message-ID: <9479fe4e-eb0c-407e-84c0-bd60c15baf74@ans.pl>
-Date: Tue, 13 Aug 2024 09:28:44 -0700
+	s=arc-20240116; t=1723566637; c=relaxed/simple;
+	bh=+kXd5lQBlmgt4ODhbDWegMf9ii18tWOxfLuvIC/UtU0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dGyRjHisbIXb5sBSO6JacUz+i9pZqv3kJEjpEG1nAGhqo0hV1srxIw5aIy1Wnvs0RQQvcd+0UO31yulJySWbaUmL5sZSbEyWnQ8vr7Jeu700C2nT6CA78wihJouvNUCeoNmmtUUDv7lNUaVgjZAYrAxBNjJJPFP3pZUnF7py9Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nWreRup1; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4f52bd5b555so13532e0c.1
+        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 09:30:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723566634; x=1724171434; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IcOkVGVomQgpIlgkRw2uEX+wAov9nzcGjYicRdhvNpA=;
+        b=nWreRup1FTbnKIJwOFhXnY9pqtM8JI9C91eBdU6pFYsE++Q665NLwzmKl/UkcHMpmv
+         ARmr04tVM3uMfu2hS2mLPzEzh2xEW6nE9n9NveHm0tPa7vOAt/Li33jLJmhkhU67G3YN
+         nUs+g9ORoVV3PWm281zKnXZvuGCUHIJzm2zKKIFkcueyhaU3mz8qW4JsrwtMpv1hKK8N
+         ckaaqkhCDhXzvn0SP76LtR/RCBFuco4zasZzaANrIqovl5eWPySA/Nxt4SlpmksNGQxW
+         oe+HcndO0mxD+LF4wZykvPYxBzCRdjU4WrmSQxKforA8PapcTWYmIQqgT1PUqvCvV6QZ
+         nCDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723566634; x=1724171434;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IcOkVGVomQgpIlgkRw2uEX+wAov9nzcGjYicRdhvNpA=;
+        b=F9ihGCbs1bGUPNy/jN1eQZ8g1RP1kvj2nCidcB04hEu/YrmP2IkygT7tZ1tFxJoDXa
+         GXG0NGirMcVm7tkF+kb0xJrlBp/DsHkECkr7qlyUDSweVnIB3mZC2SXmxCmB0EY1D2jO
+         je96VY0W5rLpTsrve8rCKA5tp2ZV5InWcWiJkGrws31axBWhJF/MCtaqZfPBWCrvGalN
+         0BF5+S9pbLtmEV5/W60mZrgCMyIiZTWc1E5KOA8OP9HR/GSudM2Fe7+f9cGJXcTbefx3
+         fIME184TOppJDn0zyePQOG77axoNFXtXlNiKp5R3gd7Nm3mJOC8R0xLMieR+BipMGzRz
+         pa9g==
+X-Gm-Message-State: AOJu0YwV8FxRpgvNhVEu/5gxRffwDWelCLnKDnecmvgIOLpWuWEOgJ2M
+	IHEFCIuyklPZOamHqwXRF7ZL9/nJhfjvgts0w8VMJ35dKbsUpKBR6+c2EAYdGcxxjfM+aeT4se8
+	6D1Z89vVlYvVM8Fy3fuaY78SrD9oOKIHWO6AT4Q==
+X-Google-Smtp-Source: AGHT+IFU2kpn0vuuQICPaDAMggyIuddBpewr8z4/Dc9irwuRYKKCgZ66IiMoSL/+f+SHq/Zuf1+9i3z0clFf39M+P+I=
+X-Received: by 2002:a05:6122:2002:b0:4f5:19b2:5435 with SMTP id
+ 71dfb90a1353d-4fac17fb19emr2537940e0c.2.1723566634139; Tue, 13 Aug 2024
+ 09:30:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression caused by "eeprom: at24: Probe for DDR3 thermal sensor
- in the SPD case" - "sysfs: cannot create duplicate filename"
-To: Heiner Kallweit <hkallweit1@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: stable@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-hwmon@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <a57e9a39-13ce-4e4d-a7a1-c591f6b4ac65@ans.pl>
- <3365237d-5fb7-4cbd-a1c0-aff39433f5c2@gmail.com>
- <be8eb641-a16d-4fc5-b4cc-35c663c37df7@ans.pl>
- <55445bee-03c6-4725-8b1d-5f656018a8af@ans.pl>
- <93f1b363-9d1e-4d18-991f-b85e7ec0cfb0@gmail.com>
-From: =?UTF-8?Q?Krzysztof_Ol=C4=99dzki?= <ole@ans.pl>
-Content-Language: en-US
-In-Reply-To: <93f1b363-9d1e-4d18-991f-b85e7ec0cfb0@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240813061957.925312455@linuxfoundation.org>
+In-Reply-To: <20240813061957.925312455@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 13 Aug 2024 22:00:22 +0530
+Message-ID: <CA+G9fYtev5H05e9-BpRPaifWekO_xBNXVz0Ev9ps-hFXcVN8ZQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/149] 6.1.105-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 03.08.2024 at 10:19, Heiner Kallweit wrote:
-> On 23.07.2024 16:12, Krzysztof Olędzki wrote:
->> On 06.07.2024 at 18:42, Krzysztof Olędzki wrote:
->>> On 02.07.2024 at 13:25, Heiner Kallweit wrote:
->>>> On 23.06.2024 20:47, Krzysztof Olędzki wrote:
->>>>> Hi,
->>>>>
->>>>> After upgrading kernel to Linux 6.6.34 on one of my systems, I noticed "sysfs: cannot create duplicate filename" and i2c registration errors in dmesg, please see below.
->>>>>
->>>>> This seems to be related to https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.6.y&id=4d5ace787273cb159bfdcf1c523df957938b3e42 - reverting the change fixes the problem.
->>>
->>> <CUT>
->>>
->>>>
->>>> Could you please test whether the attached two experimental patches fix the issue for you?
->>>> They serialize client device instantiation per I2C adapter, and include the client device
->>>> name in the check whether a bus address is busy.
->>>
->>> Sadly, they crash the kernel.
->>>
->>> I will get serial console attached there next week, so will be able to capture the full crash.
->>> For now, I was able to obtain a photo. I'm very sorry for the quality, just wanted to provide
->>> something for now.
->>
->> Sorry it took me so long - my attempts to coordinate setting up serial console
->> were not successful, so it had to wait for me to go there in person...
->>
->> I have attached complete dmesg, summary:
->>
->> [   10.905953] rtmutex deadlock detected
->> [   10.909959] WARNING: CPU: 5 PID: 83 at kernel/locking/rtmutex.c:1642 __rt_mutex_slowlock_locked.constprop.0+0x10f/0x1a5
->> [   10.920961] CPU: 5 PID: 83 Comm: kworker/u16:3 Not tainted 6.6.34-o5 #1
->> [   10.929970] Hardware name: Dell Inc. PowerEdge T110 II/0PM2CW, BIOS 2.10.0 05/24/2018
->> [   10.938954] Workqueue: events_unbound async_run_entry_fn
->>
->>
->> [   11.336954] BUG: scheduling while atomic: kworker/u16:3/83/0x00000002
->> [   11.342953] Preemption disabled at:
->> [   11.342953] [<0000000000000000>] 0x0
->> [   11.350953] CPU: 5 PID: 83 Comm: kworker/u16:3 Tainted: G        W          6.6.34-o5 #1
->> [   11.361954] Hardware name: Dell Inc. PowerEdge T110 II/0PM2CW, BIOS 2.10.0 05/24/2018
->> [   11.369953] Workqueue: events_unbound async_run_entry_fn
->>
-> Thanks a lot for the comprehensive info. Reason for the deadlock is that calls to
-> i2c_new_client_device() can be nested. So another solution approach is needed.
-> I'd appreciate if you could test also the new version below.
+On Tue, 13 Aug 2024 at 11:58, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.105 release.
+> There are 149 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 15 Aug 2024 06:19:25 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.105-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The patch did not apply cleanly for Linux-6.6, so I had to tweak it a little
-bit for the include/linux/i2c.h part, but it does seem to work. Everything
-gets detected and there are no warning / errors:
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-[    8.311414] i2c i2c-12: 4/4 memory slots populated (from DMI)
-[    8.314112] at24 12-0050: 256 byte spd EEPROM, read-only
-[    8.314856] i2c i2c-12: Successfully instantiated SPD at 0x50
-[    8.317513] at24 12-0051: 256 byte spd EEPROM, read-only
-[    8.318252] i2c i2c-12: Successfully instantiated SPD at 0x51
-[    8.320909] at24 12-0052: 256 byte spd EEPROM, read-only
-[    8.322126] i2c i2c-12: Successfully instantiated SPD at 0x52
-[    8.325538] at24 12-0053: 256 byte spd EEPROM, read-only
-[    8.326789] i2c i2c-12: Successfully instantiated SPD at 0x53
+## Build
+* kernel: 6.1.105-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 9bd7537a3dd0286970c1962438e04c42993f76a9
+* git describe: v6.1.104-150-g9bd7537a3dd0
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.1=
+04-150-g9bd7537a3dd0
 
-# sensors|grep -A2 jc42
-jc42-i2c-12-19
-Adapter: SMBus I801 adapter at 3000
-temp1:        +36.5°C  (low  =  +0.0°C)
+## Test Regressions (compared to v6.1.103-87-g54b8e3a13b43)
+
+## Metric Regressions (compared to v6.1.103-87-g54b8e3a13b43)
+
+## Test Fixes (compared to v6.1.103-87-g54b8e3a13b43)
+
+## Metric Fixes (compared to v6.1.103-87-g54b8e3a13b43)
+
+## Test result summary
+total: 315861, pass: 270713, fail: 3868, skip: 40792, xfail: 488
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 270 total, 270 passed, 0 failed
+* arm64: 82 total, 82 passed, 0 failed
+* i386: 56 total, 56 passed, 0 failed
+* mips: 52 total, 50 passed, 2 failed
+* parisc: 8 total, 8 passed, 0 failed
+* powerpc: 72 total, 70 passed, 2 failed
+* riscv: 22 total, 22 passed, 0 failed
+* s390: 28 total, 28 passed, 0 failed
+* sh: 20 total, 20 passed, 0 failed
+* sparc: 14 total, 14 passed, 0 failed
+* x86_64: 65 total, 65 passed, 0 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
 --
-jc42-i2c-12-1b
-Adapter: SMBus I801 adapter at 3000
-temp1:        +35.0°C  (low  =  +0.0°C)
---
-jc42-i2c-12-1a
-Adapter: SMBus I801 adapter at 3000
-temp1:        +36.0°C  (low  =  +0.0°C)
---
-jc42-i2c-12-18
-Adapter: SMBus I801 adapter at 3000
-temp1:        +36.5°C  (low  =  +0.0°C)
-
-Feel free to add:
-Tested-by: Krzysztof Piotr Oledzki <ole@ans.pl>
-
-Thanks,
- Krzysztof
+Linaro LKFT
+https://lkft.linaro.org
 
