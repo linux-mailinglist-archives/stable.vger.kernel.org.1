@@ -1,227 +1,136 @@
-Return-Path: <stable+bounces-67514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A2F9509CF
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 18:07:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C556C9509D3
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 18:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62F3F1F27944
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:07:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 022101C20C66
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 16:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1D21A2561;
-	Tue, 13 Aug 2024 16:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEBE1A2572;
+	Tue, 13 Aug 2024 16:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8U+7K0u"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hcPeNyLZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C27E1A0708
-	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 16:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB7A61FCF
+	for <stable@vger.kernel.org>; Tue, 13 Aug 2024 16:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723565126; cv=none; b=OY6PWWqwMC3dROVIQA9h47mhxUVLGVFOonSwurWjmHrMgr1Hq+nRZLfmgVwwwPYhvtU2hc9FAXyPh3QK6sw80J0V1NEDatgjB8gnTEzeqfe4WQ3eKasKJvj7tMBKfAl/9Fb1TBnYamgn2ICOauPACxSTTZOOl2raxsq+p22eUNY=
+	t=1723565177; cv=none; b=W55tP0aaPgAKiZ2ZL9JWD0UmU3perq4b8+QaXDJcFQWd5Imdoihm/Tc0dtOnoxCwQADBUsWdHIknVCFhYfuw2wSiqxll0DRKgeFks/+RCOC4I6ALvMAUX4nQvwXFZgs3zisP9v8DBVT2MPONBfF2c7h1blLSRv95ShOpEO1kgGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723565126; c=relaxed/simple;
-	bh=f4neqbdTbz6x4T+DClWRr7Gdzq9i79hWZFp33yNcf3w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Prv+VMA+7paOPNrWgyP1eIoqn3sfsTA8s/O8N1jvePx/U1JOcSw0p4OWgTv89iVskLkTYt70+F8pliZ1U3YRXrm7jjs6Qf8rlb4lqI8kwzdBwTNDr9Vxap15CvDWWyaL5l8GsXVQmMwybf8Rd37o1hA5UA7kWgI31dBDsqi9+lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8U+7K0u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2933FC4AF16;
-	Tue, 13 Aug 2024 16:05:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723565125;
-	bh=f4neqbdTbz6x4T+DClWRr7Gdzq9i79hWZFp33yNcf3w=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Y8U+7K0uoC48JX2FkxA/yhT+vhfqsIvLIRT0khIozBRIr3Jdw+jwSY6nwZpcdhaer
-	 3TyM7aamDHhWoJG3Kt89/ZscppjH3jblwhm7+s8qB9dVSqehQsKKsxI50wfnDcszlP
-	 07u+do5ZKFd57Q050YyxhC7KGz/6k5Cg1fqioiuo=
-Subject: FAILED: patch "[PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr" failed to apply to 5.15-stable tree
-To: willemb@google.com,kuba@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 13 Aug 2024 18:05:22 +0200
-Message-ID: <2024081322-yoyo-proving-7a44@gregkh>
+	s=arc-20240116; t=1723565177; c=relaxed/simple;
+	bh=2aKDjXMzkzZwy+w6/tkYsoHzsVEy5hXUwzS2g5555oc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sytjV/wkAXssfg6vLLpGxP6xUdydHarM5yP/ynrQKnSpaTh8EnP3z34MVIymzPM+k5xEei7ciyKygcj83H2qqTSP1D8G7PfEvji+Nx4g84NOQd66oZ3rgJHSQG2VYJY4b2EARP6CK6yRl7ZuHZUeIq7srYtkwsjNvg8Q1u2PCXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hcPeNyLZ; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6512866fa87so50589657b3.2
+        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 09:06:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723565174; x=1724169974; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a3nOqROZS7f0NGTQPLW29HPt15nh8yqYVB7M2yR1RNM=;
+        b=hcPeNyLZtXMUFI8j1L3mO55uW0erKcFZSbsf4ljj6qfXKu7eqNoaFhA3px9Fij/RiH
+         S4Eloc4GpRm5OyRLm4qdo1mEhPnZmo4rrL5YHA9r4MUdF0SQik86YRVxdmnB5FgjSGFT
+         HDfJrq6Ns5m8+kr1SbYBD5+WH4h7IX1oU73bLn8xG4qKG5Fvh7abr5z9utM1R/5IzZoA
+         7Adv5Bx+DZmcwg2VVarNAbhIfEzkI5Pbp0yqS2bxCKTYC+Qpzc/xYPLQar6bbJyE86Fk
+         GZbXrdXcv7RssnWYz2P611IhvnYDfGcrtrBrhiKLec27ZNX7Xa9JDyIR5dwGpkUtHHfX
+         tsPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723565174; x=1724169974;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a3nOqROZS7f0NGTQPLW29HPt15nh8yqYVB7M2yR1RNM=;
+        b=ZIlkZ7hEQ5cDrDfCOLuE40dsHOiFtG4t6kITHRcFGosMC7dU3eD2LejzNb8jBFoJS8
+         JR35S1HBUXIaulsMimmgxR79Ru1AYY7PUWSE3/3aP204JHrj5OiPKWBDKbQLTJUxSH/j
+         hvuUTF+JjPZX2HWHYagies8mU/G4bxUelSgs+gFnB8R6a5kkn63abUFrQBw8Bm5LEDHr
+         r0neJs4dowUjxzXIjgoA/WAnWGt+GF20O5OwZo7SvT91lZaERms67bDxA3/XGybeUTXV
+         L3jbhNbX9rDNuEDP9G7XoKMRWVxqEuGYe/vyKxVWMmFEsDPQqToC9MdHgATq9+clFbyg
+         mbZg==
+X-Forwarded-Encrypted: i=1; AJvYcCU/WAr5fIl9I8lgqo8Ak6JEBz7R/21iNWd1xBvqLc7mmWY+TkcDKRFashx+jW1+2ltb8Xu6uIDqWZn4j0rIkncqxihjGmHW
+X-Gm-Message-State: AOJu0Yz1s1y08I4ncDfNQhoQ38BLMlFiwm7m8lANARcw7ULVBihLgft8
+	H+PZpN56Sgeutmsi2v7HL9f6iUAGyaZBC5Gn3rTSGFoPrt3wVaauiRaB7bIH1Bj89DuESJZN519
+	//WZ7ffW/1WIBgQErUcglXb0BdZQGptqufawk
+X-Google-Smtp-Source: AGHT+IHMiOhzYAxqia21srgICMd3bpU5d8vj06kU3XcprkI21PIrBAy/i3gJkmKJKshgio8q/XkY77UHu8DFNnuWNYY=
+X-Received: by 2002:a05:690c:250b:b0:651:6888:9fee with SMTP id
+ 00721157ae682-6a9726719d7mr43641887b3.18.1723565174221; Tue, 13 Aug 2024
+ 09:06:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <20240813150758.855881-1-surenb@google.com> <20240813150758.855881-2-surenb@google.com>
+ <be75dbc3-3137-44a2-af45-5454728c98a2@redhat.com>
+In-Reply-To: <be75dbc3-3137-44a2-af45-5454728c98a2@redhat.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 13 Aug 2024 09:06:00 -0700
+Message-ID: <CAJuCfpHSp9Jt02qiJATj3H0=oBSUmF3JW_w5w7TNQJ6Vk9gVXA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] alloc_tag: mark pages reserved during CMA
+ activation as not tagged
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, vbabka@suse.cz, 
+	pasha.tatashin@soleen.com, souravpanda@google.com, keescook@chromium.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Aug 13, 2024 at 8:09=E2=80=AFAM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> On 13.08.24 17:07, Suren Baghdasaryan wrote:
+> > During CMA activation, pages in CMA area are prepared and then freed
+> > without being allocated. This triggers warnings when memory allocation
+> > debug config (CONFIG_MEM_ALLOC_PROFILING_DEBUG) is enabled. Fix this
+> > by marking these pages not tagged before freeing them.
+> >
+> > Fixes: d224eb0287fb ("codetag: debug: mark codetags for reserved pages =
+as empty")
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Cc: stable@vger.kernel.org # v6.10
+> > ---
+> > Changes since v2 [1]:
+> > - Add and use clear_page_tag_ref helper, per David Hildenbrand
+> >
+> > https://lore.kernel.org/all/20240812192428.151825-1-surenb@google.com/
+> >
+> >   mm/mm_init.c | 2 ++
+> >   1 file changed, 2 insertions(+)
+> >
+> > diff --git a/mm/mm_init.c b/mm/mm_init.c
+> > index 907c46b0773f..13c4060bb01a 100644
+> > --- a/mm/mm_init.c
+> > +++ b/mm/mm_init.c
+> > @@ -2245,6 +2245,8 @@ void __init init_cma_reserved_pageblock(struct pa=
+ge *page)
+> >
+> >       set_pageblock_migratetype(page, MIGRATE_CMA);
+> >       set_page_refcounted(page);
+> > +     /* pages were reserved and not allocated */
+> > +     clear_page_tag_ref(page);
+> >       __free_pages(page, pageblock_order);
+> >
+> >       adjust_managed_page_count(page, pageblock_nr_pages);
+>
+> Acked-by: David Hildenbrand <david@redhat.com>
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Thanks!
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 89add40066f9ed9abe5f7f886fe5789ff7e0c50e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081322-yoyo-proving-7a44@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
-fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
-9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
-cf9acc90c80e ("net: virtio_net_hdr_to_skb: count transport header in UFO")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 89add40066f9ed9abe5f7f886fe5789ff7e0c50e Mon Sep 17 00:00:00 2001
-From: Willem de Bruijn <willemb@google.com>
-Date: Mon, 29 Jul 2024 16:10:12 -0400
-Subject: [PATCH] net: drop bad gso csum_start and offset in virtio_net_hdr
-
-Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
-for GSO packets.
-
-The function already checks that a checksum requested with
-VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
-this might not hold for segs after segmentation.
-
-Syzkaller demonstrated to reach this warning in skb_checksum_help
-
-	offset = skb_checksum_start_offset(skb);
-	ret = -EINVAL;
-	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
-
-By injecting a TSO packet:
-
-WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
- ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
- ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
- __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
- iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
- ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
- __gre_xmit net/ipv4/ip_gre.c:469 [inline]
- ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
- __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
- netdev_start_xmit include/linux/netdevice.h:4864 [inline]
- xmit_one net/core/dev.c:3595 [inline]
- dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
- __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
- packet_snd net/packet/af_packet.c:3073 [inline]
-
-The geometry of the bad input packet at tcp_gso_segment:
-
-[   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
-[   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
-[   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
-[   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
-ip_summed=3 complete_sw=0 valid=0 level=0)
-
-Mitigate with stricter input validation.
-
-csum_offset: for GSO packets, deduce the correct value from gso_type.
-This is already done for USO. Extend it to TSO. Let UFO be:
-udp[46]_ufo_fragment ignores these fields and always computes the
-checksum in software.
-
-csum_start: finding the real offset requires parsing to the transport
-header. Do not add a parser, use existing segmentation parsing. Thanks
-to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
-Again test both TSO and USO. Do not test UFO for the above reason, and
-do not test UDP tunnel offload.
-
-GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
-CHECKSUM_NONE since commit 10154dbded6d6 ("udp: Allow GSO transmit
-from devices with no checksum offload"), but then still these fields
-are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
-need to test for ip_summed == CHECKSUM_PARTIAL first.
-
-This revises an existing fix mentioned in the Fixes tag, which broke
-small packets with GSO offload, as detected by kselftests.
-
-Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
-Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
-Fixes: e269d79c7d35 ("net: missing check virtio")
-Cc: stable@vger.kernel.org
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240729201108.1615114-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index d1d7825318c3..6c395a2600e8 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -56,7 +56,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 	unsigned int thlen = 0;
- 	unsigned int p_off = 0;
- 	unsigned int ip_proto;
--	u64 ret, remainder, gso_size;
- 
- 	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
- 		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
-@@ -99,16 +98,6 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
- 		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
- 
--		if (hdr->gso_size) {
--			gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
--			ret = div64_u64_rem(skb->len, gso_size, &remainder);
--			if (!(ret && (hdr->gso_size > needed) &&
--						((remainder > needed) || (remainder == 0)))) {
--				return -EINVAL;
--			}
--			skb_shinfo(skb)->tx_flags |= SKBFL_SHARED_FRAG;
--		}
--
- 		if (!pskb_may_pull(skb, needed))
- 			return -EINVAL;
- 
-@@ -182,6 +171,11 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 			if (gso_type != SKB_GSO_UDP_L4)
- 				return -EINVAL;
- 			break;
-+		case SKB_GSO_TCPV4:
-+		case SKB_GSO_TCPV6:
-+			if (skb->csum_offset != offsetof(struct tcphdr, check))
-+				return -EINVAL;
-+			break;
- 		}
- 
- 		/* Kernel has a special handling for GSO_BY_FRAGS. */
-diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-index 4b791e74529e..e4ad3311e148 100644
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -140,6 +140,9 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
- 	if (thlen < sizeof(*th))
- 		goto out;
- 
-+	if (unlikely(skb_checksum_start(skb) != skb_transport_header(skb)))
-+		goto out;
-+
- 	if (!pskb_may_pull(skb, thlen))
- 		goto out;
- 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index aa2e0a28ca61..bc8a9da750fe 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -278,6 +278,10 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 	if (gso_skb->len <= sizeof(*uh) + mss)
- 		return ERR_PTR(-EINVAL);
- 
-+	if (unlikely(skb_checksum_start(gso_skb) !=
-+		     skb_transport_header(gso_skb)))
-+		return ERR_PTR(-EINVAL);
-+
- 	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
- 		/* Packet is from an untrusted source, reset gso_segs. */
- 		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh),
-
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
 
