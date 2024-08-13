@@ -1,50 +1,54 @@
-Return-Path: <stable+bounces-67473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36599503A0
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 13:30:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC7B9503C6
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 13:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A980B1F255E8
-	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 11:30:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0CF8280E9C
+	for <lists+stable@lfdr.de>; Tue, 13 Aug 2024 11:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5BE1990C4;
-	Tue, 13 Aug 2024 11:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOCT/6Ks"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF0E170A2B;
+	Tue, 13 Aug 2024 11:34:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA85518B480;
-	Tue, 13 Aug 2024 11:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0F542AA8;
+	Tue, 13 Aug 2024 11:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723548630; cv=none; b=OJ7feyqhrIAuwkZAB0cVOvAi8VJ+FiFR08CZwRDqYftLJEDAlpICBiDhtKifFfVjp2Qvk5fxdl3f2+M6gohbfjm4SHsLLLM4e9sExrb4dG7S248GvPTIM0QUk40K23bBuKnSRwsbUnOA9r3bLIAbRCPajk0BCdS2bJu/qBzRAwI=
+	t=1723548890; cv=none; b=b5I0ZuO7MVD9dbKe2joFdXpkGYVF9aa075IP0Cz8tJivpWFZRj/sh/+qhQ83snbQqwEbZDRqY6hFn1CziGK5JQftZvu5VpdLHtX1J9B89SCdUicOmR9+dFBOL7Ai5KK3pQVbinCtZXriHvp8DGUtqg7dhThs3acAvURA+eOyInQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723548630; c=relaxed/simple;
-	bh=kiwXUxfjx4OtcKC14SZI8xUFCU5QGPX4eXEN8CbXRLM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=sShtepDCZRwFfuBZ0rmg1akSWDaMsw0J9jjFZhJYEB2qTteieBBeu1AP1a/Fg5V/xbAKthCALi1npdWnBa3+McaKs4afDvyKily+28coPyNZUiAk3Vc5/aJa8/FP7VzCkjNLpDcj1TSBwtKrRwOTjOhT6Fbl3L6yJaf/m3ps1t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOCT/6Ks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C097C4AF0B;
-	Tue, 13 Aug 2024 11:30:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723548630;
-	bh=kiwXUxfjx4OtcKC14SZI8xUFCU5QGPX4eXEN8CbXRLM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=HOCT/6Ks9SESeseIvikOwerpDR78YS4ROZoV5WqO9XHA9EokNr5d3KulKwHsxH9Vm
-	 +lIwOH4EXJkWrf+/cmvX6AX2jhSiOdHyFtxIhtTjGxLxx/CHYhCPLesXAMmh7ucSmg
-	 gAZmQt7mDq6wbgHQDvtGGfhyQS3bXxrouzAsn5uE/G/dKD5EfQIixWoUDsKucnupEp
-	 0JLll8NdhvHt6P+8nyURKE5n9Qc9DbH/xtBpYT5vVjYk8Ys9fakAj1q97Hy8w1MEjO
-	 3gkVR+z+iXhQQBTr9RlOzQcj9ip7YOiAkqP5153xDUJ3Rb+QC/xbOiqgLD7FECOA49
-	 qv3Z8t3nAEMAA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70EB83823327;
-	Tue, 13 Aug 2024 11:30:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1723548890; c=relaxed/simple;
+	bh=1z7S7KR2JFpZLh+XNuKxhAVF8uYKzqAYiepe300C9CY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A9OEtXyLnKhTGyWkabWWbsFxPh+20OCHFKftYqW/wOqdDN9lhBZ8JmS5TEtqOGNksHsxJocoFEf6JamHFqYp0yjtiyQ2zh2RHomZ3eG7oBdhX16+lD/oC/r002xuWp/qSMOkwUEk0WcIw4TqBpovu0Fug16IO+RyaCk5zwyu800=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Wjq5K1dTpzncwD;
+	Tue, 13 Aug 2024 19:33:25 +0800 (CST)
+Received: from kwepemi100008.china.huawei.com (unknown [7.221.188.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7C418140135;
+	Tue, 13 Aug 2024 19:34:44 +0800 (CST)
+Received: from huawei.com (10.67.174.55) by kwepemi100008.china.huawei.com
+ (7.221.188.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 13 Aug
+ 2024 19:34:43 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <dennis@kernel.org>, <tj@kernel.org>, <cl@linux.com>,
+	<mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+	<christophe.leroy@csgroup.eu>, <mahesh@linux.ibm.com>,
+	<gregkh@linuxfoundation.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [PATCH v5.15] powerpc: Avoid nmi_enter/nmi_exit in real mode interrupt.
+Date: Tue, 13 Aug 2024 11:32:20 +0000
+Message-ID: <20240813113220.1837464-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,48 +56,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net] net: mana: Fix doorbell out of order violation and
- avoid unnecessary doorbell rings
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172354862926.1604273.6519840713233454447.git-patchwork-notify@kernel.org>
-Date: Tue, 13 Aug 2024 11:30:29 +0000
-References: <1723219138-29887-1-git-send-email-longli@linuxonhyperv.com>
-In-Reply-To: <1723219138-29887-1-git-send-email-longli@linuxonhyperv.com>
-To: Long Li <longli@linuxonhyperv.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, shradhagupta@linux.microsoft.com,
- horms@kernel.org, kotaranov@microsoft.com, schakrabarti@linux.microsoft.com,
- erick.archer@outlook.com, paulros@microsoft.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- longli@microsoft.com, stable@vger.kernel.org
+Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemi100008.china.huawei.com (7.221.188.57)
 
-Hello:
+From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
+crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
+interrupt handler) if percpu allocation comes from vmalloc area.
 
-On Fri,  9 Aug 2024 08:58:58 -0700 you wrote:
-> From: Long Li <longli@microsoft.com>
-> 
-> After napi_complete_done() is called when NAPI is polling in the current
-> process context, another NAPI may be scheduled and start running in
-> softirq on another CPU and may ring the doorbell before the current CPU
-> does. When combined with unnecessary rings when there is no need to arm
-> the CQ, it triggers error paths in the hardware.
-> 
-> [...]
+Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
+wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
+percpu allocation is from the embedded first chunk. However with
+CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
+allocation can come from the vmalloc area.
 
-Here is the summary with links:
-  - [v3,net] net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings
-    https://git.kernel.org/netdev/net/c/58a63729c957
+With kernel command line "percpu_alloc=page" we can force percpu allocation
+to come from vmalloc area and can see kernel crash in machine_check_early:
 
-You are awesome, thank you!
+[    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
+[    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
+[    1.215719] --- interrupt: 200
+[    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
+[    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
+[    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
+
+Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
+first chunk is not embedded.
+
+CVE-2024-42126
+Cc: stable@vger.kernel.org#5.15.x
+Cc: gregkh@linuxfoundation.org
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
+Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
+[ Conflicts in arch/powerpc/include/asm/interrupt.h
+  because interrupt_nmi_enter_prepare() and interrupt_nmi_exit_prepare()
+  has been refactored. ]
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+---
+ arch/powerpc/include/asm/interrupt.h | 14 ++++++++++----
+ arch/powerpc/include/asm/percpu.h    | 10 ++++++++++
+ arch/powerpc/kernel/setup_64.c       |  2 ++
+ 3 files changed, 22 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index e592e65e7665..49285b147afe 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -285,18 +285,24 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
+ 	/*
+ 	 * Do not use nmi_enter() for pseries hash guest taking a real-mode
+ 	 * NMI because not everything it touches is within the RMA limit.
++	 *
++	 * Likewise, do not use it in real mode if percpu first chunk is not
++	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
++	 * are chances where percpu allocation can come from vmalloc area.
+ 	 */
+-	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
++	if ((!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
+ 			!firmware_has_feature(FW_FEATURE_LPAR) ||
+-			radix_enabled() || (mfmsr() & MSR_DR))
++			radix_enabled() || (mfmsr() & MSR_DR)) &&
++			!percpu_first_chunk_is_paged)
+ 		nmi_enter();
+ }
+ 
+ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
+ {
+-	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
++	if ((!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
+ 			!firmware_has_feature(FW_FEATURE_LPAR) ||
+-			radix_enabled() || (mfmsr() & MSR_DR))
++			radix_enabled() || (mfmsr() & MSR_DR)) &&
++			!percpu_first_chunk_is_paged)
+ 		nmi_exit();
+ 
+ 	/*
+diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
+index 8e5b7d0b851c..634970ce13c6 100644
+--- a/arch/powerpc/include/asm/percpu.h
++++ b/arch/powerpc/include/asm/percpu.h
+@@ -15,6 +15,16 @@
+ #endif /* CONFIG_SMP */
+ #endif /* __powerpc64__ */
+ 
++#if defined(CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK) && defined(CONFIG_SMP)
++#include <linux/jump_label.h>
++DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
++
++#define percpu_first_chunk_is_paged	\
++		(static_key_enabled(&__percpu_first_chunk_is_paged.key))
++#else
++#define percpu_first_chunk_is_paged	false
++#endif /* CONFIG_PPC64 && CONFIG_SMP */
++
+ #include <asm-generic/percpu.h>
+ 
+ #include <asm/paca.h>
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index eaa79a0996d1..37d5683ab298 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -825,6 +825,7 @@ static int pcpu_cpu_distance(unsigned int from, unsigned int to)
+ 
+ unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(__per_cpu_offset);
++DEFINE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
+ 
+ static void __init pcpu_populate_pte(unsigned long addr)
+ {
+@@ -904,6 +905,7 @@ void __init setup_per_cpu_areas(void)
+ 	if (rc < 0)
+ 		panic("cannot initialize percpu area (err=%d)", rc);
+ 
++	static_key_enable(&__percpu_first_chunk_is_paged.key);
+ 	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
+ 	for_each_possible_cpu(cpu) {
+                 __per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
 
