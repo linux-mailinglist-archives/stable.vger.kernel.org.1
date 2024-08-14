@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-67579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA99A95120C
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 04:18:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCED495120E
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 04:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95B241F2473D
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 02:18:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C17C1C210DF
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 02:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEC813D606;
-	Wed, 14 Aug 2024 02:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D6E2C684;
+	Wed, 14 Aug 2024 02:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HKnQaSTI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDmfM13o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0632113D531;
-	Wed, 14 Aug 2024 02:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2027D13DDC3;
+	Wed, 14 Aug 2024 02:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723601713; cv=none; b=H4Nf0Nzwo3Ci0t35cy/rLvVmJH5WucBv8I5FJ3tX+rGvr9iKJlqDeY8RB1Dk64TD9LJgAz7S0a4dSHujtpVbRaWAaBHr6+odcV1/eFTWFRYyGQa4yrZaD1x1ZVC6eGSBL7KWH01oAI/GfFg8nJ0LURsOg0p+tFJHBmIKPloVaDU=
+	t=1723601721; cv=none; b=WSyZu/65XS+rI8aUtrf50Xc9BhZ2/OcsKZ56nnuGK0uD2O1pFvjzjVd9qvQ2c9XynjFsqyo+xhAsgChYQ0oiTXLxav8UwGu5Ej6N0xFDDNbegC1WPPRk5vAJqj0pjHZQ3wLuw9+y+rSJPdaE41pHSimaDZj1lsrFM3aYpCslwkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723601713; c=relaxed/simple;
-	bh=YqS6wgA8TzPLxuLVkvnPsaOdJPUjMTohbix0zBGoew4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZtddvRAoAoeC8KnBO7ybbFN+Rd3/Vq7xGo5cxmoO6vf2yDv8Stxh+2FPBSNVmGwrsa8F1eOPUVOLTBp4tp7o7VAkFeeYQ2m7NKxIkN7MET5PZm+3fNOetaUStH+c6fyXgKJRSbDHKFZ2+GNvmfBDzmL0Goja8X9xonNzljk1sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HKnQaSTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4908C32782;
-	Wed, 14 Aug 2024 02:15:11 +0000 (UTC)
+	s=arc-20240116; t=1723601721; c=relaxed/simple;
+	bh=5zU34EoM6DMvuAuNmuBJXg4JRuV8D3pyQIgORZB1PRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CvuTGfDxuMyEa/6RqpD4oNMBfMOFn8Y2KnFiy5xYxoz6rkrDuGRtBgeOy22d3FhFDTXoC42TtIMRRQq3gvFVspV0C6Ib6Stn4bLYAQRV1+lqfBMLObbLTZrjNcYBhNHgauGeygtpoF2QdXpS8KpM1F5es2GwCQjBZo1gDF306G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDmfM13o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDDAC32782;
+	Wed, 14 Aug 2024 02:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723601712;
-	bh=YqS6wgA8TzPLxuLVkvnPsaOdJPUjMTohbix0zBGoew4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HKnQaSTIK57Je9MtFKeVY67bODxnRHr1rDQGawz2sfBSEEtOesVLGR/epybuKqz89
-	 vdSe5FGD8/MVhUW6SHIr7gQXxH/kir6pUrv/k9bGyzNEbzK5bbk54IWBJEi8xk6nLp
-	 EGxzlCWgs9TR671eZHvlzoCHSVNWdd267cZ2TTktGP55gdSdWBH1jE8Ubn1Pl/6UJW
-	 qlnnC1oLDlQQ842kYZOoe4AsT0XtkgLqZF7EVd/vRoI2OMLvd3hppGwZypT7xRUJcm
-	 iaVa6ZN1krUCN3GjzWAQ3p6JYsJJlywgrSonbSIbTmS8rHhfdSryF3IrbjolQHPU7u
-	 YS7m+I5RHnLtg==
+	s=k20201202; t=1723601720;
+	bh=5zU34EoM6DMvuAuNmuBJXg4JRuV8D3pyQIgORZB1PRs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KDmfM13oSZr5DiCE84KU2x72HBHMio4qr/s1L638a7yDBMttn9TJv+cku/CkwBPu9
+	 54cSIFcWyEY+Kk5GN0crpWHuBE10miSQw4SSPor8JIaczNCtczX0bRT0jqKKzaw5j2
+	 clLOVOiNIeRsxG/kJzxuSuVHx2LqdTpmZ8/opeaVovu7/TQxevjEphV7w2fOF64HXu
+	 VapdPEagU2RBmiiJtT+AoHXLqxg7ZFkYYFsXOY9/u3cmggooGnO8/BBQiB2geSNYgB
+	 /6PCmsvJmhV9hoeHhRMHcq3/BPQN2y39YvkFz40O6NiCiEBQ8xy75L+mQixpJKi3rQ
+	 z7JH4BJGPHKuA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhang Yi <zhangyi@everest-semi.com>,
+Cc: Bruno Ancona <brunoanconasala@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	zhuning0077@gmail.com,
+	mario.limonciello@amd.com,
+	me@jwang.link,
+	end.to.start@mail.ru,
+	git@augustwikerfors.se,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 13/13] ASoC: codecs: ES8326: button detect issue
-Date: Tue, 13 Aug 2024 22:14:44 -0400
-Message-ID: <20240814021451.4129952-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 1/7] ASoC: amd: yc: Support mic on HP 14-em0002la
+Date: Tue, 13 Aug 2024 22:15:07 -0400
+Message-ID: <20240814021517.4130238-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240814021451.4129952-1-sashal@kernel.org>
-References: <20240814021451.4129952-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,37 +66,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.10.4
+X-stable-base: Linux 6.6.45
 Content-Transfer-Encoding: 8bit
 
-From: Zhang Yi <zhangyi@everest-semi.com>
+From: Bruno Ancona <brunoanconasala@gmail.com>
 
-[ Upstream commit 4684a2df9c5b3fc914377127faf2515aa9049093 ]
+[ Upstream commit c118478665f467e57d06b2354de65974b246b82b ]
 
-We find that we need to set snd_jack_types to 0. If not,
-there will be a probability of button detection errors
+Add support for the internal microphone for HP 14-em0002la laptop using
+a quirk entry.
 
-Signed-off-by: Zhang Yi <zhangyi@everest-semi.com>
-Link: https://patch.msgid.link/20240807025356.24904-2-zhangyi@everest-semi.com
+Signed-off-by: Bruno Ancona <brunoanconasala@gmail.com>
+Link: https://patch.msgid.link/20240729045032.223230-1-brunoanconasala@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/es8326.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/sound/soc/codecs/es8326.c b/sound/soc/codecs/es8326.c
-index 6a4e42e5e35b9..e620af9b864cb 100644
---- a/sound/soc/codecs/es8326.c
-+++ b/sound/soc/codecs/es8326.c
-@@ -825,6 +825,8 @@ static void es8326_jack_detect_handler(struct work_struct *work)
- 		es8326_disable_micbias(es8326->component);
- 		if (es8326->jack->status & SND_JACK_HEADPHONE) {
- 			dev_dbg(comp->dev, "Report hp remove event\n");
-+			snd_soc_jack_report(es8326->jack, 0,
-+				    SND_JACK_BTN_0 | SND_JACK_BTN_1 | SND_JACK_BTN_2);
- 			snd_soc_jack_report(es8326->jack, 0, SND_JACK_HEADSET);
- 			/* mute adc when mic path switch */
- 			regmap_write(es8326->regmap, ES8326_ADC1_SRC, 0x44);
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 36dddf230c2c4..fa0096f2de224 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -423,6 +423,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "8A3E"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
++			DMI_MATCH(DMI_BOARD_NAME, "8B27"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
