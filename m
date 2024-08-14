@@ -1,67 +1,75 @@
-Return-Path: <stable+bounces-67701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76968952243
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 20:54:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C650C952269
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 21:02:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A41031C20CD1
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 18:54:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD67C1C2175A
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273DE1BE239;
-	Wed, 14 Aug 2024 18:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFBA1BD515;
+	Wed, 14 Aug 2024 19:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPoYqr7W"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bmql6bD3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB4D374FA;
-	Wed, 14 Aug 2024 18:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7511C1BD50A
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 19:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723661666; cv=none; b=eUCIIuosRGJUsHJksYf482T5Egpj1fr4sdfkdzyibwTS2Wr+tHzxeN2ZsbLLSuxDMDQhY5JSKQkQKyJljiEGXGeKaHMRtXUOBZMSDKgvCiEXFCabxZknHSQavYsN6XyeVaEIY8zMSuwtguLjBllIkZeRW0Ns8GIeDRkqO+d/zcw=
+	t=1723662134; cv=none; b=Z33u2HHzM3Pw+WQ3lH0RIWTH55WRtayASJ6gvy6gBfuOMbz9bY2rynqm+L14NwugGc49cYZoQjOEnE847E/Q/wQVAOxFk/xVX4mezbAbUDy6uBk4G6YNdDxcdbPQy7OZHsA/DsfS31cpMoVhKJM8nv+wc6f+CNhPZ++RzDnhb5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723661666; c=relaxed/simple;
-	bh=4ZoU25T3GpMNirAVJHlQgWCkIN0YdLxI0t6Ca/r0AuI=;
+	s=arc-20240116; t=1723662134; c=relaxed/simple;
+	bh=DGy+c13+26Igia4lcHdcGdci1sn6tyDhQb+bo4/0JFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iy9iBSXnvzWZCfNjSBgHumjln/Bzg2smUuWY6yVavSkLuPiYYNbpZ4kEydGuTuxQlZz/HLXPQNsSwwJosXZ3FofAfBOtDa6r3rnQ6GKgKcxwtP73X4bixWv4QggygVrFzKG/HH/D0n4EncV71sdGw7zSYBb3p8rtv3mrujzDkA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPoYqr7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B68C116B1;
-	Wed, 14 Aug 2024 18:54:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723661664;
-	bh=4ZoU25T3GpMNirAVJHlQgWCkIN0YdLxI0t6Ca/r0AuI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPoYqr7WwOTP5txj5SYFCRBE8SuJYpuJMRe3ZuOQtmo0X3PfpnkMUI3CxgHwsL5+m
-	 wTxGvqYxd2m0QkMedDWnbpzVeVjYU7xLr8dd8l4vMXeAgQz364ZL/XLilib0eoMS3C
-	 i8FnGEYeM5DoOyWf+TMsbpvNt0WmZ1PDvmh6GJ20/K5627vCNnejizFAYA/4/Vucor
-	 LeGBVYjOBHtdzqFm/z4u5jSAYIr+22TK5xYQAfo5NMPKVK1uoQCsj6QS+8XtZizWUX
-	 xkxHxh1nxoJTNh65ZmHaOEJSKin2BTJGjrTxCHF4Qi2HdrOv0GeIeKji2b+73Mrare
-	 WXOQ0Fk7xojEQ==
-From: Andrii Nakryiko <andrii@kernel.org>
-To: bpf@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	adobriyan@gmail.com,
-	shakeel.butt@linux.dev,
-	hannes@cmpxchg.org,
-	ak@linux.intel.com,
-	osandov@osandov.com,
-	song@kernel.org,
-	jannh@google.com,
-	linux-fsdevel@vger.kernel.org,
-	willy@infradead.org,
-	Andrii Nakryiko <andrii@kernel.org>,
+	 MIME-Version; b=A19esbuMKBLpkb6cp3C7WaQZQVIXjxhs8w9nV+jBSW+tf7hpsMFAHcRe5EgFb9Xfoz5NUV6wR+cgVip3GtiMsMnTW+kmp7PHeshVAazA+bn3A/Yt31jfhFcYO7kBXgeLHw468Cjuoi3OIBWlDKGTZJ0OTyFMtxVvhNOmxt70kuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bmql6bD3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723662131;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3/HYaNpt+Hxgow8hyB4/IctLXMbXyzlPpsD0bDBpFGE=;
+	b=Bmql6bD3uUY4n6E83qs6luk0Lz4ihuj8FEOswUUre2GqsQNI8RH4GDtAhwel4gyNCqvF59
+	kgHIfNwHB4KR3HShP6xcQH173sPgSUMoCirXRAO2rMicCJaRz1vk5oIb62CiZ8GzzvpE6T
+	G/cpTZ6st3bgZaI3+JTM0eAT1YfyiXM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-9ojPAhtCPGakEkwjO7Rkug-1; Wed,
+ 14 Aug 2024 15:02:08 -0400
+X-MC-Unique: 9ojPAhtCPGakEkwjO7Rkug-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6099A1944CEE;
+	Wed, 14 Aug 2024 19:02:06 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.22])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AC0AB19560AA;
+	Wed, 14 Aug 2024 19:02:03 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andy@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-acpi@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v6 bpf-next 01/10] lib/buildid: harden build ID parsing logic
-Date: Wed, 14 Aug 2024 11:54:08 -0700
-Message-ID: <20240814185417.1171430-2-andrii@kernel.org>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20240814185417.1171430-1-andrii@kernel.org>
-References: <20240814185417.1171430-1-andrii@kernel.org>
+Subject: [PATCH 1/3] ACPI: video: Add Dell UART backlight controller detection
+Date: Wed, 14 Aug 2024 21:01:57 +0200
+Message-ID: <20240814190159.15650-2-hdegoede@redhat.com>
+In-Reply-To: <20240814190159.15650-1-hdegoede@redhat.com>
+References: <20240814190159.15650-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,170 +77,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Harden build ID parsing logic, adding explicit READ_ONCE() where it's
-important to have a consistent value read and validated just once.
+Dell All In One (AIO) models released after 2017 use a backlight
+controller board connected to an UART.
 
-Also, as pointed out by Andi Kleen, we need to make sure that entire ELF
-note is within a page bounds, so move the overflow check up and add an
-extra note_size boundaries validation.
+In DSDT this uart port will be defined as:
 
-Fixes tag below points to the code that moved this code into
-lib/buildid.c, and then subsequently was used in perf subsystem, making
-this code exposed to perf_event_open() users in v5.12+.
+   Name (_HID, "DELL0501")
+   Name (_CID, EisaId ("PNP0501")
 
+Commit 484bae9e4d6a ("platform/x86: Add new Dell UART backlight driver")
+has added support for this, but I neglected to tie this into
+acpi_video_get_backlight_type().
+
+Now the first AIO has turned up which has not only the DSDT bits for this,
+but also an actual controller attached to the UART, yet it is not using
+this controller for backlight control.
+
+Add support to acpi_video_get_backlight_type() for a new dell_uart
+backlight type. So that the existing infra to override the backlight
+control method on the commandline or with DMI quirks can be used.
+
+Fixes: 484bae9e4d6a ("platform/x86: Add new Dell UART backlight driver")
 Cc: stable@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Suggested-by: Andi Kleen <ak@linux.intel.com>
-Fixes: bd7525dacd7e ("bpf: Move stack_map_get_build_id into lib")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- lib/buildid.c | 76 +++++++++++++++++++++++++++++----------------------
- 1 file changed, 44 insertions(+), 32 deletions(-)
+ drivers/acpi/video_detect.c | 7 +++++++
+ include/acpi/video.h        | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/lib/buildid.c b/lib/buildid.c
-index e02b5507418b..26007cc99a38 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *build_id,
- 			      const void *note_start,
- 			      Elf32_Word note_size)
- {
--	Elf32_Word note_offs = 0, new_offs;
--
--	while (note_offs + sizeof(Elf32_Nhdr) < note_size) {
--		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_offs);
-+	const char note_name[] = "GNU";
-+	const size_t note_name_sz = sizeof(note_name);
-+	u64 note_off = 0, new_off, name_sz, desc_sz;
-+	const char *data;
-+
-+	while (note_off + sizeof(Elf32_Nhdr) < note_size &&
-+	       note_off + sizeof(Elf32_Nhdr) > note_off /* overflow */) {
-+		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_off);
-+
-+		name_sz = READ_ONCE(nhdr->n_namesz);
-+		desc_sz = READ_ONCE(nhdr->n_descsz);
-+
-+		new_off = note_off + sizeof(Elf32_Nhdr);
-+		if (check_add_overflow(new_off, ALIGN(name_sz, 4), &new_off) ||
-+		    check_add_overflow(new_off, ALIGN(desc_sz, 4), &new_off) ||
-+		    new_off > note_size)
-+			break;
- 
- 		if (nhdr->n_type == BUILD_ID &&
--		    nhdr->n_namesz == sizeof("GNU") &&
--		    !strcmp((char *)(nhdr + 1), "GNU") &&
--		    nhdr->n_descsz > 0 &&
--		    nhdr->n_descsz <= BUILD_ID_SIZE_MAX) {
--			memcpy(build_id,
--			       note_start + note_offs +
--			       ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhdr),
--			       nhdr->n_descsz);
--			memset(build_id + nhdr->n_descsz, 0,
--			       BUILD_ID_SIZE_MAX - nhdr->n_descsz);
-+		    name_sz == note_name_sz &&
-+		    memcmp(nhdr + 1, note_name, note_name_sz) == 0 &&
-+		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
-+			data = note_start + note_off + ALIGN(note_name_sz, 4);
-+			memcpy(build_id, data, desc_sz);
-+			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
- 			if (size)
--				*size = nhdr->n_descsz;
-+				*size = desc_sz;
- 			return 0;
- 		}
--		new_offs = note_offs + sizeof(Elf32_Nhdr) +
--			ALIGN(nhdr->n_namesz, 4) + ALIGN(nhdr->n_descsz, 4);
--		if (new_offs <= note_offs)  /* overflow */
--			break;
--		note_offs = new_offs;
-+
-+		note_off = new_off;
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index c11cbe5b6eaa..e509dcbf3090 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -54,6 +54,8 @@ static void acpi_video_parse_cmdline(void)
+ 		acpi_backlight_cmdline = acpi_backlight_nvidia_wmi_ec;
+ 	if (!strcmp("apple_gmux", acpi_video_backlight_string))
+ 		acpi_backlight_cmdline = acpi_backlight_apple_gmux;
++	if (!strcmp("dell_uart", acpi_video_backlight_string))
++		acpi_backlight_cmdline = acpi_backlight_dell_uart;
+ 	if (!strcmp("none", acpi_video_backlight_string))
+ 		acpi_backlight_cmdline = acpi_backlight_none;
+ }
+@@ -918,6 +920,7 @@ enum acpi_backlight_type __acpi_video_get_backlight_type(bool native, bool *auto
+ 	static DEFINE_MUTEX(init_mutex);
+ 	static bool nvidia_wmi_ec_present;
+ 	static bool apple_gmux_present;
++	static bool dell_uart_present;
+ 	static bool native_available;
+ 	static bool init_done;
+ 	static long video_caps;
+@@ -932,6 +935,7 @@ enum acpi_backlight_type __acpi_video_get_backlight_type(bool native, bool *auto
+ 				    &video_caps, NULL);
+ 		nvidia_wmi_ec_present = nvidia_wmi_ec_supported();
+ 		apple_gmux_present = apple_gmux_detect(NULL, NULL);
++		dell_uart_present = acpi_dev_present("DELL0501", NULL, -1);
+ 		init_done = true;
  	}
+ 	if (native)
+@@ -962,6 +966,9 @@ enum acpi_backlight_type __acpi_video_get_backlight_type(bool native, bool *auto
+ 	if (apple_gmux_present)
+ 		return acpi_backlight_apple_gmux;
  
- 	return -EINVAL;
-@@ -71,7 +77,7 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
- {
- 	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)page_addr;
- 	Elf32_Phdr *phdr;
--	int i;
-+	__u32 i, phnum;
- 
- 	/*
- 	 * FIXME
-@@ -80,18 +86,19 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
- 	 */
- 	if (ehdr->e_phoff != sizeof(Elf32_Ehdr))
- 		return -EINVAL;
++	if (dell_uart_present)
++		return acpi_backlight_dell_uart;
 +
-+	phnum = READ_ONCE(ehdr->e_phnum);
- 	/* only supports phdr that fits in one page */
--	if (ehdr->e_phnum >
--	    (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
-+	if (phnum > (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
- 		return -EINVAL;
+ 	/* Use ACPI video if available, except when native should be preferred. */
+ 	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
+ 	     !(native_available && prefer_native_over_acpi_video()))
+diff --git a/include/acpi/video.h b/include/acpi/video.h
+index 3d538d4178ab..044c463138df 100644
+--- a/include/acpi/video.h
++++ b/include/acpi/video.h
+@@ -50,6 +50,7 @@ enum acpi_backlight_type {
+ 	acpi_backlight_native,
+ 	acpi_backlight_nvidia_wmi_ec,
+ 	acpi_backlight_apple_gmux,
++	acpi_backlight_dell_uart,
+ };
  
- 	phdr = (Elf32_Phdr *)(page_addr + sizeof(Elf32_Ehdr));
- 
--	for (i = 0; i < ehdr->e_phnum; ++i) {
-+	for (i = 0; i < phnum; ++i) {
- 		if (phdr[i].p_type == PT_NOTE &&
- 		    !parse_build_id(page_addr, build_id, size,
--				    page_addr + phdr[i].p_offset,
--				    phdr[i].p_filesz))
-+				    page_addr + READ_ONCE(phdr[i].p_offset),
-+				    READ_ONCE(phdr[i].p_filesz)))
- 			return 0;
- 	}
- 	return -EINVAL;
-@@ -103,7 +110,7 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
- {
- 	Elf64_Ehdr *ehdr = (Elf64_Ehdr *)page_addr;
- 	Elf64_Phdr *phdr;
--	int i;
-+	__u32 i, phnum;
- 
- 	/*
- 	 * FIXME
-@@ -112,18 +119,19 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
- 	 */
- 	if (ehdr->e_phoff != sizeof(Elf64_Ehdr))
- 		return -EINVAL;
-+
-+	phnum = READ_ONCE(ehdr->e_phnum);
- 	/* only supports phdr that fits in one page */
--	if (ehdr->e_phnum >
--	    (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
-+	if (phnum > (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
- 		return -EINVAL;
- 
- 	phdr = (Elf64_Phdr *)(page_addr + sizeof(Elf64_Ehdr));
- 
--	for (i = 0; i < ehdr->e_phnum; ++i) {
-+	for (i = 0; i < phnum; ++i) {
- 		if (phdr[i].p_type == PT_NOTE &&
- 		    !parse_build_id(page_addr, build_id, size,
--				    page_addr + phdr[i].p_offset,
--				    phdr[i].p_filesz))
-+				    page_addr + READ_ONCE(phdr[i].p_offset),
-+				    READ_ONCE(phdr[i].p_filesz)))
- 			return 0;
- 	}
- 	return -EINVAL;
-@@ -152,6 +160,10 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
- 	page = find_get_page(vma->vm_file->f_mapping, 0);
- 	if (!page)
- 		return -EFAULT;	/* page not mapped */
-+	if (!PageUptodate(page)) {
-+		put_page(page);
-+		return -EFAULT;
-+	}
- 
- 	ret = -EINVAL;
- 	page_addr = kmap_local_page(page);
+ #if IS_ENABLED(CONFIG_ACPI_VIDEO)
 -- 
-2.43.5
+2.46.0
 
 
