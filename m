@@ -1,136 +1,156 @@
-Return-Path: <stable+bounces-67673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65478951E92
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:31:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D06951EA8
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:36:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 977181C21F4D
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:31:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6D641C236AB
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C748F1B29BA;
-	Wed, 14 Aug 2024 15:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AB11B5832;
+	Wed, 14 Aug 2024 15:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VulC//mL"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="uO5HQsYx"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A85A2E62D
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 15:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7C21B581B;
+	Wed, 14 Aug 2024 15:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723649497; cv=none; b=SBVQCvX7rbP82L7wd1eJLwjv9w3jt4avzF7AVhpwmD1/kpWRANNcTR3M/1qIAl0Q0edu3aZZyfhTRr2zIK5SVQ0MBfybIXhsXgWbSEWghn6PyaCg5xoU+NG5Xa01nNALfaiVddg+bAfwJtLoGmZ3U2SrN2Ks9UrgSvJGkpXebpA=
+	t=1723649744; cv=none; b=jIiKbA1otMKnegRRCoMKbJC/+sDCxGkExM24qY1XyOdZz+qohxlrgSohmNW2XO+/jmzLcdDXpCi1BeS3aZXyZM2P9i+zy9ApObSb4n0x+VygbtMENDY++KEyI5f6ZVJbGP9vaGEESN39ZwQsK0uzVI4eyQRvT5+qkgFjYMogcCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723649497; c=relaxed/simple;
-	bh=9XSsEMnw7mjj4lpRgFPcQiUbJQJa5ZJfpuFAqlCw2tY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FtSJxbrpDlbyozlNDa7D6+V5RpYM0rIJk1GZyI+pDx0YoR/DSz6/DyC1+eBiX4z95T5VQ9dThlFVje0fmSLKHc9iyfvYtEiR1OslwJQ1UpTWWESPYm0bKUJT04V4Be1FiK8ibYARsM4+pygs8ZDXsyqgxrPBqMndkgofxBonUKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VulC//mL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723649495;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=IiMPsWJPYDK3P+MCQiM10rUyO4cGMHXEZ4jmPZHJ+ME=;
-	b=VulC//mLR16JgZsFya5Z7UZIhog+zZ6My3Nz9o/Xz4aRje083zR9hfuFiGGLje3kk6aCy7
-	f/iEUUUj1DPY09iJWgZTTLRcnigtjO7HIXthBVzLN5GVbWeMCsF/AfsPpauLn7SX9F4jbw
-	18iHX4kPyo5ConXx5scSHl1YWfNTz5I=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-5pYwyYgWPCe6U5M_RfEoUQ-1; Wed,
- 14 Aug 2024 11:31:31 -0400
-X-MC-Unique: 5pYwyYgWPCe6U5M_RfEoUQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9D3A019541A9;
-	Wed, 14 Aug 2024 15:31:29 +0000 (UTC)
-Received: from metal.redhat.com (unknown [10.45.225.193])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 741FF1955E80;
-	Wed, 14 Aug 2024 15:31:24 +0000 (UTC)
-From: Daniel Vacek <neelx@redhat.com>
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>
-Cc: Daniel Vacek <neelx@redhat.com>,
-	stable@vger.kernel.org,
-	Bill Peters <wpeters@atpco.net>,
-	Ingo Molnar <mingo@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] sched/core: handle affine_move_task failure case gracefully
-Date: Wed, 14 Aug 2024 17:31:18 +0200
-Message-ID: <20240814153119.27681-1-neelx@redhat.com>
+	s=arc-20240116; t=1723649744; c=relaxed/simple;
+	bh=vPBUNVJr13bzofQkt0i9RBxU35Rpem/WoHYbHGlADNU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YDbc0FqFS8HJ0JXybV1UKpZkwl4VJGAiYZFf9sHATzIJFP3PIVtgXYwCDHYtswvsNKC1FbQ+rfG4nBeWOV5QwCyW4EtdDMiPzwvFfFJfBWqLvW01GDs/dofk2yDFWG0mE5NF0YkGY1303nCE2UFmA+PHOczml7Wdwv2hkYP1Vzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=uO5HQsYx; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47EFESJW004021;
+	Wed, 14 Aug 2024 17:35:11 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	ApZSwU8z0je7+1pyLOxNF1U7pXARLkL16y03KzUYwFo=; b=uO5HQsYx1UPEPHzD
+	opKbg7SzmkK6+vbEpcPZERG0XQZ9c4KNxU1GctnCdDyc8zKtwWJ+VC78O4XJ0ey/
+	DIlZLTGosNnn61Ltsm3FBdqRztVJP/yNQjx5xbGSTgmHg5GaGM/XpUnpwmgKmVZD
+	gXfpQnZJ+03inMJmNVfqcO2fqqYo/NKdhUaGHi1+hZEZXjr17GoUxT3BtT8QELxg
+	2O8XXZXe45wnv2bbYnHNPzKAbYaYpwwZGUpw7H3okIzSnbVs7F71LKDoYfhgehsD
+	Oa/wFBqXuDARCVkktcSc9i6rqXQe4K2zsoWEbkRqI+tb05rPnzYxy+XArxJqbwi6
+	YzkN0g==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 410y24027w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Aug 2024 17:35:11 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id D462A40057;
+	Wed, 14 Aug 2024 17:35:02 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1B17827D10D;
+	Wed, 14 Aug 2024 17:34:21 +0200 (CEST)
+Received: from [10.48.87.62] (10.48.87.62) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Wed, 14 Aug
+ 2024 17:34:20 +0200
+Message-ID: <501b7fcb-5476-4418-96a6-0b03d69b0a8f@foss.st.com>
+Date: Wed, 14 Aug 2024 17:34:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] usb: dwc3: st: fix probed platform device ref count
+ on probe error path
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Thinh Nguyen
+	<Thinh.Nguyen@synopsys.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@ti.com>, Peter Griffin <peter.griffin@linaro.org>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Lee Jones <lee@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <stable@vger.kernel.org>
+References: <20240814093957.37940-1-krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+From: Patrice CHOTARD <patrice.chotard@foss.st.com>
+In-Reply-To: <20240814093957.37940-1-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-14_11,2024-08-13_02,2024-05-17_01
 
-CPU hangs were reported while offlining/onlining CPUs on s390.
 
-Analyzing the vmcore data shows `stop_one_cpu_nowait()` in `affine_move_task()`
-can fail when racing with off-/on-lining resulting in a deadlock waiting for
-the pending migration stop work completion which is never done.
 
-Fix this by gracefully handling such condition.
+On 8/14/24 11:39, Krzysztof Kozlowski wrote:
+> The probe function never performs any paltform device allocation, thus
 
-Fixes: 9e81889c7648 ("sched: Fix affine_move_task() self-concurrency")
-Cc: stable@vger.kernel.org
-Reported-by: Bill Peters <wpeters@atpco.net>
-Tested-by: Bill Peters <wpeters@atpco.net>
-Signed-off-by: Daniel Vacek <neelx@redhat.com>
----
- kernel/sched/core.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+Hi Krzysztof
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index f3951e4a55e5b..40a3c9ff74077 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -2871,8 +2871,25 @@ static int affine_move_task(struct rq *rq, struct task_struct *p, struct rq_flag
- 		preempt_disable();
- 		task_rq_unlock(rq, p, rf);
- 		if (!stop_pending) {
--			stop_one_cpu_nowait(cpu_of(rq), migration_cpu_stop,
--					    &pending->arg, &pending->stop_work);
-+			stop_pending =
-+				stop_one_cpu_nowait(cpu_of(rq), migration_cpu_stop,
-+						    &pending->arg, &pending->stop_work);
-+			/*
-+			 * The state resulting in this failure is not expected
-+			 * at this point. At least report a WARNING to be able
-+			 * to panic and further debug if reproduced.
-+			 */
-+			if (WARN_ON(!stop_pending)) {
-+				/*
-+				 * Then try to handle the failure gracefully
-+				 * to prevent the deadlock a few lines later.
-+				 */
-+				rq = task_rq_lock(p, rf);
-+				pending->stop_pending = false;
-+				p->migration_pending = NULL;
-+				task_rq_unlock(rq, p, rf);
-+				complete_all(&pending->done);
-+			}
- 		}
- 		preempt_enable();
- 
--- 
-2.43.0
+s/paltform/platform
 
+> error path "undo_platform_dev_alloc" is entirely bogus.  It drops the
+> reference count from the platform device being probed.  If error path is
+> triggered, this will lead to unbalanced device reference counts and
+> premature release of device resources, thus possible use-after-free when
+> releasing remaining devm-managed resources.
+> 
+> Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  drivers/usb/dwc3/dwc3-st.c | 11 +++--------
+>  1 file changed, 3 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/usb/dwc3/dwc3-st.c b/drivers/usb/dwc3/dwc3-st.c
+> index 211360eee95a..a9cb04043f08 100644
+> --- a/drivers/usb/dwc3/dwc3-st.c
+> +++ b/drivers/usb/dwc3/dwc3-st.c
+> @@ -219,10 +219,8 @@ static int st_dwc3_probe(struct platform_device *pdev)
+>  	dwc3_data->regmap = regmap;
+>  
+>  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "syscfg-reg");
+> -	if (!res) {
+> -		ret = -ENXIO;
+> -		goto undo_platform_dev_alloc;
+> -	}
+> +	if (!res)
+> +		return -ENXIO;
+>  
+>  	dwc3_data->syscfg_reg_off = res->start;
+>  
+> @@ -233,8 +231,7 @@ static int st_dwc3_probe(struct platform_device *pdev)
+>  		devm_reset_control_get_exclusive(dev, "powerdown");
+>  	if (IS_ERR(dwc3_data->rstc_pwrdn)) {
+>  		dev_err(&pdev->dev, "could not get power controller\n");
+> -		ret = PTR_ERR(dwc3_data->rstc_pwrdn);
+> -		goto undo_platform_dev_alloc;
+> +		return PTR_ERR(dwc3_data->rstc_pwrdn);
+>  	}
+>  
+>  	/* Manage PowerDown */
+> @@ -300,8 +297,6 @@ static int st_dwc3_probe(struct platform_device *pdev)
+>  	reset_control_assert(dwc3_data->rstc_rst);
+>  undo_powerdown:
+>  	reset_control_assert(dwc3_data->rstc_pwrdn);
+> -undo_platform_dev_alloc:
+> -	platform_device_put(pdev);
+>  	return ret;
+>  }
+>  
+
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+
+Thanks
+Patrice
 
