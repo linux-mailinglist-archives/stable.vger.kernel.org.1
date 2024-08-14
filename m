@@ -1,159 +1,184 @@
-Return-Path: <stable+bounces-67610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9C49516CE
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 10:42:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A379517C2
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 11:33:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 684B2282636
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 08:42:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73471C2225B
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 09:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF7E142E76;
-	Wed, 14 Aug 2024 08:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8759A14A093;
+	Wed, 14 Aug 2024 09:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CEJk4MK3"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="EcBNECJk";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qV/9a5/T";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="EcBNECJk";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qV/9a5/T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17851420A8
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 08:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E63149C6E;
+	Wed, 14 Aug 2024 09:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723624947; cv=none; b=j8XFrYczWWES5BIdKPZBxkauv9Smwqr39e24xSm7PG3OT5maOm4yEQy086bkowS+pKoLtjvMcCiRbdXdjCvuU99SsaPexmDtZNo8eifbnrX4/NBLpth25PYMuopdf50d/aSFWAyI8oGbMxDyN6NPPa/7yiH0jnxPwJMipxe+9TI=
+	t=1723628020; cv=none; b=kx/yf7owjUE/TPxm//oyyWN2z7Hmtqa6shbwT2q/rUt+V+qW/bvnDv1T/EUx2oyYUPuc3KnJpzTr6jY7Su0YsaxAWgSGa7Qwfpj/8SUJUI/rV1WcoHAhbXxXpSkf8gifzJBjqOD9xow9HAZg7DwnFYQDEy/cDvhsCQljLlitQlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723624947; c=relaxed/simple;
-	bh=1QfKCLMRnNPzmvyKlrpuDS58cibY7JPKGSrw1Fiy1Nw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OGUMl2k4Fh9/XLTqQfgiPAKMN82rK4dlt+p4aUuSZICsuZV2vqR3YU34MBdVnd2hsvXee3mKYtgHPWJHiwdsmewCQEPdD1rKUdI8Xddv45Zr5NRJ203mCSo2GM8i9/ZMOCM4phnuNktAML3yH224ZnF3zKfe6WKIIEOLfTzTzKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CEJk4MK3; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-428f5c0833bso3564735e9.0
-        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 01:42:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723624944; x=1724229744; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3AyfZexU22I2sH9aPnSL5GuTFz1W/ENho/AlFGBB7a0=;
-        b=CEJk4MK3CZS+YK43bn+qrW6bbbUDjcX0xgjwbHGYz26i98fKa85krHbezelrZOgBLH
-         ojcDcZlfTczn4BIdleq77AwHW64cyymaAVGFXZLhQvJs4yn3j1s+9+kespzKAD9oJfFO
-         ADRxIAPJJVTT/+NMbNDLUfnD/72mw9VfhV6tAfEk8F1luMBam7CkdmBGYImcHkxdHzmC
-         01MJ45AI00gcqQINIJEXfiPab71A13Ra9RRffq0vuNOwynlpeGK+/BBI6NiYN3xaEsqo
-         rRTjq++kcgPPKVqOiJBz7+CC64nY18bt2TiMv3nP3pz3VsXUf0tii0t2+pI/39g8IOKP
-         UOlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723624944; x=1724229744;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3AyfZexU22I2sH9aPnSL5GuTFz1W/ENho/AlFGBB7a0=;
-        b=Y09WMUgHZhNUToPtyMx9aGwHEm7+Ejhb0K9peHxJ0Z2+VNljSutgqwVTmJjEotMClO
-         TmbIKa/JxtiCyEQHgbnORE74NK1q80QyDe9r2cBVqWD3fcIW2WuEqCCJWBrmGqh0wsru
-         f1ARL2sGWSR+Fej1HgAay7OPAfAtDDyg316qXuOHyP2pZcC7EDu1pD/ER6wnMso7ieLX
-         ok6FPpPtTngw9/M20zh7D/AnCF+V7WlWgwNdjjdULxdGxvULB/CFEz1Yv9qt1T7OTAqJ
-         lTH0w+Udzhp2hlGABy6QrHd6JNkYqs2OIq6ytKlYLAY8xWCHhAj78YKOL7dFZEnwZgmf
-         wUnw==
-X-Forwarded-Encrypted: i=1; AJvYcCWVNLt4rWsDW+YlDgs7JYCZL8Z2OaCJZwhsKxVv4B9o4++WEKzVfP2yQFAgtUMsQdFdgUw/rvNwy2pRLEHzSWpUU879Jf0F
-X-Gm-Message-State: AOJu0YxmLljI195RSZ2oQ8h71o19xttT2nwErmdyr2QSTxj4+VeHbDiG
-	tgKDpOJoSxT7eXPcpaR3ebe2sPT2jOPw6nLPUTbKN9zMXbowDN7Gd4Zkg1k0IVE=
-X-Google-Smtp-Source: AGHT+IGQisfWqgtdPNDL3251nLqNoB/iLdOa4Y+g5fQHv6/ZcTIQfBAbps6K9TvAvJILM4MqhlIIFw==
-X-Received: by 2002:a05:6000:2a3:b0:366:e9f7:4e73 with SMTP id ffacd0b85a97d-3716e3ead69mr5763290f8f.5.1723624943698;
-        Wed, 14 Aug 2024 01:42:23 -0700 (PDT)
-Received: from [192.168.0.25] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37179646104sm962415f8f.113.2024.08.14.01.42.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Aug 2024 01:42:23 -0700 (PDT)
-Message-ID: <ede0cc89-35ad-454c-bcae-5a77dc3bafa9@linaro.org>
-Date: Wed, 14 Aug 2024 09:42:22 +0100
+	s=arc-20240116; t=1723628020; c=relaxed/simple;
+	bh=s7oN0Z48Kg8PWcmO3xdWsXRQV7obhRA8qPW1uEIgD14=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qqzzfwEFapLAYBkedNXwW1kCaU64Qmp1qor3jxDdAeB+LMu0//8xT7R8yb0nfzLNh/OEKo3EHyCE+S6tItHcD6naB0fnM1XIViMVgCUpIXkYZBEkiGh8zJrmkErEA//cx0uM+FxOMS4+jY6UVnnGdz4306d04O9qcNw6fS4/enU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=EcBNECJk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qV/9a5/T; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=EcBNECJk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qV/9a5/T; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AE1FF1FE84;
+	Wed, 14 Aug 2024 09:33:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1723628016; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=8KeldISweYlyBn2Rc9jXHmgstsM042C0JEwQi1qpA5g=;
+	b=EcBNECJkunPEwB6NgrF64fglWkog6OrjXafUtcT+5xVbmmFEBbzt6KiORVgSsIU7TSykqf
+	0ukuJrim9W4uh6F3RvkhZova/76S4tHmKO/jhAQv20JsmpYdBb9Zr00a0NEJepGbo7v+ka
+	juMt1+Z4iI5S3mcBZ+KbvtiQ5Argjbw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1723628016;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=8KeldISweYlyBn2Rc9jXHmgstsM042C0JEwQi1qpA5g=;
+	b=qV/9a5/T8nX/rhE8qAQfz7v+ExUmetnwb5TvAT+cx+Ot3wfnN0RmkgyUUVFbkkGXzD6T9X
+	tngrNSfBl4wHf7BQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1723628016; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=8KeldISweYlyBn2Rc9jXHmgstsM042C0JEwQi1qpA5g=;
+	b=EcBNECJkunPEwB6NgrF64fglWkog6OrjXafUtcT+5xVbmmFEBbzt6KiORVgSsIU7TSykqf
+	0ukuJrim9W4uh6F3RvkhZova/76S4tHmKO/jhAQv20JsmpYdBb9Zr00a0NEJepGbo7v+ka
+	juMt1+Z4iI5S3mcBZ+KbvtiQ5Argjbw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1723628016;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=8KeldISweYlyBn2Rc9jXHmgstsM042C0JEwQi1qpA5g=;
+	b=qV/9a5/T8nX/rhE8qAQfz7v+ExUmetnwb5TvAT+cx+Ot3wfnN0RmkgyUUVFbkkGXzD6T9X
+	tngrNSfBl4wHf7BQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11E5013B1A;
+	Wed, 14 Aug 2024 08:57:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9+FTAnlxvGYqagAAD6G6ig
+	(envelope-from <pvorel@suse.cz>); Wed, 14 Aug 2024 08:57:29 +0000
+From: Petr Vorel <pvorel@suse.cz>
+To: ltp@lists.linux.it
+Cc: Petr Vorel <pvorel@suse.cz>,
+	Li Wang <liwang@redhat.com>,
+	Cyril Hrubis <chrubis@suse.cz>,
+	Avinesh Kumar <akumar@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	NeilBrown <neilb@suse.de>,
+	stable@vger.kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH v2 1/1] nfsstat01: Update client RPC calls for kernel 6.9
+Date: Wed, 14 Aug 2024 10:57:21 +0200
+Message-ID: <20240814085721.518800-1-pvorel@suse.cz>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] media: qcom: camss: fix error path on configuration of
- power domains
-To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Robert Foss <rfoss@kernel.org>
-Cc: Todor Tomov <todor.too@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Hans Verkuil <hverkuil-cisco@xs4all.nl>,
- Konrad Dybcio <konradybcio@kernel.org>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240813210342.1765944-1-vladimir.zapolskiy@linaro.org>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20240813210342.1765944-1-vladimir.zapolskiy@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:mid];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:mid];
+	RCVD_TLS_ALL(0.00)[]
 
-On 13/08/2024 22:03, Vladimir Zapolskiy wrote:
-> There is a chance to meet runtime issues during configuration of CAMSS
-> power domains, because on the error path dev_pm_domain_detach() is
-> unexpectedly called with NULL or error pointer.
-> 
-> One of the simplest ways to reproduce the problem is to probe CAMSS
-> driver before registration of CAMSS power domains, for instance if
-> a platform CAMCC driver is simply not built.
-> 
-> Warning backtrace example:
-> 
->      Unable to handle kernel NULL pointer dereference at virtual address 00000000000001a2
-> 
->      <snip>
-> 
->      pc : dev_pm_domain_detach+0x8/0x48
->      lr : camss_probe+0x374/0x9c0
-> 
->      <snip>
-> 
->      Call trace:
->       dev_pm_domain_detach+0x8/0x48
->       platform_probe+0x70/0xf0
->       really_probe+0xc4/0x2a8
->       __driver_probe_device+0x80/0x140
->       driver_probe_device+0x48/0x170
->       __device_attach_driver+0xc0/0x148
->       bus_for_each_drv+0x88/0xf0
->       __device_attach+0xb0/0x1c0
->       device_initial_probe+0x1c/0x30
->       bus_probe_device+0xb4/0xc0
->       deferred_probe_work_func+0x90/0xd0
->       process_one_work+0x164/0x3e0
->       worker_thread+0x310/0x420
->       kthread+0x120/0x130
->       ret_from_fork+0x10/0x20
-> 
-> Fixes: 23aa4f0cd327 ("media: qcom: camss: Move VFE power-domain specifics into vfe.c")
-> Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-> ---
-> The first version of the patch and discussion is found over here:
-> 
->    https://lore.kernel.org/all/20240806221204.1560258-1-vladimir.zapolskiy@linaro.org/
-> 
-> Changes from v1 to v2:
-> * added an encountered runtime warning to the commit message per ask from Bryan.
-> 
-> I tested this fix in both cases of set and unset "power-domain-names"
-> property in camss device tree node, and I didn't find any negative side
-> effects of the fix.
-> 
->   drivers/media/platform/qcom/camss/camss.c | 19 ++++++++-----------
->   1 file changed, 8 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-> index 51b1d3550421..aa894be1461d 100644
-> --- a/drivers/media/platform/qcom/camss/camss.c
-> +++ b/drivers/media/platform/qcom/camss/camss.c
+6.9 moved client RPC calls to namespace in "Make nfs stats visible in
+network NS" patchet.
 
-+ stable@vger.kernel.org
+https://lore.kernel.org/linux-nfs/cover.1708026931.git.josef@toxicpanda.com/
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Petr Vorel <pvorel@suse.cz>
+---
+Changes v1->v2:
+* Point out whole patchset, not just single commit
+* Add a comment about the patchset
+
+Hi all,
+
+could you please ack this so that we have fixed mainline?
+
+FYI Some parts has been backported, e.g.:
+d47151b79e322 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
+to all stable/LTS: 5.4.276, 5.10.217, 5.15.159, 6.1.91, 6.6.31.
+
+But most of that is not yet (but planned to be backported), e.g.
+93483ac5fec62 ("nfsd: expose /proc/net/sunrpc/nfsd in net namespaces")
+see Chuck's patchset for 6.6
+https://lore.kernel.org/linux-nfs/20240812223604.32592-1-cel@kernel.org/
+
+Once all kernels up to 5.4 fixed we should update the version.
+
+Kind regards,
+Petr
+
+ testcases/network/nfs/nfsstat01/nfsstat01.sh | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/testcases/network/nfs/nfsstat01/nfsstat01.sh b/testcases/network/nfs/nfsstat01/nfsstat01.sh
+index c2856eff1f..1beecbec43 100755
+--- a/testcases/network/nfs/nfsstat01/nfsstat01.sh
++++ b/testcases/network/nfs/nfsstat01/nfsstat01.sh
+@@ -15,7 +15,14 @@ get_calls()
+ 	local calls opt
+ 
+ 	[ "$name" = "rpc" ] && opt="r" || opt="n"
+-	! tst_net_use_netns && [ "$nfs_f" != "nfs" ] && type="rhost"
++
++	if tst_net_use_netns; then
++		# "Make nfs stats visible in network NS" patchet
++		# https://lore.kernel.org/linux-nfs/cover.1708026931.git.josef@toxicpanda.com/
++		tst_kvcmp -ge "6.9" && [ "$nfs_f" = "nfs" ] && type="rhost"
++	else
++		[ "$nfs_f" != "nfs" ] && type="rhost"
++	fi
+ 
+ 	if [ "$type" = "lhost" ]; then
+ 		calls="$(grep $name /proc/net/rpc/$nfs_f | cut -d' ' -f$field)"
+-- 
+2.45.2
 
 
