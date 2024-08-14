@@ -1,204 +1,225 @@
-Return-Path: <stable+bounces-67682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FBDA952104
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:25:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6FD952149
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8509B1C21087
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:25:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44C67281769
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484CF1BBBCD;
-	Wed, 14 Aug 2024 17:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE64A1BE221;
+	Wed, 14 Aug 2024 17:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cHoFKsSF"
 X-Original-To: stable@vger.kernel.org
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A5B111A1;
-	Wed, 14 Aug 2024 17:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE191BD504;
+	Wed, 14 Aug 2024 17:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723656307; cv=none; b=FbfYM1Xpqn67XAPGcVJZ1uoE2WXy1TgBf1RHNK6KSVfOvEnqi2AyBx69i0kXt5GcISXrvOl54cg0GvLkT5L3fMSvm6YNCJiMb5whMAHcf0HHcKp06WFJfe9k/mT5tNAPxbCv3jL/YB7hNNkPKsHjOu2JdY79Cay1hGZ2+3MBZF0=
+	t=1723656811; cv=none; b=YX3IHrjtE+QDHXBStTfd36nxfaJsD/uxjYF/QQtRHXYLyWuEHoOYenAuMwmQBQXCFyJdn0LkPohhIpl8S3A2ieBpW519Zk7VR1gMdF+6CqjUGfxV6cuTdyWmA5bMmSKlgwcpYjCUTQBtoss9DT1mvxpFguRhiNW/6V12rs63ZgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723656307; c=relaxed/simple;
-	bh=Z3uLl1tvie8RHOYfT6GE5r9VjtWSZ+RqULeYciisB4s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZGmIOgAlhrcQsf9qFP+DW3UnGps6ERqXIkb1jCjgD68NWcEeSNFRdhLLtVIyGc0jbpam0rcsljnaTP09CqUBYiVvPAzdAp0KAAKwO1bYUfsxZx5jRFM3tniKZsZeepMNdJUVyr6wv9UqZ6DmYuHD95/Y2UgMblCjmt0ewGb9X8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WkZrb1fnlz9sRy;
-	Wed, 14 Aug 2024 19:25:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id jxUP_fGYFpiT; Wed, 14 Aug 2024 19:25:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WkZrb0QPfz9sRs;
-	Wed, 14 Aug 2024 19:25:03 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id F20568B775;
-	Wed, 14 Aug 2024 19:25:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id TDpg8Vpdl9oq; Wed, 14 Aug 2024 19:25:02 +0200 (CEST)
-Received: from [192.168.232.91] (unknown [192.168.232.91])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4CC9B8B764;
-	Wed, 14 Aug 2024 19:25:02 +0200 (CEST)
-Message-ID: <a5127803-238a-4bcb-b518-718c85e63a23@csgroup.eu>
-Date: Wed, 14 Aug 2024 19:25:02 +0200
+	s=arc-20240116; t=1723656811; c=relaxed/simple;
+	bh=IvV0qDABhzqZKc5/xCxF8BzJU9af5oxUA5A0YpRSIsA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XkvS7ijNOr/MVtcIDVxxdlqZtauFbM3ydpzU43AqewvtarBI7vbBAFb2rmL/NV1CF0gf/kZTz13l3lm9uS3BIcQJLqcL23fhAx8uwY13X3HcfVPRhGj2/EmUBaKC6VXkMpJc2OFk/fZv5bS99Qmm0/adhAeDRMh0TfG7VLsxRnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cHoFKsSF; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723656810; x=1755192810;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=IvV0qDABhzqZKc5/xCxF8BzJU9af5oxUA5A0YpRSIsA=;
+  b=cHoFKsSFYGiUWDRaIivarnwaU8L5eYM6k5/GR4StFrqlccVQ7essOSc9
+   ojVaiCt7VDXAwxU0XCuKxqQmCFxYNX7Pc/ZLQBzRmlLdbxhKLuCzrM5oI
+   /r4GcKlMOv2AiWaO0eOqM4r/Kxzi7zHZfPi+Nt8a1o3oFfuEBmDoE5aBv
+   1ZaaatCAMzVZKciytMNoT9rU/b+rLgHFPRb5FRfEispiJUx4/ZBHw7YZW
+   v9AQx0jEcGYc+4Dz+9sxXB9VBWTFVbazFm4o5/IqetVmFfyVE14ZVIROv
+   jyj8M4X7mWv1KJGxvgv8J6JLXalkx9rjm5xdfrA3GWYHIV+psGUr+FkOt
+   w==;
+X-CSE-ConnectionGUID: eyJ10oHHTTeLmdHh1Nx30w==
+X-CSE-MsgGUID: EUAMZ5jLTnWAtMaSPi/diw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="21860593"
+X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
+   d="scan'208";a="21860593"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 10:33:26 -0700
+X-CSE-ConnectionGUID: 5kYVRKSVQ6WlragEl/qGcQ==
+X-CSE-MsgGUID: C2RoE23KT2WUng//bE1QPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
+   d="scan'208";a="59233877"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa010.fm.intel.com with ESMTP; 14 Aug 2024 10:33:26 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	netdev@vger.kernel.org
+Cc: Michal Kubiak <michal.kubiak@intel.com>,
+	anthony.l.nguyen@intel.com,
+	aleksander.lobakin@intel.com,
+	przemyslaw.kitszel@intel.com,
+	joshua.a.hay@intel.com,
+	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
+	stable@vger.kernel.org
+Subject: [PATCH net-next 7/9] idpf: fix netdev Tx queue stop/wake
+Date: Wed, 14 Aug 2024 10:33:04 -0700
+Message-ID: <20240814173309.4166149-8-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240814173309.4166149-1-anthony.l.nguyen@intel.com>
+References: <20240814173309.4166149-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/hugetlb: fix hugetlb vs. core-mm PT locking
-To: David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- James Houghton <jthoughton@google.com>, stable@vger.kernel.org,
- Oscar Salvador <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-References: <20240731122103.382509-1-david@redhat.com> <ZqpQILQ7A_7qTvtq@x1n>
- <2b0131cf-d066-44ba-96d9-a611448cbaf9@redhat.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <2b0131cf-d066-44ba-96d9-a611448cbaf9@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+From: Michal Kubiak <michal.kubiak@intel.com>
 
+netif_txq_maybe_stop() returns -1, 0, or 1, while
+idpf_tx_maybe_stop_common() says it returns 0 or -EBUSY. As a result,
+there sometimes are Tx queue timeout warnings despite that the queue
+is empty or there is at least enough space to restart it.
+Make idpf_tx_maybe_stop_common() inline and returning true or false,
+handling the return of netif_txq_maybe_stop() properly. Use a correct
+goto in idpf_tx_maybe_stop_splitq() to avoid stopping the queue or
+incrementing the stops counter twice.
 
-Le 31/07/2024 à 18:33, David Hildenbrand a écrit :
-> On 31.07.24 16:54, Peter Xu wrote:
->> On Wed, Jul 31, 2024 at 02:21:03PM +0200, David Hildenbrand wrote:
->>> We recently made GUP's common page table walking code to also walk 
->>> hugetlb
->>> VMAs without most hugetlb special-casing, preparing for the future of
->>> having less hugetlb-specific page table walking code in the codebase.
->>> Turns out that we missed one page table locking detail: page table 
->>> locking
->>> for hugetlb folios that are not mapped using a single PMD/PUD.
->>>
->>> Assume we have hugetlb folio that spans multiple PTEs (e.g., 64 KiB
->>> hugetlb folios on arm64 with 4 KiB base page size). GUP, as it walks the
->>> page tables, will perform a pte_offset_map_lock() to grab the PTE table
->>> lock.
->>>
->>> However, hugetlb that concurrently modifies these page tables would
->>> actually grab the mm->page_table_lock: with USE_SPLIT_PTE_PTLOCKS, the
->>> locks would differ. Something similar can happen right now with hugetlb
->>> folios that span multiple PMDs when USE_SPLIT_PMD_PTLOCKS.
->>>
->>> This issue can be reproduced [1], for example triggering:
->>>
->>> [ 3105.936100] ------------[ cut here ]------------
->>> [ 3105.939323] WARNING: CPU: 31 PID: 2732 at mm/gup.c:142 
->>> try_grab_folio+0x11c/0x188
->>> [ 3105.944634] Modules linked in: [...]
->>> [ 3105.974841] CPU: 31 PID: 2732 Comm: reproducer Not tainted 
->>> 6.10.0-64.eln141.aarch64 #1
->>> [ 3105.980406] Hardware name: QEMU KVM Virtual Machine, BIOS 
->>> edk2-20240524-4.fc40 05/24/2024
->>> [ 3105.986185] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS 
->>> BTYPE=--)
->>> [ 3105.991108] pc : try_grab_folio+0x11c/0x188
->>> [ 3105.994013] lr : follow_page_pte+0xd8/0x430
->>> [ 3105.996986] sp : ffff80008eafb8f0
->>> [ 3105.999346] x29: ffff80008eafb900 x28: ffffffe8d481f380 x27: 
->>> 00f80001207cff43
->>> [ 3106.004414] x26: 0000000000000001 x25: 0000000000000000 x24: 
->>> ffff80008eafba48
->>> [ 3106.009520] x23: 0000ffff9372f000 x22: ffff7a54459e2000 x21: 
->>> ffff7a546c1aa978
->>> [ 3106.014529] x20: ffffffe8d481f3c0 x19: 0000000000610041 x18: 
->>> 0000000000000001
->>> [ 3106.019506] x17: 0000000000000001 x16: ffffffffffffffff x15: 
->>> 0000000000000000
->>> [ 3106.024494] x14: ffffb85477fdfe08 x13: 0000ffff9372ffff x12: 
->>> 0000000000000000
->>> [ 3106.029469] x11: 1fffef4a88a96be1 x10: ffff7a54454b5f0c x9 : 
->>> ffffb854771b12f0
->>> [ 3106.034324] x8 : 0008000000000000 x7 : ffff7a546c1aa980 x6 : 
->>> 0008000000000080
->>> [ 3106.038902] x5 : 00000000001207cf x4 : 0000ffff9372f000 x3 : 
->>> ffffffe8d481f000
->>> [ 3106.043420] x2 : 0000000000610041 x1 : 0000000000000001 x0 : 
->>> 0000000000000000
->>> [ 3106.047957] Call trace:
->>> [ 3106.049522]  try_grab_folio+0x11c/0x188
->>> [ 3106.051996]  follow_pmd_mask.constprop.0.isra.0+0x150/0x2e0
->>> [ 3106.055527]  follow_page_mask+0x1a0/0x2b8
->>> [ 3106.058118]  __get_user_pages+0xf0/0x348
->>> [ 3106.060647]  faultin_page_range+0xb0/0x360
->>> [ 3106.063651]  do_madvise+0x340/0x598
->>>
->>> Let's make huge_pte_lockptr() effectively use the same PT locks as any
->>> core-mm page table walker would. Add ptep_lockptr() to obtain the PTE
->>> page table lock using a pte pointer -- unfortunately we cannot convert
->>> pte_lockptr() because virt_to_page() doesn't work with kmap'ed page
->>> tables we can have with CONFIG_HIGHPTE.
->>>
->>> Take care of PTE tables possibly spanning multiple pages, and take 
->>> care of
->>> CONFIG_PGTABLE_LEVELS complexity when e.g., PMD_SIZE == PUD_SIZE. For
->>> example, with CONFIG_PGTABLE_LEVELS == 2, core-mm would detect
->>> with hugepagesize==PMD_SIZE pmd_leaf() and use the pmd_lockptr(), which
->>> would end up just mapping to the per-MM PT lock.
->>>
->>> There is one ugly case: powerpc 8xx, whereby we have an 8 MiB hugetlb
->>> folio being mapped using two PTE page tables.  While hugetlb wants to 
->>> take
->>> the PMD table lock, core-mm would grab the PTE table lock of one of both
->>> PTE page tables.  In such corner cases, we have to make sure that both
->>> locks match, which is (fortunately!) currently guaranteed for 8xx as it
->>> does not support SMP and consequently doesn't use split PT locks.
->>>
->>> [1] 
->>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F1bbfcc7f-f222-45a5-ac44-c5a1381c596d%40redhat.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cf91a0b3cdcab46c7bd6108dcb17e9454%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638580404425532305%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=%2FQ4QFqbyThojISHACwzxCdtYbgwc4JsMIP%2Bmx4PneOk%3D&reserved=0
->>>
->>> Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic 
->>> follow_page_mask code")
->>> Reviewed-by: James Houghton <jthoughton@google.com>
->>> Cc: <stable@vger.kernel.org>
->>> Cc: Peter Xu <peterx@redhat.com>
->>> Cc: Oscar Salvador <osalvador@suse.de>
->>> Cc: Muchun Song <muchun.song@linux.dev>
->>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>
->> Nitpick: I wonder whether some of the lines can be simplified if we write
->> it downwards from PUD, like,
->>
->> huge_pte_lockptr()
->> {
->>          if (size >= PUD_SIZE)
->>             return pud_lockptr(...);
->>          if (size >= PMD_SIZE)
->>             return pmd_lockptr(...);
->>          /* Sub-PMD only applies to !CONFIG_HIGHPTE, see 
->> pte_alloc_huge() */
->>          WARN_ON(IS_ENABLED(CONFIG_HIGHPTE));
->>          return ptep_lockptr(...);
->> }
-> 
-> Let me think about it. For PUD_SIZE == PMD_SIZE instead of like core-mm
-> calling pmd_lockptr we'd call pud_lockptr().
+Fixes: 6818c4d5b3c2 ("idpf: add splitq start_xmit")
+Fixes: a5ab9ee0df0b ("idpf: add singleq start_xmit and napi poll")
+Cc: stable@vger.kernel.org # 6.7+
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  4 +++
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 35 +++++--------------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  9 ++++-
+ 3 files changed, 21 insertions(+), 27 deletions(-)
 
-I guess it is only when including asm-generic/pgtable-nopmd.h
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
+index 947d3ff9677c..5ba360abbe66 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
+@@ -375,6 +375,10 @@ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
+ 				      IDPF_TX_DESCS_FOR_CTX)) {
+ 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
+ 
++		u64_stats_update_begin(&tx_q->stats_sync);
++		u64_stats_inc(&tx_q->q_stats.q_busy);
++		u64_stats_update_end(&tx_q->stats_sync);
++
+ 		return NETDEV_TX_BUSY;
+ 	}
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index c1df4341e9ab..60f875decd8a 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -2128,29 +2128,6 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
+ 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
+ }
+ 
+-/**
+- * idpf_tx_maybe_stop_common - 1st level check for common Tx stop conditions
+- * @tx_q: the queue to be checked
+- * @size: number of descriptors we want to assure is available
+- *
+- * Returns 0 if stop is not needed
+- */
+-int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size)
+-{
+-	struct netdev_queue *nq;
+-
+-	if (likely(IDPF_DESC_UNUSED(tx_q) >= size))
+-		return 0;
+-
+-	u64_stats_update_begin(&tx_q->stats_sync);
+-	u64_stats_inc(&tx_q->q_stats.q_busy);
+-	u64_stats_update_end(&tx_q->stats_sync);
+-
+-	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
+-
+-	return netif_txq_maybe_stop(nq, IDPF_DESC_UNUSED(tx_q), size, size);
+-}
+-
+ /**
+  * idpf_tx_maybe_stop_splitq - 1st level check for Tx splitq stop conditions
+  * @tx_q: the queue to be checked
+@@ -2162,7 +2139,7 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
+ 				     unsigned int descs_needed)
+ {
+ 	if (idpf_tx_maybe_stop_common(tx_q, descs_needed))
+-		goto splitq_stop;
++		goto out;
+ 
+ 	/* If there are too many outstanding completions expected on the
+ 	 * completion queue, stop the TX queue to give the device some time to
+@@ -2181,10 +2158,12 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
+ 	return 0;
+ 
+ splitq_stop:
++	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
++
++out:
+ 	u64_stats_update_begin(&tx_q->stats_sync);
+ 	u64_stats_inc(&tx_q->q_stats.q_busy);
+ 	u64_stats_update_end(&tx_q->stats_sync);
+-	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
+ 
+ 	return -EBUSY;
+ }
+@@ -2207,7 +2186,11 @@ void idpf_tx_buf_hw_update(struct idpf_tx_queue *tx_q, u32 val,
+ 	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
+ 	tx_q->next_to_use = val;
+ 
+-	idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED);
++	if (idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED)) {
++		u64_stats_update_begin(&tx_q->stats_sync);
++		u64_stats_inc(&tx_q->q_stats.q_busy);
++		u64_stats_update_end(&tx_q->stats_sync);
++	}
+ 
+ 	/* Force memory writes to complete before letting h/w
+ 	 * know there are new descriptors to fetch.  (Only
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index 2478f71adb95..df3574ac58c2 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -1020,7 +1020,6 @@ void idpf_tx_dma_map_error(struct idpf_tx_queue *txq, struct sk_buff *skb,
+ 			   struct idpf_tx_buf *first, u16 ring_idx);
+ unsigned int idpf_tx_desc_count_required(struct idpf_tx_queue *txq,
+ 					 struct sk_buff *skb);
+-int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size);
+ void idpf_tx_timeout(struct net_device *netdev, unsigned int txqueue);
+ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
+ 				  struct idpf_tx_queue *tx_q);
+@@ -1029,4 +1028,12 @@ bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_rx_queue *rxq,
+ 				      u16 cleaned_count);
+ int idpf_tso(struct sk_buff *skb, struct idpf_tx_offload_params *off);
+ 
++static inline bool idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q,
++					     u32 needed)
++{
++	return !netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
++					  IDPF_DESC_UNUSED(tx_q),
++					  needed, needed);
++}
++
+ #endif /* !_IDPF_TXRX_H_ */
+-- 
+2.42.0
 
-Otherwise you should have more than one entry in the PMD table so 
-PMD_SIZE would always be smaller than PUD_SIZE, wouldn't it ?
-
-So maybe some simplification could be done, like having pud_lock() a nop 
-in that case ?
-
-
-Christophe
 
