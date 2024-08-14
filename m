@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-67663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0786B951CCA
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:14:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 492C4951CCC
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:14:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96F37B28FAC
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 14:14:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05362281090
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 14:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D301B4C3E;
-	Wed, 14 Aug 2024 14:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4707A1B32B5;
+	Wed, 14 Aug 2024 14:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6L2VgKO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaomdTG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9181B29BD;
-	Wed, 14 Aug 2024 14:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB17D1B29BD;
+	Wed, 14 Aug 2024 14:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723644750; cv=none; b=CSem6O94eMKdKtFCJYz0ZKGQMfP3dtKM0+YhFUrh1qaT0Vd568iLkbl++iPc/vSONWcpQgB5XJDmows5sFyEtuxGC2JNaSimI2yzkj4ShEtGLLLTtUu+4ZnPFsYEyNcbLK+EEHoCjol6WLS7mYbg+7z/T3pLY8OaAWIkcZ6L0Os=
+	t=1723644764; cv=none; b=ke/pQRsO11PCzedk9frVxi6e+ANTcNSxBEJ1tAiTNeUDW0g2B1hYlKwoELhL4rWs+QkujQXYhaLnMDIeiHoWRsXqCfIAZN6aJ5y7UCaC/R642Sk0oV/LfTpePHwyu5a40QxwLhAFFF0jcVLvUaH36kJpdxYRV1//DhTD9NMrD50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723644750; c=relaxed/simple;
-	bh=exciCKj3zj6IEoFE38Mdny7KhQyHA+dZmV1pYaT+t8k=;
+	s=arc-20240116; t=1723644764; c=relaxed/simple;
+	bh=2NWTvkTmAjlh1Y9AcicpLHob5jRSU8t+LdyURJCYXbI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jyVjZ3+3n0POiCjBTiYXHaUtmEfmlJqEhn+aH6vnJqIJdhQINWopaBbc6onkm0AXilJpTa3VwQzUlixjENPMaPW+XOQSc6da1+Pg6kMBJXdfVy28tGW8Zar2MsEZz5xCrZQnYWb7rPM5ROSDMG4Q2h2DjsPNfJzbkXCYcZ1nhRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6L2VgKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A300C32786;
-	Wed, 14 Aug 2024 14:12:29 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=f2t6JdPuXD21AJjOJhOhPvkUup+3D6uRLHtBWY+JHd0sLrq/SwnTpb6rVgYLvdr0TjnBUZS2F4Ggd8I+ng9yz6IhQ7Zpe8m+UqYDixyQgKPR9ZpqjNiQjMhumrbIs0fk/KLKGqln4mNTGb9GTu3/PiPgswjA/jwQtZD/Bacbwlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaomdTG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB92C116B1;
+	Wed, 14 Aug 2024 14:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723644749;
-	bh=exciCKj3zj6IEoFE38Mdny7KhQyHA+dZmV1pYaT+t8k=;
+	s=korg; t=1723644763;
+	bh=2NWTvkTmAjlh1Y9AcicpLHob5jRSU8t+LdyURJCYXbI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m6L2VgKOiHuJFXYsJbveBB+bqnmh0Cm2YMpa6VZIWMS+UPyE+GTI7SPd6jYPJd6Fb
-	 PLnxUQhFUYJ8Ksm8UuBnbl/UD0+Q6xH7PjoSYwW+insBH+qlk7OCDIxBUG12fID+cy
-	 tzNKdixepjkle6vPnCmQDHp1YIEYom2qdGFqDRuI=
-Date: Wed, 14 Aug 2024 16:12:26 +0200
+	b=SaomdTG25s4riEpnZkVuCh8JeHnzdGrUW50+3y/256GiROMplf8qfBEL1jkNowj80
+	 K1JVhbp72a437OAMRApJUimBpxDpCOq82Wj5YpVVHee0cbIxJVWZA9rrP056ljaNkA
+	 4yVmh40zpXzKnlW+fGu1TXbg+ljfs7tCv7L4tR74=
+Date: Wed, 14 Aug 2024 16:12:40 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>
 Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
@@ -48,12 +48,10 @@ Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
 	=?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@linux.intel.com>,
 	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Vitaly Chikunov <vt@altlinux.org>, Mark Brown <broonie@kernel.org>,
-	Cezary Rojewski <cezary.rojewski@intel.com>
-Subject: Re: [PATCH for stable 1/2] ASoC: topology: Clean up route loading
-Message-ID: <2024081404-plow-residual-202b@gregkh>
+	Vitaly Chikunov <vt@altlinux.org>, Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH for stable 0/2] ASoC: topology: Fix loading topology issue
+Message-ID: <2024081434-drowsily-stingy-1b09@gregkh>
 References: <20240814140657.2369433-1-amadeuszx.slawinski@linux.intel.com>
- <20240814140657.2369433-2-amadeuszx.slawinski@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,22 +61,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240814140657.2369433-2-amadeuszx.slawinski@linux.intel.com>
+In-Reply-To: <20240814140657.2369433-1-amadeuszx.slawinski@linux.intel.com>
 
-On Wed, Aug 14, 2024 at 04:06:56PM +0200, Amadeusz Sławiński wrote:
-> Instead of using very long macro name, assign it to shorter variable
-> and use it instead. While doing that, we can reduce multiple if checks
-> using this define to one.
+On Wed, Aug 14, 2024 at 04:06:55PM +0200, Amadeusz Sławiński wrote:
+> Commit 97ab304ecd95 ("ASoC: topology: Fix references to freed memory")
+> is a problematic fix for issue in topology loading code, which was
+> cherry-picked to stable. It was later corrected in
+> 0298f51652be ("ASoC: topology: Fix route memory corruption"), however to
+> apply cleanly e0e7bc2cbee9 ("ASoC: topology: Clean up route loading")
+> also needs to be applied.
 > 
-> Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-> Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-> Link: https://lore.kernel.org/r/20240603102818.36165-5-amadeuszx.slawinski@linux.intel.com
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  sound/soc/soc-topology.c | 26 ++++++++------------------
->  1 file changed, 8 insertions(+), 18 deletions(-)
+> Link: https://lore.kernel.org/linux-sound/ZrwUCnrtKQ61LWFS@sashalap/T/#mbfd273adf86fe93b208721f1437d36e5d2a9aa19
+> 
+> Amadeusz Sławiński (2):
+>   ASoC: topology: Clean up route loading
+>   ASoC: topology: Fix route memory corruption
+> 
+>  sound/soc/soc-topology.c | 32 ++++++++------------------------
+>  1 file changed, 8 insertions(+), 24 deletions(-)
+> 
+> 
+> base-commit: 878fbff41def4649a2884e9d33bb423f5a7726b0
+> -- 
+> 2.34.1
+> 
 > 
 
-What is the git commit id of this change in Linus's tree?  Same for
-patch 2/2
+What stable tree(s) is this for?
 
