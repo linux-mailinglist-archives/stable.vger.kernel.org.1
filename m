@@ -1,213 +1,159 @@
-Return-Path: <stable+bounces-67609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4642A9515BE
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 09:46:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9C49516CE
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 10:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FFD0B21855
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 07:46:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 684B2282636
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 08:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608A65589B;
-	Wed, 14 Aug 2024 07:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF7E142E76;
+	Wed, 14 Aug 2024 08:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="WfTNVC8/";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hQsnQmc8";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="WfTNVC8/";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hQsnQmc8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CEJk4MK3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F6A8488;
-	Wed, 14 Aug 2024 07:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17851420A8
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 08:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723621575; cv=none; b=Lr7HYyzptHKjkrbLg5UynaZBSi0cYjDZqn7wdn8OsH24FrscVhsPZBMSE6XU9cV0Wm6BBAJuC0dbSE9ABmjTQzoi5dn7Cb5QoZy/EqUHNhhPuH6nAhnK3ESzWhfF3KXz5PAw/5IEFa/ZEygRsLIESLaowQMcnYQ3rvdatZYHDSQ=
+	t=1723624947; cv=none; b=j8XFrYczWWES5BIdKPZBxkauv9Smwqr39e24xSm7PG3OT5maOm4yEQy086bkowS+pKoLtjvMcCiRbdXdjCvuU99SsaPexmDtZNo8eifbnrX4/NBLpth25PYMuopdf50d/aSFWAyI8oGbMxDyN6NPPa/7yiH0jnxPwJMipxe+9TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723621575; c=relaxed/simple;
-	bh=ZN3Dy3Cu3HOgYeh/kioHxc1YS1vbbrnFHsAmzBFL/PI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EN3yE5gVJMNw17NK2kQMxuNtpS1o+3e8j34pi6pJSgGey994ZgUQJMV+ZKhuGj+lEO9C9aqioSpSR7ZhWJ0ReDrLlhRatDANjPwBBb5tb1HFNNkID/SD/+M8kUHCIk/KYvb6ybcnE8csr+LedmSHT6Xsm4B3XUtdXng9t4VhJ5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=WfTNVC8/; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hQsnQmc8; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=WfTNVC8/; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hQsnQmc8; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0662B1F7E1;
-	Wed, 14 Aug 2024 07:46:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1723621565;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xaVy4wFx7dCh6VdJK0U8mZ4nIvitG+veJTGq8x//eX4=;
-	b=WfTNVC8/uVDWTVk6JVyskOKqeZA9dfLCprIky1s7hApwybS7ZbSjbknR7LoWiqnoEbIH0k
-	m5vsKSCi4YaJ06epVVKcVejTeYvRfra208BGtxHURecKo+Lfksw3PRuzhExfaxcLotx+Zl
-	zBpLOEHdNURj3VrrO2tLH5Mg+Q98Jjc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1723621565;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xaVy4wFx7dCh6VdJK0U8mZ4nIvitG+veJTGq8x//eX4=;
-	b=hQsnQmc8ODY+A9pc4Mu+B8GaXYp48qvNHJaUEZ934B1AI89uZaoDLgolCSZN4ffGAf/HBJ
-	UtZ+3N2wHzNaQjBA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="WfTNVC8/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hQsnQmc8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1723621565;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xaVy4wFx7dCh6VdJK0U8mZ4nIvitG+veJTGq8x//eX4=;
-	b=WfTNVC8/uVDWTVk6JVyskOKqeZA9dfLCprIky1s7hApwybS7ZbSjbknR7LoWiqnoEbIH0k
-	m5vsKSCi4YaJ06epVVKcVejTeYvRfra208BGtxHURecKo+Lfksw3PRuzhExfaxcLotx+Zl
-	zBpLOEHdNURj3VrrO2tLH5Mg+Q98Jjc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1723621565;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xaVy4wFx7dCh6VdJK0U8mZ4nIvitG+veJTGq8x//eX4=;
-	b=hQsnQmc8ODY+A9pc4Mu+B8GaXYp48qvNHJaUEZ934B1AI89uZaoDLgolCSZN4ffGAf/HBJ
-	UtZ+3N2wHzNaQjBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B8D52139B9;
-	Wed, 14 Aug 2024 07:46:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id tTTAK7xgvGZKMwAAD6G6ig
-	(envelope-from <pvorel@suse.cz>); Wed, 14 Aug 2024 07:46:04 +0000
-Date: Wed, 14 Aug 2024 09:45:59 +0200
-From: Petr Vorel <pvorel@suse.cz>
-To: cel@kernel.org
-Cc: stable@vger.kernel.org, linux-nfs@vger.kernel.org,
-	sherry.yang@oracle.com, calum.mackay@oracle.com, kernel-team@fb.com,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Cyril Hrubis <chrubis@suse.cz>, ltp@lists.linux.it
-Subject: Re: [PATCH 6.6.y 00/12] Backport "make svc_stat per-net instead of
- global"
-Message-ID: <20240814074559.GA209695@pevik>
-Reply-To: Petr Vorel <pvorel@suse.cz>
-References: <20240812223604.32592-1-cel@kernel.org>
+	s=arc-20240116; t=1723624947; c=relaxed/simple;
+	bh=1QfKCLMRnNPzmvyKlrpuDS58cibY7JPKGSrw1Fiy1Nw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OGUMl2k4Fh9/XLTqQfgiPAKMN82rK4dlt+p4aUuSZICsuZV2vqR3YU34MBdVnd2hsvXee3mKYtgHPWJHiwdsmewCQEPdD1rKUdI8Xddv45Zr5NRJ203mCSo2GM8i9/ZMOCM4phnuNktAML3yH224ZnF3zKfe6WKIIEOLfTzTzKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CEJk4MK3; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-428f5c0833bso3564735e9.0
+        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 01:42:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723624944; x=1724229744; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3AyfZexU22I2sH9aPnSL5GuTFz1W/ENho/AlFGBB7a0=;
+        b=CEJk4MK3CZS+YK43bn+qrW6bbbUDjcX0xgjwbHGYz26i98fKa85krHbezelrZOgBLH
+         ojcDcZlfTczn4BIdleq77AwHW64cyymaAVGFXZLhQvJs4yn3j1s+9+kespzKAD9oJfFO
+         ADRxIAPJJVTT/+NMbNDLUfnD/72mw9VfhV6tAfEk8F1luMBam7CkdmBGYImcHkxdHzmC
+         01MJ45AI00gcqQINIJEXfiPab71A13Ra9RRffq0vuNOwynlpeGK+/BBI6NiYN3xaEsqo
+         rRTjq++kcgPPKVqOiJBz7+CC64nY18bt2TiMv3nP3pz3VsXUf0tii0t2+pI/39g8IOKP
+         UOlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723624944; x=1724229744;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3AyfZexU22I2sH9aPnSL5GuTFz1W/ENho/AlFGBB7a0=;
+        b=Y09WMUgHZhNUToPtyMx9aGwHEm7+Ejhb0K9peHxJ0Z2+VNljSutgqwVTmJjEotMClO
+         TmbIKa/JxtiCyEQHgbnORE74NK1q80QyDe9r2cBVqWD3fcIW2WuEqCCJWBrmGqh0wsru
+         f1ARL2sGWSR+Fej1HgAay7OPAfAtDDyg316qXuOHyP2pZcC7EDu1pD/ER6wnMso7ieLX
+         ok6FPpPtTngw9/M20zh7D/AnCF+V7WlWgwNdjjdULxdGxvULB/CFEz1Yv9qt1T7OTAqJ
+         lTH0w+Udzhp2hlGABy6QrHd6JNkYqs2OIq6ytKlYLAY8xWCHhAj78YKOL7dFZEnwZgmf
+         wUnw==
+X-Forwarded-Encrypted: i=1; AJvYcCWVNLt4rWsDW+YlDgs7JYCZL8Z2OaCJZwhsKxVv4B9o4++WEKzVfP2yQFAgtUMsQdFdgUw/rvNwy2pRLEHzSWpUU879Jf0F
+X-Gm-Message-State: AOJu0YxmLljI195RSZ2oQ8h71o19xttT2nwErmdyr2QSTxj4+VeHbDiG
+	tgKDpOJoSxT7eXPcpaR3ebe2sPT2jOPw6nLPUTbKN9zMXbowDN7Gd4Zkg1k0IVE=
+X-Google-Smtp-Source: AGHT+IGQisfWqgtdPNDL3251nLqNoB/iLdOa4Y+g5fQHv6/ZcTIQfBAbps6K9TvAvJILM4MqhlIIFw==
+X-Received: by 2002:a05:6000:2a3:b0:366:e9f7:4e73 with SMTP id ffacd0b85a97d-3716e3ead69mr5763290f8f.5.1723624943698;
+        Wed, 14 Aug 2024 01:42:23 -0700 (PDT)
+Received: from [192.168.0.25] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37179646104sm962415f8f.113.2024.08.14.01.42.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Aug 2024 01:42:23 -0700 (PDT)
+Message-ID: <ede0cc89-35ad-454c-bcae-5a77dc3bafa9@linaro.org>
+Date: Wed, 14 Aug 2024 09:42:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240812223604.32592-1-cel@kernel.org>
-X-Spam-Score: -3.71
-X-Rspamd-Queue-Id: 0662B1F7E1
-X-Spamd-Result: default: False [-3.71 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	HAS_REPLYTO(0.30)[pvorel@suse.cz];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	REPLYTO_EQ_FROM(0.00)[]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] media: qcom: camss: fix error path on configuration of
+ power domains
+To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Robert Foss <rfoss@kernel.org>
+Cc: Todor Tomov <todor.too@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+ Konrad Dybcio <konradybcio@kernel.org>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240813210342.1765944-1-vladimir.zapolskiy@linaro.org>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20240813210342.1765944-1-vladimir.zapolskiy@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Chuck,
+On 13/08/2024 22:03, Vladimir Zapolskiy wrote:
+> There is a chance to meet runtime issues during configuration of CAMSS
+> power domains, because on the error path dev_pm_domain_detach() is
+> unexpectedly called with NULL or error pointer.
+> 
+> One of the simplest ways to reproduce the problem is to probe CAMSS
+> driver before registration of CAMSS power domains, for instance if
+> a platform CAMCC driver is simply not built.
+> 
+> Warning backtrace example:
+> 
+>      Unable to handle kernel NULL pointer dereference at virtual address 00000000000001a2
+> 
+>      <snip>
+> 
+>      pc : dev_pm_domain_detach+0x8/0x48
+>      lr : camss_probe+0x374/0x9c0
+> 
+>      <snip>
+> 
+>      Call trace:
+>       dev_pm_domain_detach+0x8/0x48
+>       platform_probe+0x70/0xf0
+>       really_probe+0xc4/0x2a8
+>       __driver_probe_device+0x80/0x140
+>       driver_probe_device+0x48/0x170
+>       __device_attach_driver+0xc0/0x148
+>       bus_for_each_drv+0x88/0xf0
+>       __device_attach+0xb0/0x1c0
+>       device_initial_probe+0x1c/0x30
+>       bus_probe_device+0xb4/0xc0
+>       deferred_probe_work_func+0x90/0xd0
+>       process_one_work+0x164/0x3e0
+>       worker_thread+0x310/0x420
+>       kthread+0x120/0x130
+>       ret_from_fork+0x10/0x20
+> 
+> Fixes: 23aa4f0cd327 ("media: qcom: camss: Move VFE power-domain specifics into vfe.c")
+> Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> ---
+> The first version of the patch and discussion is found over here:
+> 
+>    https://lore.kernel.org/all/20240806221204.1560258-1-vladimir.zapolskiy@linaro.org/
+> 
+> Changes from v1 to v2:
+> * added an encountered runtime warning to the commit message per ask from Bryan.
+> 
+> I tested this fix in both cases of set and unset "power-domain-names"
+> property in camss device tree node, and I didn't find any negative side
+> effects of the fix.
+> 
+>   drivers/media/platform/qcom/camss/camss.c | 19 ++++++++-----------
+>   1 file changed, 8 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+> index 51b1d3550421..aa894be1461d 100644
+> --- a/drivers/media/platform/qcom/camss/camss.c
+> +++ b/drivers/media/platform/qcom/camss/camss.c
 
-> Following up on:
++ stable@vger.kernel.org
 
-> https://lore.kernel.org/linux-nfs/d4b235df-4ee5-4824-9d48-e3b3c1f1f4d1@oracle.com/
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-> Here is a backport series targeting origin/linux-6.6.y that closes
-> the information leak described in the above thread. It passes basic
-> NFSD regression testing.
-
-
-Thank you for handling this! The link above mentions that it was already
-backported to 5.4 and indeed I see at least d47151b79e322 ("nfs: expose
-/proc/net/sunrpc/nfs in net namespaces") is backported in 5.4, 5.10, 5.15, 6.1.
-And you're now preparing 6.6. Thus we can expect the behavior changed from
-5.4 kernels.
-
-I wonder if we consider this as a fix, thus expect any kernel newer than 5.4
-should backport all these 12 patches.
-
-Or, whether we should relax and just check if version is higher than the one
-which got it in stable/LTS (e.g. >= 5.4.276 || >= 5.10.217 ...). The question is
-also if enterprise distros will take this patchset.
-
-BTW We have in LTP functionality which points as a hint to kernel fixes. But
-it's usually a single commit. I might need to list all.
-
-Kind regards,
-Petr
-
-> Review comments welcome.   
-
-> Chuck Lever (2):
->   NFSD: Rewrite synopsis of nfsd_percpu_counters_init()
->   NFSD: Fix frame size warning in svc_export_parse()
-
-> Josef Bacik (10):
->   sunrpc: don't change ->sv_stats if it doesn't exist
->   nfsd: stop setting ->pg_stats for unused stats
->   sunrpc: pass in the sv_stats struct through svc_create_pooled
->   sunrpc: remove ->pg_stats from svc_program
->   sunrpc: use the struct net as the svc proc private
->   nfsd: rename NFSD_NET_* to NFSD_STATS_*
->   nfsd: expose /proc/net/sunrpc/nfsd in net namespaces
->   nfsd: make all of the nfsd stats per-network namespace
->   nfsd: remove nfsd_stats, make th_cnt a global counter
->   nfsd: make svc_stat per-network namespace instead of global
-
->  fs/lockd/svc.c             |  3 --
->  fs/nfs/callback.c          |  3 --
->  fs/nfsd/cache.h            |  2 -
->  fs/nfsd/export.c           | 32 ++++++++++----
->  fs/nfsd/export.h           |  4 +-
->  fs/nfsd/netns.h            | 25 +++++++++--
->  fs/nfsd/nfs4proc.c         |  6 +--
->  fs/nfsd/nfs4state.c        |  3 +-
->  fs/nfsd/nfscache.c         | 40 ++++-------------
->  fs/nfsd/nfsctl.c           | 16 +++----
->  fs/nfsd/nfsd.h             |  1 +
->  fs/nfsd/nfsfh.c            |  3 +-
->  fs/nfsd/nfssvc.c           | 14 +++---
->  fs/nfsd/stats.c            | 54 ++++++++++-------------
->  fs/nfsd/stats.h            | 88 ++++++++++++++------------------------
->  fs/nfsd/vfs.c              |  6 ++-
->  include/linux/sunrpc/svc.h |  5 ++-
->  net/sunrpc/stats.c         |  2 +-
->  net/sunrpc/svc.c           | 39 +++++++++++------
->  19 files changed, 163 insertions(+), 183 deletions(-)
 
