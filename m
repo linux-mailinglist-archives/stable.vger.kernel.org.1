@@ -1,187 +1,100 @@
-Return-Path: <stable+bounces-67616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB7A951813
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 11:55:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC4E951843
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 12:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13632285FCC
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 09:55:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89282285B53
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 10:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7540019FA8C;
-	Wed, 14 Aug 2024 09:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED8A13D502;
+	Wed, 14 Aug 2024 10:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SUKYNOho"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e0AxZ7mO"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E8316A395
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 09:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A82C36134
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 10:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723629312; cv=none; b=raITgOUcM+wv0Y6z/NihKMlicIo3DyGW0mNqBzMBIacR/QaRKwV/ms+W0o7zbm5ckI74KwyYRZzm5LAKwoR2OUeDbUk1tDUHw4dEzPqzOFxdowgMVk1u3XBkyUOXnB2zlfZa1NWtsO401w3wW0UvoI3ZGMJI3bhGPhePAtQfnD8=
+	t=1723629809; cv=none; b=CgdUKorh3Za0acULBe9hORXErIsxzyeJjdD8Qzhk1VWt4ZkNYamAxYiU/A+YKpnQ22rfY6yvLnOatuDTrMGzf3XgqI1xE1kNi7fpviW6E4RJpm4hKCUOyKb/cbdt6RaoYe1hnyvCW4vktxQR1z47jeabAniyNOHsDbU5yKMhYt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723629312; c=relaxed/simple;
-	bh=hzCTGEMMJ7kf4NqqEdzR97wZ6ZicVjeTlJk6P9+znlw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bk1lnG1D6kdOst3lOW2DT8FfDxUiB+mrKr/xJDhfdMTF7Ez5YK8irn979f/GBhErgOGt/2FCMdDLGrYzt8TNNXBZthjxsIugaewliTc/NOiup/7WmrEj2pqAXPBnc9fPTwy0cfrGfYpe+tPjvS6V2duH7iiSzhthRPADUJUxp64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SUKYNOho; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723629309;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TD3eIlc9AjVv5XHFM7Qv3v9oTzPd68l7T0XpauE4HO0=;
-	b=SUKYNOhoOubCEdz9H8As2EHVFvLTJ0DGD88CUyvhmabUiDSK4h3XXK3iVi3i4xhexH6WED
-	5+Q7IGUYwxH11LI38N1sCb6LOWvrDyGQh864NYcaYCaCZTSTstJYPcDFLATXToAM/FHp9T
-	Ny24b/TAjItQeilMIUVMuxxQCI4ANw8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-tlOluBfpPMa-foNjatnFtg-1; Wed, 14 Aug 2024 05:55:07 -0400
-X-MC-Unique: tlOluBfpPMa-foNjatnFtg-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a7a83fad218so468883766b.3
-        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 02:55:07 -0700 (PDT)
+	s=arc-20240116; t=1723629809; c=relaxed/simple;
+	bh=e8XyBB4yp1va/v+zfC3Kd+5kJrc3+5KmEpkmNaa5DPI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d66XiKHjEwilFqRUOgDAJRPyj8QVTwJYgxucn8Fn9x3XFyKk+sStJcc0A9+EJQKjhrhzqnU1kZw2fvNbQeGyQq94C1g73w4yMr3X8gUZFXU42gxubXNNidx5DBaJeRbfJYF2mSXTeFaebWvkzACU4oD+KUkcp3wBaMfjPhZglyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e0AxZ7mO; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5ba43b433beso7035218a12.1
+        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 03:03:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723629806; x=1724234606; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=L6AdZbX4AePgyvzpCvj5p2nD5PTKuc5dc/y4Q+eKt9M=;
+        b=e0AxZ7mOEqlVOtejltu5XdqFvCne1D0x64LuX6oD5EDz+NfSp1uYWcN18S2PMPcDif
+         ersQaKg3UmpJXNGqHMjBzUTXiWeqgPcWW81c+Kgt60f+hFUzW4eGC/vaToD++brVw88u
+         ytLURHMSIQAoFIQeC9xecAGRO+1aVWc3jgbhX84GUz9qaxYEaVnOYpXGKB1JR5lIBviI
+         W2s4Je9E8ZQU4c37dUpCOZjrvCSNwc5QgC+ZvgbNWIvRGFjzaMaGVU5DEbXHcBYU0udK
+         gT5SFcs28LprdnUzx0AZaR5n74r1Z7pQPbiktAUKOuNm/wL+zVH1uLAKWzm2BwJyFjt7
+         HSuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723629305; x=1724234105;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TD3eIlc9AjVv5XHFM7Qv3v9oTzPd68l7T0XpauE4HO0=;
-        b=JPZUg+jj9Cl1oiZKkpOebyDhWBGydnDrkc5nITiOZbSH1SIm6Uljb+Mz6oSYs8xd11
-         rBsOYO8UhVMY5CydhLAq7KvDMSKMTvPRp6HnlDdsG0DrnVxV3R9UcANfVcExyQ4F1LSe
-         qePL/7nnBWbd6K0i9d/fBQbUNIy19z9i/9Qy6CUG4m3Z9Gk65T7GVEdgmA+GpyM28LfZ
-         WZDLX4mQiHQxB0oqDRQm0ion03KNCtwR0TBg6iOBgYDLve2EnezX7omlr0hNujnrXujC
-         HbrnCSJsBLE+Psl75xa4zuC13cCtt9FW+cW/052+3GbEfdGT7qQyW9A86FKi30wKIcXO
-         fqfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPGcC/A673ZNextA5u//I78CtEm4CCjq8unTFhQn98QlJ3trv6bE3zjLcP0xeAlJiTX118ujnJYIFkBgLqJV09Pr0vnY2u
-X-Gm-Message-State: AOJu0Yy1mNm/zlS9o42RisdnSIYdlStisnVDijwKQLrdposOygS/4+Da
-	ptkU93aZ3CPB2a7ucTmaK39p1IPcU1c3xke7vHin7nHp2Kid7+wXZgNfh0qvFygnrELN6tTpo/f
-	2uL9JBhutkxiB64wzC1Uu4XE2WQGxV5nAq1VQ4JOKaHuiFKeiwtR4yg==
-X-Received: by 2002:a17:907:e2ca:b0:a79:82c1:a5b2 with SMTP id a640c23a62f3a-a8366c2f66emr148801766b.9.1723629304768;
-        Wed, 14 Aug 2024 02:55:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVdSA4xeG6FKGN4RSrjK5lihBvWgcah1U0Kk9andCHfMqprUTfLMzNpY/SS6Z7AT8pu64aVA==
-X-Received: by 2002:a17:907:e2ca:b0:a79:82c1:a5b2 with SMTP id a640c23a62f3a-a8366c2f66emr148799366b.9.1723629303945;
-        Wed, 14 Aug 2024 02:55:03 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc7:346:dcde:9c09:aa95:551d:d374])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80f414e127sm152304066b.150.2024.08.14.02.55.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 02:55:03 -0700 (PDT)
-Date: Wed, 14 Aug 2024 05:54:58 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Christian Heusel <christian@heusel.eu>
-Cc: Greg KH <gregkh@linuxfoundation.org>, avladu@cloudbasesolutions.com,
-	willemdebruijn.kernel@gmail.com, alexander.duyck@gmail.com,
-	arefev@swemel.ru, davem@davemloft.net, edumazet@google.com,
-	jasowang@redhat.com, kuba@kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com, stable@vger.kernel.org, willemb@google.com,
-	regressions@lists.linux.dev
-Subject: Re: [PATCH net] net: drop bad gso csum_start and offset in
- virtio_net_hdr
-Message-ID: <20240814055408-mutt-send-email-mst@kernel.org>
-References: <20240726023359.879166-1-willemdebruijn.kernel@gmail.com>
- <20240805212829.527616-1-avladu@cloudbasesolutions.com>
- <2024080703-unafraid-chastise-acf0@gregkh>
- <146d2c9f-f2c3-4891-ac48-a3e50c863530@heusel.eu>
- <2024080857-contusion-womb-aae1@gregkh>
- <60bc20c5-7512-44f7-88cb-abc540437ae1@heusel.eu>
- <0d897b58-f4b8-4814-b3f9-5dce0540c81d@heusel.eu>
+        d=1e100.net; s=20230601; t=1723629806; x=1724234606;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L6AdZbX4AePgyvzpCvj5p2nD5PTKuc5dc/y4Q+eKt9M=;
+        b=UJ+QsfOMr478nvvpQihRLJWtTdPC+R7NwbUJLK7/XjfG4cjma845EUS+M+54FuchAK
+         o8NCusvnuidxgKO2wEnLePG4pNz1+vu44Vaxm/kbHRygCKBhA8dyl3xYazAd1W3i7Uxa
+         f7aY7ohDPNWAYSrU3CI/mP8yj+bMnE1GSenANxilDAwuPMQGXthlqUnKkShHS6w12SP0
+         p7RfPHIbnRqeB0ix6dHRFI003lJdgWGw+C8q7s+bhsNbIXmwyQBOzAN6F59KG08Yxkud
+         8tS+SmYqc5s/sA50VnFaAOSn4Ls/SPmUB/QLQU5oDO3iHE3jgtRjhYu8aoX9IaUgqTFS
+         MDYA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkxhRmfGV4UV18ubSnRYg1leDSbA926Un3irs1m7+EQy3Oly8pO/S8qjTfBZ3JLaRVHZBIe8WJ+y7KXUiw0cHwm6TUaS15
+X-Gm-Message-State: AOJu0YyrhfnpXeLb39742TdisNFxpeCNZ0RReN3dk5/S9bw5M6YfPEFS
+	y/qeOlv9qyJLt1sUsD1352sjgnYZ/JNbS9RK2MQywep9u6IW2vJn37xXTneSd+A=
+X-Google-Smtp-Source: AGHT+IG3zu5ucEGQ87VA8smXNp3wJ21CmD2nr1F46xm876h9j+Ns+xJkXp5EW311IGIDO9CsfcC22g==
+X-Received: by 2002:a17:907:97c3:b0:a7d:a080:bb1 with SMTP id a640c23a62f3a-a836702c7f0mr160179666b.43.1723629805596;
+        Wed, 14 Aug 2024 03:03:25 -0700 (PDT)
+Received: from [192.168.69.100] (rsa59-h02-176-184-32-161.dsl.sta.abo.bbox.fr. [176.184.32.161])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80f3fa5db7sm153381866b.58.2024.08.14.03.03.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Aug 2024 03:03:25 -0700 (PDT)
+Message-ID: <a3673d8c-3ac4-4e7d-afda-85741d0f4d28@linaro.org>
+Date: Wed, 14 Aug 2024 12:03:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d897b58-f4b8-4814-b3f9-5dce0540c81d@heusel.eu>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] MIPS misc patches
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@kernel.org>, Laurent Vivier <laurent@vivier.eu>,
+ stable@vger.kernel.org
+References: <20240621-loongson3-ipi-follow-v2-0-848eafcbb67e@flygoat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240621-loongson3-ipi-follow-v2-0-848eafcbb67e@flygoat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 14, 2024 at 11:46:30AM +0200, Christian Heusel wrote:
-> On 24/08/08 11:52AM, Christian Heusel wrote:
-> > On 24/08/08 08:38AM, Greg KH wrote:
-> > > On Wed, Aug 07, 2024 at 08:34:48PM +0200, Christian Heusel wrote:
-> > > > On 24/08/07 04:12PM, Greg KH wrote:
-> > > > > On Mon, Aug 05, 2024 at 09:28:29PM +0000, avladu@cloudbasesolutions.com wrote:
-> > > > > > Hello,
-> > > > > > 
-> > > > > > This patch needs to be backported to the stable 6.1.x and 6.64.x branches, as the initial patch https://github.com/torvalds/linux/commit/e269d79c7d35aa3808b1f3c1737d63dab504ddc8 was backported a few days ago: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/include/linux/virtio_net.h?h=3Dv6.1.103&id=3D5b1997487a3f3373b0f580c8a20b56c1b64b0775
-> > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/include/linux/virtio_net.h?h=3Dv6.6.44&id=3D90d41ebe0cd4635f6410471efc1dd71b33e894cf
-> > > > > 
-> > > > > Please provide a working backport, the change does not properly
-> > > > > cherry-pick.
-> > > > > 
-> > > > > greg k-h
-> > > > 
-> > > > Hey Greg, hey Sasha,
-> > > > 
-> > > > this patch also needs backporting to the 6.6.y and 6.10.y series as the
-> > > > buggy commit was backported to to all three series.
-> > > 
-> > > What buggy commit?
-> > 
-> > The issue is that commit e269d79c7d35 ("net: missing check virtio")
-> > introduces a bug which is fixed by 89add40066f9 ("net: drop bad gso
-> > csum_start and offset in virtio_net_hdr") which it also carries a
-> > "Fixes:" tag for.
-> > 
-> > Therefore it would be good to also get 89add40066f9 backported.
-> > 
-> > > And how was this tested, it does not apply cleanly to the trees for me
-> > > at all.
-> > 
-> > I have tested this with the procedure as described in [0]:
-> > 
-> >     $ git switch linux-6.10.y
-> >     $ git cherry-pick -x 89add40066f9ed9abe5f7f886fe5789ff7e0c50e
-> >     Auto-merging net/ipv4/udp_offload.c
-> >     [linux-6.10.y fbc0d2bea065] net: drop bad gso csum_start and offset in virtio_net_hdr
-> >      Author: Willem de Bruijn <willemb@google.com>
-> >      Date: Mon Jul 29 16:10:12 2024 -0400
-> >      3 files changed, 12 insertions(+), 11 deletions(-)
-> > 
-> > This also works for linux-6.6.y, but not for linux-6.1.y, as it fails
-> > with a merge error there.
-> > 
-> > The relevant commit is confirmed to fix the issue in the relevant Githu
-> > issue here[1]:
-> > 
-> >     @marek22k commented
-> >     > They both fix the problem for me.
-> > 
-> > > confused,
-> > 
-> > Sorry for the confusion! I hope the above clears things up a little :)
-> > 
-> > > greg k-h
-> > 
-> > Cheers,
-> > Christian
-> > 
-> > [0]: https://lore.kernel.org/all/2024060624-platinum-ladies-9214@gregkh/
-> > [1]: https://github.com/tailscale/tailscale/issues/13041#issuecomment-2272326491
-> 
-> Since I didn't hear from anybody so far about the above issue it's a bit
-> unclear on how to proceed here. I still think that I would make sense to
-> go with my above suggestion about patching at least 2 out of the 3
-> stable series where the patch applies cleanly.
-> 
-> 	~ Chris
+On 21/6/24 15:11, Jiaxun Yang wrote:
 
+> Jiaxun Yang (3):
+>        hw/mips/loongson3_virt: Store core_iocsr into LoongsonMachineState
+>        hw/mips/loongson3_virt: Fix condition of IPI IOCSR connection
+>        linux-user/mips64: Use MIPS64R2-generic as default CPU type
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Do what Greg said:
-
-	Please provide a working backport, the change does not properly
-	cherry-pick.
-
-that means, post backported patches to stable, copy list.
-
--- 
-MST
 
 
