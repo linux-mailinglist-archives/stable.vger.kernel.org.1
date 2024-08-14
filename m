@@ -1,184 +1,172 @@
-Return-Path: <stable+bounces-67613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A379517C2
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 11:33:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF71951782
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 11:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73471C2225B
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 09:33:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95B2C1F22DE9
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 09:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8759A14A093;
-	Wed, 14 Aug 2024 09:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D030D13AA32;
+	Wed, 14 Aug 2024 09:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="EcBNECJk";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qV/9a5/T";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="EcBNECJk";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qV/9a5/T"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="alV95iKg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from xry111.site (xry111.site [89.208.246.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E63149C6E;
-	Wed, 14 Aug 2024 09:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A97E219EA
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 09:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723628020; cv=none; b=kx/yf7owjUE/TPxm//oyyWN2z7Hmtqa6shbwT2q/rUt+V+qW/bvnDv1T/EUx2oyYUPuc3KnJpzTr6jY7Su0YsaxAWgSGa7Qwfpj/8SUJUI/rV1WcoHAhbXxXpSkf8gifzJBjqOD9xow9HAZg7DwnFYQDEy/cDvhsCQljLlitQlI=
+	t=1723627123; cv=none; b=rfZpdzvA+enpCY0GWuHEuK4vLfPy79EWVCb7IN9jdO4V5w3OiQMxuHMj8asXW0iNvat5VOFuW69czu5KWB3y3n+o/jSIb57w7tE/lQzYz2Fap8X30wrbwZdQbtILIOnQARYyJRKtI2jOOgLVmAagrPBfmc2lKqkT5HHV5oBamRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723628020; c=relaxed/simple;
-	bh=s7oN0Z48Kg8PWcmO3xdWsXRQV7obhRA8qPW1uEIgD14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qqzzfwEFapLAYBkedNXwW1kCaU64Qmp1qor3jxDdAeB+LMu0//8xT7R8yb0nfzLNh/OEKo3EHyCE+S6tItHcD6naB0fnM1XIViMVgCUpIXkYZBEkiGh8zJrmkErEA//cx0uM+FxOMS4+jY6UVnnGdz4306d04O9qcNw6fS4/enU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=EcBNECJk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qV/9a5/T; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=EcBNECJk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qV/9a5/T; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	s=arc-20240116; t=1723627123; c=relaxed/simple;
+	bh=Y72mLsMFwAMZbmxekDOdlGRLPRIEOo+jEGCz2rl+T5o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ILDqgWYiVnP6oGKU3a9kOTiJBMz6qEEmETT4PG6JE37KDVfZN3ZOpKQAB2oIpWHjlaE8SNe7aQ8Z0RIrzFr/6ea5ZOxNgBWb1mJI8OTtjFTNAqjrbe9thY8RJObg33gizE5MknodCXjfgSIFxI1Zp+PLehwLCaYPQNJ4qf6pV/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=alV95iKg; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
+	s=default; t=1723627114;
+	bh=Y72mLsMFwAMZbmxekDOdlGRLPRIEOo+jEGCz2rl+T5o=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=alV95iKgpzfeUXjsW45cCWTvGUUA74hMddzT02ULdFLcy5AIYjeWIfEZPSn2GnOAy
+	 6ETT6SpOzpoasE3Ki4rPRSzLevDF7DrJR3BlLCYtQsm4+yg4CaobUoE1gJcAcwR7Nt
+	 nwEu9p+9cjO4EnfrhVQQT2RUGvF+0QkQ8wmEZGSI=
+Received: from [127.0.0.1] (unknown [IPv6:2001:470:683e::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AE1FF1FE84;
-	Wed, 14 Aug 2024 09:33:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1723628016; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=8KeldISweYlyBn2Rc9jXHmgstsM042C0JEwQi1qpA5g=;
-	b=EcBNECJkunPEwB6NgrF64fglWkog6OrjXafUtcT+5xVbmmFEBbzt6KiORVgSsIU7TSykqf
-	0ukuJrim9W4uh6F3RvkhZova/76S4tHmKO/jhAQv20JsmpYdBb9Zr00a0NEJepGbo7v+ka
-	juMt1+Z4iI5S3mcBZ+KbvtiQ5Argjbw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1723628016;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=8KeldISweYlyBn2Rc9jXHmgstsM042C0JEwQi1qpA5g=;
-	b=qV/9a5/T8nX/rhE8qAQfz7v+ExUmetnwb5TvAT+cx+Ot3wfnN0RmkgyUUVFbkkGXzD6T9X
-	tngrNSfBl4wHf7BQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1723628016; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=8KeldISweYlyBn2Rc9jXHmgstsM042C0JEwQi1qpA5g=;
-	b=EcBNECJkunPEwB6NgrF64fglWkog6OrjXafUtcT+5xVbmmFEBbzt6KiORVgSsIU7TSykqf
-	0ukuJrim9W4uh6F3RvkhZova/76S4tHmKO/jhAQv20JsmpYdBb9Zr00a0NEJepGbo7v+ka
-	juMt1+Z4iI5S3mcBZ+KbvtiQ5Argjbw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1723628016;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=8KeldISweYlyBn2Rc9jXHmgstsM042C0JEwQi1qpA5g=;
-	b=qV/9a5/T8nX/rhE8qAQfz7v+ExUmetnwb5TvAT+cx+Ot3wfnN0RmkgyUUVFbkkGXzD6T9X
-	tngrNSfBl4wHf7BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11E5013B1A;
-	Wed, 14 Aug 2024 08:57:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9+FTAnlxvGYqagAAD6G6ig
-	(envelope-from <pvorel@suse.cz>); Wed, 14 Aug 2024 08:57:29 +0000
-From: Petr Vorel <pvorel@suse.cz>
-To: ltp@lists.linux.it
-Cc: Petr Vorel <pvorel@suse.cz>,
-	Li Wang <liwang@redhat.com>,
-	Cyril Hrubis <chrubis@suse.cz>,
-	Avinesh Kumar <akumar@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	NeilBrown <neilb@suse.de>,
-	stable@vger.kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: [PATCH v2 1/1] nfsstat01: Update client RPC calls for kernel 6.9
-Date: Wed, 14 Aug 2024 10:57:21 +0200
-Message-ID: <20240814085721.518800-1-pvorel@suse.cz>
-X-Mailer: git-send-email 2.45.2
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 30E4366F26;
+	Wed, 14 Aug 2024 05:18:31 -0400 (EDT)
+Message-ID: <5aa26f6b0365ebf6b7e3c5b3d1c0a345b46431d3.camel@xry111.site>
+Subject: Re: [PATCH for-stable] LoongArch: Define __ARCH_WANT_NEW_STAT in
+ unistd.h
+From: Xi Ruoyao <xry111@xry111.site>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen
+	 <chenhuacai@kernel.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, Sasha
+ Levin <sashal@kernel.org>, stable@vger.kernel.org
+Date: Wed, 14 Aug 2024 17:18:29 +0800
+In-Reply-To: <2024081126-blubber-flaky-8219@gregkh>
+References: 
+	<CAAhV-H6vXEaJf9NO9Lqh0xKoFAehtOOOLQVO4j5v+_tD7oKEXQ@mail.gmail.com>
+	 <20240730022542.3553255-1-chenhuacai@loongson.cn>
+	 <2024073059-hamstring-verbalize-91df@gregkh>
+	 <CAAhV-H7W-Ygn6tXySrip4k3P5xVbVf7GpjOzjXfQvCCbA4r5Wg@mail.gmail.com>
+	 <2024081126-blubber-flaky-8219@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:mid];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:mid];
-	RCVD_TLS_ALL(0.00)[]
 
-6.9 moved client RPC calls to namespace in "Make nfs stats visible in
-network NS" patchet.
+On Sun, 2024-08-11 at 17:42 +0200, Greg Kroah-Hartman wrote:
+> On Wed, Jul 31, 2024 at 09:06:56AM +0800, Huacai Chen wrote:
+> > On Tue, Jul 30, 2024 at 10:24=E2=80=AFPM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >=20
+> > > On Tue, Jul 30, 2024 at 10:25:42AM +0800, Huacai Chen wrote:
+> > > > Chromium sandbox apparently wants to deny statx [1] so it could pro=
+perly
+> > > > inspect arguments after the sandboxed process later falls back to f=
+stat.
+> > > > Because there's currently not a "fd-only" version of statx, so that=
+ the
+> > > > sandbox has no way to ensure the path argument is empty without bei=
+ng
+> > > > able to peek into the sandboxed process's memory. For architectures=
+ able
+> > > > to do newfstatat though, glibc falls back to newfstatat after getti=
+ng
+> > > > -ENOSYS for statx, then the respective SIGSYS handler [2] takes car=
+e of
+> > > > inspecting the path argument, transforming allowed newfstatat's int=
+o
+> > > > fstat instead which is allowed and has the same type of return valu=
+e.
+> > > >=20
+> > > > But, as LoongArch is the first architecture to not have fstat nor
+> > > > newfstatat, the LoongArch glibc does not attempt falling back at al=
+l
+> > > > when it gets -ENOSYS for statx -- and you see the problem there!
+> > > >=20
+> > > > Actually, back when the LoongArch port was under review, people wer=
+e
+> > > > aware of the same problem with sandboxing clone3 [3], so clone was
+> > > > eventually kept. Unfortunately it seemed at that time no one had no=
+ticed
+> > > > statx, so besides restoring fstat/newfstatat to LoongArch uapi (and
+> > > > postponing the problem further), it seems inevitable that we would =
+need
+> > > > to tackle seccomp deep argument inspection.
+> > > >=20
+> > > > However, this is obviously a decision that shouldn't be taken light=
+ly,
+> > > > so we just restore fstat/newfstatat by defining __ARCH_WANT_NEW_STA=
+T
+> > > > in unistd.h. This is the simplest solution for now, and so we hope =
+the
+> > > > community will tackle the long-standing problem of seccomp deep arg=
+ument
+> > > > inspection in the future [4][5].
+> > > >=20
+> > > > More infomation please reading this thread [6].
+> > > >=20
+> > > > [1] https://chromium-review.googlesource.com/c/chromium/src/+/28231=
+50
+> > > > [2] https://chromium.googlesource.com/chromium/src/sandbox/+/c085b5=
+1940bd/linux/seccomp-bpf-helpers/sigsys_handlers.cc#355
+> > > > [3] https://lore.kernel.org/linux-arch/20220511211231.GG7074@bright=
+rain.aerifal.cx/
+> > > > [4] https://lwn.net/Articles/799557/
+> > > > [5] https://lpc.events/event/4/contributions/560/attachments/397/64=
+0/deep-arg-inspection.pdf
+> > > > [6] https://lore.kernel.org/loongarch/20240226-granit-seilschaft-ec=
+cc2433014d@brauner/T/#t
+> > > >=20
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > > ---
+> > > > =C2=A0arch/loongarch/include/uapi/asm/unistd.h | 1 +
+> > > > =C2=A01 file changed, 1 insertion(+)
+> > > >=20
+> > > > diff --git a/arch/loongarch/include/uapi/asm/unistd.h b/arch/loonga=
+rch/include/uapi/asm/unistd.h
+> > > > index fcb668984f03..b344b1f91715 100644
+> > > > --- a/arch/loongarch/include/uapi/asm/unistd.h
+> > > > +++ b/arch/loongarch/include/uapi/asm/unistd.h
+> > > > @@ -1,4 +1,5 @@
+> > > > =C2=A0/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note *=
+/
+> > > > +#define __ARCH_WANT_NEW_STAT
+> > > > =C2=A0#define __ARCH_WANT_SYS_CLONE
+> > > > =C2=A0#define __ARCH_WANT_SYS_CLONE3
+> > > >=20
+> > > > --
+> > > > 2.43.5
+> > > >=20
+> > > >=20
+> > >=20
+> > > What kernel branch(s) is this for?
+> > For 6.1~6.10.
+>=20
+> What is the git id of this change in Linus's tree?
 
-https://lore.kernel.org/linux-nfs/cover.1708026931.git.josef@toxicpanda.com/
+https://git.kernel.org/torvalds/c/7697a0fe0154
 
-Signed-off-by: Petr Vorel <pvorel@suse.cz>
----
-Changes v1->v2:
-* Point out whole patchset, not just single commit
-* Add a comment about the patchset
 
-Hi all,
-
-could you please ack this so that we have fixed mainline?
-
-FYI Some parts has been backported, e.g.:
-d47151b79e322 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
-to all stable/LTS: 5.4.276, 5.10.217, 5.15.159, 6.1.91, 6.6.31.
-
-But most of that is not yet (but planned to be backported), e.g.
-93483ac5fec62 ("nfsd: expose /proc/net/sunrpc/nfsd in net namespaces")
-see Chuck's patchset for 6.6
-https://lore.kernel.org/linux-nfs/20240812223604.32592-1-cel@kernel.org/
-
-Once all kernels up to 5.4 fixed we should update the version.
-
-Kind regards,
-Petr
-
- testcases/network/nfs/nfsstat01/nfsstat01.sh | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/testcases/network/nfs/nfsstat01/nfsstat01.sh b/testcases/network/nfs/nfsstat01/nfsstat01.sh
-index c2856eff1f..1beecbec43 100755
---- a/testcases/network/nfs/nfsstat01/nfsstat01.sh
-+++ b/testcases/network/nfs/nfsstat01/nfsstat01.sh
-@@ -15,7 +15,14 @@ get_calls()
- 	local calls opt
- 
- 	[ "$name" = "rpc" ] && opt="r" || opt="n"
--	! tst_net_use_netns && [ "$nfs_f" != "nfs" ] && type="rhost"
-+
-+	if tst_net_use_netns; then
-+		# "Make nfs stats visible in network NS" patchet
-+		# https://lore.kernel.org/linux-nfs/cover.1708026931.git.josef@toxicpanda.com/
-+		tst_kvcmp -ge "6.9" && [ "$nfs_f" = "nfs" ] && type="rhost"
-+	else
-+		[ "$nfs_f" != "nfs" ] && type="rhost"
-+	fi
- 
- 	if [ "$type" = "lhost" ]; then
- 		calls="$(grep $name /proc/net/rpc/$nfs_f | cut -d' ' -f$field)"
--- 
-2.45.2
-
+--=20
+Xi Ruoyao <xry111@xry111.site>
+School of Aerospace Science and Technology, Xidian University
 
