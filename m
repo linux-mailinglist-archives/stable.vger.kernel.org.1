@@ -1,147 +1,114 @@
-Return-Path: <stable+bounces-67675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB30D951ECA
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:42:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC73951EFF
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBB2E1C2147D
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:42:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E563B1F23CFD
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51D51B5801;
-	Wed, 14 Aug 2024 15:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DAA1B8EBC;
+	Wed, 14 Aug 2024 15:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="BMcMUG39"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ge4ULKRh"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D741B3F20;
-	Wed, 14 Aug 2024 15:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBE71B8E8B;
+	Wed, 14 Aug 2024 15:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723650122; cv=none; b=dKC/S3FF04ExQEOQmEBYZhHBHWcYJ38gzrNiVjmJE72L/vuq+Ox1WT1hjCIChOusZ2Xv6TL8xZ5FFousRyoN18s5mlNxfsJ9qAkwQLP0NoF65S0J1PrNuTW1HvAa8jqOR6gMA7XQQglpA6oWI3HUT7edHfkz9vq4E7bBWrYp5hg=
+	t=1723650433; cv=none; b=gaJFSQ/MgSBnNRp6G6fmKZdUrLFb0YWCSfFeUiqEYjVPk12++aByvg/glsqwAkdIYMeWbVtQxNUOsol869OLc6dGOtKf1jJk1e6u7I8be0fbNaa2nTNxNFCxonsw1SP0cOiICt27EXXK666idAJj0vsosIVQPUSUYxGieD+TPks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723650122; c=relaxed/simple;
-	bh=MjnTildxpAbHNkgPDPWLipmp28QBUWJrUm+Kw3OHJHM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JwwfiahSiAWuWOD2O2OkssIncNP9LpmaTw0e/GsVHeV3NGMMU7CEj9dwxg6CeK4bitj65xw3tSMaZ53DqGrW9YfUZm6GNBnrI5zF3hmmb7KS+sztR4N6QLSqcQ5aEIQ2BZPS4ITH6CohC6qWjKR8gYobb4dJRqIalEh44SwQvkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=BMcMUG39; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47EFES7o004014;
-	Wed, 14 Aug 2024 17:41:25 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	/ISX9nWWuQJU87xnhrjQ6QeMAsmctnZJm1c7Gl4Q0hw=; b=BMcMUG39HgKxS7uG
-	hzu1sw2eA2f7UEbbFJZZVJtRG/MC2Cwr3JnUb1EVN2ti+u72yeMuHQcY3Ppu7FbX
-	bRZYJ+XkyfyGuSqyzsx4zlgEKdFovXQ+bAmvaslsSpJvW1W4cKcIs477IrylZdGp
-	UB+BCgWvFzlElUFoVkQWVkJAD30IIGdsRN0tSfyvbld9dW3oOPDZQpQH2phDFP+4
-	YN+lacM75ZeEypdH0ouGK+jNpZf5yPLtywwnsHe/uqyaGLrdPJpzRMQ1Hnhr2X7r
-	ae3TCun6YBfvP+1xm87RsR6fT2B+++cfCC0AOHJNX7FzqBGGXSTQ2VNsfdJwezPK
-	hrnI3w==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 410y2402yw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Aug 2024 17:41:25 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id A13CD4002D;
-	Wed, 14 Aug 2024 17:41:20 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 5B7B227DDE4;
-	Wed, 14 Aug 2024 17:40:40 +0200 (CEST)
-Received: from [10.48.87.62] (10.48.87.62) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Wed, 14 Aug
- 2024 17:40:39 +0200
-Message-ID: <119de711-3234-4efa-b311-290ce9fa5c4e@foss.st.com>
-Date: Wed, 14 Aug 2024 17:40:39 +0200
+	s=arc-20240116; t=1723650433; c=relaxed/simple;
+	bh=CbEh9vZsDIkvt9w/RJG8miSMP2IpSdBMNNw0Z+T+ZdQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=hKx6+PgN3R79drdRyqyew51wjwJ/BwMsOGrhFhN7HX3eMMnQue/oVJXaKX7qmdki10BLYelFXKTrdupv3ZUI00XOBOygNcpeLR9AHA4HPPr5YeWQLilF0wPgr8UYL8riSvuqZstnLVtbBkrQvQOkQ+MmwRv1hpIvo/9UJH6pP/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ge4ULKRh; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723650432; x=1755186432;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=CbEh9vZsDIkvt9w/RJG8miSMP2IpSdBMNNw0Z+T+ZdQ=;
+  b=ge4ULKRhHEysgANy0pQCyrNzr9CWFF/xv0JdMdngXjOppQ2vrtyJqZZd
+   r/7HPpLipj2gqSHpY0IrEpDHU3kIb0X9+yEZFyxZh07cVlvXSzbFCPH7Z
+   1ZYBpCoIqC0BQRHnrTtc1HdxTovQeFM8lMBxMPOFrq+bc76nDok0GFqF/
+   MPREztIV0lj9TIgRqPqHOC/rK7bYhji8q8Mgim65Ux5+sh/Bg/TWHgf0N
+   vNsom74zoD3qrZRVmJzhkIgno9WTlJdz7zQ3ctWdnYdtzcYauZ/oIaY0n
+   V0VW89mYdl6PSlGgmgCw1fwPr3ccdBYHoEdJn2yzGSD4g8DHxtS1TxuEP
+   g==;
+X-CSE-ConnectionGUID: NFVANyKMSriEk2Nx7mz/Yw==
+X-CSE-MsgGUID: g0QRuBFuSHmFheC+dmK7Vw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="47279481"
+X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
+   d="scan'208";a="47279481"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 08:46:58 -0700
+X-CSE-ConnectionGUID: nkE4UlE0QZCydyjUw8BQRw==
+X-CSE-MsgGUID: W2wVLuKMQZmrfa/wcWgPog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
+   d="scan'208";a="58936548"
+Received: from dev2.igk.intel.com ([10.237.148.94])
+  by orviesa010.jf.intel.com with ESMTP; 14 Aug 2024 08:46:55 -0700
+From: =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Cc: Linux kernel regressions list <regressions@lists.linux.dev>,
+	tiwai@suse.com,
+	perex@perex.cz,
+	lgirdwood@gmail.com,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Vitaly Chikunov <vt@altlinux.org>,
+	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>
+Subject: [PATCH for stable v2 0/2] ASoC: topology: Fix loading topology issue
+Date: Wed, 14 Aug 2024 17:47:47 +0200
+Message-Id: <20240814154749.2723275-1-amadeuszx.slawinski@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] usb: dwc3: st: add missing depopulate in probe error
- path
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Thinh Nguyen
-	<Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Felipe Balbi <balbi@ti.com>, Peter Griffin <peter.griffin@linaro.org>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Lee Jones <lee@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <stable@vger.kernel.org>
-References: <20240814093957.37940-1-krzysztof.kozlowski@linaro.org>
- <20240814093957.37940-2-krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-From: Patrice CHOTARD <patrice.chotard@foss.st.com>
-In-Reply-To: <20240814093957.37940-2-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-14_11,2024-08-13_02,2024-05-17_01
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+Commit 97ab304ecd95 ("ASoC: topology: Fix references to freed memory")
+is a problematic fix for issue in topology loading code, which was
+cherry-picked to stable. It was later corrected in
+0298f51652be ("ASoC: topology: Fix route memory corruption"), however to
+apply cleanly e0e7bc2cbee9 ("ASoC: topology: Clean up route loading")
+also needs to be applied.
 
+Link: https://lore.kernel.org/linux-sound/ZrwUCnrtKQ61LWFS@sashalap/T/#mbfd273adf86fe93b208721f1437d36e5d2a9aa19
 
-On 8/14/24 11:39, Krzysztof Kozlowski wrote:
-> Depopulate device in probe error paths to fix leak of children
-> resources.
-> 
-> Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> Context of my other cleanup patches (separate series to be sent soon)
-> will depend on this.
-> ---
->  drivers/usb/dwc3/dwc3-st.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/dwc3/dwc3-st.c b/drivers/usb/dwc3/dwc3-st.c
-> index a9cb04043f08..c8c7cd0c1796 100644
-> --- a/drivers/usb/dwc3/dwc3-st.c
-> +++ b/drivers/usb/dwc3/dwc3-st.c
-> @@ -266,7 +266,7 @@ static int st_dwc3_probe(struct platform_device *pdev)
->  	if (!child_pdev) {
->  		dev_err(dev, "failed to find dwc3 core device\n");
->  		ret = -ENODEV;
-> -		goto err_node_put;
-> +		goto depopulate;
->  	}
->  
->  	dwc3_data->dr_mode = usb_get_dr_mode(&child_pdev->dev);
-> @@ -282,6 +282,7 @@ static int st_dwc3_probe(struct platform_device *pdev)
->  	ret = st_dwc3_drd_init(dwc3_data);
->  	if (ret) {
->  		dev_err(dev, "drd initialisation failed\n");
-> +		of_platform_depopulate(dev);
->  		goto undo_softreset;
->  	}
->  
-> @@ -291,6 +292,8 @@ static int st_dwc3_probe(struct platform_device *pdev)
->  	platform_set_drvdata(pdev, dwc3_data);
->  	return 0;
->  
-> +depopulate:
-> +	of_platform_depopulate(dev);
->  err_node_put:
->  	of_node_put(child);
->  undo_softreset:
+Should be applied to stable 6.1, 6.6, 6.9.
 
-Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+v2:
+ - Mention base commit
+ - Sign-off patches again, as those are cherrypicks
 
-Thanks
-Patrice
+Amadeusz Sławiński (2):
+  ASoC: topology: Clean up route loading
+  ASoC: topology: Fix route memory corruption
+
+ sound/soc/soc-topology.c | 32 ++++++++------------------------
+ 1 file changed, 8 insertions(+), 24 deletions(-)
+
+-- 
+2.34.1
+
 
