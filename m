@@ -1,88 +1,127 @@
-Return-Path: <stable+bounces-67649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62D6951C44
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:53:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD47951C4B
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AADC1F21511
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 13:53:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE22F1C22D78
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 13:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E521F1B1406;
-	Wed, 14 Aug 2024 13:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iAOxceuX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5726D1B012B;
+	Wed, 14 Aug 2024 13:53:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99301394;
-	Wed, 14 Aug 2024 13:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635D91E4B2;
+	Wed, 14 Aug 2024 13:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723643581; cv=none; b=YTSK4rIOKvpjwMZcQGO6dHfRfLfmVxoA1ibvhfQIc27zt1F42qGGNHvzEA0ZlWUml8BKdaYmhxI/oYJK7oboTBFja6mSeNCDNKnCts5emvoyy98Owbvntmonx+9BevV9Re6zSQBxAYE0R/Rp2cbz6vHn6vnYveZPAN6gragFXFI=
+	t=1723643632; cv=none; b=XqTa5mI6Y1FsEbtQmZYpF3qxUTsaILbL7t/cO/3sZubOZvOMv+uN2rew01UiyxoGKfPEnnQn7bUQNUMvk8/Q0IDeiLVe1o0yDhjlwB2FShLjW392qWiWwHjEcPDXmRGSt4v84akh7FoHzDpQuEB5I3Y8pL/wkOdPU+JAUJVXwaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723643581; c=relaxed/simple;
-	bh=S6ETUwJhJjtOyU8fyiCYNEKaNec6h6IICgYODC0gkb4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=fOdo1Y4fuKtpKyXEJreKrQDm5YAOC2ZiBGscQApl2fbimjiGjTElgMurOKM4tRx0bpF24ZbNr7+D6KoVTQAorJX9ycoigOOExy6vhpzpUyRG6tNty0VjjxBV8GfoSg6kMyLcerAz1tHponR2DV7K89morXvGj8EHRNx8sFJlaA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iAOxceuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F0AC116B1;
-	Wed, 14 Aug 2024 13:52:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723643581;
-	bh=S6ETUwJhJjtOyU8fyiCYNEKaNec6h6IICgYODC0gkb4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=iAOxceuXz2wLgjEhv9kDzU3q33Ye7VR2mcDFNLkwsnVHMmmIk4fOaKckwDT8xCGOZ
-	 TPBf61R9fAbIW+t5Di6QG+wsP6dW75sGw1JKNmaTqMPriNV8tQN5x4dSY7FGzLpL0Q
-	 j4ERYem+PR4oek0ZJyxisKY+C12j8vnCn3HpWN8bFlw6doctJTeUg3Cx4vVZe9V35b
-	 XumNK/ONgBhEw4k8gl/Qc6++6jg+jlladjB9fTgkYxtNvkhuGO2nCZ3QnKNla1yBXy
-	 92G2ioK4BM8xJi5k3tIbWfve3/pozmAC/MAz5iq5Ak4Px+0PEuHt9IFm7nnfBnlXW8
-	 gRjTlUCOoa6fg==
-From: Niklas Cassel <cassel@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>, Igor Pylypiv <ipylypiv@google.com>, 
- Hannes Reinecke <hare@suse.de>, Niklas Cassel <cassel@kernel.org>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, 
- Christoph Hellwig <hch@lst.de>, stable@vger.kernel.org, 
- Stephan Eisvogel <eisvogel@seitics.de>, 
- Christian Heusel <christian@heusel.eu>, linux-ide@vger.kernel.org
-In-Reply-To: <20240813131900.1285842-2-cassel@kernel.org>
-References: <20240813131900.1285842-2-cassel@kernel.org>
-Subject: Re: [PATCH] Revert "ata: libata-scsi: Honor the D_SENSE bit for
- CK_COND=1 and no error"
-Message-Id: <172364357883.1303881.1790276895537620446.b4-ty@kernel.org>
-Date: Wed, 14 Aug 2024 15:52:58 +0200
+	s=arc-20240116; t=1723643632; c=relaxed/simple;
+	bh=6AS+qYUwNebFbttHVuG2nph/lVb1HMXJzLaPkWSC0uQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J0mrMtgJX61D/VI8PgNQGWhYfG8DY4oBZOfwKxTdqOnLbCzTom5cXj6/1Lu8TxmNJ0jl/nj1Pc9eD7Ha4PQkgNenewmMn+VC0wqGvk3xFqZ/jQEAWknWkdTWLscggZNCAZxdkAbQcoaReGlDkOOrVxNMT+bB4zdRLzTksmAGJag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowAD3PsPXtrxm46l4Bg--.47134S2;
+	Wed, 14 Aug 2024 21:53:35 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	mwen@igalia.com,
+	aurabindo.pillai@amd.com,
+	joshua@froggi.es,
+	hamza.mahfooz@amd.com,
+	marek.olsak@amd.com,
+	HaoPing.Liu@amd.com
+Cc: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/amd/display: avoid using null object of framebuffer
+Date: Wed, 14 Aug 2024 21:53:25 +0800
+Message-Id: <20240814135325.48117-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAD3PsPXtrxm46l4Bg--.47134S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CF4xWF4xKw18Ar48KFWUCFg_yoW8Xw43pF
+	sxAFy5Xr1UZF47t347CF1I9FZ0ka93XF1xKrWUuw1Svw15trn8Zws8Grs2gF4xXFWjkw4S
+	qFy7ArW2yF1qvw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBF14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRBVb9UUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Tue, 13 Aug 2024 15:19:01 +0200, Niklas Cassel wrote:
-> This reverts commit 28ab9769117ca944cb6eb537af5599aa436287a4.
-> 
-> Sense data can be in either fixed format or descriptor format.
-> 
-> SAT-6 revision 1, "10.4.6 Control mode page", defines the D_SENSE bit:
-> "The SATL shall support this bit as defined in SPC-5 with the following
-> exception: if the D_ SENSE bit is set to zero (i.e., fixed format sense
-> data), then the SATL should return fixed format sense data for ATA
-> PASS-THROUGH commands."
-> 
-> [...]
+Instead of using state->fb->obj[0] directly, get object from framebuffer
+by calling drm_gem_fb_get_obj() and return error code when object is
+null to avoid using null object of framebuffer.
 
-Applied to libata/linux.git (for-6.11-fixes), thanks!
+Cc: stable@vger.kernel.org
+Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-[1/1] Revert "ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error"
-      https://git.kernel.org/libata/linux/c/fa0db8e5
-
-Kind regards,
-Niklas
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index a83bd0331c3b..5cb11cc2d063 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -28,6 +28,7 @@
+ #include <drm/drm_blend.h>
+ #include <drm/drm_gem_atomic_helper.h>
+ #include <drm/drm_plane_helper.h>
++#include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_fourcc.h>
+ 
+ #include "amdgpu.h"
+@@ -935,10 +936,14 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct drm_plane *plane,
+ 	}
+ 
+ 	afb = to_amdgpu_framebuffer(new_state->fb);
+-	obj = new_state->fb->obj[0];
++	obj = drm_gem_fb_get_obj(new_state->fb, 0);
++	if (!obj) {
++		DRM_ERROR("Failed to get obj from framebuffer\n");
++		return -EINVAL;
++	}
++
+ 	rbo = gem_to_amdgpu_bo(obj);
+ 	adev = amdgpu_ttm_adev(rbo->tbo.bdev);
+-
+ 	r = amdgpu_bo_reserve(rbo, true);
+ 	if (r) {
+ 		dev_err(adev->dev, "fail to reserve bo (%d)\n", r);
+-- 
+2.25.1
 
 
