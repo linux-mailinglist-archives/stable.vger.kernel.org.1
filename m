@@ -1,148 +1,189 @@
-Return-Path: <stable+bounces-67679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FDDC951F11
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:50:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F936951FF3
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 18:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1684C1F22A39
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:50:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81375B2B90C
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA751B5816;
-	Wed, 14 Aug 2024 15:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D0B1B8EA3;
+	Wed, 14 Aug 2024 16:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PP9GcaAF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y6bsfOlF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C693F1B4C3F;
-	Wed, 14 Aug 2024 15:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC931B8EB3
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 16:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723650648; cv=none; b=PlTe2XAanS4hZxukHW5ddCvY2Wl7dFv+iO9FqR9cpB+GIDH5//ClO4A9/iKPQjV57XyjQ+qtTL53VgINjjufUdOb+t/DEmn3dPj/GcEHGaEYZ//YbL+XWD/ktx5UQSNgNONPoUJWFTLoI0lnoAvjrzmZfuAiRFn6/OupPo5TfTA=
+	t=1723652081; cv=none; b=c4MGDGmltV+KVJkEfPtOv6Lt/gLhKVK5Xq75d2NZy+lrJFQGggAnmC9iZ8vzrBHcZL/JoNtEpkcL2jo7nYmidQEjCldxcwProxTTPq8TPWecJ6p9GDC04ea2fe1EuYkTipLRD1+rGoL/EO1d+WqgOo3B3SpxgDkfKTnVrg7nO6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723650648; c=relaxed/simple;
-	bh=xaIRf8gburO7fSK6Qg0SNQ6c7hxnHOaaupR7/cwfZoc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SI+78MNNIdDv0NCgcB7EX0QDdbdLEL2QtB7BDILEYuCRrpjF/GCfEHgrrwDuNSgSLeUDZlKPL6AiomlIwF/kHMdTlU45Mgnjrqmrj0K0wuUiWOSheMesHMMUozd97sh62S7d98djQHBC93zMqlH4uHHMHxnmLbU4AAvOHNTaK+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PP9GcaAF; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5af326eddb2so1736500a12.1;
-        Wed, 14 Aug 2024 08:50:46 -0700 (PDT)
+	s=arc-20240116; t=1723652081; c=relaxed/simple;
+	bh=1gR7IPGJlvDuH9OGf4O4TKswFpP6LwMPMY2YDmqcZhU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EezTDsd2UviKhnhIl2VOvZROU6iT2AN7Nr3TlceyRzullHI7MPP6s5vfnUYhufNa//OyKbOFqTz0zSpBXKpt8+0vKc269ThnhIblwPW2dgFRAqHyvPk/epPKYIdAofXGxvv8x8TnDtTLoNmPvT5qsT/KeVe1K/7vAtqqDNVvxlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y6bsfOlF; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5b9fe5ea355so8521a12.0
+        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 09:14:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723650645; x=1724255445; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=t7Sbo6wQRtkVQOZupqBdUqy9Fytqmq/TMoezSF0uEXM=;
-        b=PP9GcaAFA5mgdzs56yGr2tEV1lgh2L7fY7G2aGAqC8mkdwH+604YkBGV0NhOkxXS58
-         L+rMSmoPzrjUKbN8OMf3f+O0SbaS8fnAQRDnibvYhbEN3xWOjvMvQ2r9jfduXfmvvoIf
-         nIZFHWdW45Ut3xSDReKKVr3Kylyt3dax04AvyC+nfDWg3eS+4DRw7dARTjNHCgwhX4o+
-         K7the8zvxlAFJ8GuhaUqf4wFIDpJpRNDhSWeUihsYl7ax9v7KWzcCnddUB4isczKmj47
-         M/hyge15yGbPBSL8VwkvJMGeSqFZU3jsh4TWeuxtYFCxE8krksW/5wlhlBKKLS7dcdt5
-         PTuA==
+        d=google.com; s=20230601; t=1723652078; x=1724256878; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6bQ9j9ErtrrpZhSLzeUe548UlFsO7KLb0/TyLtNcWJw=;
+        b=Y6bsfOlFnrM681/3d/iqNng48eYUH2/3fxGvd1bip/5D70uhu/GyEUXi4dJ4BJTsV8
+         iDJxh8vz3zqBMkfPRYAXED+FfWtM3OXeI9iWoBcPddFwIdt9L/rFZc0vDXiKsTsQKgY+
+         s5A/F5wZNsgIDkiQT/kRNgJ2zCTbH8Ge/1TnRpTnZWc17goih2AlA0l5w4H3+jmmXh3f
+         Fg6FYIjoMqbd8r8Gos/GFq8p2ZXiY/faQfzKGimgEYREspLO8+KYMooQe0xZ1AOb0Jiy
+         cT+skCXnNy5eWhN3NP8pvDLOOpEhh9j4UsW78PENIUSD1Bs/S7uRjmgf3LpHV/Yo1+x4
+         Ls3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723650645; x=1724255445;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t7Sbo6wQRtkVQOZupqBdUqy9Fytqmq/TMoezSF0uEXM=;
-        b=H/cfAXxwZO5XHTUYso1U/Xjlylqd26TKIqye0sZvcOcMefX/bEjL+bZHblt2B0pt1o
-         FCayyoxbdLPpBxrGCNcMW9iCpaMThfnfQY6lX/ipayGc3o6TMEuL4AceKm2iFTK6YCYa
-         L68oNnyIO/jWPfVDYS3UvvxE5+yJgRFSNadFnWPsmFVADyL5vLJADhwcZiYRcVPL3UV2
-         dxJ8BWP/Nd67k5TGvaxmBfuPuAakjiNsYC/pkkYpExR1+1uAPmLUpn5L75EGppgw029Q
-         rwe5aR+VW5a2f/xaxgYjpa7KW2YbuR4R4J91tY3ItOOOjwXQm8XZgEY+iLWfQ/8I1EMF
-         j9Og==
-X-Forwarded-Encrypted: i=1; AJvYcCWjczG05MOKIgtcDsD0eGwkf9J3X6jk5Xyu4Ik7tik5m9IiPYxcfQSTVjPnNCeC/ngtXGFxcNt67rEZoce0xBmqf4vVe7WSZybvZ1walS2aO7g99idUNC/Hqwed/BAR7t4l
-X-Gm-Message-State: AOJu0YxYxywqmh6q0sEu5aUNN/uU76E9MdX9onIxvxglxk2Prg9RXMKG
-	NnqbHCiJLhgVPZl9OTgEIZI4pxP6hoV/bs+h5cpcxv3I+D7AdtArMUjvRUqC
-X-Google-Smtp-Source: AGHT+IFD+SXJ6j9bra4jImgUHuAQbZ7NXg7goZSpbNFpTeUCwU8XQWmuJiB72sPYUODQP/fumoI1aA==
-X-Received: by 2002:a05:6402:2085:b0:5bd:464a:2623 with SMTP id 4fb4d7f45d1cf-5beb3ae3d6emr79931a12.10.1723650644717;
-        Wed, 14 Aug 2024 08:50:44 -0700 (PDT)
-Received: from [100.65.89.151] ([188.163.112.54])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bd1968af77sm3960461a12.40.2024.08.14.08.50.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Aug 2024 08:50:44 -0700 (PDT)
-Message-ID: <045f7e8a-d462-4419-8e7b-c06857d2338f@gmail.com>
-Date: Wed, 14 Aug 2024 18:50:43 +0300
+        d=1e100.net; s=20230601; t=1723652078; x=1724256878;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6bQ9j9ErtrrpZhSLzeUe548UlFsO7KLb0/TyLtNcWJw=;
+        b=nRBjiXRRH6j3CONgCjE4D/7KqocBsNkN1VFxXogJormJxuAhmBjZ8y/8TAAdMW5iI7
+         2WRm88WZ1grQHUaa4ypjo8rhJSGktOXQYCmz+qTtuqloD2Mbirr38iLIGceFN+6MdH9x
+         1A89L5APnYH+uxzbBf0kSq/fOvlujM6hYFIdWvmPLxFf1Gt5SwOiNPxj3neOUg0RYAV6
+         FU/CVyTbLk1zSHd5iaufXRY1CYwevmS/rXlspFf2pjAu+PGcpsaEczYkGU8owxrsylLF
+         vsolQUAEOnAmpBWJ9GwvZYSE72z3xbq6APgx2Hk5OKxGF3J/lAnvBxr0Lq33y0gXs0Ci
+         L0bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYeBph/U/XYnGaEGe0g2vpBV7lD/L4z1y9eI+LZs2IIh6rj0wmlqr+4BlvIXKLygkNJ5ZxOgo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynYjcI9SNA8Mscw7IHLkgVoATLkGgDl7WbJf/DnyImOuUUn1ve
+	ZHFPdd4B5zunsfyD7kMXwggqYPiaQbRHDtEDIcYVvYawpouI+CfYMKDQ/QnIg4ru5FU28ZfvdTq
+	K/JpZU8t7SO+SXFoGxUbeOqY0yr528BB2/Z5O
+X-Google-Smtp-Source: AGHT+IEDxZPD3vJxwWTsDeOPtGLySgwgkgr6dRkg5BY1PBUpXws7SIHVDHMiXTM6viwfIH4s0+WA4qXy/HT+Mlhdu7E=
+X-Received: by 2002:a05:6402:50cf:b0:58b:93:b623 with SMTP id
+ 4fb4d7f45d1cf-5bea55635d8mr87569a12.5.1723652077454; Wed, 14 Aug 2024
+ 09:14:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: fix interrupt status read for old
- buggy chips
-To: inv.git-commit@tdk.com, jic23@kernel.org
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-References: <20240814143735.327302-1-inv.git-commit@tdk.com>
-Content-Language: en-US
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-In-Reply-To: <20240814143735.327302-1-inv.git-commit@tdk.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240813002932.3373935-1-andrii@kernel.org> <20240813002932.3373935-2-andrii@kernel.org>
+ <CAG48ez1oUas3ZMsDdJSxbZoFK0xfsLFiEZjJmOryzkURPPBeBA@mail.gmail.com> <CAEf4BzZa9Rkm=MAOOF58K444NAfiRry2Y1DDgPYaB48x6yEdbw@mail.gmail.com>
+In-Reply-To: <CAEf4BzZa9Rkm=MAOOF58K444NAfiRry2Y1DDgPYaB48x6yEdbw@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Wed, 14 Aug 2024 18:13:59 +0200
+Message-ID: <CAG48ez0QdmjJua8V4RPhs2WmuGGhD++H-e2vacfP1=2jVgCy+w@mail.gmail.com>
+Subject: Re: [PATCH v5 bpf-next 01/10] lib/buildid: harden build ID parsing logic
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, adobriyan@gmail.com, shakeel.butt@linux.dev, 
+	hannes@cmpxchg.org, ak@linux.intel.com, osandov@osandov.com, song@kernel.org, 
+	linux-fsdevel@vger.kernel.org, willy@infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-14.08.24 5:37 пп, inv.git-commit@tdk.com:
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On Wed, Aug 14, 2024 at 1:21=E2=80=AFAM Andrii Nakryiko
+<andrii.nakryiko@gmail.com> wrote:
+> On Tue, Aug 13, 2024 at 1:59=E2=80=AFPM Jann Horn <jannh@google.com> wrot=
+e:
+> >
+> > On Tue, Aug 13, 2024 at 2:29=E2=80=AFAM Andrii Nakryiko <andrii@kernel.=
+org> wrote:
+> > > Harden build ID parsing logic, adding explicit READ_ONCE() where it's
+> > > important to have a consistent value read and validated just once.
+> > >
+> > > Also, as pointed out by Andi Kleen, we need to make sure that entire =
+ELF
+> > > note is within a page bounds, so move the overflow check up and add a=
+n
+> > > extra note_size boundaries validation.
+> > >
+> > > Fixes tag below points to the code that moved this code into
+> > > lib/buildid.c, and then subsequently was used in perf subsystem, maki=
+ng
+> > > this code exposed to perf_event_open() users in v5.12+.
+> >
+> > Sorry, I missed some things in previous review rounds:
+> >
+> > [...]
+> > > @@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *buil=
+d_id,
+> > [...]
+> > >                 if (nhdr->n_type =3D=3D BUILD_ID &&
+> > > -                   nhdr->n_namesz =3D=3D sizeof("GNU") &&
+> > > -                   !strcmp((char *)(nhdr + 1), "GNU") &&
+> > > -                   nhdr->n_descsz > 0 &&
+> > > -                   nhdr->n_descsz <=3D BUILD_ID_SIZE_MAX) {
+> > > -                       memcpy(build_id,
+> > > -                              note_start + note_offs +
+> > > -                              ALIGN(sizeof("GNU"), 4) + sizeof(Elf32=
+_Nhdr),
+> > > -                              nhdr->n_descsz);
+> > > -                       memset(build_id + nhdr->n_descsz, 0,
+> > > -                              BUILD_ID_SIZE_MAX - nhdr->n_descsz);
+> > > +                   name_sz =3D=3D note_name_sz &&
+> > > +                   strcmp((char *)(nhdr + 1), note_name) =3D=3D 0 &&
+> >
+> > Please change this to something like "memcmp((char *)(nhdr + 1),
+> > note_name, note_name_sz) =3D=3D 0" to ensure that we can't run off the =
+end
+> > of the page if there are no null bytes in the rest of the page.
 >
-> Interrupt status read seems to be broken on some old MPU-6050 like
-> chips. Fix by reverting to previous driver behavior bypassing interrupt
-> status read. This is working because these chips are not supporting
-> WoM and data ready is the only interrupt source.
->
-> Fixes: 5537f653d9be ("iio: imu: inv_mpu6050: add new interrupt handler for WoM events")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Tested-by: Andreas Westman Dorcsak <hedmoo@yahoo.com> # LG P880
+> I did switch this to strncmp() at some earlier point, but then
+> realized that there is no point because note_name is controlled by us
+> and will ensure there is a zero at byte (note_name_sz - 1). So I don't
+> think memcmp() buys us anything.
 
-Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # LG P895
+There are two reasons why using strcmp() here makes me uneasy.
 
-> ---
->   drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 13 +++++++++++--
->   1 file changed, 11 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-> index 84273660ca2e..3bfeabab0ec4 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-> @@ -248,12 +248,20 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
->   	int result;
->
->   	switch (st->chip_type) {
-> +	case INV_MPU6000:
->   	case INV_MPU6050:
-> +	case INV_MPU9150:
-> +		/*
-> +		 * WoM is not supported and interrupt status read seems to be broken for
-> +		 * some chips. Since data ready is the only interrupt, bypass interrupt
-> +		 * status read and always assert data ready bit.
-> +		 */
-> +		wom_bits = 0;
-> +		int_status = INV_MPU6050_BIT_RAW_DATA_RDY_INT;
-> +		goto data_ready_interrupt;
->   	case INV_MPU6500:
->   	case INV_MPU6515:
->   	case INV_MPU6880:
-> -	case INV_MPU6000:
-> -	case INV_MPU9150:
->   	case INV_MPU9250:
->   	case INV_MPU9255:
->   		wom_bits = INV_MPU6500_BIT_WOM_INT;
-> @@ -279,6 +287,7 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
->   		}
->   	}
->
-> +data_ready_interrupt:
->   	/* handle raw data interrupt */
->   	if (int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT) {
->   		indio_dev->pollfunc->timestamp = st->it_timestamp;
-> --
-> 2.34.1
->
+
+First: We're still operating on shared memory that can concurrently change.
+
+Let's say strcmp is implemented like this, this is the generic C
+implementation in the kernel (which I think is the implementation
+that's used for x86-64):
+
+int strcmp(const char *cs, const char *ct)
+{
+        unsigned char c1, c2;
+
+        while (1) {
+                c1 =3D *cs++;
+                c2 =3D *ct++;
+                if (c1 !=3D c2)
+                        return c1 < c2 ? -1 : 1;
+                if (!c1)
+                        break;
+        }
+        return 0;
+}
+
+No READ_ONCE() or anything like that - it's not designed for being
+used on concurrently changing memory.
+
+And let's say you call it like strcmp(<shared memory>, "GNU"), and
+we're now in the fourth iteration. If the compiler decides to re-fetch
+the value of "c1" from memory for each of the two conditions, then it
+could be that the "if (c1 !=3D c2)" sees c1=3D'\0' and c2=3D'\0', so the
+condition evaluates as false; but then at the "if (!c1)", the value in
+memory changed, and we see c1=3D'A'. So now in the next round, we'll be
+accessing out-of-bounds memory behind the 4-byte string constant
+"GNU".
+
+So I don't think strcmp() on memory that can concurrently change is allowed=
+.
+
+(It actually seems like the generic memcmp() is also implemented
+without READ_ONCE(), maybe we should change that...)
+
+
+Second: You are assuming that if one side of the strcmp() is at most
+four bytes long (including null terminator), then strcmp() also won't
+access more than 4 bytes of the other string, even if that string does
+not have a null terminator at index 4. I don't think that's part of
+the normal strcmp() API contract.
 
