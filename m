@@ -1,99 +1,84 @@
-Return-Path: <stable+bounces-67662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30598951CC4
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:13:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0786B951CCA
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D85541F22639
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 14:13:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96F37B28FAC
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 14:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D198C1B375C;
-	Wed, 14 Aug 2024 14:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D301B4C3E;
+	Wed, 14 Aug 2024 14:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6L2VgKO"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5201B3729;
-	Wed, 14 Aug 2024 14:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9181B29BD;
+	Wed, 14 Aug 2024 14:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723644712; cv=none; b=FzAzk+SjnjY75ns6ivwPjsJUrbdT2xY9XcUxPGmf1pKjN/59LCirPTWeb5kpvqcykkxUPicZMN45xBsuN2FqlVCVet/RZ83exkIDQXhqcZbkeW5L/9Q1QLV2t6+M+7cAnEFAEn8tSs2b9owuyRPLCS7LriAlBbT2MCRyCQ1xm6I=
+	t=1723644750; cv=none; b=CSem6O94eMKdKtFCJYz0ZKGQMfP3dtKM0+YhFUrh1qaT0Vd568iLkbl++iPc/vSONWcpQgB5XJDmows5sFyEtuxGC2JNaSimI2yzkj4ShEtGLLLTtUu+4ZnPFsYEyNcbLK+EEHoCjol6WLS7mYbg+7z/T3pLY8OaAWIkcZ6L0Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723644712; c=relaxed/simple;
-	bh=i1CAnk/h9Q4SXCTz0xXO4EAsYZeuzccmTH4b+ucvLnw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SYqJYJIqQA8gBeTreqVM1XfBOTZuyvQIqdOS2jCqcssLUSrUJH8hYt2r4+HBaTxRsvfD8mKEocA5zSrpYVYbBbFFF3vsQ3K9XC2aOC8hi+6Hbj/lxbAPSAorUbj/8xptFqCdFBxd3ZyLjtgeSoT/uFAft6SJs+zvUNZu86Ghxn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowAA3P0sOu7xmZa95Bg--.10101S2;
-	Wed, 14 Aug 2024 22:11:33 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: vkoul@kernel.org,
-	kishon@kernel.org,
-	make24@iscas.ac.cn,
-	ansuelsmth@gmail.com,
-	agross@codeaurora.org
-Cc: linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] phy: qualcomm: Check NULL ptr on data
-Date: Wed, 14 Aug 2024 22:11:25 +0800
-Message-Id: <20240814141125.50763-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1723644750; c=relaxed/simple;
+	bh=exciCKj3zj6IEoFE38Mdny7KhQyHA+dZmV1pYaT+t8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jyVjZ3+3n0POiCjBTiYXHaUtmEfmlJqEhn+aH6vnJqIJdhQINWopaBbc6onkm0AXilJpTa3VwQzUlixjENPMaPW+XOQSc6da1+Pg6kMBJXdfVy28tGW8Zar2MsEZz5xCrZQnYWb7rPM5ROSDMG4Q2h2DjsPNfJzbkXCYcZ1nhRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6L2VgKO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A300C32786;
+	Wed, 14 Aug 2024 14:12:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723644749;
+	bh=exciCKj3zj6IEoFE38Mdny7KhQyHA+dZmV1pYaT+t8k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m6L2VgKOiHuJFXYsJbveBB+bqnmh0Cm2YMpa6VZIWMS+UPyE+GTI7SPd6jYPJd6Fb
+	 PLnxUQhFUYJ8Ksm8UuBnbl/UD0+Q6xH7PjoSYwW+insBH+qlk7OCDIxBUG12fID+cy
+	 tzNKdixepjkle6vPnCmQDHp1YIEYom2qdGFqDRuI=
+Date: Wed, 14 Aug 2024 16:12:26 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
+	Linux kernel regressions list <regressions@lists.linux.dev>,
+	tiwai@suse.com, perex@perex.cz, lgirdwood@gmail.com,
+	=?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Vitaly Chikunov <vt@altlinux.org>, Mark Brown <broonie@kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>
+Subject: Re: [PATCH for stable 1/2] ASoC: topology: Clean up route loading
+Message-ID: <2024081404-plow-residual-202b@gregkh>
+References: <20240814140657.2369433-1-amadeuszx.slawinski@linux.intel.com>
+ <20240814140657.2369433-2-amadeuszx.slawinski@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAA3P0sOu7xmZa95Bg--.10101S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKr13KryDCF45ZF4UCFW5trb_yoW3tFcE93
-	4UZr4fuF1ktF1rGr1UtrnIvryIya4qqr48Xa1SgFyrAay5AF1aqF98JFZ8ZrZ8Wa1xJw18
-	J34UuFykZr42qjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
-	Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-	b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-	vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+In-Reply-To: <20240814140657.2369433-2-amadeuszx.slawinski@linux.intel.com>
 
-Check NULL ptr on data, verify that data is not NULL before using it.
+On Wed, Aug 14, 2024 at 04:06:56PM +0200, Amadeusz Sławiński wrote:
+> Instead of using very long macro name, assign it to shorter variable
+> and use it instead. While doing that, we can reduce multiple if checks
+> using this define to one.
+> 
+> Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+> Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+> Link: https://lore.kernel.org/r/20240603102818.36165-5-amadeuszx.slawinski@linux.intel.com
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> ---
+>  sound/soc/soc-topology.c | 26 ++++++++------------------
+>  1 file changed, 8 insertions(+), 18 deletions(-)
+> 
 
-Cc: stable@vger.kernel.org
-Fixes: ef19b117b834 ("phy: qualcomm: add qcom ipq806x dwc usb phy driver")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-index 06392ed7c91b..9b9fd9c1b1f7 100644
---- a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-+++ b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-@@ -492,6 +492,8 @@ static int qcom_ipq806x_usb_phy_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	data = of_device_get_match_data(&pdev->dev);
-+	if (!data)
-+		return -ENODEV;
- 
- 	phy_dwc3->dev = &pdev->dev;
- 
--- 
-2.25.1
-
+What is the git commit id of this change in Linus's tree?  Same for
+patch 2/2
 
