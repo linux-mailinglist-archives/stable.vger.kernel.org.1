@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-67652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BD2951C7D
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:04:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6F3951C8A
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D10F01F2245A
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 14:04:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C1D21C24920
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 14:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9431B29B5;
-	Wed, 14 Aug 2024 14:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40811B1511;
+	Wed, 14 Aug 2024 14:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OAAhu5Jt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kXMeyD3/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1CC1B151E
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 14:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231A31B1507
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 14:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723644251; cv=none; b=rdZT0+78OGAuNcAvf8SKs9XEttthIy8i9cW38W5U5WuQR8SQZz7Tfn+WowdYuDfSKAVNxLO2cPW/e1MP5Ld0i3rz5wlmgBnnj7ev/BPwcONtLB/grRIwJiGvCbH8Ogh/491dcvBWizz1o8fh2nQePhhJZnd5NdkFiXI+wBJGve8=
+	t=1723644360; cv=none; b=fuLhBddTXN0ynKzdnPSBtI/9AzlK+G4pt2G7/bcjUAgJzIEYwi3gUGAxNA2kRhstjyDJsNbXEiQsVB092N6gwDiamo9dh8hEf0RJMGMlUPxEJM/MnY9cWESF7iH5EblD9cmqWy3BFPOO6ov87FF/KgJVwYwyeriKiYeuioiGQFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723644251; c=relaxed/simple;
-	bh=QItrFE+2vH5ywOqz4YoUqLUjkZcxMPAa5wns3W0o4yY=;
+	s=arc-20240116; t=1723644360; c=relaxed/simple;
+	bh=zEUKT3ZjNTIOlq6erpe5rvFGrB+ezUYVGpwer0LfC54=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=J8hVFM60wcpxARSkjCCc5ql9Lu3oEMTKGArIQG3pm4nGWB1Zbdzem88r/9mB15BSUV4kfGDWMKPRtoMoCyrPUHnudpeMNYo3d3UEGVxFQdY7oRa6vAcOfwoUaG+H/Z86aw7LLR9jnHolwb7yihcEaRApbIdD3zsYQHR2reHsg7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OAAhu5Jt; arc=none smtp.client-ip=192.198.163.9
+	 Content-Disposition:In-Reply-To; b=kVE3nF8LjZiqKx+qXBNJaVuUWQ6kR4KTjevWPMttQC7Cd3DtA1w2eC7b8p6T06shaAA7gZNlCCgGGGAHXbgC21O38jFsGgPYYROMGFvRhLn9u16aVt5REm1Tfg+rjVJpoaXmjJSg6TQRtOzDZaMoPgHGWPDXJKhgSpsvNLL/EMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kXMeyD3/; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723644249; x=1755180249;
+  t=1723644359; x=1755180359;
   h=date:from:to:cc:subject:message-id:mime-version:
    in-reply-to;
-  bh=QItrFE+2vH5ywOqz4YoUqLUjkZcxMPAa5wns3W0o4yY=;
-  b=OAAhu5JtJTri5pvYti/nxUOc4RM6V22ewgmG5Lpj2H4F9uaYFq0Haeu4
-   fHiFtnYYOiKjHeSoOrpk0+kxZR+paYx7576dTkGXfvaR6UNzJZ7CJJcSM
-   8dGzHbVZpb8Be6HIpVt2LvEyANjbyLOZ+u14xfbCPoWG+2q+fvIi5ew72
-   wFcqnRFfGRgHTyy7CeXqFe21vVwysABR19agTh/yiHsDnpSGuHpDy3xRl
-   pVBqzj/1eHd09AjBnjd2nqMEOIhCEzCsNQ1ICRHZY/jTdU9riZDDcKcf6
-   JX3edf8qA9M8FjaThkpD784LsoxH8JegKlcdkfdowU7cjPEzD4vwaWhMX
-   w==;
-X-CSE-ConnectionGUID: kGKLJFNKQta16fUj8NrytA==
-X-CSE-MsgGUID: gEx9SYGiTg+wq8fwQpI5kw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="32540353"
+  bh=zEUKT3ZjNTIOlq6erpe5rvFGrB+ezUYVGpwer0LfC54=;
+  b=kXMeyD3/hEflAyU0x8BCHvCbi5dq0KARrodWg0wMDQ8ky1eXX7TTCg0n
+   +0i1zzEn3m8E3Pka4aIzHsrkSOpDMZQfLzeuDVa81WYnQs0rVdrl7gVJw
+   k01+IAv673efHeUP6Xlnrqx+nYu5m2UVb0XUj4GCm6G2uO4bWhwaYgkgp
+   sqdNy35kQVfMPF1fzjOKyPg9Tzrd2U53jOvsfPTsYgA/DyuuY6LXvsxSG
+   O37YBNuTzfgXH51AkOT1EP6R6NkWmxU8XFj0DpUZfSnmbcRk40HZ9vUj7
+   yIUZTLtVHVbpVMV8PZIRFXkFJNVpj8UyqaMdIxU1/thPPbtdaYaHDtNKk
+   Q==;
+X-CSE-ConnectionGUID: e49sZHUNRummhYDJft0MHA==
+X-CSE-MsgGUID: DR+vqeObQJGNX3aH++R8gA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="22031355"
 X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
-   d="scan'208";a="32540353"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 07:03:57 -0700
-X-CSE-ConnectionGUID: t96CtMd7T9SEJimwLf11CQ==
-X-CSE-MsgGUID: u4fMMlYcQk28iyRgFHFnpg==
+   d="scan'208";a="22031355"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 07:05:58 -0700
+X-CSE-ConnectionGUID: jjsOCGW5Qh29n6eo+uGy+Q==
+X-CSE-MsgGUID: E8W8k+2xQ1Ob3CHGzfIrlw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
-   d="scan'208";a="59161324"
+   d="scan'208";a="59026995"
 Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 14 Aug 2024 07:03:55 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 14 Aug 2024 07:05:57 -0700
 Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1seEbQ-0001ks-2y;
-	Wed, 14 Aug 2024 14:03:52 +0000
-Date: Wed, 14 Aug 2024 22:03:47 +0800
+	id 1seEdP-0001rm-1p;
+	Wed, 14 Aug 2024 14:05:55 +0000
+Date: Wed, 14 Aug 2024 22:05:27 +0800
 From: kernel test robot <lkp@intel.com>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
+To: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v5.15] powerpc: Avoid nmi_enter/nmi_exit in real mode
- interrupt.
-Message-ID: <Zry5QzRLpWj-KotY@6301b87c729b>
+Subject: Re: [PATCH 1/1] EDAC/igen6: Fix conversion of system address to
+ physical memory address
+Message-ID: <Zry5pxjUMZrXtkXB@6301b87c729b>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,7 +77,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240813113220.1837464-1-ruanjinjie@huawei.com>
+In-Reply-To: <20240814061011.43545-1-qiuxu.zhuo@intel.com>
 
 Hi,
 
@@ -85,13 +85,11 @@ Thanks for your patch.
 
 FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH v5.15] powerpc: Avoid nmi_enter/nmi_exit in real mode interrupt.
-Link: https://lore.kernel.org/stable/20240813113220.1837464-1-ruanjinjie%40huawei.com
-
-Please ignore this mail if the patch is not relevant for upstream.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 1/1] EDAC/igen6: Fix conversion of system address to physical memory address
+Link: https://lore.kernel.org/stable/20240814061011.43545-1-qiuxu.zhuo%40intel.com
 
 -- 
 0-DAY CI Kernel Test Service
