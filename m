@@ -1,55 +1,89 @@
-Return-Path: <stable+bounces-67622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D1A951877
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 12:16:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9794095187D
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 12:19:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CC89B21A8E
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 10:16:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E6111F23789
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 10:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCD4144D15;
-	Wed, 14 Aug 2024 10:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96B91AD9C6;
+	Wed, 14 Aug 2024 10:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RYPRlP3b"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54290137C37;
-	Wed, 14 Aug 2024 10:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0561A4F10
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 10:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723630559; cv=none; b=Oq488RNaSktk1GonOCjLc+ma67mhPEWUzmB01hjHVGOpEqqWGoIBdu1aIaLzoFEKHZnTM4U6axEa1vVCdfpxegR1xMOV3EM8MRu/VL517IkZ3yq4IBgfRp/rWBbiZHPrrxTmTCz24cqoiQv14HxP7VTJ5M4hGrNC6jL7WhNpaSo=
+	t=1723630735; cv=none; b=bzWcOUrB//cHO2FcGkj0lTtrjJLlsR6AER61dAag+XNqYneOkuIdLSedS1Z6Zu4rCQGn6hkVPWVjqUTF3ta52BNrlXXDVvrtrZY0l+jrSHpOYqUeG8ZXL2luAQK+N2xGDT7vyfB4BxwsV9VVvNd80U2xYM2rq7BYPUlPN6Elhxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723630559; c=relaxed/simple;
-	bh=3wgSizC2K7D0EjJTHEAYQtnfII0JD4LxZQRqZo2h+zI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Q3muLQfhf/vWtPy+mC8EvO6sJ13SLz/udD1/yjDDKGAfxnVlUbvn8FspPW1wiCCSDxAaC7UiVLJFxYvhp3u1pp84BjTx4meW+cPsdoOEns+eMlS4ywHGmnQqpboPCt+pyW++JkueqzGcv+k5eS3R9cHUIWvUpqLKbyBUeyQeb2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAB3nwK5g7xm9DhUBg--.39765S2;
-	Wed, 14 Aug 2024 18:15:29 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	make24@iscas.ac.cn,
-	u.kleine-koenig@pengutronix.de,
-	tglx@linutronix.de,
-	zhang_shurong@foxmail.com,
-	B56683@freescale.com,
-	cosmin.stoica@nxp.com,
-	stefan-gabriel.mirea@nxp.com,
-	Larisa.Grigore@nxp.com,
-	matthew.nunez@nxp.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
+	s=arc-20240116; t=1723630735; c=relaxed/simple;
+	bh=VoIUTKlyGldU32MZSlDYD6KmvPIa8tx53ppKsKBdjS0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SOjqMRmIQxq54b68dkFQyjh+SEj7bMWVZ8Bn+v3S+J8F9+FsHxESo2mn4lyLqtJhu4hNu+Wovm9VWWJCA5zPg2ESrldgsxqmHE2FXCTXbsIHo9E6DLFNuPlhBj9SyuMsb4/ZymZ4WppYfrPZHmlswlLSrDJDX7xwfrgptxMZZD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RYPRlP3b; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-368313809a4so408299f8f.0
+        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 03:18:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723630732; x=1724235532; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VniZOaq6gdFHYm/HVi9M3gxl2wi+7Y1v4x6YyCs0zik=;
+        b=RYPRlP3bIeCcooS0wEtOREffAgAk5yDUxoREPDTFFnL9XcB9yBsDAnX9Nb9k9oU1/6
+         CkVFNRB0F+kfs7/kSRp9BzjiqeMj+G4EkqtagAoBFr07WPOHdRq9HNUiN9q1JvmY7ogM
+         cWV9l4ibd2n2SE/vF1KH28ia4MOzlL6O7Etyd3lK7pLJpQt6yZioDB+Lfur/6+mVtc2t
+         mft3iNx48/fIX8FkMY/eO6cVP7Vbtc1UD/ELQdU0iiLSOKbWA59PFKacxfZTUq1i6xwt
+         DPP3NWh1xzon3b0cS0FlVirT1TJ5X2m8fiLV+gtwNfdZl5PONhKacDDb1xtStCuV9+Wg
+         E4Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723630732; x=1724235532;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VniZOaq6gdFHYm/HVi9M3gxl2wi+7Y1v4x6YyCs0zik=;
+        b=DkJmFVV5AzOzb8Dxu9Kr9mHgin8u1eirICD5eezOtkTuYJZQ3Q9VqI8n9vrVHrTU3U
+         WUfuB4E5HNWrowtGLt+1upigEHjkkD9AnkVR6Dk2FuZ6away21Y53eX8pa/fPscHNBoo
+         sizozzDC9WwiiUril+KAHHxzPkEH4FyWwMVID1wQPgnHwyLRgZeWgKkWW2qqxxxMgfb0
+         aZg2ocAvk5Xry+vsHQpJeXOPklPyIiR9FGOHYvZINmh+qDZYKsDwyjYFHYPms+LB/LqL
+         hRfkAs43fB2TrT9bSVcU/CIRYvGenJs8Q2s6SPHDuFjgb1fvq+npNr1lfmdkaengEhrE
+         qajQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBOUOZulpDopUSU7TbjV0wz+fQdAYeNdLzPwV0G517u+elzFbJT4UJ49eZBYsmwqzlEtJBp+E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDZ8Vbsco3LXag3UAx+k5n6wDqIOforR2ftSrj+/Xi2GEeNjmT
+	krHk2GMOM6l6a67T0n2SJzktK5cjyLtPrNsL2gNsh6rfPT4y+FBJD9SNPn0so94=
+X-Google-Smtp-Source: AGHT+IFtDsJPyLphAshdk30vTR0Sl8aU6sagYCDNH5sXB4NQUBZ21n39kniHa9yrRYMarUHR64R6JA==
+X-Received: by 2002:adf:fc86:0:b0:367:8418:fde4 with SMTP id ffacd0b85a97d-3717960863fmr1393954f8f.7.1723630732067;
+        Wed, 14 Aug 2024 03:18:52 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.215.209])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36e4e51ebcdsm12487737f8f.78.2024.08.14.03.18.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Aug 2024 03:18:51 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Vignesh R <vigneshr@ti.com>,
+	Felipe Balbi <felipe.balbi@linux.intel.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Piyush Mehta <piyush.mehta@amd.com>,
+	linux-usb@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] tty: serial: Add a NULL check for of_node
-Date: Wed, 14 Aug 2024 18:15:20 +0800
-Message-Id: <20240814101520.17129-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH 1/2] usb: dwc3: omap: add missing depopulate in probe error path
+Date: Wed, 14 Aug 2024 12:18:47 +0200
+Message-ID: <20240814101848.67501-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,52 +91,37 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAB3nwK5g7xm9DhUBg--.39765S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gw13tFWkKFyUZr1kKFW8Xrb_yoWfArg_CF
-	1q93srWr12kF43tr47AFy7ur9agw4kZF4kXF1vva9aqryDAr4rZFy7Zrs8ury7Ww4UJryD
-	AanrWr1akr17ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbfAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
-	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-The pdev->dev.of_node can be NULL if the "serial" node is absent.
-Add a NULL check for np to return an error in such cases.
+Depopulate device in probe error paths to fix leak of children
+resources.
 
-Found by code review. Compile tested only.
-
-Cc: stable@vger.kernel.org
-Fixes: 09864c1cdf5c ("tty: serial: Add linflexuart driver for S32V234")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Fixes: ee249b455494 ("usb: dwc3: omap: remove IRQ_NOAUTOEN used with shared irq")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/tty/serial/fsl_linflexuart.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/dwc3/dwc3-omap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/fsl_linflexuart.c b/drivers/tty/serial/fsl_linflexuart.c
-index e972df4b188d..f46f3c21ee1b 100644
---- a/drivers/tty/serial/fsl_linflexuart.c
-+++ b/drivers/tty/serial/fsl_linflexuart.c
-@@ -811,6 +811,9 @@ static int linflex_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	int ret;
+diff --git a/drivers/usb/dwc3/dwc3-omap.c b/drivers/usb/dwc3/dwc3-omap.c
+index d5c77db4daa9..2a11fc0ee84f 100644
+--- a/drivers/usb/dwc3/dwc3-omap.c
++++ b/drivers/usb/dwc3/dwc3-omap.c
+@@ -522,11 +522,13 @@ static int dwc3_omap_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(dev, "failed to request IRQ #%d --> %d\n",
+ 			omap->irq, ret);
+-		goto err1;
++		goto err2;
+ 	}
+ 	dwc3_omap_enable_irqs(omap);
+ 	return 0;
  
-+	if (!np)
-+		return -ENODEV;
-+
- 	sport = devm_kzalloc(&pdev->dev, sizeof(*sport), GFP_KERNEL);
- 	if (!sport)
- 		return -ENOMEM;
++err2:
++	of_platform_depopulate(dev);
+ err1:
+ 	pm_runtime_put_sync(dev);
+ 	pm_runtime_disable(dev);
 -- 
-2.25.1
+2.43.0
 
 
