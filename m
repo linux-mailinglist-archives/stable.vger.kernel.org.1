@@ -1,70 +1,72 @@
-Return-Path: <stable+bounces-67614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE789517DD
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 11:40:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56329517E1
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 11:40:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D1291C219E2
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 09:40:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2381CB25AED
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 09:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7EED1667E1;
-	Wed, 14 Aug 2024 09:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56B816BE09;
+	Wed, 14 Aug 2024 09:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dukT9She"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ojVUnHrf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF4315FA7E
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 09:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E94166F0E
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 09:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723628404; cv=none; b=DZN0DGFuPNCF9jpa5zE1a3b4D0Ruzdr/+wFc1jqZ4cSWoL0bq1Hq8NBOqPCyRtUXSRsmF+EuIvB83FUhRfZfjDXwLHT8uHrO/WjUFzBRSzMeBMCY2QYeswN9o+PaPi4meRZE63blptWCNHPRuyTPsXIFrPxZd1NnEIq+8Fh0lsA=
+	t=1723628406; cv=none; b=EFmmUqGdGqE1OfW9doeK8Yj4ASgiJ6PhmF6xUZ7vDf1tv59tUyTy55bGXgS5ggviXQN7L7n1BC4Yr06kUzts0G5mb0ZAAL4yK3lrapJLzW8X6HfUZq6F/mPzpkivO/4WkrfSrv9QCgKh761MPZavw6msxjK7BoGkLIHbxWMtk9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723628404; c=relaxed/simple;
-	bh=K7a0LCBXq6OZZ3B7ZT3AYD2E1d/U39ngdeL5y8O277s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N0qTz8hrrkPC533uyzBTGr1vQwzOvCMCXGZtRxp+LBAeIOt+VoXeO16dkoLKzLM9666IQlRAt81pDgnQw7ug9mGo84Zfc0hGYLBvWXzAY02tchoy5zv3sOxS9aevD5VdogkIHtRuq5TJNd2XfgUPSlB4BoLxLuigJdRUTKDBLeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dukT9She; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1723628406; c=relaxed/simple;
+	bh=6Hu1M4Pivk4SN1qDKdBZUfJZLXx91ytTpMSmo2rqxTs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BBwcWb63oWK9RDAvhav2lL7mEp6biFLfYFMAA7O6BEJpIAxRu3/PwlQrimGdpYCi0GH5RfIw3jvCF9AYTBYuTPBbvUUUceZp2g0kR7t5FtI5HBPnw5JKo8oCPctFR7udZUMiwcoTA7qMR0lbr5XYiXbmcMtPhH6DGUBIhBJPCHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ojVUnHrf; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4280ca0791bso46965205e9.1
-        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 02:40:02 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2ef32fea28dso70413231fa.2
+        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 02:40:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723628401; x=1724233201; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JmXmcga/zjb6ahfiHPXOSzwplx1CZRP7/PHn0u7sCk0=;
-        b=dukT9SheX7TvEIR5S+jpcr94AZUkvlsmvl3MbErWvJyM5j62080PdspnaMT7pJ9bQx
-         9zsL6Kyo7TAuNjYSh7BK6zr1PPAB95Ef3t+SfsKaf5fwxTQdm5uP9DAQsZ8+OllOkYi7
-         zzwEaYA9lTxA9ptAbz7QT70RpGCsb0adDacca1843junx1eTYV6frc7BjxfKFM5frd3p
-         u6fICjQDefWWZgE+HY6PQay+XcsbpZTtiJeupppd0l7Dg0ix9OTWfmXQkTFh2dL/9WN1
-         OOLnaMoLctG8P7XbEBsufkYhgRwQWp/gODwAUxJJDlHMy7Eie752sx+SZ84tV5NAZmNt
-         XVlg==
+        d=linaro.org; s=google; t=1723628403; x=1724233203; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MGrgEwiDQnCrsN02sqw6lNl+tSbCrY1oNE/v488RmdI=;
+        b=ojVUnHrfmF4XdE15A5Un/GZflOgRBS5yfflbArLX0XThGkVXbb/F8Ed5tGE4a3kPzQ
+         XJFSVvR5xxzgWO1jI8AqNC6S4Dq18gc2Io0mDNVS1YPhd8AgziOILYOTu/fBgm03Apzn
+         S3P5NrrmmQUDgAEBWuAgLj+p2TWcYNYMUjXGqZOLICF3TC1K39C1D248B9f5PsZHmMFi
+         4Shs8L8YmnzehATM8jnACeEZ2ilKdnWIBnXYHZjX0q6/Py+XgBEDrdK3yKDW86VbLFe8
+         RdW3Dovr9dwHUECoeyhrxJW5XzG+4wcRwzCjBkv8COJEO6ZeyFJzCyJRQApYJdBspFHa
+         G/bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723628401; x=1724233201;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JmXmcga/zjb6ahfiHPXOSzwplx1CZRP7/PHn0u7sCk0=;
-        b=uHGzR4Bwx0j1u2ZZX87EaOTXkCe8CAFrt2wICWnV3GbbDtUDc1sPOk8zMX9Af/qIyP
-         YoNBUF2Xukunw/2H5PP5n4bGqiOHtz5yMdj5vh86jWuVdpQ8OduPNX/uWk9d8NWnbCbX
-         fgcCiM53Y/63tA3cEekzRg6Unu5XD4nMbqCKP2z0z98PxRbAFgDoyRbDiZID0Tb6B9L6
-         3n/IoHC+NN+mucdPci61WALrl03a4nhF+dJ9kWDq4p7f/f95WhKAme7bRkyHPz3kRorF
-         d51fvY/XnveiNCBu4afWQGt9aTEpjM0tBHiu4gHI2zQQItPWkBF82JKDBOeOu7xy0CZZ
-         a+Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCWwYaIJorQ1IeKtxEjyyhx95YIG6pndewfxH8WqQMm6Vaju/DJX9+/Syv13YmufRDfFAK4Wzt2Jdalmze+LC2lQ015i/vIq
-X-Gm-Message-State: AOJu0YwK98NN9l1xCs44s6S6wE7gLBWFuf2JtJuufjuEsuD6hSquSjBD
-	5FcVziQxwe5O91q5Y3Gn2JBP/5XzoTFELT992H5IKpP5vMV85TEehwSND2CPdWY=
-X-Google-Smtp-Source: AGHT+IF/bJMKfHmeWBSdbtMjSNM/VzBYMVOeE4F12fOKUYhXLXD2wvGqLv30n/W4um8EnKsh44iMBg==
-X-Received: by 2002:a05:600c:3c96:b0:426:6eae:6596 with SMTP id 5b1f17b1804b1-429dd264983mr13645925e9.25.1723628400773;
-        Wed, 14 Aug 2024 02:40:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723628403; x=1724233203;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MGrgEwiDQnCrsN02sqw6lNl+tSbCrY1oNE/v488RmdI=;
+        b=FzZ8FH+519DqbCfEpA/g3OI8wTSzO1qYFElGcHHBck1b2xi7BJ5N+XfUCKZ5GE6KVV
+         fh+i3M0s+2/1+m6g4ry+HMHQli4kwn90WodKY+kPk7LHyoxlfTI2ai93v04yOCeSmp14
+         QaV6k9ZswChQ4qAxYCLmKKTr2GkA4Sjam+sltOJ+bpS5Yo8q/tKsZNSXdWh9dHSSyZ0z
+         N/Rf5OXMxlBBzW7Io6K06Tl4Iv7ujkMnp34UzsbwVww7ilKwY9u3UIxRTK50AKtBI0Cj
+         AFtzIATpzaTNM3Qv0P7eKTWPGbpbt9LxQoHkS5XrYqP9SZ8Evikz3FF3T10DZi+jQ9+M
+         l4bw==
+X-Forwarded-Encrypted: i=1; AJvYcCVr5sagrd0R68/TV6oI4aW3k6CPjOL694UksrqjuWX/1KVpVENygkh5JJ41d7zxDqTOZqumojs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZQ2hE2KPQ1DSMfdkXoAzwtcw5WOKSYbMsIWKc6sPTpUK0/GeC
+	OJSR/FIH7RvamHB2cXL7umfSOoamXifcI2vHtRgOeqjUCDIiEkwS4KSL6nXnGTY=
+X-Google-Smtp-Source: AGHT+IHrsSXMDzPW+YC1yMSEObvTKIKA03QKkD9vhWlsmxjtI4DSdraFVWhJ0pwmrnCg1VCCTAW2Bw==
+X-Received: by 2002:a2e:e0a:0:b0:2f0:1c7d:1ee2 with SMTP id 38308e7fff4ca-2f3aa1f99e7mr10852261fa.41.1723628402703;
+        Wed, 14 Aug 2024 02:40:02 -0700 (PDT)
 Received: from krzk-bin.. ([178.197.215.209])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded28cdasm14195615e9.16.2024.08.14.02.39.59
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded28cdasm14195615e9.16.2024.08.14.02.40.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 02:40:00 -0700 (PDT)
+        Wed, 14 Aug 2024 02:40:01 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: Patrice Chotard <patrice.chotard@foss.st.com>,
 	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
@@ -78,10 +80,12 @@ To: Patrice Chotard <patrice.chotard@foss.st.com>,
 	linux-kernel@vger.kernel.org
 Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] usb: dwc3: st: fix probed platform device ref count on probe error path
-Date: Wed, 14 Aug 2024 11:39:56 +0200
-Message-ID: <20240814093957.37940-1-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 2/2] usb: dwc3: st: add missing depopulate in probe error path
+Date: Wed, 14 Aug 2024 11:39:57 +0200
+Message-ID: <20240814093957.37940-2-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240814093957.37940-1-krzysztof.kozlowski@linaro.org>
+References: <20240814093957.37940-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,56 +94,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The probe function never performs any paltform device allocation, thus
-error path "undo_platform_dev_alloc" is entirely bogus.  It drops the
-reference count from the platform device being probed.  If error path is
-triggered, this will lead to unbalanced device reference counts and
-premature release of device resources, thus possible use-after-free when
-releasing remaining devm-managed resources.
+Depopulate device in probe error paths to fix leak of children
+resources.
 
 Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 ---
- drivers/usb/dwc3/dwc3-st.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+
+Context of my other cleanup patches (separate series to be sent soon)
+will depend on this.
+---
+ drivers/usb/dwc3/dwc3-st.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/usb/dwc3/dwc3-st.c b/drivers/usb/dwc3/dwc3-st.c
-index 211360eee95a..a9cb04043f08 100644
+index a9cb04043f08..c8c7cd0c1796 100644
 --- a/drivers/usb/dwc3/dwc3-st.c
 +++ b/drivers/usb/dwc3/dwc3-st.c
-@@ -219,10 +219,8 @@ static int st_dwc3_probe(struct platform_device *pdev)
- 	dwc3_data->regmap = regmap;
- 
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "syscfg-reg");
--	if (!res) {
--		ret = -ENXIO;
--		goto undo_platform_dev_alloc;
--	}
-+	if (!res)
-+		return -ENXIO;
- 
- 	dwc3_data->syscfg_reg_off = res->start;
- 
-@@ -233,8 +231,7 @@ static int st_dwc3_probe(struct platform_device *pdev)
- 		devm_reset_control_get_exclusive(dev, "powerdown");
- 	if (IS_ERR(dwc3_data->rstc_pwrdn)) {
- 		dev_err(&pdev->dev, "could not get power controller\n");
--		ret = PTR_ERR(dwc3_data->rstc_pwrdn);
--		goto undo_platform_dev_alloc;
-+		return PTR_ERR(dwc3_data->rstc_pwrdn);
+@@ -266,7 +266,7 @@ static int st_dwc3_probe(struct platform_device *pdev)
+ 	if (!child_pdev) {
+ 		dev_err(dev, "failed to find dwc3 core device\n");
+ 		ret = -ENODEV;
+-		goto err_node_put;
++		goto depopulate;
  	}
  
- 	/* Manage PowerDown */
-@@ -300,8 +297,6 @@ static int st_dwc3_probe(struct platform_device *pdev)
- 	reset_control_assert(dwc3_data->rstc_rst);
- undo_powerdown:
- 	reset_control_assert(dwc3_data->rstc_pwrdn);
--undo_platform_dev_alloc:
--	platform_device_put(pdev);
- 	return ret;
- }
+ 	dwc3_data->dr_mode = usb_get_dr_mode(&child_pdev->dev);
+@@ -282,6 +282,7 @@ static int st_dwc3_probe(struct platform_device *pdev)
+ 	ret = st_dwc3_drd_init(dwc3_data);
+ 	if (ret) {
+ 		dev_err(dev, "drd initialisation failed\n");
++		of_platform_depopulate(dev);
+ 		goto undo_softreset;
+ 	}
  
+@@ -291,6 +292,8 @@ static int st_dwc3_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, dwc3_data);
+ 	return 0;
+ 
++depopulate:
++	of_platform_depopulate(dev);
+ err_node_put:
+ 	of_node_put(child);
+ undo_softreset:
 -- 
 2.43.0
 
