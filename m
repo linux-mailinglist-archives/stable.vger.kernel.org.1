@@ -1,139 +1,123 @@
-Return-Path: <stable+bounces-67658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2C3951C94
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:06:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33829951C9F
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D13262839C6
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 14:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D054A1F22473
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 14:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A861B32D7;
-	Wed, 14 Aug 2024 14:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497921B29D7;
+	Wed, 14 Aug 2024 14:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QdWlb2e5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bJSV+psT"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AEB1B32D6;
-	Wed, 14 Aug 2024 14:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BF81B1511;
+	Wed, 14 Aug 2024 14:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723644375; cv=none; b=NuzazRsdnvNjSkHMeLZuHQIvi2bKSR23bN63xH6XzE71TrtSGFamuaNgXLZY55zSwPw8SdHO0anvN3NRMd+JDEe4COZSpOXffOuT6/mmZb79XNRv375TQtoykz5byFjPUfVqbtf1tU6fScmfhtPv0hlZruNfUAmj0YpOW74os4k=
+	t=1723644483; cv=none; b=i8w8mgtZTpAoqmwdnalrS9ugBe3pCPvfNHXBtY+xmj4hT9FSh4PBxrMYpnTCduQh5Vk4dU1iiX4sGo9+ri2uULEIoBi2+GLM5FMo8N9pNoQCwsgTbeJO5jjEkzJwJdfrsubuVBe2UXUjzIJp45kEDToI1qJm9SpRUxuo1pcXygs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723644375; c=relaxed/simple;
-	bh=gdSNo/XQZDdVrV4zR7eon61VyrS8pAXXJU1DqdBYTCI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WdD/Zr1UDzcINom7uq/u+fLx+XyXfAlw+t+On6zXs5aSuypC0XWKcGw0fpa3j+IO2eF7XP40k/2w2d7KcWOTkzVWUfbGOKQACrvmyKZCOha+cq1t+TWQzzAOJZ98799ukK0mJ/QSON1wTi9Vsnz9TTXyxVbZqKYtAJ7ViZuTyNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QdWlb2e5; arc=none smtp.client-ip=192.198.163.16
+	s=arc-20240116; t=1723644483; c=relaxed/simple;
+	bh=UXD7Yz5uxT3M095WHjvjkFG6zafPrLrj0PbfzPxqi1M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TpRdNvQEtVNT9FimfoNGHvzWvsYPuG3ehVDsKuaSo1Jj8MGyqF6V1waCP5ICyI/mCmGpc9szI+xboFcuY9KTf3aXuqUvs773jstOz/eyWBAGeGTHd6vqN0yMlszMp6Cu+NL6RS+Ebhe4hhL7fUScJJTU4Hx6UGXyMgDPsiTClto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bJSV+psT; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723644374; x=1755180374;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gdSNo/XQZDdVrV4zR7eon61VyrS8pAXXJU1DqdBYTCI=;
-  b=QdWlb2e5lCkX+lSFg8qhJuHC5WZV/c4asc0NlBECPF555w1ik2S0HMZt
-   2/gzQPx5llO+7t0Ew6Oox46g/UcqImvuPJNuiRcd75t5On4JcjaLWL3H4
-   j27Z8QOwz2oxEpXFNuGNLBBuhhzrpAM21804z5a++1QG1Vlil5XdVThly
-   XDNX/93Rjy+QHSnD91wi9E1j2psZ4RTBWjFmCd9VFGxZAFMcx5lh8ZXAj
-   gkgT9pYbtxDkawQf29piEO9qxWWf8j835k53MnVvfFFR2iKSNL7ngAkdA
-   YkJEWKnb0ozQEJs/0k8pImcvEbXnfTX+wqj5ZAUVQh/ahPJZUNbizcP3u
-   g==;
-X-CSE-ConnectionGUID: PHNfdYl5TsyqMEgABcKHBw==
-X-CSE-MsgGUID: 5us6uhKFQzGJFzd9XLSFUw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="13010082"
+  t=1723644482; x=1755180482;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=UXD7Yz5uxT3M095WHjvjkFG6zafPrLrj0PbfzPxqi1M=;
+  b=bJSV+psTtYBomZL+6awS78DwGNPAQLrde534Jund3HPESvLrlux9Qsar
+   f4spYpZGcPQFKSqypZYOwoQQx4F5tkwKEebzfGo2HksySAFjtAeXR5QVN
+   Bu2PxrLhMnL+TMiQmw0NApbkhwHbf37UGTbu9qMl2pDoh/Xyv/6G2iCjN
+   AyJ3i45VU9ngFdHqI+tdipCyploiqXe/r1rG8WPiZM05Y2EusUvEvCD8v
+   x3trdCvMFjwDWifK1vfGgopJh3G+oNOQ0EAC11t6iR4IvR+crJG3MlS6K
+   S+1tU0X983+GmZ5uNIGm9UQrSp1DHbNdK9MJ+xvoYFNeKxgnrBURxVsJZ
+   Q==;
+X-CSE-ConnectionGUID: w6fTmK4dSYaZKn9jJYr4kA==
+X-CSE-MsgGUID: dZS675R0Qy6bVqmZHrsIjg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="33270338"
 X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
-   d="scan'208";a="13010082"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 07:06:14 -0700
-X-CSE-ConnectionGUID: Il7yoo66SryMa0PimKRlyQ==
-X-CSE-MsgGUID: QZil8iRtQeaxJ9js/K/NXA==
+   d="scan'208";a="33270338"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 07:08:01 -0700
+X-CSE-ConnectionGUID: J+nroZkKTMKZPQmgrrvMaQ==
+X-CSE-MsgGUID: 7BKcIl+6Tv+ml9wfo0Tz+g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
-   d="scan'208";a="59305716"
-Received: from dev2.igk.intel.com ([10.237.148.94])
-  by orviesa006.jf.intel.com with ESMTP; 14 Aug 2024 07:06:10 -0700
-From: =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Cc: Linux kernel regressions list <regressions@lists.linux.dev>,
-	tiwai@suse.com,
-	perex@perex.cz,
-	lgirdwood@gmail.com,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Mark Brown <broonie@kernel.org>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>
-Subject: [PATCH for stable 2/2] ASoC: topology: Fix route memory corruption
-Date: Wed, 14 Aug 2024 16:06:57 +0200
-Message-Id: <20240814140657.2369433-3-amadeuszx.slawinski@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240814140657.2369433-1-amadeuszx.slawinski@linux.intel.com>
-References: <20240814140657.2369433-1-amadeuszx.slawinski@linux.intel.com>
+   d="scan'208";a="58709885"
+Received: from aslawinx-mobl.ger.corp.intel.com (HELO [10.94.8.107]) ([10.94.8.107])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 07:07:57 -0700
+Message-ID: <1ea93e69-80da-4dc3-b63c-217b1f9f0447@linux.intel.com>
+Date: Wed, 14 Aug 2024 16:07:55 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.9 17/40] ASoC: topology: Fix route memory
+ corruption
+Content-Language: en-US
+To: Mark Brown <broonie@kernel.org>, Vitaly Chikunov <vt@altlinux.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ Thorsten Leemhuis <regressions@leemhuis.info>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
+ linux-sound@vger.kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <czx7na7qfoacihuxcalowdosncubkqatf7gkd3snrb63wvpsdb@mncryvo4iiep>
+ <14e54a89-5c62-41b2-8205-d69ddf75e7c7@linux.intel.com>
+ <e95a876a-b4b4-4a9d-9608-ec27a9db3e0c@leemhuis.info>
+ <210a825d-ace3-4873-ba72-2c15347f9812@linux.intel.com>
+ <2024081225-finally-grandma-011d@gregkh>
+ <20240812103842.p7mcx7iyb5oyj7ly@altlinux.org>
+ <2024081227-wrangle-overlabor-cf31@gregkh>
+ <53ab1511-b79c-4378-b2b5-ea9e19e8f65b@linux.intel.com>
+ <20240814000053.posrfbgoic2yzpsk@altlinux.org>
+ <e7b0597c-72d8-4cb6-bcec-19e29c1b864e@sirena.org.uk>
+From: =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>
+In-Reply-To: <e7b0597c-72d8-4cb6-bcec-19e29c1b864e@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-It was reported that recent fix for memory corruption during topology
-load, causes corruption in other cases. Instead of being overeager with
-checking topology, assume that it is properly formatted and just
-duplicate strings.
+On 8/14/2024 12:33 PM, Mark Brown wrote:
+> On Wed, Aug 14, 2024 at 03:00:53AM +0300, Vitaly Chikunov wrote:
+>> On Tue, Aug 13, 2024 at 04:42:04PM +0200, Amadeusz Sławiński wrote:
+> 
+>>> Should this be cherry-pick of both (they should apply cleanly):
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=e0e7bc2cbee93778c4ad7d9a792d425ffb5af6f7
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc/soc-topology.c?id=0298f51652be47b79780833e0b63194e1231fa34
+>>> or just the second one adjusted to apply for stable trees?
+> 
+>> I think having commit with memory corruption fix is more important to
+>> stable kernels than not having the code cleanup commit. So, I would
+>> suggest stable policy to be changed a bit, and minor commits like this
+>> code cleanup, be allowed in stable if they are dependence of bug fixing
+>> commits.
+> 
+>> Additionally, these neutral commits just make stable trees become closer
+>> to mainline trees (which allows more bug fix commits to be applied
+>> cleanly).
+> 
+> The reason I nacked the cleanup commit was just that there was no
+> indication that it was a dependency or anything, it just looked like
+> standard stuff with not reviewing bot output.
 
-Reported-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Closes: https://lore.kernel.org/linux-sound/171812236450.201359.3019210915105428447.b4-ty@kernel.org/T/#m8c4bd5abf453960fde6f826c4b7f84881da63e9d
-Suggested-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20240613090126.841189-1-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/soc-topology.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
-
-diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
-index e7a2426dd7443..7e8fca0b06628 100644
---- a/sound/soc/soc-topology.c
-+++ b/sound/soc/soc-topology.c
-@@ -1052,21 +1052,15 @@ static int soc_tplg_dapm_graph_elems_load(struct soc_tplg *tplg,
- 			break;
- 		}
- 
--		route->source = devm_kmemdup(tplg->dev, elem->source,
--					     min(strlen(elem->source), maxlen),
--					     GFP_KERNEL);
--		route->sink = devm_kmemdup(tplg->dev, elem->sink,
--					   min(strlen(elem->sink), maxlen),
--					   GFP_KERNEL);
-+		route->source = devm_kstrdup(tplg->dev, elem->source, GFP_KERNEL);
-+		route->sink = devm_kstrdup(tplg->dev, elem->sink, GFP_KERNEL);
- 		if (!route->source || !route->sink) {
- 			ret = -ENOMEM;
- 			break;
- 		}
- 
- 		if (strnlen(elem->control, maxlen) != 0) {
--			route->control = devm_kmemdup(tplg->dev, elem->control,
--						      min(strlen(elem->control), maxlen),
--						      GFP_KERNEL);
-+			route->control = devm_kstrdup(tplg->dev, elem->control, GFP_KERNEL);
- 			if (!route->control) {
- 				ret = -ENOMEM;
- 				break;
--- 
-2.34.1
-
+I've send both patches for stable in 
+https://lore.kernel.org/linux-sound/20240814140657.2369433-1-amadeuszx.slawinski@linux.intel.com/T/#t
 
