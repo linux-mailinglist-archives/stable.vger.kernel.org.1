@@ -1,128 +1,139 @@
-Return-Path: <stable+bounces-67629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699AE9518DA
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 12:33:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9959951982
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 12:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A3321C2138C
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 10:33:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63F441F2240A
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 10:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D50B1AD9ED;
-	Wed, 14 Aug 2024 10:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIOyxwbf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF0E1AE05A;
+	Wed, 14 Aug 2024 10:59:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B823D552;
-	Wed, 14 Aug 2024 10:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420D71AE03E
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 10:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723631610; cv=none; b=dmGIueS1Xd8VS9BxzXuji5fVpXbCOMSOX0Up+zW4pO/pC/uTus59VkaKXnoyA4bE4HuNiWzJjk2jP0sn2Gar0VKkbhmnCK3jJxSkfOqc0fumcInS3LGvCkM6gxX4lc1rl5koU5CXjGXlES7eKOvfpsQwyVGncgmpbqNSAZGvEU0=
+	t=1723633159; cv=none; b=d1FIV99etv+wL8P1aO25Mfha7/4Lnk5qStFGC1fCO2TLucSyF/EATP+Et02iGwpysSVUiiF6rmtcEk4ZlqamAnd89Pe8lo75DZhCj3nYR2h3wXl0VcU6euaO6quY5YeSet02hEaHfR63dPmx/vXvTiAIgSGiUvJukbWOuunwsE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723631610; c=relaxed/simple;
-	bh=KpPZgmHtH/1QMwBxAjeLq+Z4Flu+D6NzLewjyw97fjM=;
+	s=arc-20240116; t=1723633159; c=relaxed/simple;
+	bh=FDGJ3XkEIaTOpwp5kPnPZXSAuVrkVe3XypLywdy1494=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t44uflWzFHC787QGWx1EyQLi58yMjPX4BqtFTZLa6hT3Cny2NKFgUEnSVQNPgiHRD4Bf9IpIQJltexRf1AdimLFeW5USSbOrmcwN7gqhk6wCoOj0gY1K/5q0/vg+5OwhXKbYg1mQxyzmG6inZ2v7a6mR8yHTEMuKSvZxMVWvuYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIOyxwbf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3D5C32786;
-	Wed, 14 Aug 2024 10:33:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723631609;
-	bh=KpPZgmHtH/1QMwBxAjeLq+Z4Flu+D6NzLewjyw97fjM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FIOyxwbfv56q4xNyWm9Y0/+kYJlFBDXXn01sT/qSWopRKDfyPzjiiGam0l1ST408Y
-	 tpwRAyeYiU8y23EvPkhCxNt22mKpJWgLmL+HVY+MFw+cNgNFzoXOoGf7zTwhBYyl0x
-	 ASWUnLOCOxqhf/Z/KJmpl872A9XUqj2L8gz2IltLdb8sn1Lsw9alkagzFk+AOiFoeg
-	 amLdXDGVmVtnjBr6w9WJ6DlIPE3oJwHBKbkywpEOLVBKi51pYGkSR7Y+CgPljVgaAg
-	 3cOLQrrtEAqfiRx9tPBFjN8paWKzCeQML6jyjK4tH1WJuzyFz7wOI00jq2c4lLp920
-	 09bLRiuHqeA5A==
-Date: Wed, 14 Aug 2024 11:33:23 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Vitaly Chikunov <vt@altlinux.org>
-Cc: Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>
-Subject: Re: [PATCH AUTOSEL 6.9 17/40] ASoC: topology: Fix route memory
- corruption
-Message-ID: <e7b0597c-72d8-4cb6-bcec-19e29c1b864e@sirena.org.uk>
-References: <czx7na7qfoacihuxcalowdosncubkqatf7gkd3snrb63wvpsdb@mncryvo4iiep>
- <14e54a89-5c62-41b2-8205-d69ddf75e7c7@linux.intel.com>
- <e95a876a-b4b4-4a9d-9608-ec27a9db3e0c@leemhuis.info>
- <210a825d-ace3-4873-ba72-2c15347f9812@linux.intel.com>
- <2024081225-finally-grandma-011d@gregkh>
- <20240812103842.p7mcx7iyb5oyj7ly@altlinux.org>
- <2024081227-wrangle-overlabor-cf31@gregkh>
- <53ab1511-b79c-4378-b2b5-ea9e19e8f65b@linux.intel.com>
- <20240814000053.posrfbgoic2yzpsk@altlinux.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DdOhimiHCzYP9SzwqS431b7P+XUwnoeFfQbbKxLA0XwjjgT45JkNTf5BPMISi9E2kkG1DDhJiC5oYs0yRAHa/hFoEigbhvBBuwdGUjMjTV5ymYsm5buUWe64MnVAnYBFw9W6PLqkxm64YEaHhTb+/c1V4tZrdOH1vGqD3b6clqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1seBiM-0007qt-4B; Wed, 14 Aug 2024 12:58:50 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1seBiJ-000LFZ-HT; Wed, 14 Aug 2024 12:58:47 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1seBiJ-002Wsl-1H;
+	Wed, 14 Aug 2024 12:58:47 +0200
+Date: Wed, 14 Aug 2024 12:58:47 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Ma Ke <make24@iscas.ac.cn>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Peng Fan <peng.fan@nxp.com>,
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Marek Vasut <marex@denx.de>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	imx@lists.linux.dev, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH] soc: imx: imx8m-blk-ctrl: Fix NULL pointer dereference
+Message-ID: <20240814105847.tise4jzneszdxetb@pengutronix.de>
+References: <20240808042858.2768309-1-make24@iscas.ac.cn>
+ <20240808061245.szz5lq6hx2qwi2ja@pengutronix.de>
+ <1b04b8b3-44ca-427f-a5c9-d765ec30ec33@app.fastmail.com>
+ <CAPDyKFqd=haDWB3tATZ_E1BMpCReNh=hLa5qPGATc3h1NUx09A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="A8cRzxVvx8vzJbx5"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240814000053.posrfbgoic2yzpsk@altlinux.org>
-X-Cookie: The second best policy is dishonesty.
+In-Reply-To: <CAPDyKFqd=haDWB3tATZ_E1BMpCReNh=hLa5qPGATc3h1NUx09A@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
+On 24-08-13, Ulf Hansson wrote:
+> On Thu, 8 Aug 2024 at 08:53, Arnd Bergmann <arnd@arndb.de> wrote:
+> >
+> > On Thu, Aug 8, 2024, at 08:12, Marco Felsch wrote:
+> > >
+> > > On 24-08-08, Ma Ke wrote:
+> > >> Check bc->bus_power_dev = dev_pm_domain_attach_by_name() return value using
+> > >> IS_ERR_OR_NULL() instead of plain IS_ERR(), and fail if bc->bus_power_dev
+> > >> is either error or NULL.
+> > >>
+> > >> In case a power domain attached by dev_pm_domain_attach_by_name() is not
+> > >> described in DT, dev_pm_domain_attach_by_name() returns NULL, which is
+> > >> then used, which leads to NULL pointer dereference.
+> > >
+> > > Argh.. there are other users of this API getting this wrong too. This
+> > > make me wonder why dev_pm_domain_attach_by_name() return NULL instead of
+> > > the error code returned by of_property_match_string().
+> > >
+> > > IMHO to fix once and for all users we should fix the return code of
+> > > dev_pm_domain_attach_by_name().
+> >
+> > Agreed, in general any use of IS_ERR_OR_NULL() indicates that there
+> > is a bad API that should be fixed instead, and this is probably the
+> > case for genpd_dev_pm_attach_by_id().
+> >
+> > One common use that is widely accepted is returning NULL when
+> > a subsystem is completely disabled. In this case an IS_ERR()
+> > check returns false on a NULL pointer and the returned structure
+> > should be opaque so callers are unable to dereference that
+> > NULL pointer.
+> >
+> > genpd_dev_pm_attach_by_{id,name}() is documented to also return
+> > a NULL pointer when no PM domain is needed, but they return
+> > a normal 'struct device' that can easily be used in an unsafe
+> > way after checking for IS_ERR().
+> >
+> > Fortunately it seems that there are only a few callers at the
+> > moment, so coming up with a safer interface is still possible.
+> 
+> I am not sure it's worth the effort, but I may be wrong.
+> 
+> It's been a bit tricky to keep the interfaces above consistent with
+> the legacy interface (dev_pm_domain_attach()). Moreover, we need a way
+> to allow a PM domain to be optional. By returning NULL (or 0), we are
+> telling the consumer that there is no PM domain described that we can
+> attach the device to.
 
---A8cRzxVvx8vzJbx5
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Other subsystems like GPIO, regulator have a ..._optional API for this,
+could this be an option?
 
-On Wed, Aug 14, 2024 at 03:00:53AM +0300, Vitaly Chikunov wrote:
-> On Tue, Aug 13, 2024 at 04:42:04PM +0200, Amadeusz S=C5=82awi=C5=84ski wr=
-ote:
+Regards,
+  Marco
 
-> > Should this be cherry-pick of both (they should apply cleanly):
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/sound/soc/soc-topology.c?id=3De0e7bc2cbee93778c4ad7d9a792d425ffb5af6f7
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/sound/soc/soc-topology.c?id=3D0298f51652be47b79780833e0b63194e1231fa34
-> > or just the second one adjusted to apply for stable trees?
-
-> I think having commit with memory corruption fix is more important to
-> stable kernels than not having the code cleanup commit. So, I would
-> suggest stable policy to be changed a bit, and minor commits like this
-> code cleanup, be allowed in stable if they are dependence of bug fixing
-> commits.
-
-> Additionally, these neutral commits just make stable trees become closer
-> to mainline trees (which allows more bug fix commits to be applied
-> cleanly).
-
-The reason I nacked the cleanup commit was just that there was no
-indication that it was a dependency or anything, it just looked like
-standard stuff with not reviewing bot output.
-
---A8cRzxVvx8vzJbx5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAma8h/IACgkQJNaLcl1U
-h9DnQQf/TKq4Vc8SiV/EVDnt3MX1aX8RSRj02uCVscH5YRFRhBZJtQouANZy90Hm
-igbypwI3awsWw/rrq8OnSLz2LY118/SIYIlJ3Ha6pgrnUoJd4xTsOCLOBN24SyaS
-+nXeD6jFATJpR9JmqhVkM2jqrK9dbtWpRt/f9OxZW2AzRU+EVRdvTLYooUI3WzOD
-rhVIC1NCVhLOOWbwr9RHpz6iTUMgJpnFu3lgp/dfJ6cTNN8ZPTgtb1FJGJbDDfkH
-2qntUSTLYMix3C52VfaPAlrDj+8foF81PXQx1XnDfWyrQ90AdIZNoLZiFjOdh31t
-LEN4cmQnh10Ath7r3PLvvrdR+OK5Sw==
-=SCAF
------END PGP SIGNATURE-----
-
---A8cRzxVvx8vzJbx5--
+> 
+> Kind regards
+> Uffe
+> 
 
