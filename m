@@ -1,142 +1,148 @@
-Return-Path: <stable+bounces-67678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA99951F0A
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:49:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDDC951F11
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB08DB22341
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:48:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1684C1F22A39
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C381B9B50;
-	Wed, 14 Aug 2024 15:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA751B5816;
+	Wed, 14 Aug 2024 15:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c35oT3os"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PP9GcaAF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0958A1B8EBF;
-	Wed, 14 Aug 2024 15:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C693F1B4C3F;
+	Wed, 14 Aug 2024 15:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723650435; cv=none; b=KAUc5NA9fj2bYEN8zOwfGXWoRHZwTT56FhzAvbUT5+1HpZpyJfSBULPx5arWlQawWGR/Mim7ibjzbimI0SmwTWJ68BJTTmlE2cwf0w9fJB5hwkeL1gPoUQBBK8UciRVapbhx20UaesTDLDBd2ClQWhNkZCJUlkE0eizkFeBgKj0=
+	t=1723650648; cv=none; b=PlTe2XAanS4hZxukHW5ddCvY2Wl7dFv+iO9FqR9cpB+GIDH5//ClO4A9/iKPQjV57XyjQ+qtTL53VgINjjufUdOb+t/DEmn3dPj/GcEHGaEYZ//YbL+XWD/ktx5UQSNgNONPoUJWFTLoI0lnoAvjrzmZfuAiRFn6/OupPo5TfTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723650435; c=relaxed/simple;
-	bh=mF3IyTz4B68pPQXgPxWQqg6T2YX1f2V+LIgDKhqHrQA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IroAGB/WM0sXBerWf0v+MC91uGxf+e18E0nZW4P3o10fT4dt4IcXkpagadZ5C231+gifLKGN5hdHjSJpOubmRI758QiOBpudGyNLJDExiSB1WYxzK7MqhMRoziZGSBayScEOicBg/uqakTQN2nVjJDtggS8EMh4mbKketqcFsEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c35oT3os; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723650434; x=1755186434;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mF3IyTz4B68pPQXgPxWQqg6T2YX1f2V+LIgDKhqHrQA=;
-  b=c35oT3osToJj35ljfNrEkvbSoYekcEUFREFqsxm44ZPCFPuIIlm2ll3K
-   w5dWTJkR/UV7UbmtxDXhiEO2Vz89FXx8hpU2StEVWAz2Gi2cRXkT6mFyH
-   6U0GVAg1LpL5pVdEGzjW7NEboxbJ6POZaHUy0KFR2EaCUlaQONPQ+YcfJ
-   hS85rmSt8GW1o24B00ePOafuzTVymGOvN8Xu1vrkt1aEdikY+Z8qQjKvX
-   X/FAlXzwCQPZ5SMbifIaMXIPeF4wT//xHFbafVTBTLAhbsx62YBxA8gqS
-   XroUbLH4yR0FioVO1CKKTxpPCToCYG0KVFqWkPkx3q1FCmnIdMP4iWYQC
-   Q==;
-X-CSE-ConnectionGUID: 3TM5qvJKREyRo+jJkVSOvw==
-X-CSE-MsgGUID: 1znsFfddQQKU6c84vmBzgA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="47279532"
-X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
-   d="scan'208";a="47279532"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 08:47:06 -0700
-X-CSE-ConnectionGUID: pTb/7qr1QgWk4nqWPvmY0w==
-X-CSE-MsgGUID: 8xM7Sv2hREyamnKvVm16Eg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; 
-   d="scan'208";a="58936611"
-Received: from dev2.igk.intel.com ([10.237.148.94])
-  by orviesa010.jf.intel.com with ESMTP; 14 Aug 2024 08:47:02 -0700
-From: =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Cc: Linux kernel regressions list <regressions@lists.linux.dev>,
-	tiwai@suse.com,
-	perex@perex.cz,
-	lgirdwood@gmail.com,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Mark Brown <broonie@kernel.org>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>
-Subject: [PATCH for stable v2 2/2] ASoC: topology: Fix route memory corruption
-Date: Wed, 14 Aug 2024 17:47:49 +0200
-Message-Id: <20240814154749.2723275-3-amadeuszx.slawinski@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240814154749.2723275-1-amadeuszx.slawinski@linux.intel.com>
-References: <20240814154749.2723275-1-amadeuszx.slawinski@linux.intel.com>
+	s=arc-20240116; t=1723650648; c=relaxed/simple;
+	bh=xaIRf8gburO7fSK6Qg0SNQ6c7hxnHOaaupR7/cwfZoc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SI+78MNNIdDv0NCgcB7EX0QDdbdLEL2QtB7BDILEYuCRrpjF/GCfEHgrrwDuNSgSLeUDZlKPL6AiomlIwF/kHMdTlU45Mgnjrqmrj0K0wuUiWOSheMesHMMUozd97sh62S7d98djQHBC93zMqlH4uHHMHxnmLbU4AAvOHNTaK+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PP9GcaAF; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5af326eddb2so1736500a12.1;
+        Wed, 14 Aug 2024 08:50:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723650645; x=1724255445; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=t7Sbo6wQRtkVQOZupqBdUqy9Fytqmq/TMoezSF0uEXM=;
+        b=PP9GcaAFA5mgdzs56yGr2tEV1lgh2L7fY7G2aGAqC8mkdwH+604YkBGV0NhOkxXS58
+         L+rMSmoPzrjUKbN8OMf3f+O0SbaS8fnAQRDnibvYhbEN3xWOjvMvQ2r9jfduXfmvvoIf
+         nIZFHWdW45Ut3xSDReKKVr3Kylyt3dax04AvyC+nfDWg3eS+4DRw7dARTjNHCgwhX4o+
+         K7the8zvxlAFJ8GuhaUqf4wFIDpJpRNDhSWeUihsYl7ax9v7KWzcCnddUB4isczKmj47
+         M/hyge15yGbPBSL8VwkvJMGeSqFZU3jsh4TWeuxtYFCxE8krksW/5wlhlBKKLS7dcdt5
+         PTuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723650645; x=1724255445;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=t7Sbo6wQRtkVQOZupqBdUqy9Fytqmq/TMoezSF0uEXM=;
+        b=H/cfAXxwZO5XHTUYso1U/Xjlylqd26TKIqye0sZvcOcMefX/bEjL+bZHblt2B0pt1o
+         FCayyoxbdLPpBxrGCNcMW9iCpaMThfnfQY6lX/ipayGc3o6TMEuL4AceKm2iFTK6YCYa
+         L68oNnyIO/jWPfVDYS3UvvxE5+yJgRFSNadFnWPsmFVADyL5vLJADhwcZiYRcVPL3UV2
+         dxJ8BWP/Nd67k5TGvaxmBfuPuAakjiNsYC/pkkYpExR1+1uAPmLUpn5L75EGppgw029Q
+         rwe5aR+VW5a2f/xaxgYjpa7KW2YbuR4R4J91tY3ItOOOjwXQm8XZgEY+iLWfQ/8I1EMF
+         j9Og==
+X-Forwarded-Encrypted: i=1; AJvYcCWjczG05MOKIgtcDsD0eGwkf9J3X6jk5Xyu4Ik7tik5m9IiPYxcfQSTVjPnNCeC/ngtXGFxcNt67rEZoce0xBmqf4vVe7WSZybvZ1walS2aO7g99idUNC/Hqwed/BAR7t4l
+X-Gm-Message-State: AOJu0YxYxywqmh6q0sEu5aUNN/uU76E9MdX9onIxvxglxk2Prg9RXMKG
+	NnqbHCiJLhgVPZl9OTgEIZI4pxP6hoV/bs+h5cpcxv3I+D7AdtArMUjvRUqC
+X-Google-Smtp-Source: AGHT+IFD+SXJ6j9bra4jImgUHuAQbZ7NXg7goZSpbNFpTeUCwU8XQWmuJiB72sPYUODQP/fumoI1aA==
+X-Received: by 2002:a05:6402:2085:b0:5bd:464a:2623 with SMTP id 4fb4d7f45d1cf-5beb3ae3d6emr79931a12.10.1723650644717;
+        Wed, 14 Aug 2024 08:50:44 -0700 (PDT)
+Received: from [100.65.89.151] ([188.163.112.54])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bd1968af77sm3960461a12.40.2024.08.14.08.50.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Aug 2024 08:50:44 -0700 (PDT)
+Message-ID: <045f7e8a-d462-4419-8e7b-c06857d2338f@gmail.com>
+Date: Wed, 14 Aug 2024 18:50:43 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: imu: inv_mpu6050: fix interrupt status read for old
+ buggy chips
+To: inv.git-commit@tdk.com, jic23@kernel.org
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+References: <20240814143735.327302-1-inv.git-commit@tdk.com>
+Content-Language: en-US
+From: Svyatoslav Ryhel <clamor95@gmail.com>
+In-Reply-To: <20240814143735.327302-1-inv.git-commit@tdk.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit 0298f51652be47b79780833e0b63194e1231fa34 ]
+14.08.24 5:37 пп, inv.git-commit@tdk.com:
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+>
+> Interrupt status read seems to be broken on some old MPU-6050 like
+> chips. Fix by reverting to previous driver behavior bypassing interrupt
+> status read. This is working because these chips are not supporting
+> WoM and data ready is the only interrupt source.
+>
+> Fixes: 5537f653d9be ("iio: imu: inv_mpu6050: add new interrupt handler for WoM events")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Tested-by: Andreas Westman Dorcsak <hedmoo@yahoo.com> # LG P880
 
-It was reported that recent fix for memory corruption during topology
-load, causes corruption in other cases. Instead of being overeager with
-checking topology, assume that it is properly formatted and just
-duplicate strings.
+Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # LG P895
 
-Reported-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Closes: https://lore.kernel.org/linux-sound/171812236450.201359.3019210915105428447.b4-ty@kernel.org/T/#m8c4bd5abf453960fde6f826c4b7f84881da63e9d
-Suggested-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20240613090126.841189-1-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
----
- sound/soc/soc-topology.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
-
-diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
-index 52752e0a5dc27..27aba69894b17 100644
---- a/sound/soc/soc-topology.c
-+++ b/sound/soc/soc-topology.c
-@@ -1052,21 +1052,15 @@ static int soc_tplg_dapm_graph_elems_load(struct soc_tplg *tplg,
- 			break;
- 		}
- 
--		route->source = devm_kmemdup(tplg->dev, elem->source,
--					     min(strlen(elem->source), maxlen),
--					     GFP_KERNEL);
--		route->sink = devm_kmemdup(tplg->dev, elem->sink,
--					   min(strlen(elem->sink), maxlen),
--					   GFP_KERNEL);
-+		route->source = devm_kstrdup(tplg->dev, elem->source, GFP_KERNEL);
-+		route->sink = devm_kstrdup(tplg->dev, elem->sink, GFP_KERNEL);
- 		if (!route->source || !route->sink) {
- 			ret = -ENOMEM;
- 			break;
- 		}
- 
- 		if (strnlen(elem->control, maxlen) != 0) {
--			route->control = devm_kmemdup(tplg->dev, elem->control,
--						      min(strlen(elem->control), maxlen),
--						      GFP_KERNEL);
-+			route->control = devm_kstrdup(tplg->dev, elem->control, GFP_KERNEL);
- 			if (!route->control) {
- 				ret = -ENOMEM;
- 				break;
--- 
-2.34.1
-
+> ---
+>   drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 13 +++++++++++--
+>   1 file changed, 11 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> index 84273660ca2e..3bfeabab0ec4 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> @@ -248,12 +248,20 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
+>   	int result;
+>
+>   	switch (st->chip_type) {
+> +	case INV_MPU6000:
+>   	case INV_MPU6050:
+> +	case INV_MPU9150:
+> +		/*
+> +		 * WoM is not supported and interrupt status read seems to be broken for
+> +		 * some chips. Since data ready is the only interrupt, bypass interrupt
+> +		 * status read and always assert data ready bit.
+> +		 */
+> +		wom_bits = 0;
+> +		int_status = INV_MPU6050_BIT_RAW_DATA_RDY_INT;
+> +		goto data_ready_interrupt;
+>   	case INV_MPU6500:
+>   	case INV_MPU6515:
+>   	case INV_MPU6880:
+> -	case INV_MPU6000:
+> -	case INV_MPU9150:
+>   	case INV_MPU9250:
+>   	case INV_MPU9255:
+>   		wom_bits = INV_MPU6500_BIT_WOM_INT;
+> @@ -279,6 +287,7 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
+>   		}
+>   	}
+>
+> +data_ready_interrupt:
+>   	/* handle raw data interrupt */
+>   	if (int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT) {
+>   		indio_dev->pollfunc->timestamp = st->it_timestamp;
+> --
+> 2.34.1
+>
 
