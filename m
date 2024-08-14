@@ -1,155 +1,100 @@
-Return-Path: <stable+bounces-67642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60BA2951B4E
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:01:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CA3951B92
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 15:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BAD01F226CC
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 13:01:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B05E1C2104D
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 13:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7151B012D;
-	Wed, 14 Aug 2024 13:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202861B14EF;
+	Wed, 14 Aug 2024 13:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wyq7uAAS"
-X-Original-To: Stable@vger.kernel.org
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FJz9oeYv"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2436381D4
-	for <Stable@vger.kernel.org>; Wed, 14 Aug 2024 13:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F901B14EA
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 13:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723640493; cv=none; b=mA70f2y1BOezWqs1CRgoOeE53HSHdYWwyP4199EYRE59wDhIZEATtoIbzQynMshWGa1ZKfZkZN6ZskZVYTlJVY31VIHSnsDzGEnHGVwSEJkXRQXm4AQFOKaIgipMbUdTz50MbnjetEeXQFByc9h2E+5TpdNraTqktmQmSKhmlS8=
+	t=1723641129; cv=none; b=X0CabuSbMNPVKQHmTvx/qHSCrhu5WZNUbSHC9VSEy32Lf0CfDgdPGMDgo+xq+SXKx8cMZUCAJgmP6oO2sUSKI7/RyPEpiUPdABb9Z9BSNJa/QH+irXKiyp512jhN/rbuq6dpCC4TTkUGtmSevWDQ46c199aPRQZce7o4hLvzCR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723640493; c=relaxed/simple;
-	bh=q/uJbkjsZVe1udBwRTk4Z0NblBdsbyD+dlaoHPUzTfY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WzQnBR3syAxDGqIwWoa7b/Mz1hOMrycGQiPdCOZ6e9we+O4qlHAyqpJ/B2azeQCzYwUm9AAOgWJutXfLnpvA4wb3p30YXdBDSruRtsErd57tzhH95CbVa88HsG9awtdjhql99mOq/FEF+DH/ZI6lacUHWWfZpdLC5YLiaPni5ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wyq7uAAS; arc=none smtp.client-ip=209.85.219.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e0bf9602db6so6412791276.1
-        for <Stable@vger.kernel.org>; Wed, 14 Aug 2024 06:01:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723640491; x=1724245291; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7jfobO0h8PCWvLzZDgipywq+q6ry4w+xtSJdMM8OsI8=;
-        b=wyq7uAASsaengzfHPU49sQat/HWe/WmS1L2lwZ9yYY2j3EedHaQqDLk3ZkuNxcF8ss
-         S5Ob9Cw96H22xFbaLJO/oEPdsESjpW3vc9HvvGzSon8+6KqZ76LDwBr6EdCcHnbhaCwg
-         iNNnAPenqd2k8ECjACCeG1RhuGRm2Siz33T2Zm1B11LrEgLwfNn+mltmnyV5Mcshb1gw
-         A8MlisojbKlFsYNgkcwQAyosiWM0xtm2vugCDrgvPIP/1bO+VxdLJXAQH9qPupM4iM8Z
-         ON0bie1ck1YaWWsPOmAgerNSipCuAsOzcwLiFqYkRP0KmyIz2+avqycYiTzAOCWuqwBs
-         OKgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723640491; x=1724245291;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7jfobO0h8PCWvLzZDgipywq+q6ry4w+xtSJdMM8OsI8=;
-        b=qcLCeDkaZwIOSWYYBq7BB+nNpljjnKS+KdgOyFRyx1xdJPxgFojZHohm3RvKJBDHN8
-         InwcNPRXDqKTakC9J3Pf5J4w4vXfiABR+3NqG/2IXxvkB3DvJhwwqdE9SJMa+gah3Zwc
-         3TQezogCQH4gYP7vcywr+2d3vKyltljUWTBaz7BNrQlK6g5Q2eb1qb/z4g+NJzy/NHRc
-         2+6ec/yaNnztZ8d4bED62CQUe9QAXJTTmKhgJJA6zFHSPQOzBfGh+QSH1oc3Fwc0DqDA
-         gsCqpIhuNMByl1j18oolLrfF1M547Eha9vNJ61QOHwqcWbvwUiHTyjQAwy6ycyawStiA
-         PrZg==
-X-Forwarded-Encrypted: i=1; AJvYcCVM5eeeHiBcglefFY+59AMJsIWeo1OTbyPiKJ7pU7vthw5vWavSWAYfKAcJhIg7u1yqq7JDVzrm+3lAZ792+D8LfEJYoZv0
-X-Gm-Message-State: AOJu0YwZvGhHtdQOryE5QkrsA6s+aL7LPcSa3nrDAppsUTc1PFEBEK1U
-	vPSQAs7VXDh8rnHt9XxwEvMJUcuW+HiOTgfUjLmlXjC6tl2CBWTJtu+0wupUfL1VPYam9VHcqRu
-	mmYHVrszdcoFmuaoF++adf94yunUUZu5u9Caa+g==
-X-Google-Smtp-Source: AGHT+IHrp4Xh3i1XqddMFLTNR0pu3w38VmxhIBnGcCEYDdONQahxkdZEFtRyur/hzKD2ig6aNbR/s73+CN6uArFqY3M=
-X-Received: by 2002:a05:6902:2201:b0:e0b:c402:b03f with SMTP id
- 3f1490d57ef6-e1155ae6007mr2993583276.27.1723640489000; Wed, 14 Aug 2024
- 06:01:29 -0700 (PDT)
+	s=arc-20240116; t=1723641129; c=relaxed/simple;
+	bh=T8NZkfxMgiA00BiThOjEU5suAQFMKHoCmV9Akdc6Apc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=q5RJBSMIeziAtf3MylQtSTvYmrBtGwzDnm2RGO++0UQziv1bywyg3b44c5xzHAWT1qaeXy0x6/80bgCMJQQvDOyMJrYO9qYpj3b0ii42RVpC1saKg9s+zg2oVlW0BKTyBLiTLvGGdnEhkUJoubYg48zzFkfcZW0evBvAyK3STMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FJz9oeYv; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723641127; x=1755177127;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=T8NZkfxMgiA00BiThOjEU5suAQFMKHoCmV9Akdc6Apc=;
+  b=FJz9oeYvNgbruxpu9dva81bzio8jCSFvVo3l4MeERQbIWbGXpG2uJNkh
+   3JfbCRCGmPT/DxDWM+o2iS0oeo/M8jJltpOquGSlibjtM2+/0wChJ0LWX
+   PyCqKsF8bDvBkoJEpsTkOA7Lhp9Vu0s2JiE64qmEYzPlaZOyCP5JrzyOQ
+   6Oa2PLTFQNWOpZnEKLDlB9DT75FwGffjmc3OEQW2JeMCUuuQRHJ5+HHPx
+   Fer3bl3SithhjzBBnXPLRRwhrNExfbAefICWsCtHb7B2CAAAkVv6EDKTj
+   y5PK8id3lEDNwlBEOY2InHbl3UJuhuVVmE9JOG2AtZYb7/ZBtEnGL5lnZ
+   g==;
+X-CSE-ConnectionGUID: lm2Jj6iCTWe4h8y0GUWNyw==
+X-CSE-MsgGUID: 1TYPLQJCSj6Yze/okBeteA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="25659280"
+X-IronPort-AV: E=Sophos;i="6.10,145,1719903600"; 
+   d="scan'208";a="25659280"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 06:12:06 -0700
+X-CSE-ConnectionGUID: QsOFN6JdSRGWPaqNvRx0yQ==
+X-CSE-MsgGUID: Hmg2sNswTzqzIb4dhhi6+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,145,1719903600"; 
+   d="scan'208";a="63895569"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 14 Aug 2024 06:11:50 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1seDn2-0001fv-0Z;
+	Wed, 14 Aug 2024 13:11:48 +0000
+Date: Wed, 14 Aug 2024 21:11:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yihang Li <liyihang9@huawei.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v3] scsi: sd: retry command SYNC CACHE if format in
+ progress
+Message-ID: <Zrys7W6vp_B7WhvK@6bf3af7eeac4>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240814124740.2778952-1-peng.fan@oss.nxp.com>
-In-Reply-To: <20240814124740.2778952-1-peng.fan@oss.nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 14 Aug 2024 15:00:52 +0200
-Message-ID: <CAPDyKFrUyEfSsEdjfXGLX5NJuWaGNBZg1D+kCR=EikG42_eL0w@mail.gmail.com>
-Subject: Re: [PATCH V2] pmdomain: imx: wait SSAR when i.MX93 power domain on
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Peng Fan <peng.fan@nxp.com>, Stable@vger.kernel.org, Jacky Bai <ping.bai@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240813011747.3643577-1-liyihang9@huawei.com>
 
-On Wed, 14 Aug 2024 at 14:38, Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
->
-> From: Peng Fan <peng.fan@nxp.com>
->
-> With "quiet" set in bootargs, there is power domain failure:
-> "imx93_power_domain 44462400.power-domain: pd_off timeout: name:
->  44462400.power-domain, stat: 4"
->
-> The current power on opertation takes ISO state as power on finished
-> flag, but it is wrong. Before powering on operation really finishes,
-> powering off comes and powering off will never finish because the last
-> powering on still not finishes, so the following powering off actually
-> not trigger hardware state machine to run. SSAR is the last step when
-> powering on a domain, so need to wait SSAR done when powering on.
->
-> Since EdgeLock Enclave(ELE) handshake is involved in the flow, enlarge
-> the waiting time to 10ms for both on and off to avoid timeout.
->
-> Cc: <Stable@vger.kernel.org>
-> Fixes: 0a0f7cc25d4a ("soc: imx: add i.MX93 SRC power domain driver")
-> Reviewed-by: Jacky Bai <ping.bai@nxp.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Hi,
 
-Applied for fixes, thanks!
+Thanks for your patch.
 
-Kind regards
-Uffe
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-> ---
->
-> V2:
->  Add Fixes tag and Cc stable (Per Ulf's comment)
->
->  drivers/pmdomain/imx/imx93-pd.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/pmdomain/imx/imx93-pd.c b/drivers/pmdomain/imx/imx93-pd.c
-> index 1e94b499c19b..d750a7dc58d2 100644
-> --- a/drivers/pmdomain/imx/imx93-pd.c
-> +++ b/drivers/pmdomain/imx/imx93-pd.c
-> @@ -20,6 +20,7 @@
->  #define FUNC_STAT_PSW_STAT_MASK                BIT(0)
->  #define FUNC_STAT_RST_STAT_MASK                BIT(2)
->  #define FUNC_STAT_ISO_STAT_MASK                BIT(4)
-> +#define FUNC_STAT_SSAR_STAT_MASK       BIT(8)
->
->  struct imx93_power_domain {
->         struct generic_pm_domain genpd;
-> @@ -50,7 +51,7 @@ static int imx93_pd_on(struct generic_pm_domain *genpd)
->         writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
->
->         ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
-> -                                !(val & FUNC_STAT_ISO_STAT_MASK), 1, 10000);
-> +                                !(val & FUNC_STAT_SSAR_STAT_MASK), 1, 10000);
->         if (ret) {
->                 dev_err(domain->dev, "pd_on timeout: name: %s, stat: %x\n", genpd->name, val);
->                 return ret;
-> @@ -72,7 +73,7 @@ static int imx93_pd_off(struct generic_pm_domain *genpd)
->         writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
->
->         ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
-> -                                val & FUNC_STAT_PSW_STAT_MASK, 1, 1000);
-> +                                val & FUNC_STAT_PSW_STAT_MASK, 1, 10000);
->         if (ret) {
->                 dev_err(domain->dev, "pd_off timeout: name: %s, stat: %x\n", genpd->name, val);
->                 return ret;
-> --
-> 2.37.1
->
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v3] scsi: sd: retry command SYNC CACHE if format in progress
+Link: https://lore.kernel.org/stable/20240813011747.3643577-1-liyihang9%40huawei.com
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
