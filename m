@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-67581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196C5951210
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 04:18:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8236951214
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 04:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C72CE2864F4
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 02:18:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74FAA28367D
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 02:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999AE140397;
-	Wed, 14 Aug 2024 02:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6906B1422D4;
+	Wed, 14 Aug 2024 02:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sg3Ygvkh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oK2QtcvP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D5313E02C;
-	Wed, 14 Aug 2024 02:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9841419A9;
+	Wed, 14 Aug 2024 02:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723601722; cv=none; b=fW1ONRBm2rF9pua3wpVJ0bVYb7pVKvlxeHC285MCDnIpSxgWtmnLsQrU7WcMcQKM3r7RfPKZW4yEVNcw+z6XkgQKmrw9+ccl9LnB78B8a5N1Q9KcORlNuHuxTAkwSPRlYA/W6hhL9TXdGc+29e6QitZsTewnRslLiy5ENRWYxCA=
+	t=1723601723; cv=none; b=vDcyXsDH5QYNGsh6fRPFZv6xvyEhtMspm3XWB6ML4JbHbxWKDORCg2ov3TTMbxmo+0dcXXO+7jAotjS6XIMA4tlnVXX+8hn7PvRhgoJLvjMfIsN9fLDwWVI9JMuIfxdlB//6K901ZxgdPzn6rBKJyXADZiBac8MaZjkyaQ2ndBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723601722; c=relaxed/simple;
-	bh=fwlmcn5o1BPF1VUgfE84xYkeQ2olPznqF/Ss/KWNePc=;
+	s=arc-20240116; t=1723601723; c=relaxed/simple;
+	bh=M1d0cuB26UxfGsqNygD3iEsVrnVQKsorXrrI3VbpWu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTja2KTQx/PigvCcbSjYGh5bFhzqYVPTfWsJY80KEUnJs6+VyaEtVnH/GJwS1dqnkZsPY9ZPRaQvV9B8VNYlj2wWvuHVz5xswLq8s+bUYWXeGoK9zwZs0tW4j/Vb8DJgC1xVmiyDxY+O88NJWzqbr1pzVd3/96WbApBbnvMfiHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sg3Ygvkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0636C4AF0F;
-	Wed, 14 Aug 2024 02:15:20 +0000 (UTC)
+	 MIME-Version; b=GaCFbVpQbymcRHvl8hjTfz6ecIkxROGYD0MPGZIlzWIRqhyx3yM9piMWI1hxE8rdDBwuGwmSj7sw85gvv/Uq2ILG584RlncPFC4kVyJbVvaL85p9X0hQ5wO36nDxd2xvsgsqg6YYPX9erohVow+I/a6ahXmkxDzktGj2WY06A1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oK2QtcvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133E8C4AF12;
+	Wed, 14 Aug 2024 02:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723601721;
-	bh=fwlmcn5o1BPF1VUgfE84xYkeQ2olPznqF/Ss/KWNePc=;
+	s=k20201202; t=1723601722;
+	bh=M1d0cuB26UxfGsqNygD3iEsVrnVQKsorXrrI3VbpWu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sg3YgvkhbTeD/1rruIC0uvvU2bXGMX2UsFpf2K5PL01maaTPh3/MUC9JjEr3yZIER
-	 m8rn3cY0kfTy8QtWaIwc8Ci4WxUlrV+UPnHlXyBBsOaiSij3wDtz05aKXSt/MgFzMa
-	 LCf7dEo/wHKsehrJmOuXzvMKpGRtq2Uq1d6uUmLKb4ClDHGwLb3BrVGIpRBWt+s/iK
-	 v+QjGgCA5pmm7+XrdLgc6Jbb9VGrKnWDO6izrHsJn3jQSXOPAWntFRRXcr35oeZOh1
-	 ZXZnGNBnCb42Cg6LGgMAPIRyNZOHz3NjSG/kP3anzrolcWJmNQnD7rS03yjf4Zwlyt
-	 6SWli51KNg6RA==
+	b=oK2QtcvPGZDvxLJJ23NB1Nz7lZPl25T8yVnd2VG2QJ8TKis4y/IaZbv2dxoYmrvur
+	 Agbcr9kvgt+CHBAQxQTWWYvH08RnKmyGNa4kRNkyR1OnZff7q+kIaBSLzLFLblyyck
+	 nn1gZCmuqfx+wSgzZ/kxnbi55NkOKUsbEfEp19Ot4Gk5ickFHmY9seif5ipHkH61Ez
+	 lxPYN+r6r/GKx+OpqoBQ1GyA8D5ZvdfDsMxjw40p9KQiZsfluKaSmwuWQDVMzTUUvZ
+	 46wQc7DsYXBmueJV0fOYpC3gzoBz/toVnBw8oDkve/PjRHzse4yXfZw09gOSy+l8qh
+	 0rbccEqydmLJQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Devyn Liu <liudingyuan@huawei.com>,
-	Jay Fang <f.fangjian@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 2/7] spi: hisi-kunpeng: Add validation for the minimum value of speed_hz
-Date: Tue, 13 Aug 2024 22:15:08 -0400
-Message-ID: <20240814021517.4130238-2-sashal@kernel.org>
+	linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 3/7] i2c: Fix conditional for substituting empty ACPI functions
+Date: Tue, 13 Aug 2024 22:15:09 -0400
+Message-ID: <20240814021517.4130238-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240814021517.4130238-1-sashal@kernel.org>
 References: <20240814021517.4130238-1-sashal@kernel.org>
@@ -66,38 +65,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.45
 Content-Transfer-Encoding: 8bit
 
-From: Devyn Liu <liudingyuan@huawei.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit c3c4f22b7c814a6ee485ce294065836f8ede30fa ]
+[ Upstream commit f17c06c6608ad4ecd2ccf321753fb511812d821b ]
 
-The speed specified by the user is used to calculate the clk_div based
-on the max_speed_hz in hisi_calc_effective_speed.  A very low speed
-value can lead to a clk_div larger than the variable range. Avoid this
-by setting the min_speed_hz so that such a small speed value is
-rejected.  __spi_validate() in spi.c will return -EINVAL for the
-specified speed_hz lower than min_speed_hz.
+Add IS_ENABLED(CONFIG_I2C) to the conditional around a bunch of ACPI
+functions.
 
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
-Reviewed-by: Jay Fang <f.fangjian@huawei.com>
-Link: https://patch.msgid.link/20240730032040.3156393-2-liudingyuan@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The conditional around these functions depended only on CONFIG_ACPI.
+But the functions are implemented in I2C core, so are only present if
+CONFIG_I2C is enabled.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-hisi-kunpeng.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/i2c.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
-index 77e9738e42f60..6910b4d4c427b 100644
---- a/drivers/spi/spi-hisi-kunpeng.c
-+++ b/drivers/spi/spi-hisi-kunpeng.c
-@@ -495,6 +495,7 @@ static int hisi_spi_probe(struct platform_device *pdev)
- 	host->transfer_one = hisi_spi_transfer_one;
- 	host->handle_err = hisi_spi_handle_err;
- 	host->dev.fwnode = dev->fwnode;
-+	host->min_speed_hz = DIV_ROUND_UP(host->max_speed_hz, CLK_DIV_MAX);
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index 0dae9db275380..296e7e73a75ef 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -1033,7 +1033,7 @@ static inline int of_i2c_get_board_info(struct device *dev,
+ struct acpi_resource;
+ struct acpi_resource_i2c_serialbus;
  
- 	hisi_spi_hw_init(hs);
- 
+-#if IS_ENABLED(CONFIG_ACPI)
++#if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_I2C)
+ bool i2c_acpi_get_i2c_resource(struct acpi_resource *ares,
+ 			       struct acpi_resource_i2c_serialbus **i2c);
+ int i2c_acpi_client_count(struct acpi_device *adev);
 -- 
 2.43.0
 
