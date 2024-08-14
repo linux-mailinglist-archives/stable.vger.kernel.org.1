@@ -1,130 +1,185 @@
-Return-Path: <stable+bounces-67688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FAC6952168
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:39:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E25A952165
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D313288012
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:39:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD3AC1F23348
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBF11BD00E;
-	Wed, 14 Aug 2024 17:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F81BBBE4;
+	Wed, 14 Aug 2024 17:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDCgZZo2"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8DE1B32D2
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 17:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267C71B32D2
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 17:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723657157; cv=none; b=dJ5r0YeTSDbGrV47awUTgYDA6wmw3Cty8E9VWI5cxMFNzfYYSRVCl0OQTrBQxu4J3Up1EzG6VCq6pKWAwrj8xQC16M/Frf/gMgeXcX9qszVGiXS3nhkB0bvgWCN8+uLf6pZhs9inHMwOhYqfByuirdU7V4lKHhn8MOhrgslA4Eg=
+	t=1723657151; cv=none; b=Oe8SNOMey7MHdZQfNWblP5y2R0G821PVe292ERwgl46Dcdr79pvnBWGsyMvxm1/N+hAFWjV0NxFsSP8YGMv/O8CVBXt93GayqcOGrKzTmCCBotvD6ltTgxK04MwxOeK52CRcqU/74NYVfQl1awvUKcKOjFR5a6cZ57+pzcnYLAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723657157; c=relaxed/simple;
-	bh=1RJxAnIQpaDu9oVTDIha64CMAfqUSWeUABz0wPFGVSY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ciyFSePpYifRVdyKA2kPq1u121fkv8uICZgG42ItKzKj4m95yWbFR4BvoHIhBbyCc2A1OcAhjS9FfLpF/G3n+wyIqvBB3XoBDI8ww+35bLLW+1olgNcGit3S8HCvl68P/nS/wl0UPbCzakm4EltBfSnhWWSQ1UYLfWVtp6YdFTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1seHxj-0007OG-5I; Wed, 14 Aug 2024 19:39:07 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1seHxh-000PVL-Ve; Wed, 14 Aug 2024 19:39:05 +0200
-Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
-	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1seHxh-000cAQ-2y;
-	Wed, 14 Aug 2024 19:39:05 +0200
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Wed, 14 Aug 2024 19:39:05 +0200
-Subject: [PATCH] usb: dwc3: ep0: Don't reset resource alloc flag (including
- ep0)
+	s=arc-20240116; t=1723657151; c=relaxed/simple;
+	bh=GW3hQGXNEaHpO0OQSPm7FpNNguLp79U5O1lUSS9XyCU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=od/8sXZAn7/ycEfoV4T6keSv/UCqmYQN1NdrTcesDk15ku/bc4pqua3JkEwD6a2CSdFwT4FIFE+S93wzRLnQW1RbwLFVHAdEDsHGlsKtHar2U0HpW5g3ZX/f0SIg3tU6Sws4aa91RmlYN5Q6otbJa2gz+YQPXdh2qqqCz8LRf2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDCgZZo2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02919C116B1;
+	Wed, 14 Aug 2024 17:39:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723657150;
+	bh=GW3hQGXNEaHpO0OQSPm7FpNNguLp79U5O1lUSS9XyCU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=rDCgZZo2T40+htAWy94iM7+P08gW4Pf4dbZoj4txPfGKBHCCBV8fW9IPU6h6QPyR4
+	 XSWksOZOIg76HSWHY5qjBvFkin1y+d3/VCTbD2jE2pYzD9gEQXVF6aZNwkRFjdo1BE
+	 OJLU2xueagjR/6OvTWNzHcLUtvHU4quEzV2YrY5M=
+Subject: FAILED: patch "[PATCH] exec: Fix ToCToU between perm check and set-uid/gid usage" failed to apply to 5.10-stable tree
+To: kees@kernel.org,brauner@kernel.org,ebiederm@xmission.com,mvanotti@google.com,torvalds@linux-foundation.org,viro@zeniv.linux.org.uk
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 14 Aug 2024 19:39:06 +0200
+Message-ID: <2024081405-fender-shortcut-a18f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240814-dwc3hwep0reset-v1-1-087b0d26f3d0@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIALjrvGYC/1WNywrCMBAAf6Xs2UDSLLT6K+Ihj9XsJZZdMYXSf
- 2/qzePADLOBkjAp3IYNhL6s/K4d3GWAVEJ9keHcGUY7op0dmtySL40WK6T0MRGzn9w8ebwi9Cg
- GJRMl1FTO7N8+hUXoyevveH/s+wF1au72gQAAAA==
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Michael Grzeschik <m.grzeschik@pengutronix.de>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1563;
- i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
- bh=1RJxAnIQpaDu9oVTDIha64CMAfqUSWeUABz0wPFGVSY=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBmvOu5mBfDcjeMxKuEZekeZqKaUwz96+1rXbJcX
- frL+prpAa+JAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZrzruQAKCRC/aVhE+XH0
- q2ROD/9xFI1rhYDInPnQInL2xUj3WRWjN1OsS3j6V5IJ+6Krkbz+g+Rm6YiVv/0pMJDYykBmScb
- v+XHVTQBvo8krfMbajRTUDkSkIM1XMucJ8IlTuKC3r05tAOBx5P7KwUmklOEDXaQOzKB3xo6N46
- Sp8UJN88h6+Um/+jX9mkxraNbmB3aTDG1/ZBHDxWs5FX9R0pQxYrYRhh2DFjRAqNKEelDtdsUSJ
- i18B6RZvJIHIBRFM8G3KJH2eQJUb8yH3G0kIEq1YKITcR2grxpOyguyha+l6du926XvoOBqT/tx
- L2Y8PuNmjYrsXuVwkTzFqfb71asYTwY0q2U6KDqk7Kqc4lAQCraQP5vbtNjpWj+Dxa3kx/iMp8w
- kpAMwmxcWq4P3ty2uuWDTbERKNEiZoxSTMmQ9YyNMnXMClakMXAHUWkdg2nzA3FtrPYUsswbQAJ
- 1dg8FniOnEjwQ28+fUTQhQMqb/cveConcpn6IMipiIuUs86Tzjt2hQVfPD0sNoi0SKOjLC5sIWT
- wFCufIL2WjR93VXjqGNcIKEqWhC4qJbE2umISOt+NmhicVZxXl6UYc6eJUynjvU642XZqq4E/AO
- bfSIt35Qygd/OTEeS8t8XAQmMjsac5LyyIgOl2ppLI79RuZ7wtrg0JQlYp6KI6vdoIdKGIiNb8C
- 1BvOQ3pwo0k0tIA==
-X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
- fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-The DWC3_EP_RESOURCE_ALLOCATED flag ensures that the resource of an
-endpoint is only assigned once. Unless the endpoint is reset, don't
-clear this flag. Otherwise we may set endpoint resource again, which
-prevents the driver from initiate transfer after handling a STALL or
-endpoint halt to the control endpoint.
 
-Commit f2e0eee47038 (usb: dwc3: ep0: Don't reset resource alloc flag)
-was fixing the initial issue, but did this only for physical ep1. Since
-the function dwc3_ep0_stall_and_restart is resetting the flags for both
-physical endpoints, this also has to be done for ep0.
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x f50733b45d865f91db90919f8311e2127ce5a0cb
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081405-fender-shortcut-a18f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+
+Possible dependencies:
+
+f50733b45d86 ("exec: Fix ToCToU between perm check and set-uid/gid usage")
+e67fe63341b8 ("fs: port i_{g,u}id_into_vfs{g,u}id() to mnt_idmap")
+9452e93e6dae ("fs: port privilege checking helpers to mnt_idmap")
+f2d40141d5d9 ("fs: port inode_init_owner() to mnt_idmap")
+4609e1f18e19 ("fs: port ->permission() to pass mnt_idmap")
+13e83a4923be ("fs: port ->set_acl() to pass mnt_idmap")
+77435322777d ("fs: port ->get_acl() to pass mnt_idmap")
+011e2b717b1b ("fs: port ->tmpfile() to pass mnt_idmap")
+5ebb29bee8d5 ("fs: port ->mknod() to pass mnt_idmap")
+c54bd91e9eab ("fs: port ->mkdir() to pass mnt_idmap")
+7a77db95511c ("fs: port ->symlink() to pass mnt_idmap")
+6c960e68aaed ("fs: port ->create() to pass mnt_idmap")
+b74d24f7a74f ("fs: port ->getattr() to pass mnt_idmap")
+c1632a0f1120 ("fs: port ->setattr() to pass mnt_idmap")
+abf08576afe3 ("fs: port vfs_*() helpers to struct mnt_idmap")
+6022ec6ee2c3 ("Merge tag 'ntfs3_for_6.2' of https://github.com/Paragon-Software-Group/linux-ntfs3")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f50733b45d865f91db90919f8311e2127ce5a0cb Mon Sep 17 00:00:00 2001
+From: Kees Cook <kees@kernel.org>
+Date: Thu, 8 Aug 2024 11:39:08 -0700
+Subject: [PATCH] exec: Fix ToCToU between perm check and set-uid/gid usage
+
+When opening a file for exec via do_filp_open(), permission checking is
+done against the file's metadata at that moment, and on success, a file
+pointer is passed back. Much later in the execve() code path, the file
+metadata (specifically mode, uid, and gid) is used to determine if/how
+to set the uid and gid. However, those values may have changed since the
+permissions check, meaning the execution may gain unintended privileges.
+
+For example, if a file could change permissions from executable and not
+set-id:
+
+---------x 1 root root 16048 Aug  7 13:16 target
+
+to set-id and non-executable:
+
+---S------ 1 root root 16048 Aug  7 13:16 target
+
+it is possible to gain root privileges when execution should have been
+disallowed.
+
+While this race condition is rare in real-world scenarios, it has been
+observed (and proven exploitable) when package managers are updating
+the setuid bits of installed programs. Such files start with being
+world-executable but then are adjusted to be group-exec with a set-uid
+bit. For example, "chmod o-x,u+s target" makes "target" executable only
+by uid "root" and gid "cdrom", while also becoming setuid-root:
+
+-rwxr-xr-x 1 root cdrom 16048 Aug  7 13:16 target
+
+becomes:
+
+-rwsr-xr-- 1 root cdrom 16048 Aug  7 13:16 target
+
+But racing the chmod means users without group "cdrom" membership can
+get the permission to execute "target" just before the chmod, and when
+the chmod finishes, the exec reaches brpm_fill_uid(), and performs the
+setuid to root, violating the expressed authorization of "only cdrom
+group members can setuid to root".
+
+Re-check that we still have execute permissions in case the metadata
+has changed. It would be better to keep a copy from the perm-check time,
+but until we can do that refactoring, the least-bad option is to do a
+full inode_permission() call (under inode lock). It is understood that
+this is safe against dead-locks, but hardly optimal.
+
+Reported-by: Marco Vanotti <mvanotti@google.com>
+Tested-by: Marco Vanotti <mvanotti@google.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: stable@vger.kernel.org
-Fixes: b311048c174d ("usb: dwc3: gadget: Rewrite endpoint allocation flow")
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- drivers/usb/dwc3/ep0.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
 
-diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
-index d96ffbe520397..c9533a99e47c8 100644
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -232,7 +232,8 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
- 	/* stall is always issued on EP0 */
- 	dep = dwc->eps[0];
- 	__dwc3_gadget_ep_set_halt(dep, 1, false);
--	dep->flags = DWC3_EP_ENABLED;
-+	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED;
-+	dep->flags |= DWC3_EP_ENABLED;
- 	dwc->delayed_status = false;
+diff --git a/fs/exec.c b/fs/exec.c
+index a126e3d1cacb..50e76cc633c4 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1692,6 +1692,7 @@ static void bprm_fill_uid(struct linux_binprm *bprm, struct file *file)
+ 	unsigned int mode;
+ 	vfsuid_t vfsuid;
+ 	vfsgid_t vfsgid;
++	int err;
  
- 	if (!list_empty(&dep->pending_list)) {
-
----
-base-commit: 38343be0bf9a7d7ef0d160da5f2db887a0e29b62
-change-id: 20240814-dwc3hwep0reset-b4d371873494
-
-Best regards,
--- 
-Michael Grzeschik <m.grzeschik@pengutronix.de>
+ 	if (!mnt_may_suid(file->f_path.mnt))
+ 		return;
+@@ -1708,12 +1709,17 @@ static void bprm_fill_uid(struct linux_binprm *bprm, struct file *file)
+ 	/* Be careful if suid/sgid is set */
+ 	inode_lock(inode);
+ 
+-	/* reload atomically mode/uid/gid now that lock held */
++	/* Atomically reload and check mode/uid/gid now that lock held. */
+ 	mode = inode->i_mode;
+ 	vfsuid = i_uid_into_vfsuid(idmap, inode);
+ 	vfsgid = i_gid_into_vfsgid(idmap, inode);
++	err = inode_permission(idmap, inode, MAY_EXEC);
+ 	inode_unlock(inode);
+ 
++	/* Did the exec bit vanish out from under us? Give up. */
++	if (err)
++		return;
++
+ 	/* We ignore suid/sgid if there are no mappings for them in the ns */
+ 	if (!vfsuid_has_mapping(bprm->cred->user_ns, vfsuid) ||
+ 	    !vfsgid_has_mapping(bprm->cred->user_ns, vfsgid))
 
 
