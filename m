@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-67594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D008951234
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 04:21:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C91951237
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 04:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11A1F1F23C16
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 02:21:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5B28281D94
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 02:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9640B1547E9;
-	Wed, 14 Aug 2024 02:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AB8154BE9;
+	Wed, 14 Aug 2024 02:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b24F/xd2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZ92NNyj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9101547E6;
-	Wed, 14 Aug 2024 02:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506631547FB;
+	Wed, 14 Aug 2024 02:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723601748; cv=none; b=IxGwYzv+YwRfs7a4iDTKx4uEN0oI2S6hdaEUjLh+clrzATPjMiR8HzougYvPenIRVHG9bYNlnQo6xacWW3mZPa3RGqlftJJV2Dqj2G0Tzy8xiVe8OMTMXuM1y6BIKMwJs7YJwFs8qU2ZACA31P+Rj5DiMrq6snUV18FSKP4F57w=
+	t=1723601749; cv=none; b=t9oab0eZl/x0HtMyReXiIbk/kf9CnaIzN5XfnLBx30jSDU+iEkGBdw9MsY9QJl1O9aqcw93es3UfbWJrakLm0Dtfflrb8rqw+4kPVn50rrULe7tsAKWg6V/QQETKvFVNqay509KzVCubqBy4HfaGOhMZhKfvZt+9DFewjtWvJ0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723601748; c=relaxed/simple;
-	bh=0hULqN0PF2FUtiMYWbQqWS5lCuhg3QQ3/2z+oWF1OV4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YrYazo40wRDfRPSRfEuNZklz0e4a1zzAqrQcvHHAzxiyzRcP+8KlpmCEBAc7U7PAXbzKHa6+Iqe7vvQRoJkdI2U6of8Iy/tR8YS4GH6Nwe75wtWdXmRXxAHMYaH/x5G+AckaCp3+BML9WQgQuAbErfiXVffsMv9ppS2i+KhZQNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b24F/xd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28870C32782;
-	Wed, 14 Aug 2024 02:15:47 +0000 (UTC)
+	s=arc-20240116; t=1723601749; c=relaxed/simple;
+	bh=7mg6J3FIbPQbhpRa0byOee9Lg12BlFTEkq6nFDNv4II=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gWylFjzjJq5NqYtHhtEVisMvbl6TQbHZiMdxierYKkPIEyvzTPdGFM7WiA5gDL+Rxg7AxmCcR8Xh111Vytah7yLMA4QGRvT+m8b/ejT4niRtJ3rsyuhQMZ06RooTPn42mWxi576jPDb6jJjRQrFlwTmsVF7F5o0EuFiIx4zgwYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZ92NNyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439C3C4AF09;
+	Wed, 14 Aug 2024 02:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723601747;
-	bh=0hULqN0PF2FUtiMYWbQqWS5lCuhg3QQ3/2z+oWF1OV4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=b24F/xd2Pwdl4KlNKuDwGHBrULiItftm8QEj6XpHVkgPUoNVfgFQ5oXcRuH60HEOU
-	 JvEsAYzCx6JRQDrta61I4BwqOEFvblIzIH1tr+ZHR+48xuVlwobWTIHp6eAtE3I8+f
-	 vcIWMcWAsa8+EdoKWl6Pi5rh0FCEaMWNQSmlb/o63ZFlhbAhvbXO7l+EiKAYzyYOR3
-	 hsk883BTnM/WO+gOpvYpnWbVpi7iMi7XAW8/UTo9GXX17NfUDYDRpJCz3xCS3I7rBE
-	 lzTDquV3um2m+/ZKdVa43ZvSF6sBy/a/55k82Qq0CxOB6D+m2S11sUArjy6nvLABlu
-	 jrASQvZ1tZbkA==
+	s=k20201202; t=1723601749;
+	bh=7mg6J3FIbPQbhpRa0byOee9Lg12BlFTEkq6nFDNv4II=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VZ92NNyj5bCC9r0dbBgZQw1eDc+4j4CYcpe/CbvsjiUB6NVKrZVYrZl65AGZ/+c00
+	 wkK8vCHpwH9IdFeYIVEFZi9qP970t/uc9KFAHZ9/Rl6VR9+A3wVhCxxBfRKKGZRWrr
+	 xPDqkLbu5xAU6+UZVp7fAtoGPVLjD1zBp5iaP7kK6yJOG14ig2OtQPXfC41DbCJMLj
+	 8nlDyzW49zxHiIqSpzMQqcOQOzw7EkEmt9WPF8LmfyQgfYDKNAAlQaTcIOurORauW7
+	 K8jxKCjkJOKCItSNkjD1qMgXLFfgWkky+QK5qpKs3l+fIc9CJCwZO/tfdVnMT4/dP8
+	 uBT+S99f6prhg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+Cc: Rik van Riel <riel@surriel.com>,
+	Konstantin Ovsepian <ovs@meta.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 1/3] i2c: Fix conditional for substituting empty ACPI functions
-Date: Tue, 13 Aug 2024 22:15:43 -0400
-Message-ID: <20240814021545.4130580-1-sashal@kernel.org>
+	m.szyprowski@samsung.com,
+	iommu@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.10 2/3] dma-debug: avoid deadlock between dma debug vs printk and netconsole
+Date: Tue, 13 Aug 2024 22:15:44 -0400
+Message-ID: <20240814021545.4130580-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240814021545.4130580-1-sashal@kernel.org>
+References: <20240814021545.4130580-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,37 +67,110 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit f17c06c6608ad4ecd2ccf321753fb511812d821b ]
+[ Upstream commit bd44ca3de49cc1badcff7a96010fa2c64f04868c ]
 
-Add IS_ENABLED(CONFIG_I2C) to the conditional around a bunch of ACPI
-functions.
+Currently the dma debugging code can end up indirectly calling printk
+under the radix_lock. This happens when a radix tree node allocation
+fails.
 
-The conditional around these functions depended only on CONFIG_ACPI.
-But the functions are implemented in I2C core, so are only present if
-CONFIG_I2C is enabled.
+This is a problem because the printk code, when used together with
+netconsole, can end up inside the dma debugging code while trying to
+transmit a message over netcons.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+This creates the possibility of either a circular deadlock on the same
+CPU, with that CPU trying to grab the radix_lock twice, or an ABBA
+deadlock between different CPUs, where one CPU grabs the console lock
+first and then waits for the radix_lock, while the other CPU is holding
+the radix_lock and is waiting for the console lock.
+
+The trace captured by lockdep is of the ABBA variant.
+
+-> #2 (&dma_entry_hash[i].lock){-.-.}-{2:2}:
+                  _raw_spin_lock_irqsave+0x5a/0x90
+                  debug_dma_map_page+0x79/0x180
+                  dma_map_page_attrs+0x1d2/0x2f0
+                  bnxt_start_xmit+0x8c6/0x1540
+                  netpoll_start_xmit+0x13f/0x180
+                  netpoll_send_skb+0x20d/0x320
+                  netpoll_send_udp+0x453/0x4a0
+                  write_ext_msg+0x1b9/0x460
+                  console_flush_all+0x2ff/0x5a0
+                  console_unlock+0x55/0x180
+                  vprintk_emit+0x2e3/0x3c0
+                  devkmsg_emit+0x5a/0x80
+                  devkmsg_write+0xfd/0x180
+                  do_iter_readv_writev+0x164/0x1b0
+                  vfs_writev+0xf9/0x2b0
+                  do_writev+0x6d/0x110
+                  do_syscall_64+0x80/0x150
+                  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+-> #0 (console_owner){-.-.}-{0:0}:
+                  __lock_acquire+0x15d1/0x31a0
+                  lock_acquire+0xe8/0x290
+                  console_flush_all+0x2ea/0x5a0
+                  console_unlock+0x55/0x180
+                  vprintk_emit+0x2e3/0x3c0
+                  _printk+0x59/0x80
+                  warn_alloc+0x122/0x1b0
+                  __alloc_pages_slowpath+0x1101/0x1120
+                  __alloc_pages+0x1eb/0x2c0
+                  alloc_slab_page+0x5f/0x150
+                  new_slab+0x2dc/0x4e0
+                  ___slab_alloc+0xdcb/0x1390
+                  kmem_cache_alloc+0x23d/0x360
+                  radix_tree_node_alloc+0x3c/0xf0
+                  radix_tree_insert+0xf5/0x230
+                  add_dma_entry+0xe9/0x360
+                  dma_map_page_attrs+0x1d2/0x2f0
+                  __bnxt_alloc_rx_frag+0x147/0x180
+                  bnxt_alloc_rx_data+0x79/0x160
+                  bnxt_rx_skb+0x29/0xc0
+                  bnxt_rx_pkt+0xe22/0x1570
+                  __bnxt_poll_work+0x101/0x390
+                  bnxt_poll+0x7e/0x320
+                  __napi_poll+0x29/0x160
+                  net_rx_action+0x1e0/0x3e0
+                  handle_softirqs+0x190/0x510
+                  run_ksoftirqd+0x4e/0x90
+                  smpboot_thread_fn+0x1a8/0x270
+                  kthread+0x102/0x120
+                  ret_from_fork+0x2f/0x40
+                  ret_from_fork_asm+0x11/0x20
+
+This bug is more likely than it seems, because when one CPU has run out
+of memory, chances are the other has too.
+
+The good news is, this bug is hidden behind the CONFIG_DMA_API_DEBUG, so
+not many users are likely to trigger it.
+
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reported-by: Konstantin Ovsepian <ovs@meta.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/i2c.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/dma/debug.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index a670ae129f4b9..cbd2025a002ea 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -991,7 +991,7 @@ static inline int of_i2c_get_board_info(struct device *dev,
- struct acpi_resource;
- struct acpi_resource_i2c_serialbus;
- 
--#if IS_ENABLED(CONFIG_ACPI)
-+#if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_I2C)
- bool i2c_acpi_get_i2c_resource(struct acpi_resource *ares,
- 			       struct acpi_resource_i2c_serialbus **i2c);
- u32 i2c_acpi_find_bus_speed(struct device *dev);
+diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+index 0263983089097..654b039dfc335 100644
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -447,8 +447,11 @@ void debug_dma_dump_mappings(struct device *dev)
+  * dma_active_cacheline entry to track per event.  dma_map_sg(), on the
+  * other hand, consumes a single dma_debug_entry, but inserts 'nents'
+  * entries into the tree.
++ *
++ * Use __GFP_NOWARN because the printk from an OOM, to netconsole, could end
++ * up right back in the DMA debugging code, leading to a deadlock.
+  */
+-static RADIX_TREE(dma_active_cacheline, GFP_ATOMIC);
++static RADIX_TREE(dma_active_cacheline, GFP_ATOMIC | __GFP_NOWARN);
+ static DEFINE_SPINLOCK(radix_lock);
+ #define ACTIVE_CACHELINE_MAX_OVERLAP ((1 << RADIX_TREE_MAX_TAGS) - 1)
+ #define CACHELINE_PER_PAGE_SHIFT (PAGE_SHIFT - L1_CACHE_SHIFT)
 -- 
 2.43.0
 
