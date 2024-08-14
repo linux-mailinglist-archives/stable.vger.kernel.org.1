@@ -1,148 +1,165 @@
-Return-Path: <stable+bounces-67625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B317C95189D
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 12:24:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23439518CD
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 12:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 689301F204E2
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 10:24:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50EA81F2253B
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 10:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969EE1AE029;
-	Wed, 14 Aug 2024 10:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B481A76D2;
+	Wed, 14 Aug 2024 10:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="DXUUFQgK"
+	dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="P43pMssp";
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="o+yBHgyb"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+Received: from smtpout35.security-mail.net (smtpout35.security-mail.net [85.31.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A859213D8AC;
-	Wed, 14 Aug 2024 10:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.134
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723631077; cv=none; b=HSmKseh9IAG+d2pPmDVwEJ4D6BiNkaQMT58QB4MFN3IFxVzRHHVzq7qku7sudKAOrnXoqaifWjOefT/agOzt8JWeHSxTM+o8dwsKGcUEd1VNGfMIU2nD3eHDnUHSNB2BsvPQuAfYsoK+WSm8/YhyjjTjUWHRuLH0U9+GJ2rmEO0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723631077; c=relaxed/simple;
-	bh=RWVcbCNlHx8lGMYK5gifzzGb7Dttynafxk1chvCUirw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HJQ47ZEKeKyGoONm8Sgis4SkQ7H34T40KTxCk/s5uYiwTYnAIlpeHJ6bbRNDleBv++d1SFGi14VnTEGhgQY8UwmVPerJ7+nD4CP8NqhetgOHceEnmDZY7VOarbmQaMH1kCG7u4ZFMsiOmqBRmPoSc6YRjVw7a/Ca35v14Qs2Fyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=DXUUFQgK; arc=none smtp.client-ip=212.227.126.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1723631055; x=1724235855; i=christian@heusel.eu;
-	bh=RWVcbCNlHx8lGMYK5gifzzGb7Dttynafxk1chvCUirw=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=DXUUFQgKtY6yx+ehm/AXrEclPMeZk1vwQznH1tU+JNxX+eY0v6m8KcWvcW+M1UdW
-	 H2NCBn1HtFdwJhpwbMYY0r5903QoZXtABiDjAxs3HyAyfZoZiSQ7FwLhZzVAJb+3c
-	 UGe7MQVA94/iKwkgfu9KexOOelvBh+rIGd0V+N35V/VZhe81Hnd4fatQ0WYk1reh1
-	 25CaK1QoEakCmLaPSHz9JKN56d5W2o2LN1rqgI7kujnPscuK0LbyioZ4Tmn7ofTA/
-	 DSjmcrq/PovRSg4gvpmNtQzj0Q7NKMUMO9awBk/Lt4dr1LP3LFcJ+H4STGgXUerGo
-	 geEbHnqxwPDi14XpyA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([93.196.132.14]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N79Ey-1s64Gp2dcy-0114XL; Wed, 14 Aug 2024 12:24:15 +0200
-Date: Wed, 14 Aug 2024 12:24:13 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Adrian Vladu <avladu@cloudbasesolutions.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
-	Greg KH <gregkh@linuxfoundation.org>, 
-	"willemdebruijn.kernel@gmail.com" <willemdebruijn.kernel@gmail.com>, "alexander.duyck@gmail.com" <alexander.duyck@gmail.com>, 
-	"arefev@swemel.ru" <arefev@swemel.ru>, "davem@davemloft.net" <davem@davemloft.net>, 
-	"edumazet@google.com" <edumazet@google.com>, "jasowang@redhat.com" <jasowang@redhat.com>, 
-	"kuba@kernel.org" <kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"pabeni@redhat.com" <pabeni@redhat.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"willemb@google.com" <willemb@google.com>, "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: [PATCH net] net: drop bad gso csum_start and offset in
- virtio_net_hdr
-Message-ID: <ad4d96b7-d033-4292-86df-91b8d7b427c4@heusel.eu>
-References: <20240726023359.879166-1-willemdebruijn.kernel@gmail.com>
- <20240805212829.527616-1-avladu@cloudbasesolutions.com>
- <2024080703-unafraid-chastise-acf0@gregkh>
- <146d2c9f-f2c3-4891-ac48-a3e50c863530@heusel.eu>
- <2024080857-contusion-womb-aae1@gregkh>
- <60bc20c5-7512-44f7-88cb-abc540437ae1@heusel.eu>
- <0d897b58-f4b8-4814-b3f9-5dce0540c81d@heusel.eu>
- <20240814055408-mutt-send-email-mst@kernel.org>
- <c746a1d2-ba0d-40fe-8983-0bf1f7ce64a7@heusel.eu>
- <PR3PR09MB5411FC965DBCCC26AF850EA5B0872@PR3PR09MB5411.eurprd09.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD5A1AE022
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 10:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=85.31.212.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723631407; cv=fail; b=p66MzCKbyfFLlGVihZcFHopEvUb568GDY+UBQ+ce4UPK9EnnWj4uQOJrdUgvnLoOQVCScqVn6AS451vBjtkUCCc09LuAyYCripbSTFH+/eYB+NH6IuZX0Qx1OvOKWG5yqm0K5U+/glBVSradrg8SSkDZa3c4yMGvRr1d5T01YZU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723631407; c=relaxed/simple;
+	bh=i+TeQZsk2w3L2kzA3onIbIEHvngNPd1Cdt/9+NlMZgE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=OmId6UBIBVavfjU8lLL7j/Okr5MXWhMI6LGchex5/DzKVciikcbxlpL/fPwIIcse4dTZRuaLJv+N7GgtU/fJuQ9hWugmHwrRB+Mbkr4/zFVKv5KmOYpxjnDFPGycTpefwidMbL5EDTQvHeJ2CUz2+haxN+hJ+a0wGZh/uhK/bZE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com; spf=pass smtp.mailfrom=kalrayinc.com; dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=P43pMssp; dkim=fail (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=o+yBHgyb reason="signature verification failed"; arc=fail smtp.client-ip=85.31.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kalrayinc.com
+Received: from localhost (fx305.security-mail.net [127.0.0.1])
+	by fx305.security-mail.net (Postfix) with ESMTP id 0019030F0F5
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 12:26:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
+	s=sec-sig-email; t=1723631161;
+	bh=i+TeQZsk2w3L2kzA3onIbIEHvngNPd1Cdt/9+NlMZgE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=P43pMssp5XeSk3H/NTNgLEcQ2tRxN/1komccb412nr9g24SK3lvqg3NFLb3Ph7SmZ
+	 KEq3viZ33RWI2oOGxwPMAxjSwtCpCOIHw8YRQxTK9SVUtQNB21SOZa/G/JuQ8VrvO0
+	 Ch55elL2q04Woq6+EIB0dGg/wk6cTD2Op8tn/11k=
+Received: from fx305 (fx305.security-mail.net [127.0.0.1]) by
+ fx305.security-mail.net (Postfix) with ESMTP id A229430F0D8; Wed, 14 Aug
+ 2024 12:26:00 +0200 (CEST)
+Received: from PR0P264CU014.outbound.protection.outlook.com
+ (mail-francecentralazlp17012051.outbound.protection.outlook.com
+ [40.93.76.51]) by fx305.security-mail.net (Postfix) with ESMTPS id
+ D313330F0C1; Wed, 14 Aug 2024 12:25:59 +0200 (CEST)
+Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:14b::6)
+ by PR1P264MB1951.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:192::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.17; Wed, 14 Aug
+ 2024 10:25:58 +0000
+Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::7a6f:1976:3bf3:aa39]) by PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::7a6f:1976:3bf3:aa39%4]) with mapi id 15.20.7849.021; Wed, 14 Aug
+ 2024 10:25:58 +0000
+X-Secumail-id: <9bbc.66bc8637.d0ac6.0>
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hFMUzUcAYqshraG8i67BaChP5CiNypulHW3pvHvuom1gicEl7z3GzYwT2EULWL9lyE9qGgp1zYVt4GhpBEz2kSviYe+m2CNrorMxjv+R1KRF8ShFngIAXre80W8EwOdbuA3KioF0oAAbxt0528jqAsGVpSVEBWAzB+JJovCOr+Bhz3v+Ca3MpXeNQO06wdKRVmM9WuCBw0QJN57nYPkmJu6wuWSc73TAwEupqCUGEwGAlyToWhhoIiUtcSQ9p4QJczOnIKBmtqrXa+49c57A5Nnc2ZjdCyfvQfFPPFnCtz0dkykYDFTM7MRGnTjpcTPVV/lPWwX2peCczBHPeIVOjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microsoft.com; s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7mNyCxX9CVdD0x1b9l4Htt/lUPHHlP7RtqN6a/saKN8=;
+ b=wboc5tcc94kqbZMclO1l6fmCmUVkMIU+ZI8fF5xGgprIwjwm0JvXHDRoio2hoYveQg2Aszi5cuxBD8uyU0Em/Y4ey9G4xlCVyK/PCAbj6zOd12mbyrcrTz93+uewum0B/e91jFLgn/QR9hqaXIJUyvotWWh4kUmGfLfBfFFaH6sxu4amyJQuZ9CB+q2XMO2qUA3wfWYLDtKa9iUFZIMdPejR59wCSDZh1blM7E2Os/yeAZAC10OWK2r+xsq9YxgQXVknFjOL7aCXILtUdXFc9G1zaRx8dN1h8/p12I66BCBeXdB4qHEGBd6df3SsxUp+MdBMoQ0WpyerxDvtJz+QQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kalrayinc.com; dmarc=pass action=none
+ header.from=kalrayinc.com; dkim=pass header.d=kalrayinc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalrayinc.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7mNyCxX9CVdD0x1b9l4Htt/lUPHHlP7RtqN6a/saKN8=;
+ b=o+yBHgybdYoLda83GQk9+1MckT2EOxUcfQmoGW1wwI30dEwrrrYaRwi/wrZpa2lms/jcHGFlhViHbShfwS1sFbVqGRkbMPTk4ElTIrAlJ654dpZgKqSEMO+5wPVMtZ/BB4ZEekOPbOo8P1XYN+56Vm75pHMU/+avfRn29WgWjp80iX+9Y1Pfsf5Y1Yf8wahxepD+whusRsxBzyr/2NQl91KgeBlXK3PqxrY5dGkZdKZ4kmpvStdaI0MUDHuhSX0Ixnx26x7VyQSb3kqncQ4C6O5KBgStOKedhEHXuDd+XUPe8JU6mPTaTk65rT3EuIiyxWl95zUzorebIDtpddrkvw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kalrayinc.com;
+Message-ID: <53db9c3e-a765-4045-8a9e-b02e2da5e0f8@kalrayinc.com>
+Date: Wed, 14 Aug 2024 12:25:52 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/149] 6.1.105-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240813061957.925312455@linuxfoundation.org>
+Content-Language: en-us, fr
+From: Yann Sionneau <ysionneau@kalrayinc.com>
+In-Reply-To: <20240813061957.925312455@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PR1P264CA0194.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:34d::10) To PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:14b::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="fupy5ioaujgzhzoh"
-Content-Disposition: inline
-In-Reply-To: <PR3PR09MB5411FC965DBCCC26AF850EA5B0872@PR3PR09MB5411.eurprd09.prod.outlook.com>
-X-Provags-ID: V03:K1:4LsNBPKGSnKaAahV+kC9ffd/uvKcATEsJ6TpVO9NzBj0gyzllPp
- XaCZBYi9pTlC7pAxI2xIw7hAymOApW4HoC9FHD256ZxqUi2zb2MrwwgrgziB3zc55Sn5+VE
- onIH2ZYis+vylAgxys6bM4qlKHWD1WjzbRRLS/Qzo4SLMuAlOFHDx2LltNAJPjn5Qq+ztfl
- cRFVO0CtPamPx/x4ojAPw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Swh0577sYtM=;i4mr60u07hEUuF/IcxtkbPL6zn0
- LB4zdQZYZlBRXiMXnPGUvkYwornnELug71UPfaJkCCsSyrOL+lxx+jj4Dlk9I362dO1ZeUX+R
- p59E+A8V5tKQX4Wqqd+4uj+nHgp4oMIgjavRLnDeNZpQ0ADPfuMtpQA2QWNw9HfXfcQvNZcEW
- UPVNvvnUVoYrC7gIsap/YYmIp3p7NC0iawOkuPz6T7K4FjB1d8D8KclsMnPfmBKfhKdHBjoB9
- 4D40K9VWnDL7MCYiiVAuRH49ADiZSjeCnbTB7tQvroRDWMr1NxQnldL05UGmJ0wciB8SkmUXu
- ku1/nsFlkSrFuJBiJc4YsFpAJb7slWuC0FX4J3TtYvWfSZdEs5i+EdJGYmG/nlRzRX5MV2U9y
- 8aIZObfYISouhIDmMjnjX7gpNaCg+bWDVuC/XrM2jrcorcbZdbBHQQNTVyu/9nkZP7mYfd4Ee
- 7yofj5S/e33l6PtjpWV4zu+IgOOpMJXvZpicad2vPNeeUD2z/Cqm0PZ1GCSL1RmYgTFdRLu/t
- 6SjunKw6Ib6avTvDR3EhDqDSrZU88ErxQLQadQZvkk6QSL6MYuEaRDCMke3AtD3iET/1LZrpI
- FEl35QvI6PgROHdpqmHtTyHVPf2xXV3q9tIY8/LNoZm53RH4MHZTXPKKRr4E74xFRAdP2Nacg
- t1rp1Mmzd2WPTQn1NQlLRAoztb1MNAbqRzAOEkrWOjozNNXYDkXXRmcG8NGYm3ia5QVPqduws
- 3XQHdynm77k80BRlmtiGQg+neJNMiueTQ==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PR0P264MB3481:EE_|PR1P264MB1951:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9be7d561-0124-4ac7-d112-08dcbc4b7cec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info: 4RVu8rDZVgTEcBEKVSEDLKIl85oqCJE/G5cW5DXvSkb0+WUzPwJsGHEagRJ/492u7EpNntkdM4BEGiF+gL2GLScS84QZJJA1Fovld8vGbyrH53goV924/aUV5iaOyMgvfwPiZN+A8T/uWl2eIs/8c3zJc3xIrbNCl35+Dfw56Q9V9asYuvHP2pyKI3szse36c4P/kZXmIE9yAcakzqpEGbubCwvclyCIDCwFr4Nv/B1bLZUXq/nz9R29+SL5t/aRi/NEbCdY0Fxhh4EQhiP8By3nzMe5QnUB4VzB+5EonyiWWGDmylmSCXSJ95/R/lZcdYtebcwqgvXyYC9mG+p28ed5Z3sk40ixxBqH+8h9H84e/Jpa/AUkb/ilowNZ4lYsNC6nyIaGPp6nfdIUuWWbkGMMNDt5zt1fZpLvl6TI32RUnki1lUfl+pdeNt9m6kAAZelWSdOZhMMQdHdYE/8rRF69BaqtaOsmZVNdmqsMvz3Y745m8hEw+PR/RkMgC5RASRTxjN9k5a9bgjq9Lo+Umqp0TrcGuKd+UHkrqdrLP+8Hk65bRU29ZnE7wtbJKM6TWfBh5GcrPiLEMzogqv5QzlY+OqAriHCz/2EVQwlujqU6Lg8FsgnjAN65kEThta4MeRNyvB7rEVmdJ9cI3rCUj6qP9pCrhMWg+MccAwHQlpjIZar7EkoR3dUF1kAsVTcqBJicKys9jQlgjpZCd84N2KO6G74ntb96LtwX+4uOZTCxpR29VSrkHn6vANIMYyOUrvOSJMn2YseDnaPMBhrJDGrnPGVkfL96C/mDAkVTZ6HFsqyTiya5t9RySJrdO/pPjdpcGA5D6ucVCrI+OdRqPX5JsBqR7llwkut7QdHXtf9O0OrBug6yWLHPnhkubiJyJnL6O7NLzZk2GotQwAPXqTZFFNP6BWmurOk3BoJpreNQhZt4MSc34spwwdh2ESzA1jZ
+ v/koC78t0lJOxIbgfn0SjEupct5930lKX02WMdXFYpPvTnxoBOaDF6qKlqlgU5zGbGydmk2aXpS0mWAPJeSnihdtLLjQTo5vE5B4E0LOFNvCIBmDUzKraHQtTz+KyaOOMXTSSQ62ZyVU4Rk/cQv8Pna9QmPSw7CZFbcVvXqAENHjKFuLlPlPaIheqaPDbbTm7m1yggmu/xdFE37Ldc4fMlIlTKM//XdaMeB8IUJHVLtKvTGjuUOSxLqgdRmOP/SxXDcmi4detZgVK42TP2ia8x3CfsNlpheMWwyEnG+7o1U3uhtATLz8ymJ81vgOa91ZGKVLlVEys/nj1eMBIPy5O4R+T/jNYVeO9ZrP8Xfs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 5aUdmn5pRTDtNDyqi/TxJvIo4Xt3qanFGo3y2oXgI1mQso93gHX3BDcUvFu9Bs6qCWg2vJsd6FOY6xhJSfDpKMU8uUUAgBRZmvRBLv4z/qRWohRFVlCiryXqmqPXaDcK/Q68crntSCyatI5DqJUh5064dH57/kWtHvLSnrT2DpR1Hte5rcbUHTg6mR60EnnDbSQQ37AMNkw4VnXjNcSGY7s4kJdeXR+Gym70I5L6jA4gbRcSm2YkgK5Iuaakc8vK6RHNC2SsDvIV9IVbsdBWuu7TUSRhPEKLlBpYkbuB8jTUyVoJeiwwX5N5IA+KOGv86vErv2i1BaBGSoa7OU98Z2Ll0scW+9KAs2bqK8g3N0XmK6RVcPUnBxbbmGVFB+9yRiFfH701j1HpE/7/5TY9cbyu1J+XNdoB8KxByW1ML8vUrGSI7IiK1o6EJOCuDkfUFk0EjSml3TkUNryLeQHS4ADXx7SuN9WtFP8f0VcPrUswGuNQWH4QLB94u0R4r6dTWwas/K4Cyz373XdQ1mkWQRGYNHExLbps2/5EFF0W3LEpmFmucckJwK9Mq9NrkZKyM2cty1ocYW6wfUG7Krcj/PPqtq9IXbduT3vtkp5binP1SAi2mwsAb9R2GLbcW1HRiokO/MKFBhBmXW5XFywcqI/FhlGlTtV2qYmp3JIJN48jFaisj7b7Yo0wNLQ0xvVYnztnsmjOAgENhDJGbOSW1O+5x83rfeWrNWua8sHOLvb/mz4/UQjhLDEegevcQtUhhTPwTN4wqElicIkjD2DK04ALVcqQx00qG3zYBeRkcQnsGm+QVee2ZXonlhtO8lTm/JVn+xG6DI9lgAnrfkPtqoXGrCOR9nDFjq6pe4Ng3Ni+Hv8Vs8aE27dT2qth8C5Fz+vueBxoncGkK0EJYT+B/lY6quUhlkf6THxIb5BaUzb8mCUWGSkqjvFkha+anZJJ
+ 7D7GKt2OS4+3isucFZFChbNeeMaHWmPjdVSuJffEM4W/YwFxdEhvg/RAkdu1RufZ72q6T98pl55D9de/hZYapLgr8ADW52UCUXJznLx2wcY2G72oDAy0mqEIsxlMmrN9q1GSId5LObQ21OIU1FvBMtIyV/iYKx6zEUDC/tLSTvrGDDC7HZiz+Uw2cRfBkRWB0dPuJIPEJN3ppC1y22r6V26df4LFgLJBZgsv2PPrWGnlOrk48IWn30MJ6Y8GW0qrKXGSDdU3lkpqWb4WTMNLpM9AYMgD5zVMz50PRRg68KNgANZGpiy61yNhGD7CA3tPJ7l1cD45PXNW1HzZqI1CXcoVo2FSO+J3A3kVWD5PTLqckieHbaaPCnInBmt4XupHVfGnDmnv0a4hhC4nGxA574NHMADcYG+DEJSU1q4hg0iLzjQdtpseiB6CnJS/c50emfFjW7WRceDsRgRsBvXpdGa8ypKwSWzhsK5gektc4AiMzldn7zlX/Tyi8tQh/VDwn8hDjKGyCi2MDGJXA+kZwLcRUTnNKIMOnWQjAH4TjKBPA9w2ITwG2HC1k5vNGD6cgSE3YRhPCKhHtSZ31EDGzWSXDazEJ1rhrbCKdbauChR1tmqmALUVcG7wp3bgb9GzR7fXJi33OwZdOUEH1D+XxQ==
+X-OriginatorOrg: kalrayinc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9be7d561-0124-4ac7-d112-08dcbc4b7cec
+X-MS-Exchange-CrossTenant-AuthSource: PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 10:25:58.5460
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qLDIMiuyQ1s/yaT9FyICfFhUyjkjndElt3zNXwRyRjWfaqCedJE4VR5cRR9QOPthWh2HrK2SITHnLf33aFuNtQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB1951
+X-ALTERMIMEV2_out: done
+
+Hi Greg,
+
+On 13/08/2024 08:28, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.105 release.
+> There are 149 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 15 Aug 2024 06:19:25 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.105-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+
+I tested 6.1.105-rc2 (9bd7537a3dd02) on Kalray kvx arch (not upstream yet) and everything looks good!
+
+It ran on real hw (k200, k200lp and k300 boards), on qemu and on our internal instruction set simulator (ISS).
+
+Tests were run on several interfaces/drivers (usb, qsfp ethernet, eMMC, PCIe endpoint+RC, SPI, remoteproc, uart, iommu). LTP and uClibc-ng testsuites are also run without any regression.
+
+Everything looks fine to us.
+
+Tested-by: Yann Sionneau <ysionneau@kalrayinc.com>
+
+-- Yann
 
 
---fupy5ioaujgzhzoh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On 24/08/14 10:10AM, Adrian Vladu wrote:
-> Hello,
->=20
-> The 6.6.y branch has the patch already in the stable queue -> https://git=
-=2Ekernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=
-=3D3e713b73c01fac163a5c8cb0953d1e300407a773, and it should be available in =
-the 6.6.46 upcoming minor.
->=20
-> Thanks, Adrian.
 
-Yeah it's also queued up for 6.10, which I both missed (sorry for that!).
-If I'm able to properly backport the patch for 6.1 I'll send that one,
-but my hopes are not too high that this will work ..
 
-Have a nice day everybody :)
-Cheers,
-Chris
-
---fupy5ioaujgzhzoh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAma8hc0ACgkQwEfU8yi1
-JYX/Rw//dc3Z21CFqjdEjiKPqsv2W/NbMF0S7mtARSQKZYQV0ENEMNmeuLEoh0Xf
-yzkQuIETOTiSuTEN2UqnG6VTX13w7+9MNZYYV/lv87/8wQkbwsOsE1y8/lstCSc4
-wPhY+xYpvLTTRcp41sv1OSpoMgRpa8uFZcaKz7b8UyWW570UH61deEJa79chF5k/
-iMRHGA9BzrIT2Fp2NpAWLcJ6nR5uA5JvcnzGznnOoByiBtP8lW2vyIkv5UKBXxHX
-uh151Q46CA6p9tZTlRUhn6KurnaPovVY1GoHCDzrby1BzKWHt9T0PcQYc8dMaIUC
-6+CJEgz+GANAtllA9XDmN+9MtC7b9656FXbtPukvxM2cFhbDDuAh83AEHU5Mhacc
-ufA72bIg94B8StX5iqH/u1A+NGtN7CsBqy13827cXYB28wQopdvYrqmqBeJZ2at8
-qDchFajnChAjgG/UsNgxvcMd6VRYZk/LIQQ6UXpPFC7KeuWjLhnBgqqUApqCpXBJ
-vOVqnmI5NNpgzAYg3IAd8PDpKoiyMeJsWPEyaICQ4sPRsK0S/ZoFnk3DI3UEMxTz
-BO9w3nZ+7cw9ulJ9Z6zA6TuWQQuWVUJ27622hF43DhpKhCgG0jMWZmhPBaO+JU5m
-jiHp7/xTI/aXG7k1vOQJeDroTQBK9gCbFIniRlBGbObN1vO67no=
-=6DM2
------END PGP SIGNATURE-----
-
---fupy5ioaujgzhzoh--
 
