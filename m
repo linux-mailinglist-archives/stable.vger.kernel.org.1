@@ -1,150 +1,106 @@
-Return-Path: <stable+bounces-67605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97181951425
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 08:07:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015ED95147B
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 08:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E6A2B216DC
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 06:07:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 330F51C23F01
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 06:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B851481B9;
-	Wed, 14 Aug 2024 06:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66464131BDF;
+	Wed, 14 Aug 2024 06:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="he0BaJc2"
 X-Original-To: stable@vger.kernel.org
-Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F08874BF8
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 06:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C7574424;
+	Wed, 14 Aug 2024 06:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723615655; cv=none; b=LuNzEypLICSoe3xGJ1USQjrrsYynGzaufjWxPW6r7wOb3/FJFIRcsBSCN8VYUf2RGdoegXKgz5vhmnEjMqEWbS16CVX2amm8zg9jTM9OMMiApqvlylc16HgeQljc51H0eEi6xT7mtu5cQTBkRjcDHEZweBNsqmBqy1sqMbbmh8U=
+	t=1723616605; cv=none; b=GN7sthjjKrWPnURTM/6NQte/s8JWO/qQ79kIdBuoOIL4uA8L/YfrOcnBQyyukwKdc5PluQMFbHxgsTKFntnz9C3vCnj4mYeq17Gg7vLE+Fn94rTB8rWGscAqWKd2yMZappDIF5WRdx9mQRvCmLHmtst9IP7WhYiLdJH+0NCP0vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723615655; c=relaxed/simple;
-	bh=SBrY6b4L2KOkvuY4vo+phw6rbjW/U+9giLoXlGN29ys=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=TLMGFf4KICT/9nEhLpaiYjw9bxmBMOafJQBBU0nWO5B06wMhXeJqOWLBt+nysh4mqas+JyGA88hxbYode+iTERwSHuHcFDpWDSFmmUG4fj64irma6v085xb1epRWQfXpO8xRyqND/R14b9g0oo0MPv8Jpiad9FvbQfauJ/O/YAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
-Received: from hverkuil by linuxtv.org with local (Exim 4.96)
-	(envelope-from <hverkuil@linuxtv.org>)
-	id 1se7AO-0007R8-2m;
-	Wed, 14 Aug 2024 06:07:32 +0000
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Wed, 14 Aug 2024 06:06:07 +0000
-Subject: [git:media_stage/fixes] media: atomisp: Fix streaming no longer working on BYT / ISP2400 devices
-To: linuxtv-commits@linuxtv.org
-Cc: stable@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1se7AO-0007R8-2m@linuxtv.org>
+	s=arc-20240116; t=1723616605; c=relaxed/simple;
+	bh=08md5farfI8/U7k7Z0ZVhMh1+qgSE56XmGI12U5uknA=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=sD7WghWl5p1yEfjdE1/RWQ4f4pjJH8jgQCrs0XlzH8+Ly6B+Jb1ImqzeLmGU9qgOWIfGeSqXyb6vbIGu+teSAH+v6N8SJRa/dPXocdGaNNMS3si5PmbsYI9zXCkB66movgbK5WbF5brZWv1AuoixhQB2t4pgYNyqLNKUD5MgNWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=he0BaJc2; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723616603; x=1755152603;
+  h=from:to:cc:subject:date:message-id;
+  bh=08md5farfI8/U7k7Z0ZVhMh1+qgSE56XmGI12U5uknA=;
+  b=he0BaJc2yoEo1TJsYyysKw5U2aso1WV4iyflYaqQqbD0/GnDM4VsoYha
+   lc4VUNP0mjAd17e+x8Eak4NhYZB5/fpQKub47NPwa0J4He8g9LLd79GP8
+   f46q/IUtLUykf5xmNMFJbUxearnKb00Ymt7d5f7RzEnX9nmi2NYtwW1/A
+   xBJF5LkjjPX2C3NViRziksxv71j/6ShqwIzbnXrLNejERGHE5VpIl0iUq
+   4F6yphMiosMJIFJB7ay+fO2rkH1LmfHh4cIrowUnkEkgJrEQWBJYPoR4x
+   JuKu//p/aiq07pPRN4ruPLTBmNDBjtj1r2/fSGrt2pRwvqA80YAslBLNv
+   g==;
+X-CSE-ConnectionGUID: Cl01zjpYT+yDEQvD/WKbFA==
+X-CSE-MsgGUID: vlRxD6KJS1O5Ucly3Kg2SQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="21972893"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; 
+   d="scan'208";a="21972893"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 23:23:22 -0700
+X-CSE-ConnectionGUID: 6PM9q/EyRBWZJ2fOF+7NJg==
+X-CSE-MsgGUID: 5SqrjFCOTNa6mEgtpO4UhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; 
+   d="scan'208";a="59013610"
+Received: from qiuxu-clx.sh.intel.com ([10.239.53.109])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 23:23:20 -0700
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+To: Tony Luck <tony.luck@intel.com>
+Cc: Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	James Morse <james.morse@arm.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Robert Richter <rric@kernel.org>,
+	linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/1] EDAC/igen6: Fix conversion of system address to physical memory address
+Date: Wed, 14 Aug 2024 14:10:11 +0800
+Message-Id: <20240814061011.43545-1-qiuxu.zhuo@intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-This is an automatic generated email to let you know that the following patch were queued:
+The conversion of system address to physical memory address (as viewed by
+the memory controller) by igen6_edac is incorrect when the system address
+is above the TOM (Total amount Of populated physical Memory) for Elkhart
+Lake and Ice Lake (Neural Network Processor). Fix this conversion.
 
-Subject: media: atomisp: Fix streaming no longer working on BYT / ISP2400 devices
-Author:  Hans de Goede <hdegoede@redhat.com>
-Date:    Sun Jul 21 17:38:40 2024 +0200
-
-Commit a0821ca14bb8 ("media: atomisp: Remove test pattern generator (TPG)
-support") broke BYT support because it removed a seemingly unused field
-from struct sh_css_sp_config and a seemingly unused value from enum
-ia_css_input_mode.
-
-But these are part of the ABI between the kernel and firmware on ISP2400
-and this part of the TPG support removal changes broke ISP2400 support.
-
-ISP2401 support was not affected because on ISP2401 only a part of
-struct sh_css_sp_config is used.
-
-Restore the removed field and enum value to fix this.
-
-Fixes: a0821ca14bb8 ("media: atomisp: Remove test pattern generator (TPG) support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-
- .../staging/media/atomisp/pci/ia_css_stream_public.h  |  8 ++++++--
- drivers/staging/media/atomisp/pci/sh_css_internal.h   | 19 ++++++++++++++++---
- 2 files changed, 22 insertions(+), 5 deletions(-)
-
+Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 ---
+ drivers/edac/igen6_edac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/atomisp/pci/ia_css_stream_public.h b/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
-index 961c61288083..aad860e54d3a 100644
---- a/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
-+++ b/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
-@@ -27,12 +27,16 @@
- #include "ia_css_prbs.h"
- #include "ia_css_input_port.h"
+diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
+index 0fe75eed8973..189a2fc29e74 100644
+--- a/drivers/edac/igen6_edac.c
++++ b/drivers/edac/igen6_edac.c
+@@ -316,7 +316,7 @@ static u64 ehl_err_addr_to_imc_addr(u64 eaddr, int mc)
+ 	if (igen6_tom <= _4GB)
+ 		return eaddr + igen6_tolud - _4GB;
  
--/* Input modes, these enumerate all supported input modes.
-- *  Note that not all ISP modes support all input modes.
-+/*
-+ * Input modes, these enumerate all supported input modes.
-+ * This enum is part of the atomisp firmware ABI and must
-+ * NOT be changed!
-+ * Note that not all ISP modes support all input modes.
-  */
- enum ia_css_input_mode {
- 	IA_CSS_INPUT_MODE_SENSOR, /** data from sensor */
- 	IA_CSS_INPUT_MODE_FIFO,   /** data from input-fifo */
-+	IA_CSS_INPUT_MODE_TPG,    /** data from test-pattern generator */
- 	IA_CSS_INPUT_MODE_PRBS,   /** data from pseudo-random bit stream */
- 	IA_CSS_INPUT_MODE_MEMORY, /** data from a frame in memory */
- 	IA_CSS_INPUT_MODE_BUFFERED_SENSOR /** data is sent through mipi buffer */
-diff --git a/drivers/staging/media/atomisp/pci/sh_css_internal.h b/drivers/staging/media/atomisp/pci/sh_css_internal.h
-index a2d972ea3fa0..959e7f549641 100644
---- a/drivers/staging/media/atomisp/pci/sh_css_internal.h
-+++ b/drivers/staging/media/atomisp/pci/sh_css_internal.h
-@@ -344,7 +344,14 @@ struct sh_css_sp_input_formatter_set {
+-	if (eaddr < _4GB)
++	if (eaddr >= igen6_tom)
+ 		return eaddr + igen6_tolud - igen6_tom;
  
- #define IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT (3)
- 
--/* SP configuration information */
-+/*
-+ * SP configuration information
-+ *
-+ * This struct is part of the atomisp firmware ABI and is directly copied
-+ * to ISP DRAM by sh_css_store_sp_group_to_ddr()
-+ *
-+ * Do NOT change this struct's layout or remove seemingly unused fields!
-+ */
- struct sh_css_sp_config {
- 	u8			no_isp_sync; /* Signal host immediately after start */
- 	u8			enable_raw_pool_locking; /** Enable Raw Buffer Locking for HALv3 Support */
-@@ -354,6 +361,10 @@ struct sh_css_sp_config {
- 	     host (true) or when they are passed to the preview/video pipe
- 	     (false). */
- 
-+	 /*
-+	  * Note the fields below are only used on the ISP2400 not on the ISP2401,
-+	  * sh_css_store_sp_group_to_ddr() skip copying these when run on the ISP2401.
-+	  */
- 	struct {
- 		u8					a_changed;
- 		u8					b_changed;
-@@ -363,11 +374,13 @@ struct sh_css_sp_config {
- 	} input_formatter;
- 
- 	sync_generator_cfg_t	sync_gen;
-+	tpg_cfg_t		tpg;
- 	prbs_cfg_t		prbs;
- 	input_system_cfg_t	input_circuit;
- 	u8			input_circuit_cfg_changed;
--	u32		mipi_sizes_for_check[N_CSI_PORTS][IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT];
--	u8                 enable_isys_event_queue;
-+	u32			mipi_sizes_for_check[N_CSI_PORTS][IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT];
-+	/* These last 2 fields are used on both the ISP2400 and the ISP2401 */
-+	u8			enable_isys_event_queue;
- 	u8			disable_cont_vf;
- };
- 
+ 	return eaddr;
+-- 
+2.17.1
+
 
