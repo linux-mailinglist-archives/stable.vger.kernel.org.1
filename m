@@ -1,198 +1,204 @@
-Return-Path: <stable+bounces-67681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D68E9520B3
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:07:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBDA952104
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE54BB222D4
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:06:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8509B1C21087
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEC81BB6BE;
-	Wed, 14 Aug 2024 17:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M49s2hGM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484CF1BBBCD;
+	Wed, 14 Aug 2024 17:25:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0288E2E3E5;
-	Wed, 14 Aug 2024 17:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A5B111A1;
+	Wed, 14 Aug 2024 17:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723655210; cv=none; b=Sll5asXUQ1eFKT9Od3XACNyOd5V7di5PD6I4pkIw0IVLuDbETJzHAtUx1ndPoBP1fnJvV3A3l+O3hQemjSgX9otbb1KSoWTU4fApi9dtKX4dXV558CD35DUKzV6mujG2NDWtz8SYNaU2w3CyB1SwTqNNu+yzMKcCGmhYmSZRoyw=
+	t=1723656307; cv=none; b=FbfYM1Xpqn67XAPGcVJZ1uoE2WXy1TgBf1RHNK6KSVfOvEnqi2AyBx69i0kXt5GcISXrvOl54cg0GvLkT5L3fMSvm6YNCJiMb5whMAHcf0HHcKp06WFJfe9k/mT5tNAPxbCv3jL/YB7hNNkPKsHjOu2JdY79Cay1hGZ2+3MBZF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723655210; c=relaxed/simple;
-	bh=V+40J9S744Lv5XukuH5ORTMLHPUB/QUXM1e3ATNzDKk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FoSUySBYwNxsp7TljDY3FvxTHCe233t1rNs6hSTmsXmAbrFYh0L8aef5AqM2m3xswsZKnEQKA2wnFTre8Px8OnwEiA/bEjlJApPtENOFOAGpK08CFkUbuDuG4i11DrO2kiDk+nN9YW8OxXpgdNNg6HG7lvh3iJ6PbElO9/ZqF9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M49s2hGM; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2d3bd8784d3so293891a91.3;
-        Wed, 14 Aug 2024 10:06:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723655208; x=1724260008; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eJyDGOa9e890VyGR7m4SBs+qeXxTLNl9Z80pbaWVlzk=;
-        b=M49s2hGM5BLbuYw4kN55ry4gtLrJ+85q8wCuZiCdHr6dtBYRxK3lQI1OGW3SM8mESC
-         eRIy+5whepLQW+hQ7kxKyQN5cXBgb44njv5zP9Su6FRr2M/WyevnnGcLbNPuE0glV0Hx
-         CRsVJ4EREml7KhvKtPsUkiKlAc3XN/RL09hZqjWhh33lTNk6RX7jDSwisu2b7iNPNQ1P
-         Y4A/AuAy9UPXJnXP+xR7jc64UoewG42wGe4HJTcmipc2y6fVTxogWHNsm2ZOpdFv4ip9
-         wsFKC6PeVV/cjzYgNeGdiM3qlcTiTo+atBj9omrVphrlh4H9pCTSfS4aOoHgEultuCE2
-         Wdlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723655208; x=1724260008;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eJyDGOa9e890VyGR7m4SBs+qeXxTLNl9Z80pbaWVlzk=;
-        b=AVRDnXZXFyoCwYK78uBjCVMJlob4ovcLqwEGRjvHghU3Y1c+oxWfL1iUEXqdqj3wKu
-         OQzeP2XgmY8RXhJGuu6vA9sh5RbdZqWO785vowLWlp0KD6LbH4yKZWN16P9bJ6P9y/9Z
-         S6guN5G31NA6vvdxY/h2NgSqtxDEI0oxS/c0G1es5720GQrdd3P7XXne7aFPmcp9Jwpa
-         hpbFQ9FI8gkbI1xa/1Vw4mveQooN37odxp+NtDN32rOUn29Y5PlG+Au8fnrJ3vrkhgG7
-         Fl+ohTDUXpQ2ClMb4nWeESyW1LEHTWg5kM6xIxe428FJZDBz8lgSC5ttPX4YUaeX2njb
-         31yA==
-X-Forwarded-Encrypted: i=1; AJvYcCUWS04IBgepUX40SMGBbwVHNUX2YZU3YPoSnweczVynNuTWIqBcSNLrucHmApWEgEjhsWIHy9FnYTB3bamIt4MM6HetGStyVmy7v/orNTGYmM5uwZbIH107WaU+jlH1AtdN+cwF01S5u0Wqi/jsd7lwDyEoue7YtWS25Q==
-X-Gm-Message-State: AOJu0YzOKau8wNzj8HDCWdDDVQPYjEqv8Doh7rtA19+EbH0ej9YDhc2Q
-	n8aIfJdunkesQMkR0nsUWwJnemicn1xaz9MTC9XoFEHU23KZqO1YI6Zd1bdEinO2/XImSU9Zkxk
-	Ix9gNdeNvS+f5xnmRIPfJZVbf/D8=
-X-Google-Smtp-Source: AGHT+IFpxEFJerNQMdeR4Yo2U8OoEA6DbLNV577OSQZ/EXCkbDWO6HwvzyTFK0iPB1fUKU8OpDK7ocp4RpFKERZ05Gw=
-X-Received: by 2002:a17:90a:9f97:b0:2c7:ab00:f605 with SMTP id
- 98e67ed59e1d1-2d3aab43bb0mr3709604a91.20.1723655208070; Wed, 14 Aug 2024
- 10:06:48 -0700 (PDT)
+	s=arc-20240116; t=1723656307; c=relaxed/simple;
+	bh=Z3uLl1tvie8RHOYfT6GE5r9VjtWSZ+RqULeYciisB4s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZGmIOgAlhrcQsf9qFP+DW3UnGps6ERqXIkb1jCjgD68NWcEeSNFRdhLLtVIyGc0jbpam0rcsljnaTP09CqUBYiVvPAzdAp0KAAKwO1bYUfsxZx5jRFM3tniKZsZeepMNdJUVyr6wv9UqZ6DmYuHD95/Y2UgMblCjmt0ewGb9X8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WkZrb1fnlz9sRy;
+	Wed, 14 Aug 2024 19:25:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id jxUP_fGYFpiT; Wed, 14 Aug 2024 19:25:03 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WkZrb0QPfz9sRs;
+	Wed, 14 Aug 2024 19:25:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F20568B775;
+	Wed, 14 Aug 2024 19:25:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id TDpg8Vpdl9oq; Wed, 14 Aug 2024 19:25:02 +0200 (CEST)
+Received: from [192.168.232.91] (unknown [192.168.232.91])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4CC9B8B764;
+	Wed, 14 Aug 2024 19:25:02 +0200 (CEST)
+Message-ID: <a5127803-238a-4bcb-b518-718c85e63a23@csgroup.eu>
+Date: Wed, 14 Aug 2024 19:25:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240813002932.3373935-1-andrii@kernel.org> <20240813002932.3373935-2-andrii@kernel.org>
- <CAG48ez1oUas3ZMsDdJSxbZoFK0xfsLFiEZjJmOryzkURPPBeBA@mail.gmail.com>
- <CAEf4BzZa9Rkm=MAOOF58K444NAfiRry2Y1DDgPYaB48x6yEdbw@mail.gmail.com> <CAG48ez0QdmjJua8V4RPhs2WmuGGhD++H-e2vacfP1=2jVgCy+w@mail.gmail.com>
-In-Reply-To: <CAG48ez0QdmjJua8V4RPhs2WmuGGhD++H-e2vacfP1=2jVgCy+w@mail.gmail.com>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Wed, 14 Aug 2024 10:06:35 -0700
-Message-ID: <CAEf4Bzb+OyoMqLku0qK0-UFpFjpkWVvb2MeSedFFfWAq4erLkg@mail.gmail.com>
-Subject: Re: [PATCH v5 bpf-next 01/10] lib/buildid: harden build ID parsing logic
-To: Jann Horn <jannh@google.com>
-Cc: Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, adobriyan@gmail.com, shakeel.butt@linux.dev, 
-	hannes@cmpxchg.org, ak@linux.intel.com, osandov@osandov.com, song@kernel.org, 
-	linux-fsdevel@vger.kernel.org, willy@infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/hugetlb: fix hugetlb vs. core-mm PT locking
+To: David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ James Houghton <jthoughton@google.com>, stable@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+References: <20240731122103.382509-1-david@redhat.com> <ZqpQILQ7A_7qTvtq@x1n>
+ <2b0131cf-d066-44ba-96d9-a611448cbaf9@redhat.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <2b0131cf-d066-44ba-96d9-a611448cbaf9@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 14, 2024 at 9:14=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
->
-> On Wed, Aug 14, 2024 at 1:21=E2=80=AFAM Andrii Nakryiko
-> <andrii.nakryiko@gmail.com> wrote:
-> > On Tue, Aug 13, 2024 at 1:59=E2=80=AFPM Jann Horn <jannh@google.com> wr=
-ote:
-> > >
-> > > On Tue, Aug 13, 2024 at 2:29=E2=80=AFAM Andrii Nakryiko <andrii@kerne=
-l.org> wrote:
-> > > > Harden build ID parsing logic, adding explicit READ_ONCE() where it=
-'s
-> > > > important to have a consistent value read and validated just once.
-> > > >
-> > > > Also, as pointed out by Andi Kleen, we need to make sure that entir=
-e ELF
-> > > > note is within a page bounds, so move the overflow check up and add=
- an
-> > > > extra note_size boundaries validation.
-> > > >
-> > > > Fixes tag below points to the code that moved this code into
-> > > > lib/buildid.c, and then subsequently was used in perf subsystem, ma=
-king
-> > > > this code exposed to perf_event_open() users in v5.12+.
-> > >
-> > > Sorry, I missed some things in previous review rounds:
-> > >
-> > > [...]
-> > > > @@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *bu=
-ild_id,
-> > > [...]
-> > > >                 if (nhdr->n_type =3D=3D BUILD_ID &&
-> > > > -                   nhdr->n_namesz =3D=3D sizeof("GNU") &&
-> > > > -                   !strcmp((char *)(nhdr + 1), "GNU") &&
-> > > > -                   nhdr->n_descsz > 0 &&
-> > > > -                   nhdr->n_descsz <=3D BUILD_ID_SIZE_MAX) {
-> > > > -                       memcpy(build_id,
-> > > > -                              note_start + note_offs +
-> > > > -                              ALIGN(sizeof("GNU"), 4) + sizeof(Elf=
-32_Nhdr),
-> > > > -                              nhdr->n_descsz);
-> > > > -                       memset(build_id + nhdr->n_descsz, 0,
-> > > > -                              BUILD_ID_SIZE_MAX - nhdr->n_descsz);
-> > > > +                   name_sz =3D=3D note_name_sz &&
-> > > > +                   strcmp((char *)(nhdr + 1), note_name) =3D=3D 0 =
-&&
-> > >
-> > > Please change this to something like "memcmp((char *)(nhdr + 1),
-> > > note_name, note_name_sz) =3D=3D 0" to ensure that we can't run off th=
-e end
-> > > of the page if there are no null bytes in the rest of the page.
-> >
-> > I did switch this to strncmp() at some earlier point, but then
-> > realized that there is no point because note_name is controlled by us
-> > and will ensure there is a zero at byte (note_name_sz - 1). So I don't
-> > think memcmp() buys us anything.
->
-> There are two reasons why using strcmp() here makes me uneasy.
->
->
-> First: We're still operating on shared memory that can concurrently chang=
-e.
->
-> Let's say strcmp is implemented like this, this is the generic C
-> implementation in the kernel (which I think is the implementation
-> that's used for x86-64):
->
-> int strcmp(const char *cs, const char *ct)
-> {
->         unsigned char c1, c2;
->
->         while (1) {
->                 c1 =3D *cs++;
->                 c2 =3D *ct++;
->                 if (c1 !=3D c2)
->                         return c1 < c2 ? -1 : 1;
->                 if (!c1)
->                         break;
->         }
->         return 0;
-> }
->
-> No READ_ONCE() or anything like that - it's not designed for being
-> used on concurrently changing memory.
->
-> And let's say you call it like strcmp(<shared memory>, "GNU"), and
-> we're now in the fourth iteration. If the compiler decides to re-fetch
-> the value of "c1" from memory for each of the two conditions, then it
-> could be that the "if (c1 !=3D c2)" sees c1=3D'\0' and c2=3D'\0', so the
-> condition evaluates as false; but then at the "if (!c1)", the value in
-> memory changed, and we see c1=3D'A'. So now in the next round, we'll be
-> accessing out-of-bounds memory behind the 4-byte string constant
-> "GNU".
->
-> So I don't think strcmp() on memory that can concurrently change is allow=
-ed.
->
-> (It actually seems like the generic memcmp() is also implemented
-> without READ_ONCE(), maybe we should change that...)
->
->
-> Second: You are assuming that if one side of the strcmp() is at most
-> four bytes long (including null terminator), then strcmp() also won't
-> access more than 4 bytes of the other string, even if that string does
-> not have a null terminator at index 4. I don't think that's part of
-> the normal strcmp() API contract.
 
-Ok, I'm convinced, all fair points. I'll switch to memcmp(), there is
-no downside to that anyways.
+
+Le 31/07/2024 à 18:33, David Hildenbrand a écrit :
+> On 31.07.24 16:54, Peter Xu wrote:
+>> On Wed, Jul 31, 2024 at 02:21:03PM +0200, David Hildenbrand wrote:
+>>> We recently made GUP's common page table walking code to also walk 
+>>> hugetlb
+>>> VMAs without most hugetlb special-casing, preparing for the future of
+>>> having less hugetlb-specific page table walking code in the codebase.
+>>> Turns out that we missed one page table locking detail: page table 
+>>> locking
+>>> for hugetlb folios that are not mapped using a single PMD/PUD.
+>>>
+>>> Assume we have hugetlb folio that spans multiple PTEs (e.g., 64 KiB
+>>> hugetlb folios on arm64 with 4 KiB base page size). GUP, as it walks the
+>>> page tables, will perform a pte_offset_map_lock() to grab the PTE table
+>>> lock.
+>>>
+>>> However, hugetlb that concurrently modifies these page tables would
+>>> actually grab the mm->page_table_lock: with USE_SPLIT_PTE_PTLOCKS, the
+>>> locks would differ. Something similar can happen right now with hugetlb
+>>> folios that span multiple PMDs when USE_SPLIT_PMD_PTLOCKS.
+>>>
+>>> This issue can be reproduced [1], for example triggering:
+>>>
+>>> [ 3105.936100] ------------[ cut here ]------------
+>>> [ 3105.939323] WARNING: CPU: 31 PID: 2732 at mm/gup.c:142 
+>>> try_grab_folio+0x11c/0x188
+>>> [ 3105.944634] Modules linked in: [...]
+>>> [ 3105.974841] CPU: 31 PID: 2732 Comm: reproducer Not tainted 
+>>> 6.10.0-64.eln141.aarch64 #1
+>>> [ 3105.980406] Hardware name: QEMU KVM Virtual Machine, BIOS 
+>>> edk2-20240524-4.fc40 05/24/2024
+>>> [ 3105.986185] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS 
+>>> BTYPE=--)
+>>> [ 3105.991108] pc : try_grab_folio+0x11c/0x188
+>>> [ 3105.994013] lr : follow_page_pte+0xd8/0x430
+>>> [ 3105.996986] sp : ffff80008eafb8f0
+>>> [ 3105.999346] x29: ffff80008eafb900 x28: ffffffe8d481f380 x27: 
+>>> 00f80001207cff43
+>>> [ 3106.004414] x26: 0000000000000001 x25: 0000000000000000 x24: 
+>>> ffff80008eafba48
+>>> [ 3106.009520] x23: 0000ffff9372f000 x22: ffff7a54459e2000 x21: 
+>>> ffff7a546c1aa978
+>>> [ 3106.014529] x20: ffffffe8d481f3c0 x19: 0000000000610041 x18: 
+>>> 0000000000000001
+>>> [ 3106.019506] x17: 0000000000000001 x16: ffffffffffffffff x15: 
+>>> 0000000000000000
+>>> [ 3106.024494] x14: ffffb85477fdfe08 x13: 0000ffff9372ffff x12: 
+>>> 0000000000000000
+>>> [ 3106.029469] x11: 1fffef4a88a96be1 x10: ffff7a54454b5f0c x9 : 
+>>> ffffb854771b12f0
+>>> [ 3106.034324] x8 : 0008000000000000 x7 : ffff7a546c1aa980 x6 : 
+>>> 0008000000000080
+>>> [ 3106.038902] x5 : 00000000001207cf x4 : 0000ffff9372f000 x3 : 
+>>> ffffffe8d481f000
+>>> [ 3106.043420] x2 : 0000000000610041 x1 : 0000000000000001 x0 : 
+>>> 0000000000000000
+>>> [ 3106.047957] Call trace:
+>>> [ 3106.049522]  try_grab_folio+0x11c/0x188
+>>> [ 3106.051996]  follow_pmd_mask.constprop.0.isra.0+0x150/0x2e0
+>>> [ 3106.055527]  follow_page_mask+0x1a0/0x2b8
+>>> [ 3106.058118]  __get_user_pages+0xf0/0x348
+>>> [ 3106.060647]  faultin_page_range+0xb0/0x360
+>>> [ 3106.063651]  do_madvise+0x340/0x598
+>>>
+>>> Let's make huge_pte_lockptr() effectively use the same PT locks as any
+>>> core-mm page table walker would. Add ptep_lockptr() to obtain the PTE
+>>> page table lock using a pte pointer -- unfortunately we cannot convert
+>>> pte_lockptr() because virt_to_page() doesn't work with kmap'ed page
+>>> tables we can have with CONFIG_HIGHPTE.
+>>>
+>>> Take care of PTE tables possibly spanning multiple pages, and take 
+>>> care of
+>>> CONFIG_PGTABLE_LEVELS complexity when e.g., PMD_SIZE == PUD_SIZE. For
+>>> example, with CONFIG_PGTABLE_LEVELS == 2, core-mm would detect
+>>> with hugepagesize==PMD_SIZE pmd_leaf() and use the pmd_lockptr(), which
+>>> would end up just mapping to the per-MM PT lock.
+>>>
+>>> There is one ugly case: powerpc 8xx, whereby we have an 8 MiB hugetlb
+>>> folio being mapped using two PTE page tables.  While hugetlb wants to 
+>>> take
+>>> the PMD table lock, core-mm would grab the PTE table lock of one of both
+>>> PTE page tables.  In such corner cases, we have to make sure that both
+>>> locks match, which is (fortunately!) currently guaranteed for 8xx as it
+>>> does not support SMP and consequently doesn't use split PT locks.
+>>>
+>>> [1] 
+>>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F1bbfcc7f-f222-45a5-ac44-c5a1381c596d%40redhat.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cf91a0b3cdcab46c7bd6108dcb17e9454%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638580404425532305%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=%2FQ4QFqbyThojISHACwzxCdtYbgwc4JsMIP%2Bmx4PneOk%3D&reserved=0
+>>>
+>>> Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic 
+>>> follow_page_mask code")
+>>> Reviewed-by: James Houghton <jthoughton@google.com>
+>>> Cc: <stable@vger.kernel.org>
+>>> Cc: Peter Xu <peterx@redhat.com>
+>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>> Cc: Muchun Song <muchun.song@linux.dev>
+>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>
+>> Nitpick: I wonder whether some of the lines can be simplified if we write
+>> it downwards from PUD, like,
+>>
+>> huge_pte_lockptr()
+>> {
+>>          if (size >= PUD_SIZE)
+>>             return pud_lockptr(...);
+>>          if (size >= PMD_SIZE)
+>>             return pmd_lockptr(...);
+>>          /* Sub-PMD only applies to !CONFIG_HIGHPTE, see 
+>> pte_alloc_huge() */
+>>          WARN_ON(IS_ENABLED(CONFIG_HIGHPTE));
+>>          return ptep_lockptr(...);
+>> }
+> 
+> Let me think about it. For PUD_SIZE == PMD_SIZE instead of like core-mm
+> calling pmd_lockptr we'd call pud_lockptr().
+
+I guess it is only when including asm-generic/pgtable-nopmd.h
+
+Otherwise you should have more than one entry in the PMD table so 
+PMD_SIZE would always be smaller than PUD_SIZE, wouldn't it ?
+
+So maybe some simplification could be done, like having pud_lock() a nop 
+in that case ?
+
+
+Christophe
 
