@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-67680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F936951FF3
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 18:28:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D68E9520B3
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81375B2B90C
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 16:15:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE54BB222D4
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D0B1B8EA3;
-	Wed, 14 Aug 2024 16:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEC81BB6BE;
+	Wed, 14 Aug 2024 17:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y6bsfOlF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M49s2hGM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC931B8EB3
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 16:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0288E2E3E5;
+	Wed, 14 Aug 2024 17:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723652081; cv=none; b=c4MGDGmltV+KVJkEfPtOv6Lt/gLhKVK5Xq75d2NZy+lrJFQGggAnmC9iZ8vzrBHcZL/JoNtEpkcL2jo7nYmidQEjCldxcwProxTTPq8TPWecJ6p9GDC04ea2fe1EuYkTipLRD1+rGoL/EO1d+WqgOo3B3SpxgDkfKTnVrg7nO6Y=
+	t=1723655210; cv=none; b=Sll5asXUQ1eFKT9Od3XACNyOd5V7di5PD6I4pkIw0IVLuDbETJzHAtUx1ndPoBP1fnJvV3A3l+O3hQemjSgX9otbb1KSoWTU4fApi9dtKX4dXV558CD35DUKzV6mujG2NDWtz8SYNaU2w3CyB1SwTqNNu+yzMKcCGmhYmSZRoyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723652081; c=relaxed/simple;
-	bh=1gR7IPGJlvDuH9OGf4O4TKswFpP6LwMPMY2YDmqcZhU=;
+	s=arc-20240116; t=1723655210; c=relaxed/simple;
+	bh=V+40J9S744Lv5XukuH5ORTMLHPUB/QUXM1e3ATNzDKk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EezTDsd2UviKhnhIl2VOvZROU6iT2AN7Nr3TlceyRzullHI7MPP6s5vfnUYhufNa//OyKbOFqTz0zSpBXKpt8+0vKc269ThnhIblwPW2dgFRAqHyvPk/epPKYIdAofXGxvv8x8TnDtTLoNmPvT5qsT/KeVe1K/7vAtqqDNVvxlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y6bsfOlF; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5b9fe5ea355so8521a12.0
-        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 09:14:39 -0700 (PDT)
+	 To:Cc:Content-Type; b=FoSUySBYwNxsp7TljDY3FvxTHCe233t1rNs6hSTmsXmAbrFYh0L8aef5AqM2m3xswsZKnEQKA2wnFTre8Px8OnwEiA/bEjlJApPtENOFOAGpK08CFkUbuDuG4i11DrO2kiDk+nN9YW8OxXpgdNNg6HG7lvh3iJ6PbElO9/ZqF9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M49s2hGM; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2d3bd8784d3so293891a91.3;
+        Wed, 14 Aug 2024 10:06:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723652078; x=1724256878; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1723655208; x=1724260008; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6bQ9j9ErtrrpZhSLzeUe548UlFsO7KLb0/TyLtNcWJw=;
-        b=Y6bsfOlFnrM681/3d/iqNng48eYUH2/3fxGvd1bip/5D70uhu/GyEUXi4dJ4BJTsV8
-         iDJxh8vz3zqBMkfPRYAXED+FfWtM3OXeI9iWoBcPddFwIdt9L/rFZc0vDXiKsTsQKgY+
-         s5A/F5wZNsgIDkiQT/kRNgJ2zCTbH8Ge/1TnRpTnZWc17goih2AlA0l5w4H3+jmmXh3f
-         Fg6FYIjoMqbd8r8Gos/GFq8p2ZXiY/faQfzKGimgEYREspLO8+KYMooQe0xZ1AOb0Jiy
-         cT+skCXnNy5eWhN3NP8pvDLOOpEhh9j4UsW78PENIUSD1Bs/S7uRjmgf3LpHV/Yo1+x4
-         Ls3Q==
+        bh=eJyDGOa9e890VyGR7m4SBs+qeXxTLNl9Z80pbaWVlzk=;
+        b=M49s2hGM5BLbuYw4kN55ry4gtLrJ+85q8wCuZiCdHr6dtBYRxK3lQI1OGW3SM8mESC
+         eRIy+5whepLQW+hQ7kxKyQN5cXBgb44njv5zP9Su6FRr2M/WyevnnGcLbNPuE0glV0Hx
+         CRsVJ4EREml7KhvKtPsUkiKlAc3XN/RL09hZqjWhh33lTNk6RX7jDSwisu2b7iNPNQ1P
+         Y4A/AuAy9UPXJnXP+xR7jc64UoewG42wGe4HJTcmipc2y6fVTxogWHNsm2ZOpdFv4ip9
+         wsFKC6PeVV/cjzYgNeGdiM3qlcTiTo+atBj9omrVphrlh4H9pCTSfS4aOoHgEultuCE2
+         Wdlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723652078; x=1724256878;
+        d=1e100.net; s=20230601; t=1723655208; x=1724260008;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6bQ9j9ErtrrpZhSLzeUe548UlFsO7KLb0/TyLtNcWJw=;
-        b=nRBjiXRRH6j3CONgCjE4D/7KqocBsNkN1VFxXogJormJxuAhmBjZ8y/8TAAdMW5iI7
-         2WRm88WZ1grQHUaa4ypjo8rhJSGktOXQYCmz+qTtuqloD2Mbirr38iLIGceFN+6MdH9x
-         1A89L5APnYH+uxzbBf0kSq/fOvlujM6hYFIdWvmPLxFf1Gt5SwOiNPxj3neOUg0RYAV6
-         FU/CVyTbLk1zSHd5iaufXRY1CYwevmS/rXlspFf2pjAu+PGcpsaEczYkGU8owxrsylLF
-         vsolQUAEOnAmpBWJ9GwvZYSE72z3xbq6APgx2Hk5OKxGF3J/lAnvBxr0Lq33y0gXs0Ci
-         L0bQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYeBph/U/XYnGaEGe0g2vpBV7lD/L4z1y9eI+LZs2IIh6rj0wmlqr+4BlvIXKLygkNJ5ZxOgo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynYjcI9SNA8Mscw7IHLkgVoATLkGgDl7WbJf/DnyImOuUUn1ve
-	ZHFPdd4B5zunsfyD7kMXwggqYPiaQbRHDtEDIcYVvYawpouI+CfYMKDQ/QnIg4ru5FU28ZfvdTq
-	K/JpZU8t7SO+SXFoGxUbeOqY0yr528BB2/Z5O
-X-Google-Smtp-Source: AGHT+IEDxZPD3vJxwWTsDeOPtGLySgwgkgr6dRkg5BY1PBUpXws7SIHVDHMiXTM6viwfIH4s0+WA4qXy/HT+Mlhdu7E=
-X-Received: by 2002:a05:6402:50cf:b0:58b:93:b623 with SMTP id
- 4fb4d7f45d1cf-5bea55635d8mr87569a12.5.1723652077454; Wed, 14 Aug 2024
- 09:14:37 -0700 (PDT)
+        bh=eJyDGOa9e890VyGR7m4SBs+qeXxTLNl9Z80pbaWVlzk=;
+        b=AVRDnXZXFyoCwYK78uBjCVMJlob4ovcLqwEGRjvHghU3Y1c+oxWfL1iUEXqdqj3wKu
+         OQzeP2XgmY8RXhJGuu6vA9sh5RbdZqWO785vowLWlp0KD6LbH4yKZWN16P9bJ6P9y/9Z
+         S6guN5G31NA6vvdxY/h2NgSqtxDEI0oxS/c0G1es5720GQrdd3P7XXne7aFPmcp9Jwpa
+         hpbFQ9FI8gkbI1xa/1Vw4mveQooN37odxp+NtDN32rOUn29Y5PlG+Au8fnrJ3vrkhgG7
+         Fl+ohTDUXpQ2ClMb4nWeESyW1LEHTWg5kM6xIxe428FJZDBz8lgSC5ttPX4YUaeX2njb
+         31yA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWS04IBgepUX40SMGBbwVHNUX2YZU3YPoSnweczVynNuTWIqBcSNLrucHmApWEgEjhsWIHy9FnYTB3bamIt4MM6HetGStyVmy7v/orNTGYmM5uwZbIH107WaU+jlH1AtdN+cwF01S5u0Wqi/jsd7lwDyEoue7YtWS25Q==
+X-Gm-Message-State: AOJu0YzOKau8wNzj8HDCWdDDVQPYjEqv8Doh7rtA19+EbH0ej9YDhc2Q
+	n8aIfJdunkesQMkR0nsUWwJnemicn1xaz9MTC9XoFEHU23KZqO1YI6Zd1bdEinO2/XImSU9Zkxk
+	Ix9gNdeNvS+f5xnmRIPfJZVbf/D8=
+X-Google-Smtp-Source: AGHT+IFpxEFJerNQMdeR4Yo2U8OoEA6DbLNV577OSQZ/EXCkbDWO6HwvzyTFK0iPB1fUKU8OpDK7ocp4RpFKERZ05Gw=
+X-Received: by 2002:a17:90a:9f97:b0:2c7:ab00:f605 with SMTP id
+ 98e67ed59e1d1-2d3aab43bb0mr3709604a91.20.1723655208070; Wed, 14 Aug 2024
+ 10:06:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,13 +72,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240813002932.3373935-1-andrii@kernel.org> <20240813002932.3373935-2-andrii@kernel.org>
- <CAG48ez1oUas3ZMsDdJSxbZoFK0xfsLFiEZjJmOryzkURPPBeBA@mail.gmail.com> <CAEf4BzZa9Rkm=MAOOF58K444NAfiRry2Y1DDgPYaB48x6yEdbw@mail.gmail.com>
-In-Reply-To: <CAEf4BzZa9Rkm=MAOOF58K444NAfiRry2Y1DDgPYaB48x6yEdbw@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 14 Aug 2024 18:13:59 +0200
-Message-ID: <CAG48ez0QdmjJua8V4RPhs2WmuGGhD++H-e2vacfP1=2jVgCy+w@mail.gmail.com>
+ <CAG48ez1oUas3ZMsDdJSxbZoFK0xfsLFiEZjJmOryzkURPPBeBA@mail.gmail.com>
+ <CAEf4BzZa9Rkm=MAOOF58K444NAfiRry2Y1DDgPYaB48x6yEdbw@mail.gmail.com> <CAG48ez0QdmjJua8V4RPhs2WmuGGhD++H-e2vacfP1=2jVgCy+w@mail.gmail.com>
+In-Reply-To: <CAG48ez0QdmjJua8V4RPhs2WmuGGhD++H-e2vacfP1=2jVgCy+w@mail.gmail.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Wed, 14 Aug 2024 10:06:35 -0700
+Message-ID: <CAEf4Bzb+OyoMqLku0qK0-UFpFjpkWVvb2MeSedFFfWAq4erLkg@mail.gmail.com>
 Subject: Re: [PATCH v5 bpf-next 01/10] lib/buildid: harden build ID parsing logic
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+To: Jann Horn <jannh@google.com>
 Cc: Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org, linux-mm@kvack.org, 
 	akpm@linux-foundation.org, adobriyan@gmail.com, shakeel.butt@linux.dev, 
 	hannes@cmpxchg.org, ak@linux.intel.com, osandov@osandov.com, song@kernel.org, 
@@ -86,104 +87,112 @@ Cc: Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 14, 2024 at 1:21=E2=80=AFAM Andrii Nakryiko
-<andrii.nakryiko@gmail.com> wrote:
-> On Tue, Aug 13, 2024 at 1:59=E2=80=AFPM Jann Horn <jannh@google.com> wrot=
-e:
-> >
-> > On Tue, Aug 13, 2024 at 2:29=E2=80=AFAM Andrii Nakryiko <andrii@kernel.=
-org> wrote:
-> > > Harden build ID parsing logic, adding explicit READ_ONCE() where it's
-> > > important to have a consistent value read and validated just once.
-> > >
-> > > Also, as pointed out by Andi Kleen, we need to make sure that entire =
-ELF
-> > > note is within a page bounds, so move the overflow check up and add a=
-n
-> > > extra note_size boundaries validation.
-> > >
-> > > Fixes tag below points to the code that moved this code into
-> > > lib/buildid.c, and then subsequently was used in perf subsystem, maki=
-ng
-> > > this code exposed to perf_event_open() users in v5.12+.
-> >
-> > Sorry, I missed some things in previous review rounds:
-> >
-> > [...]
-> > > @@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *buil=
-d_id,
-> > [...]
-> > >                 if (nhdr->n_type =3D=3D BUILD_ID &&
-> > > -                   nhdr->n_namesz =3D=3D sizeof("GNU") &&
-> > > -                   !strcmp((char *)(nhdr + 1), "GNU") &&
-> > > -                   nhdr->n_descsz > 0 &&
-> > > -                   nhdr->n_descsz <=3D BUILD_ID_SIZE_MAX) {
-> > > -                       memcpy(build_id,
-> > > -                              note_start + note_offs +
-> > > -                              ALIGN(sizeof("GNU"), 4) + sizeof(Elf32=
-_Nhdr),
-> > > -                              nhdr->n_descsz);
-> > > -                       memset(build_id + nhdr->n_descsz, 0,
-> > > -                              BUILD_ID_SIZE_MAX - nhdr->n_descsz);
-> > > +                   name_sz =3D=3D note_name_sz &&
-> > > +                   strcmp((char *)(nhdr + 1), note_name) =3D=3D 0 &&
-> >
-> > Please change this to something like "memcmp((char *)(nhdr + 1),
-> > note_name, note_name_sz) =3D=3D 0" to ensure that we can't run off the =
-end
-> > of the page if there are no null bytes in the rest of the page.
+On Wed, Aug 14, 2024 at 9:14=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
 >
-> I did switch this to strncmp() at some earlier point, but then
-> realized that there is no point because note_name is controlled by us
-> and will ensure there is a zero at byte (note_name_sz - 1). So I don't
-> think memcmp() buys us anything.
+> On Wed, Aug 14, 2024 at 1:21=E2=80=AFAM Andrii Nakryiko
+> <andrii.nakryiko@gmail.com> wrote:
+> > On Tue, Aug 13, 2024 at 1:59=E2=80=AFPM Jann Horn <jannh@google.com> wr=
+ote:
+> > >
+> > > On Tue, Aug 13, 2024 at 2:29=E2=80=AFAM Andrii Nakryiko <andrii@kerne=
+l.org> wrote:
+> > > > Harden build ID parsing logic, adding explicit READ_ONCE() where it=
+'s
+> > > > important to have a consistent value read and validated just once.
+> > > >
+> > > > Also, as pointed out by Andi Kleen, we need to make sure that entir=
+e ELF
+> > > > note is within a page bounds, so move the overflow check up and add=
+ an
+> > > > extra note_size boundaries validation.
+> > > >
+> > > > Fixes tag below points to the code that moved this code into
+> > > > lib/buildid.c, and then subsequently was used in perf subsystem, ma=
+king
+> > > > this code exposed to perf_event_open() users in v5.12+.
+> > >
+> > > Sorry, I missed some things in previous review rounds:
+> > >
+> > > [...]
+> > > > @@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *bu=
+ild_id,
+> > > [...]
+> > > >                 if (nhdr->n_type =3D=3D BUILD_ID &&
+> > > > -                   nhdr->n_namesz =3D=3D sizeof("GNU") &&
+> > > > -                   !strcmp((char *)(nhdr + 1), "GNU") &&
+> > > > -                   nhdr->n_descsz > 0 &&
+> > > > -                   nhdr->n_descsz <=3D BUILD_ID_SIZE_MAX) {
+> > > > -                       memcpy(build_id,
+> > > > -                              note_start + note_offs +
+> > > > -                              ALIGN(sizeof("GNU"), 4) + sizeof(Elf=
+32_Nhdr),
+> > > > -                              nhdr->n_descsz);
+> > > > -                       memset(build_id + nhdr->n_descsz, 0,
+> > > > -                              BUILD_ID_SIZE_MAX - nhdr->n_descsz);
+> > > > +                   name_sz =3D=3D note_name_sz &&
+> > > > +                   strcmp((char *)(nhdr + 1), note_name) =3D=3D 0 =
+&&
+> > >
+> > > Please change this to something like "memcmp((char *)(nhdr + 1),
+> > > note_name, note_name_sz) =3D=3D 0" to ensure that we can't run off th=
+e end
+> > > of the page if there are no null bytes in the rest of the page.
+> >
+> > I did switch this to strncmp() at some earlier point, but then
+> > realized that there is no point because note_name is controlled by us
+> > and will ensure there is a zero at byte (note_name_sz - 1). So I don't
+> > think memcmp() buys us anything.
+>
+> There are two reasons why using strcmp() here makes me uneasy.
+>
+>
+> First: We're still operating on shared memory that can concurrently chang=
+e.
+>
+> Let's say strcmp is implemented like this, this is the generic C
+> implementation in the kernel (which I think is the implementation
+> that's used for x86-64):
+>
+> int strcmp(const char *cs, const char *ct)
+> {
+>         unsigned char c1, c2;
+>
+>         while (1) {
+>                 c1 =3D *cs++;
+>                 c2 =3D *ct++;
+>                 if (c1 !=3D c2)
+>                         return c1 < c2 ? -1 : 1;
+>                 if (!c1)
+>                         break;
+>         }
+>         return 0;
+> }
+>
+> No READ_ONCE() or anything like that - it's not designed for being
+> used on concurrently changing memory.
+>
+> And let's say you call it like strcmp(<shared memory>, "GNU"), and
+> we're now in the fourth iteration. If the compiler decides to re-fetch
+> the value of "c1" from memory for each of the two conditions, then it
+> could be that the "if (c1 !=3D c2)" sees c1=3D'\0' and c2=3D'\0', so the
+> condition evaluates as false; but then at the "if (!c1)", the value in
+> memory changed, and we see c1=3D'A'. So now in the next round, we'll be
+> accessing out-of-bounds memory behind the 4-byte string constant
+> "GNU".
+>
+> So I don't think strcmp() on memory that can concurrently change is allow=
+ed.
+>
+> (It actually seems like the generic memcmp() is also implemented
+> without READ_ONCE(), maybe we should change that...)
+>
+>
+> Second: You are assuming that if one side of the strcmp() is at most
+> four bytes long (including null terminator), then strcmp() also won't
+> access more than 4 bytes of the other string, even if that string does
+> not have a null terminator at index 4. I don't think that's part of
+> the normal strcmp() API contract.
 
-There are two reasons why using strcmp() here makes me uneasy.
-
-
-First: We're still operating on shared memory that can concurrently change.
-
-Let's say strcmp is implemented like this, this is the generic C
-implementation in the kernel (which I think is the implementation
-that's used for x86-64):
-
-int strcmp(const char *cs, const char *ct)
-{
-        unsigned char c1, c2;
-
-        while (1) {
-                c1 =3D *cs++;
-                c2 =3D *ct++;
-                if (c1 !=3D c2)
-                        return c1 < c2 ? -1 : 1;
-                if (!c1)
-                        break;
-        }
-        return 0;
-}
-
-No READ_ONCE() or anything like that - it's not designed for being
-used on concurrently changing memory.
-
-And let's say you call it like strcmp(<shared memory>, "GNU"), and
-we're now in the fourth iteration. If the compiler decides to re-fetch
-the value of "c1" from memory for each of the two conditions, then it
-could be that the "if (c1 !=3D c2)" sees c1=3D'\0' and c2=3D'\0', so the
-condition evaluates as false; but then at the "if (!c1)", the value in
-memory changed, and we see c1=3D'A'. So now in the next round, we'll be
-accessing out-of-bounds memory behind the 4-byte string constant
-"GNU".
-
-So I don't think strcmp() on memory that can concurrently change is allowed=
-.
-
-(It actually seems like the generic memcmp() is also implemented
-without READ_ONCE(), maybe we should change that...)
-
-
-Second: You are assuming that if one side of the strcmp() is at most
-four bytes long (including null terminator), then strcmp() also won't
-access more than 4 bytes of the other string, even if that string does
-not have a null terminator at index 4. I don't think that's part of
-the normal strcmp() API contract.
+Ok, I'm convinced, all fair points. I'll switch to memcmp(), there is
+no downside to that anyways.
 
