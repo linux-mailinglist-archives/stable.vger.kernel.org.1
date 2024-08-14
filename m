@@ -1,160 +1,193 @@
-Return-Path: <stable+bounces-67707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6F39522A8
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 21:29:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2F49522BA
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 21:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A446B221F2
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:28:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB2271C21299
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D601BE879;
-	Wed, 14 Aug 2024 19:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4512D1BE864;
+	Wed, 14 Aug 2024 19:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ub/HBg8j"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="KZ77uaKK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEAB1BE859;
-	Wed, 14 Aug 2024 19:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B425B679
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 19:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723663732; cv=none; b=YztXdxT9CyJBRwrO8BRqwYQFhAP8lTADb//Pvisc7eJJ6q3dre71LtNlMGTOclUsjA124UiJkf3Oeyypd31LHwlH+7+KnKnY5L0aZY31ZD1G9J2sl3qyF45ksJxnJDkEYRuC1qK9BCXhFJCxGyM2WOOmnAwBAn5OeNAalWJ6lDA=
+	t=1723664152; cv=none; b=SZqSEPCN7fR86r4izh0xQnCW8KecDTpD6WACcheqsdJwyasCVp77Ax6Y4MnGO9BEjwL+aY/EVoKeLlV4lP2SFLyU6xmXCxQ7NN7wOElbHMMCSlkpkQiRXU2rfmdmmT//ttWFRuvdlzsZ0oDRoytqVXdShEltzZf6KLN+ltGeS10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723663732; c=relaxed/simple;
-	bh=eaf5+zdx3xtHjOdmlUOAJIL8hsjjZTu8slWcJF11e1U=;
-	h=Date:To:From:Subject:Message-Id; b=urpPA+ZO3gaOHgxIJvJYjgRCwlQI4uEUfqMBeYjywXBiD91L64Mpqr9cYpitbos5kYOhl2OgKEErcTsSxOpph1mjLF7yo+IefeBSFRT9VUzPdxPc7ejLXvkxlBQyKumG1Dj4ifwafD40ZjaQ1zsXZ3uKJuVbWyBnWpq/OK4MtR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ub/HBg8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83686C116B1;
-	Wed, 14 Aug 2024 19:28:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1723663731;
-	bh=eaf5+zdx3xtHjOdmlUOAJIL8hsjjZTu8slWcJF11e1U=;
-	h=Date:To:From:Subject:From;
-	b=Ub/HBg8jTj0g/y6CLac1oxLB2+4Jhk1ThwlYt/DlK7ia6/FUzvCFG7iuubNlafnLC
-	 kBxfCoLaUq+uC6zrFl3D1byESw2ZXcBdO1/SrXdF2jgatGjkKyiQ4ccM5XVA86z9Lc
-	 2zmFiAlb6Mc+My/mDcGcXilK5aYFKrkFXRTKEcgM=
-Date: Wed, 14 Aug 2024 12:28:50 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-fix-state-management-in-error-path-of-log-writing-function.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240814192851.83686C116B1@smtp.kernel.org>
+	s=arc-20240116; t=1723664152; c=relaxed/simple;
+	bh=hCK6Laa/742kBHO3hq7sPCrsBSdM2akuM5yTETvD0Vo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UVaOH/YYjRAjFqEMahRlcx8NLtEHUCYvl5FmAMb43PLZa6XXvSk6IhTSdBqfCzwTBKLDv9iIFHtIwRTJ8qDiW7ju0egTGv/LbfS6B2XRdiMRenKwqOMpxBequdIiXmRwp+FwpcJPBP/1sqAIsmzRvCNredvXQaG+VC6+QE+iZg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=KZ77uaKK; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-690b6cbce11so2920357b3.2
+        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 12:35:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1723664146; x=1724268946; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lXKYkmuG/SU6rLkPPinW1g80glKtRtQVhMpRCtKKj8A=;
+        b=KZ77uaKKz+rtvhhjfZCOmhxFmfCvTigitA0GlX3BxdVUf+HuAsRYvxAabNWDadNqDc
+         iqnahKXQ4eRa+I2eGvfYtANjHvXjudR9U7O3MKKK3IKscoJr/BYuqZjwq50U23jaCzHZ
+         NXMnJGKbXA4+ozeKjakB5CCrnUd2mXC5rffTc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723664146; x=1724268946;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lXKYkmuG/SU6rLkPPinW1g80glKtRtQVhMpRCtKKj8A=;
+        b=DqP0rUVdoe4gKjh08kBaymWNaxmeu2wmhkccxGfVrKHK4Ug3zDLZY/VjhvCkA6BDZS
+         DZ7qFSjWWnL6ZhXXBXEjOadDOsjRRf2AoGTysVU2AjLxytM2V09ncPVdhw3tl44r/661
+         un3NNg8n5zI3Sx3a7TOEo1TjtmPBpJ7f9vZ256kTejkGWYv8buN2kxmADYMXIkypMCkT
+         mUOqidQHV8YIxoVtz+ZNPp1H2uNMR6aDkg0mg7QNCday5/kQGJRX1fLO4ocFOtg5NBRs
+         k5kqYJ6qHPvlRh+xKR8k75FhFok0UgdAwiAGDhRPQibzFLXfUVOILsDvp1qr4I0Veu6e
+         ffaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVuq20mdljlgVNB70vHXnepZ9VxZCQtrix1b0DoB3quz6FgUsWc683Cr2HBW/EawgcNy2fRaafL/KR/3yczlsgPV5v6q7li
+X-Gm-Message-State: AOJu0Yw5dUWi11K0c0j8RBuyUvV3s+ZQxivsu9545+eclunXxF9N6Z4l
+	flCc8pJPJ6eBq/pbbNmrc4phnndq4sHnTzJq7aVff/mDEUVo/hkZmsly3Lq9h5Q5MJrmlw71E+X
+	ZpTVWhU7zlffuC9Mth4PY26hBcpg32+kbMFEX
+X-Google-Smtp-Source: AGHT+IE7lpozbo57felRmsSQr4ai2rs4R3ER9HGxXfX32TS2VRfQKIj+17yMahwS4vWORjT4Ir13rVg9MI6jY42fexo=
+X-Received: by 2002:a05:690c:578f:b0:6af:5295:6673 with SMTP id
+ 00721157ae682-6af5295692fmr3468097b3.28.1723664146311; Wed, 14 Aug 2024
+ 12:35:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240814192824.56750-1-zack.rusin@broadcom.com>
+In-Reply-To: <20240814192824.56750-1-zack.rusin@broadcom.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
+Date: Wed, 14 Aug 2024 14:35:36 -0500
+Message-ID: <CAO6MGti4NYG8-kqUb2+xmQkQc7eJGsGcxa+YJ6Xt5pUf1CgY7A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] drm/vmwgfx: Prevent unmapping active read buffers
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, martin.krastev@broadcom.com, 
+	maaz.mombasawala@broadcom.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Looks Good
+Thanks,
 
-The patch titled
-     Subject: nilfs2: fix state management in error path of log writing function
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-fix-state-management-in-error-path-of-log-writing-function.patch
+Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-state-management-in-error-path-of-log-writing-function.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix state management in error path of log writing function
-Date: Wed, 14 Aug 2024 19:11:19 +0900
-
-After commit a694291a6211 ("nilfs2: separate wait function from
-nilfs_segctor_write") was applied, the log writing function
-nilfs_segctor_do_construct() was able to issue I/O requests continuously
-even if user data blocks were split into multiple logs across segments,
-but two potential flaws were introduced in its error handling.
-
-First, if nilfs_segctor_begin_construction() fails while creating the
-second or subsequent logs, the log writing function returns without
-calling nilfs_segctor_abort_construction(), so the writeback flag set on
-pages/folios will remain uncleared.  This causes page cache operations to
-hang waiting for the writeback flag.  For example,
-truncate_inode_pages_final(), which is called via nilfs_evict_inode() when
-an inode is evicted from memory, will hang.
-
-Second, the NILFS_I_COLLECTED flag set on normal inodes remain uncleared. 
-As a result, if the next log write involves checkpoint creation, that's
-fine, but if a partial log write is performed that does not, inodes with
-NILFS_I_COLLECTED set are erroneously removed from the "sc_dirty_files"
-list, and their data and b-tree blocks may not be written to the device,
-corrupting the block mapping.
-
-Fix these issues by uniformly calling nilfs_segctor_abort_construction()
-on failure of each step in the loop in nilfs_segctor_do_construct(),
-having it clean up logs and segment usages according to progress, and
-correcting the conditions for calling nilfs_redirty_inodes() to ensure
-that the NILFS_I_COLLECTED flag is cleared.
-
-Link: https://lkml.kernel.org/r/20240814101119.4070-1-konishi.ryusuke@gmail.com
-Fixes: a694291a6211 ("nilfs2: separate wait function from nilfs_segctor_write")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/segment.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
---- a/fs/nilfs2/segment.c~nilfs2-fix-state-management-in-error-path-of-log-writing-function
-+++ a/fs/nilfs2/segment.c
-@@ -1812,6 +1812,9 @@ static void nilfs_segctor_abort_construc
- 	nilfs_abort_logs(&logs, ret ? : err);
- 
- 	list_splice_tail_init(&sci->sc_segbufs, &logs);
-+	if (list_empty(&logs))
-+		return; /* if the first segment buffer preparation failed */
-+
- 	nilfs_cancel_segusage(&logs, nilfs->ns_sufile);
- 	nilfs_free_incomplete_logs(&logs, nilfs);
- 
-@@ -2056,7 +2059,7 @@ static int nilfs_segctor_do_construct(st
- 
- 		err = nilfs_segctor_begin_construction(sci, nilfs);
- 		if (unlikely(err))
--			goto out;
-+			goto failed;
- 
- 		/* Update time stamp */
- 		sci->sc_seg_ctime = ktime_get_real_seconds();
-@@ -2120,10 +2123,9 @@ static int nilfs_segctor_do_construct(st
- 	return err;
- 
-  failed_to_write:
--	if (sci->sc_stage.flags & NILFS_CF_IFILE_STARTED)
--		nilfs_redirty_inodes(&sci->sc_dirty_files);
--
-  failed:
-+	if (mode == SC_LSEG_SR && nilfs_sc_cstage_get(sci) >= NILFS_ST_IFILE)
-+		nilfs_redirty_inodes(&sci->sc_dirty_files);
- 	if (nilfs_doing_gc())
- 		nilfs_redirty_inodes(&sci->sc_gc_inodes);
- 	nilfs_segctor_abort_construction(sci, nilfs, err);
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-nilfs2-protect-references-to-superblock-parameters-exposed-in-sysfs.patch
-nilfs2-fix-missing-cleanup-on-rollforward-recovery-error.patch
-nilfs2-fix-state-management-in-error-path-of-log-writing-function.patch
-
+On Wed, Aug 14, 2024 at 2:28=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.com=
+> wrote:
+>
+> The kms paths keep a persistent map active to read and compare the cursor
+> buffer. These maps can race with each other in simple scenario where:
+> a) buffer "a" mapped for update
+> b) buffer "a" mapped for compare
+> c) do the compare
+> d) unmap "a" for compare
+> e) update the cursor
+> f) unmap "a" for update
+> At step "e" the buffer has been unmapped and the read contents is bogus.
+>
+> Prevent unmapping of active read buffers by simply keeping a count of
+> how many paths have currently active maps and unmap only when the count
+> reaches 0.
+>
+> v2: Update doc strings
+>
+> Fixes: 485d98d472d5 ("drm/vmwgfx: Add support for CursorMob and CursorByp=
+ass 4")
+> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
+om.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.19+
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+> ---
+>  drivers/gpu/drm/vmwgfx/vmwgfx_bo.c | 13 +++++++++++--
+>  drivers/gpu/drm/vmwgfx/vmwgfx_bo.h |  3 +++
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/=
+vmwgfx_bo.c
+> index f42ebc4a7c22..a0e433fbcba6 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+> @@ -360,6 +360,8 @@ void *vmw_bo_map_and_cache_size(struct vmw_bo *vbo, s=
+ize_t size)
+>         void *virtual;
+>         int ret;
+>
+> +       atomic_inc(&vbo->map_count);
+> +
+>         virtual =3D ttm_kmap_obj_virtual(&vbo->map, &not_used);
+>         if (virtual)
+>                 return virtual;
+> @@ -383,11 +385,17 @@ void *vmw_bo_map_and_cache_size(struct vmw_bo *vbo,=
+ size_t size)
+>   */
+>  void vmw_bo_unmap(struct vmw_bo *vbo)
+>  {
+> +       int map_count;
+> +
+>         if (vbo->map.bo =3D=3D NULL)
+>                 return;
+>
+> -       ttm_bo_kunmap(&vbo->map);
+> -       vbo->map.bo =3D NULL;
+> +       map_count =3D atomic_dec_return(&vbo->map_count);
+> +
+> +       if (!map_count) {
+> +               ttm_bo_kunmap(&vbo->map);
+> +               vbo->map.bo =3D NULL;
+> +       }
+>  }
+>
+>
+> @@ -421,6 +429,7 @@ static int vmw_bo_init(struct vmw_private *dev_priv,
+>         vmw_bo->tbo.priority =3D 3;
+>         vmw_bo->res_tree =3D RB_ROOT;
+>         xa_init(&vmw_bo->detached_resources);
+> +       atomic_set(&vmw_bo->map_count, 0);
+>
+>         params->size =3D ALIGN(params->size, PAGE_SIZE);
+>         drm_gem_private_object_init(vdev, &vmw_bo->tbo.base, params->size=
+);
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h b/drivers/gpu/drm/vmwgfx/=
+vmwgfx_bo.h
+> index 62b4342d5f7c..43b5439ec9f7 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+> @@ -71,6 +71,8 @@ struct vmw_bo_params {
+>   * @map: Kmap object for semi-persistent mappings
+>   * @res_tree: RB tree of resources using this buffer object as a backing=
+ MOB
+>   * @res_prios: Eviction priority counts for attached resources
+> + * @map_count: The number of currently active maps. Will differ from the
+> + * cpu_writers because it includes kernel maps.
+>   * @cpu_writers: Number of synccpu write grabs. Protected by reservation=
+ when
+>   * increased. May be decreased without reservation.
+>   * @dx_query_ctx: DX context if this buffer object is used as a DX query=
+ MOB
+> @@ -90,6 +92,7 @@ struct vmw_bo {
+>         u32 res_prios[TTM_MAX_BO_PRIORITY];
+>         struct xarray detached_resources;
+>
+> +       atomic_t map_count;
+>         atomic_t cpu_writers;
+>         /* Not ref-counted.  Protected by binding_mutex */
+>         struct vmw_resource *dx_query_ctx;
+> --
+> 2.43.0
+>
 
