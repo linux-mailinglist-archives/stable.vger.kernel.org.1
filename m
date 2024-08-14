@@ -1,83 +1,84 @@
-Return-Path: <stable+bounces-67690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF13952175
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0046A952176
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 19:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5CCE1F2219A
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:45:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76B21F2166D
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 17:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D61566A;
-	Wed, 14 Aug 2024 17:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962C71BC078;
+	Wed, 14 Aug 2024 17:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fpIusVb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHrXekoR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74961B86D5;
-	Wed, 14 Aug 2024 17:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517851B86D5;
+	Wed, 14 Aug 2024 17:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723657515; cv=none; b=UDCgZnPocsYJKzY3x6vkjPbenf1qHlULoxDeBd9QlMHe9PRsoVaC9hKSjG6pr78kXDQN8SYi9LksDUN5qz++oT09rnXoi3vTLKtnhYNt4CnRxE5iFjMny0iiJoN0bPVbf4fXHkIuSfdO+fGsJ1C4nqAqTejDFhW2FzhVy6uopI0=
+	t=1723657559; cv=none; b=H/DMu9naSY2iz3aSBKS7lI0lBFAoxpBDdrCh1WQ/T3SPFbVEt+rWZ7hryo162FqeQu6cdmB1bs9a/2WxC1oDY4YtfGClskGdyq3BzDEef/FNrQpCsvsjiBrDKdtB0CFLwH7WEg9dqgCrFQh6qJRca7a2MVV/j9nlc7nRDmY/xlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723657515; c=relaxed/simple;
-	bh=/8Ew+4ZOFRmrKzDgN2oqtTSflHfwUkFCv/OKvSUOrjE=;
+	s=arc-20240116; t=1723657559; c=relaxed/simple;
+	bh=wAC4ea+KpwuxNBnHFtKKO81lp4kma60H6+z4P6Yf80U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hILArNW/3g9Rsb+Eo3i5Fphyk5FCbBLpkIA/cp7Da8UoNXC4GY4LHP2jDzC/oJcq1auMZHgrlvIbPSHHAW8UteNzc+ANWWGxnB2j2TQFi7hwq/Y05C+BcVbPAPXhwk7jPyYeeWGVipFFZcoE+o9fCPCjh6fSoryaihSt1wksjPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fpIusVb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFBEC116B1;
-	Wed, 14 Aug 2024 17:45:14 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=kWYG2GBX21WjcKnzW8rb9JRpH0oa22Ep2+W4TmXtP5YCcCCCuFPt+CkGdKSfz4vmb+e6YXgvo1Tox90ww7MUlLBK1voXM071g3NscbGzH5xwbwOREhTcjFehTtOz+l8wwZlxv6ahJQY9/IoyKdDHxWs+EyI7LtBnmn6cQSwvJig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHrXekoR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64492C4AF09;
+	Wed, 14 Aug 2024 17:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723657515;
-	bh=/8Ew+4ZOFRmrKzDgN2oqtTSflHfwUkFCv/OKvSUOrjE=;
+	s=korg; t=1723657557;
+	bh=wAC4ea+KpwuxNBnHFtKKO81lp4kma60H6+z4P6Yf80U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2fpIusVbvQQR4KfsGEo+UQmk83OXoOlC60ObLjwEIdmRCGzcw30SaRJaFDvV7oIta
-	 vdRgEKvoL3S8TXNn8X+gbGSWJ2qsCzOXAueMmYH/yOZd8O1yPyGSj7PsrfB/a02lRm
-	 7oebJCK5RpyIhr+GFxWmBlmvZ5tY9ZsJjXp19Fjg=
-Date: Wed, 14 Aug 2024 19:45:12 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y 0/5] Backport of "mptcp: pm: don't try to create sf
- if alloc failed" and more
-Message-ID: <2024081404-tissue-manor-5166@gregkh>
-References: <2024081245-deem-refinance-8605@gregkh>
- <20240813092815.966749-7-matttbe@kernel.org>
+	b=LHrXekoRzEW6OnKWDuyOFxj4KPWM6L9rkbkfo+ISgMd+CiB1lwDSzrddy0RZiR4Kt
+	 XcX6HghXF3FRzVZ4q6SB6s6NCqphZwMWfjhGRSWlSAGkwVa00aBpCyPxBd3SQZXAeC
+	 pfLHpRIay4rFSRnwmsq+4k+1DcsU8iv7YtK/uVGE=
+Date: Wed, 14 Aug 2024 19:45:54 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Chen Ridong <chenridong@huawei.com>, Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 017/568] cgroup/cpuset: Prevent UAF in
+ proc_cpuset_show()
+Message-ID: <2024081444-outwit-panic-83fa@gregkh>
+References: <20240730151639.792277039@linuxfoundation.org>
+ <20240730151640.503086745@linuxfoundation.org>
+ <xrc6s5oyf3b5hflsffklogluuvd75h2khanrke2laes3en5js2@6kvpkcxs7ufj>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240813092815.966749-7-matttbe@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <xrc6s5oyf3b5hflsffklogluuvd75h2khanrke2laes3en5js2@6kvpkcxs7ufj>
 
-On Tue, Aug 13, 2024 at 11:28:16AM +0200, Matthieu Baerts (NGI0) wrote:
-> Patches "mptcp: pm: don't try to create sf if alloc failed" and "mptcp:
-> pm: do not ignore 'subflow' if 'signal' flag is also set" depend on
-> "mptcp: pm: reduce indentation blocks" which depends on "mptcp: pass
-> addr to mptcp_pm_alloc_anno_list". These two patches are simple ones,
-> doing some refactoring that can be picked to ease the backports.
+On Wed, Aug 14, 2024 at 02:05:59PM +0200, Michal Koutný wrote:
+> Hello.
 > 
-> Including these patches avoids conflicts with the two other patches.
+> On Tue, Jul 30, 2024 at 05:42:04PM GMT, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > ...
+> > Fix this problem by using rcu_read_lock in proc_cpuset_show().
+> > As cgroup_root is kfree_rcu after commit d23b5c577715
+> > ("cgroup: Make operations on the cgroup root_list RCU safe"),
+> > css->cgroup won't be freed during the critical section.
+> > To call cgroup_path_ns_locked, css_set_lock is needed, so it is safe to
+> > replace task_get_css with task_css.
 > 
-> While at it, also picked the modifications of the selftests to validate
-> the other modifications. Note that this last patch has been modified to
-> work on v6.1.
-> 
-> If you prefer, feel free to backport these 5 commits to v6.1:
-> 
->   528cb5f2a1e8 c95eb32ced82 cd7c957f936f 85df533a787b 4d2868b5d191
-> 
-> In this order, and thanks to 528cb5f2a1e8 and c95eb32ced82, there are no
-> conflicts.
+> This backport requires also the mentioned d23b5c577715 to be
+> effective (I noticed that is missing in 6.6.y at the moment).
 
-All queued up, thanks.
+It is in 6.6.44.
+
+thanks,
 
 greg k-h
 
