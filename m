@@ -1,101 +1,121 @@
-Return-Path: <stable+bounces-67607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0161695148D
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 08:32:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDA49515B4
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 09:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 346091C22E5F
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 06:32:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7922E285511
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 07:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E4A6A022;
-	Wed, 14 Aug 2024 06:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A69613B58D;
+	Wed, 14 Aug 2024 07:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQbC9k4R"
+	dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b="FEi6p6jC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850611F94D;
-	Wed, 14 Aug 2024 06:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7750413A41F
+	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 07:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723617170; cv=none; b=dujlOMVnHC26kx5uSH3bwQtxvS0fvXSZdEAnSHCQTdBalMlP/IMDYQnoPEY6UP2zNSE+te+WjZDDPPooAxin2u3seDcV8DQabFx+djpAqoiW7Znhof2YqauExLboFWdN1OYMwrZoOxF6ibFnc6trkbgWBRqlJjv+Ls+Y2K0fdzA=
+	t=1723621412; cv=none; b=jgwbDro7wEATpUFLAjz0nSonTMnlXMCkQAA/6vVHej4SAF3oISlcHwKi6ZgO+JCRHoA/H6gHH4r2hrRB+y9mO5rlF5w4cBADCTfqgGIwZsKsu+ACgPdbOpP3CkZUWp6GEMWqVfzUpo0g149h/kGx2nqA6t+o3ljMdr6CxRZfKzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723617170; c=relaxed/simple;
-	bh=m/8S8SGA3FdmSsBj7FumnNtqAYRVRnMckSzNeG4m0uo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U50qVQgAhgTdlDtMDyhYqKuaD+Lq3g9aqFC9s88QkzDT/JpPcTK+BA7mdMkznO1PJsGRQVe5GwFOKuFKHxctvp3W9IQLq4fk6VkhLQyhw/7/rbjSB8V9X47K1HZdIGEEOXjOREi3sFcbm7v+Y8ddWyFY02diCOrCI2+e3nXHYDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQbC9k4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E554C32786;
-	Wed, 14 Aug 2024 06:32:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723617169;
-	bh=m/8S8SGA3FdmSsBj7FumnNtqAYRVRnMckSzNeG4m0uo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HQbC9k4RRobrZWoJXPxLnJVLlonH5Hujyhvy7p4k4XflKlE3KzoLXkIb4LCmroy0C
-	 IbFM7fyabjAyJYxl/T7Xmjbizid9lF3a60uwpUwEPvCvFmYB9jyT6VbVWIUaDNY+gL
-	 rIn2Evntw3J9azwzVdmU0+127oJp6nxvou1gtBp4=
-Date: Wed, 14 Aug 2024 08:32:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
-	James Morse <james.morse@arm.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Robert Richter <rric@kernel.org>, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] EDAC/igen6: Fix conversion of system address to
- physical memory address
-Message-ID: <2024081442-pureness-salutary-35ec@gregkh>
-References: <20240814061011.43545-1-qiuxu.zhuo@intel.com>
+	s=arc-20240116; t=1723621412; c=relaxed/simple;
+	bh=RE60C9dIjR3xdU+DSCU4Zt5xPZP/MHIQfAfKZ+VgP6w=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LdkeH31bTsRV8y1laMA+tQcoorZHFE/caVam95vUi01qED3bI59RwXaPkzoNUWinQvduDeKM7yIe2Bd8LrO1P865AnQ29OaYsAspYoDiyFLkg0YZtl7kNTIh57muCth0YUgJwJmUW/JoLq7K3gk+ly0SuTN4yUuLF1hA0IKzujU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev; spf=pass smtp.mailfrom=holm.dev; dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b=FEi6p6jC; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holm.dev
+Message-ID: <2d48c3c0-286d-4ed7-a3b6-5b4742b0e9d1@holm.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=holm.dev; s=key1;
+	t=1723621407;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XrfB0GMhb8lHryl92k7ibI5+T1BmYcNtqYFF71b3Av4=;
+	b=FEi6p6jCigsTaA6OwHtHCeFysI5w0c2Trf0PRgEJEGRRYqYixoKsIpUB9eOSRLNi3cN7I5
+	jjCc7FN34oUgYagDu0KejypD97g8+hBpPCeTtFNoGdV1GjHNQbSYtv9ng0XTbgHpN5P8NG
+	dWMPXlguhsclffCAJ4Vul2HoK751Wyml4jdx3xfg57AVXTFRt35ZtIQq/DSIpyZQR11vST
+	q/lJ2cKHighVBGgSo/9lpVdb2FN91sbgZ51Ntn7RLZlZXJdiq2ng5tS1QmXidaoUVYy5s3
+	hyU3rtYWWy1pVL/YhR6FbBdDfAEfOuo/mqpoN8ZaK0oBWcCQ2rcAJFDyUDFsYA==
+Date: Wed, 14 Aug 2024 09:43:23 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240814061011.43545-1-qiuxu.zhuo@intel.com>
+Subject: Re: [PATCH 6.10 257/263] drm/amd/display: Defer handling mst up
+ request in resume
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kevin Holm <kevin@holm.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Lin, Wayne" <Wayne.Lin@amd.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "patches@lists.linux.dev" <patches@lists.linux.dev>,
+ "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Wu, Hersen" <hersenxs.wu@amd.com>, "Wheeler, Daniel"
+ <Daniel.Wheeler@amd.com>
+References: <20240812160146.517184156@linuxfoundation.org>
+ <20240812160156.489958533@linuxfoundation.org>
+ <235aa62e-271e-4e2b-b308-e29b561d6419@holm.dev>
+ <2024081345-eggnog-unease-7b3c@gregkh>
+ <CO6PR12MB5489A767C7E0B1CFAEB069A0FC862@CO6PR12MB5489.namprd12.prod.outlook.com>
+ <2024081317-penniless-gondola-2c07@gregkh>
+ <12516acf-bee6-4371-a745-8f9e221bc657@holm.dev>
+Content-Language: en-US
+In-Reply-To: <12516acf-bee6-4371-a745-8f9e221bc657@holm.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Aug 14, 2024 at 02:10:11PM +0800, Qiuxu Zhuo wrote:
-> The conversion of system address to physical memory address (as viewed by
-> the memory controller) by igen6_edac is incorrect when the system address
-> is above the TOM (Total amount Of populated physical Memory) for Elkhart
-> Lake and Ice Lake (Neural Network Processor). Fix this conversion.
+On 8/13/24 21:54, Kevin Holm wrote:
+> On 13.08.24 17:26, Greg Kroah-Hartman wrote:
+>  > On Tue, Aug 13, 2024 at 02:41:34PM +0000, Lin, Wayne wrote:
+>  >> [AMD Official Use Only - AMD Internal Distribution Only]
+>  >>
+>  >> Hi Greg and Kevin,
+>  >>
+>  >> Sorry for inconvenience, but this one should be reverted by another backport 
+> patch:
+>  >> "drm/amd/display: Solve mst monitors blank out problem after resume"
+>  >
+>  > What commit id in Linus's tree is that?
 > 
-> Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-> Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-> ---
->  drivers/edac/igen6_edac.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  From what I can tell it's:
+> e33697141bac18 ("drm/amd/display: Solve mst monitors blank out problem after 
+> resume")
 > 
-> diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-> index 0fe75eed8973..189a2fc29e74 100644
-> --- a/drivers/edac/igen6_edac.c
-> +++ b/drivers/edac/igen6_edac.c
-> @@ -316,7 +316,7 @@ static u64 ehl_err_addr_to_imc_addr(u64 eaddr, int mc)
->  	if (igen6_tom <= _4GB)
->  		return eaddr + igen6_tolud - _4GB;
->  
-> -	if (eaddr < _4GB)
-> +	if (eaddr >= igen6_tom)
->  		return eaddr + igen6_tolud - igen6_tom;
->  
->  	return eaddr;
-> -- 
-> 2.17.1
+> You've send out a message that it failed to apply to a few of the stable trees:
+> - 6.10: https://lore.kernel.org/stable/2024081212-vitally-baked-7f93@gregkh/
+> - 6.6 : https://lore.kernel.org/stable/2024081213-roast-humorless-fd20@gregkh/
+> - 6.1 : https://lore.kernel.org/stable/2024081213-sweep-hungry-2d10@gregkh/
 > 
+> To apply it on top of 6.10.5-rc1 these two patches need to be applied first:
+> f63f86b5affcc2 ("drm/amd/display: Separate setting and programming of cursor")
+> 1ff6631baeb1f5 ("drm/amd/display: Prevent IPX From Link Detect and Set Mode")
+> 
+> I don't know if that solves the problem I initially described as I'm currently
+> on a different setup. What I can say is that it applying those three patches on
+
+Applying the three patches I listed above, fixes the problem for my setup. My
+external 4k monitors now get a signal both on boot and when resuming from sleep.
+
+~kevin
+> top of 6.10.5-rc1 works without conflicts and compiles without errors.
+> 
+> ~kevin
+> 
+>  > thanks,
+>  >
+>  > greg k-h
 > 
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
 
