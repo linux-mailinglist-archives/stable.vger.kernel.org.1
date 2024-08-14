@@ -1,156 +1,254 @@
-Return-Path: <stable+bounces-67717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF279524CF
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 23:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F3F95256C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 00:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E49AF1C22CEB
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 21:30:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADB781C2113F
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 22:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FEC1C8232;
-	Wed, 14 Aug 2024 21:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8ED1494D0;
+	Wed, 14 Aug 2024 22:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJQ99KhU"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jfu11j4e";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="V8n2L59U";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jfu11j4e";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="V8n2L59U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233451BE85F
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 21:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E43222309;
+	Wed, 14 Aug 2024 22:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723671023; cv=none; b=Hp3Qqh1m+n+W2hmCQGCH2v5BtycwSWecd2E4w1v9oD3XMtREMIlOgje3jO9Bt1OSpQlE8rAn1dBt3Npul3eq7oLbd03yjADHIIuUMscJOxh0dgPNH4r0WLd112uqzaH+E2vgJ3C94Wkl2DufWV4ZNtp18YcPMLvsVhN3UpWK9iI=
+	t=1723673892; cv=none; b=Pwah4sCQIhlJD3DmkODhI7ih8Z2i9PoTwdlHBJEOt/Y9IyuOejDjy7H+/gpyPrkIsm+MRwUu8b71Z2wwW+Tt0+IlfCkAVlwBH65jjArTkgWVXMaowgjc0jHQxPHDx27A0K9DjEXB91TMy59Gm02V4COkl2czaXL5868n/A6A59E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723671023; c=relaxed/simple;
-	bh=jDP0WeUn8pqi8uBL9YVkn/FzJaNBB/i2IA/j0/4ZwOQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uSa3IDNJ7jaHIYq3mkWqR1FWYQfFsZTZCnCqC3/i68ON+dh1mqG8VBbKCYT597xWbfDAR0APxWi7FQ5koLsq1v9jyNk4cs8Ke+0DI5U/F6vsEFxC33Q+w62JFxbJWBWTBV52FnsCXf9wRejD+zdU9fj4slybQtFv8eiuuUY+OxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJQ99KhU; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1fd90c2fc68so2755395ad.1
-        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 14:30:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723671020; x=1724275820; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1NsHo05PbFGthvrcP1w5YnBAGWCrQpMiSVu6yHBZxoE=;
-        b=iJQ99KhUyAvtJ10tOQnfLcb0TKCuQ5/i+qiMX/wc/R9iFvqrOIRZP5E2kxAhTGlk3G
-         nLaoMZLukK5Hcgzz+y/UBZ0in6hMs3W8vmKE9rjQs+/VYRRXgpmTPhl4k49EycFcRTEX
-         QkK9Y1Qmz7m8Z6NojyZM3qhvEraYuIjKi4LootY0stOlXzxwHr/0fHDltyLcofKgmezL
-         NGPgKQJu7t/CWUB4nQ4O1krdLmSdN3flSKg3s10zBvYUIVdEkz4/VdIfI/b/cmcz8Sol
-         8y3pyzA65+0rBukp9W5iffDU+poVaHKpttRgSyJkK6NweoW/6ytRsYd53MuYaR7nvFtW
-         BdlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723671020; x=1724275820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1NsHo05PbFGthvrcP1w5YnBAGWCrQpMiSVu6yHBZxoE=;
-        b=nZT+xKAqf1Od/Uq5dWprYFry9XOQMXJzo7IfpP5851Ix+psskUsKqWrAQ8PnTADYg6
-         tzrNCApwoL1faHnZzOtdPrbA1BUlwjdlwA1yQ0IvLpIlI5srWpypBbWry/OXQIwRPybA
-         SdvuhwjLnoJgCoSBaoLVn9+ERXciSo9WPiiDhZLWcnLcOujyTxEmluLEUPE0Ug8E0/a8
-         c+vUJEyt6bgNRdFkjfkgx6l77v2tspjx7hyKyB4mYkdxuTq1/DYKFOCQqybi1TaJ/p2s
-         b1coYFvF31WW4oRbGY31mEOgEBYQDnQxdssJzC2RZ8HBXIJmHajdNdrBQYNZrRYhclRb
-         nw6g==
-X-Forwarded-Encrypted: i=1; AJvYcCV4lNqtHkJ745xc1FRh0Bmz9JsIoWZiLGFGPOdxq4fNwSGdn9PmGobM9S1/17v9YU7/i+I9mLWcLpzlA6VvhajbtS6rGZuo
-X-Gm-Message-State: AOJu0YxK7vDaxG07CcJ1YTHFQeNoYtvDh7wpjCwYlEo9PXw2OcBs7gtx
-	anzZQ9j9ErdmtV3NWc+utgMuCmbQ6tzn0qH5qrTdyvfiweu+pwowB326ThuWZ+Tdob68A/rtNcG
-	ifrgYYaT8hUaSNZ+5boN7enldWPA=
-X-Google-Smtp-Source: AGHT+IGO/6VFtbWnQmfGb+Soi+oj2GvKapSaNMUWtUjMTaIk9DGw3xSWQGUT3mrpqp6wi8a+/6CwpbhvPC7P1WDaC5U=
-X-Received: by 2002:a17:902:e544:b0:1fc:6a13:a394 with SMTP id
- d9443c01a7336-201d63bacdfmr62422645ad.23.1723671020124; Wed, 14 Aug 2024
- 14:30:20 -0700 (PDT)
+	s=arc-20240116; t=1723673892; c=relaxed/simple;
+	bh=FdTDOnsYydbaEH2nWmDTe1iGaqcdhYgdS+mvs4V5YXU=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=JXMZGeWI1ROEMPsP4L81ttb68AbMWUH0LvA0C0w9K5iQnwXBHZwgyHHtg6XFxHN/I5jX5Vamx47vTzoFZLFq+J98LQJddyvz8hXIHmqbbm7YXcm1irlr2Kv+c/qEWQFZeNfvVcUQJ5k9Upfet+m/GhHiDcJ3C+PExWBANheM8M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jfu11j4e; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=V8n2L59U; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jfu11j4e; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=V8n2L59U; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2B73D1FF4D;
+	Wed, 14 Aug 2024 22:18:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1723673888; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mgsbs6MgvDu9P60eUbpMp+vvP/KOYcWYiudaJDvVepg=;
+	b=jfu11j4e1KmRXifh/nvBGvoKoHQxb2F3Jj8DADbVbVpTwlCZYtQbB5CCJMYicysCg2NUO9
+	zwD20VS04ihRodGusbQPkiFtI2XF1891faRDXb0WveM1tfw44+v8sVthA1S/TvjiDV2DLf
+	/3SdSzBn0OUgpiMlqg7amztYVkZhk6Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1723673888;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mgsbs6MgvDu9P60eUbpMp+vvP/KOYcWYiudaJDvVepg=;
+	b=V8n2L59UVSay1GoTKNLc0qY8j+D88Z+8MKBlsmJQHPJxIaTtiJuakPMb3e4qbE+tjFsVMP
+	KZOqWiwCP7RlfwDg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1723673888; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mgsbs6MgvDu9P60eUbpMp+vvP/KOYcWYiudaJDvVepg=;
+	b=jfu11j4e1KmRXifh/nvBGvoKoHQxb2F3Jj8DADbVbVpTwlCZYtQbB5CCJMYicysCg2NUO9
+	zwD20VS04ihRodGusbQPkiFtI2XF1891faRDXb0WveM1tfw44+v8sVthA1S/TvjiDV2DLf
+	/3SdSzBn0OUgpiMlqg7amztYVkZhk6Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1723673888;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mgsbs6MgvDu9P60eUbpMp+vvP/KOYcWYiudaJDvVepg=;
+	b=V8n2L59UVSay1GoTKNLc0qY8j+D88Z+8MKBlsmJQHPJxIaTtiJuakPMb3e4qbE+tjFsVMP
+	KZOqWiwCP7RlfwDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A9B0D139B9;
+	Wed, 14 Aug 2024 22:18:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id SlqGFxstvWaAXQAAD6G6ig
+	(envelope-from <neilb@suse.de>); Wed, 14 Aug 2024 22:18:03 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024081247-until-audacious-6383@gregkh> <07bbc66f-5689-405d-9232-87ba59d2f421@amd.com>
-In-Reply-To: <07bbc66f-5689-405d-9232-87ba59d2f421@amd.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Wed, 14 Aug 2024 17:30:08 -0400
-Message-ID: <CADnq5_MXBZ_WykSMv-GtHZv60aNzvLFVBOvze09o6da3-4-dTQ@mail.gmail.com>
-Subject: Re: AMD drm patch workflow is broken for stable trees
-To: Felix Kuehling <felix.kuehling@amd.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, amd-gfx@lists.freedesktop.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: "NeilBrown" <neilb@suse.de>
+To: "Petr Vorel" <pvorel@suse.cz>
+Cc: "Jeff Layton" <jlayton@kernel.org>,
+ "Chuck Lever III" <chuck.lever@oracle.com>, "Greg KH" <greg@kroah.com>,
+ "Sherry Yang" <sherry.yang@oracle.com>,
+ "Calum Mackay" <calum.mackay@oracle.com>,
+ "linux-stable" <stable@vger.kernel.org>,
+ "Trond Myklebust" <trondmy@hammerspace.com>,
+ "Anna Schumaker" <anna@kernel.org>,
+ "Linux NFS Mailing List" <linux-nfs@vger.kernel.org>,
+ "kernel-team@fb.com" <kernel-team@fb.com>,
+ "ltp@lists.linux.it" <ltp@lists.linux.it>, "Avinesh Kumar" <akumar@suse.de>,
+ "Josef Bacik" <josef@toxicpanda.com>
+Subject:
+ Re: [LTP] [PATCH 1/1] nfsstat01: Update client RPC calls for kernel 6.9
+In-reply-to: <20240814205519.GA550121@pevik>
+References: <>, <20240814205519.GA550121@pevik>
+Date: Thu, 15 Aug 2024 08:17:55 +1000
+Message-id: <172367387549.6062.7078032983644586462@noble.neil.brown.name>
+X-Spam-Flag: NO
+X-Spam-Score: -8.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-8.30 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	R_RATELIMIT(0.00)[from(RLewrxuus8mos16izbn)]
 
-On Wed, Aug 14, 2024 at 4:55=E2=80=AFPM Felix Kuehling <felix.kuehling@amd.=
-com> wrote:
->
-> On 2024-08-12 11:00, Greg KH wrote:
-> > Hi all,
-> >
-> > As some of you have noticed, there's a TON of failure messages being
-> > sent out for AMD gpu driver commits that are tagged for stable
-> > backports.  In short, you all are doing something really wrong with how
-> > you are tagging these.
-> Hi Greg,
->
-> I got notifications about one KFD patch failing to apply on six branches
-> (6.10, 6.6, 6.1, 5.15, 5.10 and 5.4). The funny thing is, that you
-> already applied this patch on two branches back in May. The emails had a
-> suspicious looking date in the header (Sep 17, 2001). I wonder if there
-> was some date glitch that caused a whole bunch of patches to be re-sent
-> to stable somehow:
+On Thu, 15 Aug 2024, Petr Vorel wrote:
+> > On Fri, 12 Jul 2024, Jeff Layton wrote:
+> > > On Fri, 2024-07-12 at 16:12 +1000, NeilBrown wrote:
+>=20
+> > > > My point is that if we are going to change the kernel to accommodate =
+LTP
+> > > > at all, we should accommodate LTP as it is today.  If we are going to
+> > > > change LTP to accommodate the kernel, then it should accommodate the
+> > > > kernel as it is today.
+>=20
+>=20
+> > > The problem is that there is no way for userland tell the difference
+> > > between the older and newer behavior. That was what I was suggesting we
+> > > add.
+>=20
+> > To make sure I wasn't talking through my hat, I had a look at the ltp
+> > code.
+>=20
+> > The test in question simply tests that the count of RPC calls increases.
+>=20
+> > It can get the count of RPC calls in one of 2 ways :
+> >  1/ "lhost" - look directly in /proc/net/rpc/{nfs,nfsd}
+> >  2/ "rhost" - ssh to the server and look in that file.
+>=20
+> FYI "rhost" in LTP can be either using namespaces (Single Host Configuratio=
+n [1]),
+> which is run by default, or SSH based (Two Host Configuration [2]). IMHO mo=
+st of
+> the testers (including myself run tests simply via network namespaces).
+>=20
+> NOTE: I suppose CONFIG_NAMESPACES=3Dy is a must for 'ip netns' to be workin=
+g, thus
+> tests would hopefully failed early on kernel having that disabled.
+>=20
+> > The current test to "fix" this for kernels -ge "6.9" is to force the use
+> > of "rhost".
+>=20
+> > I'm guessing that always using "rhost" for the nfsd stats would always
+> > work.
+>=20
+> FYI this old commit [3] allowed these tests to be working in network namesp=
+aces.
+> It reads for network namespaces both /proc/net/rpc/{nfs,nfsd} from non-name=
+space
+> ("lhost").  This is the subject of the change in 6.9, which now fails.
+> And for SSH based we obviously look on "rhost" already.
 
-I think the crux of the problem is that sometimes patches go into
--next with stable tags and they end getting taken into -fixes as well
-so after the merge window they end up getting picked up for stable
-again.  Going forward, if they land in -next, I'll cherry-pick -x the
-changes into -fixes so there is better traceability.
+That patch looks like a mistake.  The author noticed that the rpc stats
+were not "namespacified" and instead of reporting the bug (and surely
+the whole point of a test suite is to report bugs), they made a change
+that seems completely unnecessary which had the effect of entrenching
+the bug.  Unfortunately the commit message only says why it is same to
+make the change, not why it us useful.
 
-Alex
+>=20
+> > But if not, the code could get both the local and remote nfsd stats, and
+> > check that at least one of them increases (and neither decrease).
+>=20
+> This sounds reasonable, thanks for a hint. I'll just look for client RPC ca=
+lls
+> (/proc/net/rpc/nfs) in both non-namespace and namespace. The only think is =
+that
+> we effectively give up checking where it should be (if it for whatever reas=
+on in
+> the future changes again, we miss that). I'm not sure if this would be trea=
+ted
+> the same as the current situation (Josef Bacik had obvious reasons for this=
+ to
+> be working).
 
->
->     ------------------ original commit in Linus's tree
->     ------------------ From 24e82654e98e96cece5d8b919c522054456eeec6 Mon
->     Sep 17 00:00:00 2001 From: Alex Deucher
->     <alexander.deucher@amd.com>Date: Sun, 14 Apr 2024 13:06:39 -0400
->     Subject: [PATCH] drm/amdkfd: don't allow mapping the MMIO HDP page
->     with large pages ...
->
-> On 6.1 and 6.6, the patch was already applied by you in May:
->
->     $ git log --pretty=3Dfuller stable/linux-6.6.y --grep "drm/amdkfd: do=
-n't allow mapping the MMIO HDP page with large pages"
->     commit 4b4cff994a27ebf7bd3fb9a798a1cdfa8d01b724
->     Author:     Alex Deucher <alexander.deucher@amd.com>
->     AuthorDate: Sun Apr 14 13:06:39 2024 -0400
->     Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     CommitDate: Fri May 17 12:02:34 2024 +0200
->
->          drm/amdkfd: don't allow mapping the MMIO HDP page with large pag=
-es
->     ...
->
-> On 6.10 it was already upstream.
->
-> On 5.4-5.15 it doesn't apply because of conflicts. I can resolve those
-> and send the fixed patches out for you.
->
-> Regards,
->    Felix
->
->
-> >
-> > Please fix it up to NOT have duplicates in multiple branches that end u=
-p
-> > in Linus's tree at different times.  Or if you MUST do that, then give
-> > us a chance to figure out that it IS a duplicate.  As-is, it's not
-> > working at all, and I think I need to just drop all patches for this
-> > driver that are tagged for stable going forward and rely on you all to
-> > provide a proper set of backported fixes when you say they are needed.
-> >
-> > Again, what you are doing today is NOT ok and is broken.  Please fix.
-> >
-> > greg k-h
+Stats should always be visible in the relevant namespace.  server stats
+should be visible in the name space where the server runs.  client stats
+should be visible in the namespace where the filesystem is mounted.
+This has always been true (as long as we have had stats) and if it ever
+stops being true, that is a bug.
+I think the test suite should test for precisely this case.  Testing if
+the stats are visible from a different namespace is not likely to be an
+interesting test - unless you want to guard against the possibility that
+we will one day accidentally de-namespaceify the stats (stranger things
+have happened).
+
+Thanks,
+NeilBrown
+
+>=20
+> @Josef @NFS maintainers: WDYT?
+>=20
+> Kind regards,
+> Petr
+>=20
+> > So ltp doesn't need to know which kernel is being used - it can be
+> > written to work safely on either.
+>=20
+> > NeilBrown
+>=20
+> [1] https://github.com/linux-test-project/ltp/tree/master/testcases/network=
+#single-host-configuration
+> [2] https://github.com/linux-test-project/ltp/tree/master/testcases/network=
+#two-host-configuration
+> [3] https://github.com/linux-test-project/ltp/commit/40958772f11d90e4b5052e=
+7e772a3837d285cf89
+>=20
+> > > To be clear, I hold this opinion loosely. If the consensus is that we
+> > > need to revert things then so be it. I just don't see the value of
+> > > doing that in this particular situation.
+> > > --=20
+> > > Jeff Layton <jlayton@kernel.org>
+>=20
+>=20
+>=20
+
 
