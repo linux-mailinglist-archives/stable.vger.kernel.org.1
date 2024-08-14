@@ -1,200 +1,122 @@
-Return-Path: <stable+bounces-67601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C3B951257
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 04:26:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 864C4951374
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 06:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C141C218AE
-	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 02:26:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FB4C1C22EFE
+	for <lists+stable@lfdr.de>; Wed, 14 Aug 2024 04:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739A51BF53;
-	Wed, 14 Aug 2024 02:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0D94CE13;
+	Wed, 14 Aug 2024 04:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Jm8+mVyo"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kLcFEAiY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB56517C66
-	for <stable@vger.kernel.org>; Wed, 14 Aug 2024 02:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B73182B5;
+	Wed, 14 Aug 2024 04:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723602355; cv=none; b=JUaJIPY7Rdhv4zR03bQuC+BFfQwrymAY3K5DUsd9aNImNdZPedTgZixO9XZ8rLT4+pvZ7yY9RXuJYhvhX4f+1OQr6th9PDeXJ4wK/bigPRBtCJC9wlw5TbE1P8aa4g9l+/OeuS+MzDMQesncFMssaOe3q2vmpXyvjcegsnBeBRM=
+	t=1723609341; cv=none; b=otS6ieKsp9TJShmluX3JqGfVyfqIeXN+9h8dL+dCyjBtLTytPa+bIhOoEEB6uojEQeOK16+B7tyuxOsx4GA0gKi3H2j5o9fMMeuqSiUNdKaANv9kL6nZmGwFc4mlMr0Zon3smGun2P2EAQFQdhomkuonylPFU3I5wHQHE5d8LHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723602355; c=relaxed/simple;
-	bh=2V9ePT8qFQLfcn3Al53k6b66Jf9bRTh5dFrcVZ4ehNw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IdRD4UtmbzI8Bzfk+kpAT5ufUwL+imYqRhLbuWo+M4nT5EJ0I/YF+ASBNhZp1IyJzVFoz5qkAcJ96zZXsIkSqasDF/uh2jP7u9+R4vuUcr8twET6hTnLSgSNmQIn1LoSpKJlv4onCUesAEM7cs2EHo8Po003ctTH7xG6K2urvFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Jm8+mVyo; arc=none smtp.client-ip=209.85.166.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-39b37b63810so3218755ab.3
-        for <stable@vger.kernel.org>; Tue, 13 Aug 2024 19:25:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1723602352; x=1724207152; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=h6LNGe/J5ub4oSc4wEcWX9/lvXmZbxXATcRN21QG/c4=;
-        b=Jm8+mVyoArP0ifQn1Bn16/qrNrDzFXhzWtYz/iVPT4y2mrS2U8vzXhlYjbwWDm6LzL
-         lzDA11RsATJgya26/jgZo5s6OrlhD/ojx5eixhgeYh+qP7G33xEwOIt9HMKPDLfGvhzG
-         pmSRas8eu/kiJvUMQkspbfo4XxqvWiOtbxB27AYwBwmbf/PY6UYDLPVuMK6Pdg8we1z0
-         XRIJfYbLMpAwjcIflkh8Ur6RLUxO9bu+o+lJU1T6zPfLWbD7pH9q3bHm25gaNEdxn0In
-         2ZdU8TR+wlNTvV48yM7RYo+kHzVv+42W/okJj8RaQoNtqSqdcATf4qat3nn+oGQI5ef3
-         hH5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723602352; x=1724207152;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=h6LNGe/J5ub4oSc4wEcWX9/lvXmZbxXATcRN21QG/c4=;
-        b=tbdBRJhsto8CyTNMxgEenlV+KPPQh93+9NmSpPZdTxBW7a9vD8Kmv/a8N9VXAbAqdz
-         rnSgc1MSsJ2eAjidvoV2miZe8zMXwCr0kZtp5Dl+JYNRdA7116Sv95Yz/QyFOuqxN7qO
-         iqQ9ZFexji0vobowQ258M4Sdxo2kmYoO8g31wOvFabhqAkO5+M7o7lE3iZJBj9eZJqaU
-         3VyiiIJXABL0OybQZVvlJac1G0mgcK/oZ/Q+bgNHUxdSByx+1+vk7g685g1fpSa0y0v4
-         7XMA7OT1VkOw7qVvVm4Yebb11piGZOYl4OxQsMbIPVRkbmcR7hkIKKgMcHcxYZ/E00KE
-         zBoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWcOiNq90Iub6ZuKOMb2UcFA5RUYggZOjqXM53Luom9e27ek4JHdnhN7RF1XOH7E3wJulxyFYtInR0uSYVySKECcbmF3e3H
-X-Gm-Message-State: AOJu0Yz6XMOS7UAMfA//svWdy9HCX/h7xUArnNQhjb7QfGNn1sMjR7GD
-	I6mxw77Qo/h0X/Y8KpAwOeF8+H1XlZDo08wFS7u/x4SZ5YezDDxH8FNiHOkqXbY=
-X-Google-Smtp-Source: AGHT+IEn4p4u+nmkKxqQbRWPDC6r2DEt5JWPBdmKEfZqfN+TfyQpUSmW5aIcJHJ7gF6pbgyQMbYzzg==
-X-Received: by 2002:a05:6e02:1d81:b0:39c:2cf0:42f2 with SMTP id e9e14a558f8ab-39d124f2f2dmr10090755ab.4.1723602351912;
-        Tue, 13 Aug 2024 19:25:51 -0700 (PDT)
-Received: from [10.4.217.215] ([139.177.225.242])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7c6979ebfaesm2154264a12.24.2024.08.13.19.25.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Aug 2024 19:25:51 -0700 (PDT)
-Message-ID: <382ae7b5-9ccd-4202-a02d-be5d453f7c43@bytedance.com>
-Date: Wed, 14 Aug 2024 10:25:43 +0800
+	s=arc-20240116; t=1723609341; c=relaxed/simple;
+	bh=Umh3zMhFXKL1dHtYPdGRhTXjQf+cXqe3JQ5A+Vx+L5g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UKprxoGexoH9Qx5n1y+u8sibqof1HuwpfQ/LWarH6a+9iBm2tXZh/0GrHcfC+ePI2Hq34UcIottGVCa/OSoObLw43Qv+YGABylPB+fut9rj0sbtKuOgbNxYptOb3fhtWB1Z11MF3UOvNOY2BYMixM1o1/JNc1Za8IntlfXc8TaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kLcFEAiY; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47E2clNf016977;
+	Wed, 14 Aug 2024 04:22:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	n26wZzdKE0a9/zaYRFmywMl5+MoJimZr3OH3v/Yy5WE=; b=kLcFEAiY7UX2rt2P
+	c22nwZeiv3T6imyN3L27dG5Ppm78iZIFDRWZwvz8zVI5LGXXnA0DLVjVI815A5N8
+	j5R5TVtlOm/qF6XsJYX0enBBuqudwMccZYtCdyyTPa63XJgVao+Aw1nfuP/b9UwC
+	lwakZ0qkIyQJMZsIeMM5Gnt37XxJRGGdrfZpa/PKoeJflW375rxrNnE9EuVKo+Nd
+	u+nxMjIiaErnxEzKXFptKu90S2U9Hqlzb5mYGYmmacm4cxVKAMxGqWI20CeQkEB7
+	AYHDXyuQSVJGKwFr7aREFdCc0eHawvz7gMKqa8GiuQSMGjZyyuGAsFmHC6468UHj
+	xxyDoA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 410kywg640-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Aug 2024 04:22:08 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47E4M7Dk017977
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Aug 2024 04:22:07 GMT
+Received: from [10.218.35.239] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 13 Aug
+ 2024 21:22:05 -0700
+Message-ID: <04fc6990-b249-29cb-bc15-7fe85292f6a0@quicinc.com>
+Date: Wed, 14 Aug 2024 09:52:02 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] userfaultfd: Fix checks for huge PMDs
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH] usb: dwc3: Fix latency of DSTS while receiving wakeup
+ event
 Content-Language: en-US
-To: Jann Horn <jannh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Pavel Emelianov <xemul@virtuozzo.com>, Andrea Arcangeli
- <aarcange@redhat.com>, Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, David Hildenbrand <david@redhat.com>,
- stable@vger.kernel.org
-References: <20240813-uffd-thp-flip-fix-v2-0-5efa61078a41@google.com>
- <20240813-uffd-thp-flip-fix-v2-1-5efa61078a41@google.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <20240813-uffd-thp-flip-fix-v2-1-5efa61078a41@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240730124742.561408-1-quic_prashk@quicinc.com>
+ <20240806235142.cem5f635wmds4bt4@synopsys.com>
+ <ec99fcdc-9404-8cd9-6a30-95e4f5c1edcd@quicinc.com>
+ <20240808000604.quk6rheiqt6ghjhv@synopsys.com>
+ <a89b5098-f9d6-4758-52b4-29d24244a09b@quicinc.com>
+ <20240813233043.uhsxocjr2pn4ujle@synopsys.com>
+From: Prashanth K <quic_prashk@quicinc.com>
+In-Reply-To: <20240813233043.uhsxocjr2pn4ujle@synopsys.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: U3DC_W_ehm6TxCOAMc8KUCv-Ci7pCLnc
+X-Proofpoint-GUID: U3DC_W_ehm6TxCOAMc8KUCv-Ci7pCLnc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-14_03,2024-08-13_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ impostorscore=0 mlxscore=0 phishscore=0 malwarescore=0 clxscore=1015
+ mlxlogscore=749 priorityscore=1501 bulkscore=0 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408140028
 
 
 
-On 2024/8/14 04:25, Jann Horn wrote:
-> This fixes two issues.
+On 14-08-24 05:00 am, Thinh Nguyen wrote:
+>>> When we receive the wakeup event, then the device is no longer in
+>>> L1/L2/U3. The Start Tranfer command should go through. >
+>> Ok will do this, I hope there won't be any corner cases where the link is
+>> down when start_xfer happens. I was not really sure about the history, thats
+>> why tried to incorporate my fix into the above IF check.
+>>
 > 
-> I discovered that the following race can occur:
+> It was initially implemented verbatim base on the Start Transfer command
+> suggestion from the programming guide without considering the dwc3
+> driver flow. First dwc3 checks for U1/U2/U3 state. Then we fixed to only
+> check for L1/L2/U3 state, but it's still not right. I've had this on my
+> TODO list for awhile and haven't made an update since it's not critical.
 > 
->    mfill_atomic                other thread
->    ============                ============
->                                <zap PMD>
->    pmdp_get_lockless() [reads none pmd]
->    <bail if trans_huge>
->    <if none:>
->                                <pagefault creates transhuge zeropage>
->      __pte_alloc [no-op]
->                                <zap PMD>
->    <bail if pmd_trans_huge(*dst_pmd)>
->    BUG_ON(pmd_none(*dst_pmd))
-> 
-> I have experimentally verified this in a kernel with extra mdelay() calls;
-> the BUG_ON(pmd_none(*dst_pmd)) triggers.
-> 
-> On kernels newer than commit 0d940a9b270b ("mm/pgtable: allow
-> pte_offset_map[_lock]() to fail"), this can't lead to anything worse than
-> a BUG_ON(), since the page table access helpers are actually designed to
-> deal with page tables concurrently disappearing; but on older kernels
-> (<=6.4), I think we could probably theoretically race past the two BUG_ON()
-> checks and end up treating a hugepage as a page table.
-> 
-> The second issue is that, as Qi Zheng pointed out, there are other types of
-> huge PMDs that pmd_trans_huge() can't catch: devmap PMDs and swap PMDs
-> (in particular, migration PMDs).
-> On <=6.4, this is worse than the first issue: If mfill_atomic() runs on a
-> PMD that contains a migration entry (which just requires winning a single,
-> fairly wide race), it will pass the PMD to pte_offset_map_lock(), which
-> assumes that the PMD points to a page table.
-> Breakage follows: First, the kernel tries to take the PTE lock (which will
-> crash or maybe worse if there is no "struct page" for the address bits in
-> the migration entry PMD - I think at least on X86 there usually is no
-> corresponding "struct page" thanks to the PTE inversion mitigation, amd64
-> looks different).
-> If that didn't crash, the kernel would next try to write a PTE into what it
-> wrongly thinks is a page table.
-> 
-> As part of fixing these issues, get rid of the check for pmd_trans_huge()
-> before __pte_alloc() - that's redundant, we're going to have to check for
-> that after the __pte_alloc() anyway.
-> 
-> Backport note: pmdp_get_lockless() is pmd_read_atomic() in older
-> kernels.
-> 
-> Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Closes: https://lore.kernel.org/r/59bf3c2e-d58b-41af-ab10-3e631d802229@bytedance.com
+Sure, thanks for the confirmation, will send v2.
 
-Ah, the issue fixed by this patch was not reported by me, so
-I think that this Reported-by does not need to be added. ;)
-
-> Cc: stable@vger.kernel.org
-> Fixes: c1a4de99fada ("userfaultfd: mcopy_atomic|mfill_zeropage: UFFDIO_COPY|UFFDIO_ZEROPAGE preparation")
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
->   mm/userfaultfd.c | 22 ++++++++++++----------
->   1 file changed, 12 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index e54e5c8907fa..290b2a0d84ac 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -787,21 +787,23 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
->   		}
->   
->   		dst_pmdval = pmdp_get_lockless(dst_pmd);
-> -		/*
-> -		 * If the dst_pmd is mapped as THP don't
-> -		 * override it and just be strict.
-> -		 */
-> -		if (unlikely(pmd_trans_huge(dst_pmdval))) {
-> -			err = -EEXIST;
-> -			break;
-> -		}
->   		if (unlikely(pmd_none(dst_pmdval)) &&
->   		    unlikely(__pte_alloc(dst_mm, dst_pmd))) {
->   			err = -ENOMEM;
->   			break;
->   		}
-> -		/* If an huge pmd materialized from under us fail */
-> -		if (unlikely(pmd_trans_huge(*dst_pmd))) {
-> +		dst_pmdval = pmdp_get_lockless(dst_pmd);
-> +		/*
-> +		 * If the dst_pmd is THP don't override it and just be strict.
-> +		 * (This includes the case where the PMD used to be THP and
-> +		 * changed back to none after __pte_alloc().)
-> +		 */
-> +		if (unlikely(!pmd_present(dst_pmdval) || pmd_trans_huge(dst_pmdval) ||
-> +			     pmd_devmap(dst_pmdval))) {
-> +			err = -EEXIST;
-> +			break;
-> +		}
-> +		if (unlikely(pmd_bad(dst_pmdval))) {
->   			err = -EFAULT;
->   			break;
->   		}
-
-Reviewed-by: Qi Zheng <zhengqi.arch@bytedance.com>
-
-> 
+Regards,
+Prashanth K
 
