@@ -1,153 +1,110 @@
-Return-Path: <stable+bounces-67763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77844952D3D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:11:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC10952C0B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 12:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28859282F31
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 11:11:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 364151F24753
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 10:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0AA38FA1;
-	Thu, 15 Aug 2024 11:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CCF1BE874;
+	Thu, 15 Aug 2024 09:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="RRCj+Tkk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hcKddZCm"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eefXyQUH"
 X-Original-To: stable@vger.kernel.org
-Received: from fout1-smtp.messagingengine.com (fout1-smtp.messagingengine.com [103.168.172.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7CA1AC89A
-	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 11:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B419CCED
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 09:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723720277; cv=none; b=ewPivF2yR8sKeylLfTiJBtpeaN1eqiR1939EtzO3pK34n0l6IrLevecwF1cXhhGFVGlziDh/e6mITKW136kmZC5KB/PfENMY2ge2dWysl/GcQ6we1Wz6b4C78UivYZQVWwBcXtri7GZEYS+vl1H+lif9k+QhhCR2HIvUzkvrcU4=
+	t=1723713707; cv=none; b=qy7tp5J5IcP4bKkBOh8EDbvxaTZt14k44azDSa/DVt8+OVzBqK2D7yHkYRTp7O9k7YWO/3eX4FXRbohfkASJNYYM15Vt6G73jlOADziAkdr3svIYasTob0GmNDvoT2V7dclgTiZ0nk3q5OtXom2w3DNEp4JdSC0nz39Jqe6xbXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723720277; c=relaxed/simple;
-	bh=BlzwvOSZZsSlOOUxYiQOGoSiFpi4Lyab8vU8QRIyA+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pZpaPAxr6wi1bboz1yu1fALWvmlXdu7syBr5UH5I8ehfiO2dPLnA1+eoOWK6Nf4BA7/wLp+JOZyTmfbbvGgajBsrY4S1jyAWMIVo5JHY0g01db6Wi+UplUJ3PjieVUoAZD9Adck8qt3NI55lSyPYTmeGKXiRMueAr/Fgpgj0uxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=RRCj+Tkk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hcKddZCm; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-02.internal (phl-compute-02.nyi.internal [10.202.2.42])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 6B3AF1389466;
-	Thu, 15 Aug 2024 04:35:33 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 15 Aug 2024 04:35:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1723710933; x=1723797333; bh=7dwDBbqayQ
-	u+NrewDKQ8tdQi+ATz1CzQcBR/n1fqoK8=; b=RRCj+Tkkar6vdEZeBWx7lJI6qw
-	RvdfRioPgrSZ+xIY3uGpAe6cp4hRxlokB4JicrnKKQ9+YcTe+oz4rtzId32ONIkt
-	tdPsEUXJHHPhIv5mc2RqdqBAzfGqoeD8aXEakikrKWoNBfY56uNvoGzdEPQWGyku
-	d8DIxM5nVgwb5e6urljhmL/BkOJOEx/0FqD1eGDoUpmP2ivWPfPZBmv3/wmo9RlT
-	AEz5LCmsnDbCfLSwk9MQ7OYRvojRNqRgsWtdiYYYP1OR1LjsWH+8kOSXqnZtisOB
-	XlbuKCpMJNdFPf/HCWykfijvfMxCqaNPFwHZzVebER3VC9UMprX1Uzh+9Vxg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1723710933; x=1723797333; bh=7dwDBbqayQu+NrewDKQ8tdQi+ATz
-	1CzQcBR/n1fqoK8=; b=hcKddZCmzxqopPbx1hBRAOmirfVSxKlKX/7LFSx1rTr9
-	63I/ZyDu/+ZUwjET8HmvVWFC5/klPU9d/ooNEtRYyYIXiFNzF0PBBVRKS4ExHuTb
-	7j8zLz6+KOLAOs78cJAM1bMr+NFRTRSThxLQCGikV9Q1xNnrx+WZq6UjzO3QuH/2
-	/0AMwrLsAIcEVa1Z05cxrpWI3DO2aKdtv5pTaftAKLGvf69WDFC3c9PfLM0R//ap
-	mU000Jxjp5Bo05/ZQRNMBZJ9ufcEasXdYoBACTmVpNt7Bjzaoli3sMIXHC/HaOIf
-	s++FZofRegRuQA6EhUgz3lrJ9aO9IrqWvm5MEKuuFQ==
-X-ME-Sender: <xms:1b29ZhmDNyP-tluih_cupoFlhmQzw_mwuMAZo7JnQcFjGuH1oikLkw>
-    <xme:1b29Zs1jba_9dS7_2irQzBXb67r1_Ca_2xAbAbMsslNoLh7StUMM-KKdpSWPHSRNT
-    joXksjR6mE3sQ>
-X-ME-Received: <xmr:1b29ZnoEmrc_jvpqwfE2eXtb7P1tjGkX6j_Bi3-nTmw96uy6AgBLAHCC9i4P5Qhieq27Iwv1hI2jwnYn1dM7_4Sl23Y5KvFVqyoYcw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddtiedgtdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepleeiteevieefteelfeehveegvdetveehgffhvdejffdvleevhfffgeff
-    ffejlefgnecuffhomhgrihhnpehfrhgvvgguvghskhhtohhprdhorhhgnecuvehluhhsth
-    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghh
-    rdgtohhmpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheprghnughirdhshhihthhisehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthht
-    ohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrnh
-    hnhhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheptghhrhhishdrphdrfihilhhsohhn
-    sehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepjhhoohhnrghsrdhlrghhth
-    hinhgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehmrghtthhhvgif
-    rdgruhhlugesihhnthgvlhdrtghomhdprhgtphhtthhopehrohgurhhighhordhvihhvih
-    esihhnthgvlhdrtghomhdprhgtphhtthhopehjohhnrghthhgrnhdrtggrvhhithhtsehi
-    nhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:1b29Zhnw9L1bsLslGhhV860mE3VtzJEtCdNxMeyUAxiNUgbz-6SogA>
-    <xmx:1b29Zv10UDLBIT7ZYnSnmaW5gdGiLBgb0PrIfUzQyPJXTIb6fd36KA>
-    <xmx:1b29Zgu6f3WcfEugdPuK93WVb0NRBQ7sI-xVm28tbO0lPYfFfPey1A>
-    <xmx:1b29ZjWqSUdY6e3w0F7vuw-qOfC5URuIy2vzyLyoaRFO2CdofFcthA>
-    <xmx:1b29ZgEYncYQqaiIAF2cT2fnrTCsEwwqNoz0gzSSV7CYLxN1ivDOJy9K>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Aug 2024 04:35:32 -0400 (EDT)
-Date: Thu, 15 Aug 2024 10:35:25 +0200
-From: Greg KH <greg@kroah.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: stable@vger.kernel.org, Jann Horn <jannh@google.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jonathan Cavitt <Jonathan.cavitt@intel.com>
-Subject: Re: [PATCH 6.1.y] drm/i915/gem: Fix Virtual Memory mapping
- boundaries calculation
-Message-ID: <2024081519-hungry-shuffle-3b9e@gregkh>
-References: <2024081218-quotation-thud-f8b0@gregkh>
- <20240813110829.17820-1-andi.shyti@linux.intel.com>
+	s=arc-20240116; t=1723713707; c=relaxed/simple;
+	bh=nats+0AUfpeNoegI+vGDrbNjh5mZV5ISbmLZ1Eq+z7s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l+qA0f6Zh5QYr4HbrMm4NsmpmWXmiSWzmQSbZpIliDF9nE8pp+qRxF9rLxr7NalwLHpxhapSFus1OCEgTKx8WLTgI/A1TLJ4k2wAsJZKFmM89nasBG6qJhMq9R3cujQu8WO2NXh69lSGpJK2QcY34aLbRlMmT4p4vaGsjFfU16c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eefXyQUH; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5bec4e00978so168463a12.0
+        for <stable@vger.kernel.org>; Thu, 15 Aug 2024 02:21:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723713704; x=1724318504; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/XC00O8mHJaP2PFpA++QvM0IPgaX3SHsT829pcUcGZE=;
+        b=eefXyQUHbQknGOvrJAdZhu3gBvs1v8WPobs/m0iJ/GUw998otZQu5hbb1ZMws4Zwg9
+         0NFUrWvVnsM3ru7IhSFsQgfU+Ab6DLUznaMjuWVQ5IyPY/wfBJRf3vwopG1mqoFaB3Qh
+         VR8S6b0T/7oeV33F4JNkOnBVNE0gqIE6xpIDf17nMhx1Zl6m0Xoxk4JC/az566hn7egu
+         PnSwuUVSQAFObiLjKRrRQIgb61/Ik8V9lwIehoIlHoUxIgp3JbEkNxsXHPpNspUXwmAz
+         oEfJqoY1bdvsFkrQv6OR1K6MEFj9/+aiv0otEkkJv3+1JdXrKO/sGxNpMIU1jMOeDG/j
+         /itQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723713704; x=1724318504;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/XC00O8mHJaP2PFpA++QvM0IPgaX3SHsT829pcUcGZE=;
+        b=hS10RMEj/yWWa6jVLAwTsTKPuH4ISgL2zczBjiMi+arzfBdIJ8OCbSwV7sYMAgYWvD
+         pFvi60j07vrsosk6J18P5ZedpcFJkYU18J0MwJjZxLasYTcNTlLHxCmkdcee5q4dAde2
+         4Q8g1yVkPJxNnUbGe+2xUXLG8teI9nP61CZBDa3vSDptx5W0oUelvBXWpjzcPKc0CfZD
+         aJ3tsbLcVZBi3tHj9513K/6E10odXT4qrfesBsifLR+mU49SGrZtd/VxeoWoJzwmzy02
+         aT0JY1vkRTirGZECSbjwS0wdm/2Tqt/X3adGMZQBxSFanJmtNkiJsfvuzlJZk19VbuOj
+         EdCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUgd/nk17CZ6N1XYdmruDLA8dnSKI97i5Wk+hCaC53CynjBzM5oB82Lo5TWQClVws2nv1OkQGJNmHzvfHK1RoTKd5ke/fTR
+X-Gm-Message-State: AOJu0YylBYrZA3W06o7F5nltEJGGcrvlU94JTya7Y/Z1jl6odYi0iDbL
+	+V+mDf7mDmDTh49uPlkKXHaaCZQRPltqvkuxJwAu9TZgUVP9zwWEzGKN9sd8HE8=
+X-Google-Smtp-Source: AGHT+IHekcCMNCw17uEnoC/sPv658hIQ1jXVkSlnpEtHHcLImpGFQ1SQ55ptRhDzyDLAxMUtve5/pQ==
+X-Received: by 2002:a05:6402:268f:b0:5b8:5851:66cd with SMTP id 4fb4d7f45d1cf-5bea1c6ab89mr3531550a12.2.1723713703685;
+        Thu, 15 Aug 2024 02:21:43 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.202.43])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bebc081cf5sm635471a12.90.2024.08.15.02.21.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Aug 2024 02:21:43 -0700 (PDT)
+Message-ID: <8289dff0-2415-4538-8c86-1c4919458023@linaro.org>
+Date: Thu, 15 Aug 2024 11:21:35 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240813110829.17820-1-andi.shyti@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] MIPS misc patches
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@kernel.org>, Laurent Vivier <laurent@vivier.eu>,
+ stable@vger.kernel.org
+References: <20240621-loongson3-ipi-follow-v2-0-848eafcbb67e@flygoat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240621-loongson3-ipi-follow-v2-0-848eafcbb67e@flygoat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 13, 2024 at 01:08:29PM +0200, Andi Shyti wrote:
-> Commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
-> 
-> Calculating the size of the mapped area as the lesser value
-> between the requested size and the actual size does not consider
-> the partial mapping offset. This can cause page fault access.
-> 
-> Fix the calculation of the starting and ending addresses, the
-> total size is now deduced from the difference between the end and
-> start addresses.
-> 
-> Additionally, the calculations have been rewritten in a clearer
-> and more understandable form.
-> 
-> Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
-> Reported-by: Jann Horn <jannh@google.com>
-> Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: <stable@vger.kernel.org> # v4.9+
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
-> [Joonas: Add Requires: tag]
-> Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
-> Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
-> (cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
-> Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+On 21/6/24 15:11, Jiaxun Yang wrote:
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 > ---
->  drivers/gpu/drm/i915/gem/i915_gem_mman.c | 53 +++++++++++++++++++++---
->  1 file changed, 47 insertions(+), 6 deletions(-)
+> Changes in v2:
+> - v1 was sent in mistake, b4 messed up with QEMU again
+> - Link to v1: https://lore.kernel.org/r/20240621-loongson3-ipi-follow-v1-0-c6e73f2b2844@flygoat.com
+> 
+> ---
+> Jiaxun Yang (3):
+>        hw/mips/loongson3_virt: Store core_iocsr into LoongsonMachineState
+>        hw/mips/loongson3_virt: Fix condition of IPI IOCSR connection
 
-Now queued up, thanks.
+Patches 1 & 2 queued,
 
-greg k-h
+>        linux-user/mips64: Use MIPS64R2-generic as default CPU type
+
+patch 3 superseded by
+https://lore.kernel.org/qemu-devel/20240814133928.6746-4-philmd@linaro.org/
+
+Thanks.
 
