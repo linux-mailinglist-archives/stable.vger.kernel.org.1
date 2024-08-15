@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-69084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05DC95355D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87FAB9533B9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65EB1F2A7A0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C06D1F2691A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033861A0733;
-	Thu, 15 Aug 2024 14:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5791A76C1;
+	Thu, 15 Aug 2024 14:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UivNbO7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7xZ8V9C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B471A01D2;
-	Thu, 15 Aug 2024 14:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC631AC8AE;
+	Thu, 15 Aug 2024 14:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732614; cv=none; b=YBaWnMAqRl4WeRoDCHomfhgOeCfX8cazoX6jFCUZIyiWZQ2uX8qkCW7MAJXyaxGPF5UlBT7uQu6h8F1doHb7ZgCKw9jQxgZBsl2rI65/nFUOJpyO2I3MVl5D4lPk2wXPPbS1M4MKmr0HitMOxYwPLOth2pikl3Bdvp+P5m3twS4=
+	t=1723731501; cv=none; b=JcLf9grUlRdwxVEWUhdu6Bwhrs6iBk/YWVkVGFQDFKlc/5rOGl+WIvXHWTdv+q2/c+/N3Cn7HPTHQjBQN9AiHCEAnBsSKnfvAvS6gWO5Jsks5l48lS7jxMoumKpP+vbjl8FgxC99+5L09lonAwKHw1fbJLSGWmtKvKDqJUFIcbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732614; c=relaxed/simple;
-	bh=/kYK6IZU6os24KGZoHjiLprMZUgdT9LWjXR0Y/yUrMI=;
+	s=arc-20240116; t=1723731501; c=relaxed/simple;
+	bh=hvSoCQeEnSXomsYuMLrl83yGpdIy26IMFrXpa0m2ftI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utaXhnunXxxp5Zy87mRiANxXbnioAXNnsAoDVKDgGwAei3PUCPJG3TS7oqUhcMKulsHZw5tEw2hwckezeNjdYSmM0BvqPlH2nUXnTKlSlXO9CJrMTxl36UBT99C1xcMQPQxZCy9GrVjzsywl1RriNYYedtbv67UACyttgWUsfRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UivNbO7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2400DC4AF0C;
-	Thu, 15 Aug 2024 14:36:53 +0000 (UTC)
+	 MIME-Version; b=cBJcGtAtV0+yn6gOJZVqyhaZIJByVkaMzUWK9BDEbfrtHeXVheH9j2V7Q8oTtVNZ8fMKrnTvwMA8iwyj4fH74Ij/LUYCpBoy5p5VgTt3/VqYEZYVYx1SHf68m/nhEUadTKjhkNvrqb6OyJPbBpx2fFaOjDw/4HDMriikanZBhT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7xZ8V9C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CA5C32786;
+	Thu, 15 Aug 2024 14:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732614;
-	bh=/kYK6IZU6os24KGZoHjiLprMZUgdT9LWjXR0Y/yUrMI=;
+	s=korg; t=1723731501;
+	bh=hvSoCQeEnSXomsYuMLrl83yGpdIy26IMFrXpa0m2ftI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UivNbO7F5JilX+hxtxjpBALY9lqr9rdrS9Rr4H7SXJxqUB//u1hGNG0bfeHDKJ+y
-	 HAg7jL3s3zJDHUqnpTI3BG3p3r9glP0pCc1RRcT32c+PYe1BdUlmjRKGot91XRGTCJ
-	 tq6fCnrPegECX46i2CbfNAE+CfkBZZyCJ1kH2yco=
+	b=W7xZ8V9C3cyfDjQ1sIA2LXqK9MJ8LPvbwrbLNv8xMsyAwSXWUHWXe7hTwPJGvvVAx
+	 nsv/utzVp3a2iLUFzpr4kPltEhBQ4ChCJM1zPYMhiIH/EVS5kp/27HQFyuoqa3Nk7d
+	 NcF2z4hfYdMDce2MufI0wyoLQS6REpmwudlQqibA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esben Haabendal <esben@geanix.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.10 216/352] powerpc/configs: Update defconfig with now user-visible CONFIG_FSL_IFC
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 149/259] ASoC: Intel: Convert to new X86 CPU match macros
 Date: Thu, 15 Aug 2024 15:24:42 +0200
-Message-ID: <20240815131927.638563668@linuxfoundation.org>
+Message-ID: <20240815131908.543219788@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 45547a0a93d85f704b49788cde2e1d9ab9cd363b upstream.
+[ Upstream commit d51ba9c6663d7171681be357f672503f4e2ccdc1 ]
 
-With CONFIG_FSL_IFC now being user-visible, and thus changed from a select
-to depends in CONFIG_MTD_NAND_FSL_IFC, the dependencies needs to be
-selected in defconfigs.
+The new macro set has a consistent namespace and uses C99 initializers
+instead of the grufty C89 ones.
 
-Depends-on: 9ba0cae3cac0 ("memory: fsl_ifc: Make FSL_IFC config visible and selectable")
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240530-fsl-ifc-config-v3-2-1fd2c3d233dd@geanix.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Get rid the of the local macro wrappers for consistency.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20200320131510.594671507@linutronix.de
+Stable-dep-of: 9931f7d5d251 ("ASoC: Intel: use soc_intel_is_byt_cr() only when IOSF_MBI is reachable")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/configs/85xx-hw.config |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/intel/common/soc-intel-quirks.h | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/arch/powerpc/configs/85xx-hw.config
-+++ b/arch/powerpc/configs/85xx-hw.config
-@@ -24,6 +24,7 @@ CONFIG_FS_ENET=y
- CONFIG_FSL_CORENET_CF=y
- CONFIG_FSL_DMA=y
- CONFIG_FSL_HV_MANAGER=y
-+CONFIG_FSL_IFC=y
- CONFIG_FSL_PQ_MDIO=y
- CONFIG_FSL_RIO=y
- CONFIG_FSL_XGMAC_MDIO=y
-@@ -58,6 +59,7 @@ CONFIG_INPUT_FF_MEMLESS=m
- CONFIG_MARVELL_PHY=y
- CONFIG_MDIO_BUS_MUX_GPIO=y
- CONFIG_MDIO_BUS_MUX_MMIOREG=y
-+CONFIG_MEMORY=y
- CONFIG_MMC_SDHCI_OF_ESDHC=y
- CONFIG_MMC_SDHCI_PLTFM=y
- CONFIG_MMC_SDHCI=y
+diff --git a/sound/soc/intel/common/soc-intel-quirks.h b/sound/soc/intel/common/soc-intel-quirks.h
+index 645baf0ed3dd1..a88a91995ce1a 100644
+--- a/sound/soc/intel/common/soc-intel-quirks.h
++++ b/sound/soc/intel/common/soc-intel-quirks.h
+@@ -16,13 +16,11 @@
+ #include <asm/intel-family.h>
+ #include <asm/iosf_mbi.h>
+ 
+-#define ICPU(model)	{ X86_VENDOR_INTEL, 6, model, X86_FEATURE_ANY, }
+-
+ #define SOC_INTEL_IS_CPU(soc, type)				\
+ static inline bool soc_intel_is_##soc(void)			\
+ {								\
+ 	static const struct x86_cpu_id soc##_cpu_ids[] = {	\
+-		ICPU(type),					\
++		X86_MATCH_INTEL_FAM6_MODEL(type, NULL),		\
+ 		{}						\
+ 	};							\
+ 	const struct x86_cpu_id *id;				\
+@@ -33,11 +31,11 @@ static inline bool soc_intel_is_##soc(void)			\
+ 	return false;						\
+ }
+ 
+-SOC_INTEL_IS_CPU(byt, INTEL_FAM6_ATOM_SILVERMONT);
+-SOC_INTEL_IS_CPU(cht, INTEL_FAM6_ATOM_AIRMONT);
+-SOC_INTEL_IS_CPU(apl, INTEL_FAM6_ATOM_GOLDMONT);
+-SOC_INTEL_IS_CPU(glk, INTEL_FAM6_ATOM_GOLDMONT_PLUS);
+-SOC_INTEL_IS_CPU(cml, INTEL_FAM6_KABYLAKE_L);
++SOC_INTEL_IS_CPU(byt, ATOM_SILVERMONT);
++SOC_INTEL_IS_CPU(cht, ATOM_AIRMONT);
++SOC_INTEL_IS_CPU(apl, ATOM_GOLDMONT);
++SOC_INTEL_IS_CPU(glk, ATOM_GOLDMONT_PLUS);
++SOC_INTEL_IS_CPU(cml, KABYLAKE_L);
+ 
+ static inline bool soc_intel_is_byt_cr(struct platform_device *pdev)
+ {
+-- 
+2.43.0
+
 
 
 
