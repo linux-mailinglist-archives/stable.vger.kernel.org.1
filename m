@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-68707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB139953397
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C736953240
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D6321F2473C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B97F51F21C05
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAE51ABEA5;
-	Thu, 15 Aug 2024 14:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3535B1A706A;
+	Thu, 15 Aug 2024 14:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wY8rPt/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="do3bq2qI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC551AB52C;
-	Thu, 15 Aug 2024 14:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B3B1B3F2A;
+	Thu, 15 Aug 2024 14:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731414; cv=none; b=BHmoQqlVd3njsXZASB5YdCvxIShBrV+EG/EBGYW8Bhii9x71FBKgWBk1IHQWgHcGWawW4F7MWwHIcU2mvO+VfRZGzpx3AidagmIfQyyX7mUuirm9NbVmDIweID52Y9UcHHvDQLXukmG9HyAW5c3R+lMTIVv5L2O2eXN0ppEwPmA=
+	t=1723730530; cv=none; b=mELF9RZ735dapM7z5GfGVwM1UuOp5YsuNWV+K0NJn8fZZ6lCYh411kUIiv/IH2V1yddAFElyxTAwShFzXOaU0S9L8iUNx6/eW/Bc0qNGVk67o8Cxdrj7WToyArEcJbOuj+0p3axtQNtZYkoVIilwBkqzHm9CM/hAEMO3NhiwHWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731414; c=relaxed/simple;
-	bh=B0FzT5TIWV6zChQ7KD0IyKjvotn6cb2pkqPBMdaWo3I=;
+	s=arc-20240116; t=1723730530; c=relaxed/simple;
+	bh=ZTlKmO227NyARBAzhCv1tO359NOfvtyeUKOvOdVjMuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHR5jh9Ic5OkpDR8tSPHiB5xJ+lAKH6IX0jctfKOKMoUXTATZE6rLQu+71oVqnVWMW9Hn3TNpyQ10IftG1wQdI3m/ZSfjb3xo7BQT3+td1ePUFIaeDuDutPYkLi2wqM7EvD8Z4NbgIRFEANIhye80l9auACsLAI/nMCUMHLjS6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wY8rPt/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A2FC4AF0C;
-	Thu, 15 Aug 2024 14:16:53 +0000 (UTC)
+	 MIME-Version; b=sqxTXsBrQB2ynQeJud1kgdN+044bRXjn+UC1FfX///J5BO2tziu83FaolILP7WBgB9b6AtCUlm/X/LtpqGiVeG6c3yOuJzQzDbx9flh4JWLGIaXzRZ4U+Y/XV0lB69XzzUNyKz5jbF/XrHCk+hEQTCqU5FAisMNuHnTDQJkU+Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=do3bq2qI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3B4C4AF0D;
+	Thu, 15 Aug 2024 14:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731413;
-	bh=B0FzT5TIWV6zChQ7KD0IyKjvotn6cb2pkqPBMdaWo3I=;
+	s=korg; t=1723730530;
+	bh=ZTlKmO227NyARBAzhCv1tO359NOfvtyeUKOvOdVjMuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wY8rPt/87LaX+K/PQ6I7ol+7XGCO6Q/ti8oOtCFA5CNVTsx95rda/4RPebcJ2ect4
-	 xvzFhRD95JdRUw1KgdG1UcLu3dslMXsj2EohjNi1+oc4/sp+GgBj9XO1eKio4F9wqG
-	 8fZaX7n9yIJE4jc0Uw3Gw2Tj7SX/3iRAHte+7LuY=
+	b=do3bq2qISx+e6jmG6Hs9nzs93bY3mpekzjP14xfVdSaa4Wm0rj6haDJoDwvo/MzHD
+	 9w63v8olQgUAe2KERQY44Z9l/3+f3gxs+HF0SITi123w7pwAIwZ6TLZ+rIbzhO+mHO
+	 PUTcKmthHz16ZP6oG9U/KrXfSJCIaTMKejXngT3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.4 121/259] perf/x86/intel/pt: Fix a topa_entry base address calculation
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 396/484] arm64: cputype: Add Neoverse-V3 definitions
 Date: Thu, 15 Aug 2024 15:24:14 +0200
-Message-ID: <20240815131907.469849117@linuxfoundation.org>
+Message-ID: <20240815131956.745228877@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit ad97196379d0b8cb24ef3d5006978a6554e6467f upstream.
+[ Upstream commit 0ce85db6c2141b7ffb95709d76fc55a27ff3cdc1 ]
 
-topa_entry->base is a bit-field. Bit-fields are not promoted to a 64-bit
-type, even if the underlying type is 64-bit, and so, if necessary, must
-be cast to a larger type when calculations are done.
+Add cputype definitions for Neoverse-V3. These will be used for errata
+detection in subsequent patches.
 
-Fix a topa_entry->base address calculation by adding a cast.
+These values can be found in Table B-249 ("MIDR_EL1 bit descriptions")
+in issue 0001-04 of the Neoverse-V3 TRM, which can be found at:
 
-Without the cast, the address was limited to 36-bits i.e. 64GiB.
+  https://developer.arm.com/documentation/107734/0001/?lang=en
 
-The address calculation is used on systems that do not support Multiple
-Entry ToPA (only Broadwell), and affects physical addresses on or above
-64GiB. Instead of writing to the correct address, the address comprising
-the first 36 bits would be written to.
-
-Intel PT snapshot and sampling modes are not affected.
-
-Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
-Reported-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240624201101.60186-3-adrian.hunter@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240508081400.235362-4-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -827,7 +827,7 @@ static void pt_update_head(struct pt *pt
-  */
- static void *pt_buffer_region(struct pt_buffer *buf)
- {
--	return phys_to_virt(TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
-+	return phys_to_virt((phys_addr_t)TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
- }
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index d222cd4983944..17fb978191d68 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -87,6 +87,7 @@
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
++#define ARM_CPU_PART_NEOVERSE_V3	0xD84
  
- /**
+ #define APM_CPU_PART_POTENZA		0x000
+ 
+@@ -143,6 +144,7 @@
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
++#define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+-- 
+2.43.0
+
 
 
 
