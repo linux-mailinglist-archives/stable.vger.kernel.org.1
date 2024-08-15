@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-68812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5A3953416
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D779535D6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBC6D1C264BB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07401F20FD3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927EC1A3BD0;
-	Thu, 15 Aug 2024 14:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F881684AC;
+	Thu, 15 Aug 2024 14:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUpEI4qs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUmnkGsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FB01A08DB;
-	Thu, 15 Aug 2024 14:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF741A3BD0;
+	Thu, 15 Aug 2024 14:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731744; cv=none; b=Xu6hso8svRVHwIyEj8WDLtBDgeLnojT2ZDCaQw4533Iw2TKfVfRKMWTeKHds5nvNH8gl6Dzvw1fKumsvrXm2soke+A1t5bSYatUtlOFiNsTwdIN/bcumVF1W9ApQBdhoSSLvCZB51Wce9C4QGtoiwAl9hN0csCcQxbhjt132zrw=
+	t=1723732905; cv=none; b=fK4Q0auusP1p0p7sKBt27YezxOivV8UmNbTdKKsGa/dPWJLx0Jy+km68uobPJipXho+pnDyPws63lW0jcSy+UT9i7gU/JW5RlhYUvrbeO11tGE52n+phSjFi7GELuGpNO6HU/U/Czx2Z7qCAJDvJdSdAEBA8Rk/Nf4SadpxQgFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731744; c=relaxed/simple;
-	bh=JMlw46eIIs+2Pnombax2VRQXtA8RkCQl/b4QS1LJgS8=;
+	s=arc-20240116; t=1723732905; c=relaxed/simple;
+	bh=WaJIZLNFDt+aFSWhkyyCSk8D6A+FtR68TE4hhdcQG40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4yo1yCbZ0d/T94Ep4capYYCqJCN0DoU8DFXqppB718s8+BMcUAAAlw9OcOT1MxeFQRLVWi8985ovY7sqrMzrynZxFrbVZpUBhNZLOK+NTUwKHgl0ORsdYP550RXzJ4uJY5w9lRVFxZAyxQK7JIkELhPS4sd36IglGgP4dRaG1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUpEI4qs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B790EC32786;
-	Thu, 15 Aug 2024 14:22:23 +0000 (UTC)
+	 MIME-Version; b=caoI1iryWl6Kv2IEkC7Yz2lecAyh4GDhbXrNPw/1BlcpiTcsibiUc3uMuj3Du/uVEEJPUAhaFLAFraS2hTnZT4ADJUKWWIHhWZskQ9+ynEeY/vnEf9995oP9OJPHG8Hwc/Du2ke8ilIjSaHtGlwpRzeL+k+z4i4Ykb//ALDEeV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUmnkGsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F4BC32786;
+	Thu, 15 Aug 2024 14:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731744;
-	bh=JMlw46eIIs+2Pnombax2VRQXtA8RkCQl/b4QS1LJgS8=;
+	s=korg; t=1723732905;
+	bh=WaJIZLNFDt+aFSWhkyyCSk8D6A+FtR68TE4hhdcQG40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUpEI4qsdL6O0seedaO8C6ofSUkUhyrCJ0btlKuKu09naH57Gyk4KFr8OdE2S9Nv/
-	 zfJjIIuKHHCizcEBU6ZMiel1rmAH0wyv94rllVGaTeW8q1pCJLkalCAVQMC3qegi3E
-	 2Sv7Zh2lgHobmpM3gbbWEwrHA8lJYlNYaYUjhpsc=
+	b=fUmnkGsHyg0jJZSwHzURtqpLVYLSbeB4g4lKtSLApwPlzzHb/i9HQ80LYe86CtjKM
+	 1wX2uGHZCOVuRjnedSk2ES1/L643diFFRxWcJ2TRbMAWOv//l/mBOQqXt38A2ME0e3
+	 OHTQfZh5pZeHHjs23i3BgX4wo6G5JgXK46jJOKrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 224/259] bpf: kprobe: remove unused declaring of bpf_kprobe_override
+Subject: [PATCH 5.10 291/352] arm64: cputype: Add Cortex-X1C definitions
 Date: Thu, 15 Aug 2024 15:25:57 +0200
-Message-ID: <20240815131911.424589821@linuxfoundation.org>
+Message-ID: <20240815131930.701430594@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 0e8b53979ac86eddb3fd76264025a70071a25574 ]
+[ Upstream commit 58d245e03c324d083a0ec3b9ab8ebd46ec9848d7 ]
 
-After the commit 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction
-pointer with original one"), "bpf_kprobe_override" is not used anywhere
-anymore, and we can remove it now.
+Add cputype definitions for Cortex-X1C. These will be used for errata
+detection in subsequent patches.
 
-Link: https://lore.kernel.org/all/20240710085939.11520-1-dongml2@chinatelecom.cn/
+These values can be found in the Cortex-X1C TRM:
 
-Fixes: 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction pointer with original one")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+  https://developer.arm.com/documentation/101968/0002/
+
+... in section B2.107 ("MIDR_EL1, Main ID Register, EL1").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20240801101803.1982459-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 12ee8973ea6f9..d88622a9db7bc 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -578,7 +578,6 @@ do {									\
- struct perf_event;
- 
- DECLARE_PER_CPU(struct pt_regs, perf_trace_regs);
--DECLARE_PER_CPU(int, bpf_kprobe_override);
- 
- extern int  perf_trace_init(struct perf_event *event);
- extern void perf_trace_destroy(struct perf_event *event);
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 35162c15ed6c6..8dccfd2052691 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -84,6 +84,7 @@
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
++#define ARM_CPU_PART_CORTEX_X1C		0xD4C
+ #define ARM_CPU_PART_CORTEX_X3		0xD4E
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+@@ -142,6 +143,7 @@
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
++#define MIDR_CORTEX_X1C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
+ #define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
 -- 
 2.43.0
 
