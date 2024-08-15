@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCE7952FC9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 014A6953212
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1E8EB2739D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA6A11F21E80
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBD019FA91;
-	Thu, 15 Aug 2024 13:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE05519F470;
+	Thu, 15 Aug 2024 14:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl1Qj852"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znBlNZSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794601714D0;
-	Thu, 15 Aug 2024 13:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CC419FA99;
+	Thu, 15 Aug 2024 14:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728956; cv=none; b=FURHJXzMYnUOU0/yRSYamVKQej+tuZJBoPe1pJfQEJpEE49zeWk4DDS+pNl8bGwBBWp0D59hGITt+cJ3WYn4cRmzcDJEvxhqGXL/qNqoBSxv1cshG9lYIrEKolx8pp3D6IXUF4rzsRYo0RzEWUOsKFBnacKoGzx0P5elZqac7Dg=
+	t=1723730490; cv=none; b=VT4wbyAOkNUb99316k8pkBdMoAY1N/erQqN4s6e1KNXxpC7BFI87N5c5ymtV3PH+1rX/48hj+1crn2H8mh0peyo8Gg7foBpAxYhDS9f7qxjzTTCCZ9NDdXrM3EcHBDK40WBNAzhRpKteMpbI/pL0Fa9QEzeol9NYwx1/hfQ6y1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728956; c=relaxed/simple;
-	bh=E62Dqouhcw3r+f7eUAjgyMKetW1BDHkzj86iooPNKlM=;
+	s=arc-20240116; t=1723730490; c=relaxed/simple;
+	bh=b27hLjxZJyAMs2D7OUnRtttirqI3oKfP2wH33ExcBQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atMYw1XIG1PbgUKogCSV+T0xQjGhsSytx6GC1hXsUtoFD6A1bl3x+fC30LMgm4EstH0t6XpEiFUms4bfikn1TBP5iljtBZVYIhFBUvTrbHYfWYq8pIfu8j4YPDOUteMn/+TZn6WfwSvogx3B6PpyIzFlB/WBCAtzoJEcZ9Cgry4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl1Qj852; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9348FC32786;
-	Thu, 15 Aug 2024 13:35:55 +0000 (UTC)
+	 MIME-Version; b=lLc+1y7zAaZe/kit3ZVShXwwYJU90l4LkBIZY3h5zeFPNH8T3ZEz1x9EzbwJ4y3RN1gdaq+hNFRqEWSj7sFeq2i0CYBayeVibDCHO8yZqJ4nJ7Q/B+YRIIP4uXljgO3jM9O8QzaFxqPwbYaSYLjHu1X2QFvG61xI/VjTefy2A/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znBlNZSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50C8C4AF0C;
+	Thu, 15 Aug 2024 14:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728956;
-	bh=E62Dqouhcw3r+f7eUAjgyMKetW1BDHkzj86iooPNKlM=;
+	s=korg; t=1723730490;
+	bh=b27hLjxZJyAMs2D7OUnRtttirqI3oKfP2wH33ExcBQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bl1Qj852YomuxOUDQiAoNWZLTNDfdFd9s+A1+AVqN4oL/qjxLXMn2tRPbSTOpIrV1
-	 ytQUBaXw6IYIVdzhM5d62B7ai1N3LmHBfYF6n4SAkbegf7KUTynIISv8naFFOmCNMq
-	 xJAO7UUxY4ESdBu2zhNd/wPaqEw+4gUn7d19y66I=
+	b=znBlNZSArja7DrHLWfkY3i5eoiPtiR4Oks54TeW7v73Z+iH3wKMyvfzWagndD3WWH
+	 NgEaur0RJHFwJCwVZSku53emxmEu1oB1zuJcnahaCzqTl7NhL1YluXLxK1T3ICs6WT
+	 71QPYvo9bnW0BOn29xwUIumvedYGGaeIJpWBMXOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 164/196] bpf: kprobe: remove unused declaring of bpf_kprobe_override
-Date: Thu, 15 Aug 2024 15:24:41 +0200
-Message-ID: <20240815131858.348707293@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 424/484] scsi: mpi3mr: Avoid IOMMU page faults on REPORT ZONES
+Date: Thu, 15 Aug 2024 15:24:42 +0200
+Message-ID: <20240815131957.833117807@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 0e8b53979ac86eddb3fd76264025a70071a25574 ]
+commit 1abc900ddda8ad2ef739fedf498d415655b6c3b8 upstream.
 
-After the commit 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction
-pointer with original one"), "bpf_kprobe_override" is not used anywhere
-anymore, and we can remove it now.
+Some firmware versions of the 9600 series SAS HBA byte-swap the REPORT
+ZONES command reply buffer from ATA-ZAC devices by directly accessing the
+buffer in the host memory. This does not respect the default command DMA
+direction and causes IOMMU page faults on architectures with an IOMMU
+enforcing write-only mappings for DMA_FROM_DEVICE DMA direction (e.g. AMD
+hosts), leading to the device capacity to be dropped to 0:
 
-Link: https://lore.kernel.org/all/20240710085939.11520-1-dongml2@chinatelecom.cn/
+scsi 18:0:58:0: Direct-Access-ZBC ATA      WDC  WSH722626AL W930 PQ: 0 ANSI: 7
+scsi 18:0:58:0: Power-on or device reset occurred
+sd 18:0:58:0: Attached scsi generic sg9 type 20
+sd 18:0:58:0: [sdj] Host-managed zoned block device
+mpi3mr 0000:c1:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0001 address=0xfec0c400 flags=0x0050]
+mpi3mr 0000:c1:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0001 address=0xfec0c500 flags=0x0050]
+sd 18:0:58:0: [sdj] REPORT ZONES start lba 0 failed
+sd 18:0:58:0: [sdj] REPORT ZONES: Result: hostbyte=DID_SOFT_ERROR driverbyte=DRIVER_OK
+sd 18:0:58:0: [sdj] 0 4096-byte logical blocks: (0 B/0 B)
+sd 18:0:58:0: [sdj] Write Protect is off
+sd 18:0:58:0: [sdj] Mode Sense: 6b 00 10 08
+sd 18:0:58:0: [sdj] Write cache: enabled, read cache: enabled, supports DPO and FUA
+sd 18:0:58:0: [sdj] Attached SCSI disk
 
-Fixes: 66665ad2f102 ("tracing/kprobe: bpf: Compare instruction pointer with original one")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Avoid this issue by always mapping the buffer of REPORT ZONES commands
+using DMA_BIDIRECTIONAL, that is, using a read-write IOMMU mapping.
+
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Fixes: 023ab2a9b4ed ("scsi: mpi3mr: Add support for queue command processing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240719073913.179559-2-dlemoal@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/trace_events.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index f4077379420fa..f0f7b348fe5e0 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -560,7 +560,6 @@ do {									\
- struct perf_event;
- 
- DECLARE_PER_CPU(struct pt_regs, perf_trace_regs);
--DECLARE_PER_CPU(int, bpf_kprobe_override);
- 
- extern int  perf_trace_init(struct perf_event *event);
- extern void perf_trace_destroy(struct perf_event *event);
--- 
-2.43.0
-
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -2411,6 +2411,17 @@ static int mpi3mr_prepare_sg_scmd(struct
+ 		    scmd->sc_data_direction);
+ 		priv->meta_sg_valid = 1; /* To unmap meta sg DMA */
+ 	} else {
++		/*
++		 * Some firmware versions byte-swap the REPORT ZONES command
++		 * reply from ATA-ZAC devices by directly accessing in the host
++		 * buffer. This does not respect the default command DMA
++		 * direction and causes IOMMU page faults on some architectures
++		 * with an IOMMU enforcing write mappings (e.g. AMD hosts).
++		 * Avoid such issue by making the REPORT ZONES buffer mapping
++		 * bi-directional.
++		 */
++		if (scmd->cmnd[0] == ZBC_IN && scmd->cmnd[1] == ZI_REPORT_ZONES)
++			scmd->sc_data_direction = DMA_BIDIRECTIONAL;
+ 		sg_scmd = scsi_sglist(scmd);
+ 		sges_left = scsi_dma_map(scmd);
+ 	}
 
 
 
