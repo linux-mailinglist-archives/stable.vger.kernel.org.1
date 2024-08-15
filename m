@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-68383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B61B9531EA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A16952F85
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 238A22881D5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C3AE1C209BE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E9F19EECF;
-	Thu, 15 Aug 2024 13:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3249D1AAE34;
+	Thu, 15 Aug 2024 13:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oj2VQ6xk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCjkVZFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8253A19DFA6;
-	Thu, 15 Aug 2024 13:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E460A1A76BC;
+	Thu, 15 Aug 2024 13:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730394; cv=none; b=lHnLYxjV0hIUxQFp4FUroQjG5C2zfiDWp5CaQMUvBC46xADQHP5/4ubE884JsqAEjFVm93brliEVPY6yoKHoU6OjdRaoHi8wKOQceZF9j+ptVdMiGkTPXKAuToiNSVta1OSiqlteJJROn44kv7dT9M889Df289qbj5adDIc7ncI=
+	t=1723728787; cv=none; b=ktOYKsk+/BtDG/YG1+DzG71g9POchH27qxpLY/4Tnj0ISur+Iupy7YkyBopw658nqNdiNQKOCHnzEnfeEdnWuDiHAKCd3BX3PM5C+7gS7P6CHVrSgsuz8O0NkOGidZXTcZI5fFk/pU8ytv+0x4+9MO17BcdLj6Zl38pmv1mjLZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730394; c=relaxed/simple;
-	bh=t32yhA0i59JFLL8btd3UEYndgZallchqcaVPjUGY6LI=;
+	s=arc-20240116; t=1723728787; c=relaxed/simple;
+	bh=d/oaxdFHOw1VAdWIW6ggiIlBeUWboaZuDHjdO2zh0hQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owOEuN5snNLK6DgTIGrcpX5AWPWedu5g4XoGzmieNzEVpcEbn1kJBE+ocvWPecXKn2iO8MuLvjulXJLc3lsEsQ1RTaWuT+3mHUMF7NCX5MoUOLy8jscT8awlfckitPiEp7UI7TqSALid7iLl89q///8WZjYndWuj843aW9G32eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oj2VQ6xk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF3CC32786;
-	Thu, 15 Aug 2024 13:59:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VM7KOq0HrE86rv86eiIjG5brIH5lw83eHlpvxOKe8Uix1TlhuTByoBh1eCWWzW/OXANXULv13iAxjXc4Pq0TfGvZRV5oTBqyAbgxtjejoG9252CMQggDhBFsMmLmo6rC8WT9TgwvLx1YqA/iOg4n10mM1pIGCWrszbyAS34Ozm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCjkVZFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6988AC4AF0E;
+	Thu, 15 Aug 2024 13:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730394;
-	bh=t32yhA0i59JFLL8btd3UEYndgZallchqcaVPjUGY6LI=;
+	s=korg; t=1723728786;
+	bh=d/oaxdFHOw1VAdWIW6ggiIlBeUWboaZuDHjdO2zh0hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oj2VQ6xkoY1zTJ4k5+woqdRUuQ65fGDjtlFBju28BuGlAVBYpHG6Vi4P/TPvOdVOe
-	 OQfFIAqfSgFiYTO+6DM/JCFz9UZGZQqzv/zWjduWq2Knwl1pcZdp7hJlqmwiwTznkI
-	 ImzpjyRDV6jAAVXJovxfBLqsyaZkk1sIIiy+rF/4=
+	b=hCjkVZFVSwzAHg+I5cccHvqt0xmxBz478jPzk0TFEEb0/mJt9tEm/1J4dBJ1NG0mE
+	 fnEeCD8gaOU/iS+wn3vI22j6PluRxmeWn9ekTXKH4UEgpHX4b69K24LQd3F34t9Kzl
+	 v2xH7T8FZD6v7YkPGppj/JUWl+K1bYHdyr3Uj2uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	kasan-dev@googlegroups.com,
+	Slark Xiao <slark_xiao@163.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 367/484] rcutorture: Fix rcu_torture_fwd_cb_cr() data race
+Subject: [PATCH 4.19 108/196] PCI: rockchip: Use GPIOD_OUT_LOW flag while requesting ep_gpio
 Date: Thu, 15 Aug 2024 15:23:45 +0200
-Message-ID: <20240815131955.611546451@linuxfoundation.org>
+Message-ID: <20240815131856.211591874@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 6040072f4774a575fa67b912efe7722874be337b ]
+[ Upstream commit 840b7a5edf88fe678c60dee88a135647c0ea4375 ]
 
-On powerpc systems, spinlock acquisition does not order prior stores
-against later loads.  This means that this statement:
+Rockchip platforms use 'GPIO_ACTIVE_HIGH' flag in the devicetree definition
+for ep_gpio. This means, whatever the logical value set by the driver for
+the ep_gpio, physical line will output the same logic level.
 
-	rfcp->rfc_next = NULL;
+For instance,
 
-Can be reordered to follow this statement:
+  gpiod_set_value_cansleep(rockchip->ep_gpio, 0); --> Level low
+  gpiod_set_value_cansleep(rockchip->ep_gpio, 1); --> Level high
 
-	WRITE_ONCE(*rfcpp, rfcp);
+But while requesting the ep_gpio, GPIOD_OUT_HIGH flag is currently used.
+Now, this also causes the physical line to output 'high' creating trouble
+for endpoint devices during host reboot.
 
-Which is then a data race with rcu_torture_fwd_prog_cr(), specifically,
-this statement:
+When host reboot happens, the ep_gpio will initially output 'low' due to
+the GPIO getting reset to its POR value. Then during host controller probe,
+it will output 'high' due to GPIOD_OUT_HIGH flag. Then during
+rockchip_pcie_host_init_port(), it will first output 'low' and then 'high'
+indicating the completion of controller initialization.
 
-	rfcpn = READ_ONCE(rfcp->rfc_next)
+On the endpoint side, each output 'low' of ep_gpio is accounted for PERST#
+assert and 'high' for PERST# deassert. With the above mentioned flow during
+host reboot, endpoint will witness below state changes for PERST#:
 
-KCSAN located this data race, which represents a real failure on powerpc.
+  (1) PERST# assert - GPIO POR state
+  (2) PERST# deassert - GPIOD_OUT_HIGH while requesting GPIO
+  (3) PERST# assert - rockchip_pcie_host_init_port()
+  (4) PERST# deassert - rockchip_pcie_host_init_port()
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: <kasan-dev@googlegroups.com>
+Now the time interval between (2) and (3) is very short as both happen
+during the driver probe(), and this results in a race in the endpoint.
+Because, before completing the PERST# deassertion in (2), endpoint got
+another PERST# assert in (3).
+
+A proper way to fix this issue is to change the GPIOD_OUT_HIGH flag in (2)
+to GPIOD_OUT_LOW. Because the usual convention is to request the GPIO with
+a state corresponding to its 'initial/default' value and let the driver
+change the state of the GPIO when required.
+
+As per that, the ep_gpio should be requested with GPIOD_OUT_LOW as it
+corresponds to the POR value of '0' (PERST# assert in the endpoint). Then
+the driver can change the state of the ep_gpio later in
+rockchip_pcie_host_init_port() as per the initialization sequence.
+
+This fixes the firmware crash issue in Qcom based modems connected to
+Rockpro64 based board.
+
+Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
+Closes: https://lore.kernel.org/mhi/20240402045647.GG2933@thinkpad/
+Link: https://lore.kernel.org/linux-pci/20240416-pci-rockchip-perst-fix-v1-1-4800b1d4d954@linaro.org
+Reported-by: Slark Xiao <slark_xiao@163.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org	# v4.9
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 2 +-
+ drivers/pci/controller/pcie-rockchip.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 9d8d1f233d7bd..a3bab6af4028f 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -2186,7 +2186,7 @@ static void rcu_torture_fwd_cb_cr(struct rcu_head *rhp)
- 	spin_lock_irqsave(&rfp->rcu_fwd_lock, flags);
- 	rfcpp = rfp->rcu_fwd_cb_tail;
- 	rfp->rcu_fwd_cb_tail = &rfcp->rfc_next;
--	WRITE_ONCE(*rfcpp, rfcp);
-+	smp_store_release(rfcpp, rfcp);
- 	WRITE_ONCE(rfp->n_launders_cb, rfp->n_launders_cb + 1);
- 	i = ((jiffies - rfp->rcu_fwd_startat) / (HZ / FWD_CBS_HIST_DIV));
- 	if (i >= ARRAY_SIZE(rfp->n_launders_hist))
+diff --git a/drivers/pci/controller/pcie-rockchip.c b/drivers/pci/controller/pcie-rockchip.c
+index c6d2f00acf890..6ab7ca0b9bf9e 100644
+--- a/drivers/pci/controller/pcie-rockchip.c
++++ b/drivers/pci/controller/pcie-rockchip.c
+@@ -121,7 +121,7 @@ int rockchip_pcie_parse_dt(struct rockchip_pcie *rockchip)
+ 
+ 	if (rockchip->is_rc) {
+ 		rockchip->ep_gpio = devm_gpiod_get_optional(dev, "ep",
+-							    GPIOD_OUT_HIGH);
++							    GPIOD_OUT_LOW);
+ 		if (IS_ERR(rockchip->ep_gpio))
+ 			return dev_err_probe(dev, PTR_ERR(rockchip->ep_gpio),
+ 					     "failed to get ep GPIO\n");
 -- 
 2.43.0
 
