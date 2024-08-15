@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-69070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD8295354D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:36:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB139953397
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C56B1C2236E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:36:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D6321F2473C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF0C19FA9D;
-	Thu, 15 Aug 2024 14:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAE51ABEA5;
+	Thu, 15 Aug 2024 14:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbemyE4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wY8rPt/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5AC3214;
-	Thu, 15 Aug 2024 14:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC551AB52C;
+	Thu, 15 Aug 2024 14:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732568; cv=none; b=BZEy8gIH8lVtksyPzV02Mq2ujbSiUBcsge+fdX83Kwgwr3VFb/YVYOyH9l+UwVjWtRw27clyh+/cZMow3u1p8uwWsK6Xs+MBAXxajMEPSrZgFt1m7ISBYeX+61lqlRvlxPcDMh/wDKZUDtJpV31cC7kUuamXkXuoJb9cU4/zWdw=
+	t=1723731414; cv=none; b=BHmoQqlVd3njsXZASB5YdCvxIShBrV+EG/EBGYW8Bhii9x71FBKgWBk1IHQWgHcGWawW4F7MWwHIcU2mvO+VfRZGzpx3AidagmIfQyyX7mUuirm9NbVmDIweID52Y9UcHHvDQLXukmG9HyAW5c3R+lMTIVv5L2O2eXN0ppEwPmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732568; c=relaxed/simple;
-	bh=Kg6UMRjwe2p6jmd0Cnpuv60SXW9Ov0PgW2F9O7oHPt4=;
+	s=arc-20240116; t=1723731414; c=relaxed/simple;
+	bh=B0FzT5TIWV6zChQ7KD0IyKjvotn6cb2pkqPBMdaWo3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TO9M43/kjN7QE/Gn49AYKqtm80/4rsGtvTr/M5WXvloy/RpXhyYeqM2TZ3IrJmT13hj0MfZOmSNSb9PxFThg2ibjkjhy6QuCgyEhdALT+h/55uPrW06Tb7hpxqhiWHW7vDmww2IX+ElAHUfYhFFcTRYcU8ysuH8yVDCqz2KaYaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbemyE4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A8CC32786;
-	Thu, 15 Aug 2024 14:36:07 +0000 (UTC)
+	 MIME-Version; b=CHR5jh9Ic5OkpDR8tSPHiB5xJ+lAKH6IX0jctfKOKMoUXTATZE6rLQu+71oVqnVWMW9Hn3TNpyQ10IftG1wQdI3m/ZSfjb3xo7BQT3+td1ePUFIaeDuDutPYkLi2wqM7EvD8Z4NbgIRFEANIhye80l9auACsLAI/nMCUMHLjS6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wY8rPt/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A2FC4AF0C;
+	Thu, 15 Aug 2024 14:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732567;
-	bh=Kg6UMRjwe2p6jmd0Cnpuv60SXW9Ov0PgW2F9O7oHPt4=;
+	s=korg; t=1723731413;
+	bh=B0FzT5TIWV6zChQ7KD0IyKjvotn6cb2pkqPBMdaWo3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbemyE4RVF2yw5OCyNa2n0ydPl4Jn+O8zxv2sO2KXf9rw8GxjjK0cJkASlFW2chDi
-	 LuCQh/9oC4f9v6+S1V0J7wR/XcGXoWKUp3di/QuyI42lC6fvALbHaRAv9q0c2qS84J
-	 FkvDWL94NYJB4KqakRok1B4ds9hLuM3B2X/FSs1E=
+	b=wY8rPt/87LaX+K/PQ6I7ol+7XGCO6Q/ti8oOtCFA5CNVTsx95rda/4RPebcJ2ect4
+	 xvzFhRD95JdRUw1KgdG1UcLu3dslMXsj2EohjNi1+oc4/sp+GgBj9XO1eKio4F9wqG
+	 8fZaX7n9yIJE4jc0Uw3Gw2Tj7SX/3iRAHte+7LuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 188/352] kdb: address -Wformat-security warnings
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.4 121/259] perf/x86/intel/pt: Fix a topa_entry base address calculation
 Date: Thu, 15 Aug 2024 15:24:14 +0200
-Message-ID: <20240815131926.544943339@linuxfoundation.org>
+Message-ID: <20240815131907.469849117@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 70867efacf4370b6c7cdfc7a5b11300e9ef7de64 ]
+commit ad97196379d0b8cb24ef3d5006978a6554e6467f upstream.
 
-When -Wformat-security is not disabled, using a string pointer
-as a format causes a warning:
+topa_entry->base is a bit-field. Bit-fields are not promoted to a 64-bit
+type, even if the underlying type is 64-bit, and so, if necessary, must
+be cast to a larger type when calculations are done.
 
-kernel/debug/kdb/kdb_io.c: In function 'kdb_read':
-kernel/debug/kdb/kdb_io.c:365:36: error: format not a string literal and no format arguments [-Werror=format-security]
-  365 |                         kdb_printf(kdb_prompt_str);
-      |                                    ^~~~~~~~~~~~~~
-kernel/debug/kdb/kdb_io.c: In function 'kdb_getstr':
-kernel/debug/kdb/kdb_io.c:456:20: error: format not a string literal and no format arguments [-Werror=format-security]
-  456 |         kdb_printf(kdb_prompt_str);
-      |                    ^~~~~~~~~~~~~~
+Fix a topa_entry->base address calculation by adding a cast.
 
-Use an explcit "%s" format instead.
+Without the cast, the address was limited to 36-bits i.e. 64GiB.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240528121154.3662553-1-arnd@kernel.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The address calculation is used on systems that do not support Multiple
+Entry ToPA (only Broadwell), and affects physical addresses on or above
+64GiB. Instead of writing to the correct address, the address comprising
+the first 36 bits would be written to.
+
+Intel PT snapshot and sampling modes are not affected.
+
+Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
+Reported-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240624201101.60186-3-adrian.hunter@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/pt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
-index a3b4b55d2e2e1..a4256e558a701 100644
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -358,7 +358,7 @@ static char *kdb_read(char *buffer, size_t bufsize)
- 			if (i >= dtab_count)
- 				kdb_printf("...");
- 			kdb_printf("\n");
--			kdb_printf(kdb_prompt_str);
-+			kdb_printf("%s",  kdb_prompt_str);
- 			kdb_printf("%s", buffer);
- 			if (cp != lastchar)
- 				kdb_position_cursor(kdb_prompt_str, buffer, cp);
-@@ -450,7 +450,7 @@ char *kdb_getstr(char *buffer, size_t bufsize, const char *prompt)
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -827,7 +827,7 @@ static void pt_update_head(struct pt *pt
+  */
+ static void *pt_buffer_region(struct pt_buffer *buf)
  {
- 	if (prompt && kdb_prompt_str != prompt)
- 		strscpy(kdb_prompt_str, prompt, CMD_BUFLEN);
--	kdb_printf(kdb_prompt_str);
-+	kdb_printf("%s", kdb_prompt_str);
- 	kdb_nextline = 1;	/* Prompt and input resets line number */
- 	return kdb_read(buffer, bufsize);
+-	return phys_to_virt(TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
++	return phys_to_virt((phys_addr_t)TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
  }
--- 
-2.43.0
-
+ 
+ /**
 
 
 
