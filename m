@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-68280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C472E953179
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF1C95317B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 797A61F20D47
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D91281C213D6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3776819DFAE;
-	Thu, 15 Aug 2024 13:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4764C19DFA6;
+	Thu, 15 Aug 2024 13:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAWSlHmk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2ccYOi1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05301714A1;
-	Thu, 15 Aug 2024 13:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08131714A1;
+	Thu, 15 Aug 2024 13:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730069; cv=none; b=Bitw0bykF8xu1QqWXA4rUXf+dLHCrxF0k8t/5wdP7N84WG3jUoC8EjH7oIfwWHNLs/sZNFYaqpPc7DI8zS1wPxOVZMzzkgtzChCZekwVq/PFA7Hv9dAwkH1LeWk0++2o75bmuwM43o1VbgiAgYaRG+lCrkV1oQv6zWlDA06L/ms=
+	t=1723730075; cv=none; b=FnNmnwLB61oCreOGGcoStTRNal39Vnooq3LL0/2WtlDLdJRGC3ctJy7kXR8VtdQ0eDfnMz2fMU02H9ybFv7Z+whcDUht5DCSa0b15ZNmkR8avLQWtv4QQropaXjgM8M3eIRqzNQsY//5lyYP04gN+s+88xjmvftiPgUYTef085g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730069; c=relaxed/simple;
-	bh=ICHs+cyAUmFs9Etj+5Fi9UgOHBF0wMZlZEwJNpECfY8=;
+	s=arc-20240116; t=1723730075; c=relaxed/simple;
+	bh=9KrbPeEVpmvjXYgypTORFMY/ANLOOjhkgj81vjHVdRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNNeRHF1wBCO4YjYnWYzPPWgCTOFmnbORFa9tC6JlOjz42/kan72Q+E1T0AFx5CP9oHp4fnCk3luH843qHslnbRvOXu493eE6unu3HQRkv9Ab3GpdeIBSIIRaMyipBUJSS+QxFH2aqmE7gyUPyQ4aAWTLj9W9Jdz6WJbW5dvKLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAWSlHmk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C456C4AF0A;
-	Thu, 15 Aug 2024 13:54:27 +0000 (UTC)
+	 MIME-Version; b=HuPiipfdCikgZmmpdwTq3sIC57Dhegh6oQhA3FGU6i7OWMPQ+MvDaoqRg8hERDFxKd3rDXY6OBo8MFGhZHIDEezqYRSDvHyP+gucyNHpJC2W6FYBprtPgPxGRjAFrdUaRHPgZhMYRmPdTGYRNAkzJbgKRE8uSNaHOukac46zxGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2ccYOi1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61082C32786;
+	Thu, 15 Aug 2024 13:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730068;
-	bh=ICHs+cyAUmFs9Etj+5Fi9UgOHBF0wMZlZEwJNpECfY8=;
+	s=korg; t=1723730074;
+	bh=9KrbPeEVpmvjXYgypTORFMY/ANLOOjhkgj81vjHVdRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAWSlHmkRZvJvTWQ+7AWoQrGn/M7ukO8K+kWcbjhFw30QHJlKdBeMB2I5oiKZ+y/D
-	 ZtPKEBYIJ1mgq7trK80XsT6S2mHMnNtGy/3VRtDPbieYskliBKy99Y5FQryfDGBPGr
-	 89IPB7uznzYTLr7zODEalpKxOJ27ld/ZXsSpHLis=
+	b=G2ccYOi1Vf1yGaJMiQcD1XnqAHUcOaKkbAWqMmBaYazSLXo7ONRNcQRCcBah2hwTY
+	 /UmDv3dDbppRKaoBkV50ErhbkRmB85UoJax71ZKI2DWlIQfT1ZqS96a87d6wwsEOSn
+	 ySDDTbNb7Yil9oIuPznvq0aiOVZcRCJTpPart6NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Will Deacon <will@kernel.org>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 293/484] iommu: sprd: Avoid NULL deref in sprd_iommu_hw_en
-Date: Thu, 15 Aug 2024 15:22:31 +0200
-Message-ID: <20240815131952.724180081@linuxfoundation.org>
+Subject: [PATCH 5.15 294/484] nvme: split command copy into a helper
+Date: Thu, 15 Aug 2024 15:22:32 +0200
+Message-ID: <20240815131952.761542154@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -67,39 +69,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 630482ee0653decf9e2482ac6181897eb6cde5b8 ]
+[ Upstream commit 3233b94cf842984ea7e208d5be1ad2f2af02d495 ]
 
-In sprd_iommu_cleanup() before calling function sprd_iommu_hw_en()
-dom->sdev is equal to NULL, which leads to null dereference.
+We'll need it for batched submit as well. Since we now have a copy
+helper, get rid of the nvme_submit_cmd() wrapper.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 9afea57384d4 ("iommu/sprd: Release dma buffer to avoid memory leak")
-Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Reviewed-by: Chunyan Zhang <zhang.lyra@gmail.com>
-Link: https://lore.kernel.org/r/20240716125522.3690358-1-artem.chernyshev@red-soft.ru
-Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: c31fad147038 ("nvme-pci: add missing condition check for existence of mapped data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/sprd-iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
-index 6b11770e3d75a..f9392dbe6511e 100644
---- a/drivers/iommu/sprd-iommu.c
-+++ b/drivers/iommu/sprd-iommu.c
-@@ -234,8 +234,8 @@ static void sprd_iommu_cleanup(struct sprd_iommu_domain *dom)
- 
- 	pgt_size = sprd_iommu_pgt_size(&dom->domain);
- 	dma_free_coherent(dom->sdev->dev, pgt_size, dom->pgt_va, dom->pgt_pa);
--	dom->sdev = NULL;
- 	sprd_iommu_hw_en(dom->sdev, false);
-+	dom->sdev = NULL;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 5a3ba7e390546..04e51134165dd 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -479,22 +479,13 @@ static inline void nvme_write_sq_db(struct nvme_queue *nvmeq, bool write_sq)
+ 	nvmeq->last_sq_tail = nvmeq->sq_tail;
  }
  
- static void sprd_iommu_domain_free(struct iommu_domain *domain)
+-/**
+- * nvme_submit_cmd() - Copy a command into a queue and ring the doorbell
+- * @nvmeq: The queue to use
+- * @cmd: The command to send
+- * @write_sq: whether to write to the SQ doorbell
+- */
+-static void nvme_submit_cmd(struct nvme_queue *nvmeq, struct nvme_command *cmd,
+-			    bool write_sq)
++static inline void nvme_sq_copy_cmd(struct nvme_queue *nvmeq,
++				    struct nvme_command *cmd)
+ {
+-	spin_lock(&nvmeq->sq_lock);
+ 	memcpy(nvmeq->sq_cmds + (nvmeq->sq_tail << nvmeq->sqes),
+-	       cmd, sizeof(*cmd));
++		absolute_pointer(cmd), sizeof(*cmd));
+ 	if (++nvmeq->sq_tail == nvmeq->q_depth)
+ 		nvmeq->sq_tail = 0;
+-	nvme_write_sq_db(nvmeq, write_sq);
+-	spin_unlock(&nvmeq->sq_lock);
+ }
+ 
+ static void nvme_commit_rqs(struct blk_mq_hw_ctx *hctx)
+@@ -940,7 +931,10 @@ static blk_status_t nvme_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	}
+ 
+ 	blk_mq_start_request(req);
+-	nvme_submit_cmd(nvmeq, cmnd, bd->last);
++	spin_lock(&nvmeq->sq_lock);
++	nvme_sq_copy_cmd(nvmeq, &iod->cmd);
++	nvme_write_sq_db(nvmeq, bd->last);
++	spin_unlock(&nvmeq->sq_lock);
+ 	return BLK_STS_OK;
+ out_unmap_data:
+ 	nvme_unmap_data(dev, req);
+@@ -1109,7 +1103,11 @@ static void nvme_pci_submit_async_event(struct nvme_ctrl *ctrl)
+ 
+ 	c.common.opcode = nvme_admin_async_event;
+ 	c.common.command_id = NVME_AQ_BLK_MQ_DEPTH;
+-	nvme_submit_cmd(nvmeq, &c, true);
++
++	spin_lock(&nvmeq->sq_lock);
++	nvme_sq_copy_cmd(nvmeq, &c);
++	nvme_write_sq_db(nvmeq, true);
++	spin_unlock(&nvmeq->sq_lock);
+ }
+ 
+ static int adapter_delete_queue(struct nvme_dev *dev, u8 opcode, u16 id)
 -- 
 2.43.0
 
