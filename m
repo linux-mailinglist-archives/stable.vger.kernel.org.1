@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-68738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163D69533BB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F0195356D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADEED2876AA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12F5928262F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F651AC8AE;
-	Thu, 15 Aug 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BEA1993B9;
+	Thu, 15 Aug 2024 14:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LT1h66ld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fv7XZu1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211FC1E526;
-	Thu, 15 Aug 2024 14:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7083214;
+	Thu, 15 Aug 2024 14:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731508; cv=none; b=rh/esRaVFBxPZ8RmmgaayFgK3lN81L0cve6Aecfr0L11VrpDm21DRta61CncPEadpDEIhkFeJzYsgekMdSNnUFXlFztym8WZS3oQn+/vMYeDQhMUhlUZzT8aaX6S6omGvDGphfU/dvHkbpVHIVxbNQ+NcQxFlZwmn3ETbn/dR1c=
+	t=1723732670; cv=none; b=DXUiO4K7RZkxhZKbh2HXT12LqBwNzv7LacpSDUOrr3F2HueczxuqXk4enkqG0Yrk1bsg8d2PDRweavb28yh5NzFMqr4pRU3IG4/7R1vXeLMdJUFeP3wcJqvr3NMS7wzib3PmIzMyxA21IsbYv0APMquibcXJJEPPzjnOeXu0tjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731508; c=relaxed/simple;
-	bh=8U6BkqfiY8eG+oF2guFx7s4crljo2ycxR1MxwKmPeR4=;
+	s=arc-20240116; t=1723732670; c=relaxed/simple;
+	bh=ymx201nHQuVYpjqe9KUkrGCaJa5sdO1DgmcbplGsLoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k49jaOn/LoYde8PMgSg0FJt6xfAhCFY2KRZzH2NLYFpnXzjWHQP9laZioRtU2BTXWW6nmvpL6vJPXGfLET1wrgtc+n432TjNCJ1naX31KD2s1ggjuUF40QOtNUXLbwonzP84QelVVcXa1J8wAiyJLnbS+AlpYDcdqnvN8di1pHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LT1h66ld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A71C32786;
-	Thu, 15 Aug 2024 14:18:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=spnLKArAw8CULXyd2UX/6s6x9099Ve63l45X0t5oWtir5HuDr4F/nNjdG2GfUbu1oGo55qA398jhJUbalDLCAuv4mjsXIW3Lk+R6hqJUGNTkS8oK3ABHFF4vR7pNyVafxuYoK2kptpHPRaB6GUvojKPwxm65VltVVtO4H4rge7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fv7XZu1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5029C32786;
+	Thu, 15 Aug 2024 14:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731507;
-	bh=8U6BkqfiY8eG+oF2guFx7s4crljo2ycxR1MxwKmPeR4=;
+	s=korg; t=1723732670;
+	bh=ymx201nHQuVYpjqe9KUkrGCaJa5sdO1DgmcbplGsLoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LT1h66ldZHEY90ZPxQx2H0dFYqIDD4g4a8ujmwNlH8xmvsP8tOZSgGqBPGa8URaWX
-	 aI8AYbUSbGfjPa4VfB8WXsDrU60uhDDK0Tg3n0INlQl4y0c6mMmyUHD/igFCpUFTO7
-	 C86dLTmCVXXYSo2GEvu8f9PP7hKuCOGosyrEL/mU=
+	b=Fv7XZu1gQYo0xxJDd4iIqKKCMiBiRZ9tSUbXV9UEdgZ+Iq8tyGopXg/ds+Yd7tR0+
+	 yR8SJgJ2Vom4QG8zl7NHEFzXn/nzdDDqMslQKxzbZgj127Y5l1DdxwMgy/Y0gzMPsJ
+	 ySveOI0WPZEiTtoqVZCtoriM/9m9y00Esh4wgkLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Joel Granados <j.granados@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 151/259] ASoC: Intel: use soc_intel_is_byt_cr() only when IOSF_MBI is reachable
-Date: Thu, 15 Aug 2024 15:24:44 +0200
-Message-ID: <20240815131908.618219865@linuxfoundation.org>
+Subject: [PATCH 5.10 219/352] sysctl: always initialize i_uid/i_gid
+Date: Thu, 15 Aug 2024 15:24:45 +0200
+Message-ID: <20240815131927.754421811@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,55 +63,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 9931f7d5d251882a147cc5811060097df43e79f5 ]
+[ Upstream commit 98ca62ba9e2be5863c7d069f84f7166b45a5b2f4 ]
 
-the Intel kbuild bot reports a link failure when IOSF_MBI is built-in
-but the Merrifield driver is configured as a module. The
-soc-intel-quirks.h is included for Merrifield platforms, but IOSF_MBI
-is not selected for that platform.
+Always initialize i_uid/i_gid inside the sysfs core so set_ownership()
+can safely skip setting them.
 
-ld.lld: error: undefined symbol: iosf_mbi_read
->>> referenced by atom.c
->>>               sound/soc/sof/intel/atom.o:(atom_machine_select) in archive vmlinux.a
+Commit 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of
+i_uid/i_gid on /proc/sys inodes.") added defaults for i_uid/i_gid when
+set_ownership() was not implemented. It also missed adjusting
+net_ctl_set_ownership() to use the same default values in case the
+computation of a better value failed.
 
-This patch forces the use of the fallback static inline when IOSF_MBI is not reachable.
-
-Fixes: 536cfd2f375d ("ASoC: Intel: use common helpers to detect CPUs")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202407160704.zpdhJ8da-lkp@intel.com/
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20240722083002.10800-1-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of i_uid/i_gid on /proc/sys inodes.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Joel Granados <j.granados@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-intel-quirks.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/proc_sysctl.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/intel/common/soc-intel-quirks.h b/sound/soc/intel/common/soc-intel-quirks.h
-index a46be331c178e..a7960b41a6a34 100644
---- a/sound/soc/intel/common/soc-intel-quirks.h
-+++ b/sound/soc/intel/common/soc-intel-quirks.h
-@@ -11,7 +11,7 @@
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -471,12 +471,10 @@ static struct inode *proc_sys_make_inode
+ 			make_empty_dir_inode(inode);
+ 	}
  
- #include <linux/platform_data/x86/soc.h>
++	inode->i_uid = GLOBAL_ROOT_UID;
++	inode->i_gid = GLOBAL_ROOT_GID;
+ 	if (root->set_ownership)
+ 		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
+-	else {
+-		inode->i_uid = GLOBAL_ROOT_UID;
+-		inode->i_gid = GLOBAL_ROOT_GID;
+-	}
  
--#if IS_ENABLED(CONFIG_X86)
-+#if IS_REACHABLE(CONFIG_IOSF_MBI)
- 
- #include <linux/dmi.h>
- #include <asm/iosf_mbi.h>
--- 
-2.43.0
-
+ 	return inode;
+ }
 
 
 
