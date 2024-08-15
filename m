@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEEBB952FA5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B28D9531E6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59666B268FD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0413B28817A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C884819FA92;
-	Thu, 15 Aug 2024 13:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7A819D891;
+	Thu, 15 Aug 2024 13:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrkwHph7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWtXFyM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8185919FA89;
-	Thu, 15 Aug 2024 13:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394C417C9A9;
+	Thu, 15 Aug 2024 13:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728861; cv=none; b=MSMmXSHgaM0n2XKddZUnF73olWId7CctlO7w9HvQrusq/Ew2mCGK6NUNOUu6LCEchSgT+sYPdj7SA2z4LE2BNO193/rPDDWuVdx+2y2dQdsh5eDAPq0gwFeypo5XMAiNUY8gbHlU4iZcT5OHqbXNBiI0v/JLrRFtlgDpo5XyQd8=
+	t=1723730388; cv=none; b=q4MchUotGwxRAXgbkQDww3TZ0N3AoM6rwImo34ETyivP80+adeJtYlXrMQHocQw/rSK1fjr3UGjJOlPcKYRg8Tbciz4btCf1aZnAXK36MlgdT0o9/yuZcXsgEq1lwAze9Am5LcGATm/6KMeb7RNFTO2NFXZD43aSg9S/3GZsL24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728861; c=relaxed/simple;
-	bh=m2TC03FeHyh2vO0dT4glFcMpGlmttuCElWZ74wA3xDw=;
+	s=arc-20240116; t=1723730388; c=relaxed/simple;
+	bh=gX+j+mdyA/TrailPeXgaryYPYt+enhcN9QSw1dsLsCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4nIvdbqGGgXAwcXq0ihEzB7XGs+/Tqm2eowMoPc29MG1dq2O6TYMHvqoZmu/1CCgkKSpU+i/h/+tmtIuDhYTbX/YMtNvL/s2ZmoT/MCJBK8jmUf2PwWSh9HlpnzQ5gZShKNLmeUxxRLwC/q3W+8fkwrYOMn9NEzJwuk3AzfocA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrkwHph7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DBFC4AF11;
-	Thu, 15 Aug 2024 13:34:20 +0000 (UTC)
+	 MIME-Version; b=fYiPuewjlxJUmQQ2TnimMbXIOHZ/1Dq+mGMnYVYVqRgV1WhVv5tdJA8DFDwLpZnhweNXbATk5BzkvnZ3JDL+RUFbrsTT8Z3YrQQHquBtz55BH3oCYOsvjCIcz+qm+iPV0IWhPp3ktZCC/Z6Y9GLuUz307pE7IWvlwt1xZ+xSick=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWtXFyM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5DFC32786;
+	Thu, 15 Aug 2024 13:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728861;
-	bh=m2TC03FeHyh2vO0dT4glFcMpGlmttuCElWZ74wA3xDw=;
+	s=korg; t=1723730387;
+	bh=gX+j+mdyA/TrailPeXgaryYPYt+enhcN9QSw1dsLsCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrkwHph7GT0aCtpNUhniT0SIpCJwTKTvSrXPNgVV4EFi70uYR6iAQAUsV+pd7sdYo
-	 7J2o+05pzrrwFiatBFT0YTcAjDcI1Sz4lZbRvtkwajiGECW+JrM/Dv2K6NtOq4ZkwJ
-	 yiZgpnTSakTumASx2kxpn70Ygx2A7u45RRaUeMyg=
+	b=MWtXFyM0/889v0tadmsdhhMpY50Ue38Z4aWplPmmRJIUyeW00W0JoPrTAxY4ZgGLq
+	 fKZ89wwYivvtdZ/OIO04DgGt8WYcN8jvyuD5XpOMOadFhRjxpP7nJJ1XLHVfmbtTpO
+	 +E+HhtAuulQNgRXqai7dpaSUEUodKb1Y+Y/p0JSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 133/196] Bluetooth: l2cap: always unlock channel in l2cap_conless_channel()
+Subject: [PATCH 5.15 392/484] arm64: cpufeature: Force HWCAP to be based on the sysreg visible to user-space
 Date: Thu, 15 Aug 2024 15:24:10 +0200
-Message-ID: <20240815131857.163126390@linuxfoundation.org>
+Message-ID: <20240815131956.588245947@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: James Morse <james.morse@arm.com>
 
-[ Upstream commit c531e63871c0b50c8c4e62c048535a08886fba3e ]
+[ Upstream commit 237405ebef580a7352a52129b2465c117145eafa ]
 
-Add missing call to 'l2cap_chan_unlock()' on receive error handling
-path in 'l2cap_conless_channel()'.
+arm64 advertises hardware features to user-space via HWCAPs, and by
+emulating access to the CPUs id registers. The cpufeature code has a
+sanitised system-wide view of an id register, and a sanitised user-space
+view of an id register, where some features use their 'safe' value
+instead of the hardware value.
 
-Fixes: a24cce144b98 ("Bluetooth: Fix reference counting of global L2CAP channels")
-Reported-by: syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=45ac74737e866894acb0
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+It is currently possible for a HWCAP to be advertised where the user-space
+view of the id register does not show the feature as supported.
+Erratum workaround need to remove both the HWCAP, and the feature from
+the user-space view of the id register. This involves duplicating the
+code, and spreading it over cpufeature.c and cpu_errata.c.
+
+Make the HWCAP code use the user-space view of id registers. This ensures
+the values never diverge, and allows erratum workaround to remove HWCAP
+by modifying the user-space view of the id register.
+
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20220909165938.3931307-2-james.morse@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: fixup lack of 'width' parameter ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kernel/cpufeature.c | 36 +++++++++++++++++++++++++++-------
+ 1 file changed, 29 insertions(+), 7 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 3f9b2b4a62ffd..ca225c1325237 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7055,6 +7055,7 @@ static void l2cap_conless_channel(struct l2cap_conn *conn, __le16 psm,
- 	bt_cb(skb)->l2cap.psm = psm;
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index f17d6cdea2605..1bb55f4a3421d 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -1319,17 +1319,39 @@ feature_matches(u64 reg, const struct arm64_cpu_capabilities *entry)
+ 	return val >= entry->min_field_value;
+ }
  
- 	if (!chan->ops->recv(chan, skb)) {
-+		l2cap_chan_unlock(chan);
- 		l2cap_chan_put(chan);
- 		return;
- 	}
+-static bool
+-has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
++static u64
++read_scoped_sysreg(const struct arm64_cpu_capabilities *entry, int scope)
+ {
+-	u64 val;
+-
+ 	WARN_ON(scope == SCOPE_LOCAL_CPU && preemptible());
+ 	if (scope == SCOPE_SYSTEM)
+-		val = read_sanitised_ftr_reg(entry->sys_reg);
++		return read_sanitised_ftr_reg(entry->sys_reg);
+ 	else
+-		val = __read_sysreg_by_encoding(entry->sys_reg);
++		return __read_sysreg_by_encoding(entry->sys_reg);
++}
++
++static bool
++has_user_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
++{
++	int mask;
++	struct arm64_ftr_reg *regp;
++	u64 val = read_scoped_sysreg(entry, scope);
++
++	regp = get_arm64_ftr_reg(entry->sys_reg);
++	if (!regp)
++		return false;
++
++	mask = cpuid_feature_extract_unsigned_field(regp->user_mask,
++						    entry->field_pos);
++	if (!mask)
++		return false;
++
++	return feature_matches(val, entry);
++}
+ 
++static bool
++has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
++{
++	u64 val = read_scoped_sysreg(entry, scope);
+ 	return feature_matches(val, entry);
+ }
+ 
+@@ -2376,7 +2398,7 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ };
+ 
+ #define HWCAP_CPUID_MATCH(reg, field, s, min_value)				\
+-		.matches = has_cpuid_feature,					\
++		.matches = has_user_cpuid_feature,				\
+ 		.sys_reg = reg,							\
+ 		.field_pos = field,						\
+ 		.sign = s,							\
 -- 
 2.43.0
 
