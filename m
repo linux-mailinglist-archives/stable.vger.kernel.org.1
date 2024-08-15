@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-68096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF539530A3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:45:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174D79530A5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05A2F1F24CDB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:45:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B2911C24FD0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113E31A01CB;
-	Thu, 15 Aug 2024 13:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C45F19F47A;
+	Thu, 15 Aug 2024 13:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWGb4zKl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlcF7kVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C0919E7F5;
-	Thu, 15 Aug 2024 13:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177571714A8;
+	Thu, 15 Aug 2024 13:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729484; cv=none; b=BDOOw6Mtf4LUYk3ohitHuOFkid7VnSXeAlmtZBytxloFrLCx0gj927pJY5v9DIX/L3EkPFEHPdqcR+Q50YjRh3iC21Vl0rxHjzPacd44Pn9cgAkQWk3GdZ/YraXyA2dFxELtiqi7Q1/4g4uDMCxSzKHCiS9dhovSR+akyBLpmOg=
+	t=1723729491; cv=none; b=WT1oqxVReYZ3rv/5Qa4FDO71g8Hmr6gKEkOg1HvsPuxs8l0QNt+oyqYqMKA3CYQ15n6rxWld5YNw8KevH2K/toen/D4l81jGMknOnppjSwfC6b1deoLattP1D3LJDkxPxLu/752ozNTdSVh5PaGTP2a+A9QzSSkWC42k0CZiZmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729484; c=relaxed/simple;
-	bh=UpPkjYfDS/2rjU66vpwioUsMcMGiYJVrJNl94mwxY2w=;
+	s=arc-20240116; t=1723729491; c=relaxed/simple;
+	bh=P3wtNF+zq4tzjACUmV5BqchuesjPbIWd9YzSD7EwPrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CdEbx3WI3jwqqtxEl7nLJPl9Ko+nQ2IRlJ3zJTH0Hcb0fQ6C9a8EWuBo65eBEZUNPDBQ9H0llmni8/Gaq+LjrAVRF5Zh3g2ErpiYTc25Rg4JpOlGsd7JTZlEWCMpY6gYUxpAEmJ/qDIf5nMSY7dWjWCwJpaOv+8koLmsoIVPAJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWGb4zKl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E725C32786;
-	Thu, 15 Aug 2024 13:44:44 +0000 (UTC)
+	 MIME-Version; b=cdYoYHi7kQ0LvQIRQcTclPs2SjqDXqgCntQITMqEDb/iu3SoN6K7TAdbi+fVtL615yhUbjf3q/UTSzJupQ3tu8uJ45+gHJL96jU7IsEZyDLDkdVnHJC+RIPfnHKTYVKY5RrPMYowEDhWs/pras7sREmxxnWeofrcW+1NIxE2W6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlcF7kVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93912C32786;
+	Thu, 15 Aug 2024 13:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729484;
-	bh=UpPkjYfDS/2rjU66vpwioUsMcMGiYJVrJNl94mwxY2w=;
+	s=korg; t=1723729491;
+	bh=P3wtNF+zq4tzjACUmV5BqchuesjPbIWd9YzSD7EwPrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWGb4zKlE798bGXXhWhjw7IR8OYgnVPHWlpTOXhePvYM3DOu4qxhmYMvwcfjXfNDo
-	 IagZQ0P1iOuGcmto95Nfby3eGcrY4ol+TyKtTryYTDy7ufREYHkyIqLB3ZxHcPzFW1
-	 osFR0x4d0L5GXE7fx6ECmCb2GZPQlvgvYGZdgeFc=
+	b=RlcF7kVFfl92ohLlX3h5IeQdfF94KF6C0E6rEb4g+iJ1NnA0hD+WDzgoDAqRw0XGi
+	 +Rr9Fw8RHoT31FvrS6C/TZujk87UwkqR9gkyJc7nnDnFyo2Y3075Px4VQ66FinEW0l
+	 +yTuXYCPNKSW4dBZx3EvFI9dCR/gNsPkpGJmG9wE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
+	Olga Kornievskaia <kolga@netapp.com>,
 	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/484] SUNRPC: avoid soft lockup when transmitting UDP to reachable server.
-Date: Thu, 15 Aug 2024 15:19:31 +0200
-Message-ID: <20240815131945.657291988@linuxfoundation.org>
+Subject: [PATCH 5.15 114/484] NFSv4.1 another fix for EXCHGID4_FLAG_USE_PNFS_DS for DS server
+Date: Thu, 15 Aug 2024 15:19:32 +0200
+Message-ID: <20240815131945.695839225@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -66,55 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit 6258cf25d5e3155c3219ab5a79b970eef7996356 ]
+[ Upstream commit 4840c00003a2275668a13b82c9f5b1aed80183aa ]
 
-Prior to the commit identified below, call_transmit_status() would
-handle -EPERM and other errors related to an unreachable server by
-falling through to call_status() which added a 3-second delay and
-handled the failure as a timeout.
+Previously in order to mark the communication with the DS server,
+we tried to use NFS_CS_DS in cl_flags. However, this flag would
+only be saved for the DS server and in case where DS equals MDS,
+the client would not find a matching nfs_client in nfs_match_client
+that represents the MDS (but is also a DS).
 
-Since that commit, call_transmit_status() falls through to
-handle_bind().  For UDP this moves straight on to handle_connect() and
-handle_transmit() so we immediately retransmit - and likely get the same
-error.
+Instead, don't rely on the NFS_CS_DS but instead use NFS_CS_PNFS.
 
-This results in an indefinite loop in __rpc_execute() which triggers a
-soft-lockup warning.
-
-For the errors that indicate an unreachable server,
-call_transmit_status() should fall back to call_status() as it did
-before.  This cannot cause the thundering herd that the previous patch
-was avoiding, as the call_status() will insert a delay.
-
-Fixes: ed7dc973bd91 ("SUNRPC: Prevent thundering herd when the socket is not connected")
-Signed-off-by: NeilBrown <neilb@suse.de>
+Fixes: 379e4adfddd6 ("NFSv4.1: fixup use EXCHGID4_FLAG_USE_PNFS_DS for DS server")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
 Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/clnt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4client.c | 6 ++----
+ fs/nfs/nfs4proc.c   | 2 +-
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index f73d4593625cd..38071a6780211 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -2226,12 +2226,13 @@ call_transmit_status(struct rpc_task *task)
- 		task->tk_action = call_transmit;
- 		task->tk_status = 0;
- 		break;
--	case -ECONNREFUSED:
- 	case -EHOSTDOWN:
- 	case -ENETDOWN:
- 	case -EHOSTUNREACH:
- 	case -ENETUNREACH:
- 	case -EPERM:
-+		break;
-+	case -ECONNREFUSED:
- 		if (RPC_IS_SOFTCONN(task)) {
- 			if (!task->tk_msg.rpc_proc->p_proc)
- 				trace_xprt_ping(task->tk_xprt,
+diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
+index cba8b4c1fb4a3..8557b2218aa19 100644
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -230,9 +230,8 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
+ 		__set_bit(NFS_CS_INFINITE_SLOTS, &clp->cl_flags);
+ 	__set_bit(NFS_CS_DISCRTRY, &clp->cl_flags);
+ 	__set_bit(NFS_CS_NO_RETRANS_TIMEOUT, &clp->cl_flags);
+-
+-	if (test_bit(NFS_CS_DS, &cl_init->init_flags))
+-		__set_bit(NFS_CS_DS, &clp->cl_flags);
++	if (test_bit(NFS_CS_PNFS, &cl_init->init_flags))
++		__set_bit(NFS_CS_PNFS, &clp->cl_flags);
+ 	/*
+ 	 * Set up the connection to the server before we add add to the
+ 	 * global list.
+@@ -997,7 +996,6 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
+ 	if (mds_srv->flags & NFS_MOUNT_NORESVPORT)
+ 		__set_bit(NFS_CS_NORESVPORT, &cl_init.init_flags);
+ 
+-	__set_bit(NFS_CS_DS, &cl_init.init_flags);
+ 	__set_bit(NFS_CS_PNFS, &cl_init.init_flags);
+ 	cl_init.max_connect = NFS_MAX_TRANSPORTS;
+ 	/*
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 167f2cc3c3798..770fa1cb112d8 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -8718,7 +8718,7 @@ nfs4_run_exchange_id(struct nfs_client *clp, const struct cred *cred,
+ #ifdef CONFIG_NFS_V4_1_MIGRATION
+ 	calldata->args.flags |= EXCHGID4_FLAG_SUPP_MOVED_MIGR;
+ #endif
+-	if (test_bit(NFS_CS_DS, &clp->cl_flags))
++	if (test_bit(NFS_CS_PNFS, &clp->cl_flags))
+ 		calldata->args.flags |= EXCHGID4_FLAG_USE_PNFS_DS;
+ 	msg.rpc_argp = &calldata->args;
+ 	msg.rpc_resp = &calldata->res;
 -- 
 2.43.0
 
