@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB0C9532C5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB6F39533EE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA7201C204F9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F5EAB20520
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008BB1A0712;
-	Thu, 15 Aug 2024 14:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783EE1A00D2;
+	Thu, 15 Aug 2024 14:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7kAunEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAiEbaMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B357419F462;
-	Thu, 15 Aug 2024 14:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B6119FA99;
+	Thu, 15 Aug 2024 14:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730844; cv=none; b=qxyQKWHANvwjAyLrKDWnfhcm38tjk9i9cZdO0nzS7cYLMYUHYcTWyBiWMpzFZR98t04AT+cSvWKUQ+qb15BQCsq1Xgewg1AKgc6KxTgfaIrFgDD0hyVo+ymQ6RiS3egJOWrZ6N6wWlUEJVQcw0z3qg87hGce1y5cVog3b5BiC3I=
+	t=1723731645; cv=none; b=stVyTRdBYSsnqVybuNhjeQMHjDSdrvRJa5FaHVzpFa0lAeO6mA5D22bT/mt4RRqFP3vhDlsWttq7I2im2XUYdmBLCfOodPMxkEgeziB+YMWj6L5ouMvs2NBpYpM0GvnjIreg8r4X4qT21iwp94mfdITjrkTTnxCxZM3OWEjDlVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730844; c=relaxed/simple;
-	bh=dgJtxaTDlmtxcXj+cVYy6/1DWqkVB4tXTizU3cI5aHQ=;
+	s=arc-20240116; t=1723731645; c=relaxed/simple;
+	bh=VugtW6xNAOBNbObqjL4QCxXLRQVxje+jn4IrquYMRfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERUwMHtO+aopbFUje3XssWNfBZgfdF5Z54wY7vX2DdqF6Ye+OwfXDptjHWn55BuLyRgg7uESdhOlYbfQABea61trlLZvtA3SdLk4BPBQcLqrILuFqPXCk4CQk3sPiO1uE4RZ/VyGF5SFvHUq75sFMe50URXZrFM6pcBZ3SJ6O6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7kAunEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3617DC32786;
-	Thu, 15 Aug 2024 14:07:24 +0000 (UTC)
+	 MIME-Version; b=QY7ajAGuste2wKOLE9HmiRudC6QQR0Mn/Exl0c+JjtxEp1Hf+tsmnGpENQVundsCsaaFuT2Ye/fi6bOCCKiwFv+jFWB2vGCQ/VRnm8s/dy31U53X9/19WYFsfoZiENho9cCjU2bfUhRIymD+/c9QjLkGSC7mLxkQBxKjtOAADuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAiEbaMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF19C4AF0C;
+	Thu, 15 Aug 2024 14:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730844;
-	bh=dgJtxaTDlmtxcXj+cVYy6/1DWqkVB4tXTizU3cI5aHQ=;
+	s=korg; t=1723731645;
+	bh=VugtW6xNAOBNbObqjL4QCxXLRQVxje+jn4IrquYMRfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U7kAunEEsVXONM0RaAjDBnMDND89alv1WeBya3uSrd5muytOdk+w8vhoXscCbOQf/
-	 edhwjViCPGcd1/EWgMQe0cdlWNn5Mh5T381UvuJ4CnAbIoEmtMFXr3Wf0rmMhZKKWf
-	 aAanSJaxFkAYJZLaC5hQeJ3LM7b8U1tWY3Gvka9g=
+	b=JAiEbaMVnN61ckwjFr2YSc6UxjZRLwjn5HcY144iR8hrmnmlBFXyTt9yf3aEs6vJH
+	 OXYO7yXWnYzSh4W8JBVTLfB5ma9gjlWuwDPCUJoxvPG6hJogqUurqHeSQ/nhlj561x
+	 6UFxHOP8+Z7Ha2f5SBEs4e2cfT+5ik46LEBuO/QY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 11/67] sunrpc: use the struct net as the svc proc private
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 192/259] md/raid5: avoid BUG_ON() while continue reshape after reassembling
 Date: Thu, 15 Aug 2024 15:25:25 +0200
-Message-ID: <20240815131838.759103238@linuxfoundation.org>
+Message-ID: <20240815131910.195369253@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 418b9687dece5bd763c09b5c27a801a7e3387be9 ]
+[ Upstream commit 305a5170dc5cf3d395bb4c4e9239bca6d0b54b49 ]
 
-nfsd is the only thing using this helper, and it doesn't use the private
-currently.  When we switch to per-network namespace stats we will need
-the struct net * in order to get to the nfsd_net.  Use the net as the
-proc private so we can utilize this when we make the switch over.
+Currently, mdadm support --revert-reshape to abort the reshape while
+reassembling, as the test 07revert-grow. However, following BUG_ON()
+can be triggerred by the test:
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+kernel BUG at drivers/md/raid5.c:6278!
+invalid opcode: 0000 [#1] PREEMPT SMP PTI
+irq event stamp: 158985
+CPU: 6 PID: 891 Comm: md0_reshape Not tainted 6.9.0-03335-g7592a0b0049a #94
+RIP: 0010:reshape_request+0x3f1/0xe60
+Call Trace:
+ <TASK>
+ raid5_sync_request+0x43d/0x550
+ md_do_sync+0xb7a/0x2110
+ md_thread+0x294/0x2b0
+ kthread+0x147/0x1c0
+ ret_from_fork+0x59/0x70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Root cause is that --revert-reshape update the raid_disks from 5 to 4,
+while reshape position is still set, and after reassembling the array,
+reshape position will be read from super block, then during reshape the
+checking of 'writepos' that is caculated by old reshape position will
+fail.
+
+Fix this panic the easy way first, by converting the BUG_ON() to
+WARN_ON(), and stop the reshape if checkings fail.
+
+Noted that mdadm must fix --revert-shape as well, and probably md/raid
+should enhance metadata validation as well, however this means
+reassemble will fail and there must be user tools to fix the wrong
+metadata.
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240611132251.1967786-13-yukuai1@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/stats.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/raid5.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/net/sunrpc/stats.c
-+++ b/net/sunrpc/stats.c
-@@ -314,7 +314,7 @@ EXPORT_SYMBOL_GPL(rpc_proc_unregister);
- struct proc_dir_entry *
- svc_proc_register(struct net *net, struct svc_stat *statp, const struct proc_ops *proc_ops)
- {
--	return do_register(net, statp->program->pg_name, statp, proc_ops);
-+	return do_register(net, statp->program->pg_name, net, proc_ops);
- }
- EXPORT_SYMBOL_GPL(svc_proc_register);
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index bba5e61cc1456..41556f5d4dcba 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -5821,7 +5821,9 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
+ 	safepos = conf->reshape_safe;
+ 	sector_div(safepos, data_disks);
+ 	if (mddev->reshape_backwards) {
+-		BUG_ON(writepos < reshape_sectors);
++		if (WARN_ON(writepos < reshape_sectors))
++			return MaxSector;
++
+ 		writepos -= reshape_sectors;
+ 		readpos += reshape_sectors;
+ 		safepos += reshape_sectors;
+@@ -5839,14 +5841,18 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
+ 	 * to set 'stripe_addr' which is where we will write to.
+ 	 */
+ 	if (mddev->reshape_backwards) {
+-		BUG_ON(conf->reshape_progress == 0);
++		if (WARN_ON(conf->reshape_progress == 0))
++			return MaxSector;
++
+ 		stripe_addr = writepos;
+-		BUG_ON((mddev->dev_sectors &
+-			~((sector_t)reshape_sectors - 1))
+-		       - reshape_sectors - stripe_addr
+-		       != sector_nr);
++		if (WARN_ON((mddev->dev_sectors &
++		    ~((sector_t)reshape_sectors - 1)) -
++		    reshape_sectors - stripe_addr != sector_nr))
++			return MaxSector;
+ 	} else {
+-		BUG_ON(writepos != sector_nr + reshape_sectors);
++		if (WARN_ON(writepos != sector_nr + reshape_sectors))
++			return MaxSector;
++
+ 		stripe_addr = sector_nr;
+ 	}
  
+-- 
+2.43.0
+
 
 
 
