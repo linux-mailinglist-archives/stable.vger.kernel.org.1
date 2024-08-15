@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-68288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBB3953181
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A33B4952F2D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857B01F21AA4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D63511C23B4B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D565819DFA6;
-	Thu, 15 Aug 2024 13:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E8417CA1D;
+	Thu, 15 Aug 2024 13:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKrPV+ud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRu5jxpL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9291A1714A1;
-	Thu, 15 Aug 2024 13:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AA71DDF5;
+	Thu, 15 Aug 2024 13:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730094; cv=none; b=pEKFEIDtQ4AwJevNVz5FLX+AwKjjGIIkE4E85xSwEH/uYPiQnVW0Krfe5r9boqcCJRwGQU78Grx6Csh1nyYgjmlwoUnc6PvezrWQxMhUD2d/gVOljKXNMDPuZLZuUO1N6AaAh5YwLIXQO5XX/TmeyqkkAVY+WZy1VNZJOMbb5jc=
+	t=1723728576; cv=none; b=mCyW/OoxpuOITlH98FdtG1sytmA7tzqI/HI5BvG8JXmHk63B6J79XZgOtsnWbLC6BW68vEjJ+6PVsJoEaBmLOtXHjpDlz8c52PfbIjv9dqW0Imruw8Ayikaecz2w6Jm0CkkVtVtFEo1kLFfoFJHbTvkNn0W4OGJ0cxJPvHSLm18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730094; c=relaxed/simple;
-	bh=wWA7NN+YEOqZu5of8kvKN5GnfEVP7cBMU21FQO+ETwQ=;
+	s=arc-20240116; t=1723728576; c=relaxed/simple;
+	bh=lK7B4Zo/YyBwT5o0CRH4BQc4PxorVmwx7ALiciAROOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=szAC18GyruX8vSX5yCFjMj3bo/hEjI7oDTvs5vAluGXEHaLr4cjpXyEfRERb/W2cBCF3y5FGPOkicNFGegiFl1LSAxI8LAng513ZZZWDAKwZgun3NsisDUdrCShpNKPNpBE2EAxdkP4N5iPVTmh+0smwrLIzFRJZ64v/HGDSiDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKrPV+ud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2BBC32786;
-	Thu, 15 Aug 2024 13:54:53 +0000 (UTC)
+	 MIME-Version; b=FbP9buVC8cD8mhCjfbZC5p46KOa8l9E4l2zdII7ksBp/ijkhYd8TfeLkAqnQlGyHvphK3ilnwe3o0ZWQxPVkzidwdf6g5FPBXVR4G4nw/Ry7wB6LZGUfKrT0rsyotDDcwBKBLsjwjpLiD+SBKfrZyMWCCzzGtHugHANjsgxWzAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRu5jxpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CE9C32786;
+	Thu, 15 Aug 2024 13:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730094;
-	bh=wWA7NN+YEOqZu5of8kvKN5GnfEVP7cBMU21FQO+ETwQ=;
+	s=korg; t=1723728576;
+	bh=lK7B4Zo/YyBwT5o0CRH4BQc4PxorVmwx7ALiciAROOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKrPV+udxtCehqbnPtvMyA5l7NKzV68fM1gpbgQino+s2gCZ0EyKgz8In4cebQTaR
-	 XPEn4wSruyuhwQNOh1aWbYbK+bm9+TG78pvUAu9CwzVqWyfW1E54eddMnSmDLWE4eF
-	 nThh1z1ko60/uP0hR0Zaj7OB9jucG8lQAk0JUehQ=
+	b=eRu5jxpLkD2/zswwIa5xZptzWiJzaUndfwrbVkLHCYJz0uzYppvLW5JlP2rfjHXCk
+	 6Edl8yDlGaCSM6gX8Vr8nBoVjV1GMDG0+6oPv6bZMq/3zoGE5yB//ZrZmglAD9xBe2
+	 +eoX5ZmPAo0q7Oof6pW5TA09kbCShqu9evXWYmik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 272/484] net: bonding: correctly annotate RCU in bond_should_notify_peers()
+Subject: [PATCH 4.19 013/196] arm64: dts: rockchip: Increase VOP clk rate on RK3328
 Date: Thu, 15 Aug 2024 15:22:10 +0200
-Message-ID: <20240815131951.913251746@linuxfoundation.org>
+Message-ID: <20240815131852.582555243@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 3ba359c0cd6eb5ea772125a7aededb4a2d516684 ]
+[ Upstream commit 0f2ddb128fa20f8441d903285632f2c69e90fae1 ]
 
-RCU use in bond_should_notify_peers() looks wrong, since it does
-rcu_dereference(), leaves the critical section, and uses the
-pointer after that.
+The VOP on RK3328 needs to run at a higher rate in order to produce a
+proper 3840x2160 signal.
 
-Luckily, it's called either inside a nested RCU critical section
-or with the RTNL held.
+Change to use 300MHz for VIO clk and 400MHz for VOP clk, same rates used
+by vendor 4.4 kernel.
 
-Annotate it with rcu_dereference_rtnl() instead, and remove the
-inner RCU critical section.
-
-Fixes: 4cb4f97b7e36 ("bonding: rebuild the lock use for bond_mii_monitor()")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20240719094119.35c62455087d.I68eb9c0f02545b364b79a59f2110f2cf5682a8e2@changeid
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 52e02d377a72 ("arm64: dts: rockchip: add core dtsi file for RK3328 SoCs")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20240615170417.3134517-2-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 9aed194d308d6..6a91229b0e05b 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1087,13 +1087,10 @@ static struct slave *bond_find_best_slave(struct bonding *bond)
- 	return bestslave;
- }
- 
-+/* must be called in RCU critical section or with RTNL held */
- static bool bond_should_notify_peers(struct bonding *bond)
- {
--	struct slave *slave;
--
--	rcu_read_lock();
--	slave = rcu_dereference(bond->curr_active_slave);
--	rcu_read_unlock();
-+	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
- 
- 	if (!slave || !bond->send_peer_notif ||
- 	    bond->send_peer_notif %
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index f6931f8d36f6d..ab870b9043967 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -649,8 +649,8 @@ cru: clock-controller@ff440000 {
+ 			<0>, <24000000>,
+ 			<24000000>, <24000000>,
+ 			<15000000>, <15000000>,
+-			<100000000>, <100000000>,
+-			<100000000>, <100000000>,
++			<300000000>, <100000000>,
++			<400000000>, <100000000>,
+ 			<50000000>, <100000000>,
+ 			<100000000>, <100000000>,
+ 			<50000000>, <50000000>,
 -- 
 2.43.0
 
