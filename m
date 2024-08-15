@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5114F9534D5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48929953350
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE8A51F2939E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8EA1282DA7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FDF2772A;
-	Thu, 15 Aug 2024 14:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC2A1A706A;
+	Thu, 15 Aug 2024 14:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/Y5//j9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMWoaMxv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F6E63D5;
-	Thu, 15 Aug 2024 14:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1A11A3BCE;
+	Thu, 15 Aug 2024 14:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732255; cv=none; b=Kf1ay5cYSHEsQ6EG+NKToj4H0b+8RWw/+8j02CjaknynaB1CzYbVkJFTBgLq/9iYYHzeFuLSjJw7xCoE2dOovMgCIQUgbR8Zt1CgYBLvbOkjjKPAtUWOwMdc4I7Y/NilqzgnhIdJbyavTvAAPe7nJ+Ui7piUgwi4lyV8Dqmda54=
+	t=1723731215; cv=none; b=j18PXNGKacpCmbgwIV4vFxCYi53pP0O99qw6O+k2IQ8iCaZ4VS2nCmy4lxCrrg9Tik6SBxI2MrYN/lU5Jm0yNgS1201qrjkEJL8fvJI6fpSuRli7n+iuejS4DbSqtoTMZouEUdbzbfuB0cGlKaWvE9VgbkKNnIDptIQ7GRsSqss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732255; c=relaxed/simple;
-	bh=2IFtMuNV5RAAHviundxOn/iotZIHs1tTwoj1b6/PgBE=;
+	s=arc-20240116; t=1723731215; c=relaxed/simple;
+	bh=EO/91a0NZIiyu8+EVniVCqIiqTPdgvEcIXKYn8cwsiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U/IM6yXaQdA46f9YHEpf4XDABDJCW/qGSdLZmDG9/m3J27dmg+xGtTwmk08dRC6UTS5ZOzi1pH6xk1+7b/jb+mKrOkk+Rs9IBfm25v9vRu9eV8M46wT3rco4oqxLer6e4Ex1JuGCOikzj5W7qSaRaB8UNqU/NMPKBWMyDtDFkjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/Y5//j9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50EEC32786;
-	Thu, 15 Aug 2024 14:30:54 +0000 (UTC)
+	 MIME-Version; b=sQM1rNFXRwNYZg5hOGxakhHVkvvA9YNY/Yw24N5H1FQ6RnYzXlU2XAbkJ3hgWalq6J1ng/OyXGHSThoAzXhFeldhIhAuYS9KYyvpm8I/fWEfrzzUJNsOSJy732JVVfqsfStPscqECI6TrcIkuZLxzn20gyRGwDZAfVQdFhrR9d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMWoaMxv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F38DC32786;
+	Thu, 15 Aug 2024 14:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732255;
-	bh=2IFtMuNV5RAAHviundxOn/iotZIHs1tTwoj1b6/PgBE=;
+	s=korg; t=1723731214;
+	bh=EO/91a0NZIiyu8+EVniVCqIiqTPdgvEcIXKYn8cwsiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/Y5//j9++J/cIpzS8fLXMbGgsTSy8AufYWlHKEL4KtvkjWIrMr6hFHM2n3uN1QYC
-	 EIPbw6+BKs1QU13vgPY2tq/6eN3asijbULVtKQMm6wc2sj0mfI4ulh3QAs09UIcDp/
-	 zOZnQ1z8rXVMnq1uZH5qcGmcrsh+sURahQ0aHX3M=
+	b=aMWoaMxv/JGpaDNJE5mM2I332BH+yrSN81uebakn+N6REv1aa6tXEcziewVzUb9MQ
+	 zsvf03snWTXTYRLiPqMTWRI5W1Sq2ESG2lXYdZ3dKfZRm6+rRJBUhSnSEWvitXyoPv
+	 aTN0pq5cxO/vLBdJv1lQCDw8QCS/N7/FBwG25srU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 123/352] rtc: interface: Add RTC offset to alarm after fix-up
-Date: Thu, 15 Aug 2024 15:23:09 +0200
-Message-ID: <20240815131924.006493385@linuxfoundation.org>
+Subject: [PATCH 5.4 057/259] media: renesas: vsp1: Store RPF partition configuration per RPF instance
+Date: Thu, 15 Aug 2024 15:23:10 +0200
+Message-ID: <20240815131905.013067480@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-[ Upstream commit 463927a8902a9f22c3633960119410f57d4c8920 ]
+[ Upstream commit a213bc09b1025c771ee722ee341af1d84375db8a ]
 
-`rtc_add_offset()` is called by `__rtc_read_time()`
-and `__rtc_read_alarm()` to add the RTC's offset to
-the raw read-outs from the device drivers. However,
-in the latter case, a fix-up algorithm is run if
-the RTC device does not report a full `struct rtc_time`
-alarm value. In that case, the offset was forgot to be
-added.
+The vsp1_partition structure stores the RPF partition configuration in a
+single field for all RPF instances, while each RPF can have its own
+configuration. Fix it by storing the configuration separately for each
+RPF instance.
 
-Fixes: fd6792bb022e ("rtc: fix alarm read and set offset")
-
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://lore.kernel.org/r/20240619140451.2800578-1-csokas.bence@prolan.hu
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Fixes: ab45e8585182 ("media: v4l: vsp1: Allow entities to participate in the partition algorithm")
+Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/interface.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/media/platform/vsp1/vsp1_pipe.h | 2 +-
+ drivers/media/platform/vsp1/vsp1_rpf.c  | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index 146056858135e..154ea5ae2c0c3 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -274,10 +274,9 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 			return err;
+diff --git a/drivers/media/platform/vsp1/vsp1_pipe.h b/drivers/media/platform/vsp1/vsp1_pipe.h
+index ae646c9ef3373..15daf35bda216 100644
+--- a/drivers/media/platform/vsp1/vsp1_pipe.h
++++ b/drivers/media/platform/vsp1/vsp1_pipe.h
+@@ -73,7 +73,7 @@ struct vsp1_partition_window {
+  * @wpf: The WPF partition window configuration
+  */
+ struct vsp1_partition {
+-	struct vsp1_partition_window rpf;
++	struct vsp1_partition_window rpf[VSP1_MAX_RPF];
+ 	struct vsp1_partition_window uds_sink;
+ 	struct vsp1_partition_window uds_source;
+ 	struct vsp1_partition_window sru;
+diff --git a/drivers/media/platform/vsp1/vsp1_rpf.c b/drivers/media/platform/vsp1/vsp1_rpf.c
+index 75083cb234fe3..996a3058d5b76 100644
+--- a/drivers/media/platform/vsp1/vsp1_rpf.c
++++ b/drivers/media/platform/vsp1/vsp1_rpf.c
+@@ -271,8 +271,8 @@ static void rpf_configure_partition(struct vsp1_entity *entity,
+ 	 * 'width' need to be adjusted.
+ 	 */
+ 	if (pipe->partitions > 1) {
+-		crop.width = pipe->partition->rpf.width;
+-		crop.left += pipe->partition->rpf.left;
++		crop.width = pipe->partition->rpf[rpf->entity.index].width;
++		crop.left += pipe->partition->rpf[rpf->entity.index].left;
+ 	}
  
- 		/* full-function RTCs won't have such missing fields */
--		if (rtc_valid_tm(&alarm->time) == 0) {
--			rtc_add_offset(rtc, &alarm->time);
--			return 0;
--		}
-+		err = rtc_valid_tm(&alarm->time);
-+		if (!err)
-+			goto done;
- 
- 		/* get the "after" timestamp, to detect wrapped fields */
- 		err = rtc_read_time(rtc, &now);
-@@ -379,6 +378,8 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 	if (err)
- 		dev_warn(&rtc->dev, "invalid alarm value: %ptR\n",
- 			 &alarm->time);
-+	else
-+		rtc_add_offset(rtc, &alarm->time);
- 
- 	return err;
+ 	if (pipe->interlaced) {
+@@ -327,7 +327,9 @@ static void rpf_partition(struct vsp1_entity *entity,
+ 			  unsigned int partition_idx,
+ 			  struct vsp1_partition_window *window)
+ {
+-	partition->rpf = *window;
++	struct vsp1_rwpf *rpf = to_rwpf(&entity->subdev);
++
++	partition->rpf[rpf->entity.index] = *window;
  }
+ 
+ static const struct vsp1_entity_operations rpf_entity_ops = {
 -- 
 2.43.0
 
