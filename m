@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57325952FA0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4979D9531E3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89D261C24633
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6C02880D5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A067D19DFA6;
-	Thu, 15 Aug 2024 13:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F351991D0;
+	Thu, 15 Aug 2024 13:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="as3pJswt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SomWD3eC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3827DA78;
-	Thu, 15 Aug 2024 13:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECF517C9A9;
+	Thu, 15 Aug 2024 13:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728852; cv=none; b=TrROZxj8iPJlIaX9t8yByASILrUTYT29NeqNBauK+BBzR4zjkgTaHGCDWJVB+kQx2VUw4njWh0CL0VtaeLlmRc4cc+2PhxqCzdUiBrFgUWXPX93p+jjElrOTvY2QkWAvmeSwkNXj+IL29g86eQAirRNIYLP781pcV4jc3D3q2Y0=
+	t=1723730378; cv=none; b=CmbJltC3g6Qs5UB7ipvcBEj7PnFhMEw0LHsUdSXmq8MPsUNGPrcc1GDXEL8xH8C09wA0Ba9g/Op6KgS9QUjRvQu+EmV/aflrvgmScYo98KMw+a5lixmeoGOc7Lde+hm0lvbG0KlcQUfqhrLKTztR1FfJ69F/F+Ilg5A0j1RLLoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728852; c=relaxed/simple;
-	bh=jjxy9lv1sHMSoOeAAJvFz4IqBxWOies/nBNOzzy3nOw=;
+	s=arc-20240116; t=1723730378; c=relaxed/simple;
+	bh=gtzc9yDZyyBBvgADWE6g9KRkNsANjXJwbNGlA1VEXzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTpD15VCM4g60n3dyxROdLS521vGfuh8/uVlJNKiNpZYDMSW1WPmztcpbm1dXm0MGUhtp1zdxQ7gve1taO/8r0hBiWfAOhILkMbIxjkcd8toD3GcsbeT71YDwUqQOrVOh/XYgmLfIHxT6QTeGtzsSUnvUo8hPMQ+vSdEffmuqyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=as3pJswt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD64FC32786;
-	Thu, 15 Aug 2024 13:34:11 +0000 (UTC)
+	 MIME-Version; b=El2xludV1I7Sigqwb5rJtK5wrFBks62NT9fEr7Jenwq8f05LVITwrekx9eNJUQUYsvv7fnZwSAWHGk4vq9fODtxcPv7XK0MNB1t5SS6JVycQ49uEndyNOR00FfVVyurWdNDu6P9OWGkgDkw+VzacVOLKbv4RmV8ynEDngkEBOEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SomWD3eC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473C8C32786;
+	Thu, 15 Aug 2024 13:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728852;
-	bh=jjxy9lv1sHMSoOeAAJvFz4IqBxWOies/nBNOzzy3nOw=;
+	s=korg; t=1723730378;
+	bh=gtzc9yDZyyBBvgADWE6g9KRkNsANjXJwbNGlA1VEXzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=as3pJswtWXOBOGcHGbfPiUEivlqKBww2SZ3Qh0YGhtiAq6sf6lCoHhl0d15KpaEA3
-	 CvVblDNQTvM4ZMuUig/wu8EWabnMwjDj4sLVhl8d5/uZQGOpJKC+m4mmNVrRzv9KEk
-	 k6T8j9ATAg8dVrWKCVvZePtd8BPuaqELvVTAd60U=
+	b=SomWD3eCCCHZ4fEUBvymLoj+QkjiOD9ysNfuECma1iVDCXYQr79VE2JHVGeBMKxGP
+	 wvj/bqW3BNudJ55n2f0Ak1IQzoUqzgYKLnWtQ4j9aJC8m/lpLFU6wmx2j9N3QaBxlM
+	 zCeHdtyHR91qulegr0IgTmg4x+9T7DKm83SsaJMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 130/196] x86/mm: Fix pti_clone_pgtable() alignment assumption
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 389/484] scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES
 Date: Thu, 15 Aug 2024 15:24:07 +0200
-Message-ID: <20240815131857.049210687@linuxfoundation.org>
+Message-ID: <20240815131956.471806236@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 41e71dbb0e0a0fe214545fe64af031303a08524c ]
+commit 82dbb57ac8d06dfe8227ba9ab11a49de2b475ae5 upstream.
 
-Guenter reported dodgy crashes on an i386-nosmp build using GCC-11
-that had the form of endless traps until entry stack exhaust and then
-#DF from the stack guard.
+Some firmware versions of the 9600 series SAS HBA byte-swap the REPORT
+ZONES command reply buffer from ATA-ZAC devices by directly accessing the
+buffer in the host memory. This does not respect the default command DMA
+direction and causes IOMMU page faults on architectures with an IOMMU
+enforcing write-only mappings for DMA_FROM_DEVICE DMA driection (e.g. AMD
+hosts).
 
-It turned out that pti_clone_pgtable() had alignment assumptions on
-the start address, notably it hard assumes start is PMD aligned. This
-is true on x86_64, but very much not true on i386.
+scsi 18:0:0:0: Direct-Access-ZBC ATA      WDC  WSH722020AL W870 PQ: 0 ANSI: 6
+scsi 18:0:0:0: SATA: handle(0x0027), sas_addr(0x300062b2083e7c40), phy(0), device_name(0x5000cca29dc35e11)
+scsi 18:0:0:0: enclosure logical id (0x300062b208097c40), slot(0)
+scsi 18:0:0:0: enclosure level(0x0000), connector name( C0.0)
+scsi 18:0:0:0: atapi(n), ncq(y), asyn_notify(n), smart(y), fua(y), sw_preserve(y)
+scsi 18:0:0:0: qdepth(32), tagged(1), scsi_level(7), cmd_que(1)
+sd 18:0:0:0: Attached scsi generic sg2 type 20
+sd 18:0:0:0: [sdc] Host-managed zoned block device
+mpt3sas 0000:41:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0xfff9b200 flags=0x0050]
+mpt3sas 0000:41:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0xfff9b300 flags=0x0050]
+mpt3sas_cm0: mpt3sas_ctl_pre_reset_handler: Releasing the trace buffer due to adapter reset.
+mpt3sas_cm0 fault info from func: mpt3sas_base_make_ioc_ready
+mpt3sas_cm0: fault_state(0x2666)!
+mpt3sas_cm0: sending diag reset !!
+mpt3sas_cm0: diag reset: SUCCESS
+sd 18:0:0:0: [sdc] REPORT ZONES start lba 0 failed
+sd 18:0:0:0: [sdc] REPORT ZONES: Result: hostbyte=DID_RESET driverbyte=DRIVER_OK
+sd 18:0:0:0: [sdc] 0 4096-byte logical blocks: (0 B/0 B)
 
-These assumptions can cause the end condition to malfunction, leading
-to a 'short' clone. Guess what happens when the user mapping has a
-short copy of the entry text?
+Avoid such issue by always mapping the buffer of REPORT ZONES commands
+using DMA_BIDIRECTIONAL (read+write IOMMU mapping). This is done by
+introducing the helper function _base_scsi_dma_map() and using this helper
+in _base_build_sg_scmd() and _base_build_sg_scmd_ieee() instead of calling
+directly scsi_dma_map().
 
-Use the correct increment form for addr to avoid alignment
-assumptions.
-
-Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240731163105.GG33588@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 471ef9d4e498 ("mpt3sas: Build MPI SGL LIST on GEN2 HBAs and IEEE SGL LIST on GEN3 HBAs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240719073913.179559-3-dlemoal@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/pti.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/mpt3sas/mpt3sas_base.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 622d5968c9795..21105ae44ca18 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -383,14 +383,14 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
- 			 */
- 			*target_pmd = *pmd;
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -2672,6 +2672,22 @@ _base_build_zero_len_sge_ieee(struct MPT
+ 	_base_add_sg_single_ieee(paddr, sgl_flags, 0, 0, -1);
+ }
  
--			addr += PMD_SIZE;
-+			addr = round_up(addr + 1, PMD_SIZE);
++static inline int _base_scsi_dma_map(struct scsi_cmnd *cmd)
++{
++	/*
++	 * Some firmware versions byte-swap the REPORT ZONES command reply from
++	 * ATA-ZAC devices by directly accessing in the host buffer. This does
++	 * not respect the default command DMA direction and causes IOMMU page
++	 * faults on some architectures with an IOMMU enforcing write mappings
++	 * (e.g. AMD hosts). Avoid such issue by making the report zones buffer
++	 * mapping bi-directional.
++	 */
++	if (cmd->cmnd[0] == ZBC_IN && cmd->cmnd[1] == ZI_REPORT_ZONES)
++		cmd->sc_data_direction = DMA_BIDIRECTIONAL;
++
++	return scsi_dma_map(cmd);
++}
++
+ /**
+  * _base_build_sg_scmd - main sg creation routine
+  *		pcie_device is unused here!
+@@ -2718,7 +2734,7 @@ _base_build_sg_scmd(struct MPT3SAS_ADAPT
+ 	sgl_flags = sgl_flags << MPI2_SGE_FLAGS_SHIFT;
  
- 		} else if (level == PTI_CLONE_PTE) {
+ 	sg_scmd = scsi_sglist(scmd);
+-	sges_left = scsi_dma_map(scmd);
++	sges_left = _base_scsi_dma_map(scmd);
+ 	if (sges_left < 0)
+ 		return -ENOMEM;
  
- 			/* Walk the page-table down to the pte level */
- 			pte = pte_offset_kernel(pmd, addr);
- 			if (pte_none(*pte)) {
--				addr += PAGE_SIZE;
-+				addr = round_up(addr + 1, PAGE_SIZE);
- 				continue;
- 			}
+@@ -2862,7 +2878,7 @@ _base_build_sg_scmd_ieee(struct MPT3SAS_
+ 	}
  
-@@ -410,7 +410,7 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
- 			/* Clone the PTE */
- 			*target_pte = *pte;
+ 	sg_scmd = scsi_sglist(scmd);
+-	sges_left = scsi_dma_map(scmd);
++	sges_left = _base_scsi_dma_map(scmd);
+ 	if (sges_left < 0)
+ 		return -ENOMEM;
  
--			addr += PAGE_SIZE;
-+			addr = round_up(addr + 1, PAGE_SIZE);
- 
- 		} else {
- 			BUG();
--- 
-2.43.0
-
 
 
 
