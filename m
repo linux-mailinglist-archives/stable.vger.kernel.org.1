@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-68834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FAE2953439
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6AD953309
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ABDAB290E5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:24:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D2461C22157
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E8F1A00DF;
-	Thu, 15 Aug 2024 14:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802811A7065;
+	Thu, 15 Aug 2024 14:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLak1/LU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaprgw5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229F717C995;
-	Thu, 15 Aug 2024 14:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B5F1A706F;
+	Thu, 15 Aug 2024 14:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731808; cv=none; b=nooz1n6F09fT9NWJBZGDIO6CnLBoYEXkYFNBb1ciXDjOd5Nl8711A+3RS2bTR/7FrBf1IPZhJbN+B/MqTCS71F7uIOGYmMowDgGOmo+/BhdyH61MUmcXlXyRillKMZ0Ba5QDIidmg1F/bloL7zXpgaJeZSwXl4uIQGl9JLVKMR0=
+	t=1723731017; cv=none; b=NTuks1UlC9SlXpciBslYKTeQqoGbduuBI5+2weKF5Ol6kA6yywHf+wKWEvE6u8arYwP1TmHn7YlW7q1foE+yBxscWAfuQ7I9l18J6dGNevCmZAkWwRFgnmAMl+yxHPBrPTQPcVBPADi05qrXwK2KAJ4LoLo24QUR5ONqstN5hGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731808; c=relaxed/simple;
-	bh=PCp/VEJt6z75G6DGseThwZy7astz2HxRJedk77qVghk=;
+	s=arc-20240116; t=1723731017; c=relaxed/simple;
+	bh=FLwvPU3ZZz87k5vWRG67+AE3xF38rcIudKklg/2zeP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAE++44jAI4WX3QJ8qjISCRlyHMTGn4tZlOF/RwSZg7V8SnLLWYVFiD7errL7n6YGUXJNM/UrWlETszJLan04UQK5M4R0zEQCh4/Bz+7fyCl342s5fhDhLZI2HVvCEkX2hkTDVUIdAvsvluoDytFjDMP15gxyix9bssuC6ck8kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLak1/LU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F818C32786;
-	Thu, 15 Aug 2024 14:23:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qTOnZWedNPplXo6jRhJ996OdGmZ7x6Q/fAfHKHkCZI6jvdbfhSKI3Q1pDEAU38LD83kEkmQ56UFvvrMnACzFGbeTaR3Fg2gG1NxG/FJQ5NUwH6gH9CljyZZ65SQokEJaziR0rdDjX29NCFXHRx0QBMwC51egajruS1QQ99I671A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaprgw5P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A3BC4AF0C;
+	Thu, 15 Aug 2024 14:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731808;
-	bh=PCp/VEJt6z75G6DGseThwZy7astz2HxRJedk77qVghk=;
+	s=korg; t=1723731016;
+	bh=FLwvPU3ZZz87k5vWRG67+AE3xF38rcIudKklg/2zeP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLak1/LUV3af9qvfH9/1+eiZeZtbcsUVXL+J85P/fOfn1Dle4VWmRlkSkXvpjYSTb
-	 JThpqXqVXNSOIULdmRjhgo2Ovo7sc4EGgb/KjGUbkVRTzCNnbqNk65BBpdV6RXcIEG
-	 UCixduTzTPcH/lpSMeKAP9wfpY73NcMoRkkKyYJE=
+	b=gaprgw5PDG3R5mGRV++sY30dlXQqW9vOOxRYQ++VWvOxIpZKB24riEXf23pqFCXE9
+	 2uA2UZxSuKIVok5JGnBmNsndO5v4/hMXFa0bJdwdald0N6BsLREZU5QZvWzw04DfPf
+	 e9M93WCw7/3WyykMHD81WcZB7OTAa8nt9X1RAIRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
-	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.4 245/259] tracing: Fix overflow in get_free_elt()
-Date: Thu, 15 Aug 2024 15:26:18 +0200
-Message-ID: <20240815131912.231206510@linuxfoundation.org>
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Waiman Long <longman@redhat.com>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.6 65/67] cgroup: Move rcu_head up near the top of cgroup_root
+Date: Thu, 15 Aug 2024 15:26:19 +0200
+Message-ID: <20240815131840.794789323@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+From: Waiman Long <longman@redhat.com>
 
-commit bcf86c01ca4676316557dd482c8416ece8c2e143 upstream.
+commit a7fb0423c201ba12815877a0b5a68a6a1710b23a upstream.
 
-"tracing_map->next_elt" in get_free_elt() is at risk of overflowing.
+Commit d23b5c577715 ("cgroup: Make operations on the cgroup root_list RCU
+safe") adds a new rcu_head to the cgroup_root structure and kvfree_rcu()
+for freeing the cgroup_root.
 
-Once it overflows, new elements can still be inserted into the tracing_map
-even though the maximum number of elements (`max_elts`) has been reached.
-Continuing to insert elements after the overflow could result in the
-tracing_map containing "tracing_map->max_size" elements, leaving no empty
-entries.
-If any attempt is made to insert an element into a full tracing_map using
-`__tracing_map_insert()`, it will cause an infinite loop with preemption
-disabled, leading to a CPU hang problem.
+The current implementation of kvfree_rcu(), however, has the limitation
+that the offset of the rcu_head structure within the larger data
+structure must be less than 4096 or the compilation will fail. See the
+macro definition of __is_kvfree_rcu_offset() in include/linux/rcupdate.h
+for more information.
 
-Fix this by preventing any further increments to "tracing_map->next_elt"
-once it reaches "tracing_map->max_elt".
+By putting rcu_head below the large cgroup structure, any change to the
+cgroup structure that makes it larger run the risk of causing build
+failure under certain configurations. Commit 77070eeb8821 ("cgroup:
+Avoid false cacheline sharing of read mostly rstat_cpu") happens to be
+the last straw that breaks it. Fix this problem by moving the rcu_head
+structure up before the cgroup structure.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Fixes: 08d43a5fa063e ("tracing: Add lock-free tracing_map")
-Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Link: https://lore.kernel.org/20240805055922.6277-1-Tze-nan.Wu@mediatek.com
-Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: d23b5c577715 ("cgroup: Make operations on the cgroup root_list RCU safe")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/lkml/20231207143806.114e0a74@canb.auug.org.au/
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Yafang Shao <laoar.shao@gmail.com>
+Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/tracing_map.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/cgroup-defs.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -454,7 +454,7 @@ static struct tracing_map_elt *get_free_
- 	struct tracing_map_elt *elt = NULL;
- 	int idx;
+--- a/include/linux/cgroup-defs.h
++++ b/include/linux/cgroup-defs.h
+@@ -543,6 +543,10 @@ struct cgroup_root {
+ 	/* Unique id for this hierarchy. */
+ 	int hierarchy_id;
  
--	idx = atomic_inc_return(&map->next_elt);
-+	idx = atomic_fetch_add_unless(&map->next_elt, 1, map->max_elts);
- 	if (idx < map->max_elts) {
- 		elt = *(TRACING_MAP_ELT(map->elts, idx));
- 		if (map->ops && map->ops->elt_init)
-@@ -699,7 +699,7 @@ void tracing_map_clear(struct tracing_ma
- {
- 	unsigned int i;
++	/* A list running through the active hierarchies */
++	struct list_head root_list;
++	struct rcu_head rcu;	/* Must be near the top */
++
+ 	/*
+ 	 * The root cgroup. The containing cgroup_root will be destroyed on its
+ 	 * release. cgrp->ancestors[0] will be used overflowing into the
+@@ -556,10 +560,6 @@ struct cgroup_root {
+ 	/* Number of cgroups in the hierarchy, used only for /proc/cgroups */
+ 	atomic_t nr_cgrps;
  
--	atomic_set(&map->next_elt, -1);
-+	atomic_set(&map->next_elt, 0);
- 	atomic64_set(&map->hits, 0);
- 	atomic64_set(&map->drops, 0);
+-	/* A list running through the active hierarchies */
+-	struct list_head root_list;
+-	struct rcu_head rcu;
+-
+ 	/* Hierarchy-specific flags */
+ 	unsigned int flags;
  
-@@ -783,7 +783,7 @@ struct tracing_map *tracing_map_create(u
- 
- 	map->map_bits = map_bits;
- 	map->max_elts = (1 << map_bits);
--	atomic_set(&map->next_elt, -1);
-+	atomic_set(&map->next_elt, 0);
- 
- 	map->map_size = (1 << (map_bits + 1));
- 	map->ops = ops;
 
 
 
