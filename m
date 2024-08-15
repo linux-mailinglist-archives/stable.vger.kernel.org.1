@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6304952F8F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6784D9531D7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3E7C1C24844
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AE1F1C23870
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E231A0712;
-	Thu, 15 Aug 2024 13:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06A119D891;
+	Thu, 15 Aug 2024 13:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg5IEaUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrDHeOUM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1961A01CF;
-	Thu, 15 Aug 2024 13:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6A07DA7D;
+	Thu, 15 Aug 2024 13:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728814; cv=none; b=kBH1NE9JP567iX9YGI+8o7HeWLbv4MBFpk1qamXhsG84qDUmzaFyCRRb1HHRypnrioDxmiTbHl2fgSpUx9nD1G0cEr3Z+C3mNr+bZl7JHBFJJdsXiDrH0gE1ATyMGueIqSGRapA1n444353YqR2XlH+s5ClSVqCHkI7IchIsyZU=
+	t=1723730339; cv=none; b=lZqPhJh5rt3F1edhy04+i5/pIeY8I7E8N1Z2T97A9cLIPyQgcO3heQVGniYkzX4dwycdrxaFaNMdzozT7mZBrhDTdtFpULRFVDbJG5HHehA2Dq4hiWTUNCBwCreI+AKtyrb0J0YkkVeRkewo4C/Zb+mOBMg7aX9adMGTBOyIp3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728814; c=relaxed/simple;
-	bh=aLdJYWjibBb7ha/BllVT7P2lT+Q4NcvGoDqcgOSBwLM=;
+	s=arc-20240116; t=1723730339; c=relaxed/simple;
+	bh=KUcSl3fKnlP7lFRvYzRluJqkNJLEfbghHGQgvnUwz1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGGPRpIbQTvdUZvmyhTad6OFIQxHqEAIx+ia/MPXf+CZKJWSF1jn016GQeb6teuV5dzh1cNrvf4hSM/nEW/Xg31cVvoOx8IfjWo1pYTe+65a0ME3HlCfSi69T3ps8NtFomFYS5b4ELlZkEnxss9xKUpk0qHUb0dPWAteSLOih1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg5IEaUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A86FC32786;
-	Thu, 15 Aug 2024 13:33:33 +0000 (UTC)
+	 MIME-Version; b=bOuyzVNyEUbvBUw769+CYD8KdTg69MkqpOxz7GcSCohKkrtHS9y8gjdlXV/qthQbIdxsRE5qMpoGiWXyymmidmb5l+oxnpC4q082C9WhrMXfUxkLDYm67tnHtOmXfF1Ce+fSkbOr39ta4Qn1tjFLtWdaRbn2z7WBqKtfI9UoMWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrDHeOUM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C0BC32786;
+	Thu, 15 Aug 2024 13:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728814;
-	bh=aLdJYWjibBb7ha/BllVT7P2lT+Q4NcvGoDqcgOSBwLM=;
+	s=korg; t=1723730339;
+	bh=KUcSl3fKnlP7lFRvYzRluJqkNJLEfbghHGQgvnUwz1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hg5IEaUjdnIiRTXTLMR3vMF/hIDLWCyTFhw/ZaH9VQGkT+k+/IYYhuZo/yAShZPaW
-	 tVf3caKk7Y/i7TaLwBrMtOaFVPleRrYLvNVQC0SW3Sw13p4Dl5BqnxT5kCWQ3djwvC
-	 am5ObfUs4e0nO9Rz9ntWwCmU+Vwh8piGjewR2o5w=
+	b=YrDHeOUMGjMqQSItpO1aK5aBjspO1/X5tApLeDkoPEjOVI2orHBw9RhJypSYDqpJB
+	 SwsfEJI5tHgrJFfFyi7QEn0/eKxi/hGkoKdk6uye4cuyA0z9Jl2kYFH3kFEb5Fi1pV
+	 drghzjY66iRq4pk42DYx7t+9XfNgNxRbkBp3NEJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 119/196] perf/x86/intel/pt: Fix a topa_entry base address calculation
+Subject: [PATCH 5.15 378/484] drm/amdgpu/pm: Fix the null pointer dereference for smu7
 Date: Thu, 15 Aug 2024 15:23:56 +0200
-Message-ID: <20240815131856.630396570@linuxfoundation.org>
+Message-ID: <20240815131956.046411512@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit ad97196379d0b8cb24ef3d5006978a6554e6467f ]
+[ Upstream commit c02c1960c93eede587576625a1221205a68a904f ]
 
-topa_entry->base is a bit-field. Bit-fields are not promoted to a 64-bit
-type, even if the underlying type is 64-bit, and so, if necessary, must
-be cast to a larger type when calculations are done.
+optimize the code to avoid pass a null pointer (hwmgr->backend)
+to function smu7_update_edc_leakage_table.
 
-Fix a topa_entry->base address calculation by adding a cast.
-
-Without the cast, the address was limited to 36-bits i.e. 64GiB.
-
-The address calculation is used on systems that do not support Multiple
-Entry ToPA (only Broadwell), and affects physical addresses on or above
-64GiB. Instead of writing to the correct address, the address comprising
-the first 36 bits would be written to.
-
-Intel PT snapshot and sampling modes are not affected.
-
-Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
-Reported-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240624201101.60186-3-adrian.hunter@intel.com
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 50 +++++++++----------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index 1fe74019ee3c8..87cca56228856 100644
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -816,7 +816,7 @@ static void pt_update_head(struct pt *pt)
-  */
- static void *pt_buffer_region(struct pt_buffer *buf)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 9bfc465d08fb0..2451cec031dda 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2907,6 +2907,7 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
+ 
+ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
  {
--	return phys_to_virt(TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
-+	return phys_to_virt((phys_addr_t)TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
++	struct amdgpu_device *adev = hwmgr->adev;
+ 	struct smu7_hwmgr *data;
+ 	int result = 0;
+ 
+@@ -2943,40 +2944,37 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 	/* Initalize Dynamic State Adjustment Rule Settings */
+ 	result = phm_initializa_dynamic_state_adjustment_rule_settings(hwmgr);
+ 
+-	if (0 == result) {
+-		struct amdgpu_device *adev = hwmgr->adev;
++	if (result)
++		goto fail;
+ 
+-		data->is_tlu_enabled = false;
++	data->is_tlu_enabled = false;
+ 
+-		hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
++	hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
+ 							SMU7_MAX_HARDWARE_POWERLEVELS;
+-		hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
+-		hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
++	hwmgr->platform_descriptor.hardwarePerformanceLevels = 2;
++	hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
+ 
+-		data->pcie_gen_cap = adev->pm.pcie_gen_mask;
+-		if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
+-			data->pcie_spc_cap = 20;
+-		else
+-			data->pcie_spc_cap = 16;
+-		data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
+-
+-		hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
+-/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
+-		hwmgr->platform_descriptor.clockStep.engineClock = 500;
+-		hwmgr->platform_descriptor.clockStep.memoryClock = 500;
+-		smu7_thermal_parameter_init(hwmgr);
+-	} else {
+-		/* Ignore return value in here, we are cleaning up a mess. */
+-		smu7_hwmgr_backend_fini(hwmgr);
+-	}
++	data->pcie_gen_cap = adev->pm.pcie_gen_mask;
++	if (data->pcie_gen_cap & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
++		data->pcie_spc_cap = 20;
++	else
++		data->pcie_spc_cap = 16;
++	data->pcie_lane_cap = adev->pm.pcie_mlw_mask;
++
++	hwmgr->platform_descriptor.vbiosInterruptId = 0x20000400; /* IRQ_SOURCE1_SW_INT */
++	/* The true clock step depends on the frequency, typically 4.5 or 9 MHz. Here we use 5. */
++	hwmgr->platform_descriptor.clockStep.engineClock = 500;
++	hwmgr->platform_descriptor.clockStep.memoryClock = 500;
++	smu7_thermal_parameter_init(hwmgr);
+ 
+ 	result = smu7_update_edc_leakage_table(hwmgr);
+-	if (result) {
+-		smu7_hwmgr_backend_fini(hwmgr);
+-		return result;
+-	}
++	if (result)
++		goto fail;
+ 
+ 	return 0;
++fail:
++	smu7_hwmgr_backend_fini(hwmgr);
++	return result;
  }
  
- /**
+ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
 -- 
 2.43.0
 
