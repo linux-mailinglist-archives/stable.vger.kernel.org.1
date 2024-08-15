@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-69048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5598B953530
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:35:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0859533C9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02421285C5C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:35:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF9C11C254D0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BB517C995;
-	Thu, 15 Aug 2024 14:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BDF29CE6;
+	Thu, 15 Aug 2024 14:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N24+5vON"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auxfYwYG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3642163D5;
-	Thu, 15 Aug 2024 14:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E7F176AD7;
+	Thu, 15 Aug 2024 14:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732498; cv=none; b=RVoA3sAUbVBTDKkqSivTVeEP1QxxG0Pol8K4JkUVuTSfFoZAaFNT4dkVvkKcKaisvkwHiGgmEhMxEETmpw45MTRM5MFUTAl/zJT2Im3G7yoOE1G257daOQeBwxuNpQPSZ3t6CdeAbnKo16h389F48Pdj5ir2LAk2L7hGo16ORdA=
+	t=1723731546; cv=none; b=s7gjaJAKO2Kjc2FrZJbGuXJ1OJie+PTLNgUW/e47oUbI5Yl3GQMRnHRE5lh/izqgpI1VhQyoZXaku6IyJmbR+A95Ii7NPzvIrMKPlefYCDNaXmiIUeSgpNjFOnGIGXZhZUCTwTSj842vgVPdJR2C5cfwZVdyfdLUPvnUWbXVAME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732498; c=relaxed/simple;
-	bh=84wnEsHRCVU3P/FLoWT5ML1L/b3AmyVwZB+1jkSiJCU=;
+	s=arc-20240116; t=1723731546; c=relaxed/simple;
+	bh=+FbD0HrgxMDiWVXr6zW1+cyvbU2q2xMUvo0Lw/b7fNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qp7GKNopjvwsbYflYsSu6PMPmlubGBVGIiel0vm0cXu72SUbfTn5OnKf/WFwRgxbDwLyU8V/FdJp7UHO3c8F0MiyaW+c9fC+UneNLx5wN5Tl3p0+76nQDLmdiNFEV1MRTY7oBKMHbbF/k60FkKnSYej9GnI3554EdTimhL0kMcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N24+5vON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46027C4AF0C;
-	Thu, 15 Aug 2024 14:34:57 +0000 (UTC)
+	 MIME-Version; b=naPI8ngQi+ulnfeWt41uzH+kNkxBFjEbMzZkdWwglGk8N6N51z9uwX1LJpwVqH1xl6gY9oTzak0ai4E9nuC1pHwT3Fzmn2xzUuN6pdPEOdYtEBLDOxZHUiOmJB1wyN7YzexVwekP+oYKYjo2w9fxyyCGfAupRakGeZi+dVmSRM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auxfYwYG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB023C32786;
+	Thu, 15 Aug 2024 14:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732497;
-	bh=84wnEsHRCVU3P/FLoWT5ML1L/b3AmyVwZB+1jkSiJCU=;
+	s=korg; t=1723731546;
+	bh=+FbD0HrgxMDiWVXr6zW1+cyvbU2q2xMUvo0Lw/b7fNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N24+5vONbG/eM5S/ohJVWGxvMhWspIqCQ8trMq6Fo6+EglCdc/FEkpVnXxTj5bzGH
-	 gkNkW2AZg1gaGFG259zc1QLe/g+ZUwvHvISQNHx2X9x8xQVOwHCKga6YqlzTCZPhbE
-	 5ppGoFI69i3QkxvHPdsW5KuLeFZG66oE1DkwfPUQ=
+	b=auxfYwYGHrz7lR652Sm/Z4qCJEvLLPfhZQDBTOSjhiMaIYkPyAMZe6oapBIQbVzi+
+	 p1BD7vuuvyCbThwYhUeRwQCtVXJFpgn1RZbZkQiJoxwNqJ4mhwRwjwhVp3KNSAoS8v
+	 D7rsGG9TOECvZCsQMJJDnre47Z93hMW7uQYcbITU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 198/352] netfilter: nft_set_pipapo_avx2: disable softinterrupts
-Date: Thu, 15 Aug 2024 15:24:24 +0200
-Message-ID: <20240815131926.930855920@linuxfoundation.org>
+	Wentao Guan <guanwentao@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Erpeng Xu <xuerpeng@uniontech.com>
+Subject: [PATCH 5.4 132/259] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x13d3:0x3591
+Date: Thu, 15 Aug 2024 15:24:25 +0200
+Message-ID: <20240815131907.890128197@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit a16909ae9982e931841c456061cb57fbaec9c59e ]
+commit 473a89b4ed7fd52a419340f7c540d5c8fc96fc75 upstream.
 
-We need to disable softinterrupts, else we get following problem:
+Add the support ID(0x13d3, 0x3591) to usb_device_id table for
+Realtek RTL8852BE.
 
-1. pipapo_avx2 called from process context; fpu usable
-2. preempt_disable() called, pcpu scratchmap in use
-3. softirq handles rx or tx, we re-enter pipapo_avx2
-4. fpu busy, fallback to generic non-avx version
-5. fallback reuses scratch map and index, which are in use
-   by the preempted process
+The device table is as follows:
 
-Handle this same way as generic version by first disabling
-softinterrupts while the scratchmap is in use.
+T:  Bus=01 Lev=02 Prnt=03 Port=00 Cnt=01 Dev#=  5 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=13d3 ProdID=3591 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 
-Fixes: f0b3d338064e ("netfilter: nft_set_pipapo_avx2: Add irq_fpu_usable() check, fallback to non-AVX2 version")
-Cc: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Erpeng Xu <xuerpeng@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index 60fb8bc0fdcc9..13c7e22c93842 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1129,8 +1129,14 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	bool map_index;
- 	int i, ret = 0;
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -370,6 +370,8 @@ static const struct usb_device_id blackl
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
  
--	if (unlikely(!irq_fpu_usable()))
--		return nft_pipapo_lookup(net, set, key, ext);
-+	local_bh_disable();
-+
-+	if (unlikely(!irq_fpu_usable())) {
-+		bool fallback_res = nft_pipapo_lookup(net, set, key, ext);
-+
-+		local_bh_enable();
-+		return fallback_res;
-+	}
- 
- 	m = rcu_dereference(priv->match);
- 
-@@ -1140,6 +1146,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	scratch = *raw_cpu_ptr(m->scratch);
- 	if (unlikely(!scratch)) {
- 		kernel_fpu_end();
-+		local_bh_enable();
- 		return false;
- 	}
- 
-@@ -1220,6 +1227,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	if (i % 2)
- 		scratch->map_index = !map_index;
- 	kernel_fpu_end();
-+	local_bh_enable();
- 
- 	return ret >= 0;
- }
--- 
-2.43.0
-
 
 
 
