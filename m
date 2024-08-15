@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-67822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1496952F43
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716EA953194
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B2FB1F269A8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A30271C2351E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7E519F471;
-	Thu, 15 Aug 2024 13:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1130719DF58;
+	Thu, 15 Aug 2024 13:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVK8cKCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDRf1Sfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E5D19EEDC;
-	Thu, 15 Aug 2024 13:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C479218D630;
+	Thu, 15 Aug 2024 13:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728627; cv=none; b=PXxhnowTW6KleDcM+DU156em5jM7AWB3JeHwuw3yc3GDcGnimE+PhOq0lSoVZfwIC4QKqGOY8EgTOed9Kzc3LW3saIH3qhmHFQpfgxwRLFKBySEur92TFU4nsXco0R+9b+i9FxjkjKsISJfAEvep39dxcFdGCfAeniTbpUnFsPw=
+	t=1723730152; cv=none; b=PE2jMEjR2SxOfvz6zLoL+i3QUvy3qSOIiQExdlLmE6CH1WrrvBSGK3EXrzjMG20cMzBPnIJpZDXvirmNKVVsjo/fG19OkD0ZS8C3hIqfOEMHeo3s6Wj90beAkH2rxv1NfkxsNV3mgE20s+hvW1tUie3MGG4X4RQsSj7mWROhhA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728627; c=relaxed/simple;
-	bh=Xo3/eTNPYPdxZS3JzGcdWr9EK9/gPzi9dYJHExYVZ+c=;
+	s=arc-20240116; t=1723730152; c=relaxed/simple;
+	bh=3dHmc5s3UwOIgyP2L9Zb/nCN2SIxMHgpHHgXjQiIIVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZWA11BLSO6zFqYW3if462jZz/+ECaxcQeP/1QezLJQSFDHDo8Hb8xWbGHNYVOzu/wnhQM3Kk/p47xqmCNSTR0pkMZcX38ALJ0X7HcjeeAjnoWjQXo90gB7lz2pWV5WfD2womVE0cQS7+j/8GgKK3d7Wd7paAfIKIQCHWL9gBSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVK8cKCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406DAC4AF0A;
-	Thu, 15 Aug 2024 13:30:27 +0000 (UTC)
+	 MIME-Version; b=WXaaQDjRZinms0tM5iLOmMn4joVJMGXXl3pK1pHCwGgwQlkN253j1oowPNQb4LkT3vnhGxOMgdmTjo8vMd3FEi+AZd4OKNOS1aOCskRNUIfRRdi1EnuX4rfBzSBHENTYxTxJf0y6LgqFMjOc0/nexw+cfiIULGcuJio1Iqqt2Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDRf1Sfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2FBC32786;
+	Thu, 15 Aug 2024 13:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728627;
-	bh=Xo3/eTNPYPdxZS3JzGcdWr9EK9/gPzi9dYJHExYVZ+c=;
+	s=korg; t=1723730152;
+	bh=3dHmc5s3UwOIgyP2L9Zb/nCN2SIxMHgpHHgXjQiIIVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVK8cKCd36y+UjCVoKdsH5tL84HuPKEB7U9SKlcbHA5s8hl/fbEHJuLGvWWsxT1XS
-	 v/gXWDkq5kwmpjO0Zk41cAnutp5VlfWLqir1fQnLnG09G0i1yO7YeYFPVuE3e3ftvf
-	 6RAeOo6uGzf/UB5hFaTARodqiivkPoTCooQ5Kgcc=
+	b=NDRf1Sfwe7oi+ByCyt8rIgaNcjbNDx8e01Y0e+ZW0gHsqVGba4SpyVLL33vErrX2E
+	 tRCE7utdzfijI+OdDXdGjSz3yyKPAvpieypI65ra8BLjCTYFG5lZc6rftOtzfleXTK
+	 foBrRAO4IEZ5l+L6zqYHpp8FcN7r7uX0p6kOijR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Alex Shi <alex.shi@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 060/196] fs/nilfs2: remove some unused macros to tame gcc
+Subject: [PATCH 5.15 319/484] irqchip/imx-irqsteer: Constify irq_chip struct
 Date: Thu, 15 Aug 2024 15:22:57 +0200
-Message-ID: <20240815131854.373527543@linuxfoundation.org>
+Message-ID: <20240815131953.727292420@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Shi <alex.shi@linux.alibaba.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit e7920b3e9d9f5470d5ff7d883e72a47addc0a137 ]
+[ Upstream commit e9a50f12e579a48e124ac5adb93dafc35f0a46b8 ]
 
-There some macros are unused and cause gcc warning. Remove them.
+The imx_irqsteer_irq_chip struct is constant data.
 
-  fs/nilfs2/segment.c:137:0: warning: macro "nilfs_cnt32_gt" is not used [-Wunused-macros]
-  fs/nilfs2/segment.c:144:0: warning: macro "nilfs_cnt32_le" is not used [-Wunused-macros]
-  fs/nilfs2/segment.c:143:0: warning: macro "nilfs_cnt32_lt" is not used [-Wunused-macros]
-
-Link: https://lkml.kernel.org/r/1607552733-24292-1-git-send-email-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 0f3819e8c483 ("nilfs2: avoid undefined behavior in nilfs_cnt32_ge macro")
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20220406163701.1277930-1-l.stach@pengutronix.de
+Stable-dep-of: 33b1c47d1fc0 ("irqchip/imx-irqsteer: Handle runtime power management correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/irqchip/irq-imx-irqsteer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 23b24ec79527c..62c83193a5bb8 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -134,14 +134,9 @@ static void nilfs_segctor_do_flush(struct nilfs_sc_info *, int);
- static void nilfs_segctor_do_immediate_flush(struct nilfs_sc_info *);
- static void nilfs_dispose_list(struct the_nilfs *, struct list_head *, int);
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index 8d91a02593fc2..e286e7c5ccbfb 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -70,7 +70,7 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
  
--#define nilfs_cnt32_gt(a, b)   \
--	(typecheck(__u32, a) && typecheck(__u32, b) && \
--	 ((__s32)(b) - (__s32)(a) < 0))
- #define nilfs_cnt32_ge(a, b)   \
- 	(typecheck(__u32, a) && typecheck(__u32, b) && \
- 	 ((__s32)(a) - (__s32)(b) >= 0))
--#define nilfs_cnt32_lt(a, b)  nilfs_cnt32_gt(b, a)
--#define nilfs_cnt32_le(a, b)  nilfs_cnt32_ge(b, a)
- 
- static int nilfs_prepare_segment_lock(struct super_block *sb,
- 				      struct nilfs_transaction_info *ti)
+-static struct irq_chip imx_irqsteer_irq_chip = {
++static const struct irq_chip imx_irqsteer_irq_chip = {
+ 	.name		= "irqsteer",
+ 	.irq_mask	= imx_irqsteer_irq_mask,
+ 	.irq_unmask	= imx_irqsteer_irq_unmask,
 -- 
 2.43.0
 
