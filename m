@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-69097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E6B95356A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BF7953251
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04E05282148
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1884289489
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E9B1DFFB;
-	Thu, 15 Aug 2024 14:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C361A2C11;
+	Thu, 15 Aug 2024 14:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZD6hhvT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp0Ohtlt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8568A3214;
-	Thu, 15 Aug 2024 14:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51DA1AC8BB;
+	Thu, 15 Aug 2024 14:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732657; cv=none; b=EiA9uTNZm7Y60BLNLQOGVJcIdEZIgk4IxXrSzCJqKbUuU1WY71+DN6z/Igg88XN3TmtNa85aBAoOHpYSjAUx1tnb1CzVRiUArq4quIh+U6iuBJgtJyMXTh73RcBPztGnPsul6/LxZvBhFl4xk7XM6Bh6pgS4uheHgiC0n/8ELcc=
+	t=1723730585; cv=none; b=Rrkc7hnqa446BLGZNV5xKoykjsjENRMC1eSxfye1L6xN51WuYgI0pBC4Tpa7SVbhzRlrdOx6ZF3USu2GUlNW/B8DHQisEs115gbkUtfTwXBaMtiYu9jxMLlGu6hwkzymBrwAiOjjSGp1ML2QVx4ZR3fOIoog297Iyr+SBkHpTFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732657; c=relaxed/simple;
-	bh=sNnBGYxrmPIPCTK8ssNdF3vZ6IpKOiWAq3TNwQPm8KU=;
+	s=arc-20240116; t=1723730585; c=relaxed/simple;
+	bh=3ZUk3hy4QT8CPyqu01KPYwY3hbLmtRRucdm1rF5fQOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftnC41kE2HXH/ydZQeUaiMYHl2IU0l3wDuXZf4Q6NiWj4UffAKhmsBFixcLh3201cEmNClnaRixvGonlQKfZ3QY6c/FFuvN7xMQz4B+3Pgfz5mEkNaz5dJ0cIesoH0IG1WCQHDxZF/+LgvSCJ6UzdEatZ6ohYL4sub1u8E/4WJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZD6hhvT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7515C32786;
-	Thu, 15 Aug 2024 14:37:36 +0000 (UTC)
+	 MIME-Version; b=qlpUZQNsdeIYGeFqJeU4097/5u4DC3MXOdWnBjhfMor6sWJY//RUjVEhYMmz7OrRbon1Njv4eOPl5awy1RPut44TzDsoGa0xzZUEFKnrV73HyMjRTFRt3Zosf40Fw5YeTm91igTZUNLByXRYhAcRijTN4GPYnFCCVSWle3pd0co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp0Ohtlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BB0C32786;
+	Thu, 15 Aug 2024 14:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732657;
-	bh=sNnBGYxrmPIPCTK8ssNdF3vZ6IpKOiWAq3TNwQPm8KU=;
+	s=korg; t=1723730585;
+	bh=3ZUk3hy4QT8CPyqu01KPYwY3hbLmtRRucdm1rF5fQOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZD6hhvToHcyZyQZClivTlwfEk4b9gacIk7otlqExCbiij8BwR2egPs48sAe+39MV
-	 dXhUSlpVq8wW0r+kyTGktPOwkWz0mvtzbbMKVTsTjbPYKdT94oDVWqIWtZvFwiTjGx
-	 F3EeYI5IO68PrngSlysSb1Mk8yc1GSyV2nZmLsNA=
+	b=yp0Ohtltf5QXd+zsz4ZC4tJrRsqbFUyiq0vTh69KcfJZGmxtEKVYudJv8qvN8aNns
+	 Y3eXZGw+xgkJauH4KPU5vZbt+mkqENB/h/9JfILUxrFe9V0sXWmZf2Rp3TpTbaVkNd
+	 a9KR0E1uYpbtF8rDpkJxdrjM6TtJeiOMeVUk9mlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 245/352] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
-Date: Thu, 15 Aug 2024 15:25:11 +0200
-Message-ID: <20240815131928.907751934@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 454/484] mptcp: mib: count MPJ with backup flag
+Date: Thu, 15 Aug 2024 15:25:12 +0200
+Message-ID: <20240815131959.001142031@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 08f3a5c38087d1569e982a121aad1e6acbf145ce upstream.
+commit 4dde0d72ccec500c60c798e036b852e013d6e124 upstream.
 
-It could lead to error happen because the variable res is not updated if
-the call to sr_share_read_word returns an error. In this particular case
-error code was returned and res stayed uninitialized. Same issue also
-applies to sr_read_reg.
+Without such counters, it is difficult to easily debug issues with MPJ
+not having the backup flags on production servers.
 
-This can be avoided by checking the return value of sr_share_read_word
-and sr_read_reg, and propagating the error if the read operation failed.
+This is not strictly a fix, but it eases to validate the following
+patches without requiring to take packet traces, to query ongoing
+connections with Netlink with admin permissions, or to guess by looking
+at the behaviour of the packet scheduler. Also, the modification is self
+contained, isolated, well controlled, and the increments are done just
+after others, there from the beginning. It looks then safe, and helpful
+to backport this.
 
-Found by code review.
-
+Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
 Cc: stable@vger.kernel.org
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in subflow.c because the context has changed in
+  commit b3ea6b272d79 ("mptcp: consolidate initial ack seq generation")
+  which is not in this version. This commit is unrelated to this
+  modification. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/sr9700.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/mptcp/mib.c     |    2 ++
+ net/mptcp/mib.h     |    2 ++
+ net/mptcp/subflow.c |    6 ++++++
+ 3 files changed, 10 insertions(+)
 
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -178,6 +178,7 @@ static int sr_mdio_read(struct net_devic
- 	struct usbnet *dev = netdev_priv(netdev);
- 	__le16 res;
- 	int rc = 0;
-+	int err;
- 
- 	if (phy_id) {
- 		netdev_dbg(netdev, "Only internal phy supported\n");
-@@ -188,11 +189,17 @@ static int sr_mdio_read(struct net_devic
- 	if (loc == MII_BMSR) {
- 		u8 value;
- 
--		sr_read_reg(dev, SR_NSR, &value);
-+		err = sr_read_reg(dev, SR_NSR, &value);
-+		if (err < 0)
-+			return err;
+--- a/net/mptcp/mib.c
++++ b/net/mptcp/mib.c
+@@ -19,7 +19,9 @@ static const struct snmp_mib mptcp_snmp_
+ 	SNMP_MIB_ITEM("MPTCPRetrans", MPTCP_MIB_RETRANSSEGS),
+ 	SNMP_MIB_ITEM("MPJoinNoTokenFound", MPTCP_MIB_JOINNOTOKEN),
+ 	SNMP_MIB_ITEM("MPJoinSynRx", MPTCP_MIB_JOINSYNRX),
++	SNMP_MIB_ITEM("MPJoinSynBackupRx", MPTCP_MIB_JOINSYNBACKUPRX),
+ 	SNMP_MIB_ITEM("MPJoinSynAckRx", MPTCP_MIB_JOINSYNACKRX),
++	SNMP_MIB_ITEM("MPJoinSynAckBackupRx", MPTCP_MIB_JOINSYNACKBACKUPRX),
+ 	SNMP_MIB_ITEM("MPJoinSynAckHMacFailure", MPTCP_MIB_JOINSYNACKMAC),
+ 	SNMP_MIB_ITEM("MPJoinAckRx", MPTCP_MIB_JOINACKRX),
+ 	SNMP_MIB_ITEM("MPJoinAckHMacFailure", MPTCP_MIB_JOINACKMAC),
+--- a/net/mptcp/mib.h
++++ b/net/mptcp/mib.h
+@@ -12,7 +12,9 @@ enum linux_mptcp_mib_field {
+ 	MPTCP_MIB_RETRANSSEGS,		/* Segments retransmitted at the MPTCP-level */
+ 	MPTCP_MIB_JOINNOTOKEN,		/* Received MP_JOIN but the token was not found */
+ 	MPTCP_MIB_JOINSYNRX,		/* Received a SYN + MP_JOIN */
++	MPTCP_MIB_JOINSYNBACKUPRX,	/* Received a SYN + MP_JOIN + backup flag */
+ 	MPTCP_MIB_JOINSYNACKRX,		/* Received a SYN/ACK + MP_JOIN */
++	MPTCP_MIB_JOINSYNACKBACKUPRX,	/* Received a SYN/ACK + MP_JOIN + backup flag */
+ 	MPTCP_MIB_JOINSYNACKMAC,	/* HMAC was wrong on SYN/ACK + MP_JOIN */
+ 	MPTCP_MIB_JOINACKRX,		/* Received an ACK + MP_JOIN */
+ 	MPTCP_MIB_JOINACKMAC,		/* HMAC was wrong on ACK + MP_JOIN */
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -163,6 +163,9 @@ static int subflow_check_req(struct requ
+ 			return 0;
+ 	} else if (opt_mp_join) {
+ 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNRX);
 +
- 		if (value & NSR_LINKST)
- 			rc = 1;
++		if (mp_opt.backup)
++			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNBACKUPRX);
  	}
--	sr_share_read_word(dev, 1, loc, &res);
-+	err = sr_share_read_word(dev, 1, loc, &res);
-+	if (err < 0)
-+		return err;
+ 
+ 	if (opt_mp_capable && listener->request_mptcp) {
+@@ -462,6 +465,9 @@ static void subflow_finish_connect(struc
+ 		subflow->mp_join = 1;
+ 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKRX);
+ 
++		if (subflow->backup)
++			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKBACKUPRX);
 +
- 	if (rc == 1)
- 		res = le16_to_cpu(res) | BMSR_LSTATUS;
- 	else
+ 		if (subflow_use_different_dport(mptcp_sk(parent), sk)) {
+ 			pr_debug("synack inet_dport=%d %d",
+ 				 ntohs(inet_sk(sk)->inet_dport),
 
 
 
