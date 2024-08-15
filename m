@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3254953341
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74989534CB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C3EC1F21A29
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 155BE1C237E7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403F61B3F07;
-	Thu, 15 Aug 2024 14:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D8917BEC0;
+	Thu, 15 Aug 2024 14:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HilwaCWP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3jLG+Pz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F441B3F05;
-	Thu, 15 Aug 2024 14:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2265B1DFFB;
+	Thu, 15 Aug 2024 14:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731170; cv=none; b=A2S6AdIj6gwu73thEEmo2Wxk53vEKiYt73jLXmgu3kkWkoqBsIlyXcL63K8p+otyUFKbGChRnJ1GUW8o+JWEemQA91p8+C7aOByzXGHP+Sisnwm3OGNueqjQMmHVKGk+rjuu8/VmNE8a/xLc1rjtZc1qNRJVXB1ffuBG/OvYJpA=
+	t=1723732227; cv=none; b=A4XihtzNwaZwnXif9Fu5R7txtwSHVcdUD6e5PqluAGwsoekAFu//IaOZA5x7ZBbS3+2QgshrvV/cgRsVQ7/Ljmfv6VVLN4H3ClGbE+cAWVS3uvEWDKWz14j9rmd5cQXvigt8ORE5taztMifwQxMeCdedBJAytskqmQNJ07Oja6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731170; c=relaxed/simple;
-	bh=tNxhW9cltJtiM0xGVO4lGOjugJDlxQi1/tIKHQNF+lI=;
+	s=arc-20240116; t=1723732227; c=relaxed/simple;
+	bh=RLzzB7ShZEKRUeCh9DaoVxphfcYkBgRyqe5Unr6b1Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cz6O6TRXzSgUP8TlLLlTmT3mnPXLrQCk70/BYlI2pa46QdL3+1G8kq2m7gf5ATswUKHwTEMrXGyIsW17LyJsnyAbEN8cFPezZbbLvRFxcUFOcliPied4J+7vScBj4AVo8AoP1UVA90JY1l9kmR15LAqipDbW0fcZiLZq/JqzyWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HilwaCWP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77071C32786;
-	Thu, 15 Aug 2024 14:12:49 +0000 (UTC)
+	 MIME-Version; b=McF5ewIdBfpKdBwt17E1XQ/Hpd9HnPUz9Kjkajm/79m7a0npB3UAxx6XZk2Q3VgiGKnHuYCiJN6GzC0UKXc0aXBnoJ1O85lnEdKrAhGFAMQVVI4pJRubNJurMjQ3tUnydHTCEaEu2+oJ5oxzTHq6vDTMNcqLhMXH/UCIW1cXPwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3jLG+Pz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2E3C32786;
+	Thu, 15 Aug 2024 14:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731169;
-	bh=tNxhW9cltJtiM0xGVO4lGOjugJDlxQi1/tIKHQNF+lI=;
+	s=korg; t=1723732227;
+	bh=RLzzB7ShZEKRUeCh9DaoVxphfcYkBgRyqe5Unr6b1Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HilwaCWPhqevKzP3F+5uOOIl7xYLPBR6WnIcZmttGwCoRbnLPKE+pcQUlB8UjGEfm
-	 p+dBVgwXujhv52xJBO8U6Uegt22OT8YHvgk7igRxcArwBrFlq+P/cwQSLmBJ9x8w5J
-	 s5fMmQbK1udqjFXh/nUX9xY6q0BZYh31XIzDlmmc=
+	b=v3jLG+PziU90mFoWw8j1E4yA79mkEwyUozNL3rDvKsfyqs5TwElNdbJI7Xtm1kWym
+	 ohKlPsXl/rHE2O9sNXhqJmJiWxAbhvn3B6eHN0M8X2RlqHbE2MniZiCfMEBRARrMCC
+	 i3UchF9h/KmfZv+7LB2L9VBUhfhhIVvY3/uJSWI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d6eb9cee2885ec06f5e3@syzkaller.appspotmail.com,
-	En-Wei Wu <en-wei.wu@canonical.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Martin Willi <martin@strongswan.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 045/259] wifi: virt_wifi: avoid reporting connection success with wrong SSID
+Subject: [PATCH 5.10 112/352] net: dsa: mv88e6xxx: Limit chip-wide frame size config to CPU ports
 Date: Thu, 15 Aug 2024 15:22:58 +0200
-Message-ID: <20240815131904.545151484@linuxfoundation.org>
+Message-ID: <20240815131923.585140801@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: En-Wei Wu <en-wei.wu@canonical.com>
+From: Martin Willi <martin@strongswan.org>
 
-[ Upstream commit b5d14b0c6716fad7f0c94ac6e1d6f60a49f985c7 ]
+[ Upstream commit 66b6095c264e1b4e0a441c6329861806504e06c6 ]
 
-When user issues a connection with a different SSID than the one
-virt_wifi has advertised, the __cfg80211_connect_result() will
-trigger the warning: WARN_ON(bss_not_found).
+Marvell chips not supporting per-port jumbo frame size configurations use
+a chip-wide frame size configuration. In the commit referenced with the
+Fixes tag, the setting is applied just for the last port changing its MTU.
 
-The issue is because the connection code in virt_wifi does not
-check the SSID from user space (it only checks the BSSID), and
-virt_wifi will call cfg80211_connect_result() with WLAN_STATUS_SUCCESS
-even if the SSID is different from the one virt_wifi has advertised.
-Eventually cfg80211 won't be able to find the cfg80211_bss and generate
-the warning.
+While configuring CPU ports accounts for tagger overhead, user ports do
+not. When setting the MTU for a user port, the chip-wide setting is
+reduced to not include the tagger overhead, resulting in an potentially
+insufficient maximum frame size for the CPU port. Specifically, sending
+full-size frames from the CPU port on a MV88E6097 having a user port MTU
+of 1500 bytes results in dropped frames.
 
-Fixed it by checking the SSID (from user space) in the connection code.
+As, by design, the CPU port MTU is adjusted for any user port change,
+apply the chip-wide setting only for CPU ports.
 
-Fixes: c7cdba31ed8b ("mac80211-next: rtnetlink wifi simulation device")
-Reported-by: syzbot+d6eb9cee2885ec06f5e3@syzkaller.appspotmail.com
-Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
-Link: https://patch.msgid.link/20240705023756.10954-1-en-wei.wu@canonical.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1baf0fac10fb ("net: dsa: mv88e6xxx: Use chip-wide max frame size for MTU")
+Suggested-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Martin Willi <martin@strongswan.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virt_wifi.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
-index 4e906910f110b..be5201bd824c2 100644
---- a/drivers/net/wireless/virt_wifi.c
-+++ b/drivers/net/wireless/virt_wifi.c
-@@ -136,6 +136,8 @@ static struct ieee80211_supported_band band_5ghz = {
- /* Assigned at module init. Guaranteed locally-administered and unicast. */
- static u8 fake_router_bssid[ETH_ALEN] __ro_after_init = {};
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 6a1ae774cfe99..c7f93329ae753 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -2774,7 +2774,8 @@ static int mv88e6xxx_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+ 	mv88e6xxx_reg_lock(chip);
+ 	if (chip->info->ops->port_set_jumbo_size)
+ 		ret = chip->info->ops->port_set_jumbo_size(chip, port, new_mtu);
+-	else if (chip->info->ops->set_max_frame_size)
++	else if (chip->info->ops->set_max_frame_size &&
++		 dsa_is_cpu_port(ds, port))
+ 		ret = chip->info->ops->set_max_frame_size(chip, new_mtu);
+ 	mv88e6xxx_reg_unlock(chip);
  
-+#define VIRT_WIFI_SSID "VirtWifi"
-+
- static void virt_wifi_inform_bss(struct wiphy *wiphy)
- {
- 	u64 tsf = div_u64(ktime_get_boottime_ns(), 1000);
-@@ -146,8 +148,8 @@ static void virt_wifi_inform_bss(struct wiphy *wiphy)
- 		u8 ssid[8];
- 	} __packed ssid = {
- 		.tag = WLAN_EID_SSID,
--		.len = 8,
--		.ssid = "VirtWifi",
-+		.len = strlen(VIRT_WIFI_SSID),
-+		.ssid = VIRT_WIFI_SSID,
- 	};
- 
- 	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
-@@ -213,6 +215,8 @@ struct virt_wifi_netdev_priv {
- 	struct net_device *upperdev;
- 	u32 tx_packets;
- 	u32 tx_failed;
-+	u32 connect_requested_ssid_len;
-+	u8 connect_requested_ssid[IEEE80211_MAX_SSID_LEN];
- 	u8 connect_requested_bss[ETH_ALEN];
- 	bool is_up;
- 	bool is_connected;
-@@ -229,6 +233,12 @@ static int virt_wifi_connect(struct wiphy *wiphy, struct net_device *netdev,
- 	if (priv->being_deleted || !priv->is_up)
- 		return -EBUSY;
- 
-+	if (!sme->ssid)
-+		return -EINVAL;
-+
-+	priv->connect_requested_ssid_len = sme->ssid_len;
-+	memcpy(priv->connect_requested_ssid, sme->ssid, sme->ssid_len);
-+
- 	could_schedule = schedule_delayed_work(&priv->connect, HZ * 2);
- 	if (!could_schedule)
- 		return -EBUSY;
-@@ -252,12 +262,15 @@ static void virt_wifi_connect_complete(struct work_struct *work)
- 		container_of(work, struct virt_wifi_netdev_priv, connect.work);
- 	u8 *requested_bss = priv->connect_requested_bss;
- 	bool right_addr = ether_addr_equal(requested_bss, fake_router_bssid);
-+	bool right_ssid = priv->connect_requested_ssid_len == strlen(VIRT_WIFI_SSID) &&
-+			  !memcmp(priv->connect_requested_ssid, VIRT_WIFI_SSID,
-+				  priv->connect_requested_ssid_len);
- 	u16 status = WLAN_STATUS_SUCCESS;
- 
- 	if (is_zero_ether_addr(requested_bss))
- 		requested_bss = NULL;
- 
--	if (!priv->is_up || (requested_bss && !right_addr))
-+	if (!priv->is_up || (requested_bss && !right_addr) || !right_ssid)
- 		status = WLAN_STATUS_UNSPECIFIED_FAILURE;
- 	else
- 		priv->is_connected = true;
 -- 
 2.43.0
 
