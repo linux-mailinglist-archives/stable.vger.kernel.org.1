@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-68988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAA39534EC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F27295335C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83261F29C55
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 038E32874E9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC861A705B;
-	Thu, 15 Aug 2024 14:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756801A00E7;
+	Thu, 15 Aug 2024 14:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyYnpI3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2y7InV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B5419FA90;
-	Thu, 15 Aug 2024 14:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3340B19D068;
+	Thu, 15 Aug 2024 14:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732305; cv=none; b=iodKHC6aZbee7PtgMw0kQbezxKK3HHwinsYCGIa/aocPYgKBmZhLueMcmMEazdNhQtZevyDkH/eyBtW9PmaBDYVpdEoxUKA66tsRkw8v2D53dXjzvEJqszSVTZRoP0awKdWscnVJuirW+hO1TsJshgsBYWTwFeE8Rn1gvUOUv9Y=
+	t=1723731253; cv=none; b=JGXpIbJu4fd0TNSUjC3O+wz8Hqt0RxbJBjoAeC5q1k0C8fei+loSF8WfiwtWUIAaQM5GI6qzlkp+1rDJ4dU44cZRxwBbWqcuMQEhWs8NYBlFp/c64xHffO0OM84PbE8GfGtbeuZDegipnTBnV5Apc5NjU9yL071S6jyqFUnP5XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732305; c=relaxed/simple;
-	bh=DbKSWjjUi+fIRFWlIspEk7DQb7pgNuCSrl9wJX2X6mw=;
+	s=arc-20240116; t=1723731253; c=relaxed/simple;
+	bh=wZqy4zacJ0UzJVGQC1SwNplJHsVe5wvKyauEN71ec3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnm3UWMbPkFutG+Ur1GEofGoWRxhS5FBXMgU/YQ5QSxa7j2K8Dxc8Sbk+33s5eM0oq+/PteDGvhcSynrTqYhohUu04NEIusihcB3ByqYdPWllfeDjtuykfh7kf9mi8WzLHBY/zWHEJrDSt+Jw5287rslM3OLUCR4h9et3hq8Kw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyYnpI3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74BFC32786;
-	Thu, 15 Aug 2024 14:31:44 +0000 (UTC)
+	 MIME-Version; b=mPWeFpJs8y7IoqcADBjaBHLCTKBjf0NHjeb2L0NmZXLOY2c/aaiqCwMno35ICiISwZp8U7jD0Y0Gzr+Otyz43NpshdxdfOGPlBHu65VV0grbuCgM167NXx2SONN5J64JKUmqUc5l1FTLWZKR8qWs1axeYlqoVKluhJ38VGwk8YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2y7InV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50897C4AF0C;
+	Thu, 15 Aug 2024 14:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732305;
-	bh=DbKSWjjUi+fIRFWlIspEk7DQb7pgNuCSrl9wJX2X6mw=;
+	s=korg; t=1723731252;
+	bh=wZqy4zacJ0UzJVGQC1SwNplJHsVe5wvKyauEN71ec3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GyYnpI3+EzzLW1hBoJiHpfz/7V1dA+RuT+q93o/GMfzjexEEksgG2BP8u/CdMNeFK
-	 rIYv3dbubJjTZVvd/QuJFNXV0tzWT25+eLJK3nBqdEB7t3dY8S+VXRG2UoBPvH88FF
-	 qC5t9y8HlyV8WfRnbVq5abJ9OGSRPfuJ6pxDk2Fk=
+	b=C2y7InV79xJp7Kq/GK6qHQLxNMJmtyXk+AIZyMSBCy44TNvebW9yAqVSwDJjn1700
+	 tO1d9kSKP8E9QEj/rHOSvvwd6lHYERcv+hzJyrUbtmzd1MRS/B16/pDfKFLOj7NoaF
+	 eTxbDLBzUNFk/8PwHZCyKwuuAVjKkGm8+sWKWsfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Qais Yousef <qyousef@layalina.io>
-Subject: [PATCH 5.10 138/352] sched/fair: Use all little CPUs for CPU-bound workloads
+	Honggang LI <honggangli@163.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 071/259] RDMA/rxe: Dont set BTH_ACK_MASK for UC or UD QPs
 Date: Thu, 15 Aug 2024 15:23:24 +0200
-Message-ID: <20240815131924.591190020@linuxfoundation.org>
+Message-ID: <20240815131905.546613776@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Honggang LI <honggangli@163.com>
 
-commit 3af7524b14198f5159a86692d57a9f28ec9375ce upstream.
+[ Upstream commit 4adcaf969d77d3d3aa3871bbadc196258a38aec6 ]
 
-Running N CPU-bound tasks on an N CPUs platform:
+BTH_ACK_MASK bit is used to indicate that an acknowledge
+(for this packet) should be scheduled by the responder.
+Both UC and UD QPs are unacknowledged, so don't set
+BTH_ACK_MASK for UC or UD QPs.
 
-- with asymmetric CPU capacity
-
-- not being a DynamIq system (i.e. having a PKG level sched domain
-  without the SD_SHARE_PKG_RESOURCES flag set)
-
-.. might result in a task placement where two tasks run on a big CPU
-and none on a little CPU. This placement could be more optimal by
-using all CPUs.
-
-Testing platform:
-
-  Juno-r2:
-    - 2 big CPUs (1-2), maximum capacity of 1024
-    - 4 little CPUs (0,3-5), maximum capacity of 383
-
-Testing workload ([1]):
-
-  Spawn 6 CPU-bound tasks. During the first 100ms (step 1), each tasks
-  is affine to a CPU, except for:
-
-    - one little CPU which is left idle.
-    - one big CPU which has 2 tasks affine.
-
-  After the 100ms (step 2), remove the cpumask affinity.
-
-Behavior before the patch:
-
-  During step 2, the load balancer running from the idle CPU tags sched
-  domains as:
-
-  - little CPUs: 'group_has_spare'. Cf. group_has_capacity() and
-    group_is_overloaded(), 3 CPU-bound tasks run on a 4 CPUs
-    sched-domain, and the idle CPU provides enough spare capacity
-    regarding the imbalance_pct
-
-  - big CPUs: 'group_overloaded'. Indeed, 3 tasks run on a 2 CPUs
-    sched-domain, so the following path is used:
-
-      group_is_overloaded()
-      \-if (sgs->sum_nr_running <= sgs->group_weight) return true;
-
-    The following path which would change the migration type to
-    'migrate_task' is not taken:
-
-      calculate_imbalance()
-      \-if (env->idle != CPU_NOT_IDLE && env->imbalance == 0)
-
-    as the local group has some spare capacity, so the imbalance
-    is not 0.
-
-  The migration type requested is 'migrate_util' and the busiest
-  runqueue is the big CPU's runqueue having 2 tasks (each having a
-  utilization of 512). The idle little CPU cannot pull one of these
-  task as its capacity is too small for the task. The following path
-  is used:
-
-   detach_tasks()
-   \-case migrate_util:
-     \-if (util > env->imbalance) goto next;
-
-After the patch:
-
-As the number of failed balancing attempts grows (with
-'nr_balance_failed'), progressively make it easier to migrate
-a big task to the idling little CPU. A similar mechanism is
-used for the 'migrate_load' migration type.
-
-Improvement:
-
-Running the testing workload [1] with the step 2 representing
-a ~10s load for a big CPU:
-
-  Before patch: ~19.3s
-  After patch:  ~18s (-6.7%)
-
-Similar issue reported at:
-
-  https://lore.kernel.org/lkml/20230716014125.139577-1-qyousef@layalina.io/
-
-Suggested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Acked-by: Qais Yousef <qyousef@layalina.io>
-Link: https://lore.kernel.org/r/20231206090043.634697-1-pierre.gondois@arm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Honggang LI <honggangli@163.com>
+Link: https://lore.kernel.org/r/20240624020348.494338-1-honggangli@163.com
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe_req.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7950,7 +7950,7 @@ static int detach_tasks(struct lb_env *e
- 		case migrate_util:
- 			util = task_util_est(p);
+diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
+index 87702478eb99b..85b382507f609 100644
+--- a/drivers/infiniband/sw/rxe/rxe_req.c
++++ b/drivers/infiniband/sw/rxe/rxe_req.c
+@@ -390,7 +390,7 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
+ 	int			solicited;
+ 	u16			pkey;
+ 	u32			qp_num;
+-	int			ack_req;
++	int			ack_req = 0;
  
--			if (util > env->imbalance)
-+			if (shr_bound(util, env->sd->nr_balance_failed) > env->imbalance)
- 				goto next;
+ 	/* length from start of bth to end of icrc */
+ 	paylen = rxe_opcode[opcode].length + payload + pad + RXE_ICRC_SIZE;
+@@ -426,8 +426,9 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
+ 	qp_num = (pkt->mask & RXE_DETH_MASK) ? ibwr->wr.ud.remote_qpn :
+ 					 qp->attr.dest_qp_num;
  
- 			env->imbalance -= util;
+-	ack_req = ((pkt->mask & RXE_END_MASK) ||
+-		(qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
++	if (qp_type(qp) != IB_QPT_UD && qp_type(qp) != IB_QPT_UC)
++		ack_req = ((pkt->mask & RXE_END_MASK) ||
++			   (qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
+ 	if (ack_req)
+ 		qp->req.noack_pkts = 0;
+ 
+-- 
+2.43.0
+
 
 
 
