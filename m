@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-68757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894B19533D2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07396953263
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BA43288606
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2341C25F43
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8189517C9B6;
-	Thu, 15 Aug 2024 14:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6987C1ABECF;
+	Thu, 15 Aug 2024 14:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOz1rY5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="188ZZFUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA8F1AC8BB;
-	Thu, 15 Aug 2024 14:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270EE19DF5F;
+	Thu, 15 Aug 2024 14:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731569; cv=none; b=ZyA+n0dKs2XIgO6J4k2QbxaJ77sgOCagOV7J/Z7psQWdzoCRDZvthCB5InXP1grDDirPiD1cC7isVjJooUa5B2HRgCbmEXHYWjnBpqyt/mDFTjj9s4N+2VVP+vh3d8QYUMXAFTg71Quw7b0WWZtRR6jhPfzJK+XZMHPfQ2GLUoA=
+	t=1723730632; cv=none; b=Tfs603JUC+XUih24AwWzU5UWwJY/YN2SmQNqYFG9xovt2IcMMwhCgSSblm8V+1ADsRm4FIz6H8qybjNsxGWN3gckLHD1RhDbofd3d/kLg3Wv9x0/0n6eydaHbEbmCmdL8cdzWl7axBZSPlSVJz9uu+D1r8RrluBqlA8eHFFj5L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731569; c=relaxed/simple;
-	bh=kFmWTKETGjlE4ZNQR1TlUzcS+KR/mZf3MYAFNZ06qWc=;
+	s=arc-20240116; t=1723730632; c=relaxed/simple;
+	bh=T3ZzHXVa+6ABWsbCdFkhCdCwT5AdGrz7wIqmOUJS7is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfVa1h0ek/+4LS0kssO33WMXltV+Cc1CLVpvdOCP/bfJzDvd2BVG0O0P0r05wyFPFR5erORQiLT89mOkLr/P4zBnpOc9L6CiNbs9RHuJ1k3ClJrfp3312KFsMLeYbwknweBsxNRNAEeRs/9IF45Thqlzq3F/AtqKQ9sZr4PPF6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOz1rY5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC48C32786;
-	Thu, 15 Aug 2024 14:19:28 +0000 (UTC)
+	 MIME-Version; b=Gg7cHiLLGgXeIKV6Dfh1ruHLB9h6SXiCKGv8ufkkSpgXGdKP8+/gNc0TYijvaw/VoDCOG+omYpUBy9NPZ8AsejOZ0ayi76W5bsM9F26KRcjrgfKdX2+kDbRA4dsVsTuR7fkyZ/NQqbRqQnny3rE6v5IK+8kdMKqlUgy7fcH1Tp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=188ZZFUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF32C32786;
+	Thu, 15 Aug 2024 14:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731568;
-	bh=kFmWTKETGjlE4ZNQR1TlUzcS+KR/mZf3MYAFNZ06qWc=;
+	s=korg; t=1723730632;
+	bh=T3ZzHXVa+6ABWsbCdFkhCdCwT5AdGrz7wIqmOUJS7is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOz1rY5arSa0LPRyQLqKjB4ZoyVQqtuvcDbhbrfUN0U3ZmA60zOkeq+eqQnfD53fS
-	 TGB4EhHzA4nBSXS5e0ziZmmwwOrehycBihPa1jgZasayVNa7fcEIczSNkShJhEu0l5
-	 48d1ob8O/YV3x0/hmJhcCtSAi38pV7PRcjM6gR0s=
+	b=188ZZFUkt7hLyBAHswCfi3K6cmSfng4o39j8P1OFsUKhzuMKSQ2W/RUphQT+5mIfP
+	 gR6eoKIlI+07nxlrRBF5r6tVnP0w93fenRV+2ikqut+PW89P+3pXynNdJTKZxvWGa3
+	 fQ0lxJZ2sQRuEu0XfrQYo8DmTgOy+ztIdoq3xeik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tuhaowen <tuhaowen@uniontech.com>,
-	stable <stable@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 163/259] dev/parport: fix the array out-of-bounds risk
+	syzkaller <syzkaller@googlegroups.com>,
+	George Kennedy <george.kennedy@oracle.com>
+Subject: [PATCH 5.15 438/484] serial: core: check uartclk for zero to avoid divide by zero
 Date: Thu, 15 Aug 2024 15:24:56 +0200
-Message-ID: <20240815131909.079815560@linuxfoundation.org>
+Message-ID: <20240815131958.375437770@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,136 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: tuhaowen <tuhaowen@uniontech.com>
+From: George Kennedy <george.kennedy@oracle.com>
 
-[ Upstream commit ab11dac93d2d568d151b1918d7b84c2d02bacbd5 ]
+commit 6eabce6608d6f3440f4c03aa3d3ef50a47a3d193 upstream.
 
-Fixed array out-of-bounds issues caused by sprintf
-by replacing it with snprintf for safer data copying,
-ensuring the destination buffer is not overflowed.
+Calling ioctl TIOCSSERIAL with an invalid baud_base can
+result in uartclk being zero, which will result in a
+divide by zero error in uart_get_divisor(). The check for
+uartclk being zero in uart_set_info() needs to be done
+before other settings are made as subsequent calls to
+ioctl TIOCSSERIAL for the same port would be impacted if
+the uartclk check was done where uartclk gets set.
 
-Below is the stack trace I encountered during the actual issue:
+Oops: divide error: 0000  PREEMPT SMP KASAN PTI
+RIP: 0010:uart_get_divisor (drivers/tty/serial/serial_core.c:580)
+Call Trace:
+ <TASK>
+serial8250_get_divisor (drivers/tty/serial/8250/8250_port.c:2576
+    drivers/tty/serial/8250/8250_port.c:2589)
+serial8250_do_set_termios (drivers/tty/serial/8250/8250_port.c:502
+    drivers/tty/serial/8250/8250_port.c:2741)
+serial8250_set_termios (drivers/tty/serial/8250/8250_port.c:2862)
+uart_change_line_settings (./include/linux/spinlock.h:376
+    ./include/linux/serial_core.h:608 drivers/tty/serial/serial_core.c:222)
+uart_port_startup (drivers/tty/serial/serial_core.c:342)
+uart_startup (drivers/tty/serial/serial_core.c:368)
+uart_set_info (drivers/tty/serial/serial_core.c:1034)
+uart_set_info_user (drivers/tty/serial/serial_core.c:1059)
+tty_set_serial (drivers/tty/tty_io.c:2637)
+tty_ioctl (drivers/tty/tty_io.c:2647 drivers/tty/tty_io.c:2791)
+__x64_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:907
+    fs/ioctl.c:893 fs/ioctl.c:893)
+do_syscall_64 (arch/x86/entry/common.c:52
+    (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1))
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-[ 66.575408s] [pid:5118,cpu4,QThread,4]Kernel panic - not syncing: stack-protector:
-Kernel stack is corrupted in: do_hardware_base_addr+0xcc/0xd0 [parport]
-[ 66.575408s] [pid:5118,cpu4,QThread,5]CPU: 4 PID: 5118 Comm:
-QThread Tainted: G S W O 5.10.97-arm64-desktop #7100.57021.2
-[ 66.575439s] [pid:5118,cpu4,QThread,6]TGID: 5087 Comm: EFileApp
-[ 66.575439s] [pid:5118,cpu4,QThread,7]Hardware name: HUAWEI HUAWEI QingYun
-PGUX-W515x-B081/SP1PANGUXM, BIOS 1.00.07 04/29/2024
-[ 66.575439s] [pid:5118,cpu4,QThread,8]Call trace:
-[ 66.575469s] [pid:5118,cpu4,QThread,9] dump_backtrace+0x0/0x1c0
-[ 66.575469s] [pid:5118,cpu4,QThread,0] show_stack+0x14/0x20
-[ 66.575469s] [pid:5118,cpu4,QThread,1] dump_stack+0xd4/0x10c
-[ 66.575500s] [pid:5118,cpu4,QThread,2] panic+0x1d8/0x3bc
-[ 66.575500s] [pid:5118,cpu4,QThread,3] __stack_chk_fail+0x2c/0x38
-[ 66.575500s] [pid:5118,cpu4,QThread,4] do_hardware_base_addr+0xcc/0xd0 [parport]
-
-Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240708080430.8221-1-tuhaowen@uniontech.com
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+Rule: add
+Link: https://lore.kernel.org/stable/1721148848-9784-1-git-send-email-george.kennedy%40oracle.com
+Link: https://lore.kernel.org/r/1721219078-3209-1-git-send-email-george.kennedy@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/procfs.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/tty/serial/serial_core.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/parport/procfs.c b/drivers/parport/procfs.c
-index e957beb94f142..595e23e6859b6 100644
---- a/drivers/parport/procfs.c
-+++ b/drivers/parport/procfs.c
-@@ -51,12 +51,12 @@ static int do_active_device(struct ctl_table *table, int write,
- 	
- 	for (dev = port->devices; dev ; dev = dev->next) {
- 		if(dev == port->cad) {
--			len += sprintf(buffer, "%s\n", dev->name);
-+			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
- 		}
- 	}
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -836,6 +836,14 @@ static int uart_set_info(struct tty_stru
+ 	new_flags = (__force upf_t)new_info->flags;
+ 	old_custom_divisor = uport->custom_divisor;
  
- 	if(!len) {
--		len += sprintf(buffer, "%s\n", "none");
-+		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
- 	}
- 
- 	if (len > *lenp)
-@@ -87,19 +87,19 @@ static int do_autoprobe(struct ctl_table *table, int write,
- 	}
- 	
- 	if ((str = info->class_name) != NULL)
--		len += sprintf (buffer + len, "CLASS:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
- 
- 	if ((str = info->model) != NULL)
--		len += sprintf (buffer + len, "MODEL:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
- 
- 	if ((str = info->mfr) != NULL)
--		len += sprintf (buffer + len, "MANUFACTURER:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
- 
- 	if ((str = info->description) != NULL)
--		len += sprintf (buffer + len, "DESCRIPTION:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
- 
- 	if ((str = info->cmdset) != NULL)
--		len += sprintf (buffer + len, "COMMAND SET:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -117,7 +117,7 @@ static int do_hardware_base_addr(struct ctl_table *table, int write,
- 				 size_t *lenp, loff_t *ppos)
- {
- 	struct parport *port = (struct parport *)table->extra1;
--	char buffer[20];
-+	char buffer[64];
- 	int len = 0;
- 
- 	if (*ppos) {
-@@ -128,7 +128,7 @@ static int do_hardware_base_addr(struct ctl_table *table, int write,
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%lu\t%lu\n", port->base, port->base_hi);
-+	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -156,7 +156,7 @@ static int do_hardware_irq(struct ctl_table *table, int write,
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%d\n", port->irq);
-+	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -184,7 +184,7 @@ static int do_hardware_dma(struct ctl_table *table, int write,
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%d\n", port->dma);
-+	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -216,7 +216,7 @@ static int do_hardware_modes(struct ctl_table *table, int write,
- #define printmode(x)							\
- do {									\
- 	if (port->modes & PARPORT_MODE_##x)				\
--		len += sprintf(buffer + len, "%s%s", f++ ? "," : "", #x); \
-+		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
- } while (0)
- 		int f = 0;
- 		printmode(PCSPP);
--- 
-2.43.0
-
++	if (!(uport->flags & UPF_FIXED_PORT)) {
++		unsigned int uartclk = new_info->baud_base * 16;
++		/* check needs to be done here before other settings made */
++		if (uartclk == 0) {
++			retval = -EINVAL;
++			goto exit;
++		}
++	}
+ 	if (!capable(CAP_SYS_ADMIN)) {
+ 		retval = -EPERM;
+ 		if (change_irq || change_port ||
 
 
 
