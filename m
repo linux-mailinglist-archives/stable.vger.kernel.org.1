@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D4D3953370
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D74953523
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CCFC1F21D68
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C04521F2A740
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2D31AC896;
-	Thu, 15 Aug 2024 14:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC33319FA7A;
+	Thu, 15 Aug 2024 14:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQpZEGc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7qRQdDy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4261ABED4;
-	Thu, 15 Aug 2024 14:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAA91DFFB;
+	Thu, 15 Aug 2024 14:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731306; cv=none; b=de4O3GONNqo0q7nPOVXWYN73OK28hXfaof5Ml0lK7eGHWnWTGTWk1DP7IYJpH2QwhN5EdKQYzp8OntxEIpbPTsqKzq9Oh9RMvWL4CBbvnYwhDsA2Ia3j0+CpsaHeGxs1ZvSTUgqgijvmHcjnNpgPhlVRbLuKMRPNuwBEQXI6uso=
+	t=1723732455; cv=none; b=f1WTJgaib5BbmOgjgXRWy4EBNHe76/BT1hYPztxUTnUrX/A/ay/DAfVTFlim0cbdFdtO5O6e0wwml3xt3b70oDWplcA+vZN22IyWwFqQK1nRcE8HDSlbtbv6r2rP5U/NQnflTddWlkFk/tRLuVL7HfNiVYYIup+XTueBNK2qvCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731306; c=relaxed/simple;
-	bh=FHH8mPEwh0ZgDidsxdYfGk5VU1mjC1TXXmt4et5Kcho=;
+	s=arc-20240116; t=1723732455; c=relaxed/simple;
+	bh=Cq0Ry/dZmCRnZtXbzIeuEkoKJOeXmx606Z3uw9rEGO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxIJCYgSpNsIY2ff5rTtDb6UVqgXSVYwtf4O/2OH6AKN9L53EAYDGwPt7BjGFPAr8oRvXtDTZ2visfrhPv88EiAnwkGrbhmTZcuI5pwVVwrm7WyIfrL4TiPNY1lm8tSoU5dheWsKPGVj4Y46utw8trVmhpvq/rR0MPqEcjOtOik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQpZEGc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDDCC32786;
-	Thu, 15 Aug 2024 14:15:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JCp1RLGm8P6OGmWsPW/vrgnDv4oZx9l+xmPecEt9aiFvKl9x93v+8+SwxrgKmiI1IXTUmK1jP7EBYJ6H+BwaVOQhJASAilKaGiCr/GM1o92YgGJJWXIvGqa9bOPflUNzBqk+yx7dOk2Oo5jFHrjRJrvsABDFuUKVZkdmiQF+lR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7qRQdDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13C1C32786;
+	Thu, 15 Aug 2024 14:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731306;
-	bh=FHH8mPEwh0ZgDidsxdYfGk5VU1mjC1TXXmt4et5Kcho=;
+	s=korg; t=1723732455;
+	bh=Cq0Ry/dZmCRnZtXbzIeuEkoKJOeXmx606Z3uw9rEGO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQpZEGc49omyS+ndWgrZaXLqOVh1Y7V6O/o2njMAPFZG4R8ZdaBaWUEtwpSkupSEt
-	 UJ+Jiy2AAonSbI9z1hJLrsGsKe9Qi+NQfTaNXhNlgdsSVxAFl05VhCzzHq8TKlg5wy
-	 gHTI4NQb+3sA6thlv7kvnrueq0XCoMd4MWk9yLcE=
+	b=v7qRQdDy+ZW9dgQPsRdMjaL4zo4XSP029FDizVlwloMJb4YTMmyniM1+QBiGPD+go
+	 KbTTCBsyJ7NaqNyE9OZMURkQWq+M/rFRlK1u2+kntm0kNPauABuOiCRItieR0/BUvf
+	 VGC65UfHCwUapez4kLylNwnRun9xUUBXhkVm+TP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 087/259] nilfs2: avoid undefined behavior in nilfs_cnt32_ge macro
+	Martijn Coenen <maco@google.com>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 5.10 154/352] binder: fix hang of unregistered readers
 Date: Thu, 15 Aug 2024 15:23:40 +0200
-Message-ID: <20240815131906.160123185@linuxfoundation.org>
+Message-ID: <20240815131925.219612282@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 0f3819e8c483771a59cf9d3190cd68a7a990083c ]
+commit 31643d84b8c3d9c846aa0e20bc033e46c68c7e7d upstream.
 
-According to the C standard 3.4.3p3, the result of signed integer overflow
-is undefined.  The macro nilfs_cnt32_ge(), which compares two sequence
-numbers, uses signed integer subtraction that can overflow, and therefore
-the result of the calculation may differ from what is expected due to
-undefined behavior in different environments.
+With the introduction of binder_available_for_proc_work_ilocked() in
+commit 1b77e9dcc3da ("ANDROID: binder: remove proc waitqueue") a binder
+thread can only "wait_for_proc_work" after its thread->looper has been
+marked as BINDER_LOOPER_STATE_{ENTERED|REGISTERED}.
 
-Similar to an earlier change to the jiffies-related comparison macros in
-commit 5a581b367b5d ("jiffies: Avoid undefined behavior from signed
-overflow"), avoid this potential issue by changing the definition of the
-macro to perform the subtraction as unsigned integers, then cast the
-result to a signed integer for comparison.
+This means an unregistered reader risks waiting indefinitely for work
+since it never gets added to the proc->waiting_threads. If there are no
+further references to its waitqueue either the task will hang. The same
+applies to readers using the (e)poll interface.
 
-Link: https://lkml.kernel.org/r/20130727225828.GA11864@linux.vnet.ibm.com
-Link: https://lkml.kernel.org/r/20240702183512.6390-1-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I couldn't find the rationale behind this restriction. So this patch
+restores the previous behavior of allowing unregistered threads to
+"wait_for_proc_work". Note that an error message for this scenario,
+which had previously become unreachable, is now re-enabled.
+
+Fixes: 1b77e9dcc3da ("ANDROID: binder: remove proc waitqueue")
+Cc: stable@vger.kernel.org
+Cc: Martijn Coenen <maco@google.com>
+Cc: Arve Hjønnevåg <arve@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20240711201452.2017543-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segment.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 62c83193a5bb8..3c4272762779c 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -136,7 +136,7 @@ static void nilfs_dispose_list(struct the_nilfs *, struct list_head *, int);
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -928,9 +928,7 @@ static bool binder_has_work(struct binde
+ static bool binder_available_for_proc_work_ilocked(struct binder_thread *thread)
+ {
+ 	return !thread->transaction_stack &&
+-		binder_worklist_empty_ilocked(&thread->todo) &&
+-		(thread->looper & (BINDER_LOOPER_STATE_ENTERED |
+-				   BINDER_LOOPER_STATE_REGISTERED));
++		binder_worklist_empty_ilocked(&thread->todo);
+ }
  
- #define nilfs_cnt32_ge(a, b)   \
- 	(typecheck(__u32, a) && typecheck(__u32, b) && \
--	 ((__s32)(a) - (__s32)(b) >= 0))
-+	 ((__s32)((a) - (b)) >= 0))
- 
- static int nilfs_prepare_segment_lock(struct super_block *sb,
- 				      struct nilfs_transaction_info *ti)
--- 
-2.43.0
-
+ static void binder_wakeup_poll_threads_ilocked(struct binder_proc *proc,
 
 
 
