@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C0859533C9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414B9953531
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF9C11C254D0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8111285E42
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BDF29CE6;
-	Thu, 15 Aug 2024 14:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6051993B9;
+	Thu, 15 Aug 2024 14:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auxfYwYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPahCeGJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E7F176AD7;
-	Thu, 15 Aug 2024 14:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D30563D5;
+	Thu, 15 Aug 2024 14:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731546; cv=none; b=s7gjaJAKO2Kjc2FrZJbGuXJ1OJie+PTLNgUW/e47oUbI5Yl3GQMRnHRE5lh/izqgpI1VhQyoZXaku6IyJmbR+A95Ii7NPzvIrMKPlefYCDNaXmiIUeSgpNjFOnGIGXZhZUCTwTSj842vgVPdJR2C5cfwZVdyfdLUPvnUWbXVAME=
+	t=1723732501; cv=none; b=NJ/y5UnB4oZbyRoLPb/P5aL9tCf0nS4JFyAJYV+J5+aO70n9oUgKP/a1KgewN4ZsNEi4vErwY1ZvFGm/gEELcfDBYLJYGHMziHMiJey0NRMU3Oad0STcW0RtFaXYVKiilqYWAKR7A0gumLSTosXNKwCl5hfGklDoSkgwpSgiNmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731546; c=relaxed/simple;
-	bh=+FbD0HrgxMDiWVXr6zW1+cyvbU2q2xMUvo0Lw/b7fNk=;
+	s=arc-20240116; t=1723732501; c=relaxed/simple;
+	bh=/GYFMd0lg22rkAUA2TczJdOzWFVcoivEWUDe4yp7Ewc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naPI8ngQi+ulnfeWt41uzH+kNkxBFjEbMzZkdWwglGk8N6N51z9uwX1LJpwVqH1xl6gY9oTzak0ai4E9nuC1pHwT3Fzmn2xzUuN6pdPEOdYtEBLDOxZHUiOmJB1wyN7YzexVwekP+oYKYjo2w9fxyyCGfAupRakGeZi+dVmSRM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auxfYwYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB023C32786;
-	Thu, 15 Aug 2024 14:19:05 +0000 (UTC)
+	 MIME-Version; b=nDT75oGZ9KWGAMLDUgrwib07JV8vQC6DeanuOOtCh64Sqme3QHfv8kQ6Un+xel+Wv79Mw04boeeIWqNms3CudohJ/DG09uHKRY5BWteXLoIrgQ0heiwajE23ZAAdG3qPr3joyH+FWiOC7MIl7ezzorloBryACB8I7/F8XOWXzZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPahCeGJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F430C32786;
+	Thu, 15 Aug 2024 14:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731546;
-	bh=+FbD0HrgxMDiWVXr6zW1+cyvbU2q2xMUvo0Lw/b7fNk=;
+	s=korg; t=1723732501;
+	bh=/GYFMd0lg22rkAUA2TczJdOzWFVcoivEWUDe4yp7Ewc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auxfYwYGHrz7lR652Sm/Z4qCJEvLLPfhZQDBTOSjhiMaIYkPyAMZe6oapBIQbVzi+
-	 p1BD7vuuvyCbThwYhUeRwQCtVXJFpgn1RZbZkQiJoxwNqJ4mhwRwjwhVp3KNSAoS8v
-	 D7rsGG9TOECvZCsQMJJDnre47Z93hMW7uQYcbITU=
+	b=hPahCeGJffZESLIWZ1aG7LuWXX+tAF765/Cxgtoz9zWY2OJp4oezNwGK/PwQhJJ2L
+	 wk/k4kyHQFpAVgLtkLG8llcGxzCk7zrcU3OKyTdyDgNQDnbQMKup+zI1LQR6bGrjX7
+	 xh0mDIdSyCYEkizzHS7z+zFngDTL0ODH5Bizp8Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Guan <guanwentao@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Erpeng Xu <xuerpeng@uniontech.com>
-Subject: [PATCH 5.4 132/259] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x13d3:0x3591
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Tung Nguyen <tung.q.nguyen@endava.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 199/352] tipc: Return non-zero value from tipc_udp_addr2str() on error
 Date: Thu, 15 Aug 2024 15:24:25 +0200
-Message-ID: <20240815131907.890128197@linuxfoundation.org>
+Message-ID: <20240815131926.969523018@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit 473a89b4ed7fd52a419340f7c540d5c8fc96fc75 upstream.
+[ Upstream commit fa96c6baef1b5385e2f0c0677b32b3839e716076 ]
 
-Add the support ID(0x13d3, 0x3591) to usb_device_id table for
-Realtek RTL8852BE.
+tipc_udp_addr2str() should return non-zero value if the UDP media
+address is invalid. Otherwise, a buffer overflow access can occur in
+tipc_media_addr_printf(). Fix this by returning 1 on an invalid UDP
+media address.
 
-The device table is as follows:
-
-T:  Bus=01 Lev=02 Prnt=03 Port=00 Cnt=01 Dev#=  5 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=13d3 ProdID=3591 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Erpeng Xu <xuerpeng@uniontech.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d0f91938bede ("tipc: add ip/udp media type")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Tung Nguyen <tung.q.nguyen@endava.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/tipc/udp_media.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -370,6 +370,8 @@ static const struct usb_device_id blackl
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index 3e47501f024fd..ec6d7730b8522 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -129,8 +129,11 @@ static int tipc_udp_addr2str(struct tipc_media_addr *a, char *buf, int size)
+ 		snprintf(buf, size, "%pI4:%u", &ua->ipv4, ntohs(ua->port));
+ 	else if (ntohs(ua->proto) == ETH_P_IPV6)
+ 		snprintf(buf, size, "%pI6:%u", &ua->ipv6, ntohs(ua->port));
+-	else
++	else {
+ 		pr_err("Invalid UDP media address\n");
++		return 1;
++	}
++
+ 	return 0;
+ }
  
+-- 
+2.43.0
+
 
 
 
