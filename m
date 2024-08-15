@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-69156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F169535B7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:41:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCE7953458
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:26:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AF8B282360
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:41:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 985371F29246
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404F91A76BC;
-	Thu, 15 Aug 2024 14:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1421AD3FD;
+	Thu, 15 Aug 2024 14:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWvCPMfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SH9cg4/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F412B1A76AB;
-	Thu, 15 Aug 2024 14:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B861AD3EE;
+	Thu, 15 Aug 2024 14:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732852; cv=none; b=YBSZoZDEp1wZB8kOEnpLXGM9xPHwOOZM/iTv0tzcjPtMkh9UjIu3F40LWkvQcpH28WuHjVY1a4fY2yQNLRCJd81qgNtoV954XS0zWUyxUY6ClROf+4Sd3ZWAyikhbDnhWOWBcIQcBXFvNIHG3FLBM82BucSw5q9Tlc8wiZw/vgY=
+	t=1723731882; cv=none; b=MlnRI32VsGMBN6gC6KKIJmmrRJIEra0TWk3Dm5NHfqL9vuOtLwwsiAvJvOeQLnbVA2bkY6+0C8G8mKmiL9gDPKf7LCfs71sNw2oMrbHeDV2okjxDKrUROuju527m1oMKNHfOYdwYa4hMFQpsgdYksV0jaWsqjO34sWyzi4KVnQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732852; c=relaxed/simple;
-	bh=J0mPdajvaiWwf1WUABRgdSxTqZJk4DEullL9jeaqqzE=;
+	s=arc-20240116; t=1723731882; c=relaxed/simple;
+	bh=1z/lcSM3VHw7+nIJJu8OzwtnelPaGjhmFkIaIZOFMDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hK22Al6i6NIQE6XtluZ/wf2iC+hqWVN+UFCR01hZMApgvp90Z3U4C4voRJlW3B4+H8Wx81+2jwWgRGmD+7z2F5ZDnNv1OowNs9pgCw/ahD8SpGFl29tQX7XqLGNx7Zk50U1IUOxF9VbjPcVkX00Xzr8sLhUrf1e8HOpPTqhVGVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWvCPMfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD303C32786;
-	Thu, 15 Aug 2024 14:40:50 +0000 (UTC)
+	 MIME-Version; b=kFGTI9V7CbEycJVtmkVcAHnpLD2/1aX8eRmO2eejbyl6d1LcTL2fB2Z625YJ/GGU1Q9nxE+g1S0F6+zZGtJ1ILAxCuQ8hWE8aeegrBg1Hws7KMu6ep08dNtsudYAn1KjYa7TfSpUEK2P7rTaQsGmuVlbdjVLJJdnuVUCNRnWreQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SH9cg4/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17742C32786;
+	Thu, 15 Aug 2024 14:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732851;
-	bh=J0mPdajvaiWwf1WUABRgdSxTqZJk4DEullL9jeaqqzE=;
+	s=korg; t=1723731881;
+	bh=1z/lcSM3VHw7+nIJJu8OzwtnelPaGjhmFkIaIZOFMDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NWvCPMfpqy+hN3wjUjw/F/AICeyN6roHMb130pdMEghvoif4h6PJfPxnEhHnPwulO
-	 mAoKNkMcfgMDVjdQPmyt7lmWrWodoC1ROleSnQ0NIrRw8DAS0T05YW4AUkVw3PU/pA
-	 xUpvHRw6PnUexsnIFcc54/MVanFecHkJ4ktJK/Eo=
+	b=SH9cg4/ZxaOcRb5IcLI/DO5QzkbBOg3ZwecQZm1dKRPN6B3EucKwK4dEioaUqa1WW
+	 nrZAFDj3xZq/PGKbKZp0q5BpvHLOodmY/Ecqs2zf1MIHwP0riLpH/GngYo4TgiPppO
+	 /CBTBeAnY7bBfAGboUJg0K7msgWzxsZa99FlKQ9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 5.10 305/352] usb: vhci-hcd: Do not drop references before new references are gained
+	Justin Stitt <justinstitt@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miroslav Lichvar <mlichvar@redhat.com>
+Subject: [PATCH 5.4 238/259] ntp: Safeguard against time_constant overflow
 Date: Thu, 15 Aug 2024 15:26:11 +0200
-Message-ID: <20240815131931.246255508@linuxfoundation.org>
+Message-ID: <20240815131911.964329038@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Justin Stitt <justinstitt@google.com>
 
-commit afdcfd3d6fcdeca2735ca8d994c5f2d24a368f0a upstream.
+commit 06c03c8edce333b9ad9c6b207d93d3a5ae7c10c0 upstream.
 
-At a few places the driver carries stale pointers
-to references that can still be used. Make sure that does not happen.
-This strictly speaking closes ZDI-CAN-22273, though there may be
-similar races in the driver.
+Using syzkaller with the recently reintroduced signed integer overflow
+sanitizer produces this UBSAN report:
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240709113851.14691-1-oneukum@suse.com
+UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:738:18
+9223372036854775806 + 4 cannot be represented in type 'long'
+Call Trace:
+ handle_overflow+0x171/0x1b0
+ __do_adjtimex+0x1236/0x1440
+ do_adjtimex+0x2be/0x740
+
+The user supplied time_constant value is incremented by four and then
+clamped to the operating range.
+
+Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
+supplied value was sanity checked to be in the operating range. That change
+removed the sanity check and relied on clamping after incrementing which
+does not work correctly when the user supplied value is in the overflow
+zone of the '+ 4' operation.
+
+The operation requires CAP_SYS_TIME and the side effect of the overflow is
+NTP getting out of sync.
+
+Similar to the fixups for time_maxerror and time_esterror, clamp the user
+space supplied value to the operating range.
+
+[ tglx: Switch to clamping ]
+
+Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miroslav Lichvar <mlichvar@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-c-v2-1-f3a80096f36f@google.com
+Closes: https://github.com/KSPP/linux/issues/352
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/usbip/vhci_hcd.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ kernel/time/ntp.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/usbip/vhci_hcd.c
-+++ b/drivers/usb/usbip/vhci_hcd.c
-@@ -745,6 +745,7 @@ static int vhci_urb_enqueue(struct usb_h
- 	 *
- 	 */
- 	if (usb_pipedevice(urb->pipe) == 0) {
-+		struct usb_device *old;
- 		__u8 type = usb_pipetype(urb->pipe);
- 		struct usb_ctrlrequest *ctrlreq =
- 			(struct usb_ctrlrequest *) urb->setup_packet;
-@@ -755,14 +756,15 @@ static int vhci_urb_enqueue(struct usb_h
- 			goto no_need_xmit;
- 		}
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -685,11 +685,10 @@ static inline void process_adjtimex_mode
+ 		time_esterror = clamp(txc->esterror, (long long)0, (long long)NTP_PHASE_LIMIT);
  
-+		old = vdev->udev;
- 		switch (ctrlreq->bRequest) {
- 		case USB_REQ_SET_ADDRESS:
- 			/* set_address may come when a device is reset */
- 			dev_info(dev, "SetAddress Request (%d) to port %d\n",
- 				 ctrlreq->wValue, vdev->rhport);
+ 	if (txc->modes & ADJ_TIMECONST) {
+-		time_constant = txc->constant;
++		time_constant = clamp(txc->constant, (long long)0, (long long)MAXTC);
+ 		if (!(time_status & STA_NANO))
+ 			time_constant += 4;
+-		time_constant = min(time_constant, (long)MAXTC);
+-		time_constant = max(time_constant, 0l);
++		time_constant = clamp(time_constant, (long)0, (long)MAXTC);
+ 	}
  
--			usb_put_dev(vdev->udev);
- 			vdev->udev = usb_get_dev(urb->dev);
-+			usb_put_dev(old);
- 
- 			spin_lock(&vdev->ud.lock);
- 			vdev->ud.status = VDEV_ST_USED;
-@@ -781,8 +783,8 @@ static int vhci_urb_enqueue(struct usb_h
- 				usbip_dbg_vhci_hc(
- 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
- 
--			usb_put_dev(vdev->udev);
- 			vdev->udev = usb_get_dev(urb->dev);
-+			usb_put_dev(old);
- 			goto out;
- 
- 		default:
-@@ -1095,6 +1097,7 @@ static void vhci_shutdown_connection(str
- static void vhci_device_reset(struct usbip_device *ud)
- {
- 	struct vhci_device *vdev = container_of(ud, struct vhci_device, ud);
-+	struct usb_device *old = vdev->udev;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&ud->lock, flags);
-@@ -1102,8 +1105,8 @@ static void vhci_device_reset(struct usb
- 	vdev->speed  = 0;
- 	vdev->devid  = 0;
- 
--	usb_put_dev(vdev->udev);
- 	vdev->udev = NULL;
-+	usb_put_dev(old);
- 
- 	if (ud->tcp_socket) {
- 		sockfd_put(ud->tcp_socket);
+ 	if (txc->modes & ADJ_TAI &&
 
 
 
