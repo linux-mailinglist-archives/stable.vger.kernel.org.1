@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-68950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1F59534BE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E49D4953355
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD05D28821D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AB421F2191D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F65017C995;
-	Thu, 15 Aug 2024 14:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FFD1A7074;
+	Thu, 15 Aug 2024 14:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAwPb9sD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGaAp/lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7D563C;
-	Thu, 15 Aug 2024 14:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D631A08C6;
+	Thu, 15 Aug 2024 14:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732185; cv=none; b=MaqzJDP65pzpBbNsmxEcJZ7UFlbnVhmEcobm4D72GBLlsnvTcCzh4RigA84CJ71QV0kp3lIn08Yu2mYOeb9YniGBAd6MKZvGoom/AdObnm5YRGNATZcyU5vmLgD9moXPTGc2559roxjS37sXOJfC2B7R4fvL89cQcT/zvs219js=
+	t=1723731233; cv=none; b=FCI20j4GLnhQNC1xEqdASn64crlmk1M/JYF5dMN2Co2eDYps6OzCRgCR0i7Y821997l/ywruTEcH9pU6C++Xw6pKj86D9Ou2P6zFrfOsjsUmYU4w4IpwX4Y/c2KLgFe5Hor4BtePUSa83W6J3KtiMLUj9LEJnw9xFfy1WERfUJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732185; c=relaxed/simple;
-	bh=YKGBfvLU9u/4QofxO4HLySEXvO41IxTlNqT//PB826M=;
+	s=arc-20240116; t=1723731233; c=relaxed/simple;
+	bh=eXUPHuTGj3cl6tvRXKjcaap6w/9uARGBqWzY80hfMuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YfQ5iHIQtt3HWah+YyFzkjoC3ibS8I+pruLycrXYep9LSuUo8dadExcqZ/XOglCkaS+nCrwxZo39pvAetpKMxUDDGnnqwYN8tdxcvQCvw1tepy5RtkYO5aw6vCaKXYgMLymhYPy5WX7s8d7D5LvBHqxCkwoYxwB5Iguljfm9O04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAwPb9sD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7F9C32786;
-	Thu, 15 Aug 2024 14:29:44 +0000 (UTC)
+	 MIME-Version; b=RzG0d891U7UopNaS+TbRuptw2mYxkr/wfx2ZpsrGE1JQSUPgJG5vdYM2dihFqaL7cUbeabpa2EGIMsdRRvuSJKniehhkH/io21fTKRlzOvQiYXrXgzeoLgFEOsk1YiCzT6pGA2oz5eG+AX/GuV5Ik2aZWDxbI8fE3rIcY2q0Fbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGaAp/lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420E8C4AF0A;
+	Thu, 15 Aug 2024 14:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732184;
-	bh=YKGBfvLU9u/4QofxO4HLySEXvO41IxTlNqT//PB826M=;
+	s=korg; t=1723731233;
+	bh=eXUPHuTGj3cl6tvRXKjcaap6w/9uARGBqWzY80hfMuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAwPb9sDPh0mGYw/m1xywFNpf6jIL/dsdi4wIRUNE6ELeRE9cEi9WzvvuNsyRZsrg
-	 PkNFCZ2Ecv0Ilp3sS5I+DLaC6sxOtdgPSoQhNY5dclAdx9Usem5TqB2kFzIMy29fpK
-	 2xERlU9L7/jBJnIUjoAAL00gYy8x2vio38o+q+io=
+	b=LGaAp/lhgo/G0QDiM2DtlPOiFkA534zNRTMJtaBnH12hAmpBZwQgqLUfNaC2Jxkgn
+	 Msz1OjL3MsXdPL1psdmSdXb9YqiXCaI3B5bR9W1pAVeJNtOxDOWIGJSRYrPQ5l+keL
+	 bsYH3KePF5SOZ9gqeN+OAW3GfZX6g0tU2JpxYv4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/352] RDMA/mlx4: Fix truncated output warning in alias_GUID.c
+Subject: [PATCH 5.4 033/259] lib: objagg: Fix general protection fault
 Date: Thu, 15 Aug 2024 15:22:46 +0200
-Message-ID: <20240815131923.125009460@linuxfoundation.org>
+Message-ID: <20240815131904.076391320@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +64,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 5953e0647cec703ef436ead37fed48943507b433 ]
+[ Upstream commit b4a3a89fffcdf09702b1f161b914e52abca1894d ]
 
-drivers/infiniband/hw/mlx4/alias_GUID.c: In function ‘mlx4_ib_init_alias_guid_service’:
-drivers/infiniband/hw/mlx4/alias_GUID.c:878:74: error: ‘%d’ directive
-output may be truncated writing between 1 and 11 bytes into a region of
-size 5 [-Werror=format-truncation=]
-  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
-      |                                                                          ^~
-drivers/infiniband/hw/mlx4/alias_GUID.c:878:63: note: directive argument in the range [-2147483641, 2147483646]
-  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
-      |                                                               ^~~~~~~~~~~~~~
-drivers/infiniband/hw/mlx4/alias_GUID.c:878:17: note: ‘snprintf’ output
-between 12 and 22 bytes into a destination of size 15
-  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+The library supports aggregation of objects into other objects only if
+the parent object does not have a parent itself. That is, nesting is not
+supported.
 
-Fixes: a0c64a17aba8 ("mlx4: Add alias_guid mechanism")
-Link: https://lore.kernel.org/r/1951c9500109ca7e36dcd523f8a5f2d0d2a608d1.1718554641.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Aggregation happens in two cases: Without and with hints, where hints
+are a pre-computed recommendation on how to aggregate the provided
+objects.
+
+Nesting is not possible in the first case due to a check that prevents
+it, but in the second case there is no check because the assumption is
+that nesting cannot happen when creating objects based on hints. The
+violation of this assumption leads to various warnings and eventually to
+a general protection fault [1].
+
+Before fixing the root cause, error out when nesting happens and warn.
+
+[1]
+general protection fault, probably for non-canonical address 0xdead000000000d90: 0000 [#1] PREEMPT SMP PTI
+CPU: 1 PID: 1083 Comm: kworker/1:9 Tainted: G        W          6.9.0-rc6-custom-gd9b4f1cca7fb #7
+Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
+Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
+RIP: 0010:mlxsw_sp_acl_erp_bf_insert+0x25/0x80
+[...]
+Call Trace:
+ <TASK>
+ mlxsw_sp_acl_atcam_entry_add+0x256/0x3c0
+ mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
+ mlxsw_sp_acl_tcam_vchunk_migrate_one+0x16b/0x270
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0xbe/0x510
+ process_one_work+0x151/0x370
+ worker_thread+0x2cb/0x3e0
+ kthread+0xd0/0x100
+ ret_from_fork+0x34/0x50
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Fixes: 9069a3817d82 ("lib: objagg: implement optimization hints assembly and use hints for object creation")
+Reported-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/alias_GUID.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/objagg.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx4/alias_GUID.c b/drivers/infiniband/hw/mlx4/alias_GUID.c
-index cca414ecfcd5a..05420e189ca90 100644
---- a/drivers/infiniband/hw/mlx4/alias_GUID.c
-+++ b/drivers/infiniband/hw/mlx4/alias_GUID.c
-@@ -832,7 +832,7 @@ void mlx4_ib_destroy_alias_guid_service(struct mlx4_ib_dev *dev)
- 
- int mlx4_ib_init_alias_guid_service(struct mlx4_ib_dev *dev)
+diff --git a/lib/objagg.c b/lib/objagg.c
+index 55621fb82e0a3..e380e95de7702 100644
+--- a/lib/objagg.c
++++ b/lib/objagg.c
+@@ -167,6 +167,9 @@ static int objagg_obj_parent_assign(struct objagg *objagg,
  {
--	char alias_wq_name[15];
-+	char alias_wq_name[22];
- 	int ret = 0;
- 	int i, j;
- 	union ib_gid gid;
+ 	void *delta_priv;
+ 
++	if (WARN_ON(!objagg_obj_is_root(parent)))
++		return -EINVAL;
++
+ 	delta_priv = objagg->ops->delta_create(objagg->priv, parent->obj,
+ 					       objagg_obj->obj);
+ 	if (IS_ERR(delta_priv))
 -- 
 2.43.0
 
