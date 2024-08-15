@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-68223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AF9953132
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4A395310F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B340D1F2173B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:51:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB7B61F211B6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0768C19AA53;
-	Thu, 15 Aug 2024 13:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B05319FA9D;
+	Thu, 15 Aug 2024 13:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNcTie9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4hPWykq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5081494C5;
-	Thu, 15 Aug 2024 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3987419FA90;
+	Thu, 15 Aug 2024 13:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729884; cv=none; b=q9hqGhd4PJq8VooCca6xFDSwbDrPGHxuLEfdml782n8BzgkR9aEaX+9DIDsKVi1Hao8psFsfI6aTWanljeosGMyXYha1dodTe95l68tkltaeZNyLixsWsrxEl6WIdLqQdA/0arEn8zNMnJWGzMQvkqEdWXfcyr2hEPR0Qk/63DI=
+	t=1723729779; cv=none; b=HcBnJwisrNIRcrM+Mu6pzFW/TmGbEMGlHVuRwygsJghuu0g3j+xUbYC4VVktCphK7rxFWVFG0F8Sja5+ic69sm2bWE3MECvyndddcX1eKYNhTSeJgsh/TUX7qkHAwtu0SXx3rXjLzMQqHWvogZxFU0TPpir4hGldsSrW+qv+uP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729884; c=relaxed/simple;
-	bh=5/Weo7+iQnsYhUvcvzeq2YNKnQtFyuaf7zVkcIRxuAc=;
+	s=arc-20240116; t=1723729779; c=relaxed/simple;
+	bh=mmfvWGD7TvdwTtitYl0x4cZfIyNvu+IH0pbba0wygq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVZ70ezh3bl6tZpsxqbasr4+r6jZisnGF4TG9L2N9DjvgMsXu+xNl95g8JSlZLdSZ8+yRG4zIidcqEbKD/Tr2zvJcnCG6sHa+W50abESo5Wv2JmB7aSLsEEjV+dWOZjJRP8d+KXpSEe1uubQ0xdLl6huwqv1dPxjdZcjkOHCLa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNcTie9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21788C32786;
-	Thu, 15 Aug 2024 13:51:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q/bXZdJtM992ua/m2q96OyDYgDUW1kHynM5jRSXzd6wz1147GnRWtBHAen72Igi18xXkGRuhgmCmnbMvuph24JiJWBYqsK664V1z5xCFitIspdRJEeN9sPMsD1YxhjZqpI/heqUX5v1wVhPtNDkPGewD2muaD2WsN0ZtqIr/F9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4hPWykq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560F4C32786;
+	Thu, 15 Aug 2024 13:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729884;
-	bh=5/Weo7+iQnsYhUvcvzeq2YNKnQtFyuaf7zVkcIRxuAc=;
+	s=korg; t=1723729778;
+	bh=mmfvWGD7TvdwTtitYl0x4cZfIyNvu+IH0pbba0wygq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNcTie9QXTv0wTzKjK4nxOMA0aXtbsYho3b7UFPE//cIvaMLkdi3LHwJMO/9Il0J6
-	 WS3Hd6AkRQQ4TkeBRf0gOP42prLKTBpr0SkXOsmgp+ZdSVXb+UkN2JZnXAQ75UcTZo
-	 8Hoq5hhDan3wjMDtnNWVqdpuPL2x8XQa5/bYvWR0=
+	b=G4hPWykqSzxVDRgZEGnO0xKy4B4vzokmyIktvN2MGgsLBtji4LGp7xI9d6DvyOh1c
+	 +DadqwOV6kVq7sLVVgBYU/LCpMX5LqGKBQ0bKJGu8fRWp3JbsJ+kzE+14mjtlPcrkB
+	 9fglrjweVrpf8vdGT4lMLeT0ftHJelgescPhGUXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.15 196/484] wifi: mwifiex: Fix interface type change
-Date: Thu, 15 Aug 2024 15:20:54 +0200
-Message-ID: <20240815131948.984578769@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.15 197/484] leds: ss4200: Convert PCIBIOS_* return codes to errnos
+Date: Thu, 15 Aug 2024 15:20:55 +0200
+Message-ID: <20240815131949.021951012@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -60,47 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Beims <rafael.beims@toradex.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit a17b9f590f6ec2b9f1b12b1db3bf1d181de6b272 upstream.
+commit ce068e83976140badb19c7f1307926b4b562fac4 upstream.
 
-When changing the interface type we also need to update the bss_num, the
-driver private data is searched based on a unique (bss_type, bss_num)
-tuple, therefore every time bss_type changes, bss_num must also change.
+ich7_lpc_probe() uses pci_read_config_dword() that returns PCIBIOS_*
+codes. The error handling code assumes incorrectly it's a normal errno
+and checks for < 0. The return code is returned from the probe function
+as is but probe functions should return normal errnos.
 
-This fixes for example an issue in which, after the mode changed, a
-wireless scan on the changed interface would not finish, leading to
-repeated -EBUSY messages to userspace when other scan requests were
-sent.
+Remove < 0 from the check and convert PCIBIOS_* returns code using
+pcibios_err_to_errno() into normal errno before returning it.
 
-Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240510110458.15475-1-francesco@dolcini.it
+Fixes: a328e95b82c1 ("leds: LED driver for Intel NAS SS4200 series (v5)")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240527132700.14260-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/leds/leds-ss4200.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -930,6 +930,8 @@ mwifiex_init_new_priv_params(struct mwif
- 		return -EOPNOTSUPP;
+--- a/drivers/leds/leds-ss4200.c
++++ b/drivers/leds/leds-ss4200.c
+@@ -356,8 +356,10 @@ static int ich7_lpc_probe(struct pci_dev
+ 
+ 	nas_gpio_pci_dev = dev;
+ 	status = pci_read_config_dword(dev, PMBASE, &g_pm_io_base);
+-	if (status)
++	if (status) {
++		status = pcibios_err_to_errno(status);
+ 		goto out;
++	}
+ 	g_pm_io_base &= 0x00000ff80;
+ 
+ 	status = pci_read_config_dword(dev, GPIO_CTRL, &gc);
+@@ -369,8 +371,9 @@ static int ich7_lpc_probe(struct pci_dev
  	}
  
-+	priv->bss_num = mwifiex_get_unused_bss_num(adapter, priv->bss_type);
-+
- 	spin_lock_irqsave(&adapter->main_proc_lock, flags);
- 	adapter->main_locked = false;
- 	spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
+ 	status = pci_read_config_dword(dev, GPIO_BASE, &nas_gpio_io_base);
+-	if (0 > status) {
++	if (status) {
+ 		dev_info(&dev->dev, "Unable to read GPIOBASE.\n");
++		status = pcibios_err_to_errno(status);
+ 		goto out;
+ 	}
+ 	dev_dbg(&dev->dev, ": GPIOBASE = 0x%08x\n", nas_gpio_io_base);
 
 
 
