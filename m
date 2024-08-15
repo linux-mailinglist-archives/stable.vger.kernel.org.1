@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-69160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D729535C4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:42:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FA1953305
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC341F2604E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:42:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29B06287B52
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4341AC451;
-	Thu, 15 Aug 2024 14:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5ECE1AED2B;
+	Thu, 15 Aug 2024 14:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYEvxTXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfau0JmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509051ABECE;
-	Thu, 15 Aug 2024 14:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822D51BB6B4;
+	Thu, 15 Aug 2024 14:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732864; cv=none; b=ew99s8qjEH2XIWIKEYZaZCqXJfbqyacauoGslOGwmHzf7WSWulyPqlsa2C9mVBuNFxJtDBswWdnIy5vjYlQjDWpX6Pj/o2ct5n9/TuXC3Ylxm7vI+NezvEaD3qok6CwLciCWMG+FTfe7eWqdKU1zPsX/UlO2UdJcU71I1YxZMZo=
+	t=1723731004; cv=none; b=bL0DwQ3JtB5zdtIhs9Vij1BPHh8zBcwrL0TC0TxiUL0DcGhpD/JORUy5RZcjmMQkSO5XMURBHsmM6fWrRFPcSGhprUawy6Jy6TqwT1fRvBEVcw5w6uDyARopkhAV6RFZF31cfPH4yr3dmju526Yu9oWfMADqONzx1mM7GJW3rEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732864; c=relaxed/simple;
-	bh=rl/U4shPjxJcavho36bC6HcWeO2Rxn4cwEAqOeRVHMc=;
+	s=arc-20240116; t=1723731004; c=relaxed/simple;
+	bh=3wcse9R1u6p0nRAHZozFronHV/EOOJRLhSveaREiuOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9J+JvY9vawUFo1w7aXgreTvXu/NTUZyS3666QOu+u83miokdx5Mwe6Aypskj1VPztjXIvCY0jeyGwx1olFTs0XJ7oJEjLbR3Cv3foqdXUneapLIyYoRUSoPdylXsSr1YkVDpnqeQDJAmpy17FtHHn3jy3TvqnJbBzn2RbWpqYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYEvxTXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA319C4AF17;
-	Thu, 15 Aug 2024 14:41:03 +0000 (UTC)
+	 MIME-Version; b=qVzb02b0QeRu6+Lsfz33AfN+SpQfe5I88NQRdy5jze4pA9es6Sdd9q07pcFn6UacWH3oJ9xyEz3Z5lP4phkFxobWqsoYIMapWGmSjaGMcelYXsjs7OksU1han0Tf45IS4E+gwA0hrq/y7vzJu7krBBPi4ANSzmJbUl8VDZM0XKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gfau0JmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BDBC4AF0A;
+	Thu, 15 Aug 2024 14:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732864;
-	bh=rl/U4shPjxJcavho36bC6HcWeO2Rxn4cwEAqOeRVHMc=;
+	s=korg; t=1723731004;
+	bh=3wcse9R1u6p0nRAHZozFronHV/EOOJRLhSveaREiuOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYEvxTXVEo39LTjrvuHBtrSlTSJJcoXwgU0AAScUnWTA9ngeIdF5HZw1p1crMIVpc
-	 7Bq8snzqbB7nQIQm8z0NUBNKy0fW2e9WF2pdmAND3x+Nbp0kTCRRy9pwxSXJQjReB+
-	 QI5d2tOHFWLJ4mQ2LMqY6/tcJ+82R1F419aIbjto=
+	b=Gfau0JmPfW+EgKU4jJwxGusxGQgGwPqzYvfbIEnTCUc8eB5tfayuo/rWfsMdzrEYN
+	 knEuEe1nJjTfK4+EkPoa6j9LmuIlQD5e7aCS7ymgpWgrTEMV1wsGrKIYKDnPq+8SLZ
+	 0haKXk3R9+MlV4S5oKUMO9KQerHvtnzpF7l8wxEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vamshi Gajjela <vamshigajjela@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 309/352] scsi: ufs: core: Fix hba->last_dme_cmd_tstamp timestamp updating logic
+	Stefan ORear <sorear@fastmail.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 61/67] binfmt_flat: Fix corruption when not offsetting data start
 Date: Thu, 15 Aug 2024 15:26:15 +0200
-Message-ID: <20240815131931.400745548@linuxfoundation.org>
+Message-ID: <20240815131840.643145788@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vamshi Gajjela <vamshigajjela@google.com>
+From: Kees Cook <kees@kernel.org>
 
-commit ab9fd06cb8f0db0854291833fc40c789e43a361f upstream.
+[ Upstream commit 3eb3cd5992f7a0c37edc8d05b4c38c98758d8671 ]
 
-The ufshcd_add_delay_before_dme_cmd() always introduces a delay of
-MIN_DELAY_BEFORE_DME_CMDS_US between DME commands even when it's not
-required. The delay is added when the UFS host controller supplies the
-quirk UFSHCD_QUIRK_DELAY_BEFORE_DME_CMDS.
+Commit 04d82a6d0881 ("binfmt_flat: allow not offsetting data start")
+introduced a RISC-V specific variant of the FLAT format which does
+not allocate any space for the (obsolete) array of shared library
+pointers. However, it did not disable the code which initializes the
+array, resulting in the corruption of sizeof(long) bytes before the DATA
+segment, generally the end of the TEXT segment.
 
-Fix the logic to update hba->last_dme_cmd_tstamp to ensure subsequent DME
-commands have the correct delay in the range of 0 to
-MIN_DELAY_BEFORE_DME_CMDS_US.
+Introduce MAX_SHARED_LIBS_UPDATE which depends on the state of
+CONFIG_BINFMT_FLAT_NO_DATA_START_OFFSET to guard the initialization of
+the shared library pointer region so that it will only be initialized
+if space is reserved for it.
 
-Update the timestamp at the end of the function to ensure it captures the
-latest time after any necessary delay has been applied.
-
-Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-Link: https://lore.kernel.org/r/20240724135126.1786126-1-vamshigajjela@google.com
-Fixes: cad2e03d8607 ("ufs: add support to allow non standard behaviours (quirks)")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04d82a6d0881 ("binfmt_flat: allow not offsetting data start")
+Co-developed-by: Stefan O'Rear <sorear@fastmail.com>
+Signed-off-by: Stefan O'Rear <sorear@fastmail.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+Link: https://lore.kernel.org/r/20240807195119.it.782-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ufs/ufshcd.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/binfmt_flat.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/ufs/ufshcd.c
-+++ b/drivers/scsi/ufs/ufshcd.c
-@@ -3653,11 +3653,16 @@ static inline void ufshcd_add_delay_befo
- 			min_sleep_time_us =
- 				MIN_DELAY_BEFORE_DME_CMDS_US - delta;
- 		else
--			return; /* no more delay required */
-+			min_sleep_time_us = 0; /* no more delay required */
- 	}
+diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
+index c26545d71d39a..cd6d5bbb4b9df 100644
+--- a/fs/binfmt_flat.c
++++ b/fs/binfmt_flat.c
+@@ -72,8 +72,10 @@
  
--	/* allow sleep for extra 50us if needed */
--	usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-+	if (min_sleep_time_us > 0) {
-+		/* allow sleep for extra 50us if needed */
-+		usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-+	}
-+
-+	/* update the last_dme_cmd_tstamp */
-+	hba->last_dme_cmd_tstamp = ktime_get();
- }
+ #ifdef CONFIG_BINFMT_FLAT_NO_DATA_START_OFFSET
+ #define DATA_START_OFFSET_WORDS		(0)
++#define MAX_SHARED_LIBS_UPDATE		(0)
+ #else
+ #define DATA_START_OFFSET_WORDS		(MAX_SHARED_LIBS)
++#define MAX_SHARED_LIBS_UPDATE		(MAX_SHARED_LIBS)
+ #endif
  
- /**
+ struct lib_info {
+@@ -880,7 +882,7 @@ static int load_flat_binary(struct linux_binprm *bprm)
+ 		return res;
+ 
+ 	/* Update data segment pointers for all libraries */
+-	for (i = 0; i < MAX_SHARED_LIBS; i++) {
++	for (i = 0; i < MAX_SHARED_LIBS_UPDATE; i++) {
+ 		if (!libinfo.lib_list[i].loaded)
+ 			continue;
+ 		for (j = 0; j < MAX_SHARED_LIBS; j++) {
+-- 
+2.43.0
+
 
 
 
