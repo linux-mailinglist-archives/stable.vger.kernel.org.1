@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC31C9533C6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A97095325E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 829431F26C08
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA4C21F2136A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73011A00E2;
-	Thu, 15 Aug 2024 14:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C1D1A4F0F;
+	Thu, 15 Aug 2024 14:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DkcGHE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UN3C1Mz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8380263C;
-	Thu, 15 Aug 2024 14:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F081ABEC0;
+	Thu, 15 Aug 2024 14:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731536; cv=none; b=CU4iGJGNktMLOXmPzaJhWOa9K/xOKCvw/NLU/LrOmPhGnGgFtLiAloyh5eEawzdFYtCwmiZsjIPbxzuYZDC3b2rQEg2jmDrXtWwDjKb60OYMD361I3yfWYqGW0QhpquSD+IdeZiuD7SNm2jzCvIQPT4ySjFLjuqOHiVdEmVd/dY=
+	t=1723730618; cv=none; b=R/I7cuYrHy10mocDG2XfphDCokgeaymnBPK/znFnc5WgDPNX9wf8atLdx/U8EA1XV4RbNAIrtdCwz7SrbIHqZ7NAbNJgusX4HNkJQQLB7QmKxjE13ePc/6yPosjtDr17o54kki9Ns3whrVMhRUaI7bZHZg8V57gntNehUF7XMNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731536; c=relaxed/simple;
-	bh=mOpb079qLSR0GV5pbh2W5H9o85wxiudEvtTR9KhUu2c=;
+	s=arc-20240116; t=1723730618; c=relaxed/simple;
+	bh=8fPWL+HUA9CweTFaIa/iTrJEAYZWTdZrOnNCKitCYYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2OXXwLMClX7xVzfQ+GCnX8ufSDHLqUlvel07+jiQsumTLjxkPGu5b9kRRRp1HYnp9kWBq6k6GNvIqmfVFrHqAYAhgb1Z5ILAqRDS09YKuDYjYgL8iFo1n4odc8hgYO9ng1sqfhJ516J3UoVzuamxX9SUvStNtAoSatRRh+rGfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DkcGHE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D243EC32786;
-	Thu, 15 Aug 2024 14:18:55 +0000 (UTC)
+	 MIME-Version; b=rV2bWaRfhX3tfENjBisv9Gg23h9E8kb0gFkLhO4D6/mdrkP5BKnZXWyoJC47q+75bLhJ06l6oHEhryd97Doq9LT04Ec5bNFu/cKzF59aGr350abTyPbTvaWu1Tfu9PLphVHxBxolD2aPQlsbWjDJfxZBpesJBYiq3Wmx0JsYTgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UN3C1Mz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D45C32786;
+	Thu, 15 Aug 2024 14:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731536;
-	bh=mOpb079qLSR0GV5pbh2W5H9o85wxiudEvtTR9KhUu2c=;
+	s=korg; t=1723730618;
+	bh=8fPWL+HUA9CweTFaIa/iTrJEAYZWTdZrOnNCKitCYYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DkcGHE93PBxl/gmQEyR46J3Xc5VUf2MKHH2IWOKapc33F7BtmYlLvjmcG5M9Rj4Y
-	 60ZlMYnY3GQ1xXuiFoYPIkvZEIynOnpH6maFB4oFg6dR3v8zDlUhJFOeouxJ9G8a7C
-	 bjdHUV12hS+Bcy+eeQ4kAa2yOhRsWeWhFhbuTUfI=
+	b=2UN3C1MzbWsGNxyW3LA5GYCIxT9Gd/ibgEMmIkOyanvu6Yz47vlp0h4Pdq2zOne9q
+	 FAZVaBb3m4gZ7DQV6UAy8nc05+Hy/cLZWeN/i+xIZGVYRQJUIGvDB/AMAhIuBJc5Py
+	 xW4ouupwC8K5eHn0kkqMVoTLVFXdElmm4ygYpClI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wens@csie.org>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 159/259] PCI: rockchip: Make ep-gpios DT property optional
+Subject: [PATCH 5.15 434/484] irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock to raw_spinlock_t
 Date: Thu, 15 Aug 2024 15:24:52 +0200
-Message-ID: <20240815131908.925181448@linuxfoundation.org>
+Message-ID: <20240815131958.223287288@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-[ Upstream commit 58adbfb3ebec460e8b58875c682bafd866808e80 ]
+[ Upstream commit f872d4af79fe8c71ae291ce8875b477e1669a6c7 ]
 
-The Rockchip PCIe controller DT binding clearly states that 'ep-gpios' is
-an optional property. And indeed there are boards that don't require it.
+This lock is acquired under irq_desc::lock with interrupts disabled.
 
-Make the driver follow the binding by using devm_gpiod_get_optional()
-instead of devm_gpiod_get().
+When PREEMPT_RT is enabled, 'spinlock_t' becomes preemptible, which results
+in invalid lock acquire context;
 
-[bhelgaas: tidy whitespace]
-Link: https://lore.kernel.org/r/20210121162321.4538-2-wens@kernel.org
-Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
-Fixes: 956cd99b35a8 ("PCI: rockchip: Separate common code from RC driver")
-Fixes: 964bac9455be ("PCI: rockchip: Split out rockchip_pcie_parse_dt() to parse DT")
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 840b7a5edf88 ("PCI: rockchip: Use GPIOD_OUT_LOW flag while requesting ep_gpio")
+  [ BUG: Invalid wait context ]
+  swapper/0/1 is trying to lock:
+  ffff0000008fed30 (&ctl->lock){....}-{3:3}, at: meson_gpio_irq_update_bits0
+  other info that might help us debug this:
+  context-{5:5}
+  3 locks held by swapper/0/1:
+   #0: ffff0000003cd0f8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0x90c
+   #1: ffff000004714650 (&desc->request_mutex){+.+.}-{4:4}, at: __setup_irq0
+   #2: ffff0000047144c8 (&irq_desc_lock_class){-.-.}-{2:2}, at: __setup_irq0
+  stack backtrace:
+  CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.9-sdkernel #1
+  Call trace:
+   _raw_spin_lock_irqsave+0x60/0x88
+   meson_gpio_irq_update_bits+0x34/0x70
+   meson8_gpio_irq_set_type+0x78/0xc4
+   meson_gpio_irq_set_type+0x30/0x60
+   __irq_set_trigger+0x60/0x180
+   __setup_irq+0x30c/0x6e0
+   request_threaded_irq+0xec/0x1a4
+
+Fixes: 215f4cc0fb20 ("irqchip/meson: Add support for gpio interrupt controller")
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240729131850.3015508-1-avkrasnov@salutedevices.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/irqchip/irq-meson-gpio.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-rockchip.c b/drivers/pci/controller/pcie-rockchip.c
-index b047437605cb2..c6d2f00acf890 100644
---- a/drivers/pci/controller/pcie-rockchip.c
-+++ b/drivers/pci/controller/pcie-rockchip.c
-@@ -84,7 +84,7 @@ int rockchip_pcie_parse_dt(struct rockchip_pcie *rockchip)
- 	}
+diff --git a/drivers/irqchip/irq-meson-gpio.c b/drivers/irqchip/irq-meson-gpio.c
+index 89dab14406e69..6a3d18d5ba2f0 100644
+--- a/drivers/irqchip/irq-meson-gpio.c
++++ b/drivers/irqchip/irq-meson-gpio.c
+@@ -141,7 +141,7 @@ struct meson_gpio_irq_controller {
+ 	void __iomem *base;
+ 	u32 channel_irqs[MAX_NUM_CHANNEL];
+ 	DECLARE_BITMAP(channel_map, MAX_NUM_CHANNEL);
+-	spinlock_t lock;
++	raw_spinlock_t lock;
+ };
  
- 	rockchip->mgmt_sticky_rst = devm_reset_control_get_exclusive(dev,
--								     "mgmt-sticky");
-+								"mgmt-sticky");
- 	if (IS_ERR(rockchip->mgmt_sticky_rst)) {
- 		if (PTR_ERR(rockchip->mgmt_sticky_rst) != -EPROBE_DEFER)
- 			dev_err(dev, "missing mgmt-sticky reset property in node\n");
-@@ -120,11 +120,11 @@ int rockchip_pcie_parse_dt(struct rockchip_pcie *rockchip)
- 	}
+ static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
+@@ -150,14 +150,14 @@ static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
+ 	unsigned long flags;
+ 	u32 tmp;
  
- 	if (rockchip->is_rc) {
--		rockchip->ep_gpio = devm_gpiod_get(dev, "ep", GPIOD_OUT_HIGH);
--		if (IS_ERR(rockchip->ep_gpio)) {
--			dev_err(dev, "missing ep-gpios property in node\n");
--			return PTR_ERR(rockchip->ep_gpio);
--		}
-+		rockchip->ep_gpio = devm_gpiod_get_optional(dev, "ep",
-+							    GPIOD_OUT_HIGH);
-+		if (IS_ERR(rockchip->ep_gpio))
-+			return dev_err_probe(dev, PTR_ERR(rockchip->ep_gpio),
-+					     "failed to get ep GPIO\n");
- 	}
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
  
- 	rockchip->aclk_pcie = devm_clk_get(dev, "aclk");
+ 	tmp = readl_relaxed(ctl->base + reg);
+ 	tmp &= ~mask;
+ 	tmp |= val;
+ 	writel_relaxed(tmp, ctl->base + reg);
+ 
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ }
+ 
+ static void meson_gpio_irq_init_dummy(struct meson_gpio_irq_controller *ctl)
+@@ -207,12 +207,12 @@ meson_gpio_irq_request_channel(struct meson_gpio_irq_controller *ctl,
+ 	unsigned long flags;
+ 	unsigned int idx;
+ 
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
+ 
+ 	/* Find a free channel */
+ 	idx = find_first_zero_bit(ctl->channel_map, ctl->params->nr_channels);
+ 	if (idx >= ctl->params->nr_channels) {
+-		spin_unlock_irqrestore(&ctl->lock, flags);
++		raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ 		pr_err("No channel available\n");
+ 		return -ENOSPC;
+ 	}
+@@ -220,7 +220,7 @@ meson_gpio_irq_request_channel(struct meson_gpio_irq_controller *ctl,
+ 	/* Mark the channel as used */
+ 	set_bit(idx, ctl->channel_map);
+ 
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ 
+ 	/*
+ 	 * Setup the mux of the channel to route the signal of the pad
+@@ -488,7 +488,7 @@ static int __init meson_gpio_irq_of_init(struct device_node *node,
+ 	if (!ctl)
+ 		return -ENOMEM;
+ 
+-	spin_lock_init(&ctl->lock);
++	raw_spin_lock_init(&ctl->lock);
+ 
+ 	ctl->base = of_iomap(node, 0);
+ 	if (!ctl->base) {
 -- 
 2.43.0
 
