@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C597953450
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573769532B5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE4851C22A3C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3152B26C23
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AD01A7076;
-	Thu, 15 Aug 2024 14:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0601A706B;
+	Thu, 15 Aug 2024 14:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EY8qy+JX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0M8OOSp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DC619DF92;
-	Thu, 15 Aug 2024 14:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7491A3BCA;
+	Thu, 15 Aug 2024 14:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731868; cv=none; b=tYVJr8Yf8tB/YUrVvD0VgLmd3kfUG0YkmwZPUGgogIKJcTapd58aUO29vg7W7qLyFLdlYtBrXAAZsB5Iv/7UfDzE+Eu8GrvM1RDoejLhFlc1VRB5mxFISdOkP1ibc+WE/PyVhl8zKI1YovQzJ3LRhxgmEkfTKLwk19aN5EYf5U4=
+	t=1723730794; cv=none; b=Jipmc1cQCZfnMeC7vPoHzJDMyyh/jZ3N8b3/JB7z4b5UWDWLF+FYb0Cz1qQ5tb/7g7rYUgPP+mv2zsMR6W/jYBGXUy62jtY6fsEYRZt0w2PjNdAF/+wDrlcobrhKoKyk7Sl44250FvJV/7wn6XyhYCaw2Wvy5ZYYGL6SbRpXrjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731868; c=relaxed/simple;
-	bh=LYxkG2VigY3qyqM585hwEsK5mXxzcAAV481J/wUK+OQ=;
+	s=arc-20240116; t=1723730794; c=relaxed/simple;
+	bh=iCYHDXCl7ZiTHJwOra1hJap6rkFncKSRXxB3i0YnQzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A0Fheq/K5jMVHwHFRRgbfsUC2J8Wde2VtvxZzCmO1M6ugCwhas8ATQGFL3k39M4m2ilEoxgA66iVWYPO1S41xLXZ9o+ozsKs4Y1SmMNP/GkHgT2TLm7SXldNlOIWjkiNc8ii8GHCdchwVSROLlSLV9BZinX5cr6s/9wGAcqNDRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EY8qy+JX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D2EC32786;
-	Thu, 15 Aug 2024 14:24:27 +0000 (UTC)
+	 MIME-Version; b=dmw7IDwiPGyboDxATUTGhsYzsjK1maSH7FTQK7+682VxIS4tZlK09Wz1aWk4LE8mUai3k0JgoV8yF+vYzV93NNYVTxgHoS89/UYd+N2e6qoja4GFdi7EJsXaazZD3sG5w2v5ge3nT9lPpvJ6crggeIExCyIgUQdcoLvtZS8+AP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0M8OOSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE42C32786;
+	Thu, 15 Aug 2024 14:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731868;
-	bh=LYxkG2VigY3qyqM585hwEsK5mXxzcAAV481J/wUK+OQ=;
+	s=korg; t=1723730794;
+	bh=iCYHDXCl7ZiTHJwOra1hJap6rkFncKSRXxB3i0YnQzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EY8qy+JXmuBFKZ3RfIGeDEB8SxJpzSDdn0ogsRJOgBMjzmpPtSOBZNa9KYOQlkRge
-	 lM0lQmd91tO/SnnL6f/V9gTke+BEJw7Qy6pYkQq6bx3Lhk+u2+z0UGxi8uDYTHZwWV
-	 FFUHYtmbJsz4RU/ThqM59GgFiBUC8PGpcAadcAA0=
+	b=S0M8OOSps6r4+5epfM0N293529VRBiP9gCa1tYD1c49aKfuaYOieWvYJEGa09tfSs
+	 IIL1d3glBXcKAfVV1WtJU2zTbytGtRWfMo2LqJMW6EZK7B536XyYSUQ0gytYqAqqUX
+	 7GU4xN41h54bwvTTCtSWeELs0Dy5zeaLzKde2ymo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vamshi Gajjela <vamshigajjela@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 234/259] scsi: ufs: core: Fix hba->last_dme_cmd_tstamp timestamp updating logic
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 33/38] drm/i915: Fix a NULL vs IS_ERR() bug
 Date: Thu, 15 Aug 2024 15:26:07 +0200
-Message-ID: <20240815131911.812783832@linuxfoundation.org>
+Message-ID: <20240815131834.230747188@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vamshi Gajjela <vamshigajjela@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit ab9fd06cb8f0db0854291833fc40c789e43a361f upstream.
+[ Upstream commit 3a89311387cde27da8e290458b2d037133c1f7b5 ]
 
-The ufshcd_add_delay_before_dme_cmd() always introduces a delay of
-MIN_DELAY_BEFORE_DME_CMDS_US between DME commands even when it's not
-required. The delay is added when the UFS host controller supplies the
-quirk UFSHCD_QUIRK_DELAY_BEFORE_DME_CMDS.
+The mmap_offset_attach() function returns error pointers, it doesn't
+return NULL.
 
-Fix the logic to update hba->last_dme_cmd_tstamp to ensure subsequent DME
-commands have the correct delay in the range of 0 to
-MIN_DELAY_BEFORE_DME_CMDS_US.
-
-Update the timestamp at the end of the function to ensure it captures the
-latest time after any necessary delay has been applied.
-
-Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-Link: https://lore.kernel.org/r/20240724135126.1786126-1-vamshigajjela@google.com
-Fixes: cad2e03d8607 ("ufs: add support to allow non standard behaviours (quirks)")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eaee1c085863 ("drm/i915: Add a function to mmap framebuffer obj")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/ZH7tHLRZ9oBjedjN@moroto
+Stable-dep-of: 1ac5167b3a90 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ufs/ufshcd.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/ufs/ufshcd.c
-+++ b/drivers/scsi/ufs/ufshcd.c
-@@ -3569,11 +3569,16 @@ static inline void ufshcd_add_delay_befo
- 			min_sleep_time_us =
- 				MIN_DELAY_BEFORE_DME_CMDS_US - delta;
- 		else
--			return; /* no more delay required */
-+			min_sleep_time_us = 0; /* no more delay required */
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+index 180b66f6193cb..4a291d29c5af5 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -1118,8 +1118,8 @@ int i915_gem_fb_mmap(struct drm_i915_gem_object *obj, struct vm_area_struct *vma
+ 		/* handle stolen and smem objects */
+ 		mmap_type = i915_ggtt_has_aperture(ggtt) ? I915_MMAP_TYPE_GTT : I915_MMAP_TYPE_WC;
+ 		mmo = mmap_offset_attach(obj, mmap_type, NULL);
+-		if (!mmo)
+-			return -ENODEV;
++		if (IS_ERR(mmo))
++			return PTR_ERR(mmo);
  	}
  
--	/* allow sleep for extra 50us if needed */
--	usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-+	if (min_sleep_time_us > 0) {
-+		/* allow sleep for extra 50us if needed */
-+		usleep_range(min_sleep_time_us, min_sleep_time_us + 50);
-+	}
-+
-+	/* update the last_dme_cmd_tstamp */
-+	hba->last_dme_cmd_tstamp = ktime_get();
- }
- 
- /**
+ 	/*
+-- 
+2.43.0
+
 
 
 
