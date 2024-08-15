@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-69087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFF995355F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6E7953245
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A8E1281821
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 413B0289092
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692F419FA9D;
-	Thu, 15 Aug 2024 14:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1701219F470;
+	Thu, 15 Aug 2024 14:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htIQMQuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEHdklKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D2A1DFFB;
-	Thu, 15 Aug 2024 14:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69551714DD;
+	Thu, 15 Aug 2024 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732625; cv=none; b=OBSU9/zFEUGfGkn4Rjsr+YNa4KE3jvKaVFinAfxHkbDatgSGFF/kmow88B1wPluUVUEqssRT7Sb9+xeeX9ns2lkBjEKcDjHxf4IGJVmHEW3OlrUIiKfwMiKVwyS5JPBYbts03J/vLxCCV4ZLinxQnBELa35L3iszM8q2xVHInyk=
+	t=1723730549; cv=none; b=Odo4iuW8eBQ43+5Gzcyfv9LgHCw5//Vvm7+3PJE86d8XWFt39KlNnV4dfkPPrHYt2jhRR0xIiokZK2VMu05rwl5yLc3WS9ZDu6vGbIDjTlcqlUDupIACIm6/+OTG8ip6y++boOhiO687o/3Y8GIV5sdCXWzAeEKI0iZshsa3NmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732625; c=relaxed/simple;
-	bh=7Wmd0g0AiW1Tfw0Uu7OAUIsfvl0klj8dFWHJbeRNnVc=;
+	s=arc-20240116; t=1723730549; c=relaxed/simple;
+	bh=61rqu7snz4G0O+p7iljs+yvSWE/I8Nk3ulmVx1/hRGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oq76aUAXaC31Odcws3iCBnsPErkM+dHcrmJHWza80whH1Lcmv9vCA2bHw2zF5HBFZ3O42CZipP5x78clpjpDjoa5gZoLl63zBIQlV+sjMvNZ+OWPMYLZwDKc4tdk1Pa/WmBuUIbJ6HmtT0bJTmuzC08rC4QxU7rnhFWVjrXCrKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htIQMQuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972FAC32786;
-	Thu, 15 Aug 2024 14:37:04 +0000 (UTC)
+	 MIME-Version; b=TGMsXkx6ygrsjMZ59IqG7hy1OjF98S+lnoKF5NmUYpAGrVb+rtXWJbYNxKvStb4LDGPHhbeKb8lIp4OLbj+Y+t5+EgQfBgZ8XlvqRFGyr7j5dBursN1Cc0t1y/UMu+UAvr5aMimn0BU86HXDCX2lDhjkZGOqhutMhNgz2E8CFkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEHdklKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFCCC32786;
+	Thu, 15 Aug 2024 14:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732625;
-	bh=7Wmd0g0AiW1Tfw0Uu7OAUIsfvl0klj8dFWHJbeRNnVc=;
+	s=korg; t=1723730549;
+	bh=61rqu7snz4G0O+p7iljs+yvSWE/I8Nk3ulmVx1/hRGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htIQMQuQoXyWikHJI69WvMWQfZm4l3UF9NKLFKoQC3nZtoonqw8nXEM3YRJdrPpkJ
-	 JPjMfIpr1XE4F3MB4/4bMY+16+Fm5A3EFaJRHomDnYErhoNEh1xSjBP5DHaUl9ss6g
-	 bmLC4BFcI4OmNZy9iS0wELdlPXKBu/VH2vClTWlg=
+	b=nEHdklKjFEv2AO4hsbOeSEUsu4nadoi/EkjBDTK5PHDJEPEu1j70gf/cvaUnUsbzt
+	 nM81zWfjdzF20vImhvZtSlthfMwgDVWTIrix+cltef6fJGTa7C5ZO5mfefRiMGoQ+9
+	 8fFtLffEE92NxV9N1vS4I2wRUYG2/c2uMoiIQQbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 236/352] net/iucv: fix use after free in iucv_sock_close()
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
+	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 444/484] tracing: Fix overflow in get_free_elt()
 Date: Thu, 15 Aug 2024 15:25:02 +0200
-Message-ID: <20240815131928.558592869@linuxfoundation.org>
+Message-ID: <20240815131958.610062684@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
 
-[ Upstream commit f558120cd709682b739207b48cf7479fd9568431 ]
+commit bcf86c01ca4676316557dd482c8416ece8c2e143 upstream.
 
-iucv_sever_path() is called from process context and from bh context.
-iucv->path is used as indicator whether somebody else is taking care of
-severing the path (or it is already removed / never existed).
-This needs to be done with atomic compare and swap, otherwise there is a
-small window where iucv_sock_close() will try to work with a path that has
-already been severed and freed by iucv_callback_connrej() called by
-iucv_tasklet_fn().
+"tracing_map->next_elt" in get_free_elt() is at risk of overflowing.
 
-Example:
-[452744.123844] Call Trace:
-[452744.123845] ([<0000001e87f03880>] 0x1e87f03880)
-[452744.123966]  [<00000000d593001e>] iucv_path_sever+0x96/0x138
-[452744.124330]  [<000003ff801ddbca>] iucv_sever_path+0xc2/0xd0 [af_iucv]
-[452744.124336]  [<000003ff801e01b6>] iucv_sock_close+0xa6/0x310 [af_iucv]
-[452744.124341]  [<000003ff801e08cc>] iucv_sock_release+0x3c/0xd0 [af_iucv]
-[452744.124345]  [<00000000d574794e>] __sock_release+0x5e/0xe8
-[452744.124815]  [<00000000d5747a0c>] sock_close+0x34/0x48
-[452744.124820]  [<00000000d5421642>] __fput+0xba/0x268
-[452744.124826]  [<00000000d51b382c>] task_work_run+0xbc/0xf0
-[452744.124832]  [<00000000d5145710>] do_notify_resume+0x88/0x90
-[452744.124841]  [<00000000d5978096>] system_call+0xe2/0x2c8
-[452744.125319] Last Breaking-Event-Address:
-[452744.125321]  [<00000000d5930018>] iucv_path_sever+0x90/0x138
-[452744.125324]
-[452744.125325] Kernel panic - not syncing: Fatal exception in interrupt
+Once it overflows, new elements can still be inserted into the tracing_map
+even though the maximum number of elements (`max_elts`) has been reached.
+Continuing to insert elements after the overflow could result in the
+tracing_map containing "tracing_map->max_size" elements, leaving no empty
+entries.
+If any attempt is made to insert an element into a full tracing_map using
+`__tracing_map_insert()`, it will cause an infinite loop with preemption
+disabled, leading to a CPU hang problem.
 
-Note that bh_lock_sock() is not serializing the tasklet context against
-process context, because the check for sock_owned_by_user() and
-corresponding handling is missing.
+Fix this by preventing any further increments to "tracing_map->next_elt"
+once it reaches "tracing_map->max_elt".
 
-Ideas for a future clean-up patch:
-A) Correct usage of bh_lock_sock() in tasklet context, as described in
-Link: https://lore.kernel.org/netdev/1280155406.2899.407.camel@edumazet-laptop/
-Re-enqueue, if needed. This may require adding return values to the
-tasklet functions and thus changes to all users of iucv.
-
-B) Change iucv tasklet into worker and use only lock_sock() in af_iucv.
-
-Fixes: 7d316b945352 ("af_iucv: remove IUCV-pathes completely")
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://patch.msgid.link/20240729122818.947756-1-wintera@linux.ibm.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 08d43a5fa063e ("tracing: Add lock-free tracing_map")
+Co-developed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Link: https://lore.kernel.org/20240805055922.6277-1-Tze-nan.Wu@mediatek.com
+Signed-off-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/iucv/af_iucv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/tracing_map.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-index 7c73faa5336cd..3d0424e4ae6c9 100644
---- a/net/iucv/af_iucv.c
-+++ b/net/iucv/af_iucv.c
-@@ -359,8 +359,8 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
- 	struct iucv_sock *iucv = iucv_sk(sk);
- 	struct iucv_path *path = iucv->path;
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -454,7 +454,7 @@ static struct tracing_map_elt *get_free_
+ 	struct tracing_map_elt *elt = NULL;
+ 	int idx;
  
--	if (iucv->path) {
--		iucv->path = NULL;
-+	/* Whoever resets the path pointer, must sever and free it. */
-+	if (xchg(&iucv->path, NULL)) {
- 		if (with_user_data) {
- 			low_nmcpy(user_data, iucv->src_name);
- 			high_nmcpy(user_data, iucv->dst_name);
--- 
-2.43.0
-
+-	idx = atomic_inc_return(&map->next_elt);
++	idx = atomic_fetch_add_unless(&map->next_elt, 1, map->max_elts);
+ 	if (idx < map->max_elts) {
+ 		elt = *(TRACING_MAP_ELT(map->elts, idx));
+ 		if (map->ops && map->ops->elt_init)
+@@ -699,7 +699,7 @@ void tracing_map_clear(struct tracing_ma
+ {
+ 	unsigned int i;
+ 
+-	atomic_set(&map->next_elt, -1);
++	atomic_set(&map->next_elt, 0);
+ 	atomic64_set(&map->hits, 0);
+ 	atomic64_set(&map->drops, 0);
+ 
+@@ -783,7 +783,7 @@ struct tracing_map *tracing_map_create(u
+ 
+ 	map->map_bits = map_bits;
+ 	map->max_elts = (1 << map_bits);
+-	atomic_set(&map->next_elt, -1);
++	atomic_set(&map->next_elt, 0);
+ 
+ 	map->map_size = (1 << (map_bits + 1));
+ 	map->ops = ops;
 
 
 
