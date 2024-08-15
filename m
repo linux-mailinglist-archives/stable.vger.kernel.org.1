@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E6B9532DB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A92C953597
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3839E1C257CB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDE3C1C22698
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7431B14F8;
-	Thu, 15 Aug 2024 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5E01993B9;
+	Thu, 15 Aug 2024 14:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eO01xhMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyGHx8vu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A42D1A7057;
-	Thu, 15 Aug 2024 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDF51AC893;
+	Thu, 15 Aug 2024 14:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730907; cv=none; b=uqE3+37/rF3UnaYkBRbqW7uiGOtWxSIWUlqGYC6tD6KFTfqAywQEC5BJbZhZLxmCNJ9zzXf6qVMlU1XNdngefzrLUC0o72SWa0ScyumKh6xeSpIcPBCjV7m9eaoVDZZe/wR98nKblW18Mgda1wEDnV/wEcjXWhx6qNIvicqNlZ8=
+	t=1723732769; cv=none; b=JKyt3YiVc/zl9LIyuEI0ubCwRbvpuRouAec6uMwK/5bV68ILPAyV/D5rX2qYnLrRbmsfth+E6wWDJKwMErRI4h/KCfk1jVpdvRcAHA2EH+q8IUnJBuvZq+sFY1s13G0yJA+YCctBzcr5gB9/NtBxkwy4SJ8Nq7kOFCf7QBPqqfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730907; c=relaxed/simple;
-	bh=S13t7G3xqQelV53Y5ONNp3x6tvNC6yK5WdLDNlUq1/M=;
+	s=arc-20240116; t=1723732769; c=relaxed/simple;
+	bh=jMwdlFELDhZso+HEaXZZAI2WkuJUdsrplkyJ5DLrN08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3coLidDV7bhf6kjswfEI5JZS5eMr0FxNyV4NJyt6ZVFYVpgzsJmTI/bLejQ5JAZMZRd7E/FYTVOJEc/CY5KB+vWTn6LEux/Oo21ygw6CYwt0WdB+jbjNybzk9Rq0tP40j7pGHEe5br9dmV6oisV1YRw3UWuLKuZ85KCKpy3MwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eO01xhMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204F5C32786;
-	Thu, 15 Aug 2024 14:08:26 +0000 (UTC)
+	 MIME-Version; b=KV6rloAuZ8Ke5cWGyIG7Vbk3LvtuMjQiCQsxuku72yfZ7SfCV8DNe9TMvJ3jyWHYMF33gg4ucjXl1+XhMCkwRKWHMXplFecrWDxEj3YBbQzdk3LItYIyBdOeaA4J1Hlu/I82mDwrnOyjGtTqwD2oEDN5tbRF6MKorPdbQt/CuH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyGHx8vu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC1CC32786;
+	Thu, 15 Aug 2024 14:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730907;
-	bh=S13t7G3xqQelV53Y5ONNp3x6tvNC6yK5WdLDNlUq1/M=;
+	s=korg; t=1723732769;
+	bh=jMwdlFELDhZso+HEaXZZAI2WkuJUdsrplkyJ5DLrN08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eO01xhMvhybM/Ts+Velku/Jju+tOIneWiUgdD/eDKeMTsYmjl3jUC5TjWssA60K1c
-	 A0+UKZ3FFzLrkL+Ok2IU6Elx4DhRyyDYuJ9RZAY/29MBNfyRbFqLFA53MBqnqugN+H
-	 NyUmG2wrsCvgLBkb8y0c6E4B0zOgo/5d5BPqgnhE=
+	b=MyGHx8vuZso5AJsKd1XxayEhiZhR1ZUgUyn8vaZIUAS63g+O3bLwtxa7AWOo5+S1i
+	 nRAr/2f3YIOk4UFXrAbmcrGtrInNIcyz4Ii4SJdD+5ILJCldcl8Sxp/eTv4G4izXro
+	 7HawIJ0/mhgryXPe5oEZIvcQe/lf+1GT5r1Pd25w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	syzbot+604424eb051c2f696163@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 31/67] Squashfs: fix variable overflow triggered by sysbot
+	Zheng Zucheng <zhengzucheng@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.10 279/352] sched/cputime: Fix mul_u64_u64_div_u64() precision for cputime
 Date: Thu, 15 Aug 2024 15:25:45 +0200
-Message-ID: <20240815131839.521744936@linuxfoundation.org>
+Message-ID: <20240815131930.235891007@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Zheng Zucheng <zhengzucheng@huawei.com>
 
-[ Upstream commit 12427de9439d68b8e96ba6f50b601ef15f437612 ]
+commit 77baa5bafcbe1b2a15ef9c37232c21279c95481c upstream.
 
-Sysbot reports a slab out of bounds write in squashfs_readahead().
+In extreme test scenarios:
+the 14th field utime in /proc/xx/stat is greater than sum_exec_runtime,
+utime = 18446744073709518790 ns, rtime = 135989749728000 ns
 
-This is ultimately caused by a file reporting an (infeasibly) large file
-size (1407374883553280 bytes) with the minimum block size of 4K.
+In cputime_adjust() process, stime is greater than rtime due to
+mul_u64_u64_div_u64() precision problem.
+before call mul_u64_u64_div_u64(),
+stime = 175136586720000, rtime = 135989749728000, utime = 1416780000.
+after call mul_u64_u64_div_u64(),
+stime = 135989949653530
 
-This causes variable overflow.
+unsigned reversion occurs because rtime is less than stime.
+utime = rtime - stime = 135989749728000 - 135989949653530
+		      = -199925530
+		      = (u64)18446744073709518790
 
-Link: https://lkml.kernel.org/r/20231113160901.6444-1-phillip@squashfs.org.uk
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: syzbot+604424eb051c2f696163@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000b1fda20609ede0d1@google.com/
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Trigger condition:
+  1). User task run in kernel mode most of time
+  2). ARM64 architecture
+  3). TICK_CPU_ACCOUNTING=y
+      CONFIG_VIRT_CPU_ACCOUNTING_NATIVE is not set
+
+Fix mul_u64_u64_div_u64() conversion precision by reset stime to rtime
+
+Fixes: 3dc167ba5729 ("sched/cputime: Improve cputime_adjust()")
+Signed-off-by: Zheng Zucheng <zhengzucheng@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20240726023235.217771-1-zhengzucheng@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/file.c        | 3 ++-
- fs/squashfs/file_direct.c | 6 +++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ kernel/sched/cputime.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/squashfs/file.c b/fs/squashfs/file.c
-index 8ba8c4c507707..e8df6430444b0 100644
---- a/fs/squashfs/file.c
-+++ b/fs/squashfs/file.c
-@@ -544,7 +544,8 @@ static void squashfs_readahead(struct readahead_control *ractl)
- 	struct squashfs_page_actor *actor;
- 	unsigned int nr_pages = 0;
- 	struct page **pages;
--	int i, file_end = i_size_read(inode) >> msblk->block_log;
-+	int i;
-+	loff_t file_end = i_size_read(inode) >> msblk->block_log;
- 	unsigned int max_pages = 1UL << shift;
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -579,6 +579,12 @@ void cputime_adjust(struct task_cputime
+ 	}
  
- 	readahead_expand(ractl, start, (len | mask) + 1);
-diff --git a/fs/squashfs/file_direct.c b/fs/squashfs/file_direct.c
-index f1ccad519e28c..763a3f7a75f6d 100644
---- a/fs/squashfs/file_direct.c
-+++ b/fs/squashfs/file_direct.c
-@@ -26,10 +26,10 @@ int squashfs_readpage_block(struct page *target_page, u64 block, int bsize,
- 	struct inode *inode = target_page->mapping->host;
- 	struct squashfs_sb_info *msblk = inode->i_sb->s_fs_info;
+ 	stime = mul_u64_u64_div_u64(stime, rtime, stime + utime);
++	/*
++	 * Because mul_u64_u64_div_u64() can approximate on some
++	 * achitectures; enforce the constraint that: a*b/(b+c) <= a.
++	 */
++	if (unlikely(stime > rtime))
++		stime = rtime;
  
--	int file_end = (i_size_read(inode) - 1) >> PAGE_SHIFT;
-+	loff_t file_end = (i_size_read(inode) - 1) >> PAGE_SHIFT;
- 	int mask = (1 << (msblk->block_log - PAGE_SHIFT)) - 1;
--	int start_index = target_page->index & ~mask;
--	int end_index = start_index | mask;
-+	loff_t start_index = target_page->index & ~mask;
-+	loff_t end_index = start_index | mask;
- 	int i, n, pages, bytes, res = -ENOMEM;
- 	struct page **page;
- 	struct squashfs_page_actor *actor;
--- 
-2.43.0
-
+ update:
+ 	/*
 
 
 
