@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-67944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BDF952FDD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A61289531FD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41071B27807
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C887287ED4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F32F19EEBD;
-	Thu, 15 Aug 2024 13:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB1119FA9D;
+	Thu, 15 Aug 2024 14:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ddsn6Ibp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVxQjHB4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6231714D0;
-	Thu, 15 Aug 2024 13:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4791919F49A;
+	Thu, 15 Aug 2024 14:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729009; cv=none; b=VDXZ74aRHINQHIteGKr7V3KSzu2YOREAIvT5rx+TYljIHlIjsXeraXlgZWFx4c4NrALRRWghjdpUPiEFhT4+dloVjIFqsxN61Ec2KNfvk2sLucz2c6pAZw22Jl+gxad5TuC87D32XplYD9RE6F3oGw+G5s2/X62hnXqpar4kAjY=
+	t=1723730439; cv=none; b=hfzaCU1M4+GbkOHCO7nDsExXd/F1laeaxjeyF7bXjmT+zmLcVHRtJNc8XeSMn7jUvFfSGW7hkSDeDVjGAVMaP2o0iiEMaVFUe+CX2WpStO3Zq23I9l0MT4NAaQduLgHii2VPCbCgn/Z7rYmhdLLoeH57Iq+GhYOhAUUxXu7z1ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729009; c=relaxed/simple;
-	bh=j5mBrSUCby2+5XNjFKYRxdmruXPJoeiPDZxM8oWpPkE=;
+	s=arc-20240116; t=1723730439; c=relaxed/simple;
+	bh=4DckLGljM6cplnp+Qb+e2mW1bH8km3HXxGRlqPwD8YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Stzz9Yp3iuklQF/M49dEy5pJMX3z5evtOI5W67da2/kaY8I3tyyBq++UVUzPwyOWDp0CW/oRcgttFDiIt4ZaU7oNqzOeppny/U7Tx/pZ1hxeUr7TZ6EnHaDGGkSJHwf2HfBwcbTHIMnjdtPA1+jjXleTE1TqlHuMa2d1TuRUVLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ddsn6Ibp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EB8C4AF0D;
-	Thu, 15 Aug 2024 13:36:48 +0000 (UTC)
+	 MIME-Version; b=JvbKv1fX17OnwMZ7zfz/ycxQoqvZA/cPX1XSBeiEDJ3Xr7rmgmYXTDjzCkvrB9W9ukPkaz/Z87TdG5mfoBugAWkxcbnOFd+iD2gflqdawpCN/IOpUDviFYQKkN+HNbnRe+wCxEQosYHat/8zMIUnnL23sbAUiuCrepU4DuQVLvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVxQjHB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F4EC32786;
+	Thu, 15 Aug 2024 14:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729009;
-	bh=j5mBrSUCby2+5XNjFKYRxdmruXPJoeiPDZxM8oWpPkE=;
+	s=korg; t=1723730439;
+	bh=4DckLGljM6cplnp+Qb+e2mW1bH8km3HXxGRlqPwD8YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ddsn6IbpD1cv1kZy4c7dmH+7MyNoirEP2GJk3FWotD8SAnnQyUnUUbRmhk7z7pGAM
-	 02jJK2PeGuPVABS2os+V1rHvzHrF7CiPzGXoop6FZ+bC1eHeyiUSz9hMxoOEdvknnk
-	 Q8DcXRw7Rs9OSkSSEIGq21y3br2cBJ/yaw8D9kWg=
+	b=XVxQjHB462iXgsgKp6SqyUb/pkMU7tOyoudC1IqTM883iCLq8/d58z3m/M2wP/hPW
+	 JTIc3SSro9tDFxB7gF239S3l6dHrareLJRH0xIvSUMB74pUyBPdcgkYYZOm9esdiUl
+	 8h9q8PaMtkgyCGWSoVvF0NJnFjeB8NlO2aGSw04Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 150/196] arm64: cputype: Add Cortex-X4 definitions
+Subject: [PATCH 5.15 409/484] spi: spidev: Add missing spi_device_id for bh2228fv
 Date: Thu, 15 Aug 2024 15:24:27 +0200
-Message-ID: <20240815131857.814915369@linuxfoundation.org>
+Message-ID: <20240815131957.247622597@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 02a0a04676fa7796d9cbc9eb5ca120aaa194d2dd ]
+[ Upstream commit e4c4638b6a10427d30e29d22351c375886025f47 ]
 
-Add cputype definitions for Cortex-X4. These will be used for errata
-detection in subsequent patches.
+When the of_device_id entry for "rohm,bh2228fv" was added, the
+corresponding spi_device_id was forgotten, causing a warning message
+during boot-up:
 
-These values can be found in Table B-249 ("MIDR_EL1 bit descriptions")
-in issue 0002-05 of the Cortex-X4 TRM, which can be found at:
+    SPI driver spidev has no spi_device_id for rohm,bh2228fv
 
-  https://developer.arm.com/documentation/102484/0002/?lang=en
+Fix module autoloading and shut up the warning by adding the missing
+entry.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240508081400.235362-3-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: fix conflict (dealt with upstream via a later merge) ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: fc28d1c1fe3b3e2f ("spi: spidev: add correct compatible for Rohm BH2228FV")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/cb571d4128f41175f31319cd9febc829417ea167.1722346539.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 0e4c0675f7461..89f9c1f5a6305 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -90,6 +90,7 @@
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
-+#define ARM_CPU_PART_CORTEX_X4		0xD82
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 99bdbc040d1ae..0b97e5b97a018 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -682,6 +682,7 @@ static const struct file_operations spidev_fops = {
+ static struct class *spidev_class;
  
- #define APM_CPU_PART_POTENZA		0x000
- 
-@@ -127,6 +128,7 @@
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
-+#define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+ static const struct spi_device_id spidev_spi_ids[] = {
++	{ .name = "bh2228fv" },
+ 	{ .name = "dh2228fv" },
+ 	{ .name = "ltc2488" },
+ 	{ .name = "sx1301" },
 -- 
 2.43.0
 
