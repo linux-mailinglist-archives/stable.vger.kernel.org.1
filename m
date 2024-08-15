@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-69000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC69A9534F8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B45953349
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BE331C23826
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1C0287CD9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF6017BEC0;
-	Thu, 15 Aug 2024 14:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7FD1AED2B;
+	Thu, 15 Aug 2024 14:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlFt7UGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kF62PDu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B950210FB;
-	Thu, 15 Aug 2024 14:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8934D1AC432;
+	Thu, 15 Aug 2024 14:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732343; cv=none; b=MKGCq5OCdF0GGEEd8SilcFEQO6gI8CHgRAtXXGV8pODh3RaEk6gMbahJ7QQGiqGMbQOwv6ZmGjBrF9lUUyXKVKwr7QGzPWVLVjQ0Fe6Zq+IVegCiyUrojHpRqHnzgTyEjPyHvxBHn1EHVLMn5rhzngnUTqw8tM5mijQD/dXQM+U=
+	t=1723731195; cv=none; b=o/K5MRd7mFDVZMvCzQqJaB736TBRDoZJ1O1bFZFMmQorcgDM3ag00sA6NNl2p1Tl5SB3Y63gnxCUQFdPZ5ieg0zPvZAKvPiPLpbzarH70zll9lilA5dwKjNHAPKEYsLlq7LEot3TXFEG8sMn0OUZ3Vjx/BF4v0zND35tJm7p3GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732343; c=relaxed/simple;
-	bh=Tu9MRo3PHV3rwQwgDzfqbvIL3kFX31j/g25oEmuMa1A=;
+	s=arc-20240116; t=1723731195; c=relaxed/simple;
+	bh=v68AnRE94YeJ5QQiZB2f5EfcEV95UKgFHVTnlHRKdLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nktFga3lJK1rMl3TkXiDWOk9r9mwoGIv6DHXdtgn1Rgb0SawsSVAXKOZclO6xPiohIA13mTJ6OrWXvWgR55sgGsyzSMPt77vABBnMrh/dYogqTgTNOIf6GgN5dNshAySBfx3NQrbtBzYYs2J2IDjSPYZPPOLTtfQepoKAwHKsSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlFt7UGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763DAC32786;
-	Thu, 15 Aug 2024 14:32:22 +0000 (UTC)
+	 MIME-Version; b=X4talEhGLbdAEe407Zw+83Zz6AasXqRFE8FEQ9P9RTvue+QHCkX2hm9VRnpAtf7qZMVb/ajaN9/oRu7nSd9evYXpsEoCA4LSXBdIubldWBsdUQdMhxQX5PxaCVaS8oOw9OOjhdSecb4+DTj52UQTUYa1KanLORWCP7zWUsht3q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kF62PDu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81F1C32786;
+	Thu, 15 Aug 2024 14:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732342;
-	bh=Tu9MRo3PHV3rwQwgDzfqbvIL3kFX31j/g25oEmuMa1A=;
+	s=korg; t=1723731195;
+	bh=v68AnRE94YeJ5QQiZB2f5EfcEV95UKgFHVTnlHRKdLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AlFt7UGzNeTmfqYtOk7W0LQvSFWVyte0yK0p6AWhu+F8W/nnPduPllaNCYRJijLmG
-	 m0fyXBrdBBqpgGU54DxuScfu3js3z799BQg1kKGdSYYfnOgecV6j1y3Fl0Ws/xQWvq
-	 HZ0vk4qs0VfqSsCqSSOjYo7yyoj0usdnUNKbPnxE=
+	b=1kF62PDuSIQ8PcecNGsQ7bJzFzc+lyvh5hnqnu3kF5Dqz94EzmZ+TErQlDLQO7qj2
+	 6tWfYjiMbVlGSfPOv50dlteeosyuemC0N8FdcFnsT5h7QVz1iG4RUemhsg7nXrQHZ5
+	 SEx6i+h8IV3f8ELfWvRrrgyHY0EveoI2WUkKzbCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/352] pinctrl: freescale: mxs: Fix refcount of child
+Subject: [PATCH 5.4 052/259] media: imon: Fix race getting ictx->lock
 Date: Thu, 15 Aug 2024 15:23:05 +0200
-Message-ID: <20240815131923.852409671@linuxfoundation.org>
+Message-ID: <20240815131904.817130323@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 7f500f2011c0bbb6e1cacab74b4c99222e60248e ]
+[ Upstream commit 24147897507cd3a7d63745d1518a638bf4132238 ]
 
-of_get_next_child() will increase refcount of the returned node, need
-use of_node_put() on it when done.
+Lets fix a race between mutex_is_lock() and mutex_lock().
 
-Per current implementation, 'child' will be override by
-for_each_child_of_node(np, child), so use of_get_child_count to avoid
-refcount leakage.
+<-mutex is not locked
+if (!mutex_is_locked(&ictx->lock)) {
+	unlock = true; <- mutex is locked externaly
+	mutex_lock(&ictx->lock);
+}
 
-Fixes: 17723111e64f ("pinctrl: add pinctrl-mxs support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/20240504-pinctrl-cleanup-v2-18-26c5f2dc1181@nxp.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Let's use mutex_trylock() that does mutex_is_lock() and mutex_lock()
+atomically.
+
+Fix the following cocci warning:
+drivers/media/rc/imon.c:1167:1-7: preceding lock on line 1153
+
+Fixes: 23ef710e1a6c ("[media] imon: add conditional locking in change_protocol")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/freescale/pinctrl-mxs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/rc/imon.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/freescale/pinctrl-mxs.c b/drivers/pinctrl/freescale/pinctrl-mxs.c
-index 735cedd0958a2..5b0fcf15f2804 100644
---- a/drivers/pinctrl/freescale/pinctrl-mxs.c
-+++ b/drivers/pinctrl/freescale/pinctrl-mxs.c
-@@ -405,8 +405,8 @@ static int mxs_pinctrl_probe_dt(struct platform_device *pdev,
- 	int ret;
- 	u32 val;
+diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
+index d8401ef9b0a79..38f6dd12d8706 100644
+--- a/drivers/media/rc/imon.c
++++ b/drivers/media/rc/imon.c
+@@ -1117,10 +1117,7 @@ static int imon_ir_change_protocol(struct rc_dev *rc, u64 *rc_proto)
  
--	child = of_get_next_child(np, NULL);
--	if (!child) {
-+	val = of_get_child_count(np);
-+	if (val == 0) {
- 		dev_err(&pdev->dev, "no group is defined\n");
- 		return -ENOENT;
- 	}
+ 	memcpy(ictx->usb_tx_buf, &ir_proto_packet, sizeof(ir_proto_packet));
+ 
+-	if (!mutex_is_locked(&ictx->lock)) {
+-		unlock = true;
+-		mutex_lock(&ictx->lock);
+-	}
++	unlock = mutex_trylock(&ictx->lock);
+ 
+ 	retval = send_packet(ictx);
+ 	if (retval)
 -- 
 2.43.0
 
