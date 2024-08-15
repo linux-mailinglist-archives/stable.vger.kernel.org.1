@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-69186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6349535F0
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D439535EF
 	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 131D1B29B9B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:44:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B96C81C2526F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A401AD419;
-	Thu, 15 Aug 2024 14:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FC41A7057;
+	Thu, 15 Aug 2024 14:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqRqma1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPloKr9m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D9C1A4F3B;
-	Thu, 15 Aug 2024 14:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BFE1AD40D;
+	Thu, 15 Aug 2024 14:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732945; cv=none; b=Eyf9UjoKbbFbuv8TljQTu+V8T9Cq1LHjwzhQMEMlrYvhBb3wC9g1VTZzVxOrOm5YWlIW1K8LsKGs8Um4HXn2uv2jqnijdnDmp5mi/2F46CkK1wg78sm9o+VWgl616Vt6i7OjIQBXJYBHmfgnyO+TYrSkvhwqSUB1kLHSid3d6fw=
+	t=1723732951; cv=none; b=f++ic23yHHGFKaCLxcTSPE1wBg+wYRVME4nuWkJ0UQImWrx77OwX1dBsoQ0BBFO1DGJqLG8okejTbXFM80l6ZQDu/auxfR1pu6D49tv929sqkItlNAp8RU/MhSNPzyxQ5qJUqbBK8DVt8khmsuEwhTUPIN4GCj8eIYFB92SWBfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732945; c=relaxed/simple;
-	bh=RRTmiSLN2Z0o3Y3T+VN7CoFpg43YSGeu/zxffhnhlO8=;
+	s=arc-20240116; t=1723732951; c=relaxed/simple;
+	bh=2R3kTzz01OEx2TADzQmP6kKb+9ali87j4z20ue/QJjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUxj8VsUQ45Z8g4CkJd09uEOaFG1+OzexqSZtlnCqkqSfOkGq0lyfd0KYQoF1XbhELYtaezXnpeLofzsoQBFJO+8ivDVot5UyDEkIEVNgfzBzCVPeBDXPL47jKmp8VyAENLWZwPoWscuStTQ+ngVSvvA7Xa51BqZOR9F9pG5K6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqRqma1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23DBC32786;
-	Thu, 15 Aug 2024 14:42:24 +0000 (UTC)
+	 MIME-Version; b=j2pgR4uU8QBrwTDU6n25JiWUZTNE8yLLKnT4zQtKHKggeoL3utCJg323iHzNWmNrQZplXGX6xJJ0lGZkLQeOWeSH/bvoD+6vocl4hORmCixt5WrhlHTr5QsEKywDGQcqb5cDg1LAI+XkCznnDZEDPy3Le6Uq9JIgZl40NrYDZM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPloKr9m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7525C4AF0D;
+	Thu, 15 Aug 2024 14:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732945;
-	bh=RRTmiSLN2Z0o3Y3T+VN7CoFpg43YSGeu/zxffhnhlO8=;
+	s=korg; t=1723732951;
+	bh=2R3kTzz01OEx2TADzQmP6kKb+9ali87j4z20ue/QJjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqRqma1g+FKhZrBTkyb//0vxKGSgWNBWONBkXJOd7a9zEfagYWN6tJTY++RZaKepu
-	 0YfsKodWBYthYy1RykSKe5g4uXNXbEF+zW2kLqL386D+Uvz3NL/r6IWCrQQ/T1pYBV
-	 fotRL4GUGVzpAKxuYyzLG8/pSsNGLf/NVAuOqtUc=
+	b=FPloKr9m0CHvuS1v1DNEkyMLixtPpCB7jA0ln3WkHGFPpbZB6brs3gHZ8gHfHN/mC
+	 HuKqvh+w1WeysAJeszWi0NMGRjF57TGHiaqfXOPsBK7h4Q54y9HWz+WvnZxAiOLs2u
+	 WtKzHLzFrDvAir5QqFpjL/xQHQIq06sql6tQTrKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 335/352] samples: Make fs-monitor depend on libc and headers
-Date: Thu, 15 Aug 2024 15:26:41 +0200
-Message-ID: <20240815131932.409254875@linuxfoundation.org>
+Subject: [PATCH 5.10 336/352] Add gitignore file for samples/fanotify/ subdirectory
+Date: Thu, 15 Aug 2024 15:26:42 +0200
+Message-ID: <20240815131932.449119768@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -67,40 +65,29 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@collabora.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 8fc70b3a142f97f7859bf052151df896933d2586 ]
+[ Upstream commit c107fb9b4f8338375b3e865c3d2c1d98ccb3a95a ]
 
-Prevent build errors when headers or libc are not available, such as on
-kernel build bots, like the below:
+Commit 5451093081db ("samples: Add fs error monitoring example") added a
+new sample program, but didn't teach git to ignore the new generated
+files, causing unnecessary noise from 'git status' after a full build.
 
-samples/fanotify/fs-monitor.c:7:10: fatal error: errno.h: No such file
-or directory
-  7 | #include <errno.h>
-    |          ^~~~~~~~~
+Add the 'fs-monitor' sample executable to the .gitignore for this
+subdirectory to silence it all again.
 
-Link: https://lore.kernel.org/r/87fsslasgz.fsf@collabora.com
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ samples/fanotify/.gitignore |    1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 samples/fanotify/.gitignore
 
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -122,7 +122,7 @@ config SAMPLE_CONNECTOR
- 
- config SAMPLE_FANOTIFY_ERROR
- 	bool "Build fanotify error monitoring sample"
--	depends on FANOTIFY
-+	depends on FANOTIFY && CC_CAN_LINK && HEADERS_INSTALL
- 	help
- 	  When enabled, this builds an example code that uses the
- 	  FAN_FS_ERROR fanotify mechanism to monitor filesystem
+--- /dev/null
++++ b/samples/fanotify/.gitignore
+@@ -0,0 +1 @@
++fs-monitor
 
 
 
