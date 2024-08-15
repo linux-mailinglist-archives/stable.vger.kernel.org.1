@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-67883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59BA952F95
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA109531DA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EBEC1F21B54
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C9F21F249FF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0811A2564;
-	Thu, 15 Aug 2024 13:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C7019DF58;
+	Thu, 15 Aug 2024 13:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZZTAVcO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0doLod7V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD1F1ABEAB;
-	Thu, 15 Aug 2024 13:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC34A7DA7D;
+	Thu, 15 Aug 2024 13:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728821; cv=none; b=HR8nv8opHqXGHrPAMY5wh1MfbzrfU5MUBsZtPg65Rfj7fS3cCsjUR5hrKdlK4/nNoTBq03bw2fe4H6MqZ1IHX9I9TILr84ObI7GK4QJHN+UT8NN5uDR39dcM2LNDtOd1lD9KIMpHf8aMoOujBzxEqraWDDOgVmRzliNxnYcdfJE=
+	t=1723730348; cv=none; b=Vp3duf6ATFGBkxxRfDdphyaDM0/2LQ2wdmvZAURDawYyYQnHOI/+3VDAA89XIXGgQM8lCfeN8sAGKySWSmiXFV8fBCf0IsqZ2kr3mfyvpeBeTG01hW8UEI40J6bOHP9R1AL+O4rlkP3XZo/nBnOJjbTtPijZ5tGG7GtjGrdnNYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728821; c=relaxed/simple;
-	bh=uV3CMouF1OtWZVIU6s2+4N33Und/wgWmgPcvHKigsjg=;
+	s=arc-20240116; t=1723730348; c=relaxed/simple;
+	bh=ddUYUdbAQJV+LiwHjDXRaHW4wWUBUHTg26cNh6/OV54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LoKqS5HHTDmyf9e+7mN3owYdGDSH3Fl/SoWJXHWsdNDxSdb7Y2/yp9KbdPJIeydPV9AvfTNXM7PCaadRkokCNJLglrn6YVF/4lKKPh7Le5Ww27ho+Vc7tXGWjm0rVF7iIosFbj7UFJqu9cx6coXkYB487WZLNqgTeDXjaykxql8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZZTAVcO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F006C32786;
-	Thu, 15 Aug 2024 13:33:40 +0000 (UTC)
+	 MIME-Version; b=PN0DdDcV+u1zYOHbM11VSwqyNlJg8JdSG7Yyp1C9qSSsh3f55uhqV75bl+PDUNLbV4gv1CbnCf2zJ9B6SRmIF4mvUDlUsE818aXo5LaISUo68RaLQzroIsfSfw2VXDF8Wm9ZwUQ3MM4Syx2JU01Q8a/EpkbuvqsWfUWgeao3ST8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0doLod7V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EC4C32786;
+	Thu, 15 Aug 2024 13:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728820;
-	bh=uV3CMouF1OtWZVIU6s2+4N33Und/wgWmgPcvHKigsjg=;
+	s=korg; t=1723730348;
+	bh=ddUYUdbAQJV+LiwHjDXRaHW4wWUBUHTg26cNh6/OV54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZZTAVcOeid2G9oQ1Fjdd55+tAdzcNftf7G1viWuOUQpB6D+KMAUpguuqefor98dJ
-	 10yCU8KJHPZ7I+vSsEGMAYTRYmt6T/P5VSiOtcupAdP5xoonMa7xSmFLH8TJ2Ov+QP
-	 VOdR/UJ6zeHzyONyyYlAJFhhfYQ1SqiZaSdvA2Ps=
+	b=0doLod7VntVmqvhPq8C4uolhAjo61fCElx0I0zNXbhaWC2RrmlGFjjvdHG7bFx7Jl
+	 q1hgY9lbMibnPEJpXmBW9jxBscakSEG4YhEdxp+QppMXsrDU/4RHGVtdtCb0LshxT3
+	 EAhkLQnti5+MrKUcF59ofjOC/+CZMf6+xjWI5vqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 121/196] remoteproc: imx_rproc: Fix ignoring mapping vdev regions
-Date: Thu, 15 Aug 2024 15:23:58 +0200
-Message-ID: <20240815131856.705735045@linuxfoundation.org>
+Subject: [PATCH 5.15 381/484] drm/amd/display: Add null checker before passing variables
+Date: Thu, 15 Aug 2024 15:23:59 +0200
+Message-ID: <20240815131956.163090443@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dong Aisheng <aisheng.dong@nxp.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit afe670e23af91d8a74a8d7049f6e0984bbf6ea11 ]
+[ Upstream commit 8092aa3ab8f7b737a34b71f91492c676a843043a ]
 
-vdev regions are typically named vdev0buffer, vdev0ring0, vdev0ring1 and
-etc. Change to strncmp to cover them all.
+Checks null pointer before passing variables to functions.
 
-Fixes: 8f2d8961640f ("remoteproc: imx_rproc: ignore mapping vdev regions")
-Reviewed-and-tested-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Cc: stable <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20210910090621.3073540-5-peng.fan@oss.nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Stable-dep-of: 2fa26ca8b786 ("remoteproc: imx_rproc: Skip over memory region when node value is NULL")
+This fixes 3 NULL_RETURNS issues reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 99d1a90ea084a..4eec6b380f11c 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -289,8 +289,8 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
- 		struct resource res;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index b821abb56ac3b..333be05418935 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2431,7 +2431,8 @@ static int dm_suspend(void *handle)
  
- 		node = of_parse_phandle(np, "memory-region", a);
--		/* Not map vdev region */
--		if (!strcmp(node->name, "vdev"))
-+		/* Not map vdevbuffer, vdevring region */
-+		if (!strncmp(node->name, "vdev", strlen("vdev")))
- 			continue;
- 		err = of_address_to_resource(node, 0, &res);
- 		if (err) {
+ 		dm->cached_dc_state = dc_copy_state(dm->dc->current_state);
+ 
+-		dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
++		if (dm->cached_dc_state)
++			dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
+ 
+ 		amdgpu_dm_commit_zero_streams(dm->dc);
+ 
+@@ -6884,7 +6885,8 @@ static void create_eml_sink(struct amdgpu_dm_connector *aconnector)
+ 		aconnector->dc_sink = aconnector->dc_link->local_sink ?
+ 		aconnector->dc_link->local_sink :
+ 		aconnector->dc_em_sink;
+-		dc_sink_retain(aconnector->dc_sink);
++		if (aconnector->dc_sink)
++			dc_sink_retain(aconnector->dc_sink);
+ 	}
+ }
+ 
+@@ -8218,7 +8220,8 @@ static int amdgpu_dm_connector_get_modes(struct drm_connector *connector)
+ 				drm_add_modes_noedid(connector, 640, 480);
+ 	} else {
+ 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
+-		amdgpu_dm_connector_add_common_modes(encoder, connector);
++		if (encoder)
++			amdgpu_dm_connector_add_common_modes(encoder, connector);
+ 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
+ 	}
+ 	amdgpu_dm_fbc_init(connector);
 -- 
 2.43.0
 
