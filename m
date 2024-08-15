@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-69030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF7995351E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8104595338A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8C2B282796
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B42151C24D2C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF40419FA9D;
-	Thu, 15 Aug 2024 14:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85A019FA90;
+	Thu, 15 Aug 2024 14:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yuesH6dF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PP2EzjM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF4363D5;
-	Thu, 15 Aug 2024 14:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774001AC8BB;
+	Thu, 15 Aug 2024 14:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732441; cv=none; b=EF8TUnekRjwFOtN5ZgmwulqL7Yu1CqyyGl+jK29DU9jxscoJq5nDr3CSE1460GJ0OatKz0GnBtu0wKazkpx0JIzO3ObG489yQjtFWFb6k2t2EhR59xpTSoyzdtB8y9filH5ZHKEmoNYD6+Bh+LpaRz8VOTbMwI9WNbWKL+86EmE=
+	t=1723731382; cv=none; b=SCOyzgR3wieYpEhW3AoveTBpub75SJdv2Jno6m6MRISVd5pAC6qN41Tx3cOLsXSKBQH6Hm2hDvHBcqWImFedbQkrMaWOBwxyaNRPSyt9uKbIaX78s8CXNts2XJs1lW76YCDTfe4O6HmP7DRkb+Ls3SNMoJ3E75L+tklfzau7WN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732441; c=relaxed/simple;
-	bh=gWYicl5PWw0fOU+jVEMLiPIZLMnNpLK1ptjWpQUt7gE=;
+	s=arc-20240116; t=1723731382; c=relaxed/simple;
+	bh=Rp0Z5lNJQ4d2nIGGh12Pcj3wKvIJmeod45YPAOBT9TM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZ7coy/z7fcnphOYwPkTM+/or1fsZa0EnYRcKJPKg6du4eiFjzmKQBH9y7hCi6DyIRAGTV4zX2VQMYZcPZO4I3Lu7g+hIZ2ohqjklJRpqI8B4KZ9nvpCcxenxptsuw27+pBnyPLu53R8e1x+OZf8bG658tJTfIzvW/tLagjMnKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yuesH6dF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D18C4AF0D;
-	Thu, 15 Aug 2024 14:34:00 +0000 (UTC)
+	 MIME-Version; b=FpUA0Z+/buRHUAazEZbxd1s7fa4aC4y2FggswxtjqE+QTDOddusnb8eJQeZgIusY6WSXY5CGyepmOREJmfzP8r8bIMo61pzneNrBEn9dhNAIXLcV8owPYW6F/31wCo5VWX58jlXpx4jEGITVGqEPcG4l2dOs9TWNio/B3ZJsxWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PP2EzjM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADFDC32786;
+	Thu, 15 Aug 2024 14:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732441;
-	bh=gWYicl5PWw0fOU+jVEMLiPIZLMnNpLK1ptjWpQUt7gE=;
+	s=korg; t=1723731382;
+	bh=Rp0Z5lNJQ4d2nIGGh12Pcj3wKvIJmeod45YPAOBT9TM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yuesH6dFc98k+BAzIJlfwkqlORdIlmQxNGlt3RYEJ3lT2lPDKz4I1/95PjC0lsPnZ
-	 gyEupPK9QfPlReqW1KrpiekvrP/6x0g7EZZN9mmXu244m4ui7OdfOq9tt8aAcQ0Smn
-	 DJfNlLy4EGtJgJcTzGSxtOW7ENIbq/dX2/CWt7JI=
+	b=PP2EzjM8d8FW32BQ9q4UMRbazLjc2dSToyDlXJXj2mriArXum0q3TDTjqbMHs0Uc2
+	 E6nq54rD1NCS55w1w+QMZIDrommaN7SDpG2AbubDnp8wl3UxBto+ivHY31K1w2YCET
+	 saV3ClLfbyCU/TWDb+/QhzNIGKQZP6wqrLHgRs7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 179/352] MIPS: Loongson64: env: Hook up Loongsson-2K
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.4 112/259] ubi: eba: properly rollback inside self_check_eba
 Date: Thu, 15 Aug 2024 15:24:05 +0200
-Message-ID: <20240815131926.195961283@linuxfoundation.org>
+Message-ID: <20240815131907.127208282@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 77543269ff23c75bebfb8e6e9a1177b350908ea7 upstream.
+commit 745d9f4a31defec731119ee8aad8ba9f2536dd9a upstream.
 
-Somehow those enablement bits were left over when we were
-adding initial Loongson-2K support.
+In case of a memory allocation failure in the volumes loop we can only
+process the already allocated scan_eba and fm_eba array elements on the
+error path - others are still uninitialized.
 
-Set up basic information and select proper builtin DTB for
-Loongson-2K.
+Found by Linux Verification Center (linuxtesting.org).
 
+Fixes: 00abf3041590 ("UBI: Add self_check_eba()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/mach-loongson64/boot_param.h |    2 ++
- arch/mips/loongson64/env.c                         |    8 ++++++++
- 2 files changed, 10 insertions(+)
+ drivers/mtd/ubi/eba.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -38,12 +38,14 @@ enum loongson_cpu_type {
- 	Legacy_1B = 0x5,
- 	Legacy_2G = 0x6,
- 	Legacy_2H = 0x7,
-+	Legacy_2K = 0x8,
- 	Loongson_1A = 0x100,
- 	Loongson_1B = 0x101,
- 	Loongson_2E = 0x200,
- 	Loongson_2F = 0x201,
- 	Loongson_2G = 0x202,
- 	Loongson_2H = 0x203,
-+	Loongson_2K = 0x204,
- 	Loongson_3A = 0x300,
- 	Loongson_3B = 0x301
- };
---- a/arch/mips/loongson64/env.c
-+++ b/arch/mips/loongson64/env.c
-@@ -65,6 +65,12 @@ void __init prom_init_env(void)
- 	cpu_clock_freq = ecpu->cpu_clock_freq;
- 	loongson_sysconf.cputype = ecpu->cputype;
- 	switch (ecpu->cputype) {
-+	case Legacy_2K:
-+	case Loongson_2K:
-+		smp_group[0] = 0x900000001fe11000;
-+		loongson_sysconf.cores_per_node = 2;
-+		loongson_sysconf.cores_per_package = 2;
-+		break;
- 	case Legacy_3A:
- 	case Loongson_3A:
- 		loongson_sysconf.cores_per_node = 4;
-@@ -213,6 +219,8 @@ void __init prom_init_env(void)
- 		default:
- 			break;
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -1560,6 +1560,7 @@ int self_check_eba(struct ubi_device *ub
+ 					  GFP_KERNEL);
+ 		if (!fm_eba[i]) {
+ 			ret = -ENOMEM;
++			kfree(scan_eba[i]);
+ 			goto out_free;
  		}
-+	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64R) {
-+		loongson_fdt_blob = __dtb_loongson64_2core_2k1000_begin;
- 	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64G) {
- 		if (loongson_sysconf.bridgetype == LS7A)
- 			loongson_fdt_blob = __dtb_loongson64g_4core_ls7a_begin;
+ 
+@@ -1595,7 +1596,7 @@ int self_check_eba(struct ubi_device *ub
+ 	}
+ 
+ out_free:
+-	for (i = 0; i < num_volumes; i++) {
++	while (--i >= 0) {
+ 		if (!ubi->volumes[i])
+ 			continue;
+ 
 
 
 
