@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-68680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C778C953377
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73510953504
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EF7A282823
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2376D28727A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73721AC422;
-	Thu, 15 Aug 2024 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7606C1993B9;
+	Thu, 15 Aug 2024 14:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJuvxYbP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGPuOCfg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7340F63C;
-	Thu, 15 Aug 2024 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A6663D5;
+	Thu, 15 Aug 2024 14:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731328; cv=none; b=l3sLptvrcDQnfGyn3mkje+MaR1lIp9NoRWJn/KhsvXOUza2uf10jb2MfOXHNtRWcI59J/g0K7/HOx8TYrsugHE0TiZ8hkA7KQH5IwodJgrnQ7vbUwB2m/WsTtXrubJeNuzL9ufCq5pjtKM6hIsxpHg3TJyuTJpK+M1NDFJQWvcU=
+	t=1723732376; cv=none; b=WYyeB4ohhI4jg3SMcglzoZidRiCFtAoodbpMnyFJhufVLv1e6Zshars3MFPEz+6UdObfxCeQpi0RwgOaiNJVS6wEk5zh+XGb7F4HeQZHEfq0ar821kpHcK1bebErDqZKw8dZs+qmKjHhstlkFJFQh3LUZo73VN9U7s7Zngd0jhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731328; c=relaxed/simple;
-	bh=Ywgg1KriyVcTig7l7qw+nCk8AsuZQL+yn4joOS+a6uA=;
+	s=arc-20240116; t=1723732376; c=relaxed/simple;
+	bh=6bMBExqIuPm4QRHIgwHjH9R/YO0wVBQ6pEIU7d/7KUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPVZ2NURnutDBpauRDvhfeHJ1w41FKPKuCDWp8dFZFOy80RNfMqyllki8GQ6mTjoxMUyLUFHjddAJaUWyXKkeRXDTLd4kd0k+dv8P+qMFmRR5BHpb4BFMeMtTRoFxNwJA2O5NbH5phSFp7i5DWBILmdz90ZxrPRTFU5P9Glhmq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJuvxYbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFDE5C32786;
-	Thu, 15 Aug 2024 14:15:27 +0000 (UTC)
+	 MIME-Version; b=GPNTy6nyszvt0ZtuHohDkH1GvHwRt0ikTAfX6SPQuUSxYRNSDkEXUa/4QF8nDOSJrm/Arp6pBcH6sQei95HBUHbkB01zIodm52DASwsqyH3SzeW0sg+TK1v8oE2vc+eHA1dV4a9aIG+s19qc9YpAHlbXGGb8gcNnQIzxoIy6OTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGPuOCfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC8AC32786;
+	Thu, 15 Aug 2024 14:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731328;
-	bh=Ywgg1KriyVcTig7l7qw+nCk8AsuZQL+yn4joOS+a6uA=;
+	s=korg; t=1723732376;
+	bh=6bMBExqIuPm4QRHIgwHjH9R/YO0wVBQ6pEIU7d/7KUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJuvxYbPjpIC8fp0P394HF3KyVkOoSL0/acLzTG8WJxqjyqtRt4FJ7mK+r1U5nDAE
-	 DWKuvmCYluwI/FguGuB9cqPJqihrIVBkWq2IavF000zZ32GJete8py+i6TGXj7fAQM
-	 ULMMgfgrFea7SbboBHa/YJVjxqA0Q5/OBTLvsLi4=
+	b=bGPuOCfg+Atua4mxNVV72PHafx6eqV2VGttduADkd1CSn5N58ovP/J6fRqJS9JqNZ
+	 URUFz0epVW7mHIdLako2U/ECePsm01hOtoAb0NSm2yCzpc9Gh5Gct3nHNa6gSL0lUQ
+	 kc4qkZ4oOyYSjxu6aTwLM9v9teDIZ3BEB4hzHrnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 5.4 093/259] char: tpm: Fix possible memory leak in tpm_bios_measurements_open()
-Date: Thu, 15 Aug 2024 15:23:46 +0200
-Message-ID: <20240815131906.394059054@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.10 161/352] kbuild: Fix -S -c in x86 stack protector scripts
+Date: Thu, 15 Aug 2024 15:23:47 +0200
+Message-ID: <20240815131925.493505132@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 5d8e2971e817bb64225fc0b6327a78752f58a9aa upstream.
+commit 3415b10a03945b0da4a635e146750dfe5ce0f448 upstream.
 
-In tpm_bios_measurements_open(), get_device() is called on the device
-embedded in struct tpm_chip. In the error path, however, put_device() is
-not called. This results in a reference count leak, which prevents the
-device from being properly released. This commit makes sure to call
-put_device() when the seq_open() call fails.
+After a recent change in clang to stop consuming all instances of '-S'
+and '-c' [1], the stack protector scripts break due to the kernel's use
+of -Werror=unused-command-line-argument to catch cases where flags are
+not being properly consumed by the compiler driver:
 
-Cc: stable@vger.kernel.org # +v4.18
-Fixes: 9b01b5356629 ("tpm: Move shared eventlog functions to common.c")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+  $ echo | clang -o - -x c - -S -c -Werror=unused-command-line-argument
+  clang: error: argument unused during compilation: '-c' [-Werror,-Wunused-command-line-argument]
+
+This results in CONFIG_STACKPROTECTOR getting disabled because
+CONFIG_CC_HAS_SANE_STACKPROTECTOR is no longer set.
+
+'-c' and '-S' both instruct the compiler to stop at different stages of
+the pipeline ('-S' after compiling, '-c' after assembling), so having
+them present together in the same command makes little sense. In this
+case, the test wants to stop before assembling because it is looking at
+the textual assembly output of the compiler for either '%fs' or '%gs',
+so remove '-c' from the list of arguments to resolve the error.
+
+All versions of GCC continue to work after this change, along with
+versions of clang that do or do not contain the change mentioned above.
+
+Cc: stable@vger.kernel.org
+Fixes: 4f7fd4d7a791 ("[PATCH] Add the -fstack-protector option to the CFLAGS")
+Fixes: 60a5317ff0f4 ("x86: implement x86_32 stack protector")
+Link: https://github.com/llvm/llvm-project/commit/6461e537815f7fa68cef06842505353cf5600e9c [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/eventlog/common.c |    2 ++
- 1 file changed, 2 insertions(+)
+ scripts/gcc-x86_32-has-stack-protector.sh |    2 +-
+ scripts/gcc-x86_64-has-stack-protector.sh |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/char/tpm/eventlog/common.c
-+++ b/drivers/char/tpm/eventlog/common.c
-@@ -47,6 +47,8 @@ static int tpm_bios_measurements_open(st
- 	if (!err) {
- 		seq = file->private_data;
- 		seq->private = chip;
-+	} else {
-+		put_device(&chip->dev);
- 	}
+--- a/scripts/gcc-x86_32-has-stack-protector.sh
++++ b/scripts/gcc-x86_32-has-stack-protector.sh
+@@ -5,4 +5,4 @@
+ # -mstack-protector-guard-reg, added by
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81708
  
- 	return err;
+-echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -m32 -O0 -fstack-protector -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard - -o - 2> /dev/null | grep -q "%fs"
++echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -m32 -O0 -fstack-protector -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard - -o - 2> /dev/null | grep -q "%fs"
+--- a/scripts/gcc-x86_64-has-stack-protector.sh
++++ b/scripts/gcc-x86_64-has-stack-protector.sh
+@@ -1,4 +1,4 @@
+ #!/bin/sh
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -m64 -O0 -mcmodel=kernel -fno-PIE -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
++echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -m64 -O0 -mcmodel=kernel -fno-PIE -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
 
 
 
