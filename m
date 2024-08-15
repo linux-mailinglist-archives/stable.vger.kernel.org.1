@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-68370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9889531DC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B09952F9A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 517E51C236E7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DFE41F21459
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33A219D891;
-	Thu, 15 Aug 2024 13:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA35B1A7048;
+	Thu, 15 Aug 2024 13:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AsImfU1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtK0lPfz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731187DA7D;
-	Thu, 15 Aug 2024 13:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E80C19EED2;
+	Thu, 15 Aug 2024 13:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730355; cv=none; b=oHtqEADHqVjsbysI6NssTrxJZ21ebhytwDMFMHaupeEk1H8hZXayC34PCMDSnEzKraULKzbbAMlfc3s/Usc7QtSlpZh1ufeZgD+H4uy3q+Texe/jXsbzpoPK740BUZQ9cfNX5UhOCARQAy9GdNrSoJV5ibqC8IgD/oQTT1v2STg=
+	t=1723728833; cv=none; b=ZqOWlsOxPoRfwWHoXzptrTH//ATdmCKC/N0zCNvhYXT+XteuSu3SqllqynpatyejL+erY8+eFkg9AREKiemMwwHQHdC/oYj1BWu575lqpe3l8DdsvfvCjaYobph15bNunRf9iluVNAD5/DbrBrJu//acdoFR64uPEflJr+9sc8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730355; c=relaxed/simple;
-	bh=qM+0MYMlaIo0YLccsGeUSzlnBmiBON1/ngZOXPxBYRM=;
+	s=arc-20240116; t=1723728833; c=relaxed/simple;
+	bh=h7iZ2mQ0fXDoyyHop0ETSKUqP9IsnetMP0qgyyg+kZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6BhvhRhDAZSWPjdNMhcm22P/OjekEh0YxLc2BcLErG109cBT2AjuXjzkn4uPL8OwTA+Q/r3NStCYDcn/5Sso5LhCzFu0nFFKYJphSjV/zY64f7OVuzzh/vz0OZ/WCynC8JOaMT8pJupzDRnGyLw70H+783EIml21zRJf832NP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AsImfU1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15C5C4AF0C;
-	Thu, 15 Aug 2024 13:59:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HCrbgJeg34GtXSu/0v1wgGQQ2m3XaHuujMQ/bA9HX/hCe34tgAfZHdxGzY2R+lhe+uL8/flz76cO9nN5KZrn6gBjRqQ7nw/KLzHG1TkaC52Q4GCvOVtL6TLhuMKx4XvYHh65BB1L3Da/NNTZoXQPRyt5Mtrw2OklO4q4JC9DR+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtK0lPfz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF4CC32786;
+	Thu, 15 Aug 2024 13:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730355;
-	bh=qM+0MYMlaIo0YLccsGeUSzlnBmiBON1/ngZOXPxBYRM=;
+	s=korg; t=1723728833;
+	bh=h7iZ2mQ0fXDoyyHop0ETSKUqP9IsnetMP0qgyyg+kZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AsImfU1Cc+74RzYHjKBL5HXdhrO4jv5MI7RJljGyg7rqoHrVAoXsdpSpfrj2vWiKy
-	 K/fXnxAHvycKGiqxa+IPNt/S04BrySB2Kwv+zEUSRqS2OJpt6mbeOpX3+kwFYplovg
-	 onyn7EXwUrRvU9WmitlfMRfxHjroJcc764JUrJIk=
+	b=mtK0lPfzbaJRW2cBDeYlQsg/Z4HvPkfQ9FJDgOIUZvzlwYv+GjdY95VT5v/xFimvq
+	 Xc+xjYU45uHKuG2voUJ/b4lIVCKTyP4VGDjINGACC8a53FPttL+owiw48/fCNn9Qm/
+	 HbTUT2j6+CDXlr1xOJ0yX6K7mIlqLEhAMLZRxcYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Jen Linkova <furry@google.com>,
+	Lorenzo Colitti <lorenzo@google.com>,
+	Patrick Rohr <prohr@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	=?UTF-8?q?YOSHIFUJI=20Hideaki=20/=20=E5=90=89=E8=97=A4=E8=8B=B1=E6=98=8E?= <yoshfuji@linux-ipv6.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 383/484] media: uvcvideo: Fix the bandwdith quirk on USB 3.x
-Date: Thu, 15 Aug 2024 15:24:01 +0200
-Message-ID: <20240815131956.240840555@linuxfoundation.org>
+Subject: [PATCH 4.19 125/196] ipv6: fix ndisc_is_useropt() handling for PIO
+Date: Thu, 15 Aug 2024 15:24:02 +0200
+Message-ID: <20240815131856.857105431@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +66,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Maciej Żenczykowski <maze@google.com>
 
-[ Upstream commit 9e3d55fbd160b3ca376599a68b4cddfdc67d4153 ]
+[ Upstream commit a46c68debf3be3a477a69ccbf0a1d050df841676 ]
 
-The bandwidth fixup quirk doesn't know that SuperSpeed exists and has
-the same 8 service intervals per millisecond as High Speed, hence its
-calculations are wrong.
+The current logic only works if the PIO is between two
+other ND user options.  This fixes it so that the PIO
+can also be either before or after other ND user options
+(for example the first or last option in the RA).
 
-Assume that all speeds from HS up use 8 intervals per millisecond.
+side note: there's actually Android tests verifying
+a portion of the old broken behaviour, so:
+  https://android-review.googlesource.com/c/kernel/tests/+/3196704
+fixes those up.
 
-No further changes are needed, updated code has been confirmed to work
-with all speeds from FS to SS.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240414190040.2255a0bc@foxbook
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Jen Linkova <furry@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Cc: Patrick Rohr <prohr@google.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: YOSHIFUJI Hideaki / 吉藤英明 <yoshfuji@linux-ipv6.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Maciej Żenczykowski <maze@google.com>
+Fixes: 048c796beb6e ("ipv6: adjust ndisc_is_useropt() to also return true for PIO")
+Link: https://patch.msgid.link/20240730001748.147636-1-maze@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv6/ndisc.c |   34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index a45d3b85e828c..446fe67e07c47 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -210,13 +210,13 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
- 		/* Compute a bandwidth estimation by multiplying the frame
- 		 * size by the number of video frames per second, divide the
- 		 * result by the number of USB frames (or micro-frames for
--		 * high-speed devices) per second and add the UVC header size
--		 * (assumed to be 12 bytes long).
-+		 * high- and super-speed devices) per second and add the UVC
-+		 * header size (assumed to be 12 bytes long).
- 		 */
- 		bandwidth = frame->wWidth * frame->wHeight / 8 * format->bpp;
- 		bandwidth *= 10000000 / interval + 1;
- 		bandwidth /= 1000;
--		if (stream->dev->udev->speed == USB_SPEED_HIGH)
-+		if (stream->dev->udev->speed >= USB_SPEED_HIGH)
- 			bandwidth /= 8;
- 		bandwidth += 12;
- 
--- 
-2.43.0
-
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -223,6 +223,7 @@ struct ndisc_options *ndisc_parse_option
+ 		return NULL;
+ 	memset(ndopts, 0, sizeof(*ndopts));
+ 	while (opt_len) {
++		bool unknown = false;
+ 		int l;
+ 		if (opt_len < sizeof(struct nd_opt_hdr))
+ 			return NULL;
+@@ -258,22 +259,23 @@ struct ndisc_options *ndisc_parse_option
+ 			break;
+ #endif
+ 		default:
+-			if (ndisc_is_useropt(dev, nd_opt)) {
+-				ndopts->nd_useropts_end = nd_opt;
+-				if (!ndopts->nd_useropts)
+-					ndopts->nd_useropts = nd_opt;
+-			} else {
+-				/*
+-				 * Unknown options must be silently ignored,
+-				 * to accommodate future extension to the
+-				 * protocol.
+-				 */
+-				ND_PRINTK(2, notice,
+-					  "%s: ignored unsupported option; type=%d, len=%d\n",
+-					  __func__,
+-					  nd_opt->nd_opt_type,
+-					  nd_opt->nd_opt_len);
+-			}
++			unknown = true;
++		}
++		if (ndisc_is_useropt(dev, nd_opt)) {
++			ndopts->nd_useropts_end = nd_opt;
++			if (!ndopts->nd_useropts)
++				ndopts->nd_useropts = nd_opt;
++		} else if (unknown) {
++			/*
++			 * Unknown options must be silently ignored,
++			 * to accommodate future extension to the
++			 * protocol.
++			 */
++			ND_PRINTK(2, notice,
++				  "%s: ignored unsupported option; type=%d, len=%d\n",
++				  __func__,
++				  nd_opt->nd_opt_type,
++				  nd_opt->nd_opt_len);
+ 		}
+ next_opt:
+ 		opt_len -= l;
 
 
 
