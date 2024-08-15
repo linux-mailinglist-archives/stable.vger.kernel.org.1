@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-69024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DFE953517
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93486953385
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AF2D288079
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 336C0283A82
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33921A01BF;
-	Thu, 15 Aug 2024 14:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F071A01BF;
+	Thu, 15 Aug 2024 14:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQxM66nd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/IgAveC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F807210FB;
-	Thu, 15 Aug 2024 14:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40BB1A00F5;
+	Thu, 15 Aug 2024 14:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732421; cv=none; b=cLCzomCV/FtKS6TVnigzBvF5bh5b3pMHRwjLTwAsR2qsoMWdKVLM4HjpbMJxp6/QJ062ssq1k52lyMj8P0bGNuLVlxv7jJ3AY5OZOZMSRA37DP/do9I53Ms90/wFjXB854RNcoGsTj/PfKcAHv1r85XvylBIVQDD1gmLr+hikn0=
+	t=1723731370; cv=none; b=LxB1TpS7fTx6sJeWI3g0dEMaHNaSBOpnX4TupffiMdQy3E/L7GZ9ECt6fzzHHouuP8BIKfIriZPR6HdnNjdBSKxbtxQECaUEH/GFnzuFrbWgJG12EHzDcR8IcJSJBU0Vb4PJAcya2JTYantzHlg5G/MmO/0wtpADwz0vm94raZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732421; c=relaxed/simple;
-	bh=eGp2SLQCLMEoaXlBue1qlmI6ODmY43tfWmLXL/yO2fA=;
+	s=arc-20240116; t=1723731370; c=relaxed/simple;
+	bh=ngGrR2PCKdwjLl2rhGB/y8ozGiHrpt++rxDa6W2oc+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDImQT/LNxRV9KM7V4xt0Pa1etgyzBUhhF4lOxRkEd7/ur0XwrdRVnWWUd0Wm52+sjSG0kGIzCkk0vJXV3IK+wYMzD65R87ikmwUtq4CiO3F3EL2LqiFd+1AHYhACs3QYCULlf1lds14+6bHl93BHbI5N35sfaW2jw+9hOd2WBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQxM66nd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0B0C32786;
-	Thu, 15 Aug 2024 14:33:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J+8fD5E0WhH1Zq/V/vRQwdr4URVjOv0+hTDOsXIAIacDfU/1NmEgWJjeDmT3TxGEzenxALtxTxhNc3/MGwvRnlhZ7FwSVw4J19Dr+ZDjhYffiNMm4EsW2n5oMQBUlawJLUFpxBgBSGz++D7g+pNqcgTecn1TVO4MqGo+aLb4Xk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/IgAveC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601FAC32786;
+	Thu, 15 Aug 2024 14:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732421;
-	bh=eGp2SLQCLMEoaXlBue1qlmI6ODmY43tfWmLXL/yO2fA=;
+	s=korg; t=1723731369;
+	bh=ngGrR2PCKdwjLl2rhGB/y8ozGiHrpt++rxDa6W2oc+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IQxM66nd5M9u0eLlhDOy6/W8cQNmkrAwGwOS5rNe89mfCMFWt/TxQwJ7Dn5yQlVJR
-	 QQbWXk4UPXRALZ3iDm2Hl9EMmn8ShBDDQ6NYW6RGUP7VNjhdUCK879FsgqsdpyiB7A
-	 5AJzmxrc75vpBbTXTKEEszx1CeK/Eo2Szx787Ycw=
+	b=M/IgAveCdv2YU37yyt8MONY8zzH1PMbDiCdupnyJaji9byHIdVClLkWjw3Enk/fUx
+	 dp6pwA5Bpp570a38zXLWI1yxUcS4/WAJk4kSqrMhA9Af//v3px7Fe73j8qInxrlD7I
+	 U0cVphhP5vF5YRzLHnM2hIqpbXRljidbu22LV7hQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 174/352] platform: mips: cpu_hwmon: Disable driver on unsupported hardware
-Date: Thu, 15 Aug 2024 15:24:00 +0200
-Message-ID: <20240815131925.999523168@linuxfoundation.org>
+	Martijn Coenen <maco@google.com>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 5.4 108/259] binder: fix hang of unregistered readers
+Date: Thu, 15 Aug 2024 15:24:01 +0200
+Message-ID: <20240815131906.974335531@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit f4d430db17b4ef4e9c3c352a04b2fe3c93011978 upstream.
+commit 31643d84b8c3d9c846aa0e20bc033e46c68c7e7d upstream.
 
-cpu_hwmon is unsupported on CPUs without loongson_chiptemp
-register and csr.
+With the introduction of binder_available_for_proc_work_ilocked() in
+commit 1b77e9dcc3da ("ANDROID: binder: remove proc waitqueue") a binder
+thread can only "wait_for_proc_work" after its thread->looper has been
+marked as BINDER_LOOPER_STATE_{ENTERED|REGISTERED}.
 
+This means an unregistered reader risks waiting indefinitely for work
+since it never gets added to the proc->waiting_threads. If there are no
+further references to its waitqueue either the task will hang. The same
+applies to readers using the (e)poll interface.
+
+I couldn't find the rationale behind this restriction. So this patch
+restores the previous behavior of allowing unregistered threads to
+"wait_for_proc_work". Note that an error message for this scenario,
+which had previously become unreachable, is now re-enabled.
+
+Fixes: 1b77e9dcc3da ("ANDROID: binder: remove proc waitqueue")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Martijn Coenen <maco@google.com>
+Cc: Arve Hjønnevåg <arve@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20240711201452.2017543-1-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/mips/cpu_hwmon.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/android/binder.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/platform/mips/cpu_hwmon.c
-+++ b/drivers/platform/mips/cpu_hwmon.c
-@@ -139,6 +139,9 @@ static int __init loongson_hwmon_init(vo
- 		csr_temp_enable = csr_readl(LOONGSON_CSR_FEATURES) &
- 				  LOONGSON_CSRF_TEMP;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -932,9 +932,7 @@ static bool binder_has_work(struct binde
+ static bool binder_available_for_proc_work_ilocked(struct binder_thread *thread)
+ {
+ 	return !thread->transaction_stack &&
+-		binder_worklist_empty_ilocked(&thread->todo) &&
+-		(thread->looper & (BINDER_LOOPER_STATE_ENTERED |
+-				   BINDER_LOOPER_STATE_REGISTERED));
++		binder_worklist_empty_ilocked(&thread->todo);
+ }
  
-+	if (!csr_temp_enable && !loongson_chiptemp[0])
-+		return -ENODEV;
-+
- 	nr_packages = loongson_sysconf.nr_cpus /
- 		loongson_sysconf.cores_per_package;
- 
+ static void binder_wakeup_poll_threads_ilocked(struct binder_proc *proc,
 
 
 
