@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA109531DA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B79952F97
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C9F21F249FF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4294E1C244B7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C7019DF58;
-	Thu, 15 Aug 2024 13:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF041ABEC7;
+	Thu, 15 Aug 2024 13:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0doLod7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjZIogAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC34A7DA7D;
-	Thu, 15 Aug 2024 13:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C50817CA1D;
+	Thu, 15 Aug 2024 13:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730348; cv=none; b=Vp3duf6ATFGBkxxRfDdphyaDM0/2LQ2wdmvZAURDawYyYQnHOI/+3VDAA89XIXGgQM8lCfeN8sAGKySWSmiXFV8fBCf0IsqZ2kr3mfyvpeBeTG01hW8UEI40J6bOHP9R1AL+O4rlkP3XZo/nBnOJjbTtPijZ5tGG7GtjGrdnNYU=
+	t=1723728824; cv=none; b=pVcfF5FXTyI3lobg0tqMvJ4HhFP86yDjOXSH56UBZtcPhzESCqeqCBMuOGuEnEhCP1gnFflTc+aSMsmeo23JRzO7HZxt+LWK9pZ4bwuQa6nrAlMl1pygzduJj1MRZKu0NY4LzD8W3+tpdABnWgM/3uvfpQw7rhN4k2w23sXhFEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730348; c=relaxed/simple;
-	bh=ddUYUdbAQJV+LiwHjDXRaHW4wWUBUHTg26cNh6/OV54=;
+	s=arc-20240116; t=1723728824; c=relaxed/simple;
+	bh=/8qwGDU+DEDCDVByKn5bX7moSuPU/vmZUVTpnipYgHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PN0DdDcV+u1zYOHbM11VSwqyNlJg8JdSG7Yyp1C9qSSsh3f55uhqV75bl+PDUNLbV4gv1CbnCf2zJ9B6SRmIF4mvUDlUsE818aXo5LaISUo68RaLQzroIsfSfw2VXDF8Wm9ZwUQ3MM4Syx2JU01Q8a/EpkbuvqsWfUWgeao3ST8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0doLod7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EC4C32786;
-	Thu, 15 Aug 2024 13:59:08 +0000 (UTC)
+	 MIME-Version; b=ZOl9iMo0P9FXc+/9tzGN37pcauYy6GCcmLK8LgRd3892WCCJHF3hc3rmoql15Yk+jEzvEZWjj7O6TlsoHfp3oLJReKCRMnYo5Cieyk/+god5BFZEpFL5HkvKjfChC6rAO6i22Jp6uz35qATA3lRWrizzJ07nGgpBTjQxgearv3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjZIogAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918F2C4AF0F;
+	Thu, 15 Aug 2024 13:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730348;
-	bh=ddUYUdbAQJV+LiwHjDXRaHW4wWUBUHTg26cNh6/OV54=;
+	s=korg; t=1723728824;
+	bh=/8qwGDU+DEDCDVByKn5bX7moSuPU/vmZUVTpnipYgHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0doLod7VntVmqvhPq8C4uolhAjo61fCElx0I0zNXbhaWC2RrmlGFjjvdHG7bFx7Jl
-	 q1hgY9lbMibnPEJpXmBW9jxBscakSEG4YhEdxp+QppMXsrDU/4RHGVtdtCb0LshxT3
-	 EAhkLQnti5+MrKUcF59ofjOC/+CZMf6+xjWI5vqw=
+	b=fjZIogAzR7jQngTqzXHBj/eaE2UxkYPAqT4kC9LPDUqaZzhe9mnyrDXzpSs0gp8wP
+	 cElCf+sXYmqcSA9oOeOZOSDsrvwRFCy5nvJ68A6qGTriyZ4RB3SA11Gs8QVWo2FM7d
+	 BsKer4OvWO84CgvapmlQyygq0eN5E3oCDlO9SX2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Peng Fan <peng.fan@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 381/484] drm/amd/display: Add null checker before passing variables
+Subject: [PATCH 4.19 122/196] remoteproc: imx_rproc: Skip over memory region when node value is NULL
 Date: Thu, 15 Aug 2024 15:23:59 +0200
-Message-ID: <20240815131956.163090443@linuxfoundation.org>
+Message-ID: <20240815131856.744143024@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 8092aa3ab8f7b737a34b71f91492c676a843043a ]
+[ Upstream commit 2fa26ca8b786888673689ccc9da6094150939982 ]
 
-Checks null pointer before passing variables to functions.
+In imx_rproc_addr_init() "nph = of_count_phandle_with_args()" just counts
+number of phandles. But phandles may be empty. So of_parse_phandle() in
+the parsing loop (0 < a < nph) may return NULL which is later dereferenced.
+Adjust this issue by adding NULL-return check.
 
-This fixes 3 NULL_RETURNS issues reported by Coverity.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a0ff4aa6f010 ("remoteproc: imx_rproc: add a NXP/Freescale imx_rproc driver")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240606075204.12354-1-amishin@t-argos.ru
+[Fixed title to fit within the prescribed 70-75 charcters]
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/remoteproc/imx_rproc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index b821abb56ac3b..333be05418935 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2431,7 +2431,8 @@ static int dm_suspend(void *handle)
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 4eec6b380f11c..7597f09a3455b 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -289,6 +289,8 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+ 		struct resource res;
  
- 		dm->cached_dc_state = dc_copy_state(dm->dc->current_state);
- 
--		dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
-+		if (dm->cached_dc_state)
-+			dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
- 
- 		amdgpu_dm_commit_zero_streams(dm->dc);
- 
-@@ -6884,7 +6885,8 @@ static void create_eml_sink(struct amdgpu_dm_connector *aconnector)
- 		aconnector->dc_sink = aconnector->dc_link->local_sink ?
- 		aconnector->dc_link->local_sink :
- 		aconnector->dc_em_sink;
--		dc_sink_retain(aconnector->dc_sink);
-+		if (aconnector->dc_sink)
-+			dc_sink_retain(aconnector->dc_sink);
- 	}
- }
- 
-@@ -8218,7 +8220,8 @@ static int amdgpu_dm_connector_get_modes(struct drm_connector *connector)
- 				drm_add_modes_noedid(connector, 640, 480);
- 	} else {
- 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
--		amdgpu_dm_connector_add_common_modes(encoder, connector);
-+		if (encoder)
-+			amdgpu_dm_connector_add_common_modes(encoder, connector);
- 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
- 	}
- 	amdgpu_dm_fbc_init(connector);
+ 		node = of_parse_phandle(np, "memory-region", a);
++		if (!node)
++			continue;
+ 		/* Not map vdevbuffer, vdevring region */
+ 		if (!strncmp(node->name, "vdev", strlen("vdev")))
+ 			continue;
 -- 
 2.43.0
 
