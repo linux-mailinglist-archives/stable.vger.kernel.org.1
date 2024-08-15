@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20726953195
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4F0952F45
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE2591F21F7D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 869BC2890F4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FFA19DF9C;
-	Thu, 15 Aug 2024 13:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C413319D09E;
+	Thu, 15 Aug 2024 13:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKXk6uSa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aplbmylC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034131714A1;
-	Thu, 15 Aug 2024 13:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A291714D0;
+	Thu, 15 Aug 2024 13:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730156; cv=none; b=N4uZke/RUb1bESlSDD2i7rg6fqqtts6lzZWIhSwwrBPeJGmABJYXtgr5Praao8ftlsRmp47/8JPbvmWrhUSbHzvfY+xYY4OcljhlDK/uPvV7Shga8pN4T+bcNZjlSXq1VmNz8R27Rmk5gv7ApHTmMyKhqFfrRMtX5KVg+sIvLHE=
+	t=1723728634; cv=none; b=ar5GDxQh/nSFVkveL06bMrvUIV0A1F3egRuKAkjbjklypANaZt0MIHzHQNcWbE1Ibvta6PjhqweHVbudtALV0AXXnSdLApJ678VEsjEoRWFQ9JcsZu/FSxhZAPqESUqsnf2a2xT4bJQbTYAtlU6zyytkqq3IWiX262UTVctoFg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730156; c=relaxed/simple;
-	bh=8S23FgFlFm62MI+SvbOiT6/3EEmjn+d+lGgm+LPtOiw=;
+	s=arc-20240116; t=1723728634; c=relaxed/simple;
+	bh=Wc58GbuW6E0V1fPhENk6kdMLtB4ylouaqJGqud4G6wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HM+ZNdeXI2U6ukIvD+sr43tAkYCzYQPVMRINm71Vb5y3Bt6gSmnIPXkA6qZjaKWvoyFrsicL29M/jXuSV8VCKFGLWx03u69u297QpwFgoHHCb7er3Lpk6dZITlGrCuFwwLqWG14QaM20vZdm0f33LStRLA0DFhiURPf53l+uIUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKXk6uSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D7AC32786;
-	Thu, 15 Aug 2024 13:55:55 +0000 (UTC)
+	 MIME-Version; b=PZGjknRqERk08V/HGjYTbLnh4bThctGcTaCplng/5SD80mirsDR9JgYFZvxKd3na6drvuzlftqXo63YJ601kXGodiqFdjSQTPRMmHeePNx2tsv6AMsdviCeLmpP7OvlxY2TaC011plfqztA285Olvo7VsI4oeu4YsXFu7CESD9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aplbmylC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B850C32786;
+	Thu, 15 Aug 2024 13:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730155;
-	bh=8S23FgFlFm62MI+SvbOiT6/3EEmjn+d+lGgm+LPtOiw=;
+	s=korg; t=1723728634;
+	bh=Wc58GbuW6E0V1fPhENk6kdMLtB4ylouaqJGqud4G6wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKXk6uSaBlPXiHrUGQtCfOB1WgyeLjeDrYk+TG5n5PP1argoans/F6AuIa35htcUS
-	 4NgyJ6u7AJ7YBVx0bd5hL/5sWrWxcQU8+QpZiBEgZi1QEEqW3clTdkw752aMwPDOv0
-	 bIC8q1esj6AM3N01+aNCUAxUHPrhmRVvl5jxYl4s=
+	b=aplbmylCnNQsgTJQz0Butb8ULe/COPi+35ft/Hnl7W5ZvV+Rcbmob932k1bHKsvXR
+	 mdlpbkLf83DiZv0YFVa3HtTKZWRyVBAMJ9fyKgBwpEAUbYZZ/uUUIR1KFLPcfPno7A
+	 LpHWXUYQxAI5lOLKOWCSbXM20Xvg2USQFTXTgCvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 320/484] irqchip/imx-irqsteer: Add runtime PM support
+Subject: [PATCH 4.19 061/196] nilfs2: avoid undefined behavior in nilfs_cnt32_ge macro
 Date: Thu, 15 Aug 2024 15:22:58 +0200
-Message-ID: <20240815131953.765407300@linuxfoundation.org>
+Message-ID: <20240815131854.411365005@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 4730d2233311d86cad9dc510318d1b40e4b53cf2 ]
+[ Upstream commit 0f3819e8c483771a59cf9d3190cd68a7a990083c ]
 
-There are now SoCs that integrate the irqsteer controller within
-a separate power domain. In order to allow this domain to be
-powered down when not needed, add runtime PM support to the driver.
+According to the C standard 3.4.3p3, the result of signed integer overflow
+is undefined.  The macro nilfs_cnt32_ge(), which compares two sequence
+numbers, uses signed integer subtraction that can overflow, and therefore
+the result of the calculation may differ from what is expected due to
+undefined behavior in different environments.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20220406163701.1277930-2-l.stach@pengutronix.de
-Stable-dep-of: 33b1c47d1fc0 ("irqchip/imx-irqsteer: Handle runtime power management correctly")
+Similar to an earlier change to the jiffies-related comparison macros in
+commit 5a581b367b5d ("jiffies: Avoid undefined behavior from signed
+overflow"), avoid this potential issue by changing the definition of the
+macro to perform the subtraction as unsigned integers, then cast the
+result to a signed integer for comparison.
+
+Link: https://lkml.kernel.org/r/20130727225828.GA11864@linux.vnet.ibm.com
+Link: https://lkml.kernel.org/r/20240702183512.6390-1-konishi.ryusuke@gmail.com
+Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-imx-irqsteer.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ fs/nilfs2/segment.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index e286e7c5ccbfb..96230a04ec238 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/of_irq.h>
- #include <linux/of_platform.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spinlock.h>
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 62c83193a5bb8..3c4272762779c 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -136,7 +136,7 @@ static void nilfs_dispose_list(struct the_nilfs *, struct list_head *, int);
  
- #define CTRL_STRIDE_OFF(_t, _r)	(_t * 4 * _r)
-@@ -175,7 +176,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 	data->irq_count = DIV_ROUND_UP(irqs_num, 64);
- 	data->reg_num = irqs_num / 32;
+ #define nilfs_cnt32_ge(a, b)   \
+ 	(typecheck(__u32, a) && typecheck(__u32, b) && \
+-	 ((__s32)(a) - (__s32)(b) >= 0))
++	 ((__s32)((a) - (b)) >= 0))
  
--	if (IS_ENABLED(CONFIG_PM_SLEEP)) {
-+	if (IS_ENABLED(CONFIG_PM)) {
- 		data->saved_reg = devm_kzalloc(&pdev->dev,
- 					sizeof(u32) * data->reg_num,
- 					GFP_KERNEL);
-@@ -199,6 +200,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 		ret = -ENOMEM;
- 		goto out;
- 	}
-+	irq_domain_set_pm_device(data->domain, &pdev->dev);
- 
- 	if (!data->irq_count || data->irq_count > CHAN_MAX_OUTPUT_INT) {
- 		ret = -EINVAL;
-@@ -219,6 +221,9 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, data);
- 
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+
- 	return 0;
- out:
- 	clk_disable_unprepare(data->ipg_clk);
-@@ -241,7 +246,7 @@ static int imx_irqsteer_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
--#ifdef CONFIG_PM_SLEEP
-+#ifdef CONFIG_PM
- static void imx_irqsteer_save_regs(struct irqsteer_data *data)
- {
- 	int i;
-@@ -288,7 +293,10 @@ static int imx_irqsteer_resume(struct device *dev)
- #endif
- 
- static const struct dev_pm_ops imx_irqsteer_pm_ops = {
--	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(imx_irqsteer_suspend, imx_irqsteer_resume)
-+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-+				      pm_runtime_force_resume)
-+	SET_RUNTIME_PM_OPS(imx_irqsteer_suspend,
-+			   imx_irqsteer_resume, NULL)
- };
- 
- static const struct of_device_id imx_irqsteer_dt_ids[] = {
+ static int nilfs_prepare_segment_lock(struct super_block *sb,
+ 				      struct nilfs_transaction_info *ti)
 -- 
 2.43.0
 
