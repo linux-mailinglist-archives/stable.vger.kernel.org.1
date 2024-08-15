@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-67773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195F8952F0A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DFE95315C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B75882874F9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDFD828ACB7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8338A19F49A;
-	Thu, 15 Aug 2024 13:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A171A01B5;
+	Thu, 15 Aug 2024 13:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJBCCBeC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/jgJArm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378C519F482;
-	Thu, 15 Aug 2024 13:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1645B1A00EC;
+	Thu, 15 Aug 2024 13:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728471; cv=none; b=LrojgNVzJ9CLHTSWUm0KO0G8gTnLbIb1li7CcBnL+6YE/3HeFPaIq5fIZ0Xa4K8gDSaeMuHaodhaLKzigG0qppvrqcYB/bIWdF/xS7ny9g4bMn13Q9z6uBZebTS6jJ+Jzf2KC0Ga1Y58/o//jF7LOlDaIjgBaVPf7rjMLfs0GTU=
+	t=1723729972; cv=none; b=TvUFrTgR7Yt9WRDHDx5kSP1PJJb0wpE6SIlgM2Ty9LkamI/QqSm8JxuMFOAxuv7BTOS2qQuZE+wirLBvf20MblZNzrPBRcF4KQ5AQr11VlB/NYSGWTumP9hgfSau2umwX0TxJ9iQdodOmSNzOR6eQXoMhtefXgBqtx0agTmzGDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728471; c=relaxed/simple;
-	bh=W9vBfO8RLZ3K3UjLH7Ev1VGo0dDYOZ7foHPhIQvhLx8=;
+	s=arc-20240116; t=1723729972; c=relaxed/simple;
+	bh=A+d8em/E+DYLe8X3kaFhqyh/iQWLzb6LXQYL0VZZEuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BIJWKY/ZPQLzmh2NKGP+ErYKuOs3KT6F0YwePIqWkrD7kursK0VY/ayyz7d5H+HXjyawqrtmYYb+mpy0raLW4N41H4uEzyiObNjgpk4ADmS8QHEjh3KLTcputwCo2GsyVcAThU4nnyAoTI3po7UezySJsH/FXV1PY9NqMuidQ3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJBCCBeC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40665C4AF0D;
-	Thu, 15 Aug 2024 13:27:50 +0000 (UTC)
+	 MIME-Version; b=Rk76CVxESaOi/0svlDfOEXiZ5RNewunt/jfOG4/MpFrSFOQTQapC0rDjibw4orEdLZx2cRbhuShBeq8W88wyeDi5qbsn6uoKNF0NCoHD+juXvTXvLfNYcyf+sI3EkpdjoqnIKU1KSEs+6jlRhkeEegxLFCaHg0hMV5RD0fwypPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/jgJArm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C94C32786;
+	Thu, 15 Aug 2024 13:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728470;
-	bh=W9vBfO8RLZ3K3UjLH7Ev1VGo0dDYOZ7foHPhIQvhLx8=;
+	s=korg; t=1723729971;
+	bh=A+d8em/E+DYLe8X3kaFhqyh/iQWLzb6LXQYL0VZZEuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJBCCBeC9t3/z75HUS94fAUY4CsUv6ey03zHAE7QqAa/zL2GJkhHJBBVBwELaVywn
-	 po2eGVDZRGmusKG5PU6Ro+iRJFALZvHO5AJYVa33l3J2XRFFOj3dbYRPnU9D3hs6GL
-	 dkOCSXWwC/1kSO/ddLOofAdxy/rU/YdpaMW0Q9R8=
+	b=h/jgJArmm5JfjnCb8DiAWcGBl7PKfiuErmcjfDXxN5uVuLaIBR6NjXGUyfwM3cFIN
+	 ATxSCigSn3hz5bVfSICgzp2PGB0m2xXfkHbOFOxmOGUk2iNr2YTRMq6TnWjZEPmVvg
+	 t8A0YtIF2quW1SIjfjZcYDhP9v8uKHk9ZZ06pxuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Jai Luthra <j-luthra@ti.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 003/196] x86/of: Return consistent error type from x86_of_pci_irq_enable()
-Date: Thu, 15 Aug 2024 15:22:00 +0200
-Message-ID: <20240815131852.201660008@linuxfoundation.org>
+Subject: [PATCH 5.15 263/484] dmaengine: ti: k3-udma: Fix BCHAN count with UHC and HC channels
+Date: Thu, 15 Aug 2024 15:22:01 +0200
+Message-ID: <20240815131951.560064921@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 
-[ Upstream commit ec0b4c4d45cf7cf9a6c9626a494a89cb1ae7c645 ]
+[ Upstream commit 372f8b3621294173f539b32976e41e6e12f5decf ]
 
-x86_of_pci_irq_enable() returns PCIBIOS_* code received from
-pci_read_config_byte() directly and also -EINVAL which are not
-compatible error types. x86_of_pci_irq_enable() is used as
-(*pcibios_enable_irq) function which should not return PCIBIOS_* codes.
+Unlike other channel counts in CAPx registers, BCDMA BCHAN CNT doesn't
+include UHC and HC BC channels. So include them explicitly to arrive at
+total BC channel in the instance.
 
-Convert the PCIBIOS_* return code from pci_read_config_byte() into
-normal errno using pcibios_err_to_errno().
-
-Fixes: 96e0a0797eba ("x86: dtb: Add support for PCI devices backed by dtb nodes")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240527125538.13620-1-ilpo.jarvinen@linux.intel.com
+Fixes: 8844898028d4 ("dmaengine: ti: k3-udma: Add support for BCDMA channel TPL handling")
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
+Link: https://lore.kernel.org/r/20240607-bcdma_chan_cnt-v2-1-bf1a55529d91@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/devicetree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/ti/k3-udma.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-index f39f3a06c26fa..c4c84e1a3044e 100644
---- a/arch/x86/kernel/devicetree.c
-+++ b/arch/x86/kernel/devicetree.c
-@@ -90,7 +90,7 @@ static int x86_of_pci_irq_enable(struct pci_dev *dev)
- 
- 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_PIN, &pin);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
- 	if (!pin)
- 		return 0;
- 
+diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+index 698fb898847c1..9db45c4eaaf24 100644
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -4415,7 +4415,9 @@ static int udma_get_mmrs(struct platform_device *pdev, struct udma_dev *ud)
+ 		ud->rchan_cnt = UDMA_CAP2_RCHAN_CNT(cap2);
+ 		break;
+ 	case DMA_TYPE_BCDMA:
+-		ud->bchan_cnt = BCDMA_CAP2_BCHAN_CNT(cap2);
++		ud->bchan_cnt = BCDMA_CAP2_BCHAN_CNT(cap2) +
++				BCDMA_CAP3_HBCHAN_CNT(cap3) +
++				BCDMA_CAP3_UBCHAN_CNT(cap3);
+ 		ud->tchan_cnt = BCDMA_CAP2_TCHAN_CNT(cap2);
+ 		ud->rchan_cnt = BCDMA_CAP2_RCHAN_CNT(cap2);
+ 		ud->rflow_cnt = ud->rchan_cnt;
 -- 
 2.43.0
 
