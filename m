@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-67905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEF5952FB2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1718B95322D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1DF02873D6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5E9128557D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66991A01D4;
-	Thu, 15 Aug 2024 13:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337AD1ABEB4;
+	Thu, 15 Aug 2024 14:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBuU6PG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="teTtbcQD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948E61A00E7;
-	Thu, 15 Aug 2024 13:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B341ABEA5;
+	Thu, 15 Aug 2024 14:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728889; cv=none; b=szq1QcOO3+GMTI9T9xK70S0blpCVV22Yf/hN3LXjK2wNow2Ndo7EW3sGAR4xPMZdvpkHyGbBLwEjMxNsJaWMq99MmkxiKscGNq3JlZkK6RwUZjz4iX7hewSOjfT5KhIvFlyM+A0E/JQfs1FxDt/samFlOi+seCaq+XyDTE9vZ5Y=
+	t=1723730515; cv=none; b=UaKgmyW1V9YQhWvjGU9SKn+okaQzSffohuBNLccuqjIkXAz7QunD5b+bgbaa0MF3OyN7j9t/Hxle+a+P01zFie306gtBJcBErZZ08urd9GBK8NDJVTDqzJmmVSx2Qc50HxqGjTo6frfSTFo8OSIgAePEreT4nDg2CpzS9LkMAW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728889; c=relaxed/simple;
-	bh=LdxVlITcNAtE27gDkBy0A+bQI1dU//Of4bsjlQeCYkE=;
+	s=arc-20240116; t=1723730515; c=relaxed/simple;
+	bh=HMYJ4y9VmUBCeUtLZKm9h/Og/54xKTQnTh7Uezs3k1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ca0I5BqsK+IPLM3q2VIpi3K3ozrmleQalYhvgReDkwi4wRVjdMenrv/mLzFx+tCPSgydvEYEpRntVNRGdPJbP77QOXkJJ6Kec7geUjsGbolmVVsWNvSpR/JkZx8Yo0WqBrTb/KJLx6Elp56TpoCIE4Uom2fpL2NXo9VE6Z7PMP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBuU6PG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E7DC32786;
-	Thu, 15 Aug 2024 13:34:48 +0000 (UTC)
+	 MIME-Version; b=piBAEnObwDHknOpcyWwKLu82fs+6uXxBbZNNaqyjbbyz84agHTxm2L3HUi6d9tdZD84zN4SB12itdBIuSYSJqsh2U2oXwB/iN7T5DieKqd918xdOSbIlvcZmSVO5I/klrzS4LkJFWsUWauv39woCoUT5o6sCQPOGGr1E37aPIC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=teTtbcQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DF1C4AF0A;
+	Thu, 15 Aug 2024 14:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728889;
-	bh=LdxVlITcNAtE27gDkBy0A+bQI1dU//Of4bsjlQeCYkE=;
+	s=korg; t=1723730514;
+	bh=HMYJ4y9VmUBCeUtLZKm9h/Og/54xKTQnTh7Uezs3k1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBuU6PG/83G4lZDF0JF6oEFHs+47x+Vq1VIpmDHoDEOG5IAUyEXAUxrYCIsBtaPt3
-	 oYql+xamBFJaXm+CtIXHB6CYYd6so9jNi9Y3SmB71kvhvzqmCXCxJaTvF8nvDcuRNb
-	 gdglrz2PdkO5l7z+YUi81LMIM4YdJIBQVSTAmBpQ=
+	b=teTtbcQD9REMRGNLyazu2YJ4MuDf6HR6Wb6GFKk6YbEUWFT9pZ3FL33CbUqMDsmBC
+	 OZnkySUjI20cSciv8inFL+bITvo32aOdsKr82aoHXU4kCb4AJuAXCuAiGLSgFNpj6K
+	 V8iLvMD0ht0D76HsBgXNsiSRA3J8BKdENd6SMevU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	HungNien Chen <hn.chen@sunplusit.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 141/196] media: uvcvideo: Ignore empty TS packets
-Date: Thu, 15 Aug 2024 15:24:18 +0200
-Message-ID: <20240815131857.469243617@linuxfoundation.org>
+Subject: [PATCH 5.15 401/484] arm64: errata: Unify speculative SSBS errata logic
+Date: Thu, 15 Aug 2024 15:24:19 +0200
+Message-ID: <20240815131956.939521292@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,131 +64,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 5cd7c25f6f0576073b3d03bc4cfb1e8ca63a1195 ]
+[ Upstream commit ec768766608092087dfb5c1fc45a16a6f524dee2 ]
 
-Some SunplusIT cameras took a borderline interpretation of the UVC 1.5
-standard, and fill the PTS and SCR fields with invalid data if the
-package does not contain data.
+Cortex-X4 erratum 3194386 and Neoverse-V3 erratum 3312417 are identical,
+with duplicate Kconfig text and some unsightly ifdeffery. While we try
+to share code behind CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS, having
+separate options results in a fair amount of boilerplate code, and this
+will only get worse as we expand the set of affected CPUs.
 
-"STC must be captured when the first video data of a video frame is put
-on the USB bus."
+To reduce this boilerplate, unify the two behind a common Kconfig
+option. This removes the duplicate text and Kconfig logic, and removes
+the need for the intermediate ARM64_WORKAROUND_SPECULATIVE_SSBS option.
+The set of affected CPUs is described as a list so that this can easily
+be extended.
 
-Some SunplusIT devices send, e.g.,
+I've used ARM64_ERRATUM_3194386 (matching the Neoverse-V3 erratum ID) as
+the common option, matching the way we use ARM64_ERRATUM_1319367 to
+cover Cortex-A57 erratum 1319537 and Cortex-A72 erratum 1319367.
 
-buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
-buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
-buffer: 0xa7755c00 len 000668 header:0x8c stc 73779dba sof 070c pts 7376d37a
-
-While the UVC specification meant that the first two packets shouldn't
-have had the SCR bit set in the header.
-
-This borderline/buggy interpretation has been implemented in a variety
-of devices, from directly SunplusIT and from other OEMs that rebrand
-SunplusIT products. So quirking based on VID:PID will be problematic.
-
-All the affected modules have the following extension unit:
-VideoControl Interface Descriptor:
-  guidExtensionCode         {82066163-7050-ab49-b8cc-b3855e8d221d}
-
-But the vendor plans to use that GUID in the future and fix the bug,
-this means that we should use heuristic to figure out the broken
-packets.
-
-This patch takes care of this.
-
-lsusb of one of the affected cameras:
-
-Bus 001 Device 003: ID 1bcf:2a01 Sunplus Innovation Technology Inc.
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.01
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 ?
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x1bcf Sunplus Innovation Technology Inc.
-  idProduct          0x2a01
-  bcdDevice            0.02
-  iManufacturer           1 SunplusIT Inc
-  iProduct                2 HanChen Wise Camera
-  iSerial                 3 01.00.00
-  bNumConfigurations      1
-
-Tested-by: HungNien Chen <hn.chen@sunplusit.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Tomasz Figa <tfiga@chromium.org>
-Link: https://lore.kernel.org/r/20240323-resend-hwtimestamp-v10-2-b08e590d97c7@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-5-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: fix conflicts & renames, drop unneeded cpucaps.h ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ Documentation/arm64/silicon-errata.rst |  2 +-
+ arch/arm64/Kconfig                     | 28 ++++----------------------
+ arch/arm64/kernel/cpu_errata.c         |  8 ++------
+ arch/arm64/kernel/proton-pack.c        |  2 +-
+ 4 files changed, 8 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index c57bc62251bb8..e2c1b98fb4a25 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -473,6 +473,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	ktime_t time;
- 	u16 host_sof;
- 	u16 dev_sof;
-+	u32 dev_stc;
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index 33595bc79dea6..13d77af92edf7 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -122,7 +122,7 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N2     | #2253138        | ARM64_ERRATUM_2253138       |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3312417       |
++| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index bc89287d38ed1..623b30c21c00d 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -848,34 +848,14 @@ config ARM64_ERRATUM_2224489
  
- 	switch (data[1] & (UVC_STREAM_PTS | UVC_STREAM_SCR)) {
- 	case UVC_STREAM_PTS | UVC_STREAM_SCR:
-@@ -517,6 +518,34 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	if (dev_sof == stream->clock.last_sof)
- 		return;
+ 	  If unsure, say Y.
  
-+	dev_stc = get_unaligned_le32(&data[header_size - 6]);
-+
-+	/*
-+	 * STC (Source Time Clock) is the clock used by the camera. The UVC 1.5
-+	 * standard states that it "must be captured when the first video data
-+	 * of a video frame is put on the USB bus". This is generally understood
-+	 * as requiring devices to clear the payload header's SCR bit before
-+	 * the first packet containing video data.
-+	 *
-+	 * Most vendors follow that interpretation, but some (namely SunplusIT
-+	 * on some devices) always set the `UVC_STREAM_SCR` bit, fill the SCR
-+	 * field with 0's,and expect that the driver only processes the SCR if
-+	 * there is data in the packet.
-+	 *
-+	 * Ignore all the hardware timestamp information if we haven't received
-+	 * any data for this frame yet, the packet contains no data, and both
-+	 * STC and SOF are zero. This heuristics should be safe on compliant
-+	 * devices. This should be safe with compliant devices, as in the very
-+	 * unlikely case where a UVC 1.1 device would send timing information
-+	 * only before the first packet containing data, and both STC and SOF
-+	 * happen to be zero for a particular frame, we would only miss one
-+	 * clock sample from many and the clock recovery algorithm wouldn't
-+	 * suffer from this condition.
-+	 */
-+	if (buf && buf->bytesused == 0 && len == header_size &&
-+	    dev_stc == 0 && dev_sof == 0)
-+		return;
-+
- 	stream->clock.last_sof = dev_sof;
+-config ARM64_WORKAROUND_SPECULATIVE_SSBS
+-	bool
+-
+ config ARM64_ERRATUM_3194386
+-	bool "Cortex-X4: 3194386: workaround for MSR SSBS not self-synchronizing"
+-	select ARM64_WORKAROUND_SPECULATIVE_SSBS
++	bool "Cortex-X4/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
+ 	default y
+ 	help
+-	  This option adds the workaround for ARM Cortex-X4 erratum 3194386.
+-
+-	  On affected cores "MSR SSBS, #0" instructions may not affect
+-	  subsequent speculative instructions, which may permit unexepected
+-	  speculative store bypassing.
+-
+-	  Work around this problem by placing a speculation barrier after
+-	  kernel changes to SSBS. The presence of the SSBS special-purpose
+-	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
+-	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
+-	  SSBS.
++	  This option adds the workaround for the following errata:
  
- 	host_sof = usb_get_current_frame_number(stream->dev->udev);
-@@ -554,7 +583,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	spin_lock_irqsave(&stream->clock.lock, flags);
+-	  If unsure, say Y.
+-
+-config ARM64_ERRATUM_3312417
+-	bool "Neoverse-V3: 3312417: workaround for MSR SSBS not self-synchronizing"
+-	select ARM64_WORKAROUND_SPECULATIVE_SSBS
+-	default y
+-	help
+-	  This option adds the workaround for ARM Neoverse-V3 erratum 3312417.
++	  * ARM Cortex-X4 erratum 3194386
++	  * ARM Neoverse-V3 erratum 3312417
  
- 	sample = &stream->clock.samples[stream->clock.head];
--	sample->dev_stc = get_unaligned_le32(&data[header_size - 6]);
-+	sample->dev_stc = dev_stc;
- 	sample->dev_sof = dev_sof;
- 	sample->host_sof = host_sof;
- 	sample->host_time = time;
+ 	  On affected cores "MSR SSBS, #0" instructions may not affect
+ 	  subsequent speculative instructions, which may permit unexepected
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index 0cf60010a0825..0fe2d65e646fe 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -402,14 +402,10 @@ static struct midr_range trbe_write_out_of_range_cpus[] = {
+ };
+ #endif /* CONFIG_ARM64_WORKAROUND_TRBE_WRITE_OUT_OF_RANGE */
+ 
+-#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
+-static const struct midr_range erratum_spec_ssbs_list[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_3194386
++static const struct midr_range erratum_spec_ssbs_list[] = {
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
+-#endif
+-#ifdef CONFIG_ARM64_ERRATUM_3312417
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+-#endif
+ 	{}
+ };
+ #endif
+@@ -661,7 +657,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ 		CAP_MIDR_RANGE_LIST(trbe_write_out_of_range_cpus),
+ 	},
+ #endif
+-#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
++#ifdef CONFIG_ARM64_ERRATUM_3194386
+ 	{
+ 		.desc = "ARM errata 3194386, 3312417",
+ 		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
+diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+index c0149af8c9e97..ebce46c4e942c 100644
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -567,7 +567,7 @@ static enum mitigation_state spectre_v4_enable_hw_mitigation(void)
+ 	 * Mitigate this with an unconditional speculation barrier, as CPUs
+ 	 * could mis-speculate branches and bypass a conditional barrier.
+ 	 */
+-	if (IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS))
++	if (IS_ENABLED(CONFIG_ARM64_ERRATUM_3194386))
+ 		spec_bar();
+ 
+ 	return SPECTRE_MITIGATED;
 -- 
 2.43.0
 
