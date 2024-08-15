@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-67776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF91952F0C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FDF953164
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 399B2287937
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B12111F24A34
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D02A19EEAA;
-	Thu, 15 Aug 2024 13:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0FA1A3BCE;
+	Thu, 15 Aug 2024 13:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgp045s9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1sYy8td"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC9519E811;
-	Thu, 15 Aug 2024 13:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4833419FA8D;
+	Thu, 15 Aug 2024 13:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728480; cv=none; b=ZdPdD87HPfD48qzvQ2/aup7LTy/eMjeIMTZwZUS/IyLwr5mVF8nmRf5ocXC1o/Nqv9dIt4KFuE7lQLK6xNdwVATYut29JgsPKPc0HjHng+/dQUboT4wHYSK0TnT+uTsEvLspfSWcY2sosMaHPntxGul6mDl+CCSRDirmonKl0Os=
+	t=1723729998; cv=none; b=PGiQoSoG3WQuBef/at5igjZDE4zD4dYY/2/cxAClPvqRRTZ+G7ut8iwuhNGiYXWZ1wIzJGRu4IM6TFSNbkkRBIGYl6DqVGCw2sb1E2eZQwC2eSggd4fna4FJNvPseBLYqOYY59X4d6HN3dijGgbASL3pNIl4C4GCW7mim1m3T7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728480; c=relaxed/simple;
-	bh=xnrQBacFWT24vj8rhJEaa3YTgivdMGDlAJkFF66r4T8=;
+	s=arc-20240116; t=1723729998; c=relaxed/simple;
+	bh=J48ORG19DyO84ZAe1JEK11peCZkc4uc2Kgcqqsh63VQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ejrD1faEnW7ZIfVS+zYSGOlZGcYl9UR8VOp+lzRcPVft/HoOubPtLmj4XKb9BCtIXFmRh6eAfNO/LG02USJSFr8FSro+QP3a0mNRBSVZ0EfzPsIvFd/cJQXFP5Z1qYEFhS8x7gX1t0fjsfMrSmwfPsSlF+AwnGQQj/JAGdDJV9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgp045s9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD146C32786;
-	Thu, 15 Aug 2024 13:27:59 +0000 (UTC)
+	 MIME-Version; b=ixc8Q8jpwssIzmzkDPBAHN5fQWCoUpt7nhmkTw45fwuGB/TYKhKtpveQg3VDVt9DtsxEVi59K5b2SvhU8yLQTdxMnG7K1ODH9Z+cZCWvcdJ5qxlC1WOCXOPwBPi0JJhSUgUnDI+1U5xEOXCaNNeCsIYuCJ+t4OuCqkMOaIrTO/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1sYy8td; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99886C4AF11;
+	Thu, 15 Aug 2024 13:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728480;
-	bh=xnrQBacFWT24vj8rhJEaa3YTgivdMGDlAJkFF66r4T8=;
+	s=korg; t=1723729998;
+	bh=J48ORG19DyO84ZAe1JEK11peCZkc4uc2Kgcqqsh63VQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zgp045s9H9XwyuK0Eik8CjlVCKhpwKevsj9vXx68SyLlINFhIs5PCcfjiwNrbOu9Q
-	 Ku7sshYs+2Iu+tPPp5xB21d4gIq5oTP5CFJ7S+CwPQx7QeZmuCsHmWiQYV3rYxvB+c
-	 iXpD48npUZqp3UsohE70vEzoSl6GoCF1dj26BxW8=
+	b=H1sYy8td0buqxc2wrqWjdzvOWSNNs7uaXHhGej2sULCDms6NXq2fmCx10/IAI4t+w
+	 RZGN/e4rwjsCcx8+11wa9YMCK3KuwPq9jTg1oIqBQC1uUEA9J1ShH+K9gxsW4chh+h
+	 umqpUPwqj+LYcbHB2+2lEWEwaB8A5qzORXNzC4kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 006/196] x86/platform/iosf_mbi: Convert PCIBIOS_* return codes to errnos
+Subject: [PATCH 5.15 265/484] um: time-travel: fix time-travel-start option
 Date: Thu, 15 Aug 2024 15:22:03 +0200
-Message-ID: <20240815131852.317159644@linuxfoundation.org>
+Message-ID: <20240815131951.637551854@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7821fa101eab529521aa4b724bf708149d70820c ]
+[ Upstream commit 7d0a8a490aa3a2a82de8826aaf1dfa38575cb77a ]
 
-iosf_mbi_pci_{read,write}_mdr() use pci_{read,write}_config_dword()
-that return PCIBIOS_* codes but functions also return -ENODEV which are
-not compatible error codes. As neither of the functions are related to
-PCI read/write functions, they should return normal errnos.
+We need to have the = as part of the option so that the
+value can be parsed properly. Also document that it must
+be given in nanoseconds, not seconds.
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it.
-
-Fixes: 46184415368a ("arch: x86: New MailBox support driver for Intel SOC's")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240527125538.13620-4-ilpo.jarvinen@linux.intel.com
+Fixes: 065038706f77 ("um: Support time travel mode")
+Link: https://patch.msgid.link/20240417102744.14b9a9d4eba0.Ib22e9136513126b2099d932650f55f193120cd97@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/platform/intel/iosf_mbi.c | 4 ++--
+ arch/um/kernel/time.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/platform/intel/iosf_mbi.c b/arch/x86/platform/intel/iosf_mbi.c
-index 6f37a2137a795..dfeedbd6467fc 100644
---- a/arch/x86/platform/intel/iosf_mbi.c
-+++ b/arch/x86/platform/intel/iosf_mbi.c
-@@ -68,7 +68,7 @@ static int iosf_mbi_pci_read_mdr(u32 mcrx, u32 mcr, u32 *mdr)
- 
- fail_read:
- 	dev_err(&mbi_pdev->dev, "PCI config access failed with %d\n", result);
--	return result;
-+	return pcibios_err_to_errno(result);
+diff --git a/arch/um/kernel/time.c b/arch/um/kernel/time.c
+index 3e270da6b6f67..c8c4ef94c753f 100644
+--- a/arch/um/kernel/time.c
++++ b/arch/um/kernel/time.c
+@@ -874,9 +874,9 @@ int setup_time_travel_start(char *str)
+ 	return 1;
  }
  
- static int iosf_mbi_pci_write_mdr(u32 mcrx, u32 mcr, u32 mdr)
-@@ -97,7 +97,7 @@ static int iosf_mbi_pci_write_mdr(u32 mcrx, u32 mcr, u32 mdr)
- 
- fail_write:
- 	dev_err(&mbi_pdev->dev, "PCI config access failed with %d\n", result);
--	return result;
-+	return pcibios_err_to_errno(result);
- }
- 
- int iosf_mbi_read(u8 port, u8 opcode, u32 offset, u32 *mdr)
+-__setup("time-travel-start", setup_time_travel_start);
++__setup("time-travel-start=", setup_time_travel_start);
+ __uml_help(setup_time_travel_start,
+-"time-travel-start=<seconds>\n"
++"time-travel-start=<nanoseconds>\n"
+ "Configure the UML instance's wall clock to start at this value rather than\n"
+ "the host's wall clock at the time of UML boot.\n");
+ #endif
 -- 
 2.43.0
 
