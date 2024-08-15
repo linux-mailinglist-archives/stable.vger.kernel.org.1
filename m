@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA0E9533D7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E45495324F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BEBEB269E4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB7901F213EA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC07917C987;
-	Thu, 15 Aug 2024 14:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DB31A76DD;
+	Thu, 15 Aug 2024 14:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/2xpYKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvoZMs37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3ED1AC896;
-	Thu, 15 Aug 2024 14:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EB61A01B5;
+	Thu, 15 Aug 2024 14:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731581; cv=none; b=Ak17jO6Cgc9emgYejJUWTNZ/v3A/A3CwwETDmWnbN4FOfQzUISSKt+/kWSWLbA/GU7E6I7NlPZ8XbXEPpimwufg7dlCBoA3K64Nc7MoYjbfuQnIBkUJlKtzE0RXa8S3eunsdZDn/bpS5zX5dSvWCty4m4GZpAh+7tniLkkrZhFk=
+	t=1723730576; cv=none; b=MHr4kmU5cpuckGELuBkuwf3W+z2HEe57E496HotFPmMjjm/JzhqX+yUGGIA3HnBkHIUcfbECu5HVUzxLruiDVI5VlObsHSwIZqVuhhQ8lraRGhSAokYSR631V2AVnfytkXa5vMZL3LOnMZSnHYwo22Get+0Td83xJ63axcOsHLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731581; c=relaxed/simple;
-	bh=T3mPAjS5e7rXAFVwFpLHlpyHqLbef4233vPicsckW3M=;
+	s=arc-20240116; t=1723730576; c=relaxed/simple;
+	bh=/iv4cy2wfcUXKcWnFXj5juwCMUo/8yBFSvDyBCt7fg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GJsIQMH5Nctz83xDWrxm0l+gTp1UAUamDE+lNH7tz6el40XQeWaG7Q1wTstHAxm8Yct+AqONf0wXIuAubFGZYiOmLWLYivPj/gzoSooWT/7SxcoE7fyd2bMdi5IVtzmljP+M8E2Cn7GcL/+olZSWojCLHzCkQmN9ETaNG01P2Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/2xpYKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8776C32786;
-	Thu, 15 Aug 2024 14:19:40 +0000 (UTC)
+	 MIME-Version; b=lEd0LMljRWfPMfO4WYGJaBBFpSs2IH81cyYd6mWI29ATk2gW5EPrAex9ldyXYb89zRXyjCOhqyGLbmjt49/bENIxhWeUe34D5/tYRwlSnQJxwCof5EL9YOQYkFN0tGROO4X45Itf9TrIuinfiWtF0v6DyRywBJAxfcPbD+LnHYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvoZMs37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0F1C4AF12;
+	Thu, 15 Aug 2024 14:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731581;
-	bh=T3mPAjS5e7rXAFVwFpLHlpyHqLbef4233vPicsckW3M=;
+	s=korg; t=1723730576;
+	bh=/iv4cy2wfcUXKcWnFXj5juwCMUo/8yBFSvDyBCt7fg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/2xpYKKJgh78e1MLMKQziJ0RPjlDfJlJYPP9aHK9d5NgO4vY+PoK9MSSENu6QXlo
-	 v0GtO7O2MTNnCXdcTR0H5LrKoPMPzyLaHQCoOHZwVnFkE0RKzd1tCVV31vJUaCrz/Q
-	 Rz3jewn7HuG+w1vKh6xJq8WXCJ5ZBG22nIRietqQ=
+	b=TvoZMs37i0iqKqkhXk2VPLMHX+ye6TyY2kEjoc6CC5UiGL35hO1lsERz1WB/T7Y4M
+	 FlI55tppvKI4lUPectST1ZHTH9p1A9/g8VmXgV5IuW53gBMx0rJbUmnpGLlX+xFW6H
+	 uiHzf0SLTogr2YQfWddaVYZRdM0myMBumjj4rQmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 175/259] net/iucv: fix use after free in iucv_sock_close()
-Date: Thu, 15 Aug 2024 15:25:08 +0200
-Message-ID: <20240815131909.535441661@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 451/484] mptcp: sched: check both directions for backup
+Date: Thu, 15 Aug 2024 15:25:09 +0200
+Message-ID: <20240815131958.883670694@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit f558120cd709682b739207b48cf7479fd9568431 ]
+commit b6a66e521a2032f7fcba2af5a9bcbaeaa19b7ca3 upstream.
 
-iucv_sever_path() is called from process context and from bh context.
-iucv->path is used as indicator whether somebody else is taking care of
-severing the path (or it is already removed / never existed).
-This needs to be done with atomic compare and swap, otherwise there is a
-small window where iucv_sock_close() will try to work with a path that has
-already been severed and freed by iucv_callback_connrej() called by
-iucv_tasklet_fn().
+The 'mptcp_subflow_context' structure has two items related to the
+backup flags:
 
-Example:
-[452744.123844] Call Trace:
-[452744.123845] ([<0000001e87f03880>] 0x1e87f03880)
-[452744.123966]  [<00000000d593001e>] iucv_path_sever+0x96/0x138
-[452744.124330]  [<000003ff801ddbca>] iucv_sever_path+0xc2/0xd0 [af_iucv]
-[452744.124336]  [<000003ff801e01b6>] iucv_sock_close+0xa6/0x310 [af_iucv]
-[452744.124341]  [<000003ff801e08cc>] iucv_sock_release+0x3c/0xd0 [af_iucv]
-[452744.124345]  [<00000000d574794e>] __sock_release+0x5e/0xe8
-[452744.124815]  [<00000000d5747a0c>] sock_close+0x34/0x48
-[452744.124820]  [<00000000d5421642>] __fput+0xba/0x268
-[452744.124826]  [<00000000d51b382c>] task_work_run+0xbc/0xf0
-[452744.124832]  [<00000000d5145710>] do_notify_resume+0x88/0x90
-[452744.124841]  [<00000000d5978096>] system_call+0xe2/0x2c8
-[452744.125319] Last Breaking-Event-Address:
-[452744.125321]  [<00000000d5930018>] iucv_path_sever+0x90/0x138
-[452744.125324]
-[452744.125325] Kernel panic - not syncing: Fatal exception in interrupt
+ - 'backup': the subflow has been marked as backup by the other peer
 
-Note that bh_lock_sock() is not serializing the tasklet context against
-process context, because the check for sock_owned_by_user() and
-corresponding handling is missing.
+ - 'request_bkup': the backup flag has been set by the host
 
-Ideas for a future clean-up patch:
-A) Correct usage of bh_lock_sock() in tasklet context, as described in
-Link: https://lore.kernel.org/netdev/1280155406.2899.407.camel@edumazet-laptop/
-Re-enqueue, if needed. This may require adding return values to the
-tasklet functions and thus changes to all users of iucv.
+Before this patch, the scheduler was only looking at the 'backup' flag.
+That can make sense in some cases, but it looks like that's not what we
+wanted for the general use, because either the path-manager was setting
+both of them when sending an MP_PRIO, or the receiver was duplicating
+the 'backup' flag in the subflow request.
 
-B) Change iucv tasklet into worker and use only lock_sock() in af_iucv.
+Note that the use of these two flags in the path-manager are going to be
+fixed in the next commits, but this change here is needed not to modify
+the behaviour.
 
-Fixes: 7d316b945352 ("af_iucv: remove IUCV-pathes completely")
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://patch.msgid.link/20240729122818.947756-1-wintera@linux.ibm.com
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Conflicts in protocol.c, because the context has changed in commit
+  3ce0852c86b9 ("mptcp: enforce HoL-blocking estimation"), which is not
+  in this version. This commit is unrelated to this modification. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/iucv/af_iucv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/trace/events/mptcp.h |    2 +-
+ net/mptcp/protocol.c         |   10 ++++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-index 652285191da1e..74cf37f17ea90 100644
---- a/net/iucv/af_iucv.c
-+++ b/net/iucv/af_iucv.c
-@@ -453,8 +453,8 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
- 	struct iucv_sock *iucv = iucv_sk(sk);
- 	struct iucv_path *path = iucv->path;
+--- a/include/trace/events/mptcp.h
++++ b/include/trace/events/mptcp.h
+@@ -34,7 +34,7 @@ TRACE_EVENT(mptcp_subflow_get_send,
+ 		struct sock *ssk;
  
--	if (iucv->path) {
--		iucv->path = NULL;
-+	/* Whoever resets the path pointer, must sever and free it. */
-+	if (xchg(&iucv->path, NULL)) {
- 		if (with_user_data) {
- 			low_nmcpy(user_data, iucv->src_name);
- 			high_nmcpy(user_data, iucv->dst_name);
--- 
-2.43.0
-
+ 		__entry->active = mptcp_subflow_active(subflow);
+-		__entry->backup = subflow->backup;
++		__entry->backup = subflow->backup || subflow->request_bkup;
+ 
+ 		if (subflow->tcp_sock && sk_fullsock(subflow->tcp_sock))
+ 			__entry->free = sk_stream_memory_free(subflow->tcp_sock);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1514,13 +1514,15 @@ static struct sock *mptcp_subflow_get_se
+ 		send_info[i].ratio = -1;
+ 	}
+ 	mptcp_for_each_subflow(msk, subflow) {
++		bool backup = subflow->backup || subflow->request_bkup;
++
+ 		trace_mptcp_subflow_get_send(subflow);
+ 		ssk =  mptcp_subflow_tcp_sock(subflow);
+ 		if (!mptcp_subflow_active(subflow))
+ 			continue;
+ 
+ 		tout = max(tout, mptcp_timeout_from_subflow(subflow));
+-		nr_active += !subflow->backup;
++		nr_active += !backup;
+ 		if (!sk_stream_memory_free(subflow->tcp_sock) || !tcp_sk(ssk)->snd_wnd)
+ 			continue;
+ 
+@@ -1530,9 +1532,9 @@ static struct sock *mptcp_subflow_get_se
+ 
+ 		ratio = div_u64((u64)READ_ONCE(ssk->sk_wmem_queued) << 32,
+ 				pace);
+-		if (ratio < send_info[subflow->backup].ratio) {
+-			send_info[subflow->backup].ssk = ssk;
+-			send_info[subflow->backup].ratio = ratio;
++		if (ratio < send_info[backup].ratio) {
++			send_info[backup].ssk = ssk;
++			send_info[backup].ratio = ratio;
+ 		}
+ 	}
+ 	__mptcp_set_timeout(sk, tout);
 
 
 
