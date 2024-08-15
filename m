@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-68764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405EF9533DA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46684953250
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7442A1C254D6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12B91F216DA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840F91A7076;
-	Thu, 15 Aug 2024 14:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19C41AAE3B;
+	Thu, 15 Aug 2024 14:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEntuOJe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynlbf5XC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431D61A4F22;
-	Thu, 15 Aug 2024 14:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6901A76CC;
+	Thu, 15 Aug 2024 14:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731591; cv=none; b=qkBc056Moh11/ujcLwWBJd/Ccp7aaob1VwF4ou5J1R/JCCdDwwLFN2n7WptoAPVSJ4l/YhJBIMR5B1TZpJ4z80uYiDMPq8lrjzRmZ2u184+zHM3eSrXS/znaOYZPFsSou0b1JQyFD2N1SZQ4HmmZfyXNjL2lDJWgOgrV3TdFQgI=
+	t=1723730582; cv=none; b=MFZV48HhhIDO6bkml/62WTpYRrFwap8EmasovTrMHuC8imlrxcM9w54CHMXm9UZ8DDol20an+QOezTDEuMQFxqUn7YZRx4G9Fq4/hli3644xo4EOtsAQsHUUA8p/aYuFzp5Q7SHGX22Xi7+lSE1F+6X+e63kE1bQ3Oit4ES0uFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731591; c=relaxed/simple;
-	bh=R65dzwqoiX6c12McE9yHT1Au1TyGyovnKaArqQ+g9MA=;
+	s=arc-20240116; t=1723730582; c=relaxed/simple;
+	bh=ff/h5LCscXKw0ZfY4iYARPeuLnoeVXmlHdhlUGCRE4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jH2eHfaggO9TTSNj7380PwPX1q+/TqqIBg7iYoU2l9GlYcNylE4tCxBytGe62he8HU5rFtTeIV1mX07BCuZtdWbbSRGxZnK/lspacHyuC4C93j6jgpL+p9UenV8AWgWC6PaVprdmAzgMbvmP588s6zISYcjlv+sCa5PSVfeIBU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEntuOJe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EBAC4AF0D;
-	Thu, 15 Aug 2024 14:19:50 +0000 (UTC)
+	 MIME-Version; b=NBncq9PBUbJ3ALuzK1V4PjmC5VnOyqQQmxtzqsgZRSEwbRRIfJO16ra87IylM3uYTB7xun4l5yi4sFegyq7PqUEhAyxkvuRJmAH126562SJWDVr0k++tRUNBfxjzT5KrNt6xb9nSXO8x0hksTS+/EmulI0fz3/713MXOLYmPFd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynlbf5XC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB05DC32786;
+	Thu, 15 Aug 2024 14:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731591;
-	bh=R65dzwqoiX6c12McE9yHT1Au1TyGyovnKaArqQ+g9MA=;
+	s=korg; t=1723730582;
+	bh=ff/h5LCscXKw0ZfY4iYARPeuLnoeVXmlHdhlUGCRE4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FEntuOJe3T5ncl6ygIMc0hY7lcLk5d7sja8/coFDV4ENHLfKoMik0OvJDB17OB9Os
-	 qAjXz5+pAjHaY7JG3Y0dZnWOvYfmbfyY8K7xZ5sucvFUcB7kFq5sFUcz+kTTb4nM5O
-	 br/mkRwu1KPnOTRTox8ng2J0KJFum5HgWwkSC/iI=
+	b=ynlbf5XC95dwTYZnK1XzevRJW4ga4hn07s0NKAsjr8hB1uJCD50JnDjuXUsUOsQX3
+	 W9jM7ukh9FERqPVIpHZ0aNwfvS2Liu6ssvZL1GCHa+M4/ngms6IHosByFQilh68R4N
+	 ttALihA/96ITVWEhL9oH46eP3AuHWXp/G1jRmQ9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
-	Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 5.4 178/259] HID: wacom: Modify pen IDs
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 453/484] mptcp: fix NL PM announced address accounting
 Date: Thu, 15 Aug 2024 15:25:11 +0200
-Message-ID: <20240815131909.652819519@linuxfoundation.org>
+Message-ID: <20240815131958.961645217@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit f0d17d696dfce77c9abc830e4ac2d677890a2dad upstream.
+commit 4b317e0eb287bd30a1b329513531157c25e8b692 upstream.
 
-The pen ID, 0x80842, was not the correct ID for wacom driver to
-treat. The ID was corrected to 0x8842.
-Also, 0x4200 was not the expected ID used on any Wacom device.
-Therefore, 0x4200 was removed.
+Currently the per connection announced address counter is never
+decreased. As a consequence, after connection establishment, if
+the NL PM deletes an endpoint and adds a new/different one, no
+additional subflow is created for the new endpoint even if the
+current limits allow that.
 
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>
-Fixes: bfdc750c4cb2 ("HID: wacom: add three styli to wacom_intuos_get_tool_type")
-Cc: stable@kernel.org #6.2
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Link: https://patch.msgid.link/20240709055729.17158-1-tatsunosuke.wacom@gmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Address the issue properly updating the signaled address counter
+every time the NL PM removes such addresses.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ Conflicts in pm_netlink.c, because the commit 6fa0174a7c86 ("mptcp:
+  more careful RM_ADDR generation") is not in this version. The
+  conditions are slightly different, but the same fix can be applied:
+  first checking the IDs, then removing the address. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mptcp/pm_netlink.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -714,13 +714,12 @@ static int wacom_intuos_get_tool_type(in
- 	case 0x8e2: /* IntuosHT2 pen */
- 	case 0x022:
- 	case 0x200: /* Pro Pen 3 */
--	case 0x04200: /* Pro Pen 3 */
- 	case 0x10842: /* MobileStudio Pro Pro Pen slim */
- 	case 0x14802: /* Intuos4/5 13HD/24HD Classic Pen */
- 	case 0x16802: /* Cintiq 13HD Pro Pen */
- 	case 0x18802: /* DTH2242 Pen */
- 	case 0x10802: /* Intuos4/5 13HD/24HD General Pen */
--	case 0x80842: /* Intuos Pro and Cintiq Pro 3D Pen */
-+	case 0x8842: /* Intuos Pro and Cintiq Pro 3D Pen */
- 		tool_type = BTN_TOOL_PEN;
- 		break;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1323,6 +1323,7 @@ static bool mptcp_pm_remove_anno_addr(st
+ 	ret = remove_anno_list_by_saddr(msk, addr);
+ 	if (ret || force) {
+ 		spin_lock_bh(&msk->pm.lock);
++		msk->pm.add_addr_signaled -= ret;
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
+@@ -1462,19 +1463,20 @@ static void mptcp_pm_remove_addrs_and_su
+ 	struct mptcp_pm_addr_entry *entry;
  
+ 	list_for_each_entry(entry, rm_list, list) {
+-		if (lookup_subflow_by_saddr(&msk->conn_list, &entry->addr) &&
+-		    alist.nr < MPTCP_RM_IDS_MAX &&
+-		    slist.nr < MPTCP_RM_IDS_MAX) {
++		if (alist.nr < MPTCP_RM_IDS_MAX &&
++		    slist.nr < MPTCP_RM_IDS_MAX &&
++		    lookup_subflow_by_saddr(&msk->conn_list, &entry->addr)) {
+ 			alist.ids[alist.nr++] = entry->addr.id;
+ 			slist.ids[slist.nr++] = entry->addr.id;
+-		} else if (remove_anno_list_by_saddr(msk, &entry->addr) &&
+-			 alist.nr < MPTCP_RM_IDS_MAX) {
++		} else if (alist.nr < MPTCP_RM_IDS_MAX &&
++			   remove_anno_list_by_saddr(msk, &entry->addr)) {
+ 			alist.ids[alist.nr++] = entry->addr.id;
+ 		}
+ 	}
+ 
+ 	if (alist.nr) {
+ 		spin_lock_bh(&msk->pm.lock);
++		msk->pm.add_addr_signaled -= alist.nr;
+ 		mptcp_pm_remove_addr(msk, &alist);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
 
 
 
