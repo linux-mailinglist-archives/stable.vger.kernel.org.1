@@ -1,112 +1,141 @@
-Return-Path: <stable+bounces-67746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14703952AE1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 10:52:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B85952AE7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 10:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9E641F2312D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 08:52:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 032461C2133D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 08:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99C21B4C30;
-	Thu, 15 Aug 2024 08:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9FD1AED52;
+	Thu, 15 Aug 2024 08:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvo7UfAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ein1RbFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670F0CA62;
-	Thu, 15 Aug 2024 08:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E226717625E;
+	Thu, 15 Aug 2024 08:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723710021; cv=none; b=h7yaLjQQCvid2FvkGwiKnrHpNF4Z2KCTZS8zDkaIuym/J8DA1hhF5tkqRpwgBSoOXTaIV/OxxKbQIjd3uD4lhTmpfu42nFDG6qH2xZLtKnFMpqxAjVo4nXhEpjl1dmqycd/sKTvztek/AOd3Tsb5vA6trSM4IFG/h9+1QbcAu1M=
+	t=1723710140; cv=none; b=YRFmL+5S7GFCAFiOUNsZhsODik49HnDFT159vWLP9Bz/WoRVbDUaOxBt0yOYaHOUX3Kx2LSkGfq3qej7irGT6a3s2J2OPaXrCYludG3q97PUx8EwHrpu193bV05Vj2I18K2+6pwD6Ts6gVCzLvRlgXsNeFnhVHizTi8AokuyCQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723710021; c=relaxed/simple;
-	bh=wd/Y+TeYN12Lhnm2jpny0XtOIGAI+2cFoEeolW+p4wo=;
+	s=arc-20240116; t=1723710140; c=relaxed/simple;
+	bh=8KRb+FzFzuh+a8cFQJg8U/5W8v8p3+oLbqlARzXcDuM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r5xIJyGp8wGeFI+lqo2vt0qU2yEB+y3VTskjR8Ud+5icKroRQ9qBcxdpVB9OqzQxz0uOaghGWA6v97ZIaF+rflhuOh5/ojDGbvBW01EQFnMuViL8g4qUgdqRRRjE3nfKfMO0yji5S8YB92I+g18f6jF65V4e8Bd5MiegX+ck+3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvo7UfAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22B9C32786;
-	Thu, 15 Aug 2024 08:20:19 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=C/dQlh8BBSMO/RZHiNm+1svgeYwzkGmKaSUhxxcM4IDWB5vhub3GebyBi/w/T6fNdDVvXL2zPxJXpg47RpAm5fpJncUng4AE4pIwrXdC7BZfciErsvB4wGNhfclAsrfsc5cO6VpS+5QYAG4nCQ9eeT+MG9p+2Rxlqhsjkj9nK5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ein1RbFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DF1C32786;
+	Thu, 15 Aug 2024 08:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723710020;
-	bh=wd/Y+TeYN12Lhnm2jpny0XtOIGAI+2cFoEeolW+p4wo=;
+	s=korg; t=1723710139;
+	bh=8KRb+FzFzuh+a8cFQJg8U/5W8v8p3+oLbqlARzXcDuM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pvo7UfAAcuYqLzpfuRr62Ufr7z30dSfnDKrmRdxpQg2OikS2qSa1g/waDKyns6obl
-	 rSPUYYm3UYNg5HyI9N2BdRkC8U/7mjquoINEW9jgbc6GVtPRNhN+SC3/xc7rX1oXNA
-	 /fGq8pcKBpcocHtMEsz+oGxLJ+/VFrFCZQrQa7xs=
-Date: Thu, 15 Aug 2024 10:20:09 +0200
+	b=ein1RbFdiNIjgtbL9IPns94n5kybDo7kop73QOwY2Y8D7JY3DGiaDbr3EjxBu7gAm
+	 dUw4ViJjoefOFBO8TaQPp1xpDSR7IdQASmR8AJH4Z7JpAzVWWB0VBNFlE0OQjisRNG
+	 /nc2Fr9RP/eD02bWnAXv4LzcD48A4Z/mJhi6YGi8=
+Date: Thu, 15 Aug 2024 10:22:14 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kevin Holm <kevin@holm.dev>
-Cc: "Lin, Wayne" <Wayne.Lin@amd.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"Limonciello, Mario" <Mario.Limonciello@amd.com>,
-	"Deucher, Alexander" <Alexander.Deucher@amd.com>,
-	"Wu, Hersen" <hersenxs.wu@amd.com>,
-	"Wheeler, Daniel" <Daniel.Wheeler@amd.com>
-Subject: Re: [PATCH 6.10 257/263] drm/amd/display: Defer handling mst up
- request in resume
-Message-ID: <2024081529-decidable-visor-6b22@gregkh>
-References: <20240812160146.517184156@linuxfoundation.org>
- <20240812160156.489958533@linuxfoundation.org>
- <235aa62e-271e-4e2b-b308-e29b561d6419@holm.dev>
- <2024081345-eggnog-unease-7b3c@gregkh>
- <CO6PR12MB5489A767C7E0B1CFAEB069A0FC862@CO6PR12MB5489.namprd12.prod.outlook.com>
- <2024081317-penniless-gondola-2c07@gregkh>
- <12516acf-bee6-4371-a745-8f9e221bc657@holm.dev>
- <2d48c3c0-286d-4ed7-a3b6-5b4742b0e9d1@holm.dev>
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev,
+	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH for-stable] LoongArch: Define __ARCH_WANT_NEW_STAT in
+ unistd.h
+Message-ID: <2024081509-hurry-subsonic-466d@gregkh>
+References: <CAAhV-H6vXEaJf9NO9Lqh0xKoFAehtOOOLQVO4j5v+_tD7oKEXQ@mail.gmail.com>
+ <20240730022542.3553255-1-chenhuacai@loongson.cn>
+ <2024073059-hamstring-verbalize-91df@gregkh>
+ <CAAhV-H7W-Ygn6tXySrip4k3P5xVbVf7GpjOzjXfQvCCbA4r5Wg@mail.gmail.com>
+ <2024081126-blubber-flaky-8219@gregkh>
+ <5aa26f6b0365ebf6b7e3c5b3d1c0a345b46431d3.camel@xry111.site>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2d48c3c0-286d-4ed7-a3b6-5b4742b0e9d1@holm.dev>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5aa26f6b0365ebf6b7e3c5b3d1c0a345b46431d3.camel@xry111.site>
 
-On Wed, Aug 14, 2024 at 09:43:23AM +0200, Kevin Holm wrote:
-> On 8/13/24 21:54, Kevin Holm wrote:
-> > On 13.08.24 17:26, Greg Kroah-Hartman wrote:
-> >  > On Tue, Aug 13, 2024 at 02:41:34PM +0000, Lin, Wayne wrote:
-> >  >> [AMD Official Use Only - AMD Internal Distribution Only]
-> >  >>
-> >  >> Hi Greg and Kevin,
-> >  >>
-> >  >> Sorry for inconvenience, but this one should be reverted by another
-> > backport patch:
-> >  >> "drm/amd/display: Solve mst monitors blank out problem after resume"
-> >  >
-> >  > What commit id in Linus's tree is that?
+On Wed, Aug 14, 2024 at 05:18:29PM +0800, Xi Ruoyao wrote:
+> On Sun, 2024-08-11 at 17:42 +0200, Greg Kroah-Hartman wrote:
+> > On Wed, Jul 31, 2024 at 09:06:56AM +0800, Huacai Chen wrote:
+> > > On Tue, Jul 30, 2024 at 10:24 PM Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > > 
+> > > > On Tue, Jul 30, 2024 at 10:25:42AM +0800, Huacai Chen wrote:
+> > > > > Chromium sandbox apparently wants to deny statx [1] so it could properly
+> > > > > inspect arguments after the sandboxed process later falls back to fstat.
+> > > > > Because there's currently not a "fd-only" version of statx, so that the
+> > > > > sandbox has no way to ensure the path argument is empty without being
+> > > > > able to peek into the sandboxed process's memory. For architectures able
+> > > > > to do newfstatat though, glibc falls back to newfstatat after getting
+> > > > > -ENOSYS for statx, then the respective SIGSYS handler [2] takes care of
+> > > > > inspecting the path argument, transforming allowed newfstatat's into
+> > > > > fstat instead which is allowed and has the same type of return value.
+> > > > > 
+> > > > > But, as LoongArch is the first architecture to not have fstat nor
+> > > > > newfstatat, the LoongArch glibc does not attempt falling back at all
+> > > > > when it gets -ENOSYS for statx -- and you see the problem there!
+> > > > > 
+> > > > > Actually, back when the LoongArch port was under review, people were
+> > > > > aware of the same problem with sandboxing clone3 [3], so clone was
+> > > > > eventually kept. Unfortunately it seemed at that time no one had noticed
+> > > > > statx, so besides restoring fstat/newfstatat to LoongArch uapi (and
+> > > > > postponing the problem further), it seems inevitable that we would need
+> > > > > to tackle seccomp deep argument inspection.
+> > > > > 
+> > > > > However, this is obviously a decision that shouldn't be taken lightly,
+> > > > > so we just restore fstat/newfstatat by defining __ARCH_WANT_NEW_STAT
+> > > > > in unistd.h. This is the simplest solution for now, and so we hope the
+> > > > > community will tackle the long-standing problem of seccomp deep argument
+> > > > > inspection in the future [4][5].
+> > > > > 
+> > > > > More infomation please reading this thread [6].
+> > > > > 
+> > > > > [1] https://chromium-review.googlesource.com/c/chromium/src/+/2823150
+> > > > > [2] https://chromium.googlesource.com/chromium/src/sandbox/+/c085b51940bd/linux/seccomp-bpf-helpers/sigsys_handlers.cc#355
+> > > > > [3] https://lore.kernel.org/linux-arch/20220511211231.GG7074@brightrain.aerifal.cx/
+> > > > > [4] https://lwn.net/Articles/799557/
+> > > > > [5] https://lpc.events/event/4/contributions/560/attachments/397/640/deep-arg-inspection.pdf
+> > > > > [6] https://lore.kernel.org/loongarch/20240226-granit-seilschaft-eccc2433014d@brauner/T/#t
+> > > > > 
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > > > ---
+> > > > >  arch/loongarch/include/uapi/asm/unistd.h | 1 +
+> > > > >  1 file changed, 1 insertion(+)
+> > > > > 
+> > > > > diff --git a/arch/loongarch/include/uapi/asm/unistd.h b/arch/loongarch/include/uapi/asm/unistd.h
+> > > > > index fcb668984f03..b344b1f91715 100644
+> > > > > --- a/arch/loongarch/include/uapi/asm/unistd.h
+> > > > > +++ b/arch/loongarch/include/uapi/asm/unistd.h
+> > > > > @@ -1,4 +1,5 @@
+> > > > >  /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+> > > > > +#define __ARCH_WANT_NEW_STAT
+> > > > >  #define __ARCH_WANT_SYS_CLONE
+> > > > >  #define __ARCH_WANT_SYS_CLONE3
+> > > > > 
+> > > > > --
+> > > > > 2.43.5
+> > > > > 
+> > > > > 
+> > > > 
+> > > > What kernel branch(s) is this for?
+> > > For 6.1~6.10.
 > > 
-> >  From what I can tell it's:
-> > e33697141bac18 ("drm/amd/display: Solve mst monitors blank out problem
-> > after resume")
-> > 
-> > You've send out a message that it failed to apply to a few of the stable trees:
-> > - 6.10: https://lore.kernel.org/stable/2024081212-vitally-baked-7f93@gregkh/
-> > - 6.6 : https://lore.kernel.org/stable/2024081213-roast-humorless-fd20@gregkh/
-> > - 6.1 : https://lore.kernel.org/stable/2024081213-sweep-hungry-2d10@gregkh/
-> > 
-> > To apply it on top of 6.10.5-rc1 these two patches need to be applied first:
-> > f63f86b5affcc2 ("drm/amd/display: Separate setting and programming of cursor")
-> > 1ff6631baeb1f5 ("drm/amd/display: Prevent IPX From Link Detect and Set Mode")
-> > 
-> > I don't know if that solves the problem I initially described as I'm currently
-> > on a different setup. What I can say is that it applying those three patches on
+> > What is the git id of this change in Linus's tree?
 > 
-> Applying the three patches I listed above, fixes the problem for my setup. My
-> external 4k monitors now get a signal both on boot and when resuming from sleep.
+> https://git.kernel.org/torvalds/c/7697a0fe0154
 
-Ok, that worked for 6.10.y, but the dependant patches did not apply to
-6.6.y or 6.1.y, so I'll only pick this up for 6.10.y for now unless
-someone sends me a series of patches backported.
-
-thanks,
+Thanks, now queued up.
 
 greg k-h
 
