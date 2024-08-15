@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-68533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFB89532CE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00169533E3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 105361F21973
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5540B288ECC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A564B1AED5A;
-	Thu, 15 Aug 2024 14:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B296B1A2C11;
+	Thu, 15 Aug 2024 14:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWCJZQTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCpvnRxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D1D44376;
-	Thu, 15 Aug 2024 14:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFBB1A0712;
+	Thu, 15 Aug 2024 14:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730869; cv=none; b=JbFh4//mMgdL43y0J9WdPWCkF+w2nzBQVYk6mk4CQGPEnym2Hrpon34w5V9HzeFq1eRuu947lfDDfteGmTnuuFN2At7izG0PpYRdobujAoRTrQu7r44RaehIVOuQ+U0RCWLgu7WQoxqQnnESCtTMOoFT6Tgl2adMtNv42foGcgY=
+	t=1723731617; cv=none; b=afZSEE83VH068zBXsXuFKpjk1yU6lHpRSutgr3tX4FbyKXjfIMl0X4cIMPW70Ma3y6vspR/N8zdnGa3uyormlbl1xMFX2cEpE8HlvX50OJKVIRfMzSxpX/4kDsFlupOG60iXFJK2YoC0dHDLV9f7iks+ICMEKFfCvq/mJ3dUBHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730869; c=relaxed/simple;
-	bh=hy24SqDZCdLCO/zAAy181hD4hEXWOZFsEyfxft/udCE=;
+	s=arc-20240116; t=1723731617; c=relaxed/simple;
+	bh=uDnKTNjnYEOABhkcfEJYUKZzPEZDn3n5XWJjk8hVEhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4JXQ8MiQQaa1Z3fsHzl5T9X5GotP7o+hDVEZq3tPKwmTbh5bOQIEB+R9Kf1vIBHvYo+M7/yYTTBXkS58x7luyzRpbpF36cY6Xhyi47QfwRvumEmwWTtK0gVE6efjbIUTbN6awC6iwkhe92YT1iP3A2epb74DCuzyYimQtSDZ7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWCJZQTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D992BC32786;
-	Thu, 15 Aug 2024 14:07:48 +0000 (UTC)
+	 MIME-Version; b=cxcY2OYaGAcrWGDHJ3uQLXDZsxOAWu2EEECEJ5KgwpMMmmcwhVerwrI96e0cUv87Mjr213C4uhqG6odElIPeOwxCO/o1DpFyZglfgPNHMzks3n/EfY8G/0A6IBghGdWggNdcgia0Vej2D4ZKu1B3915fGCMKYpZ5H3JXJJE+CYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCpvnRxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61FCC32786;
+	Thu, 15 Aug 2024 14:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730869;
-	bh=hy24SqDZCdLCO/zAAy181hD4hEXWOZFsEyfxft/udCE=;
+	s=korg; t=1723731617;
+	bh=uDnKTNjnYEOABhkcfEJYUKZzPEZDn3n5XWJjk8hVEhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xWCJZQTIqIA+sgaqlAl7jLWeH8zI5UbB1RfJyhoILBl2/WxkFRrSjqIlKb+V/0rtm
-	 8tHqSj5iInQ36bKU9LtULkzFh6TdKp+Pt1byQnqPwmwUBHBpEwGZzmEoBqvGGdB0Yw
-	 0CeUstkmvxvSj7NO2RimhTZ+3dTcdJ98h8kdPsoU=
+	b=mCpvnRxbSb6XK2CRsv6hgA7Y8oR5PbwFyP3YBYjZKyJBZ0SA+2IK36n7Jh6U4d2g6
+	 e8k2ZafO+SVU7wl7+cMNrY/HWBX6QWVbUVG5WXMGjWSG9kelkEMabCETqwynaCjRSB
+	 k0KDDi1/rBUn6wuAdmNEBfNI4MQVdqrZI9Z5vK8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 04/67] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
+	Guenter Roeck <linux@roeck-us.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 185/259] x86/mm: Fix pti_clone_pgtable() alignment assumption
 Date: Thu, 15 Aug 2024 15:25:18 +0200
-Message-ID: <20240815131838.486320821@linuxfoundation.org>
+Message-ID: <20240815131909.924567110@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 7697a0fe0154468f5df35c23ebd7aa48994c2cdc upstream.
+[ Upstream commit 41e71dbb0e0a0fe214545fe64af031303a08524c ]
 
-Chromium sandbox apparently wants to deny statx [1] so it could properly
-inspect arguments after the sandboxed process later falls back to fstat.
-Because there's currently not a "fd-only" version of statx, so that the
-sandbox has no way to ensure the path argument is empty without being
-able to peek into the sandboxed process's memory. For architectures able
-to do newfstatat though, glibc falls back to newfstatat after getting
--ENOSYS for statx, then the respective SIGSYS handler [2] takes care of
-inspecting the path argument, transforming allowed newfstatat's into
-fstat instead which is allowed and has the same type of return value.
+Guenter reported dodgy crashes on an i386-nosmp build using GCC-11
+that had the form of endless traps until entry stack exhaust and then
+#DF from the stack guard.
 
-But, as LoongArch is the first architecture to not have fstat nor
-newfstatat, the LoongArch glibc does not attempt falling back at all
-when it gets -ENOSYS for statx -- and you see the problem there!
+It turned out that pti_clone_pgtable() had alignment assumptions on
+the start address, notably it hard assumes start is PMD aligned. This
+is true on x86_64, but very much not true on i386.
 
-Actually, back when the LoongArch port was under review, people were
-aware of the same problem with sandboxing clone3 [3], so clone was
-eventually kept. Unfortunately it seemed at that time no one had noticed
-statx, so besides restoring fstat/newfstatat to LoongArch uapi (and
-postponing the problem further), it seems inevitable that we would need
-to tackle seccomp deep argument inspection.
+These assumptions can cause the end condition to malfunction, leading
+to a 'short' clone. Guess what happens when the user mapping has a
+short copy of the entry text?
 
-However, this is obviously a decision that shouldn't be taken lightly,
-so we just restore fstat/newfstatat by defining __ARCH_WANT_NEW_STAT
-in unistd.h. This is the simplest solution for now, and so we hope the
-community will tackle the long-standing problem of seccomp deep argument
-inspection in the future [4][5].
+Use the correct increment form for addr to avoid alignment
+assumptions.
 
-Also add "newstat" to syscall_abis_64 in Makefile.syscalls due to
-upstream asm-generic changes.
-
-More infomation please reading this thread [6].
-
-[1] https://chromium-review.googlesource.com/c/chromium/src/+/2823150
-[2] https://chromium.googlesource.com/chromium/src/sandbox/+/c085b51940bd/linux/seccomp-bpf-helpers/sigsys_handlers.cc#355
-[3] https://lore.kernel.org/linux-arch/20220511211231.GG7074@brightrain.aerifal.cx/
-[4] https://lwn.net/Articles/799557/
-[5] https://lpc.events/event/4/contributions/560/attachments/397/640/deep-arg-inspection.pdf
-[6] https://lore.kernel.org/loongarch/20240226-granit-seilschaft-eccc2433014d@brauner/T/#t
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20240731163105.GG33588@noisy.programming.kicks-ass.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/uapi/asm/unistd.h |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/mm/pti.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/include/uapi/asm/unistd.h
-+++ b/arch/loongarch/include/uapi/asm/unistd.h
-@@ -1,4 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#define __ARCH_WANT_NEW_STAT
- #define __ARCH_WANT_SYS_CLONE
- #define __ARCH_WANT_SYS_CLONE3
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index 7f2140414440d..29eaf3cd9bbdb 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -375,14 +375,14 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
+ 			 */
+ 			*target_pmd = *pmd;
  
+-			addr += PMD_SIZE;
++			addr = round_up(addr + 1, PMD_SIZE);
+ 
+ 		} else if (level == PTI_CLONE_PTE) {
+ 
+ 			/* Walk the page-table down to the pte level */
+ 			pte = pte_offset_kernel(pmd, addr);
+ 			if (pte_none(*pte)) {
+-				addr += PAGE_SIZE;
++				addr = round_up(addr + 1, PAGE_SIZE);
+ 				continue;
+ 			}
+ 
+@@ -402,7 +402,7 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
+ 			/* Clone the PTE */
+ 			*target_pte = *pte;
+ 
+-			addr += PAGE_SIZE;
++			addr = round_up(addr + 1, PAGE_SIZE);
+ 
+ 		} else {
+ 			BUG();
+-- 
+2.43.0
+
 
 
 
