@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-68570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D7F9532FC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:12:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C0395358E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB141C20BC1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:12:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6529C1F26C4C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5975A1BA879;
-	Thu, 15 Aug 2024 14:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D8E1A00CF;
+	Thu, 15 Aug 2024 14:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzfxSEEQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ek+8bFiI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1512C1AE84C;
-	Thu, 15 Aug 2024 14:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235721AC893;
+	Thu, 15 Aug 2024 14:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730985; cv=none; b=NsKgyDPIz3knibPP+r1Gjpw1u+JQK8/u7qy4fcIWezshtO1nq1rH2IUZFAqhYN0Y4UNdYlJWI+sL5cgjzLRXo6Jt/WXmfATkCDTKFrGYbdPGT7WOk60cdf30qCJTDK9k0RmCkGCkURAhJIjkbtW9AEOR0W0DnH97ef5hzJk8mck=
+	t=1723732740; cv=none; b=dYuEMWq/sY1QH88vmyQEf2ccTZTPBglzCwCGUdq7SoeL44FLlBZcEBgrjHVOFuFgF1rwoSSke/3LRlDi/v0VFh/ytYGaI4ckVACPsVkCN6m9ccWCzGGLQ52FE5uIaHkAfRcRFca+jYQ2i2K4tvv/inkZBWAd2X7FOgPTBQUudpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730985; c=relaxed/simple;
-	bh=+epm1Ze4trRhU0LXeWm6ZScHhvIEnN8KHWRGgw3tzw4=;
+	s=arc-20240116; t=1723732740; c=relaxed/simple;
+	bh=WCdFpOBj50uSNiJvHpME9an8b1zf1uA5ERRFPrNcabI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lMhebWV3bW1E1JI0P1uENNnwSmRlMbMXC1RNAy+K6M8uQs2c+A9/1Hx6iefyvMgFnh7gG0Idi5bUk2ucbrmsAmgsUpguQq/WAb9JRqg1qhJeGt9fyEfVn+MnTDbUpPpIVkFe5wwOzTRLT6je7CvdWXxFxSIpH5qMmnfuchZ3TcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzfxSEEQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847E8C32786;
-	Thu, 15 Aug 2024 14:09:44 +0000 (UTC)
+	 MIME-Version; b=AK777eUwCRGTFB6Uftk8/wUk4JKLt6wVVPsihnp2cEpXFBGyfE63/YRqCU8PJkqDlIjGvdEnlPEBOixybdMQ+E6Fx5HEPbhkrAoiopIidLIVBIgUwNh3wbpsssfNJbIGY2vzeRZAQP/+fhoFDhGKTG936cvhFFwK3kstegT7Gl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ek+8bFiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 474E4C32786;
+	Thu, 15 Aug 2024 14:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730984;
-	bh=+epm1Ze4trRhU0LXeWm6ZScHhvIEnN8KHWRGgw3tzw4=;
+	s=korg; t=1723732739;
+	bh=WCdFpOBj50uSNiJvHpME9an8b1zf1uA5ERRFPrNcabI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzfxSEEQJaORMxAAHPlmsIugay6AzctTEPyTrcai19pb4swwlNDY6iLTMzdoxteJ6
-	 J1s3IE4uHW57TJw6fa3xQF0t5lwJS1ARMoeq5dMAiW4/3xF4a4jXl6pq1UxC40a1Mx
-	 3njhdPQwZoSGfy7yOI1oG2TUOoxHWc+E5jw46oZo=
+	b=ek+8bFiI/03v4KwrAb1aYtQYyT+jrgaQoQF71P588b+YZa7IMBNq4WWkUE5ihZyeU
+	 Ttib0w1+z2kgg519dw6xv1bfemtuzOwP30qsYkKeKSjP51JhiddpJCIroN8c2kAZhf
+	 34KO+7AkRlo5tqI+Wt82AllTGlAbyfuTVuRDtq34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 23/67] wifi: mac80211: take wiphy lock for MAC addr change
+Subject: [PATCH 5.10 271/352] btrfs: fix bitmap leak when loading free space cache on duplicate entry
 Date: Thu, 15 Aug 2024 15:25:37 +0200
-Message-ID: <20240815131839.224649878@linuxfoundation.org>
+Message-ID: <20240815131929.925714640@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit a26787aa13974fb0b3fb42bfeb4256c1b686e305 ]
+[ Upstream commit 320d8dc612660da84c3b70a28658bb38069e5a9a ]
 
-We want to ensure everything holds the wiphy lock,
-so also extend that to the MAC change callback.
+If we failed to link a free space entry because there's already a
+conflicting entry for the same offset, we free the free space entry but
+we don't free the associated bitmap that we had just allocated before.
+Fix that by freeing the bitmap before freeing the entry.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 74a7c93f45ab ("wifi: mac80211: fix change_address deadlock during unregister")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ fs/btrfs/free-space-cache.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 6e3bfb46af44d..9ac5252c3da00 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -251,9 +251,9 @@ static int ieee80211_can_powered_addr_change(struct ieee80211_sub_if_data *sdata
- 	return ret;
- }
- 
--static int ieee80211_change_mac(struct net_device *dev, void *addr)
-+static int _ieee80211_change_mac(struct ieee80211_sub_if_data *sdata,
-+				 void *addr)
- {
--	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
- 	struct ieee80211_local *local = sdata->local;
- 	struct sockaddr *sa = addr;
- 	bool check_dup = true;
-@@ -278,7 +278,7 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
- 
- 	if (live)
- 		drv_remove_interface(local, sdata);
--	ret = eth_mac_addr(dev, sa);
-+	ret = eth_mac_addr(sdata->dev, sa);
- 
- 	if (ret == 0) {
- 		memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
-@@ -294,6 +294,19 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
- 	return ret;
- }
- 
-+static int ieee80211_change_mac(struct net_device *dev, void *addr)
-+{
-+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-+	struct ieee80211_local *local = sdata->local;
-+	int ret;
-+
-+	wiphy_lock(local->hw.wiphy);
-+	ret = _ieee80211_change_mac(sdata, addr);
-+	wiphy_unlock(local->hw.wiphy);
-+
-+	return ret;
-+}
-+
- static inline int identical_mac_addr_allowed(int type1, int type2)
- {
- 	return type1 == NL80211_IFTYPE_MONITOR ||
+diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
+index 4989c60b1df9c..af52c9e005b3c 100644
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -798,6 +798,7 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
+ 				spin_unlock(&ctl->tree_lock);
+ 				btrfs_err(fs_info,
+ 					"Duplicate entries in free space cache, dumping");
++				kmem_cache_free(btrfs_free_space_bitmap_cachep, e->bitmap);
+ 				kmem_cache_free(btrfs_free_space_cachep, e);
+ 				goto free_cache;
+ 			}
 -- 
 2.43.0
 
