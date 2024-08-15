@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-69108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A9495357A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:38:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B92189532C4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D436AB2441A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:38:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E4C21F21F99
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73B61A2570;
-	Thu, 15 Aug 2024 14:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6911A01CC;
+	Thu, 15 Aug 2024 14:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNGFPcfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkfKIlu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750E31A0733;
-	Thu, 15 Aug 2024 14:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F068519F49A;
+	Thu, 15 Aug 2024 14:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732693; cv=none; b=pc0tMqPkjO9mRurik7LrEn6my0R/FdV2vQ1kc770ZPx7TA41s1SKzzIpEVUOxR8ahmN5DkITtxkHRq5pUbK6g83cvVClYx2eeHqy/g6H7u1n+WgeqpBVgM7jAOygX05s/bwR7Z+bcHk8eG1VAo2d0DViImgrAn76x7K3mRwSyBo=
+	t=1723730843; cv=none; b=cQxvlCEPOR8y3YSOwNBC1a9+8XAUh5ZJNbg0DZetFgu+JtN+oUo/wdMTaVyxPDfJEm5tncVi6Jif6eRP67C+z6SU0cWenWU9jmcpAqIuouwYKEvbFfZpb/sf41uFVSQ+oFOsG+0HvC7+IugZf7ZceCA03dmEx70GCC9dDOaoouY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732693; c=relaxed/simple;
-	bh=lRMrOls95I6t6IdCESuy6j9BxWAkgbJXhO6vj1vkhJ0=;
+	s=arc-20240116; t=1723730843; c=relaxed/simple;
+	bh=kHhjm6Btrii3Nto3tPQBqWfPAzu1tSqqkxCQd/Z30Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ia5ko7BsG3dXofKMBgSBmTC4Its7NKtRLYlApa/yDrsu6z+JzNjtJuRaM3OpdxKNd2a55SpcCrcgr85yJcTS52RNfBYZN7mcNBcvnC9X8EzdMxht7v5fVQZagf/Q+1eGHLcHky58n1AAQLJUQv6V6i3SlFUcGPGS8w20j+QYqRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNGFPcfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E410BC4AF0D;
-	Thu, 15 Aug 2024 14:38:12 +0000 (UTC)
+	 MIME-Version; b=EEfh/2mi+fT4QtF4qig+jdJNXIYRFoGJ5ta38DCu7Ag9+2pQvAK1emEvMRxspcsFrmzmJeBKIcvTtGsfea+h2uKKSiTU99tr+sb4krzvpVQMqifMwJ7+RHSnGKhhrU02f2MNN6fcVQX3WC0C/o/80WQ/iC0gTfbXNxnei38hveQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkfKIlu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CA9C4AF0C;
+	Thu, 15 Aug 2024 14:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732693;
-	bh=lRMrOls95I6t6IdCESuy6j9BxWAkgbJXhO6vj1vkhJ0=;
+	s=korg; t=1723730841;
+	bh=kHhjm6Btrii3Nto3tPQBqWfPAzu1tSqqkxCQd/Z30Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNGFPcfLc6k07MNyrpPu8ke4eeIhyDlQ21womMZmRWjCqkwcbqrjgdUhIWBaBRsIe
-	 Oxts+3I/9ZOZZjfwf7PVFT1aWQJe96Hzgx/O1avf4hzQa0xF+LMsxwXBbFsQpm1uxx
-	 rPGe2P1SaHG890xFyTUMhQutz+nk3T07DQvHNh3I=
+	b=MkfKIlu6ttdAs+Rdwh1ehWUCK6P5dAN+tqporc/w6lbiTjZiaC7ytxkf7/YLquuIr
+	 /Fjfyynmsx7TF7qHwarsHGjFm9inAUd0jY6cKacuo2BBN3ht+abWPBcQIYDXPijMiO
+	 ZV595ruGBTM1VO7vUPlGRapQs9SlK/oaNEqutWZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 258/352] net: dsa: bcm_sf2: Fix a possible memory leak in bcm_sf2_mdio_register()
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 10/67] sunrpc: remove ->pg_stats from svc_program
 Date: Thu, 15 Aug 2024 15:25:24 +0200
-Message-ID: <20240815131929.416524387@linuxfoundation.org>
+Message-ID: <20240815131838.720311001@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit e3862093ee93fcfbdadcb7957f5f8974fffa806a ]
+[ Upstream commit 3f6ef182f144dcc9a4d942f97b6a8ed969f13c95 ]
 
-bcm_sf2_mdio_register() calls of_phy_find_device() and then
-phy_device_remove() in a loop to remove existing PHY devices.
-of_phy_find_device() eventually calls bus_find_device(), which calls
-get_device() on the returned struct device * to increment the refcount.
-The current implementation does not decrement the refcount, which causes
-memory leak.
+Now that this isn't used anywhere, remove it.
 
-This commit adds the missing phy_device_free() call to decrement the
-refcount via put_device() to balance the refcount.
-
-Fixes: 771089c2a485 ("net: dsa: bcm_sf2: Ensure that MDIO diversion is used")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240806011327.3817861-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/bcm_sf2.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfsd/nfssvc.c           |    1 -
+ include/linux/sunrpc/svc.h |    1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
-index a5849663f65c3..d0f94a5fae5ae 100644
---- a/drivers/net/dsa/bcm_sf2.c
-+++ b/drivers/net/dsa/bcm_sf2.c
-@@ -558,8 +558,10 @@ static int bcm_sf2_mdio_register(struct dsa_switch *ds)
- 			of_remove_property(child, prop);
- 
- 		phydev = of_phy_find_device(child);
--		if (phydev)
-+		if (phydev) {
- 			phy_device_remove(phydev);
-+			phy_device_free(phydev);
-+		}
- 	}
- 
- 	err = mdiobus_register(priv->slave_mii_bus);
--- 
-2.43.0
-
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -136,7 +136,6 @@ struct svc_program		nfsd_program = {
+ 	.pg_vers		= nfsd_version,		/* version table */
+ 	.pg_name		= "nfsd",		/* program name */
+ 	.pg_class		= "nfsd",		/* authentication class */
+-	.pg_stats		= &nfsd_svcstats,	/* version table */
+ 	.pg_authenticate	= &svc_set_client,	/* export authentication */
+ 	.pg_init_request	= nfsd_init_request,
+ 	.pg_rpcbind_set		= nfsd_rpcbind_set,
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -336,7 +336,6 @@ struct svc_program {
+ 	const struct svc_version **pg_vers;	/* version array */
+ 	char *			pg_name;	/* service name */
+ 	char *			pg_class;	/* class name: services sharing authentication */
+-	struct svc_stat *	pg_stats;	/* rpc statistics */
+ 	enum svc_auth_status	(*pg_authenticate)(struct svc_rqst *rqstp);
+ 	__be32			(*pg_init_request)(struct svc_rqst *,
+ 						   const struct svc_program *,
 
 
 
