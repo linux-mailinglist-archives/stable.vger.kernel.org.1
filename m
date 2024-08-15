@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86068952F83
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B61B9531EA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 375281F236D0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 238A22881D5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6F519F49C;
-	Thu, 15 Aug 2024 13:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E9F19EECF;
+	Thu, 15 Aug 2024 13:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="si0lSo1E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oj2VQ6xk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D054917C984;
-	Thu, 15 Aug 2024 13:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8253A19DFA6;
+	Thu, 15 Aug 2024 13:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728783; cv=none; b=YOoSnhmRt0WdAKuzyKYYrkVNzL2GQVQsQoRX7STlRZIQtjSmuU7Gd/EQYrjQDkiQD3md9ITK+8n+r+Waf6Y55xuGqY78kw1PzQXK4RLYPpoZxtjjFLNHUt9QLJvER4zpm2k/9Kh/5M5kvTekre4kgJWJdWyX/4J4pZ3jndaRZuc=
+	t=1723730394; cv=none; b=lHnLYxjV0hIUxQFp4FUroQjG5C2zfiDWp5CaQMUvBC46xADQHP5/4ubE884JsqAEjFVm93brliEVPY6yoKHoU6OjdRaoHi8wKOQceZF9j+ptVdMiGkTPXKAuToiNSVta1OSiqlteJJROn44kv7dT9M889Df289qbj5adDIc7ncI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728783; c=relaxed/simple;
-	bh=a0F57Vg5+IHlJ+yzD9/OPF6mCVsWuoupCVDsskvQzV4=;
+	s=arc-20240116; t=1723730394; c=relaxed/simple;
+	bh=t32yhA0i59JFLL8btd3UEYndgZallchqcaVPjUGY6LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJBDclcEfAd6941zCotHOvMimWQ9BcTJXmp68MgNTGsSkvyGOY0VyxedECv9tL/g5ObeR///Pdz5+sTM5oAmnnTbc6y/Zcn3XgMjToAIMfRq7qiSTi1fYyD15+5V4rO81xpGr0Da0AkwviuagTx9N0bLFfBDqYsKLMQWt2tTFPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=si0lSo1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58134C32786;
-	Thu, 15 Aug 2024 13:33:03 +0000 (UTC)
+	 MIME-Version; b=owOEuN5snNLK6DgTIGrcpX5AWPWedu5g4XoGzmieNzEVpcEbn1kJBE+ocvWPecXKn2iO8MuLvjulXJLc3lsEsQ1RTaWuT+3mHUMF7NCX5MoUOLy8jscT8awlfckitPiEp7UI7TqSALid7iLl89q///8WZjYndWuj843aW9G32eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oj2VQ6xk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF3CC32786;
+	Thu, 15 Aug 2024 13:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728783;
-	bh=a0F57Vg5+IHlJ+yzD9/OPF6mCVsWuoupCVDsskvQzV4=;
+	s=korg; t=1723730394;
+	bh=t32yhA0i59JFLL8btd3UEYndgZallchqcaVPjUGY6LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=si0lSo1ETbo3NdvBLmMaf/x2pH1fhiQrh0BGWSNVWZCCQiVabYhnRh6jBNjmj6Yo7
-	 vYv8uhvBbP4bSTSvD8ObzlFuEvlNELeYcOihcsTS7OBiT/1LowPtS23Eru9gnih7qH
-	 047eK1/YS472uy2jT7JnazwRiuMJRdfB3Jpo9gq8=
+	b=oj2VQ6xkoY1zTJ4k5+woqdRUuQ65fGDjtlFBju28BuGlAVBYpHG6Vi4P/TPvOdVOe
+	 OQfFIAqfSgFiYTO+6DM/JCFz9UZGZQqzv/zWjduWq2Knwl1pcZdp7hJlqmwiwTznkI
+	 ImzpjyRDV6jAAVXJovxfBLqsyaZkk1sIIiy+rF/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wens@csie.org>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	kasan-dev@googlegroups.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 107/196] PCI: rockchip: Make ep-gpios DT property optional
-Date: Thu, 15 Aug 2024 15:23:44 +0200
-Message-ID: <20240815131856.173934972@linuxfoundation.org>
+Subject: [PATCH 5.15 367/484] rcutorture: Fix rcu_torture_fwd_cb_cr() data race
+Date: Thu, 15 Aug 2024 15:23:45 +0200
+Message-ID: <20240815131955.611546451@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 58adbfb3ebec460e8b58875c682bafd866808e80 ]
+[ Upstream commit 6040072f4774a575fa67b912efe7722874be337b ]
 
-The Rockchip PCIe controller DT binding clearly states that 'ep-gpios' is
-an optional property. And indeed there are boards that don't require it.
+On powerpc systems, spinlock acquisition does not order prior stores
+against later loads.  This means that this statement:
 
-Make the driver follow the binding by using devm_gpiod_get_optional()
-instead of devm_gpiod_get().
+	rfcp->rfc_next = NULL;
 
-[bhelgaas: tidy whitespace]
-Link: https://lore.kernel.org/r/20210121162321.4538-2-wens@kernel.org
-Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
-Fixes: 956cd99b35a8 ("PCI: rockchip: Separate common code from RC driver")
-Fixes: 964bac9455be ("PCI: rockchip: Split out rockchip_pcie_parse_dt() to parse DT")
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 840b7a5edf88 ("PCI: rockchip: Use GPIOD_OUT_LOW flag while requesting ep_gpio")
+Can be reordered to follow this statement:
+
+	WRITE_ONCE(*rfcpp, rfcp);
+
+Which is then a data race with rcu_torture_fwd_prog_cr(), specifically,
+this statement:
+
+	rfcpn = READ_ONCE(rfcp->rfc_next)
+
+KCSAN located this data race, which represents a real failure on powerpc.
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Marco Elver <elver@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: <kasan-dev@googlegroups.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/rcu/rcutorture.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-rockchip.c b/drivers/pci/controller/pcie-rockchip.c
-index b047437605cb2..c6d2f00acf890 100644
---- a/drivers/pci/controller/pcie-rockchip.c
-+++ b/drivers/pci/controller/pcie-rockchip.c
-@@ -84,7 +84,7 @@ int rockchip_pcie_parse_dt(struct rockchip_pcie *rockchip)
- 	}
- 
- 	rockchip->mgmt_sticky_rst = devm_reset_control_get_exclusive(dev,
--								     "mgmt-sticky");
-+								"mgmt-sticky");
- 	if (IS_ERR(rockchip->mgmt_sticky_rst)) {
- 		if (PTR_ERR(rockchip->mgmt_sticky_rst) != -EPROBE_DEFER)
- 			dev_err(dev, "missing mgmt-sticky reset property in node\n");
-@@ -120,11 +120,11 @@ int rockchip_pcie_parse_dt(struct rockchip_pcie *rockchip)
- 	}
- 
- 	if (rockchip->is_rc) {
--		rockchip->ep_gpio = devm_gpiod_get(dev, "ep", GPIOD_OUT_HIGH);
--		if (IS_ERR(rockchip->ep_gpio)) {
--			dev_err(dev, "missing ep-gpios property in node\n");
--			return PTR_ERR(rockchip->ep_gpio);
--		}
-+		rockchip->ep_gpio = devm_gpiod_get_optional(dev, "ep",
-+							    GPIOD_OUT_HIGH);
-+		if (IS_ERR(rockchip->ep_gpio))
-+			return dev_err_probe(dev, PTR_ERR(rockchip->ep_gpio),
-+					     "failed to get ep GPIO\n");
- 	}
- 
- 	rockchip->aclk_pcie = devm_clk_get(dev, "aclk");
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 9d8d1f233d7bd..a3bab6af4028f 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -2186,7 +2186,7 @@ static void rcu_torture_fwd_cb_cr(struct rcu_head *rhp)
+ 	spin_lock_irqsave(&rfp->rcu_fwd_lock, flags);
+ 	rfcpp = rfp->rcu_fwd_cb_tail;
+ 	rfp->rcu_fwd_cb_tail = &rfcp->rfc_next;
+-	WRITE_ONCE(*rfcpp, rfcp);
++	smp_store_release(rfcpp, rfcp);
+ 	WRITE_ONCE(rfp->n_launders_cb, rfp->n_launders_cb + 1);
+ 	i = ((jiffies - rfp->rcu_fwd_startat) / (HZ / FWD_CBS_HIST_DIV));
+ 	if (i >= ARRAY_SIZE(rfp->n_launders_hist))
 -- 
 2.43.0
 
