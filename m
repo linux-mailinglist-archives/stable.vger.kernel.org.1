@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-68472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C74D953275
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C218A95327A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAB75285AFA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 004FA1C2564F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EC81AED40;
-	Thu, 15 Aug 2024 14:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879631A7067;
+	Thu, 15 Aug 2024 14:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cda2o6cC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ+QxUvk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C494E1A00CF;
-	Thu, 15 Aug 2024 14:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD7719F49C;
+	Thu, 15 Aug 2024 14:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730677; cv=none; b=sUurpIuCy8fl0pIPv1tD7Ko+OrbOQGeIT9d3mIj3GgCqrYnBRzNfc2zs7OJTWrznI+aZ+n3EVaOLZtfyLzZiBdoGwwj+gdRApO3j0ySbwZsr+OgSvb3yINGvtoR5V6a9FHxxAsM1Iscm+cvM+zXPdp+emXRgdJS5DCKz1NMg+RA=
+	t=1723730687; cv=none; b=sYh6n3qySP1VkET3NxPGCS7S+G7SI7bTKpReAmHXCem06c/L6/HrlyKPZMRWNg1it+7n9lT/QGToOUJicXMgHleM08SxOVXlPmshjRE5EUTTlD3LFBBTzHydlY/WKgrZLkHjDiSakQCcrEpjhHG53OSBCVnPYqvWzlxxYk/R3SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730677; c=relaxed/simple;
-	bh=jgTLgYSgSKxUsYpJYwEpkpnclye5UzwvtyeIyP0RG9g=;
+	s=arc-20240116; t=1723730687; c=relaxed/simple;
+	bh=AsV4oErpSQF2rVODKV4dDokNSDEubvDJ1qNDOD5rgwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JaDAEf/UgerF+8zDTmNrXxOBaJZSfpviXZM1FovsP7FWvILKbzChvIbeU6VRfsabRFourhLigsGvelPtSb7w39ZmCl9ZmnI/0/ZOS4XlPOsOxBp52gbY/SErqiOYqAutDGUxgQHnTMJPoiFvHMS8QUV4C4XV4AbrA4kBvOtd304=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cda2o6cC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7BFC32786;
-	Thu, 15 Aug 2024 14:04:36 +0000 (UTC)
+	 MIME-Version; b=rAQ5c9XKsa1E7GZpiICEeb2jjGBI59nCCdAygsbfLM0zk8HCJLckHlmEL1TbOJ6+qUytplSYE4ZujzSPNTXTmZxlkwsM6hiQoUVjpsA4KBDGvAut5IhLw/Z06aXUfxiX1q+YmOjpGqSZz5nVj+s2ekuBVdNwoBgd9Q+q2jYu5q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ+QxUvk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A5FC32786;
+	Thu, 15 Aug 2024 14:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730677;
-	bh=jgTLgYSgSKxUsYpJYwEpkpnclye5UzwvtyeIyP0RG9g=;
+	s=korg; t=1723730686;
+	bh=AsV4oErpSQF2rVODKV4dDokNSDEubvDJ1qNDOD5rgwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cda2o6cCKlhNSeKgwUKSwWuZcvJ6Ow69P7+RY7wSCahL89u8Ce3a626ASlhylPSvr
-	 MLblK3uOfhayK9rMRkYTgW6WaqO0BdlxBJ+FJAYon0F+yK2sfY18WS/23QI04Y+6sb
-	 5dGL+EN/ehD8VmdsbxNg/EDwBFWeE/aK8lpZq7xw=
+	b=CQ+QxUvkVzaELvK7LE+KT5auO0ndOdB2KglipYohd1vJ5VW1wpWQ7346VqGwwyafA
+	 Hc+sV6LzScVlxS2FOY9JTCmReSKJVFeDJtAgG28z+8ye3hyPiKJ2BZIk8q4DNqGrNn
+	 z8XcdDCRLie/Z5ZAeJXY0/nM0ggAJNtWVvKciHKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	valis <sec@valis.email>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Lee Jones <lee@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.15 465/484] tls: fix race between tx work scheduling and socket close
-Date: Thu, 15 Aug 2024 15:25:23 +0200
-Message-ID: <20240815131959.438868589@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 466/484] netfilter: nf_tables: set element extended ACK reporting support
+Date: Thu, 15 Aug 2024 15:25:24 +0200
+Message-ID: <20240815131959.478016394@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -70,69 +65,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit e01e3934a1b2d122919f73bc6ddbe1cdafc4bbdb upstream.
+commit b53c116642502b0c85ecef78bff4f826a7dd4145 upstream.
 
-Similarly to previous commit, the submitting thread (recvmsg/sendmsg)
-may exit as soon as the async crypto handler calls complete().
-Reorder scheduling the work before calling complete().
-This seems more logical in the first place, as it's
-the inverse order of what the submitting thread will do.
+Report the element that causes problems via netlink extended ACK for set
+element commands.
 
-Reported-by: valis <sec@valis.email>
-Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[ Lee: Fixed merge-conflict in Stable branches linux-6.1.y and older ]
-Signed-off-by: Lee Jones <lee@kernel.org>
-[ Harshit: bp to 5.15.y, minor conflict resolutin due to missing commit:
-  8ae187386420 ("tls: Only use data field in crypto completion function")
-  in 5.15.y]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ net/netfilter/nf_tables_api.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -468,7 +468,6 @@ static void tls_encrypt_done(struct cryp
- 	struct scatterlist *sge;
- 	struct sk_msg *msg_en;
- 	struct tls_rec *rec;
--	bool ready = false;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5769,8 +5769,10 @@ static int nf_tables_getsetelem(struct s
  
- 	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
- 		return;
-@@ -502,19 +501,16 @@ static void tls_encrypt_done(struct cryp
- 		/* If received record is at head of tx_list, schedule tx */
- 		first_rec = list_first_entry(&ctx->tx_list,
- 					     struct tls_rec, list);
--		if (rec == first_rec)
--			ready = true;
-+		if (rec == first_rec) {
-+			/* Schedule the transmission */
-+			if (!test_and_set_bit(BIT_TX_SCHEDULED,
-+					      &ctx->tx_bitmask))
-+				schedule_delayed_work(&ctx->tx_work.work, 1);
+ 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
+ 		err = nft_get_set_elem(&ctx, set, attr);
+-		if (err < 0)
++		if (err < 0) {
++			NL_SET_BAD_ATTR(extack, attr);
+ 			break;
 +		}
  	}
  
- 	if (atomic_dec_and_test(&ctx->encrypt_pending))
- 		complete(&ctx->async_wait.completion);
--
--	if (!ready)
--		return;
--
--	/* Schedule the transmission */
--	if (!test_and_set_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask))
--		schedule_delayed_work(&ctx->tx_work.work, 1);
- }
+ 	return err;
+@@ -6589,8 +6591,10 @@ static int nf_tables_newsetelem(struct s
  
- static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
+ 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
+ 		err = nft_add_set_elem(&ctx, set, attr, info->nlh->nlmsg_flags);
+-		if (err < 0)
++		if (err < 0) {
++			NL_SET_BAD_ATTR(extack, attr);
+ 			return err;
++		}
+ 	}
+ 
+ 	if (nft_net->validate_state == NFT_VALIDATE_DO)
+@@ -6866,8 +6870,10 @@ static int nf_tables_delsetelem(struct s
+ 
+ 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
+ 		err = nft_del_setelem(&ctx, set, attr);
+-		if (err < 0)
++		if (err < 0) {
++			NL_SET_BAD_ATTR(extack, attr);
+ 			break;
++		}
+ 	}
+ 	return err;
+ }
 
 
 
