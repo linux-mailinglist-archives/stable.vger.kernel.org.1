@@ -1,92 +1,120 @@
-Return-Path: <stable+bounces-68244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18F6953150
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:52:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096599531AC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82005B20E47
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:52:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B352C28960B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20ABF19F49A;
-	Thu, 15 Aug 2024 13:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0625D19F482;
+	Thu, 15 Aug 2024 13:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="PiGrnevy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DaPmhwBl"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A25B17BEA5;
-	Thu, 15 Aug 2024 13:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D701714A1;
+	Thu, 15 Aug 2024 13:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729950; cv=none; b=FTRe7fxLtKJlUS3yV0mTb3rjEkCGFVOJK/9gCmJEB3KY6A8LomD30/qrszWLh8y4UUzKgXzf5DuT+OgsWqk2J5DrgaqkVvIdePA1+KrMTGqj7IaAwSNQ+8gkqAfZbL+w9Irv9ggJR0nCQW8cHekDoMHaJGJlzopX4+TridqqIQk=
+	t=1723730215; cv=none; b=cD6ZcYxDhLvS001YNb33dGfqy4x1hdDzr56aYBj1qMYWOsFOvisSg25GillIW8j5qQq6dFOWy7764/Gk7xBru5Cmve3V/w+Qld+t73tZHscKTMo3/AD4dKKvVHOlVS/hV6Av7Tg6diZCHu/nqQTJ9djfGPykvCWcauTcb4wIkV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729950; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=LnhWqaEFdKjFyXU/tM9UHu8S1GLGkhkMNRRQwC+dNeNxyZcU3Aq/7wUmbsMdacKpz6POn8rWWv2vjCbY6Iy6qtORcrF41QLYFSsR7seAIDu0va+coWH6jdaWkkelRTPuS9TmZdntDi3/y4gg7sWIJ1V4jMx2pXqKz2ZDhZvRW4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=PiGrnevy; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1723729945; x=1724334745; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=PiGrnevyM/LiWyaPY79YSXP/wpQlJreYf0LwyvB4xMBZtcj9Vtzv615gdqcxNcGY
-	 iLVjqzZiHVzI8p5Bwfr0Spsmk08MvrS3eTJYA3wCtumJ+bL2T0Q/gc63zvlQ/29rZ
-	 FB2ISumaKaQ2ViHbOI3WxTgWYxXV8JOJF51+5CLrI6uDs0QXFbTRxGeOFmyXE/9i5
-	 abzaerc6OaVGPL50xEXtm6ei0RbEaa5ryPhjmZdbGaSaYe11e0M3WI2ApQpucKOwb
-	 ziqQTKOYdxgMtfTTGN5Ug+00SaPpnmyvWuUCaLYQaRwKmQTiU1iSvp3Rf6CJZWpbI
-	 B2GC0xHX5zAOteJXXA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.35.162]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCbEp-1sVYcs29nn-00H624; Thu, 15
- Aug 2024 15:52:25 +0200
-Message-ID: <67325f54-7807-4a78-819e-c968c17e7209@gmx.de>
-Date: Thu, 15 Aug 2024 15:52:25 +0200
+	s=arc-20240116; t=1723730215; c=relaxed/simple;
+	bh=pNzAuHuhw5vFj0MfUJcfnnwgyE2OQGAdmeyHX+UNaD4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PHacP5TBa7onHV1Z8I6XWukTe58h3KcZToH9LlD6+4PtHYy1tUexWQOH1hy3YEGs+SdbMh6XEMgkCh/62troGj9RXwVIccoqOuD1vjyff2G5P/Dm52Nno2xQfA3WMjTB51nhSdCjwOEWJRR8r14mOY2r1WfmGNfRGyTmY0V7iOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DaPmhwBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880A2C4AF0D;
+	Thu, 15 Aug 2024 13:56:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723730215;
+	bh=pNzAuHuhw5vFj0MfUJcfnnwgyE2OQGAdmeyHX+UNaD4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DaPmhwBlEUrM/uGlSuvQkk2mh69hNGpN3oP0zLSuu4YAZAzR4D8aC2ZIcAvzlNQLr
+	 TKegh9YnwSlgdfXVJXTVxMs/EDzX6qV4Ssxp2LMUz4bgwuKfoNmvcczsng8Na4ZpGJ
+	 LYncOTQnQp7swLnA6FCPHVtRBkq1LSxkehOTEI61CKit6QLrxbEgrE6AhMhs2ET97Q
+	 NwlTi/+tj10fBRStqSZv3MnAIGe4CM2S1h2kOKMCEprJjcAbtiKWPpnuO+RB0u8LZa
+	 0F0BPI2p8oxY/tShm1OCxw6z9kRmx4reVienSJTiRThdFZaarVJCtLlJDZhqZlLnPL
+	 9/YiktCVJGk+A==
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2d3b785d8b1so627114a91.1;
+        Thu, 15 Aug 2024 06:56:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWIshp+OSZgQudqTKxOP59iwq2RLFWSlzBIgQHtLFpcRyIkvZVGSN1LvCJ7UDcA8BJWZpnzq9yzT+Epfr+6bkd8hYgVHunWHtyuy8mxURWf/YnQWQ9QcODXuaM6Vb+1Dc/63NMC
+X-Gm-Message-State: AOJu0Yz6O1RqlXz4Joi3s0yqEkOD7PCQwmUt1a99AuHZ6uaY0JwS+caZ
+	0Nbyb2GgAFvggIP0FX8Lvy2kCMqlJiS41ZmiayloQczztrqcM6aVN7jrpmKu3n0VuGDuNnARjw9
+	tXSY69svFq7mTxlY6wEtdICbcFQ==
+X-Google-Smtp-Source: AGHT+IHF8lihSFvFy146V9RFDKmET4UMbp4dFKkjYWDYSa8MfftqgIMB+sTB/uU6Rl3c42kHJSnavDM+yFIZjN3/ZEk=
+X-Received: by 2002:a17:90b:230d:b0:2d3:ad41:4d7a with SMTP id
+ 98e67ed59e1d1-2d3c391157dmr4796664a91.4.1723730215112; Thu, 15 Aug 2024
+ 06:56:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.10 00/22] 6.10.6-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:PYt1DwTIr0uJxeEE4KR1CVS/SuXpE8kQwqAz2U0W0Eg9MsRzuKX
- oa4QOx7WX2KjHx8nUJGTuxNHNBmqvGFJXYYVMJvba1ZdqG5bvn3HnYZarXE9pdbznGzAlEy
- WCfrfSqZ3mH0ctQ/s74ifXuKD8fnTLD1Xq/XpRakdwjV7bU0M2bX9dBG/yPJp7iqo6W/3vc
- pWxtmalsFzXLAdb/uSX7Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lsjbrFqKIUM=;ev9YJCG3KyAiA/FVkEgLiYr7EnZ
- /ZNgFqB8EliGuJIqIh3pcszGAURlVyfeDJIc5QC8GmuTcuEA3FWWs/Qsk77TzZ1wJI8EdtFzR
- rXeYvCefg7XFY7EWN2aex2xdAudZDgkRVIJFSY+JqVOVxM5G0T8o9p+o8Tl+x16Jh+j3djkzu
- r+yeSv76XcexUF+vgEoHS0Gnt4pKgZl+8UxmcyFRdj9OnStKIJMjXeLx/AG04NvCjIr5IsBL7
- DHDN87nYfUGk0f3ow18KZIYf7Vt2ipVGCla1J1AmyMsYIpbsOGg/FXmfQcWBFGKc2EqR7zQK9
- yv3gWwBErt9ojF48VLzRx0Rr56pBaUt7teeARIT0wLmLGjS5SEt7O6n2UjhE/VXNNZKxx7fe0
- zYtBixnF4QhOtGwQkqnkverreFC5NwgSq2htrZ5m4dTGOdouHDQrAnZHulwOlwBf/N31mogG3
- yUd23KbypxWl9CYgZ4/oEwqgxcnC8Vov8vpQilvcQZzZpXnDLCYAmM2iCYW2m879/Tbk4z3wR
- Xt+2eBbYr7mRrTA1v+DNp8EwRP1Zpyx6E330oGh7uC1+zkSZbwJmEKaodyF61XWc4DT/S7TQL
- H/Lwfwr10HGJwa9UFb5YfJzNoJvormWw7lytkIGWrx9Z22t3ocpZqa4HZF7C8grHHy+wpMVyc
- mNnnZ+rhh9truKdLdBwKocLnGojXs1aKOEIZG97Y+ZGvTO9PLWWX5nZsUvxbnxmpZO4HaR30B
- vkJA08FcKwFkp8/zbvzRAbBM6KPsAkUyo8TDHnq/iHQjf/1rr13JfSAc05nf8unwWlUoPNtwf
- 7Se5lgoGMu9qGbwHfVyrjRGQ==
+References: <20240624-mtk_disp_ovl_adaptor_scoped-v1-0-9fa1e074d881@gmail.com>
+In-Reply-To: <20240624-mtk_disp_ovl_adaptor_scoped-v1-0-9fa1e074d881@gmail.com>
+From: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Date: Thu, 15 Aug 2024 21:57:07 +0800
+X-Gmail-Original-Message-ID: <CAAOTY__EAW-Tj93oSnN1TTB0sH3VMnHwwRaVv-Nm7cEGBeuvcQ@mail.gmail.com>
+Message-ID: <CAAOTY__EAW-Tj93oSnN1TTB0sH3VMnHwwRaVv-Nm7cEGBeuvcQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] drm/mediatek: fixes for ovl_adaptor
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	"Nancy.Lin" <nancy.lin@mediatek.com>, dri-devel@lists.freedesktop.org, 
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg
+Hi, Javier:
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+Javier Carrasco <javier.carrasco.cruz@gmail.com> =E6=96=BC 2024=E5=B9=B46=
+=E6=9C=8825=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8A=E5=8D=8812:44=E5=AF=AB=E9=
+=81=93=EF=BC=9A
+>
+> The main fix is a possible memory leak on an early exit in the
+> for_each_child_of_node() loop. That fix has been divided into a patch
+> that can be backported (a simple of_node_put()), and another one that
+> uses the scoped variant of the macro, removing the need for any
+> of_node_put(). That prevents mistakes if new break/return instructions
+> are added, but the macro might not be available in older kernels.
+>
+> When at it, an unused header has been dropped.
 
-Thanks
+For this series, applied to mediatek-drm-next [1], thanks.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Regards,
+CK
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/chunkuang.hu/linux.git/=
+log/?h=3Dmediatek-drm-next
+
+>
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+> Javier Carrasco (3):
+>       drm/mediatek: ovl_adaptor: drop unused mtk_crtc.h header
+>       drm/mediatek: ovl_adaptor: add missing of_node_put()
+>       drm/mediatek: ovl_adaptor: use scoped variant of for_each_child_of_=
+node()
+>
+>  drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> ---
+> base-commit: f76698bd9a8ca01d3581236082d786e9a6b72bb7
+> change-id: 20240624-mtk_disp_ovl_adaptor_scoped-0702a6b23443
+>
+> Best regards,
+> --
+> Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>
 
