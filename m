@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-68520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5F39532BF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DDF95340B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E8BD288302
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D1B11C2383D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2281B14F6;
-	Thu, 15 Aug 2024 14:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1B619FA8D;
+	Thu, 15 Aug 2024 14:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYLiw0Tz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Voo222Cs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95C01B142C;
-	Thu, 15 Aug 2024 14:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4551AC8AE;
+	Thu, 15 Aug 2024 14:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730828; cv=none; b=b2nGecY3r5pkwemLDvjaCV3XC8joWVzqFtPoYc7vcCjcZCGb7sdLJmbDGdJNw56Ae/MCAmP6su+vPzAOCp7M1iYQ9UH2gfbLO4lFSukMR7P/rBLuGM0xc5NHsggy1/TCwHZurDeRsDvF3UB84kSj+wjmIEy0CFQj71JIXaqaTRI=
+	t=1723731713; cv=none; b=RB0gdalOWR4QjnYFTOsi/iz/zUD9uVScpGzC+jtuLEVEAroShDTXrb14oDGqI9WMGVYUHx/R+9WAjSYHRc2wv6V20WReBnZkv3qRw2TO5+/drTiHVjgZtrzK1y2vAawkjV7iGunrcbg45a7vDGv3XTX1N9tYzEO+EuMfjS5JjzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730828; c=relaxed/simple;
-	bh=2Kj/WuridUQ1BmJ+TZHjVIYy2U7JsRwMmInHq16Ez88=;
+	s=arc-20240116; t=1723731713; c=relaxed/simple;
+	bh=WElfT2VasCjsbhUXHlsZhfxEoz/D0KIgELzr9YOv/Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hg4l1BfEifYhQO2NJKP2dqfTrOX2XmzTHNld/Vd9MtNlxTrYlIdqR82AOIK4laxPVqnSlJjYlsUCYNp8xYdJX8Wd4jZqfaMTzqyOuYjOaNZFS0Ae7wTERqwde9spUVo/HF10dSf2zmfl/KaTMFIbrIWsA/+XSZOnwq73P4QGNUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYLiw0Tz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF27C32786;
-	Thu, 15 Aug 2024 14:07:08 +0000 (UTC)
+	 MIME-Version; b=T5EZIFYfX3FTfqLJQ/VoOmaR1t9dj8V2Oj0PVZBUbwDo6KKM5mhnEq9PzOsmQnEGuOozWSQPHRLggARFCS8BbxIDr1JN60mjoQJo/ZQhV+rObfDnK3PlBWSPhKl71+T3HFcOZab8BLELEyqdDhD+MPvmBkr4EJjPvBm09nk8Bjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Voo222Cs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63360C32786;
+	Thu, 15 Aug 2024 14:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730828;
-	bh=2Kj/WuridUQ1BmJ+TZHjVIYy2U7JsRwMmInHq16Ez88=;
+	s=korg; t=1723731713;
+	bh=WElfT2VasCjsbhUXHlsZhfxEoz/D0KIgELzr9YOv/Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYLiw0TzlYbkPtUHWUlc4Nsv6kiQEuq2DJZfFkyFsDVtRT/5PckixPXnSvYp1jVXT
-	 PrFnBSriOJsb7yTGYhIwHHS0664qcLF8yjFIO2IrL6MVaqmBvRqNCBwhFiph05iHI4
-	 GUd4p/ehIhTQxeBcOtumYjvdLueNN2fRs9saJyQo=
+	b=Voo222CsJnjYogrUme5r62LeOCAk608rglsk0PqZWnSZmDhdWqGKavKs9ik/dX8f6
+	 Wqpa4Fg4HImqJx62Z4iT30SyCoz3gD5Ot4o39LQugNc8UtQK/je+GYQ0bKmU19JmBg
+	 M19/a5skfNdHKx0utRAMFd5ZIWSzLWLbRYLxiFvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 13/38] NFSD: Rename nfsd_reply_cache_alloc()
-Date: Thu, 15 Aug 2024 15:25:47 +0200
-Message-ID: <20240815131833.463817769@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 215/259] arm64: cputype: Add Cortex-X925 definitions
+Date: Thu, 15 Aug 2024 15:25:48 +0200
+Message-ID: <20240815131911.074491899@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit ff0d169329768c1102b7b07eebe5a9839aa1c143 ]
+[ Upstream commit fd2ff5f0b320f418288e7a1f919f648fbc8a0dfc ]
 
-For readability, rename to match the other helpers.
+Add cputype definitions for Cortex-X925. These will be used for errata
+detection in subsequent patches.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Stable-dep-of: 4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+These values can be found in Table A-285 ("MIDR_EL1 bit descriptions")
+in issue 0001-05 of the Cortex-X925 TRM, which can be found at:
+
+  https://developer.arm.com/documentation/102807/0001/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-4-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfscache.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -85,8 +85,8 @@ nfsd_hashsize(unsigned int limit)
- }
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 540c25014c9de..6322263063887 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -85,6 +85,7 @@
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
++#define ARM_CPU_PART_CORTEX_X925	0xD85
  
- static struct svc_cacherep *
--nfsd_reply_cache_alloc(struct svc_rqst *rqstp, __wsum csum,
--			struct nfsd_net *nn)
-+nfsd_cacherep_alloc(struct svc_rqst *rqstp, __wsum csum,
-+		    struct nfsd_net *nn)
- {
- 	struct svc_cacherep	*rp;
+ #define APM_CPU_PART_POTENZA		0x000
  
-@@ -481,7 +481,7 @@ int nfsd_cache_lookup(struct svc_rqst *r
- 	 * preallocate an entry.
- 	 */
- 	nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
--	rp = nfsd_reply_cache_alloc(rqstp, csum, nn);
-+	rp = nfsd_cacherep_alloc(rqstp, csum, nn);
- 	if (!rp)
- 		goto out;
- 
+@@ -131,6 +132,7 @@
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
++#define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+-- 
+2.43.0
+
 
 
 
