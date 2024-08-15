@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59D7953290
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D7F9532FC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 903211F21C8F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB141C20BC1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E11D1AAE01;
-	Thu, 15 Aug 2024 14:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5975A1BA879;
+	Thu, 15 Aug 2024 14:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0i2mbOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzfxSEEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FF41A08DD;
-	Thu, 15 Aug 2024 14:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1512C1AE84C;
+	Thu, 15 Aug 2024 14:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730719; cv=none; b=l2Ht0rFIOOyXXPa6+Y/MDrORaFSgXxY0wchj+zqS2s6vr2yp7ogSh2CzD8PBwz8sq1Rehh7H2UiUV7ZYnU3ugtHdSOT+AnGi/HXwYhjwjFJAqip8VjZ3fsiuwZIcXijMX8mFD3NakEojMHBXc1/1YY9qas4Rym64J+AAsY/ecLk=
+	t=1723730985; cv=none; b=NsKgyDPIz3knibPP+r1Gjpw1u+JQK8/u7qy4fcIWezshtO1nq1rH2IUZFAqhYN0Y4UNdYlJWI+sL5cgjzLRXo6Jt/WXmfATkCDTKFrGYbdPGT7WOk60cdf30qCJTDK9k0RmCkGCkURAhJIjkbtW9AEOR0W0DnH97ef5hzJk8mck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730719; c=relaxed/simple;
-	bh=9cEtTATly220fqMeRG/NqlAkNYEuC1p1ODhJltaT1UU=;
+	s=arc-20240116; t=1723730985; c=relaxed/simple;
+	bh=+epm1Ze4trRhU0LXeWm6ZScHhvIEnN8KHWRGgw3tzw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTuRmNINA/zU47gWFhNXR5k+fe0W83ioPmBH86xUI8dogyPtfxC1/5q+MlEwoj5xzp2xvywWk064FOJ6z95aqp+zMsusDvY+I/TeBqm6vEq1sPZa23M4ocWlc4Bz8cmq+qr86lxRfe3/ZgKEtSTFhq2K7hVLx/IE4NDCMSjotDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0i2mbOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6828C32786;
-	Thu, 15 Aug 2024 14:05:18 +0000 (UTC)
+	 MIME-Version; b=lMhebWV3bW1E1JI0P1uENNnwSmRlMbMXC1RNAy+K6M8uQs2c+A9/1Hx6iefyvMgFnh7gG0Idi5bUk2ucbrmsAmgsUpguQq/WAb9JRqg1qhJeGt9fyEfVn+MnTDbUpPpIVkFe5wwOzTRLT6je7CvdWXxFxSIpH5qMmnfuchZ3TcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzfxSEEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847E8C32786;
+	Thu, 15 Aug 2024 14:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730719;
-	bh=9cEtTATly220fqMeRG/NqlAkNYEuC1p1ODhJltaT1UU=;
+	s=korg; t=1723730984;
+	bh=+epm1Ze4trRhU0LXeWm6ZScHhvIEnN8KHWRGgw3tzw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d0i2mbOtgTFvuEoLYg8uTKdB/d/xhK7ZXixjN3C+mcMuFwt66R2Gwr29dRPCXLT38
-	 mnAz5E5Jmq1KvA3iJe2UBZ7Pa0M7TTHI8TEKSH5bcVoxLEa0xXv+0r35+tPhRWi9PD
-	 lhfS7k4Wyqj4S8FmpU0zfFXs2GuWsd0QEQV6R6eA=
+	b=EzfxSEEQJaORMxAAHPlmsIugay6AzctTEPyTrcai19pb4swwlNDY6iLTMzdoxteJ6
+	 J1s3IE4uHW57TJw6fa3xQF0t5lwJS1ARMoeq5dMAiW4/3xF4a4jXl6pq1UxC40a1Mx
+	 3njhdPQwZoSGfy7yOI1oG2TUOoxHWc+E5jw46oZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 03/38] mptcp: pm: dont try to create sf if alloc failed
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 23/67] wifi: mac80211: take wiphy lock for MAC addr change
 Date: Thu, 15 Aug 2024 15:25:37 +0200
-Message-ID: <20240815131833.084805074@linuxfoundation.org>
+Message-ID: <20240815131839.224649878@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit cd7c957f936f8cb80d03e5152f4013aae65bd986 upstream.
+[ Upstream commit a26787aa13974fb0b3fb42bfeb4256c1b686e305 ]
 
-It sounds better to avoid wasting cycles and / or put extreme memory
-pressure on the system by trying to create new subflows if it was not
-possible to add a new item in the announce list.
+We want to ensure everything holds the wiphy lock,
+so also extend that to the MAC change callback.
 
-While at it, a warning is now printed if the entry was already in the
-list as it should not happen with the in-kernel path-manager. With this
-PM, mptcp_pm_alloc_anno_list() should only fail in case of memory
-pressure.
-
-Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-4-c8a9b036493b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 74a7c93f45ab ("wifi: mac80211: fix change_address deadlock during unregister")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/mac80211/iface.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -363,7 +363,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 	add_entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 6e3bfb46af44d..9ac5252c3da00 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -251,9 +251,9 @@ static int ieee80211_can_powered_addr_change(struct ieee80211_sub_if_data *sdata
+ 	return ret;
+ }
  
- 	if (add_entry) {
--		if (mptcp_pm_is_kernel(msk))
-+		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
- 			return false;
+-static int ieee80211_change_mac(struct net_device *dev, void *addr)
++static int _ieee80211_change_mac(struct ieee80211_sub_if_data *sdata,
++				 void *addr)
+ {
+-	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct sockaddr *sa = addr;
+ 	bool check_dup = true;
+@@ -278,7 +278,7 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
  
- 		sk_reset_timer(sk, &add_entry->add_timer,
-@@ -567,8 +567,6 @@ static void mptcp_pm_create_subflow_or_s
+ 	if (live)
+ 		drv_remove_interface(local, sdata);
+-	ret = eth_mac_addr(dev, sa);
++	ret = eth_mac_addr(sdata->dev, sa);
  
- 	/* check first for announce */
- 	if (msk->pm.add_addr_signaled < add_addr_signal_max) {
--		local = select_signal_address(pernet, msk);
--
- 		/* due to racing events on both ends we can reach here while
- 		 * previous add address is still running: if we invoke now
- 		 * mptcp_pm_announce_addr(), that will fail and the
-@@ -579,11 +577,15 @@ static void mptcp_pm_create_subflow_or_s
- 		if (msk->pm.addr_signal & BIT(MPTCP_ADD_ADDR_SIGNAL))
- 			return;
+ 	if (ret == 0) {
+ 		memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
+@@ -294,6 +294,19 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
+ 	return ret;
+ }
  
-+		local = select_signal_address(pernet, msk);
- 		if (!local)
- 			goto subflow;
- 
-+		/* If the alloc fails, we are on memory pressure, not worth
-+		 * continuing, and trying to create subflows.
-+		 */
- 		if (!mptcp_pm_alloc_anno_list(msk, &local->addr))
--			goto subflow;
-+			return;
- 
- 		__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
- 		msk->pm.add_addr_signaled++;
++static int ieee80211_change_mac(struct net_device *dev, void *addr)
++{
++	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	struct ieee80211_local *local = sdata->local;
++	int ret;
++
++	wiphy_lock(local->hw.wiphy);
++	ret = _ieee80211_change_mac(sdata, addr);
++	wiphy_unlock(local->hw.wiphy);
++
++	return ret;
++}
++
+ static inline int identical_mac_addr_allowed(int type1, int type2)
+ {
+ 	return type1 == NL80211_IFTYPE_MONITOR ||
+-- 
+2.43.0
+
 
 
 
