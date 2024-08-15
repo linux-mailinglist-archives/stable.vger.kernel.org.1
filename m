@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-68786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88C89533F5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECA29533F8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 922951F27B71
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EF911C25A77
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E12017C987;
-	Thu, 15 Aug 2024 14:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE711A256C;
+	Thu, 15 Aug 2024 14:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjF1jqb5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHaPjV53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDC71AC8AE;
-	Thu, 15 Aug 2024 14:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299C91A01BF;
+	Thu, 15 Aug 2024 14:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731666; cv=none; b=DISSyb7Kt1LHGwa6wqznREaJU1Tq3ondZ0AQTlA7tzY62ChYhnK6SMeBNftP8wJITx/1MMXYrXJ3qk/M2ha4Brm4WK8hU06mFTEJFSCRSbXrIbqJQlkuV6toqxsGMlbv2379MtftKJ5JNAakltnqJvzwtvGblIcn3A+ZbReWSAI=
+	t=1723731669; cv=none; b=HB89pR0vWqpcURnUlS8R6ac2BzOvcxghcuxBlZrVSweUQ9pcuMOORiGaWxcvahnFot/heROyRpc2VqC1EZVMUnN+UcC5zEOHYnjpMBsEyml4Dxl3rEd7KoisqqKilJdrlIEh9zTiVGAvoX9ENp55SZFXX1VB7khp22MTARO7eLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731666; c=relaxed/simple;
-	bh=3vAqUdDwdFy3Rh3d6TDQioM6+wY8hFPIHXBtsdmLktM=;
+	s=arc-20240116; t=1723731669; c=relaxed/simple;
+	bh=Og9SKjd21m0C+uLSpU4aF9ZHRH0Nri6nVj25uKhxApE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBYT2q8idf8itle2dFsBrN8hqbLeDXN+TbHgxQ0Od71JgS7Mubzunb6EX0kkRknjCLMXUGpU0yO5Ev4D2DecF95F8PLSv8blTebbrX61rUIemH85gw0uuKNTQAY3BSEyusYpYFSPvSWybcdbYKE+UMOT5klFYzO3/AXZOVILa+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjF1jqb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E97CC4AF17;
-	Thu, 15 Aug 2024 14:21:04 +0000 (UTC)
+	 MIME-Version; b=jRnqd3SPrc9CiS4a6+l0dZ3cs03RX6JV+6RC1AwI9JTdijdNqVgDGKl4WsNAAX3KSnivH+Xj+Gk3mHCaqQ0yWGUTnACjqWo0875X66znCQ+fCNEq8c7rwQchboB7YcE8WV6pE6kZKZ8Wg1cVptAIkOKIQnMmNL4N4IkvF42knxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHaPjV53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A14FC4AF0D;
+	Thu, 15 Aug 2024 14:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731665;
-	bh=3vAqUdDwdFy3Rh3d6TDQioM6+wY8hFPIHXBtsdmLktM=;
+	s=korg; t=1723731669;
+	bh=Og9SKjd21m0C+uLSpU4aF9ZHRH0Nri6nVj25uKhxApE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjF1jqb5kL3RskFNyVLzkaJufcwhdAEsX547ztGTPHietNBICqNfC4Yhom5DfJX4D
-	 mZONFJJj6WuySJb2DxLBTtymPaoAoqlujnXjgf4qxGDY0uD8N10Hl2Y5/3oA9ufJRK
-	 RnvHINZkkBYH0u3Dv5iSazxtAe0h99zpTST+hKRQ=
+	b=YHaPjV53zHInJ1PCLK/393F5Atkxxb7Uz5ko/IP9V/2tKl5cLwC5Hkxg3oV99Iv3s
+	 1sniAcZUvqdBn23jI3NtwRvMcWRNcYHvRvpqx2Tdw3mVgDeIP/1n2eWCtEJr6fAMtM
+	 Cw3usrw7pYE264mzoX4XCvtPnoVchuvpwKd88Wxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 168/259] irqchip/imx-irqsteer: Add runtime PM support
-Date: Thu, 15 Aug 2024 15:25:01 +0200
-Message-ID: <20240815131909.269565096@linuxfoundation.org>
+Subject: [PATCH 5.4 169/259] irqchip/imx-irqsteer: Handle runtime power management correctly
+Date: Thu, 15 Aug 2024 15:25:02 +0200
+Message-ID: <20240815131909.307613626@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
 References: <20240815131902.779125794@linuxfoundation.org>
@@ -66,83 +66,105 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-[ Upstream commit 4730d2233311d86cad9dc510318d1b40e4b53cf2 ]
+[ Upstream commit 33b1c47d1fc0b5f06a393bb915db85baacba18ea ]
 
-There are now SoCs that integrate the irqsteer controller within
-a separate power domain. In order to allow this domain to be
-powered down when not needed, add runtime PM support to the driver.
+The power domain is automatically activated from clk_prepare(). However, on
+certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
+sleeping functions, which triggers the 'scheduling while atomic' bug in the
+context switch path during device probing:
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20220406163701.1277930-2-l.stach@pengutronix.de
-Stable-dep-of: 33b1c47d1fc0 ("irqchip/imx-irqsteer: Handle runtime power management correctly")
+ BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
+ Call trace:
+  __schedule_bug+0x54/0x6c
+  __schedule+0x7f0/0xa94
+  schedule+0x5c/0xc4
+  schedule_preempt_disabled+0x24/0x40
+  __mutex_lock.constprop.0+0x2c0/0x540
+  __mutex_lock_slowpath+0x14/0x20
+  mutex_lock+0x48/0x54
+  clk_prepare_lock+0x44/0xa0
+  clk_prepare+0x20/0x44
+  imx_irqsteer_resume+0x28/0xe0
+  pm_generic_runtime_resume+0x2c/0x44
+  __genpd_runtime_resume+0x30/0x80
+  genpd_runtime_resume+0xc8/0x2c0
+  __rpm_callback+0x48/0x1d8
+  rpm_callback+0x6c/0x78
+  rpm_resume+0x490/0x6b4
+  __pm_runtime_resume+0x50/0x94
+  irq_chip_pm_get+0x2c/0xa0
+  __irq_do_set_handler+0x178/0x24c
+  irq_set_chained_handler_and_data+0x60/0xa4
+  mxc_gpio_probe+0x160/0x4b0
+
+Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
+callbacks and handle power management in them as they are invoked from
+non-atomic context.
+
+[ tglx: Rewrote change log, added Fixes tag ]
+
+Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-imx-irqsteer.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-imx-irqsteer.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index 1b01e655b9923..e622dbd614638 100644
+index e622dbd614638..23aafc52768c7 100644
 --- a/drivers/irqchip/irq-imx-irqsteer.c
 +++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/of_irq.h>
- #include <linux/of_platform.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spinlock.h>
- 
- #define CTRL_STRIDE_OFF(_t, _r)	(_t * 4 * _r)
-@@ -181,7 +182,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 	data->irq_count = DIV_ROUND_UP(irqs_num, 64);
- 	data->reg_num = irqs_num / 32;
- 
--	if (IS_ENABLED(CONFIG_PM_SLEEP)) {
-+	if (IS_ENABLED(CONFIG_PM)) {
- 		data->saved_reg = devm_kzalloc(&pdev->dev,
- 					sizeof(u32) * data->reg_num,
- 					GFP_KERNEL);
-@@ -205,6 +206,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 		ret = -ENOMEM;
- 		goto out;
- 	}
-+	irq_domain_set_pm_device(data->domain, &pdev->dev);
- 
- 	if (!data->irq_count || data->irq_count > CHAN_MAX_OUTPUT_INT) {
- 		ret = -EINVAL;
-@@ -225,6 +227,9 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, data);
- 
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+
- 	return 0;
- out:
- 	clk_disable_unprepare(data->ipg_clk);
-@@ -247,7 +252,7 @@ static int imx_irqsteer_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
--#ifdef CONFIG_PM_SLEEP
-+#ifdef CONFIG_PM
- static void imx_irqsteer_save_regs(struct irqsteer_data *data)
- {
- 	int i;
-@@ -294,7 +299,10 @@ static int imx_irqsteer_resume(struct device *dev)
- #endif
- 
- static const struct dev_pm_ops imx_irqsteer_pm_ops = {
--	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(imx_irqsteer_suspend, imx_irqsteer_resume)
-+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-+				      pm_runtime_force_resume)
-+	SET_RUNTIME_PM_OPS(imx_irqsteer_suspend,
-+			   imx_irqsteer_resume, NULL)
+@@ -35,6 +35,7 @@ struct irqsteer_data {
+ 	int			channel;
+ 	struct irq_domain	*domain;
+ 	u32			*saved_reg;
++	struct device		*dev;
  };
  
- static const struct of_device_id imx_irqsteer_dt_ids[] = {
+ static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
+@@ -71,10 +72,26 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
+ 
++static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_get_sync(data->dev);
++}
++
++static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_put_autosuspend(data->dev);
++}
++
+ static const struct irq_chip imx_irqsteer_irq_chip = {
+-	.name		= "irqsteer",
+-	.irq_mask	= imx_irqsteer_irq_mask,
+-	.irq_unmask	= imx_irqsteer_irq_unmask,
++	.name			= "irqsteer",
++	.irq_mask		= imx_irqsteer_irq_mask,
++	.irq_unmask		= imx_irqsteer_irq_unmask,
++	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
++	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
+ };
+ 
+ static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
+@@ -152,6 +169,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENOMEM;
+ 
++	data->dev = &pdev->dev;
+ 	data->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(data->regs)) {
+ 		dev_err(&pdev->dev, "failed to initialize reg\n");
 -- 
 2.43.0
 
