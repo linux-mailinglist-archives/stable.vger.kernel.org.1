@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0889532DE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5F39532BF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D870288E02
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E8BD288302
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3184D1AD3EE;
-	Thu, 15 Aug 2024 14:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2281B14F6;
+	Thu, 15 Aug 2024 14:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbNNtfGr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYLiw0Tz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E395B44376;
-	Thu, 15 Aug 2024 14:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95C01B142C;
+	Thu, 15 Aug 2024 14:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730914; cv=none; b=QYUTB2bfx+wW58YRdnu1gi3m1MD7Z0eIZTKxsLZZSBIe1/zD9QzaGT+y9Ct/a9OZqL2bL5sBowGG4N8kLX+KnrNauywArY1ez0VsXouSCWd53d7Tg4PFW9wIVDn4iLkEG6LBe3uB8l37XEY5T3uGTiWV9d+FyCJCjqVrTlz3I9E=
+	t=1723730828; cv=none; b=b2nGecY3r5pkwemLDvjaCV3XC8joWVzqFtPoYc7vcCjcZCGb7sdLJmbDGdJNw56Ae/MCAmP6su+vPzAOCp7M1iYQ9UH2gfbLO4lFSukMR7P/rBLuGM0xc5NHsggy1/TCwHZurDeRsDvF3UB84kSj+wjmIEy0CFQj71JIXaqaTRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730914; c=relaxed/simple;
-	bh=kgKaA/FKeAfByfZ0s3VgQ0CRC7HdxcGP59bVxh/sgis=;
+	s=arc-20240116; t=1723730828; c=relaxed/simple;
+	bh=2Kj/WuridUQ1BmJ+TZHjVIYy2U7JsRwMmInHq16Ez88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVfIS1Rk1MJX3+uPpFlZz80hYd0oz+wNAsDbdgCnLPSG3cQ4m7g9Gg/1rQqN2W26+iHNkIHKJgIj3SbN/uqdBQnzmTCnF+6Kn6IedqTKQsGISVmWvpErQ1BiX7J5ttlRFJoI+ZFv/C100DSJlfpj3J9RbiigOlzJudZDfUzl//0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbNNtfGr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EE3C32786;
-	Thu, 15 Aug 2024 14:08:33 +0000 (UTC)
+	 MIME-Version; b=Hg4l1BfEifYhQO2NJKP2dqfTrOX2XmzTHNld/Vd9MtNlxTrYlIdqR82AOIK4laxPVqnSlJjYlsUCYNp8xYdJX8Wd4jZqfaMTzqyOuYjOaNZFS0Ae7wTERqwde9spUVo/HF10dSf2zmfl/KaTMFIbrIWsA/+XSZOnwq73P4QGNUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYLiw0Tz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF27C32786;
+	Thu, 15 Aug 2024 14:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730913;
-	bh=kgKaA/FKeAfByfZ0s3VgQ0CRC7HdxcGP59bVxh/sgis=;
+	s=korg; t=1723730828;
+	bh=2Kj/WuridUQ1BmJ+TZHjVIYy2U7JsRwMmInHq16Ez88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbNNtfGrbjhbiQqLuNyzs3tSQX5MZBa+QPyAD3cgWenQI+EOeDGHCJtUDAhU7j0MO
-	 BFgqBkQgfeDBTgmY5KnV7z5Rv0wt2R4Hx5UxZWZnYWW1UC2jI+DpWMwqB5Ct67NFmj
-	 +fkWqLNqlDHJIb4DjoH4M9NHHettsZV7KIvHHcAA=
+	b=VYLiw0TzlYbkPtUHWUlc4Nsv6kiQEuq2DJZfFkyFsDVtRT/5PckixPXnSvYp1jVXT
+	 PrFnBSriOJsb7yTGYhIwHHS0664qcLF8yjFIO2IrL6MVaqmBvRqNCBwhFiph05iHI4
+	 GUd4p/ehIhTQxeBcOtumYjvdLueNN2fRs9saJyQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Hu <huyue2@coolpad.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+6c746eea496f34b3161d@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 33/67] erofs: avoid debugging output for (de)compressed data
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 13/38] NFSD: Rename nfsd_reply_cache_alloc()
 Date: Thu, 15 Aug 2024 15:25:47 +0200
-Message-ID: <20240815131839.595087430@linuxfoundation.org>
+Message-ID: <20240815131833.463817769@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 496530c7c1dfc159d59a75ae00b572f570710c53 ]
+[ Upstream commit ff0d169329768c1102b7b07eebe5a9839aa1c143 ]
 
-Syzbot reported a KMSAN warning,
-erofs: (device loop0): z_erofs_lz4_decompress_mem: failed to decompress -12 in[46, 4050] out[917]
-=====================================================
-BUG: KMSAN: uninit-value in hex_dump_to_buffer+0xae9/0x10f0 lib/hexdump.c:194
-  ..
-  print_hex_dump+0x13d/0x3e0 lib/hexdump.c:276
-  z_erofs_lz4_decompress_mem fs/erofs/decompressor.c:252 [inline]
-  z_erofs_lz4_decompress+0x257e/0x2a70 fs/erofs/decompressor.c:311
-  z_erofs_decompress_pcluster fs/erofs/zdata.c:1290 [inline]
-  z_erofs_decompress_queue+0x338c/0x6460 fs/erofs/zdata.c:1372
-  z_erofs_runqueue+0x36cd/0x3830
-  z_erofs_read_folio+0x435/0x810 fs/erofs/zdata.c:1843
+For readability, rename to match the other helpers.
 
-The root cause is that the printed decompressed buffer may be filled
-incompletely due to decompression failure.  Since they were once only
-used for debugging, get rid of them now.
-
-Reported-and-tested-by: syzbot+6c746eea496f34b3161d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/000000000000321c24060d7cfa1c@google.com
-Reviewed-by: Yue Hu <huyue2@coolpad.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20231227151903.2900413-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: 4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/decompressor.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ fs/nfsd/nfscache.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
-index d36b3963c0bf3..aa59788a61e6e 100644
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -248,15 +248,9 @@ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
- 	if (ret != rq->outputsize) {
- 		erofs_err(rq->sb, "failed to decompress %d in[%u, %u] out[%u]",
- 			  ret, rq->inputsize, inputmargin, rq->outputsize);
--
--		print_hex_dump(KERN_DEBUG, "[ in]: ", DUMP_PREFIX_OFFSET,
--			       16, 1, src + inputmargin, rq->inputsize, true);
--		print_hex_dump(KERN_DEBUG, "[out]: ", DUMP_PREFIX_OFFSET,
--			       16, 1, out, rq->outputsize, true);
--
- 		if (ret >= 0)
- 			memset(out + ret, 0, rq->outputsize - ret);
--		ret = -EIO;
-+		ret = -EFSCORRUPTED;
- 	} else {
- 		ret = 0;
- 	}
--- 
-2.43.0
-
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -85,8 +85,8 @@ nfsd_hashsize(unsigned int limit)
+ }
+ 
+ static struct svc_cacherep *
+-nfsd_reply_cache_alloc(struct svc_rqst *rqstp, __wsum csum,
+-			struct nfsd_net *nn)
++nfsd_cacherep_alloc(struct svc_rqst *rqstp, __wsum csum,
++		    struct nfsd_net *nn)
+ {
+ 	struct svc_cacherep	*rp;
+ 
+@@ -481,7 +481,7 @@ int nfsd_cache_lookup(struct svc_rqst *r
+ 	 * preallocate an entry.
+ 	 */
+ 	nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+-	rp = nfsd_reply_cache_alloc(rqstp, csum, nn);
++	rp = nfsd_cacherep_alloc(rqstp, csum, nn);
+ 	if (!rp)
+ 		goto out;
+ 
 
 
 
