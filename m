@@ -1,264 +1,120 @@
-Return-Path: <stable+bounces-69241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA66C953AA4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 21:11:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B68A953AD0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 21:21:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DDD01F23BCC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 19:11:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAC91B20ACD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 19:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7567710F;
-	Thu, 15 Aug 2024 19:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AA3BA53;
+	Thu, 15 Aug 2024 19:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E5ZfmP8J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ai1e7fav"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6926256B72
-	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 19:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792311DDF5;
+	Thu, 15 Aug 2024 19:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723749062; cv=none; b=AeXLJqQax9MeQniwEtVhGQEphLBsl1sPtXcqsves8Jw/5PKO7uuGJl3SHwkmUzPFcTtoJD4QqRNt9p4H+1jlkaXviqaZPdisBQ9be+PucNuTLRkkFXEon7QE6AqKx54rNP4RYQ5iYpEMAgahGnrmyiMGnngs1FD/eqynXUasAXI=
+	t=1723749695; cv=none; b=rALY4o05slsS2j3FSzu7S3sxxDsHeKHaRSMS/+AkF3TtY+8c63MPTihx1GYDokvKJnBBlURKj3ZmYYXqSkQGLjwxbEy6VcolzNfP21iVQJ4MIoFrlDIMTRzxSYWu9wkz+1jfqUp2/G01phcWuFSHifL5a+RXVC+0/ClLsybRRVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723749062; c=relaxed/simple;
-	bh=IvqiAKfSVYJv0+vHHR6tnTLJ+5hBsObUakXHw8ISKdw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=V6pVPCTQKMikI/pmDSwNzlfaivtEreUNXLEbpz8FXd97ATHok7vbDQPfE3XW6NjSRXAulV0TNrDck6fIOQ0I+Tc6IvWjyLHmPObC6QviRCmPvI8Iyb0o2pKjWAuHBAIUNxSffs1smi1pDDbFhLqqPuxhVbQcmSQ+rUrXrX4eMro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E5ZfmP8J; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1723749695; c=relaxed/simple;
+	bh=L8EPgfErufotgtcVogDTGa11kdtq+O4nYORBDNA/Lgw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RgfjtflPYdqLCsLV12V+0TTF4n9zPG6LeCWQ6YzPy0PaiofGvanlFbYkdNp59A6PYH4szpd88lNHMr5V7qrG/mnlXvrzBR3nYL4/Jro3UPQ7bSXi7Tjcv5f2ULJPhMYGyeIHRHFr9X6edHgDhm9aadgAQ8CuYAfsp7kKqcGx9aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ai1e7fav; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-367990aaef3so687470f8f.0
-        for <stable@vger.kernel.org>; Thu, 15 Aug 2024 12:11:00 -0700 (PDT)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1fd70ba6a15so11587815ad.0;
+        Thu, 15 Aug 2024 12:21:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723749058; x=1724353858; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wzku6EqezrhV/Q1Jipsbt19i41hvIhfl+s6YKEhDhTI=;
-        b=E5ZfmP8JZxTEaaGJv/uJ2Exr/7z+5spXwzvj5/J7c5TnHzgfB8Y5kEdVxo37ysUq2t
-         03sHKqBjy7mV0cnA9N2T5xwsbSC8C4qXrYJWrhnqfc8dc1Y9Avqnsg2rrulVqjb9vw7c
-         lCCIcNQAVXYzntaYLxCdYnad3IH9JJY1vE5V3d7h/lB5bw4m7FHvUe3u909WMZ52ku79
-         xcOiDp74v3Bgf9JKiJi0sEthB0T+iMHbzI69jbXQYrOn73VNgMOIvQjRvkEBMUEHayS8
-         oJBMnVmBJWe3u9xEBLrFDxCPeEFTLP2cctS4+XivlRKPCfqsaDtshRTTBljA4CKI6ZHA
-         XMig==
+        d=gmail.com; s=20230601; t=1723749694; x=1724354494; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Umz9hDXFSz3YBUb9yk0tQ3KFZaZp7tJt+ZRbi1r2fU0=;
+        b=ai1e7favJeZcz+fFusvJ18pV9sDRABySy8b5+urVJvhfxWrlalfW1I7MZsm30Q1LEw
+         DMtb3Kl9tPpcmdCAF9ipUulRK+3AF6fmd94xztYO6+jnKw9sWagOXQWfSb8YCnI/FoX5
+         CJQuys845WNP7Yi5RpZfnAXAEf6/T9uwVe62to+HNBhLgI13+cqYXJSX3kSx6itYH55M
+         gInAhPDbQW6Ixyv5+lnUtNrZmMkAYtErJqQD4WvsGZN7LC+pyzQJaemAd7smo43Ko+5K
+         0QYmpgt3jWYjgN1u9xrY2JY5drribsnB4PPKPhSL+RK6ok1/6zFzNV7pjfGZyjKix3HQ
+         qkbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723749058; x=1724353858;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wzku6EqezrhV/Q1Jipsbt19i41hvIhfl+s6YKEhDhTI=;
-        b=wxEpkbtJdn6u1gihvlgF3NT7rX+IW05zATCUwWSvu3byXQUbzTaayFMT2PbmOm6h8a
-         hFjgPLr1f9WmwoxoeHlkhHeKXPfVXyrKCqnWlIg9yStZqJOlFbBQHYATepZy0rUUvCQL
-         DoKmnp/jJIB7mMuHORe8cWt1vob/BvBCJilL1G72H6atAXoZy8I7bPlWDltX2Q3rdYCa
-         4EFbBY/D3axHOoq25TbhGX6t9S2suftIBzTPqCJAGlsJd6+CXSkmzerj29cjCI11pUs9
-         Hm0A5WoQ0slIa0FsDMZMWdLovatGLQ7HxOqVEYFddTcBajotYBoiHp2qW3yY85xFM/OL
-         UhLA==
-X-Gm-Message-State: AOJu0YwjgXexLB/693oXxb1s6n7PvKCRA5oCIvO9bW8Zi+pks/zu7C1h
-	EeD6uCnwaVqtZvv2Gn4XS3p3yVOng9s1+dkpLeLkk0fD50/x4vf9OmSafUVv
-X-Google-Smtp-Source: AGHT+IHiVgV0zFMQ13way+COh1ffrR+TuDlypF9+LtJeEGw2clSGESWqowQb3iQYb3Itp2FfMw43Ew==
-X-Received: by 2002:adf:e841:0:b0:368:420e:b790 with SMTP id ffacd0b85a97d-371943289e7mr217621f8f.14.1723749058112;
-        Thu, 15 Aug 2024 12:10:58 -0700 (PDT)
-Received: from laptop.. (117.red-83-52-251.dynamicip.rima-tde.net. [83.52.251.117])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded180dcsm56393475e9.4.2024.08.15.12.10.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Aug 2024 12:10:57 -0700 (PDT)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: stable@vger.kernel.org
-Cc: linux-kernel-mentees@lists.linuxfoundation.org,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-Subject: [PATCH 6.6.y] jfs: define xtree root and page independently
-Date: Thu, 15 Aug 2024 21:10:47 +0200
-Message-Id: <20240815191047.9737-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20230601; t=1723749694; x=1724354494;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Umz9hDXFSz3YBUb9yk0tQ3KFZaZp7tJt+ZRbi1r2fU0=;
+        b=Oh8M1bJ2fnHk7T6Klw6qW5YrbiLn0I9npwsX60hCabjLdDYk2p1MscPrp/Y9VQz8In
+         oE7v4J5tE/5DYveG35atVOM4z1xZIHRaMLAFrv9waEa5Ll5WhJua13WLHwUKkafrh2C1
+         0WVCmMaVJfyjLwOpoJYfcluE7Jyrt5Rg7iMNueyBzYlEHgPA2bzLCfa4MDj3E7uKV0YW
+         5kCr/wbpgnNd2o6XJFanRRD7niUOiR7/Z40yhzzilNEI4nUrluI6Pjzrwbn+bpFGCtK4
+         vZg+5Hd+ztnE2vDepMWNbW6M6aQmlvjB5tEy7gT8S2s6KkO4kk/qDP6zYyqzcM9eD8RP
+         He1w==
+X-Forwarded-Encrypted: i=1; AJvYcCWn++ABYWo4aWRvpZN09PV27sut7dfwO6NRpPksKlE31i+m8dH7EOKzoKShs+ZVagcmETNbFsj2vQ3NPHc5Cqm/qRJdMfFKv3xKJ84U/RO/M0zSvAElcKc6Z6o3UdRY30dMlz9D
+X-Gm-Message-State: AOJu0YymxvO/WRFw8lmPpu/qie9+hZLNOWNwrfdbV8x2mm5hiU4AbxxS
+	toCVsTWVwejpEMX5TpNLt42vLATvR5PViwH+RpjQeOlonqzzDByk
+X-Google-Smtp-Source: AGHT+IF7fvFs+8/4+eEtd/uO/sToK/u6WOiwUJ3JPwO8p43BjJXgCpRgn8uVmQNMyQanV4QZgamreg==
+X-Received: by 2002:a17:902:f68c:b0:201:febc:436a with SMTP id d9443c01a7336-20203e868dbmr7931075ad.15.1723749693535;
+        Thu, 15 Aug 2024 12:21:33 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-201f03a1468sm13274725ad.271.2024.08.15.12.21.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Aug 2024 12:21:33 -0700 (PDT)
+Message-ID: <d203bdb1-1ee3-4de5-9d20-1e2b08e710e7@gmail.com>
+Date: Thu, 15 Aug 2024 12:21:31 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 000/259] 5.4.282-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240815131902.779125794@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+On 8/15/24 06:22, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.282 release.
+> There are 259 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 17 Aug 2024 13:18:17 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.282-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-[ Upstream commit a779ed754e52d582b8c0e17959df063108bd0656 ]
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-In order to make array bounds checking sane, provide a separate
-definition of the in-inode xtree root and the external xtree page.
-
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Tested-by: Manas Ghandat <ghandatmanas@gmail.com>
-(cherry picked from commit a779ed754e52d582b8c0e17959df063108bd0656)
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
----
- fs/jfs/jfs_dinode.h |  2 +-
- fs/jfs/jfs_imap.c   |  6 +++---
- fs/jfs/jfs_incore.h |  2 +-
- fs/jfs/jfs_txnmgr.c |  4 ++--
- fs/jfs/jfs_xtree.c  |  4 ++--
- fs/jfs/jfs_xtree.h  | 37 +++++++++++++++++++++++--------------
- 6 files changed, 32 insertions(+), 23 deletions(-)
-
-diff --git a/fs/jfs/jfs_dinode.h b/fs/jfs/jfs_dinode.h
-index 6b231d0d0071..603aae17a693 100644
---- a/fs/jfs/jfs_dinode.h
-+++ b/fs/jfs/jfs_dinode.h
-@@ -96,7 +96,7 @@ struct dinode {
- #define di_gengen	u._file._u1._imap._gengen
- 
- 			union {
--				xtpage_t _xtroot;
-+				xtroot_t _xtroot;
- 				struct {
- 					u8 unused[16];	/* 16: */
- 					dxd_t _dxd;	/* 16: */
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 4bc589c4dcca..82d88dcf0ea6 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -673,7 +673,7 @@ int diWrite(tid_t tid, struct inode *ip)
- 		 * This is the special xtree inside the directory for storing
- 		 * the directory table
- 		 */
--		xtpage_t *p, *xp;
-+		xtroot_t *p, *xp;
- 		xad_t *xad;
- 
- 		jfs_ip->xtlid = 0;
-@@ -687,7 +687,7 @@ int diWrite(tid_t tid, struct inode *ip)
- 		 * copy xtree root from inode to dinode:
- 		 */
- 		p = &jfs_ip->i_xtroot;
--		xp = (xtpage_t *) &dp->di_dirtable;
-+		xp = (xtroot_t *) &dp->di_dirtable;
- 		lv = ilinelock->lv;
- 		for (n = 0; n < ilinelock->index; n++, lv++) {
- 			memcpy(&xp->xad[lv->offset], &p->xad[lv->offset],
-@@ -716,7 +716,7 @@ int diWrite(tid_t tid, struct inode *ip)
- 	 *	regular file: 16 byte (XAD slot) granularity
- 	 */
- 	if (type & tlckXTREE) {
--		xtpage_t *p, *xp;
-+		xtroot_t *p, *xp;
- 		xad_t *xad;
- 
- 		/*
-diff --git a/fs/jfs/jfs_incore.h b/fs/jfs/jfs_incore.h
-index d3c35068cb76..10934f9a11be 100644
---- a/fs/jfs/jfs_incore.h
-+++ b/fs/jfs/jfs_incore.h
-@@ -66,7 +66,7 @@ struct jfs_inode_info {
- 	lid_t	xtlid;		/* lid of xtree lock on directory */
- 	union {
- 		struct {
--			xtpage_t _xtroot;	/* 288: xtree root */
-+			xtroot_t _xtroot;	/* 288: xtree root */
- 			struct inomap *_imap;	/* 4: inode map header	*/
- 		} file;
- 		struct {
-diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
-index ce4b4760fcb1..dccc8b3f1045 100644
---- a/fs/jfs/jfs_txnmgr.c
-+++ b/fs/jfs/jfs_txnmgr.c
-@@ -783,7 +783,7 @@ struct tlock *txLock(tid_t tid, struct inode *ip, struct metapage * mp,
- 			if (mp->xflag & COMMIT_PAGE)
- 				p = (xtpage_t *) mp->data;
- 			else
--				p = &jfs_ip->i_xtroot;
-+				p = (xtpage_t *) &jfs_ip->i_xtroot;
- 			xtlck->lwm.offset =
- 			    le16_to_cpu(p->header.nextindex);
- 		}
-@@ -1676,7 +1676,7 @@ static void xtLog(struct jfs_log * log, struct tblock * tblk, struct lrd * lrd,
- 
- 	if (tlck->type & tlckBTROOT) {
- 		lrd->log.redopage.type |= cpu_to_le16(LOG_BTROOT);
--		p = &JFS_IP(ip)->i_xtroot;
-+		p = (xtpage_t *) &JFS_IP(ip)->i_xtroot;
- 		if (S_ISDIR(ip->i_mode))
- 			lrd->log.redopage.type |=
- 			    cpu_to_le16(LOG_DIR_XTREE);
-diff --git a/fs/jfs/jfs_xtree.c b/fs/jfs/jfs_xtree.c
-index 2d304cee884c..5ee618d17e77 100644
---- a/fs/jfs/jfs_xtree.c
-+++ b/fs/jfs/jfs_xtree.c
-@@ -1213,7 +1213,7 @@ xtSplitRoot(tid_t tid,
- 	struct xtlock *xtlck;
- 	int rc;
- 
--	sp = &JFS_IP(ip)->i_xtroot;
-+	sp = (xtpage_t *) &JFS_IP(ip)->i_xtroot;
- 
- 	INCREMENT(xtStat.split);
- 
-@@ -2098,7 +2098,7 @@ int xtAppend(tid_t tid,		/* transaction id */
-  */
- void xtInitRoot(tid_t tid, struct inode *ip)
- {
--	xtpage_t *p;
-+	xtroot_t *p;
- 
- 	/*
- 	 * acquire a transaction lock on the root
-diff --git a/fs/jfs/jfs_xtree.h b/fs/jfs/jfs_xtree.h
-index ad7592191d76..0f6cf5a1ce75 100644
---- a/fs/jfs/jfs_xtree.h
-+++ b/fs/jfs/jfs_xtree.h
-@@ -65,24 +65,33 @@ struct xadlist {
- #define XTPAGEMAXSLOT	256
- #define XTENTRYSTART	2
- 
--/*
-- *	xtree page:
-- */
--typedef union {
--	struct xtheader {
--		__le64 next;	/* 8: */
--		__le64 prev;	/* 8: */
-+struct xtheader {
-+	__le64 next;	/* 8: */
-+	__le64 prev;	/* 8: */
- 
--		u8 flag;	/* 1: */
--		u8 rsrvd1;	/* 1: */
--		__le16 nextindex;	/* 2: next index = number of entries */
--		__le16 maxentry;	/* 2: max number of entries */
--		__le16 rsrvd2;	/* 2: */
-+	u8 flag;	/* 1: */
-+	u8 rsrvd1;	/* 1: */
-+	__le16 nextindex;	/* 2: next index = number of entries */
-+	__le16 maxentry;	/* 2: max number of entries */
-+	__le16 rsrvd2;	/* 2: */
- 
--		pxd_t self;	/* 8: self */
--	} header;		/* (32) */
-+	pxd_t self;	/* 8: self */
-+};
- 
-+/*
-+ *	xtree root (in inode):
-+ */
-+typedef union {
-+	struct xtheader header;
- 	xad_t xad[XTROOTMAXSLOT];	/* 16 * maxentry: xad array */
-+} xtroot_t;
-+
-+/*
-+ *	xtree page:
-+ */
-+typedef union {
-+	struct xtheader header;
-+	xad_t xad[XTPAGEMAXSLOT];	/* 16 * maxentry: xad array */
- } xtpage_t;
- 
- /*
-
-base-commit: 99fd042016c7489192d05ff21a10620c2142301d
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.39.2
+Florian
 
 
