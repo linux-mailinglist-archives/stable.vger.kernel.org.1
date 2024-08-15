@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-68437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571DA95324B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A46AE95324E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E84D5289140
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D05FC1C25C2F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0145D1A01CC;
-	Thu, 15 Aug 2024 14:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687CA1A76C9;
+	Thu, 15 Aug 2024 14:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmIO6gU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6oeXaro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B415A19F49A;
-	Thu, 15 Aug 2024 14:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D9A1A76C0;
+	Thu, 15 Aug 2024 14:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730565; cv=none; b=uXn30/rpfK6FakqPUS3kvcZe1w62jqOiPud5rUX1S53K69DT52tdIkXz5g3ZDIsRepEhakdCZn8rCQmXQwh1DTjWtba/048bALmZaheyn7/2dGIEe9vINVCH/aCe6jJIy6dLKYfESskcxv/kOtpvRM8xBgpusWyrNJZSg8Spl24=
+	t=1723730572; cv=none; b=ahRSp/5SGARP2IhpdJc1zUDjtOtgANP7o6emkrkVQjvc/nqkleF4xC+O5NIfW08ocgXr7mU0bc3q5Bif7hoDBZgJ0b4P4L9c9dujbf57Jj42ZQ+tmLa1n6831+Pl/2XSpYbSnZnLjh/IRoaLYpzlB1oBHuVw3XgzBvJcXkkMMas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730565; c=relaxed/simple;
-	bh=IDFTU2iSid7MbSUwoj3UHn9NyxS0YghCbkBmkmxg4S4=;
+	s=arc-20240116; t=1723730572; c=relaxed/simple;
+	bh=IH3teq22bxzKy6o2uyj+PG2VdGtS3eSxnEz/sab6pE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffcO8fffPSHIqRgJQRizIygep5iygtMMTn4Y8OLea13HPxZCxzsgYA2WGHDtOMWlEArPlU6d3ZPK0R43jYZ0NPgsCpx+SxDzUK/SeZnplL6hW2ciocejJ+blmQUMdfaGH1D7EOu0fEaAZ1P/lxC5/BVxP2qrcXoLm4b/WUFwWsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmIO6gU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C962C32786;
-	Thu, 15 Aug 2024 14:02:45 +0000 (UTC)
+	 MIME-Version; b=N3W8wa1RB45WNOCdQSSOk00IZIvrex7Kyq/ZtosYKslZec5/hEEwzwhWuqs9ZrzT02OBmEJt5/QcChweP9A03IJIT0mURsjlo1PFEhKHWigV5W96g+MphynM57kg4JOSVhjLvLbR7PXmsd1qvKTwboI04jls3FKDJT1JyXk0uX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6oeXaro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F48C32786;
+	Thu, 15 Aug 2024 14:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730565;
-	bh=IDFTU2iSid7MbSUwoj3UHn9NyxS0YghCbkBmkmxg4S4=;
+	s=korg; t=1723730572;
+	bh=IH3teq22bxzKy6o2uyj+PG2VdGtS3eSxnEz/sab6pE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TmIO6gU2PSWnSrW7zzSSDGwd7lrEq1jrhzRvrGg1wrjHu5PWuwyS5zchj2DsgEThL
-	 cxQsHwxwBjyfRSqVK0jhFjZOZMRfCcyRjZgSqC+KrfVm6hUjUBTtWi2yqbMKY5t9YA
-	 uVzcyayMhertZreOTbO2RaznBE54cYIkFcqiPnQs=
+	b=L6oeXaroohQenvp30HdSUoE8RxBk6Wb/WLf7Ae/x9xedJRbiHUg6Xcib3VZ2Bocjc
+	 vPOCcLzuRgDHjeALTh0fYdMw14fIZ9Ak7HONWLTamFy/QjO4IxaSV4WiICl6ZcwgJg
+	 n41820rvZXs12GiMnQ3ycxgzyXv5X9ij2BDqO+Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Robert Foss <rfoss@kernel.org>
-Subject: [PATCH 5.15 449/484] drm/bridge: analogix_dp: properly handle zero sized AUX transactions
-Date: Thu, 15 Aug 2024 15:25:07 +0200
-Message-ID: <20240815131958.803395732@linuxfoundation.org>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 5.15 450/484] drm/mgag200: Set DDC timeout in milliseconds
+Date: Thu, 15 Aug 2024 15:25:08 +0200
+Message-ID: <20240815131958.842779796@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -65,59 +69,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit e82290a2e0e8ec5e836ecad1ca025021b3855c2d upstream.
+commit ecde5db1598aecab54cc392282c15114f526f05f upstream.
 
-Address only transactions without any data are valid and should not
-be flagged as short transactions. Simply return the message size when
-no transaction errors occured.
+Compute the i2c timeout in jiffies from a value in milliseconds. The
+original values of 2 jiffies equals 2 milliseconds if HZ has been
+configured to a value of 1000. This corresponds to 2.2 milliseconds
+used by most other DRM drivers. Update mgag200 accordingly.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240318203925.2837689-1-l.stach@pengutronix.de
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.5+
+Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/mgag200/mgag200_i2c.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
-@@ -1027,7 +1027,6 @@ ssize_t analogix_dp_transfer(struct anal
- 	u32 status_reg;
- 	u8 *buffer = msg->buffer;
- 	unsigned int i;
--	int num_transferred = 0;
- 	int ret;
+--- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
++++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
+@@ -134,7 +134,7 @@ struct mga_i2c_chan *mgag200_i2c_create(
+ 	i2c->adapter.algo_data = &i2c->bit;
  
- 	/* Buffer size of AUX CH is 16 bytes */
-@@ -1079,7 +1078,6 @@ ssize_t analogix_dp_transfer(struct anal
- 			reg = buffer[i];
- 			writel(reg, dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
- 			       4 * i);
--			num_transferred++;
- 		}
- 	}
- 
-@@ -1127,7 +1125,6 @@ ssize_t analogix_dp_transfer(struct anal
- 			reg = readl(dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
- 				    4 * i);
- 			buffer[i] = (unsigned char)reg;
--			num_transferred++;
- 		}
- 	}
- 
-@@ -1144,7 +1141,7 @@ ssize_t analogix_dp_transfer(struct anal
- 		 (msg->request & ~DP_AUX_I2C_MOT) == DP_AUX_NATIVE_READ)
- 		msg->reply = DP_AUX_NATIVE_REPLY_ACK;
- 
--	return num_transferred > 0 ? num_transferred : -EBUSY;
-+	return msg->size;
- 
- aux_error:
- 	/* if aux err happen, reset aux */
+ 	i2c->bit.udelay = 10;
+-	i2c->bit.timeout = 2;
++	i2c->bit.timeout = usecs_to_jiffies(2200);
+ 	i2c->bit.data = i2c;
+ 	i2c->bit.setsda		= mga_gpio_setsda;
+ 	i2c->bit.setscl		= mga_gpio_setscl;
 
 
 
