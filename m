@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-68850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B0395344B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9985D9535DE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C3DC1C20F68
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4029F1F2579D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C47A1A01BF;
-	Thu, 15 Aug 2024 14:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6994E1ABEC8;
+	Thu, 15 Aug 2024 14:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3JpJx93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMKUGStp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5E019DF92;
-	Thu, 15 Aug 2024 14:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270761ABECF;
+	Thu, 15 Aug 2024 14:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731862; cv=none; b=AVdGi9pZDvxKlyojH8rd6BrarxJSzuhWQI/t5tHqqN0WW5ow7NxLUn+VRgQ1DNccxv9A8uhQzUcPeb0aOqlCpGFXSpKh7bdZsnk8SBBYnsgOiwq6lSC+ScV2chcEWixYJx5Lu0LJm7h6DXahppuZ6txnf27PL9GKCbbRg0rYpmY=
+	t=1723732918; cv=none; b=lPCtpR/gI35JyHvqchTAhSR4ZTMaK/bak1PhjtNt6T5HXtL3DofiJxPxicuw83SVdv1wSOWEzcBErcCEa2PaT8FDmBX8UgTPaPOso1dIbgn/r9HdtyKobN83Wd+oC2V3m6XBktbZkqKMKxwY1hrVPBLBkiSuncN1fWfLyI0dNKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731862; c=relaxed/simple;
-	bh=PjQAHIC4oH7D+wbRLrV7Lvri2Avn51fQ5rcVcMRpQ+s=;
+	s=arc-20240116; t=1723732918; c=relaxed/simple;
+	bh=x0N8jQwsK/HCOvqdsvy0TJR2PTtkg7PHYTH5Y8Z6WdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zb9pDdDNwYxonWDAD83kcL0DNNlKAH4A9BW4ReA3/j8JwdZIjwiJMjZYwP3900BuOpePWy7pYVoQDngzFDeaASqFQSxnWXGkvflkN6Qsl1W5klUH8AeUAJWebxhsOY8ZJCdD0+DQ7OQNZvyFH7KLiQ35zH7fgc8EcFdo7zbXcXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3JpJx93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D30C32786;
-	Thu, 15 Aug 2024 14:24:21 +0000 (UTC)
+	 MIME-Version; b=TtJPtdf7Q80in7v8/hLekpom+lFVnvCAjsCjG5OBWr4rt5k9lh/S3O22aDqXNa6gHYBNRuMSJpRqjKTmAQJBO5mOiPpuzZtmCi48sKaD7KHuLnXzAupIJZFCIdcBK+vgF4unVhUjocTEUgw7CZgRB4dIMvgMLC86VRTCGzZH/ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMKUGStp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A047EC32786;
+	Thu, 15 Aug 2024 14:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731862;
-	bh=PjQAHIC4oH7D+wbRLrV7Lvri2Avn51fQ5rcVcMRpQ+s=;
+	s=korg; t=1723732918;
+	bh=x0N8jQwsK/HCOvqdsvy0TJR2PTtkg7PHYTH5Y8Z6WdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3JpJx93iqGzdW7dnrgOlaO34gR3kj5feiS8Cq6io8eNNggdHa3Z4fp3/kFHOkmSr
-	 fuWn86suwrhAcYjDKB6b9XyWWnYMdYMMlur4QfaxA706djomVhP6qdsFbwYimvmbkG
-	 H596cGhYOTg7BoOpdq0mMgRTw+ybXrUYzdrHRlLQ=
+	b=nMKUGStptm5SzDFieSjq6w7rlin2i3uIIPt5C6s0ncrN7R1eWseyTHKkGmF6sprxd
+	 B2bmSc7OG25UAnM6ce0mHC4A50k6JxV2V9uESVCsznNQaXdgGcf9XyTXNIoCHUYRai
+	 I0nCYMmTLnpyNusdSFcirCRkWcnQtV0H5kFVvghc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 5.4 259/259] ARM: dts: imx6qdl-kontron-samx6i: fix phy-mode
-Date: Thu, 15 Aug 2024 15:26:32 +0200
-Message-ID: <20240815131912.872919263@linuxfoundation.org>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 5.10 327/352] drm/mgag200: Set DDC timeout in milliseconds
+Date: Thu, 15 Aug 2024 15:26:33 +0200
+Message-ID: <20240815131932.090249827@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 0df3c7d7a73d75153090637392c0b73a63cdc24a upstream.
+commit ecde5db1598aecab54cc392282c15114f526f05f upstream.
 
-The i.MX6 cannot add any RGMII delays. The PHY has to add both the RX
-and TX delays on the RGMII interface. Fix the interface mode. While at
-it, use the new phy-connection-type property name.
+Compute the i2c timeout in jiffies from a value in milliseconds. The
+original values of 2 jiffies equals 2 milliseconds if HZ has been
+configured to a value of 1000. This corresponds to 2.2 milliseconds
+used by most other DRM drivers. Update mgag200 accordingly.
 
-Fixes: 5694eed98cca ("ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.5+
+Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi |    2 +-
+ drivers/gpu/drm/mgag200/mgag200_i2c.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
-+++ b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
-@@ -259,7 +259,7 @@
- &fec {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet>;
--	phy-mode = "rgmii";
-+	phy-connection-type = "rgmii-id";
- 	phy-handle = <&ethphy>;
+--- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
++++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
+@@ -134,7 +134,7 @@ struct mga_i2c_chan *mgag200_i2c_create(
+ 	i2c->adapter.algo_data = &i2c->bit;
  
- 	mdio {
+ 	i2c->bit.udelay = 10;
+-	i2c->bit.timeout = 2;
++	i2c->bit.timeout = usecs_to_jiffies(2200);
+ 	i2c->bit.data = i2c;
+ 	i2c->bit.setsda		= mga_gpio_setsda;
+ 	i2c->bit.setscl		= mga_gpio_setscl;
 
 
 
