@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416C295333D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE359534C6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750DA1C20C84
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1E541C2360E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133311B32C2;
-	Thu, 15 Aug 2024 14:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC4919E7FA;
+	Thu, 15 Aug 2024 14:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsFO8C7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmYJPYee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C540C1B29C1;
-	Thu, 15 Aug 2024 14:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16001DFFB;
+	Thu, 15 Aug 2024 14:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731157; cv=none; b=aDV6I99CKMSsXXxEneEcKFtzNA7+wbsN2zfu9Ujs33x1K/ZnI3+gE3mV/OceJZ3wEG34hRb7IiqRSLlIfRU5l4n/bhA6xMfnKUrLbKjl3wO7AFqQYntMkSoGehHrwAntrtPJwx+z/g6AmRnegFxBUWSHl4cPGzJPhqPArzoDDYE=
+	t=1723732210; cv=none; b=kCplo2+XppSsHvL1cK32ByniuCTVPbY96qKs1ctdHhPV0lgeFcl1grxY6C0zBVxDD2p0+HahFzHEYvVadWkyXgZnDDtN4sI0iyHgGZ9SajfXmo6bjJF20XxrPk/g0xVySs3nqm1RaxXR/zcZsVOSjhNXhuXIDvjrG+OwaqhUpOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731157; c=relaxed/simple;
-	bh=oOgy9uWBGcogmGnZJdG/omrM7A+W7xNM1fgon1LKar4=;
+	s=arc-20240116; t=1723732210; c=relaxed/simple;
+	bh=B+MwpQWyxrsPfEwNCZAkDYj46GAlZINR40Z1Cu/aQ6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1qGeeRNxFXAmHd3dmCRQLNc1b6VyXJHvxcEpaVSPMzYP02zrcpgP/BonIgFWHS2E5TCWByyebNISlqGaVIj6MUGuc4uUp15+Yz43gOc5sJmQrwA/nzojP3ge60Ioeon+UY+n2BLHIm7tmgLrGnaTLWS7EfeWSSigrImH6T1mcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsFO8C7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE234C4AF0D;
-	Thu, 15 Aug 2024 14:12:36 +0000 (UTC)
+	 MIME-Version; b=BbDmpeTuVxG+oa/mpCyU4gEkw53k2j1wRKE9bcXHGOwp3LEhumRjx0F4C2bu7A7Tu9hJ8Qs2pdQQ1DvebkExTjQEO6xnLHY2989J/WKcTZs1CIzu1ULE2FuzX8ROJOIhCBXn1pLzjnzdMNJK1ByRWcpgbDi9lQ/n0mJu9xN7B8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmYJPYee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575ECC32786;
+	Thu, 15 Aug 2024 14:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731157;
-	bh=oOgy9uWBGcogmGnZJdG/omrM7A+W7xNM1fgon1LKar4=;
+	s=korg; t=1723732210;
+	bh=B+MwpQWyxrsPfEwNCZAkDYj46GAlZINR40Z1Cu/aQ6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsFO8C7lmoT89Jg13TN2nj18AFz6ZfpmV3KMA3cckBRQzEXIYzXvTViaXajx6KsVX
-	 d1OuYAQ1VR+dVuEAHxEtu+TijkrCF9eIKetCr/+mJvk7ym3ULrV0k5+uzZzCW6zZzD
-	 0GSVwNFvMS5ET/f8KheloN6BYqxuCGxEWfXDWLvg=
+	b=bmYJPYeeAHnh82NH6qKtdmjfS9m5Hu58KIl0N3CiEQ4y5SCa/joebKONgmsAhd7KC
+	 t7aheFYLrA3dloCI3V4Ig3u8/pjxlwiWazekUhOwGl9wpLgko7MvqO0kthomKeHwOx
+	 rnK3+UTfhI1n+AZCP4pl6Q5WLru2GoWqrjVEe7ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Nick Bowler <nbowler@draconx.ca>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/259] perf/x86/intel/pt: Fix pt_topa_entry_for_page() address calculation
+Subject: [PATCH 5.10 108/352] macintosh/therm_windtunnel: fix module unload.
 Date: Thu, 15 Aug 2024 15:22:54 +0200
-Message-ID: <20240815131904.389865165@linuxfoundation.org>
+Message-ID: <20240815131923.431094678@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Nick Bowler <nbowler@draconx.ca>
 
-[ Upstream commit 3520b251dcae2b4a27b95cd6f745c54fd658bda5 ]
+[ Upstream commit fd748e177194ebcbbaf98df75152a30e08230cc6 ]
 
-Currently, perf allocates an array of page pointers which is limited in
-size by MAX_PAGE_ORDER. That in turn limits the maximum Intel PT buffer
-size to 2GiB. Should that limitation be lifted, the Intel PT driver can
-support larger sizes, except for one calculation in
-pt_topa_entry_for_page(), which is limited to 32-bits.
+The of_device_unregister call in therm_windtunnel's module_exit procedure
+does not fully reverse the effects of of_platform_device_create in the
+module_init prodedure.  Once you unload this module, it is impossible
+to load it ever again since only the first of_platform_device_create
+call on the fan node succeeds.
 
-Fix pt_topa_entry_for_page() address calculation by adding a cast.
+This driver predates first git commit, and it turns out back then
+of_platform_device_create worked differently than it does today.
+So this is actually an old regression.
 
-Fixes: 39152ee51b77 ("perf/x86/intel/pt: Get rid of reverse lookup table for ToPA")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-4-adrian.hunter@intel.com
+The appropriate function to undo of_platform_device_create now appears
+to be of_platform_device_destroy, and switching to use this makes it
+possible to unload and load the module as expected.
+
+Signed-off-by: Nick Bowler <nbowler@draconx.ca>
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240711035428.16696-1-nbowler@draconx.ca
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c | 2 +-
+ drivers/macintosh/therm_windtunnel.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index f4d2322f4c629..10ccc30d84638 100644
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -935,7 +935,7 @@ pt_topa_entry_for_page(struct pt_buffer *buf, unsigned int pg)
- 	 * order allocations, there shouldn't be many of these.
- 	 */
- 	list_for_each_entry(topa, &buf->tables, list) {
--		if (topa->offset + topa->size > pg << PAGE_SHIFT)
-+		if (topa->offset + topa->size > (unsigned long)pg << PAGE_SHIFT)
- 			goto found;
- 	}
+diff --git a/drivers/macintosh/therm_windtunnel.c b/drivers/macintosh/therm_windtunnel.c
+index f55f6adf5e5ff..49805eb4d145a 100644
+--- a/drivers/macintosh/therm_windtunnel.c
++++ b/drivers/macintosh/therm_windtunnel.c
+@@ -549,7 +549,7 @@ g4fan_exit( void )
+ 	platform_driver_unregister( &therm_of_driver );
  
+ 	if( x.of_dev )
+-		of_device_unregister( x.of_dev );
++		of_platform_device_destroy(&x.of_dev->dev, NULL);
+ }
+ 
+ module_init(g4fan_init);
 -- 
 2.43.0
 
