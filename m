@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-69153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3309535B2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:41:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 265F995330D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 841D7B2198B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4FC11F223FF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50011A00CF;
-	Thu, 15 Aug 2024 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1441A00E2;
+	Thu, 15 Aug 2024 14:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZRQtMnT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dR8qlH17"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724821AC893;
-	Thu, 15 Aug 2024 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E6719DF6A;
+	Thu, 15 Aug 2024 14:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732841; cv=none; b=LH76bAk4ZW/yKQEC+vJiFbDogVlqlEHfZ8emFv5mOxln+AQxPLykXKGx7V/CSbbQ5t7zFbOWvDC04Sa4OAmdVTtosMq18fxbHW41E6mhocToNXpmEt1jXbzA9HDNO/icUejM815/77EY8MVS1OVvsd7wKupOJqio2BwBhCvcKmo=
+	t=1723731029; cv=none; b=oCTcNoOM7kEr9zX5OT0ZQqyefERbDS4gV1S8K5wzshBOyfmxR8cs4u8cykejqG/YTMevnWjoJwSMbXtZNZ0l8DKo1RCQV4jf+flBBcLXitJmoZjs2IvQXJnS+8FbEgGZYHOHtizyid7xz2dl9TuyThD2EowEu5B93p/ivPqHhTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732841; c=relaxed/simple;
-	bh=YB4ypPWgUT6WNHtbTM/vMcV+49w2Hpm4ZLO2kHNSNBY=;
+	s=arc-20240116; t=1723731029; c=relaxed/simple;
+	bh=/4++GUXI/tHogoiukFMOnZN8xcMDsrlhUZmeIzVytJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsOWEiPYJXX3U/xWw53xZNcPKxw35pnKcLG12KTYWFw31dpnJzZzRo0IYyi7q8hHbByMh7prrmSRctO0ScJKUbj2HKeGdD48SUgoonXGF8dehAqX9R7JIWuf/J1PDJLtLcqL1A+LmC4UxKermQpoEUY0IKtvDOwDaf/sSbEgalU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZRQtMnT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EF7C32786;
-	Thu, 15 Aug 2024 14:40:40 +0000 (UTC)
+	 MIME-Version; b=gC4jlrooFVRgpSgqX6TylBkY3XYufNPGXUTQ9kyt7/MlKnUA8MNL+Mck8DJu8UVxGyeeylB+Jp0lL9CD8Q0wTgcK0dz0bN9tvn2ONfbpogUFV8bPGXOYHLz5fVnxtqhWL394TiHoVVgVBGchugvW2bD/7r1vVqu8JPcMOBtv41E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dR8qlH17; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D702C4AF0A;
+	Thu, 15 Aug 2024 14:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732841;
-	bh=YB4ypPWgUT6WNHtbTM/vMcV+49w2Hpm4ZLO2kHNSNBY=;
+	s=korg; t=1723731029;
+	bh=/4++GUXI/tHogoiukFMOnZN8xcMDsrlhUZmeIzVytJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RZRQtMnTOlvdSPIHusHuy9HwZQqnPQCIzD0ySoSPKTq8XzBI6qpGtTuTjWroLKpaB
-	 7LEmxfBm0IlTrD7qH5vNa2kLVmASSvhHvdR7gbvrHgpPu3H8KLGMr/01OCu+5BciqO
-	 TD/u3w6ZPJds1rgIXfNKTi9LqufK3MUoAwy/Az2U=
+	b=dR8qlH17hV3pOnRqE7AtOFVJWxlhO7bRbAgbKkPyRNh+MNl1pKFcHNmoAgXrYWzmZ
+	 l4P+7rlWh2/a7ERYyIfxOJ8MohmlbBGkkcgpXPl68Ci/h0lmceT4XRl6OZMB8v42kB
+	 QH2Cbh8Ki9HT5njvDUdWoQCjTEoHBTepxVR9uJUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 302/352] ALSA: line6: Fix racy access to midibuf
+	syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 54/67] f2fs: fix to do sanity check on F2FS_INLINE_DATA flag in inode during GC
 Date: Thu, 15 Aug 2024 15:26:08 +0200
-Message-ID: <20240815131931.133286690@linuxfoundation.org>
+Message-ID: <20240815131840.382682546@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Chao Yu <chao@kernel.org>
 
-commit 15b7a03205b31bc5623378c190d22b7ff60026f1 upstream.
+[ Upstream commit fc01008c92f40015aeeced94750855a7111b6929 ]
 
-There can be concurrent accesses to line6 midibuf from both the URB
-completion callback and the rawmidi API access.  This could be a cause
-of KMSAN warning triggered by syzkaller below (so put as reported-by
-here).
+syzbot reports a f2fs bug as below:
 
-This patch protects the midibuf call of the former code path with a
-spinlock for avoiding the possible races.
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/inline.c:258!
+CPU: 1 PID: 34 Comm: kworker/u8:2 Not tainted 6.9.0-rc6-syzkaller-00012-g9e4bc4bcae01 #0
+RIP: 0010:f2fs_write_inline_data+0x781/0x790 fs/f2fs/inline.c:258
+Call Trace:
+ f2fs_write_single_data_page+0xb65/0x1d60 fs/f2fs/data.c:2834
+ f2fs_write_cache_pages fs/f2fs/data.c:3133 [inline]
+ __f2fs_write_data_pages fs/f2fs/data.c:3288 [inline]
+ f2fs_write_data_pages+0x1efe/0x3a90 fs/f2fs/data.c:3315
+ do_writepages+0x35b/0x870 mm/page-writeback.c:2612
+ __writeback_single_inode+0x165/0x10b0 fs/fs-writeback.c:1650
+ writeback_sb_inodes+0x905/0x1260 fs/fs-writeback.c:1941
+ wb_writeback+0x457/0xce0 fs/fs-writeback.c:2117
+ wb_do_writeback fs/fs-writeback.c:2264 [inline]
+ wb_workfn+0x410/0x1090 fs/fs-writeback.c:2304
+ process_one_work kernel/workqueue.c:3254 [inline]
+ process_scheduled_works+0xa12/0x17c0 kernel/workqueue.c:3335
+ worker_thread+0x86d/0xd70 kernel/workqueue.c:3416
+ kthread+0x2f2/0x390 kernel/kthread.c:388
+ ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Reported-by: syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/00000000000000949c061df288c5@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240805130129.10872-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The root cause is: inline_data inode can be fuzzed, so that there may
+be valid blkaddr in its direct node, once f2fs triggers background GC
+to migrate the block, it will hit f2fs_bug_on() during dirty page
+writeback.
+
+Let's add sanity check on F2FS_INLINE_DATA flag in inode during GC,
+so that, it can forbid migrating inline_data inode's data block for
+fixing.
+
+Reported-by: syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000d103ce06174d7ec3@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/line6/driver.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/f2fs/gc.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/sound/usb/line6/driver.c
-+++ b/sound/usb/line6/driver.c
-@@ -286,12 +286,14 @@ static void line6_data_received(struct u
- {
- 	struct usb_line6 *line6 = (struct usb_line6 *)urb->context;
- 	struct midi_buffer *mb = &line6->line6midi->midibuf_in;
-+	unsigned long flags;
- 	int done;
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index afb7c88ba06b2..888c301ffe8f4 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1563,6 +1563,16 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+ 				continue;
+ 			}
  
- 	if (urb->status == -ESHUTDOWN)
- 		return;
- 
- 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
-+		spin_lock_irqsave(&line6->line6midi->lock, flags);
- 		done =
- 			line6_midibuf_write(mb, urb->transfer_buffer, urb->actual_length);
- 
-@@ -300,12 +302,15 @@ static void line6_data_received(struct u
- 			dev_dbg(line6->ifcdev, "%d %d buffer overflow - message skipped\n",
- 				done, urb->actual_length);
- 		}
-+		spin_unlock_irqrestore(&line6->line6midi->lock, flags);
- 
- 		for (;;) {
-+			spin_lock_irqsave(&line6->line6midi->lock, flags);
- 			done =
- 				line6_midibuf_read(mb, line6->buffer_message,
- 						   LINE6_MIDI_MESSAGE_MAXLEN,
- 						   LINE6_MIDIBUF_READ_RX);
-+			spin_unlock_irqrestore(&line6->line6midi->lock, flags);
- 
- 			if (done <= 0)
- 				break;
++			if (f2fs_has_inline_data(inode)) {
++				iput(inode);
++				set_sbi_flag(sbi, SBI_NEED_FSCK);
++				f2fs_err_ratelimited(sbi,
++					"inode %lx has both inline_data flag and "
++					"data block, nid=%u, ofs_in_node=%u",
++					inode->i_ino, dni.nid, ofs_in_node);
++				continue;
++			}
++
+ 			err = f2fs_gc_pinned_control(inode, gc_type, segno);
+ 			if (err == -EAGAIN) {
+ 				iput(inode);
+-- 
+2.43.0
+
 
 
 
