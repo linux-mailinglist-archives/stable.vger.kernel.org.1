@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6CD95340C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5B29532E1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4622899D9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA4DA1F21F93
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEEB1AC8BB;
-	Thu, 15 Aug 2024 14:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AD21AD404;
+	Thu, 15 Aug 2024 14:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12n5E63o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9i+MMpF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392F91AC896;
-	Thu, 15 Aug 2024 14:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3516119F49B;
+	Thu, 15 Aug 2024 14:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731719; cv=none; b=j3KfLu6UyP+d7dOj0kL71EBztH+4J4sKcGzAE1JTAa6wciV6TlafRAaBtq7kT3YzAUxiWyz2uzwCLw3APtPKIiSDaZtrWt5lUQItGIe9Om/q3AvYxJ90B1CwnhgseF5UPphYKB/JcOq4Vh7WXgQ5TWHuyTQhucDNoyLXhf4+iwE=
+	t=1723730921; cv=none; b=SFQIOZUtoYhcin8Avfu6lo/1OlMTFnj8U6WxXL1eA2vYVxn7P6kTuLMF+j4JbFpeCU+TCOPJwwe0qpOE9h18Ux2SzUD2BhoUTk1bmeLGqRUNNd3xZ+L/BcTb561UjjkVrxkneqSRJ2HeLOwKppnsh+G19rzIQemCZ9zXMn40Pfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731719; c=relaxed/simple;
-	bh=y9BSpmUKiIIjJptnHQRx7aTwyuR/L8/3xrwFqFnUNc0=;
+	s=arc-20240116; t=1723730921; c=relaxed/simple;
+	bh=4tWxhbAZMOk+fJFHVBBJotIhYSoI3WW3cahaWFdjX8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iEHTJJ/OmALGLM4bmlOPD92pjIbApo+f0YAUhIsCrJJqOdM0u8GVbPuhQV+TMGPDQJ+oqYc+jo9UrOyt9uv5zLOD4EuntSIADsjP5HF9EU7f3W1F3rRRzmQSttvIHjr2wodhJQPn5QoNJhLy48jIJ1B4Dt2i3lsws+MO78YBVvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12n5E63o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6B2C32786;
-	Thu, 15 Aug 2024 14:21:58 +0000 (UTC)
+	 MIME-Version; b=PJK3CJAJwczRBt+LaUdwN7k3NvPZ42nZshksRlEynELpd3Mp3aI9bdacnJqevNzYo0fWk67hJhoOnbzB6JkJzoeGi61qMHReAgv40DBTgGpNUKoIwtRuJXxBYvMkwCTXi2UxN+WSIEvqW9ThvGIfPwHO6HogCKBqzcujD7BH6X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9i+MMpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B082C32786;
+	Thu, 15 Aug 2024 14:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731719;
-	bh=y9BSpmUKiIIjJptnHQRx7aTwyuR/L8/3xrwFqFnUNc0=;
+	s=korg; t=1723730921;
+	bh=4tWxhbAZMOk+fJFHVBBJotIhYSoI3WW3cahaWFdjX8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12n5E63o4n+olY+ZE4Up5FlQXcd8PDB/SnWdvW4URyyXaq4pvTL9w8faytE+HH/M6
-	 4EjEm4ugBvJ74nJzaN94joOUvg8CTqd7QgbhS/WZeLcGkOQ1XSK/gzSfv0RjXDPTa4
-	 zUV3cyY94nwxmJEk3bGHGA0FlSYFhzhl8bD1KJ+s=
+	b=L9i+MMpFKjpfgtgKIT4+5OljBayqRu41KsuU3zPebjOZzu2VdjhrxH+iYBTUV9tMG
+	 u1rbqQ2Y82U1LQ+gdxowaFESCwK0G1aJ2uN64EEm9hoEUKWRjsi1og5dYA3dsCOoWG
+	 3Jjb1Uuf5qS1BYhaJiPB6xn7HHFEsqmSBenVTVGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 216/259] arm64: errata: Unify speculative SSBS errata logic
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+348331f63b034f89b622@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 35/67] Input: bcm5974 - check endpoint type before starting traffic
 Date: Thu, 15 Aug 2024 15:25:49 +0200
-Message-ID: <20240815131911.112483290@linuxfoundation.org>
+Message-ID: <20240815131839.670893903@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,138 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit ec768766608092087dfb5c1fc45a16a6f524dee2 ]
+[ Upstream commit 2b9c3eb32a699acdd4784d6b93743271b4970899 ]
 
-Cortex-X4 erratum 3194386 and Neoverse-V3 erratum 3312417 are identical,
-with duplicate Kconfig text and some unsightly ifdeffery. While we try
-to share code behind CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS, having
-separate options results in a fair amount of boilerplate code, and this
-will only get worse as we expand the set of affected CPUs.
+syzbot has found a type mismatch between a USB pipe and the transfer
+endpoint, which is triggered by the bcm5974 driver[1].
 
-To reduce this boilerplate, unify the two behind a common Kconfig
-option. This removes the duplicate text and Kconfig logic, and removes
-the need for the intermediate ARM64_WORKAROUND_SPECULATIVE_SSBS option.
-The set of affected CPUs is described as a list so that this can easily
-be extended.
+This driver expects the device to provide input interrupt endpoints and
+if that is not the case, the driver registration should terminate.
 
-I've used ARM64_ERRATUM_3194386 (matching the Neoverse-V3 erratum ID) as
-the common option, matching the way we use ARM64_ERRATUM_1319367 to
-cover Cortex-A57 erratum 1319537 and Cortex-A72 erratum 1319367.
+Repros are available to reproduce this issue with a certain setup for
+the dummy_hcd, leading to an interrupt/bulk mismatch which is caught in
+the USB core after calling usb_submit_urb() with the following message:
+"BOGUS urb xfer, pipe 1 != type 3"
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-5-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: fix conflicts & renames, drop unneeded cpucaps.h ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Some other device drivers (like the appletouch driver bcm5974 is mainly
+based on) provide some checking mechanism to make sure that an IN
+interrupt endpoint is available. In this particular case the endpoint
+addresses are provided by a config table, so the checking can be
+targeted to the provided endpoints.
+
+Add some basic checking to guarantee that the endpoints available match
+the expected type for both the trackpad and button endpoints.
+
+This issue was only found for the trackpad endpoint, but the checking
+has been added to the button endpoint as well for the same reasons.
+
+Given that there was never a check for the endpoint type, this bug has
+been there since the first implementation of the driver (f89bd95c5c94).
+
+[1] https://syzkaller.appspot.com/bug?extid=348331f63b034f89b622
+
+Fixes: f89bd95c5c94 ("Input: bcm5974 - add driver for Macbook Air and Pro Penryn touchpads")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reported-and-tested-by: syzbot+348331f63b034f89b622@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/20231007-topic-bcm5974_bulk-v3-1-d0f38b9d2935@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arm64/silicon-errata.rst |  2 +-
- arch/arm64/Kconfig                     | 28 ++++----------------------
- arch/arm64/kernel/cpu_errata.c         | 10 +++------
- 3 files changed, 8 insertions(+), 32 deletions(-)
+ drivers/input/mouse/bcm5974.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index 003424286dda4..b2db2492bd131 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -96,7 +96,7 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1542419        | ARM64_ERRATUM_1542419       |
- +----------------+-----------------+-----------------+-----------------------------+
--| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3312417       |
-+| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 122f2b068e28d..1455a81ee8687 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -590,34 +590,14 @@ config ARM64_ERRATUM_1742098
+diff --git a/drivers/input/mouse/bcm5974.c b/drivers/input/mouse/bcm5974.c
+index ca150618d32f1..953992b458e9f 100644
+--- a/drivers/input/mouse/bcm5974.c
++++ b/drivers/input/mouse/bcm5974.c
+@@ -19,6 +19,7 @@
+  * Copyright (C) 2006	   Nicolas Boichat (nicolas@boichat.ch)
+  */
  
- 	  If unsure, say Y.
++#include "linux/usb.h"
+ #include <linux/kernel.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+@@ -193,6 +194,8 @@ enum tp_type {
  
--config ARM64_WORKAROUND_SPECULATIVE_SSBS
--	bool
--
- config ARM64_ERRATUM_3194386
--	bool "Cortex-X4: 3194386: workaround for MSR SSBS not self-synchronizing"
--	select ARM64_WORKAROUND_SPECULATIVE_SSBS
-+	bool "Cortex-X4/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
- 	default y
- 	help
--	  This option adds the workaround for ARM Cortex-X4 erratum 3194386.
--
--	  On affected cores "MSR SSBS, #0" instructions may not affect
--	  subsequent speculative instructions, which may permit unexepected
--	  speculative store bypassing.
--
--	  Work around this problem by placing a speculation barrier after
--	  kernel changes to SSBS. The presence of the SSBS special-purpose
--	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
--	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
--	  SSBS.
-+	  This option adds the workaround for the following errata:
+ /* list of device capability bits */
+ #define HAS_INTEGRATED_BUTTON	1
++/* maximum number of supported endpoints (currently trackpad and button) */
++#define MAX_ENDPOINTS	2
  
--	  If unsure, say Y.
--
--config ARM64_ERRATUM_3312417
--	bool "Neoverse-V3: 3312417: workaround for MSR SSBS not self-synchronizing"
--	select ARM64_WORKAROUND_SPECULATIVE_SSBS
--	default y
--	help
--	  This option adds the workaround for ARM Neoverse-V3 erratum 3312417.
-+	  * ARM Cortex-X4 erratum 3194386
-+	  * ARM Neoverse-V3 erratum 3312417
+ /* trackpad finger data block size */
+ #define FSIZE_TYPE1		(14 * sizeof(__le16))
+@@ -891,6 +894,18 @@ static int bcm5974_resume(struct usb_interface *iface)
+ 	return error;
+ }
  
- 	  On affected cores "MSR SSBS, #0" instructions may not affect
- 	  subsequent speculative instructions, which may permit unexepected
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index dd8be391e595d..5e77a7595059b 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -382,7 +382,7 @@ void arm64_set_ssbd_mitigation(bool state)
- 		 * CPUs could mis-speculate branches and bypass a conditional
- 		 * barrier.
- 		 */
--		if (IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS))
-+		if (IS_ENABLED(CONFIG_ARM64_ERRATUM_3194386))
- 			spec_bar();
++static bool bcm5974_check_endpoints(struct usb_interface *iface,
++				    const struct bcm5974_config *cfg)
++{
++	u8 ep_addr[MAX_ENDPOINTS + 1] = {0};
++
++	ep_addr[0] = cfg->tp_ep;
++	if (cfg->tp_type == TYPE1)
++		ep_addr[1] = cfg->bt_ep;
++
++	return usb_check_int_endpoints(iface, ep_addr);
++}
++
+ static int bcm5974_probe(struct usb_interface *iface,
+ 			 const struct usb_device_id *id)
+ {
+@@ -903,6 +918,11 @@ static int bcm5974_probe(struct usb_interface *iface,
+ 	/* find the product index */
+ 	cfg = bcm5974_get_config(udev);
  
- 		return;
-@@ -841,14 +841,10 @@ static struct midr_range broken_aarch32_aes[] = {
- };
- #endif
- 
--#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
--static const struct midr_range erratum_spec_ssbs_list[] = {
- #ifdef CONFIG_ARM64_ERRATUM_3194386
-+static const struct midr_range erratum_spec_ssbs_list[] = {
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
--#endif
--#ifdef CONFIG_ARM64_ERRATUM_3312417
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
--#endif
- 	{}
- };
- #endif
-@@ -1042,7 +1038,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
- 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
- 	},
- #endif
--#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
-+#ifdef CONFIG_ARM64_ERRATUM_3194386
- 	{
- 		.desc = "ARM errata 3194386, 3312417",
- 		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
++	if (!bcm5974_check_endpoints(iface, cfg)) {
++		dev_err(&iface->dev, "Unexpected non-int endpoint\n");
++		return -ENODEV;
++	}
++
+ 	/* allocate memory for our device state and initialize it */
+ 	dev = kzalloc(sizeof(struct bcm5974), GFP_KERNEL);
+ 	input_dev = input_allocate_device();
 -- 
 2.43.0
 
