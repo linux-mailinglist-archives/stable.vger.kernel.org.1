@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-67947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB96952FDF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:37:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED71D952FBC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C066289FEE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:37:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C3DF1C22854
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB7418D630;
-	Thu, 15 Aug 2024 13:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1591E1A2561;
+	Thu, 15 Aug 2024 13:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5HCMeSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2VZM5nY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5281714D0;
-	Thu, 15 Aug 2024 13:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F4C19DF9E;
+	Thu, 15 Aug 2024 13:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729018; cv=none; b=JNvH6f3a4sXTp9sPGx7NHYgkVal+NYJYHFEok4lGW8qyhk9Dfn81esBAEA2+QgxgdqMhViL1JW9+m0Ly092WqtBhYhyCiiIutGCh+wWT2OGDkjV3BpZE+dQ77z5anbqZG+177eH+iL4vKmTPZf34uHXpN5LvYl42jvEu+9q9AjY=
+	t=1723728916; cv=none; b=jQDf1XpT4EnDTpedOXqPqRtSS8r0RsHaaHi/UuSGUW8zNba35piGuVSEd4RuxiEqvNpyKUU6r7WI+FsR1gtcd12V0X2JbpGDP8DZ12FEgvQvW6paN7RV6nqpvZpsDroxWQv838BWJLg1EZw8U2/mkNtZm+WfXoUh71EAY49Xubc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729018; c=relaxed/simple;
-	bh=UomFiaLEvhT4WR884sK3cSCOU+I1zMw9PWbWLG9jdWM=;
+	s=arc-20240116; t=1723728916; c=relaxed/simple;
+	bh=8gixcCp0avZkccly13pOa7u4VziwFIoQnoXRkE6lXyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppw2Ufk5FlY/LBIyDZ75cDbHTMZ/KBpEMiezIhE2hLiox7BDDYPoPP9sPF/ve/53/g3L9SFq2TJks03SV95MU4HmqIyBxb3esWK9rM9vG8xlSOK+pFPJnM+QV95qanwum3r7Lox1Er6GVr7sauv3QuLIhXFqPzLaPKUY3wh+AiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5HCMeSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD90C32786;
-	Thu, 15 Aug 2024 13:36:57 +0000 (UTC)
+	 MIME-Version; b=CrfmgVDomZRRhJJBfW06EQu3warQvGmHrYpbF+xsw4jMKzjMetfjsaBv83Zq7d+PRlyr/GrqOeGEs427vvpE5rrdgvqz+idUqZ7E9m4qApGdwISFnlSdDyIrOzGqUakaAQTGtt8JLZBuDeyP06z1lZMWjjnW0aXvx5B9M8VRlWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2VZM5nY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C902C32786;
+	Thu, 15 Aug 2024 13:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729018;
-	bh=UomFiaLEvhT4WR884sK3cSCOU+I1zMw9PWbWLG9jdWM=;
+	s=korg; t=1723728916;
+	bh=8gixcCp0avZkccly13pOa7u4VziwFIoQnoXRkE6lXyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5HCMeSp5JPEZrxPWBuppxhlTA+VSNBpA5JpFu8Cn/bUhSdFoQF8nvqWH5h4CVEbP
-	 YPMaSCsaggUpHqNVbl9d1DEjd9yZjZBaKsW1nCBbsQmJsLteiYaTUZoxpvJKfPf140
-	 L+AcLwN6i/EGqk4sXCp+G8IjbvRzgUkh1pAUbPS8=
+	b=w2VZM5nYc3VS+iDGTPPMluV7097sUTh3xawX3G1E9MyFeuew9FQcG0SDSwnt9IIdC
+	 wtkVx2ua4DWTJD4GHSJKCZybT7qrYn4edN1trjWmjggRSNfLmLXPIGGkbjcJbIwWRT
+	 wjIRhrNpdkvR6wNYuzR1ZYq+TLvzIBop5MkUr2WI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 143/196] jbd2: avoid memleak in jbd2_journal_write_metadata_buffer
-Date: Thu, 15 Aug 2024 15:24:20 +0200
-Message-ID: <20240815131857.543844995@linuxfoundation.org>
+Subject: [PATCH 4.19 144/196] s390/sclp: Prevent release of buffer in I/O
+Date: Thu, 15 Aug 2024 15:24:21 +0200
+Message-ID: <20240815131857.583890537@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
 References: <20240815131852.063866671@linuxfoundation.org>
@@ -68,35 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit cc102aa24638b90e04364d64e4f58a1fa91a1976 ]
+[ Upstream commit bf365071ea92b9579d5a272679b74052a5643e35 ]
 
-The new_bh is from alloc_buffer_head, we should call free_buffer_head to
-free it in error case.
+When a task waiting for completion of a Store Data operation is
+interrupted, an attempt is made to halt this operation. If this attempt
+fails due to a hardware or firmware problem, there is a chance that the
+SCLP facility might store data into buffers referenced by the original
+operation at a later time.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240514112438.1269037-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Handle this situation by not releasing the referenced data buffers if
+the halt attempt fails. For current use cases, this might result in a
+leak of few pages of memory in case of a rare hardware/firmware
+malfunction.
+
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/journal.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/s390/char/sclp_sd.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 629928b19e487..08cff80f8c297 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -430,6 +430,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
- 		tmp = jbd2_alloc(bh_in->b_size, GFP_NOFS);
- 		if (!tmp) {
- 			brelse(new_bh);
-+			free_buffer_head(new_bh);
- 			return -ENOMEM;
- 		}
- 		jbd_lock_bh_state(bh_in);
+diff --git a/drivers/s390/char/sclp_sd.c b/drivers/s390/char/sclp_sd.c
+index 1e244f78f1929..64581433c3349 100644
+--- a/drivers/s390/char/sclp_sd.c
++++ b/drivers/s390/char/sclp_sd.c
+@@ -319,8 +319,14 @@ static int sclp_sd_store_data(struct sclp_sd_data *result, u8 di)
+ 			  &esize);
+ 	if (rc) {
+ 		/* Cancel running request if interrupted */
+-		if (rc == -ERESTARTSYS)
+-			sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL);
++		if (rc == -ERESTARTSYS) {
++			if (sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL)) {
++				pr_warn("Could not stop Store Data request - leaking at least %zu bytes\n",
++					(size_t)dsize * PAGE_SIZE);
++				data = NULL;
++				asce = 0;
++			}
++		}
+ 		vfree(data);
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
