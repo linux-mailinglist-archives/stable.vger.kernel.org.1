@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-69161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A3F9535C9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:42:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB95A953307
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8DBEB288FF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:42:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FD5E1F242D0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4401AE878;
-	Thu, 15 Aug 2024 14:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B351BB6BB;
+	Thu, 15 Aug 2024 14:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOpYVXRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnMsgxaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9451A3BB6;
-	Thu, 15 Aug 2024 14:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90371A7056;
+	Thu, 15 Aug 2024 14:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732867; cv=none; b=eav9WkFFci8wcvSIgF0XG5e5v6s56Q9G56cvANcyWb2rV7GnzS6g6tW43UrwSCazoIGmcEQGBOT8zOebrh/RDFyP0GluVT6D939Lb4NI1296v6sUat8AgyBziYq1qPSlL3kePmVSmnNwskdje3+35ZHxzPD9Ied9Maz75uNPwOE=
+	t=1723731010; cv=none; b=P9p1micishlfmgrEfKFD6MwxI9zlbbJY/QA+qffVbQtnH9LlaII+3gnYD7YYbmmjhdoAo3x37ZHyJOdDAqIyI5ezFtRBGF9NUODm5SuEB/+2DMV1s+viQlZKKP878OnkdrnQ6hakOqr+yc/aDQ1XN9vrLIXlEiPIB5jFSqc/uBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732867; c=relaxed/simple;
-	bh=ygTw6H3NfQwanyqGWDJ+QIl1vmmYZkjmaI3vQZRY0RE=;
+	s=arc-20240116; t=1723731010; c=relaxed/simple;
+	bh=QGDEwYSXEJfdjZ5I8Mda29Agntp3MXRW0vsRHuFm4/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAxHT8lOh/p7xCrw0tybZcshp71Ci9kb9rnDReomw3B9h6i1NVv83aOOlyCuYbXFf0Exre/kNfCYeS+m86Y0NVgS6ALTnk7XjWf/6k+G76XkP+uiWJEeTHxVQ4llDK8/vdQulP0xpSp9WNzOmFTzEvnH2DbF39pPjZpPWxRAvS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOpYVXRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF38C4AF16;
-	Thu, 15 Aug 2024 14:41:06 +0000 (UTC)
+	 MIME-Version; b=A/XdlrAX9z8UspS+VoEiAE8rg8RJ86MAGgEnqEkzHNnvQRDdUpgaBLEhoQ0pRxCbtLwq1vlfrWmCEXxe74EA/JaszKoG0RSgOe8XG/RvU+UIbir4NBca6D235dUMZ596AQqQZbp18iUiWkEYLIqnsPxXVZhCD25cR0buYlCFi4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnMsgxaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33356C32786;
+	Thu, 15 Aug 2024 14:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732867;
-	bh=ygTw6H3NfQwanyqGWDJ+QIl1vmmYZkjmaI3vQZRY0RE=;
+	s=korg; t=1723731010;
+	bh=QGDEwYSXEJfdjZ5I8Mda29Agntp3MXRW0vsRHuFm4/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOpYVXRO0JcHNdJV1Lr0dyaLynrk0c5iXp3g+5O3IwiS5BYrcfJoK1tQq6B8uDlEq
-	 QPGytJozMTIO7RGV+fq8ohomjoo2fxPU5Ujy7sjz9+VKmhK5lhSySI+8oYlz3b4Ald
-	 WRkKDkveORoKHFrZsFGFGm4KbKgPRxuEcLD/GArg=
+	b=QnMsgxaCNngnR2RyqwS3fncem9QFYUAMIyyzavNtLNZ0nmV/Sssz96bdFVhS1jJP6
+	 CxgkoQLEtvKQ5dvkZm9H2GoYurXl4sk2zPXCzu3gyd7gJ+a/CPHx3GWgqxFSMDmmHa
+	 81Tq/ODzdJl8Z+KIelW1Rtmp8BFk6Xl2/wq6uilY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yu Liao <liaoyu15@huawei.com>
-Subject: [PATCH 5.10 310/352] tick/broadcast: Move per CPU pointer access into the atomic section
-Date: Thu, 15 Aug 2024 15:26:16 +0200
-Message-ID: <20240815131931.439336797@linuxfoundation.org>
+	Jacopo Radice <jacopo.radice@outlook.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 63/67] Revert "Input: bcm5974 - check endpoint type before starting traffic"
+Date: Thu, 15 Aug 2024 15:26:17 +0200
+Message-ID: <20240815131840.718224334@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 6881e75237a84093d0986f56223db3724619f26e upstream.
+commit 7105e92c60c9cc4112c782d69c172e96b69a43dc upstream.
 
-The recent fix for making the take over of the broadcast timer more
-reliable retrieves a per CPU pointer in preemptible context.
+This patch intended to fix an well-knonw issue in old drivers where the
+endpoint type is taken for granted, which is often triggered by fuzzers.
 
-This went unnoticed as compilers hoist the access into the non-preemptible
-region where the pointer is actually used. But of course it's valid that
-the compiler keeps it at the place where the code puts it which rightfully
-triggers:
+That was the case for this driver [1], and although the fix seems to be
+correct, it uncovered another issue that leads to a regression [2], if
+the endpoints of the current interface are checked.
 
-  BUG: using smp_processor_id() in preemptible [00000000] code:
-       caller is hotplug_cpu__broadcast_tick_pull+0x1c/0xc0
+The driver makes use of endpoints that belong to a different interface
+rather than the one it binds (it binds to the third interface, but also
+accesses an endpoint from a different one). The driver should claim the
+interfaces it requires, but that is still not the case.
 
-Move it to the actual usage site which is in a non-preemptible region.
+Given that the regression is more severe than the issue found by
+syzkaller, the best approach is reverting the patch that causes the
+regression, and trying to fix the underlying problem before checking
+the endpoint types again.
 
-Fixes: f7d43dd206e7 ("tick/broadcast: Make takeover of broadcast hrtimer reliable")
-Reported-by: David Wang <00107082@163.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Yu Liao <liaoyu15@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/87ttg56ers.ffs@tglx
+Note that reverting this patch will probably trigger the syzkaller bug
+at some point.
+
+This reverts commit 2b9c3eb32a699acdd4784d6b93743271b4970899.
+
+Link: https://syzkaller.appspot.com/bug?extid=348331f63b034f89b622 [1]
+Link: https://lore.kernel.org/linux-input/87sf161jjc.wl-tiwai@suse.de/ [2]
+
+Fixes: 2b9c3eb32a69 ("Input: bcm5974 - check endpoint type before starting traffic")
+Reported-by: Jacopo Radice <jacopo.radice@outlook.com>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1220030
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20240305-revert_bcm5974_ep_check-v3-1-527198cf6499@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/tick-broadcast.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/mouse/bcm5974.c |   20 --------------------
+ 1 file changed, 20 deletions(-)
 
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -944,7 +944,6 @@ void tick_broadcast_switch_to_oneshot(vo
- #ifdef CONFIG_HOTPLUG_CPU
- void hotplug_cpu__broadcast_tick_pull(int deadcpu)
- {
--	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
- 	struct clock_event_device *bc;
- 	unsigned long flags;
+--- a/drivers/input/mouse/bcm5974.c
++++ b/drivers/input/mouse/bcm5974.c
+@@ -19,7 +19,6 @@
+  * Copyright (C) 2006	   Nicolas Boichat (nicolas@boichat.ch)
+  */
  
-@@ -970,6 +969,8 @@ void hotplug_cpu__broadcast_tick_pull(in
- 		 * device to avoid the starvation.
- 		 */
- 		if (tick_check_broadcast_expired()) {
-+			struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
-+
- 			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
- 			tick_program_event(td->evtdev->next_event, 1);
- 		}
+-#include "linux/usb.h"
+ #include <linux/kernel.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+@@ -194,8 +193,6 @@ enum tp_type {
+ 
+ /* list of device capability bits */
+ #define HAS_INTEGRATED_BUTTON	1
+-/* maximum number of supported endpoints (currently trackpad and button) */
+-#define MAX_ENDPOINTS	2
+ 
+ /* trackpad finger data block size */
+ #define FSIZE_TYPE1		(14 * sizeof(__le16))
+@@ -894,18 +891,6 @@ static int bcm5974_resume(struct usb_int
+ 	return error;
+ }
+ 
+-static bool bcm5974_check_endpoints(struct usb_interface *iface,
+-				    const struct bcm5974_config *cfg)
+-{
+-	u8 ep_addr[MAX_ENDPOINTS + 1] = {0};
+-
+-	ep_addr[0] = cfg->tp_ep;
+-	if (cfg->tp_type == TYPE1)
+-		ep_addr[1] = cfg->bt_ep;
+-
+-	return usb_check_int_endpoints(iface, ep_addr);
+-}
+-
+ static int bcm5974_probe(struct usb_interface *iface,
+ 			 const struct usb_device_id *id)
+ {
+@@ -918,11 +903,6 @@ static int bcm5974_probe(struct usb_inte
+ 	/* find the product index */
+ 	cfg = bcm5974_get_config(udev);
+ 
+-	if (!bcm5974_check_endpoints(iface, cfg)) {
+-		dev_err(&iface->dev, "Unexpected non-int endpoint\n");
+-		return -ENODEV;
+-	}
+-
+ 	/* allocate memory for our device state and initialize it */
+ 	dev = kzalloc(sizeof(struct bcm5974), GFP_KERNEL);
+ 	input_dev = input_allocate_device();
 
 
 
