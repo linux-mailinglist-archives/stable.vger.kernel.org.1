@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-68352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B929531CA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D1A9531F6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97D381C231B0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D60F1C244FC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BE919DF58;
-	Thu, 15 Aug 2024 13:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DF519DFA4;
+	Thu, 15 Aug 2024 14:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHWJZhit"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIoBlZE1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A567DA7D;
-	Thu, 15 Aug 2024 13:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BA51714DD;
+	Thu, 15 Aug 2024 14:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730297; cv=none; b=H3r852sdw0tA5xDoU0fBGFxiobqM8vtg1puNCXU1VsxIX/q8RsgF7ilSOFqlzZ2ThZoslN+ybXqerCeAJblnDHSjINloz95JSMv/LTjApjGr3rR3Dwnww+Hs13Ru7Mmsy3/yzDUiaIqn7PUFylJHo0M5ep/CoadltT25oqBCfzk=
+	t=1723730424; cv=none; b=YbsyHYMG/xxn6tK9ZY6m8vs6G5hWxevv+xUadeYEOjSnJ2GEN9b0BSpktTfiEn5oUNsjS/cJWhTW+C5HFxXUlPD61lt/ooc9LklufaBltfrbGPHWvjdrSq4BouQ5UWsOu4yrizzunhVxX/9Qg3BV/SkxiJ+X0eR68ama12xR2xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730297; c=relaxed/simple;
-	bh=kxNToy70nvYBkQRrCNJNUlwkpYbkzqRfoEZHLlhGN3M=;
+	s=arc-20240116; t=1723730424; c=relaxed/simple;
+	bh=Bxzyc8twNc3nesZWzQm1u18La4CRrT17E1D9nyiuhZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NfBOgJveUuIPPN/SW8nil8PCKFM4p1Bb7dR7XH2QdGYr4MzZwL4BJvyB7PxqAFuyk6hEmeTvl65H+PtPXmuPABzt1AmWjv1ohpJsAFhVELiTAhw/D5BLTI7a19W0/qeZW7UnaRwRIwaf2CKW2we5jOQejDk8kD54MZRrrxErcbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHWJZhit; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30EDC32786;
-	Thu, 15 Aug 2024 13:58:16 +0000 (UTC)
+	 MIME-Version; b=rQskx2LvkcSitc5EGWtPgG1l8aTXncrpCqd93GwKBUvBc34TWb5eZ4LJ71+W2tAGAbJ3I0bEacb3CPpFNfPdw2m9DAC0fczWA94bt3msrCYcLQc9NSvagNvZ50DDt9bDfeSwy/V02C6ysXqyN96Rr3eC9Bla7IQdWwKDkyeJhcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIoBlZE1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305EAC32786;
+	Thu, 15 Aug 2024 14:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730297;
-	bh=kxNToy70nvYBkQRrCNJNUlwkpYbkzqRfoEZHLlhGN3M=;
+	s=korg; t=1723730423;
+	bh=Bxzyc8twNc3nesZWzQm1u18La4CRrT17E1D9nyiuhZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHWJZhitjPMw1HpJIYCPCUSyJG7kU+uj2Q49BTn0hZq7bqm+y5A3v5xH6HJOmMGSK
-	 Ff/Wn/62YlQFThNC1qYcLWntmtQj8TYUS7Sa8dKhWDQneTxyA4JDFCDOUZkbE24o9M
-	 UPDmXcC+0RtQNfT7peitC1G6UvB9bjsoYQTsiY/0=
+	b=XIoBlZE1uq4MzLYrxdJavNXwVjkzl0/f3BZ31yAfARiAddKN9OcMgMJrVqhdv+1uN
+	 UPlpoiovRG9oT5JiUqr3ceHhetQz3ddcOxbxb2AuV2gHT8PFL7N7smzyt8WRwTTCbx
+	 6PmWXczSNPHwk6zMPQ1+VUgUa1FrlFJAQDT967W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 363/484] Bluetooth: l2cap: always unlock channel in l2cap_conless_channel()
-Date: Thu, 15 Aug 2024 15:23:41 +0200
-Message-ID: <20240815131955.454286862@linuxfoundation.org>
+Subject: [PATCH 5.15 364/484] net: dsa: bcm_sf2: Fix a possible memory leak in bcm_sf2_mdio_register()
+Date: Thu, 15 Aug 2024 15:23:42 +0200
+Message-ID: <20240815131955.493722416@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -67,35 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit c531e63871c0b50c8c4e62c048535a08886fba3e ]
+[ Upstream commit e3862093ee93fcfbdadcb7957f5f8974fffa806a ]
 
-Add missing call to 'l2cap_chan_unlock()' on receive error handling
-path in 'l2cap_conless_channel()'.
+bcm_sf2_mdio_register() calls of_phy_find_device() and then
+phy_device_remove() in a loop to remove existing PHY devices.
+of_phy_find_device() eventually calls bus_find_device(), which calls
+get_device() on the returned struct device * to increment the refcount.
+The current implementation does not decrement the refcount, which causes
+memory leak.
 
-Fixes: a24cce144b98 ("Bluetooth: Fix reference counting of global L2CAP channels")
-Reported-by: syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=45ac74737e866894acb0
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This commit adds the missing phy_device_free() call to decrement the
+refcount via put_device() to balance the refcount.
+
+Fixes: 771089c2a485 ("net: dsa: bcm_sf2: Ensure that MDIO diversion is used")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240806011327.3817861-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/bcm_sf2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 43a21a90619d9..4d5dd82f26144 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7767,6 +7767,7 @@ static void l2cap_conless_channel(struct l2cap_conn *conn, __le16 psm,
- 	bt_cb(skb)->l2cap.psm = psm;
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index 1fa392aee52de..f259b0add5b2e 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -638,8 +638,10 @@ static int bcm_sf2_mdio_register(struct dsa_switch *ds)
+ 			of_remove_property(child, prop);
  
- 	if (!chan->ops->recv(chan, skb)) {
-+		l2cap_chan_unlock(chan);
- 		l2cap_chan_put(chan);
- 		return;
+ 		phydev = of_phy_find_device(child);
+-		if (phydev)
++		if (phydev) {
+ 			phy_device_remove(phydev);
++			phy_device_free(phydev);
++		}
  	}
+ 
+ 	err = mdiobus_register(priv->slave_mii_bus);
 -- 
 2.43.0
 
