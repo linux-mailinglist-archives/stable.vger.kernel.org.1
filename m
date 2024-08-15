@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-69158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8B59535B9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:41:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5D8953316
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B75DB28276E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:41:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABF6A1C2361E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE26919FA9D;
-	Thu, 15 Aug 2024 14:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9F11BBBF9;
+	Thu, 15 Aug 2024 14:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htffQMWq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNEmRCIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7210C63D5;
-	Thu, 15 Aug 2024 14:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7BD1A01DA;
+	Thu, 15 Aug 2024 14:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732858; cv=none; b=VM1CrBlw1X5KKiYRxl5mIYZZjFAlVBsQ5+qjvrAYYAiqvXfEi+EgZVwRvdarGbtqPgkOA5pj9Z48eMT2RQMDxGUoOuvbSXT0KxMNCMP9A8kpQ8VWXAclRVybA/9YGxlH2OiCtjf20GcdI+lpzDa2kDdbPSSE38fPnty0jXDTUNc=
+	t=1723731048; cv=none; b=qqPCYASMhcoswjZ0njbS5Gt5MIZ5br9OF0ejAFXth4tILR5tIJ3RlkGUnqyTdqbome1g/1jiOtvbb17P12Y3WoAdXtiD9SqAORewcSzK8Mmfk2qMcz1rHGETaDQ1PopoLy+k0FNX5gjPYummWv/O2HxA3SkNGS9B4h3hd2N8yms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732858; c=relaxed/simple;
-	bh=s5wKDBgobbJZ8tzqz3nLuZmEK1nnTkdC9T4zhqGHDx8=;
+	s=arc-20240116; t=1723731048; c=relaxed/simple;
+	bh=4x0JCUKFtqgfLa2PVd7H5vRc/ZMW4gZ7s4tHo9F4hqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSNZgAV2q6Cce490oZ+VWNrWJ6fnCDQ4p6IjueSWsKELZHf35R4gPk2y1kqBX+p+KvA9IrB1OVSh0f/Sc1mV3FXGOY52rFs03qhs2bWfFrjA7E8afM78ltVRc297Vj0XBi5IeTWjfT7xXmJKz2e0Xqvh7PPftI7nMieKgaQz1r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htffQMWq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AEBC32786;
-	Thu, 15 Aug 2024 14:40:57 +0000 (UTC)
+	 MIME-Version; b=Y7hGQtYqY4VjorSlLB5J1wpYRrKo0+swn4xR02JNoiAfmL+zUvYJ2Jyu/w+3KSqXu/mYlRoHfP52kJimfl25L5DeWhP3LlaJ/6FsRs9Vq+qVjgas+KH5/uSK9tJUc1+kk1iDPkCuqmJT6QNkBEdIzm/3Z/3jW/emEN7yaEFAkK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNEmRCIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601A5C32786;
+	Thu, 15 Aug 2024 14:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732858;
-	bh=s5wKDBgobbJZ8tzqz3nLuZmEK1nnTkdC9T4zhqGHDx8=;
+	s=korg; t=1723731047;
+	bh=4x0JCUKFtqgfLa2PVd7H5vRc/ZMW4gZ7s4tHo9F4hqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htffQMWq8HbjqGRmyXaKvhBiv5BbS4sVdVv3glX4z8tzPlZCtcbrDWcsh2YXnzLuC
-	 rH/0jISiTax0FQfuZpwskn9QbySRUnrdkHBvjDmubGmhmm5IMkHpMPos0vxuqSb3c2
-	 QdByU9qrk0O7DwC67ntW+rfeX0+sHvmPwRjXxQeM=
+	b=yNEmRCIf/3mf619veDDK4DCJZ3Ghw7b0SqM+BMJEanJQIXkek+kiwQb4Bw+Y+cbjh
+	 e7Sbh9v6jO5W7Zsj6+LWPk9hyqzhmDlPyRas497jwMCg8pG4FvU2myCDPOTR9vZ1W4
+	 ylZLZmqzSm2fN2aUiOHENN91d42siV7JGuhIUA20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wulff <crwulff@gmail.com>
-Subject: [PATCH 5.10 307/352] usb: gadget: core: Check for unset descriptor
-Date: Thu, 15 Aug 2024 15:26:13 +0200
-Message-ID: <20240815131931.324059170@linuxfoundation.org>
+	syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 60/67] ALSA: usb: Fix UBSAN warning in parse_audio_unit()
+Date: Thu, 15 Aug 2024 15:26:14 +0200
+Message-ID: <20240815131840.604840529@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wulff <crwulff@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 973a57891608a98e894db2887f278777f564de18 upstream.
+[ Upstream commit 2f38cf730caedaeacdefb7ff35b0a3c1168117f9 ]
 
-Make sure the descriptor has been set before looking at maxpacket.
-This fixes a null pointer panic in this case.
+A malformed USB descriptor may pass the lengthy mixer description with
+a lot of channels, and this may overflow the 32bit integer shift
+size, as caught by syzbot UBSAN test.  Although this won't cause any
+real trouble, it's better to address.
 
-This may happen if the gadget doesn't properly set up the endpoint
-for the current speed, or the gadget descriptors are malformed and
-the descriptor for the speed/endpoint are not found.
+This patch introduces a sanity check of the number of channels to bail
+out the parsing when too many channels are found.
 
-No current gadget driver is known to have this problem, but this
-may cause a hard-to-find bug during development of new gadgets.
-
-Fixes: 54f83b8c8ea9 ("USB: gadget: Reject endpoints with 0 maxpacket value")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chris Wulff <crwulff@gmail.com>
-Link: https://lore.kernel.org/r/20240725010419.314430-2-crwulff@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/0000000000000adac5061d3c7355@google.com
+Link: https://patch.msgid.link/20240715123619.26612-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/core.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ sound/usb/mixer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -99,12 +99,10 @@ int usb_ep_enable(struct usb_ep *ep)
- 		goto out;
- 
- 	/* UDC drivers can't handle endpoints with maxpacket size 0 */
--	if (usb_endpoint_maxp(ep->desc) == 0) {
--		/*
--		 * We should log an error message here, but we can't call
--		 * dev_err() because there's no way to find the gadget
--		 * given only ep.
--		 */
-+	if (!ep->desc || usb_endpoint_maxp(ep->desc) == 0) {
-+		WARN_ONCE(1, "%s: ep%d (%s) has %s\n", __func__, ep->address, ep->name,
-+			  (!ep->desc) ? "NULL descriptor" : "maxpacket 0");
-+
- 		ret = -EINVAL;
- 		goto out;
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index d1bdb0b93bda0..8cc2d4937f340 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -2021,6 +2021,13 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
+ 		bmaControls = ftr->bmaControls;
  	}
+ 
++	if (channels > 32) {
++		usb_audio_info(state->chip,
++			       "usbmixer: too many channels (%d) in unit %d\n",
++			       channels, unitid);
++		return -EINVAL;
++	}
++
+ 	/* parse the source unit */
+ 	err = parse_audio_unit(state, hdr->bSourceID);
+ 	if (err < 0)
+-- 
+2.43.0
+
 
 
 
