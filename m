@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-68328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0F19531AF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E86952F89
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24C9B28B766
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06BDA286B0A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246621A071A;
-	Thu, 15 Aug 2024 13:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1A419F462;
+	Thu, 15 Aug 2024 13:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYbj9jkx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMkGWTLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40DE1A01D2;
-	Thu, 15 Aug 2024 13:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5869E1714D0;
+	Thu, 15 Aug 2024 13:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730218; cv=none; b=BEh/aB88/Eh3qFE+IkAeH2mx3El/CZ3DJL8OsrhZtzfbc/AXRCHmPzmfDhBMiOsDQwAlOvJuk6MeecP3aDpzdtavNV+jAhAWQuP7RblyM57gOt7iSspRpNQAbpKDPHzlsESt6rdp+6+6ydxUc4+3uQEsrbndUXYo1dQJiWwTnSA=
+	t=1723728802; cv=none; b=TIsAMPbtLr+Q66Kghx+d5Xk3JUvjpTN3aPU6hhz5/cNzVDxv0AxqulsR9AWUxjoXs0r9StynRLVSVMxVC4S6pgAHGxPyDaNb8pauKdoKW7Jn4v5GzR12hOlGOqCJ3BeJmAksgEZRQZScSyp4MLx9jW/j/iNkp5o3za4N4UTPQtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730218; c=relaxed/simple;
-	bh=v2++EbYLAxZrEgombunXWG/Ea4r7g/m+WGiQ3Q/bbN0=;
+	s=arc-20240116; t=1723728802; c=relaxed/simple;
+	bh=9BZ96yMhbWJFg02U2LzWjtwMFHH4SH68u5euPP+7LvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaVGfZhNlgwaZXLmD46P7LGd05tbrgDH9igd92M+7Vr1kswdWy9MXxQ3++3KzwgCZFuvb5U8lvdy5+oM7A3puqYg3YosEr3HBQyse2Xi1U3lam4l5/NeEIG8gYZlQ135SbooaSc675lDXAETm1GaL2OkdQDkKO8pchgXocBVly0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYbj9jkx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B745C4AF0F;
-	Thu, 15 Aug 2024 13:56:58 +0000 (UTC)
+	 MIME-Version; b=YRDTnqn4DS4yuqcTXWIEU5nWBp4jv/wvz0o1Bf/8KQ2Jcgivw6Zf6kq1vQ//R8Dq4GpTzhO51+49u+Z7vq/TGcRMR4ttfJFSOMjDg2G0RGTs0I1GOSb/yLoYtXiUh1U4dDeSVs7saEPmInadzn9OC1sWtTR5VMB9IaVm9VaaieE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMkGWTLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF55DC32786;
+	Thu, 15 Aug 2024 13:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730218;
-	bh=v2++EbYLAxZrEgombunXWG/Ea4r7g/m+WGiQ3Q/bbN0=;
+	s=korg; t=1723728802;
+	bh=9BZ96yMhbWJFg02U2LzWjtwMFHH4SH68u5euPP+7LvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYbj9jkxdipOlw8mo8bS0mSpKoOZsFpifbTKrSGCfLjuap0T8AAzP+zLyKu9Nqkch
-	 jNh1gpvPMe8bI2SSkJuMMVco5Zsut4iF5QZu6KXlz7Z6tbO4VglX9X3cIpdqQluW3r
-	 3UzIqL3vCL9BrNc5VuBVuFNfQpOX/+Uf2Efd2SgY=
+	b=OMkGWTLwuxsUf3HAnOHADiHoo7H8Q4f5DiNVbGWemtlHynHOfHtavzyjeuQt6YBzA
+	 lUGkdNfsFLLrX5LWig0rLgZIdsp7VyymZLXBrjjKMPJnYrgEY3TwsBpVX9P2cb7rb2
+	 IJTahsi6l1CZXvs2XgTf2naUA8eWsjczOeIGYd5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-hardening@vger.kernel.org,
-	Justin Stitt <justinstitt@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 341/484] power: supply: bq24190_charger: replace deprecated strncpy with strscpy
-Date: Thu, 15 Aug 2024 15:23:19 +0200
-Message-ID: <20240815131954.589989595@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 4.19 083/196] ubi: eba: properly rollback inside self_check_eba
+Date: Thu, 15 Aug 2024 15:23:20 +0200
+Message-ID: <20240815131855.254817862@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit b0009b8bed98bd5d59449af48781703df261c247 ]
+commit 745d9f4a31defec731119ee8aad8ba9f2536dd9a upstream.
 
-strncpy() is deprecated for use on NUL-terminated destination strings
-[1] and as such we should prefer more robust and less ambiguous string
-interfaces.
+In case of a memory allocation failure in the volumes loop we can only
+process the already allocated scan_eba and fm_eba array elements on the
+error path - others are still uninitialized.
 
-We expect bdi->model_name to be NUL-terminated based on its usage with
-sysfs_emit and format strings:
+Found by Linux Verification Center (linuxtesting.org).
 
-val->strval is assigned to bdi->model_name in
-bq24190_charger_get_property():
-1186 | val->strval = bdi->model_name;
-
-... then in power_supply_sysfs.c we use value.strval with a format string:
-311  | ret = sysfs_emit(buf, "%s\n", value.strval);
-
-we assigned value.strval via:
-285  | ret = power_supply_get_property(psy, psp, &value);
-... which invokes psy->desc->get_property():
-1210 | return psy->desc->get_property(psy, psp, val);
-
-with bq24190_charger_get_property():
-1320 | static const struct power_supply_desc bq24190_charger_desc = {
-...
-1325 | 	.get_property		= bq24190_charger_get_property,
-
-Moreover, no NUL-padding is required as bdi is zero-allocated in
-bq24190_charger.c:
-1798 | bdi = devm_kzalloc(dev, sizeof(*bdi), GFP_KERNEL);
-
-Considering the above, a suitable replacement is `strscpy` [2] due to
-the fact that it guarantees NUL-termination on the destination buffer
-without unnecessarily NUL-padding.
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
-Link: https://github.com/KSPP/linux/issues/90
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20231020-strncpy-drivers-power-supply-bq24190_charger-c-v1-1-e896223cb795@google.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 00abf3041590 ("UBI: Add self_check_eba()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq24190_charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/ubi/eba.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq24190_charger.c b/drivers/power/supply/bq24190_charger.c
-index 90ac5e59a5d6f..8a4729ee1ab19 100644
---- a/drivers/power/supply/bq24190_charger.c
-+++ b/drivers/power/supply/bq24190_charger.c
-@@ -1727,7 +1727,7 @@ static int bq24190_probe(struct i2c_client *client,
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -1573,6 +1573,7 @@ int self_check_eba(struct ubi_device *ub
+ 					  GFP_KERNEL);
+ 		if (!fm_eba[i]) {
+ 			ret = -ENOMEM;
++			kfree(scan_eba[i]);
+ 			goto out_free;
+ 		}
  
- 	bdi->client = client;
- 	bdi->dev = dev;
--	strncpy(bdi->model_name, id->name, I2C_NAME_SIZE);
-+	strscpy(bdi->model_name, id->name, sizeof(bdi->model_name));
- 	mutex_init(&bdi->f_reg_lock);
- 	bdi->f_reg = 0;
- 	bdi->ss_reg = BQ24190_REG_SS_VBUS_STAT_MASK; /* impossible state */
--- 
-2.43.0
-
+@@ -1608,7 +1609,7 @@ int self_check_eba(struct ubi_device *ub
+ 	}
+ 
+ out_free:
+-	for (i = 0; i < num_volumes; i++) {
++	while (--i >= 0) {
+ 		if (!ubi->volumes[i])
+ 			continue;
+ 
 
 
 
