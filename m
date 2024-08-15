@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC07995328A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4C995326F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CF701F21E66
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADE421C254E4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669BB1A0712;
-	Thu, 15 Aug 2024 14:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD751AD9D9;
+	Thu, 15 Aug 2024 14:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agP4OXU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMPlh3wk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234F61A00F5;
-	Thu, 15 Aug 2024 14:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED95A1AE035;
+	Thu, 15 Aug 2024 14:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730713; cv=none; b=dmfF6c9HdW8pNzmqLmaUMQPqY+LYfrMDDPTmGpGYtfRliJOiz2o9dXhubH7eS/GHb6wtKZrZCP7MSemCcjiOfsF/NnJUG6YT4hUgVwiidFkwf/8CBAC4mLf8Owlpef0GFFa1rBvoJYE2TD+HOt4S0ibTSSdC9Rhbc/A1ZeOj3+g=
+	t=1723730658; cv=none; b=dIUcwabflMHUgswZGPPW+fR8gRvPSWYhQpF7AVeynvskI8MX+XTfQqgjVZEE4wX0VpGr9ZxIept8saHzsKFov6l/YkkDemE/ROTu1wvkUyfneTwvMwjYYHzJZ3UdDdp1Mkf+0oqSuGEuU7njgvUTZH5l7GEVTp99RXXRd3yf2cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730713; c=relaxed/simple;
-	bh=fsy3qJFMATI9LqKH4/i1OFCurY/A3Nb2Ngi2uSeK5Yc=;
+	s=arc-20240116; t=1723730658; c=relaxed/simple;
+	bh=uy7uWXD86erjX9o0BarSk0posxQh3IMIVb3R5/UPC5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oj9IEzOpSsFaDUIPuJIR4vaeL4S7fwpr0ujv6RV/tftRyEKdHJXSKB6+lU+T8q/eOp1ifUCPNGLhoFxQGfYuoMqwo9yzHOE1QSZq000iliJg/ByboYJHLuv93DwrFUf2xDC4wKwsi6MXqtWIU0jS6M/Fl+wOOWfd2Gr3RpNM9Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agP4OXU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706C4C4AF0C;
-	Thu, 15 Aug 2024 14:05:12 +0000 (UTC)
+	 MIME-Version; b=AoERXa4kjnC1Ngo8Hkj/5+6oW5Q6YKEAUCfHnGGd9NA9CTHBpdmhZdikBhiaWxFZdeM1Y2Grhm1ceZY99Di39Bi3lLAb7UPAEm+dTIT87C767a65ehT/dlNQY5vjKF45s15Z5eeAfqsUX5LT8GQu98Ex8fwK1PVIfORZEEd0tsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMPlh3wk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C65C32786;
+	Thu, 15 Aug 2024 14:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730713;
-	bh=fsy3qJFMATI9LqKH4/i1OFCurY/A3Nb2Ngi2uSeK5Yc=;
+	s=korg; t=1723730657;
+	bh=uy7uWXD86erjX9o0BarSk0posxQh3IMIVb3R5/UPC5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agP4OXU6rzURubm4QrB6nJ+0TR0Yr9QuQhCUomFlayg9YnBNhXK4TS3buQl5skK9H
-	 48QGWBUGEt5tH2Onj1Kw2kTZ322xNvmAQeceoc6t93eQU4WGh7Tt+7uRRQ7o8ZS5PW
-	 gG8utg6L65UMQjQqMu+KbUuebDHjnxq8r3ik2KFc=
+	b=yMPlh3wkCrc5jxGRvfrKBWKDft/t+ZVpbERWwEAsaD45wQfXIFaleRBst0nnDzkCA
+	 TWQhHauegQ9ZzYXnjvkR6ftDxU/YhPw59rSJpyF8KcGSkBbXvSKG5RMIBf5rf6vDSI
+	 H1lxh7CO7+V9kKS4hOdrEoQXVxces38yYK2lXtGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang.tang@suse.com>,
-	Matthieu Baerts <matthieu.baerts@tessares.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.1 01/38] mptcp: pass addr to mptcp_pm_alloc_anno_list
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>
+Subject: [PATCH 5.15 477/484] arm64: dts: qcom: msm8996: correct #clock-cells for QMP PHY nodes
 Date: Thu, 15 Aug 2024 15:25:35 +0200
-Message-ID: <20240815131833.005686056@linuxfoundation.org>
+Message-ID: <20240815131959.905311010@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 528cb5f2a1e859522f36f091f29f5c81ec6d4a4c upstream.
+commit b874fff9a7683df30e5aff16d5a85b1f8a43aa5d upstream.
 
-Pass addr parameter to mptcp_pm_alloc_anno_list() instead of entry. We
-can reduce the scope, e.g. in mptcp_pm_alloc_anno_list(), we only access
-"entry->addr", we can then restrict to the pointer to "addr" then.
+The commit 82d61e19fccb ("arm64: dts: qcom: msm8996: Move '#clock-cells'
+to QMP PHY child node") moved the '#clock-cells' properties to the child
+nodes. However it missed the fact that the property must have been set
+to <0> (as all pipe clocks use of_clk_hw_simple_get as the xlate
+function. Also the mentioned commit didn't add '#clock-cells' properties
+to second and third PCIe PHY nodes. Correct both these mistakes:
 
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c95eb32ced82 ("mptcp: pm: reduce indentation blocks")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+- Set '#clock-cells' to <0>,
+- Add the property to pciephy_1 and pciephy_2 nodes.
+
+Fixes: 82d61e19fccb ("arm64: dts: qcom: msm8996: Move '#clock-cells' to QMP PHY child node")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Link: https://lore.kernel.org/r/20220620071936.1558906-3-dmitry.baryshkov@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c   |    8 ++++----
- net/mptcp/pm_userspace.c |    2 +-
- net/mptcp/protocol.h     |    2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -352,7 +352,7 @@ mptcp_pm_del_add_timer(struct mptcp_sock
- }
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -636,7 +636,7 @@
+ 				      <0x00035400 0x1dc>;
+ 				#phy-cells = <0>;
  
- bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
--			      const struct mptcp_pm_addr_entry *entry)
-+			      const struct mptcp_addr_info *addr)
- {
- 	struct mptcp_pm_add_entry *add_entry = NULL;
- 	struct sock *sk = (struct sock *)msk;
-@@ -360,7 +360,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
+-				#clock-cells = <1>;
++				#clock-cells = <0>;
+ 				clock-output-names = "pcie_0_pipe_clk_src";
+ 				clocks = <&gcc GCC_PCIE_0_PIPE_CLK>;
+ 				clock-names = "pipe0";
+@@ -650,6 +650,7 @@
+ 				      <0x00036400 0x1dc>;
+ 				#phy-cells = <0>;
  
- 	lockdep_assert_held(&msk->pm.lock);
++				#clock-cells = <0>;
+ 				clock-output-names = "pcie_1_pipe_clk_src";
+ 				clocks = <&gcc GCC_PCIE_1_PIPE_CLK>;
+ 				clock-names = "pipe1";
+@@ -663,6 +664,7 @@
+ 				      <0x00037400 0x1dc>;
+ 				#phy-cells = <0>;
  
--	add_entry = mptcp_lookup_anno_list_by_saddr(msk, &entry->addr);
-+	add_entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
++				#clock-cells = <0>;
+ 				clock-output-names = "pcie_2_pipe_clk_src";
+ 				clocks = <&gcc GCC_PCIE_2_PIPE_CLK>;
+ 				clock-names = "pipe2";
+@@ -2662,7 +2664,7 @@
+ 				      <0x07410600 0x1a8>;
+ 				#phy-cells = <0>;
  
- 	if (add_entry) {
- 		if (mptcp_pm_is_kernel(msk))
-@@ -377,7 +377,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 
- 	list_add(&add_entry->list, &msk->pm.anno_list);
- 
--	add_entry->addr = entry->addr;
-+	add_entry->addr = *addr;
- 	add_entry->sock = msk;
- 	add_entry->retrans_times = 0;
- 
-@@ -580,7 +580,7 @@ static void mptcp_pm_create_subflow_or_s
- 			return;
- 
- 		if (local) {
--			if (mptcp_pm_alloc_anno_list(msk, local)) {
-+			if (mptcp_pm_alloc_anno_list(msk, &local->addr)) {
- 				__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
- 				msk->pm.add_addr_signaled++;
- 				mptcp_pm_announce_addr(msk, &local->addr, false);
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -225,7 +225,7 @@ int mptcp_nl_cmd_announce(struct sk_buff
- 	lock_sock((struct sock *)msk);
- 	spin_lock_bh(&msk->pm.lock);
- 
--	if (mptcp_pm_alloc_anno_list(msk, &addr_val)) {
-+	if (mptcp_pm_alloc_anno_list(msk, &addr_val.addr)) {
- 		msk->pm.add_addr_signaled++;
- 		mptcp_pm_announce_addr(msk, &addr_val.addr, false);
- 		mptcp_pm_nl_addr_send_ack(msk);
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -812,7 +812,7 @@ int mptcp_pm_nl_mp_prio_send_ack(struct
- 				 struct mptcp_addr_info *rem,
- 				 u8 bkup);
- bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
--			      const struct mptcp_pm_addr_entry *entry);
-+			      const struct mptcp_addr_info *addr);
- void mptcp_pm_free_anno_list(struct mptcp_sock *msk);
- bool mptcp_pm_sport_in_anno_list(struct mptcp_sock *msk, const struct sock *sk);
- struct mptcp_pm_add_entry *
+-				#clock-cells = <1>;
++				#clock-cells = <0>;
+ 				clock-output-names = "usb3_phy_pipe_clk_src";
+ 				clocks = <&gcc GCC_USB3_PHY_PIPE_CLK>;
+ 				clock-names = "pipe0";
 
 
 
