@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088499533A7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32397953511
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9876EB248B0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEFCD1F2A519
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B571A0733;
-	Thu, 15 Aug 2024 14:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716CD1A00CE;
+	Thu, 15 Aug 2024 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meNnOv0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXMySk8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04A614AD0A;
-	Thu, 15 Aug 2024 14:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA0563D5;
+	Thu, 15 Aug 2024 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731453; cv=none; b=q/foNchiHerH7SOTrt2U3NGd+m78OVypcpkz9phETxwPXg0ahm7iW/rCJqG0U9a7lzSX/5o1fD3mxQSjZK/VBRacY+/kavBlGL8Yz6pocLIpoXT8wKhrv4U0kourJjTvezFHbVn/l/Znm63y5qZeYtgDf11avAvHjtqIqpDLNAk=
+	t=1723732408; cv=none; b=oFw12xa2EKRv+ZHGuG67CBmVWclntfxqmlhIfaHNFhYj6wH3DngYelSs6v58HOK3wUgI/bdlbOr22wR3oaYq+djlkw20cwD01PcJ88lftTD1ANgk+TyTO4yZT7BcGMFwAI4nCEGk8EW/ouK/xjmNMWpXFov5O7oMEbrnUvcKr4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731453; c=relaxed/simple;
-	bh=taU6sVxxrQi5OoV6tVHb2T/YfEZLKwvWJOeuaF3wzMQ=;
+	s=arc-20240116; t=1723732408; c=relaxed/simple;
+	bh=ERQBGkXamaDLEjI5xivIKnxhiXvXV+WTvuOX7CTS924=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+x+ayrNFfM1V561/cZAETE9b7yKtJeWDIAdaQnZM5FychqHe0933EyaR1lqqd/YtLiz8goBWspGXMtH5FD6Col1214TaRFDrzFsMeinG4HZQd72TdovKjudXO6esti1/Fe+dhhkjEU9baNxvJBrbfxAco8BcetJOakpMXiusyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meNnOv0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2A8C4AF0C;
-	Thu, 15 Aug 2024 14:17:32 +0000 (UTC)
+	 MIME-Version; b=WRJGHjyPYgE60UNoQLKHZRs6bpTUjM7j+v0Ik+cJ9U0pRKdI08qTtAFoGrYPhfFvIfwoYj4azCvJ4AxFFzHS0qHPCEUmKevzmZf1h8nVsYUfXZ9g9RgAwfp4nzFiecRjX2olA0WnECFUqjLv2ex7lOMOTGvU231gko5KH/IyzA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXMySk8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE52EC4AF0D;
+	Thu, 15 Aug 2024 14:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731453;
-	bh=taU6sVxxrQi5OoV6tVHb2T/YfEZLKwvWJOeuaF3wzMQ=;
+	s=korg; t=1723732408;
+	bh=ERQBGkXamaDLEjI5xivIKnxhiXvXV+WTvuOX7CTS924=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=meNnOv0qfvCAiUBNRAP95RFXgfPXORGzVSrR57j4vcNo8CHGYdpHJS4g1kDngllj4
-	 X/k+mGYGtSHkw+7MDb7YrvkTYdJ0WuN2nedPgMIzfNGCdDGrWHqmTVN7itzfwSJ65W
-	 STGw2Q8hBzIMf+I/vMS1OKicH46qi/vL8M1u+7B8=
+	b=JXMySk8XT85NGejJluX+3ucAFB1ti8vGPGdJBJVW+oOScrrI31xPMYXPDrZY5F052
+	 u3WZZgnIPR5dkXO/Si8YAA75rZu/7dsq9pwtA/NTxppPmxfQVL4EeWV77KLnvK/zal
+	 gcsZ9SBrfm+j5eXWnErnK1qKiHHNPQyh3+4sgh2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.4 103/259] wifi: mwifiex: Fix interface type change
+	Marco Cavenati <cavenati.marco@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.10 170/352] perf/x86/intel/pt: Fix topa_entry base length
 Date: Thu, 15 Aug 2024 15:23:56 +0200
-Message-ID: <20240815131906.780942431@linuxfoundation.org>
+Message-ID: <20240815131925.845215305@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Beims <rafael.beims@toradex.com>
+From: Marco Cavenati <cavenati.marco@gmail.com>
 
-commit a17b9f590f6ec2b9f1b12b1db3bf1d181de6b272 upstream.
+commit 5638bd722a44bbe97c1a7b3fae5b9efddb3e70ff upstream.
 
-When changing the interface type we also need to update the bss_num, the
-driver private data is searched based on a unique (bss_type, bss_num)
-tuple, therefore every time bss_type changes, bss_num must also change.
+topa_entry->base needs to store a pfn.  It obviously needs to be
+large enough to store the largest possible x86 pfn which is
+MAXPHYADDR-PAGE_SIZE (52-12).  So it is 4 bits too small.
 
-This fixes for example an issue in which, after the mode changed, a
-wireless scan on the changed interface would not finish, leading to
-repeated -EBUSY messages to userspace when other scan requests were
-sent.
+Increase the size of topa_entry->base from 36 bits to 40 bits.
 
-Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
+Note, systems where physical addresses can be 256TiB or more are affected.
+
+[ Adrian: Amend commit message as suggested by Dave Hansen ]
+
+Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
+Signed-off-by: Marco Cavenati <cavenati.marco@gmail.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240510110458.15475-1-francesco@dolcini.it
+Link: https://lore.kernel.org/r/20240624201101.60186-2-adrian.hunter@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/events/intel/pt.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -934,6 +934,8 @@ mwifiex_init_new_priv_params(struct mwif
- 		return -EOPNOTSUPP;
- 	}
+--- a/arch/x86/events/intel/pt.h
++++ b/arch/x86/events/intel/pt.h
+@@ -33,8 +33,8 @@ struct topa_entry {
+ 	u64	rsvd2	: 1;
+ 	u64	size	: 4;
+ 	u64	rsvd3	: 2;
+-	u64	base	: 36;
+-	u64	rsvd4	: 16;
++	u64	base	: 40;
++	u64	rsvd4	: 12;
+ };
  
-+	priv->bss_num = mwifiex_get_unused_bss_num(adapter, priv->bss_type);
-+
- 	spin_lock_irqsave(&adapter->main_proc_lock, flags);
- 	adapter->main_locked = false;
- 	spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
+ /* TSC to Core Crystal Clock Ratio */
 
 
 
