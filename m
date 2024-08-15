@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38AB9534A6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:28:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 455B495331A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53AEA1F213F3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:28:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78ECB1C2373D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1E31A00F5;
-	Thu, 15 Aug 2024 14:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E341A01DA;
+	Thu, 15 Aug 2024 14:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZP5uddp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSj8auY9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D9E19DFA4;
-	Thu, 15 Aug 2024 14:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F86019D068;
+	Thu, 15 Aug 2024 14:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732113; cv=none; b=azpYj8uBtFheLaefgL0IH+/HZsR4AKc5ZzpYUCSzalqXbzehjKG3qmFMjarV2IIe6331bfA/Wy2xaKMqg0NDXJ1ZiJKN65zroxVplc0SPoBzpHR37XaZLRyW2YnetmpQxTjkvi9CVk6/PoBejQjki5wX9LcnPsBrneGzR/fbA5Y=
+	t=1723731057; cv=none; b=H0BD0e2axmnKEIRDuL9H/S7GRc6knj+98huR6b1T6utQ08ZouK1suecDBqWpSrsHj+lZgJrikaZ+nh4VUu6/pRdN3o36H+uqecE+Edheitb7gruGgeXK30rhUorJBA6wI5TMnRqUDOuPQqb/0ZnG3qXzrqg7iyicFZyyU+JC+Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732113; c=relaxed/simple;
-	bh=bav8GNLeO7SiEDTw0BCq4WGtvKpqUwkjyriA8nXSTwg=;
+	s=arc-20240116; t=1723731057; c=relaxed/simple;
+	bh=845M7Up8KgoTLzO0B+3GzXx8RkdncjA6xgenCwsI3u4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MN0LpSA/WB6fhsv4hdq9XmiBQ352e37VC5JjkiHUhEFHUwmJf0KTHyF75Tn7Hzp/9Nn2dLeSm69bBlO4t3NM+vusETP8+o5fROQPZJ8CXp8nzzGQizeDL5I0WG5uD0wRYlu1piv9pZOUmn/aO76UIXURFGWKKCfrGa2Kvwj9ecU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZP5uddp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00837C32786;
-	Thu, 15 Aug 2024 14:28:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=av/5VnjZaqFS1WRMWV/WbsTFszQ9jZPiWasRji/SgXu9JaNsGm6/btk43FNbVbkRfcytTLtKa+fpoxpgCAApPhzfFaZpGv9bCW49Fzkdv2Zm22FPwTFZywewUYGybA1MAA4NKXMDdirCaywYLcU+0swKyEHd2yB+Wx8kCI/ZtZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSj8auY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC1BC32786;
+	Thu, 15 Aug 2024 14:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732113;
-	bh=bav8GNLeO7SiEDTw0BCq4WGtvKpqUwkjyriA8nXSTwg=;
+	s=korg; t=1723731057;
+	bh=845M7Up8KgoTLzO0B+3GzXx8RkdncjA6xgenCwsI3u4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZP5uddpVJsoLDbllFcFakwF+QeIIQ3XSCmO4ktm0AOAaSIo/kMsEkuFPqbEeRGCO
-	 GglLUcv99g+1i8spie7EdGdZlY8h2kAl6XqZZIfWCRHsv4RppONNAiABa/0Ule8UrM
-	 nF9uLoAVz1NY1k+gCj56VwpR6eV0E4CVcwxyfyZI=
+	b=SSj8auY9nKpGjKLvYHW1kutqS64QpI1EpH/k+A15wAGgm3iv3YDIRusSKk+kEXVCV
+	 AmNYD0vX7gBKYjhbI+QGKzM6/1DjikBsf/hWc06Kr4LmGuKBPXfi7r/3VDmb0wVvuJ
+	 Ao8pt+G5gXfryR2Wwy8EzNdSvAScPHlfq9sGToQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Burakov <a.burakov@rosalinux.ru>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/352] saa7134: Unchecked i2c_transfer function result fixed
+Subject: [PATCH 5.4 010/259] x86/platform/iosf_mbi: Convert PCIBIOS_* return codes to errnos
 Date: Thu, 15 Aug 2024 15:22:23 +0200
-Message-ID: <20240815131922.219641232@linuxfoundation.org>
+Message-ID: <20240815131903.190436794@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Burakov <a.burakov@rosalinux.ru>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 9d8683b3fd93f0e378f24dc3d9604e5d7d3e0a17 ]
+[ Upstream commit 7821fa101eab529521aa4b724bf708149d70820c ]
 
-Return value of function 'i2c_transfer' is not checked that
-may cause undefined behaviour.
+iosf_mbi_pci_{read,write}_mdr() use pci_{read,write}_config_dword()
+that return PCIBIOS_* codes but functions also return -ENODEV which are
+not compatible error codes. As neither of the functions are related to
+PCI read/write functions, they should return normal errnos.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+errno before returning it.
 
-Fixes: 2cf36ac44730 ("[PATCH] v4l: 656: added support for the following cards")
-Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 46184415368a ("arch: x86: New MailBox support driver for Intel SOC's")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240527125538.13620-4-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/saa7134/saa7134-dvb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/platform/intel/iosf_mbi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/saa7134/saa7134-dvb.c b/drivers/media/pci/saa7134/saa7134-dvb.c
-index f359cd5c006a7..c786b83a69d2b 100644
---- a/drivers/media/pci/saa7134/saa7134-dvb.c
-+++ b/drivers/media/pci/saa7134/saa7134-dvb.c
-@@ -466,7 +466,9 @@ static int philips_europa_tuner_sleep(struct dvb_frontend *fe)
- 	/* switch the board to analog mode */
- 	if (fe->ops.i2c_gate_ctrl)
- 		fe->ops.i2c_gate_ctrl(fe, 1);
--	i2c_transfer(&dev->i2c_adap, &analog_msg, 1);
-+	if (i2c_transfer(&dev->i2c_adap, &analog_msg, 1) != 1)
-+		return -EIO;
-+
- 	return 0;
+diff --git a/arch/x86/platform/intel/iosf_mbi.c b/arch/x86/platform/intel/iosf_mbi.c
+index 9e24445004282..117cabcfe29db 100644
+--- a/arch/x86/platform/intel/iosf_mbi.c
++++ b/arch/x86/platform/intel/iosf_mbi.c
+@@ -62,7 +62,7 @@ static int iosf_mbi_pci_read_mdr(u32 mcrx, u32 mcr, u32 *mdr)
+ 
+ fail_read:
+ 	dev_err(&mbi_pdev->dev, "PCI config access failed with %d\n", result);
+-	return result;
++	return pcibios_err_to_errno(result);
  }
  
-@@ -1018,7 +1020,9 @@ static int md8800_set_voltage2(struct dvb_frontend *fe,
- 	else
- 		wbuf[1] = rbuf & 0xef;
- 	msg[0].len = 2;
--	i2c_transfer(&dev->i2c_adap, msg, 1);
-+	if (i2c_transfer(&dev->i2c_adap, msg, 1) != 1)
-+		return -EIO;
-+
- 	return 0;
+ static int iosf_mbi_pci_write_mdr(u32 mcrx, u32 mcr, u32 mdr)
+@@ -91,7 +91,7 @@ static int iosf_mbi_pci_write_mdr(u32 mcrx, u32 mcr, u32 mdr)
+ 
+ fail_write:
+ 	dev_err(&mbi_pdev->dev, "PCI config access failed with %d\n", result);
+-	return result;
++	return pcibios_err_to_errno(result);
  }
  
+ int iosf_mbi_read(u8 port, u8 opcode, u32 offset, u32 *mdr)
 -- 
 2.43.0
 
