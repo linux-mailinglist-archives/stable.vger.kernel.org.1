@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FAC79534CE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A65A1953323
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B210288F14
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 284861F221E5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD6D17C995;
-	Thu, 15 Aug 2024 14:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E311ABEB4;
+	Thu, 15 Aug 2024 14:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdwHWR1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YS3OIAxc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD1163D5;
-	Thu, 15 Aug 2024 14:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7566119E7FA;
+	Thu, 15 Aug 2024 14:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732236; cv=none; b=Dd1+0GlpEgnUvZK4N9KCTLhbVjaMYWQQDfwOoJSjxwCYXejrW/J3kAslxV2TcPiqGycx2/CeblDzzgbb35lKlbXfngpSiusBVnu3XaKebl8GJLxRG370Uh+L1EVMOu9QhNlLmF2ELthjV9l7lQuDNyrH7Pir5mudEHqNVP2U4EI=
+	t=1723731083; cv=none; b=qix1yhrva3kVcQzLK989sJCR+mM8ITShtjs8iwkvUX9NTAOuB5yhs6L43PJr5mu45fc/N/FikMITFkQHHzL9SJ2R216zddJ0DC73rcR69cnyGPmmJuvq9x1SCutdgcef1CGGrQF2J1HNYPxEKBB/i92nIRcEt37JWxKgWD+8oi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732236; c=relaxed/simple;
-	bh=gx1mF23XqB4PKu8LwsJOOThiPsX/A+eY+ztgA+uFqpM=;
+	s=arc-20240116; t=1723731083; c=relaxed/simple;
+	bh=faDgAkz2fo+bpVw899jaG0stFIFl85f1qs43SXZqOuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cih0+3anAvdjHvz4/KekkCA820kvRlqvmOYxpWU2yue0wA9mKR7Ks2JyAwbJrpDd9H9KUAohEOXQ4yxiSDdsyAOEgKNOIPT3F26O4cW5LaMXM6jI/sdzCIsuGcrliqhfd9zPBmaqm7xTGuXU9WKwy1GlJKwQ6eKA8Q3+x4FRVCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdwHWR1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152FFC32786;
-	Thu, 15 Aug 2024 14:30:35 +0000 (UTC)
+	 MIME-Version; b=DPTX2dRDu/sdGqWTxhkL8gv7IIwlLVmwHvjXSZCfMUHTUrzu4t4kUsScUT9TEht9LSEFgxdl7F8NOl3h3u7pqTsA6JIJRvoWKvhLB6r7/Lptp5Wz16J6N17q3h4xfUB0LDtc47pGh9ClDkOP0OHzvuNSi8eux3JDX3w1It8PDoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YS3OIAxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13FEC32786;
+	Thu, 15 Aug 2024 14:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732236;
-	bh=gx1mF23XqB4PKu8LwsJOOThiPsX/A+eY+ztgA+uFqpM=;
+	s=korg; t=1723731083;
+	bh=faDgAkz2fo+bpVw899jaG0stFIFl85f1qs43SXZqOuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdwHWR1n+vu357CIjNnxOC3N2tBEdaU0fnFXBKi/boaVdAf9p5Fp71npzDEXP5Bm8
-	 yipUt6OHkkZGnszyS09nTlpune1d06tHVpctitO5M6mWAvKZD5owv66eeUiXqOhqKt
-	 cItXlUUNYZ1u9F1Dw3njy6m86hVUJv6uqvTv3kmA=
+	b=YS3OIAxcvf+I9J0YIHOnUUvnYe66YlyIx046uR7ODrAdSNondZ5ovI7Dsr6HlfBem
+	 ICHJMAHOZgQjxGNVoWnA/CWfuFlnwmrpaHsMMun0siIerSL+X0ynUvJE7CaCRqs0fn
+	 Dm3cHOEDXiwfUiQRoue10Pwszk3MrHx7s+XjvBnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/352] drm/qxl: Add check for drm_cvt_mode
+Subject: [PATCH 5.4 018/259] ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node
 Date: Thu, 15 Aug 2024 15:22:31 +0200
-Message-ID: <20240815131922.532501749@linuxfoundation.org>
+Message-ID: <20240815131903.501252890@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit 7bd09a2db0f617377027a2bb0b9179e6959edff3 ]
+[ Upstream commit 5694eed98cca5c164ebb5b831b65b4c9eee4b2d5 ]
 
-Add check for the return value of drm_cvt_mode() and return the error if
-it fails in order to avoid NULL pointer dereference.
+Add ethernet-phy node so we can drop the deprecated fec phy-reset-gpios
+property. The reset-assert-us value is taken from the existing logic
+since the fec driver will add an 1ms assert delay per default if
+phy-reset-gpios is used and phy-reset-duration is not specified.
 
-Fixes: 1b043677d4be ("drm/qxl: add qxl_add_mode helper function")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621071031.1987974-1-nichen@iscas.ac.cn
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: edfea889a049 ("ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/qxl/qxl_display.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/qxl/qxl_display.c b/drivers/gpu/drm/qxl/qxl_display.c
-index f22a1b776f4ba..3ffa721d777bf 100644
---- a/drivers/gpu/drm/qxl/qxl_display.c
-+++ b/drivers/gpu/drm/qxl/qxl_display.c
-@@ -232,6 +232,9 @@ static int qxl_add_mode(struct drm_connector *connector,
- 		return 0;
- 
- 	mode = drm_cvt_mode(dev, width, height, 60, false, false, false);
-+	if (!mode)
-+		return 0;
+diff --git a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
+index 5e454a694b78a..1b9e38ec74489 100644
+--- a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
+@@ -260,7 +260,19 @@ &fec {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_enet>;
+ 	phy-mode = "rgmii";
+-	phy-reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
++	phy-handle = <&ethphy>;
 +
- 	if (preferred)
- 		mode->type |= DRM_MODE_TYPE_PREFERRED;
- 	mode->hdisplay = width;
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <1>;
++			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <1000>;
++		};
++	};
+ };
+ 
+ &i2c_intern {
 -- 
 2.43.0
 
