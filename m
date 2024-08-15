@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCE7953458
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:26:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC909532B8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 985371F29246
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:26:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A966288170
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1421AD3FD;
-	Thu, 15 Aug 2024 14:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7001AED38;
+	Thu, 15 Aug 2024 14:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SH9cg4/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTCYaeX5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B861AD3EE;
-	Thu, 15 Aug 2024 14:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3706119F473;
+	Thu, 15 Aug 2024 14:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731882; cv=none; b=MlnRI32VsGMBN6gC6KKIJmmrRJIEra0TWk3Dm5NHfqL9vuOtLwwsiAvJvOeQLnbVA2bkY6+0C8G8mKmiL9gDPKf7LCfs71sNw2oMrbHeDV2okjxDKrUROuju527m1oMKNHfOYdwYa4hMFQpsgdYksV0jaWsqjO34sWyzi4KVnQg=
+	t=1723730810; cv=none; b=EXpHPGtcEhtoUNcw8ZtYrDKG9jTMlrrX0RxT7P4YjyxPZKdW5hlydyD3sjkAcIHzDWvvS+ZYLEk8jFnlrT6hbU0BkUVERdnkwPc8tUq6xQXnLBhz69I3Pvi/W1S+uuT77FC3F2AKOg/mlr4Z1QFSP+KvPjPXoDBDsn/c7Koe2qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731882; c=relaxed/simple;
-	bh=1z/lcSM3VHw7+nIJJu8OzwtnelPaGjhmFkIaIZOFMDA=;
+	s=arc-20240116; t=1723730810; c=relaxed/simple;
+	bh=GAWNmtLWXjZYiBq850ZwAjYo0BPI1OypsiI894aOTKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFGTI9V7CbEycJVtmkVcAHnpLD2/1aX8eRmO2eejbyl6d1LcTL2fB2Z625YJ/GGU1Q9nxE+g1S0F6+zZGtJ1ILAxCuQ8hWE8aeegrBg1Hws7KMu6ep08dNtsudYAn1KjYa7TfSpUEK2P7rTaQsGmuVlbdjVLJJdnuVUCNRnWreQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SH9cg4/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17742C32786;
-	Thu, 15 Aug 2024 14:24:40 +0000 (UTC)
+	 MIME-Version; b=ijObXs2g2eTViAJnYOELIRJtvGqhOc0PA5t4gP+pyosRPIG/K4nIfAhJaFNq/st2oGaQdfvx0cL7T0K1gciXWuklXx+MEIRfrzrHRadZrcM6TjdHceaXgy+T2TffndRWNq8rzF8xcv3AQgG99OdslvvzWlsyfFJkU5cFnoQCMwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTCYaeX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF919C4AF0A;
+	Thu, 15 Aug 2024 14:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731881;
-	bh=1z/lcSM3VHw7+nIJJu8OzwtnelPaGjhmFkIaIZOFMDA=;
+	s=korg; t=1723730810;
+	bh=GAWNmtLWXjZYiBq850ZwAjYo0BPI1OypsiI894aOTKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SH9cg4/ZxaOcRb5IcLI/DO5QzkbBOg3ZwecQZm1dKRPN6B3EucKwK4dEioaUqa1WW
-	 nrZAFDj3xZq/PGKbKZp0q5BpvHLOodmY/Ecqs2zf1MIHwP0riLpH/GngYo4TgiPppO
-	 /CBTBeAnY7bBfAGboUJg0K7msgWzxsZa99FlKQ9s=
+	b=MTCYaeX5fC7ZbuKcTI5990m+Il0O4OEsRMFdVJ92zHWHja9LU6X48Cv0zngpi27SU
+	 LfdontvBk3XKKTv7KwpJe8FEAoQSJUub4ZwlYNY4y+EMsTRnSPCVlqDTIea3UHV3nS
+	 xlsqfxK4ehKC1yVHb7su6UJgWM9/rDkx8VRLqxgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miroslav Lichvar <mlichvar@redhat.com>
-Subject: [PATCH 5.4 238/259] ntp: Safeguard against time_constant overflow
+	Eric Dumazet <edumazet@google.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 37/38] wifi: cfg80211: restrict NL80211_ATTR_TXQ_QUANTUM values
 Date: Thu, 15 Aug 2024 15:26:11 +0200
-Message-ID: <20240815131911.964329038@linuxfoundation.org>
+Message-ID: <20240815131834.380356813@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 06c03c8edce333b9ad9c6b207d93d3a5ae7c10c0 upstream.
+[ Upstream commit d1cba2ea8121e7fdbe1328cea782876b1dd80993 ]
 
-Using syzkaller with the recently reintroduced signed integer overflow
-sanitizer produces this UBSAN report:
+syzbot is able to trigger softlockups, setting NL80211_ATTR_TXQ_QUANTUM
+to 2^31.
 
-UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:738:18
-9223372036854775806 + 4 cannot be represented in type 'long'
-Call Trace:
- handle_overflow+0x171/0x1b0
- __do_adjtimex+0x1236/0x1440
- do_adjtimex+0x2be/0x740
+We had a similar issue in sch_fq, fixed with commit
+d9e15a273306 ("pkt_sched: fq: do not accept silly TCA_FQ_QUANTUM")
 
-The user supplied time_constant value is incremented by four and then
-clamped to the operating range.
+watchdog: BUG: soft lockup - CPU#1 stuck for 26s! [kworker/1:0:24]
+Modules linked in:
+irq event stamp: 131135
+ hardirqs last  enabled at (131134): [<ffff80008ae8778c>] __exit_to_kernel_mode arch/arm64/kernel/entry-common.c:85 [inline]
+ hardirqs last  enabled at (131134): [<ffff80008ae8778c>] exit_to_kernel_mode+0xdc/0x10c arch/arm64/kernel/entry-common.c:95
+ hardirqs last disabled at (131135): [<ffff80008ae85378>] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]
+ hardirqs last disabled at (131135): [<ffff80008ae85378>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551
+ softirqs last  enabled at (125892): [<ffff80008907e82c>] neigh_hh_init net/core/neighbour.c:1538 [inline]
+ softirqs last  enabled at (125892): [<ffff80008907e82c>] neigh_resolve_output+0x268/0x658 net/core/neighbour.c:1553
+ softirqs last disabled at (125896): [<ffff80008904166c>] local_bh_disable+0x10/0x34 include/linux/bottom_half.h:19
+CPU: 1 PID: 24 Comm: kworker/1:0 Not tainted 6.9.0-rc7-syzkaller-gfda5695d692c #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Workqueue: mld mld_ifc_work
+pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : __list_del include/linux/list.h:195 [inline]
+ pc : __list_del_entry include/linux/list.h:218 [inline]
+ pc : list_move_tail include/linux/list.h:310 [inline]
+ pc : fq_tin_dequeue include/net/fq_impl.h:112 [inline]
+ pc : ieee80211_tx_dequeue+0x6b8/0x3b4c net/mac80211/tx.c:3854
+ lr : __list_del_entry include/linux/list.h:218 [inline]
+ lr : list_move_tail include/linux/list.h:310 [inline]
+ lr : fq_tin_dequeue include/net/fq_impl.h:112 [inline]
+ lr : ieee80211_tx_dequeue+0x67c/0x3b4c net/mac80211/tx.c:3854
+sp : ffff800093d36700
+x29: ffff800093d36a60 x28: ffff800093d36960 x27: dfff800000000000
+x26: ffff0000d800ad50 x25: ffff0000d800abe0 x24: ffff0000d800abf0
+x23: ffff0000e0032468 x22: ffff0000e00324d4 x21: ffff0000d800abf0
+x20: ffff0000d800abf8 x19: ffff0000d800abf0 x18: ffff800093d363c0
+x17: 000000000000d476 x16: ffff8000805519dc x15: ffff7000127a6cc8
+x14: 1ffff000127a6cc8 x13: 0000000000000004 x12: ffffffffffffffff
+x11: ffff7000127a6cc8 x10: 0000000000ff0100 x9 : 0000000000000000
+x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+x5 : ffff80009287aa08 x4 : 0000000000000008 x3 : ffff80008034c7fc
+x2 : ffff0000e0032468 x1 : 00000000da0e46b8 x0 : ffff0000e0032470
+Call trace:
+  __list_del include/linux/list.h:195 [inline]
+  __list_del_entry include/linux/list.h:218 [inline]
+  list_move_tail include/linux/list.h:310 [inline]
+  fq_tin_dequeue include/net/fq_impl.h:112 [inline]
+  ieee80211_tx_dequeue+0x6b8/0x3b4c net/mac80211/tx.c:3854
+  wake_tx_push_queue net/mac80211/util.c:294 [inline]
+  ieee80211_handle_wake_tx_queue+0x118/0x274 net/mac80211/util.c:315
+  drv_wake_tx_queue net/mac80211/driver-ops.h:1350 [inline]
+  schedule_and_wake_txq net/mac80211/driver-ops.h:1357 [inline]
+  ieee80211_queue_skb+0x18e8/0x2244 net/mac80211/tx.c:1664
+  ieee80211_tx+0x260/0x400 net/mac80211/tx.c:1966
+  ieee80211_xmit+0x278/0x354 net/mac80211/tx.c:2062
+  __ieee80211_subif_start_xmit+0xab8/0x122c net/mac80211/tx.c:4338
+  ieee80211_subif_start_xmit+0xe0/0x438 net/mac80211/tx.c:4532
+  __netdev_start_xmit include/linux/netdevice.h:4903 [inline]
+  netdev_start_xmit include/linux/netdevice.h:4917 [inline]
+  xmit_one net/core/dev.c:3531 [inline]
+  dev_hard_start_xmit+0x27c/0x938 net/core/dev.c:3547
+  __dev_queue_xmit+0x1678/0x33fc net/core/dev.c:4341
+  dev_queue_xmit include/linux/netdevice.h:3091 [inline]
+  neigh_resolve_output+0x558/0x658 net/core/neighbour.c:1563
+  neigh_output include/net/neighbour.h:542 [inline]
+  ip6_finish_output2+0x104c/0x1ee8 net/ipv6/ip6_output.c:137
+  ip6_finish_output+0x428/0x7a0 net/ipv6/ip6_output.c:222
+  NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+  ip6_output+0x270/0x594 net/ipv6/ip6_output.c:243
+  dst_output include/net/dst.h:450 [inline]
+  NF_HOOK+0x160/0x4f0 include/linux/netfilter.h:314
+  mld_sendpack+0x7b4/0x10f4 net/ipv6/mcast.c:1818
+  mld_send_cr net/ipv6/mcast.c:2119 [inline]
+  mld_ifc_work+0x840/0xd0c net/ipv6/mcast.c:2650
+  process_one_work+0x7b8/0x15d4 kernel/workqueue.c:3267
+  process_scheduled_works kernel/workqueue.c:3348 [inline]
+  worker_thread+0x938/0xef4 kernel/workqueue.c:3429
+  kthread+0x288/0x310 kernel/kthread.c:388
+  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
 
-Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
-supplied value was sanity checked to be in the operating range. That change
-removed the sanity check and relied on clamping after incrementing which
-does not work correctly when the user supplied value is in the overflow
-zone of the '+ 4' operation.
-
-The operation requires CAP_SYS_TIME and the side effect of the overflow is
-NTP getting out of sync.
-
-Similar to the fixups for time_maxerror and time_esterror, clamp the user
-space supplied value to the operating range.
-
-[ tglx: Switch to clamping ]
-
-Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Miroslav Lichvar <mlichvar@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-c-v2-1-f3a80096f36f@google.com
-Closes: https://github.com/KSPP/linux/issues/352
+Fixes: 52539ca89f36 ("cfg80211: Expose TXQ stats and parameters to userspace")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240615160800.250667-1-edumazet@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/ntp.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/wireless/nl80211.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/kernel/time/ntp.c
-+++ b/kernel/time/ntp.c
-@@ -685,11 +685,10 @@ static inline void process_adjtimex_mode
- 		time_esterror = clamp(txc->esterror, (long long)0, (long long)NTP_PHASE_LIMIT);
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -463,6 +463,10 @@ nl80211_sta_wme_policy[NL80211_STA_WME_M
+ 	[NL80211_STA_WME_MAX_SP] = { .type = NLA_U8 },
+ };
  
- 	if (txc->modes & ADJ_TIMECONST) {
--		time_constant = txc->constant;
-+		time_constant = clamp(txc->constant, (long long)0, (long long)MAXTC);
- 		if (!(time_status & STA_NANO))
- 			time_constant += 4;
--		time_constant = min(time_constant, (long)MAXTC);
--		time_constant = max(time_constant, 0l);
-+		time_constant = clamp(time_constant, (long)0, (long)MAXTC);
- 	}
++static struct netlink_range_validation q_range = {
++	.max = INT_MAX,
++};
++
+ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[0] = { .strict_start_type = NL80211_ATTR_HE_OBSS_PD },
+ 	[NL80211_ATTR_WIPHY] = { .type = NLA_U32 },
+@@ -745,7 +749,7 @@ static const struct nla_policy nl80211_p
  
- 	if (txc->modes & ADJ_TAI &&
+ 	[NL80211_ATTR_TXQ_LIMIT] = { .type = NLA_U32 },
+ 	[NL80211_ATTR_TXQ_MEMORY_LIMIT] = { .type = NLA_U32 },
+-	[NL80211_ATTR_TXQ_QUANTUM] = { .type = NLA_U32 },
++	[NL80211_ATTR_TXQ_QUANTUM] = NLA_POLICY_FULL_RANGE(NLA_U32, &q_range),
+ 	[NL80211_ATTR_HE_CAPABILITY] =
+ 		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_he_capa,
+ 				       NL80211_HE_MAX_CAPABILITY_LEN),
 
 
 
