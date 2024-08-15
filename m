@@ -1,103 +1,74 @@
-Return-Path: <stable+bounces-69032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E33795351F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA7A9535DB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B920D28293D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 474AC28100F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9054F19FA90;
-	Thu, 15 Aug 2024 14:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0811A00EC;
+	Thu, 15 Aug 2024 14:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mess.org header.i=@mess.org header.b="GoSmb/Dy"
+	dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b="qOSMXXyI"
 X-Original-To: stable@vger.kernel.org
-Received: from gofer.mess.org (gofer.mess.org [88.97.38.141])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D341DFFB
-	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 14:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.97.38.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128CB19F482
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 14:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732448; cv=none; b=K5TjVSBnWCidGQcEvNlcuguQ+Gpi9ohUn/kto/ZhocmwtRX9/fU3hyTO75vhgnkf1Ap+Fe/1NS3mqS4MlHO+uBLw+tu8Qbw4pC+6kpA4uoSic6h1KzkQsAUiK61/4sQ5HWY3uul+lma7W8lqtZLTi1uipvRnGzK2OeWIl/LJoB8=
+	t=1723732917; cv=none; b=KN1uker5D74z/xfthYdKVqxomogjtxGyDx3ofwWs85leGjE4cjUKe8ldobvNMhJx1p1v+JpemLh5Kdgpkw2m1PXua4nFdc6vNFyPQrS0LOSRY7wRDU2w2VDXIGjaJOgVninWMS3QWhtEms9AYvmUDG7SsnYjDEN7YzoWGoJfuhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732448; c=relaxed/simple;
-	bh=BO0n+O7EJs1I9dLjyqNtz6bJ9wBbUzVxEOeDNvtyjUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sfAbLxRnVckSXL21/ezUFODNmkPxbH3kckAkWLwCVjEEnUoTDffFRPyOQttK9qTFODF0Bh33tcf6Jr26ckfKt0QjYZ8e6rJPCXzcYn9Kkue/QrDcDhBEuenF9Jkyjz1ygWsi31SXIQ0N9oGDf4IcPD0uDtNU/dk85GE5ZzSrgZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mess.org; spf=pass smtp.mailfrom=mess.org; dkim=pass (2048-bit key) header.d=mess.org header.i=@mess.org header.b=GoSmb/Dy; arc=none smtp.client-ip=88.97.38.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mess.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mess.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
-	t=1723732444; bh=BO0n+O7EJs1I9dLjyqNtz6bJ9wBbUzVxEOeDNvtyjUg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GoSmb/DyL2TyxpsisZ9X4Wp4Ht4nEfTToj9biyMxrnLNLPp2LtOM1XtzcS0+ZlQR0
-	 qgmoY7RWZzSzrRP4d7fneHWB1wA1zYOmOiZqcVgViYLX07o16gkj+KDATAunLncmWj
-	 ZrezKja9QKqspeLowCXaGs52tfpbicpi8dbG61bM8hikAOVi8PHXh6j6evqPnwsqBE
-	 kUyNW18AH62jyV0wsGuiChZnyfKLfcOHo/+6EcfQDixCjHWVo1YqeOHeiEfd/UGxg0
-	 fytb9p3mGSLuSo7QEWtk3iyLUUYe8jgyQ/PcfrfpRiwI6RVlBqBjsWYlPaEjF+7R7h
-	 T1FQWW/YSekzg==
-Received: by gofer.mess.org (Postfix, from userid 1000)
-	id 3EAB1100104; Thu, 15 Aug 2024 15:34:04 +0100 (BST)
-Date: Thu, 15 Aug 2024 15:34:04 +0100
-From: Sean Young <sean@mess.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 068/352] media: dvb-usb: Fix unexpected infinite
- loop in dvb_usb_read_remote_control()
-Message-ID: <Zr4R3E207yZPKYjB@gofer.mess.org>
-References: <20240815131919.196120297@linuxfoundation.org>
- <20240815131921.871240885@linuxfoundation.org>
+	s=arc-20240116; t=1723732917; c=relaxed/simple;
+	bh=V1Tmi90Vp6+xVthfYBvn9AgjYVq/QodifRtN0GFYLAw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CFkGgUkrMWAbFBIpujW4RtMlDZg89c8FyBakvRimyF4d4yw4jfGLZ33rJxoMBzVar4elkGU+sY8OEgZeHuLQBgjIwhlQOCc6xWL6Xt86T7nnhXPXvWnqb+PXPasWSQhQgIS4cyUQqBv7+DbLpd0GWPFb0SxW8hImoqUEwK92Rxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev; spf=pass smtp.mailfrom=holm.dev; dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b=qOSMXXyI; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holm.dev
+Message-ID: <886dd1f9-82f0-48f3-90bb-684a2e193ed4@holm.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=holm.dev; s=key1;
+	t=1723732912;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V1Tmi90Vp6+xVthfYBvn9AgjYVq/QodifRtN0GFYLAw=;
+	b=qOSMXXyIaKlk62rmLQ7dh/+QRGQyCSs26sQ6hgLNqjYgZ/MYHFTA6j9B+dGjay6c2VciwG
+	HxPdbGdATS5qLQcQOX4Z3DzSzBX66iifKRF1XhPIvK0hu7tlerBHIvBkEV5pztHL5OV116
+	hmnwTplW3HMcIcocOJ9RLkS+Z1hXm3Vc5mxeo1R6MbdJ72igApAqCPriKk4uytHynfpA2K
+	rXnX1HNB47Ie9BJinyiDKhqV+lI/w/BcmDhLu69KLRfyxlMEEjApQf02Becbd6mgKNXHu6
+	J6ffIYn2wx1cmkA5jyWtPdjJcP3znEwxuTCO1dtDYKbA8MbZo1sKO7qlQeaQoQ==
+Date: Thu, 15 Aug 2024 16:41:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240815131921.871240885@linuxfoundation.org>
+Subject: Re: [PATCH 6.10 00/22] 6.10.6-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240815131831.265729493@linuxfoundation.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kevin Holm <kevin@holm.dev>
+In-Reply-To: <20240815131831.265729493@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Aug 15, 2024 at 03:22:14PM +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Zheng Yejian <zhengyejian1@huawei.com>
-> 
-> [ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
-> 
-> Infinite log printing occurs during fuzz test:
-> 
->   rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
->   ...
->   dvb-usb: schedule remote query interval to 100 msecs.
->   dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initialized ...
->   dvb-usb: bulk message failed: -22 (1/0)
->   dvb-usb: bulk message failed: -22 (1/0)
->   dvb-usb: bulk message failed: -22 (1/0)
->   ...
->   dvb-usb: bulk message failed: -22 (1/0)
-> 
-> Looking into the codes, there is a loop in dvb_usb_read_remote_control(),
-> that is in rc_core_dvb_usb_remote_init() create a work that will call
-> dvb_usb_read_remote_control(), and this work will reschedule itself at
-> 'rc_interval' intervals to recursively call dvb_usb_read_remote_control(),
-> see following code snippet:
+Works without any new errors or problems on my Setup.
 
-This commit causes problems and has been reverted upstream.
-
-https://git.linuxtv.org/media_stage.git/commit/?h=fixes&id=0c84bde4f37ba27d50e4c70ecacd33fe4a57030d
-
-Please don't apply.
-
-Thanks,
-
-Sean
+Tested-By: Kevin Holm <kevin@holm.dev>
 
