@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-68657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0BC95335E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD749534ED
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FB032839E8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DCFB1C23B53
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB601A01DA;
-	Thu, 15 Aug 2024 14:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991BA19FA7A;
+	Thu, 15 Aug 2024 14:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEOzS9fc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrFn9QgU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB4B17C9B6;
-	Thu, 15 Aug 2024 14:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577452772A;
+	Thu, 15 Aug 2024 14:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731256; cv=none; b=Z5IHd+lydn+mNMRPwihPVFlu86L020xytVddWdASPKjeZdWz17qdOyDyx4qUhGFQBM6E1cH19n6p6lqWXrNMqgzVfm3mL555NWR2Int0W92I5yXWyNqNkg0xJqbdusALDZ/Z/9WkNNycz4G3y+oFWhdyiVHXPChCHicKvpZFw1s=
+	t=1723732308; cv=none; b=STUt33oUD+p+NkcYS1FX2a9eLUDTP06j+L77WR3KgEU4ASqLIyCyKYolmBvKK5RydpqK05YJfuvvT0a+JYJ8F49gP2qMqHq9PsgAnToIyWssqu/ZQbssSir2bvl+pAaZ9bxzF/55hzRrt1ZSp6v7eDI8GJH0PVkGGtg+p9UH8ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731256; c=relaxed/simple;
-	bh=GkUz54racOx8g1XbqJB0LRhXqGW2hZbfGHmaRJCKlk8=;
+	s=arc-20240116; t=1723732308; c=relaxed/simple;
+	bh=XtMvZ3rGermZSeBbgdvbZTLwnFRC9SfQR+bVjZnnbxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYVcWZHXjf+SIox1InsiJ+THXuC/MIPtlJ96Ml3N+pbvfkEmblYpXtoHFbACCzoJVzbewWYgoRD7lFrXnwYm+pMU1908sUALVzB8qjpnh2zExEo5jcvxhT9oU9Eox/LRNjH/SINwqI38MccCwXO7Lq3TjLtYXcBh6sv1H5C96Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEOzS9fc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FF5C32786;
-	Thu, 15 Aug 2024 14:14:15 +0000 (UTC)
+	 MIME-Version; b=IMSYxsOuojAE3I7k4ESV+oYHAKpf6Cl9+1DOEjKLK0SENq0IKj6HM0KSewax/f9bNQFgfyeDlHU1c6JWxQZw3uczUZOQPk3i/qCRNiwPBh/HMnhuSRJezhYiPMdbhwn8NyUjfQBDfyqUCYTUWl1kVWrcfMwJ+MtWz+r8WdLEAfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrFn9QgU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FD6C32786;
+	Thu, 15 Aug 2024 14:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731255;
-	bh=GkUz54racOx8g1XbqJB0LRhXqGW2hZbfGHmaRJCKlk8=;
+	s=korg; t=1723732308;
+	bh=XtMvZ3rGermZSeBbgdvbZTLwnFRC9SfQR+bVjZnnbxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEOzS9fc4aIE33hdQUXF+EjNZ0RQTAhvbGYxlPMSNLGK0AjCikhn0x8CPokWAiG7V
-	 S5U4C7rmDofakK38ZgkytNzdsOF70SZgiuQ1s071ceDOaZgnFsBC5oaamoZ0uswBRv
-	 4sMCHIkdQTRCMkqRI4/szy/OiSu8i7KkDslEvvb0=
+	b=ZrFn9QgUmmitZHVyazc1eQ4CUBAiN6mVV/9PcnNFOlswf8jbIObrybVn8Kev0FPtY
+	 cG4spUU6YI6Bp5l+cVpQQkdxsVyvrYcxbAZ+8fRPXStWD0+9YzsQTAMqLTPTvPXdTn
+	 M9K+mMkFGLUIcSWL7SNP0Nc6hh5rMLEcG/bkeWtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 072/259] ASoC: max98088: Check for clk_prepare_enable() error
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 5.10 139/352] apparmor: use kvfree_sensitive to free data->data
 Date: Thu, 15 Aug 2024 15:23:25 +0200
-Message-ID: <20240815131905.583814101@linuxfoundation.org>
+Message-ID: <20240815131924.631124712@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 1a70579723fde3624a72dfea6e79e55be6e36659 ]
+commit 2bc73505a5cd2a18a7a542022722f136c19e3b87 upstream.
 
-clk_prepare_enable() may fail, so we should better check its return
-value and propagate it in the case of error.
+Inside unpack_profile() data->data is allocated using kvmemdup() so it
+should be freed with the corresponding kvfree_sensitive().
 
-Fixes: 62a7fc32a628 ("ASoC: max98088: Add master clock handling")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://patch.msgid.link/20240628080534.843815-1-nichen@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also add missing data->data release for rhashtable insertion failure path
+in unpack_profile().
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: e025be0f26d5 ("apparmor: support querying extended trusted helper extra data")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/max98088.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ security/apparmor/policy.c        |    2 +-
+ security/apparmor/policy_unpack.c |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/max98088.c b/sound/soc/codecs/max98088.c
-index fa4cdbfd0b80d..678b209d0bce0 100644
---- a/sound/soc/codecs/max98088.c
-+++ b/sound/soc/codecs/max98088.c
-@@ -1317,6 +1317,7 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
-                                   enum snd_soc_bias_level level)
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -187,7 +187,7 @@ static void aa_free_data(void *ptr, void
  {
- 	struct max98088_priv *max98088 = snd_soc_component_get_drvdata(component);
-+	int ret;
+ 	struct aa_data *data = ptr;
  
- 	switch (level) {
- 	case SND_SOC_BIAS_ON:
-@@ -1332,10 +1333,13 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
- 		 */
- 		if (!IS_ERR(max98088->mclk)) {
- 			if (snd_soc_component_get_bias_level(component) ==
--			    SND_SOC_BIAS_ON)
-+			    SND_SOC_BIAS_ON) {
- 				clk_disable_unprepare(max98088->mclk);
--			else
--				clk_prepare_enable(max98088->mclk);
-+			} else {
-+				ret = clk_prepare_enable(max98088->mclk);
-+				if (ret)
-+					return ret;
-+			}
- 		}
- 		break;
+-	kfree_sensitive(data->data);
++	kvfree_sensitive(data->data, data->size);
+ 	kfree_sensitive(data->key);
+ 	kfree_sensitive(data);
+ }
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -915,6 +915,7 @@ static struct aa_profile *unpack_profile
  
--- 
-2.43.0
-
+ 			if (rhashtable_insert_fast(profile->data, &data->head,
+ 						   profile->data->p)) {
++				kvfree_sensitive(data->data, data->size);
+ 				kfree_sensitive(data->key);
+ 				kfree_sensitive(data);
+ 				info = "failed to insert data to table";
 
 
 
