@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-68190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4A395310F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:49:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B7995311B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:50:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB7B61F211B6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:49:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 968B01C24AF5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B05319FA9D;
-	Thu, 15 Aug 2024 13:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBB019DFA6;
+	Thu, 15 Aug 2024 13:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4hPWykq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYLEuZZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3987419FA90;
-	Thu, 15 Aug 2024 13:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAE81494C5;
+	Thu, 15 Aug 2024 13:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729779; cv=none; b=HcBnJwisrNIRcrM+Mu6pzFW/TmGbEMGlHVuRwygsJghuu0g3j+xUbYC4VVktCphK7rxFWVFG0F8Sja5+ic69sm2bWE3MECvyndddcX1eKYNhTSeJgsh/TUX7qkHAwtu0SXx3rXjLzMQqHWvogZxFU0TPpir4hGldsSrW+qv+uP4=
+	t=1723729813; cv=none; b=p2O45566wqdw3btrnfoEjfHm6N9sjVYbySRmLja9rnfbi8pUxtLwBQTurH30oV29BPPpSRkMDaM52o4JIADCfXaWlulEz5qBNsuVf7nKOGIJwLiwKlzNIvZS0P7PkUO3wgx0gONrhuugSbNZor1dXgaNRMmusQA2zetbANAOfmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729779; c=relaxed/simple;
-	bh=mmfvWGD7TvdwTtitYl0x4cZfIyNvu+IH0pbba0wygq0=;
+	s=arc-20240116; t=1723729813; c=relaxed/simple;
+	bh=vGSA5OKVCGBIsbysymT7m4aBNxB3C+3/FOfNpI6Ejfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q/bXZdJtM992ua/m2q96OyDYgDUW1kHynM5jRSXzd6wz1147GnRWtBHAen72Igi18xXkGRuhgmCmnbMvuph24JiJWBYqsK664V1z5xCFitIspdRJEeN9sPMsD1YxhjZqpI/heqUX5v1wVhPtNDkPGewD2muaD2WsN0ZtqIr/F9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4hPWykq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560F4C32786;
-	Thu, 15 Aug 2024 13:49:38 +0000 (UTC)
+	 MIME-Version; b=rcdSbIA8hCnktcXKUOkWEoBDV5tOpOhMs/OzHISkrVGpr2q0auvl2gysbPUui4UiTc7LnuHqmNHzikQwHxYb6pWGJ72ppJIf3BfwNJtXTEebAM5hGTfY2bmFKRwUPqDEo7qU2Qt6Xn2pUPdzcdCWiznqywg7aP7H8tV1rWNX3Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYLEuZZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE33C4AF0A;
+	Thu, 15 Aug 2024 13:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729778;
-	bh=mmfvWGD7TvdwTtitYl0x4cZfIyNvu+IH0pbba0wygq0=;
+	s=korg; t=1723729813;
+	bh=vGSA5OKVCGBIsbysymT7m4aBNxB3C+3/FOfNpI6Ejfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G4hPWykqSzxVDRgZEGnO0xKy4B4vzokmyIktvN2MGgsLBtji4LGp7xI9d6DvyOh1c
-	 +DadqwOV6kVq7sLVVgBYU/LCpMX5LqGKBQ0bKJGu8fRWp3JbsJ+kzE+14mjtlPcrkB
-	 9fglrjweVrpf8vdGT4lMLeT0ftHJelgescPhGUXo=
+	b=AYLEuZZZXk6E0dToL0cnRifLyf14W822IU1oDcJLAjkykKUVElAF+O0mvPUBj6U3l
+	 jAH9zyH1b7FEwsCkvp8DmrZQ4RvX9jW0jVG3LWnTvkb03Zcdqvap1qX9g/HS5bH9za
+	 faq76nZiZrAfify5ttGkLZFX22nuhPU9zICi/3nI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.15 197/484] leds: ss4200: Convert PCIBIOS_* return codes to errnos
-Date: Thu, 15 Aug 2024 15:20:55 +0200
-Message-ID: <20240815131949.021951012@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 198/484] jbd2: make jbd2_journal_get_max_txn_bufs() internal
+Date: Thu, 15 Aug 2024 15:20:56 +0200
+Message-ID: <20240815131949.059773224@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -59,60 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Jan Kara <jack@suse.cz>
 
-commit ce068e83976140badb19c7f1307926b4b562fac4 upstream.
+commit 4aa99c71e42ad60178c1154ec24e3df9c684fb67 upstream.
 
-ich7_lpc_probe() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The error handling code assumes incorrectly it's a normal errno
-and checks for < 0. The return code is returned from the probe function
-as is but probe functions should return normal errnos.
+There's no reason to have jbd2_journal_get_max_txn_bufs() public
+function. Currently all users are internal and can use
+journal->j_max_transaction_buffers instead. This saves some unnecessary
+recomputations of the limit as a bonus which becomes important as this
+function gets more complex in the following patch.
 
-Remove < 0 from the check and convert PCIBIOS_* returns code using
-pcibios_err_to_errno() into normal errno before returning it.
-
-Fixes: a328e95b82c1 ("leds: LED driver for Intel NAS SS4200 series (v5)")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240527132700.14260-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20240624170127.3253-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/leds-ss4200.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/jbd2/commit.c     |    2 +-
+ fs/jbd2/journal.c    |    5 +++++
+ include/linux/jbd2.h |    5 -----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/leds/leds-ss4200.c
-+++ b/drivers/leds/leds-ss4200.c
-@@ -356,8 +356,10 @@ static int ich7_lpc_probe(struct pci_dev
- 
- 	nas_gpio_pci_dev = dev;
- 	status = pci_read_config_dword(dev, PMBASE, &g_pm_io_base);
--	if (status)
-+	if (status) {
-+		status = pcibios_err_to_errno(status);
- 		goto out;
-+	}
- 	g_pm_io_base &= 0x00000ff80;
- 
- 	status = pci_read_config_dword(dev, GPIO_CTRL, &gc);
-@@ -369,8 +371,9 @@ static int ich7_lpc_probe(struct pci_dev
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -800,7 +800,7 @@ start_journal_io:
+ 		if (first_block < journal->j_tail)
+ 			freed += journal->j_last - journal->j_first;
+ 		/* Update tail only if we free significant amount of space */
+-		if (freed < jbd2_journal_get_max_txn_bufs(journal))
++		if (freed < journal->j_max_transaction_buffers)
+ 			update_tail = 0;
  	}
+ 	J_ASSERT(commit_transaction->t_state == T_COMMIT);
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1529,6 +1529,11 @@ static void journal_fail_superblock(jour
+ 	journal->j_sb_buffer = NULL;
+ }
  
- 	status = pci_read_config_dword(dev, GPIO_BASE, &nas_gpio_io_base);
--	if (0 > status) {
-+	if (status) {
- 		dev_info(&dev->dev, "Unable to read GPIOBASE.\n");
-+		status = pcibios_err_to_errno(status);
- 		goto out;
- 	}
- 	dev_dbg(&dev->dev, ": GPIOBASE = 0x%08x\n", nas_gpio_io_base);
++static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
++{
++	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
++}
++
+ /*
+  * Given a journal_t structure, initialise the various fields for
+  * startup of a new journaling session.  We use this both when creating
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1669,11 +1669,6 @@ int jbd2_wait_inode_data(journal_t *jour
+ int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
+ int jbd2_fc_release_bufs(journal_t *journal);
+ 
+-static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
+-{
+-	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
+-}
+-
+ /*
+  * is_journal_abort
+  *
 
 
 
