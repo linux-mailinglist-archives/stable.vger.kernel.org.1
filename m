@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A3F9532A9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:09:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D230A9535A8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1377B26273
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:09:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FCB81C22BC0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A0B1BB6B7;
-	Thu, 15 Aug 2024 14:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A1F1A0710;
+	Thu, 15 Aug 2024 14:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyzXEL40"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyxpWZ0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651151BB6AD;
-	Thu, 15 Aug 2024 14:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF462772A;
+	Thu, 15 Aug 2024 14:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730775; cv=none; b=HT5gRjdY+JJakyKzK3jEQ/bqaB1mYaJw5S/s9hqkd+B/J+OYcxd07qy4njmhvXO0NP9tH+VWlaCp7aVpxIRzW0iPNDbM2ZLZzQ5yoadMipmycr0DC+R4gPeDPZFkkvwLFODf0E1suqMTMtXb84F5hlUxpcHYBuhwyt6YowemGYA=
+	t=1723732818; cv=none; b=NFaz5MdJPrFG3VFyy7OAaTR9WlHALi+Gl5uYhUx1uvkKRPO2kky9lkOajs2r8U84z050fc10maVHQOAF4xT77kv/qZ2SKJ0GGh672UqjkTV+JwReGyF0fhEn58AoPU0i2gl+PM3f9mlxtjQyn7WNHvHoy8YG9Ayuwh8DbqY3LVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730775; c=relaxed/simple;
-	bh=CqhZsu9JhJnEpUXkx7vQysQkha4+SK9g4KxrXhmhnt4=;
+	s=arc-20240116; t=1723732818; c=relaxed/simple;
+	bh=0v5rP+AcEpLVS+0Z3Td0mWVa3pbMjm3REQdD8MrwBDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upMFn2J1D/iGoJzP4rYCRzbR4/c9Co2CTcHhk6m/KQSD1cJ6A/cLXPgCehTRt5i/Ei8AFq/j87Q4J5iTe4BsP5evF271pfdvQZt05oZRYiZ1WgDrqE81pIP3WFJ1jh2b++WzGcNIP9t0niChE2fUCDaxv4K2zhRhnP7endrF2aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyzXEL40; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8095CC4AF0C;
-	Thu, 15 Aug 2024 14:06:14 +0000 (UTC)
+	 MIME-Version; b=VJLf2x9VFgSNOfu37gvX9KOx8dK59A1uhh8FRwOPwPwJadlUyFYX0pUtIyGHc4l1hYzktiM1hQcMlKP3cBTXgTWo1WHxq6uGYkORiWK8lm+eYwC43W9Y9h3aH4ZegBtGyM4/9vOd3fJ2KfH17lXTsg5+IKH+apOrIDo6YxDc28k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyxpWZ0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFB8C32786;
+	Thu, 15 Aug 2024 14:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730774;
-	bh=CqhZsu9JhJnEpUXkx7vQysQkha4+SK9g4KxrXhmhnt4=;
+	s=korg; t=1723732818;
+	bh=0v5rP+AcEpLVS+0Z3Td0mWVa3pbMjm3REQdD8MrwBDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyzXEL40TCO2OyKCo0nMsZyiCQZJrs4Ms8Pe28QtdJ7gt5ADYxdVKyqeNlbrGTrRs
-	 RanM/D7JUlKzbNYbfosEfHswz/zlfkkNFFI8srLTdcy/IvdU3VLLAVZALGxnhyqW5Q
-	 1le8jmFfru8mD4DVSRobL9mOpjzJNJ01Xp612J9w=
+	b=KyxpWZ0MiObmiHMkdcQs67QPM7BDg0uaTIVEHAJKZLuAoyZbmdx9MP54+T+DaGKSs
+	 9LZpbIq8/2L5fsq31cgFS0YaxOg/h2oJ47iyNcxucOXOrgiEhQLUsfQlP7gou7/RWC
+	 bCroc6ghMCKffARZhEVRjuPUCAZFoOoIn2jsYqos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 27/38] nfsd: make svc_stat per-network namespace instead of global
-Date: Thu, 15 Aug 2024 15:26:01 +0200
-Message-ID: <20240815131834.002115924@linuxfoundation.org>
+	Guenter Roeck <linux@roeck-us.net>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 296/352] i2c: smbus: Send alert notifications to all devices if source not found
+Date: Thu, 15 Aug 2024 15:26:02 +0200
+Message-ID: <20240815131930.894631333@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 16fb9808ab2c99979f081987752abcbc5b092eac ]
+[ Upstream commit f6c29f710c1ff2590109f83be3e212b86c01e0f3 ]
 
-The final bit of stats that is global is the rpc svc_stat.  Move this
-into the nfsd_net struct and use that everywhere instead of the global
-struct.  Remove the unused global struct.
+If a SMBus alert is received and the originating device is not found,
+the reason may be that the address reported on the SMBus alert address
+is corrupted, for example because multiple devices asserted alert and
+do not correctly implement SMBus arbitration.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If this happens, call alert handlers on all devices connected to the
+given I2C bus, in the hope that this cleans up the situation.
+
+This change reliably fixed the problem on a system with multiple devices
+on a single bus. Example log where the device on address 0x18 (ADM1021)
+and on address 0x4c (ADT7461A) both had the alert line asserted:
+
+smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
+smbus_alert 3-000c: no driver alert()!
+smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
+smbus_alert 3-000c: no driver alert()!
+lm90 3-0018: temp1 out of range, please check!
+lm90 3-0018: Disabling ALERT#
+lm90 3-0029: Everything OK
+lm90 3-002a: Everything OK
+lm90 3-004c: temp1 out of range, please check!
+lm90 3-004c: temp2 out of range, please check!
+lm90 3-004c: Disabling ALERT#
+
+Fixes: b5527a7766f0 ("i2c: Add SMBus alert support")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+[wsa: fixed a typo in the commit message]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/netns.h  |    4 ++++
- fs/nfsd/nfsctl.c |    2 ++
- fs/nfsd/nfssvc.c |    2 +-
- fs/nfsd/stats.c  |   10 ++++------
- fs/nfsd/stats.h  |    2 --
- 5 files changed, 11 insertions(+), 9 deletions(-)
+ drivers/i2c/i2c-smbus.c | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -13,6 +13,7 @@
- #include <linux/nfs4.h>
- #include <linux/percpu_counter.h>
- #include <linux/siphash.h>
-+#include <linux/sunrpc/stats.h>
- 
- /* Hash tables for nfs4_clientid state */
- #define CLIENT_HASH_BITS                 4
-@@ -183,6 +184,9 @@ struct nfsd_net {
- 	/* Per-netns stats counters */
- 	struct percpu_counter    counter[NFSD_STATS_COUNTERS_NUM];
- 
-+	/* sunrpc svc stats */
-+	struct svc_stat          nfsd_svcstats;
-+
- 	/* longest hash chain seen */
- 	unsigned int             longest_chain;
- 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1453,6 +1453,8 @@ static __net_init int nfsd_init_net(stru
- 	retval = nfsd_stat_counters_init(nn);
- 	if (retval)
- 		goto out_repcache_error;
-+	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
-+	nn->nfsd_svcstats.program = &nfsd_program;
- 	nn->nfsd_versions = NULL;
- 	nn->nfsd4_minorversions = NULL;
- 	nfsd4_init_leases_net(nn);
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -657,7 +657,7 @@ int nfsd_create_serv(struct net *net)
- 	if (nfsd_max_blksize == 0)
- 		nfsd_max_blksize = nfsd_get_default_max_blksize();
- 	nfsd_reset_versions(nn);
--	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
-+	serv = svc_create_pooled(&nfsd_program, &nn->nfsd_svcstats,
- 				 nfsd_max_blksize, nfsd);
- 	if (serv == NULL)
- 		return -ENOMEM;
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -27,10 +27,6 @@
- 
- #include "nfsd.h"
- 
--struct svc_stat		nfsd_svcstats = {
--	.program	= &nfsd_program,
--};
--
- static int nfsd_show(struct seq_file *seq, void *v)
- {
- 	struct net *net = pde_data(file_inode(seq->file));
-@@ -56,7 +52,7 @@ static int nfsd_show(struct seq_file *se
- 	seq_puts(seq, "\nra 0 0 0 0 0 0 0 0 0 0 0 0\n");
- 
- 	/* show my rpc info */
--	svc_seq_show(seq, &nfsd_svcstats);
-+	svc_seq_show(seq, &nn->nfsd_svcstats);
- 
- #ifdef CONFIG_NFSD_V4
- 	/* Show count for individual nfsv4 operations */
-@@ -119,7 +115,9 @@ void nfsd_stat_counters_destroy(struct n
- 
- void nfsd_proc_stat_init(struct net *net)
- {
--	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+
-+	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
+diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
+index dcbc4b29aa729..44582cf29e162 100644
+--- a/drivers/i2c/i2c-smbus.c
++++ b/drivers/i2c/i2c-smbus.c
+@@ -65,6 +65,32 @@ static int smbus_do_alert(struct device *dev, void *addrp)
+ 	return ret;
  }
  
- void nfsd_proc_stat_shutdown(struct net *net)
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -10,8 +10,6 @@
- #include <uapi/linux/nfsd/stats.h>
- #include <linux/percpu_counter.h>
++/* Same as above, but call back all drivers with alert handler */
++
++static int smbus_do_alert_force(struct device *dev, void *addrp)
++{
++	struct i2c_client *client = i2c_verify_client(dev);
++	struct alert_data *data = addrp;
++	struct i2c_driver *driver;
++
++	if (!client || (client->flags & I2C_CLIENT_TEN))
++		return 0;
++
++	/*
++	 * Drivers should either disable alerts, or provide at least
++	 * a minimal handler. Lock so the driver won't change.
++	 */
++	device_lock(dev);
++	if (client->dev.driver) {
++		driver = to_i2c_driver(client->dev.driver);
++		if (driver->alert)
++			driver->alert(client, data->type, data->data);
++	}
++	device_unlock(dev);
++
++	return 0;
++}
++
+ /*
+  * The alert IRQ handler needs to hand work off to a task which can issue
+  * SMBus calls, because those sleeping calls can't be made in IRQ context.
+@@ -106,13 +132,19 @@ static irqreturn_t smbus_alert(int irq, void *d)
+ 		/*
+ 		 * If we read the same address more than once, and the alert
+ 		 * was not handled by a driver, it won't do any good to repeat
+-		 * the loop because it will never terminate.
+-		 * Bail out in this case.
++		 * the loop because it will never terminate. Try again, this
++		 * time calling the alert handlers of all devices connected to
++		 * the bus, and abort the loop afterwards. If this helps, we
++		 * are all set. If it doesn't, there is nothing else we can do,
++		 * so we might as well abort the loop.
+ 		 * Note: This assumes that a driver with alert handler handles
+ 		 * the alert properly and clears it if necessary.
+ 		 */
+-		if (data.addr == prev_addr && status != -EBUSY)
++		if (data.addr == prev_addr && status != -EBUSY) {
++			device_for_each_child(&ara->adapter->dev, &data,
++					      smbus_do_alert_force);
+ 			break;
++		}
+ 		prev_addr = data.addr;
+ 	}
  
--extern struct svc_stat		nfsd_svcstats;
--
- int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
+-- 
+2.43.0
+
 
 
 
