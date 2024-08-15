@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-68714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A4E95339E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABFAE95352D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C64571C24CF1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF1801C214A8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069FC3214;
-	Thu, 15 Aug 2024 14:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA0319FA7A;
+	Thu, 15 Aug 2024 14:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUH+UzQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRQl+aBB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D9114AD0A;
-	Thu, 15 Aug 2024 14:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF07F63D5;
+	Thu, 15 Aug 2024 14:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731435; cv=none; b=K+TKbv7df2IoE5P4nS4jn+flZvFlwOK3CfRZnGIbuUn4VAUrscAW/Zojli75+Wl1XJmCcykd8HPdEhypsbXqC5BK4q7oTrmdrmlAGoqWh/YLso8cnSUc+g5+BI0mOjl2W4Ze5iHvjFlUd6gGop2TO+QRc8rXZasDHiWGo93UNQg=
+	t=1723732487; cv=none; b=m7zg9Ge1zakipmGAfNVnaTOTW8jPk/UQyMYl5tySuWH4+9Ak91/Ahd7NZRO/t7aiGwZJDk4eR/1xIS6aOq4pgD8FenPNAGCKjbeOyUy4DCQpus4ioblWvSDw9DWjd0Lfucp0f7wXxYNMq5Cx7X1k2F7QJCUfYL9ZMIH0WDnERyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731435; c=relaxed/simple;
-	bh=mdit0r/eklCCkjoPzQJH29MnH8XHEhpQCqRTW37DDfw=;
+	s=arc-20240116; t=1723732487; c=relaxed/simple;
+	bh=uA6lA0fqLvbeacp5tAAY6ROxHYHCa7eo51DsS3urP68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GXmnlirBDIoboiqCIiuomQ/z9qA8JhRerQAUkgL3eZUbpiXUNo74uR/EI8vXE23eKwb9Lb5of6cHHLETjUqYdFZb3FBYM+KhmTJqw7HrmCWcsNGJhf9AFWC5feCXzVzP9kNcYLuuQSxkypN/0ABXH+OF5BOJr/7OxCOsoACyfs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUH+UzQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB867C32786;
-	Thu, 15 Aug 2024 14:17:14 +0000 (UTC)
+	 MIME-Version; b=COXVaoLRit04hAu0AmwREyjG2Pd6qA3xyKrXxUjmB+kAJNZVRzogt5pD8fu7toHoeVROy5d+62y5Ld6ROUo/1Ajv7v9zpsR8DsJllbDCY2O9sJXJvim0d0bhh7mF48A1OZW86cOMZaMnCEDFnIZagFTxJbg6FRZnZfQ4Epzh7mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRQl+aBB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D870C32786;
+	Thu, 15 Aug 2024 14:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731435;
-	bh=mdit0r/eklCCkjoPzQJH29MnH8XHEhpQCqRTW37DDfw=;
+	s=korg; t=1723732487;
+	bh=uA6lA0fqLvbeacp5tAAY6ROxHYHCa7eo51DsS3urP68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qUH+UzQM6ria/BM/NuRuAqQuxdYKon/EoS3rgJCpPJkxx3GsJIu2OzrkBShG91V/0
-	 Jl8Vvq7jCddcJN7wxqo83OPSXy7T6OaOMsMKmv73GW3gU5WwsInUsNmkTfl7XsvxNW
-	 MCD1n+U2XsNaziWOmGnHkF1RH6G7ClQtsUhyvHQo=
+	b=FRQl+aBBHU6CUK8MUOoeXScx4o9dQhmIPbP05Yzv/PAw4pRPpG4W06dcxzKFvFfml
+	 NMdGgv7eoSc8QnKBSvo9oBWSMg+wG1InXY7ILSaG8fSBaL27yGZVQzYJx4ISSDZz0v
+	 ehO/sh4errChiN/0jre1zAEwb/9VHKYdj1W9kzt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 5.4 127/259] rbd: dont assume rbd_is_lock_owner() for exclusive mappings
-Date: Thu, 15 Aug 2024 15:24:20 +0200
-Message-ID: <20240815131907.698930138@linuxfoundation.org>
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 195/352] MIPS: SMP-CPS: Fix address for GCR_ACCESS register for CM3 and later
+Date: Thu, 15 Aug 2024 15:24:21 +0200
+Message-ID: <20240815131926.815841862@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Gregory CLEMENT <gregory.clement@bootlin.com>
 
-commit 3ceccb14f5576e02b81cc8b105ab81f224bd87f6 upstream.
+[ Upstream commit a263e5f309f32301e1f3ad113293f4e68a82a646 ]
 
-Expanding on the previous commit, assuming that rbd_is_lock_owner()
-always returns true (i.e. that we are either in RBD_LOCK_STATE_LOCKED
-or RBD_LOCK_STATE_QUIESCING) if the mapping is exclusive is wrong too.
-In case ceph_cls_set_cookie() fails, the lock would be temporarily
-released even if the mapping is exclusive, meaning that we can end up
-even in RBD_LOCK_STATE_UNLOCKED.
+When the CM block migrated from CM2.5 to CM3.0, the address offset for
+the Global CSR Access Privilege register was modified. We saw this in
+the "MIPS64 I6500 Multiprocessing System Programmer's Guide," it is
+stated that "the Global CSR Access Privilege register is located at
+offset 0x0120" in section 5.4. It is at least the same for I6400.
 
-IOW, exclusive mappings are really "just" about disabling automatic
-lock transitions (as documented in the man page), not about grabbing
-the lock and holding on to it whatever it takes.
+This fix allows to use the VP cores in SMP mode if the reset values
+were modified by the bootloader.
 
-Cc: stable@vger.kernel.org
-Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Based on the work of Vladimir Kondratiev
+<vladimir.kondratiev@mobileye.com> and the feedback from Jiaxun Yang
+<jiaxun.yang@flygoat.com>.
+
+Fixes: 197e89e0984a ("MIPS: mips-cm: Implement mips_cm_revision")
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c |    5 -----
- 1 file changed, 5 deletions(-)
+ arch/mips/include/asm/mips-cm.h | 4 ++++
+ arch/mips/kernel/smp-cps.c      | 5 ++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -6618,11 +6618,6 @@ static int rbd_add_acquire_lock(struct r
- 		return ret;
- 	}
+diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
+index 23c67c0871b17..696b40beb774f 100644
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -228,6 +228,10 @@ GCR_ACCESSOR_RO(32, 0x0d0, gic_status)
+ GCR_ACCESSOR_RO(32, 0x0f0, cpc_status)
+ #define CM_GCR_CPC_STATUS_EX			BIT(0)
  
--	/*
--	 * The lock may have been released by now, unless automatic lock
--	 * transitions are disabled.
--	 */
--	rbd_assert(!rbd_dev->opts->exclusive || rbd_is_lock_owner(rbd_dev));
- 	return 0;
- }
++/* GCR_ACCESS - Controls core/IOCU access to GCRs */
++GCR_ACCESSOR_RW(32, 0x120, access_cm3)
++#define CM_GCR_ACCESS_ACCESSEN			GENMASK(7, 0)
++
+ /* GCR_L2_CONFIG - Indicates L2 cache configuration when Config5.L2C=1 */
+ GCR_ACCESSOR_RW(32, 0x130, l2_config)
+ #define CM_GCR_L2_CONFIG_BYPASS			BIT(20)
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index f659adb681bc3..02ae0b29e6888 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -229,7 +229,10 @@ static void boot_core(unsigned int core, unsigned int vpe_id)
+ 	write_gcr_co_reset_ext_base(CM_GCR_Cx_RESET_EXT_BASE_UEB);
  
+ 	/* Ensure the core can access the GCRs */
+-	set_gcr_access(1 << core);
++	if (mips_cm_revision() < CM_REV_CM3)
++		set_gcr_access(1 << core);
++	else
++		set_gcr_access_cm3(1 << core);
+ 
+ 	if (mips_cpc_present()) {
+ 		/* Reset the core */
+-- 
+2.43.0
+
 
 
 
