@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-68867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F762953463
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:26:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458D695345B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A84C1C2585C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:26:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF7D828A18B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A271A00E7;
-	Thu, 15 Aug 2024 14:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F1F19FA90;
+	Thu, 15 Aug 2024 14:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="js3knlwk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xN3UjFFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C701AC8BB;
-	Thu, 15 Aug 2024 14:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E98819DF85;
+	Thu, 15 Aug 2024 14:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731916; cv=none; b=K2gH7Lo1A9EXGZrelVBXxcfVlerEoNBqnMyctGcXTR0//SNegjV81yto2SH243L4gc2y/QCWTJWf9kp12wc2N4PboOVhBb8OC7tkk8qKL/62Z8+J/p6X+KArwAieLrCAnyr1WR2H9PkKugPrIrGfO5u0GgWbaDuakcNEE+P+yw4=
+	t=1723731891; cv=none; b=V2BQoSp4/hs218K1FX+G8Go1mCGdY7TNjt2RglvV26vbL6wBVVqXJjC7DXyShk+2rTxWsEJPIa5KaT3uUG70vt9IkQXW0b7xmmA+8/hUH8u4lnQcJA53jPzbSjtyNq1shR8nNf4VxLQF8PZVL1EI34IOZdEo1bsFZZmF5TM2NKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731916; c=relaxed/simple;
-	bh=War0Nr4M3e+pzv7l8K6ZSKUB+cAnrO1eYABXnkw3pfs=;
+	s=arc-20240116; t=1723731891; c=relaxed/simple;
+	bh=xOn5HlOGlEqtIUaSaQV3n7wcvWLMvW6dSWSYIQSzyGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rp7h/m9+NuP0VyE1NbBE6URsNTfFOb/Qcfoh/RjngFt9DRwB89NLKfm6pNiVCTE2msP2/3hMzcyjE3E4CIQ9dwd6/P2kD2mnDWjC40dGQL8tgEK44XsPg98XjB4l99ryx7DWbZdUK4i5omMO6UI+hp23rpu4G74R2AiSF9uYvZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=js3knlwk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB910C4AF0A;
-	Thu, 15 Aug 2024 14:25:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qWc5er1fEBooFnnNYBJbQiBgRH8X41FPZ/9rIu6ThLI8uzRRBJI04aYMuiLovyWp12515cdEU4NlXuIxpaoeTnVVl/RvPnmA9JG6Eiyjgz2ZA5k0Vm7EgGtXj3VmsV/LnC9ZTYKQZmD5LLHvJMNFsmsyBL1xFmDm3xy/EHvUVTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xN3UjFFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75858C32786;
+	Thu, 15 Aug 2024 14:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731916;
-	bh=War0Nr4M3e+pzv7l8K6ZSKUB+cAnrO1eYABXnkw3pfs=;
+	s=korg; t=1723731890;
+	bh=xOn5HlOGlEqtIUaSaQV3n7wcvWLMvW6dSWSYIQSzyGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=js3knlwkqQ070DQkX3TRX7e576s8uDhfQRHwQHXFEbCzY6Ku4lclsgCfx1YokfJJb
-	 hFMw27xfh17g/gReXVPVGNLKyExG9ee/ERX9Hw7bGSAgOxDO6elBbUE9YshEl9YlQ4
-	 BAY7yZ/aUQG2aLw2yepjrgMfz69fgPv57Z7qFmG4=
+	b=xN3UjFFKRrewdfbj6KNK1i23X3ErBZY8rqpWwTza5eY7R7H6Ry8cHFw4zYXEsc5U+
+	 y+Dl7fffRa6Qk8AT7I1oD0MKAkXsLCgHnlX9QrK8FV4Rd72zoVJoRy7sAYUov+KkCJ
+	 2+A7bTrBid9zA1//XVEa3wNoOzNzh6vKhof+E6ZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Tung <chineweff@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 009/352] hwmon: (adt7475) Fix default duty on fan is disabled
-Date: Thu, 15 Aug 2024 15:21:15 +0200
-Message-ID: <20240815131919.570147002@linuxfoundation.org>
+Subject: [PATCH 5.10 010/352] pwm: stm32: Always do lazy disabling
+Date: Thu, 15 Aug 2024 15:21:16 +0200
+Message-ID: <20240815131919.609106698@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -60,42 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Tung <chineweff@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 39b24cced70fdc336dbc0070f8b3bde61d8513a8 ]
+[ Upstream commit 7346e7a058a2c9aa9ff1cc699c7bf18a402d9f84 ]
 
-According to the comments on fan is disabled, we change to manual mode
-and set the duty cycle to 0.
-For setting the duty cycle part, the register is wrong. Fix it.
+When the state changes from enabled to disabled, polarity, duty_cycle
+and period are not configured in hardware and TIM_CCER_CCxE is just
+cleared. However if the state changes from one disabled state to
+another, all parameters are written to hardware because the early exit
+from stm32_pwm_apply() is only taken if the pwm is currently enabled.
 
-Fixes: 1c301fc5394f ("hwmon: Add a driver for the ADT7475 hardware monitoring chip")
-Signed-off-by: Wayne Tung <chineweff@gmail.com>
-Link: https://lore.kernel.org/r/20240701073252.317397-1-chineweff@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+This yields surprises like: Applying
+
+	{ .period = 1, .duty_cycle = 0, .enabled = false }
+
+succeeds if the pwm is initially on, but fails if it's already off
+because 1 is a too small period.
+
+Update the check for lazy disable to always exit early if the target
+state is disabled, no matter what is currently configured.
+
+Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20240703110010.672654-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/adt7475.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-stm32.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
-index 22e314725def0..b4c0f01f52c4f 100644
---- a/drivers/hwmon/adt7475.c
-+++ b/drivers/hwmon/adt7475.c
-@@ -1770,7 +1770,7 @@ static void adt7475_read_pwm(struct i2c_client *client, int index)
- 		data->pwm[CONTROL][index] &= ~0xE0;
- 		data->pwm[CONTROL][index] |= (7 << 5);
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index 3e5f1b622af89..7146b3f6755bc 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -452,8 +452,9 @@ static int stm32_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
  
--		i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(index),
-+		i2c_smbus_write_byte_data(client, PWM_REG(index),
- 					  data->pwm[INPUT][index]);
+ 	enabled = pwm->state.enabled;
  
- 		i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(index),
+-	if (enabled && !state->enabled) {
+-		stm32_pwm_disable(priv, pwm->hwpwm);
++	if (!state->enabled) {
++		if (enabled)
++			stm32_pwm_disable(priv, pwm->hwpwm);
+ 		return 0;
+ 	}
+ 
 -- 
 2.43.0
 
