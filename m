@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3754E953172
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C10B952F1C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5DB4B23EAF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11A1A1F2623D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C9619AA53;
-	Thu, 15 Aug 2024 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E936E19F47A;
+	Thu, 15 Aug 2024 13:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwmV4/sX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChTMS5qn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9791714A1;
-	Thu, 15 Aug 2024 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76BD19DFAE;
+	Thu, 15 Aug 2024 13:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730044; cv=none; b=Zg3SAY2lTdo8/qO+I+7yMrZ3UusktRmRr8fo1p0TZ44voTC4pHfbz7R9JxuVMUz9o1WriBX1bf9BZSeoyPX9r91KVOj/F0k65Ib+7oQIOFEbOD1CwXRGJKBnQn+EnoN8O2LPs8gs2Y0S2MB333GB9oD0JIQoOScNHnDu1qdEiuw=
+	t=1723728522; cv=none; b=QoW5QqVK1XJg/0Dq+8+IpFWXndWXnhmpkFWjt8Zw8GmsgZfxnPW8a7k5dzYrE5st3u6uwL7mzuzD6X4KhXAOdghrU/8ryfE4Goks4wKmQ1bDv0gOosPxu7WkWlxs8S9cvIA22tbuOhdAbhuo45LD7/y8s35Ht8Vb9c9274GDij4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730044; c=relaxed/simple;
-	bh=eIStSxETZq31TdmUl2jveBJ5Mg762GIF2L29yFx9IBY=;
+	s=arc-20240116; t=1723728522; c=relaxed/simple;
+	bh=jGRPQNGljoxX0whuqLZBlLrCFJhlsz6Ibkks3xDT6kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cbyr9tHYFy8EGjS13fX4TTnCQqB7VQwdBrSbviLK1VG28s7XSN1zF8mETVcB3GhYKS6ljdETPEN9RQk2btG9+DB/dntJhB38qWX5DP/3s+0fnJVb0UP7gQFMzpn69Cdlye1xp74bYRc7tHmwHACAetvAWFHvhQVx+SKvy8kMnVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwmV4/sX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11189C32786;
-	Thu, 15 Aug 2024 13:54:03 +0000 (UTC)
+	 MIME-Version; b=aAmZea6nsuMFVglpTaS1+DiWpEXHZ0SOL0js8Mq4seykV4jeHrrjZbAK0rBcCAICfO9frzlTaies5BjlesfWfE83/C7w6VmV0cOHqJZLdry4PYIpMQprHiV8cFPKU+tOgHUfLekIox27SZpyeONv2Tp+CYgyESZnV+9TVr6pZC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChTMS5qn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188E9C32786;
+	Thu, 15 Aug 2024 13:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730044;
-	bh=eIStSxETZq31TdmUl2jveBJ5Mg762GIF2L29yFx9IBY=;
+	s=korg; t=1723728522;
+	bh=jGRPQNGljoxX0whuqLZBlLrCFJhlsz6Ibkks3xDT6kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwmV4/sXMXFz0ROt9mYOomWSstE8iA5MZbp22Flel5qlaPADWziDnjFsnwUq5UlLc
-	 mP4nEsxG7FjAiHawkRV1q/3mxBCvNTZrCkS2ICVJ3LPk63QfUs4xZYxu/5+9uywXFy
-	 fBnztRWNMIwNyXvUOhqKXWrvGNNumNC+UxTBEGfE=
+	b=ChTMS5qnD3jUNXIP3Yd+0ADrD0febzgih9G/hAfkes4HOK/cy7FB8yUZ/ZaF7xKPb
+	 zB9vr1pXzlP0sp9urFpQb/hZYVkOuRL6yQA1xEehsMtLXIJnXVu4LRRGp0xLJfdzlE
+	 5Tpg4XtQCfy+/QklSBMk0XSTpLfmns/QTiyitUGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 286/484] spi: spidev: order compatibles alphabetically
+Subject: [PATCH 4.19 027/196] perf: Prevent passing zero nr_pages to rb_alloc_aux()
 Date: Thu, 15 Aug 2024 15:22:24 +0200
-Message-ID: <20240815131952.455174880@linuxfoundation.org>
+Message-ID: <20240815131853.125624946@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit be5852457b7e85ad13b1bded9c97bed5ee1715a3 ]
+[ Upstream commit dbc48c8f41c208082cfa95e973560134489e3309 ]
 
-Bring some order to reduce possibilities of conflicts.
+nr_pages is unsigned long but gets passed to rb_alloc_aux() as an int,
+and is stored as an int.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230120075651.153763-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: fc28d1c1fe3b ("spi: spidev: add correct compatible for Rohm BH2228FV")
+Only power-of-2 values are accepted, so if nr_pages is a 64_bit value, it
+will be passed to rb_alloc_aux() as zero.
+
+That is not ideal because:
+ 1. the value is incorrect
+ 2. rb_alloc_aux() is at risk of misbehaving, although it manages to
+ return -ENOMEM in that case, it is a result of passing zero to get_order()
+ even though the get_order() result is documented to be undefined in that
+ case.
+
+Fix by simply validating the maximum supported value in the first place.
+Use -ENOMEM error code for consistency with the current error code that
+is returned in that case.
+
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240624201101.60186-6-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/events/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index c083d511f63dd..14bebc079ddbd 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -709,14 +709,14 @@ static int spidev_of_check(struct device *dev)
- }
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index c7651c30eaabf..4f1b0fc2e74d2 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5730,6 +5730,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+ 			return -EINVAL;
  
- static const struct of_device_id spidev_dt_ids[] = {
--	{ .compatible = "rohm,dh2228fv", .data = &spidev_of_check },
-+	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
-+	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
- 	{ .compatible = "lineartechnology,ltc2488", .data = &spidev_of_check },
--	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
- 	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
--	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
- 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
--	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
- 	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
-+	{ .compatible = "rohm,dh2228fv", .data = &spidev_of_check },
-+	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
- 	{ .compatible = "silabs,em3581", .data = &spidev_of_check },
- 	{},
- };
+ 		nr_pages = vma_size / PAGE_SIZE;
++		if (nr_pages > INT_MAX)
++			return -ENOMEM;
+ 
+ 		mutex_lock(&event->mmap_mutex);
+ 		ret = -EINVAL;
 -- 
 2.43.0
 
