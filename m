@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB41952F61
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36609531B5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF04D1C24366
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7D7C1F21967
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C2218D627;
-	Thu, 15 Aug 2024 13:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FADA19F49B;
+	Thu, 15 Aug 2024 13:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHGQmz5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ie467Zu8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF5E7DA78;
-	Thu, 15 Aug 2024 13:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C99417C9A9;
+	Thu, 15 Aug 2024 13:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728717; cv=none; b=PJKW6sDEdkN73msdfWqESRQ/IlJQgziB0Qk8aGB5qwtM3mPSwLLHRUhZ+MKydETYsVvelQJ8n22TdLqhmszSrBS+qxEW26yoF0xQveBwJToEzuuafLDV+i1N3QZH73AiVOEycRd8SmHejWJFkKPQxIMpoZRKucEgY2DEfu5ySbo=
+	t=1723730237; cv=none; b=VnXNKCaCzg3OQ6Q+74ovvmisBaj3ST0+aieqUlMCaOCcjLYCtn6vooRvF8aXw7dtj2G5mEpnpULgyyxhW0f5AmAckE0sMqr6A3z4gATA43jgo9cLbrDfSmIi7RaVBs0OhO2sxwtUnLJgixRV4H6+86EfA6mDkSQrERrSTxDxHWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728717; c=relaxed/simple;
-	bh=YJi8YRr6gIAoID9N2Wi9Zj8WihMvuO3FGflO6qL3kdg=;
+	s=arc-20240116; t=1723730237; c=relaxed/simple;
+	bh=QGWYtf8B+9jLbqXYjLIknWRilpGaWJi/J6r1eueTpX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmTDFTE9J1JbSgZQOQ9fCctxjVtRK8H0QvyZCKjmFYtlWtA0PiO7Ei68dh+egUC0afaDxGPBElzhppsaNDP04haL503qyX6AmkMfAUa+AWj+Fw8g2xEV4Qbp1sXWG0VNjlA7oI/qdZ1bW0TYxXJOs5fbInnfDE3B8Ni3LQeu2K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHGQmz5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43635C32786;
-	Thu, 15 Aug 2024 13:31:57 +0000 (UTC)
+	 MIME-Version; b=hf+uFPB+trtx/aIjrl51RuLfE8hSLCAKw0jugfiFpKuZrW1hb71/KaKF3BimLWXDaLuQ0l0/IaOL67tS/jpiGuI4LM/UCHzptf3I/Af/viT6CB/1ia5LEdAHmFo7fTlUZsBLew95KKguWfvqaY8Ch4sAzdoLwqWbAnxe8A8qSwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ie467Zu8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D308BC4AF0C;
+	Thu, 15 Aug 2024 13:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728717;
-	bh=YJi8YRr6gIAoID9N2Wi9Zj8WihMvuO3FGflO6qL3kdg=;
+	s=korg; t=1723730237;
+	bh=QGWYtf8B+9jLbqXYjLIknWRilpGaWJi/J6r1eueTpX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHGQmz5ciKJlmFAH0dmKYU1B2ouLkJjQ0PNaoxInTYumnIfS+OLVl8IodnjX3MfMO
-	 wvGSJlFkseObGfOsbVTDb4ADeSt3WLmoSYn4nFuwJnWf68nwwHMzKJ/oevtv6NmuBw
-	 E/F6gKKocx7Y33QOtFoIUdJzux8zqx8jWXby/5e4=
+	b=Ie467Zu8RBrj68ax1Qx35MaF5pkRSfUTVj38NVbDVVwmzzUgWXuArD6m8KHFEuFjt
+	 /jv3TJeyzsgM+bzhni5N3Nzh925MMtjv0xLfQHDJ3pvtUXO1VU/O/xHKw/PYdaOo3t
+	 9cMhf503AXRzkWmFLEg1va5+EMePZjWUzcBZCGI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.19 088/196] scsi: qla2xxx: validate nvme_local_port correctly
+	Edmund Raile <edmund.raile@protonmail.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 347/484] Revert "ALSA: firewire-lib: obsolete workqueue for period update"
 Date: Thu, 15 Aug 2024 15:23:25 +0200
-Message-ID: <20240815131855.449612255@linuxfoundation.org>
+Message-ID: <20240815131954.824584008@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Edmund Raile <edmund.raile@protonmail.com>
 
-commit eb1d4ce2609584eeb7694866f34d4b213caa3af9 upstream.
+commit 6ccf9984d6be3c2f804087b736db05c2ec42664b upstream.
 
-The driver load failed with error message,
+prepare resolution of AB/BA deadlock competition for substream lock:
+restore workqueue previously used for process context:
 
-qla2xxx [0000:04:00.0]-ffff:0: register_localport failed: ret=ffffffef
-
-and with a kernel crash,
-
-	BUG: unable to handle kernel NULL pointer dereference at 0000000000000070
-	Workqueue: events_unbound qla_register_fcport_fn [qla2xxx]
-	RIP: 0010:nvme_fc_register_remoteport+0x16/0x430 [nvme_fc]
-	RSP: 0018:ffffaaa040eb3d98 EFLAGS: 00010282
-	RAX: 0000000000000000 RBX: ffff9dfb46b78c00 RCX: 0000000000000000
-	RDX: ffff9dfb46b78da8 RSI: ffffaaa040eb3e08 RDI: 0000000000000000
-	RBP: ffff9dfb612a0a58 R08: ffffffffaf1d6270 R09: 3a34303a30303030
-	R10: 34303a303030305b R11: 2078787832616c71 R12: ffff9dfb46b78dd4
-	R13: ffff9dfb46b78c24 R14: ffff9dfb41525300 R15: ffff9dfb46b78da8
-	FS:  0000000000000000(0000) GS:ffff9dfc67c00000(0000) knlGS:0000000000000000
-	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-	CR2: 0000000000000070 CR3: 000000018da10004 CR4: 00000000000206f0
-	Call Trace:
-	qla_nvme_register_remote+0xeb/0x1f0 [qla2xxx]
-	? qla2x00_dfs_create_rport+0x231/0x270 [qla2xxx]
-	qla2x00_update_fcport+0x2a1/0x3c0 [qla2xxx]
-	qla_register_fcport_fn+0x54/0xc0 [qla2xxx]
-
-Exit the qla_nvme_register_remote() function when qla_nvme_register_hba()
-fails and correctly validate nvme_local_port.
+revert commit b5b519965c4c ("ALSA: firewire-lib: obsolete workqueue
+for period update")
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-3-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/kwryofzdmjvzkuw6j3clftsxmoolynljztxqwg76hzeo4simnl@jn3eo7pe642q/
+Signed-off-by: Edmund Raile <edmund.raile@protonmail.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20240730195318.869840-2-edmund.raile@protonmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_nvme.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/firewire/amdtp-stream.c |   15 +++++++++++++++
+ sound/firewire/amdtp-stream.h |    1 +
+ 2 files changed, 16 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_nvme.c
-+++ b/drivers/scsi/qla2xxx/qla_nvme.c
-@@ -30,7 +30,10 @@ int qla_nvme_register_remote(struct scsi
- 		return 0;
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -77,6 +77,8 @@
+ // overrun. Actual device can skip more, then this module stops the packet streaming.
+ #define IR_JUMBO_PAYLOAD_MAX_SKIP_CYCLES	5
+ 
++static void pcm_period_work(struct work_struct *work);
++
+ /**
+  * amdtp_stream_init - initialize an AMDTP stream structure
+  * @s: the AMDTP stream to initialize
+@@ -105,6 +107,7 @@ int amdtp_stream_init(struct amdtp_strea
+ 	s->flags = flags;
+ 	s->context = ERR_PTR(-1);
+ 	mutex_init(&s->mutex);
++	INIT_WORK(&s->period_work, pcm_period_work);
+ 	s->packet_index = 0;
+ 
+ 	init_waitqueue_head(&s->ready_wait);
+@@ -343,6 +346,7 @@ EXPORT_SYMBOL(amdtp_stream_get_max_paylo
+  */
+ void amdtp_stream_pcm_prepare(struct amdtp_stream *s)
+ {
++	cancel_work_sync(&s->period_work);
+ 	s->pcm_buffer_pointer = 0;
+ 	s->pcm_period_pointer = 0;
+ }
+@@ -622,6 +626,16 @@ static void update_pcm_pointers(struct a
+ 	}
+ }
+ 
++static void pcm_period_work(struct work_struct *work)
++{
++	struct amdtp_stream *s = container_of(work, struct amdtp_stream,
++					      period_work);
++	struct snd_pcm_substream *pcm = READ_ONCE(s->pcm);
++
++	if (pcm)
++		snd_pcm_period_elapsed(pcm);
++}
++
+ static int queue_packet(struct amdtp_stream *s, struct fw_iso_packet *params,
+ 			bool sched_irq)
+ {
+@@ -1798,6 +1812,7 @@ static void amdtp_stream_stop(struct amd
+ 		return;
  	}
  
--	if (!vha->nvme_local_port && qla_nvme_register_hba(vha))
-+	if (qla_nvme_register_hba(vha))
-+		return 0;
-+
-+	if (!vha->nvme_local_port)
- 		return 0;
++	cancel_work_sync(&s->period_work);
+ 	fw_iso_context_stop(s->context);
+ 	fw_iso_context_destroy(s->context);
+ 	s->context = ERR_PTR(-1);
+--- a/sound/firewire/amdtp-stream.h
++++ b/sound/firewire/amdtp-stream.h
+@@ -190,6 +190,7 @@ struct amdtp_stream {
  
- 	if (!(fcport->nvme_prli_service_param &
+ 	/* For a PCM substream processing. */
+ 	struct snd_pcm_substream *pcm;
++	struct work_struct period_work;
+ 	snd_pcm_uframes_t pcm_buffer_pointer;
+ 	unsigned int pcm_period_pointer;
+ 
 
 
 
