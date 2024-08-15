@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A535A9533A5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DFB95350F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEFD0B2549E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53128287D61
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFFD1A01BF;
-	Thu, 15 Aug 2024 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9504A1A4F22;
+	Thu, 15 Aug 2024 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkrtBBJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deKgyF8H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B854762D2;
-	Thu, 15 Aug 2024 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522E81A3BCE;
+	Thu, 15 Aug 2024 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731447; cv=none; b=W0O1ymEHDWj5gAWYfIZ1OyB6xtyaRQT+5tfJggUnXbU0OVE/x0yBRuMLU/9nNqAI8zrL4Du4/pfWG4IM5DT4gKKEGlzAKRIsOP3Ir6Lb61iCTBx58vQBkp4gffjTcdzR9NAaq71BWeO1OuYe5fToOyRNkoguPs1YJj1mY+TVqBA=
+	t=1723732402; cv=none; b=lOR40DXL5YyImzzg/mIjCL+UdSyaN7gD0jsUmVzEpaz/Hy/LoxxSpWMGbip7G656aaOIqm1M1tX4uPEYHsB63X499F7NgewBAAcaHjJWdPScaquiXN4xql4FfZAvQqwZuH4j+JkyNKmUa0FpxQ3AEoYLBo7RTSm7ufgUaCvZvlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731447; c=relaxed/simple;
-	bh=vYym6YgTR4kHnOxddGoUbJMVti765RKCps+LOAwEVLs=;
+	s=arc-20240116; t=1723732402; c=relaxed/simple;
+	bh=AKcr42Ic6UOTFZuxc0vSSkBNdG1Wnk+5kqs67gUvqiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/lMdVROhkaCbDkDY72Ha/+JEcqAGMwUXcIHD8jGu+rdl7inSi4AHl03fmJ51mcq43RKkrgcUYbuPjFQAkaKtZeFkXVJrY5l5gg6KRHD3c0qZzxdajlHaFk1867eyqpg7L2tEhTADcxUDd5UGcjtMYzDvr2bHZzyAEIMn1UQZ8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkrtBBJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D93C4AF0A;
-	Thu, 15 Aug 2024 14:17:26 +0000 (UTC)
+	 MIME-Version; b=efj4E0tarLe8Gt4+Bf9fV0hFHsMv197WkiD9y2L3/vMTsTOr8FeKnJIPAlzrD5zLLFTcMjGEc9gITpbJsx30aodJ3KTw0k78/C6vkCp2ZSN8jL+gBlCyP3gUp2Iv0lthU1zIQOkZy7YVA/E9DWAjnWKsYQrRFaC+SOdAR2CGs+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deKgyF8H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72304C4AF0C;
+	Thu, 15 Aug 2024 14:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731447;
-	bh=vYym6YgTR4kHnOxddGoUbJMVti765RKCps+LOAwEVLs=;
+	s=korg; t=1723732401;
+	bh=AKcr42Ic6UOTFZuxc0vSSkBNdG1Wnk+5kqs67gUvqiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkrtBBJ+wh23sB2Pw5Biftul7B9mtUomcD8cWsmeV+M+6EoBuoxFFICN7Jr79AiKB
-	 h1Cz0EKel3fPvMfrvDwG6YWbukPeY5X/57TbOeTgxVvPAd++19zNBHocqFUzGB4new
-	 HtYgw1Ll7WeQ0wsZniKu8kPgarJFoONLDHjoi4cs=
+	b=deKgyF8Hp77UbDZk0/MOPxBqXokb/1Ne5yFBELEq6cjtSv8HFh3khyUo0zOvTt/H3
+	 9IXaT9MEZdzR3STEyN7KGkcjMTFVJ+aBd7inqICJDVi+8PkpcB+6lZx3jCkvu3S1i2
+	 88NNv+g0R32INF56hbhdGnkw2sAyTbEPyd6Ov4v4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 101/259] ext4: check dot and dotdot of dx_root before making dir indexed
+	Shreyas Deodhar <sdeodhar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 168/352] scsi: qla2xxx: Complete command early within lock
 Date: Thu, 15 Aug 2024 15:23:54 +0200
-Message-ID: <20240815131906.704089894@linuxfoundation.org>
+Message-ID: <20240815131925.768836206@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,156 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-commit 50ea741def587a64e08879ce6c6a30131f7111e7 upstream.
+commit 4475afa2646d3fec176fc4d011d3879b26cb26e3 upstream.
 
-Syzbot reports a issue as follows:
-============================================
-BUG: unable to handle page fault for address: ffffed11022e24fe
-PGD 23ffee067 P4D 23ffee067 PUD 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 PID: 5079 Comm: syz-executor306 Not tainted 6.10.0-rc5-g55027e689933 #0
-Call Trace:
+A crash was observed while performing NPIV and FW reset,
+
+ BUG: kernel NULL pointer dereference, address: 000000000000001c
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: 0000 1 PREEMPT_RT SMP NOPTI
+ RIP: 0010:dma_direct_unmap_sg+0x51/0x1e0
+ RSP: 0018:ffffc90026f47b88 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: 0000000000000021 RCX: 0000000000000002
+ RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff8881041130d0
+ RBP: ffff8881041130d0 R08: 0000000000000000 R09: 0000000000000034
+ R10: ffffc90026f47c48 R11: 0000000000000031 R12: 0000000000000000
+ R13: 0000000000000000 R14: ffff8881565e4a20 R15: 0000000000000000
+ FS: 00007f4c69ed3d00(0000) GS:ffff889faac80000(0000) knlGS:0000000000000000
+ CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000000000001c CR3: 0000000288a50002 CR4: 00000000007706e0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
  <TASK>
- make_indexed_dir+0xdaf/0x13c0 fs/ext4/namei.c:2341
- ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2451
- ext4_rename fs/ext4/namei.c:3936 [inline]
- ext4_rename2+0x26e5/0x4370 fs/ext4/namei.c:4214
-[...]
-============================================
+ ? __die_body+0x1a/0x60
+ ? page_fault_oops+0x16f/0x4a0
+ ? do_user_addr_fault+0x174/0x7f0
+ ? exc_page_fault+0x69/0x1a0
+ ? asm_exc_page_fault+0x22/0x30
+ ? dma_direct_unmap_sg+0x51/0x1e0
+ ? preempt_count_sub+0x96/0xe0
+ qla2xxx_qpair_sp_free_dma+0x29f/0x3b0 [qla2xxx]
+ qla2xxx_qpair_sp_compl+0x60/0x80 [qla2xxx]
+ __qla2x00_abort_all_cmds+0xa2/0x450 [qla2xxx]
 
-The immediate cause of this problem is that there is only one valid dentry
-for the block to be split during do_split, so split==0 results in out of
-bounds accesses to the map triggering the issue.
+The command completion was done early while aborting the commands in driver
+unload path but outside lock to avoid the WARN_ON condition of performing
+dma_free_attr within the lock. However this caused race condition while
+command completion via multiple paths causing system crash.
 
-    do_split
-      unsigned split
-      dx_make_map
-       count = 1
-      split = count/2 = 0;
-      continued = hash2 == map[split - 1].hash;
-       ---> map[4294967295]
+Hence complete the command early in unload path but within the lock to
+avoid race condition.
 
-The maximum length of a filename is 255 and the minimum block size is 1024,
-so it is always guaranteed that the number of entries is greater than or
-equal to 2 when do_split() is called.
-
-But syzbot's crafted image has no dot and dotdot in dir, and the dentry
-distribution in dirblock is as follows:
-
-  bus     dentry1          hole           dentry2           free
-|xx--|xx-------------|...............|xx-------------|...............|
-0   12 (8+248)=256  268     256     524 (8+256)=264 788     236     1024
-
-So when renaming dentry1 increases its name_len length by 1, neither hole
-nor free is sufficient to hold the new dentry, and make_indexed_dir() is
-called.
-
-In make_indexed_dir() it is assumed that the first two entries of the
-dirblock must be dot and dotdot, so bus and dentry1 are left in dx_root
-because they are treated as dot and dotdot, and only dentry2 is moved
-to the new leaf block. That's why count is equal to 1.
-
-Therefore add the ext4_check_dx_root() helper function to add more sanity
-checks to dot and dotdot before starting the conversion to avoid the above
-issue.
-
-Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
-Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240702132349.2600605-2-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 0367076b0817 ("scsi: qla2xxx: Perform lockless command completion in abort path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/namei.c |   56 +++++++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 51 insertions(+), 5 deletions(-)
+ drivers/scsi/qla2xxx/qla_os.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -2086,6 +2086,52 @@ static int add_dirent_to_buf(handle_t *h
- 	return 0;
- }
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1752,14 +1752,9 @@ __qla2x00_abort_all_cmds(struct qla_qpai
+ 	for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
+ 		sp = req->outstanding_cmds[cnt];
+ 		if (sp) {
+-			/*
+-			 * perform lockless completion during driver unload
+-			 */
+ 			if (qla2x00_chip_is_down(vha)) {
+ 				req->outstanding_cmds[cnt] = NULL;
+-				spin_unlock_irqrestore(qp->qp_lock_ptr, flags);
+ 				sp->done(sp, res);
+-				spin_lock_irqsave(qp->qp_lock_ptr, flags);
+ 				continue;
+ 			}
  
-+static bool ext4_check_dx_root(struct inode *dir, struct dx_root *root)
-+{
-+	struct fake_dirent *fde;
-+	const char *error_msg;
-+	unsigned int rlen;
-+	unsigned int blocksize = dir->i_sb->s_blocksize;
-+	char *blockend = (char *)root + dir->i_sb->s_blocksize;
-+
-+	fde = &root->dot;
-+	if (unlikely(fde->name_len != 1)) {
-+		error_msg = "invalid name_len for '.'";
-+		goto corrupted;
-+	}
-+	if (unlikely(strncmp(root->dot_name, ".", fde->name_len))) {
-+		error_msg = "invalid name for '.'";
-+		goto corrupted;
-+	}
-+	rlen = ext4_rec_len_from_disk(fde->rec_len, blocksize);
-+	if (unlikely((char *)fde + rlen >= blockend)) {
-+		error_msg = "invalid rec_len for '.'";
-+		goto corrupted;
-+	}
-+
-+	fde = &root->dotdot;
-+	if (unlikely(fde->name_len != 2)) {
-+		error_msg = "invalid name_len for '..'";
-+		goto corrupted;
-+	}
-+	if (unlikely(strncmp(root->dotdot_name, "..", fde->name_len))) {
-+		error_msg = "invalid name for '..'";
-+		goto corrupted;
-+	}
-+	rlen = ext4_rec_len_from_disk(fde->rec_len, blocksize);
-+	if (unlikely((char *)fde + rlen >= blockend)) {
-+		error_msg = "invalid rec_len for '..'";
-+		goto corrupted;
-+	}
-+
-+	return true;
-+
-+corrupted:
-+	EXT4_ERROR_INODE(dir, "Corrupt dir, %s, running e2fsck is recommended",
-+			 error_msg);
-+	return false;
-+}
-+
- /*
-  * This converts a one block unindexed directory to a 3 block indexed
-  * directory, and adds the dentry to the indexed directory.
-@@ -2119,17 +2165,17 @@ static int make_indexed_dir(handle_t *ha
- 		brelse(bh);
- 		return retval;
- 	}
-+
- 	root = (struct dx_root *) bh->b_data;
-+	if (!ext4_check_dx_root(dir, root)) {
-+		brelse(bh);
-+		return -EFSCORRUPTED;
-+	}
- 
- 	/* The 0th block becomes the root, move the dirents out */
- 	fde = &root->dotdot;
- 	de = (struct ext4_dir_entry_2 *)((char *)fde +
- 		ext4_rec_len_from_disk(fde->rec_len, blocksize));
--	if ((char *) de >= (((char *) root) + blocksize)) {
--		EXT4_ERROR_INODE(dir, "invalid rec_len for '..'");
--		brelse(bh);
--		return -EFSCORRUPTED;
--	}
- 	len = ((char *) root) + (blocksize - csum_size) - (char *) de;
- 
- 	/* Allocate new block for the 0th block's dirents */
 
 
 
