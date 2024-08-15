@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719249533BA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E20B395356E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5C751C25485
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4ADCAB22A58
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6733180021;
-	Thu, 15 Aug 2024 14:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B5C19FA7A;
+	Thu, 15 Aug 2024 14:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2dhAEDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5k/HcKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813FE17BEAD;
-	Thu, 15 Aug 2024 14:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426F73214;
+	Thu, 15 Aug 2024 14:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731504; cv=none; b=AVZCMfxMHmDdM872HdtvR4qu8id8+cZCkBxBYbCkRTY6lyHtIFI/S0dEudjLs8J2+58kTUqtpV4R3cBKkgI8C9/0Cj8i89uVVMYptWbIGjp7udKZhahHN/et4tw7ZaroCQCe3e8cTBp3p5455xW1vlqff308Ok+Br23JQvQw8dU=
+	t=1723732667; cv=none; b=PrLYPORwSnEHrTGnwqrL5TWak1uhypNf58PoylUKOuPZtmSpLdpLRUeYJpyPBZS2yANzcu0s77ai8Q1dsItt8qvccn95c+Z8uFq7xEz4wvAK5hwOL5ZBvc2mJD5n1vUM1CT4+trdrQ13dqbN45axZL+9Nmxm5h0lJOkYU/Z30kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731504; c=relaxed/simple;
-	bh=iD+G9MPpgEykq0WmY7qjGJTAr/UIFLOz+t1WdD6dKho=;
+	s=arc-20240116; t=1723732667; c=relaxed/simple;
+	bh=N4HgJq0sBNLZOnHnewma1SkZfYzk3tkisEePXjT6D2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngleWaJ7g/s6Vahlv8e23uYxuMjTp4c76BbBVFGRWlED3JKYyqHraNBwfU6S7KHHIOVYZV4zkrlioIn4r+ulSvyJrZkCuDmqZLLyxsSmDMR4tvzSnfcowl+OA99tyEJPyFdXj5rozwaxqC5oS1l2bVaVgr2wnVc0O7zsue5RJeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2dhAEDQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C13C32786;
-	Thu, 15 Aug 2024 14:18:23 +0000 (UTC)
+	 MIME-Version; b=YLl7gQU9NIgwMioTNByNNjVsLwCO+1c43FmQOD+QuAPAiFBee9qS9SpALCA1Og1lRxzgJPww9zsB8FuIwGqCJtePaKGgy7Cgf2/Uo9+6Bs2qJE9buLk7rVylatFkppEMU7v4DQvlh1pk3kgdueEgowD8An33etPmh1HsLVyr344=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5k/HcKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF165C32786;
+	Thu, 15 Aug 2024 14:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731504;
-	bh=iD+G9MPpgEykq0WmY7qjGJTAr/UIFLOz+t1WdD6dKho=;
+	s=korg; t=1723732667;
+	bh=N4HgJq0sBNLZOnHnewma1SkZfYzk3tkisEePXjT6D2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N2dhAEDQ2W/CM6CCMl75ktuUSHF9oLQD77JjgYOPgCOsUpg9lEIb/fBWU8rRK+sQx
-	 wop+wGt06pl2i4beBZoOQZHrYbu+7g7oIyedsNo0YThAtL09h8EjjV/khikl4JF28N
-	 dvV63iQRhQD4xK+8rDZoaH1gziRIMVJLhN24mnX4=
+	b=h5k/HcKqSRI0zuX6Sb4TL+OtkyrISQh+pHkp5PGlhqNtw57c3Z6ynT9kSCnQxUIIQ
+	 56IM4gtXrkMoDbfLms4xGZ9kLvZeJgwUbPracPVIQZ1Ovx7cfpayX0TYJwrWq1Cg8G
+	 jBRuy9VKR3y3IfxR7o6a+XZwWTLGK+K8IMc/Qf7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Eric Sandeen <sandeen@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 150/259] ASoC: Intel: Move soc_intel_is_foo() helpers to a generic header
-Date: Thu, 15 Aug 2024 15:24:43 +0200
-Message-ID: <20240815131908.581482308@linuxfoundation.org>
+Subject: [PATCH 5.10 218/352] fuse: verify {g,u}id mount options correctly
+Date: Thu, 15 Aug 2024 15:24:44 +0200
+Message-ID: <20240815131927.715606774@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit cd45c9bf8b43cd387e167cf166ae5c517f56d658 ]
+[ Upstream commit 525bd65aa759ec320af1dc06e114ed69733e9e23 ]
 
-The soc_intel_is_foo() helpers from
-sound/soc/intel/common/soc-intel-quirks.h are useful outside of the
-sound subsystem too.
+As was done in
+0200679fc795 ("tmpfs: verify {g,u}id mount options correctly")
+we need to validate that the requested uid and/or gid is representable in
+the filesystem's idmapping.
 
-Move these to include/linux/platform_data/x86/soc.h, so that
-other code can use them too.
+Cribbing from the above commit log,
 
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20211018143324.296961-2-hdegoede@redhat.com
-Stable-dep-of: 9931f7d5d251 ("ASoC: Intel: use soc_intel_is_byt_cr() only when IOSF_MBI is reachable")
+The contract for {g,u}id mount options and {g,u}id values in general set
+from userspace has always been that they are translated according to the
+caller's idmapping. In so far, fuse has been doing the correct thing.
+But since fuse is mountable in unprivileged contexts it is also
+necessary to verify that the resulting {k,g}uid is representable in the
+namespace of the superblock.
+
+Fixes: c30da2e981a7 ("fuse: convert to use the new mount API")
+Cc: stable@vger.kernel.org # 5.4+
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Link: https://lore.kernel.org/r/8f07d45d-c806-484d-a2e3-7a2199df1cd2@redhat.com
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/platform_data/x86/soc.h     | 65 +++++++++++++++++++++++
- sound/soc/intel/common/soc-intel-quirks.h | 51 ++----------------
- 2 files changed, 68 insertions(+), 48 deletions(-)
- create mode 100644 include/linux/platform_data/x86/soc.h
+ fs/fuse/inode.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/platform_data/x86/soc.h b/include/linux/platform_data/x86/soc.h
-new file mode 100644
-index 0000000000000..da05f425587a0
---- /dev/null
-+++ b/include/linux/platform_data/x86/soc.h
-@@ -0,0 +1,65 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Helpers for Intel SoC model detection
-+ *
-+ * Copyright (c) 2019, Intel Corporation.
-+ */
-+
-+#ifndef __PLATFORM_DATA_X86_SOC_H
-+#define __PLATFORM_DATA_X86_SOC_H
-+
-+#if IS_ENABLED(CONFIG_X86)
-+
-+#include <asm/cpu_device_id.h>
-+#include <asm/intel-family.h>
-+
-+#define SOC_INTEL_IS_CPU(soc, type)				\
-+static inline bool soc_intel_is_##soc(void)			\
-+{								\
-+	static const struct x86_cpu_id soc##_cpu_ids[] = {	\
-+		X86_MATCH_INTEL_FAM6_MODEL(type, NULL),		\
-+		{}						\
-+	};							\
-+	const struct x86_cpu_id *id;				\
-+								\
-+	id = x86_match_cpu(soc##_cpu_ids);			\
-+	if (id)							\
-+		return true;					\
-+	return false;						\
-+}
-+
-+SOC_INTEL_IS_CPU(byt, ATOM_SILVERMONT);
-+SOC_INTEL_IS_CPU(cht, ATOM_AIRMONT);
-+SOC_INTEL_IS_CPU(apl, ATOM_GOLDMONT);
-+SOC_INTEL_IS_CPU(glk, ATOM_GOLDMONT_PLUS);
-+SOC_INTEL_IS_CPU(cml, KABYLAKE_L);
-+
-+#else /* IS_ENABLED(CONFIG_X86) */
-+
-+static inline bool soc_intel_is_byt(void)
-+{
-+	return false;
-+}
-+
-+static inline bool soc_intel_is_cht(void)
-+{
-+	return false;
-+}
-+
-+static inline bool soc_intel_is_apl(void)
-+{
-+	return false;
-+}
-+
-+static inline bool soc_intel_is_glk(void)
-+{
-+	return false;
-+}
-+
-+static inline bool soc_intel_is_cml(void)
-+{
-+	return false;
-+}
-+#endif /* IS_ENABLED(CONFIG_X86) */
-+
-+#endif /* __PLATFORM_DATA_X86_SOC_H */
-diff --git a/sound/soc/intel/common/soc-intel-quirks.h b/sound/soc/intel/common/soc-intel-quirks.h
-index a88a91995ce1a..a46be331c178e 100644
---- a/sound/soc/intel/common/soc-intel-quirks.h
-+++ b/sound/soc/intel/common/soc-intel-quirks.h
-@@ -9,34 +9,13 @@
- #ifndef _SND_SOC_INTEL_QUIRKS_H
- #define _SND_SOC_INTEL_QUIRKS_H
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index 5f9b2dc59135b..a5d1eb0bc5214 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -540,6 +540,8 @@ static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
+ 	struct fs_parse_result result;
+ 	struct fuse_fs_context *ctx = fsc->fs_private;
+ 	int opt;
++	kuid_t kuid;
++	kgid_t kgid;
  
-+#include <linux/platform_data/x86/soc.h>
-+
- #if IS_ENABLED(CONFIG_X86)
+ 	if (fsc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
+ 		/*
+@@ -584,16 +586,30 @@ static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
+ 		break;
  
- #include <linux/dmi.h>
--#include <asm/cpu_device_id.h>
--#include <asm/intel-family.h>
- #include <asm/iosf_mbi.h>
+ 	case OPT_USER_ID:
+-		ctx->user_id = make_kuid(fsc->user_ns, result.uint_32);
+-		if (!uid_valid(ctx->user_id))
++		kuid =  make_kuid(fsc->user_ns, result.uint_32);
++		if (!uid_valid(kuid))
+ 			return invalfc(fsc, "Invalid user_id");
++		/*
++		 * The requested uid must be representable in the
++		 * filesystem's idmapping.
++		 */
++		if (!kuid_has_mapping(fsc->user_ns, kuid))
++			return invalfc(fsc, "Invalid user_id");
++		ctx->user_id = kuid;
+ 		ctx->user_id_present = true;
+ 		break;
  
--#define SOC_INTEL_IS_CPU(soc, type)				\
--static inline bool soc_intel_is_##soc(void)			\
--{								\
--	static const struct x86_cpu_id soc##_cpu_ids[] = {	\
--		X86_MATCH_INTEL_FAM6_MODEL(type, NULL),		\
--		{}						\
--	};							\
--	const struct x86_cpu_id *id;				\
--								\
--	id = x86_match_cpu(soc##_cpu_ids);			\
--	if (id)							\
--		return true;					\
--	return false;						\
--}
--
--SOC_INTEL_IS_CPU(byt, ATOM_SILVERMONT);
--SOC_INTEL_IS_CPU(cht, ATOM_AIRMONT);
--SOC_INTEL_IS_CPU(apl, ATOM_GOLDMONT);
--SOC_INTEL_IS_CPU(glk, ATOM_GOLDMONT_PLUS);
--SOC_INTEL_IS_CPU(cml, KABYLAKE_L);
--
- static inline bool soc_intel_is_byt_cr(struct platform_device *pdev)
- {
- 	/*
-@@ -114,30 +93,6 @@ static inline bool soc_intel_is_byt_cr(struct platform_device *pdev)
- 	return false;
- }
+ 	case OPT_GROUP_ID:
+-		ctx->group_id = make_kgid(fsc->user_ns, result.uint_32);
+-		if (!gid_valid(ctx->group_id))
++		kgid = make_kgid(fsc->user_ns, result.uint_32);;
++		if (!gid_valid(kgid))
++			return invalfc(fsc, "Invalid group_id");
++		/*
++		 * The requested gid must be representable in the
++		 * filesystem's idmapping.
++		 */
++		if (!kgid_has_mapping(fsc->user_ns, kgid))
+ 			return invalfc(fsc, "Invalid group_id");
++		ctx->group_id = kgid;
+ 		ctx->group_id_present = true;
+ 		break;
  
--static inline bool soc_intel_is_byt(void)
--{
--	return false;
--}
--
--static inline bool soc_intel_is_cht(void)
--{
--	return false;
--}
--
--static inline bool soc_intel_is_apl(void)
--{
--	return false;
--}
--
--static inline bool soc_intel_is_glk(void)
--{
--	return false;
--}
--
--static inline bool soc_intel_is_cml(void)
--{
--	return false;
--}
- #endif
- 
-- #endif /* _SND_SOC_INTEL_QUIRKS_H */
-+#endif /* _SND_SOC_INTEL_QUIRKS_H */
 -- 
 2.43.0
 
