@@ -1,91 +1,80 @@
-Return-Path: <stable+bounces-69230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8719F953A2B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 20:34:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87A5953A2D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 20:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 310321F21E05
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 18:34:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ECF5281588
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 18:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4872D4AEE9;
-	Thu, 15 Aug 2024 18:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB5752F70;
+	Thu, 15 Aug 2024 18:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1w0wzHc"
+	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="5ZHdrUVy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF54383A3;
-	Thu, 15 Aug 2024 18:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D09383A3;
+	Thu, 15 Aug 2024 18:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723746872; cv=none; b=V5SamCMFAlMgN5NnJedcAPmTvNHnLqz2mYG7sBDVrhLENCWYmQcx97hwx4Lk8L84gIUp9G2zKVvyAm8+u/QnngNG/1Qo+ez7dL9S+3+iSsKxY1ptazvfVjjmFbsx75POa18t0FgT7KwrC9YBuGk9Kl2MI+t3VTO4uEkHZto1DpI=
+	t=1723746893; cv=none; b=ijEMGACleMEMLxaIW1u3Prku7gHA+ZqQNMQQ+RO9pItTGUO0yYsF5OoewO7Wdt7cx4m7fj9PczXEP+8NEYgEVO/Qgvl8JBw45/79MXh74dAPhHEHgkU8qxxx0WgXF7JcYqzgL5SoMw0Qyp2la5bMNLnYnSI6dyw6yWzrj6bmoUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723746872; c=relaxed/simple;
-	bh=nWfVmAun0Cx3DA+43CHSrDQiQLi21CFd4iQTZkbUIk0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=OWcRzA4VqZftxRqSjJ4g8JKgV/Gmfi7TDSjAEakOrup4ddxTmscoZSPTKEFuvjfyNTaFJ//WdDdf1ngks4dnSELdNf5r+zSt4dwi9CMQOSkqZWGlfXhPWuLBBvSF/+NiRr96silEvu0p8VegxptPbeAsPfrKfDHKsxofsY6j3Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1w0wzHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2421EC32786;
-	Thu, 15 Aug 2024 18:34:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723746871;
-	bh=nWfVmAun0Cx3DA+43CHSrDQiQLi21CFd4iQTZkbUIk0=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=o1w0wzHcdGcuv4jtDomB1MsIEG92YWnwO4bTUbCio34b5S1w1x9K9zBsmwR+s80xl
-	 o9saMHCVYZy+3tiCZtSfWSNIXC60MG27YpQCuSax08dSV2oTE65RjajxRMUPcESm9t
-	 6nXZ7IhEIav4GqyJRHCxDuXECLrxUBLRMZqWWYF3moI4YbZqXd6M4AADoHUGcuRhNV
-	 rfJYkAZ2OUnv36FYRw0vw5vXUojT/u1abxAw6tFmFj6ZAk1aZbUidEVVqK/sxhnKT3
-	 nuX7+ogjv6X+QWXydGgQfsDERgrPEKbLgvVEZOKSvm6UTWyprSmS7Boch3vlTYfsRI
-	 OO9O1Z8HvGDTQ==
+	s=arc-20240116; t=1723746893; c=relaxed/simple;
+	bh=xLnJMUPm2aYBrTTcAEmd/1AjrG7nIACiu9DwvTR9ocA=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rO+hsxeYgQ3vHy++0BYzgdfH1sAh5gC3a3QQUUhNf8MRPHn6WOxqbfh1k4g3XeZPKvhc7S/oBcpo/CRF4Sa2F+lYSggr2/ct6R2RJqXu4Duyq+CWpt0JUyZyQhHJxSq0XGVCmywjau5qRW6h8n7VRnOONSti0Z9SS9opVcKPrvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=5ZHdrUVy; arc=none smtp.client-ip=91.227.220.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
+Date: Thu, 15 Aug 2024 20:34:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+	s=202107; t=1723746883;
+	bh=xLnJMUPm2aYBrTTcAEmd/1AjrG7nIACiu9DwvTR9ocA=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+	 From:from:in-reply-to:in-reply-to:message-id:mime-version:
+	 references:reply-to:Sender:Subject:Subject:To:To;
+	b=5ZHdrUVydthB2a5OjGdMWBqYCQaoBiCmhcAJBUKMV4P7xIUjgQLMQoJAerzDBx2h+
+	 jy0RB5uZmCdmmcv497I2lALIUAJvnGOJ5fAmMitFB3DN3h2uh0UvTcIWoruSWBkEs0
+	 mvJOimilZZsd085CCKjSDA4jiZOpIlO6UdOaqljCTbEUJLecbCA8Rm0cLxPI/MVo8+
+	 Qglvcn4hvBKdCzzqQYAYycX8rEnk42bC2caDDBlmB7hljOcuHa6bFiu95pnqU1XdD3
+	 MdVSP+zvR1sHUX48p69RQFlgP5aPtdI8RsQw1XEaL0IxqYZ00lbsw30zCcNCYepncV
+	 SJBRRRYrqnimw==
+From: Markus Reichelt <lkt+2023@mareichelt.com>
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.10 00/22] 6.10.6-rc1 review
+Message-ID: <20240815183441.GB5407@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240815131831.265729493@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Aug 2024 21:34:27 +0300
-Message-Id: <D3GP9N3N7TUE.38H37K436OD50@kernel.org>
-To: "Dmitrii Kuvaiskii" <dmitrii.kuvaiskii@intel.com>
-Cc: <dave.hansen@linux.intel.com>, <haitao.huang@linux.intel.com>,
- <kai.huang@intel.com>, <kailun.qin@intel.com>,
- <linux-kernel@vger.kernel.org>, <linux-sgx@vger.kernel.org>,
- <mona.vij@intel.com>, <reinette.chatre@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v4 3/3] x86/sgx: Resolve EREMOVE page vs EAUG page data
- race
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <D2RQZSM3MMVN.8DFKF3GGGTWE@kernel.org>
- <20240812082543.3119659-1-dmitrii.kuvaiskii@intel.com>
-In-Reply-To: <20240812082543.3119659-1-dmitrii.kuvaiskii@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240815131831.265729493@linuxfoundation.org>
 
-On Mon Aug 12, 2024 at 11:25 AM EEST, Dmitrii Kuvaiskii wrote:
-> On Wed, Jul 17, 2024 at 01:38:59PM +0300, Jarkko Sakkinen wrote:
->
-> > Ditto.
->
-> Just to be sure: I assume this means "Fixes should be in the head of the
-> series so please reorder"? If yes, please see my reply in the other email
-> [1].
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-OK, based on your earlier remarks and references I agree with you.
+> This is the start of the stable review cycle for the 6.10.6 release.
+> There are 22 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 17 Aug 2024 13:18:17 +0000.
+> Anything received after that time might be too late.
 
->
-> [1] https://lore.kernel.org/all/20240812082128.3084051-1-dmitrii.kuvaiski=
-i@intel.com/
->
-> --
-> Dmitrii Kuvaiskii
+Hi Greg
 
-I think for future and since we have bunch of state flags, removing
-that "e.g." is worth of doing. Often you need to go through all of
-the flags to remind you how they interact, and at that point "one
-vs many" does help navigating the complexity.
+6.10.6-rc1 compiles, boots and runs here on x86_64
+(AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
 
-BR, Jarkko
+Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
 
