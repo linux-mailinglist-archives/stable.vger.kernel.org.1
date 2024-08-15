@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-67958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78150952FF6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF478953018
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC07A1C21252
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:38:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DACA41C23E0F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4352A1A00CE;
-	Thu, 15 Aug 2024 13:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C7919D89D;
+	Thu, 15 Aug 2024 13:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmleZOyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGMqu+4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F223F19F49A;
-	Thu, 15 Aug 2024 13:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943C91714A8;
+	Thu, 15 Aug 2024 13:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729053; cv=none; b=RDOZkqRdAc0Tcid24kjOCV9HmIbAPMCVoNBb1pQ9ylf9R+arAudvV0COs4XzpGcsC/i9vwfbkh/dPJJ9NV0Je/qE8oQHjzVPutLUz13Z4qTGntXgUm9TbgS+X3791fE7f2pMBWUwlccBNTpTSVeIJPBOIF0oxxfUSwQquVUyHRc=
+	t=1723729140; cv=none; b=jUyv4PlntZg7ktewxIBo/bmFj61/2juHtT0SxfV0cO5Pf1fDoYHcubh6nbM8DFyJ1SJv2mFyxBczn9cP/CM9zSi+RLdM39IssLLjbeRCWDNt7V/ofXTwTJAr4z6c0jtcBNT2dQUg8cfKGBYtif0tHuJXvX7T65yiW2Suatn+6jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729053; c=relaxed/simple;
-	bh=KH9fAm4Vt9PLWX2GnmabCQKDeQpSmTxYnNhepj5rdXA=;
+	s=arc-20240116; t=1723729140; c=relaxed/simple;
+	bh=0d2CgvO6bmuv03cAin/nCFXMcC/6ViuSMu5dgbmMd7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EK7svbXeqlK3Lkikr8NRw1TeV3rr5s/wsKUr2izQ97LGgTYZ9+GhTN+/QZWq8ZkuXfHVhZLLK9/58kj1kQh98O6lDKSvTgF44G7zcOOn4Y2u/lp9gV2ECVvMp8aosZ4bPqyPQUXL8dWnJNmCuBg1uSDbLbrv9+TJQ3gjJ1k51sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmleZOyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DA1C32786;
-	Thu, 15 Aug 2024 13:37:32 +0000 (UTC)
+	 MIME-Version; b=Co20Nx5/GuLoDPDeVArjfywcLGClryWfYVJzEQRymci13LHNOwtNvIYLA/PA/cVcQL88ECHass2Ccsj8mLQ7FXpy/dPT6JnSB+kQmsU6G6PYId/Tb981ZY/eu8jRKGDKh3tUSPFJAxEaCj/VZlTvvgYnbsIsPGnKFoqO+fvUO4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGMqu+4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBC6C32786;
+	Thu, 15 Aug 2024 13:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729052;
-	bh=KH9fAm4Vt9PLWX2GnmabCQKDeQpSmTxYnNhepj5rdXA=;
+	s=korg; t=1723729140;
+	bh=0d2CgvO6bmuv03cAin/nCFXMcC/6ViuSMu5dgbmMd7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LmleZOyL0kkS7Lre7M6uKmDLp7CDmLAgZaymBSwQtbO2vaf1rDDsQiWhuD+kCzCbW
-	 2N1Sjzh7pzAJ8jBygV/PtULtxDk3OeO/fLEcU7Ax0QrEUUEgKdYftvNtKgm6Fx9qSF
-	 m/vtCiguMLRVfdUSFucRbNoHfp9CO90iP2AuZfZ0=
+	b=oGMqu+4+Q3IP4+SfFPBtfeRHtFqqXt5kBw/BJ/fPzSo0S5r9uZZ8KZjojTkiPoPjO
+	 rLoKFuxlWHcycANnkyHqLLhd7D5Hc3P2PWVx6drNLOi2mAIapL2tNsRthWOWqWXsq0
+	 YZvh6OHatVnLzrfSASsBg4Df6PoAlkFP7t7fSLfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Wentao Guan <guanwentao@uniontech.com>,
 	WangYuli <wangyuli@uniontech.com>,
 	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 4.19 196/196] nvme/pci: Add APST quirk for Lenovo N60z laptop
-Date: Thu, 15 Aug 2024 15:25:13 +0200
-Message-ID: <20240815131859.571861730@linuxfoundation.org>
+Subject: [PATCH 6.10 06/22] nvme/pci: Add APST quirk for Lenovo N60z laptop
+Date: Thu, 15 Aug 2024 15:25:14 +0200
+Message-ID: <20240815131831.509167131@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131831.265729493@linuxfoundation.org>
+References: <20240815131831.265729493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,8 +87,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/nvme/host/pci.c
 +++ b/drivers/nvme/host/pci.c
-@@ -2481,6 +2481,13 @@ static unsigned long check_vendor_combin
- 			return NVME_QUIRK_NO_APST;
+@@ -2933,6 +2933,13 @@ static unsigned long check_vendor_combin
+ 			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
  	}
  
 +	/*
