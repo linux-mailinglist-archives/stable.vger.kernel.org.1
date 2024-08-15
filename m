@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-68811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B1E953415
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F999535D5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5AE1F288D2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DDAA282314
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626BD1A08DD;
-	Thu, 15 Aug 2024 14:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF461A76AE;
+	Thu, 15 Aug 2024 14:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veehCLh5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtrabJli"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F5C1A08DB;
-	Thu, 15 Aug 2024 14:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BD81AC893;
+	Thu, 15 Aug 2024 14:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731741; cv=none; b=Rlcyyu5AsXdwk36VRuE80XiHMoZh5pYXNV80F17zwDgJBWN1Clz1Fo8+wSDL7gvdECfwJE34xFXf8v7mb0cDOtgD7G8uRdGgQiCbf6UtjUjHJICEB5x5xmuXcjP0KYYol2PgFvOWau5zrZ6YH/WDN0O6uwYvFk0mbY4uVGgm6wI=
+	t=1723732902; cv=none; b=Gm3zz5Y4i2dAeRBl4S7uj0ymA6FWadvz3hg4M0xdOX6jsCqyPx8mmFcHqGMrb9FMwGZl0/moWEXPhS6Rqx4tjKRoKS2b3xfGFc2gi2sfU6r5q5DPyVxsrrfHgIJ5EK7sX7wyaiymQvs8UVO2D8LiQesqp0+PW+6C0BuQxzYmzOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731741; c=relaxed/simple;
-	bh=0rZ/yFEjvGLU/BPGfXjfHzQVu4jTvnqE+aTZzZS6Rlc=;
+	s=arc-20240116; t=1723732902; c=relaxed/simple;
+	bh=kuJSpu4VuQF6KZhMiSMOFTA1E5Syr0siCWlgPpkze54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbDBzzuKAeJvB7Fd4l6u8tFZ+Ma36y3VnwRVPs1bNiV4KRQg3pBkMM/Kn31w2kQb562lXwdls60KvKq1ODL3g7Q3kd3MjSp4vfBS5Tex/UXcUiIMQaDpblRoqWbGlYe6UQfVDW0Ted4mUWPQes9sBfOK5yLsK8FqfRhkEA50BzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veehCLh5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAB9C32786;
-	Thu, 15 Aug 2024 14:22:20 +0000 (UTC)
+	 MIME-Version; b=iiXKJVOjAeuy+NFud0aTOmG6W9z50ELQq8Bk4pp8mkbqqr9wDKcESk0m18efEM2wi7edj3pF6cCjXyAc97sO+lV8+caZk+nxYsdfZbX9BRIc/CjL6cEbg9b5elGIuh8xwkAEf6YPbnWou0CSYp4ki5CEHtBfpnvJlZYvO6o1nsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtrabJli; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C649C32786;
+	Thu, 15 Aug 2024 14:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731741;
-	bh=0rZ/yFEjvGLU/BPGfXjfHzQVu4jTvnqE+aTZzZS6Rlc=;
+	s=korg; t=1723732902;
+	bh=kuJSpu4VuQF6KZhMiSMOFTA1E5Syr0siCWlgPpkze54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=veehCLh51XNRa2koMfOkTid0ZOSE/Vbg2LIPy7IQxVR8cO3tVA01INd7KZAISU6Cz
-	 LOdc9ZMBH/NHlfGEMhPKhM3NjUFiozhT4/vjzSnq+BF8MtMBdnX1BNVyQpYfLK6i5I
-	 FJU1QFrKzrTCZyupjsmT/hLcVSsCv+oDmJ+aGMuM=
+	b=rtrabJli3JnSwX7unlTUk6luS5U3yM4A+aGEl4p/QLz0V1qIEPXDNeJF2ZOdpI+1i
+	 PY6BdzUGQ2H0FB9xaVAEVEXPw+4fX5hKUIJE1cL76WoEus3cycG/NhaJ3h4ZjvhbQN
+	 NUpFT8Csh2aveQatCiyA+dKFfVgKOPQcO7h6/XGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 223/259] i2c: smbus: Send alert notifications to all devices if source not found
+Subject: [PATCH 5.10 290/352] arm64: errata: Expand speculative SSBS workaround
 Date: Thu, 15 Aug 2024 15:25:56 +0200
-Message-ID: <20240815131911.384615409@linuxfoundation.org>
+Message-ID: <20240815131930.661923220@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +64,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit f6c29f710c1ff2590109f83be3e212b86c01e0f3 ]
+[ Upstream commit 75b3c43eab594bfbd8184ec8ee1a6b820950819a ]
 
-If a SMBus alert is received and the originating device is not found,
-the reason may be that the address reported on the SMBus alert address
-is corrupted, for example because multiple devices asserted alert and
-do not correctly implement SMBus arbitration.
+A number of Arm Ltd CPUs suffer from errata whereby an MSR to the SSBS
+special-purpose register does not affect subsequent speculative
+instructions, permitting speculative store bypassing for a window of
+time.
 
-If this happens, call alert handlers on all devices connected to the
-given I2C bus, in the hope that this cleans up the situation.
+We worked around this for Cortex-X4 and Neoverse-V3, in commit:
 
-This change reliably fixed the problem on a system with multiple devices
-on a single bus. Example log where the device on address 0x18 (ADM1021)
-and on address 0x4c (ADT7461A) both had the alert line asserted:
+  7187bb7d0b5c7dfa ("arm64: errata: Add workaround for Arm errata 3194386 and 3312417")
 
-smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
-smbus_alert 3-000c: no driver alert()!
-smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
-smbus_alert 3-000c: no driver alert()!
-lm90 3-0018: temp1 out of range, please check!
-lm90 3-0018: Disabling ALERT#
-lm90 3-0029: Everything OK
-lm90 3-002a: Everything OK
-lm90 3-004c: temp1 out of range, please check!
-lm90 3-004c: temp2 out of range, please check!
-lm90 3-004c: Disabling ALERT#
+... as per their Software Developer Errata Notice (SDEN) documents:
 
-Fixes: b5527a7766f0 ("i2c: Add SMBus alert support")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-[wsa: fixed a typo in the commit message]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+* Cortex-X4 SDEN v8.0, erratum 3194386:
+  https://developer.arm.com/documentation/SDEN-2432808/0800/
+
+* Neoverse-V3 SDEN v6.0, erratum 3312417:
+  https://developer.arm.com/documentation/SDEN-2891958/0600/
+
+Since then, similar errata have been published for a number of other Arm Ltd
+CPUs, for which the mitigation is the same. This is described in their
+respective SDEN documents:
+
+* Cortex-A710 SDEN v19.0, errataum 3324338
+  https://developer.arm.com/documentation/SDEN-1775101/1900/?lang=en
+
+* Cortex-A720 SDEN v11.0, erratum 3456091
+  https://developer.arm.com/documentation/SDEN-2439421/1100/?lang=en
+
+* Cortex-X2 SDEN v19.0, erratum 3324338
+  https://developer.arm.com/documentation/SDEN-1775100/1900/?lang=en
+
+* Cortex-X3 SDEN v14.0, erratum 3324335
+  https://developer.arm.com/documentation/SDEN-2055130/1400/?lang=en
+
+* Cortex-X925 SDEN v8.0, erratum 3324334
+  https://developer.arm.com/documentation/109108/800/?lang=en
+
+* Neoverse-N2 SDEN v17.0, erratum 3324339
+  https://developer.arm.com/documentation/SDEN-1982442/1700/?lang=en
+
+* Neoverse-V2 SDEN v9.0, erratum 3324336
+  https://developer.arm.com/documentation/SDEN-2332927/900/?lang=en
+
+Note that due to shared design lineage, some CPUs share the same erratum
+number.
+
+Add these to the existing mitigation under CONFIG_ARM64_ERRATUM_3194386.
+As listing all of the erratum IDs in the runtime description would be
+unwieldy, this is reduced to:
+
+	"SSBS not fully self-synchronizing"
+
+... matching the description of the errata in all of the SDENs.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-6-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: fix conflicts and renames ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-smbus.c | 38 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 35 insertions(+), 3 deletions(-)
+ Documentation/arm64/silicon-errata.rst | 14 ++++++++++++++
+ arch/arm64/Kconfig                     |  9 ++++++++-
+ arch/arm64/kernel/cpu_errata.c         |  9 ++++++++-
+ 3 files changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
-index 792954a9b78f4..85b17c71ce84d 100644
---- a/drivers/i2c/i2c-smbus.c
-+++ b/drivers/i2c/i2c-smbus.c
-@@ -64,6 +64,32 @@ static int smbus_do_alert(struct device *dev, void *addrp)
- 	return ret;
- }
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index 2f50eb0fce34f..748f9cc5877bc 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -98,14 +98,28 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A510     | #2457168        | ARM64_ERRATUM_2457168       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A710     | #3324338        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A720     | #3456091        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X2       | #3324338        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X3       | #3324335        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-X4       | #3194386        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X925     | #3324334        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #1349291        | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #1542419        | ARM64_ERRATUM_1542419       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-V2     | #3324336        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 4ed94e8d84c71..3662cb8aa44d5 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -692,12 +692,19 @@ config ARM64_ERRATUM_2457168
+ 	  If unsure, say Y.
  
-+/* Same as above, but call back all drivers with alert handler */
-+
-+static int smbus_do_alert_force(struct device *dev, void *addrp)
-+{
-+	struct i2c_client *client = i2c_verify_client(dev);
-+	struct alert_data *data = addrp;
-+	struct i2c_driver *driver;
-+
-+	if (!client || (client->flags & I2C_CLIENT_TEN))
-+		return 0;
-+
-+	/*
-+	 * Drivers should either disable alerts, or provide at least
-+	 * a minimal handler. Lock so the driver won't change.
-+	 */
-+	device_lock(dev);
-+	if (client->dev.driver) {
-+		driver = to_i2c_driver(client->dev.driver);
-+		if (driver->alert)
-+			driver->alert(client, data->type, data->data);
-+	}
-+	device_unlock(dev);
-+
-+	return 0;
-+}
-+
- /*
-  * The alert IRQ handler needs to hand work off to a task which can issue
-  * SMBus calls, because those sleeping calls can't be made in IRQ context.
-@@ -105,13 +131,19 @@ static irqreturn_t smbus_alert(int irq, void *d)
- 		/*
- 		 * If we read the same address more than once, and the alert
- 		 * was not handled by a driver, it won't do any good to repeat
--		 * the loop because it will never terminate.
--		 * Bail out in this case.
-+		 * the loop because it will never terminate. Try again, this
-+		 * time calling the alert handlers of all devices connected to
-+		 * the bus, and abort the loop afterwards. If this helps, we
-+		 * are all set. If it doesn't, there is nothing else we can do,
-+		 * so we might as well abort the loop.
- 		 * Note: This assumes that a driver with alert handler handles
- 		 * the alert properly and clears it if necessary.
- 		 */
--		if (data.addr == prev_addr && status != -EBUSY)
-+		if (data.addr == prev_addr && status != -EBUSY) {
-+			device_for_each_child(&ara->adapter->dev, &data,
-+					      smbus_do_alert_force);
- 			break;
-+		}
- 		prev_addr = data.addr;
- 	}
+ config ARM64_ERRATUM_3194386
+-	bool "Cortex-X4/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
++	bool "Cortex-{A720,X4,X925}/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
+ 	default y
+ 	help
+ 	  This option adds the workaround for the following errata:
  
++	  * ARM Cortex-A710 erratam 3324338
++	  * ARM Cortex-A720 erratum 3456091
++	  * ARM Cortex-X2 erratum 3324338
++	  * ARM Cortex-X3 erratum 3324335
+ 	  * ARM Cortex-X4 erratum 3194386
++	  * ARM Cortex-X925 erratum 3324334
++	  * ARM Neoverse N2 erratum 3324339
++	  * ARM Neoverse V2 erratum 3324336
+ 	  * ARM Neoverse-V3 erratum 3312417
+ 
+ 	  On affected cores "MSR SSBS, #0" instructions may not affect
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index 4dc465d285d58..000c61ee5a1e1 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -366,8 +366,15 @@ static struct midr_range broken_aarch32_aes[] = {
+ 
+ #ifdef CONFIG_ARM64_ERRATUM_3194386
+ static const struct midr_range erratum_spec_ssbs_list[] = {
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+ 	{}
+ };
+ #endif
+@@ -581,7 +588,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ #endif
+ #ifdef CONFIG_ARM64_ERRATUM_3194386
+ 	{
+-		.desc = "ARM errata 3194386, 3312417",
++		.desc = "SSBS not fully self-synchronizing",
+ 		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
+ 		ERRATA_MIDR_RANGE_LIST(erratum_spec_ssbs_list),
+ 	},
 -- 
 2.43.0
 
