@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7639531DD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86068952F83
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCEAF1F25429
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 375281F236D0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C463319DFA6;
-	Thu, 15 Aug 2024 13:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6F519F49C;
+	Thu, 15 Aug 2024 13:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BycRs+sP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="si0lSo1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E907DA7D;
-	Thu, 15 Aug 2024 13:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D054917C984;
+	Thu, 15 Aug 2024 13:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730358; cv=none; b=WH7VhqXrXkhXZWfQZf2XLSXF7Gzh4kmQFZ2b77NGBsBd0gU/bm3G71dTYOK6cmkX/MRBmqhIzFB1DhkRd54EpBhr84Yxol+PfxojeZ4bttlKadCwuc8X/MOdx/KnuFGqOsA8kv/im5gjkjSwsifruP1vJi2C+irEV0pvhpmpMBo=
+	t=1723728783; cv=none; b=YOoSnhmRt0WdAKuzyKYYrkVNzL2GQVQsQoRX7STlRZIQtjSmuU7Gd/EQYrjQDkiQD3md9ITK+8n+r+Waf6Y55xuGqY78kw1PzQXK4RLYPpoZxtjjFLNHUt9QLJvER4zpm2k/9Kh/5M5kvTekre4kgJWJdWyX/4J4pZ3jndaRZuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730358; c=relaxed/simple;
-	bh=bfOmWdTIbsWq6AFxuhnX+T/ccgOz5cb41ep7xrtip2Q=;
+	s=arc-20240116; t=1723728783; c=relaxed/simple;
+	bh=a0F57Vg5+IHlJ+yzD9/OPF6mCVsWuoupCVDsskvQzV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ePMUsXUo9xYh6J9RMtXoB2r6EeXLmZu9CjedLPaQQ9Ts/5Jq9ozFCdBFooRkEhbedQq/gRhBWOYMIBfWUgfzFYAC+fkXGYGoby5W6JZ8x6Rroh7yGWVvbA+LgExAcSNoiDKjNj+zPXNV7pnuh24qhJAPRdKnUUp2q5IhiLe/s4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BycRs+sP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F1EC32786;
-	Thu, 15 Aug 2024 13:59:17 +0000 (UTC)
+	 MIME-Version; b=tJBDclcEfAd6941zCotHOvMimWQ9BcTJXmp68MgNTGsSkvyGOY0VyxedECv9tL/g5ObeR///Pdz5+sTM5oAmnnTbc6y/Zcn3XgMjToAIMfRq7qiSTi1fYyD15+5V4rO81xpGr0Da0AkwviuagTx9N0bLFfBDqYsKLMQWt2tTFPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=si0lSo1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58134C32786;
+	Thu, 15 Aug 2024 13:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730358;
-	bh=bfOmWdTIbsWq6AFxuhnX+T/ccgOz5cb41ep7xrtip2Q=;
+	s=korg; t=1723728783;
+	bh=a0F57Vg5+IHlJ+yzD9/OPF6mCVsWuoupCVDsskvQzV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BycRs+sPOG1I8CnxwyaHZqCUStULe2+w4BVlUWkXI7NflaKkkfeiKtkSel7Q+WBaB
-	 UiY8HXZ+2fLxhtNPfeckdZ4xH4kYIH5x2odi1RVq+msDZZg5kzePd6otQwAIXSJjuN
-	 HzZY6QRGMcUSrTIo8h6mGjpII5lOye+/UMziRTHM=
+	b=si0lSo1ETbo3NdvBLmMaf/x2pH1fhiQrh0BGWSNVWZCCQiVabYhnRh6jBNjmj6Yo7
+	 vYv8uhvBbP4bSTSvD8ObzlFuEvlNELeYcOihcsTS7OBiT/1LowPtS23Eru9gnih7qH
+	 047eK1/YS472uy2jT7JnazwRiuMJRdfB3Jpo9gq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
-	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
+	patches@lists.linux.dev,
+	Chen-Yu Tsai <wens@csie.org>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 366/484] net: fec: Stop PPS on driver remove
+Subject: [PATCH 4.19 107/196] PCI: rockchip: Make ep-gpios DT property optional
 Date: Thu, 15 Aug 2024 15:23:44 +0200
-Message-ID: <20240815131955.571671978@linuxfoundation.org>
+Message-ID: <20240815131856.173934972@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Chen-Yu Tsai <wens@csie.org>
 
-[ Upstream commit 8fee6d5ad5fa18c270eedb2a2cdf58dbadefb94b ]
+[ Upstream commit 58adbfb3ebec460e8b58875c682bafd866808e80 ]
 
-PPS was not stopped in `fec_ptp_stop()`, called when
-the adapter was removed. Consequentially, you couldn't
-safely reload the driver with the PPS signal on.
+The Rockchip PCIe controller DT binding clearly states that 'ep-gpios' is
+an optional property. And indeed there are boards that don't require it.
 
-Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://lore.kernel.org/netdev/CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com/T/#m01dcb810bfc451a492140f6797ca77443d0cb79f
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240807080956.2556602-1-csokas.bence@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Make the driver follow the binding by using devm_gpiod_get_optional()
+instead of devm_gpiod_get().
+
+[bhelgaas: tidy whitespace]
+Link: https://lore.kernel.org/r/20210121162321.4538-2-wens@kernel.org
+Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
+Fixes: 956cd99b35a8 ("PCI: rockchip: Separate common code from RC driver")
+Fixes: 964bac9455be ("PCI: rockchip: Split out rockchip_pcie_parse_dt() to parse DT")
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: 840b7a5edf88 ("PCI: rockchip: Use GPIOD_OUT_LOW flag while requesting ep_gpio")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/controller/pcie-rockchip.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 780fbb3e1ed06..84e0855069a84 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -640,6 +640,9 @@ void fec_ptp_stop(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
+diff --git a/drivers/pci/controller/pcie-rockchip.c b/drivers/pci/controller/pcie-rockchip.c
+index b047437605cb2..c6d2f00acf890 100644
+--- a/drivers/pci/controller/pcie-rockchip.c
++++ b/drivers/pci/controller/pcie-rockchip.c
+@@ -84,7 +84,7 @@ int rockchip_pcie_parse_dt(struct rockchip_pcie *rockchip)
+ 	}
  
-+	if (fep->pps_enable)
-+		fec_ptp_enable_pps(fep, 0);
-+
- 	cancel_delayed_work_sync(&fep->time_keep);
- 	if (fep->ptp_clock)
- 		ptp_clock_unregister(fep->ptp_clock);
+ 	rockchip->mgmt_sticky_rst = devm_reset_control_get_exclusive(dev,
+-								     "mgmt-sticky");
++								"mgmt-sticky");
+ 	if (IS_ERR(rockchip->mgmt_sticky_rst)) {
+ 		if (PTR_ERR(rockchip->mgmt_sticky_rst) != -EPROBE_DEFER)
+ 			dev_err(dev, "missing mgmt-sticky reset property in node\n");
+@@ -120,11 +120,11 @@ int rockchip_pcie_parse_dt(struct rockchip_pcie *rockchip)
+ 	}
+ 
+ 	if (rockchip->is_rc) {
+-		rockchip->ep_gpio = devm_gpiod_get(dev, "ep", GPIOD_OUT_HIGH);
+-		if (IS_ERR(rockchip->ep_gpio)) {
+-			dev_err(dev, "missing ep-gpios property in node\n");
+-			return PTR_ERR(rockchip->ep_gpio);
+-		}
++		rockchip->ep_gpio = devm_gpiod_get_optional(dev, "ep",
++							    GPIOD_OUT_HIGH);
++		if (IS_ERR(rockchip->ep_gpio))
++			return dev_err_probe(dev, PTR_ERR(rockchip->ep_gpio),
++					     "failed to get ep GPIO\n");
+ 	}
+ 
+ 	rockchip->aclk_pcie = devm_clk_get(dev, "aclk");
 -- 
 2.43.0
 
