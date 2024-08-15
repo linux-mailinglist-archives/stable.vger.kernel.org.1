@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-68985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A819534E6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFA095337D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EC0E1F2995A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 651EE2824B4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9669219FA9D;
-	Thu, 15 Aug 2024 14:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A081AD3E1;
+	Thu, 15 Aug 2024 14:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJJfOjNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlIvU4Vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557AB19FA90;
-	Thu, 15 Aug 2024 14:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFCD63C;
+	Thu, 15 Aug 2024 14:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732296; cv=none; b=kaHiyiQyXQCQcXjV+uAsXpO/9zYyNWx632ZpAkvuqAmhR0uE5qjaE/8Tic+mUJ1V/IdD7TfoJjTDPflQMbpczKTcaWvK6xn6NNpj68TnblL0CcEe39dTSvVxuwb8+mz60+6wptRvdTqC4mrLc63P3em7vkkM+SwJ0sBdKWjMxOg=
+	t=1723731344; cv=none; b=vBwy7TShPY6wAZwGswT6quLKiWH33VdOz4QpBZ2M5OZplnhF4xWaIr9J0HTqAnUBu6tF6u0u0ys8KbPxfofGU6O+QW+6BzeivxccNqaMi0p9moGyuzvctOsI6xRvMD8Rzg4C0eqK+7kSsH1k94P49JVhu+ruHkyfmOhH2DBy+f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732296; c=relaxed/simple;
-	bh=rgUaxsmtrrUIDVV50SAmqh3g16rSSbhQxalwPkrpfGk=;
+	s=arc-20240116; t=1723731344; c=relaxed/simple;
+	bh=0XM7YkoHrK4OZ2mRb0Mzbsll1JiuxQnBKoc21108jFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIHrv5HE+sxSJqAIb3J7ffx57IVwKtZ9SebTms3gHuU06hVnJdh+YBdQKG5bhQznBdmLL5Ais9gajA/icPsJbEUYRN0ybkQjy8VV1DmMqzqqb1HfGNAK+HaGpOpw0BcMewcDp6zHIXTpnyEYOnHIy60ffXgD/cT96ZdZRfoO4Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJJfOjNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E370C32786;
-	Thu, 15 Aug 2024 14:31:35 +0000 (UTC)
+	 MIME-Version; b=keYWAkQH4k6Q1G6nJ4Pp0i1WVkIvWR4HvPMhnSQ94CSGEWBy3hZFMrHSjM1geYTcFYLznhDC0cXQ+T/xq0tCwr2vS5869Pu9H1Zpl1iWrL3L3HtdXB4JWD7tLf+5iCo4dCCt1WBSb4ey9oeKZ4SUuxt1OLn/Aotr/fbQD0Uwmss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlIvU4Vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC12C32786;
+	Thu, 15 Aug 2024 14:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732295;
-	bh=rgUaxsmtrrUIDVV50SAmqh3g16rSSbhQxalwPkrpfGk=;
+	s=korg; t=1723731344;
+	bh=0XM7YkoHrK4OZ2mRb0Mzbsll1JiuxQnBKoc21108jFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJJfOjNTGhNq1YxVyES++MOxT8SiEGjjVLPhvkqgBbniv9NMg7nsn6w9HWX+AuSbX
-	 VTfqP5/QA7It4juofkIBw/O5M1WpNVVEKNStIoLhy2sTW/uyn2SEAQtosexG+jHuxX
-	 ZJYGQrmKjAgQ5TmzS3v0/Cv+QhtwfxACBrdOIUI4=
+	b=OlIvU4VdawlkKICKcHUrxRIu8SsfYv/IZtsXuvwRTRjXd9kOu9XrCjldDe1fWKGQ/
+	 DrxEWa3rELg3McA3wdAPBPl/rJRpSxGY6xxineWeVOwUsnDo0DhPXeHEABDdVF8XB9
+	 oMN0xwtnrb9fonWXYSOjtXuiuDrCuD9taGagIZZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 5.10 135/352] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
+	Andrei Lalaev <andrei.lalaev@anton-paar.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 068/259] Input: qt1050 - handle CHIP_ID reading error
 Date: Thu, 15 Aug 2024 15:23:21 +0200
-Message-ID: <20240815131924.473903573@linuxfoundation.org>
+Message-ID: <20240815131905.430151864@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Andrei Lalaev <andrei.lalaev@anton-paar.com>
 
-commit 2df7aac81070987b0f052985856aa325a38debf6 upstream.
+[ Upstream commit 866a5c7e2781cf1b019072288f1f5c64186dcb63 ]
 
-In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+If the device is missing, we get the following error:
 
-Cc: stable@vger.kernel.org
-Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240709092011.3204970-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  qt1050 3-0041: ID -1340767592 not supported
+
+Let's handle this situation and print more informative error
+when reading of CHIP_ID fails:
+
+  qt1050 3-0041: Failed to read chip ID: -6
+
+Fixes: cbebf5addec1 ("Input: qt1050 - add Microchip AT42QT1050 support")
+Signed-off-by: Andrei Lalaev <andrei.lalaev@anton-paar.com>
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Link: https://lore.kernel.org/r/20240617183018.916234-1-andrey.lalaev@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/psb_intel_lvds.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/input/keyboard/qt1050.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
-+++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
-@@ -508,6 +508,9 @@ static int psb_intel_lvds_get_modes(stru
- 	if (mode_dev->panel_fixed_mode != NULL) {
- 		struct drm_display_mode *mode =
- 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
-+		if (!mode)
-+			return 0;
+diff --git a/drivers/input/keyboard/qt1050.c b/drivers/input/keyboard/qt1050.c
+index 403060d05c3b3..7193a4198e214 100644
+--- a/drivers/input/keyboard/qt1050.c
++++ b/drivers/input/keyboard/qt1050.c
+@@ -226,7 +226,12 @@ static bool qt1050_identify(struct qt1050_priv *ts)
+ 	int err;
+ 
+ 	/* Read Chip ID */
+-	regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
++	err = regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
++	if (err) {
++		dev_err(&ts->client->dev, "Failed to read chip ID: %d\n", err);
++		return false;
++	}
 +
- 		drm_mode_probed_add(connector, mode);
- 		return 1;
- 	}
+ 	if (val != QT1050_CHIP_ID_VER) {
+ 		dev_err(&ts->client->dev, "ID %d not supported\n", val);
+ 		return false;
+-- 
+2.43.0
+
 
 
 
