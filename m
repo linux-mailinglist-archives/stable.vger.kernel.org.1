@@ -1,104 +1,123 @@
-Return-Path: <stable+bounces-67735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1742D9527C5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 04:00:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 471B4952807
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 04:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DCAB1F22B17
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 02:00:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D077E1F21BCA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 02:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246F279EA;
-	Thu, 15 Aug 2024 02:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128401D545;
+	Thu, 15 Aug 2024 02:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="EhvLsG96"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEFF8F6D;
-	Thu, 15 Aug 2024 02:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7104B18C0C;
+	Thu, 15 Aug 2024 02:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723687233; cv=none; b=cyeJDs6ROPlEPb0WFaXbQlSM0slmgVVtedCtcp2Zagd+y/h9738oCdPAdRSVi5E1luNqPE+N1EyUZKe8IoSS87sy2vVYzA4JhYtzzj/M5kKzeQYMKQ9D9Efwkrgv0RgQINzjYvnE5qQQ0wEIsvXUYZD/zCL1QdyZwqbTQrkHqKA=
+	t=1723690606; cv=none; b=M5CGA62P1aydZLZkwbJWNMWWmI082F7pfp4FvR6OZ4YLNR4/aQUFJAj8tctzts2Ag3p07panDRd6O4CxwyvyS2x2pCSNGVouXmSJiGPVSCmafjHNpo+4HtSe1p47AXKI0z2T9mKzxJOF056xX9ey/pSS9QHYai98I3iqNDZT9e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723687233; c=relaxed/simple;
-	bh=glhbN7dVT4zQpN3na6hmnR2DxrICAvbg2AdlboJlrmM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qrdmUl/MJ+lP+FA0SkZKRvhz35s2/LAgldivdqljowXuKGMJt0r08hwOZ0PEIjNYDmMBwiR47BpHv3NoKxtSOzOPsT3sevSeiNcIEH9+HXjbZPCbAicDLtFNSoy9u6XYw7fTF0C/uzAXCNhwkHcu/uLU5svuIlJuzE1jPwvTf1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAAHDvovYb1mXpiIBg--.8052S2;
-	Thu, 15 Aug 2024 10:00:22 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: tony@atomide.com,
-	haojian.zhuang@linaro.org,
-	linus.walleij@linaro.org,
-	akpm@linux-foundation.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] pinctrl: single: fix potential NULL dereference in pcs_get_function()
-Date: Thu, 15 Aug 2024 10:00:14 +0800
-Message-Id: <20240815020014.149431-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1723690606; c=relaxed/simple;
+	bh=qoaWrAb8kjBtgWeIJuuD1ayfZGcAGUFf/DgXrhGn7xI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=plx1c73cjEehBZo5roFCgx4zwNzFUL6ggRHFJNXfYmbNBqBcTWNwk3Zu20GDdA2qfmbbTgKqc02Zi247/OiVxAU3UgEQrK46t9b53GQi+48lwE/8wndU5kw+r4vSYmp359rx3yn+M1YOz2pUWSbrRl3xIE2ac02DaFBxk8PJZDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=EhvLsG96; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: fdb25da45ab111ef8b96093e013ec31c-20240815
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=IreNKXAd6Wij/T8hdkR8/W4pp0PDvrbdbTuyMa714HU=;
+	b=EhvLsG968NWKTBd2Vn1QWFfmTlDmR4DbviJhNXnuSEnEWBM5g3ZaKGRjmTIwBbk5eJGJQzJkLaA0PJFMhlE3Y3ToJotfW2mrqqyWUkFF9gHTrNkv5VlB9ndkQsHUrG/EHPpJe/VZPLtUSbfaGPq6WLk1vsnv/buqlG/+bbKXcEM=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.41,REQID:7ccb41eb-044a-499b-8505-d0852749139d,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6dc6a47,CLOUDID:b11c9cfe-77bb-433c-b174-ffb8012693b0,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: fdb25da45ab111ef8b96093e013ec31c-20240815
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1470514797; Thu, 15 Aug 2024 10:56:38 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 15 Aug 2024 10:56:35 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 15 Aug 2024 10:56:35 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
+	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH] wifi: mt76: mt7921: fix wrong UNII-4 freq range check for the channel usage
+Date: Thu, 15 Aug 2024 10:56:33 +0800
+Message-ID: <20240815025633.20974-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAHDvovYb1mXpiIBg--.8052S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrury8WFW5Xr4DZF4fCFW8tFb_yoWDZFg_CF
-	WxXryxJryUGF4DXw17K3yrZFy0ka1UZFW0vr4vg34akryUAw4q93ykG390kwn7Gr4fGrZa
-	yFy5Zr93J347AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbh8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
-	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r
-	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
-	YI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82
-	IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC2
-	0s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMI
-	IF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF
-	0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87
-	Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUF0eHDUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10-0.808800-8.000000
+X-TMASE-MatchedRID: PwZ81m9fkLYO9fZKTjt+z/havVZP5tTaKFFZAe4nyZ4Fi3R9x/2qQjEG
+	FjeZwyRU/Wti4Vzf8lvbCHv011Gy9U/CFiHta6tDngIgpj8eDcAZ1CdBJOsoY9mzcdRxL+xwKra
+	uXd3MZDX371moSn0VOAmbF1rkLU7qU7EZP1t1XBI2LIqpGKMvSJdTpzr1FBoedipJQCO3xTig3f
+	bPV9K2v+/Dm8xfT8B7S7S4JFB9LdNl6jZ5qkH35hdGg+ZY7eN6THB2Q+oKru8MTI34nyF36MJL1
+	aANdU8K+rL5VW+ofZc=
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10-0.808800-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP:
+	7E10A3FC5E124F9FF0A490BB7CFDBDE5BE3AD67CB69DD3D00DA2ED5DBE0B567E2000:8
 
-pinmux_generic_get_function() can return NULL and the pointer 'function'
-was dereferenced without checking against NULL. Add checking of pointer
-'function' in pcs_get_function().
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Found by code review.
+The check should start from 5845 to 5925, which includes
+channels 169, 173, and 177.
 
 Cc: stable@vger.kernel.org
-Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Fixes: 09382d8f8641 ("wifi: mt76: mt7921: update the channel usage when the regd domain changed")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
- drivers/pinctrl/pinctrl-single.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 4c6bfabb6bd7..4da3c3f422b6 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -345,6 +345,8 @@ static int pcs_get_function(struct pinctrl_dev *pctldev, unsigned pin,
- 		return -ENOTSUPP;
- 	fselector = setting->func;
- 	function = pinmux_generic_get_function(pctldev, fselector);
-+	if (!function)
-+		return -EINVAL;
- 	*func = function->data;
- 	if (!(*func)) {
- 		dev_err(pcs->dev, "%s could not find function%i\n",
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index ef0c721d26e3..57672c69150e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -83,7 +83,7 @@ mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
+ 		}
+ 
+ 		/* UNII-4 */
+-		if (IS_UNII_INVALID(0, 5850, 5925))
++		if (IS_UNII_INVALID(0, 5845, 5925))
+ 			ch->flags |= IEEE80211_CHAN_DISABLED;
+ 	}
+ 
 -- 
-2.25.1
+2.18.0
 
 
