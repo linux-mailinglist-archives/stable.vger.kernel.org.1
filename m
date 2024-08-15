@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-68377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DECB9531E2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F504952F9F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F8D91C22E8C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C220289FD7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC4C19DFA6;
-	Thu, 15 Aug 2024 13:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B46E19F489;
+	Thu, 15 Aug 2024 13:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpWev5Zi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDNJe2oZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0CF7DA7D;
-	Thu, 15 Aug 2024 13:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449E319EECF;
+	Thu, 15 Aug 2024 13:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730374; cv=none; b=d91bt5V+2SjG38SRm9VwFZotjNahhCZIq/IMONW7xochbFo0nSd7915X2a/RwT3dAljljieC2gHe5pTz8fFeaow5MPZ24hjy5xQsXmlNGazti5wKbfsteFlv4Y1npPfkucZcfGld2NNH03gjFhGewS3hfhk6phQJ8gkjlCM39dQ=
+	t=1723728849; cv=none; b=JEXlM9+sqDD0WP3HFH1x/3q5dhvXYXkczo8iZqCVTHJICjSIlTvfVXtGabBexpsSeaIdoGZWFAVXu21VtwwK0d+lxp/hFUc/KBhLuNpBaNUVXpiwc4uzJejw1BT6hxSsVocTxXb12hCMRNXMxMbn7pbl6N3IO19CfCeJ8ndxEfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730374; c=relaxed/simple;
-	bh=aKTF0lsXjR6YPWsWtI2OQyEx6U2Q3g6y4iHqvRHVccg=;
+	s=arc-20240116; t=1723728849; c=relaxed/simple;
+	bh=rszRp1NhMiUiH14DYGApzeQyS0SF2fr+V5XIYqjcHDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1qkem2DN/sFBE2AYy18A0ArP0JKutdWZ9UBmp00XhxXe5A50h2EJ7sZJ+h8IMIOYXohO45ksrGrsyTVgYGaewt0QDknI1piok4rtxxX6VExZJ99ssr3SipHvV80WYOWx1hysxar6rU5PvxuKlSyjdWZeQcdqG6VF5tNoGhjjBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpWev5Zi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E35BC32786;
-	Thu, 15 Aug 2024 13:59:34 +0000 (UTC)
+	 MIME-Version; b=AFAXsjwmAW+ltOZX2j7KrvwzQkH5o0xW/2VxyV+WAh6M+ZHMfdclnH326qS6qnkYG5DBVqh1TALmYCxrIOvz1X2rwXEUcWJ79EG9Gobl3pWKx7SY+zGDtjKVYUznrtuEgbnOqIXeO1azZz4q6ITEcnKq7B3sjaghCXtgnn6yiYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDNJe2oZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3ABC32786;
+	Thu, 15 Aug 2024 13:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730374;
-	bh=aKTF0lsXjR6YPWsWtI2OQyEx6U2Q3g6y4iHqvRHVccg=;
+	s=korg; t=1723728849;
+	bh=rszRp1NhMiUiH14DYGApzeQyS0SF2fr+V5XIYqjcHDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpWev5ZinGoY36z32U3iv704FJd/yKccUn6y9DOf6uxloX3XfQzr906yy1oaAD4I3
-	 d3vh3RNdbxByDHoiUf11lL6NANqW88OaMXLZHoKduji0g5vr7WWZe6azGrymR2ys6Z
-	 oL0OXPX3N+CJqZFAPBQIxB5XPW6Pq55VgJUgkb4k=
+	b=YDNJe2oZKLdnyVQ++eHYoyNcO33gpnGMn+M+txLi+5NLyS6Vm6gF0ZOzgLDC/pXwR
+	 OoJtIabSob0WTfQJZ/xb+m/BN6FGHibY5YE4adpSKVq75U/1ZSzUdk+w/Lkze9G4ze
+	 SWAUjjQTkd8FcZvzoi9TTzsSh/FTu5h+XoP7Ge7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.15 388/484] profiling: remove profile=sleep support
+	Yipeng Zou <zouyipeng@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 129/196] irqchip/mbigen: Fix mbigen node address layout
 Date: Thu, 15 Aug 2024 15:24:06 +0200
-Message-ID: <20240815131956.432530801@linuxfoundation.org>
+Message-ID: <20240815131857.010901857@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,134 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-commit b88f55389ad27f05ed84af9e1026aa64dbfabc9a upstream.
+[ Upstream commit 6be6cba9c4371d27f78d900ccfe34bb880d9ee20 ]
 
-The kernel sleep profile is no longer working due to a recursive locking
-bug introduced by commit 42a20f86dc19 ("sched: Add wrapper for get_wchan()
-to keep task blocked")
+The mbigen interrupt chip has its per node registers located in a
+contiguous region of page sized chunks. The code maps them into virtual
+address space as a contiguous region and determines the address of a node
+by using the node ID as index.
 
-Booting with the 'profile=sleep' kernel command line option added or
-executing
+                    mbigen chip
+       |-----------------|------------|--------------|
+   mgn_node_0         mgn_node_1     ...         mgn_node_i
+|--------------|   |--------------|       |----------------------|
+[0x0000, 0x0x0FFF] [0x1000, 0x1FFF]    [i*0x1000, (i+1)*0x1000 - 1]
 
-  # echo -n sleep > /sys/kernel/profiling
+This works correctly up to 10 nodes, but then fails because the 11th's
+array slot is used for the MGN_CLEAR registers.
 
-after boot causes the system to lock up.
+                         mbigen chip
+    |-----------|--------|--------|---------------|--------|
+mgn_node_0  mgn_node_1  ...  mgn_clear_register  ...   mgn_node_i
+                            |-----------------|
+                             [0xA000, 0xAFFF]
 
-Lockdep reports
+Skip the MGN_CLEAR register space when calculating the offset for node IDs
+greater than or equal to ten.
 
-  kthreadd/3 is trying to acquire lock:
-  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: get_wchan+0x32/0x70
-
-  but task is already holding lock:
-  ffff93ac82e08d58 (&p->pi_lock){....}-{2:2}, at: try_to_wake_up+0x53/0x370
-
-with the call trace being
-
-   lock_acquire+0xc8/0x2f0
-   get_wchan+0x32/0x70
-   __update_stats_enqueue_sleeper+0x151/0x430
-   enqueue_entity+0x4b0/0x520
-   enqueue_task_fair+0x92/0x6b0
-   ttwu_do_activate+0x73/0x140
-   try_to_wake_up+0x213/0x370
-   swake_up_locked+0x20/0x50
-   complete+0x2f/0x40
-   kthread+0xfb/0x180
-
-However, since nobody noticed this regression for more than two years,
-let's remove 'profile=sleep' support based on the assumption that nobody
-needs this functionality.
-
-Fixes: 42a20f86dc19 ("sched: Add wrapper for get_wchan() to keep task blocked")
-Cc: stable@vger.kernel.org # v5.16+
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a6c2f87b8820 ("irqchip/mbigen: Implement the mbigen irq chip operation functions")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240730014400.1751530-1-zouyipeng@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |    4 +---
- include/linux/profile.h                         |    1 -
- kernel/profile.c                                |   16 +---------------
- kernel/sched/fair.c                             |   10 ----------
- 4 files changed, 2 insertions(+), 29 deletions(-)
+ drivers/irqchip/irq-mbigen.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4355,11 +4355,9 @@
+diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
+index c98358be0bc8b..19cf1239c7d3b 100644
+--- a/drivers/irqchip/irq-mbigen.c
++++ b/drivers/irqchip/irq-mbigen.c
+@@ -75,6 +75,20 @@ struct mbigen_device {
+ 	void __iomem		*base;
+ };
  
- 	profile=	[KNL] Enable kernel profiling via /proc/profile
- 			Format: [<profiletype>,]<number>
--			Param: <profiletype>: "schedule", "sleep", or "kvm"
-+			Param: <profiletype>: "schedule" or "kvm"
- 				[defaults to kernel profiling]
- 			Param: "schedule" - profile schedule points.
--			Param: "sleep" - profile D-state sleeping (millisecs).
--				Requires CONFIG_SCHEDSTATS
- 			Param: "kvm" - profile VM exits.
- 			Param: <number> - step/bucket size as a power of 2 for
- 				statistical time based profiling.
---- a/include/linux/profile.h
-+++ b/include/linux/profile.h
-@@ -11,7 +11,6 @@
- 
- #define CPU_PROFILING	1
- #define SCHED_PROFILING	2
--#define SLEEP_PROFILING	3
- #define KVM_PROFILING	4
- 
- struct proc_dir_entry;
---- a/kernel/profile.c
-+++ b/kernel/profile.c
-@@ -57,24 +57,10 @@ static DEFINE_MUTEX(profile_flip_mutex);
- int profile_setup(char *str)
++static inline unsigned int get_mbigen_node_offset(unsigned int nid)
++{
++	unsigned int offset = nid * MBIGEN_NODE_OFFSET;
++
++	/*
++	 * To avoid touched clear register in unexpected way, we need to directly
++	 * skip clear register when access to more than 10 mbigen nodes.
++	 */
++	if (nid >= (REG_MBIGEN_CLEAR_OFFSET / MBIGEN_NODE_OFFSET))
++		offset += MBIGEN_NODE_OFFSET;
++
++	return offset;
++}
++
+ static inline unsigned int get_mbigen_vec_reg(irq_hw_number_t hwirq)
  {
- 	static const char schedstr[] = "schedule";
--	static const char sleepstr[] = "sleep";
- 	static const char kvmstr[] = "kvm";
- 	int par;
+ 	unsigned int nid, pin;
+@@ -83,8 +97,7 @@ static inline unsigned int get_mbigen_vec_reg(irq_hw_number_t hwirq)
+ 	nid = hwirq / IRQS_PER_MBIGEN_NODE + 1;
+ 	pin = hwirq % IRQS_PER_MBIGEN_NODE;
  
--	if (!strncmp(str, sleepstr, strlen(sleepstr))) {
--#ifdef CONFIG_SCHEDSTATS
--		force_schedstat_enabled();
--		prof_on = SLEEP_PROFILING;
--		if (str[strlen(sleepstr)] == ',')
--			str += strlen(sleepstr) + 1;
--		if (get_option(&str, &par))
--			prof_shift = clamp(par, 0, BITS_PER_LONG - 1);
--		pr_info("kernel sleep profiling enabled (shift: %u)\n",
--			prof_shift);
--#else
--		pr_warn("kernel sleep profiling requires CONFIG_SCHEDSTATS\n");
--#endif /* CONFIG_SCHEDSTATS */
--	} else if (!strncmp(str, schedstr, strlen(schedstr))) {
-+	if (!strncmp(str, schedstr, strlen(schedstr))) {
- 		prof_on = SCHED_PROFILING;
- 		if (str[strlen(schedstr)] == ',')
- 			str += strlen(schedstr) + 1;
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -988,16 +988,6 @@ update_stats_enqueue_sleeper(struct cfs_
+-	return pin * 4 + nid * MBIGEN_NODE_OFFSET
+-			+ REG_MBIGEN_VEC_OFFSET;
++	return pin * 4 + get_mbigen_node_offset(nid) + REG_MBIGEN_VEC_OFFSET;
+ }
  
- 			trace_sched_stat_blocked(tsk, delta);
+ static inline void get_mbigen_type_reg(irq_hw_number_t hwirq,
+@@ -99,8 +112,7 @@ static inline void get_mbigen_type_reg(irq_hw_number_t hwirq,
+ 	*mask = 1 << (irq_ofst % 32);
+ 	ofst = irq_ofst / 32 * 4;
  
--			/*
--			 * Blocking time is in units of nanosecs, so shift by
--			 * 20 to get a milliseconds-range estimation of the
--			 * amount of time that the task spent sleeping:
--			 */
--			if (unlikely(prof_on == SLEEP_PROFILING)) {
--				profile_hits(SLEEP_PROFILING,
--						(void *)get_wchan(tsk),
--						delta >> 20);
--			}
- 			account_scheduler_latency(tsk, delta >> 10, 0);
- 		}
- 	}
+-	*addr = ofst + nid * MBIGEN_NODE_OFFSET
+-		+ REG_MBIGEN_TYPE_OFFSET;
++	*addr = ofst + get_mbigen_node_offset(nid) + REG_MBIGEN_TYPE_OFFSET;
+ }
+ 
+ static inline void get_mbigen_clear_reg(irq_hw_number_t hwirq,
+-- 
+2.43.0
+
 
 
 
