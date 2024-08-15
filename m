@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-69045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABFAE95352D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9409533D1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF1801C214A8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 295BE1C254B3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA0319FA7A;
-	Thu, 15 Aug 2024 14:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C437219F471;
+	Thu, 15 Aug 2024 14:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRQl+aBB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beDv+Irl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF07F63D5;
-	Thu, 15 Aug 2024 14:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AF217C9B6;
+	Thu, 15 Aug 2024 14:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732487; cv=none; b=m7zg9Ge1zakipmGAfNVnaTOTW8jPk/UQyMYl5tySuWH4+9Ak91/Ahd7NZRO/t7aiGwZJDk4eR/1xIS6aOq4pgD8FenPNAGCKjbeOyUy4DCQpus4ioblWvSDw9DWjd0Lfucp0f7wXxYNMq5Cx7X1k2F7QJCUfYL9ZMIH0WDnERyQ=
+	t=1723731565; cv=none; b=gE34+trk+xebDeg6yt3feaSyJc0iBEVcYV4VBs36RPiCncboGZxLHLF0mNdoZLacA2Y0FaFPJUrZmffBH4thSTQfE+fyhTJpAyUTfQLR9x4TXdsqgsBZbf7jp9PLJM1euBYCyWoiQ74+KPzdLX+hAOUAoQpFfYb9B92SmnFay60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732487; c=relaxed/simple;
-	bh=uA6lA0fqLvbeacp5tAAY6ROxHYHCa7eo51DsS3urP68=;
+	s=arc-20240116; t=1723731565; c=relaxed/simple;
+	bh=hvpAnhagf2IvQUM7VmPJHztjLZV85UtakmXisFL7HY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COXVaoLRit04hAu0AmwREyjG2Pd6qA3xyKrXxUjmB+kAJNZVRzogt5pD8fu7toHoeVROy5d+62y5Ld6ROUo/1Ajv7v9zpsR8DsJllbDCY2O9sJXJvim0d0bhh7mF48A1OZW86cOMZaMnCEDFnIZagFTxJbg6FRZnZfQ4Epzh7mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRQl+aBB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D870C32786;
-	Thu, 15 Aug 2024 14:34:47 +0000 (UTC)
+	 MIME-Version; b=aa79KzcJpqoSv1ICG99AKX4fFykt0v9BmAun7s2YscG78rosSwicqytBY8nG7qsnfmsTbS9FJ0QRW4jJcDFWb3OGQrLdwdUH/2wxIJgvqHtJAb2uiI+trGDaYRSkoW222qVBIWpLJ6TrTx9aH0/1wofnMdZuADvqiiE+cLiPJVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beDv+Irl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEF4C32786;
+	Thu, 15 Aug 2024 14:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732487;
-	bh=uA6lA0fqLvbeacp5tAAY6ROxHYHCa7eo51DsS3urP68=;
+	s=korg; t=1723731565;
+	bh=hvpAnhagf2IvQUM7VmPJHztjLZV85UtakmXisFL7HY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRQl+aBBHU6CUK8MUOoeXScx4o9dQhmIPbP05Yzv/PAw4pRPpG4W06dcxzKFvFfml
-	 NMdGgv7eoSc8QnKBSvo9oBWSMg+wG1InXY7ILSaG8fSBaL27yGZVQzYJx4ISSDZz0v
-	 ehO/sh4errChiN/0jre1zAEwb/9VHKYdj1W9kzt0=
+	b=beDv+Irl4TCEecirVFvNCCc6P3VEmyXs3h5yLebAyk4DXw7Ycg7XGmTzHwKFsNXeN
+	 ShSEgr9PR7Rpwawbwc1jD9vrkMw3fVOeRL4DmCdWXwWAJnEsVBMyQU21IZoBS4Awov
+	 heOnXUzKP/iUrCkmzhjgX8ROEMU8YJ9QWim/hHsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 195/352] MIPS: SMP-CPS: Fix address for GCR_ACCESS register for CM3 and later
+	Diederik de Haas <didi.debian@cknow.org>,
+	Furkan Kardame <f.kardame@manjaro.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Steven Price <steven.price@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>
+Subject: [PATCH 5.4 128/259] drm/panfrost: Mark simple_ondemand governor as softdep
 Date: Thu, 15 Aug 2024 15:24:21 +0200
-Message-ID: <20240815131926.815841862@linuxfoundation.org>
+Message-ID: <20240815131907.738783630@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit a263e5f309f32301e1f3ad113293f4e68a82a646 ]
+commit 80f4e62730a91572b7fdc657f7bb747e107ae308 upstream.
 
-When the CM block migrated from CM2.5 to CM3.0, the address offset for
-the Global CSR Access Privilege register was modified. We saw this in
-the "MIPS64 I6500 Multiprocessing System Programmer's Guide," it is
-stated that "the Global CSR Access Privilege register is located at
-offset 0x0120" in section 5.4. It is at least the same for I6400.
+Panfrost DRM driver uses devfreq to perform DVFS, while using simple_ondemand
+devfreq governor by default.  This causes driver initialization to fail on
+boot when simple_ondemand governor isn't built into the kernel statically,
+as a result of the missing module dependency and, consequently, the required
+governor module not being included in the initial ramdisk.  Thus, let's mark
+simple_ondemand governor as a softdep for Panfrost, to have its kernel module
+included in the initial ramdisk.
 
-This fix allows to use the VP cores in SMP mode if the reset values
-were modified by the bootloader.
+This is a rather longstanding issue that has forced distributions to build
+devfreq governors statically into their kernels, [1][2] or has forced users
+to introduce some unnecessary workarounds. [3]
 
-Based on the work of Vladimir Kondratiev
-<vladimir.kondratiev@mobileye.com> and the feedback from Jiaxun Yang
-<jiaxun.yang@flygoat.com>.
+For future reference, not having support for the simple_ondemand governor in
+the initial ramdisk produces errors in the kernel log similar to these below,
+which were taken from a Pine64 RockPro64:
 
-Fixes: 197e89e0984a ("MIPS: mips-cm: Implement mips_cm_revision")
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  panfrost ff9a0000.gpu: [drm:panfrost_devfreq_init [panfrost]] *ERROR* Couldn't initialize GPU devfreq
+  panfrost ff9a0000.gpu: Fatal error during GPU init
+  panfrost: probe of ff9a0000.gpu failed with error -22
+
+Having simple_ondemand marked as a softdep for Panfrost may not resolve this
+issue for all Linux distributions.  In particular, it will remain unresolved
+for the distributions whose utilities for the initial ramdisk generation do
+not handle the available softdep information [4] properly yet.  However, some
+Linux distributions already handle softdeps properly while generating their
+initial ramdisks, [5] and this is a prerequisite step in the right direction
+for the distributions that don't handle them properly yet.
+
+[1] https://gitlab.manjaro.org/manjaro-arm/packages/core/linux/-/blob/linux61/config?ref_type=heads#L8180
+[2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/1066
+[3] https://forum.pine64.org/showthread.php?tid=15458
+[4] https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
+[5] https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
+
+Cc: Diederik de Haas <didi.debian@cknow.org>
+Cc: Furkan Kardame <f.kardame@manjaro.org>
+Cc: stable@vger.kernel.org
+Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/mips-cm.h | 4 ++++
- arch/mips/kernel/smp-cps.c      | 5 ++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panfrost/panfrost_drv.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 23c67c0871b17..696b40beb774f 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -228,6 +228,10 @@ GCR_ACCESSOR_RO(32, 0x0d0, gic_status)
- GCR_ACCESSOR_RO(32, 0x0f0, cpc_status)
- #define CM_GCR_CPC_STATUS_EX			BIT(0)
- 
-+/* GCR_ACCESS - Controls core/IOCU access to GCRs */
-+GCR_ACCESSOR_RW(32, 0x120, access_cm3)
-+#define CM_GCR_ACCESS_ACCESSEN			GENMASK(7, 0)
-+
- /* GCR_L2_CONFIG - Indicates L2 cache configuration when Config5.L2C=1 */
- GCR_ACCESSOR_RW(32, 0x130, l2_config)
- #define CM_GCR_L2_CONFIG_BYPASS			BIT(20)
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index f659adb681bc3..02ae0b29e6888 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -229,7 +229,10 @@ static void boot_core(unsigned int core, unsigned int vpe_id)
- 	write_gcr_co_reset_ext_base(CM_GCR_Cx_RESET_EXT_BASE_UEB);
- 
- 	/* Ensure the core can access the GCRs */
--	set_gcr_access(1 << core);
-+	if (mips_cm_revision() < CM_REV_CM3)
-+		set_gcr_access(1 << core);
-+	else
-+		set_gcr_access_cm3(1 << core);
- 
- 	if (mips_cpc_present()) {
- 		/* Reset the core */
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/panfrost/panfrost_drv.c
++++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
+@@ -692,3 +692,4 @@ module_platform_driver(panfrost_driver);
+ MODULE_AUTHOR("Panfrost Project Developers");
+ MODULE_DESCRIPTION("Panfrost DRM Driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_SOFTDEP("pre: governor_simpleondemand");
 
 
 
