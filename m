@@ -1,113 +1,136 @@
-Return-Path: <stable+bounces-67742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639739528CD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 07:12:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 453E7952971
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 08:41:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 973211C2117D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 05:12:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B183287301
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 06:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA32457CA7;
-	Thu, 15 Aug 2024 05:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWXz1qEY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E2A179654;
+	Thu, 15 Aug 2024 06:40:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689FF58ABC
-	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 05:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8221C176FD2
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 06:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723698765; cv=none; b=WQpRNZIrKGWB8Xk+Dx4c3LLAN2lM1K9Q/XCLrd8HDUBoLi7wLWlto1976hXkpMhaTOAyl+OBsUIihgJU+ktUrHORvQ8moL+Gj3+m+it7MfgqDm/9EDVT31sGOqaGUftVpVw4D+TVD6vcVDoFpI0/CWfdDy5YSycoJnust1llCNQ=
+	t=1723704040; cv=none; b=pBCxJdSvSD+locKnRbWEkkjSX4eC2i952FStLdcvfdZPDuUgS5PGUSBVK1LRlf912rAKuivuAcNJrki9VMrMQoxQ0C9cDtPkFWtlSmWOQHzrk9fjpIkJgiaNp+CncDhoPNR+mslQC4bS90fuiY0dxTXN9qje4s+u37Xv5erlbS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723698765; c=relaxed/simple;
-	bh=Nhs4LP/qOha9uBz5IKXTxoESOcgX8PVTbALyHYj31N8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RJJ5MCerqw+Z26OsYfBTA0gleDYmNsySBCJBKSscQJWlJ9kUZ7FeWAD82rBm/j0YkHF9MfyaptiltP5oyBVxvCe3BOJHpWJTWQYc4LbKaTB9Ih7gynY2r1A3zCMlDOe+KzUhaNx7AUic7tAPJpMa0dgKMuaI4pYQawM5Z+sxUxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWXz1qEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F46C4AF0A;
-	Thu, 15 Aug 2024 05:12:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723698764;
-	bh=Nhs4LP/qOha9uBz5IKXTxoESOcgX8PVTbALyHYj31N8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WWXz1qEYUgsDIfcOzUses/8TFIE43Yb2x3KTlsB2rBaVb8fSCEfa++IoVb0cPIzv/
-	 pyZsdjwt//xvZvWX1hrjPe946GN4FuA0qEbGhRPo3iaBe0eSqaO8cQ9MK+3Iq3AGDW
-	 +QRkcGBSSGD8qGTik94R6a5kOw6JQHSl+Pt8X1Hg=
-Date: Thu, 15 Aug 2024 07:12:41 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Felix Kuehling <felix.kuehling@amd.com>
-Cc: amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
-Subject: Re: AMD drm patch workflow is broken for stable trees
-Message-ID: <2024081527-step-resort-2984@gregkh>
-References: <2024081247-until-audacious-6383@gregkh>
- <07bbc66f-5689-405d-9232-87ba59d2f421@amd.com>
+	s=arc-20240116; t=1723704040; c=relaxed/simple;
+	bh=Vy2YoRP3WMBL9Q0m0cvv2z3doL40ax72V/J2g22sdOI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DEIj46r2oeR7LeIFVIWxi+VnrasJEtxQ3QdqTMsa7/Tl07NTnsQJQz7989RFmQpTVmqAiqaULzsSOJPJwR2OcXw0ylqCXk4D+6fT4Ja67rSw9Ethjusaew56tJA68QWZNsHFQoQUVMAmgBwZ7S55AOgNJROvENFzHPClyvNZv8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1seU9u-0002L8-Ty; Thu, 15 Aug 2024 08:40:30 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1seU9t-000XGZ-Oj; Thu, 15 Aug 2024 08:40:29 +0200
+Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
+	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1seU9t-002CsL-2H;
+	Thu, 15 Aug 2024 08:40:29 +0200
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Thu, 15 Aug 2024 08:40:29 +0200
+Subject: [PATCH v2] usb: dwc3: ep0: Don't reset resource alloc flag
+ (including ep0)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <07bbc66f-5689-405d-9232-87ba59d2f421@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240814-dwc3hwep0reset-v2-1-29e1d7d923ea@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIANyivWYC/3WOOw6DMBBEr4K2jiP/FEiq3COiwHjB2xi0JkCEu
+ HsMXYqUbzRPMxskZMIEj2IDxpkSDTGDvhTQhib2KMhnBi21lZWywi+tCQuOkjHhJJz1plRVaez
+ dQpZck1A4bmIbDu23fRRGxo7Wc/FVZw6UpoE/54FZHenfrVkJJWRVOun1rTNePkeM/XviIdJ69
+ Qj1vu9fEiwMaNIAAAA=
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Michael Grzeschik <m.grzeschik@pengutronix.de>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1784;
+ i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
+ bh=Vy2YoRP3WMBL9Q0m0cvv2z3doL40ax72V/J2g22sdOI=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBmvaLd76WjuTzBse4a1zQhSPCx4BbCb63ZKWekQ
+ 78y4MU4I5mJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZr2i3QAKCRC/aVhE+XH0
+ q/F6D/9egYIhDfTzbtMWhwhK6deKJS363ZTXV5Xq9R8Bt6wjqDfp8yz9StX0LewcdFcKBPbb/NC
+ LiJPB1yWimhY8ENM+KLjb63lzgvkiYR0fLC2Ruzo9ZpCBSflWy4xAPLiPICVr3ghxaT7wxQs+Ha
+ qGJnp1dsIbuhtATkniT6HtAtFHsNEu8jamCuHy8r9+94C1R1CUcOvf0RXbq/fftGJOZgaOLe3GE
+ 8gFUo8PRG6gsArFmU0+lUyN+HHIpOKAsi1xl3bUyhwLGuwdonUrdpYFjCm0RVFEHMCAObC7GeCI
+ 6WzLPiCNP1aUB0b99AxUC3tIb0/Pi7DEudPOYKw2iZwJoGuv0ZZjuiIKK2Wt01K3R2XaAQIWSIo
+ Y0L3YpzJ7l4k0DaFNWKhPVeZHRrxkYmT88INiACI/ICsCAcD3SdbQLe3PuBGybpVaX/coEnrS7p
+ xWWYQlLGZ7pt4gqKDT2QwwEKQzWaWb5UAkWRu8XOVsYvAQ1h3yeum5+zApVhHrnn1M3woRvoFDV
+ q7RhUCfdU5ubUq6O3l8uioR5DsRKzboitMEDpQ3StXrNpB88cm7MqJvy3o0mnd4shM6duI3m/V8
+ BSqlmXWLxEFQariB6S2CCuH5vuOmOSc0w31IAPvnV52h7wbOprmk1N+GnDLx9xTiwne+H2zRaCE
+ 0992l7kkJRLM5ag==
+X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
+ fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Wed, Aug 14, 2024 at 04:39:29PM -0400, Felix Kuehling wrote:
-> On 2024-08-12 11:00, Greg KH wrote:
-> > Hi all,
-> > 
-> > As some of you have noticed, there's a TON of failure messages being
-> > sent out for AMD gpu driver commits that are tagged for stable
-> > backports.  In short, you all are doing something really wrong with how
-> > you are tagging these.
-> Hi Greg,
-> 
-> I got notifications about one KFD patch failing to apply on six branches
-> (6.10, 6.6, 6.1, 5.15, 5.10 and 5.4). The funny thing is, that you already
-> applied this patch on two branches back in May. The emails had a suspicious
-> looking date in the header (Sep 17, 2001). I wonder if there was some date
-> glitch that caused a whole bunch of patches to be re-sent to stable somehow:
-> 
->    ------------------ original commit in Linus's tree
->    ------------------ From 24e82654e98e96cece5d8b919c522054456eeec6 Mon
->    Sep 17 00:00:00 2001 From: Alex Deucher
->    <alexander.deucher@amd.com>Date: Sun, 14 Apr 2024 13:06:39 -0400
+The DWC3_EP_RESOURCE_ALLOCATED flag ensures that the resource of an
+endpoint is only assigned once. Unless the endpoint is reset, don't
+clear this flag. Otherwise we may set endpoint resource again, which
+prevents the driver from initiate transfer after handling a STALL or
+endpoint halt to the control endpoint.
 
-That's the real date, ignore the 2001 thing, that's from git.
+Commit f2e0eee47038 ("usb: dwc3: ep0: Don't reset resource alloc flag")
+was fixing the initial issue, but did this only for physical ep1. Since
+the function dwc3_ep0_stall_and_restart is resetting the flags for both
+physical endpoints, this also has to be done for ep0.
 
+Cc: stable@vger.kernel.org
+Fixes: b311048c174d ("usb: dwc3: gadget: Rewrite endpoint allocation flow")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+v2: Added missing double quotes in the referenced patch name
 
->    Subject: [PATCH] drm/amdkfd: don't allow mapping the MMIO HDP page
->    with large pages ...
-> 
-> On 6.1 and 6.6, the patch was already applied by you in May:
-> 
->    $ git log --pretty=fuller stable/linux-6.6.y --grep "drm/amdkfd: don't allow mapping the MMIO HDP page with large pages"
->    commit 4b4cff994a27ebf7bd3fb9a798a1cdfa8d01b724
->    Author:     Alex Deucher <alexander.deucher@amd.com>
->    AuthorDate: Sun Apr 14 13:06:39 2024 -0400
->    Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->    CommitDate: Fri May 17 12:02:34 2024 +0200
-> 
->         drm/amdkfd: don't allow mapping the MMIO HDP page with large pages
->    ...
-> 
-> On 6.10 it was already upstream.
+- Link to v1: https://lore.kernel.org/r/20240814-dwc3hwep0reset-v1-1-087b0d26f3d0@pengutronix.de
+---
+ drivers/usb/dwc3/ep0.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Then why did we have it in the tree again with different commit ids?
-That's the issue here, and the major confusion as there is no way for us
-to determine if this is a commit that has been in the tree already or if
-it's just a normal failure.
+diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
+index d96ffbe520397..c9533a99e47c8 100644
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -232,7 +232,8 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
+ 	/* stall is always issued on EP0 */
+ 	dep = dwc->eps[0];
+ 	__dwc3_gadget_ep_set_halt(dep, 1, false);
+-	dep->flags = DWC3_EP_ENABLED;
++	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED;
++	dep->flags |= DWC3_EP_ENABLED;
+ 	dwc->delayed_status = false;
+ 
+ 	if (!list_empty(&dep->pending_list)) {
 
-> On 5.4-5.15 it doesn't apply because of conflicts. I can resolve those and
-> send the fixed patches out for you.
+---
+base-commit: 38343be0bf9a7d7ef0d160da5f2db887a0e29b62
+change-id: 20240814-dwc3hwep0reset-b4d371873494
 
-If it is needed in those branches, please do so.
+Best regards,
+-- 
+Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-thanks,
-
-greg k-h
 
