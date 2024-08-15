@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-68736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FAB9533B9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442C3953568
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C06D1F2691A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0795FB21ACE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5791A76C1;
-	Thu, 15 Aug 2024 14:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B2219FA7A;
+	Thu, 15 Aug 2024 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7xZ8V9C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fq520k7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC631AC8AE;
-	Thu, 15 Aug 2024 14:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148B817BEC0;
+	Thu, 15 Aug 2024 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731501; cv=none; b=JcLf9grUlRdwxVEWUhdu6Bwhrs6iBk/YWVkVGFQDFKlc/5rOGl+WIvXHWTdv+q2/c+/N3Cn7HPTHQjBQN9AiHCEAnBsSKnfvAvS6gWO5Jsks5l48lS7jxMoumKpP+vbjl8FgxC99+5L09lonAwKHw1fbJLSGWmtKvKDqJUFIcbY=
+	t=1723732651; cv=none; b=o66sV0/ViPP/c+y1s9NhuUVJr/LtjLoIi+O1wOqp41JxpGrcvrISHGkNcrAdXo/MVHVgLdX4y4dHZW7mlOo2NiUV2n6IPPYJjEJPq7M8MAWd3qeNdFC+1jWHLCrYU2vld4Z7n3j39P1e39ezUrW/sg47xJj9RHrorR8QqQi9eL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731501; c=relaxed/simple;
-	bh=hvSoCQeEnSXomsYuMLrl83yGpdIy26IMFrXpa0m2ftI=;
+	s=arc-20240116; t=1723732651; c=relaxed/simple;
+	bh=GFvGTCO8+GSd/6aD6TJIe3vJGbIaw7H4GMkymofVOJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBJcGtAtV0+yn6gOJZVqyhaZIJByVkaMzUWK9BDEbfrtHeXVheH9j2V7Q8oTtVNZ8fMKrnTvwMA8iwyj4fH74Ij/LUYCpBoy5p5VgTt3/VqYEZYVYx1SHf68m/nhEUadTKjhkNvrqb6OyJPbBpx2fFaOjDw/4HDMriikanZBhT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7xZ8V9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CA5C32786;
-	Thu, 15 Aug 2024 14:18:20 +0000 (UTC)
+	 MIME-Version; b=C6InuxP+wXngL2gdG+XZs/3j6W834+C8RvukK3U9ADF1cAnDUSO0J1+wafqNtgUbSdwyR5LlmJg8p6MrQsyfgQclDBOsWad0hUEDuavXV3MMcef4DjiVJnGOdbRSO/Pq8NCBGl/Alif0Td/gya4r5FMscyqHZrOHDXg07nMWOO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fq520k7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACC3C32786;
+	Thu, 15 Aug 2024 14:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731501;
-	bh=hvSoCQeEnSXomsYuMLrl83yGpdIy26IMFrXpa0m2ftI=;
+	s=korg; t=1723732651;
+	bh=GFvGTCO8+GSd/6aD6TJIe3vJGbIaw7H4GMkymofVOJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7xZ8V9C3cyfDjQ1sIA2LXqK9MJ8LPvbwrbLNv8xMsyAwSXWUHWXe7hTwPJGvvVAx
-	 nsv/utzVp3a2iLUFzpr4kPltEhBQ4ChCJM1zPYMhiIH/EVS5kp/27HQFyuoqa3Nk7d
-	 NcF2z4hfYdMDce2MufI0wyoLQS6REpmwudlQqibA=
+	b=Fq520k7OnGBKQK/TXjg/9hv0AjXDnUsKsAVLhzcRm1Gnf58oAyQ8ZRwqQN+pw526Q
+	 12waaTLuZC7Dj0vIEjur7izDRhJS3pwJ/kKG4HPbgZJngk7U3B/vNpw4/LXPU+yhI9
+	 ss/NvVqFVXmM18UOxzMY3HdviYD9XGON+9MKWUKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@suse.de>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 149/259] ASoC: Intel: Convert to new X86 CPU match macros
-Date: Thu, 15 Aug 2024 15:24:42 +0200
-Message-ID: <20240815131908.543219788@linuxfoundation.org>
+Subject: [PATCH 5.10 217/352] fuse: name fs_context consistently
+Date: Thu, 15 Aug 2024 15:24:43 +0200
+Message-ID: <20240815131927.677111155@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,282 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit d51ba9c6663d7171681be357f672503f4e2ccdc1 ]
+[ Upstream commit 84c215075b5723ab946708a6c74c26bd3c51114c ]
 
-The new macro set has a consistent namespace and uses C99 initializers
-instead of the grufty C89 ones.
+Naming convention under fs/fuse/:
 
-Get rid the of the local macro wrappers for consistency.
+	struct fuse_conn *fc;
+	struct fs_context *fsc;
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lkml.kernel.org/r/20200320131510.594671507@linutronix.de
-Stable-dep-of: 9931f7d5d251 ("ASoC: Intel: use soc_intel_is_byt_cr() only when IOSF_MBI is reachable")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Stable-dep-of: 525bd65aa759 ("fuse: verify {g,u}id mount options correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-intel-quirks.h | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ fs/fuse/control.c   | 10 ++++----
+ fs/fuse/inode.c     | 60 ++++++++++++++++++++++-----------------------
+ fs/fuse/virtio_fs.c | 12 ++++-----
+ 3 files changed, 41 insertions(+), 41 deletions(-)
 
-diff --git a/sound/soc/intel/common/soc-intel-quirks.h b/sound/soc/intel/common/soc-intel-quirks.h
-index 645baf0ed3dd1..a88a91995ce1a 100644
---- a/sound/soc/intel/common/soc-intel-quirks.h
-+++ b/sound/soc/intel/common/soc-intel-quirks.h
-@@ -16,13 +16,11 @@
- #include <asm/intel-family.h>
- #include <asm/iosf_mbi.h>
- 
--#define ICPU(model)	{ X86_VENDOR_INTEL, 6, model, X86_FEATURE_ANY, }
--
- #define SOC_INTEL_IS_CPU(soc, type)				\
- static inline bool soc_intel_is_##soc(void)			\
- {								\
- 	static const struct x86_cpu_id soc##_cpu_ids[] = {	\
--		ICPU(type),					\
-+		X86_MATCH_INTEL_FAM6_MODEL(type, NULL),		\
- 		{}						\
- 	};							\
- 	const struct x86_cpu_id *id;				\
-@@ -33,11 +31,11 @@ static inline bool soc_intel_is_##soc(void)			\
- 	return false;						\
+diff --git a/fs/fuse/control.c b/fs/fuse/control.c
+index 24b4d9db231db..79f01d09c78cb 100644
+--- a/fs/fuse/control.c
++++ b/fs/fuse/control.c
+@@ -328,7 +328,7 @@ void fuse_ctl_remove_conn(struct fuse_conn *fc)
+ 	drop_nlink(d_inode(fuse_control_sb->s_root));
  }
  
--SOC_INTEL_IS_CPU(byt, INTEL_FAM6_ATOM_SILVERMONT);
--SOC_INTEL_IS_CPU(cht, INTEL_FAM6_ATOM_AIRMONT);
--SOC_INTEL_IS_CPU(apl, INTEL_FAM6_ATOM_GOLDMONT);
--SOC_INTEL_IS_CPU(glk, INTEL_FAM6_ATOM_GOLDMONT_PLUS);
--SOC_INTEL_IS_CPU(cml, INTEL_FAM6_KABYLAKE_L);
-+SOC_INTEL_IS_CPU(byt, ATOM_SILVERMONT);
-+SOC_INTEL_IS_CPU(cht, ATOM_AIRMONT);
-+SOC_INTEL_IS_CPU(apl, ATOM_GOLDMONT);
-+SOC_INTEL_IS_CPU(glk, ATOM_GOLDMONT_PLUS);
-+SOC_INTEL_IS_CPU(cml, KABYLAKE_L);
- 
- static inline bool soc_intel_is_byt_cr(struct platform_device *pdev)
+-static int fuse_ctl_fill_super(struct super_block *sb, struct fs_context *fctx)
++static int fuse_ctl_fill_super(struct super_block *sb, struct fs_context *fsc)
  {
+ 	static const struct tree_descr empty_descr = {""};
+ 	struct fuse_conn *fc;
+@@ -354,18 +354,18 @@ static int fuse_ctl_fill_super(struct super_block *sb, struct fs_context *fctx)
+ 	return 0;
+ }
+ 
+-static int fuse_ctl_get_tree(struct fs_context *fc)
++static int fuse_ctl_get_tree(struct fs_context *fsc)
+ {
+-	return get_tree_single(fc, fuse_ctl_fill_super);
++	return get_tree_single(fsc, fuse_ctl_fill_super);
+ }
+ 
+ static const struct fs_context_operations fuse_ctl_context_ops = {
+ 	.get_tree	= fuse_ctl_get_tree,
+ };
+ 
+-static int fuse_ctl_init_fs_context(struct fs_context *fc)
++static int fuse_ctl_init_fs_context(struct fs_context *fsc)
+ {
+-	fc->ops = &fuse_ctl_context_ops;
++	fsc->ops = &fuse_ctl_context_ops;
+ 	return 0;
+ }
+ 
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index 4a7ebccd359ee..5f9b2dc59135b 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -141,12 +141,12 @@ static void fuse_evict_inode(struct inode *inode)
+ 	}
+ }
+ 
+-static int fuse_reconfigure(struct fs_context *fc)
++static int fuse_reconfigure(struct fs_context *fsc)
+ {
+-	struct super_block *sb = fc->root->d_sb;
++	struct super_block *sb = fsc->root->d_sb;
+ 
+ 	sync_filesystem(sb);
+-	if (fc->sb_flags & SB_MANDLOCK)
++	if (fsc->sb_flags & SB_MANDLOCK)
+ 		return -EINVAL;
+ 
+ 	return 0;
+@@ -535,38 +535,38 @@ static const struct fs_parameter_spec fuse_fs_parameters[] = {
+ 	{}
+ };
+ 
+-static int fuse_parse_param(struct fs_context *fc, struct fs_parameter *param)
++static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
+ {
+ 	struct fs_parse_result result;
+-	struct fuse_fs_context *ctx = fc->fs_private;
++	struct fuse_fs_context *ctx = fsc->fs_private;
+ 	int opt;
+ 
+-	if (fc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
++	if (fsc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
+ 		/*
+ 		 * Ignore options coming from mount(MS_REMOUNT) for backward
+ 		 * compatibility.
+ 		 */
+-		if (fc->oldapi)
++		if (fsc->oldapi)
+ 			return 0;
+ 
+-		return invalfc(fc, "No changes allowed in reconfigure");
++		return invalfc(fsc, "No changes allowed in reconfigure");
+ 	}
+ 
+-	opt = fs_parse(fc, fuse_fs_parameters, param, &result);
++	opt = fs_parse(fsc, fuse_fs_parameters, param, &result);
+ 	if (opt < 0)
+ 		return opt;
+ 
+ 	switch (opt) {
+ 	case OPT_SOURCE:
+-		if (fc->source)
+-			return invalfc(fc, "Multiple sources specified");
+-		fc->source = param->string;
++		if (fsc->source)
++			return invalfc(fsc, "Multiple sources specified");
++		fsc->source = param->string;
+ 		param->string = NULL;
+ 		break;
+ 
+ 	case OPT_SUBTYPE:
+ 		if (ctx->subtype)
+-			return invalfc(fc, "Multiple subtypes specified");
++			return invalfc(fsc, "Multiple subtypes specified");
+ 		ctx->subtype = param->string;
+ 		param->string = NULL;
+ 		return 0;
+@@ -578,22 +578,22 @@ static int fuse_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 
+ 	case OPT_ROOTMODE:
+ 		if (!fuse_valid_type(result.uint_32))
+-			return invalfc(fc, "Invalid rootmode");
++			return invalfc(fsc, "Invalid rootmode");
+ 		ctx->rootmode = result.uint_32;
+ 		ctx->rootmode_present = true;
+ 		break;
+ 
+ 	case OPT_USER_ID:
+-		ctx->user_id = make_kuid(fc->user_ns, result.uint_32);
++		ctx->user_id = make_kuid(fsc->user_ns, result.uint_32);
+ 		if (!uid_valid(ctx->user_id))
+-			return invalfc(fc, "Invalid user_id");
++			return invalfc(fsc, "Invalid user_id");
+ 		ctx->user_id_present = true;
+ 		break;
+ 
+ 	case OPT_GROUP_ID:
+-		ctx->group_id = make_kgid(fc->user_ns, result.uint_32);
++		ctx->group_id = make_kgid(fsc->user_ns, result.uint_32);
+ 		if (!gid_valid(ctx->group_id))
+-			return invalfc(fc, "Invalid group_id");
++			return invalfc(fsc, "Invalid group_id");
+ 		ctx->group_id_present = true;
+ 		break;
+ 
+@@ -611,7 +611,7 @@ static int fuse_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 
+ 	case OPT_BLKSIZE:
+ 		if (!ctx->is_bdev)
+-			return invalfc(fc, "blksize only supported for fuseblk");
++			return invalfc(fsc, "blksize only supported for fuseblk");
+ 		ctx->blksize = result.uint_32;
+ 		break;
+ 
+@@ -622,9 +622,9 @@ static int fuse_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 	return 0;
+ }
+ 
+-static void fuse_free_fc(struct fs_context *fc)
++static void fuse_free_fsc(struct fs_context *fsc)
+ {
+-	struct fuse_fs_context *ctx = fc->fs_private;
++	struct fuse_fs_context *ctx = fsc->fs_private;
+ 
+ 	if (ctx) {
+ 		kfree(ctx->subtype);
+@@ -1486,9 +1486,9 @@ static int fuse_fill_super(struct super_block *sb, struct fs_context *fsc)
+ 	return err;
+ }
+ 
+-static int fuse_get_tree(struct fs_context *fc)
++static int fuse_get_tree(struct fs_context *fsc)
+ {
+-	struct fuse_fs_context *ctx = fc->fs_private;
++	struct fuse_fs_context *ctx = fsc->fs_private;
+ 
+ 	if (!ctx->fd_present || !ctx->rootmode_present ||
+ 	    !ctx->user_id_present || !ctx->group_id_present)
+@@ -1496,14 +1496,14 @@ static int fuse_get_tree(struct fs_context *fc)
+ 
+ #ifdef CONFIG_BLOCK
+ 	if (ctx->is_bdev)
+-		return get_tree_bdev(fc, fuse_fill_super);
++		return get_tree_bdev(fsc, fuse_fill_super);
+ #endif
+ 
+-	return get_tree_nodev(fc, fuse_fill_super);
++	return get_tree_nodev(fsc, fuse_fill_super);
+ }
+ 
+ static const struct fs_context_operations fuse_context_ops = {
+-	.free		= fuse_free_fc,
++	.free		= fuse_free_fsc,
+ 	.parse_param	= fuse_parse_param,
+ 	.reconfigure	= fuse_reconfigure,
+ 	.get_tree	= fuse_get_tree,
+@@ -1512,7 +1512,7 @@ static const struct fs_context_operations fuse_context_ops = {
+ /*
+  * Set up the filesystem mount context.
+  */
+-static int fuse_init_fs_context(struct fs_context *fc)
++static int fuse_init_fs_context(struct fs_context *fsc)
+ {
+ 	struct fuse_fs_context *ctx;
+ 
+@@ -1525,14 +1525,14 @@ static int fuse_init_fs_context(struct fs_context *fc)
+ 	ctx->legacy_opts_show = true;
+ 
+ #ifdef CONFIG_BLOCK
+-	if (fc->fs_type == &fuseblk_fs_type) {
++	if (fsc->fs_type == &fuseblk_fs_type) {
+ 		ctx->is_bdev = true;
+ 		ctx->destroy = true;
+ 	}
+ #endif
+ 
+-	fc->fs_private = ctx;
+-	fc->ops = &fuse_context_ops;
++	fsc->fs_private = ctx;
++	fsc->ops = &fuse_context_ops;
+ 	return 0;
+ }
+ 
+diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
+index faadc80485e7f..7d4655022afc6 100644
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -97,14 +97,14 @@ static const struct fs_parameter_spec virtio_fs_parameters[] = {
+ 	{}
+ };
+ 
+-static int virtio_fs_parse_param(struct fs_context *fc,
++static int virtio_fs_parse_param(struct fs_context *fsc,
+ 				 struct fs_parameter *param)
+ {
+ 	struct fs_parse_result result;
+-	struct fuse_fs_context *ctx = fc->fs_private;
++	struct fuse_fs_context *ctx = fsc->fs_private;
+ 	int opt;
+ 
+-	opt = fs_parse(fc, virtio_fs_parameters, param, &result);
++	opt = fs_parse(fsc, virtio_fs_parameters, param, &result);
+ 	if (opt < 0)
+ 		return opt;
+ 
+@@ -119,9 +119,9 @@ static int virtio_fs_parse_param(struct fs_context *fc,
+ 	return 0;
+ }
+ 
+-static void virtio_fs_free_fc(struct fs_context *fc)
++static void virtio_fs_free_fsc(struct fs_context *fsc)
+ {
+-	struct fuse_fs_context *ctx = fc->fs_private;
++	struct fuse_fs_context *ctx = fsc->fs_private;
+ 
+ 	kfree(ctx);
+ }
+@@ -1500,7 +1500,7 @@ static int virtio_fs_get_tree(struct fs_context *fsc)
+ }
+ 
+ static const struct fs_context_operations virtio_fs_context_ops = {
+-	.free		= virtio_fs_free_fc,
++	.free		= virtio_fs_free_fsc,
+ 	.parse_param	= virtio_fs_parse_param,
+ 	.get_tree	= virtio_fs_get_tree,
+ };
 -- 
 2.43.0
 
