@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-67915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE6B952FBD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72670953204
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F4DB1C22854
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D36F1F21EAD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D53F19F470;
-	Thu, 15 Aug 2024 13:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D8B1A01CB;
+	Thu, 15 Aug 2024 14:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plpUKj1s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUi6N94l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C053E198E78;
-	Thu, 15 Aug 2024 13:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE311684AC;
+	Thu, 15 Aug 2024 14:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728919; cv=none; b=pv7FE2AU+dAWGYQ9XN3Z7l5Of/TZRNFwV/+EOz1BwPsiWfGAeJAoq3Yf3PHX8uG9i7YEdGUGw1LH/C4PhGA55BkdbN3S6MXpjIpwS+qdwRwtDqP3aUZlE7vW4Y9tKCAAeUFTFneVnNrcf9PSJZYIX6MULKsO/4Ph2rsAYVreZiw=
+	t=1723730453; cv=none; b=hTCAi/3pX3JT5ZRekWgqta/inGjizovaYLJCTr3wOAl++0ZhGy2On+H2FacK331dGAvA0PkrI92yBcppMbtjgvyaYj+iobb9qzBP2kb5ORx6y2AhZDQZJyMcfPFdHg6dY6XHjupS9XfDVqqu8nW6Cd2NWWFdPAgMgNK34NRrFSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728919; c=relaxed/simple;
-	bh=eP6ISUTX05zja1aX0+2/vYtCb/PaE3klIJ0gKaDIY6c=;
+	s=arc-20240116; t=1723730453; c=relaxed/simple;
+	bh=49pb3yPGXAIw6albdFBaSoQJy9+HMQV2Q/KAv8b3xq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTVhlnzlZtIlvKAbAXSRUyveCNGIVoAHS72nuc6sDajYLzMSOilN0E4aldEilHO5VQf7ZvwpSvQtChDyH/lEn5s10YVuuQHjbmVCGeM1AwQHfo5AqSTh7acJQAgeLYyl7mLetzn8NEuZ0sMDyfaxO2zkmbEjIcXcsfH1utqBzDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plpUKj1s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4554EC32786;
-	Thu, 15 Aug 2024 13:35:19 +0000 (UTC)
+	 MIME-Version; b=DrXkUMn6KwR6OAYd3ibxi33tX4n5aSuSWNna1TWS0gtXooHtFBnJFYD1uIDccjvcFgBuNzPeZR44z/INvM/DevnW6G1GZtPggTkuxnM6VAUKgIdRGP9FUrjCicvMO8DHx5o1yrGmrOV5deoiF/BaHZljDhiW6TEp4+QCt+d7cR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUi6N94l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197D7C32786;
+	Thu, 15 Aug 2024 14:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728919;
-	bh=eP6ISUTX05zja1aX0+2/vYtCb/PaE3klIJ0gKaDIY6c=;
+	s=korg; t=1723730452;
+	bh=49pb3yPGXAIw6albdFBaSoQJy9+HMQV2Q/KAv8b3xq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=plpUKj1smQjZqQfFwphkSaDf6sb3ysCGeMf81CA5kMykTHUVvGHFbXM3Vp1sSUOc3
-	 3M4/vcA+8Pd+LYVitXPaMYRsNPBbSQYtcc7vc4WyFOlLi9Z4AHQkFAzcTA/OvumL8t
-	 5InW5ZQKtqdlNYCJ5FL6znEy2XvXckUWZM94EmHk=
+	b=AUi6N94l9msY8p38mno96RqGUjo1Llv7Ixf+Ui5Yz5C2wIFNJrt69amZ7TpnPsxW6
+	 HTZX+fFX/JXXRJRLHWb1/gWL3UGf5TbjU2US3cZQzsEt/ludm1iHoYQTV/zj6vNiif
+	 0H4AiimDSIfClNSudE9R6EkDgnsxLgkfb7ayZ0C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 153/196] arm64: cputype: Add Cortex-X3 definitions
-Date: Thu, 15 Aug 2024 15:24:30 +0200
-Message-ID: <20240815131857.928601113@linuxfoundation.org>
+Subject: [PATCH 5.15 413/484] spi: spi-fsl-lpspi: Fix scldiv calculation
+Date: Thu, 15 Aug 2024 15:24:31 +0200
+Message-ID: <20240815131957.407370556@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit be5a6f238700f38b534456608588723fba96c5ab ]
+[ Upstream commit 730bbfaf7d4890bd99e637db7767dc68cfeb24e7 ]
 
-Add cputype definitions for Cortex-X3. These will be used for errata
-detection in subsequent patches.
+The effective SPI clock frequency should never exceed speed_hz
+otherwise this might result in undefined behavior of the SPI device.
 
-These values can be found in Table A-263 ("MIDR_EL1 bit descriptions")
-in issue 07 of the Cortex-X3 TRM, which can be found at:
+Currently the scldiv calculation could violate this constraint.
+For the example parameters perclk_rate = 24 MHz and speed_hz = 7 MHz,
+the function fsl_lpspi_set_bitrate will determine perscale = 0 and
+scldiv = 1, which is a effective SPI clock of 8 MHz.
 
-  https://developer.arm.com/documentation/101593/0102/?lang=en
+So fix this by rounding up the quotient of perclk_rate and speed_hz.
+While this never change within the loop, we can pull this out.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-2-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://patch.msgid.link/20240804113611.83613-1-wahrenst@gmx.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-fsl-lpspi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 9b44a59195889..a89d6baecbede 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -89,6 +89,7 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_CORTEX_X3		0xD4E
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
-@@ -128,6 +129,7 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index c5ff6e8c45be0..c21d7959dcd23 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -297,7 +297,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
+ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	struct lpspi_config config = fsl_lpspi->config;
+-	unsigned int perclk_rate, scldiv;
++	unsigned int perclk_rate, scldiv, div;
+ 	u8 prescale;
+ 
+ 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
+@@ -308,8 +308,10 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 		return -EINVAL;
+ 	}
+ 
++	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
++
+ 	for (prescale = 0; prescale < 8; prescale++) {
+-		scldiv = perclk_rate / config.speed_hz / (1 << prescale) - 2;
++		scldiv = div / (1 << prescale) - 2;
+ 		if (scldiv < 256) {
+ 			fsl_lpspi->config.prescale = prescale;
+ 			break;
 -- 
 2.43.0
 
