@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFA095337D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 491169534E7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 651EE2824B4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5EDD2893DB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A081AD3E1;
-	Thu, 15 Aug 2024 14:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D231A00CE;
+	Thu, 15 Aug 2024 14:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlIvU4Vd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxkxvBtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFCD63C;
-	Thu, 15 Aug 2024 14:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0CC17BEC0;
+	Thu, 15 Aug 2024 14:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731344; cv=none; b=vBwy7TShPY6wAZwGswT6quLKiWH33VdOz4QpBZ2M5OZplnhF4xWaIr9J0HTqAnUBu6tF6u0u0ys8KbPxfofGU6O+QW+6BzeivxccNqaMi0p9moGyuzvctOsI6xRvMD8Rzg4C0eqK+7kSsH1k94P49JVhu+ruHkyfmOhH2DBy+f0=
+	t=1723732299; cv=none; b=tJ3MnyDXouQIEmgwwTVS9RfF96syGd8nDKmiR0+0VJ5sAY2GGhsSnQkCuaYLODxKXWUveE0FVjBJKGvKh1aiy7jnizRkYXkufHV1aQTltljRuAivXgxhL5JQl0ETtSPccsVXod+6yDie56BBwb/Dxz+Yrk7qvFJ6bd6PKbVYRh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731344; c=relaxed/simple;
-	bh=0XM7YkoHrK4OZ2mRb0Mzbsll1JiuxQnBKoc21108jFw=;
+	s=arc-20240116; t=1723732299; c=relaxed/simple;
+	bh=AvHXXcdUumRaKWPCxfGBy4A/BlVv2+6FDTjNUuF+Zog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=keYWAkQH4k6Q1G6nJ4Pp0i1WVkIvWR4HvPMhnSQ94CSGEWBy3hZFMrHSjM1geYTcFYLznhDC0cXQ+T/xq0tCwr2vS5869Pu9H1Zpl1iWrL3L3HtdXB4JWD7tLf+5iCo4dCCt1WBSb4ey9oeKZ4SUuxt1OLn/Aotr/fbQD0Uwmss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlIvU4Vd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC12C32786;
-	Thu, 15 Aug 2024 14:15:43 +0000 (UTC)
+	 MIME-Version; b=Q6QJPUPO/2Ght2DiKMbiRuXTdxUfk6E/hfpSWLDFzAdoM4TQq/zG+mmRAxr/7ADQ51U3HxBqNZe/wPUV+cbD9u3rN0DTyLvAZhmTuvXMr8WQ0gcVDTXZZ4HNmkJuEc8aEkpCmquxS9emqR97232q58z2zfQ/vVEY2hRWur2zlzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxkxvBtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B487C32786;
+	Thu, 15 Aug 2024 14:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731344;
-	bh=0XM7YkoHrK4OZ2mRb0Mzbsll1JiuxQnBKoc21108jFw=;
+	s=korg; t=1723732299;
+	bh=AvHXXcdUumRaKWPCxfGBy4A/BlVv2+6FDTjNUuF+Zog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OlIvU4VdawlkKICKcHUrxRIu8SsfYv/IZtsXuvwRTRjXd9kOu9XrCjldDe1fWKGQ/
-	 DrxEWa3rELg3McA3wdAPBPl/rJRpSxGY6xxineWeVOwUsnDo0DhPXeHEABDdVF8XB9
-	 oMN0xwtnrb9fonWXYSOjtXuiuDrCuD9taGagIZZ4=
+	b=DxkxvBtDbnHvgzH04uuFMBMSfA6gXWsoGf8jsMWpi1sXqxeNf0p4XalQEWKqKykwL
+	 CPpTOdUDPzVl/Y0JCd8Ll+cdePgHdbFeBjx7b4TLwfP7fwcZy4A1v5cO92s39wvp+2
+	 3G4eOFs8CgqHNW52sJ9qx6XqjAl3BvSUEmxfOmsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Lalaev <andrei.lalaev@anton-paar.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/259] Input: qt1050 - handle CHIP_ID reading error
-Date: Thu, 15 Aug 2024 15:23:21 +0200
-Message-ID: <20240815131905.430151864@linuxfoundation.org>
+	Shreyas Deodhar <sdeodhar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 136/352] scsi: qla2xxx: Fix optrom version displayed in FDMI
+Date: Thu, 15 Aug 2024 15:23:22 +0200
+Message-ID: <20240815131924.512426941@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Lalaev <andrei.lalaev@anton-paar.com>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-[ Upstream commit 866a5c7e2781cf1b019072288f1f5c64186dcb63 ]
+commit 348744f27a35e087acc9378bf53537fbfb072775 upstream.
 
-If the device is missing, we get the following error:
+Bios version was popluated for FDMI response. Systems with EFI would show
+optrom version as 0.  EFI version is populated here and BIOS version is
+already displayed under FDMI_HBA_BOOT_BIOS_NAME.
 
-  qt1050 3-0041: ID -1340767592 not supported
-
-Let's handle this situation and print more informative error
-when reading of CHIP_ID fails:
-
-  qt1050 3-0041: Failed to read chip ID: -6
-
-Fixes: cbebf5addec1 ("Input: qt1050 - add Microchip AT42QT1050 support")
-Signed-off-by: Andrei Lalaev <andrei.lalaev@anton-paar.com>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Link: https://lore.kernel.org/r/20240617183018.916234-1-andrey.lalaev@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-9-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/qt1050.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_gs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/keyboard/qt1050.c b/drivers/input/keyboard/qt1050.c
-index 403060d05c3b3..7193a4198e214 100644
---- a/drivers/input/keyboard/qt1050.c
-+++ b/drivers/input/keyboard/qt1050.c
-@@ -226,7 +226,12 @@ static bool qt1050_identify(struct qt1050_priv *ts)
- 	int err;
- 
- 	/* Read Chip ID */
--	regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
-+	err = regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
-+	if (err) {
-+		dev_err(&ts->client->dev, "Failed to read chip ID: %d\n", err);
-+		return false;
-+	}
-+
- 	if (val != QT1050_CHIP_ID_VER) {
- 		dev_err(&ts->client->dev, "ID %d not supported\n", val);
- 		return false;
--- 
-2.43.0
-
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -1708,7 +1708,7 @@ qla2x00_hba_attributes(scsi_qla_host_t *
+ 	eiter->type = cpu_to_be16(FDMI_HBA_OPTION_ROM_VERSION);
+ 	alen = scnprintf(
+ 		eiter->a.orom_version, sizeof(eiter->a.orom_version),
+-		"%d.%02d", ha->bios_revision[1], ha->bios_revision[0]);
++		"%d.%02d", ha->efi_revision[1], ha->efi_revision[0]);
+ 	alen += FDMI_ATTR_ALIGNMENT(alen);
+ 	alen += FDMI_ATTR_TYPELEN(eiter);
+ 	eiter->len = cpu_to_be16(alen);
 
 
 
