@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1190D953345
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A60B9534E2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450701C23B63
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2AD9289520
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822731B3F20;
-	Thu, 15 Aug 2024 14:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D588B63D5;
+	Thu, 15 Aug 2024 14:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="io/V5I4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmg2suun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4164D1AE845;
-	Thu, 15 Aug 2024 14:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D0C17C995;
+	Thu, 15 Aug 2024 14:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731183; cv=none; b=fSxZzgv/U5lmCAtyg7d006A7He7ivpdEYo2hWyDULUmFpthAt4CasiIl/IpoVcHgvhH1pND09/OsjNuRRgSlFD653UtKAMO3FM6DVuSLZ1iVrvwct+goIaJkWvMp2Q1z0O5F2Wh6E0VjtRaZjwoyrHGGn+UIn91mYbwSzv6YNc4=
+	t=1723732286; cv=none; b=VzBZVngI2cmPWq2m2S0/ctdQeAgD1yoDcwx96fo5tQBYEy6zuhXxeQLuQ5Er9+V8EIWh6zyioRrZho3R3SYIXzxro0nXRoSkuE1HZHgdTJwjoZVB7JDOvldsJnrKfh79J+XOoXInYAb/B9LmNriUfYqQHskXJJC1BXlyu8PHHrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731183; c=relaxed/simple;
-	bh=YirkVDMeIGfEmdAb8EalmP5aJ83YnXOF0m8b2rVHBhc=;
+	s=arc-20240116; t=1723732286; c=relaxed/simple;
+	bh=JZWiOiv+Qr9Cenb11AD5dhsCVaNusFEe0kWdNzv5Fh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VA+c883gZqFXq5Puu5KuHspNTQZEbi8h6TPB1omVpDjgI98iB7Zf2JQAJc7NVyMaX1ZR2PIF4esp/jAXNM50bU/UauYk2hqsyXP0sL3h4kMykmLv6RHgCct/uG8SJjPiw5LavT6L07rRgqEtWBheWpthb9S6Mm5T8F9Wnp1URI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=io/V5I4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A82C32786;
-	Thu, 15 Aug 2024 14:13:02 +0000 (UTC)
+	 MIME-Version; b=BQ4OznsXyEwB0w9WP1PMiF9Zu3xP9VrLt21SOfatpe/UMnpblnYv1cSbOH7k7Th/l3sr0+IEx6JP3RV7M7BKn6H0GRfS72DYG2dSKTLurF/EIZt6/JevPhhxbSOiNTJs/m8t3TmKjPEWaDXf4xlZHyAtst80c2kOZiB0qmAvymQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmg2suun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17ADFC32786;
+	Thu, 15 Aug 2024 14:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731183;
-	bh=YirkVDMeIGfEmdAb8EalmP5aJ83YnXOF0m8b2rVHBhc=;
+	s=korg; t=1723732286;
+	bh=JZWiOiv+Qr9Cenb11AD5dhsCVaNusFEe0kWdNzv5Fh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=io/V5I4zeDG38i7u2sKq/zK4+GK5nVqltQQtcRawjyupk3vjOP8w1azT2tYOmHEHB
-	 q7iQc2O8x3D9WY2BXBEjwDqXAZLOc02uDzW2/aswxy9liGQdQowO8IQGawFlzgYnlm
-	 5zTMz8E5+AppP9fgpHH5V3L6f7EZts3+tXyluSkk=
+	b=wmg2suun++XWFygZpTBHriO5D0VaBTkb4M3aeCCcWyCZTysMfoU23Zvg5j9m6gcwN
+	 Kj/mWA7bvXooQbEEGZOPwB0dBNJicwSejWCRfAqzdzDpXKJev6OvVpX7lI2AGHKou0
+	 Y+buh6P27/HFM3Jos3RqPQKjvKVhOIIPGdQ8NxLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 048/259] bna: adjust name buf size of bna_tcb and bna_ccb structures
+Subject: [PATCH 5.10 115/352] pinctrl: core: fix possible memory leak when pinctrl_enable() fails
 Date: Thu, 15 Aug 2024 15:23:01 +0200
-Message-ID: <20240815131904.660026192@linuxfoundation.org>
+Message-ID: <20240815131923.700062869@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit c9741a03dc8e491e57b95fba0058ab46b7e506da ]
+[ Upstream commit ae1cf4759972c5fe665ee4c5e0c29de66fe3cf4a ]
 
-To have enough space to write all possible sprintf() args. Currently
-'name' size is 16, but the first '%s' specifier may already need at
-least 16 characters, since 'bnad->netdev->name' is used there.
+In devm_pinctrl_register(), if pinctrl_enable() fails in pinctrl_register(),
+the "pctldev" has not been added to dev resources, so devm_pinctrl_dev_release()
+can not be called, it leads memory leak.
 
-For '%d' specifiers, assume that they require:
- * 1 char for 'tx_id + tx_info->tcb[i]->id' sum, BNAD_MAX_TXQ_PER_TX is 8
- * 2 chars for 'rx_id + rx_info->rx_ctrl[i].ccb->id', BNAD_MAX_RXP_PER_RX
-   is 16
+Introduce pinctrl_uninit_controller(), call it in the error path to free memory.
 
-And replace sprintf with snprintf.
-
-Detected using the static analysis tool - Svace.
-
-Fixes: 8b230ed8ec96 ("bna: Brocade 10Gb Ethernet device driver")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240606023704.3931561-2-yangyingliang@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/brocade/bna/bna_types.h |  2 +-
- drivers/net/ethernet/brocade/bna/bnad.c      | 11 ++++++-----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/pinctrl/core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/brocade/bna/bna_types.h b/drivers/net/ethernet/brocade/bna/bna_types.h
-index 666b6922e24db..ebf54d74c2bbe 100644
---- a/drivers/net/ethernet/brocade/bna/bna_types.h
-+++ b/drivers/net/ethernet/brocade/bna/bna_types.h
-@@ -410,7 +410,7 @@ struct bna_ib {
- /* Tx object */
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 3d44d6f48cc4c..8152d24e128a3 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -2039,6 +2039,14 @@ pinctrl_init_controller(struct pinctrl_desc *pctldesc, struct device *dev,
+ 	return ERR_PTR(ret);
+ }
  
- /* Tx datapath control structure */
--#define BNA_Q_NAME_SIZE		16
-+#define BNA_Q_NAME_SIZE		(IFNAMSIZ + 6)
- struct bna_tcb {
- 	/* Fast path */
- 	void			**sw_qpt;
-diff --git a/drivers/net/ethernet/brocade/bna/bnad.c b/drivers/net/ethernet/brocade/bna/bnad.c
-index 94e87e7f277bb..838fa3a2700ab 100644
---- a/drivers/net/ethernet/brocade/bna/bnad.c
-+++ b/drivers/net/ethernet/brocade/bna/bnad.c
-@@ -1535,8 +1535,9 @@ bnad_tx_msix_register(struct bnad *bnad, struct bnad_tx_info *tx_info,
++static void pinctrl_uninit_controller(struct pinctrl_dev *pctldev, struct pinctrl_desc *pctldesc)
++{
++	pinctrl_free_pindescs(pctldev, pctldesc->pins,
++			      pctldesc->npins);
++	mutex_destroy(&pctldev->mutex);
++	kfree(pctldev);
++}
++
+ static int pinctrl_claim_hogs(struct pinctrl_dev *pctldev)
+ {
+ 	pctldev->p = create_pinctrl(pctldev->dev, pctldev);
+@@ -2119,8 +2127,10 @@ struct pinctrl_dev *pinctrl_register(struct pinctrl_desc *pctldesc,
+ 		return pctldev;
  
- 	for (i = 0; i < num_txqs; i++) {
- 		vector_num = tx_info->tcb[i]->intr_vector;
--		sprintf(tx_info->tcb[i]->name, "%s TXQ %d", bnad->netdev->name,
--				tx_id + tx_info->tcb[i]->id);
-+		snprintf(tx_info->tcb[i]->name, BNA_Q_NAME_SIZE, "%s TXQ %d",
-+			 bnad->netdev->name,
-+			 tx_id + tx_info->tcb[i]->id);
- 		err = request_irq(bnad->msix_table[vector_num].vector,
- 				  (irq_handler_t)bnad_msix_tx, 0,
- 				  tx_info->tcb[i]->name,
-@@ -1586,9 +1587,9 @@ bnad_rx_msix_register(struct bnad *bnad, struct bnad_rx_info *rx_info,
+ 	error = pinctrl_enable(pctldev);
+-	if (error)
++	if (error) {
++		pinctrl_uninit_controller(pctldev, pctldesc);
+ 		return ERR_PTR(error);
++	}
  
- 	for (i = 0; i < num_rxps; i++) {
- 		vector_num = rx_info->rx_ctrl[i].ccb->intr_vector;
--		sprintf(rx_info->rx_ctrl[i].ccb->name, "%s CQ %d",
--			bnad->netdev->name,
--			rx_id + rx_info->rx_ctrl[i].ccb->id);
-+		snprintf(rx_info->rx_ctrl[i].ccb->name, BNA_Q_NAME_SIZE,
-+			 "%s CQ %d", bnad->netdev->name,
-+			 rx_id + rx_info->rx_ctrl[i].ccb->id);
- 		err = request_irq(bnad->msix_table[vector_num].vector,
- 				  (irq_handler_t)bnad_msix_rx, 0,
- 				  rx_info->rx_ctrl[i].ccb->name,
+ 	return pctldev;
+ }
 -- 
 2.43.0
 
