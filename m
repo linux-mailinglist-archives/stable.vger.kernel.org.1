@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909159534A2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:28:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2D3953330
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 449381F29262
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:28:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AB3D1C22285
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E1B17C9B6;
-	Thu, 15 Aug 2024 14:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A83F1AC44F;
+	Thu, 15 Aug 2024 14:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBJrO9rM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b46ECzjp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502393214;
-	Thu, 15 Aug 2024 14:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7111AC8AE;
+	Thu, 15 Aug 2024 14:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732097; cv=none; b=FTuCNkNP+68S3jzOPd9bKkXNzJAyEBiG7SV98kgD037CEOLxTysIelkM8EblA6TpuOyD492X1QS+/ojduPWPVDLqF55116sBLCYuMLbuedB+dPGSUstVFOmsDTfjJ911Nn++12P2NzTlS0CDrbN76y3uAiZ1uH5zrk9GXqRD3yc=
+	t=1723731124; cv=none; b=V0fSjrngpixFXKGOUqu4SVFO2cgO9pN679WzdqwrkgkTBtKnP448eSYH0jtC4ymxaLJlxQdSyG8uLg8rO6WYsT50TEOMZuwc4+4QYA2Z2cESwLCREe3sutOSIGpQndRXm8ycfQ1zVqcfrvw7tVk48e6qQ58c64biNFSB2qExtgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732097; c=relaxed/simple;
-	bh=ebAOZSdUyAVhUxuFMIoJOsO5qHos8pZy8I+PaWnzCpU=;
+	s=arc-20240116; t=1723731124; c=relaxed/simple;
+	bh=r1iP8iP7zGTY+dcaC9/W/yUH4HlaBt3kCG66ur9OuiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LX32Mnr7oQ7BAxMqWptHA35pSro2t0G+/8vJAT3fFJGHxtGVcZI/Y6/dttZe/KjjYgU5wKat79MOxetx8aA475Rca+JSM4GxuiVXXCFD/HPL9gZJ+8tfkicSe39WIhQ6f/cll08lb+dCpnPTaX+y0Tu1IfWL1FARSCVgmrYUWVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBJrO9rM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97EEC32786;
-	Thu, 15 Aug 2024 14:28:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nUzWzFQvM5S9FnlgK8FTZqw8F1Vg1HI3Itb4hevugN9wTvq5MmOJ9Mnq4h013IXLugTyazaWn3LDNd5sg2jxlKW15c+nI2QhOIMPKuc0rcIvr06va8cUsRtLUl17C73KcpJjvRE6TDGVUt97YdmQOeoGilewGa3Rhx6wKYWn4Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b46ECzjp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B16C32786;
+	Thu, 15 Aug 2024 14:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732097;
-	bh=ebAOZSdUyAVhUxuFMIoJOsO5qHos8pZy8I+PaWnzCpU=;
+	s=korg; t=1723731124;
+	bh=r1iP8iP7zGTY+dcaC9/W/yUH4HlaBt3kCG66ur9OuiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBJrO9rMxlhq7pTVwcgpPDLpsInbybo5wX2APBp3blulu4VEjtUyrTiKf3EP0sHms
-	 8RpgaVPlbg+TqrCSKciiJBKFF4X7p0itsTIVl9FaDKrOHvUp6yM/62CNAF+BVV0lIH
-	 H4qItn3mI+eLNF9IBtBIU0QXlm+IOxFj1P+DRb3w=
+	b=b46ECzjp6I6YL53+DCLBAc8ZCYSdL02h3mPhwP0VKFgEyUZVC8rCXKRcoZasQ6Hxb
+	 UPeQWv6PIN/PBNnNSF802/RinMSFsCE/f8Uy+yuahorX/aG9/3X6LwXPeVE8Yd2l5M
+	 Ebpu7QcXbJIJqFdOMb1bo47XBI/CX/if0JkHhHbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 073/352] KVM: s390: fix race in gmap_make_secure()
-Date: Thu, 15 Aug 2024 15:22:19 +0200
-Message-ID: <20240815131922.064188355@linuxfoundation.org>
+Subject: [PATCH 5.4 007/259] x86/of: Return consistent error type from x86_of_pci_irq_enable()
+Date: Thu, 15 Aug 2024 15:22:20 +0200
+Message-ID: <20240815131903.074272320@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,98 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit c148dc8e2fa403be501612ee409db866eeed35c0 ]
+[ Upstream commit ec0b4c4d45cf7cf9a6c9626a494a89cb1ae7c645 ]
 
-Fix a potential race in gmap_make_secure() and remove the last user of
-follow_page() without FOLL_GET.
+x86_of_pci_irq_enable() returns PCIBIOS_* code received from
+pci_read_config_byte() directly and also -EINVAL which are not
+compatible error types. x86_of_pci_irq_enable() is used as
+(*pcibios_enable_irq) function which should not return PCIBIOS_* codes.
 
-The old code is locking something it doesn't have a reference to, and
-as explained by Jason and David in this discussion:
-https://lore.kernel.org/linux-mm/Y9J4P%2FRNvY1Ztn0Q@nvidia.com/
-it can lead to all kind of bad things, including the page getting
-unmapped (MADV_DONTNEED), freed, reallocated as a larger folio and the
-unlock_page() would target the wrong bit.
-There is also another race with the FOLL_WRITE, which could race
-between the follow_page() and the get_locked_pte().
+Convert the PCIBIOS_* return code from pci_read_config_byte() into
+normal errno using pcibios_err_to_errno().
 
-The main point is to remove the last use of follow_page() without
-FOLL_GET or FOLL_PIN, removing the races can be considered a nice
-bonus.
-
-Link: https://lore.kernel.org/linux-mm/Y9J4P%2FRNvY1Ztn0Q@nvidia.com/
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Fixes: 214d9bbcd3a6 ("s390/mm: provide memory management functions for protected KVM guests")
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-Id: <20230428092753.27913-2-imbrenda@linux.ibm.com>
-Stable-dep-of: 3f29f6537f54 ("s390/uv: Don't call folio_wait_writeback() without a folio reference")
+Fixes: 96e0a0797eba ("x86: dtb: Add support for PCI devices backed by dtb nodes")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240527125538.13620-1-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/uv.c | 32 +++++++++++---------------------
- 1 file changed, 11 insertions(+), 21 deletions(-)
+ arch/x86/kernel/devicetree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-index c38103f3044da..6abf73e832445 100644
---- a/arch/s390/kernel/uv.c
-+++ b/arch/s390/kernel/uv.c
-@@ -213,21 +213,10 @@ static int expected_page_refs(struct page *page)
- 	return res;
- }
+diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
+index 8d85e00bb40a5..04c5f25877998 100644
+--- a/arch/x86/kernel/devicetree.c
++++ b/arch/x86/kernel/devicetree.c
+@@ -91,7 +91,7 @@ static int x86_of_pci_irq_enable(struct pci_dev *dev)
  
--static int make_secure_pte(pte_t *ptep, unsigned long addr,
--			   struct page *exp_page, struct uv_cb_header *uvcb)
-+static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
- {
--	pte_t entry = READ_ONCE(*ptep);
--	struct page *page;
- 	int expected, cc = 0;
- 
--	if (!pte_present(entry))
--		return -ENXIO;
--	if (pte_val(entry) & _PAGE_INVALID)
--		return -ENXIO;
--
--	page = pte_page(entry);
--	if (page != exp_page)
--		return -ENXIO;
- 	if (PageWriteback(page))
- 		return -EAGAIN;
- 	expected = expected_page_refs(page);
-@@ -318,17 +307,18 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 		goto out;
- 
- 	rc = -ENXIO;
--	page = follow_page(vma, uaddr, FOLL_WRITE);
--	if (IS_ERR_OR_NULL(page))
--		goto out;
--
--	lock_page(page);
- 	ptep = get_locked_pte(gmap->mm, uaddr, &ptelock);
--	if (should_export_before_import(uvcb, gmap->mm))
--		uv_convert_from_secure(page_to_phys(page));
--	rc = make_secure_pte(ptep, uaddr, page, uvcb);
-+	if (pte_present(*ptep) && !(pte_val(*ptep) & _PAGE_INVALID) && pte_write(*ptep)) {
-+		page = pte_page(*ptep);
-+		rc = -EAGAIN;
-+		if (trylock_page(page)) {
-+			if (should_export_before_import(uvcb, gmap->mm))
-+				uv_convert_from_secure(page_to_phys(page));
-+			rc = make_page_secure(page, uvcb);
-+			unlock_page(page);
-+		}
-+	}
- 	pte_unmap_unlock(ptep, ptelock);
--	unlock_page(page);
- out:
- 	mmap_read_unlock(gmap->mm);
+ 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_PIN, &pin);
+ 	if (ret)
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 	if (!pin)
+ 		return 0;
  
 -- 
 2.43.0
