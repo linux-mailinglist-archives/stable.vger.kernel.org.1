@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C184953178
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D000952F24
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F53728B48A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E781288707
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8419619DFA6;
-	Thu, 15 Aug 2024 13:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7867019DFA4;
+	Thu, 15 Aug 2024 13:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAjTprjB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2s7n/q96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419E41714A1;
-	Thu, 15 Aug 2024 13:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EE31DDF5;
+	Thu, 15 Aug 2024 13:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730065; cv=none; b=lWMECJuoXeXcWdUyK74QJYFHQFppmzggH9bTxulda2uiz4SulK2yqaC5wVgKTOVY9LCRSAI+FGlK9SOLQyBy5qhJelkGUHUQ3M05yVjhXioEqxiXG7OX590HCnRWCgwYvgnXxd1Z2t+WyFjSJaqaIA8Hgg+MLZKEmTIsL1O3HYA=
+	t=1723728548; cv=none; b=lMLHFSlQ6nqhtzBfAdtBjO0TwcWZbYflrj9JXnCeyQRbDq+vPRStke3g6b7DDApgU9MOfi0Wc8kLMKC0VEvcFMMOCJbCFbuhEfTU5wqL5O2wGy9K4W5M5VoUD5ENkzda2pTt5FPMAODHUcYsAI096dtOWizUkKmhZdf0lV+y6ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730065; c=relaxed/simple;
-	bh=bBNjhGbjL/DlKZ7YL8Cb59PCKDLw6ed5QYdkdmBLOz4=;
+	s=arc-20240116; t=1723728548; c=relaxed/simple;
+	bh=GKthvC6bh5LShMOM61iJ5mxl06EZ3YsxODG/K3zBCnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GrsistbddFgWbiOPHTJgL+v8s1tD6eBnOXGf+jfuH91ytLQo0JuzeEmV6st72pCTSk6JKcOVzZKviu6TL7kb3Lober7wOwGIJMUW7+wXofghNh1GZnzO2CJ+f5SHuy5qJLULQ7qD/RtJUXz0bHxaAoxIx5XF6tq5P9zCi/mLklA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAjTprjB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEDBC32786;
-	Thu, 15 Aug 2024 13:54:24 +0000 (UTC)
+	 MIME-Version; b=aTo/6/kf0nkcjclQvYO1g/NHpDrtnImBh+lhOeRNfRK6Yl2Ynaw3Jy6EDTwQ0nGKnA7ipAqTFlhlnV9QIE7upcErk53C3vR+WvkSreCTB3p7fAio48JaWONvcLne8TSXEnJy1pSDCQi9URUjhkHs0Emqc3tXLxQnQHwOzDPDErQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2s7n/q96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9028BC32786;
+	Thu, 15 Aug 2024 13:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730065;
-	bh=bBNjhGbjL/DlKZ7YL8Cb59PCKDLw6ed5QYdkdmBLOz4=;
+	s=korg; t=1723728548;
+	bh=GKthvC6bh5LShMOM61iJ5mxl06EZ3YsxODG/K3zBCnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kAjTprjBWKYyQeVI3qVctYqih3EHchdzuh7nhwfNfLNg9tcUa26e/1gyn7ha4Mghe
-	 0VdA1HoL6MZJFCS8gjgysVKOGtf8hLiIdTg2pnf3xi/Ccr7XGIWvHH2IM8vWOGEMDu
-	 kUkdP2VzpnTJpr6OZY7NSN36fepsL5xOAqWAvEhA=
+	b=2s7n/q96zRAKnV4LbY4Sgs9pEwJqovmGOxA6Us2HymFXodFakQqcUClJmpZHvkav5
+	 ITGCz/SEwoJdMkFZsBswsbbxqOiZri3HkpXfi9OF+qewcGrBqkHMXO7/ns9Axaq7Mj
+	 vT+Brh3aT5wUbN5JyUtM4m8/lhroZ8BrUj0ZFy7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 292/484] s390/pci: Allow allocation of more than 1 MSI interrupt
-Date: Thu, 15 Aug 2024 15:22:30 +0200
-Message-ID: <20240815131952.686216001@linuxfoundation.org>
+Subject: [PATCH 4.19 034/196] media: renesas: vsp1: Fix _irqsave and _irq mix
+Date: Thu, 15 Aug 2024 15:22:31 +0200
+Message-ID: <20240815131853.394061622@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-[ Upstream commit ab42fcb511fd9d241bbab7cc3ca04e34e9fc0666 ]
+[ Upstream commit 57edbbcf5258c378a9b9d0c80d33b03a010b22c8 ]
 
-On a PCI adapter that provides up to 8 MSI interrupt sources the s390
-implementation of PCI interrupts rejected to accommodate them, although
-the underlying hardware is able to support that.
+The histogram support mixes _irqsave and _irq, causing the following
+smatch warning:
 
-For MSI-X it is sufficient to allocate a single irq_desc per msi_desc,
-but for MSI multiple irq descriptors are attached to and controlled by
-a single msi descriptor. Add the appropriate loops to maintain multiple
-irq descriptors and tie/untie them to/from the appropriate AIBV bit, if
-a device driver allocates more than 1 MSI interrupt.
+     drivers/media/platform/renesas/vsp1/vsp1_histo.c:153 histo_stop_streaming()
+     warn: mixing irqsave and irq
 
-Common PCI code passes on requests to allocate a number of interrupt
-vectors based on the device drivers' demand and the PCI functions'
-capabilities. However, the root-complex of s390 systems support just a
-limited number of interrupt vectors per PCI function.
-Produce a kernel log message to inform about any architecture-specific
-capping that might be done.
+The histo_stop_streaming() calls spin_lock_irqsave() followed by
+wait_event_lock_irq(). The former hints that interrupts may be disabled
+by the caller, while the latter reenables interrupts unconditionally.
+This doesn't cause any real bug, as the function is always called with
+interrupts enabled, but the pattern is still incorrect.
 
-With this change, we had a PCI adapter successfully raising
-interrupts to its device driver via all 8 sources.
+Fix the problem by using spin_lock_irq() instead of spin_lock_irqsave()
+in histo_stop_streaming(). While at it, switch to spin_lock_irq() and
+spin_lock() as appropriate elsewhere.
 
-Fixes: a384c8924a8b ("s390/PCI: Fix single MSI only check")
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 99362e32332b ("[media] v4l: vsp1: Add histogram support")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-renesas-soc/164d74ff-312c-468f-be64-afa7182cd2f4@moroto.mountain/
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 62 ++++++++++++++++++++++++++++-------------
- 1 file changed, 42 insertions(+), 20 deletions(-)
+ drivers/media/platform/vsp1/vsp1_histo.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 39c3c29f0d1d3..4a1dfce1a5cd2 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -292,8 +292,8 @@ static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
- 
- int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+diff --git a/drivers/media/platform/vsp1/vsp1_histo.c b/drivers/media/platform/vsp1/vsp1_histo.c
+index 5e15c8ff88d99..d1942163e650d 100644
+--- a/drivers/media/platform/vsp1/vsp1_histo.c
++++ b/drivers/media/platform/vsp1/vsp1_histo.c
+@@ -36,9 +36,8 @@ struct vsp1_histogram_buffer *
+ vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
  {
-+	unsigned int hwirq, msi_vecs, irqs_per_msi, i, cpu;
- 	struct zpci_dev *zdev = to_zpci(pdev);
--	unsigned int hwirq, msi_vecs, cpu;
- 	struct msi_desc *msi;
- 	struct msi_msg msg;
- 	unsigned long bit;
-@@ -303,30 +303,46 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
- 	zdev->aisb = -1UL;
- 	zdev->msi_first_bit = -1U;
+ 	struct vsp1_histogram_buffer *buf = NULL;
+-	unsigned long flags;
  
--	if (type == PCI_CAP_ID_MSI && nvec > 1)
--		return 1;
- 	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
-+	if (msi_vecs < nvec) {
-+		pr_info("%s requested %d irqs, allocate system limit of %d",
-+			pci_name(pdev), nvec, zdev->max_msi);
-+	}
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock(&histo->irqlock);
  
- 	rc = __alloc_airq(zdev, msi_vecs, &bit);
- 	if (rc < 0)
- 		return rc;
+ 	if (list_empty(&histo->irqqueue))
+ 		goto done;
+@@ -49,7 +48,7 @@ vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
+ 	histo->readout = true;
  
--	/* Request MSI interrupts */
-+	/*
-+	 * Request MSI interrupts:
-+	 * When using MSI, nvec_used interrupt sources and their irq
-+	 * descriptors are controlled through one msi descriptor.
-+	 * Thus the outer loop over msi descriptors shall run only once,
-+	 * while two inner loops iterate over the interrupt vectors.
-+	 * When using MSI-X, each interrupt vector/irq descriptor
-+	 * is bound to exactly one msi descriptor (nvec_used is one).
-+	 * So the inner loops are executed once, while the outer iterates
-+	 * over the MSI-X descriptors.
-+	 */
- 	hwirq = bit;
- 	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
--		rc = -EIO;
- 		if (hwirq - bit >= msi_vecs)
- 			break;
--		irq = __irq_alloc_descs(-1, 0, 1, 0, THIS_MODULE,
--				(irq_delivery == DIRECTED) ?
--				msi->affinity : NULL);
-+		irqs_per_msi = min_t(unsigned int, msi_vecs, msi->nvec_used);
-+		irq = __irq_alloc_descs(-1, 0, irqs_per_msi, 0, THIS_MODULE,
-+					(irq_delivery == DIRECTED) ?
-+					msi->affinity : NULL);
- 		if (irq < 0)
- 			return -ENOMEM;
--		rc = irq_set_msi_desc(irq, msi);
--		if (rc)
--			return rc;
--		irq_set_chip_and_handler(irq, &zpci_irq_chip,
--					 handle_percpu_irq);
-+
-+		for (i = 0; i < irqs_per_msi; i++) {
-+			rc = irq_set_msi_desc_off(irq, i, msi);
-+			if (rc)
-+				return rc;
-+			irq_set_chip_and_handler(irq + i, &zpci_irq_chip,
-+						 handle_percpu_irq);
-+		}
-+
- 		msg.data = hwirq - bit;
- 		if (irq_delivery == DIRECTED) {
- 			if (msi->affinity)
-@@ -339,31 +355,35 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
- 			msg.address_lo |= (cpu_addr << 8);
- 
- 			for_each_possible_cpu(cpu) {
--				airq_iv_set_data(zpci_ibv[cpu], hwirq, irq);
-+				for (i = 0; i < irqs_per_msi; i++)
-+					airq_iv_set_data(zpci_ibv[cpu],
-+							 hwirq + i, irq + i);
- 			}
- 		} else {
- 			msg.address_lo = zdev->msi_addr & 0xffffffff;
--			airq_iv_set_data(zdev->aibv, hwirq, irq);
-+			for (i = 0; i < irqs_per_msi; i++)
-+				airq_iv_set_data(zdev->aibv, hwirq + i, irq + i);
- 		}
- 		msg.address_hi = zdev->msi_addr >> 32;
- 		pci_write_msi_msg(irq, &msg);
--		hwirq++;
-+		hwirq += irqs_per_msi;
- 	}
- 
- 	zdev->msi_first_bit = bit;
--	zdev->msi_nr_irqs = msi_vecs;
-+	zdev->msi_nr_irqs = hwirq - bit;
- 
- 	rc = zpci_set_irq(zdev);
- 	if (rc)
- 		return rc;
- 
--	return (msi_vecs == nvec) ? 0 : msi_vecs;
-+	return (zdev->msi_nr_irqs == nvec) ? 0 : zdev->msi_nr_irqs;
+ done:
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock(&histo->irqlock);
+ 	return buf;
  }
  
- void arch_teardown_msi_irqs(struct pci_dev *pdev)
+@@ -58,7 +57,6 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
+ 				    size_t size)
  {
- 	struct zpci_dev *zdev = to_zpci(pdev);
- 	struct msi_desc *msi;
-+	unsigned int i;
- 	int rc;
+ 	struct vsp1_pipeline *pipe = histo->entity.pipe;
+-	unsigned long flags;
  
- 	/* Disable interrupts */
-@@ -373,8 +393,10 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+ 	/*
+ 	 * The pipeline pointer is guaranteed to be valid as this function is
+@@ -70,10 +68,10 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
+ 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, size);
+ 	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
  
- 	/* Release MSI interrupts */
- 	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_ASSOCIATED) {
--		irq_set_msi_desc(msi->irq, NULL);
--		irq_free_desc(msi->irq);
-+		for (i = 0; i < msi->nvec_used; i++) {
-+			irq_set_msi_desc(msi->irq + i, NULL);
-+			irq_free_desc(msi->irq + i);
-+		}
- 		msi->msg.address_lo = 0;
- 		msi->msg.address_hi = 0;
- 		msi->msg.data = 0;
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock(&histo->irqlock);
+ 	histo->readout = false;
+ 	wake_up(&histo->wait_queue);
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock(&histo->irqlock);
+ }
+ 
+ /* -----------------------------------------------------------------------------
+@@ -124,11 +122,10 @@ static void histo_buffer_queue(struct vb2_buffer *vb)
+ 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
+ 	struct vsp1_histogram *histo = vb2_get_drv_priv(vb->vb2_queue);
+ 	struct vsp1_histogram_buffer *buf = to_vsp1_histogram_buffer(vbuf);
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock_irq(&histo->irqlock);
+ 	list_add_tail(&buf->queue, &histo->irqqueue);
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock_irq(&histo->irqlock);
+ }
+ 
+ static int histo_start_streaming(struct vb2_queue *vq, unsigned int count)
+@@ -140,9 +137,8 @@ static void histo_stop_streaming(struct vb2_queue *vq)
+ {
+ 	struct vsp1_histogram *histo = vb2_get_drv_priv(vq);
+ 	struct vsp1_histogram_buffer *buffer;
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock_irq(&histo->irqlock);
+ 
+ 	/* Remove all buffers from the IRQ queue. */
+ 	list_for_each_entry(buffer, &histo->irqqueue, queue)
+@@ -152,7 +148,7 @@ static void histo_stop_streaming(struct vb2_queue *vq)
+ 	/* Wait for the buffer being read out (if any) to complete. */
+ 	wait_event_lock_irq(histo->wait_queue, !histo->readout, histo->irqlock);
+ 
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock_irq(&histo->irqlock);
+ }
+ 
+ static const struct vb2_ops histo_video_queue_qops = {
 -- 
 2.43.0
 
