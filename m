@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727C29533F1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13ADB9532C6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274711F27AEA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357BA1C20CB8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6C11A3BCE;
-	Thu, 15 Aug 2024 14:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F85F1A0710;
+	Thu, 15 Aug 2024 14:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRokMKeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdRXsl6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1CE14AD0A;
-	Thu, 15 Aug 2024 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAD229CE6;
+	Thu, 15 Aug 2024 14:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731652; cv=none; b=MykUTrUzYXBGFLtrSHQDKq+YBKXyXM4Zhd2Ny1LiqFzDhus+A0dF8ig5c/gKhClmIqsykCueEqsfuFEOcogdYUB6YPIfBp3VDsnSRH7tTWDytKJbjGUclU0G8+6W/vUGzy2YOOnF9iBu0NMIs+cstvvriYVvcuVZTjWoZeLIc+s=
+	t=1723730852; cv=none; b=f0/LqpY3wA84m4Ay3KZNsw2v5hELs9bII7xFgDm/5CuTDe9P0OGzhIugZz5ZCAxGEgB0tRYlMSZ0ae7McLyI/ZitaWRd55yyGN2gQqCQHHP8hMKKI80S8TtoYU8DrhE7kQ4+LFWz56Hhi3b/uSWTADxOnncKav1ZbVJ0eNY7+NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731652; c=relaxed/simple;
-	bh=8J/PpZ4FZnVdVScWxf62p8tesHaJh74d5IV/USSh9Ds=;
+	s=arc-20240116; t=1723730852; c=relaxed/simple;
+	bh=ogLMKwVSwNLLm4Nh83XdRVUdzqFIeW+yDqieS1cUKG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZOuhJu/EYZUspZd7Ll9gHrfxYcn/Zpb35xEl7ngtW6K1P+ZuGex731/xXsUqxaBoyHF/6C9VRw3bKBvkgm5NFeImla85PGZB05xqPhdYzuCdayG9lQJFzX0ZQBfD+u3jneHwkZkjQD1HS6sn7Ba/FwwbMwar6DIwCIMjc8q3o80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRokMKeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE71C32786;
-	Thu, 15 Aug 2024 14:20:50 +0000 (UTC)
+	 MIME-Version; b=uAr0jCgbZVQlgwjcZ3bxDiwljqDfBqaAdFuyb8V3jj59bVLirj7Pr0sjexfj0t/O+LEIKIfCzRFVoRr6rZE2ThaZbmM6GSyuZTuTC3MfqSLltmZwf5bH0Jm6pFotG5/RDt9DGFm0z4yVchc53w3EZ890mCzBocZehAG+EzdWj+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdRXsl6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB4DC32786;
+	Thu, 15 Aug 2024 14:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731651;
-	bh=8J/PpZ4FZnVdVScWxf62p8tesHaJh74d5IV/USSh9Ds=;
+	s=korg; t=1723730850;
+	bh=ogLMKwVSwNLLm4Nh83XdRVUdzqFIeW+yDqieS1cUKG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRokMKeBY61Om0KmRmG+9XmFBBySwhBa8jRpuS7+CylOK9ECWvbHAIYaTbF//zmYM
-	 FD6/BYEIS0Z5SO103S3dh0tHbvEjY66NQ3UY3tI/7GDEZ+Pw2bg0kFhVlhxHzsC/v/
-	 ecAl5J8J2dwKs/ZhCdh/Z3SApUzMqfpUxrV16EPg=
+	b=GdRXsl6rItMs+/LFazN6JpwOGsPbu6Tz+FeTh4XNJvFjV8XTCfVWDlJ2fanhOhakP
+	 iBBMuX1LHf+7G/1YKk892lp7ZewGDIrfXSsxQ9PH6ZfXcflPCmdbz+k0d+cL1z0EB7
+	 RANaEuTbxPLtbkAl67kJsNPC1yhmvn4HkVYGcyYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 194/259] ACPI: battery: create alarm sysfs attribute atomically
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 13/67] nfsd: expose /proc/net/sunrpc/nfsd in net namespaces
 Date: Thu, 15 Aug 2024 15:25:27 +0200
-Message-ID: <20240815131910.270781768@linuxfoundation.org>
+Message-ID: <20240815131838.836289075@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +60,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit a231eed10ed5a290129fda36ad7bcc263c53ff7d ]
+[ Upstream commit 93483ac5fec62cc1de166051b219d953bb5e4ef4 ]
 
-Let the power supply core register the attribute.
-This ensures that the attribute is created before the device is
-announced to userspace, avoid a race condition.
+We are running nfsd servers inside of containers with their own network
+namespace, and we want to monitor these services using the stats found
+in /proc.  However these are not exposed in the proc inside of the
+container, so we have to bind mount the host /proc into our containers
+to get at this information.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Separate out the stat counters init and the proc registration, and move
+the proc registration into the pernet operations entry and exit points
+so that these stats can be exposed inside of network namespaces.
+
+This is an intermediate step, this just exposes the global counters in
+the network namespace.  Subsequent patches will move these counters into
+the per-network namespace container.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ fs/nfsd/nfsctl.c |    8 +++++---
+ fs/nfsd/stats.c  |   21 ++++++---------------
+ fs/nfsd/stats.h  |    6 ++++--
+ 3 files changed, 15 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index a49a09e3de1b3..af78f76a28729 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -681,12 +681,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
- 	return count;
- }
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1532,6 +1532,7 @@ static __net_init int nfsd_net_init(stru
+ 	nfsd4_init_leases_net(nn);
+ 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
+ 	seqlock_init(&nn->writeverf_lock);
++	nfsd_proc_stat_init(net);
  
--static const struct device_attribute alarm_attr = {
-+static struct device_attribute alarm_attr = {
- 	.attr = {.name = "alarm", .mode = 0644},
- 	.show = acpi_battery_alarm_show,
- 	.store = acpi_battery_alarm_store,
- };
+ 	return 0;
  
-+static struct attribute *acpi_battery_attrs[] = {
-+	&alarm_attr.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(acpi_battery);
-+
- /*
-  * The Battery Hooking API
-  *
-@@ -823,7 +829,10 @@ static void __exit battery_hook_exit(void)
- 
- static int sysfs_add_battery(struct acpi_battery *battery)
+@@ -1552,6 +1553,7 @@ static __net_exit void nfsd_net_exit(str
  {
--	struct power_supply_config psy_cfg = { .drv_data = battery, };
-+	struct power_supply_config psy_cfg = {
-+		.drv_data = battery,
-+		.attr_grp = acpi_battery_groups,
-+	};
- 	bool full_cap_broken = false;
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
  
- 	if (!ACPI_BATTERY_CAPACITY_VALID(battery->full_charge_capacity) &&
-@@ -868,7 +877,7 @@ static int sysfs_add_battery(struct acpi_battery *battery)
- 		return result;
- 	}
- 	battery_hook_add_battery(battery);
--	return device_create_file(&battery->bat->dev, &alarm_attr);
-+	return 0;
++	nfsd_proc_stat_shutdown(net);
+ 	nfsd_net_reply_cache_destroy(nn);
+ 	nfsd_idmap_shutdown(net);
+ 	nfsd_export_shutdown(net);
+@@ -1575,7 +1577,7 @@ static int __init init_nfsd(void)
+ 	retval = nfsd4_init_pnfs();
+ 	if (retval)
+ 		goto out_free_slabs;
+-	retval = nfsd_stat_init();	/* Statistics */
++	retval = nfsd_stat_counters_init();	/* Statistics */
+ 	if (retval)
+ 		goto out_free_pnfs;
+ 	retval = nfsd_drc_slab_create();
+@@ -1611,7 +1613,7 @@ out_free_lockd:
+ 	nfsd_lockd_shutdown();
+ 	nfsd_drc_slab_free();
+ out_free_stat:
+-	nfsd_stat_shutdown();
++	nfsd_stat_counters_destroy();
+ out_free_pnfs:
+ 	nfsd4_exit_pnfs();
+ out_free_slabs:
+@@ -1628,7 +1630,7 @@ static void __exit exit_nfsd(void)
+ 	nfsd_drc_slab_free();
+ 	remove_proc_entry("fs/nfs/exports", NULL);
+ 	remove_proc_entry("fs/nfs", NULL);
+-	nfsd_stat_shutdown();
++	nfsd_stat_counters_destroy();
+ 	nfsd_lockd_shutdown();
+ 	nfsd4_free_slabs();
+ 	nfsd4_exit_pnfs();
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -108,31 +108,22 @@ void nfsd_percpu_counters_destroy(struct
+ 		percpu_counter_destroy(&counters[i]);
  }
  
- static void sysfs_remove_battery(struct acpi_battery *battery)
-@@ -879,7 +888,6 @@ static void sysfs_remove_battery(struct acpi_battery *battery)
- 		return;
- 	}
- 	battery_hook_remove_battery(battery);
--	device_remove_file(&battery->bat->dev, &alarm_attr);
- 	power_supply_unregister(battery->bat);
- 	battery->bat = NULL;
- 	mutex_unlock(&battery->sysfs_lock);
--- 
-2.43.0
-
+-static int nfsd_stat_counters_init(void)
++int nfsd_stat_counters_init(void)
+ {
+ 	return nfsd_percpu_counters_init(nfsdstats.counter, NFSD_STATS_COUNTERS_NUM);
+ }
+ 
+-static void nfsd_stat_counters_destroy(void)
++void nfsd_stat_counters_destroy(void)
+ {
+ 	nfsd_percpu_counters_destroy(nfsdstats.counter, NFSD_STATS_COUNTERS_NUM);
+ }
+ 
+-int nfsd_stat_init(void)
++void nfsd_proc_stat_init(struct net *net)
+ {
+-	int err;
+-
+-	err = nfsd_stat_counters_init();
+-	if (err)
+-		return err;
+-
+-	svc_proc_register(&init_net, &nfsd_svcstats, &nfsd_proc_ops);
+-
+-	return 0;
++	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
+ }
+ 
+-void nfsd_stat_shutdown(void)
++void nfsd_proc_stat_shutdown(struct net *net)
+ {
+-	nfsd_stat_counters_destroy();
+-	svc_proc_unregister(&init_net, "nfsd");
++	svc_proc_unregister(net, "nfsd");
+ }
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -40,8 +40,10 @@ extern struct svc_stat		nfsd_svcstats;
+ int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
+ void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
+ void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
+-int nfsd_stat_init(void);
+-void nfsd_stat_shutdown(void);
++int nfsd_stat_counters_init(void);
++void nfsd_stat_counters_destroy(void);
++void nfsd_proc_stat_init(struct net *net);
++void nfsd_proc_stat_shutdown(struct net *net);
+ 
+ static inline void nfsd_stats_rc_hits_inc(void)
+ {
 
 
 
