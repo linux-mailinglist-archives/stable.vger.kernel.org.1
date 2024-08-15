@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FCA953247
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:04:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D58619533F9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B17331C25A55
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AE731C25B4B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FEA419FA91;
-	Thu, 15 Aug 2024 14:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B152F1A00E2;
+	Thu, 15 Aug 2024 14:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoJICipv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSnmNX7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F316144376;
-	Thu, 15 Aug 2024 14:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E17A1AC8BB;
+	Thu, 15 Aug 2024 14:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730553; cv=none; b=l8Tj6uD0EYScdR7R9DqU/3+GyT1nVnkV9+2L8eCNbtUtvmuyX6vXysdyuQ2RdfLWmRTuXVoUSilO6+gHbIVYplq1iX8OEElLqx6KJZ+8ZuwCooSLEkzMngKbEPd5+/Nudx2zZa1aEt26ELai+vo6dqQWJWZa4bvhzI43AmBns7w=
+	t=1723731672; cv=none; b=nRdVMJIws+Z2OAmVEIAP+14bpJMWvjLmSXea3lq/NTwI/5oyGt/qsLydALemDoXEvR5QCLDq9R2zfdKo+Vm0xvj9afUT9N+D4KmHpGQ334R2NbGDxjYB7eJzRBk/eS1XJPUPxIpdQx2UYB3kZRFwDGlu7WZf0DcyDIFQNbwI1PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730553; c=relaxed/simple;
-	bh=dNioB9qs23oPuwPSDPNNqQYR61Z1TWqKVG3mGcMS2iI=;
+	s=arc-20240116; t=1723731672; c=relaxed/simple;
+	bh=S+6xZkbpntIQHOqOwL7fVnucWCzIgiYAmxDNhr1igKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKX7o760ESe6LpuY2jAe0vHaoKkE75oxpA88+DskUzRSnui4eMIWNxd7DCARnm4aAr4Ah2aATC44PZ4wJAgJMJp4nf/aJRm4MTxrTgIiHDC88D6zuqip+gctlE2Xa04l/6+MrrM7gLQRjRla+Ab5fsIqapjUGpLVBTusQcnySj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoJICipv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78967C4AF0F;
-	Thu, 15 Aug 2024 14:02:32 +0000 (UTC)
+	 MIME-Version; b=Xyj6sfVWgUjCETeML4CybyIvJjnNGVj0kJtcPcKazQQ6/8VoGJy4JG4VuTelG81D+AS+gfrBqlG98xcvINyNin47YigpsADxRaIZhdwyizM4itE/OchI/o3RBfrqJ7hJLXoA0AraMnPrfSAf4Sonndzt+uElmJBYYbItCdU+iLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSnmNX7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C06C32786;
+	Thu, 15 Aug 2024 14:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730552;
-	bh=dNioB9qs23oPuwPSDPNNqQYR61Z1TWqKVG3mGcMS2iI=;
+	s=korg; t=1723731672;
+	bh=S+6xZkbpntIQHOqOwL7fVnucWCzIgiYAmxDNhr1igKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BoJICipvfV7Qevx21KeksH5BQ16rfw+f30+s+N9kMzmM7x06jufImynA8LxC2/wso
-	 j+ADHMH5VVzHBDEFbAhPfMFjdBAD3p+z46EMv9GLJNc7on5YEOncLlnjviEZev6vmW
-	 XlIzU1iS8RMKeUbtdDtm5o5kKoD0tXi/9Dci9m7I=
+	b=OSnmNX7n/2QlwYVIM1gnbY9ZzCgKLrd0v0kZElsFXphaRFsYjpULNc4rbUIeTTHOr
+	 fDKoJUFX8/TXQYeMEB6rYw/yBOr0/UA155lMXz/E3r1wQHxwMwD2OWu10F0G5RMOkT
+	 eiO+jVuD2kpVhMzW1P8MxivAQZiSP2KjJZx9H1Qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 445/484] padata: Fix possible divide-by-0 panic in padata_mt_helper()
+	Peng Fan <peng.fan@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 170/259] remoteproc: imx_rproc: ignore mapping vdev regions
 Date: Thu, 15 Aug 2024 15:25:03 +0200
-Message-ID: <20240815131958.648426993@linuxfoundation.org>
+Message-ID: <20240815131909.345570897@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 6d45e1c948a8b7ed6ceddb14319af69424db730c upstream.
+[ Upstream commit 8f2d8961640f0346cbe892273c3260a0d30c1931 ]
 
-We are hit with a not easily reproducible divide-by-0 panic in padata.c at
-bootup time.
+vdev regions are vdev0vring0, vdev0vring1, vdevbuffer and similar.
+They are handled by remoteproc common code, no need to map in imx
+rproc driver.
 
-  [   10.017908] Oops: divide error: 0000 1 PREEMPT SMP NOPTI
-  [   10.017908] CPU: 26 PID: 2627 Comm: kworker/u1666:1 Not tainted 6.10.0-15.el10.x86_64 #1
-  [   10.017908] Hardware name: Lenovo ThinkSystem SR950 [7X12CTO1WW]/[7X12CTO1WW], BIOS [PSE140J-2.30] 07/20/2021
-  [   10.017908] Workqueue: events_unbound padata_mt_helper
-  [   10.017908] RIP: 0010:padata_mt_helper+0x39/0xb0
-    :
-  [   10.017963] Call Trace:
-  [   10.017968]  <TASK>
-  [   10.018004]  ? padata_mt_helper+0x39/0xb0
-  [   10.018084]  process_one_work+0x174/0x330
-  [   10.018093]  worker_thread+0x266/0x3a0
-  [   10.018111]  kthread+0xcf/0x100
-  [   10.018124]  ret_from_fork+0x31/0x50
-  [   10.018138]  ret_from_fork_asm+0x1a/0x30
-  [   10.018147]  </TASK>
-
-Looking at the padata_mt_helper() function, the only way a divide-by-0
-panic can happen is when ps->chunk_size is 0.  The way that chunk_size is
-initialized in padata_do_multithreaded(), chunk_size can be 0 when the
-min_chunk in the passed-in padata_mt_job structure is 0.
-
-Fix this divide-by-0 panic by making sure that chunk_size will be at least
-1 no matter what the input parameters are.
-
-Link: https://lkml.kernel.org/r/20240806174647.1050398-1-longman@redhat.com
-Fixes: 004ed42638f4 ("padata: add basic support for multithreaded jobs")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Cc: Daniel Jordan <daniel.m.jordan@oracle.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Waiman Long <longman@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Link: https://lore.kernel.org/r/1615029865-23312-10-git-send-email-peng.fan@oss.nxp.com
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Stable-dep-of: 2fa26ca8b786 ("remoteproc: imx_rproc: Skip over memory region when node value is NULL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/remoteproc/imx_rproc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -508,6 +508,13 @@ void __init padata_do_multithreaded(stru
- 	ps.chunk_size = max(ps.chunk_size, job->min_chunk);
- 	ps.chunk_size = roundup(ps.chunk_size, job->align);
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 3e72b6f38d4bc..05b724fdca591 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -286,6 +286,9 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+ 		struct resource res;
  
-+	/*
-+	 * chunk_size can be 0 if the caller sets min_chunk to 0. So force it
-+	 * to at least 1 to prevent divide-by-0 panic in padata_mt_helper().`
-+	 */
-+	if (!ps.chunk_size)
-+		ps.chunk_size = 1U;
-+
- 	list_for_each_entry(pw, &works, pw_list)
- 		queue_work(system_unbound_wq, &pw->pw_work);
- 
+ 		node = of_parse_phandle(np, "memory-region", a);
++		/* Not map vdev region */
++		if (!strcmp(node->name, "vdev"))
++			continue;
+ 		err = of_address_to_resource(node, 0, &res);
+ 		if (err) {
+ 			dev_err(dev, "unable to resolve memory region\n");
+-- 
+2.43.0
+
 
 
 
