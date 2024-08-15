@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040E1953175
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5420D952F21
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DFA1C22704
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2608B249A1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6851F19DF58;
-	Thu, 15 Aug 2024 13:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742F41DFFB;
+	Thu, 15 Aug 2024 13:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSmVVY+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBjqwEjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9F1714A1;
-	Thu, 15 Aug 2024 13:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B3B17CA1D;
+	Thu, 15 Aug 2024 13:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730055; cv=none; b=rYtFfNIDYlMRW08/0/grVovXpAiJMjKJE2V4hgIZTV6u05vZ2jw480R1P5XnHaHHM7q9V7LGFFmau8lD2Or3nakoQUQLIM+uJ1kB0R/9ETp4HYmaJ1HIRyXtld08jC89sRo6Tlm6/FX4qCzMMdcwEzGQzv0u1YxUcs/F0oCppik=
+	t=1723728535; cv=none; b=g8nM4lJtKKkn2eZnQv1L0x4WUsqKc1dua72gizbIKgQrVh2EU0prX7TeaKNKVG8CCI4SIUnI71lO4FATLJ1HCjwvYlSON3lPnLj3gIRmaMgslt2QNXIVwoeylZlkzyerQJHdagNM7dcsfxJmv662C5Tr3F+q0b8dRrFIMhEAK1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730055; c=relaxed/simple;
-	bh=i7QsemlssG5QUhv5wgHwf1rgTGa69Y3cAb2XXqHuHCM=;
+	s=arc-20240116; t=1723728535; c=relaxed/simple;
+	bh=wslGucgzhkjIuJbEQOmva8PAuEImQmbZ6EfyvKGFJK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/7AjVufB0mF/ogY/gEQBJfioNesYF4+ei15L3BO7cmWEixfYA6d6N9V+sy/NH6wZB+6fmvBXq3ANZSBIqQsEDGu/P3cj/iJMBjlOAMShWn8gA35hPfTUYWJB9GwVNPUA+OWffiWCDX00M4TybTJz8UEB1woEbYennFQ+b4pJpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSmVVY+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7B1C32786;
-	Thu, 15 Aug 2024 13:54:14 +0000 (UTC)
+	 MIME-Version; b=djVRWzhgWLN4Dad4UgGW2ysPImEYD439eLAoKr7GblHdZ7ZNAA3Az3v4224RgXWhkZIVSsMvQKyxIPApEi3DDrnfMWeZ80LQ1wST859bU8UMTerBs+2ALvyn1waqubU+fzwqPCuTSI219xw7fehivG6lpBluZKuSWBc+UhsctrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBjqwEjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90586C32786;
+	Thu, 15 Aug 2024 13:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730054;
-	bh=i7QsemlssG5QUhv5wgHwf1rgTGa69Y3cAb2XXqHuHCM=;
+	s=korg; t=1723728535;
+	bh=wslGucgzhkjIuJbEQOmva8PAuEImQmbZ6EfyvKGFJK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSmVVY+mho6sVyHY+NLqkTRyXIZSjq8EXWO1BeUwGEndDriT2oLyjiNf5AfV55kmf
-	 AkT8EwlapHS3n3NmLb3krAReQcMoREhd1OB3sfv6Ga6/67WNtG9gLcfFjSd1W70OYm
-	 PWm//JKbnLkVwzFz3wylRn7wHdohIzL6hSDOQe/Y=
+	b=uBjqwEjVHCID2UEpxkcOi1nr+rao0+0IoVsP08IA5Uydwz5S1uW1DhzlcIVvRuOmu
+	 DImoycQCL7L6NOd3frPjV+/Hb8seHKBNv1gA0o8fCNyXWloEAOuRGT3BS6lgvmKija
+	 eSoRX3E7iYgC+KyxGTXq6J8KTG8YMNdsa8weCGNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ethanwu <ethanwu@synology.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 289/484] ceph: fix incorrect kmalloc size of pagevec mempool
+Subject: [PATCH 4.19 030/196] media: imon: Fix race getting ictx->lock
 Date: Thu, 15 Aug 2024 15:22:27 +0200
-Message-ID: <20240815131952.571096533@linuxfoundation.org>
+Message-ID: <20240815131853.239600449@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ethanwu <ethanwu@synology.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 03230edb0bd831662a7c08b6fef66b2a9a817774 ]
+[ Upstream commit 24147897507cd3a7d63745d1518a638bf4132238 ]
 
-The kmalloc size of pagevec mempool is incorrectly calculated.
-It misses the size of page pointer and only accounts the number for the array.
+Lets fix a race between mutex_is_lock() and mutex_lock().
 
-Fixes: a0102bda5bc0 ("ceph: move sb->wb_pagevec_pool to be a global mempool")
-Signed-off-by: ethanwu <ethanwu@synology.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+<-mutex is not locked
+if (!mutex_is_locked(&ictx->lock)) {
+	unlock = true; <- mutex is locked externaly
+	mutex_lock(&ictx->lock);
+}
+
+Let's use mutex_trylock() that does mutex_is_lock() and mutex_lock()
+atomically.
+
+Fix the following cocci warning:
+drivers/media/rc/imon.c:1167:1-7: preceding lock on line 1153
+
+Fixes: 23ef710e1a6c ("[media] imon: add conditional locking in change_protocol")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/rc/imon.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-index 1723ec21cd470..b5ed6d9a19f4a 100644
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -783,7 +783,8 @@ static int __init init_caches(void)
- 	if (!ceph_mds_request_cachep)
- 		goto bad_mds_req;
+diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
+index 99bb7380ee0e5..c78e1a4a10ec5 100644
+--- a/drivers/media/rc/imon.c
++++ b/drivers/media/rc/imon.c
+@@ -1126,10 +1126,7 @@ static int imon_ir_change_protocol(struct rc_dev *rc, u64 *rc_proto)
  
--	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10, CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT);
-+	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10,
-+	    (CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT) * sizeof(struct page *));
- 	if (!ceph_wb_pagevec_pool)
- 		goto bad_pagevec_pool;
+ 	memcpy(ictx->usb_tx_buf, &ir_proto_packet, sizeof(ir_proto_packet));
  
+-	if (!mutex_is_locked(&ictx->lock)) {
+-		unlock = true;
+-		mutex_lock(&ictx->lock);
+-	}
++	unlock = mutex_trylock(&ictx->lock);
+ 
+ 	retval = send_packet(ictx);
+ 	if (retval)
 -- 
 2.43.0
 
