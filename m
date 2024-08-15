@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-68617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94AF5953331
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42639534A9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49E031F23948
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50369B2794C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3CD1AD3EE;
-	Thu, 15 Aug 2024 14:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB4E18CBE1;
+	Thu, 15 Aug 2024 14:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v78wvWA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjWW19uU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E651AD3E5;
-	Thu, 15 Aug 2024 14:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE0F19DFA4;
+	Thu, 15 Aug 2024 14:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731132; cv=none; b=danfSeZF7agzIFClULeZJmB5WPP4JmFphOLRwAfpdEE6epizuhcOmIoMt6Scpu7R26OJKgTMxxbhysQ7RJjTUR+BttO+UnkguoOTEp1dEgfZCExM3i0vFOxFJN5ut9EP+bbqmP8p6LZHRSVFExK86yvnf7YctOUDNDGV2eBruT4=
+	t=1723732110; cv=none; b=MLeiFGU1lKUieAhrTrsY176dYWfD7J+id61nsI2DhklI/rUQOA/YdP527k6cApOk9yJb3FR1kgszqiTZHKKnrW+gIFv8W3XStupFZDIABfw55WDeEINMJGpgxwmHrhUHgXJmhES+VeE7XFDwGIVtloJ9y/cO42MgRrhxkwZdp4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731132; c=relaxed/simple;
-	bh=nkNVeNka2XQn964XDUpYI+H0RxgyPK4uxz8p0CW256M=;
+	s=arc-20240116; t=1723732110; c=relaxed/simple;
+	bh=NFhZmzEG6KhDXWzeR/4KyloH/jrUEOmlgPUYlpuoPAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FNVAW+kFGIn1/eWGaNam6U8bLIwB4LQypnkdVsVgb3p/m+cZintl6qXHNPUX0UYRK1iAPO0dLfUVJdl8+unVhyOXZIH5jveSvIsrRQtOPt1RPrN7eCMly0tWmi7UGizE+WOOwuiUrDE8GG7Zt8LItFuDH/4PlpqPHkZXxsrwCa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v78wvWA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DD7C32786;
-	Thu, 15 Aug 2024 14:12:11 +0000 (UTC)
+	 MIME-Version; b=BEp4Jbf8hGCVYoghaZCpAhZ5AYk4mqk3Ezk4WUn636h7G339uUBb3dM3QPtd7iqhNFRUCUv39zm+oNgu0miB9A+e88G/uhHYUprV4xbSBELAq1S2rWxl1pRdzoSZyqzI14w2yrjJDr8r3ZgekSxCTaXx8a6uYrrxIsLr/n+PIAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjWW19uU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C718DC32786;
+	Thu, 15 Aug 2024 14:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731131;
-	bh=nkNVeNka2XQn964XDUpYI+H0RxgyPK4uxz8p0CW256M=;
+	s=korg; t=1723732110;
+	bh=NFhZmzEG6KhDXWzeR/4KyloH/jrUEOmlgPUYlpuoPAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v78wvWA8+Dzs3z15y7hhiPaioujM07zL8XY5j5Sr17w4NAy3hSjOucZhKYCK8TpgA
-	 mrWOOPNrdFaHHEQLDpJVrKeqhmFwKZeJ9t+KOqKGE2smiHYAih41uH8pkMQ3VI15Ia
-	 Spx79V+/Vz9yE3QC0XZuDkqaEKyp9E9DLiwZQvM0=
+	b=HjWW19uUaXQVwXp1McgaH9q6r+nY9vGAEOFQH1MJrsJg+4sxlYv48ZrN5tHFgogd0
+	 FQ6xCd/48K6vbTDdJUHjfiyyc2o5YKTK1xNyeiGyD9xW39Q7UOquOOTePrfe3eQN6x
+	 pQC9EfFAlWDVgIdLawFqIm/0IiGEGhBTIz9he4NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Juergen Gross <jgross@suse.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 009/259] x86/pci/xen: Fix PCIBIOS_* return code handling
+Subject: [PATCH 5.10 076/352] s390/uv: Dont call folio_wait_writeback() without a folio reference
 Date: Thu, 15 Aug 2024 15:22:22 +0200
-Message-ID: <20240815131903.151707996@linuxfoundation.org>
+Message-ID: <20240815131922.180958015@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit e9d7b435dfaec58432f4106aaa632bf39f52ce9f ]
+[ Upstream commit 3f29f6537f54d74e64bac0a390fb2e26da25800d ]
 
-xen_pcifront_enable_irq() uses pci_read_config_byte() that returns
-PCIBIOS_* codes. The error handling, however, assumes the codes are
-normal errnos because it checks for < 0.
+folio_wait_writeback() requires that no spinlocks are held and that
+a folio reference is held, as documented. After we dropped the PTL, the
+folio could get freed concurrently. So grab a temporary reference.
 
-xen_pcifront_enable_irq() also returns the PCIBIOS_* code back to the
-caller but the function is used as the (*pcibios_enable_irq) function
-which should return normal errnos.
-
-Convert the error check to plain non-zero check which works for
-PCIBIOS_* return codes and convert the PCIBIOS_* return code using
-pcibios_err_to_errno() into normal errno before returning it.
-
-Fixes: 3f2a230caf21 ("xen: handled remapped IRQs when enabling a pcifront PCI device.")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20240527125538.13620-3-ilpo.jarvinen@linux.intel.com
+Fixes: 214d9bbcd3a6 ("s390/mm: provide memory management functions for protected KVM guests")
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/r/20240508182955.358628-2-david@redhat.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/pci/xen.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/kernel/uv.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
-index 9cf8f5417e7f4..f93e03b236457 100644
---- a/arch/x86/pci/xen.c
-+++ b/arch/x86/pci/xen.c
-@@ -37,10 +37,10 @@ static int xen_pcifront_enable_irq(struct pci_dev *dev)
- 	u8 gsi;
- 
- 	rc = pci_read_config_byte(dev, PCI_INTERRUPT_LINE, &gsi);
--	if (rc < 0) {
-+	if (rc) {
- 		dev_warn(&dev->dev, "Xen PCI: failed to read interrupt line: %d\n",
- 			 rc);
--		return rc;
-+		return pcibios_err_to_errno(rc);
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 8c73d4901e145..03a8a9a52186a 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -320,6 +320,13 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 			rc = make_folio_secure(folio, uvcb);
+ 			folio_unlock(folio);
+ 		}
++
++		/*
++		 * Once we drop the PTL, the folio may get unmapped and
++		 * freed immediately. We need a temporary reference.
++		 */
++		if (rc == -EAGAIN)
++			folio_get(folio);
  	}
- 	/* In PV DomU the Xen PCI backend puts the PIRQ in the interrupt line.*/
- 	pirq = gsi;
+ unlock:
+ 	pte_unmap_unlock(ptep, ptelock);
+@@ -332,6 +339,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 		 * completion, this is just a useless check, but it is safe.
+ 		 */
+ 		folio_wait_writeback(folio);
++		folio_put(folio);
+ 	} else if (rc == -EBUSY) {
+ 		/*
+ 		 * If we have tried a local drain and the folio refcount
 -- 
 2.43.0
 
