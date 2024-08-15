@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-69063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24225953546
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:36:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6B69533B3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0C661F2A7BF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:35:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA266B2637C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FD31A00CE;
-	Thu, 15 Aug 2024 14:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D1D17C9B6;
+	Thu, 15 Aug 2024 14:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/OH5f8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQui2Y0+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21CB1DFFB;
-	Thu, 15 Aug 2024 14:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E35C1A01D2;
+	Thu, 15 Aug 2024 14:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732545; cv=none; b=RzJbVhbbg+WUeeqrGGdRbuwkSPGos+ZtftDrGL7oRGz2xCiMmimicUNhGlW7zm1WwnMUYqiHY3KTjVAasO8aI9M5DQvsg1i53xzj/7NBsZbkSjt11UvgNwd5sTuEJBbZ+6OMIaTqBWAM0RIUSUEFnnWfFzJAZ4u1bCmpJJghIOM=
+	t=1723731482; cv=none; b=rFyjPyJq3wDr6lEXQIVYe+XJFQA2qBdnsBId11YhnnMx/gM+ptoGs32XztE3xY0b/o3dYnmQ0oWrhON2vfBnswcWoEQER8J9Z1qtzW/L5/p+J3kbm3Uft5RoBV0G32ATOjktw7ZZwkb2P6MUuSoTNTkTDKMqLQpif3pVK1FOtKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732545; c=relaxed/simple;
-	bh=f9ZX2a+B5SQXSIUJnEa2fRMWukS1bzGjopsjLE/sIxk=;
+	s=arc-20240116; t=1723731482; c=relaxed/simple;
+	bh=7kcbAlDIyivt9wOjbLGHYv3jN8s5E6gm878BloKlUhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0bsh5b1NWHZqGYc4xNy8if5XgEKesHlPE2ClSjZoB1o4+Xjj8Le+EtaeV993Yoolm1l4pJBtAXXgeKu9c9bfn03qoljRCOsPmFNWfEGfrecShv+65KT/75XxlMIXAovOthVw7jkefFTCemlrJ/lhxndWYJLEQezt6d/9YWeFW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/OH5f8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4E3C32786;
-	Thu, 15 Aug 2024 14:35:45 +0000 (UTC)
+	 MIME-Version; b=r6rQGUcCVgnIi2Vw7y/ALAan2XwYoSMTD4tU90uxm4b9GN3aBEn0GHjBawzq8mjZBVbMsIiDYGZSS20GsfduB+CP6U9atJ1c7qgd6VEdXyDcu3dcLj6C6YgAyQ3k7cmK74YHMW0lf3cHpLOte6NYVytQ2f5RuceTkvyEvaHQLQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQui2Y0+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92525C4AF0C;
+	Thu, 15 Aug 2024 14:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732545;
-	bh=f9ZX2a+B5SQXSIUJnEa2fRMWukS1bzGjopsjLE/sIxk=;
+	s=korg; t=1723731482;
+	bh=7kcbAlDIyivt9wOjbLGHYv3jN8s5E6gm878BloKlUhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/OH5f8pxQOQHjYldzVmyDLy8MjfjZIyxbRtGQQkUCWfaXzx/4il0BOyn2ztDDM01
-	 pz5fTfYoJqgajuVYtxiHnKhhuy+/cjOJNIqwIyO+fN4XHOYPsWltvfe40PSx3yLg50
-	 hdW9fo7wEzKjKTHvOpGrBFvwiPAzei6UzSaAAVCg=
+	b=nQui2Y0+BAEYXp1ilu8sYHP95NSqnIXcArZySDAS9kouL5Na49t+wjEdBu1m5S88u
+	 bQ40/3ABUazZf6nRrQbEmod1BR6KE5go6Ogf5tFOls270RbeERZYxe9AW6j8PRvlcx
+	 /RStotK6adOgepiwlmoONzd61nudM4tbI/6Cu38M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 211/352] s390/pci: Refactor arch_setup_msi_irqs()
+Subject: [PATCH 5.4 144/259] net: nexthop: Initialize all fields in dumped nexthops
 Date: Thu, 15 Aug 2024 15:24:37 +0200
-Message-ID: <20240815131927.444086684@linuxfoundation.org>
+Message-ID: <20240815131908.352623448@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 5fd11b96b43708f2f6e3964412c301c1bd20ec0f ]
+[ Upstream commit 6d745cd0e9720282cd291d36b9db528aea18add2 ]
 
-Factor out adapter interrupt allocation from arch_setup_msi_irqs() in
-preparation for enabling registration of multiple MSIs. Code movement
-only, no change of functionality intended.
+struct nexthop_grp contains two reserved fields that are not initialized by
+nla_put_nh_group(), and carry garbage. This can be observed e.g. with
+strace (edited for clarity):
 
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
+    # ip nexthop add id 1 dev lo
+    # ip nexthop add id 101 group 1
+    # strace -e recvmsg ip nexthop get id 101
+    ...
+    recvmsg(... [{nla_len=12, nla_type=NHA_GROUP},
+                 [{id=1, weight=0, resvd1=0x69, resvd2=0x67}]] ...) = 52
+
+The fields are reserved and therefore not currently used. But as they are, they
+leak kernel memory, and the fact they are not just zero complicates repurposing
+of the fields for new ends. Initialize the full structure.
+
+Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 54 ++++++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 22 deletions(-)
+ net/ipv4/nexthop.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 9ed76fa9391cb..b36f5ef34a6c1 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -232,33 +232,20 @@ static void zpci_floating_irq_handler(struct airq_struct *airq, bool floating)
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 0137854a7faaa..388f5773b88d2 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -201,9 +201,10 @@ static int nla_put_nh_group(struct sk_buff *skb, struct nh_group *nhg)
+ 
+ 	p = nla_data(nla);
+ 	for (i = 0; i < nhg->num_nh; ++i) {
+-		p->id = nhg->nh_entries[i].nh->id;
+-		p->weight = nhg->nh_entries[i].weight - 1;
+-		p += 1;
++		*p++ = (struct nexthop_grp) {
++			.id = nhg->nh_entries[i].nh->id,
++			.weight = nhg->nh_entries[i].weight - 1,
++		};
  	}
- }
  
--int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
-+			unsigned long *bit)
- {
--	struct zpci_dev *zdev = to_zpci(pdev);
--	unsigned int hwirq, msi_vecs, cpu;
--	unsigned long bit;
--	struct msi_desc *msi;
--	struct msi_msg msg;
--	int cpu_addr;
--	int rc, irq;
--
--	zdev->aisb = -1UL;
--	zdev->msi_first_bit = -1U;
--	if (type == PCI_CAP_ID_MSI && nvec > 1)
--		return 1;
--	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
--
- 	if (irq_delivery == DIRECTED) {
- 		/* Allocate cpu vector bits */
--		bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
-+		if (*bit == -1UL)
- 			return -EIO;
- 	} else {
- 		/* Allocate adapter summary indicator bit */
--		bit = airq_iv_alloc_bit(zpci_sbv);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc_bit(zpci_sbv);
-+		if (*bit == -1UL)
- 			return -EIO;
--		zdev->aisb = bit;
-+		zdev->aisb = *bit;
- 
- 		/* Create adapter interrupt vector */
- 		zdev->aibv = airq_iv_create(msi_vecs, AIRQ_IV_DATA | AIRQ_IV_BITLOCK);
-@@ -266,10 +253,33 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
- 			return -ENOMEM;
- 
- 		/* Wire up shortcut pointer */
--		zpci_ibv[bit] = zdev->aibv;
-+		zpci_ibv[*bit] = zdev->aibv;
- 		/* Each function has its own interrupt vector */
--		bit = 0;
-+		*bit = 0;
- 	}
-+	return 0;
-+}
-+
-+int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+{
-+	struct zpci_dev *zdev = to_zpci(pdev);
-+	unsigned int hwirq, msi_vecs, cpu;
-+	struct msi_desc *msi;
-+	struct msi_msg msg;
-+	unsigned long bit;
-+	int cpu_addr;
-+	int rc, irq;
-+
-+	zdev->aisb = -1UL;
-+	zdev->msi_first_bit = -1U;
-+
-+	if (type == PCI_CAP_ID_MSI && nvec > 1)
-+		return 1;
-+	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
-+
-+	rc = __alloc_airq(zdev, msi_vecs, &bit);
-+	if (rc < 0)
-+		return rc;
- 
- 	/* Request MSI interrupts */
- 	hwirq = bit;
+ 	return 0;
 -- 
 2.43.0
 
