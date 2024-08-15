@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-68890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8804995347D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:27:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3465B953480
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3101C1F2903A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:27:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C21F2B272D9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80AD19E808;
-	Thu, 15 Aug 2024 14:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D91C1A00EC;
+	Thu, 15 Aug 2024 14:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1sF5YlK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r50cNa0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EAD1AC896;
-	Thu, 15 Aug 2024 14:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2673214;
+	Thu, 15 Aug 2024 14:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731990; cv=none; b=ovwFB07AIzCB6Ioh9xXkGg7FuenXPmgmxXidtO5yY3Eums86SNQwVgWvUwH2bIevoHlS1zn6H+aYqRsQiKAp6s1aO+fj9dfUxj7DF4+C3WFVnTw/HNSLrXVWnlkvePdcEtuuKCIboMvrH41sGOBS+o1YEemggb5dIAG0sDrpJfU=
+	t=1723731997; cv=none; b=pKFT94Oh1pKCsQFxsGTPAXO2Abno2UTtZ/1LIKMUwr0DZbyhMZKTenj2G3sXen3Q43SP58G84p4fDLeLspNlyclvOyiwIOXXYW+TRtizzEC37mJQNN50NNVdQ/Sec+n83KrMZSGjXrJw63deDILxN5lOZXAgb9yOw33LT0jdjiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731990; c=relaxed/simple;
-	bh=HuVMTq0DyeDDopxu/D1NIeSIVimNSCDHOjIAyGY7IXw=;
+	s=arc-20240116; t=1723731997; c=relaxed/simple;
+	bh=9gLKopD8+g+6o9QLaNvzmpw+O0hZ3EU6/CZgdSjHkZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjFg3HclVko4HgS4u+uoDpUzagCqTNkVITTRZzPeITNgf6Jg0PWcxa3HGoQYS1+DYNFdSmmyG3unv4Ix/+O1/MTEAHgTCsaIzuIaVtY1g8LeDR+AOhNgmVwC91KAVL/A3ASUOhDpTZ7F9DuoVe9JON1vP6+bcT/2zGPtTvpPOeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1sF5YlK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D3AC32786;
-	Thu, 15 Aug 2024 14:26:30 +0000 (UTC)
+	 MIME-Version; b=CNEmjdCoSbYHZFACe+/W7fvdiXm76lyFPI53pdx1BuqHUvrRtjpNI1v7UNI4VaSMMA7nhmjXWeGjxr2yaJe1RU5QDa5nf2okf+MdD69hRWOO7dOJaObq6tMuEgg6s0wsWZlS1fzsChXc73wSjKtpt5u7UqiQ39ukFBFsH2f6QMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r50cNa0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C353C32786;
+	Thu, 15 Aug 2024 14:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731990;
-	bh=HuVMTq0DyeDDopxu/D1NIeSIVimNSCDHOjIAyGY7IXw=;
+	s=korg; t=1723731997;
+	bh=9gLKopD8+g+6o9QLaNvzmpw+O0hZ3EU6/CZgdSjHkZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1sF5YlK5jT3eyfxIgfmX9bkGPWGlVcRLQsLdJR++TUhmMEkf1ZMpK4iDW6ehTAkd
-	 s+YdG2TDxa/wSN2CEYw8gT8jOXmAT6Kdhs7RTRuHsWH+bResCrh9sX5++2OTljLFs1
-	 uKz8ewhRfy50fRSPz/YxVAfzG4iqSTVceufIWZxA=
+	b=r50cNa0bMRtLq0MMx80XNYyq2i+xK8w0pizKDLZSclepuxER7bmVXHw49cYIsM5jG
+	 MUiJU/e0uKPZrfiMPZX4CjdCIYfmnzNxctF3DuzcvIwK+1JqtjNAA835lMJpkM1JIK
+	 1+RaAYjgPKeF+psuhVCyS7oVYXWHHLawypFc8YDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/352] selftests/bpf: Check length of recv in test_sockmap
-Date: Thu, 15 Aug 2024 15:21:46 +0200
-Message-ID: <20240815131920.782568613@linuxfoundation.org>
+Subject: [PATCH 5.10 041/352] lib: objagg: Fix general protection fault
+Date: Thu, 15 Aug 2024 15:21:47 +0200
+Message-ID: <20240815131920.821072471@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -68,38 +70,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit de1b5ea789dc28066cc8dc634b6825bd6148f38b ]
+[ Upstream commit b4a3a89fffcdf09702b1f161b914e52abca1894d ]
 
-The value of recv in msg_loop may be negative, like EWOULDBLOCK, so it's
-necessary to check if it is positive before accumulating it to bytes_recvd.
+The library supports aggregation of objects into other objects only if
+the parent object does not have a parent itself. That is, nesting is not
+supported.
 
-Fixes: 16962b2404ac ("bpf: sockmap, add selftests")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/5172563f7c7b2a2e953cef02e89fc34664a7b190.1716446893.git.tanggeliang@kylinos.cn
+Aggregation happens in two cases: Without and with hints, where hints
+are a pre-computed recommendation on how to aggregate the provided
+objects.
+
+Nesting is not possible in the first case due to a check that prevents
+it, but in the second case there is no check because the assumption is
+that nesting cannot happen when creating objects based on hints. The
+violation of this assumption leads to various warnings and eventually to
+a general protection fault [1].
+
+Before fixing the root cause, error out when nesting happens and warn.
+
+[1]
+general protection fault, probably for non-canonical address 0xdead000000000d90: 0000 [#1] PREEMPT SMP PTI
+CPU: 1 PID: 1083 Comm: kworker/1:9 Tainted: G        W          6.9.0-rc6-custom-gd9b4f1cca7fb #7
+Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
+Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
+RIP: 0010:mlxsw_sp_acl_erp_bf_insert+0x25/0x80
+[...]
+Call Trace:
+ <TASK>
+ mlxsw_sp_acl_atcam_entry_add+0x256/0x3c0
+ mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
+ mlxsw_sp_acl_tcam_vchunk_migrate_one+0x16b/0x270
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0xbe/0x510
+ process_one_work+0x151/0x370
+ worker_thread+0x2cb/0x3e0
+ kthread+0xd0/0x100
+ ret_from_fork+0x34/0x50
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Fixes: 9069a3817d82 ("lib: objagg: implement optimization hints assembly and use hints for object creation")
+Reported-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/objagg.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index daf848258410e..61be5993416e9 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -663,7 +663,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 				}
- 			}
+diff --git a/lib/objagg.c b/lib/objagg.c
+index 5e1676ccdaddd..73d7116025736 100644
+--- a/lib/objagg.c
++++ b/lib/objagg.c
+@@ -167,6 +167,9 @@ static int objagg_obj_parent_assign(struct objagg *objagg,
+ {
+ 	void *delta_priv;
  
--			s->bytes_recvd += recv;
-+			if (recv > 0)
-+				s->bytes_recvd += recv;
- 
- 			if (data) {
- 				int chunk_sz = opt->sendpage ?
++	if (WARN_ON(!objagg_obj_is_root(parent)))
++		return -EINVAL;
++
+ 	delta_priv = objagg->ops->delta_create(objagg->priv, parent->obj,
+ 					       objagg_obj->obj);
+ 	if (IS_ERR(delta_priv))
 -- 
 2.43.0
 
