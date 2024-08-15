@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-68337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816849531B9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6689531BB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37DAB28B7BC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97DC61F21DA8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6119519F470;
-	Thu, 15 Aug 2024 13:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBAF18D64F;
+	Thu, 15 Aug 2024 13:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KV2X3mF4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1Za4p0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0B518D64F;
-	Thu, 15 Aug 2024 13:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04371714A1;
+	Thu, 15 Aug 2024 13:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730247; cv=none; b=rNlNTsC5Hm1vPi17iccdydcEI3fK1HY/hF8hIP44H+f6bi708zyc7eZM8QNR/DFAxGRq1RA8bk+wAQAKjEeS2+8dMVC2IdX3Ue4mk8O+YrJ+i6QtHEVBrKGquWcivqUOlocu7Igr8AXx6hvWyw9EcHr+S+IeXJhAg/GZA3UFlc4=
+	t=1723730254; cv=none; b=KmQoaZJt/p5fUxT8qLyj1AEkYsypCCAT8/6vC1r+ODzXC141GsDsQCNt0qcWtaNvoICIAlwG7Atwm6fLiHvSgaYTPEZWYQ4mkhklS2LYNSonbTWbBh8MyaM+gvF1etJ7S9vyXTPXR0MhZxvX8BRXX0khE7wJBe//lGa9NxGgP4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730247; c=relaxed/simple;
-	bh=nwHlLZPuZqxUvXOnS6oblc3veX/n+e+oInHWOz3QDAw=;
+	s=arc-20240116; t=1723730254; c=relaxed/simple;
+	bh=pVt6r0XEqxrCFFScv/zZzp8Vmt94iIEXa4abpduRy/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jcAxXcNiFPMM28IYAdD/+eYlY9Nihgy85AQCQE9xtWfo+3OKBvWx95wMaz8Zx0b3eGPyqpXGv+LUgXXpTI0fmTZqVNyOodhurCZTo9xshoudlr3huRp01YplVoNmBa734SjeQWAp6J3wyM2bI98JR2sA84ju6shS52D1I9fWi+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KV2X3mF4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DF1C32786;
-	Thu, 15 Aug 2024 13:57:26 +0000 (UTC)
+	 MIME-Version; b=evKkDqRhOj+1Meo1gyjWGYEfOgNijspQGwclg1z666//XJIGRL8d+6tpXL0xHcCcjv2UGHZYWRn3lxhozfjhxdSGVRmY11fqXJgze/B+wob2IwwMLfRIXhlLe1D0Sc4yTf3dH9e7NV6oBwQxh2ggiXzjqRulP7OzvdCGk/vv9kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1Za4p0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6033CC32786;
+	Thu, 15 Aug 2024 13:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730247;
-	bh=nwHlLZPuZqxUvXOnS6oblc3veX/n+e+oInHWOz3QDAw=;
+	s=korg; t=1723730253;
+	bh=pVt6r0XEqxrCFFScv/zZzp8Vmt94iIEXa4abpduRy/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KV2X3mF4YDnHy0Fb15asCmvKHo/QUMwpY4ffPgvwnXmAo+C2Xe25t8Yj4sT0m+x3m
-	 iE/cqKer45jBHEuiXP8q714YivKJqb+iFijVSI7GlWaUTcDYR9dMdyXYQSlxdiYI7f
-	 QeGxK2DxKPu6oMld1UfKHg9mkZtHd1roRynCXTOA=
+	b=M1Za4p0f4BgZXMIm45mD6nI4NFEj/mIjJjqr+pp/2rsMGmH1/nL/h0GEYxYCuCqUf
+	 hQLglMRCByx9Pg7OHkJzh34SEEbOx2y+HL9Sbg4Y3IsbYbDxKgATIe9JaUba6T2PyW
+	 Ykm3Pb0tkFo9fyAFlg//DBvI1xnleStxr1ur4lvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 350/484] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
-Date: Thu, 15 Aug 2024 15:23:28 +0200
-Message-ID: <20240815131954.945656749@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>
+Subject: [PATCH 5.15 351/484] r8169: dont increment tx_dropped in case of NETDEV_TX_BUSY
+Date: Thu, 15 Aug 2024 15:23:29 +0200
+Message-ID: <20240815131954.985473851@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -67,61 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 08f3a5c38087d1569e982a121aad1e6acbf145ce upstream.
+commit d516b187a9cc2e842030dd005be2735db3e8f395 upstream.
 
-It could lead to error happen because the variable res is not updated if
-the call to sr_share_read_word returns an error. In this particular case
-error code was returned and res stayed uninitialized. Same issue also
-applies to sr_read_reg.
+The skb isn't consumed in case of NETDEV_TX_BUSY, therefore don't
+increment the tx_dropped counter.
 
-This can be avoided by checking the return value of sr_share_read_word
-and sr_read_reg, and propagating the error if the read operation failed.
-
-Found by code review.
-
+Fixes: 188f4af04618 ("r8169: use NETDEV_TX_{BUSY/OK}")
 Cc: stable@vger.kernel.org
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/bbba9c48-8bac-4932-9aa1-d2ed63bc9433@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/sr9700.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -179,6 +179,7 @@ static int sr_mdio_read(struct net_devic
- 	struct usbnet *dev = netdev_priv(netdev);
- 	__le16 res;
- 	int rc = 0;
-+	int err;
- 
- 	if (phy_id) {
- 		netdev_dbg(netdev, "Only internal phy supported\n");
-@@ -189,11 +190,17 @@ static int sr_mdio_read(struct net_devic
- 	if (loc == MII_BMSR) {
- 		u8 value;
- 
--		sr_read_reg(dev, SR_NSR, &value);
-+		err = sr_read_reg(dev, SR_NSR, &value);
-+		if (err < 0)
-+			return err;
-+
- 		if (value & NSR_LINKST)
- 			rc = 1;
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4283,7 +4283,8 @@ static netdev_tx_t rtl8169_start_xmit(st
+ 	if (unlikely(!rtl_tx_slots_avail(tp))) {
+ 		if (net_ratelimit())
+ 			netdev_err(dev, "BUG! Tx Ring full when queue awake!\n");
+-		goto err_stop_0;
++		netif_stop_queue(dev);
++		return NETDEV_TX_BUSY;
  	}
--	sr_share_read_word(dev, 1, loc, &res);
-+	err = sr_share_read_word(dev, 1, loc, &res);
-+	if (err < 0)
-+		return err;
-+
- 	if (rc == 1)
- 		res = le16_to_cpu(res) | BMSR_LSTATUS;
- 	else
+ 
+ 	opts[1] = rtl8169_tx_vlan_tag(skb);
+@@ -4356,11 +4357,6 @@ err_dma_0:
+ 	dev_kfree_skb_any(skb);
+ 	dev->stats.tx_dropped++;
+ 	return NETDEV_TX_OK;
+-
+-err_stop_0:
+-	netif_stop_queue(dev);
+-	dev->stats.tx_dropped++;
+-	return NETDEV_TX_BUSY;
+ }
+ 
+ static unsigned int rtl_last_frag_len(struct sk_buff *skb)
 
 
 
