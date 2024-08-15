@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291DA9531BD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26DC952F67
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C1921C2215D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B5FA289A32
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BFA19E7F6;
-	Thu, 15 Aug 2024 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28270198E78;
+	Thu, 15 Aug 2024 13:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eijFRNNe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urOqXlSk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776BF18D630;
-	Thu, 15 Aug 2024 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0B71714D0;
+	Thu, 15 Aug 2024 13:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730260; cv=none; b=UfgfofUPXrzcBAw8JI+jxiixTB/U0RX6Htl5hUalTn6SepJONLmsYr5Zy2tcZvVvWg8b7xnVHIlquNfbLfIiYjeu7XdHOsNQkuwv5tvhtk0tgZ2Fkf6G0jWsLYyIZGn8mWOa0iJukkrAVPFpo3Zkz/DJeivoguDJ9fpUorhd2Ug=
+	t=1723728736; cv=none; b=Zwm3Qa1ZSDVjyzPhErJbPjMHmYy8qXtIihReN9huFhlh0KYYyGc2J1JdEjK40Q0mptsmsPsc4Fpn6wW6DJkKMINWIQnaECn1vpN0ijJ3fVQKcggQci6quK9K0DQnfEkwogdKLv9fOH8247bWL0EQxYACYQTCwHB5O1c0PFcPdm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730260; c=relaxed/simple;
-	bh=fdtS5lPN43zZxR4/Oit+mruBUYQVxv1zKQ4/HK46Z+Q=;
+	s=arc-20240116; t=1723728736; c=relaxed/simple;
+	bh=gHTYCWXrn0rmtoM3Z+ImNjGdB7dKPfgFqwAXl7i/PWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hsiRlKIbyy97sfC39W6nx5fpiPWl3fDIl+qxQWB7HtfEXuSeICSpNnNXFYI2iAAQntEEJY2E/1bME+KmyAHom3H3e1YPb9XZ/Kfq0vIVYsObw2SeBu8kVF5jLMIC6mg3HpiwDDUQTqUselO+oST3+XlhdfaF5WrH5GT8u/zpsPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eijFRNNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40D2C32786;
-	Thu, 15 Aug 2024 13:57:39 +0000 (UTC)
+	 MIME-Version; b=L7ee805Zlh6ZN/qv0xNc0FNFYA47JDv+EWGO0IpuDiWJI6x97sDycKq8Hj13Z6D1H/WChjnQmdqiKNytdElQEAMLsu2eCDnDOrpK2HYVoG+BA5zStUbX0vvFu6cr4ZHvvEQpTk8V/0vW3EEDuL69Do5Gbez3rfHFV2vCZQSce0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urOqXlSk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60000C32786;
+	Thu, 15 Aug 2024 13:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730260;
-	bh=fdtS5lPN43zZxR4/Oit+mruBUYQVxv1zKQ4/HK46Z+Q=;
+	s=korg; t=1723728736;
+	bh=gHTYCWXrn0rmtoM3Z+ImNjGdB7dKPfgFqwAXl7i/PWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eijFRNNeNAqEPdBYEBQcg9/tCv5ze1/vatz2TJMJGmwbP6f8yv8oUuciz0nqQHVhk
-	 f/GO5rzJHosogRowVp2HjRsJcitK+St/M2m8THwvUvWXGC2hY9AMonf2pwBeuu/wou
-	 X5WCDZa9m3J31/BnoY55AiIFdSTnWJRRlaB/QoHs=
+	b=urOqXlSkqGaEuQ6NwUdIgEo5lm/mKPpVHcGP+H9FqnH0Q+qBpwFaaTZnt7sqiBeS2
+	 vh2OGJaR0+tcBHrKPLQ9HOOaTwQ1w+cSdIH42ZjHrqR7YJzcm7Dn+nrW0WVh+dTMgl
+	 h9k2IlqQTff5o2mr2DJOd1YYTVvn6owVodjg3cVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Maltsev <keltar.gw@gmail.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 353/484] netfilter: ipset: Add list flush to cancel_gc
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 094/196] nilfs2: handle inconsistent state in nilfs_btnode_create_block()
 Date: Thu, 15 Aug 2024 15:23:31 +0200
-Message-ID: <20240815131955.062612388@linuxfoundation.org>
+Message-ID: <20240815131855.679080744@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Maltsev <keltar.gw@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit c1193d9bbbd379defe9be3c6de566de684de8a6f ]
+commit 4811f7af6090e8f5a398fbdd766f903ef6c0d787 upstream.
 
-Flushing list in cancel_gc drops references to other lists right away,
-without waiting for RCU to destroy list. Fixes race when referenced
-ipsets can't be destroyed while referring list is scheduled for destroy.
+Syzbot reported that a buffer state inconsistency was detected in
+nilfs_btnode_create_block(), triggering a kernel bug.
 
-Fixes: 97f7cf1cd80e ("netfilter: ipset: fix performance regression in swap operation")
-Signed-off-by: Alexander Maltsev <keltar.gw@gmail.com>
-Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It is not appropriate to treat this inconsistency as a bug; it can occur
+if the argument block address (the buffer index of the newly created
+block) is a virtual block number and has been reallocated due to
+corruption of the bitmap used to manage its allocation state.
+
+So, modify nilfs_btnode_create_block() and its callers to treat it as a
+possible filesystem error, rather than triggering a kernel bug.
+
+Link: https://lkml.kernel.org/r/20240725052007.4562-1-konishi.ryusuke@gmail.com
+Fixes: a60be987d45d ("nilfs2: B-tree node cache")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=89cc4f2324ed37988b60
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_list_set.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nilfs2/btnode.c |   25 ++++++++++++++++++++-----
+ fs/nilfs2/btree.c  |    4 ++--
+ 2 files changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
-index e839c356bcb56..902ff2f3bc72b 100644
---- a/net/netfilter/ipset/ip_set_list_set.c
-+++ b/net/netfilter/ipset/ip_set_list_set.c
-@@ -547,6 +547,9 @@ list_set_cancel_gc(struct ip_set *set)
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -51,12 +51,21 @@ nilfs_btnode_create_block(struct address
  
- 	if (SET_WITH_TIMEOUT(set))
- 		del_timer_sync(&map->gc);
+ 	bh = nilfs_grab_buffer(inode, btnc, blocknr, BIT(BH_NILFS_Node));
+ 	if (unlikely(!bh))
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	if (unlikely(buffer_mapped(bh) || buffer_uptodate(bh) ||
+ 		     buffer_dirty(bh))) {
+-		brelse(bh);
+-		BUG();
++		/*
++		 * The block buffer at the specified new address was already
++		 * in use.  This can happen if it is a virtual block number
++		 * and has been reallocated due to corruption of the bitmap
++		 * used to manage its allocation state (if not, the buffer
++		 * clearing of an abandoned b-tree node is missing somewhere).
++		 */
++		nilfs_error(inode->i_sb,
++			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%lu)",
++			    (unsigned long long)blocknr, inode->i_ino);
++		goto failed;
+ 	}
+ 	memset(bh->b_data, 0, i_blocksize(inode));
+ 	bh->b_bdev = inode->i_sb->s_bdev;
+@@ -67,6 +76,12 @@ nilfs_btnode_create_block(struct address
+ 	unlock_page(bh->b_page);
+ 	put_page(bh->b_page);
+ 	return bh;
 +
-+	/* Flush list to drop references to other ipsets */
-+	list_set_flush(set);
++failed:
++	unlock_page(bh->b_page);
++	put_page(bh->b_page);
++	brelse(bh);
++	return ERR_PTR(-EIO);
  }
  
- static const struct ip_set_type_variant set_variant = {
--- 
-2.43.0
-
+ int nilfs_btnode_submit_block(struct address_space *btnc, __u64 blocknr,
+@@ -224,8 +239,8 @@ retry:
+ 	}
+ 
+ 	nbh = nilfs_btnode_create_block(btnc, newkey);
+-	if (!nbh)
+-		return -ENOMEM;
++	if (IS_ERR(nbh))
++		return PTR_ERR(nbh);
+ 
+ 	BUG_ON(nbh == obh);
+ 	ctxt->newbh = nbh;
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -63,8 +63,8 @@ static int nilfs_btree_get_new_block(con
+ 	struct buffer_head *bh;
+ 
+ 	bh = nilfs_btnode_create_block(btnc, ptr);
+-	if (!bh)
+-		return -ENOMEM;
++	if (IS_ERR(bh))
++		return PTR_ERR(bh);
+ 
+ 	set_buffer_nilfs_volatile(bh);
+ 	*bhp = bh;
 
 
 
