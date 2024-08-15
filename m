@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-68464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3122E95326D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F66C9532E3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1D03281F44
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49AB51F213C8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43921AD41F;
-	Thu, 15 Aug 2024 14:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E8A1AD40A;
+	Thu, 15 Aug 2024 14:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fh3ityFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYs+eypa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A8B1A7060;
-	Thu, 15 Aug 2024 14:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E8519F49B;
+	Thu, 15 Aug 2024 14:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730651; cv=none; b=VFLwNIHdVbSAnhZ7hTvm6DeDuwFJw2pKm1ZaEAxffEHcGWueZNXcsFLFA0O/xCvRvmCJkptCJUhzORPqwQyW+Ds8UdJFInP5I6Ex5csX3WKiNSUlW+PJc3lsOJP3tM48eQeMiLFatyzxThPP8pQGTRh+kuUUdtKYugSy8hb/GTw=
+	t=1723730927; cv=none; b=X/mXMR8FJiKS7QGhNUTQqeF4yt5xPdXZtoDGjp2uJZaeEC5lLZDWeW94Knz/MvsbnrFA8WYT2cg2HwJU64ASye/0xelgWH91s/QYkKG4OINTG4R6RxiIlw8nSi+kqNqQoQ4pmxwdqQjrOVPybDeLKmoEfUtowmG2pXcpiuiiAsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730651; c=relaxed/simple;
-	bh=9ATMyHnP5pVIdhXNmz8kbczuVUgzMJNc9JvsAINgza0=;
+	s=arc-20240116; t=1723730927; c=relaxed/simple;
+	bh=uJS12TQZxTvxBieztMSj+uoatkTe8LQ4O+Dw6otxEWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVjBHgf8LwG2Ul8QuC67cPgTYgPgoSyP3oeEDGjJhVsrE3OTXRve+Fp91BtamoML92tDxRwb6IK0WOYMA7i80kUrjVtAyjM5RdFti6Ghc7CmrOlCwWOMG9dU7nNLhNOBQ4bpQjWXJaB1OcEngS/JSGHwv5DRaBeKPFSzcgzQt4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fh3ityFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E95C4AF0A;
-	Thu, 15 Aug 2024 14:04:10 +0000 (UTC)
+	 MIME-Version; b=dX8iQlDm+Ikn/L7/pXPtvOcyQy763S/4Z3zWR7GzImg/cb/CuoUxYNRcKHod3V6bHFf63OHvtCtUS2AUkrxQm6LrdbuKSbLWti7HRgXgksEGITdktt0sZ3ZwbgojOiDYxJLI3r2G6N5g2rOVGT2bqQSN2hysuHgPBUMUTABaoCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYs+eypa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D76C32786;
+	Thu, 15 Aug 2024 14:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730651;
-	bh=9ATMyHnP5pVIdhXNmz8kbczuVUgzMJNc9JvsAINgza0=;
+	s=korg; t=1723730927;
+	bh=uJS12TQZxTvxBieztMSj+uoatkTe8LQ4O+Dw6otxEWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fh3ityFa/0CenRKxoijf82XWLVFzPoA9wP++poMZl14tYbmm3DVbgXK3YuK4e+ak6
-	 ufECFSonJii6ICe7NJo8ft6uuLXMuN9YD5wZgj0AW2cx5/+4uKqN0seyhehbTwy0Og
-	 C3TvJSF5X5QPVmDtVfOMz4VcgOvuc5O38H/vY3eo=
+	b=rYs+eyparGduc1Gs1dJdfcuON0LP/TgaXU/K6k1U2hbfnBbCl/xvGKYM4LRWRdRCN
+	 n192bSn6B2S+YJ5gEOfKwTB56O001Y9W30oPiRTqcdrtnCkDOoKwBB6/RLI/QqysWa
+	 FP2a7jmef8BK/0Ux+ml4kR4BSTfMztDqzYa8jpqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jonathan Cavitt <Jonathan.cavitt@intel.com>
-Subject: [PATCH 5.15 475/484] drm/i915/gem: Fix Virtual Memory mapping boundaries calculation
+	David Stevens <stevensd@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bart Van Assche <bvanassche@acm.org>
+Subject: [PATCH 6.6 19/67] genirq/cpuhotplug: Skip suspended interrupts when restoring affinity
 Date: Thu, 15 Aug 2024 15:25:33 +0200
-Message-ID: <20240815131959.826627740@linuxfoundation.org>
+Message-ID: <20240815131839.073104291@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,131 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: David Stevens <stevensd@chromium.org>
 
-commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
+commit a60dd06af674d3bb76b40da5d722e4a0ecefe650 upstream.
 
-Calculating the size of the mapped area as the lesser value
-between the requested size and the actual size does not consider
-the partial mapping offset. This can cause page fault access.
+irq_restore_affinity_of_irq() restarts managed interrupts unconditionally
+when the first CPU in the affinity mask comes online. That's correct during
+normal hotplug operations, but not when resuming from S3 because the
+drivers are not resumed yet and interrupt delivery is not expected by them.
 
-Fix the calculation of the starting and ending addresses, the
-total size is now deduced from the difference between the end and
-start addresses.
+Skip the startup of suspended interrupts and let resume_device_irqs() deal
+with restoring them. This ensures that irqs are not delivered to drivers
+during the noirq phase of resuming from S3, after non-boot CPUs are brought
+back online.
 
-Additionally, the calculations have been rewritten in a clearer
-and more understandable form.
-
-Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
-Reported-by: Jann Horn <jannh@google.com>
-Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v4.9+
-Reviewed-by: Jann Horn <jannh@google.com>
-Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
-[Joonas: Add Requires: tag]
-Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
-(cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: David Stevens <stevensd@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240424090341.72236-1-stevensd@chromium.org
+Cc: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_mman.c |   53 +++++++++++++++++++++++++++----
- 1 file changed, 47 insertions(+), 6 deletions(-)
+ kernel/irq/cpuhotplug.c |   11 ++++++++---
+ kernel/irq/manage.c     |   12 ++++++++----
+ 2 files changed, 16 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -286,6 +286,41 @@ out:
- 	return i915_error_to_vmf_fault(err);
- }
+--- a/kernel/irq/cpuhotplug.c
++++ b/kernel/irq/cpuhotplug.c
+@@ -195,10 +195,15 @@ static void irq_restore_affinity_of_irq(
+ 	    !irq_data_get_irq_chip(data) || !cpumask_test_cpu(cpu, affinity))
+ 		return;
  
-+static void set_address_limits(struct vm_area_struct *area,
-+			       struct i915_vma *vma,
-+			       unsigned long obj_offset,
-+			       unsigned long *start_vaddr,
-+			       unsigned long *end_vaddr)
-+{
-+	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
-+	long start, end; /* memory boundaries */
-+
+-	if (irqd_is_managed_and_shutdown(data)) {
+-		irq_startup(desc, IRQ_RESEND, IRQ_START_COND);
 +	/*
-+	 * Let's move into the ">> PAGE_SHIFT"
-+	 * domain to be sure not to lose bits
++	 * Don't restore suspended interrupts here when a system comes back
++	 * from S3. They are reenabled via resume_device_irqs().
 +	 */
-+	vm_start = area->vm_start >> PAGE_SHIFT;
-+	vm_end = area->vm_end >> PAGE_SHIFT;
-+	vma_size = vma->size >> PAGE_SHIFT;
++	if (desc->istate & IRQS_SUSPENDED)
+ 		return;
+-	}
 +
-+	/*
-+	 * Calculate the memory boundaries by considering the offset
-+	 * provided by the user during memory mapping and the offset
-+	 * provided for the partial mapping.
-+	 */
-+	start = vm_start;
-+	start -= obj_offset;
-+	start += vma->ggtt_view.partial.offset;
-+	end = start + vma_size;
-+
-+	start = max_t(long, start, vm_start);
-+	end = min_t(long, end, vm_end);
-+
-+	/* Let's move back into the "<< PAGE_SHIFT" domain */
-+	*start_vaddr = (unsigned long)start << PAGE_SHIFT;
-+	*end_vaddr = (unsigned long)end << PAGE_SHIFT;
-+}
-+
- static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
- {
- #define MIN_CHUNK_PAGES (SZ_1M >> PAGE_SHIFT)
-@@ -298,14 +333,18 @@ static vm_fault_t vm_fault_gtt(struct vm
- 	struct i915_ggtt *ggtt = &i915->ggtt;
- 	bool write = area->vm_flags & VM_WRITE;
- 	struct i915_gem_ww_ctx ww;
-+	unsigned long obj_offset;
-+	unsigned long start, end; /* memory boundaries */
- 	intel_wakeref_t wakeref;
- 	struct i915_vma *vma;
- 	pgoff_t page_offset;
-+	unsigned long pfn;
- 	int srcu;
- 	int ret;
++	if (irqd_is_managed_and_shutdown(data))
++		irq_startup(desc, IRQ_RESEND, IRQ_START_COND);
  
--	/* We don't use vmf->pgoff since that has the fake offset */
-+	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
- 	page_offset = (vmf->address - area->vm_start) >> PAGE_SHIFT;
-+	page_offset += obj_offset;
- 
- 	trace_i915_gem_object_fault(obj, page_offset, true, write);
- 
-@@ -376,12 +415,14 @@ retry:
- 	if (ret)
- 		goto err_unpin;
- 
-+	set_address_limits(area, vma, obj_offset, &start, &end);
-+
-+	pfn = (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
-+	pfn += (start - area->vm_start) >> PAGE_SHIFT;
-+	pfn += obj_offset - vma->ggtt_view.partial.offset;
-+
- 	/* Finally, remap it using the new GTT offset */
--	ret = remap_io_mapping(area,
--			       area->vm_start + (vma->ggtt_view.partial.offset << PAGE_SHIFT),
--			       (ggtt->gmadr.start + vma->node.start) >> PAGE_SHIFT,
--			       min_t(u64, vma->size, area->vm_end - area->vm_start),
--			       &ggtt->iomap);
-+	ret = remap_io_mapping(area, start, pfn, end - start, &ggtt->iomap);
- 	if (ret)
- 		goto err_fence;
- 
+ 	/*
+ 	 * If the interrupt can only be directed to a single target
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -796,10 +796,14 @@ void __enable_irq(struct irq_desc *desc)
+ 		irq_settings_set_noprobe(desc);
+ 		/*
+ 		 * Call irq_startup() not irq_enable() here because the
+-		 * interrupt might be marked NOAUTOEN. So irq_startup()
+-		 * needs to be invoked when it gets enabled the first
+-		 * time. If it was already started up, then irq_startup()
+-		 * will invoke irq_enable() under the hood.
++		 * interrupt might be marked NOAUTOEN so irq_startup()
++		 * needs to be invoked when it gets enabled the first time.
++		 * This is also required when __enable_irq() is invoked for
++		 * a managed and shutdown interrupt from the S3 resume
++		 * path.
++		 *
++		 * If it was already started up, then irq_startup() will
++		 * invoke irq_enable() under the hood.
+ 		 */
+ 		irq_startup(desc, IRQ_RESEND, IRQ_START_FORCE);
+ 		break;
 
 
 
