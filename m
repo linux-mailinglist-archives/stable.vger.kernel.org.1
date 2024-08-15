@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-68338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D1E9531BA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D474A9531C7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C39AC1C22E16
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B2DA285DC3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CC419EEB6;
-	Thu, 15 Aug 2024 13:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D39319DF58;
+	Thu, 15 Aug 2024 13:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVyIfiCf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7HZPkgo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2821714A1;
-	Thu, 15 Aug 2024 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB0E19DFA6;
+	Thu, 15 Aug 2024 13:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730250; cv=none; b=X1j2bGgQKINd6shNv3D1HDBU90IOuMli8ypa7HStR/t9ynMswnPDRLFHbF1qBRVQI6W+5iKGIPiZwgX61MFiQ+RglJpSNWGH7kAWLRq4hGaocpmrdyC6b+4FqZ/OqtVBm0BWe+0BGfI7vwXGlhbgjQ1ayJFO+43fw9wXjqx7oyM=
+	t=1723730288; cv=none; b=ufAfZ0U6JY1QC5e+MJPcnZa/VF38p1saKLF2D3k4EH0q5UaxZ79/WD4aZdTJyCwM0pCzi8xQGK0LI6u442KrH6Ua0cXm2BSh105ChXIgICuMvXQy27HAhciVX7EBlcyNE6DLSxbcWwxdtAfNCNkzNkNJiLHPZTofd4IaKMY1fYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730250; c=relaxed/simple;
-	bh=HrtKBLFzwdAchFyUPYndErfFSxj8Dhh+qfsIALUhPyo=;
+	s=arc-20240116; t=1723730288; c=relaxed/simple;
+	bh=LPAya4r9n4VN0lCSg/+Bzkbc7UZCBDhc+iGgtVD+a2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mR2/6ksxbd39Ok4rl04plhNrU+yi5K1GjQjoQOD7cEDuW7FP84tEyNChyEGI3JfWJd/DAyQbLRXkLeM+LZ/B2/thCg2kNG7wLvSwAW/Bxhj8V5ZQ0353QhwBM+MZNgvr5ci+vA5WchCYqXxc4sQAP/69ruDd7XF7ODErOpo4AMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVyIfiCf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6C1C4AF0C;
-	Thu, 15 Aug 2024 13:57:29 +0000 (UTC)
+	 MIME-Version; b=l79tQS9vvkLQCK2s0VwsKC47wu7U5cHIcxMtx3Sq5Cu01ZS85KueZV6HS4FYBVcL7arjmmHdNDDulwD7308saI8fIiUIAgxN0PROYmd83/aKbGLWVcbQbxw0IQd25BPolZ7EojPRKkCrn65Gp11anh9wdIdW1GG4ocC1DHmhWH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7HZPkgo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469C9C32786;
+	Thu, 15 Aug 2024 13:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730250;
-	bh=HrtKBLFzwdAchFyUPYndErfFSxj8Dhh+qfsIALUhPyo=;
+	s=korg; t=1723730287;
+	bh=LPAya4r9n4VN0lCSg/+Bzkbc7UZCBDhc+iGgtVD+a2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVyIfiCfHDuyLFIkiL/DCEh0JOaMYgzp50y4GREs5XxlFOSdJAOy4KICJEZKSR5Eo
-	 qXI2XlIY+bcygu3fEbyn/cOdz4JSuWzrtqVm+hjPHyaWEJl0qzXTmQYwtNZK3P/jas
-	 RzyMk2SfzL0rTdWxNhzH8FMFpgnbVQ8NZ7u7d3Ws=
+	b=z7HZPkgo/hyP91fLAbbjFXPH20tVG5qYRDwa1ZMlGaDDgP7kEj5qh33UI1+z/vQ7l
+	 pm/ezInJFFBkO2+8ZLrxf/DdwMDcreaOIctT1bxrwFB8J8rwN9cJIImVc3q7vQBYZ+
+	 ec40IAn8rGLj9pNGK80AKJSYOatRaIHzPm7KSJrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 333/484] rtnetlink: Dont ignore IFLA_TARGET_NETNSID when ifname is specified in rtnl_dellink().
-Date: Thu, 15 Aug 2024 15:23:11 +0200
-Message-ID: <20240815131954.273504926@linuxfoundation.org>
+Subject: [PATCH 5.15 334/484] net/iucv: fix use after free in iucv_sock_close()
+Date: Thu, 15 Aug 2024 15:23:12 +0200
+Message-ID: <20240815131954.311661775@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -67,39 +67,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-[ Upstream commit 9415d375d8520e0ed55f0c0b058928da9a5b5b3d ]
+[ Upstream commit f558120cd709682b739207b48cf7479fd9568431 ]
 
-The cited commit accidentally replaced tgt_net with net in rtnl_dellink().
+iucv_sever_path() is called from process context and from bh context.
+iucv->path is used as indicator whether somebody else is taking care of
+severing the path (or it is already removed / never existed).
+This needs to be done with atomic compare and swap, otherwise there is a
+small window where iucv_sock_close() will try to work with a path that has
+already been severed and freed by iucv_callback_connrej() called by
+iucv_tasklet_fn().
 
-As a result, IFLA_TARGET_NETNSID is ignored if the interface is specified
-with IFLA_IFNAME or IFLA_ALT_IFNAME.
+Example:
+[452744.123844] Call Trace:
+[452744.123845] ([<0000001e87f03880>] 0x1e87f03880)
+[452744.123966]  [<00000000d593001e>] iucv_path_sever+0x96/0x138
+[452744.124330]  [<000003ff801ddbca>] iucv_sever_path+0xc2/0xd0 [af_iucv]
+[452744.124336]  [<000003ff801e01b6>] iucv_sock_close+0xa6/0x310 [af_iucv]
+[452744.124341]  [<000003ff801e08cc>] iucv_sock_release+0x3c/0xd0 [af_iucv]
+[452744.124345]  [<00000000d574794e>] __sock_release+0x5e/0xe8
+[452744.124815]  [<00000000d5747a0c>] sock_close+0x34/0x48
+[452744.124820]  [<00000000d5421642>] __fput+0xba/0x268
+[452744.124826]  [<00000000d51b382c>] task_work_run+0xbc/0xf0
+[452744.124832]  [<00000000d5145710>] do_notify_resume+0x88/0x90
+[452744.124841]  [<00000000d5978096>] system_call+0xe2/0x2c8
+[452744.125319] Last Breaking-Event-Address:
+[452744.125321]  [<00000000d5930018>] iucv_path_sever+0x90/0x138
+[452744.125324]
+[452744.125325] Kernel panic - not syncing: Fatal exception in interrupt
 
-Let's pass tgt_net to rtnl_dev_get().
+Note that bh_lock_sock() is not serializing the tasklet context against
+process context, because the check for sock_owned_by_user() and
+corresponding handling is missing.
 
-Fixes: cc6090e985d7 ("net: rtnetlink: introduce helper to get net_device instance by ifname")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Ideas for a future clean-up patch:
+A) Correct usage of bh_lock_sock() in tasklet context, as described in
+Link: https://lore.kernel.org/netdev/1280155406.2899.407.camel@edumazet-laptop/
+Re-enqueue, if needed. This may require adding return values to the
+tasklet functions and thus changes to all users of iucv.
+
+B) Change iucv tasklet into worker and use only lock_sock() in af_iucv.
+
+Fixes: 7d316b945352 ("af_iucv: remove IUCV-pathes completely")
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://patch.msgid.link/20240729122818.947756-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/iucv/af_iucv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 4284406740932..eca7f6f4a52f5 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3115,7 +3115,7 @@ static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (ifm->ifi_index > 0)
- 		dev = __dev_get_by_index(tgt_net, ifm->ifi_index);
- 	else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
--		dev = rtnl_dev_get(net, tb);
-+		dev = rtnl_dev_get(tgt_net, tb);
- 	else if (tb[IFLA_GROUP])
- 		err = rtnl_group_dellink(tgt_net, nla_get_u32(tb[IFLA_GROUP]));
- 	else
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index 18316ee3c6921..e6cb3e1cbbf9b 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -336,8 +336,8 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
+ 	struct iucv_sock *iucv = iucv_sk(sk);
+ 	struct iucv_path *path = iucv->path;
+ 
+-	if (iucv->path) {
+-		iucv->path = NULL;
++	/* Whoever resets the path pointer, must sever and free it. */
++	if (xchg(&iucv->path, NULL)) {
+ 		if (with_user_data) {
+ 			low_nmcpy(user_data, iucv->src_name);
+ 			high_nmcpy(user_data, iucv->dst_name);
 -- 
 2.43.0
 
