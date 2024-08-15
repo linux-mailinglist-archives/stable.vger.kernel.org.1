@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-69119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7A095358B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC5B9532F5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B129284A20
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB814B2403F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EEBC1A0712;
-	Thu, 15 Aug 2024 14:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6CA1B3F31;
+	Thu, 15 Aug 2024 14:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcxFH9Jm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2KfEvcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3882D1A0710;
-	Thu, 15 Aug 2024 14:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC42B1AD9E8;
+	Thu, 15 Aug 2024 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732729; cv=none; b=JwxY+LI9EG0zl7FHx0VhouKwlGxy9RA+siJgEp31ZtJ5BIYK5l9wNuiKC+FqhOfiYtEHGRS2jHYeFFsC5HzSCTMIFa8bNu2l85xIipLmljf9sTI9HE87aJvJMXpFt00++aoM23MPeVtNFvadLpGbcAmGUQOEjKEwakZyQQVqi04=
+	t=1723730963; cv=none; b=TQy+DJN5aKqFkj8IiLKho5O79eH1o0vfAu394As3r1XZevePOjtikWFQoSTEtyLsaMTKhM+dRuL1lXOyFJUwt6ZixZjpPVGTmIGbAciAtBi4N7gq1VePAk6ChKT01zxUs9l5SCoX/oMCbiZQmHsnpBMREk92UcxDXkay5sVB1lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732729; c=relaxed/simple;
-	bh=XsMQGKx4djBXik5Vm0afr1lJAS21+fL19WhSwCnMhTk=;
+	s=arc-20240116; t=1723730963; c=relaxed/simple;
+	bh=HvGQJ/J9mLylRVilvVG0RyrxK5M7Q8YWChhvffl4xGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6loZ6a7SXNh9RG1Ca1YUYzQqo4HIIy8IlSHPPuAMSRwIZxoSaDj0mXDkxl4O0idI2pLzpXA24rOdwrsDOzQiWV6BbV+5egNh8Zz3T/EOIMD7rS2EY7tHW9b2VK/A3PzVTY3LB4N5xMWgPqVynjzLryJ6kGqhjKrWFypAQIrORQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcxFH9Jm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B518EC32786;
-	Thu, 15 Aug 2024 14:38:48 +0000 (UTC)
+	 MIME-Version; b=B5KIR19EIGY37dgEhJIVTIhp+LcFzr0n8d2XDeX7Dcznj/DBmyW6HFJyx+8grcgCrn1vk3j6t8h+Zqa2buMMcni2PqYvYYpXRsl5W53AYqKFfM10VCrk3mQKckUG51BhT9HSRHGEnlx0ur2EHwHIXwEpRV6M9iKEBz1gIbEx/tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2KfEvcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031C3C32786;
+	Thu, 15 Aug 2024 14:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732729;
-	bh=XsMQGKx4djBXik5Vm0afr1lJAS21+fL19WhSwCnMhTk=;
+	s=korg; t=1723730962;
+	bh=HvGQJ/J9mLylRVilvVG0RyrxK5M7Q8YWChhvffl4xGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OcxFH9JmlwF/Kz1RIqtA6j7UmxJJd8Xp0ZThqRAQd+sQjDqvT6ChuJGYkviL2HPkF
-	 WF0ojNzz6859rs8A6jMU75ruZXAkMcbducRIKpVjMXZZVRpBof540HBxFShQMdelBl
-	 FMUDF8/zbtzJWoDlWL5k6oUYgtA2cyHDBm9vZPx8=
+	b=E2KfEvcuvM7zmAQLnuyxw2xp9zdgiFip65H3cqjBdK8sZ3x08oHKcgFhYLSt7y+QG
+	 dSWMH6ky1PbdlHsQOc/75NbjD2N9wI3kLwEL5D/8zMFh3oZsgweqHn6sYIDi2JCAsw
+	 3+knQvaOK7V4AaNe5k/qNC5Cw2AyJk+Dxu+WFAg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 268/352] PCI: Add Edimax Vendor ID to pci_ids.h
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bart Van Assche <bvanassche@acm.org>
+Subject: [PATCH 6.6 20/67] genirq/cpuhotplug: Retry with cpu_online_mask when migration fails
 Date: Thu, 15 Aug 2024 15:25:34 +0200
-Message-ID: <20240815131929.804041892@linuxfoundation.org>
+Message-ID: <20240815131839.111621911@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-[ Upstream commit eee5528890d54b22b46f833002355a5ee94c3bb4 ]
+commit 88d724e2301a69c1ab805cd74fc27aa36ae529e0 upstream.
 
-Add the Edimax Vendor ID (0x1432) for an ethernet driver for Tehuti
-Networks TN40xx chips. This ID can be used for Realtek 8180 and Ralink
-rt28xx wireless drivers.
+When a CPU goes offline, the interrupts affine to that CPU are
+re-configured.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20240623235507.108147-2-fujita.tomonori@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Managed interrupts undergo either migration to other CPUs or shutdown if
+all CPUs listed in the affinity are offline. The migration of managed
+interrupts is guaranteed on x86 because there are interrupt vectors
+reserved.
+
+Regular interrupts are migrated to a still online CPU in the affinity mask
+or if there is no online CPU to any online CPU.
+
+This works as long as the still online CPUs in the affinity mask have
+interrupt vectors available, but in case that none of those CPUs has a
+vector available the migration fails and the device interrupt becomes
+stale.
+
+This is not any different from the case where the affinity mask does not
+contain any online CPU, but there is no fallback operation for this.
+
+Instead of giving up, retry the migration attempt with the online CPU mask
+if the interrupt is not managed, as managed interrupts cannot be affected
+by this problem.
+
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240423073413.79625-1-dongli.zhang@oracle.com
+Cc: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pci_ids.h | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/irq/cpuhotplug.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 80744a7b5e333..b2418bfda4a98 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2137,6 +2137,8 @@
- 
- #define PCI_VENDOR_ID_CHELSIO		0x1425
- 
-+#define PCI_VENDOR_ID_EDIMAX		0x1432
+--- a/kernel/irq/cpuhotplug.c
++++ b/kernel/irq/cpuhotplug.c
+@@ -130,6 +130,22 @@ static bool migrate_one_irq(struct irq_d
+ 	 * CPU.
+ 	 */
+ 	err = irq_do_set_affinity(d, affinity, false);
 +
- #define PCI_VENDOR_ID_ADLINK		0x144a
- 
- #define PCI_VENDOR_ID_SAMSUNG		0x144d
--- 
-2.43.0
-
++	/*
++	 * If there are online CPUs in the affinity mask, but they have no
++	 * vectors left to make the migration work, try to break the
++	 * affinity by migrating to any online CPU.
++	 */
++	if (err == -ENOSPC && !irqd_affinity_is_managed(d) && affinity != cpu_online_mask) {
++		pr_debug("IRQ%u: set affinity failed for %*pbl, re-try with online CPUs\n",
++			 d->irq, cpumask_pr_args(affinity));
++
++		affinity = cpu_online_mask;
++		brokeaff = true;
++
++		err = irq_do_set_affinity(d, affinity, false);
++	}
++
+ 	if (err) {
+ 		pr_warn_ratelimited("IRQ%u: set affinity failed(%d).\n",
+ 				    d->irq, err);
 
 
 
