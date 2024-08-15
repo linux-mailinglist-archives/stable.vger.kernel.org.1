@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-69004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 177FF9534FC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2BE953343
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B513E1F29F25
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1F39287B4A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3202019DFA4;
-	Thu, 15 Aug 2024 14:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0C41B3F18;
+	Thu, 15 Aug 2024 14:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKZx6b0z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAe7AIqX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C5C210FB;
-	Thu, 15 Aug 2024 14:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3991B32CD;
+	Thu, 15 Aug 2024 14:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732356; cv=none; b=OKZn+Ip89BQsytiLLA4FwqdlR40INJZKCnrd1VRMWK3vwR0knhCV6r8lA68M9GnvOq5HPSH7zjkxBEwzlJZni/oCtADiv3Ws1AcD85VBD9Y5W0EW+udrmSDdtL1kpiWoIMrgnrrZlj0xoupSRLGwlrH8ys/DgqxXDoMK7zBTu7Y=
+	t=1723731177; cv=none; b=Mq6f4MRCcTHsdBlcpruEeYWiuKmdU2GlxEn6ObnNd1CDEShZ9tf764RZ53SM9rb0Hn1gh6jnj7SFLuaqKlSlVNnv2r2nOqFjC3HseWVLzE2Epilj1HJ7YjrCdFn0wYQHUbjzd0zeJuldE23FV55kXOX/W5dwRqIrSeiFDhwXp/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732356; c=relaxed/simple;
-	bh=Tki2Q8pG5mp1Qlgp4W3sUKxBZ+8waB2tCT3TZApz9Vg=;
+	s=arc-20240116; t=1723731177; c=relaxed/simple;
+	bh=hiLbpp/u5f/vHKz+GXeUWiwuW88eInljKuyH16HX1N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aej8HnbW4QmYKAwctODPhihtYmMEwU+UEOpnGfu0n6hvmIOfy0naADV15fWHRDTwS6rT1M5a3TTWfN7iKEICQaoNESvAjj4Q0wphwmoPDSY3a8U7F/GOgV0wjkfwQ5WZUvfZOJXwCQwLivr6RLrus40Q2nnqi7lIB6kBQwj81PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKZx6b0z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E703C32786;
-	Thu, 15 Aug 2024 14:32:35 +0000 (UTC)
+	 MIME-Version; b=FuEGrUwcmpf9GaLp3eS+fSKjz7CwA+YmFephwOSNvJ+Pu773aUj+wlpudRQL2iDmaJabdhN2+D2kyR+ieotXfLAXtQLaMWPvtxXfKHqE8lHmD0O90gzpJUEA42yMtwHtRndJ/wu4Cew7WEz5Mihr83pNyw19hngl4BXFjpa+ISs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAe7AIqX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42391C32786;
+	Thu, 15 Aug 2024 14:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732355;
-	bh=Tki2Q8pG5mp1Qlgp4W3sUKxBZ+8waB2tCT3TZApz9Vg=;
+	s=korg; t=1723731176;
+	bh=hiLbpp/u5f/vHKz+GXeUWiwuW88eInljKuyH16HX1N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKZx6b0z2oSRn0GrtPlwb/940j5S9bTWETiEGRgWajxtf1EJlUCBTjhQDT5NkquNF
-	 lxSDXgji5wAX8Z2MqJQygH3pbqz7R3zoBHvIxR9IQTUXghYiZzXIbHfd69NwbsX5OY
-	 i/djv95CkCSrFqT/E/wdrhn/NIUYAEtPt9wShNYo=
+	b=pAe7AIqXlAp7U95FTZNkZVffs70cucGfvSs2njsqDOQ5uU74fY365LWeCp7QZ17vl
+	 p42O9P5cbB/w6IHYjzaLAh1HIXHHfADNiGph9xZjT2IqxSxhz4zqY5IQV2p3w4lz89
+	 TayVBMk/FFFlq5woCeStlD5oSLeCoLaO49G04LGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Martin Willi <martin@strongswan.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 113/352] net: dsa: b53: Limit chip-wide jumbo frame config to CPU ports
+Subject: [PATCH 5.4 046/259] gss_krb5: Fix the error handling path for crypto_sync_skcipher_setkey
 Date: Thu, 15 Aug 2024 15:22:59 +0200
-Message-ID: <20240815131923.623099332@linuxfoundation.org>
+Message-ID: <20240815131904.583324704@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Willi <martin@strongswan.org>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit c5118072e228e7e4385fc5ac46b2e31cf6c4f2d3 ]
+[ Upstream commit a3123341dc358952ce2bf8067fbdfb7eaadf71bb ]
 
-Broadcom switches supported by the b53 driver use a chip-wide jumbo frame
-configuration. In the commit referenced with the Fixes tag, the setting
-is applied just for the last port changing its MTU.
+If we fail to call crypto_sync_skcipher_setkey, we should free the
+memory allocation for cipher, replace err_return with err_free_cipher
+to free the memory of cipher.
 
-While configuring CPU ports accounts for tagger overhead, user ports do
-not. When setting the MTU for a user port, the chip-wide setting is
-reduced to not include the tagger overhead, resulting in an potentially
-insufficient chip-wide maximum frame size for the CPU port.
-
-As, by design, the CPU port MTU is adjusted for any user port change,
-apply the chip-wide setting only for CPU ports. This aligns the driver
-to the behavior of other switch drivers.
-
-Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
-Suggested-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Martin Willi <martin@strongswan.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4891f2d008e4 ("gss_krb5: import functionality to derive keys into the kernel")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sunrpc/auth_gss/gss_krb5_keys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index d3b37cebcfde8..2bf07a3980544 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2180,6 +2180,9 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
- 	if (is5325(dev) || is5365(dev))
- 		return -EOPNOTSUPP;
+diff --git a/net/sunrpc/auth_gss/gss_krb5_keys.c b/net/sunrpc/auth_gss/gss_krb5_keys.c
+index 3b7f721c023bb..f77ea3dc0cc84 100644
+--- a/net/sunrpc/auth_gss/gss_krb5_keys.c
++++ b/net/sunrpc/auth_gss/gss_krb5_keys.c
+@@ -161,7 +161,7 @@ u32 krb5_derive_key(const struct gss_krb5_enctype *gk5e,
+ 	if (IS_ERR(cipher))
+ 		goto err_return;
+ 	if (crypto_sync_skcipher_setkey(cipher, inkey->data, inkey->len))
+-		goto err_return;
++		goto err_free_cipher;
  
-+	if (!dsa_is_cpu_port(ds, port))
-+		return 0;
-+
- 	enable_jumbo = (mtu >= JMS_MIN_SIZE);
- 	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
+ 	/* allocate and set up buffers */
  
 -- 
 2.43.0
