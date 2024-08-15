@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D42A952FA8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B48E9531E8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77839B26F28
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0059F28816D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D4F1A76A4;
-	Thu, 15 Aug 2024 13:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A641A19D891;
+	Thu, 15 Aug 2024 13:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUWP6gZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6K5y+NQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0286B1A7074;
-	Thu, 15 Aug 2024 13:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640307DA7D;
+	Thu, 15 Aug 2024 13:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728866; cv=none; b=ocLuqS4rd4nSFNg9Fqr3AmndEABqcU1VuZZG/vH3uyDL5Cpp4hAu9B6oj/nGjngrGTWQ/eqEdLLt8TChWVIQYanW9BpB7fbG+UwRzMwnKxCCIS+8bI2ZB5dBVyWGOJaTkuJFshdavfZKmGvGJh5MunT6+ztnylXgvFZ3TMVYCFQ=
+	t=1723730391; cv=none; b=N5M2cJ+yi7MJ9l5kIMrBeqblyPJXfbJuchaTM9Qf8oQF7keT5Pq4+nkqJ9bFpSRgA2ojAlslVVVuHvNDJkL4wupNnZ4eSMjQv1xHGoYZt2KbYM7Qer1iVfbQ5bM44DRH+0n3jmpKHdWmGPOKf5k74MLvyIlEK74IzKJx7s3Z2FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728866; c=relaxed/simple;
-	bh=mbsfryQJx3oYlze74Z4zeab6HJnRBs3ZqmRFolBFqi0=;
+	s=arc-20240116; t=1723730391; c=relaxed/simple;
+	bh=8mmk5G9aeEMzkc1pVMt0a4bATA4dQ1lZxW4Y147K/B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i0cQdx0ZnCNJcxdj7Qq8/haRglybiLXwrkNtGscGAcjLpIyxBfs4c0iqlUzoGhwOHtb5RmhPJH/TIITy41hlpjOZPqguSJ+MNyCpijQbdM47vn9rBOJfxHfj++wFkLo39YCV7TNTxMV+qdmRimMgp0HIui2ADM3Plw6SjEFlpng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUWP6gZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319EAC32786;
-	Thu, 15 Aug 2024 13:34:24 +0000 (UTC)
+	 MIME-Version; b=XDrVEZwwXD+xV8MD4CpqtsNa6Vj2wgjpKX6iMG1VZf3/RzuUsCqbN/4FIR8oaetMAcFwQhhSZt7G5C2b5SBwFQRjgdXzFw+VT2uBp/BNJHqzHyiQnbfSJWxVMwebznZWIDBlJigQ4pvlEL2PVCIUxIVw+3mi8F+bx30GzRfJYhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6K5y+NQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C707EC32786;
+	Thu, 15 Aug 2024 13:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728864;
-	bh=mbsfryQJx3oYlze74Z4zeab6HJnRBs3ZqmRFolBFqi0=;
+	s=korg; t=1723730391;
+	bh=8mmk5G9aeEMzkc1pVMt0a4bATA4dQ1lZxW4Y147K/B8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUWP6gZZGdPgWm79vbYJ76krwVZyFTZ0IweDLouGlYmMr+758MHn5Ndx529Z8EEbE
-	 egJi6DVSlhODr3URES2tTlJbwXWAoieziK5WFRDuc4qn6jdMkWzvTcGZ5VF+65BagX
-	 yzXrREKbCcaoJxh8SHwLEkA0T3SCsF6Mbd9GRAHc=
+	b=P6K5y+NQKMPLpYb3/t3PbscJ21Ok49qFGMxUsX1ydP66BP0+fNGI1su+USaFE14mP
+	 oNjUwGXBwmfNlXfB4nZh4OSm5HTwkukpnsp5GOD16B0WfXMnV+yP/k7ywh9giUb7Sh
+	 s8yGbfYOxVJVEo7CeMQ4Euh2fZ/p9/WG0mXifwUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
-	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
+	patches@lists.linux.dev,
+	Besar Wicaksono <bwicaksono@nvidia.com>,
+	James Clark <james.clark@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 134/196] net: fec: Stop PPS on driver remove
+Subject: [PATCH 5.15 393/484] arm64: Add Neoverse-V2 part
 Date: Thu, 15 Aug 2024 15:24:11 +0200
-Message-ID: <20240815131857.201800197@linuxfoundation.org>
+Message-ID: <20240815131956.626611936@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Besar Wicaksono <bwicaksono@nvidia.com>
 
-[ Upstream commit 8fee6d5ad5fa18c270eedb2a2cdf58dbadefb94b ]
+[ Upstream commit f4d9d9dcc70b96b5e5d7801bd5fbf8491b07b13d ]
 
-PPS was not stopped in `fec_ptp_stop()`, called when
-the adapter was removed. Consequentially, you couldn't
-safely reload the driver with the PPS signal on.
+Add the part number and MIDR for Neoverse-V2
 
-Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://lore.kernel.org/netdev/CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com/T/#m01dcb810bfc451a492140f6797ca77443d0cb79f
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240807080956.2556602-1-csokas.bence@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Besar Wicaksono <bwicaksono@nvidia.com>
+Reviewed-by: James Clark <james.clark@arm.com>
+Link: https://lore.kernel.org/r/20240109192310.16234-2-bwicaksono@nvidia.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index abf0b6cddf204..a5d693f51d2b1 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -635,6 +635,9 @@ void fec_ptp_stop(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 3656bbbb7c7b6..d6d3f15c80aae 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -85,6 +85,7 @@
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
++#define ARM_CPU_PART_NEOVERSE_V2	0xD4F
  
-+	if (fep->pps_enable)
-+		fec_ptp_enable_pps(fep, 0);
-+
- 	cancel_delayed_work_sync(&fep->time_keep);
- 	if (fep->ptp_clock)
- 		ptp_clock_unregister(fep->ptp_clock);
+ #define APM_CPU_PART_POTENZA		0x000
+ 
+@@ -139,6 +140,7 @@
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
++#define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 -- 
 2.43.0
 
