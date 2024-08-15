@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-68821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9F9953427
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:24:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC07995328A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89C50B28CCE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:23:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CF701F21E66
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C4D1A01DE;
-	Thu, 15 Aug 2024 14:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669BB1A0712;
+	Thu, 15 Aug 2024 14:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2isQkmEL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agP4OXU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9315B1A01D4;
-	Thu, 15 Aug 2024 14:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234F61A00F5;
+	Thu, 15 Aug 2024 14:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731769; cv=none; b=YAxhJb/gRZmwBAK+ewDk5+GDMOd6I9VMQLy9FewNXL5MfiZ1s1h7AFxKAxSyIsSTzpqaUtdIjSD3cjxgn2y7IaX77uL4psGcDvZbuTBWcmzrC97nCvPp9URCn2XcaUYGqg3U2yjRErxs55oT/eB1Lyso+1c0OyYTQ5giV932B3Q=
+	t=1723730713; cv=none; b=dmfF6c9HdW8pNzmqLmaUMQPqY+LYfrMDDPTmGpGYtfRliJOiz2o9dXhubH7eS/GHb6wtKZrZCP7MSemCcjiOfsF/NnJUG6YT4hUgVwiidFkwf/8CBAC4mLf8Owlpef0GFFa1rBvoJYE2TD+HOt4S0ibTSSdC9Rhbc/A1ZeOj3+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731769; c=relaxed/simple;
-	bh=yj8YhOLKBOl8O1kY/2MZgYMKTL+QaBqOQSH6bo65Rro=;
+	s=arc-20240116; t=1723730713; c=relaxed/simple;
+	bh=fsy3qJFMATI9LqKH4/i1OFCurY/A3Nb2Ngi2uSeK5Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJYhW/etBLkzbF+m7/tKitCk6B35uReQ9nFEQa93+Hq49YctHAzapys41KkVqjBr/GeMzkLEkq/3Hj4zTMyp9L2DBjqEQWb3dQA4R/RH/nGNamwSA4GjnqAhmvfPMvE8TFTWR9yeHdFzRFxpQk0AjhRqJ/iOwl2zOox0IscNt/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2isQkmEL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051DCC32786;
-	Thu, 15 Aug 2024 14:22:48 +0000 (UTC)
+	 MIME-Version; b=oj9IEzOpSsFaDUIPuJIR4vaeL4S7fwpr0ujv6RV/tftRyEKdHJXSKB6+lU+T8q/eOp1ifUCPNGLhoFxQGfYuoMqwo9yzHOE1QSZq000iliJg/ByboYJHLuv93DwrFUf2xDC4wKwsi6MXqtWIU0jS6M/Fl+wOOWfd2Gr3RpNM9Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agP4OXU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706C4C4AF0C;
+	Thu, 15 Aug 2024 14:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731769;
-	bh=yj8YhOLKBOl8O1kY/2MZgYMKTL+QaBqOQSH6bo65Rro=;
+	s=korg; t=1723730713;
+	bh=fsy3qJFMATI9LqKH4/i1OFCurY/A3Nb2Ngi2uSeK5Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2isQkmELPid8kS9i2zyNFyPxvpNngxyLOKn9CbUFWYFM4Qo6kgNP7LEycYqu5UjVh
-	 wEeE+8v9hhHS6BrAAZqAZOYclMqwgxwRKm0wsXzHMQIxStYuhQVhlOsDyKCA1gJ3zl
-	 vEZqdbn2VREccXF2id1J/7n4BZy1In3vmeADrbvI=
+	b=agP4OXU6rzURubm4QrB6nJ+0TR0Yr9QuQhCUomFlayg9YnBNhXK4TS3buQl5skK9H
+	 48QGWBUGEt5tH2Onj1Kw2kTZ322xNvmAQeceoc6t93eQU4WGh7Tt+7uRRQ7o8ZS5PW
+	 gG8utg6L65UMQjQqMu+KbUuebDHjnxq8r3ik2KFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	HungNien Chen <hn.chen@sunplusit.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 202/259] media: uvcvideo: Ignore empty TS packets
+	Geliang Tang <geliang.tang@suse.com>,
+	Matthieu Baerts <matthieu.baerts@tessares.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.1 01/38] mptcp: pass addr to mptcp_pm_alloc_anno_list
 Date: Thu, 15 Aug 2024 15:25:35 +0200
-Message-ID: <20240815131910.574832025@linuxfoundation.org>
+Message-ID: <20240815131833.005686056@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,134 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit 5cd7c25f6f0576073b3d03bc4cfb1e8ca63a1195 ]
+commit 528cb5f2a1e859522f36f091f29f5c81ec6d4a4c upstream.
 
-Some SunplusIT cameras took a borderline interpretation of the UVC 1.5
-standard, and fill the PTS and SCR fields with invalid data if the
-package does not contain data.
+Pass addr parameter to mptcp_pm_alloc_anno_list() instead of entry. We
+can reduce the scope, e.g. in mptcp_pm_alloc_anno_list(), we only access
+"entry->addr", we can then restrict to the pointer to "addr" then.
 
-"STC must be captured when the first video data of a video frame is put
-on the USB bus."
-
-Some SunplusIT devices send, e.g.,
-
-buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
-buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
-buffer: 0xa7755c00 len 000668 header:0x8c stc 73779dba sof 070c pts 7376d37a
-
-While the UVC specification meant that the first two packets shouldn't
-have had the SCR bit set in the header.
-
-This borderline/buggy interpretation has been implemented in a variety
-of devices, from directly SunplusIT and from other OEMs that rebrand
-SunplusIT products. So quirking based on VID:PID will be problematic.
-
-All the affected modules have the following extension unit:
-VideoControl Interface Descriptor:
-  guidExtensionCode         {82066163-7050-ab49-b8cc-b3855e8d221d}
-
-But the vendor plans to use that GUID in the future and fix the bug,
-this means that we should use heuristic to figure out the broken
-packets.
-
-This patch takes care of this.
-
-lsusb of one of the affected cameras:
-
-Bus 001 Device 003: ID 1bcf:2a01 Sunplus Innovation Technology Inc.
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.01
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 ?
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x1bcf Sunplus Innovation Technology Inc.
-  idProduct          0x2a01
-  bcdDevice            0.02
-  iManufacturer           1 SunplusIT Inc
-  iProduct                2 HanChen Wise Camera
-  iSerial                 3 01.00.00
-  bNumConfigurations      1
-
-Tested-by: HungNien Chen <hn.chen@sunplusit.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Tomasz Figa <tfiga@chromium.org>
-Link: https://lore.kernel.org/r/20240323-resend-hwtimestamp-v10-2-b08e590d97c7@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c95eb32ced82 ("mptcp: pm: reduce indentation blocks")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c   |    8 ++++----
+ net/mptcp/pm_userspace.c |    2 +-
+ net/mptcp/protocol.h     |    2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index 6dff8e2fadbac..43c9660b729e0 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -468,6 +468,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	ktime_t time;
- 	u16 host_sof;
- 	u16 dev_sof;
-+	u32 dev_stc;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -352,7 +352,7 @@ mptcp_pm_del_add_timer(struct mptcp_sock
+ }
  
- 	switch (data[1] & (UVC_STREAM_PTS | UVC_STREAM_SCR)) {
- 	case UVC_STREAM_PTS | UVC_STREAM_SCR:
-@@ -512,6 +513,34 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	if (dev_sof == stream->clock.last_sof)
- 		return;
+ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
+-			      const struct mptcp_pm_addr_entry *entry)
++			      const struct mptcp_addr_info *addr)
+ {
+ 	struct mptcp_pm_add_entry *add_entry = NULL;
+ 	struct sock *sk = (struct sock *)msk;
+@@ -360,7 +360,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
  
-+	dev_stc = get_unaligned_le32(&data[header_size - 6]);
-+
-+	/*
-+	 * STC (Source Time Clock) is the clock used by the camera. The UVC 1.5
-+	 * standard states that it "must be captured when the first video data
-+	 * of a video frame is put on the USB bus". This is generally understood
-+	 * as requiring devices to clear the payload header's SCR bit before
-+	 * the first packet containing video data.
-+	 *
-+	 * Most vendors follow that interpretation, but some (namely SunplusIT
-+	 * on some devices) always set the `UVC_STREAM_SCR` bit, fill the SCR
-+	 * field with 0's,and expect that the driver only processes the SCR if
-+	 * there is data in the packet.
-+	 *
-+	 * Ignore all the hardware timestamp information if we haven't received
-+	 * any data for this frame yet, the packet contains no data, and both
-+	 * STC and SOF are zero. This heuristics should be safe on compliant
-+	 * devices. This should be safe with compliant devices, as in the very
-+	 * unlikely case where a UVC 1.1 device would send timing information
-+	 * only before the first packet containing data, and both STC and SOF
-+	 * happen to be zero for a particular frame, we would only miss one
-+	 * clock sample from many and the clock recovery algorithm wouldn't
-+	 * suffer from this condition.
-+	 */
-+	if (buf && buf->bytesused == 0 && len == header_size &&
-+	    dev_stc == 0 && dev_sof == 0)
-+		return;
-+
- 	stream->clock.last_sof = dev_sof;
+ 	lockdep_assert_held(&msk->pm.lock);
  
- 	host_sof = usb_get_current_frame_number(stream->dev->udev);
-@@ -549,7 +578,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	spin_lock_irqsave(&stream->clock.lock, flags);
+-	add_entry = mptcp_lookup_anno_list_by_saddr(msk, &entry->addr);
++	add_entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
  
- 	sample = &stream->clock.samples[stream->clock.head];
--	sample->dev_stc = get_unaligned_le32(&data[header_size - 6]);
-+	sample->dev_stc = dev_stc;
- 	sample->dev_sof = dev_sof;
- 	sample->host_sof = host_sof;
- 	sample->host_time = time;
--- 
-2.43.0
-
+ 	if (add_entry) {
+ 		if (mptcp_pm_is_kernel(msk))
+@@ -377,7 +377,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
+ 
+ 	list_add(&add_entry->list, &msk->pm.anno_list);
+ 
+-	add_entry->addr = entry->addr;
++	add_entry->addr = *addr;
+ 	add_entry->sock = msk;
+ 	add_entry->retrans_times = 0;
+ 
+@@ -580,7 +580,7 @@ static void mptcp_pm_create_subflow_or_s
+ 			return;
+ 
+ 		if (local) {
+-			if (mptcp_pm_alloc_anno_list(msk, local)) {
++			if (mptcp_pm_alloc_anno_list(msk, &local->addr)) {
+ 				__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
+ 				msk->pm.add_addr_signaled++;
+ 				mptcp_pm_announce_addr(msk, &local->addr, false);
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -225,7 +225,7 @@ int mptcp_nl_cmd_announce(struct sk_buff
+ 	lock_sock((struct sock *)msk);
+ 	spin_lock_bh(&msk->pm.lock);
+ 
+-	if (mptcp_pm_alloc_anno_list(msk, &addr_val)) {
++	if (mptcp_pm_alloc_anno_list(msk, &addr_val.addr)) {
+ 		msk->pm.add_addr_signaled++;
+ 		mptcp_pm_announce_addr(msk, &addr_val.addr, false);
+ 		mptcp_pm_nl_addr_send_ack(msk);
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -812,7 +812,7 @@ int mptcp_pm_nl_mp_prio_send_ack(struct
+ 				 struct mptcp_addr_info *rem,
+ 				 u8 bkup);
+ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
+-			      const struct mptcp_pm_addr_entry *entry);
++			      const struct mptcp_addr_info *addr);
+ void mptcp_pm_free_anno_list(struct mptcp_sock *msk);
+ bool mptcp_pm_sport_in_anno_list(struct mptcp_sock *msk, const struct sock *sk);
+ struct mptcp_pm_add_entry *
 
 
 
