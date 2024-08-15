@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-69145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1079535A7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321E595341F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BA741F274F2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D07891F28F02
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A551A01BB;
-	Thu, 15 Aug 2024 14:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE331AAE07;
+	Thu, 15 Aug 2024 14:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1kKnejw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CrdHJEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6A21AC893;
-	Thu, 15 Aug 2024 14:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168EA1A76C6;
+	Thu, 15 Aug 2024 14:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732815; cv=none; b=CmmDi2wI4MaZEao8/6aVs5UjpQjSVs3qzfGcJ8ZQiE9G5Y5+UBoVzM21H17RHkyCWtFlQuS6J0zpVAdL5CcTBSZ28yetUSoVgQh7jgwLs4e5G3CaOIjeQJRbHR47NyE62dcMJf1a0B7UEHL13z6moa0+Kv+htb5jOyrw9saamBk=
+	t=1723731760; cv=none; b=nbYve+Ql/EEakNmSb2RetMUxaccteSlGI57e91QkyXtULOju7Duj11yP1odpY3xavUi7KzD6QKI1Ghiaj7LJAI+N/hNBQJtwxCmdj4oEJj/bOaPINz/VG8ZU4Gi1QQGPkVNLRYrgBLPGE0Pf3orkPTiQ3VjSI7k2ezih9oJVWeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732815; c=relaxed/simple;
-	bh=6iAkeUKZ/Rvd5S4vqK0vqDSpGHYY38Z8JhEu3pmH4iw=;
+	s=arc-20240116; t=1723731760; c=relaxed/simple;
+	bh=VMMIrQmzg73rKcV91PAYj4KKP1aTOestXGRV99hA08w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmkwOXQhVtgEpbpSlEXeD5Yp/dCQvO2UZiRhdtjyS5kLBG0ygrM87Pe9DQ2hjR9eT0mJrmW/ZywZ6+vkQDyQgwQhoJy7UIFlc2YWGgnFlJFOo6S0FkANzbHlUmUjg36DLgJItNBRdQLbKKf5NBhiah7+iXBNiL1NfTZQPpel0/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1kKnejw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC2BC32786;
-	Thu, 15 Aug 2024 14:40:14 +0000 (UTC)
+	 MIME-Version; b=LSKRgY5QhyZs+HeQiN17uiIxH5fFm9+qR6D8oMW4F8flDy8TSfhM1Zrg2pkjCNXFEu/UKpL1TVxDH7UWsUqZ2ga7gS8o+sOyxX6qYH2FRYKBQOmcOEg3VXRs57Svp6VxvUiok0Vu0HbG1/ABaV5jG/7tF+HdAdiU68JWDkyuTTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CrdHJEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A25C32786;
+	Thu, 15 Aug 2024 14:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732815;
-	bh=6iAkeUKZ/Rvd5S4vqK0vqDSpGHYY38Z8JhEu3pmH4iw=;
+	s=korg; t=1723731760;
+	bh=VMMIrQmzg73rKcV91PAYj4KKP1aTOestXGRV99hA08w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1kKnejwOJJJyQvYzk8CBSsaDiijiY9ZSTKzKEWMedsmKlDrkibAaADlV0SstZ9j1
-	 1qimp6zAiPEn6KGzPdeeYnzlC2t4DD5kpHlB47AHQ6Y/yY739v3EUGkTtUIh4j+ADj
-	 O3WJImyYMRwIgB24J1wZi8GtqqUeoENOEmhfN6+0=
+	b=1CrdHJEcRriz85UwL7RlhNZ4LzcdrmnwE2cfXGiWTtsRSBXYJGFz7pLdv+zhQpAna
+	 XhSMu94aGGKn1UPZMFanRkl6EBPBSnYkAUFD3P8gQ2cuGKEz/O8YbgQW1uuCBbD8+J
+	 RJO1tZ8V4ePYNVx8VpMxTbQW4b1NNgWZxkA4CmLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 295/352] ASoC: codecs: wsa881x: Correct Soundwire ports mask
+	syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 228/259] ALSA: line6: Fix racy access to midibuf
 Date: Thu, 15 Aug 2024 15:26:01 +0200
-Message-ID: <20240815131930.856495553@linuxfoundation.org>
+Message-ID: <20240815131911.584529169@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit eb11c3bb64ad0a05aeacdb01039863aa2aa3614b ]
+commit 15b7a03205b31bc5623378c190d22b7ff60026f1 upstream.
 
-Device has up to WSA881X_MAX_SWR_PORTS number of ports and the array
-assigned to prop.sink_dpn_prop has 0..WSA881X_MAX_SWR_PORTS-1 elements.
-On the other hand, GENMASK(high, low) creates an inclusive mask between
-<high, low>, so we need the mask from 0 up to WSA881X_MAX_SWR_PORTS-1.
+There can be concurrent accesses to line6 midibuf from both the URB
+completion callback and the rawmidi API access.  This could be a cause
+of KMSAN warning triggered by syzkaller below (so put as reported-by
+here).
 
-Theoretically, too wide mask could cause an out of bounds read in
-sdw_get_slave_dpn_prop() in stream.c, however only in the case of buggy
-driver, e.g. adding incorrect number of ports via
-sdw_stream_add_slave().
+This patch protects the midibuf call of the former code path with a
+spinlock for avoiding the possible races.
 
-Fixes: a0aab9e1404a ("ASoC: codecs: add wsa881x amplifier support")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240726-asoc-wcd-wsa-swr-ports-genmask-v1-4-d4d7a8b56f05@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/00000000000000949c061df288c5@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240805130129.10872-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wsa881x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/line6/driver.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/soc/codecs/wsa881x.c b/sound/soc/codecs/wsa881x.c
-index 9f66f6dc2c67f..77012979e1319 100644
---- a/sound/soc/codecs/wsa881x.c
-+++ b/sound/soc/codecs/wsa881x.c
-@@ -1120,7 +1120,7 @@ static int wsa881x_probe(struct sdw_slave *pdev,
- 	wsa881x->sconfig.frame_rate = 48000;
- 	wsa881x->sconfig.direction = SDW_DATA_DIR_RX;
- 	wsa881x->sconfig.type = SDW_STREAM_PDM;
--	pdev->prop.sink_ports = GENMASK(WSA881X_MAX_SWR_PORTS, 0);
-+	pdev->prop.sink_ports = GENMASK(WSA881X_MAX_SWR_PORTS - 1, 0);
- 	pdev->prop.sink_dpn_prop = wsa_sink_dpn_prop;
- 	pdev->prop.scp_int1_mask = SDW_SCP_INT1_BUS_CLASH | SDW_SCP_INT1_PARITY;
- 	gpiod_direction_output(wsa881x->sd_n, 1);
--- 
-2.43.0
-
+--- a/sound/usb/line6/driver.c
++++ b/sound/usb/line6/driver.c
+@@ -285,12 +285,14 @@ static void line6_data_received(struct u
+ {
+ 	struct usb_line6 *line6 = (struct usb_line6 *)urb->context;
+ 	struct midi_buffer *mb = &line6->line6midi->midibuf_in;
++	unsigned long flags;
+ 	int done;
+ 
+ 	if (urb->status == -ESHUTDOWN)
+ 		return;
+ 
+ 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
++		spin_lock_irqsave(&line6->line6midi->lock, flags);
+ 		done =
+ 			line6_midibuf_write(mb, urb->transfer_buffer, urb->actual_length);
+ 
+@@ -299,12 +301,15 @@ static void line6_data_received(struct u
+ 			dev_dbg(line6->ifcdev, "%d %d buffer overflow - message skipped\n",
+ 				done, urb->actual_length);
+ 		}
++		spin_unlock_irqrestore(&line6->line6midi->lock, flags);
+ 
+ 		for (;;) {
++			spin_lock_irqsave(&line6->line6midi->lock, flags);
+ 			done =
+ 				line6_midibuf_read(mb, line6->buffer_message,
+ 						   LINE6_MIDI_MESSAGE_MAXLEN,
+ 						   LINE6_MIDIBUF_READ_RX);
++			spin_unlock_irqrestore(&line6->line6midi->lock, flags);
+ 
+ 			if (done <= 0)
+ 				break;
 
 
 
