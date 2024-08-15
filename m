@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE359534C6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADFE953340
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1E541C2360E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A05D9B2834A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC4919E7FA;
-	Thu, 15 Aug 2024 14:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389B01B373E;
+	Thu, 15 Aug 2024 14:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmYJPYee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUpllnre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16001DFFB;
-	Thu, 15 Aug 2024 14:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A181AED5A;
+	Thu, 15 Aug 2024 14:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732210; cv=none; b=kCplo2+XppSsHvL1cK32ByniuCTVPbY96qKs1ctdHhPV0lgeFcl1grxY6C0zBVxDD2p0+HahFzHEYvVadWkyXgZnDDtN4sI0iyHgGZ9SajfXmo6bjJF20XxrPk/g0xVySs3nqm1RaxXR/zcZsVOSjhNXhuXIDvjrG+OwaqhUpOo=
+	t=1723731161; cv=none; b=sWKBJJe1wxi8q3KAOJ7CZ9kzRuXMZE2xtr++ZFl9MVr1M6374XqKhMo4lxTu8/VOzSn+dlXNkQ9+ntjEL5N9a9Nh2DouTOWctddRlY/4E55muMYtJlEL+QXXTwp01E0gs1rnXPci+iDSn+XKOnTR/zRmikHvWWEuz70zNYYdBGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732210; c=relaxed/simple;
-	bh=B+MwpQWyxrsPfEwNCZAkDYj46GAlZINR40Z1Cu/aQ6c=;
+	s=arc-20240116; t=1723731161; c=relaxed/simple;
+	bh=oS4Vy+nfgFd1W4krWlU72fbkfxRZnCe25VEAbNR36LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbDmpeTuVxG+oa/mpCyU4gEkw53k2j1wRKE9bcXHGOwp3LEhumRjx0F4C2bu7A7Tu9hJ8Qs2pdQQ1DvebkExTjQEO6xnLHY2989J/WKcTZs1CIzu1ULE2FuzX8ROJOIhCBXn1pLzjnzdMNJK1ByRWcpgbDi9lQ/n0mJu9xN7B8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmYJPYee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575ECC32786;
-	Thu, 15 Aug 2024 14:30:10 +0000 (UTC)
+	 MIME-Version; b=S+f//tKSt60+fYqJTu3ywKAwd0jWlzk4uW5e1hG2W1Y89gW17AjB9isTfZXjtTauLhQALAYmKma42KW6uNE2Vd/tFHJPRAPIf1z124FiwO+GKA3mqqYYS7ukNXRQUdczZf2x3W3sMnXIcxxwMyOmZxgZ5+GLaiDypTDHcIZBM2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUpllnre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA6CC32786;
+	Thu, 15 Aug 2024 14:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732210;
-	bh=B+MwpQWyxrsPfEwNCZAkDYj46GAlZINR40Z1Cu/aQ6c=;
+	s=korg; t=1723731160;
+	bh=oS4Vy+nfgFd1W4krWlU72fbkfxRZnCe25VEAbNR36LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmYJPYeeAHnh82NH6qKtdmjfS9m5Hu58KIl0N3CiEQ4y5SCa/joebKONgmsAhd7KC
-	 t7aheFYLrA3dloCI3V4Ig3u8/pjxlwiWazekUhOwGl9wpLgko7MvqO0kthomKeHwOx
-	 rnK3+UTfhI1n+AZCP4pl6Q5WLru2GoWqrjVEe7ik=
+	b=PUpllnreAfouSAVzKh2kakysSlLeu45EPSveIJBqbH4anRlRnOSbDn80NcN4Kl/P9
+	 XEr9v5Mw7UIza/jhS1jQFL8DZdXVyrDIM2WBpc+5L1CHbmynAprPr48e8sUmW95YBC
+	 g6JaDW4It2KchXhH5G8LxGMPG6yhS3oZJr9JK2a0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Bowler <nbowler@draconx.ca>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 108/352] macintosh/therm_windtunnel: fix module unload.
-Date: Thu, 15 Aug 2024 15:22:54 +0200
-Message-ID: <20240815131923.431094678@linuxfoundation.org>
+Subject: [PATCH 5.4 042/259] perf: Fix perf_aux_size() for greater-than 32-bit size
+Date: Thu, 15 Aug 2024 15:22:55 +0200
+Message-ID: <20240815131904.427407808@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Bowler <nbowler@draconx.ca>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit fd748e177194ebcbbaf98df75152a30e08230cc6 ]
+[ Upstream commit 3df94a5b1078dfe2b0c03f027d018800faf44c82 ]
 
-The of_device_unregister call in therm_windtunnel's module_exit procedure
-does not fully reverse the effects of of_platform_device_create in the
-module_init prodedure.  Once you unload this module, it is impossible
-to load it ever again since only the first of_platform_device_create
-call on the fan node succeeds.
+perf_buffer->aux_nr_pages uses a 32-bit type, so a cast is needed to
+calculate a 64-bit size.
 
-This driver predates first git commit, and it turns out back then
-of_platform_device_create worked differently than it does today.
-So this is actually an old regression.
-
-The appropriate function to undo of_platform_device_create now appears
-to be of_platform_device_destroy, and switching to use this makes it
-possible to unload and load the module as expected.
-
-Signed-off-by: Nick Bowler <nbowler@draconx.ca>
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240711035428.16696-1-nbowler@draconx.ca
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240624201101.60186-5-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/therm_windtunnel.c | 2 +-
+ kernel/events/internal.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/macintosh/therm_windtunnel.c b/drivers/macintosh/therm_windtunnel.c
-index f55f6adf5e5ff..49805eb4d145a 100644
---- a/drivers/macintosh/therm_windtunnel.c
-+++ b/drivers/macintosh/therm_windtunnel.c
-@@ -549,7 +549,7 @@ g4fan_exit( void )
- 	platform_driver_unregister( &therm_of_driver );
+diff --git a/kernel/events/internal.h b/kernel/events/internal.h
+index 6e87b358e0826..30218d7c74e66 100644
+--- a/kernel/events/internal.h
++++ b/kernel/events/internal.h
+@@ -122,7 +122,7 @@ static inline unsigned long perf_data_size(struct ring_buffer *rb)
  
- 	if( x.of_dev )
--		of_device_unregister( x.of_dev );
-+		of_platform_device_destroy(&x.of_dev->dev, NULL);
+ static inline unsigned long perf_aux_size(struct ring_buffer *rb)
+ {
+-	return rb->aux_nr_pages << PAGE_SHIFT;
++	return (unsigned long)rb->aux_nr_pages << PAGE_SHIFT;
  }
  
- module_init(g4fan_init);
+ #define __DEFINE_OUTPUT_COPY_BODY(advance_buf, memcpy_func, ...)	\
 -- 
 2.43.0
 
