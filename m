@@ -1,52 +1,58 @@
-Return-Path: <stable+bounces-68148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC5D9530DF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:47:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4AF95310E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED7D1C23602
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:47:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C1CE2869A1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD82189BB5;
-	Thu, 15 Aug 2024 13:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B4019FA7A;
+	Thu, 15 Aug 2024 13:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRL/9T7u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ara0RWXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A481AC8AE;
-	Thu, 15 Aug 2024 13:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0647919DF9A;
+	Thu, 15 Aug 2024 13:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729642; cv=none; b=tTli9nIcHxJC51iY7TDenkOtInXk24mYAjCBfyxjeNSk0di3ywScwiK5bMHTMnjTfAFcjnqGdNwE9Y4CpAWEFFhm3q/Yulf3AK5R9Na8SODJVLElKC5ztR+Gc+xhmIBmeHjQTejLxcqRUvBsbnnGPvc3nRfCo1N0lw0hAQ7zm64=
+	t=1723729776; cv=none; b=VjyKsyvPNnTPyhtATHpG7jQrWfizd+xsuueeJng+Qrwpm/cUXB5KQgQdnCKDenGRNkSrBoSP9KpBnhcUvmtI4/J+3164+aiu03BOh2KplcjziksSnZkweaBDFM2wEaBO4+BlyefcjtVwIuWjd7E6dOZ0wx96SKK0t2kAP2sSBJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729642; c=relaxed/simple;
-	bh=JUeMhs1b7poknWbXaDRKAPbx3WS1jcIhcwgJi84AI0s=;
+	s=arc-20240116; t=1723729776; c=relaxed/simple;
+	bh=xPKTyq/bRfh/8AaKL/yFesAtJ9e21CCWWBsZvVnervs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnNAaxIkdzYFvvweWUOKkf/Sg2qvobxLCTVb+V2CwUBA7FKrlLU/bxwx9W6fQXt+Q6WeumkvcFYqMBASUFuZKLMJ+qsJ90pK55GI1yw4xdAcOtiUPDfh6h+vcxzACdYY2vHIadRlHVrdJmF2lmRP+r/JwwLwW3yj4sDLRcEby8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRL/9T7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8407DC32786;
-	Thu, 15 Aug 2024 13:47:21 +0000 (UTC)
+	 MIME-Version; b=u7oAaBiqbUO/LR+XNnLsA2W7HOoHGQnNVwLGwUWnj9bLZlRjZwq1VSkptPpTQlypGZADi1maqqD8fGno66A5C/eRFpdJ1XyZ6Anikc6fAIs8RfL4Fu7jBIczMgNWqYqE7xIOb8f0bWsr1JKqWWao+hsqLj2K/SkaypdKBPWOxLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ara0RWXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B594C32786;
+	Thu, 15 Aug 2024 13:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729642;
-	bh=JUeMhs1b7poknWbXaDRKAPbx3WS1jcIhcwgJi84AI0s=;
+	s=korg; t=1723729775;
+	bh=xPKTyq/bRfh/8AaKL/yFesAtJ9e21CCWWBsZvVnervs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRL/9T7udJ+cz++68ECqZqb/lGAfHJaErMxvvaH1/lb6LFM6U5baGl4+PmhBJre47
-	 toMB4LOSxeR13RTzIDm3CCacfVbYBLNHGJn8V93BZqziLunfYEuhtBN1j81u0fitkX
-	 /toQZiz4DH+xl7LDLh7bExlS1PdWTo+KVYkIA2fg=
+	b=ara0RWXYT1twlLfMS6oc7XsBzcTiqjw8iWahJG6Bif6pHC6/h/+y+Bh73cmzpscwn
+	 7+8aobPwNSeZzExteZ+IGw6B9k4fYmvGwTO6xJoIulDxtnlDosXofVvNQpPgrBBswk
+	 /0zyG8xm4ZZjlXKWeoMSmg8/EfO/7IsUBzeZVtp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 161/484] fs/ntfs3: Fix field-spanning write in INDEX_HDR
-Date: Thu, 15 Aug 2024 15:20:19 +0200
-Message-ID: <20240815131947.630673643@linuxfoundation.org>
+Subject: [PATCH 5.15 162/484] fs/proc/task_mmu: indicate PM_FILE for PMD-mapped file THP
+Date: Thu, 15 Aug 2024 15:20:20 +0200
+Message-ID: <20240815131947.668037817@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -65,82 +71,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 2f3e176fee66ac86ae387787bf06457b101d9f7a ]
+[ Upstream commit 3f9f022e975d930709848a86a1c79775b0585202 ]
 
-Fields flags and res[3] replaced with one 4 byte flags.
+Patch series "fs/proc: move page_mapcount() to fs/proc/internal.h".
 
-Fixes: 4534a70b7056 ("fs/ntfs3: Add headers and misc files")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+With all other page_mapcount() users in the tree gone, move
+page_mapcount() to fs/proc/internal.h, rename it and extend the
+documentation to prevent future (ab)use.
+
+... of course, I find some issues while working on that code that I sort
+first ;)
+
+We'll now only end up calling page_mapcount() [now
+folio_precise_page_mapcount()] on pages mapped via present page table
+entries.  Except for /proc/kpagecount, that still does questionable
+things, but we'll leave that legacy interface as is for now.
+
+Did a quick sanity check.  Likely we would want some better selfestest for
+/proc/$/pagemap + smaps.  I'll see if I can find some time to write some
+more.
+
+This patch (of 6):
+
+Looks like we never taught pagemap_pmd_range() about the existence of
+PMD-mapped file THPs.  Seems to date back to the times when we first added
+support for non-anon THPs in the form of shmem THP.
+
+Link: https://lkml.kernel.org/r/20240607122357.115423-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20240607122357.115423-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Lance Yang <ioworker0@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/index.c | 4 ++--
- fs/ntfs3/ntfs.h  | 9 +++++----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ fs/proc/task_mmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index a069ae7a748ef..13f492d0d971f 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -979,7 +979,7 @@ static struct indx_node *indx_new(struct ntfs_index *indx,
- 		hdr->used =
- 			cpu_to_le32(eo + sizeof(struct NTFS_DE) + sizeof(u64));
- 		de_set_vbn_le(e, *sub_vbn);
--		hdr->flags = 1;
-+		hdr->flags = NTFS_INDEX_HDR_HAS_SUBNODES;
- 	} else {
- 		e->size = cpu_to_le16(sizeof(struct NTFS_DE));
- 		hdr->used = cpu_to_le32(eo + sizeof(struct NTFS_DE));
-@@ -1684,7 +1684,7 @@ static int indx_insert_into_root(struct ntfs_index *indx, struct ntfs_inode *ni,
- 	e->size = cpu_to_le16(sizeof(struct NTFS_DE) + sizeof(u64));
- 	e->flags = NTFS_IE_HAS_SUBNODES | NTFS_IE_LAST;
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 705a41f4d6b36..b255e3dfded14 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1471,6 +1471,8 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		}
+ #endif
  
--	hdr->flags = 1;
-+	hdr->flags = NTFS_INDEX_HDR_HAS_SUBNODES;
- 	hdr->used = hdr->total =
- 		cpu_to_le32(new_root_size - offsetof(struct INDEX_ROOT, ihdr));
++		if (page && !PageAnon(page))
++			flags |= PM_FILE;
+ 		if (page && !migration && page_mapcount(page) == 1)
+ 			flags |= PM_MMAP_EXCLUSIVE;
  
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index b992ec42a1d92..625f2b52bd586 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -686,14 +686,15 @@ static inline bool de_has_vcn_ex(const struct NTFS_DE *e)
- 	      offsetof(struct ATTR_FILE_NAME, name) + \
- 	      NTFS_NAME_LEN * sizeof(short), 8)
- 
-+#define NTFS_INDEX_HDR_HAS_SUBNODES cpu_to_le32(1)
-+
- struct INDEX_HDR {
- 	__le32 de_off;	// 0x00: The offset from the start of this structure
- 			// to the first NTFS_DE.
- 	__le32 used;	// 0x04: The size of this structure plus all
- 			// entries (quad-word aligned).
- 	__le32 total;	// 0x08: The allocated size of for this structure plus all entries.
--	u8 flags;	// 0x0C: 0x00 = Small directory, 0x01 = Large directory.
--	u8 res[3];
-+	__le32 flags;	// 0x0C: 0x00 = Small directory, 0x01 = Large directory.
- 
- 	//
- 	// de_off + used <= total
-@@ -740,7 +741,7 @@ static inline struct NTFS_DE *hdr_next_de(const struct INDEX_HDR *hdr,
- 
- static inline bool hdr_has_subnode(const struct INDEX_HDR *hdr)
- {
--	return hdr->flags & 1;
-+	return hdr->flags & NTFS_INDEX_HDR_HAS_SUBNODES;
- }
- 
- struct INDEX_BUFFER {
-@@ -760,7 +761,7 @@ static inline bool ib_is_empty(const struct INDEX_BUFFER *ib)
- 
- static inline bool ib_is_leaf(const struct INDEX_BUFFER *ib)
- {
--	return !(ib->ihdr.flags & 1);
-+	return !(ib->ihdr.flags & NTFS_INDEX_HDR_HAS_SUBNODES);
- }
- 
- /* Index root structure ( 0x90 ). */
 -- 
 2.43.0
 
