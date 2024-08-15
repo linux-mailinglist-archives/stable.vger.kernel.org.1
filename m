@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835DA9532A0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C09953418
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B36681C2579B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:08:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8199DB27A19
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16141AD3EE;
-	Thu, 15 Aug 2024 14:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CA81A4F1C;
+	Thu, 15 Aug 2024 14:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hg4Z3rR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTSSF2tn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E80A762D2;
-	Thu, 15 Aug 2024 14:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B10419DF92;
+	Thu, 15 Aug 2024 14:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730759; cv=none; b=DRyLme69u+/ac9FI9vdTtyfbW/Z6/ZXKxSS34ti5FdtudtrzFBUEusYU0bNlMNUcYoPq6X9kmSk5O5829ZNAaacU7EYySGlgyYJJmItWo9J92+sD3BqygvGMC5ho+jweL+1QpAJRitps54nfEdCkskPa/LqBbbLDJ/mod43uNjE=
+	t=1723731747; cv=none; b=Iiz8yrBAi5Z8AC00VjrTSv3kyGO4YEQXTbAOZs1/3knW1mG/PMXyIptejv9loC7Mfk7vc4ntOrXIQI7ZYwozqsZE9FQXJ0BEX7cFTKkRrMyYcdaDbWODBwlg6Cxu0twZFurSdMI+K0N2dGMNAjyxBlpgvs0dCjfnwsWmwzXSnew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730759; c=relaxed/simple;
-	bh=oQ0Njouh99ayXOAO0ZjTwnuf8tOTu+gcQEEVcfrv65k=;
+	s=arc-20240116; t=1723731747; c=relaxed/simple;
+	bh=3NLqioVRavUotdvV8xxvUxdNXfoHZeXXKyzQvGTzV90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z47QgfbPEUdTYSz7cL3o8USDDapJKKu6Fu3KtOaZmmwM+tr5n/yDSnW+tt8C2937fOOTqrzyAqGMrhGBM/nTxPK6TpV62WJtAadxvBuPSpCRAl3DI4lktM/i5StEmWf/jH/SMUgbwflP9k8dE7HFn7p8c/wvyaVbezG+PqdWBnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hg4Z3rR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F87C32786;
-	Thu, 15 Aug 2024 14:05:58 +0000 (UTC)
+	 MIME-Version; b=NS/+vViLmn6vGtvBESA197Er2LR80ebEtFkeJyVVKMVH+YcuhHKubGa23yynJKlp4RnE6PRgNhoDDrbmDykoHeldgTWXT6FnZcB4cCsK/pXESp8O/P6G0QB51ecw6zCp0T9fHPYybQc+eK6cuDitldl+5axKKZJPkX6KW6hDy6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTSSF2tn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE095C4AF0C;
+	Thu, 15 Aug 2024 14:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730758;
-	bh=oQ0Njouh99ayXOAO0ZjTwnuf8tOTu+gcQEEVcfrv65k=;
+	s=korg; t=1723731747;
+	bh=3NLqioVRavUotdvV8xxvUxdNXfoHZeXXKyzQvGTzV90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hg4Z3rR8q1yWYn42rtaJuySzZbLSb6yMiKVCkqkWv6cx9MD5kZ6WC8wQaO78IDQI3
-	 CS0MCNttzqxWt+U8T3PIzAazDClS4/X/AOHFmItz9xKDdcCyDoC/14M2pR5F4vmwyW
-	 BiAlM6YN6yBHp8K09aQWBlmvPn0ZXo/jVcXJWD3o=
+	b=kTSSF2tnFOeoXh1rErwjuUkfLLuzrhuvv52TGgaeQH+j91TLmqkNTAx35tTOpsU7V
+	 0lQc3QaeLpIF/MzQgR/jCY+8AwtJNnSAWKYXeFdt6rzaMWLZA0WJBNyAwI0nYl2qMl
+	 SK1a0js5VpGoZFVPsfhHJJ52XMxII4tmzD/oYLOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 23/38] nfsd: rename NFSD_NET_* to NFSD_STATS_*
-Date: Thu, 15 Aug 2024 15:25:57 +0200
-Message-ID: <20240815131833.847683892@linuxfoundation.org>
+	Oleksandr Suvorov <oleksandr.suvorov@toradex.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 225/259] spi: fsl-lpspi: remove unneeded array
+Date: Thu, 15 Aug 2024 15:25:58 +0200
+Message-ID: <20240815131911.463275579@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
 
-[ Upstream commit d98416cc2154053950610bb6880911e3dcbdf8c5 ]
+[ Upstream commit 2fa98705a9289c758b6154a22174aa8d4041a285 ]
 
-We're going to merge the stats all into per network namespace in
-subsequent patches, rename these nn counters to be consistent with the
-rest of the stats.
+- replace the array with the shift operation
+- remove the extra comparing operation.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
+Link: https://lore.kernel.org/r/20200220141143.3902922-2-oleksandr.suvorov@toradex.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 730bbfaf7d48 ("spi: spi-fsl-lpspi: Fix scldiv calculation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/netns.h    |    4 ++--
- fs/nfsd/nfscache.c |    4 ++--
- fs/nfsd/stats.h    |    6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -25,9 +25,9 @@ struct nfsd4_client_tracking_ops;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 58b2da91be1c0..5351185fd9af7 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -86,8 +86,6 @@
+ #define TCR_RXMSK	BIT(19)
+ #define TCR_TXMSK	BIT(18)
  
- enum {
- 	/* cache misses due only to checksum comparison failures */
--	NFSD_NET_PAYLOAD_MISSES,
-+	NFSD_STATS_PAYLOAD_MISSES,
- 	/* amount of memory (in bytes) currently consumed by the DRC */
--	NFSD_NET_DRC_MEM_USAGE,
-+	NFSD_STATS_DRC_MEM_USAGE,
- 	NFSD_NET_COUNTERS_NUM
- };
+-static int clkdivs[] = {1, 2, 4, 8, 16, 32, 64, 128};
+-
+ struct lpspi_config {
+ 	u8 bpw;
+ 	u8 chip_select;
+@@ -331,15 +329,14 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 	}
  
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -696,7 +696,7 @@ int nfsd_reply_cache_stats_show(struct s
- 		   atomic_read(&nn->num_drc_entries));
- 	seq_printf(m, "hash buckets:          %u\n", 1 << nn->maskbits);
- 	seq_printf(m, "mem usage:             %lld\n",
--		   percpu_counter_sum_positive(&nn->counter[NFSD_NET_DRC_MEM_USAGE]));
-+		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_DRC_MEM_USAGE]));
- 	seq_printf(m, "cache hits:            %lld\n",
- 		   percpu_counter_sum_positive(&nfsdstats.counter[NFSD_STATS_RC_HITS]));
- 	seq_printf(m, "cache misses:          %lld\n",
-@@ -704,7 +704,7 @@ int nfsd_reply_cache_stats_show(struct s
- 	seq_printf(m, "not cached:            %lld\n",
- 		   percpu_counter_sum_positive(&nfsdstats.counter[NFSD_STATS_RC_NOCACHE]));
- 	seq_printf(m, "payload misses:        %lld\n",
--		   percpu_counter_sum_positive(&nn->counter[NFSD_NET_PAYLOAD_MISSES]));
-+		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_PAYLOAD_MISSES]));
- 	seq_printf(m, "longest chain len:     %u\n", nn->longest_chain);
- 	seq_printf(m, "cachesize at longest:  %u\n", nn->longest_chain_cachesize);
- 	return 0;
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -80,17 +80,17 @@ static inline void nfsd_stats_io_write_a
+ 	for (prescale = 0; prescale < 8; prescale++) {
+-		scldiv = perclk_rate /
+-			 (clkdivs[prescale] * config.speed_hz) - 2;
++		scldiv = perclk_rate / config.speed_hz / (1 << prescale) - 2;
+ 		if (scldiv < 256) {
+ 			fsl_lpspi->config.prescale = prescale;
+ 			break;
+ 		}
+ 	}
  
- static inline void nfsd_stats_payload_misses_inc(struct nfsd_net *nn)
- {
--	percpu_counter_inc(&nn->counter[NFSD_NET_PAYLOAD_MISSES]);
-+	percpu_counter_inc(&nn->counter[NFSD_STATS_PAYLOAD_MISSES]);
- }
+-	if (prescale == 8 && scldiv >= 256)
++	if (scldiv >= 256)
+ 		return -EINVAL;
  
- static inline void nfsd_stats_drc_mem_usage_add(struct nfsd_net *nn, s64 amount)
- {
--	percpu_counter_add(&nn->counter[NFSD_NET_DRC_MEM_USAGE], amount);
-+	percpu_counter_add(&nn->counter[NFSD_STATS_DRC_MEM_USAGE], amount);
- }
- 
- static inline void nfsd_stats_drc_mem_usage_sub(struct nfsd_net *nn, s64 amount)
- {
--	percpu_counter_sub(&nn->counter[NFSD_NET_DRC_MEM_USAGE], amount);
-+	percpu_counter_sub(&nn->counter[NFSD_STATS_DRC_MEM_USAGE], amount);
- }
- 
- #endif /* _NFSD_STATS_H */
+ 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
+-- 
+2.43.0
+
 
 
 
