@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-67790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C93952F1D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 639FA95317E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67DEF1C23B6F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9777D1C21093
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39B519E7C8;
-	Thu, 15 Aug 2024 13:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C2819DFA6;
+	Thu, 15 Aug 2024 13:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sxr6vcP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXYZV44y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601951DDF5;
-	Thu, 15 Aug 2024 13:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68E718D630;
+	Thu, 15 Aug 2024 13:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728527; cv=none; b=RRyqKm3o/e55DNLY6NRGEhaYIpkg96R8tKGFFaTGx9gsy8VZa7uUztMM6ikE9rXydWn/UhEiOdMrFQ5S+TlKmr32a15iludfL+K1uI5sxbpyyTmwRcTkNzMBxnLPeuU0UpS3x4/i4d1N9imOyMl23DkRD92bwgSxSGXt3m08JwE=
+	t=1723730084; cv=none; b=td2FibY8PzpuDTFDpoNfLJ3UqEXl930vESfCuc8q6z1q/gr1CdrVrCjwUsQr7P1qqSmfIPBBGqG+hXYE29DbV9P/KEYGgcVjN+kAZ06Sq07cPxlQuyZVuSYUttnO/286j4FLSROO75lCBVlLrMp6sab9M7aucNikqBVbGz6b6M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728527; c=relaxed/simple;
-	bh=N7LAyKXRLd5FHJwBSkV9potIFRNjxlNzBYPN0w13HYA=;
+	s=arc-20240116; t=1723730084; c=relaxed/simple;
+	bh=GT2SSdGaTUmbNR6ukWX73Q98KDBPoTkHd32XV8bgqKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plOQaJ3Mu5/CQHRXxNmefE970bpGNuPk5+XGBEqhwrShKvNdNI5+QGdutKhVJoOwBgWmr9XYO1kmQmNTFjvlW6bxH75XjJMMOUyTfmP1cd+oDzM/MP/ddxHe6zjdT2L3xKEksY3aJlLPzLfH+MI6LT9+ZoKLwBbI44dX1+sHlec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sxr6vcP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B076C32786;
-	Thu, 15 Aug 2024 13:28:45 +0000 (UTC)
+	 MIME-Version; b=aEcm19ux7h3Twpguus9S66H8rU6RXzl0NCGKo7b36Hrw2jUbAAMWr7DJMG1O/7+AdFK7JVrbebZGDQA+otrXQSapDSFxwKZMDZ/n2hLuSO0Ak9NoFjD9zt5rU9OyEIEAqfny1UiHVjQCuYmIE0rAsw3LRQnX73+R0pV62ECXB4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXYZV44y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D57FC32786;
+	Thu, 15 Aug 2024 13:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728525;
-	bh=N7LAyKXRLd5FHJwBSkV9potIFRNjxlNzBYPN0w13HYA=;
+	s=korg; t=1723730084;
+	bh=GT2SSdGaTUmbNR6ukWX73Q98KDBPoTkHd32XV8bgqKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sxr6vcP1kLrXFPr2kpkjn87mSMZsBT7iA1ah/y3aRAZ4xlFLcdWPlFXzkxzZCTStV
-	 WJaKakW3kWwZFbI0JZNCEM9UwUuOoFfPVD+2eDeHJPdtsDbL7buDckAgfgW1U+w8XL
-	 Gmv0Yjglblfda89JBTf/fTL9AK38q+Zi+IJvhzpU=
+	b=wXYZV44ynB5z0RNWm6QnJu54MQ1ecaw+KFn9tr/9FKWj22eMgL8j5wsW7ugXNy/xJ
+	 cJlFTXzOtDAut1L+IrXBezRFH7FKhmY1m1+5swJOORhICJG7mfAxFBdzke0sXdYqK+
+	 0/zhQd2uwXh32iq0IO+5kYxKvHp8QyplUFRhHb9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	Hou Tao <houtao1@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 010/196] hwmon: Introduce SENSOR_DEVICE_ATTR_{RO, RW, WO} and variants
+Subject: [PATCH 5.15 269/484] bpf, events: Use prog to emit ksymbol event for main program
 Date: Thu, 15 Aug 2024 15:22:07 +0200
-Message-ID: <20240815131852.467245466@linuxfoundation.org>
+Message-ID: <20240815131951.793192871@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit a5c47c0d388b939dd578fd466aa804b7f2445390 ]
+[ Upstream commit 0be9ae5486cd9e767138c13638820d240713f5f1 ]
 
-Introduce SENSOR_DEVICE_ATTR_{RO,RW,WO} and SENSOR_DEVICE_ATTR_2_{RO,RW,WO}
-as simplified variants of SENSOR_DEVICE_ATTR and SENSOR_DEVICE_ATTR_2 to
-simplify the source code, improve readbility, and reduce the chance of
-inconsistencies.
+Since commit 0108a4e9f358 ("bpf: ensure main program has an extable"),
+prog->aux->func[0]->kallsyms is left as uninitialized. For BPF programs
+with subprogs, the symbol for the main program is missing just as shown
+in the output of perf script below:
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 1ea3fd1eb986 ("hwmon: (max6697) Fix swapped temp{1,8} critical alarms")
+ ffffffff81284b69 qp_trie_lookup_elem+0xb9 ([kernel.kallsyms])
+ ffffffffc0011125 bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
+ ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
+ ffffffffc00110a1 +0x25 ()
+ ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
+
+Fix it by always using prog instead prog->aux->func[0] to emit ksymbol
+event for the main program. After the fix, the output of perf script
+will be correct:
+
+ ffffffff81284b96 qp_trie_lookup_elem+0xe6 ([kernel.kallsyms])
+ ffffffffc001382d bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
+ ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
+ ffffffffc0013779 bpf_prog_245c55ab25cfcf40_qp_trie_lookup+0x25 (bpf...)
+ ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
+
+Fixes: 0108a4e9f358 ("bpf: ensure main program has an extable")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Yonghong Song <yonghong.song@linux.dev>
+Reviewed-by: Krister Johansen <kjlx@templeofstupid.com>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20240714065533.1112616-1-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/hwmon/hwmon-kernel-api.txt | 24 ++++++++++-----
- include/linux/hwmon-sysfs.h              | 39 ++++++++++++++++++++++++
- 2 files changed, 55 insertions(+), 8 deletions(-)
+ kernel/events/core.c |   26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/hwmon/hwmon-kernel-api.txt b/Documentation/hwmon/hwmon-kernel-api.txt
-index eb7a78aebb380..8bdefb41be307 100644
---- a/Documentation/hwmon/hwmon-kernel-api.txt
-+++ b/Documentation/hwmon/hwmon-kernel-api.txt
-@@ -299,17 +299,25 @@ functions is used.
- The header file linux/hwmon-sysfs.h provides a number of useful macros to
- declare and use hardware monitoring sysfs attributes.
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9194,21 +9194,19 @@ static void perf_event_bpf_emit_ksymbols
+ 	bool unregister = type == PERF_BPF_EVENT_PROG_UNLOAD;
+ 	int i;
  
--In many cases, you can use the exsting define DEVICE_ATTR to declare such
--attributes. This is feasible if an attribute has no additional context. However,
--in many cases there will be additional information such as a sensor index which
--will need to be passed to the sysfs attribute handling function.
-+In many cases, you can use the exsting define DEVICE_ATTR or its variants
-+DEVICE_ATTR_{RW,RO,WO} to declare such attributes. This is feasible if an
-+attribute has no additional context. However, in many cases there will be
-+additional information such as a sensor index which will need to be passed
-+to the sysfs attribute handling function.
+-	if (prog->aux->func_cnt == 0) {
+-		perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
+-				   (u64)(unsigned long)prog->bpf_func,
+-				   prog->jited_len, unregister,
+-				   prog->aux->ksym.name);
+-	} else {
+-		for (i = 0; i < prog->aux->func_cnt; i++) {
+-			struct bpf_prog *subprog = prog->aux->func[i];
++	perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
++			   (u64)(unsigned long)prog->bpf_func,
++			   prog->jited_len, unregister,
++			   prog->aux->ksym.name);
  
- SENSOR_DEVICE_ATTR and SENSOR_DEVICE_ATTR_2 can be used to define attributes
- which need such additional context information. SENSOR_DEVICE_ATTR requires
- one additional argument, SENSOR_DEVICE_ATTR_2 requires two.
+-			perf_event_ksymbol(
+-				PERF_RECORD_KSYMBOL_TYPE_BPF,
+-				(u64)(unsigned long)subprog->bpf_func,
+-				subprog->jited_len, unregister,
+-				subprog->aux->ksym.name);
+-		}
++	for (i = 1; i < prog->aux->func_cnt; i++) {
++		struct bpf_prog *subprog = prog->aux->func[i];
++
++		perf_event_ksymbol(
++			PERF_RECORD_KSYMBOL_TYPE_BPF,
++			(u64)(unsigned long)subprog->bpf_func,
++			subprog->jited_len, unregister,
++			subprog->aux->ksym.name);
+ 	}
+ }
  
--SENSOR_DEVICE_ATTR defines a struct sensor_device_attribute variable.
--This structure has the following fields.
-+Simplified variants of SENSOR_DEVICE_ATTR and SENSOR_DEVICE_ATTR_2 are available
-+and should be used if standard attribute permissions and function names are
-+feasible. Standard permissions are 0644 for SENSOR_DEVICE_ATTR[_2]_RW,
-+0444 for SENSOR_DEVICE_ATTR[_2]_RO, and 0200 for SENSOR_DEVICE_ATTR[_2]_WO.
-+Standard functions, similar to DEVICE_ATTR_{RW,RO,WO}, have _show and _store
-+appended to the provided function name.
-+
-+SENSOR_DEVICE_ATTR and its variants define a struct sensor_device_attribute
-+variable. This structure has the following fields.
- 
- struct sensor_device_attribute {
- 	struct device_attribute dev_attr;
-@@ -320,8 +328,8 @@ You can use to_sensor_dev_attr to get the pointer to this structure from the
- attribute read or write function. Its parameter is the device to which the
- attribute is attached.
- 
--SENSOR_DEVICE_ATTR_2 defines a struct sensor_device_attribute_2 variable,
--which is defined as follows.
-+SENSOR_DEVICE_ATTR_2 and its variants define a struct sensor_device_attribute_2
-+variable, which is defined as follows.
- 
- struct sensor_device_attribute_2 {
- 	struct device_attribute dev_attr;
-diff --git a/include/linux/hwmon-sysfs.h b/include/linux/hwmon-sysfs.h
-index 1c7b89ae6bdcb..473897bbd898a 100644
---- a/include/linux/hwmon-sysfs.h
-+++ b/include/linux/hwmon-sysfs.h
-@@ -33,10 +33,28 @@ struct sensor_device_attribute{
- 	{ .dev_attr = __ATTR(_name, _mode, _show, _store),	\
- 	  .index = _index }
- 
-+#define SENSOR_ATTR_RO(_name, _func, _index)			\
-+	SENSOR_ATTR(_name, 0444, _func##_show, NULL, _index)
-+
-+#define SENSOR_ATTR_RW(_name, _func, _index)			\
-+	SENSOR_ATTR(_name, 0644, _func##_show, _func##_store, _index)
-+
-+#define SENSOR_ATTR_WO(_name, _func, _index)			\
-+	SENSOR_ATTR(_name, 0200, NULL, _func##_store, _index)
-+
- #define SENSOR_DEVICE_ATTR(_name, _mode, _show, _store, _index)	\
- struct sensor_device_attribute sensor_dev_attr_##_name		\
- 	= SENSOR_ATTR(_name, _mode, _show, _store, _index)
- 
-+#define SENSOR_DEVICE_ATTR_RO(_name, _func, _index)		\
-+	SENSOR_DEVICE_ATTR(_name, 0444, _func##_show, NULL, _index)
-+
-+#define SENSOR_DEVICE_ATTR_RW(_name, _func, _index)		\
-+	SENSOR_DEVICE_ATTR(_name, 0644, _func##_show, _func##_store, _index)
-+
-+#define SENSOR_DEVICE_ATTR_WO(_name, _func, _index)		\
-+	SENSOR_DEVICE_ATTR(_name, 0200, NULL, _func##_store, _index)
-+
- struct sensor_device_attribute_2 {
- 	struct device_attribute dev_attr;
- 	u8 index;
-@@ -50,8 +68,29 @@ struct sensor_device_attribute_2 {
- 	  .index = _index,					\
- 	  .nr = _nr }
- 
-+#define SENSOR_ATTR_2_RO(_name, _func, _nr, _index)		\
-+	SENSOR_ATTR_2(_name, 0444, _func##_show, NULL, _nr, _index)
-+
-+#define SENSOR_ATTR_2_RW(_name, _func, _nr, _index)		\
-+	SENSOR_ATTR_2(_name, 0644, _func##_show, _func##_store, _nr, _index)
-+
-+#define SENSOR_ATTR_2_WO(_name, _func, _nr, _index)		\
-+	SENSOR_ATTR_2(_name, 0200, NULL, _func##_store, _nr, _index)
-+
- #define SENSOR_DEVICE_ATTR_2(_name,_mode,_show,_store,_nr,_index)	\
- struct sensor_device_attribute_2 sensor_dev_attr_##_name		\
- 	= SENSOR_ATTR_2(_name, _mode, _show, _store, _nr, _index)
- 
-+#define SENSOR_DEVICE_ATTR_2_RO(_name, _func, _nr, _index)		\
-+	SENSOR_DEVICE_ATTR_2(_name, 0444, _func##_show, NULL,		\
-+			     _nr, _index)
-+
-+#define SENSOR_DEVICE_ATTR_2_RW(_name, _func, _nr, _index)		\
-+	SENSOR_DEVICE_ATTR_2(_name, 0644, _func##_show, _func##_store,	\
-+			     _nr, _index)
-+
-+#define SENSOR_DEVICE_ATTR_2_WO(_name, _func, _nr, _index)		\
-+	SENSOR_DEVICE_ATTR_2(_name, 0200, NULL, _func##_store,		\
-+			     _nr, _index)
-+
- #endif /* _LINUX_HWMON_SYSFS_H */
--- 
-2.43.0
-
 
 
 
