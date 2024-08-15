@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616AA953364
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9899534F2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0656928308B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890FD1F29E1A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD4B1AB53F;
-	Thu, 15 Aug 2024 14:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C19C1A01BF;
+	Thu, 15 Aug 2024 14:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Y/ZtHzg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuOUU22y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D571AB52A;
-	Thu, 15 Aug 2024 14:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F2F2772A;
+	Thu, 15 Aug 2024 14:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731268; cv=none; b=HRrDm4aGkvAVdvMKtWUA++aXkjH6Iqn/9aUtaCl8Z9egvbEzF9EJVahi0UNCKilYHrq5lB696yP4d1fSGDNsHv6tGZFrl0yDrMRrcVx8Gb7nb0/38CovcR7jEjRUpFdgANiNX3F6AYTzNuIxd+nwgpExwbk2NxN0llrF1jqIGF0=
+	t=1723732323; cv=none; b=Iby/dv0LIBLg3OdK9lU7IJk7ifZ8U/IFJlhDTfvG+cxduMXCBNxUHzTfbff9AL1YgIhhiQosk2ariJ2NqJ+1luNkzN3nwPqvvtx1L+pTyuC2llHQC8nnSMm/fx3YNMT8odWggw2zlnDoJ2LWjOXPWy1F0jwpWu/KRWAszJjYSCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731268; c=relaxed/simple;
-	bh=auDaJEXeveCgSaA3lUSs5YHM5+MFHIYBoRK4T/AGu+U=;
+	s=arc-20240116; t=1723732323; c=relaxed/simple;
+	bh=aTTqMMAbiGWB9ozP2Y86ZxN1mKGHQI7UNFYeTSN+Poc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXX6NB76YHsyV59A2iR33tX9PEHF9z7+h1JRvpjmPo/lKFR5uPVAgsb9g+zmrU75UulKXeEP/K5CCzI0jq7Ht0eD9PNIVXJH1DSmcYOkNy430J2OMRJkBJC6bXcrgbjXYrBCZNRpnEwsXtPKwWmCBUAPcNJhyljkiCBIa2bI+U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Y/ZtHzg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBD4C32786;
-	Thu, 15 Aug 2024 14:14:27 +0000 (UTC)
+	 MIME-Version; b=WEx3xfHZbB7VG73VsslETqxukTn571fEktXrbyWIeWoSNVundHGKzR4VvoUftpgkeJQl7892au4EMPmxD287t0xdog+RP6/Bj1veaQRh+OEz/aE6SjUBnY6AW6b8VGJmStgBQnmtHRXTaTU8ErClYHFGqoHGumPCqYO8beQhm8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuOUU22y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C410DC32786;
+	Thu, 15 Aug 2024 14:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731268;
-	bh=auDaJEXeveCgSaA3lUSs5YHM5+MFHIYBoRK4T/AGu+U=;
+	s=korg; t=1723732323;
+	bh=aTTqMMAbiGWB9ozP2Y86ZxN1mKGHQI7UNFYeTSN+Poc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Y/ZtHzgb4uXznqzgCoKq93KiHRml1Yggi2NoR5Pg7kqq9epH76MkGmLOZ0dQ1emu
-	 cGCbtcWzSWivuBa87JoppW/25/hTfRtswpCSRKLWj8zpLSXhW91fg3JNGewEvXiwRv
-	 BJv5s1ZjqFhq5ZAx1iTHM/M17otUv20krEDrQOtI=
+	b=MuOUU22yZi0Cu58IwxnoWBTaQLHbfUrELkvVODQbhxk5iMwZM2p0ZdNtB6ZQ5+d9M
+	 ZNx2jc55kxLL8JibvI2XJ4Qm4p3IGfDBsqzUE+5rRnkgKX/7PKRQezMKb8Tip4mzO8
+	 5/M3l6sRojIii6Rhtld2DMg0dbIOGEoLM0Rm80yM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 076/259] MIPS: Octeron: remove source file executable bit
+	stable <stable@kernel.org>,
+	Paolo Pisati <p.pisati@gmail.com>,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 5.10 143/352] m68k: amiga: Turn off Warp1260 interrupts during boot
 Date: Thu, 15 Aug 2024 15:23:29 +0200
-Message-ID: <20240815131905.739770906@linuxfoundation.org>
+Message-ID: <20240815131924.787484306@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,32 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Paolo Pisati <p.pisati@gmail.com>
 
-[ Upstream commit 89c7f5078935872cf47a713a645affb5037be694 ]
+commit 1d8491d3e726984343dd8c3cdbe2f2b47cfdd928 upstream.
 
-This does not matter the least, but there is no other .[ch] file in the
-repo that is executable, so clean this up.
+On an Amiga 1200 equipped with a Warp1260 accelerator, an interrupt
+storm coming from the accelerator board causes the machine to crash in
+local_irq_enable() or auto_irq_enable().  Disabling interrupts for the
+Warp1260 in amiga_parse_bootinfo() fixes the problem.
 
-Fixes: 29b83a64df3b ("MIPS: Octeon: Add PCIe link status check")
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/ZkjwzVwYeQtyAPrL@amaterasu.local
+Cc: stable <stable@kernel.org>
+Signed-off-by: Paolo Pisati <p.pisati@gmail.com>
+Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20240601153254.186225-1-p.pisati@gmail.com
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/pci/pcie-octeon.c | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- mode change 100755 => 100644 arch/mips/pci/pcie-octeon.c
+ arch/m68k/amiga/config.c       |    9 +++++++++
+ include/uapi/linux/zorro_ids.h |    3 +++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
-old mode 100755
-new mode 100644
--- 
-2.43.0
-
+--- a/arch/m68k/amiga/config.c
++++ b/arch/m68k/amiga/config.c
+@@ -179,6 +179,15 @@ int __init amiga_parse_bootinfo(const st
+ 			dev->slotsize = be16_to_cpu(cd->cd_SlotSize);
+ 			dev->boardaddr = be32_to_cpu(cd->cd_BoardAddr);
+ 			dev->boardsize = be32_to_cpu(cd->cd_BoardSize);
++
++			/* CS-LAB Warp 1260 workaround */
++			if (be16_to_cpu(dev->rom.er_Manufacturer) == ZORRO_MANUF(ZORRO_PROD_CSLAB_WARP_1260) &&
++			    dev->rom.er_Product == ZORRO_PROD(ZORRO_PROD_CSLAB_WARP_1260)) {
++
++				/* turn off all interrupts */
++				pr_info("Warp 1260 card detected: applying interrupt storm workaround\n");
++				*(uint32_t *)(dev->boardaddr + 0x1000) = 0xfff;
++			}
+ 		} else
+ 			pr_warn("amiga_parse_bootinfo: too many AutoConfig devices\n");
+ #endif /* CONFIG_ZORRO */
+--- a/include/uapi/linux/zorro_ids.h
++++ b/include/uapi/linux/zorro_ids.h
+@@ -449,6 +449,9 @@
+ #define  ZORRO_PROD_VMC_ISDN_BLASTER_Z2				ZORRO_ID(VMC, 0x01, 0)
+ #define  ZORRO_PROD_VMC_HYPERCOM_4				ZORRO_ID(VMC, 0x02, 0)
+ 
++#define ZORRO_MANUF_CSLAB					0x1400
++#define  ZORRO_PROD_CSLAB_WARP_1260				ZORRO_ID(CSLAB, 0x65, 0)
++
+ #define ZORRO_MANUF_INFORMATION					0x157C
+ #define  ZORRO_PROD_INFORMATION_ISDN_ENGINE_I			ZORRO_ID(INFORMATION, 0x64, 0)
+ 
 
 
 
