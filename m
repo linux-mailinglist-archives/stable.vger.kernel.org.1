@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-68648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F269A953356
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A8C9534BC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BD11B28746
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9184F1F28747
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16601AED33;
-	Thu, 15 Aug 2024 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B81D17C9B6;
+	Thu, 15 Aug 2024 14:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKk6LC+g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDakJZIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792E81A00F8;
-	Thu, 15 Aug 2024 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2D763C;
+	Thu, 15 Aug 2024 14:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731230; cv=none; b=AXuTtO3QuQBGi42RB/Ixlc8KNmtox/0HH7/4SRaYTs5pjDURdZZrSjLKZb5TLAHi/p2v7MESY049drjDdOTrMw3XwWXdGvMleAaVnTgNqPUlxsYscE3ItDKRN+nOfSWUfQeXQ6bL08O1pI+Y1GTvyI8wafzfWD2EHgYF/o2cRbA=
+	t=1723732182; cv=none; b=rYjmoZ62v5mZtBees/iTmO4/C1shQ8FgNSB1IX6Lt2zW/uYA+KfOkgmgkAk1EZP3uFP6+OocBrQm7KwrvYVgrDv9Sku9oimYPEJdZzj8th2RY22hBiwqm6gvTQfpW8sup/MvlFqJQlbJ9UqfXcoJwP49zJLXIn/XvnzBdpZJRY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731230; c=relaxed/simple;
-	bh=xijjj36egfT6yOp5QhTsJ1rZc2c0RZnnLAbmeo0t7s4=;
+	s=arc-20240116; t=1723732182; c=relaxed/simple;
+	bh=WEyMxkqxAfqM9E09U0X3Auu9Jf26lyPFpsAU1pUdd4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmTkXg/UBeOGK6d9DDbsGk4ZMR/N/KEIJ3HIZh+m6kdM1rsR+9KGXmdg8hjLp6RomjP/CvdtPNzauJRcigq3SuDE3jm6Csembigjx3SdM86l3zc0QGVPYw8WyOQ9/Du4jKj2ckPsqjOoHyq6gGQX8xKzI4WlWOtkwddZjGr9QFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKk6LC+g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E39C32786;
-	Thu, 15 Aug 2024 14:13:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HwF2hWlCwuuzCs8+vxFba7m/cXuVGj9Q+2Vs+Y4nRjaxdNY0YZyYu1bRQMCJHsatMNSdI+tNcziIc/si/WelMyLOk5d6Xw5TsrCK2MTlR5eq0zVsUy6gFY6Zb0d2rGpIHrOgEeohrX0QxCkBshlUDW3GnShBie2tH1KivGlLel4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDakJZIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECA3C32786;
+	Thu, 15 Aug 2024 14:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731230;
-	bh=xijjj36egfT6yOp5QhTsJ1rZc2c0RZnnLAbmeo0t7s4=;
+	s=korg; t=1723732181;
+	bh=WEyMxkqxAfqM9E09U0X3Auu9Jf26lyPFpsAU1pUdd4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EKk6LC+gIuho/2d3PiBSK4YtI7ynSR0qsaooxmmvit7Wp1v7Q8n00y5G9hZAfoOIK
-	 hQsW/HwAYVsi4MOR8TJCgSmL3yMvk2HqoODVa4zvusH1FCtHtw+ls9TW6MgsnZvXob
-	 N4CaGu3t2ZLOh2N3+H6GalvvogOlYd+ixK5GahIU=
+	b=EDakJZIEU9Bt77SJZC4/3cZjFYjP4jByQEQZ3u7ZN0VB1fFGyFyUhTXuYDFH2vjPS
+	 Gz/KfhDfXzKY3hsZ5I+Ca02DKEGFXXeVShHN9QAGWr9FpNAWhUzZANwNOtwn3hRMqU
+	 vBXA6cQ4VFddIgYcMliJQwWYuyyODJqFXlppIEFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 032/259] selftests/bpf: Check length of recv in test_sockmap
+Subject: [PATCH 5.10 099/352] RDMA/mlx4: Fix truncated output warning in mad.c
 Date: Thu, 15 Aug 2024 15:22:45 +0200
-Message-ID: <20240815131904.037320634@linuxfoundation.org>
+Message-ID: <20240815131923.086197103@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit de1b5ea789dc28066cc8dc634b6825bd6148f38b ]
+[ Upstream commit 0d2e6992fc956e3308cd5376c18567def4cb3967 ]
 
-The value of recv in msg_loop may be negative, like EWOULDBLOCK, so it's
-necessary to check if it is positive before accumulating it to bytes_recvd.
+Increase size of the name array to avoid truncated output warning.
 
-Fixes: 16962b2404ac ("bpf: sockmap, add selftests")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/5172563f7c7b2a2e953cef02e89fc34664a7b190.1716446893.git.tanggeliang@kylinos.cn
+drivers/infiniband/hw/mlx4/mad.c: In function ‘mlx4_ib_alloc_demux_ctx’:
+drivers/infiniband/hw/mlx4/mad.c:2197:47: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 4
+[-Werror=format-truncation=]
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |                                               ^~
+drivers/infiniband/hw/mlx4/mad.c:2197:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |                                      ^~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2197:9: note: ‘snprintf’ output between
+10 and 20 bytes into a destination of size 12
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2205:48: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 3
+[-Werror=format-truncation=]
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |                                                ^~
+drivers/infiniband/hw/mlx4/mad.c:2205:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |                                      ^~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2205:9: note: ‘snprintf’ output between
+11 and 21 bytes into a destination of size 12
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2213:48: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 3
+[-Werror=format-truncation=]
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |                                                ^~
+drivers/infiniband/hw/mlx4/mad.c:2213:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |                                      ^~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2213:9: note: ‘snprintf’ output between
+11 and 21 bytes into a destination of size 12
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/hw/mlx4/mad.o] Error 1
+
+Fixes: fc06573dfaf8 ("IB/mlx4: Initialize SR-IOV IB support for slaves in master context")
+Link: https://lore.kernel.org/r/f3798b3ce9a410257d7e1ec7c9e285f1352e256a.1718554569.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx4/mad.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 779e11da979c8..5e5648ed0b11f 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -552,7 +552,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 				}
- 			}
+diff --git a/drivers/infiniband/hw/mlx4/mad.c b/drivers/infiniband/hw/mlx4/mad.c
+index 8bd16474708fb..44ea25e825490 100644
+--- a/drivers/infiniband/hw/mlx4/mad.c
++++ b/drivers/infiniband/hw/mlx4/mad.c
+@@ -2155,7 +2155,7 @@ static int mlx4_ib_alloc_demux_ctx(struct mlx4_ib_dev *dev,
+ 				       struct mlx4_ib_demux_ctx *ctx,
+ 				       int port)
+ {
+-	char name[12];
++	char name[21];
+ 	int ret = 0;
+ 	int i;
  
--			s->bytes_recvd += recv;
-+			if (recv > 0)
-+				s->bytes_recvd += recv;
- 
- 			if (data) {
- 				int chunk_sz = opt->sendpage ?
 -- 
 2.43.0
 
