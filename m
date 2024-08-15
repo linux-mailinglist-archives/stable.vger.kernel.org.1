@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-68649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49D4953355
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D11C9534BF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AB421F2191D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 600491C20F13
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FFD1A7074;
-	Thu, 15 Aug 2024 14:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4D917C9B6;
+	Thu, 15 Aug 2024 14:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGaAp/lh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3yHSRFj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D631A08C6;
-	Thu, 15 Aug 2024 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D68063C;
+	Thu, 15 Aug 2024 14:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731233; cv=none; b=FCI20j4GLnhQNC1xEqdASn64crlmk1M/JYF5dMN2Co2eDYps6OzCRgCR0i7Y821997l/ywruTEcH9pU6C++Xw6pKj86D9Ou2P6zFrfOsjsUmYU4w4IpwX4Y/c2KLgFe5Hor4BtePUSa83W6J3KtiMLUj9LEJnw9xFfy1WERfUJ0=
+	t=1723732188; cv=none; b=tHyBJxXzr6H0ZE3hHZobVAUN2HKemzQa/4zOvlPepTBIAydQ/7pkJ/S7w5iCgeW7IZzSFxUZGDpdidvZUZyUF3X7/b2+Tys74qNpRUyjuZ0yZ9aRHOQ0OHHxfMgCdZMHpgQItE496ipITF4tErGuL+EfZPOKo6pI2GwDpO5C0dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731233; c=relaxed/simple;
-	bh=eXUPHuTGj3cl6tvRXKjcaap6w/9uARGBqWzY80hfMuA=;
+	s=arc-20240116; t=1723732188; c=relaxed/simple;
+	bh=KBv0fFuNJmkR0lucH3Xg7dbpy5VD4Qs8YdUUx8uH70c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RzG0d891U7UopNaS+TbRuptw2mYxkr/wfx2ZpsrGE1JQSUPgJG5vdYM2dihFqaL7cUbeabpa2EGIMsdRRvuSJKniehhkH/io21fTKRlzOvQiYXrXgzeoLgFEOsk1YiCzT6pGA2oz5eG+AX/GuV5Ik2aZWDxbI8fE3rIcY2q0Fbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGaAp/lh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420E8C4AF0A;
-	Thu, 15 Aug 2024 14:13:53 +0000 (UTC)
+	 MIME-Version; b=FsqikKalltg1AdOhM9eksfs1W2oMP8KbSC0eqUiSgt/2DSr5rdLihbpLkyLIRjuob9GhOUXKoqi4jFZJ5Qf9KQvYVLAIe8V9/59sIB8kE/Nm54FDlRQM2k7nnnRvp635DNMnAhKPAQQjiC/PX3d6BeYQ8Mr1j/Y4sySUag5qeKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3yHSRFj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E537AC32786;
+	Thu, 15 Aug 2024 14:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731233;
-	bh=eXUPHuTGj3cl6tvRXKjcaap6w/9uARGBqWzY80hfMuA=;
+	s=korg; t=1723732188;
+	bh=KBv0fFuNJmkR0lucH3Xg7dbpy5VD4Qs8YdUUx8uH70c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGaAp/lhgo/G0QDiM2DtlPOiFkA534zNRTMJtaBnH12hAmpBZwQgqLUfNaC2Jxkgn
-	 Msz1OjL3MsXdPL1psdmSdXb9YqiXCaI3B5bR9W1pAVeJNtOxDOWIGJSRYrPQ5l+keL
-	 bsYH3KePF5SOZ9gqeN+OAW3GfZX6g0tU2JpxYv4Q=
+	b=I3yHSRFjys+XgsRd4G+PcForsyDMeO2d6py9Xa4wkM1In6eS3c0MLOqis0bKNdyxM
+	 xn/C9ms9VuLERm/QC/fycTUzQlZHQtRkxPFOKE6shMqSJITSGO09l9WV+yVxOguMSd
+	 RNlnbGB2p+v20TreDhjDpxexJguGjgMsuf2IL9f0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Zubkov <green@qrator.net>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Honggang LI <honggangli@163.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 033/259] lib: objagg: Fix general protection fault
-Date: Thu, 15 Aug 2024 15:22:46 +0200
-Message-ID: <20240815131904.076391320@linuxfoundation.org>
+Subject: [PATCH 5.10 101/352] RDMA/rxe: Dont set BTH_ACK_MASK for UC or UD QPs
+Date: Thu, 15 Aug 2024 15:22:47 +0200
+Message-ID: <20240815131923.163052591@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Honggang LI <honggangli@163.com>
 
-[ Upstream commit b4a3a89fffcdf09702b1f161b914e52abca1894d ]
+[ Upstream commit 4adcaf969d77d3d3aa3871bbadc196258a38aec6 ]
 
-The library supports aggregation of objects into other objects only if
-the parent object does not have a parent itself. That is, nesting is not
-supported.
+BTH_ACK_MASK bit is used to indicate that an acknowledge
+(for this packet) should be scheduled by the responder.
+Both UC and UD QPs are unacknowledged, so don't set
+BTH_ACK_MASK for UC or UD QPs.
 
-Aggregation happens in two cases: Without and with hints, where hints
-are a pre-computed recommendation on how to aggregate the provided
-objects.
-
-Nesting is not possible in the first case due to a check that prevents
-it, but in the second case there is no check because the assumption is
-that nesting cannot happen when creating objects based on hints. The
-violation of this assumption leads to various warnings and eventually to
-a general protection fault [1].
-
-Before fixing the root cause, error out when nesting happens and warn.
-
-[1]
-general protection fault, probably for non-canonical address 0xdead000000000d90: 0000 [#1] PREEMPT SMP PTI
-CPU: 1 PID: 1083 Comm: kworker/1:9 Tainted: G        W          6.9.0-rc6-custom-gd9b4f1cca7fb #7
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-RIP: 0010:mlxsw_sp_acl_erp_bf_insert+0x25/0x80
-[...]
-Call Trace:
- <TASK>
- mlxsw_sp_acl_atcam_entry_add+0x256/0x3c0
- mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
- mlxsw_sp_acl_tcam_vchunk_migrate_one+0x16b/0x270
- mlxsw_sp_acl_tcam_vregion_rehash_work+0xbe/0x510
- process_one_work+0x151/0x370
- worker_thread+0x2cb/0x3e0
- kthread+0xd0/0x100
- ret_from_fork+0x34/0x50
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Fixes: 9069a3817d82 ("lib: objagg: implement optimization hints assembly and use hints for object creation")
-Reported-by: Alexander Zubkov <green@qrator.net>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Amit Cohen <amcohen@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Honggang LI <honggangli@163.com>
+Link: https://lore.kernel.org/r/20240624020348.494338-1-honggangli@163.com
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/objagg.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/sw/rxe/rxe_req.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/lib/objagg.c b/lib/objagg.c
-index 55621fb82e0a3..e380e95de7702 100644
---- a/lib/objagg.c
-+++ b/lib/objagg.c
-@@ -167,6 +167,9 @@ static int objagg_obj_parent_assign(struct objagg *objagg,
- {
- 	void *delta_priv;
+diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
+index 69238f856c677..a034aa8fc5ca5 100644
+--- a/drivers/infiniband/sw/rxe/rxe_req.c
++++ b/drivers/infiniband/sw/rxe/rxe_req.c
+@@ -362,7 +362,7 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
+ 	int			solicited;
+ 	u16			pkey;
+ 	u32			qp_num;
+-	int			ack_req;
++	int			ack_req = 0;
  
-+	if (WARN_ON(!objagg_obj_is_root(parent)))
-+		return -EINVAL;
-+
- 	delta_priv = objagg->ops->delta_create(objagg->priv, parent->obj,
- 					       objagg_obj->obj);
- 	if (IS_ERR(delta_priv))
+ 	/* length from start of bth to end of icrc */
+ 	paylen = rxe_opcode[opcode].length + payload + pad + RXE_ICRC_SIZE;
+@@ -396,8 +396,9 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
+ 	qp_num = (pkt->mask & RXE_DETH_MASK) ? ibwr->wr.ud.remote_qpn :
+ 					 qp->attr.dest_qp_num;
+ 
+-	ack_req = ((pkt->mask & RXE_END_MASK) ||
+-		(qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
++	if (qp_type(qp) != IB_QPT_UD && qp_type(qp) != IB_QPT_UC)
++		ack_req = ((pkt->mask & RXE_END_MASK) ||
++			   (qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
+ 	if (ack_req)
+ 		qp->req.noack_pkts = 0;
+ 
 -- 
 2.43.0
 
