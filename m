@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF0F952F70
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459C49531C4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B38AC1C24170
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E82662874F9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398FF18D639;
-	Thu, 15 Aug 2024 13:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80E619F49B;
+	Thu, 15 Aug 2024 13:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iD8Dm2H8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKqXvJMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70DD19F460;
-	Thu, 15 Aug 2024 13:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6596619DFA6;
+	Thu, 15 Aug 2024 13:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728758; cv=none; b=PSEIMvZDERkAEdX2DXNpsrLzgJLT4c8W2436MudTbmm8cX9T+HPYWUgGHBuOlUIpk0owdA0+B880sq7DLqWKU6mdgA9+v+jBaIGZHqAroUsnEu7l4Ggi0PjhMGG4wl8hGFoT0ZEDKWv3yRrZVTMtriDeYNR0pLdk4sV5rlPtijc=
+	t=1723730281; cv=none; b=mx+UoZSKWbRHniL0RESW7zexCT8HM1zZU7vMdNOiEm0I3DAz7pIhAg4maNM9cxKf0d2I0LYSqF7xlq9/oy4SSlzkm72Vm0rg3dWEeb6Vt0zIreSKdoYX+uZ0CYTWKv130KPvb+2jGnL/FjR0GOudlGimVdviYaPKwYD+X9xtnsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728758; c=relaxed/simple;
-	bh=jQv7VBnAZ4AkFd8Te7yARLH/YvmHBOFZT3okMAt3BA8=;
+	s=arc-20240116; t=1723730281; c=relaxed/simple;
+	bh=Ed7Fxx4SMBik5jZHzKlclvTD8HKp3mk0R+NNhnWAWtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=agEhqw+DmeMk2IVqUvIEW0W7KaVvNLnsBUPP/uTNKJFQESkqGBEGbas64N1G2NXDPhBfDZR6/260MiHXAJECK9wZDOEtyOLAUiwW9iGE8WMw67WfoH9JXjLFVig8OMUcaAo0SZWOunm/dQ/mOQ29bMGEWDN6g3ci1TWApTJWCmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iD8Dm2H8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D20EC4AF0A;
-	Thu, 15 Aug 2024 13:32:38 +0000 (UTC)
+	 MIME-Version; b=u872Zf0IHQaJU6pc1MSLPWIPErazopQT23vVn4PwfgerF+h7RWt7EPCpDubpD5KacUY8SLgJgRycz6n2DIxUPds9/hN+Q0MJNBW5aakZL7zQcOce+8ixatIYJ05guwFoIVny6hVTyPlo1MbpcIbEG6N9ts5qaTvIFSEAEP83rKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKqXvJMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B324C32786;
+	Thu, 15 Aug 2024 13:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728758;
-	bh=jQv7VBnAZ4AkFd8Te7yARLH/YvmHBOFZT3okMAt3BA8=;
+	s=korg; t=1723730281;
+	bh=Ed7Fxx4SMBik5jZHzKlclvTD8HKp3mk0R+NNhnWAWtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iD8Dm2H8ES1W9liMoy+tQSWqe9ykyXj3z+sqS/cJIdNAFHJsigUcNgQfV+puKppm+
-	 EEt4/l4wx2HzbsQ4SswpURh88p4jwhHdX2eZtCQr7C96bp2ezJqIa2q6vgGRrxkXoT
-	 ll21j161oTFJAx1ECkcNG6VffRl+bIvQf/0ceM9c=
+	b=DKqXvJMIViADvKSxv01nY8b70qP7qN/hvEi9QMjvU++RknnEQsruSvwe4Q5pv6/1m
+	 jaxUSAQM+jIfCqOSlOLE4zJilhMyjVqYUChIya1hGe677CX0NADNybJFeFTZzULSaJ
+	 LW0bckbkio8PVH8i7Qlm+2PNCc6Wg7uAWuh31qD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	syzbot+e6979a5d2f10ecb700e4@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 100/196] MIPS: SMP-CPS: Fix address for GCR_ACCESS register for CM3 and later
+Subject: [PATCH 5.15 359/484] sctp: Fix null-ptr-deref in reuseport_add_sock().
 Date: Thu, 15 Aug 2024 15:23:37 +0200
-Message-ID: <20240815131855.910154325@linuxfoundation.org>
+Message-ID: <20240815131955.297818609@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit a263e5f309f32301e1f3ad113293f4e68a82a646 ]
+[ Upstream commit 9ab0faa7f9ffe31296dbb9bbe6f76c72c14eea18 ]
 
-When the CM block migrated from CM2.5 to CM3.0, the address offset for
-the Global CSR Access Privilege register was modified. We saw this in
-the "MIPS64 I6500 Multiprocessing System Programmer's Guide," it is
-stated that "the Global CSR Access Privilege register is located at
-offset 0x0120" in section 5.4. It is at least the same for I6400.
+syzbot reported a null-ptr-deref while accessing sk2->sk_reuseport_cb in
+reuseport_add_sock(). [0]
 
-This fix allows to use the VP cores in SMP mode if the reset values
-were modified by the bootloader.
+The repro first creates a listener with SO_REUSEPORT.  Then, it creates
+another listener on the same port and concurrently closes the first
+listener.
 
-Based on the work of Vladimir Kondratiev
-<vladimir.kondratiev@mobileye.com> and the feedback from Jiaxun Yang
-<jiaxun.yang@flygoat.com>.
+The second listen() calls reuseport_add_sock() with the first listener as
+sk2, where sk2->sk_reuseport_cb is not expected to be cleared concurrently,
+but the close() does clear it by reuseport_detach_sock().
 
-Fixes: 197e89e0984a ("MIPS: mips-cm: Implement mips_cm_revision")
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+The problem is SCTP does not properly synchronise reuseport_alloc(),
+reuseport_add_sock(), and reuseport_detach_sock().
+
+The caller of reuseport_alloc() and reuseport_{add,detach}_sock() must
+provide synchronisation for sockets that are classified into the same
+reuseport group.
+
+Otherwise, such sockets form multiple identical reuseport groups, and
+all groups except one would be silently dead.
+
+  1. Two sockets call listen() concurrently
+  2. No socket in the same group found in sctp_ep_hashtable[]
+  3. Two sockets call reuseport_alloc() and form two reuseport groups
+  4. Only one group hit first in __sctp_rcv_lookup_endpoint() receives
+      incoming packets
+
+Also, the reported null-ptr-deref could occur.
+
+TCP/UDP guarantees that would not happen by holding the hash bucket lock.
+
+Let's apply the locking strategy to __sctp_hash_endpoint() and
+__sctp_unhash_endpoint().
+
+[0]:
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000002: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+CPU: 1 UID: 0 PID: 10230 Comm: syz-executor119 Not tainted 6.10.0-syzkaller-12585-g301927d2d2eb #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+RIP: 0010:reuseport_add_sock+0x27e/0x5e0 net/core/sock_reuseport.c:350
+Code: 00 0f b7 5d 00 bf 01 00 00 00 89 de e8 1b a4 ff f7 83 fb 01 0f 85 a3 01 00 00 e8 6d a0 ff f7 49 8d 7e 12 48 89 f8 48 c1 e8 03 <42> 0f b6 04 28 84 c0 0f 85 4b 02 00 00 41 0f b7 5e 12 49 8d 7e 14
+RSP: 0018:ffffc9000b947c98 EFLAGS: 00010202
+RAX: 0000000000000002 RBX: ffff8880252ddf98 RCX: ffff888079478000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000012
+RBP: 0000000000000001 R08: ffffffff8993e18d R09: 1ffffffff1fef385
+R10: dffffc0000000000 R11: fffffbfff1fef386 R12: ffff8880252ddac0
+R13: dffffc0000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007f24e45b96c0(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffcced5f7b8 CR3: 00000000241be000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __sctp_hash_endpoint net/sctp/input.c:762 [inline]
+ sctp_hash_endpoint+0x52a/0x600 net/sctp/input.c:790
+ sctp_listen_start net/sctp/socket.c:8570 [inline]
+ sctp_inet_listen+0x767/0xa20 net/sctp/socket.c:8625
+ __sys_listen_socket net/socket.c:1883 [inline]
+ __sys_listen+0x1b7/0x230 net/socket.c:1894
+ __do_sys_listen net/socket.c:1902 [inline]
+ __se_sys_listen net/socket.c:1900 [inline]
+ __x64_sys_listen+0x5a/0x70 net/socket.c:1900
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f24e46039b9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 91 1a 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f24e45b9228 EFLAGS: 00000246 ORIG_RAX: 0000000000000032
+RAX: ffffffffffffffda RBX: 00007f24e468e428 RCX: 00007f24e46039b9
+RDX: 00007f24e46039b9 RSI: 0000000000000003 RDI: 0000000000000004
+RBP: 00007f24e468e420 R08: 00007f24e45b96c0 R09: 00007f24e45b96c0
+R10: 00007f24e45b96c0 R11: 0000000000000246 R12: 00007f24e468e42c
+R13: 00007f24e465a5dc R14: 0020000000000001 R15: 00007ffcced5f7d8
+ </TASK>
+Modules linked in:
+
+Fixes: 6ba845740267 ("sctp: process sk_reuseport in sctp_get_port_local")
+Reported-by: syzbot+e6979a5d2f10ecb700e4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e6979a5d2f10ecb700e4
+Tested-by: syzbot+e6979a5d2f10ecb700e4@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20240731234624.94055-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h | 4 ++++
- arch/mips/kernel/smp-cps.c      | 5 ++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ net/sctp/input.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 890e51b159e06..11a3d5120e2b5 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -232,6 +232,10 @@ GCR_ACCESSOR_RO(32, 0x0d0, gic_status)
- GCR_ACCESSOR_RO(32, 0x0f0, cpc_status)
- #define CM_GCR_CPC_STATUS_EX			BIT(0)
+diff --git a/net/sctp/input.c b/net/sctp/input.c
+index 4f43afa8678f9..4ee9374dcfb92 100644
+--- a/net/sctp/input.c
++++ b/net/sctp/input.c
+@@ -748,15 +748,19 @@ static int __sctp_hash_endpoint(struct sctp_endpoint *ep)
+ 	struct sock *sk = ep->base.sk;
+ 	struct net *net = sock_net(sk);
+ 	struct sctp_hashbucket *head;
++	int err = 0;
  
-+/* GCR_ACCESS - Controls core/IOCU access to GCRs */
-+GCR_ACCESSOR_RW(32, 0x120, access_cm3)
-+#define CM_GCR_ACCESS_ACCESSEN			GENMASK(7, 0)
+ 	ep->hashent = sctp_ep_hashfn(net, ep->base.bind_addr.port);
+ 	head = &sctp_ep_hashtable[ep->hashent];
+ 
++	write_lock(&head->lock);
+ 	if (sk->sk_reuseport) {
+ 		bool any = sctp_is_ep_boundall(sk);
+ 		struct sctp_endpoint *ep2;
+ 		struct list_head *list;
+-		int cnt = 0, err = 1;
++		int cnt = 0;
 +
- /* GCR_L2_CONFIG - Indicates L2 cache configuration when Config5.L2C=1 */
- GCR_ACCESSOR_RW(32, 0x130, l2_config)
- #define CM_GCR_L2_CONFIG_BYPASS			BIT(20)
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index 03f1026ad1484..1861b20e978d0 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -233,7 +233,10 @@ static void boot_core(unsigned int core, unsigned int vpe_id)
- 	write_gcr_co_reset_ext_base(CM_GCR_Cx_RESET_EXT_BASE_UEB);
++		err = 1;
  
- 	/* Ensure the core can access the GCRs */
--	set_gcr_access(1 << core);
-+	if (mips_cm_revision() < CM_REV_CM3)
-+		set_gcr_access(1 << core);
-+	else
-+		set_gcr_access_cm3(1 << core);
+ 		list_for_each(list, &ep->base.bind_addr.address_list)
+ 			cnt++;
+@@ -774,24 +778,24 @@ static int __sctp_hash_endpoint(struct sctp_endpoint *ep)
+ 			if (!err) {
+ 				err = reuseport_add_sock(sk, sk2, any);
+ 				if (err)
+-					return err;
++					goto out;
+ 				break;
+ 			} else if (err < 0) {
+-				return err;
++				goto out;
+ 			}
+ 		}
  
- 	if (mips_cpc_present()) {
- 		/* Reset the core */
+ 		if (err) {
+ 			err = reuseport_alloc(sk, any);
+ 			if (err)
+-				return err;
++				goto out;
+ 		}
+ 	}
+ 
+-	write_lock(&head->lock);
+ 	hlist_add_head(&ep->node, &head->chain);
++out:
+ 	write_unlock(&head->lock);
+-	return 0;
++	return err;
+ }
+ 
+ /* Add an endpoint to the hash. Local BH-safe. */
+@@ -816,10 +820,9 @@ static void __sctp_unhash_endpoint(struct sctp_endpoint *ep)
+ 
+ 	head = &sctp_ep_hashtable[ep->hashent];
+ 
++	write_lock(&head->lock);
+ 	if (rcu_access_pointer(sk->sk_reuseport_cb))
+ 		reuseport_detach_sock(sk);
+-
+-	write_lock(&head->lock);
+ 	hlist_del_init(&ep->node);
+ 	write_unlock(&head->lock);
+ }
 -- 
 2.43.0
 
