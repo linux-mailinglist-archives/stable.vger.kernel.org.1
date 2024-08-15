@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-68493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3F695329B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D0C9535D2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F951B2107C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:08:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49CF6B29619
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3D91A4F16;
-	Thu, 15 Aug 2024 14:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C581A0733;
+	Thu, 15 Aug 2024 14:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqkm92At"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyfXHaFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7621AC8BB;
-	Thu, 15 Aug 2024 14:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6E919FA7A;
+	Thu, 15 Aug 2024 14:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730741; cv=none; b=roELelMSF7Mv2JdMFxHNwy+8Yr6MIYVMwvaucD2I9v0u9fxh5R3KRDZs4FbpGVTxH4uAnUQzuxcwIJOhSPQn9lm6BEyVB+Jq+5B7s99mKLvbxXDHwWzT5bMJGkIBfOjhPKPgSCqh4W25eGZZ31Dm4o8PQZo9DoxyETKb9Oy4M70=
+	t=1723732889; cv=none; b=FRzACJurTwEq21dtgZrTSvO/sWPK05vAxXfl9xt6ygZBMUuUFitgDiCpki9pJMY8Wz5GmiPkwvqTly8L61gPqpRQMegKNXkv4fgBLofCo7kNJSluizLVEe9f6QlV9V4fZEQPEkQMcGByCCzD/fXWvvaF4s9YzdWPSmBvTRRWie0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730741; c=relaxed/simple;
-	bh=FsIK4VK9J4V58ZMyPO5iETevpDqr40NVbWkCRoss7/Q=;
+	s=arc-20240116; t=1723732889; c=relaxed/simple;
+	bh=BNiTYxtgLy1MOg+VYjLTA40qYOZGe+5sgqh+sFVydV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EubiLgHL2ogoeX+h2lj3Ofiht//P7lps0hJorpl6fPWP8qUuNUueEmtJX4W0A933Z80dW8NSc4hH3LgBwWjSjwEKotJtjJ6WiAmT0It2QuZ+a8qVH1zchH4b5nXU0lLErE43VtE/Vnon7NaKoh7KbiqzI51Yg6c9Uk2Y6hkUFFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqkm92At; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0E2C32786;
-	Thu, 15 Aug 2024 14:05:41 +0000 (UTC)
+	 MIME-Version; b=uE84WrAMQxriQs9fygc3zDMhUEyK7FZGiRqaoUnD7HiwC9WttGFpJ1nXXUVOgYyHhzbWundPyziGDh97r/P9QCRX4QanNQCkIrQ8ZCMlUre4/DHKiIhcXFGGrnnWApOLD7FpQcznpYJ7PNQ2L2rekjAa3X138NGZsU8jElkqyhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xyfXHaFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A6FC32786;
+	Thu, 15 Aug 2024 14:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730741;
-	bh=FsIK4VK9J4V58ZMyPO5iETevpDqr40NVbWkCRoss7/Q=;
+	s=korg; t=1723732889;
+	bh=BNiTYxtgLy1MOg+VYjLTA40qYOZGe+5sgqh+sFVydV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqkm92At6VKNcK24jHy2aH75g9wLlqYw703styS44TLAR5egfyFEHWdm/QOZGTqNh
-	 XJqrLih37ZVH3rJMnzBIlpoTyNqAqMB5o+/3DLxCfIHQIDGrWo4N205cUZy7QpfCKG
-	 956Ravx9+H0kXnlciWX2pJmFRGxGDgBChJ6gELhk=
+	b=xyfXHaFxujgpSOQfyQAo/H09BHKFIVqTslfrxcjQdAM+BEOz6pgHQyaa8sffhEjdq
+	 OIaTbKPGTlb3d3G+ZBWCAFucyw2XAeofuYbe23bzuy/hVufCTdB6TWTAiQoIRrT2eG
+	 QdXUYqKWhCfEMOS+9N9Vy+f4L8kK27F5pSjoF9Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 18/38] sunrpc: dont change ->sv_stats if it doesnt exist
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 286/352] arm64: cputype: Add Cortex-X3 definitions
 Date: Thu, 15 Aug 2024 15:25:52 +0200
-Message-ID: <20240815131833.652544899@linuxfoundation.org>
+Message-ID: <20240815131930.503665225@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit ab42f4d9a26f1723dcfd6c93fcf768032b2bb5e7 ]
+[ Upstream commit be5a6f238700f38b534456608588723fba96c5ab ]
 
-We check for the existence of ->sv_stats elsewhere except in the core
-processing code.  It appears that only nfsd actual exports these values
-anywhere, everybody else just has a write only copy of sv_stats in their
-svc_program.  Add a check for ->sv_stats before every adjustment to
-allow us to eliminate the stats struct from all the users who don't
-report the stats.
+Add cputype definitions for Cortex-X3. These will be used for errata
+detection in subsequent patches.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-[ cel: adjusted to apply to v6.1.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+These values can be found in Table A-263 ("MIDR_EL1 bit descriptions")
+in issue 07 of the Cortex-X3 TRM, which can be found at:
+
+  https://developer.arm.com/documentation/101593/0102/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svc.c |   24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1324,7 +1324,8 @@ svc_process_common(struct svc_rqst *rqst
- 		goto err_bad_proc;
- 
- 	/* Syntactic check complete */
--	serv->sv_stats->rpccnt++;
-+	if (serv->sv_stats)
-+		serv->sv_stats->rpccnt++;
- 	trace_svc_process(rqstp, progp->pg_name);
- 
- 	/* Build the reply header. */
-@@ -1377,7 +1378,8 @@ err_short_len:
- 	goto close_xprt;
- 
- err_bad_rpc:
--	serv->sv_stats->rpcbadfmt++;
-+	if (serv->sv_stats)
-+		serv->sv_stats->rpcbadfmt++;
- 	svc_putnl(resv, 1);	/* REJECT */
- 	svc_putnl(resv, 0);	/* RPC_MISMATCH */
- 	svc_putnl(resv, 2);	/* Only RPCv2 supported */
-@@ -1387,7 +1389,8 @@ err_bad_rpc:
- err_bad_auth:
- 	dprintk("svc: authentication failed (%d)\n",
- 		be32_to_cpu(rqstp->rq_auth_stat));
--	serv->sv_stats->rpcbadauth++;
-+	if (serv->sv_stats)
-+		serv->sv_stats->rpcbadauth++;
- 	/* Restore write pointer to location of accept status: */
- 	xdr_ressize_check(rqstp, reply_statp);
- 	svc_putnl(resv, 1);	/* REJECT */
-@@ -1397,7 +1400,8 @@ err_bad_auth:
- 
- err_bad_prog:
- 	dprintk("svc: unknown program %d\n", prog);
--	serv->sv_stats->rpcbadfmt++;
-+	if (serv->sv_stats)
-+		serv->sv_stats->rpcbadfmt++;
- 	svc_putnl(resv, RPC_PROG_UNAVAIL);
- 	goto sendit;
- 
-@@ -1405,7 +1409,8 @@ err_bad_vers:
- 	svc_printk(rqstp, "unknown version (%d for prog %d, %s)\n",
- 		       rqstp->rq_vers, rqstp->rq_prog, progp->pg_name);
- 
--	serv->sv_stats->rpcbadfmt++;
-+	if (serv->sv_stats)
-+		serv->sv_stats->rpcbadfmt++;
- 	svc_putnl(resv, RPC_PROG_MISMATCH);
- 	svc_putnl(resv, process.mismatch.lovers);
- 	svc_putnl(resv, process.mismatch.hivers);
-@@ -1414,7 +1419,8 @@ err_bad_vers:
- err_bad_proc:
- 	svc_printk(rqstp, "unknown procedure (%d)\n", rqstp->rq_proc);
- 
--	serv->sv_stats->rpcbadfmt++;
-+	if (serv->sv_stats)
-+		serv->sv_stats->rpcbadfmt++;
- 	svc_putnl(resv, RPC_PROC_UNAVAIL);
- 	goto sendit;
- 
-@@ -1423,7 +1429,8 @@ err_garbage:
- 
- 	rpc_stat = rpc_garbage_args;
- err_bad:
--	serv->sv_stats->rpcbadfmt++;
-+	if (serv->sv_stats)
-+		serv->sv_stats->rpcbadfmt++;
- 	svc_putnl(resv, ntohl(rpc_stat));
- 	goto sendit;
- }
-@@ -1469,7 +1476,8 @@ svc_process(struct svc_rqst *rqstp)
- out_baddir:
- 	svc_printk(rqstp, "bad direction 0x%08x, dropping request\n",
- 		   be32_to_cpu(dir));
--	rqstp->rq_server->sv_stats->rpcbadfmt++;
-+	if (rqstp->rq_server->sv_stats)
-+		rqstp->rq_server->sv_stats->rpcbadfmt++;
- out_drop:
- 	svc_drop(rqstp);
- 	return 0;
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index b2887995e575e..e8ceddaba7a06 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -84,6 +84,7 @@
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
++#define ARM_CPU_PART_CORTEX_X3		0xD4E
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+@@ -139,6 +140,7 @@
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
++#define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+-- 
+2.43.0
+
 
 
 
