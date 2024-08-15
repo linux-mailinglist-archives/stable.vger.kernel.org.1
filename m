@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB359534F4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712EA953367
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 691BD28569A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A125E1C213ED
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D393D1A01CB;
-	Thu, 15 Aug 2024 14:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271A41AB52C;
+	Thu, 15 Aug 2024 14:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bq1EalpW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t715cxUE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883E11DFFB;
-	Thu, 15 Aug 2024 14:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C091A7048;
+	Thu, 15 Aug 2024 14:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732329; cv=none; b=mbwDoWXAPnicBg+z8Nb1AYeX4cqGqhFKX73COlu0rdIBYqvu0q8W7No89X+RCTxdrZYhclUZwc1gsITP+t5XNt0N97HbIFg2U2lfpLYse3pYKLk86cB+G1ajrnghb2WcNBimfT98pNRDgOhU0an+1RPShDGhPDWv1QwbUcDlhaA=
+	t=1723731277; cv=none; b=r8BglYtiv0kCnrzAlEuE+9PBKxTgcAIc9xs2AJlHA52g5yQcfdsZwqj1/Nk3EEr3nIz+B8lt9GtK8Frb5TPCuSNlPBgdCsqUbcKc6AI4V4EVTgIR5AVVQJqjbaI9Oc7p6W7+BW4IdpSs251epf0WjiceRa9icIvP9yhPAseAOoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732329; c=relaxed/simple;
-	bh=OV7zAWJ9Nkz3kZcZHsYbV+0w7TPdo/oqWme1Tw0reSg=;
+	s=arc-20240116; t=1723731277; c=relaxed/simple;
+	bh=XLfnY49JQ+iF14qrJRPNo2LKIzAvxEFUGoTZDzn4Yhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2ZvWnh6d1NkWNycZbVyJNN43h/9v96ktdUuapz6rTSanmSFcWKfnvhmEc0g0PtAfXYAwI8aRDlnPOxLFNfhVoSH0lRNrn0f/n4vMJ2dXIu6XpXUPsvxw8NhinpQ1OKabzHmYLU8fN1CNpZnSIsRDTsXKv2X9MKvL7YTWa9prs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bq1EalpW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB83AC32786;
-	Thu, 15 Aug 2024 14:32:08 +0000 (UTC)
+	 MIME-Version; b=CKSUKTcdMJeMXNBfo58oNV9MoDnWTrpAeLetEOiP1u4/tigHB8WxmydR7AQx1es67cMg3p0ImDRoi0iVT5KkfIF3iySWtK8BKNhCWhPGZTUszuDohMPewEzGGLOpdAbeIn/kAUpyQ1de94QpWVqSqh3fl/PqVBM+FrnYZkeTpxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t715cxUE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF17C32786;
+	Thu, 15 Aug 2024 14:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732329;
-	bh=OV7zAWJ9Nkz3kZcZHsYbV+0w7TPdo/oqWme1Tw0reSg=;
+	s=korg; t=1723731277;
+	bh=XLfnY49JQ+iF14qrJRPNo2LKIzAvxEFUGoTZDzn4Yhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bq1EalpWW7L+DX1FR42EwptNINmVmMl2ps6iRHWFikjFlTxrGOwSerutxTnsIsjXC
-	 9cz5JYvfbxOFy+UraRFZI6cMkbxN6ACZ5cHlr+AzZ3tVxUypDc08/L4mCjXXFWQRsT
-	 wC7lByo0kO4SshB3JZFUS91blKQDo50I/AxcFQFc=
+	b=t715cxUEAo0Yaa6+ziIc0PDlu5knBEX97OCtLh4JpE3BcD2kehK5ebgcl38AXwdLr
+	 weHZHGtPsNN+GXQ+p3GSVObxS77D+o/Qh4X562Aw3zEOdGYS4TN23VmQyJ5w0ZUukA
+	 ha9VuQmerM38p/UUqI4gG5kQB05M4MTDvpHJ+3yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 145/352] ext4: make sure the first directory block is not a hole
-Date: Thu, 15 Aug 2024 15:23:31 +0200
-Message-ID: <20240815131924.864396764@linuxfoundation.org>
+	Jack Wang <jinpu.wang@ionos.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 079/259] bnxt_re: Fix imm_data endianness
+Date: Thu, 15 Aug 2024 15:23:32 +0200
+Message-ID: <20240815131905.853637249@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-commit f9ca51596bbfd0f9c386dd1c613c394c78d9e5e6 upstream.
+[ Upstream commit 95b087f87b780daafad1dbb2c84e81b729d5d33f ]
 
-The syzbot constructs a directory that has no dirblock but is non-inline,
-i.e. the first directory block is a hole. And no errors are reported when
-creating files in this directory in the following flow.
+When map a device between servers with MLX and BCM RoCE nics, RTRS
+server complain about unknown imm type, and can't map the device,
 
-    ext4_mknod
-     ...
-      ext4_add_entry
-        // Read block 0
-        ext4_read_dirblock(dir, block, DIRENT)
-          bh = ext4_bread(NULL, inode, block, 0)
-          if (!bh && (type == INDEX || type == DIRENT_HTREE))
-          // The first directory block is a hole
-          // But type == DIRENT, so no error is reported.
+After more debug, it seems bnxt_re wrongly handle the
+imm_data, this patch fixed the compat issue with MLX for us.
 
-After that, we get a directory block without '.' and '..' but with a valid
-dentry. This may cause some code that relies on dot or dotdot (such as
-make_indexed_dir()) to crash.
+In off list discussion, Selvin confirmed HW is working in little endian format
+and all data needs to be converted to LE while providing.
 
-Therefore when ext4_read_dirblock() finds that the first directory block
-is a hole report that the filesystem is corrupted and return an error to
-avoid loading corrupted data from disk causing something bad.
+This patch fix the endianness for imm_data
 
-Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
-Fixes: 4e19d6b65fb4 ("ext4: allow directory holes")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240702132349.2600605-3-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Link: https://lore.kernel.org/r/20240710122102.37569-1-jinpu.wang@ionos.com
+Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/namei.c |   17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 8 ++++----
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h | 6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -145,10 +145,11 @@ static struct buffer_head *__ext4_read_d
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index c9a7c03403ac0..4a1c11bdc4adc 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -2271,7 +2271,7 @@ static int bnxt_re_build_send_wqe(struct bnxt_re_qp *qp,
+ 		break;
+ 	case IB_WR_SEND_WITH_IMM:
+ 		wqe->type = BNXT_QPLIB_SWQE_TYPE_SEND_WITH_IMM;
+-		wqe->send.imm_data = wr->ex.imm_data;
++		wqe->send.imm_data = be32_to_cpu(wr->ex.imm_data);
+ 		break;
+ 	case IB_WR_SEND_WITH_INV:
+ 		wqe->type = BNXT_QPLIB_SWQE_TYPE_SEND_WITH_INV;
+@@ -2301,7 +2301,7 @@ static int bnxt_re_build_rdma_wqe(const struct ib_send_wr *wr,
+ 		break;
+ 	case IB_WR_RDMA_WRITE_WITH_IMM:
+ 		wqe->type = BNXT_QPLIB_SWQE_TYPE_RDMA_WRITE_WITH_IMM;
+-		wqe->rdma.imm_data = wr->ex.imm_data;
++		wqe->rdma.imm_data = be32_to_cpu(wr->ex.imm_data);
+ 		break;
+ 	case IB_WR_RDMA_READ:
+ 		wqe->type = BNXT_QPLIB_SWQE_TYPE_RDMA_READ;
+@@ -3250,7 +3250,7 @@ static void bnxt_re_process_res_shadow_qp_wc(struct bnxt_re_qp *gsi_sqp,
+ 	wc->byte_len = orig_cqe->length;
+ 	wc->qp = &gsi_qp->ib_qp;
  
- 		return bh;
- 	}
--	if (!bh && (type == INDEX || type == DIRENT_HTREE)) {
-+	/* The first directory block must not be a hole. */
-+	if (!bh && (type == INDEX || type == DIRENT_HTREE || block == 0)) {
- 		ext4_error_inode(inode, func, line, block,
--				 "Directory hole found for htree %s block",
--				 (type == INDEX) ? "index" : "leaf");
-+				 "Directory hole found for htree %s block %u",
-+				 (type == INDEX) ? "index" : "leaf", block);
- 		return ERR_PTR(-EFSCORRUPTED);
- 	}
- 	if (!bh)
-@@ -2977,10 +2978,7 @@ bool ext4_empty_dir(struct inode *inode)
- 		EXT4_ERROR_INODE(inode, "invalid size");
- 		return false;
- 	}
--	/* The first directory block must not be a hole,
--	 * so treat it as DIRENT_HTREE
--	 */
--	bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
-+	bh = ext4_read_dirblock(inode, 0, EITHER);
- 	if (IS_ERR(bh))
- 		return false;
- 
-@@ -3611,10 +3609,7 @@ static struct buffer_head *ext4_get_firs
- 		struct ext4_dir_entry_2 *de;
- 		unsigned int offset;
- 
--		/* The first directory block must not be a hole, so
--		 * treat it as DIRENT_HTREE
--		 */
--		bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
-+		bh = ext4_read_dirblock(inode, 0, EITHER);
- 		if (IS_ERR(bh)) {
- 			*retval = PTR_ERR(bh);
- 			return NULL;
+-	wc->ex.imm_data = orig_cqe->immdata;
++	wc->ex.imm_data = cpu_to_be32(le32_to_cpu(orig_cqe->immdata));
+ 	wc->src_qp = orig_cqe->src_qp;
+ 	memcpy(wc->smac, orig_cqe->smac, ETH_ALEN);
+ 	if (bnxt_re_is_vlan_pkt(orig_cqe, &vlan_id, &sl)) {
+@@ -3391,7 +3391,7 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
+ 				continue;
+ 			}
+ 			wc->qp = &qp->ib_qp;
+-			wc->ex.imm_data = cqe->immdata;
++			wc->ex.imm_data = cpu_to_be32(le32_to_cpu(cqe->immdata));
+ 			wc->src_qp = cqe->src_qp;
+ 			memcpy(wc->smac, cqe->smac, ETH_ALEN);
+ 			wc->port_num = 1;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index 99e0a13cbefaf..ff0f7b1095070 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -145,7 +145,7 @@ struct bnxt_qplib_swqe {
+ 		/* Send, with imm, inval key */
+ 		struct {
+ 			union {
+-				__be32	imm_data;
++				u32	imm_data;
+ 				u32	inv_key;
+ 			};
+ 			u32		q_key;
+@@ -163,7 +163,7 @@ struct bnxt_qplib_swqe {
+ 		/* RDMA write, with imm, read */
+ 		struct {
+ 			union {
+-				__be32	imm_data;
++				u32	imm_data;
+ 				u32	inv_key;
+ 			};
+ 			u64		remote_va;
+@@ -350,7 +350,7 @@ struct bnxt_qplib_cqe {
+ 	u16				cfa_meta;
+ 	u64				wr_id;
+ 	union {
+-		__be32			immdata;
++		__le32			immdata;
+ 		u32			invrkey;
+ 	};
+ 	u64				qp_handle;
+-- 
+2.43.0
+
 
 
 
