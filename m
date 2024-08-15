@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A33B4952F2D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5478953182
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D63511C23B4B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89F531F2193E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E8417CA1D;
-	Thu, 15 Aug 2024 13:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C4419AA53;
+	Thu, 15 Aug 2024 13:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRu5jxpL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0uV5lAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AA71DDF5;
-	Thu, 15 Aug 2024 13:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A821714A1;
+	Thu, 15 Aug 2024 13:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728576; cv=none; b=mCyW/OoxpuOITlH98FdtG1sytmA7tzqI/HI5BvG8JXmHk63B6J79XZgOtsnWbLC6BW68vEjJ+6PVsJoEaBmLOtXHjpDlz8c52PfbIjv9dqW0Imruw8Ayikaecz2w6Jm0CkkVtVtFEo1kLFfoFJHbTvkNn0W4OGJ0cxJPvHSLm18=
+	t=1723730098; cv=none; b=UVDpzwvTWTSfFyBaJOn0f9NU+ffCS5UZLQ+BnMftHZOXj0Lh+paINIKfLfbFLuAgFx7kiRg93Ps8xtMh3BUOUdAa2ywcEWgKP1shEofYb1u8eApZpojWLToYCE97tOpdSz5Ay8WMz88HWhOx0TwqK29R5GDVpjGbWzd3B4kw1kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728576; c=relaxed/simple;
-	bh=lK7B4Zo/YyBwT5o0CRH4BQc4PxorVmwx7ALiciAROOc=;
+	s=arc-20240116; t=1723730098; c=relaxed/simple;
+	bh=Z1zHJnzleCfK0aHFkrF/IqOTtqvfv2oma25sK+UDGfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FbP9buVC8cD8mhCjfbZC5p46KOa8l9E4l2zdII7ksBp/ijkhYd8TfeLkAqnQlGyHvphK3ilnwe3o0ZWQxPVkzidwdf6g5FPBXVR4G4nw/Ry7wB6LZGUfKrT0rsyotDDcwBKBLsjwjpLiD+SBKfrZyMWCCzzGtHugHANjsgxWzAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRu5jxpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CE9C32786;
-	Thu, 15 Aug 2024 13:29:36 +0000 (UTC)
+	 MIME-Version; b=HBdTAtfTm7uaM5l7DL2xX4tT6CMInwHZt2w8wLOJE0tLq22HzcdHXmJpdyKwwVsQa8GZgbHTBvkoVhcX/UCIwSbsLXSKDAptvJUyfjzG6GzMlGu1uN1gyeL7+/12BXlO8y6jIB9nVPqj0/RJk8u0AlNxFALi8gUxpRkdqkE++Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0uV5lAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF593C4AF0A;
+	Thu, 15 Aug 2024 13:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728576;
-	bh=lK7B4Zo/YyBwT5o0CRH4BQc4PxorVmwx7ALiciAROOc=;
+	s=korg; t=1723730098;
+	bh=Z1zHJnzleCfK0aHFkrF/IqOTtqvfv2oma25sK+UDGfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRu5jxpLkD2/zswwIa5xZptzWiJzaUndfwrbVkLHCYJz0uzYppvLW5JlP2rfjHXCk
-	 6Edl8yDlGaCSM6gX8Vr8nBoVjV1GMDG0+6oPv6bZMq/3zoGE5yB//ZrZmglAD9xBe2
-	 +eoX5ZmPAo0q7Oof6pW5TA09kbCShqu9evXWYmik=
+	b=D0uV5lAfMMsuBRcOnR1cPwuGUV+7tZCTb/NBbs6955PkXLhPOBzJZd/ZLS1rApekf
+	 xBI9+JKwd1TZ98dH3tnnNi3H0LoJm3gb14sl90z3TKkjMnqf57jticKmbADFmBCds2
+	 L/8L/bWjwiX6F2kDOlDnnnwgJiVkBBKS0m2bRwr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 013/196] arm64: dts: rockchip: Increase VOP clk rate on RK3328
-Date: Thu, 15 Aug 2024 15:22:10 +0200
-Message-ID: <20240815131852.582555243@linuxfoundation.org>
+Subject: [PATCH 5.15 273/484] netfilter: nft_set_pipapo_avx2: disable softinterrupts
+Date: Thu, 15 Aug 2024 15:22:11 +0200
+Message-ID: <20240815131951.951074727@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 0f2ddb128fa20f8441d903285632f2c69e90fae1 ]
+[ Upstream commit a16909ae9982e931841c456061cb57fbaec9c59e ]
 
-The VOP on RK3328 needs to run at a higher rate in order to produce a
-proper 3840x2160 signal.
+We need to disable softinterrupts, else we get following problem:
 
-Change to use 300MHz for VIO clk and 400MHz for VOP clk, same rates used
-by vendor 4.4 kernel.
+1. pipapo_avx2 called from process context; fpu usable
+2. preempt_disable() called, pcpu scratchmap in use
+3. softirq handles rx or tx, we re-enter pipapo_avx2
+4. fpu busy, fallback to generic non-avx version
+5. fallback reuses scratch map and index, which are in use
+   by the preempted process
 
-Fixes: 52e02d377a72 ("arm64: dts: rockchip: add core dtsi file for RK3328 SoCs")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240615170417.3134517-2-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Handle this same way as generic version by first disabling
+softinterrupts while the scratchmap is in use.
+
+Fixes: f0b3d338064e ("netfilter: nft_set_pipapo_avx2: Add irq_fpu_usable() check, fallback to non-AVX2 version")
+Cc: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_set_pipapo_avx2.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index f6931f8d36f6d..ab870b9043967 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-@@ -649,8 +649,8 @@ cru: clock-controller@ff440000 {
- 			<0>, <24000000>,
- 			<24000000>, <24000000>,
- 			<15000000>, <15000000>,
--			<100000000>, <100000000>,
--			<100000000>, <100000000>,
-+			<300000000>, <100000000>,
-+			<400000000>, <100000000>,
- 			<50000000>, <100000000>,
- 			<100000000>, <100000000>,
- 			<50000000>, <50000000>,
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index 295406cf63672..dfae90cd34939 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -1141,8 +1141,14 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	bool map_index;
+ 	int i, ret = 0;
+ 
+-	if (unlikely(!irq_fpu_usable()))
+-		return nft_pipapo_lookup(net, set, key, ext);
++	local_bh_disable();
++
++	if (unlikely(!irq_fpu_usable())) {
++		bool fallback_res = nft_pipapo_lookup(net, set, key, ext);
++
++		local_bh_enable();
++		return fallback_res;
++	}
+ 
+ 	m = rcu_dereference(priv->match);
+ 
+@@ -1157,6 +1163,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	scratch = *raw_cpu_ptr(m->scratch);
+ 	if (unlikely(!scratch)) {
+ 		kernel_fpu_end();
++		local_bh_enable();
+ 		return false;
+ 	}
+ 
+@@ -1237,6 +1244,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	if (i % 2)
+ 		scratch->map_index = !map_index;
+ 	kernel_fpu_end();
++	local_bh_enable();
+ 
+ 	return ret >= 0;
+ }
 -- 
 2.43.0
 
