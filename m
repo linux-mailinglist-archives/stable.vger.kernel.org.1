@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-69061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830BE95353F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:35:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC35E953390
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6A4D1C2376F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:35:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802F11F24392
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E703017BEC0;
-	Thu, 15 Aug 2024 14:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A52E1AB51B;
+	Thu, 15 Aug 2024 14:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJiRh5F3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipUv3UI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A645963D5;
-	Thu, 15 Aug 2024 14:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189AE18D64F;
+	Thu, 15 Aug 2024 14:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732539; cv=none; b=EOtkRI45oBXMHDXmz3KCdakmQHfIm6eHRPBrXlUIdH7kA6g9UWivCsU8tP6TF9uW/IrJBw+eJJHeooOWIkRJmaFTMsvUoVTQ9f9oKBsP0aHKe93RaGMHXVwUaxSvv795nE6aG1G7/sYsUHifW0MtZ7/pbf0kfMsbt3P8QBhFK1U=
+	t=1723731398; cv=none; b=kg/j1IBd/GqZ6QPy00dif86oyr5F22HOFjs9OIS/IJl0SfNZfbzVJ32nv5Y2yHjVKS3Mp7Wkoc8psQd8Z2dqtiPMwLDQ4dA/6ATl4Heu7VE6ieqGB8iFvIDeg4ie1J5c39I0OPkKfapY10lVwcRwR9/ryB1xxJDfdqew4xctH/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732539; c=relaxed/simple;
-	bh=BxHGMSI3d51aIW1JmuQgnclq4yKrXVEo1MJCFEHEYnE=;
+	s=arc-20240116; t=1723731398; c=relaxed/simple;
+	bh=YuwotoWj6FkTjaPM69LLj8LFbVFsPpz9NbJzTF6uOp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwRpC5RGm+hl+Xegy0UTATa0VNaWsrinR96KJ7fEJxTw9TrxIFcp9JV+MUhocUxSuWvayISldUoCvRoOtCIh0cU88FcAEL7NvWxHEfbRYfp1H44W9V/nOZqWMp3p/dNruxHM/o4L74pwUCr+4OEN3lyQRFtTMRZkPGEN2awPJ/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJiRh5F3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A0BC32786;
-	Thu, 15 Aug 2024 14:35:38 +0000 (UTC)
+	 MIME-Version; b=BNeBGkH1Q899JCEOCKhDpTHT206Ut8DE/dmdco/shSVOzmAJFZeQScEIx5qHLvYE/QPiC5aPPvNSCRHb7iTiNfB7/CJbQGGn84ohhdji+46Fq7CLVr1iQ587Vl87tCPm+KtiIKOsKVaExFO90gPNe+ETu+kfQpi5BGVSTV+yRPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipUv3UI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95042C32786;
+	Thu, 15 Aug 2024 14:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732539;
-	bh=BxHGMSI3d51aIW1JmuQgnclq4yKrXVEo1MJCFEHEYnE=;
+	s=korg; t=1723731398;
+	bh=YuwotoWj6FkTjaPM69LLj8LFbVFsPpz9NbJzTF6uOp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJiRh5F3F6NEBDhLXpurstO/QqMZ0Q4f/MbfLdmK5BHkISz53Ej5Qdy77zjU6P3V0
-	 t4CnyC3IzwSB0wmf0VJqMTmXdm5m9hU16wXUYbp0ofEkzdTP/GeLzYGhZfmo6rUWYk
-	 6annNfe6TLuLyldLLpA23vXsRIk+88EmA4QgpGwQ=
+	b=ipUv3UI1GaGexvNDVAQnPm2549Xp3cgAyxqe1D4B/jhSqC/2zBKIeky4DhYs2E2JM
+	 5jlT/T5ZnYi6FyDCxhPfXO+ow54bqTsWMiBhJ7sGOOhW8Am9bn/kH7nbQtkrNF96GX
+	 HWV6x2dS92bCX4pQlTsM0sNH17PRncLsSigMEiKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Erpeng Xu <xuerpeng@uniontech.com>
-Subject: [PATCH 5.10 183/352] Bluetooth: btusb: Add RTL8852BE device 0489:e125 to device tables
+	Manish Rangankar <mrangankar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 116/259] scsi: qla2xxx: During vport delete send async logout explicitly
 Date: Thu, 15 Aug 2024 15:24:09 +0200
-Message-ID: <20240815131926.351259971@linuxfoundation.org>
+Message-ID: <20240815131907.278464719@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hilda Wu <hildawu@realtek.com>
+From: Manish Rangankar <mrangankar@marvell.com>
 
-commit 295ef07a9dae6182ad4b689aa8c6a7dbba21474c upstream.
+commit 76f480d7c717368f29a3870f7d64471ce0ff8fb2 upstream.
 
-Add the support ID 0489:e125 to usb_device_id table for
-Realtek RTL8852B chip.
+During vport delete, it is observed that during unload we hit a crash
+because of stale entries in outstanding command array.  For all these stale
+I/O entries, eh_abort was issued and aborted (fast_fail_io = 2009h) but
+I/Os could not complete while vport delete is in process of deleting.
 
-The device info from /sys/kernel/debug/usb/devices as below.
+  BUG: kernel NULL pointer dereference, address: 000000000000001c
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] PREEMPT SMP NOPTI
+  Workqueue: qla2xxx_wq qla_do_work [qla2xxx]
+  RIP: 0010:dma_direct_unmap_sg+0x51/0x1e0
+  RSP: 0018:ffffa1e1e150fc68 EFLAGS: 00010046
+  RAX: 0000000000000000 RBX: 0000000000000021 RCX: 0000000000000001
+  RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff8ce208a7a0d0
+  RBP: ffff8ce208a7a0d0 R08: 0000000000000000 R09: ffff8ce378aac9c8
+  R10: ffff8ce378aac8a0 R11: ffffa1e1e150f9d8 R12: 0000000000000000
+  R13: 0000000000000000 R14: ffff8ce378aac9c8 R15: 0000000000000000
+  FS:  0000000000000000(0000) GS:ffff8d217f000000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 000000000000001c CR3: 0000002089acc000 CR4: 0000000000350ee0
+  Call Trace:
+  <TASK>
+  qla2xxx_qpair_sp_free_dma+0x417/0x4e0
+  ? qla2xxx_qpair_sp_compl+0x10d/0x1a0
+  ? qla2x00_status_entry+0x768/0x2830
+  ? newidle_balance+0x2f0/0x430
+  ? dequeue_entity+0x100/0x3c0
+  ? qla24xx_process_response_queue+0x6a1/0x19e0
+  ? __schedule+0x2d5/0x1140
+  ? qla_do_work+0x47/0x60
+  ? process_one_work+0x267/0x440
+  ? process_one_work+0x440/0x440
+  ? worker_thread+0x2d/0x3d0
+  ? process_one_work+0x440/0x440
+  ? kthread+0x156/0x180
+  ? set_kthread_struct+0x50/0x50
+  ? ret_from_fork+0x22/0x30
+  </TASK>
 
-T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=03 Dev#=  5 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e125 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+Send out async logout explicitly for all the ports during vport delete.
 
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Erpeng Xu <xuerpeng@uniontech.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-8-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/qla2xxx/qla_mid.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -428,6 +428,8 @@ static const struct usb_device_id blackl
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+--- a/drivers/scsi/qla2xxx/qla_mid.c
++++ b/drivers/scsi/qla2xxx/qla_mid.c
+@@ -165,7 +165,7 @@ qla24xx_disable_vp(scsi_qla_host_t *vha)
+ 	atomic_set(&vha->loop_state, LOOP_DOWN);
+ 	atomic_set(&vha->loop_down_timer, LOOP_DOWN_TIME);
+ 	list_for_each_entry(fcport, &vha->vp_fcports, list)
+-		fcport->logout_on_delete = 0;
++		fcport->logout_on_delete = 1;
  
- 	/* Realtek Bluetooth devices */
- 	{ USB_VENDOR_AND_INTERFACE_INFO(0x0bda, 0xe0, 0x01, 0x01),
+ 	qla2x00_mark_all_devices_lost(vha, 0);
+ 
 
 
 
