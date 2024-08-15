@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-68557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F679532EA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B1E953415
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FA421F21F8A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5AE1F288D2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F7E1AD9FB;
-	Thu, 15 Aug 2024 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626BD1A08DD;
+	Thu, 15 Aug 2024 14:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SszHka/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veehCLh5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6551AAE38;
-	Thu, 15 Aug 2024 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F5C1A08DB;
+	Thu, 15 Aug 2024 14:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730947; cv=none; b=pNUkU/bIJQsDXTt3aIISgj2kmDyS/lsabrj3hf8ocEL8IraDWlLE0DwWG/ItCzN6kcniY4STjQmVo7W/wDlxDaNpPWMkOp8AHT553PjhgGbjJHi5S3pOtscZhv3Y80Rr/OTGtcoC7IWYUqYHT7f1n+gud9zo1QrKkUxi1qTa0/w=
+	t=1723731741; cv=none; b=Rlcyyu5AsXdwk36VRuE80XiHMoZh5pYXNV80F17zwDgJBWN1Clz1Fo8+wSDL7gvdECfwJE34xFXf8v7mb0cDOtgD7G8uRdGgQiCbf6UtjUjHJICEB5x5xmuXcjP0KYYol2PgFvOWau5zrZ6YH/WDN0O6uwYvFk0mbY4uVGgm6wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730947; c=relaxed/simple;
-	bh=2YwUS8tsC2XSBmWKSfgW8NRL+tT/EaHHtoJzLZzArps=;
+	s=arc-20240116; t=1723731741; c=relaxed/simple;
+	bh=0rZ/yFEjvGLU/BPGfXjfHzQVu4jTvnqE+aTZzZS6Rlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4P+dmQtyjaTMuWA4FnhS6WMwwYdeENHs7xPqMDTkgMVYy/0lN5dI8jiXPpyJhmQ/vfa9C2wh1tO9EpEql8o9bUEwwLjjWzVINBUvyy8NlFkdtFAteTj5UFhKNkSPnFiSI1cZ74RRSqe46JDh3rr5QQLus6gL4qLRoVQoFWRgnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SszHka/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4B7C32786;
-	Thu, 15 Aug 2024 14:09:06 +0000 (UTC)
+	 MIME-Version; b=SbDBzzuKAeJvB7Fd4l6u8tFZ+Ma36y3VnwRVPs1bNiV4KRQg3pBkMM/Kn31w2kQb562lXwdls60KvKq1ODL3g7Q3kd3MjSp4vfBS5Tex/UXcUiIMQaDpblRoqWbGlYe6UQfVDW0Ted4mUWPQes9sBfOK5yLsK8FqfRhkEA50BzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veehCLh5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAB9C32786;
+	Thu, 15 Aug 2024 14:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730946;
-	bh=2YwUS8tsC2XSBmWKSfgW8NRL+tT/EaHHtoJzLZzArps=;
+	s=korg; t=1723731741;
+	bh=0rZ/yFEjvGLU/BPGfXjfHzQVu4jTvnqE+aTZzZS6Rlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SszHka/CiAcAX4uyhaaOs1Oy2InIDbZKrd7UGh1eAUkchYLnllHCNbLkYjrtRwAlg
-	 dP/iGAQ0LkiYw1u9xdJ/qPt7ggIHj1XhD9Cp4Cne6RTR/WzPRVKIbdiEckVx7q7P0D
-	 nO67HTBbdpc1F1Te3UtD/YL+6KD14v6B7y2f6FA0=
+	b=veehCLh51XNRa2koMfOkTid0ZOSE/Vbg2LIPy7IQxVR8cO3tVA01INd7KZAISU6Cz
+	 LOdc9ZMBH/NHlfGEMhPKhM3NjUFiozhT4/vjzSnq+BF8MtMBdnX1BNVyQpYfLK6i5I
+	 FJU1QFrKzrTCZyupjsmT/hLcVSsCv+oDmJ+aGMuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4139435cb1b34cf759c2@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 42/67] fs: Annotate struct file_handle with __counted_by() and use struct_size()
+Subject: [PATCH 5.4 223/259] i2c: smbus: Send alert notifications to all devices if source not found
 Date: Thu, 15 Aug 2024 15:25:56 +0200
-Message-ID: <20240815131839.932956707@linuxfoundation.org>
+Message-ID: <20240815131911.384615409@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 68d6f4f3fbd9b1baae53e7cf33fb3362b5a21494 ]
+[ Upstream commit f6c29f710c1ff2590109f83be3e212b86c01e0f3 ]
 
-Prepare for the coming implementation by GCC and Clang of the __counted_by
-attribute. Flexible array members annotated with __counted_by can have
-their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
-array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-functions).
+If a SMBus alert is received and the originating device is not found,
+the reason may be that the address reported on the SMBus alert address
+is corrupted, for example because multiple devices asserted alert and
+do not correctly implement SMBus arbitration.
 
-While there, use struct_size() helper, instead of the open-coded
-version.
+If this happens, call alert handlers on all devices connected to the
+given I2C bus, in the hope that this cleans up the situation.
 
-[brauner@kernel.org: contains a fix by Edward for an OOB access]
-Reported-by: syzbot+4139435cb1b34cf759c2@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://lore.kernel.org/r/tencent_A7845DD769577306D813742365E976E3A205@qq.com
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/ZgImCXTdGDTeBvSS@neat
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This change reliably fixed the problem on a system with multiple devices
+on a single bus. Example log where the device on address 0x18 (ADM1021)
+and on address 0x4c (ADT7461A) both had the alert line asserted:
+
+smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
+smbus_alert 3-000c: no driver alert()!
+smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
+smbus_alert 3-000c: no driver alert()!
+lm90 3-0018: temp1 out of range, please check!
+lm90 3-0018: Disabling ALERT#
+lm90 3-0029: Everything OK
+lm90 3-002a: Everything OK
+lm90 3-004c: temp1 out of range, please check!
+lm90 3-004c: temp2 out of range, please check!
+lm90 3-004c: Disabling ALERT#
+
+Fixes: b5527a7766f0 ("i2c: Add SMBus alert support")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+[wsa: fixed a typo in the commit message]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fhandle.c       | 6 +++---
- include/linux/fs.h | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/i2c/i2c-smbus.c | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/fs/fhandle.c b/fs/fhandle.c
-index 99dcf07cfecfe..c361d7ff1b88d 100644
---- a/fs/fhandle.c
-+++ b/fs/fhandle.c
-@@ -40,7 +40,7 @@ static long do_sys_name_to_handle(const struct path *path,
- 	if (f_handle.handle_bytes > MAX_HANDLE_SZ)
- 		return -EINVAL;
+diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
+index 792954a9b78f4..85b17c71ce84d 100644
+--- a/drivers/i2c/i2c-smbus.c
++++ b/drivers/i2c/i2c-smbus.c
+@@ -64,6 +64,32 @@ static int smbus_do_alert(struct device *dev, void *addrp)
+ 	return ret;
+ }
  
--	handle = kzalloc(sizeof(struct file_handle) + f_handle.handle_bytes,
-+	handle = kzalloc(struct_size(handle, f_handle, f_handle.handle_bytes),
- 			 GFP_KERNEL);
- 	if (!handle)
- 		return -ENOMEM;
-@@ -75,7 +75,7 @@ static long do_sys_name_to_handle(const struct path *path,
- 	/* copy the mount id */
- 	if (put_user(real_mount(path->mnt)->mnt_id, mnt_id) ||
- 	    copy_to_user(ufh, handle,
--			 sizeof(struct file_handle) + handle_bytes))
-+			 struct_size(handle, f_handle, handle_bytes)))
- 		retval = -EFAULT;
- 	kfree(handle);
- 	return retval;
-@@ -196,7 +196,7 @@ static int handle_to_path(int mountdirfd, struct file_handle __user *ufh,
- 		retval = -EINVAL;
- 		goto out_err;
++/* Same as above, but call back all drivers with alert handler */
++
++static int smbus_do_alert_force(struct device *dev, void *addrp)
++{
++	struct i2c_client *client = i2c_verify_client(dev);
++	struct alert_data *data = addrp;
++	struct i2c_driver *driver;
++
++	if (!client || (client->flags & I2C_CLIENT_TEN))
++		return 0;
++
++	/*
++	 * Drivers should either disable alerts, or provide at least
++	 * a minimal handler. Lock so the driver won't change.
++	 */
++	device_lock(dev);
++	if (client->dev.driver) {
++		driver = to_i2c_driver(client->dev.driver);
++		if (driver->alert)
++			driver->alert(client, data->type, data->data);
++	}
++	device_unlock(dev);
++
++	return 0;
++}
++
+ /*
+  * The alert IRQ handler needs to hand work off to a task which can issue
+  * SMBus calls, because those sleeping calls can't be made in IRQ context.
+@@ -105,13 +131,19 @@ static irqreturn_t smbus_alert(int irq, void *d)
+ 		/*
+ 		 * If we read the same address more than once, and the alert
+ 		 * was not handled by a driver, it won't do any good to repeat
+-		 * the loop because it will never terminate.
+-		 * Bail out in this case.
++		 * the loop because it will never terminate. Try again, this
++		 * time calling the alert handlers of all devices connected to
++		 * the bus, and abort the loop afterwards. If this helps, we
++		 * are all set. If it doesn't, there is nothing else we can do,
++		 * so we might as well abort the loop.
+ 		 * Note: This assumes that a driver with alert handler handles
+ 		 * the alert properly and clears it if necessary.
+ 		 */
+-		if (data.addr == prev_addr && status != -EBUSY)
++		if (data.addr == prev_addr && status != -EBUSY) {
++			device_for_each_child(&ara->adapter->dev, &data,
++					      smbus_do_alert_force);
+ 			break;
++		}
+ 		prev_addr = data.addr;
  	}
--	handle = kmalloc(sizeof(struct file_handle) + f_handle.handle_bytes,
-+	handle = kmalloc(struct_size(handle, f_handle, f_handle.handle_bytes),
- 			 GFP_KERNEL);
- 	if (!handle) {
- 		retval = -ENOMEM;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 5ca9e859c042b..43e640fb4a7f7 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1036,7 +1036,7 @@ struct file_handle {
- 	__u32 handle_bytes;
- 	int handle_type;
- 	/* file identifier */
--	unsigned char f_handle[];
-+	unsigned char f_handle[] __counted_by(handle_bytes);
- };
  
- static inline struct file *get_file(struct file *f)
 -- 
 2.43.0
 
