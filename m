@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C61952FAE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1A49531F4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D8C5289FFC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBD3C28246D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5201A00CF;
-	Thu, 15 Aug 2024 13:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FCF19E7F6;
+	Thu, 15 Aug 2024 14:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4NmShaE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndKAcx1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C16C1714D0;
-	Thu, 15 Aug 2024 13:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E351AC8BB;
+	Thu, 15 Aug 2024 14:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728880; cv=none; b=MnUKFQwmRBqdX2/PTSPCdkAXEQjk2RZ96EGsbSTm/E/aE2Zjol4DIusTRah+Iy8shfzrDKvu0fxFIRjBWNuvVBuETwqcPy6rJ7P5rKlOQLGbJ0RWAZko0i13uRYjd2RoLU7/0WXcrHGgg14gtKNBV9Y/Ew8/pG+It3Ycy3YT14M=
+	t=1723730414; cv=none; b=b3mvDWHUlU72PbsLMZRtMBZDBDjBfXEowFLIVjWTUxnSMxyDrHq6KKial1yrEtwamA38Z80Dw4sOmj9O+2ukq7FFxODQKCxNbFosInBysuuQ3UQIFsZ8Q7znhgm6KZNZjj3+MvUUCoTdGULXDRNiCZW+P3vMyLftb7FCqFL/Ro4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728880; c=relaxed/simple;
-	bh=/rUquG+zwFYO/JBs44gsnmUTfIl2hqis0iN5BJlw7zQ=;
+	s=arc-20240116; t=1723730414; c=relaxed/simple;
+	bh=QemSNOpTZJjyRE2bWHymkBisLeZmQNbaYthD9gjoaEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rG0pxjbe9qKR7s+sOIU7GTyVcYG7mq4Zgw9ujCgBne/tnoNwsc8iOqSAC1dkFzN2BAt1e6YDDlMl7djZD14mzN/XyHfNBrWjJaZHtRhuOdIDoQeoORbVP+yF9HHfFXq6utm4pNSqP/wvEy72MrLSFSKGTB5cMV0MeIKRAWVqXWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4NmShaE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AB1C32786;
-	Thu, 15 Aug 2024 13:34:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uWvdNWloS4l5WSYWAAb/cBhH2JwmF01gvNfx1Ehvx3RuRESrsT3GCFVxah//DPGFIWXO+BZ4Vlc7O4TCfPtnyL+mFUW9FRFZ5kxDUl4gGxvZIli0sGzr6n0yX2NCDp2gZj1G7mSl69s9t+FQZe6pYJILWWazP3UTcaerOCsxmJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndKAcx1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C04C4AF0D;
+	Thu, 15 Aug 2024 14:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728880;
-	bh=/rUquG+zwFYO/JBs44gsnmUTfIl2hqis0iN5BJlw7zQ=;
+	s=korg; t=1723730414;
+	bh=QemSNOpTZJjyRE2bWHymkBisLeZmQNbaYthD9gjoaEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4NmShaE6TeErjwAKm+mnx4SxYyWnPY5No5R2LDj4d7uhQVY3mP0bpLPFV80VnWWB
-	 KUUgQBiCGu+86XA8zmNRUftzKhWhEem/D6Y6nqi/jfFx8g3JhCgWSkm3YO+LjCI7EX
-	 07nVSubTbWAjcs/oIhS9tcTDbdSczmLE4bQWrQ5E=
+	b=ndKAcx1faOoVoW5cdc1N/xrrpQ5AGk3gjPjYm+YE2cFgNSkuuY4YO+GI85WRjtPwn
+	 LC0p9AbrhkSVQ6nYeLvMgg/G4Xj5E1g/6ZcaFRiKTR2IBu/lknkPoEYYKTBhPV6k4T
+	 JRKTRJosFkkogEGlx/RHvxvJXa8S1iIWJpYV2frk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tuhaowen <tuhaowen@uniontech.com>,
-	stable <stable@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 112/196] dev/parport: fix the array out-of-bounds risk
+Subject: [PATCH 5.15 371/484] ACPI: battery: create alarm sysfs attribute atomically
 Date: Thu, 15 Aug 2024 15:23:49 +0200
-Message-ID: <20240815131856.365351120@linuxfoundation.org>
+Message-ID: <20240815131955.769601637@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,135 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: tuhaowen <tuhaowen@uniontech.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit ab11dac93d2d568d151b1918d7b84c2d02bacbd5 ]
+[ Upstream commit a231eed10ed5a290129fda36ad7bcc263c53ff7d ]
 
-Fixed array out-of-bounds issues caused by sprintf
-by replacing it with snprintf for safer data copying,
-ensuring the destination buffer is not overflowed.
+Let the power supply core register the attribute.
+This ensures that the attribute is created before the device is
+announced to userspace, avoid a race condition.
 
-Below is the stack trace I encountered during the actual issue:
-
-[ 66.575408s] [pid:5118,cpu4,QThread,4]Kernel panic - not syncing: stack-protector:
-Kernel stack is corrupted in: do_hardware_base_addr+0xcc/0xd0 [parport]
-[ 66.575408s] [pid:5118,cpu4,QThread,5]CPU: 4 PID: 5118 Comm:
-QThread Tainted: G S W O 5.10.97-arm64-desktop #7100.57021.2
-[ 66.575439s] [pid:5118,cpu4,QThread,6]TGID: 5087 Comm: EFileApp
-[ 66.575439s] [pid:5118,cpu4,QThread,7]Hardware name: HUAWEI HUAWEI QingYun
-PGUX-W515x-B081/SP1PANGUXM, BIOS 1.00.07 04/29/2024
-[ 66.575439s] [pid:5118,cpu4,QThread,8]Call trace:
-[ 66.575469s] [pid:5118,cpu4,QThread,9] dump_backtrace+0x0/0x1c0
-[ 66.575469s] [pid:5118,cpu4,QThread,0] show_stack+0x14/0x20
-[ 66.575469s] [pid:5118,cpu4,QThread,1] dump_stack+0xd4/0x10c
-[ 66.575500s] [pid:5118,cpu4,QThread,2] panic+0x1d8/0x3bc
-[ 66.575500s] [pid:5118,cpu4,QThread,3] __stack_chk_fail+0x2c/0x38
-[ 66.575500s] [pid:5118,cpu4,QThread,4] do_hardware_base_addr+0xcc/0xd0 [parport]
-
-Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240708080430.8221-1-tuhaowen@uniontech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/procfs.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/acpi/battery.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/parport/procfs.c b/drivers/parport/procfs.c
-index e957beb94f142..595e23e6859b6 100644
---- a/drivers/parport/procfs.c
-+++ b/drivers/parport/procfs.c
-@@ -51,12 +51,12 @@ static int do_active_device(struct ctl_table *table, int write,
- 	
- 	for (dev = port->devices; dev ; dev = dev->next) {
- 		if(dev == port->cad) {
--			len += sprintf(buffer, "%s\n", dev->name);
-+			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
- 		}
- 	}
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index c7569151fd02a..aed4132985a96 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -676,12 +676,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
+ 	return count;
+ }
  
- 	if(!len) {
--		len += sprintf(buffer, "%s\n", "none");
-+		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
- 	}
+-static const struct device_attribute alarm_attr = {
++static struct device_attribute alarm_attr = {
+ 	.attr = {.name = "alarm", .mode = 0644},
+ 	.show = acpi_battery_alarm_show,
+ 	.store = acpi_battery_alarm_store,
+ };
  
- 	if (len > *lenp)
-@@ -87,19 +87,19 @@ static int do_autoprobe(struct ctl_table *table, int write,
- 	}
- 	
- 	if ((str = info->class_name) != NULL)
--		len += sprintf (buffer + len, "CLASS:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
++static struct attribute *acpi_battery_attrs[] = {
++	&alarm_attr.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(acpi_battery);
++
+ /*
+  * The Battery Hooking API
+  *
+@@ -818,7 +824,10 @@ static void __exit battery_hook_exit(void)
  
- 	if ((str = info->model) != NULL)
--		len += sprintf (buffer + len, "MODEL:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
- 
- 	if ((str = info->mfr) != NULL)
--		len += sprintf (buffer + len, "MANUFACTURER:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
- 
- 	if ((str = info->description) != NULL)
--		len += sprintf (buffer + len, "DESCRIPTION:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
- 
- 	if ((str = info->cmdset) != NULL)
--		len += sprintf (buffer + len, "COMMAND SET:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -117,7 +117,7 @@ static int do_hardware_base_addr(struct ctl_table *table, int write,
- 				 size_t *lenp, loff_t *ppos)
+ static int sysfs_add_battery(struct acpi_battery *battery)
  {
- 	struct parport *port = (struct parport *)table->extra1;
--	char buffer[20];
-+	char buffer[64];
- 	int len = 0;
+-	struct power_supply_config psy_cfg = { .drv_data = battery, };
++	struct power_supply_config psy_cfg = {
++		.drv_data = battery,
++		.attr_grp = acpi_battery_groups,
++	};
+ 	bool full_cap_broken = false;
  
- 	if (*ppos) {
-@@ -128,7 +128,7 @@ static int do_hardware_base_addr(struct ctl_table *table, int write,
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
+ 	if (!ACPI_BATTERY_CAPACITY_VALID(battery->full_charge_capacity) &&
+@@ -863,7 +872,7 @@ static int sysfs_add_battery(struct acpi_battery *battery)
+ 		return result;
+ 	}
+ 	battery_hook_add_battery(battery);
+-	return device_create_file(&battery->bat->dev, &alarm_attr);
++	return 0;
+ }
  
--	len += sprintf (buffer, "%lu\t%lu\n", port->base, port->base_hi);
-+	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -156,7 +156,7 @@ static int do_hardware_irq(struct ctl_table *table, int write,
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%d\n", port->irq);
-+	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -184,7 +184,7 @@ static int do_hardware_dma(struct ctl_table *table, int write,
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%d\n", port->dma);
-+	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -216,7 +216,7 @@ static int do_hardware_modes(struct ctl_table *table, int write,
- #define printmode(x)							\
- do {									\
- 	if (port->modes & PARPORT_MODE_##x)				\
--		len += sprintf(buffer + len, "%s%s", f++ ? "," : "", #x); \
-+		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
- } while (0)
- 		int f = 0;
- 		printmode(PCSPP);
+ static void sysfs_remove_battery(struct acpi_battery *battery)
+@@ -874,7 +883,6 @@ static void sysfs_remove_battery(struct acpi_battery *battery)
+ 		return;
+ 	}
+ 	battery_hook_remove_battery(battery);
+-	device_remove_file(&battery->bat->dev, &alarm_attr);
+ 	power_supply_unregister(battery->bat);
+ 	battery->bat = NULL;
+ 	mutex_unlock(&battery->sysfs_lock);
 -- 
 2.43.0
 
