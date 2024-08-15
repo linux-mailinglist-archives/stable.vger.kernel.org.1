@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-69015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E22D953509
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 909629533A0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 823071C251D6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 313A7282883
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04F017C995;
-	Thu, 15 Aug 2024 14:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A241A00D2;
+	Thu, 15 Aug 2024 14:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doXym4do"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2hkEbqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D80D2772A;
-	Thu, 15 Aug 2024 14:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DC814AD0A;
+	Thu, 15 Aug 2024 14:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732392; cv=none; b=AVIuOQSWlknoZumPhRd4ly3zKfoz/BBoPamjYMjaguWYzqloBEIbXHRRv47gJQfnqmCRR3QTbXG+HZN3RnPH15gAMDrhAOs897sSRrUXBi0LKnmKEHGvu/D4aYs0FV2BkbNEAk69WOc0oTwKXYXthw5o09JcUOxKpFFRJ+nds3k=
+	t=1723731441; cv=none; b=EsbXklVBo7SWtRDh0gJpjcHihYZ5H4EQvOy61NGdKOckXXJQCvFfb4NLXeB58NgEQvnq+K1BjUa5/QqczmVLPm+LxanbrLVjkQaqu5hpvPGihXDQ8C2OXZH15Ob+A2Awy7IRqT1B/7IskgBKkY/NGLjzM7wsBy260dl8UD37OTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732392; c=relaxed/simple;
-	bh=+OQa2j1MZG4sxqQ+w7gUZpdv9m3DvE7pzFGn84wbBWc=;
+	s=arc-20240116; t=1723731441; c=relaxed/simple;
+	bh=6X9gZNrrTKxI4ywe/FahSl/gMmyq4/rdJjx1ofoWy9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvHw1G9dQBjTvs/KM73WkHo6B2qQ5b/4KaaRLxnReAmJD92FT+CtKwqVLCirpYq1QRGTnNcWSTGDztMdVyVERQpXXdFcD7peV6dgHPvPye3Qmecq8YOi0GWqKY7ZzObsCHTBCB6w8KNe7jZrdx09A8SAVOi0XnjF42/GEyN2Lu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doXym4do; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDCCC32786;
-	Thu, 15 Aug 2024 14:33:11 +0000 (UTC)
+	 MIME-Version; b=DVcOe+Szu89e+PLlmxc5kHAOUDbij3YIX9d4zubevTzSyIiogsm1ngB9PoM3NQetBS3ECM0lSkiCODl3OCSq033VxravAULE5ESl6PgpYCdyXAOIzl9bowd6L4KNMpglioVe5BN1bUeDgOXeG1+m5nusnTszkeugx1hqXQHyvFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2hkEbqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B87C32786;
+	Thu, 15 Aug 2024 14:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732392;
-	bh=+OQa2j1MZG4sxqQ+w7gUZpdv9m3DvE7pzFGn84wbBWc=;
+	s=korg; t=1723731441;
+	bh=6X9gZNrrTKxI4ywe/FahSl/gMmyq4/rdJjx1ofoWy9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doXym4doV8pNauSpjNN30QDwbeMQfDswVLRi5e3vDTmuvVw/evmqz/ubpQUsfsUmS
-	 50davr4HGBRuZVx0s+e6L2fb3D/f84G7ySowdpQmJFeVCSr0GDHABCMjmgaGVDlNwX
-	 rabh40xhtFJ81sJvvTHLUPHE5m3vkpmXhnXNdCjo=
+	b=M2hkEbqfRgpafRa0Njn72YJ+Xoiv7snwTfz4NgDioZV3134h8hq6gPh81LBKhWsVX
+	 qX9DNXyg2CCJ82xMJdnEMYTLB7Rr33VJr9O/wAhsn/TYYOARBl1m/aX34Hmlk37KQJ
+	 T+OGIqOI5cuqiNUyLHe4dIeY90I+0IJRwIYKZ5rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shreyas Deodhar <sdeodhar@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 166/352] scsi: qla2xxx: Fix for possible memory corruption
+	syzbot+5f682cd029581f9edfd1@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.4 099/259] udf: Avoid using corrupted block bitmap buffer
 Date: Thu, 15 Aug 2024 15:23:52 +0200
-Message-ID: <20240815131925.688518313@linuxfoundation.org>
+Message-ID: <20240815131906.625616033@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shreyas Deodhar <sdeodhar@marvell.com>
+From: Jan Kara <jack@suse.cz>
 
-commit c03d740152f78e86945a75b2ad541bf972fab92a upstream.
+commit a90d4471146de21745980cba51ce88e7926bcc4f upstream.
 
-Init Control Block is dereferenced incorrectly.  Correctly dereference ICB
+When the filesystem block bitmap is corrupted, we detect the corruption
+while loading the bitmap and fail the allocation with error. However the
+next allocation from the same bitmap will notice the bitmap buffer is
+already loaded and tries to allocate from the bitmap with mixed results
+(depending on the exact nature of the bitmap corruption). Fix the
+problem by using BH_verified bit to indicate whether the bitmap is valid
+or not.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-4-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: syzbot+5f682cd029581f9edfd1@syzkaller.appspotmail.com
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/20240617154201.29512-2-jack@suse.cz
+Fixes: 1e0d4adf17e7 ("udf: Check consistency of Space Bitmap Descriptor")
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/udf/balloc.c |   15 +++++++++++++--
+ fs/udf/super.c  |    3 ++-
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -4453,7 +4453,7 @@ static void
- qla2x00_number_of_exch(scsi_qla_host_t *vha, u32 *ret_cnt, u16 max_cnt)
- {
- 	u32 temp;
--	struct init_cb_81xx *icb = (struct init_cb_81xx *)&vha->hw->init_cb;
-+	struct init_cb_81xx *icb = (struct init_cb_81xx *)vha->hw->init_cb;
- 	*ret_cnt = FW_DEF_EXCHANGES_CNT;
+--- a/fs/udf/balloc.c
++++ b/fs/udf/balloc.c
+@@ -68,8 +68,12 @@ static int read_block_bitmap(struct supe
+ 	}
  
- 	if (max_cnt > vha->hw->max_exchg)
+ 	for (i = 0; i < count; i++)
+-		if (udf_test_bit(i + off, bh->b_data))
++		if (udf_test_bit(i + off, bh->b_data)) {
++			bitmap->s_block_bitmap[bitmap_nr] =
++							ERR_PTR(-EFSCORRUPTED);
++			brelse(bh);
+ 			return -EFSCORRUPTED;
++		}
+ 	return 0;
+ }
+ 
+@@ -85,8 +89,15 @@ static int __load_block_bitmap(struct su
+ 			  block_group, nr_groups);
+ 	}
+ 
+-	if (bitmap->s_block_bitmap[block_group])
++	if (bitmap->s_block_bitmap[block_group]) {
++		/*
++		 * The bitmap failed verification in the past. No point in
++		 * trying again.
++		 */
++		if (IS_ERR(bitmap->s_block_bitmap[block_group]))
++			return PTR_ERR(bitmap->s_block_bitmap[block_group]);
+ 		return block_group;
++	}
+ 
+ 	retval = read_block_bitmap(sb, bitmap, block_group, block_group);
+ 	if (retval < 0)
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -266,7 +266,8 @@ static void udf_sb_free_bitmap(struct ud
+ 	int nr_groups = bitmap->s_nr_groups;
+ 
+ 	for (i = 0; i < nr_groups; i++)
+-		brelse(bitmap->s_block_bitmap[i]);
++		if (!IS_ERR_OR_NULL(bitmap->s_block_bitmap[i]))
++			brelse(bitmap->s_block_bitmap[i]);
+ 
+ 	kvfree(bitmap);
+ }
 
 
 
