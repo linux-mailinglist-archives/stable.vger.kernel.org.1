@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-67840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E797952F56
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28E9953186
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1B771C20A5D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E717E1C20C3C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3951118D630;
-	Thu, 15 Aug 2024 13:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2204A19DFA6;
+	Thu, 15 Aug 2024 13:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HT0iGrwo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMH21UYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBA27DA78;
-	Thu, 15 Aug 2024 13:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47C219AA53;
+	Thu, 15 Aug 2024 13:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728685; cv=none; b=iQ5knm9uI9HcJ5sZu73d2WZvy2KAdhruNChcPnQKYh2LVA346mrHfexcrXDxoA0sXYKUpbSyJlU+ezX9r7wlHwt1ds8ZS+e8DT8+RSoM3W7Sx+Ee5sQ8j48YpG5Qpc52jv9eie7ABc4+8pwj2067CxqdUBcNYmC8H1HoUL2u2mA=
+	t=1723730107; cv=none; b=lkIaF4tuhlnuZxB+H3155yXhWVN1UREauLpEROzIewneIyPs/eItnTiBnqbj0QQ7rfjqedIAan3b5F6Ap6lF6C/H72KcIg5Klf+LztTDFxTy7FVKoPEgIcLD2POA0QmNNsGBlHh63yqhRdV9VYRajPJkNjVLM+ABLoPoODgL0Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728685; c=relaxed/simple;
-	bh=ciK62ypz9rYpcP1rbJimNvkuOZQSJXyUXQ+pqzjcvQE=;
+	s=arc-20240116; t=1723730107; c=relaxed/simple;
+	bh=Z/gHYIchP9Qc4TsK567dQydv4kTfn5KEg3Ki2YNs1j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSkADesyupCI+PRq8/76x2+vFIER8NvzPhoXPQLoZpGR1mY3QwznKQZDPOSbF6UuYeo+zpmgLyBPA+HcAG5JkC+aDwsnYhzrsgFEBvkJ9CsOI6Y6Va0wXFxvO53zdlFKBbAHFDRGSXKejMweN/HY5ebo4Ig7XhfWpZyKREGruJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HT0iGrwo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B5AC32786;
-	Thu, 15 Aug 2024 13:31:23 +0000 (UTC)
+	 MIME-Version; b=A5yne3YiI417h82rVXPeiLKBJRoQ6tsT0NW0bglZnE2VOPxP5CzMnKw41q5emrpAiKzuTFmAAc61aV68SJa2w7zI/zWIaffa2gZ1RERK/Lhvg1tlP2rBqTx/Xv1Nt16dWLLlxP9ZM5AZb9ttK0SapEzSlA+554qBzbuSjUxWcdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMH21UYN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5781EC32786;
+	Thu, 15 Aug 2024 13:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728684;
-	bh=ciK62ypz9rYpcP1rbJimNvkuOZQSJXyUXQ+pqzjcvQE=;
+	s=korg; t=1723730107;
+	bh=Z/gHYIchP9Qc4TsK567dQydv4kTfn5KEg3Ki2YNs1j8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HT0iGrwoqBmwLtD3ikA6CQa4oL2RYFPWrtneSJvHZF8KyTMmaTyEQHBlirzf1T0RU
-	 dpTte2IaN0TZDMpMH3ptkdbJkJG3BTTZZDnos1yFNAH8szXli02peN4f3/JUBeN7D1
-	 oJTk4KgypGP9e1ZeCX2OpGsbL5o2BUmBbpajJbG0=
+	b=QMH21UYNlccukb92NnuKa/09ASM4sV5bBqbdKci4b5ev3lBl0m1rutYsjodsvoTMZ
+	 WJOdlSy7CcK+88svfDbyPw5wzykkrc+nhp7uOiATXBCPDQ1TGQRjAuRFFllaWnVm0L
+	 ZDZGRBW/get6Z4R3zTKDAENGAnOspBrFEz787OGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honggang LI <honggangli@163.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 046/196] RDMA/rxe: Dont set BTH_ACK_MASK for UC or UD QPs
-Date: Thu, 15 Aug 2024 15:22:43 +0200
-Message-ID: <20240815131853.846902947@linuxfoundation.org>
+Subject: [PATCH 5.15 306/484] ext4: refactor ext4_da_map_blocks()
+Date: Thu, 15 Aug 2024 15:22:44 +0200
+Message-ID: <20240815131953.227924456@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 4adcaf969d77d3d3aa3871bbadc196258a38aec6 ]
+[ Upstream commit 3fcc2b887a1ba4c1f45319cd8c54daa263ecbc36 ]
 
-BTH_ACK_MASK bit is used to indicate that an acknowledge
-(for this packet) should be scheduled by the responder.
-Both UC and UD QPs are unacknowledged, so don't set
-BTH_ACK_MASK for UC or UD QPs.
+Refactor and cleanup ext4_da_map_blocks(), reduce some unnecessary
+parameters and branches, no logic changes.
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://lore.kernel.org/r/20240624020348.494338-1-honggangli@163.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240127015825.1608160-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_req.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/ext4/inode.c | 39 +++++++++++++++++----------------------
+ 1 file changed, 17 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-index 4008ab2da0526..aa57a9cb53886 100644
---- a/drivers/infiniband/sw/rxe/rxe_req.c
-+++ b/drivers/infiniband/sw/rxe/rxe_req.c
-@@ -390,7 +390,7 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	int			solicited;
- 	u16			pkey;
- 	u32			qp_num;
--	int			ack_req;
-+	int			ack_req = 0;
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 7ad37c807147b..bfd81ff29afcf 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1713,7 +1713,6 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 	/* Lookup extent status tree firstly */
+ 	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
+ 		if (ext4_es_is_hole(&es)) {
+-			retval = 0;
+ 			down_read(&EXT4_I(inode)->i_data_sem);
+ 			goto add_delayed;
+ 		}
+@@ -1758,26 +1757,9 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
+ 	else
+ 		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
+-
+-add_delayed:
+-	if (retval == 0) {
+-		int ret;
+-
+-		/*
+-		 * XXX: __block_prepare_write() unmaps passed block,
+-		 * is it OK?
+-		 */
+-
+-		ret = ext4_insert_delayed_block(inode, map->m_lblk);
+-		if (ret != 0) {
+-			retval = ret;
+-			goto out_unlock;
+-		}
+-
+-		map_bh(bh, inode->i_sb, invalid_block);
+-		set_buffer_new(bh);
+-		set_buffer_delay(bh);
+-	} else if (retval > 0) {
++	if (retval < 0)
++		goto out_unlock;
++	if (retval > 0) {
+ 		unsigned int status;
  
- 	/* length from start of bth to end of icrc */
- 	paylen = rxe_opcode[opcode].length + payload + pad + RXE_ICRC_SIZE;
-@@ -426,8 +426,9 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	qp_num = (pkt->mask & RXE_DETH_MASK) ? ibwr->wr.ud.remote_qpn :
- 					 qp->attr.dest_qp_num;
+ 		if (unlikely(retval != map->m_len)) {
+@@ -1792,11 +1774,24 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
+ 		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
+ 				      map->m_pblk, status);
++		goto out_unlock;
+ 	}
  
--	ack_req = ((pkt->mask & RXE_END_MASK) ||
--		(qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
-+	if (qp_type(qp) != IB_QPT_UD && qp_type(qp) != IB_QPT_UC)
-+		ack_req = ((pkt->mask & RXE_END_MASK) ||
-+			   (qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
- 	if (ack_req)
- 		qp->req.noack_pkts = 0;
++add_delayed:
++	/*
++	 * XXX: __block_prepare_write() unmaps passed block,
++	 * is it OK?
++	 */
++	retval = ext4_insert_delayed_block(inode, map->m_lblk);
++	if (retval)
++		goto out_unlock;
++
++	map_bh(bh, inode->i_sb, invalid_block);
++	set_buffer_new(bh);
++	set_buffer_delay(bh);
++
+ out_unlock:
+ 	up_read((&EXT4_I(inode)->i_data_sem));
+-
+ 	return retval;
+ }
  
 -- 
 2.43.0
