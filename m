@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74E8953310
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F169535B7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B5121F243A9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AF8B282360
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6ED1A706C;
-	Thu, 15 Aug 2024 14:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404F91A76BC;
+	Thu, 15 Aug 2024 14:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZUqzYJS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWvCPMfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B6E1A00F7;
-	Thu, 15 Aug 2024 14:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F412B1A76AB;
+	Thu, 15 Aug 2024 14:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731038; cv=none; b=prxgMUIk1Qx9D0z9wiyluIdD537vCEaxGfCVCbuELxFKBtQZEVUkCR7zzP3/BEaCCfN6iV8pPcwIj3/2ui2izcTike9aPR9TyIIsZzRoliroH7FE1srYFE5sB6LAetOPz0jDg5YyJ0GFlRxHqAd/wbckGUTnK81Arz3GOQK9aHc=
+	t=1723732852; cv=none; b=YBSZoZDEp1wZB8kOEnpLXGM9xPHwOOZM/iTv0tzcjPtMkh9UjIu3F40LWkvQcpH28WuHjVY1a4fY2yQNLRCJd81qgNtoV954XS0zWUyxUY6ClROf+4Sd3ZWAyikhbDnhWOWBcIQcBXFvNIHG3FLBM82BucSw5q9Tlc8wiZw/vgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731038; c=relaxed/simple;
-	bh=5wVoeWkQ/auD+XigzMIDzMOW+2bc+FkmidJhcpDXsRo=;
+	s=arc-20240116; t=1723732852; c=relaxed/simple;
+	bh=J0mPdajvaiWwf1WUABRgdSxTqZJk4DEullL9jeaqqzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOuyjBpQxxVCQ619Vqt/HZMPw1KSR+XhNsprxy8rYGXmUNP8uSlYwt1M3RduAfvVKoe9MnusUGoxHfkiv4OwLZ2jlxdrKgvyoMacCoYswXw38RInlqeFZ0CpxSIo+i2q3+YZDbkw4LdyLjTm3JCn0Dh9RW/jiOo7IQ65RDuxzAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZUqzYJS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC82C4AF0D;
-	Thu, 15 Aug 2024 14:10:38 +0000 (UTC)
+	 MIME-Version; b=hK22Al6i6NIQE6XtluZ/wf2iC+hqWVN+UFCR01hZMApgvp90Z3U4C4voRJlW3B4+H8Wx81+2jwWgRGmD+7z2F5ZDnNv1OowNs9pgCw/ahD8SpGFl29tQX7XqLGNx7Zk50U1IUOxF9VbjPcVkX00Xzr8sLhUrf1e8HOpPTqhVGVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWvCPMfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD303C32786;
+	Thu, 15 Aug 2024 14:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731038;
-	bh=5wVoeWkQ/auD+XigzMIDzMOW+2bc+FkmidJhcpDXsRo=;
+	s=korg; t=1723732851;
+	bh=J0mPdajvaiWwf1WUABRgdSxTqZJk4DEullL9jeaqqzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZUqzYJSIPEf3vl4FIkB7Bj/Uk001MGesIygd824rjUxgmsGNVlDgyzdzlvoKjqfJ
-	 slBnNizgXXyxeCp0EWfAIDyAbTkyJgHS17sZR0XSBT4gxHrMad7uRRV8H+HwbHm6og
-	 cr2dNvuu/E9wnxNSebB2kZq9zXa8jFjWlsorYUjU=
+	b=NWvCPMfpqy+hN3wjUjw/F/AICeyN6roHMb130pdMEghvoif4h6PJfPxnEhHnPwulO
+	 mAoKNkMcfgMDVjdQPmyt7lmWrWodoC1ROleSnQ0NIrRw8DAS0T05YW4AUkVw3PU/pA
+	 xUpvHRw6PnUexsnIFcc54/MVanFecHkJ4ktJK/Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bba84aef3a26fb93deb9@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 57/67] jfs: fix null ptr deref in dtInsertEntry
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.10 305/352] usb: vhci-hcd: Do not drop references before new references are gained
 Date: Thu, 15 Aug 2024 15:26:11 +0200
-Message-ID: <20240815131840.494615489@linuxfoundation.org>
+Message-ID: <20240815131931.246255508@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit ce6dede912f064a855acf6f04a04cbb2c25b8c8c ]
+commit afdcfd3d6fcdeca2735ca8d994c5f2d24a368f0a upstream.
 
-[syzbot reported]
-general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 0 PID: 5061 Comm: syz-executor404 Not tainted 6.8.0-syzkaller-08951-gfe46a7dd189e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-RIP: 0010:dtInsertEntry+0xd0c/0x1780 fs/jfs/jfs_dtree.c:3713
-...
-[Analyze]
-In dtInsertEntry(), when the pointer h has the same value as p, after writing
-name in UniStrncpy_to_le(), p->header.flag will be cleared. This will cause the
-previously true judgment "p->header.flag & BT-LEAF" to change to no after writing
-the name operation, this leads to entering an incorrect branch and accessing the
-uninitialized object ih when judging this condition for the second time.
+At a few places the driver carries stale pointers
+to references that can still be used. Make sure that does not happen.
+This strictly speaking closes ZDI-CAN-22273, though there may be
+similar races in the driver.
 
-[Fix]
-After got the page, check freelist first, if freelist == 0 then exit dtInsert()
-and return -EINVAL.
-
-Reported-by: syzbot+bba84aef3a26fb93deb9@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240709113851.14691-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/usbip/vhci_hcd.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 031d8f570f581..5d3127ca68a42 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -834,6 +834,8 @@ int dtInsert(tid_t tid, struct inode *ip,
- 	 * the full page.
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -745,6 +745,7 @@ static int vhci_urb_enqueue(struct usb_h
+ 	 *
  	 */
- 	DT_GETSEARCH(ip, btstack->top, bn, mp, p, index);
-+	if (p->header.freelist == 0)
-+		return -EINVAL;
+ 	if (usb_pipedevice(urb->pipe) == 0) {
++		struct usb_device *old;
+ 		__u8 type = usb_pipetype(urb->pipe);
+ 		struct usb_ctrlrequest *ctrlreq =
+ 			(struct usb_ctrlrequest *) urb->setup_packet;
+@@ -755,14 +756,15 @@ static int vhci_urb_enqueue(struct usb_h
+ 			goto no_need_xmit;
+ 		}
  
- 	/*
- 	 *	insert entry for new key
--- 
-2.43.0
-
++		old = vdev->udev;
+ 		switch (ctrlreq->bRequest) {
+ 		case USB_REQ_SET_ADDRESS:
+ 			/* set_address may come when a device is reset */
+ 			dev_info(dev, "SetAddress Request (%d) to port %d\n",
+ 				 ctrlreq->wValue, vdev->rhport);
+ 
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 
+ 			spin_lock(&vdev->ud.lock);
+ 			vdev->ud.status = VDEV_ST_USED;
+@@ -781,8 +783,8 @@ static int vhci_urb_enqueue(struct usb_h
+ 				usbip_dbg_vhci_hc(
+ 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+ 
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 			goto out;
+ 
+ 		default:
+@@ -1095,6 +1097,7 @@ static void vhci_shutdown_connection(str
+ static void vhci_device_reset(struct usbip_device *ud)
+ {
+ 	struct vhci_device *vdev = container_of(ud, struct vhci_device, ud);
++	struct usb_device *old = vdev->udev;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&ud->lock, flags);
+@@ -1102,8 +1105,8 @@ static void vhci_device_reset(struct usb
+ 	vdev->speed  = 0;
+ 	vdev->devid  = 0;
+ 
+-	usb_put_dev(vdev->udev);
+ 	vdev->udev = NULL;
++	usb_put_dev(old);
+ 
+ 	if (ud->tcp_socket) {
+ 		sockfd_put(ud->tcp_socket);
 
 
 
