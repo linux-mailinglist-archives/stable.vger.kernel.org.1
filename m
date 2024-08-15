@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-68951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D11C9534BF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F010953357
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 600491C20F13
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF5EE1F21D5D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4D917C9B6;
-	Thu, 15 Aug 2024 14:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6561AED54;
+	Thu, 15 Aug 2024 14:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3yHSRFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTc0o5iH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D68063C;
-	Thu, 15 Aug 2024 14:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AABC1AED48;
+	Thu, 15 Aug 2024 14:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732188; cv=none; b=tHyBJxXzr6H0ZE3hHZobVAUN2HKemzQa/4zOvlPepTBIAydQ/7pkJ/S7w5iCgeW7IZzSFxUZGDpdidvZUZyUF3X7/b2+Tys74qNpRUyjuZ0yZ9aRHOQ0OHHxfMgCdZMHpgQItE496ipITF4tErGuL+EfZPOKo6pI2GwDpO5C0dU=
+	t=1723731237; cv=none; b=SejJAnyQTc/3uEE2IdASmcJ0bC4j8Hu1y/de4cmzRYgIUWtcOJTQm7LUciDIqg7RDSitKyiSNcFiwmwJW7ID7S3Rx1w7GMN5s/tliQDZeBC2REorE83wkvUGL2CB71Whnb3Bo4O2B4701zkOSQ/iWwpWPEZOv++SVpXBFhxPe9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732188; c=relaxed/simple;
-	bh=KBv0fFuNJmkR0lucH3Xg7dbpy5VD4Qs8YdUUx8uH70c=;
+	s=arc-20240116; t=1723731237; c=relaxed/simple;
+	bh=0ry1xC3ByEDJjoDsxkAGORIjTS0dO0dTBKIQn4AqLA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FsqikKalltg1AdOhM9eksfs1W2oMP8KbSC0eqUiSgt/2DSr5rdLihbpLkyLIRjuob9GhOUXKoqi4jFZJ5Qf9KQvYVLAIe8V9/59sIB8kE/Nm54FDlRQM2k7nnnRvp635DNMnAhKPAQQjiC/PX3d6BeYQ8Mr1j/Y4sySUag5qeKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3yHSRFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E537AC32786;
-	Thu, 15 Aug 2024 14:29:47 +0000 (UTC)
+	 MIME-Version; b=pNMIPvpWKkRagN677GrawQUWIn6E24zFKdunolRvpO/+B0AlDBURA0Oe+Iab7r2BczntRymooTVhT112Z6zBuC52Q4h9n8NRBUMpe9SsnZcfIo0OBqafWft0ZId2OpB5iBSyrQz/eRNPkBn0cdDr/IDlqitfHe4h0+BuyQ8H+VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTc0o5iH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CE8C32786;
+	Thu, 15 Aug 2024 14:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732188;
-	bh=KBv0fFuNJmkR0lucH3Xg7dbpy5VD4Qs8YdUUx8uH70c=;
+	s=korg; t=1723731236;
+	bh=0ry1xC3ByEDJjoDsxkAGORIjTS0dO0dTBKIQn4AqLA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I3yHSRFjys+XgsRd4G+PcForsyDMeO2d6py9Xa4wkM1In6eS3c0MLOqis0bKNdyxM
-	 xn/C9ms9VuLERm/QC/fycTUzQlZHQtRkxPFOKE6shMqSJITSGO09l9WV+yVxOguMSd
-	 RNlnbGB2p+v20TreDhjDpxexJguGjgMsuf2IL9f0=
+	b=hTc0o5iHWQoDrlTBQwmkAp+41YbOXUhv0RFpYNgNu6zGOHQKgKVlnc3XtXlXnvkmC
+	 D7NpDzYOnlWfrtM6crKOebFyfMeXTJ0puE7YanfB2ZldaCA1uFUQwiFXCYgA6RdR+A
+	 cwR1d5o2HiLDubGwytdysvIq3PS8fiIMRyUiQ5+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honggang LI <honggangli@163.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/352] RDMA/rxe: Dont set BTH_ACK_MASK for UC or UD QPs
+Subject: [PATCH 5.4 034/259] mlxsw: spectrum_acl_erp: Fix object nesting warning
 Date: Thu, 15 Aug 2024 15:22:47 +0200
-Message-ID: <20240815131923.163052591@linuxfoundation.org>
+Message-ID: <20240815131904.115873955@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +66,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 4adcaf969d77d3d3aa3871bbadc196258a38aec6 ]
+[ Upstream commit 97d833ceb27dc19f8777d63f90be4a27b5daeedf ]
 
-BTH_ACK_MASK bit is used to indicate that an acknowledge
-(for this packet) should be scheduled by the responder.
-Both UC and UD QPs are unacknowledged, so don't set
-BTH_ACK_MASK for UC or UD QPs.
+ACLs in Spectrum-2 and newer ASICs can reside in the algorithmic TCAM
+(A-TCAM) or in the ordinary circuit TCAM (C-TCAM). The former can
+contain more ACLs (i.e., tc filters), but the number of masks in each
+region (i.e., tc chain) is limited.
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://lore.kernel.org/r/20240624020348.494338-1-honggangli@163.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+In order to mitigate the effects of the above limitation, the device
+allows filters to share a single mask if their masks only differ in up
+to 8 consecutive bits. For example, dst_ip/25 can be represented using
+dst_ip/24 with a delta of 1 bit. The C-TCAM does not have a limit on the
+number of masks being used (and therefore does not support mask
+aggregation), but can contain a limited number of filters.
+
+The driver uses the "objagg" library to perform the mask aggregation by
+passing it objects that consist of the filter's mask and whether the
+filter is to be inserted into the A-TCAM or the C-TCAM since filters in
+different TCAMs cannot share a mask.
+
+The set of created objects is dependent on the insertion order of the
+filters and is not necessarily optimal. Therefore, the driver will
+periodically ask the library to compute a more optimal set ("hints") by
+looking at all the existing objects.
+
+When the library asks the driver whether two objects can be aggregated
+the driver only compares the provided masks and ignores the A-TCAM /
+C-TCAM indication. This is the right thing to do since the goal is to
+move as many filters as possible to the A-TCAM. The driver also forbids
+two identical masks from being aggregated since this can only happen if
+one was intentionally put in the C-TCAM to avoid a conflict in the
+A-TCAM.
+
+The above can result in the following set of hints:
+
+H1: {mask X, A-TCAM} -> H2: {mask Y, A-TCAM} // X is Y + delta
+H3: {mask Y, C-TCAM} -> H4: {mask Z, A-TCAM} // Y is Z + delta
+
+After getting the hints from the library the driver will start migrating
+filters from one region to another while consulting the computed hints
+and instructing the device to perform a lookup in both regions during
+the transition.
+
+Assuming a filter with mask X is being migrated into the A-TCAM in the
+new region, the hints lookup will return H1. Since H2 is the parent of
+H1, the library will try to find the object associated with it and
+create it if necessary in which case another hints lookup (recursive)
+will be performed. This hints lookup for {mask Y, A-TCAM} will either
+return H2 or H3 since the driver passes the library an object comparison
+function that ignores the A-TCAM / C-TCAM indication.
+
+This can eventually lead to nested objects which are not supported by
+the library [1].
+
+Fix by removing the object comparison function from both the driver and
+the library as the driver was the only user. That way the lookup will
+only return exact matches.
+
+I do not have a reliable reproducer that can reproduce the issue in a
+timely manner, but before the fix the issue would reproduce in several
+minutes and with the fix it does not reproduce in over an hour.
+
+Note that the current usefulness of the hints is limited because they
+include the C-TCAM indication and represent aggregation that cannot
+actually happen. This will be addressed in net-next.
+
+[1]
+WARNING: CPU: 0 PID: 153 at lib/objagg.c:170 objagg_obj_parent_assign+0xb5/0xd0
+Modules linked in:
+CPU: 0 PID: 153 Comm: kworker/0:18 Not tainted 6.9.0-rc6-custom-g70fbc2c1c38b #42
+Hardware name: Mellanox Technologies Ltd. MSN3700C/VMOD0008, BIOS 5.11 10/10/2018
+Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
+RIP: 0010:objagg_obj_parent_assign+0xb5/0xd0
+[...]
+Call Trace:
+ <TASK>
+ __objagg_obj_get+0x2bb/0x580
+ objagg_obj_get+0xe/0x80
+ mlxsw_sp_acl_erp_mask_get+0xb5/0xf0
+ mlxsw_sp_acl_atcam_entry_add+0xe8/0x3c0
+ mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
+ mlxsw_sp_acl_tcam_vchunk_migrate_one+0x16b/0x270
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0xbe/0x510
+ process_one_work+0x151/0x370
+
+Fixes: 9069a3817d82 ("lib: objagg: implement optimization hints assembly and use hints for object creation")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_req.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ .../ethernet/mellanox/mlxsw/spectrum_acl_erp.c    | 13 -------------
+ include/linux/objagg.h                            |  1 -
+ lib/objagg.c                                      | 15 ---------------
+ 3 files changed, 29 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-index 69238f856c677..a034aa8fc5ca5 100644
---- a/drivers/infiniband/sw/rxe/rxe_req.c
-+++ b/drivers/infiniband/sw/rxe/rxe_req.c
-@@ -362,7 +362,7 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	int			solicited;
- 	u16			pkey;
- 	u32			qp_num;
--	int			ack_req;
-+	int			ack_req = 0;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
+index d231f4d2888be..9eee229303cce 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
+@@ -1217,18 +1217,6 @@ static bool mlxsw_sp_acl_erp_delta_check(void *priv, const void *parent_obj,
+ 	return err ? false : true;
+ }
  
- 	/* length from start of bth to end of icrc */
- 	paylen = rxe_opcode[opcode].length + payload + pad + RXE_ICRC_SIZE;
-@@ -396,8 +396,9 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	qp_num = (pkt->mask & RXE_DETH_MASK) ? ibwr->wr.ud.remote_qpn :
- 					 qp->attr.dest_qp_num;
+-static int mlxsw_sp_acl_erp_hints_obj_cmp(const void *obj1, const void *obj2)
+-{
+-	const struct mlxsw_sp_acl_erp_key *key1 = obj1;
+-	const struct mlxsw_sp_acl_erp_key *key2 = obj2;
+-
+-	/* For hints purposes, two objects are considered equal
+-	 * in case the masks are the same. Does not matter what
+-	 * the "ctcam" value is.
+-	 */
+-	return memcmp(key1->mask, key2->mask, sizeof(key1->mask));
+-}
+-
+ static void *mlxsw_sp_acl_erp_delta_create(void *priv, void *parent_obj,
+ 					   void *obj)
+ {
+@@ -1308,7 +1296,6 @@ static void mlxsw_sp_acl_erp_root_destroy(void *priv, void *root_priv)
+ static const struct objagg_ops mlxsw_sp_acl_erp_objagg_ops = {
+ 	.obj_size = sizeof(struct mlxsw_sp_acl_erp_key),
+ 	.delta_check = mlxsw_sp_acl_erp_delta_check,
+-	.hints_obj_cmp = mlxsw_sp_acl_erp_hints_obj_cmp,
+ 	.delta_create = mlxsw_sp_acl_erp_delta_create,
+ 	.delta_destroy = mlxsw_sp_acl_erp_delta_destroy,
+ 	.root_create = mlxsw_sp_acl_erp_root_create,
+diff --git a/include/linux/objagg.h b/include/linux/objagg.h
+index 78021777df462..6df5b887dc547 100644
+--- a/include/linux/objagg.h
++++ b/include/linux/objagg.h
+@@ -8,7 +8,6 @@ struct objagg_ops {
+ 	size_t obj_size;
+ 	bool (*delta_check)(void *priv, const void *parent_obj,
+ 			    const void *obj);
+-	int (*hints_obj_cmp)(const void *obj1, const void *obj2);
+ 	void * (*delta_create)(void *priv, void *parent_obj, void *obj);
+ 	void (*delta_destroy)(void *priv, void *delta_priv);
+ 	void * (*root_create)(void *priv, void *obj, unsigned int root_id);
+diff --git a/lib/objagg.c b/lib/objagg.c
+index e380e95de7702..8a84c6dfa24b4 100644
+--- a/lib/objagg.c
++++ b/lib/objagg.c
+@@ -909,20 +909,6 @@ static const struct objagg_opt_algo *objagg_opt_algos[] = {
+ 	[OBJAGG_OPT_ALGO_SIMPLE_GREEDY] = &objagg_opt_simple_greedy,
+ };
  
--	ack_req = ((pkt->mask & RXE_END_MASK) ||
--		(qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
-+	if (qp_type(qp) != IB_QPT_UD && qp_type(qp) != IB_QPT_UC)
-+		ack_req = ((pkt->mask & RXE_END_MASK) ||
-+			   (qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
- 	if (ack_req)
- 		qp->req.noack_pkts = 0;
+-static int objagg_hints_obj_cmp(struct rhashtable_compare_arg *arg,
+-				const void *obj)
+-{
+-	struct rhashtable *ht = arg->ht;
+-	struct objagg_hints *objagg_hints =
+-			container_of(ht, struct objagg_hints, node_ht);
+-	const struct objagg_ops *ops = objagg_hints->ops;
+-	const char *ptr = obj;
+-
+-	ptr += ht->p.key_offset;
+-	return ops->hints_obj_cmp ? ops->hints_obj_cmp(ptr, arg->key) :
+-				    memcmp(ptr, arg->key, ht->p.key_len);
+-}
+-
+ /**
+  * objagg_hints_get - obtains hints instance
+  * @objagg:		objagg instance
+@@ -961,7 +947,6 @@ struct objagg_hints *objagg_hints_get(struct objagg *objagg,
+ 				offsetof(struct objagg_hints_node, obj);
+ 	objagg_hints->ht_params.head_offset =
+ 				offsetof(struct objagg_hints_node, ht_node);
+-	objagg_hints->ht_params.obj_cmpfn = objagg_hints_obj_cmp;
  
+ 	err = rhashtable_init(&objagg_hints->node_ht, &objagg_hints->ht_params);
+ 	if (err)
 -- 
 2.43.0
 
