@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265F995330D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0715B953451
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4FC11F223FF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE76028A175
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1441A00E2;
-	Thu, 15 Aug 2024 14:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325CE63C;
+	Thu, 15 Aug 2024 14:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dR8qlH17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1+k2Cpy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E6719DF6A;
-	Thu, 15 Aug 2024 14:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57D419F473;
+	Thu, 15 Aug 2024 14:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731029; cv=none; b=oCTcNoOM7kEr9zX5OT0ZQqyefERbDS4gV1S8K5wzshBOyfmxR8cs4u8cykejqG/YTMevnWjoJwSMbXtZNZ0l8DKo1RCQV4jf+flBBcLXitJmoZjs2IvQXJnS+8FbEgGZYHOHtizyid7xz2dl9TuyThD2EowEu5B93p/ivPqHhTQ=
+	t=1723731872; cv=none; b=QglxiYbSD3x8nThJruQ5/tiUU6JWXqC3jTlyq3WPXhyv6NN/iVnt0b0AEk90mTL0H1Ei04+n8ecWj5Ut+YNcOfqEssyKR4Socfq97qqbJ62aiiiqb09nlowWgdbfeIlSaTbt1uPQl8J6vqHYZOXcm6iRM4ZTr4WNEuXjGy9KIzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731029; c=relaxed/simple;
-	bh=/4++GUXI/tHogoiukFMOnZN8xcMDsrlhUZmeIzVytJI=;
+	s=arc-20240116; t=1723731872; c=relaxed/simple;
+	bh=XRCplMXi57a1UbsEGAsWnoN9I4wmbJAgQfyqfVK3oBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gC4jlrooFVRgpSgqX6TylBkY3XYufNPGXUTQ9kyt7/MlKnUA8MNL+Mck8DJu8UVxGyeeylB+Jp0lL9CD8Q0wTgcK0dz0bN9tvn2ONfbpogUFV8bPGXOYHLz5fVnxtqhWL394TiHoVVgVBGchugvW2bD/7r1vVqu8JPcMOBtv41E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dR8qlH17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D702C4AF0A;
-	Thu, 15 Aug 2024 14:10:28 +0000 (UTC)
+	 MIME-Version; b=kT3lmWJ3KPre5ME/UEFpydjctDqu/2MA+Kub5zlC8OfTN8lmqAkCvrBA231WWiit+G5NVqyTiq6PIhwkzCIYOAsbn2r+n0X8jS4Bj+ylWh7KsEZb2JV3fR83IrGnSYhT8+M2AjLCFC65zonqbZEkgsQS4FjAigrXKHZjPpmQzgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1+k2Cpy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAB4C32786;
+	Thu, 15 Aug 2024 14:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731029;
-	bh=/4++GUXI/tHogoiukFMOnZN8xcMDsrlhUZmeIzVytJI=;
+	s=korg; t=1723731871;
+	bh=XRCplMXi57a1UbsEGAsWnoN9I4wmbJAgQfyqfVK3oBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dR8qlH17hV3pOnRqE7AtOFVJWxlhO7bRbAgbKkPyRNh+MNl1pKFcHNmoAgXrYWzmZ
-	 l4P+7rlWh2/a7ERYyIfxOJ8MohmlbBGkkcgpXPl68Ci/h0lmceT4XRl6OZMB8v42kB
-	 QH2Cbh8Ki9HT5njvDUdWoQCjTEoHBTepxVR9uJUY=
+	b=p1+k2CpyTffQws1Va3AlzwHBMD0ZWiD55rhYk1Og66kgCMw4+/Dq4THag5Y6reChr
+	 l8ZXOIOlQG9guWkftCZEzfap3ULUn+wY+gOp652ouU/TlaHEyDW4oL5LFaHYEXbRBH
+	 H89vtVVBXqrmRH7i8eKn5G/Zt+18TToz2nT3m8eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 54/67] f2fs: fix to do sanity check on F2FS_INLINE_DATA flag in inode during GC
+	David Wang <00107082@163.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yu Liao <liaoyu15@huawei.com>
+Subject: [PATCH 5.4 235/259] tick/broadcast: Move per CPU pointer access into the atomic section
 Date: Thu, 15 Aug 2024 15:26:08 +0200
-Message-ID: <20240815131840.382682546@linuxfoundation.org>
+Message-ID: <20240815131911.850207006@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit fc01008c92f40015aeeced94750855a7111b6929 ]
+commit 6881e75237a84093d0986f56223db3724619f26e upstream.
 
-syzbot reports a f2fs bug as below:
+The recent fix for making the take over of the broadcast timer more
+reliable retrieves a per CPU pointer in preemptible context.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/inline.c:258!
-CPU: 1 PID: 34 Comm: kworker/u8:2 Not tainted 6.9.0-rc6-syzkaller-00012-g9e4bc4bcae01 #0
-RIP: 0010:f2fs_write_inline_data+0x781/0x790 fs/f2fs/inline.c:258
-Call Trace:
- f2fs_write_single_data_page+0xb65/0x1d60 fs/f2fs/data.c:2834
- f2fs_write_cache_pages fs/f2fs/data.c:3133 [inline]
- __f2fs_write_data_pages fs/f2fs/data.c:3288 [inline]
- f2fs_write_data_pages+0x1efe/0x3a90 fs/f2fs/data.c:3315
- do_writepages+0x35b/0x870 mm/page-writeback.c:2612
- __writeback_single_inode+0x165/0x10b0 fs/fs-writeback.c:1650
- writeback_sb_inodes+0x905/0x1260 fs/fs-writeback.c:1941
- wb_writeback+0x457/0xce0 fs/fs-writeback.c:2117
- wb_do_writeback fs/fs-writeback.c:2264 [inline]
- wb_workfn+0x410/0x1090 fs/fs-writeback.c:2304
- process_one_work kernel/workqueue.c:3254 [inline]
- process_scheduled_works+0xa12/0x17c0 kernel/workqueue.c:3335
- worker_thread+0x86d/0xd70 kernel/workqueue.c:3416
- kthread+0x2f2/0x390 kernel/kthread.c:388
- ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+This went unnoticed as compilers hoist the access into the non-preemptible
+region where the pointer is actually used. But of course it's valid that
+the compiler keeps it at the place where the code puts it which rightfully
+triggers:
 
-The root cause is: inline_data inode can be fuzzed, so that there may
-be valid blkaddr in its direct node, once f2fs triggers background GC
-to migrate the block, it will hit f2fs_bug_on() during dirty page
-writeback.
+  BUG: using smp_processor_id() in preemptible [00000000] code:
+       caller is hotplug_cpu__broadcast_tick_pull+0x1c/0xc0
 
-Let's add sanity check on F2FS_INLINE_DATA flag in inode during GC,
-so that, it can forbid migrating inline_data inode's data block for
-fixing.
+Move it to the actual usage site which is in a non-preemptible region.
 
-Reported-by: syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000d103ce06174d7ec3@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f7d43dd206e7 ("tick/broadcast: Make takeover of broadcast hrtimer reliable")
+Reported-by: David Wang <00107082@163.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Yu Liao <liaoyu15@huawei.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/87ttg56ers.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/gc.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ kernel/time/tick-broadcast.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index afb7c88ba06b2..888c301ffe8f4 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1563,6 +1563,16 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- 				continue;
- 			}
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -944,7 +944,6 @@ void tick_broadcast_switch_to_oneshot(vo
+ #ifdef CONFIG_HOTPLUG_CPU
+ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
+ {
+-	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+ 	struct clock_event_device *bc;
+ 	unsigned long flags;
  
-+			if (f2fs_has_inline_data(inode)) {
-+				iput(inode);
-+				set_sbi_flag(sbi, SBI_NEED_FSCK);
-+				f2fs_err_ratelimited(sbi,
-+					"inode %lx has both inline_data flag and "
-+					"data block, nid=%u, ofs_in_node=%u",
-+					inode->i_ino, dni.nid, ofs_in_node);
-+				continue;
-+			}
+@@ -970,6 +969,8 @@ void hotplug_cpu__broadcast_tick_pull(in
+ 		 * device to avoid the starvation.
+ 		 */
+ 		if (tick_check_broadcast_expired()) {
++			struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
 +
- 			err = f2fs_gc_pinned_control(inode, gc_type, segno);
- 			if (err == -EAGAIN) {
- 				iput(inode);
--- 
-2.43.0
-
+ 			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
+ 			tick_program_event(td->evtdev->next_event, 1);
+ 		}
 
 
 
