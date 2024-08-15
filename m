@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39685953328
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1DC9534B2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D4DC1C21EC5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEC4E1C224D3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E3419DF5F;
-	Thu, 15 Aug 2024 14:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087E119ADAC;
+	Thu, 15 Aug 2024 14:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KHDk9nC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="th45l/6A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033241A7057;
-	Thu, 15 Aug 2024 14:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCED863C;
+	Thu, 15 Aug 2024 14:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731099; cv=none; b=T/3jdMrWtNWbk3LQxnvYgmR148RGja/oIAXN7RZQ7QPpzaePfUIalzL1m5QYq/QfqMWUXvWBjDmmNsM2Un6fDRQVone/5zDmZbvn/KhuQ5XevmWOsVn/Fs68DzliCnkw/pndObkKkDNcoh+g2knHBXOe8wW1sGYT0Kcen5ulFhI=
+	t=1723732146; cv=none; b=spxXf6yoRbK3evb25apdXFUZ7+KgQ5IM5ZWyafw0im2Uiihb6VJrpnQfZI/FvXE50uTPr427QYbneUIm9/DjaRgKMZYRvChSgOihuIEJaSo090mt5wk7Cg1vdeq45TWGk4B/q/KdT6gBd3JYG6SLv5Cp5ieAyryWrmFpoj2/VD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731099; c=relaxed/simple;
-	bh=2Mk9/wydS8vVU+hGiib+Mzzb3OUTn+bcAEgze93WFmc=;
+	s=arc-20240116; t=1723732146; c=relaxed/simple;
+	bh=+2VYYxJAAWf2Vl/mWMIswrf0NPZGPoF7TINoBrqePzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V9dYybDlr73GNaPAQ7Xx8AYcq4VQO9BeyX/QcXGu5C2rnjoIKs5NrEv4jrNEihkr+qYCQIOvIwIfaFrCvvUZKOxRtEubfplcy9hmks0V18Ji52zvWbLJu/bGus99C90DdDNX4bAA+w3qA1FVlLLe6kkVCPD0kLTImj8DNmiHwtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KHDk9nC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD7BC32786;
-	Thu, 15 Aug 2024 14:11:38 +0000 (UTC)
+	 MIME-Version; b=MpsDsJz8RQ3WIRGsiplJevBVT22hHp1yot7TC0L4LoexBqLck2x75MXx2Yqe4zZqkVUrkYRI3wX/KzTDfbBT5xrpfZTyWkyLY1u2yD895bYc+x50WcrEbq8yL0gpIQ6FYEnZUoU13YgsJ5x4Kkfm8wPUJ9gkhNHs527SUH7XpDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=th45l/6A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B58FC32786;
+	Thu, 15 Aug 2024 14:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731098;
-	bh=2Mk9/wydS8vVU+hGiib+Mzzb3OUTn+bcAEgze93WFmc=;
+	s=korg; t=1723732146;
+	bh=+2VYYxJAAWf2Vl/mWMIswrf0NPZGPoF7TINoBrqePzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KHDk9nCxfb3vbef/b2RDTOflnI4Dav8szLmHIPRIj2Pyr/aR74Zhf8k9r3VOg4n5
-	 8K7Q1pNu8/GGnfsksLbCvQevcR/V8JN/5JYx5eDQjAa8IwMthnske3QQf8CaHt0R4Y
-	 tUFImfBHh1YcG20XK6ULw3xIdOMqIcUcywxrvOBA=
+	b=th45l/6AlRTVi38DHOcM+Peu4Gmv949b85hAyeYiJ1or67e2+Qu209QkYH/5aBU92
+	 nj0vCv5L+CRWKXxuXyGVkTZCRZoN5LEuO4FrO6zYkiSBKs9HXl/DmNfbRfezNWtkce
+	 15CZzhnxMwPFKg+5QCJsZekGEC9m8ntkPXIkzc+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Kees Cook <kees@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 022/259] arm64: dts: mediatek: mt7622: fix "emmc" pinctrl mux
+Subject: [PATCH 5.10 089/352] mfd: omap-usb-tll: Use struct_size to allocate tll
 Date: Thu, 15 Aug 2024 15:22:35 +0200
-Message-ID: <20240815131903.655223375@linuxfoundation.org>
+Message-ID: <20240815131922.699812084@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit aebba1030a5766cdf894ed4ab0cac7aed5aee9c1 ]
+[ Upstream commit 40176714c818b0b6a2ca8213cdb7654fbd49b742 ]
 
-Value "emmc_rst" is a group name and should be part of the "groups"
-property.
+Commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+changed the memory allocation of 'tll' to consolidate it into a single
+allocation, introducing an incorrect size calculation.
 
-This fixes:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
-        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
-arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
-        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
+In particular, the allocation for the array of pointers was converted
+into a single-pointer allocation.
 
-Fixes: 3725ba3f5574 ("arm64: dts: mt7622: add pinctrl related device nodes")
-Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240604074916.7929-1-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+The memory allocation used to occur in two steps:
+
+tll = devm_kzalloc(dev, sizeof(struct usbtll_omap), GFP_KERNEL);
+tll->ch_clk = devm_kzalloc(dev, sizeof(struct clk *) * tll->nch,
+                           GFP_KERNEL);
+
+And it turned that into the following allocation:
+
+tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
+                   GFP_KERNEL);
+
+sizeof(tll->ch_clk[nch]) returns the size of a single pointer instead of
+the expected nch pointers.
+
+This bug went unnoticed because the allocation size was small enough to
+fit within the minimum size of a memory allocation for this particular
+case [1].
+
+The complete allocation can still be done at once with the struct_size
+macro, which comes in handy for structures with a trailing flexible
+array.
+
+Fix the memory allocation to obtain the original size again.
+
+Link: https://lore.kernel.org/all/202406261121.2FFD65647@keescook/ [1]
+Fixes: 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+Reviewed-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Fixes: commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+Link: https://lore.kernel.org/r/20240626-omap-usb-tll-counted_by-v2-1-4bedf20d1b51@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts | 4 ++--
- arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/mfd/omap-usb-tll.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-index eec9ec1db682a..cdfcaac932349 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-@@ -235,8 +235,8 @@ asm_sel {
- 	/* eMMC is shared pin with parallel NAND */
- 	emmc_pins_default: emmc-pins-default {
- 		mux {
--			function = "emmc", "emmc_rst";
--			groups = "emmc";
-+			function = "emmc";
-+			groups = "emmc", "emmc_rst";
- 		};
+diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+index 16fad79c73f1f..99ca0dfa127b5 100644
+--- a/drivers/mfd/omap-usb-tll.c
++++ b/drivers/mfd/omap-usb-tll.c
+@@ -237,8 +237,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+ 		break;
+ 	}
  
- 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-index ee57fccd489a3..03fbc802985d0 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-@@ -198,8 +198,8 @@ &pio {
- 	/* eMMC is shared pin with parallel NAND */
- 	emmc_pins_default: emmc-pins-default {
- 		mux {
--			function = "emmc", "emmc_rst";
--			groups = "emmc";
-+			function = "emmc";
-+			groups = "emmc", "emmc_rst";
- 		};
- 
- 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
+-	tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
+-			   GFP_KERNEL);
++	tll = devm_kzalloc(dev, struct_size(tll, ch_clk, nch), GFP_KERNEL);
+ 	if (!tll) {
+ 		pm_runtime_put_sync(dev);
+ 		pm_runtime_disable(dev);
 -- 
 2.43.0
 
