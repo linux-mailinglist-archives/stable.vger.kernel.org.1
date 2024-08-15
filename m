@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363679531F3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:00:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 554CA952F9E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 128961C24CD9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:00:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0228D289FD5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1801A01CB;
-	Thu, 15 Aug 2024 14:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A758F19F470;
+	Thu, 15 Aug 2024 13:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKQoxKyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vm9eP1Iw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346AF1A01B5;
-	Thu, 15 Aug 2024 14:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643227DA78;
+	Thu, 15 Aug 2024 13:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730411; cv=none; b=CFYp1LjyuxMQ/tkWgMgMHtYkWLKlIGYX5jxgyDi8x5IDhiSVHadVdT7ezlZ59m/4Ius62zwGeEvSDFcXAvWOOc9712UJm3ZwVyhWjDxaOCCQTyxv8wz4sYwHnmlyhUQZnMIVsaQczXDo0AgeNUl/5s+dJvKIvKT3rFNbncLJblI=
+	t=1723728846; cv=none; b=V8kZUFMkY3XT8m9y45D6EiIrXtFWK2OeON2Qtyb/6JusIHqy3wMH7qlmhkhN9toExBLehk+BPUcUVts0do6TAQkNX+UoQq+WWzdB0joACnaPOwfGSMS1y93kTqSZ9Dj4ST8LSjp0QwCrBqodrdzhjojdqFnBNpjCBbSmoQfjy8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730411; c=relaxed/simple;
-	bh=X7SaUFDrq6eEyj/o7/aduSy7d7EIaYcUsBoB1w2K+Mc=;
+	s=arc-20240116; t=1723728846; c=relaxed/simple;
+	bh=CVjWmUfWJXiOiU3h/vU5V8Z37XCli6WBSovmA40Ut74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J4/dN7sA6VCJmJcHGZ3VP1GYIivwhVOoq2aAs0VEeNptd6oCk9dripVqAqJf9rdAEmvtiZlzX4rc1fGo7d8RTDakxjbB9V93zTRoidaw3P1xUOpNSXntU2wx1fKuIfTlU8G8BhYunYxZqfhSHzPkv6ioPsQXtHjmXZCPsTjUx3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKQoxKyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0D6C4AF0D;
-	Thu, 15 Aug 2024 14:00:10 +0000 (UTC)
+	 MIME-Version; b=BJzSVQlaLDrWz27zfDdSpRG0YU03Tt3yhf67fe/N4CkvxIOK43J+BMS8JH9yDgh4c0flmIh8oIA3DBJLfva/h7urf7KVDnrkyr71C5f6zkZWcXzT963wwBH5+CJGhp9ShEQZbjc/K7MbEBJJzI4xo2Hf6Stb9hwKXDjI2PIDCuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vm9eP1Iw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31A6C32786;
+	Thu, 15 Aug 2024 13:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730411;
-	bh=X7SaUFDrq6eEyj/o7/aduSy7d7EIaYcUsBoB1w2K+Mc=;
+	s=korg; t=1723728846;
+	bh=CVjWmUfWJXiOiU3h/vU5V8Z37XCli6WBSovmA40Ut74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKQoxKywkiYA4VL50tMjW0rZ3qYMvoLDV1g05R+Qbb9w6Mp6WOt72SqQRxos9iib+
-	 IzznACZRFV7QLAeHSoDddTozNYFlQ/bOuezD7kFhzFnloStrGbQUgiIyGn2U+bpU6t
-	 HO6tKjncOL1rOK3VYxbzlBOne5qZBml5vCkCdMoU=
+	b=Vm9eP1Iw7Jr9cIGTLJq4AB7ER/y4jxcx3n9nTlmhIjMf78L/yDFyYS05BDd/e+yMD
+	 RZaA+5I/l1bngbJuDIrKNj7pfLDYpatIILqwNHYcsR2YwPrnHuZEP21F2S7r4OGVcX
+	 mtCc5VccCw5qwS1zDvbp9PTEGhkj478EHgiHFZWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Joe Perches <joe@perches.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 370/484] clocksource/drivers/sh_cmt: Address race condition for clock events
+Subject: [PATCH 4.19 111/196] parport: Standardize use of printmode
 Date: Thu, 15 Aug 2024 15:23:48 +0200
-Message-ID: <20240815131955.731360587@linuxfoundation.org>
+Message-ID: <20240815131856.327161760@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,146 +61,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Joe Perches <joe@perches.com>
 
-[ Upstream commit db19d3aa77612983a02bd223b3f273f896b243cf ]
+[ Upstream commit a6abfdff4fe5dd19d1f1b37d72ba34cd4492fd4d ]
 
-There is a race condition in the CMT interrupt handler. In the interrupt
-handler the driver sets a driver private flag, FLAG_IRQCONTEXT. This
-flag is used to indicate any call to set_next_event() should not be
-directly propagated to the device, but instead cached. This is done as
-the interrupt handler itself reprograms the device when needed before it
-completes and this avoids this operation to take place twice.
+Standardize the define and the uses of printmode.
 
-It is unclear why this design was chosen, my suspicion is to allow the
-struct clock_event_device.event_handler callback, which is called while
-the FLAG_IRQCONTEXT is set, can update the next event without having to
-write to the device twice.
+Miscellanea:
 
-Unfortunately there is a race between when the FLAG_IRQCONTEXT flag is
-set and later cleared where the interrupt handler have already started to
-write the next event to the device. If set_next_event() is called in
-this window the value is only cached in the driver but not written. This
-leads to the board to misbehave, or worse lockup and produce a splat.
+o Add missing statement termination ; where necessary
 
-   rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-   rcu:     0-...!: (0 ticks this GP) idle=f5e0/0/0x0 softirq=519/519 fqs=0 (false positive?)
-   rcu:     (detected by 1, t=6502 jiffies, g=-595, q=77 ncpus=2)
-   Sending NMI from CPU 1 to CPUs 0:
-   NMI backtrace for cpu 0
-   CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.10.0-rc5-arm64-renesas-00019-g74a6f86eaf1c-dirty #20
-   Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
-   pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-   pc : tick_check_broadcast_expired+0xc/0x40
-   lr : cpu_idle_poll.isra.0+0x8c/0x168
-   sp : ffff800081c63d70
-   x29: ffff800081c63d70 x28: 00000000580000c8 x27: 00000000bfee5610
-   x26: 0000000000000027 x25: 0000000000000000 x24: 0000000000000000
-   x23: ffff00007fbb9100 x22: ffff8000818f1008 x21: ffff8000800ef07c
-   x20: ffff800081c79ec0 x19: ffff800081c70c28 x18: 0000000000000000
-   x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffc2c717d8
-   x14: 0000000000000000 x13: ffff000009c18080 x12: ffff8000825f7fc0
-   x11: 0000000000000000 x10: ffff8000818f3cd4 x9 : 0000000000000028
-   x8 : ffff800081c79ec0 x7 : ffff800081c73000 x6 : 0000000000000000
-   x5 : 0000000000000000 x4 : ffff7ffffe286000 x3 : 0000000000000000
-   x2 : ffff7ffffe286000 x1 : ffff800082972900 x0 : ffff8000818f1008
-   Call trace:
-    tick_check_broadcast_expired+0xc/0x40
-    do_idle+0x9c/0x280
-    cpu_startup_entry+0x34/0x40
-    kernel_init+0x0/0x11c
-    do_one_initcall+0x0/0x260
-    __primary_switched+0x80/0x88
-   rcu: rcu_preempt kthread timer wakeup didn't happen for 6501 jiffies! g-595 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
-   rcu:     Possible timer handling issue on cpu=0 timer-softirq=262
-   rcu: rcu_preempt kthread starved for 6502 jiffies! g-595 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=0
-   rcu:     Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-   rcu: RCU grace-period kthread stack dump:
-   task:rcu_preempt     state:I stack:0     pid:15    tgid:15    ppid:2      flags:0x00000008
-   Call trace:
-    __switch_to+0xbc/0x100
-    __schedule+0x358/0xbe0
-    schedule+0x48/0x148
-    schedule_timeout+0xc4/0x138
-    rcu_gp_fqs_loop+0x12c/0x764
-    rcu_gp_kthread+0x208/0x298
-    kthread+0x10c/0x110
-    ret_from_fork+0x10/0x20
-
-The design have been part of the driver since it was first merged in
-early 2009. It becomes increasingly harder to trigger the issue the
-older kernel version one tries. It only takes a few boots on v6.10-rc5,
-while hundreds of boots are needed to trigger it on v5.10.
-
-Close the race condition by using the CMT channel lock for the two
-competing sections. The channel lock was added to the driver after its
-initial design.
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://lore.kernel.org/r/20240702190230.3825292-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Joe Perches <joe@perches.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Link: https://lore.kernel.org/r/20200403134325.11523-8-sudipm.mukherjee@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: ab11dac93d2d ("dev/parport: fix the array out-of-bounds risk")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/sh_cmt.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/parport/parport_gsc.c |  8 ++++++--
+ drivers/parport/parport_pc.c  | 14 ++++++--------
+ drivers/parport/procfs.c      |  6 +++++-
+ 3 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clocksource/sh_cmt.c b/drivers/clocksource/sh_cmt.c
-index d35548aa026fb..8e06767e0d4cb 100644
---- a/drivers/clocksource/sh_cmt.c
-+++ b/drivers/clocksource/sh_cmt.c
-@@ -529,6 +529,7 @@ static void sh_cmt_set_next(struct sh_cmt_channel *ch, unsigned long delta)
- static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
- {
- 	struct sh_cmt_channel *ch = dev_id;
-+	unsigned long flags;
+diff --git a/drivers/parport/parport_gsc.c b/drivers/parport/parport_gsc.c
+index 7e2dd330831cf..467bc0ab95ec1 100644
+--- a/drivers/parport/parport_gsc.c
++++ b/drivers/parport/parport_gsc.c
+@@ -304,12 +304,16 @@ struct parport *parport_gsc_probe_port(unsigned long base,
+ 		p->dma = PARPORT_DMA_NONE;
  
- 	/* clear flags */
- 	sh_cmt_write_cmcsr(ch, sh_cmt_read_cmcsr(ch) &
-@@ -559,6 +560,8 @@ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
+ 	pr_cont(" [");
+-#define printmode(x) {if(p->modes&PARPORT_MODE_##x){pr_cont("%s%s",f?",":"",#x);f++;}}
++#define printmode(x)							\
++do {									\
++	if (p->modes & PARPORT_MODE_##x)				\
++		pr_cont("%s%s", f++ ? "," : "", #x);			\
++} while (0)
+ 	{
+ 		int f = 0;
+ 		printmode(PCSPP);
+ 		printmode(TRISTATE);
+-		printmode(COMPAT)
++		printmode(COMPAT);
+ 		printmode(EPP);
+ //		printmode(ECP);
+ //		printmode(DMA);
+diff --git a/drivers/parport/parport_pc.c b/drivers/parport/parport_pc.c
+index 2bc5593b76067..ad2acafb68506 100644
+--- a/drivers/parport/parport_pc.c
++++ b/drivers/parport/parport_pc.c
+@@ -2142,19 +2142,17 @@ struct parport *parport_pc_probe_port(unsigned long int base,
  
- 	ch->flags &= ~FLAG_SKIPEVENT;
+ 	pr_cont(" [");
  
-+	raw_spin_lock_irqsave(&ch->lock, flags);
-+
- 	if (ch->flags & FLAG_REPROGRAM) {
- 		ch->flags &= ~FLAG_REPROGRAM;
- 		sh_cmt_clock_event_program_verify(ch, 1);
-@@ -571,6 +574,8 @@ static irqreturn_t sh_cmt_interrupt(int irq, void *dev_id)
+-#define printmode(x) \
+-	{\
+-		if (p->modes & PARPORT_MODE_##x) {\
+-			pr_cont("%s%s", f ? "," : "", #x);	\
+-			f++;\
+-		} \
+-	}
++#define printmode(x)							\
++do {									\
++	if (p->modes & PARPORT_MODE_##x)				\
++		pr_cont("%s%s", f++ ? "," : "", #x);			\
++} while (0)
  
- 	ch->flags &= ~FLAG_IRQCONTEXT;
+ 	{
+ 		int f = 0;
+ 		printmode(PCSPP);
+ 		printmode(TRISTATE);
+-		printmode(COMPAT)
++		printmode(COMPAT);
+ 		printmode(EPP);
+ 		printmode(ECP);
+ 		printmode(DMA);
+diff --git a/drivers/parport/procfs.c b/drivers/parport/procfs.c
+index 48804049d6972..e957beb94f142 100644
+--- a/drivers/parport/procfs.c
++++ b/drivers/parport/procfs.c
+@@ -213,7 +213,11 @@ static int do_hardware_modes(struct ctl_table *table, int write,
+ 		return -EACCES;
  
-+	raw_spin_unlock_irqrestore(&ch->lock, flags);
-+
- 	return IRQ_HANDLED;
- }
- 
-@@ -781,12 +786,18 @@ static int sh_cmt_clock_event_next(unsigned long delta,
- 				   struct clock_event_device *ced)
- {
- 	struct sh_cmt_channel *ch = ced_to_sh_cmt(ced);
-+	unsigned long flags;
- 
- 	BUG_ON(!clockevent_state_oneshot(ced));
-+
-+	raw_spin_lock_irqsave(&ch->lock, flags);
-+
- 	if (likely(ch->flags & FLAG_IRQCONTEXT))
- 		ch->next_match_value = delta - 1;
- 	else
--		sh_cmt_set_next(ch, delta - 1);
-+		__sh_cmt_set_next(ch, delta - 1);
-+
-+	raw_spin_unlock_irqrestore(&ch->lock, flags);
- 
- 	return 0;
- }
+ 	{
+-#define printmode(x) {if(port->modes&PARPORT_MODE_##x){len+=sprintf(buffer+len,"%s%s",f?",":"",#x);f++;}}
++#define printmode(x)							\
++do {									\
++	if (port->modes & PARPORT_MODE_##x)				\
++		len += sprintf(buffer + len, "%s%s", f++ ? "," : "", #x); \
++} while (0)
+ 		int f = 0;
+ 		printmode(PCSPP);
+ 		printmode(TRISTATE);
 -- 
 2.43.0
 
