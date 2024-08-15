@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977889533A1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39ED9953508
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19EE9B24D82
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D4CD1C2524A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B274219FA8D;
-	Thu, 15 Aug 2024 14:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAEF210FB;
+	Thu, 15 Aug 2024 14:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1HSQxVI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0y/lT3QU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D9A14AD0A;
-	Thu, 15 Aug 2024 14:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F9A1993B9;
+	Thu, 15 Aug 2024 14:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731438; cv=none; b=SIPXSZ3ohmegfzfI241rMBz4KR0u7hwZEqSULtsvFdxhGL/FVZKg3R5gahR6D6thDt+WQe3FEtO1tLiP4gCJjn1SuMKAizR8uQP6hlN3jxNfCGlRs28/mTc1Ia42UdH/blc6YmUxGNG3GqUXk1fYHNWaLc0ZFmExoZcZqBiKJuk=
+	t=1723732389; cv=none; b=BsjbFfPAhNOcUQ46QaOgw0/WiJ7gd6VuUi7axW7rtrjliPwZlwBoSu6PHi7llQlu05LTdngeBxW3B2+aFuQFM338JZn7txT2MZ8GSRp/SECfBnufy7SZKvPsCXTuem2LbjvXBwkI7h5bkYQCc88ZEgj72qOdDRDMb63/2jvAPZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731438; c=relaxed/simple;
-	bh=+6JVi+zpOdtS3Id/GVq3/s6GA96juu78Nx+JvIGOMCg=;
+	s=arc-20240116; t=1723732389; c=relaxed/simple;
+	bh=OSnN35/JABQww5XW0He4B7+92j2C3cbLEhYEsHTPJHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpdk6GffDVMEZ8+cz1InMHAvg3nflkkjQ83ukyVouoXIWvx9zaxymoYzPJuqahIQ0WcmyL43gnu4OW5Mv1jGsMbkpuH9OyX4lOwjCNMdzftpF4nQ9wLfNwjoUuunREyL5XdQZK2WCUISVv3G14HW1MZ8DwB9inVkGs3rq7YDK6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1HSQxVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0534C4AF0C;
-	Thu, 15 Aug 2024 14:17:17 +0000 (UTC)
+	 MIME-Version; b=ATMGgbliTlt4MFgJHwfdWYSQR6gxM1piZd/JjpeRWwQF1As7QZoaI0P+41+0NjSvXCgj+75no+kODGn7ORbmz4SYJDY+dIcNrHfhrHnGjaJ4FaufAMAE7wNF191DGNYZPGkPxs2D/BWC4sD6yIAlPmQNFNVI8/Oq3sCu2vqVn0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0y/lT3QU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3345C32786;
+	Thu, 15 Aug 2024 14:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731438;
-	bh=+6JVi+zpOdtS3Id/GVq3/s6GA96juu78Nx+JvIGOMCg=;
+	s=korg; t=1723732389;
+	bh=OSnN35/JABQww5XW0He4B7+92j2C3cbLEhYEsHTPJHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1HSQxVI0a7S/soj1jBVDxRjDbYiFRJSZzVLdUuSM13XNJr8b9QTCu6kCEjRyXfMw
-	 T8ajiiLV2z9oXQZFHlUF9+sPKiMN3QGCpgQayp6s58P4oGkpfJvW7Q8h67JQQ9gRgQ
-	 xGoyKMjgXY9725KQDST+SaV19Lxzj1bA9E6SLEps=
+	b=0y/lT3QUdSJ5HVQA2bJF3/h/R3gdgpJxOLLcP2a1SoIzpoCBtN/cCAdSz6txujXow
+	 2b3YQOB961/cKAkZYyJYgBMUu990vq0oXDARWbha29Csbz9qYZcIRo75PezTpi3YKP
+	 qAjqZ9UNWJ3U2aWgTT5mo77kb140Dc4Sv0tAaMAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Xi (Alex) Liu" <xi.liu@amd.com>,
-	Sung Joon Kim <sungjoon.kim@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>
-Subject: [PATCH 5.4 098/259] drm/amd/display: Check for NULL pointer
+	Manish Rangankar <mrangankar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 165/352] scsi: qla2xxx: During vport delete send async logout explicitly
 Date: Thu, 15 Aug 2024 15:23:51 +0200
-Message-ID: <20240815131906.585194433@linuxfoundation.org>
+Message-ID: <20240815131925.650045535@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sung Joon Kim <sungjoon.kim@amd.com>
+From: Manish Rangankar <mrangankar@marvell.com>
 
-commit 4ab68e168ae1695f7c04fae98930740aaf7c50fa upstream.
+commit 76f480d7c717368f29a3870f7d64471ce0ff8fb2 upstream.
 
-[why & how]
-Need to make sure plane_state is initialized
-before accessing its members.
+During vport delete, it is observed that during unload we hit a crash
+because of stale entries in outstanding command array.  For all these stale
+I/O entries, eh_abort was issued and aborted (fast_fail_io = 2009h) but
+I/Os could not complete while vport delete is in process of deleting.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+  BUG: kernel NULL pointer dereference, address: 000000000000001c
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] PREEMPT SMP NOPTI
+  Workqueue: qla2xxx_wq qla_do_work [qla2xxx]
+  RIP: 0010:dma_direct_unmap_sg+0x51/0x1e0
+  RSP: 0018:ffffa1e1e150fc68 EFLAGS: 00010046
+  RAX: 0000000000000000 RBX: 0000000000000021 RCX: 0000000000000001
+  RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff8ce208a7a0d0
+  RBP: ffff8ce208a7a0d0 R08: 0000000000000000 R09: ffff8ce378aac9c8
+  R10: ffff8ce378aac8a0 R11: ffffa1e1e150f9d8 R12: 0000000000000000
+  R13: 0000000000000000 R14: ffff8ce378aac9c8 R15: 0000000000000000
+  FS:  0000000000000000(0000) GS:ffff8d217f000000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 000000000000001c CR3: 0000002089acc000 CR4: 0000000000350ee0
+  Call Trace:
+  <TASK>
+  qla2xxx_qpair_sp_free_dma+0x417/0x4e0
+  ? qla2xxx_qpair_sp_compl+0x10d/0x1a0
+  ? qla2x00_status_entry+0x768/0x2830
+  ? newidle_balance+0x2f0/0x430
+  ? dequeue_entity+0x100/0x3c0
+  ? qla24xx_process_response_queue+0x6a1/0x19e0
+  ? __schedule+0x2d5/0x1140
+  ? qla_do_work+0x47/0x60
+  ? process_one_work+0x267/0x440
+  ? process_one_work+0x440/0x440
+  ? worker_thread+0x2d/0x3d0
+  ? process_one_work+0x440/0x440
+  ? kthread+0x156/0x180
+  ? set_kthread_struct+0x50/0x50
+  ? ret_from_fork+0x22/0x30
+  </TASK>
+
+Send out async logout explicitly for all the ports during vport delete.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Xi (Alex) Liu <xi.liu@amd.com>
-Signed-off-by: Sung Joon Kim <sungjoon.kim@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 295d91cbc700651782a60572f83c24861607b648)
+Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-8-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_surface.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_mid.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-@@ -165,7 +165,8 @@ const struct dc_plane_status *dc_plane_g
- 		if (pipe_ctx->plane_state != plane_state)
- 			continue;
+--- a/drivers/scsi/qla2xxx/qla_mid.c
++++ b/drivers/scsi/qla2xxx/qla_mid.c
+@@ -164,7 +164,7 @@ qla24xx_disable_vp(scsi_qla_host_t *vha)
+ 	atomic_set(&vha->loop_state, LOOP_DOWN);
+ 	atomic_set(&vha->loop_down_timer, LOOP_DOWN_TIME);
+ 	list_for_each_entry(fcport, &vha->vp_fcports, list)
+-		fcport->logout_on_delete = 0;
++		fcport->logout_on_delete = 1;
  
--		pipe_ctx->plane_state->status.is_flip_pending = false;
-+		if (pipe_ctx->plane_state)
-+			pipe_ctx->plane_state->status.is_flip_pending = false;
+ 	qla2x00_mark_all_devices_lost(vha);
  
- 		break;
- 	}
 
 
 
