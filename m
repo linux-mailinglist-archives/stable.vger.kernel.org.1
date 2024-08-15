@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1924A95333E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB27E9534CA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE1AA2879CE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE5961C2360E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D831B3748;
-	Thu, 15 Aug 2024 14:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D9514AD0A;
+	Thu, 15 Aug 2024 14:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPOt4iQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVBpvEmJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DDA1B32CD;
-	Thu, 15 Aug 2024 14:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAA663D5;
+	Thu, 15 Aug 2024 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731164; cv=none; b=FkFLjLj2LKoi+9bQ9/AZqj2Wq9vfD0PkNzJuYS/km6tZznRvNtYiBdPHVMfCVZzB7G8XFdiqMBQBYPDHyQhSQ6TYynCHJroikXF97n9bSNE5SJk5DuD6X3vqo/ibzVNs98AsLyUIH3AHej/QQ4piSzTXjRQ774pFeoJUCZg2LUk=
+	t=1723732224; cv=none; b=dHjJq7biaPQbXWd0xvLWg9pVs74gMiuupZxe+oI0cV+vTX/aMaNqSTXPaIEO8xP5xSkl6gophqRueKBcJz7c+TKV8XGf7shME76WIOEsn/CSxLHQG58Mf5tkhtWOj2I1egdfFUltq1pQX7f9QO8Zrg1oXmMLpF+OWGr2va9kGVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731164; c=relaxed/simple;
-	bh=BGrgjzYhIhZy1M9Zm8PF5CCYxdDb50dDKsoUYKtHOFA=;
+	s=arc-20240116; t=1723732224; c=relaxed/simple;
+	bh=Z41+D0Jcw97LaYghP0PkqA/QuaQ++z5ketTYON2lmJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8Hv5B1rxCLyPI4IhCAS+G7MxGU/4W4JMI1Bg9dAyEM+PWdWAIcu1RfMHTdT9TeXi4u3zqY5aXn/YdqR7bq8RC78AjLRKpD75QNAG2gkRD7E/WgNXB1fYe9ODP6K/xa+x4yT13IDX47dMQLOWu/X07oowTozST4KtJTb4rTzUuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPOt4iQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821B3C32786;
-	Thu, 15 Aug 2024 14:12:43 +0000 (UTC)
+	 MIME-Version; b=PBSCCA1Y5KNf2JY/DgEVrahWefYb+kmN00l5eB8KRGaQaGZX3+Nlt+X87aPa69opfLNIhd70p9E8/OjOl9hnOTBd2jRak8tCZ7R2Mv5F0I7zPEJG1RsNu+kzhpOSKXezG8TwfhajjP0GkVDCcYLHn8t5U2cEBKO2X0EWIdQb3KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVBpvEmJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F422C32786;
+	Thu, 15 Aug 2024 14:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731164;
-	bh=BGrgjzYhIhZy1M9Zm8PF5CCYxdDb50dDKsoUYKtHOFA=;
+	s=korg; t=1723732223;
+	bh=Z41+D0Jcw97LaYghP0PkqA/QuaQ++z5ketTYON2lmJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPOt4iQjf8egXq4Cojh9ObTi18QhM1x0UsSArus4X8yIwgK7/xJygbA+jJ6pRZwob
-	 0hwQ5djEBHR9QcZIL4N8YU/AnwbtMXE4j75Iqs3XGeUvXWgrr0+qoYB32DTDaWoGbP
-	 q5ZS4nb03YBNit7pDJFPQFOl8lDzqquNOOosO4Hg=
+	b=vVBpvEmJZSaPAWaa7TVc01GEPMxvySUPZlOiRHrp6WEX4hyzdWnuBHhSP/83wB9T1
+	 MacseBCwlomLs66P5m6hqTzZDNBEPaAUh0BypOPphnOXP5zCPX/8flRi9HsYlK2ST4
+	 qdMCoJNwPkEuYPI0C3etmtEvq0DzI9lKGEWNuXFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	zdi-disclosures@trendmicro.com,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/259] perf: Prevent passing zero nr_pages to rb_alloc_aux()
-Date: Thu, 15 Aug 2024 15:22:56 +0200
-Message-ID: <20240815131904.467445870@linuxfoundation.org>
+Subject: [PATCH 5.10 111/352] netfilter: ctnetlink: use helper function to calculate expect ID
+Date: Thu, 15 Aug 2024 15:22:57 +0200
+Message-ID: <20240815131923.546294483@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit dbc48c8f41c208082cfa95e973560134489e3309 ]
+[ Upstream commit 782161895eb4ac45cf7cfa8db375bd4766cb8299 ]
 
-nr_pages is unsigned long but gets passed to rb_alloc_aux() as an int,
-and is stored as an int.
+Delete expectation path is missing a call to the nf_expect_get_id()
+helper function to calculate the expectation ID, otherwise LSB of the
+expectation object address is leaked to userspace.
 
-Only power-of-2 values are accepted, so if nr_pages is a 64_bit value, it
-will be passed to rb_alloc_aux() as zero.
-
-That is not ideal because:
- 1. the value is incorrect
- 2. rb_alloc_aux() is at risk of misbehaving, although it manages to
- return -ENOMEM in that case, it is a result of passing zero to get_order()
- even though the get_order() result is documented to be undefined in that
- case.
-
-Fix by simply validating the maximum supported value in the first place.
-Use -ENOMEM error code for consistency with the current error code that
-is returned in that case.
-
-Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-6-adrian.hunter@intel.com
+Fixes: 3c79107631db ("netfilter: ctnetlink: don't use conntrack/expect object addresses as id")
+Reported-by: zdi-disclosures@trendmicro.com
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nf_conntrack_netlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 2347dda682abd..39cf0040e6dfb 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5830,6 +5830,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 			return -EINVAL;
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index ceb7c988edefa..b55e87143c2ce 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3413,7 +3413,8 @@ static int ctnetlink_del_expect(struct net *net, struct sock *ctnl,
  
- 		nr_pages = vma_size / PAGE_SIZE;
-+		if (nr_pages > INT_MAX)
-+			return -ENOMEM;
- 
- 		mutex_lock(&event->mmap_mutex);
- 		ret = -EINVAL;
+ 		if (cda[CTA_EXPECT_ID]) {
+ 			__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
+-			if (ntohl(id) != (u32)(unsigned long)exp) {
++
++			if (id != nf_expect_get_id(exp)) {
+ 				nf_ct_expect_put(exp);
+ 				return -ENOENT;
+ 			}
 -- 
 2.43.0
 
