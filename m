@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D170695324D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A63953551
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F9731C25BB3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 073E7B21783
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9AD1A4F1C;
-	Thu, 15 Aug 2024 14:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886F21A00CE;
+	Thu, 15 Aug 2024 14:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSVSqbrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1+EooHx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5B51A08CB;
-	Thu, 15 Aug 2024 14:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450623214;
+	Thu, 15 Aug 2024 14:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730569; cv=none; b=DL5YnIxtsoZtizoQaQj2QV6dvT8cscMEXifNVHzNfU4rsOVcUxcKiM9sbczS/WlRTCFGKWWUxSwTb9Cs+tAa/5T99a8ZcKxQHTJT2bXIa+PoFL+QPylXg2Z0EIg6a0+5YuHpr+ZUpyIfwd/jpXQdpSDYAnni/DpvDBBkbU3fwg0=
+	t=1723732581; cv=none; b=TO4cVzcM0B4gZuIHYvy3tFpPfdQOX8VJTPzb2xYseLhU580ihjgPnwvUOQSsb5dWze3KYSX6Z0wPzEKBjuG85/D21H4IusHTUZLZkwriflJO0SJD2X/MyIdu+sixY/d5w9PyvlXRehwiQg52xqp8zhAMRrhI9hhfNyjhmcK8IgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730569; c=relaxed/simple;
-	bh=WQQIlOYtIY/1lewFsCqEuOKa06aYP6DvOkeb92C4+ko=;
+	s=arc-20240116; t=1723732581; c=relaxed/simple;
+	bh=IIZeBfxNsYAxk9SbyWARSDORvMfT0WAkZpi6qBp3pvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNCMxtLP3Skm0R79JKyfr7eAGS92dRAeV1Jnvd5k10TIgAnVRUrY6v5xbqyude9KVFBfYBCa3Y29eL2gM1bKzD4BPSNzd4jzEFxDoxUclAyHyamqpUC9Di/2xd7WxiezS9Z9CXRb0ulufab6WFMd4VJxL7B+uoXIxdoMx7m9Kfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSVSqbrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43122C32786;
-	Thu, 15 Aug 2024 14:02:48 +0000 (UTC)
+	 MIME-Version; b=KlTqM8/3INVY9/pPFp12sinplIfMJNkTGzEKkWAWj9LNmkkXzbOHaTUbY9+j9LbSc39ORnSP0GgIqpwhHMAzUS7gUmx+z9++7EJJus4AmJGnD85Qam/u8ljDqJSPF0o3CbtMQUWeORsCRgMD4IpI6QxAXtCTlgED/1stF25FKM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1+EooHx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD699C32786;
+	Thu, 15 Aug 2024 14:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730568;
-	bh=WQQIlOYtIY/1lewFsCqEuOKa06aYP6DvOkeb92C4+ko=;
+	s=korg; t=1723732581;
+	bh=IIZeBfxNsYAxk9SbyWARSDORvMfT0WAkZpi6qBp3pvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KSVSqbrzXLpY7abXI4VJ8LSzQMCmaUowScewd7rYrjhPNhXXjY66kDo+jeS5mb2sN
-	 tfEEEi7XFdpanXO/rtaoP7DLrKTfnizEiAIV8P0nN7YnnchzUch2Fibdy2GXsGUam4
-	 gYY4cRo+xag+cT8fDMwXIS5qp8s7nY9/+18bI8tc=
+	b=g1+EooHxfYA6lFVHLR9+cvgnFJunPmK903Ws/VdB53vVbNJfQMuThcruVxDyuzIYi
+	 WeHY8kwOzSGLk5Sfpg+E+tmMfceZEhqQDRNXALcwaZuqr8FTo4Dz7GvuxxNs9P7+RO
+	 r+chXnPZ1ei8GMSQUQwMCh4tgGyrO4tLemtXiUxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 432/484] clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()
+Subject: [PATCH 5.10 224/352] driver core: Cast to (void *) with __force for __percpu pointer
 Date: Thu, 15 Aug 2024 15:24:50 +0200
-Message-ID: <20240815131958.144511459@linuxfoundation.org>
+Message-ID: <20240815131928.089754678@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit f2655ac2c06a15558e51ed6529de280e1553c86e ]
+[ Upstream commit d7aa44f5a1f86cb40659eef06035d8d92604b9d5 ]
 
-The current "nretries > 1 || nretries >= max_retries" check in
-cs_watchdog_read() will always evaluate to true, and thus pr_warn(), if
-nretries is greater than 1.  The intent is instead to never warn on the
-first try, but otherwise warn if the successful retry was the last retry.
+Sparse is not happy:
 
-Therefore, change that "||" to "&&".
+  drivers/base/devres.c:1230:9: warning: cast removes address space '__percpu' of expression
 
-Fixes: db3a34e17433 ("clocksource: Retry clock read if long delays detected")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240802154618.4149953-2-paulmck@kernel.org
+Use __force attribute to make it happy.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20210401171030.60527-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bd50a974097b ("devres: Fix memory leakage caused by driver API devm_free_percpu()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/clocksource.c | 2 +-
+ drivers/base/devres.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index c3b59f2250a17..3ccb383741d08 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -229,7 +229,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow,
- 		wd_delay = clocksource_cyc2ns(wd_delta, watchdog->mult,
- 					      watchdog->shift);
- 		if (wd_delay <= WATCHDOG_MAX_SKEW) {
--			if (nretries > 1 || nretries >= max_retries) {
-+			if (nretries > 1 && nretries >= max_retries) {
- 				pr_warn("timekeeping watchdog on CPU%d: %s retried %d times before success\n",
- 					smp_processor_id(), watchdog->name, nretries);
- 			}
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index 452541ce0dc82..a1508eeb8ebd1 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -1231,6 +1231,6 @@ EXPORT_SYMBOL_GPL(__devm_alloc_percpu);
+ void devm_free_percpu(struct device *dev, void __percpu *pdata)
+ {
+ 	WARN_ON(devres_destroy(dev, devm_percpu_release, devm_percpu_match,
+-			       (void *)pdata));
++			       (__force void *)pdata));
+ }
+ EXPORT_SYMBOL_GPL(devm_free_percpu);
 -- 
 2.43.0
 
