@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-68294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20ABB953187
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8600E952F59
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB4F81F21DB0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3031F26F02
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A94119DF9C;
-	Thu, 15 Aug 2024 13:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E4418D630;
+	Thu, 15 Aug 2024 13:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyJZtda9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyOpi0vZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F131714A1;
-	Thu, 15 Aug 2024 13:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CE67DA78;
+	Thu, 15 Aug 2024 13:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730114; cv=none; b=GpI2qrMug1TagHO9kK6uAUHcshp1YBWYgHW6My6RCiODgAvCawO+CqO7eSpUR5l/o4SwMJSjxCxmzTF95TP0C+f+vDewLQ/3aCblfJJ6SZs5DobUvRS5XILMTXM8InEQcyIn9MwEVjrT/yCfdR+ZNZgHkVD5r5Lh8oEnyC3w17Y=
+	t=1723728694; cv=none; b=iWPg9HlvcACALfhqNt/UmJ7Kj2qGSgOXCi2i3LvIpZ/YDBXVah1ZDkkN8Ze7SaH1IWBCzYnc5Yhhnnjn8VSDDMXc/Nh7H01F34B9J2hY7VUxt428U2GhF+J4iiG0fe5jWcdcVPXWwB6t9qMrFJ93guyFwV6QdOyI6KfWfY/X1gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730114; c=relaxed/simple;
-	bh=OUfOVHHWmlzhWeU8JtUZBg6ByKTBPwMNh6VRImrqfdI=;
+	s=arc-20240116; t=1723728694; c=relaxed/simple;
+	bh=RqqiUcuvlYJPQDJB3gu1zxg9f2qfvibkFCRCFaxTg8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SAe+S1ta4r25fSjmIOfCr5Pw45FLp5/j0rx7U10GzC2ezmP3kRLE9dZmdHmoUbAI0B0G5v3Vw9sDsc4s6LLX7ApoAYAINCWUdVzabFha3AoMW0k1vUgS9OJUdLmSB3j9Go4+Wi2esp76E8SHKNlX2yxN6ZS4a78uT7H3oFFCizE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyJZtda9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6C5C32786;
-	Thu, 15 Aug 2024 13:55:13 +0000 (UTC)
+	 MIME-Version; b=q6xxr4T4fumuGFjmegwGFkK8T3cO/2DtiXs5Rz9aPHB6gBhtu2+Ox/KuoSU+KkhvgGxdsPplK4GWdP0a6H8txfTQq860Ob5Ev0Ax4w2L1kYhQ9rBNmcU8VjVv3+cihYhjb06q8916v7pbRs7Yqr5AJRgOjKWzLFzogHbHVcZSSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyOpi0vZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA481C32786;
+	Thu, 15 Aug 2024 13:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730114;
-	bh=OUfOVHHWmlzhWeU8JtUZBg6ByKTBPwMNh6VRImrqfdI=;
+	s=korg; t=1723728694;
+	bh=RqqiUcuvlYJPQDJB3gu1zxg9f2qfvibkFCRCFaxTg8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyJZtda9lHPXOUCZt0WFQwdy+JC3BkRIMovLy3cuGG9jR7lN4B87UpF42qUryU8Xt
-	 lxD68TQOK9iFYVnfuHIanSP0VWN+8xG4ai07r0vYR4VfkqAhtlVf/2rsooyX7fRm+6
-	 q6SAHA4izVemBkSWPNpjrPjvkdxbsWJuXxniElwk=
+	b=QyOpi0vZdNIYdgjsv8+FP4HO2E6XI1q1w+yDeUPEVvVJ5Jlkg/LB87QZ5Xl/VrblK
+	 9USCOjfDjrddszk7oNorYHS4nKhDnnYAzyD6wmS89KfeKC1LK7NqCnVrNS85QNE78H
+	 i5EidjU+YW1Tt84sDmidTcbtr08+RLN9I+CGJ6tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 308/484] ext4: factor out a common helper to query extent map
+Subject: [PATCH 4.19 049/196] MIPS: Octeron: remove source file executable bit
 Date: Thu, 15 Aug 2024 15:22:46 +0200
-Message-ID: <20240815131953.306253666@linuxfoundation.org>
+Message-ID: <20240815131853.959222846@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +62,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-[ Upstream commit 8e4e5cdf2fdeb99445a468b6b6436ad79b9ecb30 ]
+[ Upstream commit 89c7f5078935872cf47a713a645affb5037be694 ]
 
-Factor out a new common helper ext4_map_query_blocks() from the
-ext4_da_map_blocks(), it query and return the extent map status on the
-inode's extent path, no logic changes.
+This does not matter the least, but there is no other .[ch] file in the
+repo that is executable, so clean this up.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://patch.msgid.link/20240517124005.347221-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
+Fixes: 29b83a64df3b ("MIPS: Octeon: Add PCIe link status check")
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 57 +++++++++++++++++++++++++++----------------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
+ arch/mips/pci/pcie-octeon.c | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ mode change 100755 => 100644 arch/mips/pci/pcie-octeon.c
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 329e3dc9cb32c..403f88662bc30 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -484,6 +484,35 @@ static void ext4_map_blocks_es_recheck(handle_t *handle,
- }
- #endif /* ES_AGGRESSIVE_TEST */
- 
-+static int ext4_map_query_blocks(handle_t *handle, struct inode *inode,
-+				 struct ext4_map_blocks *map)
-+{
-+	unsigned int status;
-+	int retval;
-+
-+	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		retval = ext4_ext_map_blocks(handle, inode, map, 0);
-+	else
-+		retval = ext4_ind_map_blocks(handle, inode, map, 0);
-+
-+	if (retval <= 0)
-+		return retval;
-+
-+	if (unlikely(retval != map->m_len)) {
-+		ext4_warning(inode->i_sb,
-+			     "ES len assertion failed for inode "
-+			     "%lu: retval %d != map->m_len %d",
-+			     inode->i_ino, retval, map->m_len);
-+		WARN_ON(1);
-+	}
-+
-+	status = map->m_flags & EXT4_MAP_UNWRITTEN ?
-+			EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
-+	ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
-+			      map->m_pblk, status);
-+	return retval;
-+}
-+
- /*
-  * The ext4_map_blocks() function tries to look up the requested blocks,
-  * and returns if the blocks are already mapped.
-@@ -1751,33 +1780,11 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 	down_read(&EXT4_I(inode)->i_data_sem);
- 	if (ext4_has_inline_data(inode))
- 		retval = 0;
--	else if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
--		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
- 	else
--		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
--	if (retval < 0) {
--		up_read(&EXT4_I(inode)->i_data_sem);
--		return retval;
--	}
--	if (retval > 0) {
--		unsigned int status;
--
--		if (unlikely(retval != map->m_len)) {
--			ext4_warning(inode->i_sb,
--				     "ES len assertion failed for inode "
--				     "%lu: retval %d != map->m_len %d",
--				     inode->i_ino, retval, map->m_len);
--			WARN_ON(1);
--		}
--
--		status = map->m_flags & EXT4_MAP_UNWRITTEN ?
--				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
--		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
--				      map->m_pblk, status);
--		up_read(&EXT4_I(inode)->i_data_sem);
--		return retval;
--	}
-+		retval = ext4_map_query_blocks(NULL, inode, map);
- 	up_read(&EXT4_I(inode)->i_data_sem);
-+	if (retval)
-+		return retval;
- 
- add_delayed:
- 	down_write(&EXT4_I(inode)->i_data_sem);
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+old mode 100755
+new mode 100644
 -- 
 2.43.0
 
