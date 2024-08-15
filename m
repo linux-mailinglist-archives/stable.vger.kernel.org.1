@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94D1952F90
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034319531D9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50B691F213E3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FE1C1F24706
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325751A2C11;
-	Thu, 15 Aug 2024 13:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AE419D891;
+	Thu, 15 Aug 2024 13:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWFW0xJG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxDLh6g3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB37B1A00F1;
-	Thu, 15 Aug 2024 13:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6877DA7D;
+	Thu, 15 Aug 2024 13:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728818; cv=none; b=DmE3+YKc7iHDrqz+aHf+hqC4TS+iz0WNqMlD3kQLaon98TRaeLlLH41dPdBVeZQVqZuABWCDfkMv+G22ht05zB3Krj9SSVykUUBIOPFRNjwZKAgNpupEBeF8ZPVI7MPXF9S2S3z0opcK6Z8jPliBP1SHZAgDgQLDbhc4ccQZxcE=
+	t=1723730345; cv=none; b=qXGDgP76eJn4QaKF75XkTiqvjBDEYCDtiMUndVFbVmoEEthOEnhbCfvRNfOO1id76oHFzqZgARqlyLCP0PgtOLzjODtGE3WttBHldgsBn0kCtTBXCZH6C7iO7Az+H0k3tSaf8PuOxZocPjYNxBmH6/BHZK5VtVfoRMPHyircMnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728818; c=relaxed/simple;
-	bh=QZTaewZ6tE+lztpDoLuCehM26bciG6mgYmokH82t55s=;
+	s=arc-20240116; t=1723730345; c=relaxed/simple;
+	bh=kxkOzHAQcUOVVDXg03LLTRUQUd/m8/MOh/NVc+KoSvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmmCD83OEG4KtzU073aYF8w5Y4ysaPEh3S4LnG3044K9Gg1C1w5kQoeVsqf9uK4Q8W/I6ZkgcnzHSRjmV4N3IKYX9i8Ek75WFu86u4COHuR2yr5Br1TeksgODwu2Du6PM1fp0uvRKN6bButJ44nleOL7Gk4fKOJivEQuhKSoO3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWFW0xJG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6F9C4AF0C;
-	Thu, 15 Aug 2024 13:33:37 +0000 (UTC)
+	 MIME-Version; b=RdU26Qaq8lwr+lSIu9J3lwG4wTSAKUQGeO+XMSEO4nFcLubX+witN54Zg7obwbH7Gehd5V6OpeHlfUMGB7cAPR+Dkm7XT4FHO/+1t0myifIPXo2uZeGxrqok+B5fcoskMGgu3T7KoQIKE3vIsBirWPi1rsh/b21OfKyOWluXk5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxDLh6g3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DDEC32786;
+	Thu, 15 Aug 2024 13:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728817;
-	bh=QZTaewZ6tE+lztpDoLuCehM26bciG6mgYmokH82t55s=;
+	s=korg; t=1723730345;
+	bh=kxkOzHAQcUOVVDXg03LLTRUQUd/m8/MOh/NVc+KoSvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWFW0xJGbkdV2JIEmsJyjR1WxQamegOrpZSQJHuS8jwqO0nTFHTj46209AwoqLVRo
-	 QIMOvtRzedX6/nJcroFgNsG0C4Msi5raZb4TUigByHhIXCwmO2I5h8ymZe+VtUQe8v
-	 Ivua7fDVvgNfJL0fzJfYONXC7gLrwB47P3rmh3lI=
+	b=nxDLh6g3jhR821ufm6FG3vZR3/yWqcub5OEUPN6pbftEZT/TBW2mJ0GpoqQrJuSKl
+	 4qikWvYT4poNwR8COccfG7woEgMeQB6aijbK1bTKOXwr7wzoWbzvydoYXbCR7Fsy/U
+	 G2AlF77Rukkgv/ArqtKoNUlhovNKglpwbbiB8p3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 120/196] remoteproc: imx_rproc: ignore mapping vdev regions
-Date: Thu, 15 Aug 2024 15:23:57 +0200
-Message-ID: <20240815131856.668072553@linuxfoundation.org>
+Subject: [PATCH 5.15 380/484] drm/amdgpu/pm: Fix the null pointer dereference in apply_state_adjust_rules
+Date: Thu, 15 Aug 2024 15:23:58 +0200
+Message-ID: <20240815131956.123870247@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 8f2d8961640f0346cbe892273c3260a0d30c1931 ]
+[ Upstream commit d19fb10085a49b77578314f69fff21562f7cd054 ]
 
-vdev regions are vdev0vring0, vdev0vring1, vdevbuffer and similar.
-They are handled by remoteproc common code, no need to map in imx
-rproc driver.
+Check the pointer value to fix potential null pointer
+dereference
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Link: https://lore.kernel.org/r/1615029865-23312-10-git-send-email-peng.fan@oss.nxp.com
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Stable-dep-of: 2fa26ca8b786 ("remoteproc: imx_rproc: Skip over memory region when node value is NULL")
+Acked-by: Yang Wang<kevinyang.wang@amd.com>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_rproc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c    |  7 +++++--
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c    | 14 ++++++++------
+ .../gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c  |  7 +++++--
+ 3 files changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 54c07fd3f2042..99d1a90ea084a 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -289,6 +289,9 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
- 		struct resource res;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 2451cec031dda..9c7c3c06327d9 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -3275,8 +3275,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 			const struct pp_power_state *current_ps)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+-	struct smu7_power_state *smu7_ps =
+-				cast_phw_smu7_power_state(&request_ps->hardware);
++	struct smu7_power_state *smu7_ps;
+ 	uint32_t sclk;
+ 	uint32_t mclk;
+ 	struct PP_Clocks minimum_clocks = {0};
+@@ -3293,6 +3292,10 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 	uint32_t latency;
+ 	bool latency_allowed = false;
  
- 		node = of_parse_phandle(np, "memory-region", a);
-+		/* Not map vdev region */
-+		if (!strcmp(node->name, "vdev"))
-+			continue;
- 		err = of_address_to_resource(node, 0, &res);
- 		if (err) {
- 			dev_err(dev, "unable to resolve memory region\n");
++	smu7_ps = cast_phw_smu7_power_state(&request_ps->hardware);
++	if (!smu7_ps)
++		return -EINVAL;
++
+ 	data->battery_state = (PP_StateUILabel_Battery ==
+ 			request_ps->classification.ui_label);
+ 	data->mclk_ignore_signal = false;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+index 03bf8f0692228..f0f8ebffd9f2f 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+@@ -1051,16 +1051,18 @@ static int smu8_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 				struct pp_power_state  *prequest_ps,
+ 			const struct pp_power_state *pcurrent_ps)
+ {
+-	struct smu8_power_state *smu8_ps =
+-				cast_smu8_power_state(&prequest_ps->hardware);
+-
+-	const struct smu8_power_state *smu8_current_ps =
+-				cast_const_smu8_power_state(&pcurrent_ps->hardware);
+-
++	struct smu8_power_state *smu8_ps;
++	const struct smu8_power_state *smu8_current_ps;
+ 	struct smu8_hwmgr *data = hwmgr->backend;
+ 	struct PP_Clocks clocks = {0, 0, 0, 0};
+ 	bool force_high;
+ 
++	smu8_ps = cast_smu8_power_state(&prequest_ps->hardware);
++	smu8_current_ps = cast_const_smu8_power_state(&pcurrent_ps->hardware);
++
++	if (!smu8_ps || !smu8_current_ps)
++		return -EINVAL;
++
+ 	smu8_ps->need_dfs_bypass = true;
+ 
+ 	data->battery_state = (PP_StateUILabel_Battery == prequest_ps->classification.ui_label);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index e6336654c5655..aba8904ac75f7 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3237,8 +3237,7 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 			const struct pp_power_state *current_ps)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+-	struct vega10_power_state *vega10_ps =
+-				cast_phw_vega10_power_state(&request_ps->hardware);
++	struct vega10_power_state *vega10_ps;
+ 	uint32_t sclk;
+ 	uint32_t mclk;
+ 	struct PP_Clocks minimum_clocks = {0};
+@@ -3256,6 +3255,10 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 	uint32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
+ 	uint32_t latency;
+ 
++	vega10_ps = cast_phw_vega10_power_state(&request_ps->hardware);
++	if (!vega10_ps)
++		return -EINVAL;
++
+ 	data->battery_state = (PP_StateUILabel_Battery ==
+ 			request_ps->classification.ui_label);
+ 
 -- 
 2.43.0
 
