@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-69150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E609535AE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8F395344F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F9291F2717A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ACE828A14D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC9C1A01B6;
-	Thu, 15 Aug 2024 14:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89641A705B;
+	Thu, 15 Aug 2024 14:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlp5zHab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spf/2k+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D871A00CE;
-	Thu, 15 Aug 2024 14:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E3E1A2C11;
+	Thu, 15 Aug 2024 14:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732832; cv=none; b=sQxq4ZpMkIEHxtFaFkal5sVQYdY68olPmOQruFBtj/7l/d3kUjhzk5hCQ2lUpZp7ZbHZsKkOocAQ6N5Gs2gs5yJ966PdUFkEBuOmUu8+2TCk4UV+CSNi1yL15PQEmpXLtPaEL7SEZDc2OqAGtbhyl7gvYjkpRbUmH81OBjFdxgU=
+	t=1723731865; cv=none; b=RRV1KeD9YNaDcb6RANayY0DLRT38Cg7WuD6Ig9/3efrrQuoKTThE4p/OaqupSCyHm68SvvNmUewEZeBR0Bdpyyzayd86RgAjHQoSRpT5SN1edrsvg0MrZK5Fm9O7WCOy6ouX3RzkMUwMkb01asAuTdUOMYEyqZqc/g5LaTkIEqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732832; c=relaxed/simple;
-	bh=x07Sem0VZX64xXKetQdtnjzxwhiG4uSEe3JadiZBigU=;
+	s=arc-20240116; t=1723731865; c=relaxed/simple;
+	bh=PL0Zb5h2hA6pi0t8odArRtCu6LKokH+O+MiDhY/5UsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PW+Ti8xYxY0sBUlMMnBExPmEPJohudcXWmetxD0eu8N8i+wQ0efyHDs1mrMSK2caRIkX7Qts8Q7YZHXnJk9ThzezsKqsqeHW/ujNTW3y+k4k5aBbD9EPVE6u8Mmyz81EYvinwtljMlKOB8RjDuSFpnU/cQeh5yl1BiSlkFOhOBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlp5zHab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82146C4AF0C;
-	Thu, 15 Aug 2024 14:40:31 +0000 (UTC)
+	 MIME-Version; b=fLxZh51pM8aLuChmxrSgEjjBB4uEW/ezijCDVprM6bjUz+EdjGHj90yZZQF+1HeYsuRDwRiUaoF0ACQkZxRB9K//it+pz7qKkKNhlvFGduM2Eb7MXQRbXYwvdHSF+6HGVPeL7J0A6r0NsNyOkNnNZdgms5f6p/sqttAE20Ja2dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spf/2k+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBF6C4AF0C;
+	Thu, 15 Aug 2024 14:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732831;
-	bh=x07Sem0VZX64xXKetQdtnjzxwhiG4uSEe3JadiZBigU=;
+	s=korg; t=1723731865;
+	bh=PL0Zb5h2hA6pi0t8odArRtCu6LKokH+O+MiDhY/5UsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlp5zHabqDDKukp+eBBbWY8EwEE76znlSJYQqykSOOuxAJ8w2MTtlrcIQTsTYOJdK
-	 dDMOj6Il0Ffk7NSQIyidnTqGlprMcMOaYjHMSn0iXCcxFV20MrdIykUVrMd0f+N+iQ
-	 ldPsuqAuvLhlhxhi5rrDuo/s1wBG3F7GYwx6vaaY=
+	b=spf/2k+jW0IE0jWoSYnOTP+mWkPvSEXSGi/TBuEW7vJa+DJ1cGpCKUWk/vfafY2/P
+	 ddPRsFtDfS8FvFW3PHji6T7IL9iugL3jh5/EC6GYgJ7l5wgz9pOCmtda5JyWiIgek2
+	 129dLJ0LyvSOn/G1KG9rwYCs8+ttxK7uVaLbpYvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 300/352] ALSA: usb-audio: Re-add ScratchAmp quirk entries
+	Chris Wulff <crwulff@gmail.com>
+Subject: [PATCH 5.4 233/259] usb: gadget: core: Check for unset descriptor
 Date: Thu, 15 Aug 2024 15:26:06 +0200
-Message-ID: <20240815131931.057669277@linuxfoundation.org>
+Message-ID: <20240815131911.775028541@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Chris Wulff <crwulff@gmail.com>
 
-[ Upstream commit 03898691d42e0170e7d00f07cbe21ce0e9f3a8fa ]
+commit 973a57891608a98e894db2887f278777f564de18 upstream.
 
-At the code refactoring of USB-audio quirk handling, I assumed that
-the quirk entries of Stanton ScratchAmp devices were only about the
-device name, and moved them completely into the rename table.
-But it seems that the device requires the quirk entry so that it's
-probed by the driver itself.
+Make sure the descriptor has been set before looking at maxpacket.
+This fixes a null pointer panic in this case.
 
-This re-adds back the quirk entries of ScratchAmp, but in a
-minimalistic manner.
+This may happen if the gadget doesn't properly set up the endpoint
+for the current speed, or the gadget descriptors are malformed and
+the descriptor for the speed/endpoint are not found.
 
-Fixes: 5436f59bc5bc ("ALSA: usb-audio: Move device rename and profile quirks to an internal table")
-Link: https://patch.msgid.link/20240808081803.22300-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No current gadget driver is known to have this problem, but this
+may cause a hard-to-find bug during development of new gadgets.
+
+Fixes: 54f83b8c8ea9 ("USB: gadget: Reject endpoints with 0 maxpacket value")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chris Wulff <crwulff@gmail.com>
+Link: https://lore.kernel.org/r/20240725010419.314430-2-crwulff@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks-table.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/gadget/udc/core.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 97fe2fadcafb3..8f2fb2ac7af67 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -2573,6 +2573,10 @@ YAMAHA_DEVICE(0x7010, "UB99"),
- 	}
- },
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -99,12 +99,10 @@ int usb_ep_enable(struct usb_ep *ep)
+ 		goto out;
  
-+/* Stanton ScratchAmp */
-+{ USB_DEVICE(0x103d, 0x0100) },
-+{ USB_DEVICE(0x103d, 0x0101) },
+ 	/* UDC drivers can't handle endpoints with maxpacket size 0 */
+-	if (usb_endpoint_maxp(ep->desc) == 0) {
+-		/*
+-		 * We should log an error message here, but we can't call
+-		 * dev_err() because there's no way to find the gadget
+-		 * given only ep.
+-		 */
++	if (!ep->desc || usb_endpoint_maxp(ep->desc) == 0) {
++		WARN_ONCE(1, "%s: ep%d (%s) has %s\n", __func__, ep->address, ep->name,
++			  (!ep->desc) ? "NULL descriptor" : "maxpacket 0");
 +
- /* Novation EMS devices */
- {
- 	USB_DEVICE_VENDOR_SPEC(0x1235, 0x0001),
--- 
-2.43.0
-
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
 
 
 
