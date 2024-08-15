@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A099953189
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01AD952F5A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E9EA1F21C7B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90BF7289351
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8367D19E7F6;
-	Thu, 15 Aug 2024 13:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AFF17C984;
+	Thu, 15 Aug 2024 13:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWeJsRUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3PPglzg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BB918D64F;
-	Thu, 15 Aug 2024 13:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29477DA78;
+	Thu, 15 Aug 2024 13:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730117; cv=none; b=tEz6wuHaV6moRZSgtJlM5VFsdt1iaKQ6MAAaDC3jyrCH2GARPe8rK+kdk5sZ+sFMBupThC+yw3/fXZCXbeifD+QiAzCqLI4mH9iM4xoJfLClCrHKUYrvZD0/Xf+07b5SQdIc5KOWY+gYEBtYCtHCnyl8/++kxj6426UV+tu4q+c=
+	t=1723728697; cv=none; b=NuLpfCBmMScIlJRE2g6/K+YTTmckSImXGYQmtQ1AenCXosEmiP0NIT+vJZOSN0cWqEGteZJzNwmgTFNtXU3xgH97v095ZlpJw1ykv8a8dHCXxBn18WBCR2Iylcv1axrQTsPutf7+cQIFKGV2TOJR+eK/ScXGvAVbG2SqFrxb8wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730117; c=relaxed/simple;
-	bh=6kB96IIRnD/TiQ4SYVo6uH4dEaD27+N6rahOj6VdSHI=;
+	s=arc-20240116; t=1723728697; c=relaxed/simple;
+	bh=JAFot6l1nqIgwYSNg6IPKgyLAfxS9tzvHhTwupeJJjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=om+G36LBPkP7g+pQ+04qafj4lVK0XxzbzTx66apfu/q1dM1z7dddw2SXtVp8n3EBIPk3Q0ahtufIzUQmIlyQ5uHPsH7Svc6TevynffLRWR986Tyq7DFgJLqf+kVKMmbqZ3np8jNMKM7a2JypNObnFTvyGwGGqA+dXJ5YbrunLqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWeJsRUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9D8C32786;
-	Thu, 15 Aug 2024 13:55:16 +0000 (UTC)
+	 MIME-Version; b=KkXtK6OjHvkQfiOj7nMx3kE6wUlKVpcRKbVtFMb5IpW+68DIUzfc0aCFPcHetJOBi+jqW+WK/nF+4ZoPifJPXHvWQhzTdBOn4xQ+zwHtEBN0jX4/JUzAR3fNnGMQI+XlfCkFzreYECtK9gaUp2GsNpmhXieJ43KBTZkXctHe54w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3PPglzg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F328BC32786;
+	Thu, 15 Aug 2024 13:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730117;
-	bh=6kB96IIRnD/TiQ4SYVo6uH4dEaD27+N6rahOj6VdSHI=;
+	s=korg; t=1723728697;
+	bh=JAFot6l1nqIgwYSNg6IPKgyLAfxS9tzvHhTwupeJJjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VWeJsRUh3VlZgNK7qcGgYwIIg3BSKk0cPN4bAvlyasgAiw61SlC1qClmHa0NYpVtp
-	 mrxhpJOinzgWZSeDictSAvi1PazFFEbciPMuNhY/pukZ2MMrLMF7Qsx6J28900r4fQ
-	 QCo5SEWc4BAFS9dB6pFK6pYBKVvKqOhBZ4zCy4Sk=
+	b=O3PPglzg0QbE4y/deoG06rfvPowTkoE5jZ7N60tCtMF4kfcifaCTD0PD7EY2bd6LI
+	 C+Ys/M/y0RKJiqoIaCYY0z/Y8BpppZFq96gKBQ+N6gVm1eV0W+yWVtILl/OwwzMZ0Q
+	 kaJEZrXKlC+9c2xdmy72bCAtKUjf59pfdyEq/+Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 309/484] ext4: check the extent status again before inserting delalloc block
+Subject: [PATCH 4.19 050/196] powerpc/xmon: Fix disassembly CPU feature checks
 Date: Thu, 15 Aug 2024 15:22:47 +0200
-Message-ID: <20240815131953.345044793@linuxfoundation.org>
+Message-ID: <20240815131853.996574020@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 0ea6560abb3bac1ffcfa4bf6b2c4d344fdc27b3c ]
+[ Upstream commit 14196e47c5ffe32af7ed5a51c9e421c5ea5bccce ]
 
-ext4_da_map_blocks looks up for any extent entry in the extent status
-tree (w/o i_data_sem) and then the looks up for any ondisk extent
-mapping (with i_data_sem in read mode).
+In the xmon disassembly code there are several CPU feature checks to
+determine what dialects should be passed to the disassembler. The
+dialect controls which instructions the disassembler will recognise.
 
-If it finds a hole in the extent status tree or if it couldn't find any
-entry at all, it then takes the i_data_sem in write mode to add a da
-entry into the extent status tree. This can actually race with page
-mkwrite & fallocate path.
+Unfortunately the checks are incorrect, because instead of passing a
+single CPU feature they are passing a mask of feature bits.
 
-Note that this is ok between
-1. ext4 buffered-write path v/s ext4_page_mkwrite(), because of the
-   folio lock
-2. ext4 buffered write path v/s ext4 fallocate because of the inode
-   lock.
+For example the code:
 
-But this can race between ext4_page_mkwrite() & ext4 fallocate path
+  if (cpu_has_feature(CPU_FTRS_POWER5))
+      dialect |= PPC_OPCODE_POWER5;
 
-ext4_page_mkwrite()             ext4_fallocate()
- block_page_mkwrite()
-  ext4_da_map_blocks()
-   //find hole in extent status tree
-                                 ext4_alloc_file_blocks()
-                                  ext4_map_blocks()
-                                   //allocate block and unwritten extent
-   ext4_insert_delayed_block()
-    ext4_da_reserve_space()
-     //reserve one more block
-    ext4_es_insert_delayed_block()
-     //drop unwritten extent and add delayed extent by mistake
+Is trying to check if the system is running on a Power5 CPU. But
+CPU_FTRS_POWER5 is a mask of *all* the feature bits that are enabled on
+a Power5.
 
-Then, the delalloc extent is wrong until writeback and the extra
-reserved block can't be released any more and it triggers below warning:
+In practice the test will always return true for any 64-bit CPU, because
+at least one bit in the mask will be present in the CPU_FTRS_ALWAYS
+mask.
 
- EXT4-fs (pmem2): Inode 13 (00000000bbbd4d23): i_reserved_data_blocks(1) not cleared!
+Similarly for all the other checks against CPU_FTRS_xx masks.
 
-Fix the problem by looking up extent status tree again while the
-i_data_sem is held in write mode. If it still can't find any entry, then
-we insert a new da entry into the extent status tree.
+Rather than trying to match the disassembly behaviour exactly to the
+current CPU, just differentiate between 32-bit and 64-bit, and Altivec,
+VSX and HTM.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240517124005.347221-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+That will cause some instructions to be shown in disassembly even
+on a CPU that doesn't support them, but that's OK, objdump -d output
+has the same behaviour, and if anything it's less confusing than some
+instructions not being disassembled.
+
+Fixes: 897f112bb42e ("[POWERPC] Import updated version of ppc disassembly code for xmon")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240509121248.270878-2-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/powerpc/xmon/ppc-dis.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 403f88662bc30..e765c0d05fea2 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1744,6 +1744,7 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 		if (ext4_es_is_hole(&es))
- 			goto add_delayed;
+diff --git a/arch/powerpc/xmon/ppc-dis.c b/arch/powerpc/xmon/ppc-dis.c
+index 27f1e64150360..8f84e6502776b 100644
+--- a/arch/powerpc/xmon/ppc-dis.c
++++ b/arch/powerpc/xmon/ppc-dis.c
+@@ -133,32 +133,21 @@ int print_insn_powerpc (unsigned long insn, unsigned long memaddr)
+   bool insn_is_short;
+   ppc_cpu_t dialect;
  
-+found:
- 		/*
- 		 * Delayed extent could be allocated by fallocate.
- 		 * So we need to check it.
-@@ -1788,6 +1789,26 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+-  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON
+-            | PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_ALTIVEC;
++  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON;
  
- add_delayed:
- 	down_write(&EXT4_I(inode)->i_data_sem);
-+	/*
-+	 * Page fault path (ext4_page_mkwrite does not take i_rwsem)
-+	 * and fallocate path (no folio lock) can race. Make sure we
-+	 * lookup the extent status tree here again while i_data_sem
-+	 * is held in write mode, before inserting a new da entry in
-+	 * the extent status tree.
-+	 */
-+	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
-+		if (!ext4_es_is_hole(&es)) {
-+			up_write(&EXT4_I(inode)->i_data_sem);
-+			goto found;
-+		}
-+	} else if (!ext4_has_inline_data(inode)) {
-+		retval = ext4_map_query_blocks(NULL, inode, map);
-+		if (retval) {
-+			up_write(&EXT4_I(inode)->i_data_sem);
-+			return retval;
-+		}
-+	}
-+
- 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
- 	up_write(&EXT4_I(inode)->i_data_sem);
- 	if (retval)
+-  if (cpu_has_feature(CPU_FTRS_POWER5))
+-    dialect |= PPC_OPCODE_POWER5;
++  if (IS_ENABLED(CONFIG_PPC64))
++    dialect |= PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_CELL |
++	PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7 | PPC_OPCODE_POWER8 |
++	PPC_OPCODE_POWER9;
+ 
+-  if (cpu_has_feature(CPU_FTRS_CELL))
+-    dialect |= (PPC_OPCODE_CELL | PPC_OPCODE_ALTIVEC);
++  if (cpu_has_feature(CPU_FTR_TM))
++    dialect |= PPC_OPCODE_HTM;
+ 
+-  if (cpu_has_feature(CPU_FTRS_POWER6))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_ALTIVEC);
++  if (cpu_has_feature(CPU_FTR_ALTIVEC))
++    dialect |= PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2;
+ 
+-  if (cpu_has_feature(CPU_FTRS_POWER7))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
+-                | PPC_OPCODE_ALTIVEC | PPC_OPCODE_VSX);
+-
+-  if (cpu_has_feature(CPU_FTRS_POWER8))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
+-		| PPC_OPCODE_POWER8 | PPC_OPCODE_HTM
+-		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2 | PPC_OPCODE_VSX);
+-
+-  if (cpu_has_feature(CPU_FTRS_POWER9))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
+-		| PPC_OPCODE_POWER8 | PPC_OPCODE_POWER9 | PPC_OPCODE_HTM
+-		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2
+-		| PPC_OPCODE_VSX | PPC_OPCODE_VSX3);
++  if (cpu_has_feature(CPU_FTR_VSX))
++    dialect |= PPC_OPCODE_VSX | PPC_OPCODE_VSX3;
+ 
+   /* Get the major opcode of the insn.  */
+   opcode = NULL;
 -- 
 2.43.0
 
