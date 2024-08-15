@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0439534E0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE4295337B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C72BA289538
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3357B213C6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29EFC19FA99;
-	Thu, 15 Aug 2024 14:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280DE1AC437;
+	Thu, 15 Aug 2024 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyviLQSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpX7BNCt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2AD63D5;
-	Thu, 15 Aug 2024 14:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A261A256C;
+	Thu, 15 Aug 2024 14:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732281; cv=none; b=Ji2e4PqVyZeb3N9so9+Q7/Q2E+MlfUfpDv+NraNJethZnfvL8bk/NTsG7g+nzhN6m1dR2aoKXcXZqdraOVrJxlZFz1eI8dbKyvZpuw5X2ympXqsQPpx8D8hvEAops2o2LasxV/k+uGnZNekIJ2r1k9HcPICUFEn7TEL40Hplxl0=
+	t=1723731334; cv=none; b=dAuM08aNFaF5Q9rHYknpz2HbWndBPlrEbsNRv5kxwCOYaAxU5VmiSzrmjT5+gb94inW6HKsbRgFRkgaTiIuyv/9Tafsm9VWs/2JWfIz5tmnswCMRDyyNo6zwwoKWSw+qq31hAFnQul1doFfLII/Wj135PoCgO0VQX5wbK/INYUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732281; c=relaxed/simple;
-	bh=gOrxdRKLrx1CVJqMW9aLAIIRCGf0itMZzPX4O52BZX4=;
+	s=arc-20240116; t=1723731334; c=relaxed/simple;
+	bh=WA57wxS3/aDuMA7CnvZt70qa2x5afEaYro3Jj/4hf7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oy0N7+dlLO7Xy0QepkfxarX87qdUQXjupgPZFZRpMj0Oas4snvZLsSckSqzazgKtBUqhvmGTyN+Zt154r9Fsl76ZxtA1IrJC/vi2MeCQiELyHB/wIc3JvClbb9VytJ3LZ1WX323nvT2qYAHsNvFfLoJfuoKiRFX03EtEeBDnylY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyviLQSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB99C32786;
-	Thu, 15 Aug 2024 14:31:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e5che3sngcS5mUAsrii+ItFImODTphn0/YHv2FjDIO4UC1bQSFJHPTTGHab6YRKZJaP/tK7vHgtogH2lviKW2DvkVtDowJ4OiHEFu3AcZic8bpjQnSkv0OJJLfPrWV7zYwGFf+iUiqcU/Km/fdPTgPltpkRV4oxQWZ8EekgDUsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpX7BNCt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC05DC32786;
+	Thu, 15 Aug 2024 14:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732280;
-	bh=gOrxdRKLrx1CVJqMW9aLAIIRCGf0itMZzPX4O52BZX4=;
+	s=korg; t=1723731334;
+	bh=WA57wxS3/aDuMA7CnvZt70qa2x5afEaYro3Jj/4hf7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AyviLQSLreqxz/5KiIMIp2L5Z9CIhWduJ7AIBnluBZz5LoEoIo9rjMOlQzN/NiUYs
-	 Nd19G1xZueWY9OmhN+/qhVn+iIbsay7JhrBS/P9whbBM1y5K5tVpoMNtnEjJcv3aNP
-	 9n63j/NttDCQ+mvu6D0os6a6JgtryFZzUrO/fu9U=
+	b=qpX7BNCtG7FrbtHu12ajKzrhSCNEgSa0/KDQxzbxi06B/GkYFZqSgIN653fWofmXU
+	 0v7K1/PWackumoVqNiS9cPhXC77ic7eZWbgdC+19+02XGFdQBgsC8EZizf0znGCAN5
+	 NIdKSh099j0HuKqj6ol8Iy68avjA8JXOTqGE69Y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.10 131/352] media: venus: fix use after free in vdec_close
-Date: Thu, 15 Aug 2024 15:23:17 +0200
-Message-ID: <20240815131924.320388606@linuxfoundation.org>
+	Andreas Larsson <andreas@gaisler.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 065/259] sparc64: Fix incorrect function signature and add prototype for prom_cif_init
+Date: Thu, 15 Aug 2024 15:23:18 +0200
+Message-ID: <20240815131905.316778859@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +59,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Andreas Larsson <andreas@gaisler.com>
 
-commit a0157b5aa34eb43ec4c5510f9c260bbb03be937e upstream.
+[ Upstream commit a6c3ea1ec96307dbfbb2f16d96c674c5cc80f445 ]
 
-There appears to be a possible use after free with vdec_close().
-The firmware will add buffer release work to the work queue through
-HFI callbacks as a normal part of decoding. Randomly closing the
-decoder device from userspace during normal decoding can incur
-a read after free for inst.
+Remove the unused cif_stack argument and add a protype in oplib_64.h
+Commit ef3e035c3a9b ("sparc64: Fix register corruption in top-most
+kernel stack frame during boot.") removed the cif_stack argument to
+prom_cif init in the declaration at the caller site and the usage of it
+within prom_cif_init, but not in the function signature of the function
+itself.
 
-Fix it by cancelling the work in vdec_close.
+This also fixes the following warning:
+arch/sparc/prom/p1275.c:52:6: warning: no previous prototype for ‘prom_cif_init’
 
-Cc: stable@vger.kernel.org
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ef3e035c3a9b ("sparc64: Fix register corruption in top-most kernel stack frame during boot.")
+Link: https://lore.kernel.org/r/20240710094155.458731-3-andreas@gaisler.com
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/vdec.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/sparc/include/asm/oplib_64.h | 1 +
+ arch/sparc/prom/init_64.c         | 3 ---
+ arch/sparc/prom/p1275.c           | 2 +-
+ 3 files changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -1587,6 +1587,7 @@ static int vdec_close(struct file *file)
+diff --git a/arch/sparc/include/asm/oplib_64.h b/arch/sparc/include/asm/oplib_64.h
+index a67abebd43592..1b86d02a84556 100644
+--- a/arch/sparc/include/asm/oplib_64.h
++++ b/arch/sparc/include/asm/oplib_64.h
+@@ -247,6 +247,7 @@ void prom_sun4v_guest_soft_state(void);
+ int prom_ihandle2path(int handle, char *buffer, int bufsize);
  
- 	vdec_pm_get(inst);
+ /* Client interface level routines. */
++void prom_cif_init(void *cif_handler);
+ void p1275_cmd_direct(unsigned long *);
  
-+	cancel_work_sync(&inst->delayed_process_work);
- 	v4l2_m2m_ctx_release(inst->m2m_ctx);
- 	v4l2_m2m_release(inst->m2m_dev);
- 	vdec_ctrl_deinit(inst);
+ #endif /* !(__SPARC64_OPLIB_H) */
+diff --git a/arch/sparc/prom/init_64.c b/arch/sparc/prom/init_64.c
+index 103aa91043185..f7b8a1a865b8f 100644
+--- a/arch/sparc/prom/init_64.c
++++ b/arch/sparc/prom/init_64.c
+@@ -26,9 +26,6 @@ phandle prom_chosen_node;
+  * routines in the prom library.
+  * It gets passed the pointer to the PROM vector.
+  */
+-
+-extern void prom_cif_init(void *);
+-
+ void __init prom_init(void *cif_handler)
+ {
+ 	phandle node;
+diff --git a/arch/sparc/prom/p1275.c b/arch/sparc/prom/p1275.c
+index 889aa602f8d86..51c3f984bbf72 100644
+--- a/arch/sparc/prom/p1275.c
++++ b/arch/sparc/prom/p1275.c
+@@ -49,7 +49,7 @@ void p1275_cmd_direct(unsigned long *args)
+ 	local_irq_restore(flags);
+ }
+ 
+-void prom_cif_init(void *cif_handler, void *cif_stack)
++void prom_cif_init(void *cif_handler)
+ {
+ 	p1275buf.prom_cif_handler = (void (*)(long *))cif_handler;
+ }
+-- 
+2.43.0
+
 
 
 
