@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06CAF952F63
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2159531B8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9DEB28996C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51DE28B71B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD16819DF9D;
-	Thu, 15 Aug 2024 13:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D1D19DF9C;
+	Thu, 15 Aug 2024 13:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0dPyEm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mxqam55c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABED18D630;
-	Thu, 15 Aug 2024 13:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA00719DF58;
+	Thu, 15 Aug 2024 13:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728724; cv=none; b=BvMDz+C3GcYUb4AfQ0lO+GhPN60egZy9Hi3RtoJ9Y6RNXtL2b3sDldrOaPFYBk3n6DIr7U4R6S4jRaaaYRRT9Zz8ZtShCIuulPenMxIxTcymZm/m+OtbXGPup0nYe1ky6/O4gLJ+9FXYNnowblCekm3trhLE4Ytau/tY/DB9Uy0=
+	t=1723730243; cv=none; b=Ejv7Px9G9E/h8+55EK/1jFzvX+ZFpRIvehioOMkFqq98zS1Q0Fnysi06LYn6MvUcEIC1uNJhzkPyns4Bf5CWI4d1Qxxu+CPILVaDvhrfUZesAEo/oBxiC+AF6RAmPZgW8bUA6QqtdNWI9VimprhIluOSkgK6uqy9loqFscr1QF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728724; c=relaxed/simple;
-	bh=QW8Sk67inKjZPoWIMwIAHgSUrNr/AxhXpdgN+iO+ou4=;
+	s=arc-20240116; t=1723730243; c=relaxed/simple;
+	bh=QzxffVVHF5NbYd4SHa/JzNbT2iprt19zMSfWzH2kMvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUQxjdXICP5ilBywl7eU5F6coN7+aePzkwmuhOnvl1KGRBmunLMmJP/pYpBeSIff3LHLIq1Q7X/LPv6kSra5bQEuArkBbfR4wnG8bbNurtOsP2frgm8XLumKpU/mA6ujNtjY6o5iDJlG1bo3ZdWccw+5iMWKwc9t1v6rYfzoR0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0dPyEm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D96C32786;
-	Thu, 15 Aug 2024 13:32:03 +0000 (UTC)
+	 MIME-Version; b=K0t+rQ1SHmYIGEIqmUaCWQtbN91pMeA7zEQxbDkgMZJhtbEDx16dRZyMNqZlq2jCa9WMuxBdU1D4F1sEfHxUDjleCkFa2MZolVIlH7wMm3XV6BEWz9X4vLCOjG7Ii+mYchPbLg7KQ1UrEt7c9vv+eUqNPvcokAT7m8J/WUzMLJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mxqam55c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5818CC32786;
+	Thu, 15 Aug 2024 13:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728724;
-	bh=QW8Sk67inKjZPoWIMwIAHgSUrNr/AxhXpdgN+iO+ou4=;
+	s=korg; t=1723730243;
+	bh=QzxffVVHF5NbYd4SHa/JzNbT2iprt19zMSfWzH2kMvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0dPyEm+KvjEr9RUfkoEiRKrXJhYJqZePzZJDLN4yftZrC0t9G0O/xPP1jzxR3/ed
-	 FWrNRMtflxtxZcZH6pEabE+jV44V2o5qbDgC8w+8O7a+NwsjO+FRSyiwIKlS/Yg+wp
-	 BkRkQNIP/eJLQHDo//58Leg6Du/yVMufH7fzEOfM=
+	b=Mxqam55cPaiRmg6XeYCo4roYjNXQSKR9D7RLup63nQ2kHax1HR472/mX/3+bgLOwK
+	 RjSaaXGwPGnvEFXKGgnz0pwanHjUECJg77/LFV3Cr4HBHBEVOiWC9VVXfoJjp/63PC
+	 LCA5BTZU6Kig+G+Apc8V6oXeYwEjDFzPoYutdP/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Arjan van de Ven <arjan@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 090/196] watchdog/perf: properly initialize the turbo mode timestamp and rearm counter
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>
+Subject: [PATCH 5.15 349/484] drm/vmwgfx: Fix a deadlock in dma buf fence polling
 Date: Thu, 15 Aug 2024 15:23:27 +0200
-Message-ID: <20240815131855.525292168@linuxfoundation.org>
+Message-ID: <20240815131954.906187365@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-commit f944ffcbc2e1c759764850261670586ddf3bdabb upstream.
+commit e58337100721f3cc0c7424a18730e4f39844934f upstream.
 
-For systems on which the performance counter can expire early due to turbo
-modes the watchdog handler has a safety net in place which validates that
-since the last watchdog event there has at least 4/5th of the watchdog
-period elapsed.
+Introduce a version of the fence ops that on release doesn't remove
+the fence from the pending list, and thus doesn't require a lock to
+fix poll->fence wait->fence unref deadlocks.
 
-This works reliably only after the first watchdog event because the per
-CPU variable which holds the timestamp of the last event is never
-initialized.
+vmwgfx overwrites the wait callback to iterate over the list of all
+fences and update their status, to do that it holds a lock to prevent
+the list modifcations from other threads. The fence destroy callback
+both deletes the fence and removes it from the list of pending
+fences, for which it holds a lock.
 
-So a first spurious event will validate against a timestamp of 0 which
-results in a delta which is likely to be way over the 4/5 threshold of the
-period.  As this might happen before the first watchdog hrtimer event
-increments the watchdog counter, this can lead to false positives.
+dma buf polling cb unrefs a fence after it's been signaled: so the poll
+calls the wait, which signals the fences, which are being destroyed.
+The destruction tries to acquire the lock on the pending fences list
+which it can never get because it's held by the wait from which it
+was called.
 
-Fix this by initializing the timestamp before enabling the hardware event.
-Reset the rearm counter as well, as that might be non zero after the
-watchdog was disabled and reenabled.
+Old bug, but not a lot of userspace apps were using dma-buf polling
+interfaces. Fix those, in particular this fixes KDE stalls/deadlock.
 
-Link: https://lkml.kernel.org/r/87frsfu15a.ffs@tglx
-Fixes: 7edaeb6841df ("kernel/watchdog: Prevent false positives with turbo modes")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Arjan van de Ven <arjan@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 2298e804e96e ("drm/vmwgfx: rework to new fence interface, v2")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.2+
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240722184313.181318-2-zack.rusin@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/watchdog_hld.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c |   17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
---- a/kernel/watchdog_hld.c
-+++ b/kernel/watchdog_hld.c
-@@ -91,11 +91,15 @@ static bool watchdog_check_timestamp(voi
- 	__this_cpu_write(last_timestamp, now);
- 	return true;
- }
--#else
--static inline bool watchdog_check_timestamp(void)
-+
-+static void watchdog_init_timestamp(void)
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+@@ -32,7 +32,6 @@
+ #define VMW_FENCE_WRAP (1 << 31)
+ 
+ struct vmw_fence_manager {
+-	int num_fence_objects;
+ 	struct vmw_private *dev_priv;
+ 	spinlock_t lock;
+ 	struct list_head fence_list;
+@@ -127,13 +126,13 @@ static void vmw_fence_obj_destroy(struct
  {
--	return true;
-+	__this_cpu_write(nmi_rearmed, 0);
-+	__this_cpu_write(last_timestamp, ktime_get_mono_fast_ns());
+ 	struct vmw_fence_obj *fence =
+ 		container_of(f, struct vmw_fence_obj, base);
+-
+ 	struct vmw_fence_manager *fman = fman_from_fence(fence);
+ 
+-	spin_lock(&fman->lock);
+-	list_del_init(&fence->head);
+-	--fman->num_fence_objects;
+-	spin_unlock(&fman->lock);
++	if (!list_empty(&fence->head)) {
++		spin_lock(&fman->lock);
++		list_del_init(&fence->head);
++		spin_unlock(&fman->lock);
++	}
+ 	fence->destroy(fence);
  }
-+#else
-+static inline bool watchdog_check_timestamp(void) { return true; }
-+static inline void watchdog_init_timestamp(void) { }
- #endif
  
- static struct perf_event_attr wd_hw_attr = {
-@@ -195,6 +199,7 @@ void hardlockup_detector_perf_enable(voi
- 	if (!atomic_fetch_inc(&watchdog_cpus))
- 		pr_info("Enabled. Permanently consumes one hw-PMU counter.\n");
+@@ -260,7 +259,6 @@ static const struct dma_fence_ops vmw_fe
+ 	.release = vmw_fence_obj_destroy,
+ };
  
-+	watchdog_init_timestamp();
- 	perf_event_enable(this_cpu_read(watchdog_ev));
- }
+-
+ /*
+  * Execute signal actions on fences recently signaled.
+  * This is done from a workqueue so we don't have to execute
+@@ -363,7 +361,6 @@ static int vmw_fence_obj_init(struct vmw
+ 		goto out_unlock;
+ 	}
+ 	list_add_tail(&fence->head, &fman->fence_list);
+-	++fman->num_fence_objects;
  
+ out_unlock:
+ 	spin_unlock(&fman->lock);
+@@ -411,7 +408,7 @@ static bool vmw_fence_goal_new_locked(st
+ 				      u32 passed_seqno)
+ {
+ 	u32 goal_seqno;
+-	struct vmw_fence_obj *fence;
++	struct vmw_fence_obj *fence, *next_fence;
+ 
+ 	if (likely(!fman->seqno_valid))
+ 		return false;
+@@ -421,7 +418,7 @@ static bool vmw_fence_goal_new_locked(st
+ 		return false;
+ 
+ 	fman->seqno_valid = false;
+-	list_for_each_entry(fence, &fman->fence_list, head) {
++	list_for_each_entry_safe(fence, next_fence, &fman->fence_list, head) {
+ 		if (!list_empty(&fence->seq_passed_actions)) {
+ 			fman->seqno_valid = true;
+ 			vmw_fence_goal_write(fman->dev_priv,
 
 
 
