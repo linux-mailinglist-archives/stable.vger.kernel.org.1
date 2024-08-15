@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-69088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522FC953560
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4421395324A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84C051C2520D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2FE6B23DF4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2321A01AE;
-	Thu, 15 Aug 2024 14:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB9B1A00DF;
+	Thu, 15 Aug 2024 14:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etcbuO32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgElZeHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC061A00EC;
-	Thu, 15 Aug 2024 14:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AEB44376;
+	Thu, 15 Aug 2024 14:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732628; cv=none; b=o2aTB5PM7RRSSxDMmOI1qXWf32zonY51Yk3caMoGTF2VjXlPCqBQ0JQFRVVKVpvivZO1QvhNPZGgyNgwJY3kFeVc95WYryLZe2nf+zNWiaUhHsvMjLogkKregKSLyGgCzbchJYHEseOcfw53G4NX/5sEGpjFSQdPAHAlHMZYIEo=
+	t=1723730556; cv=none; b=gq1CF5cZh/9qnFqWXcRD+JPB8ZJ/CDUvu649l9fL02nuFtpxReaFwnVn5lgfZjyTKVhFugFLwX1HW4iFOB/DeQTypOPM2xWnVUCL8DZW8tmerJqGWgrdiOjb6EQij/8LeKxlOfJG9qRt5qEzEcE/d2fcQbbh65spUDczQaJrlvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732628; c=relaxed/simple;
-	bh=8pSMzoYtEvLwBlwHtSE5Mz3eMCxqG3ZCfj1f8wGal6A=;
+	s=arc-20240116; t=1723730556; c=relaxed/simple;
+	bh=e421JMG2QkD386mC1/ilGUF34IyMEVQ4k/Zidb8B8ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1PjKR408bGup6VHSAzf3zsR6OEwYYg3H2ayoZN9Mk1lX/eOHCd1o4ciZRUDkSbznttLWCIEILbvXWyJPDrRIJ6UPgehO/Hi2QTY/EOgEhzg1vwJhjBlISuDeXxoYHPnpVGYwi8nO+7saLz799DAxonGjZ+IkaRNc/LAnoGBb30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etcbuO32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44F6C32786;
-	Thu, 15 Aug 2024 14:37:07 +0000 (UTC)
+	 MIME-Version; b=ZjbnUaO+mYnDf837akDX5Fv5BHKFY5BD2jAmytrmkQyh8/W8R/XiJ9kkUbIO56KOwyyNOHi2wo9laVtAKZobQEnGPixQX7W9TzLRH1uWuWW+lXtp5j12DaFZxMBwLJ5ZNpiWu6PVfvWI0VCoVptchEK+lRwwJnnEMb22HdzXEdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgElZeHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0B9C32786;
+	Thu, 15 Aug 2024 14:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732628;
-	bh=8pSMzoYtEvLwBlwHtSE5Mz3eMCxqG3ZCfj1f8wGal6A=;
+	s=korg; t=1723730556;
+	bh=e421JMG2QkD386mC1/ilGUF34IyMEVQ4k/Zidb8B8ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etcbuO32VkDRSJhd0/tDeRQCDeiYz22pfoIxvUAdfyCCnulQkvz5XA8i5LvBJACxP
-	 LCFxlu6TfTpg7l1adRLzfjNw3kNFdSOMZd9+LjWTDtRXeqgwoTVI736do4SRDuWd9B
-	 Zj8NV0s6rhcYr3kB29foNsCoT1jh5TquhopMGUsI=
+	b=ZgElZeHBe3s1lTYsol9SCGDLm0iVCHq43Yq47uhI9bPUXLeB6EOfdF4L2iQpha4B/
+	 nfSqf/YQDzT4NPCT6e0+8eRD6ygcwJyNbaCaEEK5fKXxuetIr+HEsNqP9iHfM7t5tx
+	 mgyxE25aRJNpcDRzdrYuqyXeQ9fC2hHh/EFdVqQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 237/352] net/mlx5e: Add a check for the return value from mlx5_port_set_eth_ptys
-Date: Thu, 15 Aug 2024 15:25:03 +0200
-Message-ID: <20240815131928.597114687@linuxfoundation.org>
+	Andi Kleen <ak@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.15 446/484] x86/mtrr: Check if fixed MTRRs exist before saving them
+Date: Thu, 15 Aug 2024 15:25:04 +0200
+Message-ID: <20240815131958.686299944@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Andi Kleen <ak@linux.intel.com>
 
-[ Upstream commit 3f8e82a020a5c22f9b791f4ac499b8e18007fbda ]
+commit 919f18f961c03d6694aa726c514184f2311a4614 upstream.
 
-Since the documentation for mlx5_toggle_port_link states that it should
-only be used after setting the port register, we add a check for the
-return value from mlx5_port_set_eth_ptys to ensure the register was
-successfully set before calling it.
+MTRRs have an obsolete fixed variant for fine grained caching control
+of the 640K-1MB region that uses separate MSRs. This fixed variant has
+a separate capability bit in the MTRR capability MSR.
 
-Fixes: 667daedaecd1 ("net/mlx5e: Toggle link only after modifying port parameters")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-9-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So far all x86 CPUs which support MTRR have this separate bit set, so it
+went unnoticed that mtrr_save_state() does not check the capability bit
+before accessing the fixed MTRR MSRs.
+
+Though on a CPU that does not support the fixed MTRR capability this
+results in a #GP.  The #GP itself is harmless because the RDMSR fault is
+handled gracefully, but results in a WARN_ON().
+
+Add the missing capability check to prevent this.
+
+Fixes: 2b1f6278d77c ("[PATCH] x86: Save the MTRRs of the BSP before booting an AP")
+Signed-off-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240808000244.946864-1-ak@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mtrr/mtrr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index d3817dd07e3dc..1fdb42899a9f3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -1155,7 +1155,12 @@ int mlx5e_ethtool_set_link_ksettings(struct mlx5e_priv *priv,
- 	if (!an_changes && link_modes == eproto.admin)
- 		goto out;
+--- a/arch/x86/kernel/cpu/mtrr/mtrr.c
++++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
+@@ -816,7 +816,7 @@ void mtrr_save_state(void)
+ {
+ 	int first_cpu;
  
--	mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
-+	err = mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
-+	if (err) {
-+		netdev_err(priv->netdev, "%s: failed to set ptys reg: %d\n", __func__, err);
-+		goto out;
-+	}
-+
- 	mlx5_toggle_port_link(mdev);
+-	if (!mtrr_enabled())
++	if (!mtrr_enabled() || !mtrr_state.have_fixed)
+ 		return;
  
- out:
--- 
-2.43.0
-
+ 	first_cpu = cpumask_first(cpu_online_mask);
 
 
 
