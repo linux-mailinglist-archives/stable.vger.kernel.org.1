@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-68699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF27F95338C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D34953506
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E54E1C24B56
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3633428710C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CD219EED4;
-	Thu, 15 Aug 2024 14:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D48063D5;
+	Thu, 15 Aug 2024 14:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSTQyR9U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DU/TovHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C82A1AC8BB;
-	Thu, 15 Aug 2024 14:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE1E14AD0A;
+	Thu, 15 Aug 2024 14:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731388; cv=none; b=FJcDDWhouW5pjKFNBf8kuxRGnkM5IXIpJqp863ICcYRv4d4JVZznyWCPNOK8fR/ETPoifdxaKfnfNgycykqLLCwbwcJJyIUChalGPhBdTBa0EdlcH7l9IXRYb2VqNbKC0xzMww5ZxoEuijzNRTXQ9Za1kBlIlVeFEzQv0YuVw8w=
+	t=1723732382; cv=none; b=XcrldDhQPzghs2+8asGY0aaU/uybj0smLeMyJIi0g3ywNjWpVrMpWy+Po8XQRn93dOCw85DWgtRUn1wHFUV2gpk6072amGQ8x7eS4zZa5yYkMnQ9pza8+AhFZIWmq5+ZY+q/3t6VTw4ipeHArxkjsI0AF9RqjXqwLQZhQ0pB1Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731388; c=relaxed/simple;
-	bh=L7LZyKOjSaErfNlAMfHdXqGgwekCq3MWK9BIn6iK3S8=;
+	s=arc-20240116; t=1723732382; c=relaxed/simple;
+	bh=t+LkI0Dx+H+a+oOofr4H2IPAUi+hlbjZE74ZjO0nciE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1pL67kB+RAKoxFZDun3NSYdkK9GnwayePfscL1yBWOgs/QxbfLG9uKhfnFLkgk88DIrr94CmITwRM3Q8P3UM78r31dW+/poVpyYKFH+Scywyr2gGE6gse4e3gkfZgcL7fl1hQHHB1kYJUyhcPBa7De+XmdHbvsKB4mCKjwFjtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSTQyR9U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4014C32786;
-	Thu, 15 Aug 2024 14:16:27 +0000 (UTC)
+	 MIME-Version; b=jNhp0WtP9ZpVf5jTeP6eYuO9obsKSoajY43L7m9WI4opJ/S6JgJ1BEMskVeWpq4qHCC5JO27mv+z1nj4R0pVNmDDx33Z6oVdGkYfegmMEjOw+zwiXf7nZjFa5RVTKloECasKK4G+tBD3T1ePGKopwtZ0/bDuWSjQ9q/E8DokcbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DU/TovHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34795C32786;
+	Thu, 15 Aug 2024 14:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731388;
-	bh=L7LZyKOjSaErfNlAMfHdXqGgwekCq3MWK9BIn6iK3S8=;
+	s=korg; t=1723732382;
+	bh=t+LkI0Dx+H+a+oOofr4H2IPAUi+hlbjZE74ZjO0nciE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zSTQyR9UqASdxEWHwqpqp7sWXH9EnfREQAETGbd4hB3AgVS/fjqIcIbEzlagSE7/A
-	 Tr7n3T7R9SSjXhhlzZohy+G0zodv3lG8VdjazMDtQFDNWGJu20Es61mUP3gMtnOwcj
-	 mnDUi+crHAxKSE5/K+e0kk3qpuMA7B9NRHmRiYZY=
+	b=DU/TovHPNxwo5MFRvMy/spJ2zPuXEdooUVci9q8RnmoKTnZCHeg+wL2386HII3fxG
+	 y0kc8nsxj46F4UFt0CCKYP6WBzxAXhH7UOnsL1w072gHbdjjZKwxqpEnr0rWDKoc8h
+	 8s2xi7x4/cBzOAATozcw++ZOG5a81brIpTpGMGqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 5.4 096/259] drm/gma500: fix null pointer dereference in cdv_intel_lvds_get_modes
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 5.10 163/352] devres: Fix devm_krealloc() wasting memory
 Date: Thu, 15 Aug 2024 15:23:49 +0200
-Message-ID: <20240815131906.510761664@linuxfoundation.org>
+Message-ID: <20240815131925.572066732@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit cb520c3f366c77e8d69e4e2e2781a8ce48d98e79 upstream.
+commit c884e3249f753dcef7a2b2023541ac1dc46b318e upstream.
 
-In cdv_intel_lvds_get_modes(), the return value of drm_mode_duplicate()
-is assigned to mode, which will lead to a NULL pointer dereference on
-failure of drm_mode_duplicate(). Add a check to avoid npd.
+Driver API devm_krealloc() calls alloc_dr() with wrong argument
+@total_new_size, so causes more memory to be allocated than required
+fix this memory waste by using @new_size as the argument for alloc_dr().
 
+Fixes: f82485722e5d ("devres: provide devm_krealloc()")
 Cc: stable@vger.kernel.org
-Fixes: 6a227d5fd6c4 ("gma500: Add support for Cedarview")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240709113311.37168-1-make24@iscas.ac.cn
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/1719931914-19035-2-git-send-email-quic_zijuhu@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gma500/cdv_intel_lvds.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/base/devres.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/gma500/cdv_intel_lvds.c
-+++ b/drivers/gpu/drm/gma500/cdv_intel_lvds.c
-@@ -391,6 +391,9 @@ static int cdv_intel_lvds_get_modes(stru
- 	if (mode_dev->panel_fixed_mode != NULL) {
- 		struct drm_display_mode *mode =
- 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
-+		if (!mode)
-+			return 0;
-+
- 		drm_mode_probed_add(connector, mode);
- 		return 1;
- 	}
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -901,9 +901,12 @@ void *devm_krealloc(struct device *dev,
+ 	/*
+ 	 * Otherwise: allocate new, larger chunk. We need to allocate before
+ 	 * taking the lock as most probably the caller uses GFP_KERNEL.
++	 * alloc_dr() will call check_dr_size() to reserve extra memory
++	 * for struct devres automatically, so size @new_size user request
++	 * is delivered to it directly as devm_kmalloc() does.
+ 	 */
+ 	new_dr = alloc_dr(devm_kmalloc_release,
+-			  total_new_size, gfp, dev_to_node(dev));
++			  new_size, gfp, dev_to_node(dev));
+ 	if (!new_dr)
+ 		return NULL;
+ 
 
 
 
