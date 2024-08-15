@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C569533B0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CB295353C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:35:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2352B26377
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F84B1C21200
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362301A76A2;
-	Thu, 15 Aug 2024 14:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED041993B9;
+	Thu, 15 Aug 2024 14:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HK8Z/zd4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG+85PC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E281A7076;
-	Thu, 15 Aug 2024 14:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAFA63D5;
+	Thu, 15 Aug 2024 14:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731472; cv=none; b=CwuEZlkPHKD2q5pc+6sRmgOnEYWgOOK+s/PsZOJX1qJRJYO7O1Yxf74HRQwHFEhksnSvmtPWUxFE0fF7fxIOi0p5r3jIeWXMwcQGG0r0Ga+A8dPLDvf+czs7BgvisT/rssxktCAjnM+L9DmKs6Vbks+qQ3S45BmDsSgw3HoWYMw=
+	t=1723732533; cv=none; b=Eho5xmfI8a5P2BSryV03NbIQCwjCvFHvjim+HNu/AIcBV206dehNyIEkNEGbx2ibbIMzKV19sN6osyC4WYsPZVBMoq3OnUBMLSgIGeyrso8sp1fZCaCbIQCfBarrSGL7xnSFYLCzyEwKONw23Ev1nwnvlZJ7HTutC/37q9EUzqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731472; c=relaxed/simple;
-	bh=R5hCHX68kN7mQYUWpt8QcEzMVZdbElEmbGuFzPaA8SM=;
+	s=arc-20240116; t=1723732533; c=relaxed/simple;
+	bh=IIMGATqBPx/2vz2QPiXGd+Isl9JKoX/0UNWhHnBEt98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmDJEdFahSFpZUb+fRkCvirl4mHenqw2yqJSKDDfhMdmLY2/h6iyU+q+gvHYcBoKoAhQW8feIMsoj/sSRx5FIuCmW6ibEvIYJ1pXvVrL1bVG95deZhZ4prbWLppt3fa04hSljhZAuFg/6Lsxf8y4pDbItxENi5Bfq2nLhHxsRAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HK8Z/zd4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB22C32786;
-	Thu, 15 Aug 2024 14:17:51 +0000 (UTC)
+	 MIME-Version; b=kGxxhaHqVvFRidlkbYap4jb51QcnhErlQisvWX0FgWl+flCORZwKpZ2ZIcgXjFmxwJYo1C1GP3lY50TROme0eWB9fSFznBLtYi89eTxGNKj7mkTgRi7wcP4rh3fvbOqg79UsfuRioNc8KIGg8+kPA6OES81Soo0N/97LV+4nzKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG+85PC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBDEC4AF0C;
+	Thu, 15 Aug 2024 14:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731471;
-	bh=R5hCHX68kN7mQYUWpt8QcEzMVZdbElEmbGuFzPaA8SM=;
+	s=korg; t=1723732533;
+	bh=IIMGATqBPx/2vz2QPiXGd+Isl9JKoX/0UNWhHnBEt98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HK8Z/zd4khU/GNoWs+knaUATnbmtGqtnw87i8EnrYMW8ffDSwiWwHD9+wzhWMtb99
-	 r7kOlgrhJJwtm4/aaZxmQ+KEACP/5teu0arEVHfscTY1N44UMG74GqyeIisM+z05eI
-	 GzXiSg3TagXFcD68BWMU6qafgszLmJIrRAyTxTX8=
+	b=aG+85PC+a/FpSVen1CUcEkFwoi5alTd76NXEFFmW8dFD8+gfuKfprHYlrcC1J/Lu/
+	 ClJ1ejpmdRqJ1PVyt0V9EgwZEZWYHeX1tKMGF8rbMUAzc1EfqOQZ+7Cz/E49DGwfP7
+	 CxP+A6dOVZm6BGcuiFqN4gZ6QbN8eP8IhGfU4xhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	ethanwu <ethanwu@synology.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 141/259] ipv4: Fix incorrect source address in Record Route option
+Subject: [PATCH 5.10 208/352] ceph: fix incorrect kmalloc size of pagevec mempool
 Date: Thu, 15 Aug 2024 15:24:34 +0200
-Message-ID: <20240815131908.236930723@linuxfoundation.org>
+Message-ID: <20240815131927.324375807@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: ethanwu <ethanwu@synology.com>
 
-[ Upstream commit cc73bbab4b1fb8a4f53a24645871dafa5f81266a ]
+[ Upstream commit 03230edb0bd831662a7c08b6fef66b2a9a817774 ]
 
-The Record Route IP option records the addresses of the routers that
-routed the packet. In the case of forwarded packets, the kernel performs
-a route lookup via fib_lookup() and fills in the preferred source
-address of the matched route.
+The kmalloc size of pagevec mempool is incorrectly calculated.
+It misses the size of page pointer and only accounts the number for the array.
 
-The lookup is performed with the DS field of the forwarded packet, but
-using the RT_TOS() macro which only masks one of the two ECN bits. If
-the packet is ECT(0) or CE, the matched route might be different than
-the route via which the packet was forwarded as the input path masks
-both of the ECN bits, resulting in the wrong address being filled in the
-Record Route option.
-
-Fix by masking both of the ECN bits.
-
-Fixes: 8e36360ae876 ("ipv4: Remove route key identity dependencies in ip_rt_get_source().")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20240718123407.434778-1-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: a0102bda5bc0 ("ceph: move sb->wb_pagevec_pool to be a global mempool")
+Signed-off-by: ethanwu <ethanwu@synology.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 2672b71e662d3..f3e77b1e1d4b9 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1283,7 +1283,7 @@ void ip_rt_get_source(u8 *addr, struct sk_buff *skb, struct rtable *rt)
- 		struct flowi4 fl4 = {
- 			.daddr = iph->daddr,
- 			.saddr = iph->saddr,
--			.flowi4_tos = RT_TOS(iph->tos),
-+			.flowi4_tos = iph->tos & IPTOS_RT_MASK,
- 			.flowi4_oif = rt->dst.dev->ifindex,
- 			.flowi4_iif = skb->dev->ifindex,
- 			.flowi4_mark = skb->mark,
+diff --git a/fs/ceph/super.c b/fs/ceph/super.c
+index f2aff97348bc9..4e09d8e066473 100644
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -783,7 +783,8 @@ static int __init init_caches(void)
+ 	if (!ceph_mds_request_cachep)
+ 		goto bad_mds_req;
+ 
+-	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10, CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT);
++	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10,
++	    (CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT) * sizeof(struct page *));
+ 	if (!ceph_wb_pagevec_pool)
+ 		goto bad_pagevec_pool;
+ 
 -- 
 2.43.0
 
