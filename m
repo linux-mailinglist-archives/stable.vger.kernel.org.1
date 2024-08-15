@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBE795336F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CE7953521
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAF41B20797
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF3A62820A7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9751ABEBD;
-	Thu, 15 Aug 2024 14:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2C21A00D1;
+	Thu, 15 Aug 2024 14:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSaBHPYi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBDpK0AM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0C31ABEAB;
-	Thu, 15 Aug 2024 14:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCAE1DFFB;
+	Thu, 15 Aug 2024 14:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731300; cv=none; b=E5+4g7E8x2gdvfTD3cIYB2QzM5rYSN1E9J4YLVl8JBM102sD0nYuvEy83a2AgNueUBhB9MEZJmDcucvR5vsbMeGyqfZjhHtan2PzDj9pjoALFnGcc3Q1ymcYUBs93tcgd5+CL+gd9/bBISPRaNmGvUSjJi0We1gSIOPSHjTc4qs=
+	t=1723732448; cv=none; b=garOll2y/yDA1CkGfRHK02L8M/6G3R5uM5/GSTVU0V0MVSrFNMgSWVr3H6opxJoZY66ZLSegm0MyI/X9apH/0PF9iQ5TZY5+/ip/zC8RkzQxIvZF9ZYKEFGm2zxaLkUlm48lzdSJ2hISY6GtdXIIpri1jysSd+CKrLLlZAUzEoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731300; c=relaxed/simple;
-	bh=pGIT5Hl8UdAH88P/flt5O+fZsiVHxLi1C6e+U4oEPHY=;
+	s=arc-20240116; t=1723732448; c=relaxed/simple;
+	bh=2by8ZFF3jkERSMvPFBRk6JwqLNongUISXAQo8xWQIvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgSpH9BfkNob+DcI7nJpvFvsktkP2hPpiQte5sil4tNynDaqVtiibJf9zVXT/D5lCI8JyFMzj9mArzAcI+NVKleu+vxhNRELXgnDwqErVnUXwFAzwllvs9rnu4S44+IqJotqiGQtYr7ZZImN9G56RqKFCvTj5j3SqwBpT4UQT08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSaBHPYi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AA8C32786;
-	Thu, 15 Aug 2024 14:14:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sadIYB8jznKn9zVZFrOREuzx9i+ZErnuxYxO/t7lEEqcYjQXpFfslUCFBDDB6VOo2WBun7+7O+8nFo1WSuCjv31veZI39nBrQarMUHjla1hmXoh4mpdJ/ky8GtWv8rH2NevJ19d53RX04FGSZF0i49YkcXjPDcutlBdbIA9IZvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBDpK0AM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C373C4AF0C;
+	Thu, 15 Aug 2024 14:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731300;
-	bh=pGIT5Hl8UdAH88P/flt5O+fZsiVHxLi1C6e+U4oEPHY=;
+	s=korg; t=1723732448;
+	bh=2by8ZFF3jkERSMvPFBRk6JwqLNongUISXAQo8xWQIvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xSaBHPYiUp0/mgtc18GMZcmpGI2kxZAySzARYOlZXANK1/EVhBmT6YRVfGTbKjy31
-	 LJod1HamXkoaGad6uoqcHdkgHZZxVem2kYZpqqppPGmYcKi7BFHGLuqh9zRvlzTfe3
-	 k/KU8U3aAmTz/o6U7jeCmpiW0V+mBE/P/zpG08jY=
+	b=hBDpK0AMiv5IEzHWj8RAO3NTmmQYHAUzEB3Tnk1308oCJfXnoNtdJ3LDQ8d/n0lD0
+	 5JY3EI0nhxoE62T1qJg8huaVe8FyuklqD/gQriXgyaiB1rvx/88AKiCdYqWwd/l6B+
+	 rqMupHTNwHA82LNMiwRMytHQsh+tPI0SPz4jbA44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 085/259] pinctrl: freescale: mxs: Fix refcount of child
+	Wei Liu <wei.liu@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	stable@kernel.org
+Subject: [PATCH 5.10 152/352] PCI: hv: Return zero, not garbage, when reading PCI_INTERRUPT_PIN
 Date: Thu, 15 Aug 2024 15:23:38 +0200
-Message-ID: <20240815131906.083569696@linuxfoundation.org>
+Message-ID: <20240815131925.140428804@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Wei Liu <wei.liu@kernel.org>
 
-[ Upstream commit 7f500f2011c0bbb6e1cacab74b4c99222e60248e ]
+commit fea93a3e5d5e6a09eb153866d2ce60ea3287a70d upstream.
 
-of_get_next_child() will increase refcount of the returned node, need
-use of_node_put() on it when done.
+The intent of the code snippet is to always return 0 for both
+PCI_INTERRUPT_LINE and PCI_INTERRUPT_PIN.
 
-Per current implementation, 'child' will be override by
-for_each_child_of_node(np, child), so use of_get_child_count to avoid
-refcount leakage.
+The check misses PCI_INTERRUPT_PIN. This patch fixes that.
 
-Fixes: 17723111e64f ("pinctrl: add pinctrl-mxs support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/20240504-pinctrl-cleanup-v2-18-26c5f2dc1181@nxp.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is discovered by this call in VFIO:
+
+    pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+
+The old code does not set *val to 0 because it misses the check for
+PCI_INTERRUPT_PIN. Garbage is returned in that case.
+
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+Link: https://lore.kernel.org/linux-pci/20240701202606.129606-1-wei.liu@kernel.org
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/freescale/pinctrl-mxs.c | 4 ++--
+ drivers/pci/controller/pci-hyperv.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/freescale/pinctrl-mxs.c b/drivers/pinctrl/freescale/pinctrl-mxs.c
-index 735cedd0958a2..5b0fcf15f2804 100644
---- a/drivers/pinctrl/freescale/pinctrl-mxs.c
-+++ b/drivers/pinctrl/freescale/pinctrl-mxs.c
-@@ -405,8 +405,8 @@ static int mxs_pinctrl_probe_dt(struct platform_device *pdev,
- 	int ret;
- 	u32 val;
- 
--	child = of_get_next_child(np, NULL);
--	if (!child) {
-+	val = of_get_child_count(np);
-+	if (val == 0) {
- 		dev_err(&pdev->dev, "no group is defined\n");
- 		return -ENOENT;
- 	}
--- 
-2.43.0
-
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -680,8 +680,8 @@ static void _hv_pcifront_read_config(str
+ 		   PCI_CAPABILITY_LIST) {
+ 		/* ROM BARs are unimplemented */
+ 		*val = 0;
+-	} else if (where >= PCI_INTERRUPT_LINE && where + size <=
+-		   PCI_INTERRUPT_PIN) {
++	} else if ((where >= PCI_INTERRUPT_LINE && where + size <= PCI_INTERRUPT_PIN) ||
++		   (where >= PCI_INTERRUPT_PIN && where + size <= PCI_MIN_GNT)) {
+ 		/*
+ 		 * Interrupt Line and Interrupt PIN are hard-wired to zero
+ 		 * because this front-end only supports message-signaled
 
 
 
