@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-69151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF569535AF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 918C895330C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89B4282739
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C53D41C2349C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0E21A00EC;
-	Thu, 15 Aug 2024 14:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE5719FA9D;
+	Thu, 15 Aug 2024 14:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2YNUzfi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yuA9bQxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBE22772A;
-	Thu, 15 Aug 2024 14:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B601714DD;
+	Thu, 15 Aug 2024 14:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732835; cv=none; b=DBlwFuXgEUMEi5biN3y3Xe4GjGri4+yJE8ChA2j5DDbsDSdHJ2fq7H57MC0yaXEaz1jfmPQHqa+fvpToWJCr+/cythdg7NpV0HyMBl8NHYAsSSLDxZU80ZG0e2s9S8eLBijNOlCzTumsFW83Gw26xYdGnSXQYYxhWSZ2JBA9MnI=
+	t=1723731026; cv=none; b=e20goKYqSNHb4X7ixQPdGpFzIfhJekzvRUj0TNVuVjxrBhU6UDaZLEyeSLOaMKXEwfFSoIDPSbCWSCvBQK5XkKu1iA9SeDYKYeT0WkrldGw8NvosbH7lN35ohj3ryoMHDEw6LMpBmjhLPouxiYTQY9lvnx92lQNIklHW0Xz+bAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732835; c=relaxed/simple;
-	bh=cA+9bUXQofDfUcnWe75Ys0dQHPqfZ2a9A/G3p5k0Sfs=;
+	s=arc-20240116; t=1723731026; c=relaxed/simple;
+	bh=Xv3iJZpgcewwDmjsZ6lS+RZs5kRp/R2m6WSt0VYvsmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/mGB8suQB1qIl94VoPAvCDChOxwl/EK/ie+CDQt3nmotDGUU2/fQtzDNDSyNpf3lrN0AGuGzpkGyUljqA5nNClUjNRvbkoxVdMg38tSA0AB1e8lY4SI45n76RLoE0kywnvz+tM54qIJqb1BeIhdeBeroy6BbRM0YYd4aaZmx/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2YNUzfi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941D6C32786;
-	Thu, 15 Aug 2024 14:40:34 +0000 (UTC)
+	 MIME-Version; b=IjSCCPRPoGffKLlRwOrTHiwZ1DGT/PoY2fyEqN8V2YAcgCbStMeG0GSyffEvtDIK2BTOqJ3u10JRBAXoh7Hvwa13GV35AmtGXO4YasEr9CARCIyb4so33v3bukW+OrFVYJZzCFkieg3yTA+/YJQ/DFYjHKs26mVBHkP8ZXxeIGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yuA9bQxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CF5C32786;
+	Thu, 15 Aug 2024 14:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732835;
-	bh=cA+9bUXQofDfUcnWe75Ys0dQHPqfZ2a9A/G3p5k0Sfs=;
+	s=korg; t=1723731026;
+	bh=Xv3iJZpgcewwDmjsZ6lS+RZs5kRp/R2m6WSt0VYvsmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2YNUzfi5D5HPuuo/hexjBwwVXHG6kQwI4u/AVI2w8J7ZuvTQxOyW0Ki9eV85btU7
-	 aRu5Ed+3jtyA+HAXA3zEsIikQLCqonP7m6kXvMDszkQtaj+uRyYhuCSOCJQgX8Dw7t
-	 086/8BVd1Du7kmLtht4bY3QbTsKxRR2MJg1XUdk0=
+	b=yuA9bQxqs6WqQXKb+vh+xO1ASoZnudcTBya7Kj2qUJo+b81iJVbf2uTz44Yp4NZOA
+	 IcVvSS1dZAUYZgQmxd4pjqB4zutvQGBe199+PHIZKmvdP/807c+NIoKUej02JtZNLU
+	 KR8NZUemJtfkdSC9J6XuVkFERufUCs9aDTOT285I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.10 301/352] drm/client: fix null pointer dereference in drm_client_modeset_probe
+	syzbot <syzkaller@googlegroups.com>,
+	yunshui <jiangyunshui@kylinos.cn>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 53/67] bpf, net: Use DEV_STAT_INC()
 Date: Thu, 15 Aug 2024 15:26:07 +0200
-Message-ID: <20240815131931.096027106@linuxfoundation.org>
+Message-ID: <20240815131840.345977310@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: yunshui <jiangyunshui@kylinos.cn>
 
-commit 113fd6372a5bb3689aba8ef5b8a265ed1529a78f upstream.
+[ Upstream commit d9cbd8343b010016fcaabc361c37720dcafddcbe ]
 
-In drm_client_modeset_probe(), the return value of drm_mode_duplicate() is
-assigned to modeset->mode, which will lead to a possible NULL pointer
-dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
+syzbot/KCSAN reported that races happen when multiple CPUs updating
+dev->stats.tx_error concurrently. Adopt SMP safe DEV_STATS_INC() to
+update the dev->stats fields.
 
-Cc: stable@vger.kernel.org
-Fixes: cf13909aee05 ("drm/fb-helper: Move out modeset config code")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240802044736.1570345-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: yunshui <jiangyunshui@kylinos.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240523033520.4029314-1-jiangyunshui@kylinos.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_client_modeset.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/core/filter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -866,6 +866,11 @@ int drm_client_modeset_probe(struct drm_
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 8cb44cd29967b..be313928d272c 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2271,12 +2271,12 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
  
- 			kfree(modeset->mode);
- 			modeset->mode = drm_mode_duplicate(dev, mode);
-+			if (!modeset->mode) {
-+				ret = -ENOMEM;
-+				break;
-+			}
-+
- 			drm_connector_get(connector);
- 			modeset->connectors[modeset->num_connectors++] = connector;
- 			modeset->x = offset->x;
+ 	err = bpf_out_neigh_v6(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		dev->stats.tx_errors++;
++		DEV_STATS_INC(dev, tx_errors);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	dev->stats.tx_errors++;
++	DEV_STATS_INC(dev, tx_errors);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
+@@ -2378,12 +2378,12 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	err = bpf_out_neigh_v4(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		dev->stats.tx_errors++;
++		DEV_STATS_INC(dev, tx_errors);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	dev->stats.tx_errors++;
++	DEV_STATS_INC(dev, tx_errors);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
+-- 
+2.43.0
+
 
 
 
