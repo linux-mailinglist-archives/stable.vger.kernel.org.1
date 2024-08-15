@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-68201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B7995311B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:50:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E24953127
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 968B01C24AF5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:50:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFC23288F68
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBB019DFA6;
-	Thu, 15 Aug 2024 13:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE09017BEA5;
+	Thu, 15 Aug 2024 13:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYLEuZZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uN07Jpqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAE81494C5;
-	Thu, 15 Aug 2024 13:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D70F18D630;
+	Thu, 15 Aug 2024 13:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729813; cv=none; b=p2O45566wqdw3btrnfoEjfHm6N9sjVYbySRmLja9rnfbi8pUxtLwBQTurH30oV29BPPpSRkMDaM52o4JIADCfXaWlulEz5qBNsuVf7nKOGIJwLiwKlzNIvZS0P7PkUO3wgx0gONrhuugSbNZor1dXgaNRMmusQA2zetbANAOfmg=
+	t=1723729849; cv=none; b=XJv38z/9w7tum4lBEdRc93YBsx4IjD6EBTHH+49XTufVVeO0OoPZ53LFcMgUt4v7B1M1oWA0YPXU9W2otQya/AOJIrJc/iYDB7Q0Wvtn1S3hICXbhbv4jWLVPK6SNZGuXTSdlK9qqIyvNa8ZJoMjuUKQP0+eWjDEoMTApAC/L6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729813; c=relaxed/simple;
-	bh=vGSA5OKVCGBIsbysymT7m4aBNxB3C+3/FOfNpI6Ejfc=;
+	s=arc-20240116; t=1723729849; c=relaxed/simple;
+	bh=FURa9UOPlwdIa3JmD/PhPBb1VqFeZiizjLdYuh5sGC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcdSbIA8hCnktcXKUOkWEoBDV5tOpOhMs/OzHISkrVGpr2q0auvl2gysbPUui4UiTc7LnuHqmNHzikQwHxYb6pWGJ72ppJIf3BfwNJtXTEebAM5hGTfY2bmFKRwUPqDEo7qU2Qt6Xn2pUPdzcdCWiznqywg7aP7H8tV1rWNX3Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYLEuZZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE33C4AF0A;
-	Thu, 15 Aug 2024 13:50:13 +0000 (UTC)
+	 MIME-Version; b=F/e379T6eJO4Y3jmkurcb5uNraN4nuAvE+3O6uk1yRGsTQqmNMLm/cG1nG2a2d7ni1lYDRDl8mJYfHd9V8BlTC/6wE4MiNsktT95xt39bO5ALXv/purrEeBXm4qEmPFcEHuhc3H/AXz4rC9QmMTL5MSWV5YM5lZGD/7mnQe2t7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uN07Jpqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E239C32786;
+	Thu, 15 Aug 2024 13:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729813;
-	bh=vGSA5OKVCGBIsbysymT7m4aBNxB3C+3/FOfNpI6Ejfc=;
+	s=korg; t=1723729849;
+	bh=FURa9UOPlwdIa3JmD/PhPBb1VqFeZiizjLdYuh5sGC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AYLEuZZZXk6E0dToL0cnRifLyf14W822IU1oDcJLAjkykKUVElAF+O0mvPUBj6U3l
-	 jAH9zyH1b7FEwsCkvp8DmrZQ4RvX9jW0jVG3LWnTvkb03Zcdqvap1qX9g/HS5bH9za
-	 faq76nZiZrAfify5ttGkLZFX22nuhPU9zICi/3nI=
+	b=uN07JpqagV0gfiTt4Uye4VDmp5jcs/bgvE34Jt9MJ4nEH8JI+rDtn+1DoHql6YLUN
+	 cCjxeiZk3Ap5kcoOvxO/WjMjxJnLkX+DjGVPrpVd9V8x+rxwmGU1U75m8a3gABcRfz
+	 FnUCTiAgoLNHotHc41GVFD6OFDHgaZeve8SrFE1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 198/484] jbd2: make jbd2_journal_get_max_txn_bufs() internal
-Date: Thu, 15 Aug 2024 15:20:56 +0200
-Message-ID: <20240815131949.059773224@linuxfoundation.org>
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH 5.15 199/484] media: uvcvideo: Fix integer overflow calculating timestamp
+Date: Thu, 15 Aug 2024 15:20:57 +0200
+Message-ID: <20240815131949.098246292@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -66,67 +65,137 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 4aa99c71e42ad60178c1154ec24e3df9c684fb67 upstream.
+commit 8676a5e796fa18f55897ca36a94b2adf7f73ebd1 upstream.
 
-There's no reason to have jbd2_journal_get_max_txn_bufs() public
-function. Currently all users are internal and can use
-journal->j_max_transaction_buffers instead. This saves some unnecessary
-recomputations of the limit as a bonus which becomes important as this
-function gets more complex in the following patch.
+The function uvc_video_clock_update() supports a single SOF overflow. Or
+in other words, the maximum difference between the first ant the last
+timestamp can be 4096 ticks or 4.096 seconds.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20240624170127.3253-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+This results in a maximum value for y2 of: 0x12FBECA00, that overflows
+32bits.
+y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
+
+Extend the size of y2 to u64 to support all its values.
+
+Without this patch:
+ # yavta -s 1920x1080 -f YUYV -t 1/5 -c /dev/video0
+Device /dev/v4l/by-id/usb-Shine-Optics_Integrated_Camera_0001-video-index0 opened.
+Device `Integrated Camera: Integrated C' on `usb-0000:00:14.0-6' (driver 'uvcvideo') supports video, capture, without mplanes.
+Video format set: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
+Video format: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
+Current frame rate: 1/5
+Setting frame rate to: 1/5
+Frame rate set: 1/5
+8 buffers requested.
+length: 4147200 offset: 0 timestamp type/source: mono/SoE
+Buffer 0/0 mapped at address 0x7947ea94c000.
+length: 4147200 offset: 4149248 timestamp type/source: mono/SoE
+Buffer 1/0 mapped at address 0x7947ea557000.
+length: 4147200 offset: 8298496 timestamp type/source: mono/SoE
+Buffer 2/0 mapped at address 0x7947ea162000.
+length: 4147200 offset: 12447744 timestamp type/source: mono/SoE
+Buffer 3/0 mapped at address 0x7947e9d6d000.
+length: 4147200 offset: 16596992 timestamp type/source: mono/SoE
+Buffer 4/0 mapped at address 0x7947e9978000.
+length: 4147200 offset: 20746240 timestamp type/source: mono/SoE
+Buffer 5/0 mapped at address 0x7947e9583000.
+length: 4147200 offset: 24895488 timestamp type/source: mono/SoE
+Buffer 6/0 mapped at address 0x7947e918e000.
+length: 4147200 offset: 29044736 timestamp type/source: mono/SoE
+Buffer 7/0 mapped at address 0x7947e8d99000.
+0 (0) [-] none 0 4147200 B 507.554210 508.874282 242.836 fps ts mono/SoE
+1 (1) [-] none 2 4147200 B 508.886298 509.074289 0.751 fps ts mono/SoE
+2 (2) [-] none 3 4147200 B 509.076362 509.274307 5.261 fps ts mono/SoE
+3 (3) [-] none 4 4147200 B 509.276371 509.474336 5.000 fps ts mono/SoE
+4 (4) [-] none 5 4147200 B 509.476394 509.674394 4.999 fps ts mono/SoE
+5 (5) [-] none 6 4147200 B 509.676506 509.874345 4.997 fps ts mono/SoE
+6 (6) [-] none 7 4147200 B 509.876430 510.074370 5.002 fps ts mono/SoE
+7 (7) [-] none 8 4147200 B 510.076434 510.274365 5.000 fps ts mono/SoE
+8 (0) [-] none 9 4147200 B 510.276421 510.474333 5.000 fps ts mono/SoE
+9 (1) [-] none 10 4147200 B 510.476391 510.674429 5.001 fps ts mono/SoE
+10 (2) [-] none 11 4147200 B 510.676434 510.874283 4.999 fps ts mono/SoE
+11 (3) [-] none 12 4147200 B 510.886264 511.074349 4.766 fps ts mono/SoE
+12 (4) [-] none 13 4147200 B 511.070577 511.274304 5.426 fps ts mono/SoE
+13 (5) [-] none 14 4147200 B 511.286249 511.474301 4.637 fps ts mono/SoE
+14 (6) [-] none 15 4147200 B 511.470542 511.674251 5.426 fps ts mono/SoE
+15 (7) [-] none 16 4147200 B 511.672651 511.874337 4.948 fps ts mono/SoE
+16 (0) [-] none 17 4147200 B 511.873988 512.074462 4.967 fps ts mono/SoE
+17 (1) [-] none 18 4147200 B 512.075982 512.278296 4.951 fps ts mono/SoE
+18 (2) [-] none 19 4147200 B 512.282631 512.482423 4.839 fps ts mono/SoE
+19 (3) [-] none 20 4147200 B 518.986637 512.686333 0.149 fps ts mono/SoE
+20 (4) [-] none 21 4147200 B 518.342709 512.886386 -1.553 fps ts mono/SoE
+21 (5) [-] none 22 4147200 B 517.909812 513.090360 -2.310 fps ts mono/SoE
+22 (6) [-] none 23 4147200 B 517.590775 513.294454 -3.134 fps ts mono/SoE
+23 (7) [-] none 24 4147200 B 513.298465 513.494335 -0.233 fps ts mono/SoE
+24 (0) [-] none 25 4147200 B 513.510273 513.698375 4.721 fps ts mono/SoE
+25 (1) [-] none 26 4147200 B 513.698904 513.902327 5.301 fps ts mono/SoE
+26 (2) [-] none 27 4147200 B 513.895971 514.102348 5.074 fps ts mono/SoE
+27 (3) [-] none 28 4147200 B 514.099091 514.306337 4.923 fps ts mono/SoE
+28 (4) [-] none 29 4147200 B 514.310348 514.510567 4.734 fps ts mono/SoE
+29 (5) [-] none 30 4147200 B 514.509295 514.710367 5.026 fps ts mono/SoE
+30 (6) [-] none 31 4147200 B 521.532513 514.914398 0.142 fps ts mono/SoE
+31 (7) [-] none 32 4147200 B 520.885277 515.118385 -1.545 fps ts mono/SoE
+32 (0) [-] none 33 4147200 B 520.411140 515.318336 -2.109 fps ts mono/SoE
+33 (1) [-] none 34 4147200 B 515.325425 515.522278 -0.197 fps ts mono/SoE
+34 (2) [-] none 35 4147200 B 515.538276 515.726423 4.698 fps ts mono/SoE
+35 (3) [-] none 36 4147200 B 515.720767 515.930373 5.480 fps ts mono/SoE
+
+Cc: stable@vger.kernel.org
+Fixes: 66847ef013cc ("[media] uvcvideo: Add UVC timestamps support")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240610-hwtimestamp-followup-v1-2-f9eaed7be7f0@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/commit.c     |    2 +-
- fs/jbd2/journal.c    |    5 +++++
- include/linux/jbd2.h |    5 -----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -800,7 +800,7 @@ start_journal_io:
- 		if (first_block < journal->j_tail)
- 			freed += journal->j_last - journal->j_first;
- 		/* Update tail only if we free significant amount of space */
--		if (freed < jbd2_journal_get_max_txn_bufs(journal))
-+		if (freed < journal->j_max_transaction_buffers)
- 			update_tail = 0;
- 	}
- 	J_ASSERT(commit_transaction->t_state == T_COMMIT);
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1529,6 +1529,11 @@ static void journal_fail_superblock(jour
- 	journal->j_sb_buffer = NULL;
- }
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -697,11 +697,11 @@ void uvc_video_clock_update(struct uvc_s
+ 	unsigned long flags;
+ 	u64 timestamp;
+ 	u32 delta_stc;
+-	u32 y1, y2;
++	u32 y1;
+ 	u32 x1, x2;
+ 	u32 mean;
+ 	u32 sof;
+-	u64 y;
++	u64 y, y2;
  
-+static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
-+{
-+	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
-+}
-+
- /*
-  * Given a journal_t structure, initialise the various fields for
-  * startup of a new journaling session.  We use this both when creating
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1669,11 +1669,6 @@ int jbd2_wait_inode_data(journal_t *jour
- int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
- int jbd2_fc_release_bufs(journal_t *journal);
+ 	if (!uvc_hw_timestamps_param)
+ 		return;
+@@ -741,7 +741,7 @@ void uvc_video_clock_update(struct uvc_s
+ 	sof = y;
  
--static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
--{
--	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
--}
--
- /*
-  * is_journal_abort
-  *
+ 	uvc_dbg(stream->dev, CLOCK,
+-		"%s: PTS %u y %llu.%06llu SOF %u.%06llu (x1 %u x2 %u y1 %u y2 %u SOF offset %u)\n",
++		"%s: PTS %u y %llu.%06llu SOF %u.%06llu (x1 %u x2 %u y1 %u y2 %llu SOF offset %u)\n",
+ 		stream->dev->name, buf->pts,
+ 		y >> 16, div_u64((y & 0xffff) * 1000000, 65536),
+ 		sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
+@@ -756,7 +756,7 @@ void uvc_video_clock_update(struct uvc_s
+ 		goto done;
+ 
+ 	y1 = NSEC_PER_SEC;
+-	y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
++	y2 = ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
+ 
+ 	/* Interpolated and host SOF timestamps can wrap around at slightly
+ 	 * different times. Handle this by adding or removing 2048 to or from
+@@ -776,7 +776,7 @@ void uvc_video_clock_update(struct uvc_s
+ 	timestamp = ktime_to_ns(first->host_time) + y - y1;
+ 
+ 	uvc_dbg(stream->dev, CLOCK,
+-		"%s: SOF %u.%06llu y %llu ts %llu buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %u)\n",
++		"%s: SOF %u.%06llu y %llu ts %llu buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %llu)\n",
+ 		stream->dev->name,
+ 		sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
+ 		y, timestamp, vbuf->vb2_buf.timestamp,
 
 
 
