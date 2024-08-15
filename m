@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-68074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8037A953081
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:43:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F224E953089
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:44:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A8621F24C7D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:43:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31B571C256DD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFC319E7EF;
-	Thu, 15 Aug 2024 13:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EAF1A00EC;
+	Thu, 15 Aug 2024 13:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZj1iEvX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbK78gn1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBCF1714A8;
-	Thu, 15 Aug 2024 13:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB80E19DF9C;
+	Thu, 15 Aug 2024 13:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729415; cv=none; b=Tc8g8EbprBQGGFykaI2buD7sUgQW0qW6hzNRNS/8dLpLMJqF/y9GKF2FZf5uV91ZAwz7j3DS/4APzZbnZbcAsOp3FI0W8KNGoW4pxS5uGKo0SYA//3mmbyzS58kDccj3q8vC28stH2slcbPRD87OEqW75s7hn71xQ9I3zEbK7Tw=
+	t=1723729431; cv=none; b=F6YpAYRyjSiLyN4IpqdZUOD/079kuhjXXxq59Tv3gTPXeCuvXTWaJiS+Ob5H2hrJAK6V938LXKDoZ1PGvFe95XosmV6EbonVhbPna5799qK5pMDMc3xiz92lIAgYjdHcUhdazryYZgcF+ZHacbhycdhGhnAZlo4vVXovj8CBYH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729415; c=relaxed/simple;
-	bh=LowJcJ0RCDS+xMmrOYQorpr/JUVYurtVWyuoCzmqysc=;
+	s=arc-20240116; t=1723729431; c=relaxed/simple;
+	bh=pG3JR5dZ+epYrfiY/QjoON/Zld/g8+hd4H/6ou4rB+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FhfDzUY7DCe7ey5VAugzhw7xxdGvhQ5N4fDlldyQ19w0RZB3+RS7PZdTuo/Vt59MlRpLoDGNfJE/uW+giGVrm9ijQftnMAoOcxhHyOKnG4jtOcZkPaou347prhWJlnS/L9m7cCCI+O74OJuTSBF4CWrtQT15hGH0ggUDE9dAmtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZj1iEvX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85D8C32786;
-	Thu, 15 Aug 2024 13:43:34 +0000 (UTC)
+	 MIME-Version; b=g3uWK47m+9peSOI3g0EMaC/J6GCwUfEyDqOd+m7AIVNGltwFg5Fp493umuMB7y1D7Pr7gRkzWIaLIRqJKLV680NiDJizFOA7QgRL85181+gOxz4VnUWikt2IUli4ZDusdiyO1KdQwiHzkUUGhipIPfUXM+GNTojh+hoB6PKlqD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbK78gn1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9263C32786;
+	Thu, 15 Aug 2024 13:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729415;
-	bh=LowJcJ0RCDS+xMmrOYQorpr/JUVYurtVWyuoCzmqysc=;
+	s=korg; t=1723729431;
+	bh=pG3JR5dZ+epYrfiY/QjoON/Zld/g8+hd4H/6ou4rB+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZj1iEvXzfEiM+N6UwB/C2lqgMC7C2ZpUdTf2vs+UKBOuO6im2tLO9YSwU3bW/G5V
-	 cXtdwVMCpx18603FFi/AVIWSwB9g2m9DZhq3i23xYokEwBnMKi/o9Azx7Vwc7Efnmo
-	 w1vdOSwYmmBxeBcQSnOGFILBrvyYHCg/F53ZWUOk=
+	b=WbK78gn1uOXyJA18Wkg7NfEk27zu7cHgs9p0t/T7bcBOIWQOW79supukUqsh2TDdD
+	 ZHN2iggMZ08KGJVi2jxkcpkkxL2iZ1lnxPXVwSYroV1EVFjhCSIAtWr4N7E/wgU2w9
+	 t8UtpG94HROn9xvGyQ+0s/rcUTqKN5Aw21+/ywuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Wei Fang <wei.fang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	patches@lists.linux.dev,
+	Donglin Peng <dolinux.peng@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 063/484] net: fec: Fix FEC_ECR_EN1588 being cleared on link-down
-Date: Thu, 15 Aug 2024 15:18:41 +0200
-Message-ID: <20240815131943.716514236@linuxfoundation.org>
+Subject: [PATCH 5.15 064/484] libbpf: Checking the btf_type kind when fixing variable offsets
+Date: Thu, 15 Aug 2024 15:18:42 +0200
+Message-ID: <20240815131943.756172980@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -62,52 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Donglin Peng <dolinux.peng@gmail.com>
 
-[ Upstream commit c32fe1986f27cac329767d3497986e306cad1d5e ]
+[ Upstream commit cc5083d1f3881624ad2de1f3cbb3a07e152cb254 ]
 
-FEC_ECR_EN1588 bit gets cleared after MAC reset in `fec_stop()`, which
-makes all 1588 functionality shut down, and all the extended registers
-disappear, on link-down, making the adapter fall back to compatibility
-"dumb mode". However, some functionality needs to be retained (e.g. PPS)
-even without link.
+I encountered an issue when building the test_progs from the repository [1]:
 
-Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
-Cc: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/netdev/5fa9fadc-a89d-467a-aae9-c65469ff5fe1@lunn.ch/
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  $ pwd
+  /work/Qemu/x86_64/linux-6.10-rc2/tools/testing/selftests/bpf/
+
+  $ make test_progs V=1
+  [...]
+  ./tools/sbin/bpftool gen object ./ip_check_defrag.bpf.linked2.o ./ip_check_defrag.bpf.linked1.o
+  libbpf: failed to find symbol for variable 'bpf_dynptr_slice' in section '.ksyms'
+  Error: failed to link './ip_check_defrag.bpf.linked1.o': No such file or directory (2)
+  [...]
+
+Upon investigation, I discovered that the btf_types referenced in the '.ksyms'
+section had a kind of BTF_KIND_FUNC instead of BTF_KIND_VAR:
+
+  $ bpftool btf dump file ./ip_check_defrag.bpf.linked1.o
+  [...]
+  [2] DATASEC '.ksyms' size=0 vlen=2
+        type_id=16 offset=0 size=0 (FUNC 'bpf_dynptr_from_skb')
+        type_id=17 offset=0 size=0 (FUNC 'bpf_dynptr_slice')
+  [...]
+  [16] FUNC 'bpf_dynptr_from_skb' type_id=82 linkage=extern
+  [17] FUNC 'bpf_dynptr_slice' type_id=85 linkage=extern
+  [...]
+
+For a detailed analysis, please refer to [2]. We can add a kind checking to
+fix the issue.
+
+  [1] https://github.com/eddyz87/bpf/tree/binsort-btf-dedup
+  [2] https://lore.kernel.org/all/0c0ef20c-c05e-4db9-bad7-2cbc0d6dfae7@oracle.com/
+
+Fixes: 8fd27bf69b86 ("libbpf: Add BPF static linker BTF and BTF.ext support")
+Signed-off-by: Donglin Peng <dolinux.peng@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/bpf/20240619122355.426405-1-dolinux.peng@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/lib/bpf/linker.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 722810ce4068f..0a3cf22dc260b 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1242,6 +1242,12 @@ fec_stop(struct net_device *ndev)
- 		writel(FEC_ECR_ETHEREN, fep->hwp + FEC_ECNTRL);
- 		writel(rmii_mode, fep->hwp + FEC_R_CNTRL);
- 	}
-+
-+	if (fep->bufdesc_ex) {
-+		val = readl(fep->hwp + FEC_ECNTRL);
-+		val |= FEC_ECR_EN1588;
-+		writel(val, fep->hwp + FEC_ECNTRL);
-+	}
- }
+diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
+index 6b2f59ddb6918..bfe0c30841b9b 100644
+--- a/tools/lib/bpf/linker.c
++++ b/tools/lib/bpf/linker.c
+@@ -2193,10 +2193,17 @@ static int linker_fixup_btf(struct src_obj *obj)
+ 		vi = btf_var_secinfos(t);
+ 		for (j = 0, m = btf_vlen(t); j < m; j++, vi++) {
+ 			const struct btf_type *vt = btf__type_by_id(obj->btf, vi->type);
+-			const char *var_name = btf__str_by_offset(obj->btf, vt->name_off);
+-			int var_linkage = btf_var(vt)->linkage;
++			const char *var_name;
++			int var_linkage;
+ 			Elf64_Sym *sym;
  
- static void
++			/* could be a variable or function */
++			if (!btf_is_var(vt))
++				continue;
++
++			var_name = btf__str_by_offset(obj->btf, vt->name_off);
++			var_linkage = btf_var(vt)->linkage;
++
+ 			/* no need to patch up static or extern vars */
+ 			if (var_linkage != BTF_VAR_GLOBAL_ALLOCATED)
+ 				continue;
 -- 
 2.43.0
 
