@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-67920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00002952FC2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE5A953209
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 335FC1C244C8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C640A1F21A2C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B48019F49A;
-	Thu, 15 Aug 2024 13:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29C219F49A;
+	Thu, 15 Aug 2024 14:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uV12Gp2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FECW2SO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC6E1DA4E;
-	Thu, 15 Aug 2024 13:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A51019F470;
+	Thu, 15 Aug 2024 14:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728934; cv=none; b=GfCpX2OY+ANSJMi778Q/JvVB1NvyGcFON2oLVDiaIERSCh6ActXIgWPVnpqZ+WsLlqVVPC2suOOp13y947TowX/QdqPKKbSYyTxedIzmIzAn4z8FKM/oZpJGqc+O2ZZEaaGnx8Q3D//CqAL0JP74uUz52Y8MP2aaFgEiSqSCLZI=
+	t=1723730468; cv=none; b=htpXwiDI9lvYpZk4ty2vxnk4sBmQnYnCavCcF2Jrn89HAddFBzC6VausLo6fWf4dMxQ88aEeCr6ooNTMYUqTrDAPJLGKCyzRvOJaYCeBvSfC6VuDTqKiSI4IHTA8eWAQO1FkJt4Awo57dLH3fnP15/qLwmaavQvLhvSuaEviVE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728934; c=relaxed/simple;
-	bh=00FmnMQ3+wBcUIZZ78+S/Dti1+Jwqo0okl1pDJvmB2M=;
+	s=arc-20240116; t=1723730468; c=relaxed/simple;
+	bh=nEYaz89FN6WHQfedJ2lmvuv43WDFwWi1M3uS6XmPc8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJtXk1xtO1ma0j/uhGlGhQU/SZljwPxHdTy4jr380fyaUW5kaIuE5jfdWgTwuvcFGKTjmtQ86Oa+CDCqB5ahW3gYGIhgsH5FaORn0SRGSgTpoy7DdvCAE6CqchtrItnF0pGh77R/un9pCWGyId4l5MNomqeAzTbXcLjmv6PKOMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uV12Gp2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58476C4AF0A;
-	Thu, 15 Aug 2024 13:35:34 +0000 (UTC)
+	 MIME-Version; b=KN3s161JfDVN8zbxjPMeOS8h+TqoghmLuRKPX172VCqAoIcNoXFPbtUeh1N2SDwUY8RHaguHAN0ujKTQU+/i1o7oIP3fmzeNcgrY8fTyVvPezbKtIbZhoevWgthfCFbd1YYTK8P83ltS7EwyvfsnptEWgn1Tg+tSq9PC6QDOs9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FECW2SO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA9FC32786;
+	Thu, 15 Aug 2024 14:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728934;
-	bh=00FmnMQ3+wBcUIZZ78+S/Dti1+Jwqo0okl1pDJvmB2M=;
+	s=korg; t=1723730468;
+	bh=nEYaz89FN6WHQfedJ2lmvuv43WDFwWi1M3uS6XmPc8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uV12Gp2moFJ8+6w5iMfPfAyh2RwTrTbYD+D1Hb11KxGO4OEwtuAK+xdZu+MKndt+1
-	 CutdTVIoJigELwWC1SzECXMGuJY2EbvaUPrBcaiCmPtx6CQiQ4aMJNdgo3H5yHvKwy
-	 JaSCnllSgnKTyAyo2jXKpSbwN1la3jIqcdP1z9AM=
+	b=2FECW2SOxMQGUYf0uje5iFNbQvG6+thWNorchI1pt3hXLSvQbkhEOjvvaS7+8fIwy
+	 L21DOsDqM+jt5/YEAniiuSPa3sUQsQ5BUTa1lv62FIAnHZWHhg3FVuawXlIewU7mRd
+	 E9R4Wqp9wE8A7WRmiLcWYSfRdYPW88CJZ6EbCZTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 158/196] arm64: cputype: Add Cortex-X1C definitions
+	syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 417/484] ALSA: line6: Fix racy access to midibuf
 Date: Thu, 15 Aug 2024 15:24:35 +0200
-Message-ID: <20240815131858.120615908@linuxfoundation.org>
+Message-ID: <20240815131957.559134839@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 58d245e03c324d083a0ec3b9ab8ebd46ec9848d7 ]
+commit 15b7a03205b31bc5623378c190d22b7ff60026f1 upstream.
 
-Add cputype definitions for Cortex-X1C. These will be used for errata
-detection in subsequent patches.
+There can be concurrent accesses to line6 midibuf from both the URB
+completion callback and the rawmidi API access.  This could be a cause
+of KMSAN warning triggered by syzkaller below (so put as reported-by
+here).
 
-These values can be found in the Cortex-X1C TRM:
+This patch protects the midibuf call of the former code path with a
+spinlock for avoiding the possible races.
 
-  https://developer.arm.com/documentation/101968/0002/
-
-... in section B2.107 ("MIDR_EL1, Main ID Register, EL1").
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20240801101803.1982459-2-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/00000000000000949c061df288c5@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240805130129.10872-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/usb/line6/driver.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 304e634c64a05..ad054869acf6b 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -89,6 +89,7 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_CORTEX_X1C		0xD4C
- #define ARM_CPU_PART_CORTEX_X3		0xD4E
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_A720	0xD81
-@@ -131,6 +132,7 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_CORTEX_X1C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
- #define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
--- 
-2.43.0
-
+--- a/sound/usb/line6/driver.c
++++ b/sound/usb/line6/driver.c
+@@ -286,12 +286,14 @@ static void line6_data_received(struct u
+ {
+ 	struct usb_line6 *line6 = (struct usb_line6 *)urb->context;
+ 	struct midi_buffer *mb = &line6->line6midi->midibuf_in;
++	unsigned long flags;
+ 	int done;
+ 
+ 	if (urb->status == -ESHUTDOWN)
+ 		return;
+ 
+ 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
++		spin_lock_irqsave(&line6->line6midi->lock, flags);
+ 		done =
+ 			line6_midibuf_write(mb, urb->transfer_buffer, urb->actual_length);
+ 
+@@ -300,12 +302,15 @@ static void line6_data_received(struct u
+ 			dev_dbg(line6->ifcdev, "%d %d buffer overflow - message skipped\n",
+ 				done, urb->actual_length);
+ 		}
++		spin_unlock_irqrestore(&line6->line6midi->lock, flags);
+ 
+ 		for (;;) {
++			spin_lock_irqsave(&line6->line6midi->lock, flags);
+ 			done =
+ 				line6_midibuf_read(mb, line6->buffer_message,
+ 						   LINE6_MIDI_MESSAGE_MAXLEN,
+ 						   LINE6_MIDIBUF_READ_RX);
++			spin_unlock_irqrestore(&line6->line6midi->lock, flags);
+ 
+ 			if (done <= 0)
+ 				break;
 
 
 
