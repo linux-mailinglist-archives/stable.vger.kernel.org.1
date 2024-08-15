@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-68526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887D99532C8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341AA95357D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC93FB26AA7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDC3C1F2A7BF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012AA1A00F7;
-	Thu, 15 Aug 2024 14:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E941684AC;
+	Thu, 15 Aug 2024 14:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXCHqkt7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4S/LXyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A993919F462;
-	Thu, 15 Aug 2024 14:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FD53214;
+	Thu, 15 Aug 2024 14:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730847; cv=none; b=JGFRAAUsm7HBBp2hzhegzU4yyLv85NXsWejsSvb8JuIjit5MNd/RV/8PzgOfvU52krnCmbUJrQGAYDzPVWL0Oo02sEvWOELJshRl//UcNJZaIzz4xiEsP1QjJI+rzukJw94RJytIeMz40dmzAL3A/X3Iw5ZyAfKBzeek88gdp0M=
+	t=1723732703; cv=none; b=m8AgpmlnglmXMCjhu6YEx3QcV/EWP7eW7kEkmbSOKrEGTMDY+GTsLXXq0Dxo24M974A00K/rM1OZHsD9iL5cZroy/KtsbdiTFoL2ITRmJXn1vVmLJqCVy50ptHnVuYZTgAKeBDXbFmHGG1jgNHWJK9ZwToTlKzWrtrERCWm1pPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730847; c=relaxed/simple;
-	bh=1FgAAeaIUS3/nAoOTwpudwmNvk8kx0/uaUhx3iC26Y4=;
+	s=arc-20240116; t=1723732703; c=relaxed/simple;
+	bh=SEZeZcGDfxufyOpqQDNSoebr1aSptnBMhVa61sr83ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfpxROk5AOWOmL41BYEAaugxcFi5va1GULk1YjmoUPETyQTEuEYfmBrMRRjOWhW1NQE439bEswg1YV+1nezbpbbEFwEB6FbS9TZXERvR62vYJIPQbW+CrRpL3xyhbFmWYu+Y87LklmP6I8a52tJ+6Ie6qEc6oHq80qHEewZUMtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXCHqkt7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7D5C32786;
-	Thu, 15 Aug 2024 14:07:27 +0000 (UTC)
+	 MIME-Version; b=PzLOJHYXbBVp0PAojSoHqt4ynR1rMQmUXTgqr7mmnt0SpesEYcF08DX1zC5WYPQsDtZBPlt9GR/c3uSR2rDdmlqX09EIYxhAMhhOrQEpVYN8PpMfcT3GaMW8JKvTSwvjVrGoo8xJ0MP5pyUuxHJwsmGpyZvSOKSFkebzCfxBBO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4S/LXyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E88C32786;
+	Thu, 15 Aug 2024 14:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730847;
-	bh=1FgAAeaIUS3/nAoOTwpudwmNvk8kx0/uaUhx3iC26Y4=;
+	s=korg; t=1723732702;
+	bh=SEZeZcGDfxufyOpqQDNSoebr1aSptnBMhVa61sr83ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXCHqkt7ROeNmk5KWIxQxnnH8anDQXKH87uRNKlJUqrWUfBhXvLWKWIpnA0brPGwN
-	 l1iNZWKy+vho1izE/JR07nldWvQ+Qg0fup7wS6gEXP3gx2IjCaIK38fnseku6Icc1O
-	 luxTRXwPEd4wT3/8nj6Ee50Upmu591QxCNa8Qm00=
+	b=k4S/LXyJqmFk/XT2b/zq4ZJ5IQTUU9grNNb0rxJL9efLyBWWg7BzxbSWiu3pTfGQI
+	 gEonbAGZU+wESs1l82HyBUIFpoD+SIJphGVVbw1w+WG/BcO6dHBS+0BK1v54rmNDmX
+	 YTcM2TtithjBEd3wIMA0iVIaakVb/5aNAEWbKhBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 12/67] nfsd: rename NFSD_NET_* to NFSD_STATS_*
-Date: Thu, 15 Aug 2024 15:25:26 +0200
-Message-ID: <20240815131838.797295238@linuxfoundation.org>
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	kasan-dev@googlegroups.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 261/352] rcutorture: Fix rcu_torture_fwd_cb_cr() data race
+Date: Thu, 15 Aug 2024 15:25:27 +0200
+Message-ID: <20240815131929.532094273@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit d98416cc2154053950610bb6880911e3dcbdf8c5 ]
+[ Upstream commit 6040072f4774a575fa67b912efe7722874be337b ]
 
-We're going to merge the stats all into per network namespace in
-subsequent patches, rename these nn counters to be consistent with the
-rest of the stats.
+On powerpc systems, spinlock acquisition does not order prior stores
+against later loads.  This means that this statement:
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	rfcp->rfc_next = NULL;
+
+Can be reordered to follow this statement:
+
+	WRITE_ONCE(*rfcpp, rfcp);
+
+Which is then a data race with rcu_torture_fwd_prog_cr(), specifically,
+this statement:
+
+	rfcpn = READ_ONCE(rfcp->rfc_next)
+
+KCSAN located this data race, which represents a real failure on powerpc.
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Marco Elver <elver@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: <kasan-dev@googlegroups.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/netns.h    |    4 ++--
- fs/nfsd/nfscache.c |    4 ++--
- fs/nfsd/stats.h    |    6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ kernel/rcu/rcutorture.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -26,9 +26,9 @@ struct nfsd4_client_tracking_ops;
- 
- enum {
- 	/* cache misses due only to checksum comparison failures */
--	NFSD_NET_PAYLOAD_MISSES,
-+	NFSD_STATS_PAYLOAD_MISSES,
- 	/* amount of memory (in bytes) currently consumed by the DRC */
--	NFSD_NET_DRC_MEM_USAGE,
-+	NFSD_STATS_DRC_MEM_USAGE,
- 	NFSD_NET_COUNTERS_NUM
- };
- 
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -690,7 +690,7 @@ int nfsd_reply_cache_stats_show(struct s
- 		   atomic_read(&nn->num_drc_entries));
- 	seq_printf(m, "hash buckets:          %u\n", 1 << nn->maskbits);
- 	seq_printf(m, "mem usage:             %lld\n",
--		   percpu_counter_sum_positive(&nn->counter[NFSD_NET_DRC_MEM_USAGE]));
-+		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_DRC_MEM_USAGE]));
- 	seq_printf(m, "cache hits:            %lld\n",
- 		   percpu_counter_sum_positive(&nfsdstats.counter[NFSD_STATS_RC_HITS]));
- 	seq_printf(m, "cache misses:          %lld\n",
-@@ -698,7 +698,7 @@ int nfsd_reply_cache_stats_show(struct s
- 	seq_printf(m, "not cached:            %lld\n",
- 		   percpu_counter_sum_positive(&nfsdstats.counter[NFSD_STATS_RC_NOCACHE]));
- 	seq_printf(m, "payload misses:        %lld\n",
--		   percpu_counter_sum_positive(&nn->counter[NFSD_NET_PAYLOAD_MISSES]));
-+		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_PAYLOAD_MISSES]));
- 	seq_printf(m, "longest chain len:     %u\n", nn->longest_chain);
- 	seq_printf(m, "cachesize at longest:  %u\n", nn->longest_chain_cachesize);
- 	return 0;
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -81,17 +81,17 @@ static inline void nfsd_stats_io_write_a
- 
- static inline void nfsd_stats_payload_misses_inc(struct nfsd_net *nn)
- {
--	percpu_counter_inc(&nn->counter[NFSD_NET_PAYLOAD_MISSES]);
-+	percpu_counter_inc(&nn->counter[NFSD_STATS_PAYLOAD_MISSES]);
- }
- 
- static inline void nfsd_stats_drc_mem_usage_add(struct nfsd_net *nn, s64 amount)
- {
--	percpu_counter_add(&nn->counter[NFSD_NET_DRC_MEM_USAGE], amount);
-+	percpu_counter_add(&nn->counter[NFSD_STATS_DRC_MEM_USAGE], amount);
- }
- 
- static inline void nfsd_stats_drc_mem_usage_sub(struct nfsd_net *nn, s64 amount)
- {
--	percpu_counter_sub(&nn->counter[NFSD_NET_DRC_MEM_USAGE], amount);
-+	percpu_counter_sub(&nn->counter[NFSD_STATS_DRC_MEM_USAGE], amount);
- }
- 
- #ifdef CONFIG_NFSD_V4
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 9f505688291e5..5c4bdbe76df04 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -1867,7 +1867,7 @@ static void rcu_torture_fwd_cb_cr(struct rcu_head *rhp)
+ 	spin_lock_irqsave(&rfp->rcu_fwd_lock, flags);
+ 	rfcpp = rfp->rcu_fwd_cb_tail;
+ 	rfp->rcu_fwd_cb_tail = &rfcp->rfc_next;
+-	WRITE_ONCE(*rfcpp, rfcp);
++	smp_store_release(rfcpp, rfcp);
+ 	WRITE_ONCE(rfp->n_launders_cb, rfp->n_launders_cb + 1);
+ 	i = ((jiffies - rfp->rcu_fwd_startat) / (HZ / FWD_CBS_HIST_DIV));
+ 	if (i >= ARRAY_SIZE(rfp->n_launders_hist))
+-- 
+2.43.0
+
 
 
 
