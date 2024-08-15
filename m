@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491169534E7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE58D95337E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5EDD2893DB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFBDA1C245D8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D231A00CE;
-	Thu, 15 Aug 2024 14:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912AF63C;
+	Thu, 15 Aug 2024 14:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxkxvBtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWSU3EKg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0CC17BEC0;
-	Thu, 15 Aug 2024 14:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5DF1AC42C;
+	Thu, 15 Aug 2024 14:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732299; cv=none; b=tJ3MnyDXouQIEmgwwTVS9RfF96syGd8nDKmiR0+0VJ5sAY2GGhsSnQkCuaYLODxKXWUveE0FVjBJKGvKh1aiy7jnizRkYXkufHV1aQTltljRuAivXgxhL5JQl0ETtSPccsVXod+6yDie56BBwb/Dxz+Yrk7qvFJ6bd6PKbVYRh8=
+	t=1723731347; cv=none; b=iw7afQ45AqdLIcVLzm5RoqUEgKL1f8NNkDeQvAq72o9qWFQmY1fYmdhFPDhls6Xa6Jk9v0or3JMgUF1lh5tStet8S/0ekfi9aLa2sgJJdn2ie8CihSxdkee8xTQnlXkQShvVqKlh4N+HiVA6E1ILyKdnGlyEVn9y8TCABnCICQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732299; c=relaxed/simple;
-	bh=AvHXXcdUumRaKWPCxfGBy4A/BlVv2+6FDTjNUuF+Zog=;
+	s=arc-20240116; t=1723731347; c=relaxed/simple;
+	bh=E0pTlMHPQQAaS36soUipgxDbnz8N7jpf+s4P02MQvd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6QJPUPO/2Ght2DiKMbiRuXTdxUfk6E/hfpSWLDFzAdoM4TQq/zG+mmRAxr/7ADQ51U3HxBqNZe/wPUV+cbD9u3rN0DTyLvAZhmTuvXMr8WQ0gcVDTXZZ4HNmkJuEc8aEkpCmquxS9emqR97232q58z2zfQ/vVEY2hRWur2zlzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxkxvBtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B487C32786;
-	Thu, 15 Aug 2024 14:31:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ASrnrniV4Iv252cnYLSasNpBDBQ09OL0Xv/1L7eW81Q/ThV+y0d0tdol5rb9uKudwoNDkAb43XF8KFl9FT8+4/gvEf7VrfeCD0oO9Le053+1zSUoMcg4Z7XMb2cYOxc0DnO5CXpUkro7kEj6cWW65zKr3+x6Fwk8HSBoO1hP6hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWSU3EKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB445C32786;
+	Thu, 15 Aug 2024 14:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732299;
-	bh=AvHXXcdUumRaKWPCxfGBy4A/BlVv2+6FDTjNUuF+Zog=;
+	s=korg; t=1723731347;
+	bh=E0pTlMHPQQAaS36soUipgxDbnz8N7jpf+s4P02MQvd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxkxvBtDbnHvgzH04uuFMBMSfA6gXWsoGf8jsMWpi1sXqxeNf0p4XalQEWKqKykwL
-	 CPpTOdUDPzVl/Y0JCd8Ll+cdePgHdbFeBjx7b4TLwfP7fwcZy4A1v5cO92s39wvp+2
-	 3G4eOFs8CgqHNW52sJ9qx6XqjAl3BvSUEmxfOmsk=
+	b=PWSU3EKgxynpIex04+zrsjfm2GiABweu0BZqgDRpvg1zVJbot0StzIa9Xf0ysm4Zp
+	 QfqRC96zM8MJvtWlvyGlAQ0TiP8fX5UOHWNVS03j1UgUyFLZW2GADzZ4RCZl0x9HFz
+	 lgLt/SYW4npWHncG8UxOQJeDGkonBH8UIN/esGtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shreyas Deodhar <sdeodhar@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 136/352] scsi: qla2xxx: Fix optrom version displayed in FDMI
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 069/259] RDMA/mlx4: Fix truncated output warning in mad.c
 Date: Thu, 15 Aug 2024 15:23:22 +0200
-Message-ID: <20240815131924.512426941@linuxfoundation.org>
+Message-ID: <20240815131905.469353750@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shreyas Deodhar <sdeodhar@marvell.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 348744f27a35e087acc9378bf53537fbfb072775 upstream.
+[ Upstream commit 0d2e6992fc956e3308cd5376c18567def4cb3967 ]
 
-Bios version was popluated for FDMI response. Systems with EFI would show
-optrom version as 0.  EFI version is populated here and BIOS version is
-already displayed under FDMI_HBA_BOOT_BIOS_NAME.
+Increase size of the name array to avoid truncated output warning.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-9-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/infiniband/hw/mlx4/mad.c: In function ‘mlx4_ib_alloc_demux_ctx’:
+drivers/infiniband/hw/mlx4/mad.c:2197:47: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 4
+[-Werror=format-truncation=]
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |                                               ^~
+drivers/infiniband/hw/mlx4/mad.c:2197:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |                                      ^~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2197:9: note: ‘snprintf’ output between
+10 and 20 bytes into a destination of size 12
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2205:48: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 3
+[-Werror=format-truncation=]
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |                                                ^~
+drivers/infiniband/hw/mlx4/mad.c:2205:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |                                      ^~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2205:9: note: ‘snprintf’ output between
+11 and 21 bytes into a destination of size 12
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2213:48: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 3
+[-Werror=format-truncation=]
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |                                                ^~
+drivers/infiniband/hw/mlx4/mad.c:2213:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |                                      ^~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2213:9: note: ‘snprintf’ output between
+11 and 21 bytes into a destination of size 12
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/hw/mlx4/mad.o] Error 1
+
+Fixes: fc06573dfaf8 ("IB/mlx4: Initialize SR-IOV IB support for slaves in master context")
+Link: https://lore.kernel.org/r/f3798b3ce9a410257d7e1ec7c9e285f1352e256a.1718554569.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c |    2 +-
+ drivers/infiniband/hw/mlx4/mad.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -1708,7 +1708,7 @@ qla2x00_hba_attributes(scsi_qla_host_t *
- 	eiter->type = cpu_to_be16(FDMI_HBA_OPTION_ROM_VERSION);
- 	alen = scnprintf(
- 		eiter->a.orom_version, sizeof(eiter->a.orom_version),
--		"%d.%02d", ha->bios_revision[1], ha->bios_revision[0]);
-+		"%d.%02d", ha->efi_revision[1], ha->efi_revision[0]);
- 	alen += FDMI_ATTR_ALIGNMENT(alen);
- 	alen += FDMI_ATTR_TYPELEN(eiter);
- 	eiter->len = cpu_to_be16(alen);
+diff --git a/drivers/infiniband/hw/mlx4/mad.c b/drivers/infiniband/hw/mlx4/mad.c
+index 08eccf2b6967d..511e095aa5567 100644
+--- a/drivers/infiniband/hw/mlx4/mad.c
++++ b/drivers/infiniband/hw/mlx4/mad.c
+@@ -2167,7 +2167,7 @@ static int mlx4_ib_alloc_demux_ctx(struct mlx4_ib_dev *dev,
+ 				       struct mlx4_ib_demux_ctx *ctx,
+ 				       int port)
+ {
+-	char name[12];
++	char name[21];
+ 	int ret = 0;
+ 	int i;
+ 
+-- 
+2.43.0
+
 
 
 
