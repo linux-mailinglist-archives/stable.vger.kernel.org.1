@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-68440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E45495324F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C74179533D6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB7901F213EA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 717CC28881B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DB31A76DD;
-	Thu, 15 Aug 2024 14:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294E419E808;
+	Thu, 15 Aug 2024 14:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvoZMs37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4WiEpbo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EB61A01B5;
-	Thu, 15 Aug 2024 14:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1F91AC896;
+	Thu, 15 Aug 2024 14:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730576; cv=none; b=MHr4kmU5cpuckGELuBkuwf3W+z2HEe57E496HotFPmMjjm/JzhqX+yUGGIA3HnBkHIUcfbECu5HVUzxLruiDVI5VlObsHSwIZqVuhhQ8lraRGhSAokYSR631V2AVnfytkXa5vMZL3LOnMZSnHYwo22Get+0Td83xJ63axcOsHLo=
+	t=1723731584; cv=none; b=oH40ws93Z52DsjNnSlZk/AkqS/dqmAE6NvH3e9K5Rkuam7TXILMSTNU0/8pBtxWZfyayOhXc2n1JEnXiHRvgg9yvirSi/wTgQ2QyowiG45EKVyvkbT6BrSkSygNqCCcr/Q7dL8jWQySEFb7dxT+uXd8HZ4UvjPXcY6hyXdugFKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730576; c=relaxed/simple;
-	bh=/iv4cy2wfcUXKcWnFXj5juwCMUo/8yBFSvDyBCt7fg4=;
+	s=arc-20240116; t=1723731584; c=relaxed/simple;
+	bh=2gJSEu+6NZjD5ldX9BrLA2OisxGmYPCOJhKRY8YfKmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEd0LMljRWfPMfO4WYGJaBBFpSs2IH81cyYd6mWI29ATk2gW5EPrAex9ldyXYb89zRXyjCOhqyGLbmjt49/bENIxhWeUe34D5/tYRwlSnQJxwCof5EL9YOQYkFN0tGROO4X45Itf9TrIuinfiWtF0v6DyRywBJAxfcPbD+LnHYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvoZMs37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0F1C4AF12;
-	Thu, 15 Aug 2024 14:02:54 +0000 (UTC)
+	 MIME-Version; b=P1bQGavuGaOk0FHJXkNmqpXDxeaghGL4WxdBL3tXxXqcJH6IKjlDGiPcyYz5h+hMnL4wkDopFl6fx2LfPPQ3QGnwz0Rm1cnyFOiIe66aIR6MyMZXG0ne2AdGX+DiBvqCzzVhrtDkorKG3ZQHKkp3HM7mm1g05hleynKOLUFMm8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4WiEpbo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A015C32786;
+	Thu, 15 Aug 2024 14:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730576;
-	bh=/iv4cy2wfcUXKcWnFXj5juwCMUo/8yBFSvDyBCt7fg4=;
+	s=korg; t=1723731584;
+	bh=2gJSEu+6NZjD5ldX9BrLA2OisxGmYPCOJhKRY8YfKmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TvoZMs37i0iqKqkhXk2VPLMHX+ye6TyY2kEjoc6CC5UiGL35hO1lsERz1WB/T7Y4M
-	 FlI55tppvKI4lUPectST1ZHTH9p1A9/g8VmXgV5IuW53gBMx0rJbUmnpGLlX+xFW6H
-	 uiHzf0SLTogr2YQfWddaVYZRdM0myMBumjj4rQmo=
+	b=R4WiEpbofs023fU4BABu5OGl31ZLaNyB7tl5tQCIB2YPCWoCukcpLyZGKIEMBn71k
+	 U4AQAQGpFd7EtcM9ptHN5eg3GqlzniDAGUHDM2g2NMNMzDJHRXgePZIv4tFlXiSSE0
+	 T8whN1SbjSlKNih9WGQkU2JJXL80K0Qnh/rqMq7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 451/484] mptcp: sched: check both directions for backup
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 176/259] net/mlx5e: Add a check for the return value from mlx5_port_set_eth_ptys
 Date: Thu, 15 Aug 2024 15:25:09 +0200
-Message-ID: <20240815131958.883670694@linuxfoundation.org>
+Message-ID: <20240815131909.575858221@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-commit b6a66e521a2032f7fcba2af5a9bcbaeaa19b7ca3 upstream.
+[ Upstream commit 3f8e82a020a5c22f9b791f4ac499b8e18007fbda ]
 
-The 'mptcp_subflow_context' structure has two items related to the
-backup flags:
+Since the documentation for mlx5_toggle_port_link states that it should
+only be used after setting the port register, we add a check for the
+return value from mlx5_port_set_eth_ptys to ensure the register was
+successfully set before calling it.
 
- - 'backup': the subflow has been marked as backup by the other peer
-
- - 'request_bkup': the backup flag has been set by the host
-
-Before this patch, the scheduler was only looking at the 'backup' flag.
-That can make sense in some cases, but it looks like that's not what we
-wanted for the general use, because either the path-manager was setting
-both of them when sending an MP_PRIO, or the receiver was duplicating
-the 'backup' flag in the subflow request.
-
-Note that the use of these two flags in the path-manager are going to be
-fixed in the next commits, but this change here is needed not to modify
-the behaviour.
-
-Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in protocol.c, because the context has changed in commit
-  3ce0852c86b9 ("mptcp: enforce HoL-blocking estimation"), which is not
-  in this version. This commit is unrelated to this modification. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 667daedaecd1 ("net/mlx5e: Toggle link only after modifying port parameters")
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-9-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/mptcp.h |    2 +-
- net/mptcp/protocol.c         |   10 ++++++----
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/include/trace/events/mptcp.h
-+++ b/include/trace/events/mptcp.h
-@@ -34,7 +34,7 @@ TRACE_EVENT(mptcp_subflow_get_send,
- 		struct sock *ssk;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index 18e0cb02aee18..10411ab89e1cf 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -1104,7 +1104,12 @@ int mlx5e_ethtool_set_link_ksettings(struct mlx5e_priv *priv,
+ 	if (!an_changes && link_modes == eproto.admin)
+ 		goto out;
  
- 		__entry->active = mptcp_subflow_active(subflow);
--		__entry->backup = subflow->backup;
-+		__entry->backup = subflow->backup || subflow->request_bkup;
- 
- 		if (subflow->tcp_sock && sk_fullsock(subflow->tcp_sock))
- 			__entry->free = sk_stream_memory_free(subflow->tcp_sock);
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1514,13 +1514,15 @@ static struct sock *mptcp_subflow_get_se
- 		send_info[i].ratio = -1;
- 	}
- 	mptcp_for_each_subflow(msk, subflow) {
-+		bool backup = subflow->backup || subflow->request_bkup;
+-	mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
++	err = mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
++	if (err) {
++		netdev_err(priv->netdev, "%s: failed to set ptys reg: %d\n", __func__, err);
++		goto out;
++	}
 +
- 		trace_mptcp_subflow_get_send(subflow);
- 		ssk =  mptcp_subflow_tcp_sock(subflow);
- 		if (!mptcp_subflow_active(subflow))
- 			continue;
+ 	mlx5_toggle_port_link(mdev);
  
- 		tout = max(tout, mptcp_timeout_from_subflow(subflow));
--		nr_active += !subflow->backup;
-+		nr_active += !backup;
- 		if (!sk_stream_memory_free(subflow->tcp_sock) || !tcp_sk(ssk)->snd_wnd)
- 			continue;
- 
-@@ -1530,9 +1532,9 @@ static struct sock *mptcp_subflow_get_se
- 
- 		ratio = div_u64((u64)READ_ONCE(ssk->sk_wmem_queued) << 32,
- 				pace);
--		if (ratio < send_info[subflow->backup].ratio) {
--			send_info[subflow->backup].ssk = ssk;
--			send_info[subflow->backup].ratio = ratio;
-+		if (ratio < send_info[backup].ratio) {
-+			send_info[backup].ssk = ssk;
-+			send_info[backup].ratio = ratio;
- 		}
- 	}
- 	__mptcp_set_timeout(sk, tout);
+ out:
+-- 
+2.43.0
+
 
 
 
