@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014A6953212
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:01:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A247A952FCB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA6A11F21E80
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:01:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C807A1C2492E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE05519F470;
-	Thu, 15 Aug 2024 14:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD001A00DF;
+	Thu, 15 Aug 2024 13:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znBlNZSA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeD33gfI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CC419FA99;
-	Thu, 15 Aug 2024 14:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C4E1A00D1;
+	Thu, 15 Aug 2024 13:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730490; cv=none; b=VT4wbyAOkNUb99316k8pkBdMoAY1N/erQqN4s6e1KNXxpC7BFI87N5c5ymtV3PH+1rX/48hj+1crn2H8mh0peyo8Gg7foBpAxYhDS9f7qxjzTTCCZ9NDdXrM3EcHBDK40WBNAzhRpKteMpbI/pL0Fa9QEzeol9NYwx1/hfQ6y1A=
+	t=1723728959; cv=none; b=PS5eIUhAoFKdiVVlh4PcChN6XiS5Q3zjInOPnljY4nQT2ngD2MzstqRTTNMwYzksB6bYDp7kkKIfAg/QCBR4E3X5oJBG1zUwoFBjPujEsBWAyiMPZR7oaP+7e/n2Uadrg/WM0/r0BwaQJSGlkPpOflicKDQiAKFiu8j5k1nltDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730490; c=relaxed/simple;
-	bh=b27hLjxZJyAMs2D7OUnRtttirqI3oKfP2wH33ExcBQo=;
+	s=arc-20240116; t=1723728959; c=relaxed/simple;
+	bh=FKMeuB+rMszW6TbWS3wT/nQxCyPCzSL+MyXQ+yg53j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLc+1y7zAaZe/kit3ZVShXwwYJU90l4LkBIZY3h5zeFPNH8T3ZEz1x9EzbwJ4y3RN1gdaq+hNFRqEWSj7sFeq2i0CYBayeVibDCHO8yZqJ4nJ7Q/B+YRIIP4uXljgO3jM9O8QzaFxqPwbYaSYLjHu1X2QFvG61xI/VjTefy2A/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znBlNZSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50C8C4AF0C;
-	Thu, 15 Aug 2024 14:01:29 +0000 (UTC)
+	 MIME-Version; b=UTP+exxThKLcBRBDvK6vgZ3eEsEWawmSagD2xkhj/RQXIPnAnfU0AFBITf7BYSX47j7LT6Kd5GB+jP+Jsjqx5rkwoSkvAq46r9xYAOnB2Scblhh2ohtw064VmTm0or2JDWmJu/nmAyLZFWGrfcyhqbqJqpFbQPUZvnm3thtxS9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeD33gfI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EACC32786;
+	Thu, 15 Aug 2024 13:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730490;
-	bh=b27hLjxZJyAMs2D7OUnRtttirqI3oKfP2wH33ExcBQo=;
+	s=korg; t=1723728959;
+	bh=FKMeuB+rMszW6TbWS3wT/nQxCyPCzSL+MyXQ+yg53j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znBlNZSArja7DrHLWfkY3i5eoiPtiR4Oks54TeW7v73Z+iH3wKMyvfzWagndD3WWH
-	 NgEaur0RJHFwJCwVZSku53emxmEu1oB1zuJcnahaCzqTl7NhL1YluXLxK1T3ICs6WT
-	 71QPYvo9bnW0BOn29xwUIumvedYGGaeIJpWBMXOw=
+	b=EeD33gfIffA7kEFcTwoG+9Xx5ZJOH0XCDyBPtiIrWebkJT39BseHDa5jSzwHiG+FW
+	 xxMXQbWkSQ9sfJEZh1jlEslvORnCsrEBtkf3E4R1GVGhLdFo3CiELfKYqNOgvEtQVA
+	 uLlRYywZW5Bt/ljVzVulxJ/siQ9w8uDdG8jB/cEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 424/484] scsi: mpi3mr: Avoid IOMMU page faults on REPORT ZONES
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 165/196] spi: lpspi: Replace all "master" with "controller"
 Date: Thu, 15 Aug 2024 15:24:42 +0200
-Message-ID: <20240815131957.833117807@linuxfoundation.org>
+Message-ID: <20240815131858.386254466@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,246 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-commit 1abc900ddda8ad2ef739fedf498d415655b6c3b8 upstream.
+[ Upstream commit 07d71557494c05b0651def1651bf6d7e7f47bbbb ]
 
-Some firmware versions of the 9600 series SAS HBA byte-swap the REPORT
-ZONES command reply buffer from ATA-ZAC devices by directly accessing the
-buffer in the host memory. This does not respect the default command DMA
-direction and causes IOMMU page faults on architectures with an IOMMU
-enforcing write-only mappings for DMA_FROM_DEVICE DMA direction (e.g. AMD
-hosts), leading to the device capacity to be dropped to 0:
+In order to enable the slave mode and make the code more readable,
+replace all related structure names and object names which is
+named "master" with "controller".
 
-scsi 18:0:58:0: Direct-Access-ZBC ATA      WDC  WSH722626AL W930 PQ: 0 ANSI: 7
-scsi 18:0:58:0: Power-on or device reset occurred
-sd 18:0:58:0: Attached scsi generic sg9 type 20
-sd 18:0:58:0: [sdj] Host-managed zoned block device
-mpi3mr 0000:c1:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0001 address=0xfec0c400 flags=0x0050]
-mpi3mr 0000:c1:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0001 address=0xfec0c500 flags=0x0050]
-sd 18:0:58:0: [sdj] REPORT ZONES start lba 0 failed
-sd 18:0:58:0: [sdj] REPORT ZONES: Result: hostbyte=DID_SOFT_ERROR driverbyte=DRIVER_OK
-sd 18:0:58:0: [sdj] 0 4096-byte logical blocks: (0 B/0 B)
-sd 18:0:58:0: [sdj] Write Protect is off
-sd 18:0:58:0: [sdj] Mode Sense: 6b 00 10 08
-sd 18:0:58:0: [sdj] Write cache: enabled, read cache: enabled, supports DPO and FUA
-sd 18:0:58:0: [sdj] Attached SCSI disk
-
-Avoid this issue by always mapping the buffer of REPORT ZONES commands
-using DMA_BIDIRECTIONAL, that is, using a read-write IOMMU mapping.
-
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Fixes: 023ab2a9b4ed ("scsi: mpi3mr: Add support for queue command processing")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20240719073913.179559-2-dlemoal@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 730bbfaf7d48 ("spi: spi-fsl-lpspi: Fix scldiv calculation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_os.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/spi/spi-fsl-lpspi.c | 84 ++++++++++++++++++++-----------------
+ 1 file changed, 46 insertions(+), 38 deletions(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -2411,6 +2411,17 @@ static int mpi3mr_prepare_sg_scmd(struct
- 		    scmd->sc_data_direction);
- 		priv->meta_sg_valid = 1; /* To unmap meta sg DMA */
- 	} else {
-+		/*
-+		 * Some firmware versions byte-swap the REPORT ZONES command
-+		 * reply from ATA-ZAC devices by directly accessing in the host
-+		 * buffer. This does not respect the default command DMA
-+		 * direction and causes IOMMU page faults on some architectures
-+		 * with an IOMMU enforcing write mappings (e.g. AMD hosts).
-+		 * Avoid such issue by making the REPORT ZONES buffer mapping
-+		 * bi-directional.
-+		 */
-+		if (scmd->cmnd[0] == ZBC_IN && scmd->cmnd[1] == ZI_REPORT_ZONES)
-+			scmd->sc_data_direction = DMA_BIDIRECTIONAL;
- 		sg_scmd = scsi_sglist(scmd);
- 		sges_left = scsi_dma_map(scmd);
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 51670976faa35..725d6ac5f814d 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -3,6 +3,7 @@
+ // Freescale i.MX7ULP LPSPI driver
+ //
+ // Copyright 2016 Freescale Semiconductor, Inc.
++// Copyright 2018 NXP Semiconductors
+ 
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+@@ -137,16 +138,18 @@ static void fsl_lpspi_intctrl(struct fsl_lpspi_data *fsl_lpspi,
+ 	writel(enable, fsl_lpspi->base + IMX7ULP_IER);
+ }
+ 
+-static int lpspi_prepare_xfer_hardware(struct spi_master *master)
++static int lpspi_prepare_xfer_hardware(struct spi_controller *controller)
+ {
+-	struct fsl_lpspi_data *fsl_lpspi = spi_master_get_devdata(master);
++	struct fsl_lpspi_data *fsl_lpspi =
++				spi_controller_get_devdata(controller);
+ 
+ 	return clk_prepare_enable(fsl_lpspi->clk);
+ }
+ 
+-static int lpspi_unprepare_xfer_hardware(struct spi_master *master)
++static int lpspi_unprepare_xfer_hardware(struct spi_controller *controller)
+ {
+-	struct fsl_lpspi_data *fsl_lpspi = spi_master_get_devdata(master);
++	struct fsl_lpspi_data *fsl_lpspi =
++				spi_controller_get_devdata(controller);
+ 
+ 	clk_disable_unprepare(fsl_lpspi->clk);
+ 
+@@ -291,7 +294,8 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+ static void fsl_lpspi_setup_transfer(struct spi_device *spi,
+ 				     struct spi_transfer *t)
+ {
+-	struct fsl_lpspi_data *fsl_lpspi = spi_master_get_devdata(spi->master);
++	struct fsl_lpspi_data *fsl_lpspi =
++				spi_controller_get_devdata(spi->controller);
+ 
+ 	fsl_lpspi->config.mode = spi->mode;
+ 	fsl_lpspi->config.bpw = t ? t->bits_per_word : spi->bits_per_word;
+@@ -318,11 +322,12 @@ static void fsl_lpspi_setup_transfer(struct spi_device *spi,
+ 	fsl_lpspi_config(fsl_lpspi);
+ }
+ 
+-static int fsl_lpspi_transfer_one(struct spi_master *master,
++static int fsl_lpspi_transfer_one(struct spi_controller *controller,
+ 				  struct spi_device *spi,
+ 				  struct spi_transfer *t)
+ {
+-	struct fsl_lpspi_data *fsl_lpspi = spi_master_get_devdata(master);
++	struct fsl_lpspi_data *fsl_lpspi =
++				spi_controller_get_devdata(controller);
+ 	int ret;
+ 
+ 	fsl_lpspi->tx_buf = t->tx_buf;
+@@ -347,10 +352,11 @@ static int fsl_lpspi_transfer_one(struct spi_master *master,
+ 	return 0;
+ }
+ 
+-static int fsl_lpspi_transfer_one_msg(struct spi_master *master,
++static int fsl_lpspi_transfer_one_msg(struct spi_controller *controller,
+ 				      struct spi_message *msg)
+ {
+-	struct fsl_lpspi_data *fsl_lpspi = spi_master_get_devdata(master);
++	struct fsl_lpspi_data *fsl_lpspi =
++				spi_controller_get_devdata(controller);
+ 	struct spi_device *spi = msg->spi;
+ 	struct spi_transfer *xfer;
+ 	bool is_first_xfer = true;
+@@ -366,7 +372,7 @@ static int fsl_lpspi_transfer_one_msg(struct spi_master *master,
+ 
+ 		is_first_xfer = false;
+ 
+-		ret = fsl_lpspi_transfer_one(master, spi, xfer);
++		ret = fsl_lpspi_transfer_one(controller, spi, xfer);
+ 		if (ret < 0)
+ 			goto complete;
+ 
+@@ -380,7 +386,7 @@ static int fsl_lpspi_transfer_one_msg(struct spi_master *master,
+ 	writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
+ 
+ 	msg->status = ret;
+-	spi_finalize_current_message(master);
++	spi_finalize_current_message(controller);
+ 
+ 	return ret;
+ }
+@@ -410,30 +416,31 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ static int fsl_lpspi_probe(struct platform_device *pdev)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi;
+-	struct spi_master *master;
++	struct spi_controller *controller;
+ 	struct resource *res;
+ 	int ret, irq;
+ 	u32 temp;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(struct fsl_lpspi_data));
+-	if (!master)
++	controller = spi_alloc_master(&pdev->dev,
++					sizeof(struct fsl_lpspi_data));
++	if (!controller)
+ 		return -ENOMEM;
+ 
+-	platform_set_drvdata(pdev, master);
++	platform_set_drvdata(pdev, controller);
+ 
+-	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+-	master->bus_num = pdev->id;
++	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
++	controller->bus_num = pdev->id;
+ 
+-	fsl_lpspi = spi_master_get_devdata(master);
++	fsl_lpspi = spi_controller_get_devdata(controller);
+ 	fsl_lpspi->dev = &pdev->dev;
+ 
+-	master->transfer_one_message = fsl_lpspi_transfer_one_msg;
+-	master->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
+-	master->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+-	master->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
+-	master->dev.of_node = pdev->dev.of_node;
+-	master->bus_num = pdev->id;
++	controller->transfer_one_message = fsl_lpspi_transfer_one_msg;
++	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
++	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
++	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	controller->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
++	controller->dev.of_node = pdev->dev.of_node;
++	controller->bus_num = pdev->id;
+ 
+ 	init_completion(&fsl_lpspi->xfer_done);
+ 
+@@ -441,32 +448,32 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	fsl_lpspi->base = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(fsl_lpspi->base)) {
+ 		ret = PTR_ERR(fsl_lpspi->base);
+-		goto out_master_put;
++		goto out_controller_put;
  	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		ret = irq;
+-		goto out_master_put;
++		goto out_controller_put;
+ 	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, irq, fsl_lpspi_isr, 0,
+ 			       dev_name(&pdev->dev), fsl_lpspi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "can't get irq%d: %d\n", irq, ret);
+-		goto out_master_put;
++		goto out_controller_put;
+ 	}
+ 
+ 	fsl_lpspi->clk = devm_clk_get(&pdev->dev, "ipg");
+ 	if (IS_ERR(fsl_lpspi->clk)) {
+ 		ret = PTR_ERR(fsl_lpspi->clk);
+-		goto out_master_put;
++		goto out_controller_put;
+ 	}
+ 
+ 	ret = clk_prepare_enable(fsl_lpspi->clk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "can't enable lpspi clock, ret=%d\n", ret);
+-		goto out_master_put;
++		goto out_controller_put;
+ 	}
+ 
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
+@@ -475,24 +482,25 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(fsl_lpspi->clk);
+ 
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	ret = devm_spi_register_controller(&pdev->dev, controller);
+ 	if (ret < 0) {
+-		dev_err(&pdev->dev, "spi_register_master error.\n");
+-		goto out_master_put;
++		dev_err(&pdev->dev, "spi_register_controller error.\n");
++		goto out_controller_put;
+ 	}
+ 
+ 	return 0;
+ 
+-out_master_put:
+-	spi_master_put(master);
++out_controller_put:
++	spi_controller_put(controller);
+ 
+ 	return ret;
+ }
+ 
+ static int fsl_lpspi_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct fsl_lpspi_data *fsl_lpspi = spi_master_get_devdata(master);
++	struct spi_controller *controller = platform_get_drvdata(pdev);
++	struct fsl_lpspi_data *fsl_lpspi =
++				spi_controller_get_devdata(controller);
+ 
+ 	clk_disable_unprepare(fsl_lpspi->clk);
+ 
+@@ -509,6 +517,6 @@ static struct platform_driver fsl_lpspi_driver = {
+ };
+ module_platform_driver(fsl_lpspi_driver);
+ 
+-MODULE_DESCRIPTION("LPSPI Master Controller driver");
++MODULE_DESCRIPTION("LPSPI Controller driver");
+ MODULE_AUTHOR("Gao Pan <pandy.gao@nxp.com>");
+ MODULE_LICENSE("GPL");
+-- 
+2.43.0
+
 
 
 
