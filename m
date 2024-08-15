@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-69099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FDEF95356B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 604AD9535A0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A4C1F2A7A2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0586C281E86
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2061993B9;
-	Thu, 15 Aug 2024 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF13B1684AC;
+	Thu, 15 Aug 2024 14:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDkLxzcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1lK3mRD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198CF3214;
-	Thu, 15 Aug 2024 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD6D1AC893;
+	Thu, 15 Aug 2024 14:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732664; cv=none; b=X6FCmwx7k7QoD7Earzh2OmYmJdYbB3elZrrrZjaTqXvLZPoBu1k93EX2tjBrgN3EcgJUnuIi4CQuOjsR3pmx/FuAIBqoAFh6XP0eGPaRhGKbCm1YH8QVhGPEm3Gc2XIHl2/ODOYn+9+K992FMxpguzlKzHX4u6TnAGHf5np66BA=
+	t=1723732798; cv=none; b=cvX9MoAqzqXUSLoFewgw26llPswysngJqojK1Cw+KcdUrfjREkSS/ggj9qCsJ0oVHU5WGWd9KrvKhNkJK4wo+6Yk3vov9k+MZulFlhXjXpOtmb7U7Olq99K7PxVLNeSOGFGxTJ2RpVeOt/BH9jq8yr3clwdQSMdSmgPOoxwCRbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732664; c=relaxed/simple;
-	bh=zogJCYDhq16CHU6ojYro5f4X8782hpQ9D3L9kEgIjG0=;
+	s=arc-20240116; t=1723732798; c=relaxed/simple;
+	bh=QPwGoGtUPFGUpN2N4eiA0OZmBPQqkHr1ccNnYNU50nA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGVLOGb1Kpj+ruoqsMAt6HFC6kctxAuQTG2Q8bx1tNeJdf82FHb1rvbkdGiqQ+TLmh5fnEsKB2mYy4I4MPwMqKvr/R3NLmUdT1FklG04DDrsne+p4Vzi9MWW8aNWdNUuDJHjsyiV4F+J1fbVipoUpNRN4SME/ATf0IQn+Szlu0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDkLxzcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9BDC4AF0C;
-	Thu, 15 Aug 2024 14:37:43 +0000 (UTC)
+	 MIME-Version; b=MSC2C0RcgvwoWhKr1xBZHuAf4cGRPsLqM/avtt4bbQnK75YIK5mkgpmDzTxRv+mQD4s31NJXgPjjizXXiJI7uHsIc15e5HMyJjuO7CiyTMTiKg9QcAw0x6AmxXcLTQvj5A1+mYsqPFEXJrOCs0rCDLBfy8wTwlTwWZrxo+K/FBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1lK3mRD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FB9C32786;
+	Thu, 15 Aug 2024 14:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732664;
-	bh=zogJCYDhq16CHU6ojYro5f4X8782hpQ9D3L9kEgIjG0=;
+	s=korg; t=1723732798;
+	bh=QPwGoGtUPFGUpN2N4eiA0OZmBPQqkHr1ccNnYNU50nA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KDkLxzcKoPlN3asgVOWosOuLAWntEGLYpVoy2dOYGYcVdlu7/1JffrQ0S57Z8JU9C
-	 el0ATW2Jt+FdIrSG1EmKJ6QpEPGFjAH4/J5KG3Axy7OeNvT99R/zE6Nh8lY+nrpvHq
-	 9Yye1B9lDFCNqYgUNamxJk/xdkUNCodtaKY0rPMk=
+	b=U1lK3mRD6UYTasc7YjkgcmSJwqUkxENWhXc9+SN0FJTsmw660ga+/piRK5rzhYqeN
+	 q7Bm9CqRgzgJc94MbWwLQLafE+4T0uH7hHviFZowoVfqKSk8zoIEv2kynyZ/rOFZ4w
+	 DfEqVLXRTTYlgnP2HU5E5tWKLzvNMCGKz3zr9tuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.10 247/352] mptcp: fix duplicate data handling
-Date: Thu, 15 Aug 2024 15:25:13 +0200
-Message-ID: <20240815131928.985734907@linuxfoundation.org>
+	Alexander Maltsev <keltar.gw@gmail.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 248/352] netfilter: ipset: Add list flush to cancel_gc
+Date: Thu, 15 Aug 2024 15:25:14 +0200
+Message-ID: <20240815131929.023017151@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -66,63 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Alexander Maltsev <keltar.gw@gmail.com>
 
-commit 68cc924729ffcfe90d0383177192030a9aeb2ee4 upstream.
+[ Upstream commit c1193d9bbbd379defe9be3c6de566de684de8a6f ]
 
-When a subflow receives and discards duplicate data, the mptcp
-stack assumes that the consumed offset inside the current skb is
-zero.
+Flushing list in cancel_gc drops references to other lists right away,
+without waiting for RCU to destroy list. Fixes race when referenced
+ipsets can't be destroyed while referring list is scheduled for destroy.
 
-With multiple subflows receiving data simultaneously such assertion
-does not held true. As a result the subflow-level copied_seq will
-be incorrectly increased and later on the same subflow will observe
-a bad mapping, leading to subflow reset.
-
-Address the issue taking into account the skb consumed offset in
-mptcp_subflow_discard_data().
-
-Fixes: 04e4cd4f7ca4 ("mptcp: cleanup mptcp_subflow_discard_data()")
-Cc: stable@vger.kernel.org
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/501
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 97f7cf1cd80e ("netfilter: ipset: fix performance regression in swap operation")
+Signed-off-by: Alexander Maltsev <keltar.gw@gmail.com>
+Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ net/netfilter/ipset/ip_set_list_set.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -863,14 +863,22 @@ static void mptcp_subflow_discard_data(s
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
- 	bool fin = TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN;
--	u32 incr;
-+	struct tcp_sock *tp = tcp_sk(ssk);
-+	u32 offset, incr, avail_len;
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index e839c356bcb56..902ff2f3bc72b 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -547,6 +547,9 @@ list_set_cancel_gc(struct ip_set *set)
  
--	incr = limit >= skb->len ? skb->len + fin : limit;
-+	offset = tp->copied_seq - TCP_SKB_CB(skb)->seq;
-+	if (WARN_ON_ONCE(offset > skb->len))
-+		goto out;
+ 	if (SET_WITH_TIMEOUT(set))
+ 		del_timer_sync(&map->gc);
++
++	/* Flush list to drop references to other ipsets */
++	list_set_flush(set);
+ }
  
--	pr_debug("discarding=%d len=%d seq=%d", incr, skb->len,
--		 subflow->map_subflow_seq);
-+	avail_len = skb->len - offset;
-+	incr = limit >= avail_len ? avail_len + fin : limit;
-+
-+	pr_debug("discarding=%d len=%d offset=%d seq=%d", incr, skb->len,
-+		 offset, subflow->map_subflow_seq);
- 	MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DUPDATA);
- 	tcp_sk(ssk)->copied_seq += incr;
-+
-+out:
- 	if (!before(tcp_sk(ssk)->copied_seq, TCP_SKB_CB(skb)->end_seq))
- 		sk_eat_skb(ssk, skb);
- 	if (mptcp_subflow_get_map_offset(subflow) >= subflow->map_data_len)
+ static const struct ip_set_type_variant set_variant = {
+-- 
+2.43.0
+
 
 
 
