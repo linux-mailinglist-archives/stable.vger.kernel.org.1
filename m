@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC3E953449
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE1D95360C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7586F1C224ED
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30D91F21429
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247C31A0712;
-	Thu, 15 Aug 2024 14:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1741AAE30;
+	Thu, 15 Aug 2024 14:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5ECRSD/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxFRkfxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE431AC8AE;
-	Thu, 15 Aug 2024 14:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4661AAE01;
+	Thu, 15 Aug 2024 14:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731855; cv=none; b=dLhXVMflUmI77ie2P1UzkWHYHCXjQXNMaP4TBYbEcwFyAodzWPf6IGk3yTdntMz0oIA2f//DlonyFZ7fjXur9ktjlZQysl+DyBQnslsvxNG418vX1g6Cg2NUZkdf4XAAXu+OgVZAhLvaMSVhcom/q4Vjm3t9m0EdqVg1Oqch5gI=
+	t=1723733018; cv=none; b=CRNiWK8h90bNgip1uyS5DueWcuYp1mcP1jMSwgwWuGGZ9a4KdRSr5YI9ntHGZNXMMaLh/a0zyB+oBMRuz1s4o2bmcF7YUiAjdBFZJt6HBy9PwxtLLIo3tsjm9Tdsno2cVW0pWs/wuRs8VgC83Vzju84pOO+tOcKN7Efbd/HPp44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731855; c=relaxed/simple;
-	bh=I/me8FpqMZjJJL4EMM5iXjByD2NcgLU+rS8Adz8Mg8g=;
+	s=arc-20240116; t=1723733018; c=relaxed/simple;
+	bh=DIQwabo72AJN272cTtNVi2iOTvWYmkxMuJfmtgfVQHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipOTqz92accYL4Xrv8fSW7l1QQa25VNRLe+VTfjzQbGHT1ZaujGIB9ugjk2BcDN2DXH47Vdf4UKNmMpsjcVpTwmDyK9isoaC7vAsDoRNI1Ate7lK+4iTWacvXUbORedH9bERifsKrV4h/IYnio36qnGaY+bpO1vVhwp0pFe68sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5ECRSD/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ECFC32786;
-	Thu, 15 Aug 2024 14:24:14 +0000 (UTC)
+	 MIME-Version; b=AG3hpC2+4KhrG+tfRzZF31KMuJxLl3H1TIrJ82cAPKpU2hvV8b+A4R609lnJZXcp/8yK7ohryOD8Oi07W5nIRKbbX3+6l9cVk9oxywTPbHndRzZTvGdgPfimaddCvXgHs+DBivBsS7WgP1SRTHWCOdAFl114PvBIIxK/obK9GGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxFRkfxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C223EC32786;
+	Thu, 15 Aug 2024 14:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731855;
-	bh=I/me8FpqMZjJJL4EMM5iXjByD2NcgLU+rS8Adz8Mg8g=;
+	s=korg; t=1723733018;
+	bh=DIQwabo72AJN272cTtNVi2iOTvWYmkxMuJfmtgfVQHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5ECRSD/gXTJcsUOM6XgNspaxPbYIJbNJ+JUYdNm9fZKu20YmixQkzS++wiLubWOX
-	 aI/0B1e7Aa1UyvD9+dWorWWVwWWg/cfybqEroJPnWOWiiNwzwwQTLaHDTh3a2BvuJb
-	 vJbQhk2eBPxC0dFF1E0NjFmPC60+meMM+LXImJd0=
+	b=uxFRkfxZFnnot+zkhbmsujaT0vMs2XD1vxw1ypJKUk3gI7UoTD4dyxCtt2ii7L8+Z
+	 SJzozjOL5pv9vk5klsPPJN2N4mwn0LvRc2kryoloEPgBvN7aBjUO7/yNSfUVZH3jJQ
+	 5ZXtfZACAq/s9LC0Z6iyCXUR+F1CBM/KOQNWuvgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hmy <huanglin@uniontech.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.4 258/259] nvme/pci: Add APST quirk for Lenovo N60z laptop
+	Andi Kleen <ak@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.10 325/352] x86/mtrr: Check if fixed MTRRs exist before saving them
 Date: Thu, 15 Aug 2024 15:26:31 +0200
-Message-ID: <20240815131912.834696263@linuxfoundation.org>
+Message-ID: <20240815131932.014688294@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Andi Kleen <ak@linux.intel.com>
 
-commit ab091ec536cb7b271983c0c063b17f62f3591583 upstream.
+commit 919f18f961c03d6694aa726c514184f2311a4614 upstream.
 
-There is a hardware power-saving problem with the Lenovo N60z
-board. When turn it on and leave it for 10 hours, there is a
-20% chance that a nvme disk will not wake up until reboot.
+MTRRs have an obsolete fixed variant for fine grained caching control
+of the 640K-1MB region that uses separate MSRs. This fixed variant has
+a separate capability bit in the MTRR capability MSR.
 
-Link: https://lore.kernel.org/all/2B5581C46AC6E335+9c7a81f1-05fb-4fd0-9fbb-108757c21628@uniontech.com
-Signed-off-by: hmy <huanglin@uniontech.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+So far all x86 CPUs which support MTRR have this separate bit set, so it
+went unnoticed that mtrr_save_state() does not check the capability bit
+before accessing the fixed MTRR MSRs.
+
+Though on a CPU that does not support the fixed MTRR capability this
+results in a #GP.  The #GP itself is harmless because the RDMSR fault is
+handled gracefully, but results in a WARN_ON().
+
+Add the missing capability check to prevent this.
+
+Fixes: 2b1f6278d77c ("[PATCH] x86: Save the MTRRs of the BSP before booting an AP")
+Signed-off-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240808000244.946864-1-ak@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/cpu/mtrr/mtrr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2822,6 +2822,13 @@ static unsigned long check_vendor_combin
- 			return NVME_QUIRK_SIMPLE_SUSPEND;
- 	}
+--- a/arch/x86/kernel/cpu/mtrr/mtrr.c
++++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
+@@ -817,7 +817,7 @@ void mtrr_save_state(void)
+ {
+ 	int first_cpu;
  
-+	/*
-+	 * NVMe SSD drops off the PCIe bus after system idle
-+	 * for 10 hours on a Lenovo N60z board.
-+	 */
-+	if (dmi_match(DMI_BOARD_NAME, "LXKT-ZXEG-N6"))
-+		return NVME_QUIRK_NO_APST;
-+
- 	return 0;
- }
+-	if (!mtrr_enabled())
++	if (!mtrr_enabled() || !mtrr_state.have_fixed)
+ 		return;
  
+ 	first_cpu = cpumask_first(cpu_online_mask);
 
 
 
