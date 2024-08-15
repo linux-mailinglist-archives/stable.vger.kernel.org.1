@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-69171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0729535D3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEED9532E9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B0F21C239F1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C1441C2042D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3A21A7068;
-	Thu, 15 Aug 2024 14:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC081AC450;
+	Thu, 15 Aug 2024 14:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwYHNgHu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgWQZsuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF3E1AC893;
-	Thu, 15 Aug 2024 14:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5231A01D4;
+	Thu, 15 Aug 2024 14:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732899; cv=none; b=Q08EhnJa1oV13sQkSNJFrOz6MriNiB7G863x9gw+wlhx6pumdDFT2ngrXMLrZahirUpGDEtzTQAbAYKg8ZqTkDXhXuVkhHrgL3Z6n8FqdsU2DKEbFEjlbcIqgbxqlStH9iFJ7UcTNp2NwCdldNxZ8luF0q8ePWi+MFfoM7A/OEk=
+	t=1723730944; cv=none; b=H/hAjn0L90/YCxwMlvvT1o7R/19/sMbfXL+VL1u0hz42mlHd8aV2P0WKE9pvl46DUshP6ZE6rp0FkETcMFzrkHjWsHN1hb3EC1Sq0y6QvwMTHXj5dNNHakf2fGuYpetoAwxh0dqw320SnXAf6PtIZmI2+SAIon+H92lc5XO2/CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732899; c=relaxed/simple;
-	bh=dSBPxdGEZTIMGwwCY2ggLm/LIsmw6LmRzexmiCQyePM=;
+	s=arc-20240116; t=1723730944; c=relaxed/simple;
+	bh=QG1Tz1S5Lwe2alfITdxDGfA+HsyM0BG4M2V4aWAGbTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4Sritx8F3VJiy/BzEMLwGqH5+LylllmC4LFdRp5fiNX5NKB1eiKglVF0mkEP7WXKd/Y2Qzfym5gB9IXoYrynpSq3a90gWiFhxfRSeZFahc7euKvO6AStqte15d4z3GXsRInfthSiclbSwdec7paakQ+g+r9CnoBR/DLbK5Zg3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwYHNgHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806F0C4AF11;
-	Thu, 15 Aug 2024 14:41:38 +0000 (UTC)
+	 MIME-Version; b=UL9t6zh2mzOShgEg9WdAaDCHHC4sQZ0RBuJ45uiymU5SuCcL+BOEX7A+Zo32XSmsmMtEQ/RgEW+9YKCNlFrCrQ6ja8BBKHTLZM3ro1LBgva+KHiVGhtDI9jGe70VfiPA2Uy3i2EPmu9sle+tQCdBURMevNBBRghlbJ7BN5LRcBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgWQZsuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4F7C32786;
+	Thu, 15 Aug 2024 14:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732898;
-	bh=dSBPxdGEZTIMGwwCY2ggLm/LIsmw6LmRzexmiCQyePM=;
+	s=korg; t=1723730943;
+	bh=QG1Tz1S5Lwe2alfITdxDGfA+HsyM0BG4M2V4aWAGbTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zwYHNgHuOnYPNPuHIswFdI8lyhh1ziyuDNks7BtBDyRDK3QRCe2cliZWs+cXmtL2+
-	 QAqtb7FqRB5KRcz1lUTKwoGYPin1cAd3/dY3NQ+EKV7kmi4Mh6z8LmX3fdiyIyDDMO
-	 ApS1/UULbvCw3hDy0h8220Ck1S3G/ngqr9lhjeXw=
+	b=GgWQZsuZwoX66btfH1L5mlyOP0nABK7xuIPqoYlCv4dCp7UXYp0KAWYEdlc1grMFG
+	 h4j2Ui4crgPqlaiDxRx01/yArEWUy6NlV66J3ZM9GuPUjeC9E17vMr+T4abTAiBf8d
+	 ovNI4Sqz/vmszuDM4UBgh1elJxkbWkQjtoGxG+Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 289/352] arm64: errata: Unify speculative SSBS errata logic
+Subject: [PATCH 6.6 41/67] bpf: Avoid kfree_rcu() under lock in bpf_lpm_trie.
 Date: Thu, 15 Aug 2024 15:25:55 +0200
-Message-ID: <20240815131930.622274387@linuxfoundation.org>
+Message-ID: <20240815131839.895503593@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,143 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit ec768766608092087dfb5c1fc45a16a6f524dee2 ]
+[ Upstream commit 59f2f841179aa6a0899cb9cf53659149a35749b7 ]
 
-Cortex-X4 erratum 3194386 and Neoverse-V3 erratum 3312417 are identical,
-with duplicate Kconfig text and some unsightly ifdeffery. While we try
-to share code behind CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS, having
-separate options results in a fair amount of boilerplate code, and this
-will only get worse as we expand the set of affected CPUs.
+syzbot reported the following lock sequence:
+cpu 2:
+  grabs timer_base lock
+    spins on bpf_lpm lock
 
-To reduce this boilerplate, unify the two behind a common Kconfig
-option. This removes the duplicate text and Kconfig logic, and removes
-the need for the intermediate ARM64_WORKAROUND_SPECULATIVE_SSBS option.
-The set of affected CPUs is described as a list so that this can easily
-be extended.
+cpu 1:
+  grab rcu krcp lock
+    spins on timer_base lock
 
-I've used ARM64_ERRATUM_3194386 (matching the Neoverse-V3 erratum ID) as
-the common option, matching the way we use ARM64_ERRATUM_1319367 to
-cover Cortex-A57 erratum 1319537 and Cortex-A72 erratum 1319367.
+cpu 0:
+  grab bpf_lpm lock
+    spins on rcu krcp lock
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-5-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: fix conflicts & renames, drop unneeded cpucaps.h ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+bpf_lpm lock can be the same.
+timer_base lock can also be the same due to timer migration.
+but rcu krcp lock is always per-cpu, so it cannot be the same lock.
+Hence it's a false positive.
+To avoid lockdep complaining move kfree_rcu() after spin_unlock.
+
+Reported-by: syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240329171439.37813-1-alexei.starovoitov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arm64/silicon-errata.rst |  2 +-
- arch/arm64/Kconfig                     | 28 ++++----------------------
- arch/arm64/kernel/cpu_errata.c         |  8 ++------
- arch/arm64/kernel/proton-pack.c        |  2 +-
- 4 files changed, 8 insertions(+), 32 deletions(-)
+ kernel/bpf/lpm_trie.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index 0ecb714b2c426..2f50eb0fce34f 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -106,7 +106,7 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1542419        | ARM64_ERRATUM_1542419       |
- +----------------+-----------------+-----------------+-----------------------------+
--| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3312417       |
-+| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 0d59e8ab27c88..4ed94e8d84c71 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -691,34 +691,14 @@ config ARM64_ERRATUM_2457168
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 050fe1ebf0f7d..d0febf07051ed 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -308,6 +308,7 @@ static long trie_update_elem(struct bpf_map *map,
+ {
+ 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
+ 	struct lpm_trie_node *node, *im_node = NULL, *new_node = NULL;
++	struct lpm_trie_node *free_node = NULL;
+ 	struct lpm_trie_node __rcu **slot;
+ 	struct bpf_lpm_trie_key_u8 *key = _key;
+ 	unsigned long irq_flags;
+@@ -382,7 +383,7 @@ static long trie_update_elem(struct bpf_map *map,
+ 			trie->n_entries--;
  
- 	  If unsure, say Y.
+ 		rcu_assign_pointer(*slot, new_node);
+-		kfree_rcu(node, rcu);
++		free_node = node;
  
--config ARM64_WORKAROUND_SPECULATIVE_SSBS
--	bool
--
- config ARM64_ERRATUM_3194386
--	bool "Cortex-X4: 3194386: workaround for MSR SSBS not self-synchronizing"
--	select ARM64_WORKAROUND_SPECULATIVE_SSBS
-+	bool "Cortex-X4/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
- 	default y
- 	help
--	  This option adds the workaround for ARM Cortex-X4 erratum 3194386.
--
--	  On affected cores "MSR SSBS, #0" instructions may not affect
--	  subsequent speculative instructions, which may permit unexepected
--	  speculative store bypassing.
--
--	  Work around this problem by placing a speculation barrier after
--	  kernel changes to SSBS. The presence of the SSBS special-purpose
--	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
--	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
--	  SSBS.
-+	  This option adds the workaround for the following errata:
+ 		goto out;
+ 	}
+@@ -429,6 +430,7 @@ static long trie_update_elem(struct bpf_map *map,
+ 	}
  
--	  If unsure, say Y.
--
--config ARM64_ERRATUM_3312417
--	bool "Neoverse-V3: 3312417: workaround for MSR SSBS not self-synchronizing"
--	select ARM64_WORKAROUND_SPECULATIVE_SSBS
--	default y
--	help
--	  This option adds the workaround for ARM Neoverse-V3 erratum 3312417.
-+	  * ARM Cortex-X4 erratum 3194386
-+	  * ARM Neoverse-V3 erratum 3312417
+ 	spin_unlock_irqrestore(&trie->lock, irq_flags);
++	kfree_rcu(free_node, rcu);
  
- 	  On affected cores "MSR SSBS, #0" instructions may not affect
- 	  subsequent speculative instructions, which may permit unexepected
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index 3eabd809aee4a..4dc465d285d58 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -364,14 +364,10 @@ static struct midr_range broken_aarch32_aes[] = {
- };
- #endif
+ 	return ret;
+ }
+@@ -437,6 +439,7 @@ static long trie_update_elem(struct bpf_map *map,
+ static long trie_delete_elem(struct bpf_map *map, void *_key)
+ {
+ 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
++	struct lpm_trie_node *free_node = NULL, *free_parent = NULL;
+ 	struct bpf_lpm_trie_key_u8 *key = _key;
+ 	struct lpm_trie_node __rcu **trim, **trim2;
+ 	struct lpm_trie_node *node, *parent;
+@@ -506,8 +509,8 @@ static long trie_delete_elem(struct bpf_map *map, void *_key)
+ 		else
+ 			rcu_assign_pointer(
+ 				*trim2, rcu_access_pointer(parent->child[0]));
+-		kfree_rcu(parent, rcu);
+-		kfree_rcu(node, rcu);
++		free_parent = parent;
++		free_node = node;
+ 		goto out;
+ 	}
  
--#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
--static const struct midr_range erratum_spec_ssbs_list[] = {
- #ifdef CONFIG_ARM64_ERRATUM_3194386
-+static const struct midr_range erratum_spec_ssbs_list[] = {
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
--#endif
--#ifdef CONFIG_ARM64_ERRATUM_3312417
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
--#endif
- 	{}
- };
- #endif
-@@ -583,7 +579,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
- 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
- 	},
- #endif
--#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
-+#ifdef CONFIG_ARM64_ERRATUM_3194386
- 	{
- 		.desc = "ARM errata 3194386, 3312417",
- 		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
-diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
-index b40310e0bdb90..90337910c3f53 100644
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -583,7 +583,7 @@ static enum mitigation_state spectre_v4_enable_hw_mitigation(void)
- 	 * Mitigate this with an unconditional speculation barrier, as CPUs
- 	 * could mis-speculate branches and bypass a conditional barrier.
- 	 */
--	if (IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS))
-+	if (IS_ENABLED(CONFIG_ARM64_ERRATUM_3194386))
- 		spec_bar();
+@@ -521,10 +524,12 @@ static long trie_delete_elem(struct bpf_map *map, void *_key)
+ 		rcu_assign_pointer(*trim, rcu_access_pointer(node->child[1]));
+ 	else
+ 		RCU_INIT_POINTER(*trim, NULL);
+-	kfree_rcu(node, rcu);
++	free_node = node;
  
- 	return SPECTRE_MITIGATED;
+ out:
+ 	spin_unlock_irqrestore(&trie->lock, irq_flags);
++	kfree_rcu(free_parent, rcu);
++	kfree_rcu(free_node, rcu);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
