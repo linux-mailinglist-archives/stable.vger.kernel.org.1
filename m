@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F529533E0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC289532CD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C58F7288E6F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76712B26F3F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5A91A256C;
-	Thu, 15 Aug 2024 14:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965C31A76A0;
+	Thu, 15 Aug 2024 14:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PK0ZZPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oc/ADwaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFCA1A01D2;
-	Thu, 15 Aug 2024 14:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E7D1A76B7;
+	Thu, 15 Aug 2024 14:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731610; cv=none; b=W4Yz5mu3WZPne9eyEp9aInVbQe6eXkMt1ZN68C4yfEJqZmEjNcYcLKsNipdMgrzztL2yVa1ZCLoAOs2Li3Apba6U7/x4znnGEQ2Fofrzl58xW4VTK3TAaR5OVfvFyBuGmoNPaCaD7SLEdQUsKBR+BGb+9skf39RNOHRf5pqNHf0=
+	t=1723730866; cv=none; b=JxvDnIqq4cCxbJ49LefIX/P3e+8dI7F9GZtfZxHkF37DLiFR+qqFBODQ2+NooMOej5UyyMqa0yuYc5yT+2YQNJmcEeHFU60QSVSVo/83C/DaXCJvIONkx58y4WyWfLegz8FBdvxkiVDyzRMhN2BFXzGmi9VHDjTgj292/ZxL1WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731610; c=relaxed/simple;
-	bh=VZDyoQWnzOi0t2lbLwHWIWTto3GVyf3YRSfe6UBTbVc=;
+	s=arc-20240116; t=1723730866; c=relaxed/simple;
+	bh=3CS/A/m/K+GQuHGgeRVdy/ABg8ggzq0sbWwXpXI5tkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzrjn6FTnMCQ9Vq7BO9+oRm+rHUn3z3pyjyunkbkcpaD9ST7TRz3v63P9Se0iBEv5LFjq4UfKi8nQ2Hw2k0ztlKAKplqcX9dVzkSYDbsBILric93o0npAmtT/k3R6l27czFSVzcyyASI78+AEXBd+hLrjmD46f8xHenEjnkhs+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PK0ZZPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3491FC32786;
-	Thu, 15 Aug 2024 14:20:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DN+xtBtsC5yr0iS7DUKr6BMQONdFSS8cccyPU8dsGAoxpL0UlmPyFFXtxov7PMx231ia61wjqj4oAb1R8e7jdmxzAmQ6Oj1Q/zbME4JMVcjVshnFWcvnBU4MJA2umxqMtp8CraZP6Bf7oAGSLFTqRg5t6MFXLmbRKRdmKA8QeDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oc/ADwaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BFEC32786;
+	Thu, 15 Aug 2024 14:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731610;
-	bh=VZDyoQWnzOi0t2lbLwHWIWTto3GVyf3YRSfe6UBTbVc=;
+	s=korg; t=1723730866;
+	bh=3CS/A/m/K+GQuHGgeRVdy/ABg8ggzq0sbWwXpXI5tkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0PK0ZZPE9lkqwWKVD9DoAtsZAM1Zd9IuR1moPAg2KTLKa1vsFvrDAA8SEEWTDGzZ9
-	 OS/+GBdtf3jAtyfrWWyNwsmqdcXrR8YPxmFxMnSfHjxXc97gYQ0OLiVzPa17S0/f0z
-	 d5bIk+oAxAFkysv2yZA0XBIzgPM9azUYdwQy1dRs=
+	b=oc/ADwaSshoN6pgxtw4N8OvBou+DVxlnsa3I6m6CIVOP1CvvaO29GSrRRhuJSZHcn
+	 +qzU12tOEWzccln38rGXXyR9TA4hWpg/60XQT4W913mYozFQdLaoVWP0uz0gflpIJs
+	 hccDl6x/rTYDdfP4B9Ol5RwXsWIrfpk/qQM3o1Bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 183/259] genirq: Allow irq_chip registration functions to take a const irq_chip
-Date: Thu, 15 Aug 2024 15:25:16 +0200
-Message-ID: <20240815131909.848261639@linuxfoundation.org>
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 03/67] ASoC: topology: Fix route memory corruption
+Date: Thu, 15 Aug 2024 15:25:17 +0200
+Message-ID: <20240815131838.446637528@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit 393e1280f765661cf39785e967676a4e57324126 ]
+commit 0298f51652be47b79780833e0b63194e1231fa34 upstream.
 
-In order to let a const irqchip be fed to the irqchip layer, adjust
-the various prototypes. An extra cast in irq_set_chip()() is required
-to avoid a warning.
+It was reported that recent fix for memory corruption during topology
+load, causes corruption in other cases. Instead of being overeager with
+checking topology, assume that it is properly formatted and just
+duplicate strings.
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20220209162607.1118325-3-maz@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Closes: https://lore.kernel.org/linux-sound/171812236450.201359.3019210915105428447.b4-ty@kernel.org/T/#m8c4bd5abf453960fde6f826c4b7f84881da63e9d
+Suggested-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240613090126.841189-1-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/irq.h | 7 ++++---
- kernel/irq/chip.c   | 9 +++------
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ sound/soc/soc-topology.c |   12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 5655da9eb1fb9..0c3f153f60670 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -677,10 +677,11 @@ extern struct irq_chip no_irq_chip;
- extern struct irq_chip dummy_irq_chip;
+--- a/sound/soc/soc-topology.c
++++ b/sound/soc/soc-topology.c
+@@ -1052,21 +1052,15 @@ static int soc_tplg_dapm_graph_elems_loa
+ 			break;
+ 		}
  
- extern void
--irq_set_chip_and_handler_name(unsigned int irq, struct irq_chip *chip,
-+irq_set_chip_and_handler_name(unsigned int irq, const struct irq_chip *chip,
- 			      irq_flow_handler_t handle, const char *name);
+-		route->source = devm_kmemdup(tplg->dev, elem->source,
+-					     min(strlen(elem->source), maxlen),
+-					     GFP_KERNEL);
+-		route->sink = devm_kmemdup(tplg->dev, elem->sink,
+-					   min(strlen(elem->sink), maxlen),
+-					   GFP_KERNEL);
++		route->source = devm_kstrdup(tplg->dev, elem->source, GFP_KERNEL);
++		route->sink = devm_kstrdup(tplg->dev, elem->sink, GFP_KERNEL);
+ 		if (!route->source || !route->sink) {
+ 			ret = -ENOMEM;
+ 			break;
+ 		}
  
--static inline void irq_set_chip_and_handler(unsigned int irq, struct irq_chip *chip,
-+static inline void irq_set_chip_and_handler(unsigned int irq,
-+					    const struct irq_chip *chip,
- 					    irq_flow_handler_t handle)
- {
- 	irq_set_chip_and_handler_name(irq, chip, handle, NULL);
-@@ -770,7 +771,7 @@ static inline void irq_set_percpu_devid_flags(unsigned int irq)
- }
- 
- /* Set/get chip/data for an IRQ: */
--extern int irq_set_chip(unsigned int irq, struct irq_chip *chip);
-+extern int irq_set_chip(unsigned int irq, const struct irq_chip *chip);
- extern int irq_set_handler_data(unsigned int irq, void *data);
- extern int irq_set_chip_data(unsigned int irq, void *data);
- extern int irq_set_irq_type(unsigned int irq, unsigned int type);
-diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
-index 498f76beb8766..5f85eac6af11b 100644
---- a/kernel/irq/chip.c
-+++ b/kernel/irq/chip.c
-@@ -38,7 +38,7 @@ struct irqaction chained_action = {
-  *	@irq:	irq number
-  *	@chip:	pointer to irq chip description structure
-  */
--int irq_set_chip(unsigned int irq, struct irq_chip *chip)
-+int irq_set_chip(unsigned int irq, const struct irq_chip *chip)
- {
- 	unsigned long flags;
- 	struct irq_desc *desc = irq_get_desc_lock(irq, &flags, 0);
-@@ -46,10 +46,7 @@ int irq_set_chip(unsigned int irq, struct irq_chip *chip)
- 	if (!desc)
- 		return -EINVAL;
- 
--	if (!chip)
--		chip = &no_irq_chip;
--
--	desc->irq_data.chip = chip;
-+	desc->irq_data.chip = (struct irq_chip *)(chip ?: &no_irq_chip);
- 	irq_put_desc_unlock(desc, flags);
- 	/*
- 	 * For !CONFIG_SPARSE_IRQ make the irq show up in
-@@ -1086,7 +1083,7 @@ irq_set_chained_handler_and_data(unsigned int irq, irq_flow_handler_t handle,
- EXPORT_SYMBOL_GPL(irq_set_chained_handler_and_data);
- 
- void
--irq_set_chip_and_handler_name(unsigned int irq, struct irq_chip *chip,
-+irq_set_chip_and_handler_name(unsigned int irq, const struct irq_chip *chip,
- 			      irq_flow_handler_t handle, const char *name)
- {
- 	irq_set_chip(irq, chip);
--- 
-2.43.0
-
+ 		if (strnlen(elem->control, maxlen) != 0) {
+-			route->control = devm_kmemdup(tplg->dev, elem->control,
+-						      min(strlen(elem->control), maxlen),
+-						      GFP_KERNEL);
++			route->control = devm_kstrdup(tplg->dev, elem->control, GFP_KERNEL);
+ 			if (!route->control) {
+ 				ret = -ENOMEM;
+ 				break;
 
 
 
