@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B56B95334B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB6E9534FB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 428BE282628
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 937E81F29F0D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAC11A00CE;
-	Thu, 15 Aug 2024 14:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E9263D5;
+	Thu, 15 Aug 2024 14:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtZ9IzVZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VA5lhVKl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FAA762D2;
-	Thu, 15 Aug 2024 14:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D4B210FB;
+	Thu, 15 Aug 2024 14:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731205; cv=none; b=d+NcSXOKkdoX2EQqS0JJELICyt2ygjjV5zPp3dGh+SGvdl1HVKzeG0RbDaFmMJzxsiKHjFT/I74+XR595NlfyrANaX0Mhi95cVOvg1Jn3fHth7Oekd/e18xx8KvDtFbRYGssSh99AcO3dzM8U3YZc2cZqiao90+TPkq1XQQ67T8=
+	t=1723732352; cv=none; b=EG48RabqaiqKQZ5NlJy7IA9nbj3FPE4w4t+/5c+53z+xnVK+MOLaGN60sLb/dd7dMtuNAoEs7qgz/cKu1aZDWLrxoYXYqYm2pA3PQKIaFuc+PgtZGjPMfwwxT9d0qwsZkKDBpVMP20wcKI9ugDcuA0URFa86u8IiBgjqu8K7l+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731205; c=relaxed/simple;
-	bh=UdCInjsp1FGBFSkKFcfC+G9+BUfp1gWVI6NtJHbofws=;
+	s=arc-20240116; t=1723732352; c=relaxed/simple;
+	bh=8wdMhCES3idcQpFtB3/KmLu4ocpOba/1IfITc1OWyQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxKYOw+vVa7TS7N/cmz/IYe4089O8HOWFyHGWpjSQomgL2t8SCqNN7a+TWfTJKFjB2gr+DHNAOVywEmSNQpbnbnahytqH9JEV5+et6SWELIbFGT9k5hCWAKf4uWaJjJDFo4WnHJGgizsCqxrAQ7nQ7wBV4kVIwnuwzWZ7ovuswU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtZ9IzVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E38C32786;
-	Thu, 15 Aug 2024 14:13:24 +0000 (UTC)
+	 MIME-Version; b=eJez6QL6OfelaDAGfR92c1Fe5WAkRHAVYt5bNXckPeM0ZxjoJcOUnVS2V1vRxSpnI+io97zJNV7zKd70KwCg5AXBoQpUp0rrhmy9u4MIHtzJkLVjgjByXqPW86AaWVAIWh2Z8LX9zV/nbqloFvqkcWrrXIMay062nCjWTyc64o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VA5lhVKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CF8C32786;
+	Thu, 15 Aug 2024 14:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731205;
-	bh=UdCInjsp1FGBFSkKFcfC+G9+BUfp1gWVI6NtJHbofws=;
+	s=korg; t=1723732352;
+	bh=8wdMhCES3idcQpFtB3/KmLu4ocpOba/1IfITc1OWyQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LtZ9IzVZ00wHMc96Y6bPBIeKf/ROxbngUGn8SXhX+Gc9OC4upEWjdYv3JBV6RGMHu
-	 j/ONBjl0QMSwA6b4ZwnLoyzeAQBpV3+B+lwLsxVBRupgWnmo6f8caST+j0RYZQHeGt
-	 GEoF7EBoTtHvMyIqSl3tqhLncXiP47QS008kP7QY=
+	b=VA5lhVKlBxExlD051MDhpDol1p9cmTOdtjWwBSyjXSF7OwPwzTJHPK5etMIScE+fL
+	 mV6z4szBT8xERvfZr1qNUlhLFGWBtDtLrrG28Th9LddhVr+3kQh3pK6gz9ziq/LxmT
+	 Z6eKEdn4Z8WyrAqrAJ8V9nbfTZSrvOL6496q42P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Schaefer <dhs@frame.work>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 055/259] media: uvcvideo: Override default flags
+Subject: [PATCH 5.10 122/352] nilfs2: avoid undefined behavior in nilfs_cnt32_ge macro
 Date: Thu, 15 Aug 2024 15:23:08 +0200
-Message-ID: <20240815131904.936082043@linuxfoundation.org>
+Message-ID: <20240815131923.968141505@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Schaefer <dhs@frame.work>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 86419686e66da5b90a07fb8a40ab138fe97189b5 ]
+[ Upstream commit 0f3819e8c483771a59cf9d3190cd68a7a990083c ]
 
-When the UVC device has a control that is readonly it doesn't set the
-SET_CUR flag. For example the privacy control has SET_CUR flag set in
-the defaults in the `uvc_ctrls` variable. Even if the device does not
-have it set, it's not cleared by uvc_ctrl_get_flags().
+According to the C standard 3.4.3p3, the result of signed integer overflow
+is undefined.  The macro nilfs_cnt32_ge(), which compares two sequence
+numbers, uses signed integer subtraction that can overflow, and therefore
+the result of the calculation may differ from what is expected due to
+undefined behavior in different environments.
 
-Originally written with assignment in commit 859086ae3636 ("media:
-uvcvideo: Apply flags from device to actual properties"). But changed to
-|= in commit 0dc68cabdb62 ("media: uvcvideo: Prevent setting unavailable
-flags"). It would not clear the default flags.
+Similar to an earlier change to the jiffies-related comparison macros in
+commit 5a581b367b5d ("jiffies: Avoid undefined behavior from signed
+overflow"), avoid this potential issue by changing the definition of the
+macro to perform the subtraction as unsigned integers, then cast the
+result to a signed integer for comparison.
 
-With this patch applied the correct flags are reported to user space.
-Tested with:
-
-```
-> v4l2-ctl --list-ctrls | grep privacy
-privacy 0x009a0910 (bool)   : default=0 value=0 flags=read-only
-```
-
-Signed-off-by: Daniel Schaefer <dhs@frame.work>
-Fixes: 0dc68cabdb62 ("media: uvcvideo: Prevent setting unavailable flags")
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240602065053.36850-1-dhs@frame.work
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lkml.kernel.org/r/20130727225828.GA11864@linux.vnet.ibm.com
+Link: https://lkml.kernel.org/r/20240702183512.6390-1-konishi.ryusuke@gmail.com
+Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/nilfs2/segment.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index 13723fccb9000..c8d9f0df3f03d 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1734,7 +1734,13 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
- 	else
- 		ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
- 				     dev->intfnum, info->selector, data, 1);
--	if (!ret)
-+
-+	if (!ret) {
-+		info->flags &= ~(UVC_CTRL_FLAG_GET_CUR |
-+				 UVC_CTRL_FLAG_SET_CUR |
-+				 UVC_CTRL_FLAG_AUTO_UPDATE |
-+				 UVC_CTRL_FLAG_ASYNCHRONOUS);
-+
- 		info->flags |= (data[0] & UVC_CONTROL_CAP_GET ?
- 				UVC_CTRL_FLAG_GET_CUR : 0)
- 			    |  (data[0] & UVC_CONTROL_CAP_SET ?
-@@ -1743,6 +1749,7 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
- 				UVC_CTRL_FLAG_AUTO_UPDATE : 0)
- 			    |  (data[0] & UVC_CONTROL_CAP_ASYNCHRONOUS ?
- 				UVC_CTRL_FLAG_ASYNCHRONOUS : 0);
-+	}
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 1f7ae5f36bde7..d9f92df15a84f 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -136,7 +136,7 @@ static void nilfs_dispose_list(struct the_nilfs *, struct list_head *, int);
  
- 	kfree(data);
- 	return ret;
+ #define nilfs_cnt32_ge(a, b)   \
+ 	(typecheck(__u32, a) && typecheck(__u32, b) && \
+-	 ((__s32)(a) - (__s32)(b) >= 0))
++	 ((__s32)((a) - (b)) >= 0))
+ 
+ static int nilfs_prepare_segment_lock(struct super_block *sb,
+ 				      struct nilfs_transaction_info *ti)
 -- 
 2.43.0
 
