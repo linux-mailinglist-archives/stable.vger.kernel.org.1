@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-67805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30CF952F2C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBB3953181
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 915D81F26517
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857B01F21AA4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EDC19DFAE;
-	Thu, 15 Aug 2024 13:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D565819DFA6;
+	Thu, 15 Aug 2024 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11h0h435"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKrPV+ud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFAF1DDF5;
-	Thu, 15 Aug 2024 13:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9291A1714A1;
+	Thu, 15 Aug 2024 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728573; cv=none; b=pY75ee+j2v7ksJEBaTb38zYv71g+OPWBe61HHUT4g5WBdRsv7PPXZkEkKZjyjfiEbgxvm+8hDSOu9SHuDQoc6wGpsx2PyGRQ0foeCleTWuoVC3jtfbiAD4OjWpE0bOgD5w9CS2dYnJ73bdYqwzvQdxfIwn/YBK/6WoaG51v9bwI=
+	t=1723730094; cv=none; b=pEKFEIDtQ4AwJevNVz5FLX+AwKjjGIIkE4E85xSwEH/uYPiQnVW0Krfe5r9boqcCJRwGQU78Grx6Csh1nyYgjmlwoUnc6PvezrWQxMhUD2d/gVOljKXNMDPuZLZuUO1N6AaAh5YwLIXQO5XX/TmeyqkkAVY+WZy1VNZJOMbb5jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728573; c=relaxed/simple;
-	bh=yJLpZIpegTTCny5cMvp1eKVP3r9uU7jwKlOf2nKcrMs=;
+	s=arc-20240116; t=1723730094; c=relaxed/simple;
+	bh=wWA7NN+YEOqZu5of8kvKN5GnfEVP7cBMU21FQO+ETwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmywEceRZRePyVwUb/U23K1IPqvahKI39bJMZQsYZB9undqTlVZVtO9fGOg+nQvnLWhfdHEWbR/FnBvXixz7uoSqB7N+9+4K7uVpmQ9uT982jmK8i/Gl88GjyWnUeTfAsbyq4BrSVmUdk9em5Ni8tTQyWrJWKNjhWP+3eE5kPBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11h0h435; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F17C32786;
-	Thu, 15 Aug 2024 13:29:32 +0000 (UTC)
+	 MIME-Version; b=szAC18GyruX8vSX5yCFjMj3bo/hEjI7oDTvs5vAluGXEHaLr4cjpXyEfRERb/W2cBCF3y5FGPOkicNFGegiFl1LSAxI8LAng513ZZZWDAKwZgun3NsisDUdrCShpNKPNpBE2EAxdkP4N5iPVTmh+0smwrLIzFRJZ64v/HGDSiDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKrPV+ud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2BBC32786;
+	Thu, 15 Aug 2024 13:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728573;
-	bh=yJLpZIpegTTCny5cMvp1eKVP3r9uU7jwKlOf2nKcrMs=;
+	s=korg; t=1723730094;
+	bh=wWA7NN+YEOqZu5of8kvKN5GnfEVP7cBMU21FQO+ETwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11h0h435vVFsCR3Yk6zyjizx8gk+eO6M4jGF/ZlQWB9okZjUZt+0AVjA/m3/kZG1I
-	 PPjrnkXkb4fKiLsN3VGeZqQRWGp+Ff8Ye3BcEvdj4w1WJ9qFkZ3dAwNMDbpCZU3s09
-	 p96D/SI98VMTQhaiStS/ECk/3gXr+iy/69RHeXs0=
+	b=OKrPV+udxtCehqbnPtvMyA5l7NKzV68fM1gpbgQino+s2gCZ0EyKgz8In4cebQTaR
+	 XPEn4wSruyuhwQNOh1aWbYbK+bm9+TG78pvUAu9CwzVqWyfW1E54eddMnSmDLWE4eF
+	 nThh1z1ko60/uP0hR0Zaj7OB9jucG8lQAk0JUehQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 012/196] hwmon: (max6697) Fix swapped temp{1,8} critical alarms
-Date: Thu, 15 Aug 2024 15:22:09 +0200
-Message-ID: <20240815131852.544250473@linuxfoundation.org>
+Subject: [PATCH 5.15 272/484] net: bonding: correctly annotate RCU in bond_should_notify_peers()
+Date: Thu, 15 Aug 2024 15:22:10 +0200
+Message-ID: <20240815131951.913251746@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 1ea3fd1eb9869fcdcbc9c68f9728bfc47b9503f1 ]
+[ Upstream commit 3ba359c0cd6eb5ea772125a7aededb4a2d516684 ]
 
-The critical alarm bit for the local temperature sensor (temp1) is in
-bit 7 of register 0x45 (not bit 6), and the critical alarm bit for remote
-temperature sensor 7 (temp8) is in bit 6 (not bit 7).
+RCU use in bond_should_notify_peers() looks wrong, since it does
+rcu_dereference(), leaves the critical section, and uses the
+pointer after that.
 
-This only affects MAX6581 since all other chips supported by this driver
-do not support those critical alarms.
+Luckily, it's called either inside a nested RCU critical section
+or with the RTNL held.
 
-Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Annotate it with rcu_dereference_rtnl() instead, and remove the
+inner RCU critical section.
+
+Fixes: 4cb4f97b7e36 ("bonding: rebuild the lock use for bond_mii_monitor()")
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20240719094119.35c62455087d.I68eb9c0f02545b364b79a59f2110f2cf5682a8e2@changeid
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max6697.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
-index 2103ba45de745..14c34a2d36af3 100644
---- a/drivers/hwmon/max6697.c
-+++ b/drivers/hwmon/max6697.c
-@@ -368,14 +368,14 @@ static SENSOR_DEVICE_ATTR_RO(temp6_max_alarm, alarm, 20);
- static SENSOR_DEVICE_ATTR_RO(temp7_max_alarm, alarm, 21);
- static SENSOR_DEVICE_ATTR_RO(temp8_max_alarm, alarm, 23);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 9aed194d308d6..6a91229b0e05b 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1087,13 +1087,10 @@ static struct slave *bond_find_best_slave(struct bonding *bond)
+ 	return bestslave;
+ }
  
--static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 14);
-+static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 15);
- static SENSOR_DEVICE_ATTR_RO(temp2_crit_alarm, alarm, 8);
- static SENSOR_DEVICE_ATTR_RO(temp3_crit_alarm, alarm, 9);
- static SENSOR_DEVICE_ATTR_RO(temp4_crit_alarm, alarm, 10);
- static SENSOR_DEVICE_ATTR_RO(temp5_crit_alarm, alarm, 11);
- static SENSOR_DEVICE_ATTR_RO(temp6_crit_alarm, alarm, 12);
- static SENSOR_DEVICE_ATTR_RO(temp7_crit_alarm, alarm, 13);
--static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 15);
-+static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 14);
++/* must be called in RCU critical section or with RTNL held */
+ static bool bond_should_notify_peers(struct bonding *bond)
+ {
+-	struct slave *slave;
+-
+-	rcu_read_lock();
+-	slave = rcu_dereference(bond->curr_active_slave);
+-	rcu_read_unlock();
++	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
  
- static SENSOR_DEVICE_ATTR_RO(temp2_fault, alarm, 1);
- static SENSOR_DEVICE_ATTR_RO(temp3_fault, alarm, 2);
+ 	if (!slave || !bond->send_peer_notif ||
+ 	    bond->send_peer_notif %
 -- 
 2.43.0
 
