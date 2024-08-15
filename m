@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-67912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05505952FBA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE80A9531D6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A457228A009
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F17C51C21EBA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A381A3BD0;
-	Thu, 15 Aug 2024 13:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964F519EEB6;
+	Thu, 15 Aug 2024 13:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cl97ZEW5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylgTznnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46F01A2C0F;
-	Thu, 15 Aug 2024 13:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C167DA7D;
+	Thu, 15 Aug 2024 13:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728910; cv=none; b=b1I0b8wSmeE3aU6QE4pS1nKICjEIA9g4tOdhIuchADEQ25JOz2O2kNMafIeeVkCL9nZE5QqOSJ/AFzSHCorCpOJyC+hmqFlW+hSnWR5evJtSQa8uPSbiXXLXmDJbOdCf3+KIdEsHXymSI0Yl/ruLTif6ZKiSyH96j80e1hNJH+k=
+	t=1723730336; cv=none; b=o7Q10Ukprdy/aoUQbo1YMuyTOqDUUpSfN6aIobqOHWfE0Fmf61FYth7GrHfhPek/eehyJGYLpCA6J6A9yHYY3gSyuPf7WyYNB1T2nBDiHapmiGuHF9n6lxK1tiTpb4ugrLT5bIotB8OvMbfJBH+x76hQVFW8jvqJPICCYn4RC4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728910; c=relaxed/simple;
-	bh=sEEaGKCmtcPGPT56LVbWeQmkFnGdgcvgmznqwTV6dpo=;
+	s=arc-20240116; t=1723730336; c=relaxed/simple;
+	bh=0wDkmZiK9LD5tGX7deVWDP5Qje8ipysrlir9Mhn8onI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUfNrYxRhiOeBKs0b5TLiyckfqicwGdiTOWqc4L3hVZJlA1gBhpzLWlVNPB//x9sqGieAPFyHVPBDXjmHIgfmZ+aGlKXeFTRtrGhMHOVOhUxWWdCnIRNI+PFcweA1TrIrXH6pesxI8vTaY/Eol9nTrke3s4IOkhNrEJ5vIio9/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cl97ZEW5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6F6C4AF0A;
-	Thu, 15 Aug 2024 13:35:09 +0000 (UTC)
+	 MIME-Version; b=qVfPxmi5cQCAsIQFZSwJ4dX31RWThIAayWtBwj8yeQv76vj6oaSt37tNyobtQMUftB3VIsdnS3ryLKNgVDfAyjHTexb6j3BDg7pRCTHaHtULCyG7QJm2AdcntqPDogz8NS+wEiJHwdAY/988xJq3XmiD/Ixi9/T6mTR0Brkztcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylgTznnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD286C32786;
+	Thu, 15 Aug 2024 13:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728910;
-	bh=sEEaGKCmtcPGPT56LVbWeQmkFnGdgcvgmznqwTV6dpo=;
+	s=korg; t=1723730336;
+	bh=0wDkmZiK9LD5tGX7deVWDP5Qje8ipysrlir9Mhn8onI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cl97ZEW5i3CgCpB+BikEL6cUNXiKuUy1S4851yGBZbjJmlM7wtwr2bnAocaRfgaBd
-	 MjPGqhohrcRQFAIhAo94s1J4p8mRmVCcPI6PVV3ppX/luOEHT5BSV3FEo9Wg5HcLpo
-	 kg/P/Zg5jkVHIx1oYpkeXPXB5PuK1vj2L5e8lcw0=
+	b=ylgTznnKOcx6Q43WzIEhiGBcbBBE+yBaasxWBOijMtOjGYF5N5BToe7a6J1lzLcN9
+	 ysRsQ0yqOTV7czifrbAOxqFAnLb5m9EwDWi9ldiXsOXzJBvHIngYTbgSGIy6j/xl9n
+	 99fTwXmgucF9TjS3nuDpgctOypVOD7cLGjQnDPxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Jiri Olsa <jolsa@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Stephane Eranian <eranian@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vince Weaver <vincent.weaver@maine.edu>,
-	Ingo Molnar <mingo@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 118/196] perf/x86/intel/pt: Split ToPA metadata and page layout
+Subject: [PATCH 5.15 377/484] btrfs: fix bitmap leak when loading free space cache on duplicate entry
 Date: Thu, 15 Aug 2024 15:23:55 +0200
-Message-ID: <20240815131856.591391933@linuxfoundation.org>
+Message-ID: <20240815131956.007128257@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,238 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 38bb8d77d0b932a0773b5de2ef42479409314f96 ]
+[ Upstream commit 320d8dc612660da84c3b70a28658bb38069e5a9a ]
 
-PT uses page sized ToPA tables, where the ToPA table resides at the bottom
-and its driver-specific metadata taking up a few words at the top of the
-page. The split is currently calculated manually and needs to be redone
-every time a field is added to or removed from the metadata structure.
-Also, the 32-bit version can be made smaller.
+If we failed to link a free space entry because there's already a
+conflicting entry for the same offset, we free the free space entry but
+we don't free the associated bitmap that we had just allocated before.
+Fix that by freeing the bitmap before freeing the entry.
 
-By splitting the table and metadata into separate structures, we are making
-the compiler figure out the division of the page.
-
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vince Weaver <vincent.weaver@maine.edu>
-Link: http://lkml.kernel.org/r/20190821124727.73310-5-alexander.shishkin@linux.intel.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Stable-dep-of: ad97196379d0 ("perf/x86/intel/pt: Fix a topa_entry base address calculation")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c | 93 ++++++++++++++++++++++++--------------
- 1 file changed, 60 insertions(+), 33 deletions(-)
+ fs/btrfs/free-space-cache.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index 5dff4548b0875..1fe74019ee3c8 100644
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -546,16 +546,8 @@ static void pt_config_buffer(void *buf, unsigned int topa_idx,
- 	wrmsrl(MSR_IA32_RTIT_OUTPUT_MASK, reg);
- }
- 
--/*
-- * Keep ToPA table-related metadata on the same page as the actual table,
-- * taking up a few words from the top
-- */
--
--#define TENTS_PER_PAGE (((PAGE_SIZE - 40) / sizeof(struct topa_entry)) - 1)
--
- /**
-- * struct topa - page-sized ToPA table with metadata at the top
-- * @table:	actual ToPA table entries, as understood by PT hardware
-+ * struct topa - ToPA metadata
-  * @list:	linkage to struct pt_buffer's list of tables
-  * @phys:	physical address of this page
-  * @offset:	offset of the first entry in this table in the buffer
-@@ -563,7 +555,6 @@ static void pt_config_buffer(void *buf, unsigned int topa_idx,
-  * @last:	index of the last initialized entry in this table
-  */
- struct topa {
--	struct topa_entry	table[TENTS_PER_PAGE];
- 	struct list_head	list;
- 	u64			phys;
- 	u64			offset;
-@@ -571,8 +562,39 @@ struct topa {
- 	int			last;
- };
- 
-+/*
-+ * Keep ToPA table-related metadata on the same page as the actual table,
-+ * taking up a few words from the top
-+ */
-+
-+#define TENTS_PER_PAGE	\
-+	((PAGE_SIZE - sizeof(struct topa)) / sizeof(struct topa_entry))
-+
-+/**
-+ * struct topa_page - page-sized ToPA table with metadata at the top
-+ * @table:	actual ToPA table entries, as understood by PT hardware
-+ * @topa:	metadata
-+ */
-+struct topa_page {
-+	struct topa_entry	table[TENTS_PER_PAGE];
-+	struct topa		topa;
-+};
-+
-+static inline struct topa_page *topa_to_page(struct topa *topa)
-+{
-+	return container_of(topa, struct topa_page, topa);
-+}
-+
-+static inline struct topa_page *topa_entry_to_page(struct topa_entry *te)
-+{
-+	return (struct topa_page *)((unsigned long)te & PAGE_MASK);
-+}
-+
- /* make -1 stand for the last table entry */
--#define TOPA_ENTRY(t, i) ((i) == -1 ? &(t)->table[(t)->last] : &(t)->table[(i)])
-+#define TOPA_ENTRY(t, i)				\
-+	((i) == -1					\
-+		? &topa_to_page(t)->table[(t)->last]	\
-+		: &topa_to_page(t)->table[(i)])
- #define TOPA_ENTRY_SIZE(t, i) (sizes(TOPA_ENTRY((t), (i))->size))
- 
- /**
-@@ -585,27 +607,27 @@ struct topa {
- static struct topa *topa_alloc(int cpu, gfp_t gfp)
- {
- 	int node = cpu_to_node(cpu);
--	struct topa *topa;
-+	struct topa_page *tp;
- 	struct page *p;
- 
- 	p = alloc_pages_node(node, gfp | __GFP_ZERO, 0);
- 	if (!p)
- 		return NULL;
- 
--	topa = page_address(p);
--	topa->last = 0;
--	topa->phys = page_to_phys(p);
-+	tp = page_address(p);
-+	tp->topa.last = 0;
-+	tp->topa.phys = page_to_phys(p);
- 
- 	/*
- 	 * In case of singe-entry ToPA, always put the self-referencing END
- 	 * link as the 2nd entry in the table
- 	 */
- 	if (!intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries)) {
--		TOPA_ENTRY(topa, 1)->base = topa->phys >> TOPA_SHIFT;
--		TOPA_ENTRY(topa, 1)->end = 1;
-+		TOPA_ENTRY(&tp->topa, 1)->base = tp->topa.phys;
-+		TOPA_ENTRY(&tp->topa, 1)->end = 1;
- 	}
- 
--	return topa;
-+	return &tp->topa;
- }
- 
- /**
-@@ -715,22 +737,23 @@ static void pt_topa_dump(struct pt_buffer *buf)
- 	struct topa *topa;
- 
- 	list_for_each_entry(topa, &buf->tables, list) {
-+		struct topa_page *tp = topa_to_page(topa);
- 		int i;
- 
--		pr_debug("# table @%p (%016Lx), off %llx size %zx\n", topa->table,
-+		pr_debug("# table @%p (%016Lx), off %llx size %zx\n", tp->table,
- 			 topa->phys, topa->offset, topa->size);
- 		for (i = 0; i < TENTS_PER_PAGE; i++) {
- 			pr_debug("# entry @%p (%lx sz %u %c%c%c) raw=%16llx\n",
--				 &topa->table[i],
--				 (unsigned long)topa->table[i].base << TOPA_SHIFT,
--				 sizes(topa->table[i].size),
--				 topa->table[i].end ?  'E' : ' ',
--				 topa->table[i].intr ? 'I' : ' ',
--				 topa->table[i].stop ? 'S' : ' ',
--				 *(u64 *)&topa->table[i]);
-+				 &tp->table[i],
-+				 (unsigned long)tp->table[i].base << TOPA_SHIFT,
-+				 sizes(tp->table[i].size),
-+				 tp->table[i].end ?  'E' : ' ',
-+				 tp->table[i].intr ? 'I' : ' ',
-+				 tp->table[i].stop ? 'S' : ' ',
-+				 *(u64 *)&tp->table[i]);
- 			if ((intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries) &&
--			     topa->table[i].stop) ||
--			    topa->table[i].end)
-+			     tp->table[i].stop) ||
-+			    tp->table[i].end)
- 				break;
- 		}
- 	}
-@@ -793,7 +816,7 @@ static void pt_update_head(struct pt *pt)
-  */
- static void *pt_buffer_region(struct pt_buffer *buf)
- {
--	return phys_to_virt(buf->cur->table[buf->cur_idx].base << TOPA_SHIFT);
-+	return phys_to_virt(TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
- }
- 
- /**
-@@ -870,9 +893,11 @@ static void pt_handle_status(struct pt *pt)
- static void pt_read_offset(struct pt_buffer *buf)
- {
- 	u64 offset, base_topa;
-+	struct topa_page *tp;
- 
- 	rdmsrl(MSR_IA32_RTIT_OUTPUT_BASE, base_topa);
--	buf->cur = phys_to_virt(base_topa);
-+	tp = phys_to_virt(base_topa);
-+	buf->cur = &tp->topa;
- 
- 	rdmsrl(MSR_IA32_RTIT_OUTPUT_MASK, offset);
- 	/* offset within current output region */
-@@ -1022,6 +1047,7 @@ static void pt_buffer_setup_topa_index(struct pt_buffer *buf)
-  */
- static void pt_buffer_reset_offsets(struct pt_buffer *buf, unsigned long head)
- {
-+	struct topa_page *cur_tp;
- 	int pg;
- 
- 	if (buf->snapshot)
-@@ -1030,7 +1056,8 @@ static void pt_buffer_reset_offsets(struct pt_buffer *buf, unsigned long head)
- 	pg = (head >> PAGE_SHIFT) & (buf->nr_pages - 1);
- 	pg = pt_topa_next_entry(buf, pg);
- 
--	buf->cur = (struct topa *)((unsigned long)buf->topa_index[pg] & PAGE_MASK);
-+	cur_tp = topa_entry_to_page(buf->topa_index[pg]);
-+	buf->cur = &cur_tp->topa;
- 	buf->cur_idx = buf->topa_index[pg] - TOPA_ENTRY(buf->cur, 0);
- 	buf->output_off = head & (pt_buffer_region_size(buf) - 1);
- 
-@@ -1296,7 +1323,7 @@ void intel_pt_interrupt(void)
- 			return;
- 		}
- 
--		pt_config_buffer(buf->cur->table, buf->cur_idx,
-+		pt_config_buffer(topa_to_page(buf->cur)->table, buf->cur_idx,
- 				 buf->output_off);
- 		pt_config(event);
- 	}
-@@ -1361,7 +1388,7 @@ static void pt_event_start(struct perf_event *event, int mode)
- 	WRITE_ONCE(pt->handle_nmi, 1);
- 	hwc->state = 0;
- 
--	pt_config_buffer(buf->cur->table, buf->cur_idx,
-+	pt_config_buffer(topa_to_page(buf->cur)->table, buf->cur_idx,
- 			 buf->output_off);
- 	pt_config(event);
- 
+diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
+index 9161bc4f40649..0004488eeb060 100644
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -829,6 +829,7 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
+ 				spin_unlock(&ctl->tree_lock);
+ 				btrfs_err(fs_info,
+ 					"Duplicate entries in free space cache, dumping");
++				kmem_cache_free(btrfs_free_space_bitmap_cachep, e->bitmap);
+ 				kmem_cache_free(btrfs_free_space_cachep, e);
+ 				goto free_cache;
+ 			}
 -- 
 2.43.0
 
