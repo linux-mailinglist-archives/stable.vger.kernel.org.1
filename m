@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1DC9534B2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9AF953329
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEC4E1C224D3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88756B20D3C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087E119ADAC;
-	Thu, 15 Aug 2024 14:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530AF19F471;
+	Thu, 15 Aug 2024 14:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="th45l/6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dIz/Ok0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCED863C;
-	Thu, 15 Aug 2024 14:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEC21AC8AE;
+	Thu, 15 Aug 2024 14:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732146; cv=none; b=spxXf6yoRbK3evb25apdXFUZ7+KgQ5IM5ZWyafw0im2Uiihb6VJrpnQfZI/FvXE50uTPr427QYbneUIm9/DjaRgKMZYRvChSgOihuIEJaSo090mt5wk7Cg1vdeq45TWGk4B/q/KdT6gBd3JYG6SLv5Cp5ieAyryWrmFpoj2/VD0=
+	t=1723731102; cv=none; b=RSKNPgB4ACCa9Cm4KVSbN6IAUX/DJDtPTyknUVeuUc+QX1pd/xrZGukYruD5VoRoCRxR3OsnFKeZkUHG72ugSp9AobCnR0fSd8uzJ0loUjb91ZbulPmut+UphGQR4aPViIcY8FmjqndQJAcWxmW43zdQYjtkB1dBkFY8SHqpvFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732146; c=relaxed/simple;
-	bh=+2VYYxJAAWf2Vl/mWMIswrf0NPZGPoF7TINoBrqePzM=;
+	s=arc-20240116; t=1723731102; c=relaxed/simple;
+	bh=+A6HNYE4mP174co2MKTPXxaDV4lAYCwfwOQN0GONfEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MpsDsJz8RQ3WIRGsiplJevBVT22hHp1yot7TC0L4LoexBqLck2x75MXx2Yqe4zZqkVUrkYRI3wX/KzTDfbBT5xrpfZTyWkyLY1u2yD895bYc+x50WcrEbq8yL0gpIQ6FYEnZUoU13YgsJ5x4Kkfm8wPUJ9gkhNHs527SUH7XpDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=th45l/6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B58FC32786;
-	Thu, 15 Aug 2024 14:29:05 +0000 (UTC)
+	 MIME-Version; b=tGHBHt5QECKvAFz4TLm8gzsylgl7hFlrmQyUGjIf8FDuNP3Y3lX6UrBpY9aw5b9o2KJKakjScKsTvUAxCUoQGvkYi3qHQl11RtVovAbntbNpkRo5rYEo2WU+TvhtsGQAPhdYRjXoAqW7RPeo+ptA6AX+30/QLoDYCf9DtH1qFaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dIz/Ok0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9D4C32786;
+	Thu, 15 Aug 2024 14:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732146;
-	bh=+2VYYxJAAWf2Vl/mWMIswrf0NPZGPoF7TINoBrqePzM=;
+	s=korg; t=1723731101;
+	bh=+A6HNYE4mP174co2MKTPXxaDV4lAYCwfwOQN0GONfEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=th45l/6AlRTVi38DHOcM+Peu4Gmv949b85hAyeYiJ1or67e2+Qu209QkYH/5aBU92
-	 nj0vCv5L+CRWKXxuXyGVkTZCRZoN5LEuO4FrO6zYkiSBKs9HXl/DmNfbRfezNWtkce
-	 15CZzhnxMwPFKg+5QCJsZekGEC9m8ntkPXIkzc+s=
+	b=0dIz/Ok0z/BsE/+8eiZY48/G79QC1lhKDyVd5SehA8Bk/d/BmtNSc873GSYyG28Pp
+	 ABYSpSKuaLh57M0piiyk1VAzvyMKVZxl7w+clApS64DQ0enCKVuqt4jw1zifXxAhyF
+	 pU9X7DwPtDb4HSA5mtGrJsd25kpRk4BpClMr+ndo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/352] mfd: omap-usb-tll: Use struct_size to allocate tll
-Date: Thu, 15 Aug 2024 15:22:35 +0200
-Message-ID: <20240815131922.699812084@linuxfoundation.org>
+Subject: [PATCH 5.4 023/259] arm64: dts: amlogic: gx: correct hdmi clocks
+Date: Thu, 15 Aug 2024 15:22:36 +0200
+Message-ID: <20240815131903.693509085@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 40176714c818b0b6a2ca8213cdb7654fbd49b742 ]
+[ Upstream commit 0602ba0dcd0e76067a0b7543e92b2de3fb231073 ]
 
-Commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-changed the memory allocation of 'tll' to consolidate it into a single
-allocation, introducing an incorrect size calculation.
+The clocks provided to HDMI tx are not consistent between gx and g12:
+* gx receives the peripheral clock as 'isfr' while g12 receives it as
+  'iahb'
+* g12 gets the HDMI system clock as 'isfr' but gx does not even get it.
+  It surely needs that clock since the driver is directly poking around
+  the clock controller's registers for that clock.
 
-In particular, the allocation for the array of pointers was converted
-into a single-pointer allocation.
+Align gx SoCs with g12 and provide:
+ * the HDMI peripheral clock as 'iahb'
+ * the HDMI system clock as 'isfr'
 
-The memory allocation used to occur in two steps:
-
-tll = devm_kzalloc(dev, sizeof(struct usbtll_omap), GFP_KERNEL);
-tll->ch_clk = devm_kzalloc(dev, sizeof(struct clk *) * tll->nch,
-                           GFP_KERNEL);
-
-And it turned that into the following allocation:
-
-tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
-                   GFP_KERNEL);
-
-sizeof(tll->ch_clk[nch]) returns the size of a single pointer instead of
-the expected nch pointers.
-
-This bug went unnoticed because the allocation size was small enough to
-fit within the minimum size of a memory allocation for this particular
-case [1].
-
-The complete allocation can still be done at once with the struct_size
-macro, which comes in handy for structures with a trailing flexible
-array.
-
-Fix the memory allocation to obtain the original size again.
-
-Link: https://lore.kernel.org/all/202406261121.2FFD65647@keescook/ [1]
-Fixes: 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Fixes: commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-Link: https://lore.kernel.org/r/20240626-omap-usb-tll-counted_by-v2-1-4bedf20d1b51@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 6939db7e0dbf ("ARM64: dts: meson-gx: Add support for HDMI output")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240626152733.1350376-2-jbrunet@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/omap-usb-tll.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi | 4 ++--
+ arch/arm64/boot/dts/amlogic/meson-gxl.dtsi  | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-index 16fad79c73f1f..99ca0dfa127b5 100644
---- a/drivers/mfd/omap-usb-tll.c
-+++ b/drivers/mfd/omap-usb-tll.c
-@@ -237,8 +237,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
- 		break;
- 	}
- 
--	tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
--			   GFP_KERNEL);
-+	tll = devm_kzalloc(dev, struct_size(tll, ch_clk, nch), GFP_KERNEL);
- 	if (!tll) {
- 		pm_runtime_put_sync(dev);
- 		pm_runtime_disable(dev);
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+index 0cb40326b0d3f..e54473f98b022 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+@@ -326,8 +326,8 @@ &hdmi_tx {
+ 		 <&reset RESET_HDMI_SYSTEM_RESET>,
+ 		 <&reset RESET_HDMI_TX>;
+ 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
+-	clocks = <&clkc CLKID_HDMI_PCLK>,
+-		 <&clkc CLKID_CLK81>,
++	clocks = <&clkc CLKID_HDMI>,
++		 <&clkc CLKID_HDMI_PCLK>,
+ 		 <&clkc CLKID_GCLK_VENCI_INT0>;
+ 	clock-names = "isfr", "iahb", "venci";
+ };
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
+index 6809f495a5030..308db3bc417b9 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
+@@ -273,8 +273,8 @@ &hdmi_tx {
+ 		 <&reset RESET_HDMI_SYSTEM_RESET>,
+ 		 <&reset RESET_HDMI_TX>;
+ 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
+-	clocks = <&clkc CLKID_HDMI_PCLK>,
+-		 <&clkc CLKID_CLK81>,
++	clocks = <&clkc CLKID_HDMI>,
++		 <&clkc CLKID_HDMI_PCLK>,
+ 		 <&clkc CLKID_GCLK_VENCI_INT0>;
+ 	clock-names = "isfr", "iahb", "venci";
+ };
 -- 
 2.43.0
 
