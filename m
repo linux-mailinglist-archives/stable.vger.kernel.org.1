@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464E4953192
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FAB4952F40
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE8D528B7A2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93AE61C23EBC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D85618D64F;
-	Thu, 15 Aug 2024 13:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEFE18D627;
+	Thu, 15 Aug 2024 13:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vzw7ARO7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ly45wLt3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3FB1714A1;
-	Thu, 15 Aug 2024 13:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7037DA78;
+	Thu, 15 Aug 2024 13:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730146; cv=none; b=FFnwYbMRecpCBwo6S3gghMYX16HwOiNtwviP//xd+IYoTtwMWKU5zJ9XOcL1heIk4rd4xCUapFJw4iB3TNglbqyclqXsVJ34GFw/UjmAxrMvx6Qg6mb8cPUUSQjx1L9GCiILZIAbmu2vHetmaqmM8MGWj5JfyxbwZndlVTEOsJg=
+	t=1723728621; cv=none; b=PBhIOAHzbXqVgZtlj86bkGrKKrWshr0FS+dXupNZ0zZEMSORsZ6KjiX37gYqG0o2e/llyK+NiF7M00ZBpcGyN1uH0bIACWkJL8dEzY5yb94gEaL9fnCmYvx3qOVZM/rAqADi+cJNG5hd9tex0bkMe3xOu/rUKWUwMyrJfBkUmNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730146; c=relaxed/simple;
-	bh=JtD3ek2HPjFv86H31UL7qZgkkQI3AN/q5VkceHLyGxw=;
+	s=arc-20240116; t=1723728621; c=relaxed/simple;
+	bh=mzoDpbZUQxVCuuBAZRYXs1QGmW1V4tXRd40KqccMzbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlQChByvzkVHOkDwLOuUUWDJjn+UcfQi+2tzs8hYxNyCfYyHpSZmgLnn0IVs4o9JceO2yAyVSyjqi7xO8w1e/IyTJZZo8EQg/ARPkTh1BcRLFWTs6KyJCNTofVqa7VQ8Yf8KocEagLSKhNfE0v/fAOWQJnciynxnZlkGSrVWPoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vzw7ARO7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D648BC32786;
-	Thu, 15 Aug 2024 13:55:45 +0000 (UTC)
+	 MIME-Version; b=mXBHQliFoMPVDUn4v6HGImlfIxUZePGaRBC8JQ/FNEXKor4YvAtpBc8XUOwGgazszoFXVw2EKe3p0GwfUnWkUyjLcnIs0FG6mBgLHrt1I1BRJYX4DTOmaELoNvRpoIi+0ATpTA/MzaxIQqGE+VGn08YDnPqz0oka2CJ2lHutrEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ly45wLt3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB9FC32786;
+	Thu, 15 Aug 2024 13:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730146;
-	bh=JtD3ek2HPjFv86H31UL7qZgkkQI3AN/q5VkceHLyGxw=;
+	s=korg; t=1723728621;
+	bh=mzoDpbZUQxVCuuBAZRYXs1QGmW1V4tXRd40KqccMzbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vzw7ARO768Ra4bg+K8qBOW3WYQhrhBelNcvtuQVJ6wL2FUkubr/XzniYeJ/Vb8ETy
-	 rRKTrZR3QoUhY9/eQpz2FCsxgjgKgC3y7dmeMll0WaYJ8i/H+n2dux5tt3GLhltXky
-	 /G9J4T4VXjbeoVSBJhITVS9ohD0bFAeljvpXPZ8k=
+	b=ly45wLt3LZcKQJ0qw8/j33hWAweNhBAEwg1Pqgc2i8BpKCv7St/P4F8jr02dDja8a
+	 dhO73GKo3bW11+SMBbkkyxjOftFj1oiZ7MhHoujNjAaPKyGySAUGKz4mQw5nVczVqy
+	 QFvAtkH0vQ26dhBtcjBGQv6s+TYAjX9BFtY4frGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 317/484] irqdomain: Fixed unbalanced fwnode get and put
+Subject: [PATCH 4.19 058/196] pinctrl: ti: ti-iodelay: fix possible memory leak when pinctrl_enable() fails
 Date: Thu, 15 Aug 2024 15:22:55 +0200
-Message-ID: <20240815131953.650858241@linuxfoundation.org>
+Message-ID: <20240815131854.297483291@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 6ce3e98184b625d2870991880bf9586ded7ea7f9 ]
+[ Upstream commit 9b401f4a7170125365160c9af267a41ff6b39001 ]
 
-fwnode_handle_get(fwnode) is called when a domain is created with fwnode
-passed as a function parameter. fwnode_handle_put(domain->fwnode) is called
-when the domain is destroyed but during the creation a path exists that
-does not set domain->fwnode.
+This driver calls pinctrl_register_and_init() which is not
+devm_ managed, it will leads memory leak if pinctrl_enable()
+fails. Replace it with devm_pinctrl_register_and_init().
+And add missing of_node_put() in the error path.
 
-If this path is taken, the fwnode get will never be put.
-
-To avoid the unbalanced get and put, set domain->fwnode unconditionally.
-
-Fixes: d59f6617eef0 ("genirq: Allow fwnode to carry name information only")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240614173232.1184015-4-herve.codina@bootlin.com
+Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240606023704.3931561-4-yangyingliang@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/irqdomain.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -153,7 +153,6 @@ static struct irq_domain *__irq_domain_c
- 		switch (fwid->type) {
- 		case IRQCHIP_FWNODE_NAMED:
- 		case IRQCHIP_FWNODE_NAMED_ID:
--			domain->fwnode = fwnode;
- 			domain->name = kstrdup(fwid->name, GFP_KERNEL);
- 			if (!domain->name) {
- 				kfree(domain);
-@@ -162,7 +161,6 @@ static struct irq_domain *__irq_domain_c
- 			domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 			break;
- 		default:
--			domain->fwnode = fwnode;
- 			domain->name = fwid->name;
- 			break;
- 		}
-@@ -184,7 +182,6 @@ static struct irq_domain *__irq_domain_c
- 		strreplace(name, '/', ':');
+diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+index 1c4196f40e8d6..e86b765141a63 100644
+--- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
++++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+@@ -881,7 +881,7 @@ static int ti_iodelay_probe(struct platform_device *pdev)
+ 	iod->desc.name = dev_name(dev);
+ 	iod->desc.owner = THIS_MODULE;
  
- 		domain->name = name;
--		domain->fwnode = fwnode;
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
+-	ret = pinctrl_register_and_init(&iod->desc, dev, iod, &iod->pctl);
++	ret = devm_pinctrl_register_and_init(dev, &iod->desc, iod, &iod->pctl);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to register pinctrl\n");
+ 		goto exit_out;
+@@ -889,7 +889,11 @@ static int ti_iodelay_probe(struct platform_device *pdev)
  
-@@ -200,8 +197,8 @@ static struct irq_domain *__irq_domain_c
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
+ 	platform_set_drvdata(pdev, iod);
  
--	fwnode_handle_get(fwnode);
--	fwnode_dev_initialized(fwnode, true);
-+	domain->fwnode = fwnode_handle_get(fwnode);
-+	fwnode_dev_initialized(domain->fwnode, true);
+-	return pinctrl_enable(iod->pctl);
++	ret = pinctrl_enable(iod->pctl);
++	if (ret)
++		goto exit_out;
++
++	return 0;
  
- 	/* Fill structure */
- 	INIT_RADIX_TREE(&domain->revmap_tree, GFP_KERNEL);
+ exit_out:
+ 	of_node_put(np);
+@@ -906,9 +910,6 @@ static int ti_iodelay_remove(struct platform_device *pdev)
+ {
+ 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
+ 
+-	if (iod->pctl)
+-		pinctrl_unregister(iod->pctl);
+-
+ 	ti_iodelay_pinconf_deinit_dev(iod);
+ 
+ 	/* Expect other allocations to be freed by devm */
+-- 
+2.43.0
+
 
 
 
