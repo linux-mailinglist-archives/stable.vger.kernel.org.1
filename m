@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C25795336A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 089669534FD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F8051F243A9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B25E7282203
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB841A01D4;
-	Thu, 15 Aug 2024 14:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B3917C995;
+	Thu, 15 Aug 2024 14:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQapYXwm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlvF1v1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A4938DC8;
-	Thu, 15 Aug 2024 14:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DAA210FB;
+	Thu, 15 Aug 2024 14:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731287; cv=none; b=IehcM55BDwB5fm3lArP7oYlEGHxPPvo7NRqjmiZE+vjnPQkdsah2dwEPg8iW0eILYTCZZkOggyg8LsgaTnPP9DmFYIwZTIAmW3ADwTzcevgV6S0KWp4a8H73vMi1jnSRLuW25fEZNsHclBZrashOqsriODqqoIislL3wcy4FwJU=
+	t=1723732359; cv=none; b=BdvtievmSXFO0uZ/M23HPxnMGUN0xm+ijAaiZvef8KSfU29w6M/SCHBSLLEjFPkyeLe4dwXCdcRhYxbbxvFXOtkrt+IRf0461eh1/HBoSd5SgfT6penq6XrRdT2TRNYFlY8RwQuWRnf+ZX+/f/EFWm+6ikPIXnscrruX2y4lg20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731287; c=relaxed/simple;
-	bh=yABv8y0CISWEVIl+DPcWMIQwtQXk4MxluXPzgwtbzDE=;
+	s=arc-20240116; t=1723732359; c=relaxed/simple;
+	bh=qBHMJyN+ljPvU4jLU4Qq+hxpFn5SRIlJdISJAx3/sPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUwdxKG1dtZDreWR2uBeIv+UEZqYYjIUrig/FXa1EVvsC21Eiybvbmy1qVmpp9+1SshLQ+ye5KneSKmcCM8vGWeDC7Cz3n3k0Go1xFpW0YyTp46ZoV/K46rbEiibuJzEFD0E/Gdb8kPAtoYEfnCDVXzSDT5f4Ob0xdY5Rg8mtV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQapYXwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E6DC32786;
-	Thu, 15 Aug 2024 14:14:46 +0000 (UTC)
+	 MIME-Version; b=MSMu4aXcNMBebW2YV6TG7PBOdvOS0AsgolgJ/hCjIaZBZYo8Wyw9qJKr6frPaVkddkJuUabRBXejkWhfEHohvSLNO0md/0aCigQG8KS20y7IvkVTyOdQhOpVSvD3n35dJTWFjtgJqG1jk4x4fYmm/tm3ReweUzy2TiktRT4TPDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlvF1v1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E19C32786;
+	Thu, 15 Aug 2024 14:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731287;
-	bh=yABv8y0CISWEVIl+DPcWMIQwtQXk4MxluXPzgwtbzDE=;
+	s=korg; t=1723732359;
+	bh=qBHMJyN+ljPvU4jLU4Qq+hxpFn5SRIlJdISJAx3/sPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQapYXwmDj2Xx/l8m/JsORHu8CTFck4JCWxB1skp4Ss+PmfExUHBiKXM5lEHKamQR
-	 HU5R0kSpKzahfJ31tFtLXQNS32oEFADqoah8lf0G1NUFS+bwz9wK/O0clFjR+8Y4RU
-	 YQGWoW0PKzjptDXcipitbZY7HMLocK2LNCvdGK2Q=
+	b=tlvF1v1lRlCAB6AuxDYNGcJ0VdX4iJBWUJDZ7A8T8rBCSikuQUsnOo9sLNLNt8AIa
+	 2grBKmlaU2kek5tXug0TeWiJTgxfWGGjprd3GfCSvO7SF/WK9BmAthWTeQuVgB+Nu/
+	 xWPd+SZMP14oM3A3KjXjde/KD3UDozn+vKG4+A3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 081/259] pinctrl: core: fix possible memory leak when pinctrl_enable() fails
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 148/352] jbd2: make jbd2_journal_get_max_txn_bufs() internal
 Date: Thu, 15 Aug 2024 15:23:34 +0200
-Message-ID: <20240815131905.930991395@linuxfoundation.org>
+Message-ID: <20240815131924.982050320@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit ae1cf4759972c5fe665ee4c5e0c29de66fe3cf4a ]
+commit 4aa99c71e42ad60178c1154ec24e3df9c684fb67 upstream.
 
-In devm_pinctrl_register(), if pinctrl_enable() fails in pinctrl_register(),
-the "pctldev" has not been added to dev resources, so devm_pinctrl_dev_release()
-can not be called, it leads memory leak.
+There's no reason to have jbd2_journal_get_max_txn_bufs() public
+function. Currently all users are internal and can use
+journal->j_max_transaction_buffers instead. This saves some unnecessary
+recomputations of the limit as a bonus which becomes important as this
+function gets more complex in the following patch.
 
-Introduce pinctrl_uninit_controller(), call it in the error path to free memory.
-
-Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240606023704.3931561-2-yangyingliang@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20240624170127.3253-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/jbd2/commit.c     |    2 +-
+ fs/jbd2/journal.c    |    5 +++++
+ include/linux/jbd2.h |    5 -----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
-index 1d8324e220fcf..fa4aec8c4ad54 100644
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -2017,6 +2017,14 @@ pinctrl_init_controller(struct pinctrl_desc *pctldesc, struct device *dev,
- 	return ERR_PTR(ret);
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -813,7 +813,7 @@ start_journal_io:
+ 		if (first_block < journal->j_tail)
+ 			freed += journal->j_last - journal->j_first;
+ 		/* Update tail only if we free significant amount of space */
+-		if (freed < jbd2_journal_get_max_txn_bufs(journal))
++		if (freed < journal->j_max_transaction_buffers)
+ 			update_tail = 0;
+ 	}
+ 	J_ASSERT(commit_transaction->t_state == T_COMMIT);
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1481,6 +1481,11 @@ static void journal_fail_superblock(jour
+ 	journal->j_sb_buffer = NULL;
  }
  
-+static void pinctrl_uninit_controller(struct pinctrl_dev *pctldev, struct pinctrl_desc *pctldesc)
++static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
 +{
-+	pinctrl_free_pindescs(pctldev, pctldesc->pins,
-+			      pctldesc->npins);
-+	mutex_destroy(&pctldev->mutex);
-+	kfree(pctldev);
++	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
 +}
 +
- static int pinctrl_claim_hogs(struct pinctrl_dev *pctldev)
- {
- 	pctldev->p = create_pinctrl(pctldev->dev, pctldev);
-@@ -2097,8 +2105,10 @@ struct pinctrl_dev *pinctrl_register(struct pinctrl_desc *pctldesc,
- 		return pctldev;
+ /*
+  * Given a journal_t structure, initialise the various fields for
+  * startup of a new journaling session.  We use this both when creating
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1626,11 +1626,6 @@ int jbd2_wait_inode_data(journal_t *jour
+ int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
+ int jbd2_fc_release_bufs(journal_t *journal);
  
- 	error = pinctrl_enable(pctldev);
--	if (error)
-+	if (error) {
-+		pinctrl_uninit_controller(pctldev, pctldesc);
- 		return ERR_PTR(error);
-+	}
- 
- 	return pctldev;
- 
--- 
-2.43.0
-
+-static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
+-{
+-	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
+-}
+-
+ /*
+  * is_journal_abort
+  *
 
 
 
