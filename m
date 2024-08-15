@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9893953268
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B6695341A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:23:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EC5C1F21C3F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B532C1F28B98
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862231A7057;
-	Thu, 15 Aug 2024 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CB319FA99;
+	Thu, 15 Aug 2024 14:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoWLvbPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="144/u83V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4358A19DF5F;
-	Thu, 15 Aug 2024 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C521A7068;
+	Thu, 15 Aug 2024 14:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730645; cv=none; b=l4XCisLTJZ9nbnw861z6UZO8UuYvrw1+F0vg7fI3UVsKpGVYhvb2yuq/uHI/QIEUtp5OolD/l1FlUu8VRa8JE6sYnhQoOXj+UrDc3u0EPUq35Zjeesny++hhTq07sVjTUeY9myzf/6x430fmd5JNwVvywJMWIIVQpgU/CFj6GxQ=
+	t=1723731750; cv=none; b=n9gnc4aZZP0TNfftF4u4JDHyNnx+tACt+9kua24dG5czjU2q64ngqMWu9MBx3430k3x+ZT0fYG/Q4KfIKrynPwDBw1EplBMzwrRmFMoO14bB+O1RVTEFuz/5dTatuqA/klbeY8qx1mx1HQ1kjgMF5FVmQ1vWt5DZMeA2XdtL9qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730645; c=relaxed/simple;
-	bh=3QJ5XFc2jSgWVwWINsxZRlU/3T0NkZfsws9SJoM93wo=;
+	s=arc-20240116; t=1723731750; c=relaxed/simple;
+	bh=Cra+QBo703scIMkRQsp7zftBWVbtSDEvn+Vf6IzyjZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSLofZiThqnowckM0gJyZc+lUHNtXFV68gXh99hUzHHvkAzTba3ZDglqy/yqOHApY+fm+sWGxIRA6KsrHTMtjakeNHN8kFlof6VdqqgqwwvMn2rR2PP/Jmx0wdpS0GTY9JjDq3WdvUQZNKq7gbEOcoEKXI+FUH3GZ0BEcr7mZdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoWLvbPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3944C32786;
-	Thu, 15 Aug 2024 14:04:04 +0000 (UTC)
+	 MIME-Version; b=lNNrUAAF6D6eeoA2v5LmHMopXI08wLrvanoSQ2cGzK06tV2YiHtMuw+8QimwZUMiMSoepAFv/v0HhYBNP/85ix4fP2IYp98e9xGn8CWyaL4S5Iq9E+3R1Zfgo818PXOOpVJ1yDmyAKcDzMdYiXF6IuJCeVarzmSrpa0G3TdgDzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=144/u83V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179F5C32786;
+	Thu, 15 Aug 2024 14:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730645;
-	bh=3QJ5XFc2jSgWVwWINsxZRlU/3T0NkZfsws9SJoM93wo=;
+	s=korg; t=1723731750;
+	bh=Cra+QBo703scIMkRQsp7zftBWVbtSDEvn+Vf6IzyjZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xoWLvbPR5yW6SadIeSsnmzvHMdY/TYtj5zAle/Ffhqu/leC4naMBinrE6eZlBY1FP
-	 YOJ1LIUtWYAQ7OmUNDKkTG6tosw7sQoeb3wTjvii1FuQDZl2t0GzRCD1gHpSS1bGBV
-	 091UReRlr3OtrkPr7JHuEQHUY1eIJ9YDkeKU0rK0=
+	b=144/u83VBOOEXJwThaaqP7oDL3hojc646EpbmpKK0zX3fgSqyn1Sf/+AH+GHMrGCN
+	 c+7kDksNkfOhyW0dFvaKD+t7yofRCT9MScbdII+TSkVSd08lgU9gJ2pw5conINfP7V
+	 /pOJYxCVf9GtE7tWT+EtabGLm5jXL+A4+hZLSihY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
-	syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com,
-	Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-Subject: [PATCH 5.15 473/484] wifi: mac80211: check basic rates validity
-Date: Thu, 15 Aug 2024 15:25:31 +0200
-Message-ID: <20240815131959.747094574@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 199/259] wifi: nl80211: dont give key data to userspace
+Date: Thu, 15 Aug 2024 15:25:32 +0200
+Message-ID: <20240815131910.459824997@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
+[ Upstream commit a7e5793035792cc46a1a4b0a783655ffa897dfe9 ]
 
-When userspace sets basic rates, it might send us some rates
-list that's empty or consists of invalid values only. We're
-currently ignoring invalid values and then may end up with a
-rates bitmap that's empty, which later results in a warning.
+When a key is requested by userspace, there's really no need
+to include the key data, the sequence counter is really what
+userspace needs in this case. The fact that it's included is
+just a historic quirk.
 
-Reject the call if there were no valid rates.
+Remove the key data.
 
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240627104411.b6a4f097e4ea.I7e6cc976cb9e8a80ef25a3351330f313373b4578@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reported-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
-Tested-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=19013115c9786bfd0c4e
-Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ net/wireless/nl80211.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2339,6 +2339,17 @@ static int ieee80211_change_bss(struct w
- 	if (!sband)
- 		return -EINVAL;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 0d15dd68565cb..e85e8f7b48f92 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3723,10 +3723,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	struct nlattr *key;
+ 	struct get_key_cookie *cookie = c;
  
-+	if (params->basic_rates) {
-+		if (!ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
-+					      wiphy->bands[sband->band],
-+					      params->basic_rates,
-+					      params->basic_rates_len,
-+					      &sdata->vif.bss_conf.basic_rates))
-+			return -EINVAL;
-+		changed |= BSS_CHANGED_BASIC_RATES;
-+		ieee80211_check_rate_mask(sdata);
-+	}
-+
- 	if (params->use_cts_prot >= 0) {
- 		sdata->vif.bss_conf.use_cts_prot = params->use_cts_prot;
- 		changed |= BSS_CHANGED_ERP_CTS_PROT;
-@@ -2362,16 +2373,6 @@ static int ieee80211_change_bss(struct w
- 		changed |= BSS_CHANGED_ERP_SLOT;
- 	}
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_ATTR_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_ATTR_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
+@@ -3738,10 +3735,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	if (!key)
+ 		goto nla_put_failure;
  
--	if (params->basic_rates) {
--		ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
--					 wiphy->bands[sband->band],
--					 params->basic_rates,
--					 params->basic_rates_len,
--					 &sdata->vif.bss_conf.basic_rates);
--		changed |= BSS_CHANGED_BASIC_RATES;
--		ieee80211_check_rate_mask(sdata);
--	}
--
- 	if (params->ap_isolate >= 0) {
- 		if (params->ap_isolate)
- 			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
+-- 
+2.43.0
+
 
 
 
