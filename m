@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FAB4952F40
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73461953193
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93AE61C23EBC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77BB11C234C4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEFE18D627;
-	Thu, 15 Aug 2024 13:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A9619DFA6;
+	Thu, 15 Aug 2024 13:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ly45wLt3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdhLm7xy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7037DA78;
-	Thu, 15 Aug 2024 13:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963F817C9A9;
+	Thu, 15 Aug 2024 13:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728621; cv=none; b=PBhIOAHzbXqVgZtlj86bkGrKKrWshr0FS+dXupNZ0zZEMSORsZ6KjiX37gYqG0o2e/llyK+NiF7M00ZBpcGyN1uH0bIACWkJL8dEzY5yb94gEaL9fnCmYvx3qOVZM/rAqADi+cJNG5hd9tex0bkMe3xOu/rUKWUwMyrJfBkUmNY=
+	t=1723730149; cv=none; b=iRYj9FYOjcaTkcdcEaNR6jkAOiGGGbYE8KBeRxoeaBBBkxHar2QZk0qW92lfDQ74bP1fvDWYlNHDaNhGbclEuY+8pf8kDg5DfeburmInXMHOeN3T/O3BMcuISuJL4Bgj2n/aV468dpqnVuaH1KYXdjGcIAwAQFvYs3ZZNVeKHsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728621; c=relaxed/simple;
-	bh=mzoDpbZUQxVCuuBAZRYXs1QGmW1V4tXRd40KqccMzbo=;
+	s=arc-20240116; t=1723730149; c=relaxed/simple;
+	bh=itAhFh+XrmDoSOJFDhlsYQaMmJK/MDWEJSwd6RFZbH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXBHQliFoMPVDUn4v6HGImlfIxUZePGaRBC8JQ/FNEXKor4YvAtpBc8XUOwGgazszoFXVw2EKe3p0GwfUnWkUyjLcnIs0FG6mBgLHrt1I1BRJYX4DTOmaELoNvRpoIi+0ATpTA/MzaxIQqGE+VGn08YDnPqz0oka2CJ2lHutrEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ly45wLt3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB9FC32786;
-	Thu, 15 Aug 2024 13:30:20 +0000 (UTC)
+	 MIME-Version; b=Kwv1XiE44haZ5ZuWfw1loECC+cKdZW4aznBns0HY759S8aetEh1+GL+zt4Vw9UsPy/vfV/PqXkho1BetN4PMSf9bszdhSWl+wibSm98exJHAcsQOLlP5owHdY6In63tY1McOFJmRGBBNQwlkBWGL0QEQi/zldqoCpk1b11xtWw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdhLm7xy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140A3C32786;
+	Thu, 15 Aug 2024 13:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728621;
-	bh=mzoDpbZUQxVCuuBAZRYXs1QGmW1V4tXRd40KqccMzbo=;
+	s=korg; t=1723730149;
+	bh=itAhFh+XrmDoSOJFDhlsYQaMmJK/MDWEJSwd6RFZbH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ly45wLt3LZcKQJ0qw8/j33hWAweNhBAEwg1Pqgc2i8BpKCv7St/P4F8jr02dDja8a
-	 dhO73GKo3bW11+SMBbkkyxjOftFj1oiZ7MhHoujNjAaPKyGySAUGKz4mQw5nVczVqy
-	 QFvAtkH0vQ26dhBtcjBGQv6s+TYAjX9BFtY4frGQ=
+	b=BdhLm7xyB+HfUwjVzgHPEZp/zKOGqKmBAufGAsp1rG508V4+yfAFy9dX2wDrDsMgL
+	 IZZC77cflkGNthSZ6VF2BfBOsSmnQCTEZKIpMikrstbW7NWOlLfjbNQBKcVJrnVu2o
+	 cdvCCqw0B4LippSVP2VjGiiBlLe3bbNUm3PYPYF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Tony Lindgren <tony@atomide.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 058/196] pinctrl: ti: ti-iodelay: fix possible memory leak when pinctrl_enable() fails
-Date: Thu, 15 Aug 2024 15:22:55 +0200
-Message-ID: <20240815131854.297483291@linuxfoundation.org>
+Subject: [PATCH 5.15 318/484] genirq: Allow the PM device to originate from irq domain
+Date: Thu, 15 Aug 2024 15:22:56 +0200
+Message-ID: <20240815131953.688865651@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 9b401f4a7170125365160c9af267a41ff6b39001 ]
+[ Upstream commit 1f8863bfb5ca500ea1c7669b16b1931ba27fce20 ]
 
-This driver calls pinctrl_register_and_init() which is not
-devm_ managed, it will leads memory leak if pinctrl_enable()
-fails. Replace it with devm_pinctrl_register_and_init().
-And add missing of_node_put() in the error path.
+As a preparation to moving the reference to the device used for
+runtime power management, add a new 'dev' field to the irqdomain
+structure for that exact purpose.
 
-Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240606023704.3931561-4-yangyingliang@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+The irq_chip_pm_{get,put}() helpers are made aware of the dual
+location via a new private helper.
+
+No functional change intended.
+
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Tony Lindgren <tony@atomide.com>
+Acked-by: Bartosz Golaszewski <brgl@bgdev.pl>
+Link: https://lore.kernel.org/r/20220201120310.878267-2-maz@kernel.org
+Stable-dep-of: 33b1c47d1fc0 ("irqchip/imx-irqsteer: Handle runtime power management correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/linux/irqdomain.h | 10 ++++++++++
+ kernel/irq/chip.c         | 23 ++++++++++++++++++-----
+ 2 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-index 1c4196f40e8d6..e86b765141a63 100644
---- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-+++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-@@ -881,7 +881,7 @@ static int ti_iodelay_probe(struct platform_device *pdev)
- 	iod->desc.name = dev_name(dev);
- 	iod->desc.owner = THIS_MODULE;
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index 9ee238ad29ce9..a7c80bd4b45b6 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -147,6 +147,8 @@ struct irq_domain_chip_generic;
+  * @gc: Pointer to a list of generic chips. There is a helper function for
+  *      setting up one or more generic chips for interrupt controllers
+  *      drivers using the generic chip library which uses this pointer.
++ * @dev: Pointer to a device that the domain represent, and that will be
++ *       used for power management purposes.
+  * @parent: Pointer to parent irq_domain to support hierarchy irq_domains
+  *
+  * Revmap data, used internally by irq_domain
+@@ -167,6 +169,7 @@ struct irq_domain {
+ 	struct fwnode_handle *fwnode;
+ 	enum irq_domain_bus_token bus_token;
+ 	struct irq_domain_chip_generic *gc;
++	struct device *dev;
+ #ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY
+ 	struct irq_domain *parent;
+ #endif
+@@ -222,6 +225,13 @@ static inline struct device_node *irq_domain_get_of_node(struct irq_domain *d)
+ 	return to_of_node(d->fwnode);
+ }
  
--	ret = pinctrl_register_and_init(&iod->desc, dev, iod, &iod->pctl);
-+	ret = devm_pinctrl_register_and_init(dev, &iod->desc, iod, &iod->pctl);
- 	if (ret) {
- 		dev_err(dev, "Failed to register pinctrl\n");
- 		goto exit_out;
-@@ -889,7 +889,11 @@ static int ti_iodelay_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, iod);
- 
--	return pinctrl_enable(iod->pctl);
-+	ret = pinctrl_enable(iod->pctl);
-+	if (ret)
-+		goto exit_out;
++static inline void irq_domain_set_pm_device(struct irq_domain *d,
++					    struct device *dev)
++{
++	if (d)
++		d->dev = dev;
++}
 +
-+	return 0;
+ #ifdef CONFIG_IRQ_DOMAIN
+ struct fwnode_handle *__irq_domain_alloc_fwnode(unsigned int type, int id,
+ 						const char *name, phys_addr_t *pa);
+diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+index f3920374f71ce..7ea66e55ef86b 100644
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -1559,6 +1559,17 @@ int irq_chip_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
+ 	return 0;
+ }
  
- exit_out:
- 	of_node_put(np);
-@@ -906,9 +910,6 @@ static int ti_iodelay_remove(struct platform_device *pdev)
++static struct device *irq_get_parent_device(struct irq_data *data)
++{
++	if (data->chip->parent_device)
++		return data->chip->parent_device;
++
++	if (data->domain)
++		return data->domain->dev;
++
++	return NULL;
++}
++
+ /**
+  * irq_chip_pm_get - Enable power for an IRQ chip
+  * @data:	Pointer to interrupt specific data
+@@ -1568,12 +1579,13 @@ int irq_chip_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
+  */
+ int irq_chip_pm_get(struct irq_data *data)
  {
- 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
++	struct device *dev = irq_get_parent_device(data);
+ 	int retval;
  
--	if (iod->pctl)
--		pinctrl_unregister(iod->pctl);
--
- 	ti_iodelay_pinconf_deinit_dev(iod);
+-	if (IS_ENABLED(CONFIG_PM) && data->chip->parent_device) {
+-		retval = pm_runtime_get_sync(data->chip->parent_device);
++	if (IS_ENABLED(CONFIG_PM) && dev) {
++		retval = pm_runtime_get_sync(dev);
+ 		if (retval < 0) {
+-			pm_runtime_put_noidle(data->chip->parent_device);
++			pm_runtime_put_noidle(dev);
+ 			return retval;
+ 		}
+ 	}
+@@ -1591,10 +1603,11 @@ int irq_chip_pm_get(struct irq_data *data)
+  */
+ int irq_chip_pm_put(struct irq_data *data)
+ {
++	struct device *dev = irq_get_parent_device(data);
+ 	int retval = 0;
  
- 	/* Expect other allocations to be freed by devm */
+-	if (IS_ENABLED(CONFIG_PM) && data->chip->parent_device)
+-		retval = pm_runtime_put(data->chip->parent_device);
++	if (IS_ENABLED(CONFIG_PM) && dev)
++		retval = pm_runtime_put(dev);
+ 
+ 	return (retval < 0) ? retval : 0;
+ }
 -- 
 2.43.0
 
