@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-69013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4AD953507
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E05795339A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4476B1F2A287
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE8A1F2473C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7011A00CE;
-	Thu, 15 Aug 2024 14:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5F017BEC0;
+	Thu, 15 Aug 2024 14:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rliQUgb3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbQfJwnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED49014AD0A;
-	Thu, 15 Aug 2024 14:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DED3214;
+	Thu, 15 Aug 2024 14:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732386; cv=none; b=hy3JnUpws8h502kS91HHsXU3alA0F+iKZcaB9pvZdLaZNoaKbdsuDerNaC2PDyd8oFCn0E7BLGTKZ9lIh38PyamFS9cXFQLrQThNHa2GhI2I2nQsxXwZbTgVmqZha3YJt7wY3+YJyhTK/7iokcUXG4QnpIVp+Qhn9Bq4L53bTXA=
+	t=1723731423; cv=none; b=jByJ+zFp0Sm1+kO2X5YNuWgFvtQCUAoZYe6Rox+pOk9VZhCwDhiKHcOzWWV4kO8iDLZY4HoWHzbPzEkHkR8ESRD7QtXZnsB3sTqaWY9QacCEO1xB+L486y7qTEFj1TQ5CBL0BRsS6wm/LX/ngmswIyqzM78U0b4mAYRq15gih08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732386; c=relaxed/simple;
-	bh=OjRzaH/SPqNWVs/rfsHhhrNacdQRdrfSknWzMA9THj8=;
+	s=arc-20240116; t=1723731423; c=relaxed/simple;
+	bh=Pa6qSY038yoAm4mmT1ArWo3ZkXAni2vwC+/2cxZsBNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcUICVXDRdPWG6lMZycLhscePyPE9m9eNsd18ut2k11+hKEPN1jUeKH+9HW/uFY57bSzcgresSqcVTTay+NFaQic0YFtjA01zPnA5vMkpxTSkCmv3KrJ9BiZY0oj7eJqR9r2r9g7Hnh6hkZ76N/B4NVnmUDhfOwNIImmuRqnnWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rliQUgb3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F770C32786;
-	Thu, 15 Aug 2024 14:33:05 +0000 (UTC)
+	 MIME-Version; b=ZjBG2XwWVKOEJQl59QUwIILxczw//1iHMnPEupjImS4h2OwM6HPIIA78SPJKtvQHvebOZ0nNK3InmmWbk6MGzKOa93Z2p506Gr+7eFbEZmICvBx+jsZRTdnG5EGSKVxa+fZDsN0L0TmmELh1TsNdd3cabmaZrbjUIgJbGOqcMl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbQfJwnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4521C32786;
+	Thu, 15 Aug 2024 14:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732385;
-	bh=OjRzaH/SPqNWVs/rfsHhhrNacdQRdrfSknWzMA9THj8=;
+	s=korg; t=1723731423;
+	bh=Pa6qSY038yoAm4mmT1ArWo3ZkXAni2vwC+/2cxZsBNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rliQUgb3vZhLJ5jJenIxmfLEyYjn8Zm9/xerwvFbaS6ANKr2HyGTUtWlSPysctvVl
-	 pLgLgJT629UFmJTaYhsHmEr8Y2B3xrmazoNWrYpwTx6OPTcGNvQigKQEs0dE9/hME2
-	 d8QRNedVvQf5urs1fkLyyS0/13+mkptCIQI+F2s4=
+	b=kbQfJwnNQDq8+jYRdJxrGzGpAF1Fu/Tt4QhYlIrl5zjTDqisxhfSxH51sf4+Dwxhk
+	 ah8iHzo/Nl4Sx6neNQBsUs25JwOvIfpz57Fm3LmmQzGYCmoc3wtGspOrTao7GgHNyk
+	 fCU37TNBaO/kyiWRY/q0D2/Ec+rnPgMyYxDVkaMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.10 164/352] rtc: cmos: Fix return value of nvmem callbacks
+	Ma Ke <make24@iscas.ac.cn>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 5.4 097/259] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
 Date: Thu, 15 Aug 2024 15:23:50 +0200
-Message-ID: <20240815131925.610028593@linuxfoundation.org>
+Message-ID: <20240815131906.548214598@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 1c184baccf0d5e2ef4cc1562261d0e48508a1c2b upstream.
+commit 2df7aac81070987b0f052985856aa325a38debf6 upstream.
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-cmos_nvram_read()/cmos_nvram_write() currently return the number of
-bytes read or written, fix to return 0 on success and -EIO incase number
-of bytes requested was not read or written.
-
-Fixes: 8b5b7958fd1c ("rtc: cmos: use generic nvmem")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240612083635.1253039-1-joychakr@google.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240709092011.3204970-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-cmos.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/gma500/psb_intel_lvds.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -649,11 +649,10 @@ static int cmos_nvram_read(void *priv, u
- 			   size_t count)
- {
- 	unsigned char *buf = val;
--	int	retval;
- 
- 	off += NVRAM_OFFSET;
- 	spin_lock_irq(&rtc_lock);
--	for (retval = 0; count; count--, off++, retval++) {
-+	for (; count; count--, off++) {
- 		if (off < 128)
- 			*buf++ = CMOS_READ(off);
- 		else if (can_bank2)
-@@ -663,7 +662,7 @@ static int cmos_nvram_read(void *priv, u
+--- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
++++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
+@@ -506,6 +506,9 @@ static int psb_intel_lvds_get_modes(stru
+ 	if (mode_dev->panel_fixed_mode != NULL) {
+ 		struct drm_display_mode *mode =
+ 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
++		if (!mode)
++			return 0;
++
+ 		drm_mode_probed_add(connector, mode);
+ 		return 1;
  	}
- 	spin_unlock_irq(&rtc_lock);
- 
--	return retval;
-+	return count ? -EIO : 0;
- }
- 
- static int cmos_nvram_write(void *priv, unsigned int off, void *val,
-@@ -671,7 +670,6 @@ static int cmos_nvram_write(void *priv,
- {
- 	struct cmos_rtc	*cmos = priv;
- 	unsigned char	*buf = val;
--	int		retval;
- 
- 	/* NOTE:  on at least PCs and Ataris, the boot firmware uses a
- 	 * checksum on part of the NVRAM data.  That's currently ignored
-@@ -680,7 +678,7 @@ static int cmos_nvram_write(void *priv,
- 	 */
- 	off += NVRAM_OFFSET;
- 	spin_lock_irq(&rtc_lock);
--	for (retval = 0; count; count--, off++, retval++) {
-+	for (; count; count--, off++) {
- 		/* don't trash RTC registers */
- 		if (off == cmos->day_alrm
- 				|| off == cmos->mon_alrm
-@@ -695,7 +693,7 @@ static int cmos_nvram_write(void *priv,
- 	}
- 	spin_unlock_irq(&rtc_lock);
- 
--	return retval;
-+	return count ? -EIO : 0;
- }
- 
- /*----------------------------------------------------------------*/
 
 
 
