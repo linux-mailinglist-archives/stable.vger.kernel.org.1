@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-68820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB5B953424
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD5B95326E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4482728A16A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:23:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98BA4282F27
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B185E1ABECE;
-	Thu, 15 Aug 2024 14:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5716C1AD9E6;
+	Thu, 15 Aug 2024 14:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnYkRAiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wnx6b0k2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3FD1A01CB;
-	Thu, 15 Aug 2024 14:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F131A00CF;
+	Thu, 15 Aug 2024 14:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731766; cv=none; b=oUS+xZaiGqTJHFv4WeZ0EjTem9eF6m3DFc6aCL/2hIjDqwo1JWk+Wr2vdtrNR9O5QJL79pMKpeXKEsxcqmy35g6sOjzv1fPm0Vgch0YDfXWzOG4aqzWQVe/IN/OjDPWWPsNmNm01g/5IRy4NM4mz4AWUyX/hd7nul3khhjE9XzU=
+	t=1723730655; cv=none; b=BmRNot2DnDuJoGvI+BVL4C9x8erSuu/I7zfU5MFp37WqC+rbrPd7r6202+6+5xEGvXi2Vr+WhPNQoajzOOfgmb2dHy/u5gYASmEviC/vGfF/AXqr55ZJ3CRlVS6k9lF8gnmMLdTtEOpZ6lPERaoTxg9x9SBEqvwimclWU8+gSI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731766; c=relaxed/simple;
-	bh=epyLOYUDJysq0I8dbEIS2oRrsooT0Gyig/K81Hw2idA=;
+	s=arc-20240116; t=1723730655; c=relaxed/simple;
+	bh=I3r3kucNWisc3NV7gTE4UdQAXbXDnla7pQ6HlK98H1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGn/nYvSXl8PQpzrCnEzC1skyuuXO6OSW597cxNgvDjtLMyiuDKoPyBDsi7XGHPuhj5mBvc3hdPMw750mGTNmN0BzHsPqgbtRdT49SrNd0RAyKq+7+qTjioxsFBKmpIbApYb8XtAiSlDSrJJ3dU3Zwo7cKIVilK2PPM+pCQIoLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnYkRAiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D349BC4AF0D;
-	Thu, 15 Aug 2024 14:22:45 +0000 (UTC)
+	 MIME-Version; b=NZ1kR0bE19UnqrWk+z03jO+bNzSqcJFh8qj6EKMfbdT/8tQVrWyX6LKxUZoN2FLGfbzv/GcFUA51nhnFLXa2VzoY518wVQBuCUtEB0IRz71rzDXkl7U1MNXM2UEDHbvcHnVNdnkr7qgBRtBov9S7HsoM6O8tQzVjPnjeJKLDFz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wnx6b0k2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8CEC32786;
+	Thu, 15 Aug 2024 14:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731766;
-	bh=epyLOYUDJysq0I8dbEIS2oRrsooT0Gyig/K81Hw2idA=;
+	s=korg; t=1723730654;
+	bh=I3r3kucNWisc3NV7gTE4UdQAXbXDnla7pQ6HlK98H1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RnYkRAiS3aE2lx8qTuoKfiJkeMGwS/KqB2cuT++nM/kVehztcfyXok6dGshMO7pKQ
-	 NpPWuPPAFF6OUkm5TIRIAO0upj13oV0V/0AIvWu46u9sWpG0/7GQ2JEPFPLxVlThDc
-	 xcYqe70r/NphxksPsmI91LFyXWk+saAjTKYR3wAk=
+	b=Wnx6b0k2+ousMoTs30LnBAI71GJoOQjqgUSmYeirwvB4QCM9TclYdEyJdKH1JXYZw
+	 Pvf8WZMax8zabTbn24V0wUv80GUOGXv664gnT9tvX92/PSPrJP9izBmYvbQkkOpS6w
+	 0IjgvARY/LhZERFSaO78ckfjuRR3ZXMjcZPI5vTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 201/259] drm/amdgpu: Fix the null pointer dereference to ras_manager
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Shirisha Ganta <shirisha@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Jinjie Ruan <ruanjinjie@huawei.com>
+Subject: [PATCH 5.15 476/484] powerpc: Avoid nmi_enter/nmi_exit in real mode interrupt.
 Date: Thu, 15 Aug 2024 15:25:34 +0200
-Message-ID: <20240815131910.536984113@linuxfoundation.org>
+Message-ID: <20240815131959.866659132@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
-[ Upstream commit 4c11d30c95576937c6c35e6f29884761f2dddb43 ]
+commit 0db880fc865ffb522141ced4bfa66c12ab1fbb70 upstream.
 
-Check ras_manager before using it
+nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
+crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
+interrupt handler) if percpu allocation comes from vmalloc area.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
+wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
+percpu allocation is from the embedded first chunk. However with
+CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
+allocation can come from the vmalloc area.
+
+With kernel command line "percpu_alloc=page" we can force percpu allocation
+to come from vmalloc area and can see kernel crash in machine_check_early:
+
+[    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
+[    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
+[    1.215719] --- interrupt: 200
+[    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
+[    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
+[    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
+
+Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
+first chunk is not embedded.
+
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
+Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
+[ Conflicts in arch/powerpc/include/asm/interrupt.h
+  because interrupt_nmi_enter_prepare() and interrupt_nmi_exit_prepare()
+  has been refactored. ]
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/interrupt.h |   14 ++++++++++----
+ arch/powerpc/include/asm/percpu.h    |   10 ++++++++++
+ arch/powerpc/kernel/setup_64.c       |    2 ++
+ 3 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index b6fc191c353a7..96aad6cc83b1e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -1053,12 +1053,15 @@ static void amdgpu_ras_interrupt_process_handler(struct work_struct *work)
- int amdgpu_ras_interrupt_dispatch(struct amdgpu_device *adev,
- 		struct ras_dispatch_if *info)
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -285,18 +285,24 @@ static inline void interrupt_nmi_enter_p
+ 	/*
+ 	 * Do not use nmi_enter() for pseries hash guest taking a real-mode
+ 	 * NMI because not everything it touches is within the RMA limit.
++	 *
++	 * Likewise, do not use it in real mode if percpu first chunk is not
++	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
++	 * are chances where percpu allocation can come from vmalloc area.
+ 	 */
+-	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
++	if ((!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
+ 			!firmware_has_feature(FW_FEATURE_LPAR) ||
+-			radix_enabled() || (mfmsr() & MSR_DR))
++			radix_enabled() || (mfmsr() & MSR_DR)) &&
++			!percpu_first_chunk_is_paged)
+ 		nmi_enter();
+ }
+ 
+ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
  {
--	struct ras_manager *obj = amdgpu_ras_find_obj(adev, &info->head);
--	struct ras_ih_data *data = &obj->ih_data;
-+	struct ras_manager *obj;
-+	struct ras_ih_data *data;
+-	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
++	if ((!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
+ 			!firmware_has_feature(FW_FEATURE_LPAR) ||
+-			radix_enabled() || (mfmsr() & MSR_DR))
++			radix_enabled() || (mfmsr() & MSR_DR)) &&
++			!percpu_first_chunk_is_paged)
+ 		nmi_exit();
  
-+	obj = amdgpu_ras_find_obj(adev, &info->head);
- 	if (!obj)
- 		return -EINVAL;
+ 	/*
+--- a/arch/powerpc/include/asm/percpu.h
++++ b/arch/powerpc/include/asm/percpu.h
+@@ -15,6 +15,16 @@
+ #endif /* CONFIG_SMP */
+ #endif /* __powerpc64__ */
  
-+	data = &obj->ih_data;
++#if defined(CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK) && defined(CONFIG_SMP)
++#include <linux/jump_label.h>
++DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
 +
- 	if (data->inuse == 0)
- 		return 0;
++#define percpu_first_chunk_is_paged	\
++		(static_key_enabled(&__percpu_first_chunk_is_paged.key))
++#else
++#define percpu_first_chunk_is_paged	false
++#endif /* CONFIG_PPC64 && CONFIG_SMP */
++
+ #include <asm-generic/percpu.h>
  
--- 
-2.43.0
-
+ #include <asm/paca.h>
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -825,6 +825,7 @@ static int pcpu_cpu_distance(unsigned in
+ 
+ unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(__per_cpu_offset);
++DEFINE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
+ 
+ static void __init pcpu_populate_pte(unsigned long addr)
+ {
+@@ -904,6 +905,7 @@ void __init setup_per_cpu_areas(void)
+ 	if (rc < 0)
+ 		panic("cannot initialize percpu area (err=%d)", rc);
+ 
++	static_key_enable(&__percpu_first_chunk_is_paged.key);
+ 	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
+ 	for_each_possible_cpu(cpu) {
+                 __per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
 
 
 
