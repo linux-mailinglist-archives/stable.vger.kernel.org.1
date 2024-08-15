@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E83953191
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCC7952F3F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E51F6B21E0D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B5E6288CEE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED4E19DF9C;
-	Thu, 15 Aug 2024 13:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFD71714D0;
+	Thu, 15 Aug 2024 13:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXIocWWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvRz7X86"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2ED1714A1;
-	Thu, 15 Aug 2024 13:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3ED7DA78;
+	Thu, 15 Aug 2024 13:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730143; cv=none; b=XA7HTovc0MAzvM8IkjlhiY6jg0Hxyuuj8MndenIme95SE1NY8QEaR6kgtZzMqPuk9R+o4ZmZI9Q2Pm9SngSSlxx6lZubSA8vGH1i+KBU4J3VHh86IThRjKD2YFwnMYg6gIDj3GLUzU67zBBxTIAeARU98i/to5PUe1M4IXm+cvc=
+	t=1723728619; cv=none; b=gucFVKZVzdJjLFiKLYJFQnh311uLvVv9GXyPoovf86GZ3I3TUfK9/kKZ2cxAHtzPqMDMUmPIMEw49mdqR4W2e8UUsR0qbvR+G5ZJDpIq2s2M8zo8VAA5o1kNFKuZUsmHvMqDb8EJNDEk/81Sq2d5lC4bVWx2lc3rU0ruzphk14Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730143; c=relaxed/simple;
-	bh=ZB+OF2YiXECrWPSR3ygLqsNcmhxkh13AwlM55u4drPw=;
+	s=arc-20240116; t=1723728619; c=relaxed/simple;
+	bh=zG2KN2/QwTwUiEf2KkLfDOtckmItxhH4k7s1f3tWTFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XcDOBHAFPWDpOZ6NWuyl3qZ74ghBuZ/X5R7l9Q9rXvHlk/Ji/Xn+BzbBYM/lUMwrlrFifWjNaPJfquGAvjJX/CQRi10nv++a2/ekmiRfUFA+7d1fBXs1g9GsqXyDQdINvPaYYA2I2XsEPmaOay+ck62rJJPTr/ZiyHm75wsWn4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXIocWWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CCEC32786;
-	Thu, 15 Aug 2024 13:55:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F6rWsKBbO9Q7srSyZVdqHH1jIaC6KtWjmaCowSuqojJP/hQAKaG1gZdmjbn2+wjfd8vRRj7jSlUDAcMHgwsOXKSGkUuOTqFhb2ZFgqk8ig4mEkc2qKpoU1IfO/Mz/jGQMNq2CbLIXQRoc8MfKfSTW2kRVo8Ie9oWK3a9uAF0FWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvRz7X86; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D76C32786;
+	Thu, 15 Aug 2024 13:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730143;
-	bh=ZB+OF2YiXECrWPSR3ygLqsNcmhxkh13AwlM55u4drPw=;
+	s=korg; t=1723728618;
+	bh=zG2KN2/QwTwUiEf2KkLfDOtckmItxhH4k7s1f3tWTFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXIocWWcha24LcOEp1d5psLzqHE9EAztk9VpknJzER/BKU6D4FuIPt46nnssF+2eH
-	 qWPqi5N9BNfbvhwuYwSpT1kDlmIeNnt1fe8y7hahe2d8lKr/EOO+VaUtTUbKgQP0YL
-	 m0J3AFziW1GHPfsscitb2w0WT1+K/mgkXG4bbA2g=
+	b=lvRz7X86DTz/TxkGDYEPoX9h5cwY57VGoI03MPU9IFN6yBX+7hSxeyc/FIVLky9lU
+	 ZydKUuyE1wtGLd3CxYH+XKyaZKaZWJZU4UXzyDClBZWYCre0HTo1/L77mSc4GaiCq/
+	 Q4WRwUvID/CuXF1ZpBu+oXvxaUzw4iskAR7jnhyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dustin L. Howett" <dustin@howett.net>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Lee Jones <lee@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 316/484] leds: triggers: Flush pending brightness before activating trigger
+Subject: [PATCH 4.19 057/196] pinctrl: ti: ti-iodelay: Drop if block with always false condition
 Date: Thu, 15 Aug 2024 15:22:54 +0200
-Message-ID: <20240815131953.608476380@linuxfoundation.org>
+Message-ID: <20240815131854.259926528@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit ab477b766edd3bfb6321a6e3df4c790612613fae ]
+[ Upstream commit 88b3f108502bc45e6ebd005702add46759f3f45a ]
 
-The race fixed in timer_trig_activate() between a blocking
-set_brightness() call and trigger->activate() can affect any trigger.
-So move the call to flush_work() into led_trigger_set() where it can
-avoid the race for all triggers.
+ti_iodelay_remove() is only called after ti_iodelay_probe() completed
+successfully. In this case platform_set_drvdata() was called with a
+non-NULL argument and so platform_get_drvdata() won't return NULL.
 
-Fixes: 0db37915d912 ("leds: avoid races with workqueue")
-Fixes: 8c0f693c6eff ("leds: avoid flush_work in atomic context")
-Cc: stable@vger.kernel.org
-Tested-by: Dustin L. Howett <dustin@howett.net>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20240613-led-trigger-flush-v2-1-f4f970799d77@weissschuh.net
-Signed-off-by: Lee Jones <lee@kernel.org>
+Simplify by removing the if block with the always false condition.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231009083856.222030-4-u.kleine-koenig@pengutronix.de
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: 9b401f4a7170 ("pinctrl: ti: ti-iodelay: fix possible memory leak when pinctrl_enable() fails")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-triggers.c          | 6 ++++++
- drivers/leds/trigger/ledtrig-timer.c | 5 -----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-index fe7fb2e7149c5..3d3673c197e38 100644
---- a/drivers/leds/led-triggers.c
-+++ b/drivers/leds/led-triggers.c
-@@ -200,6 +200,12 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
- 		 */
- 		synchronize_rcu();
+diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+index 4eda888b4d048..1c4196f40e8d6 100644
+--- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
++++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+@@ -906,9 +906,6 @@ static int ti_iodelay_remove(struct platform_device *pdev)
+ {
+ 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
  
-+		/*
-+		 * If "set brightness to 0" is pending in workqueue,
-+		 * we don't want that to be reordered after ->activate()
-+		 */
-+		flush_work(&led_cdev->set_brightness_work);
-+
- 		ret = 0;
- 		if (trig->activate)
- 			ret = trig->activate(led_cdev);
-diff --git a/drivers/leds/trigger/ledtrig-timer.c b/drivers/leds/trigger/ledtrig-timer.c
-index b4688d1d9d2b2..1d213c999d40a 100644
---- a/drivers/leds/trigger/ledtrig-timer.c
-+++ b/drivers/leds/trigger/ledtrig-timer.c
-@@ -110,11 +110,6 @@ static int timer_trig_activate(struct led_classdev *led_cdev)
- 		led_cdev->flags &= ~LED_INIT_DEFAULT_TRIGGER;
- 	}
- 
--	/*
--	 * If "set brightness to 0" is pending in workqueue, we don't
--	 * want that to be reordered after blink_set()
--	 */
--	flush_work(&led_cdev->set_brightness_work);
- 	led_blink_set(led_cdev, &led_cdev->blink_delay_on,
- 		      &led_cdev->blink_delay_off);
+-	if (!iod)
+-		return 0;
+-
+ 	if (iod->pctl)
+ 		pinctrl_unregister(iod->pctl);
  
 -- 
 2.43.0
