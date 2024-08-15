@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4200F95335B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A66E9534DE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3762B287AD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D44541F29869
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4FF1AC8BB;
-	Thu, 15 Aug 2024 14:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEABE1A00CE;
+	Thu, 15 Aug 2024 14:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrbxsY1f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQkVlbpi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7AC1A76C1;
-	Thu, 15 Aug 2024 14:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C41519FA99;
+	Thu, 15 Aug 2024 14:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731247; cv=none; b=rxmY+ZNdagphRLMkorAC+b3W4Q2H7OVPJHtG3lxZiPoPK7hczKIBQBVUQ0/fsGxrf+KpJadhrmzOR8rhCV+NVsVeesIn3DbikUUNazbPCyLVyNr/OfWjwh1w3R1n3CdbW10+qafRg7twaI8gzggWrBPs4GLd6JGba6W8AAPEQWM=
+	t=1723732274; cv=none; b=eiAJumxEVdiYHRaIsVcd+KalVuPueIJs0wXKRbJkCHnb/cMHz2Mw3VWKIoxmlUAPGU82cVBeMWXWEDmgUQEbvjEt9JvQXxV/KDZ5yzRs/hqZMpyA28C8aGu9kPopxeSXB0Nl5ERqjPqEZWTuLeQIBJjOFoFayJq6LSvDpn2hKQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731247; c=relaxed/simple;
-	bh=pvyO057lVB3BrKMNMaaOfh8yRiDfaaThR/hI5HoFA/o=;
+	s=arc-20240116; t=1723732274; c=relaxed/simple;
+	bh=MQOBFzygx2yi4JEjBD5NvZkXzd/p7acyVSIcgA9SVic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROP3rVjqz9UvkMhSJZtD/1566EzNZ/roc6Hy3rcBbvu8YetTHoOJxcqlw0wEo6DAOEQKDmowmnFeQyHm1j4fW6Gd0HeN8x8aexc9Ph+DhEs7Ttx82pSk4RpyS48TZ0WlaCA9ZUkTcEqeZoqbIauQa1XZdcATenHFOvZ4Nd56QlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrbxsY1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5A2C32786;
-	Thu, 15 Aug 2024 14:14:06 +0000 (UTC)
+	 MIME-Version; b=ThwN+yuZ+gQEHTRSJWuRtb1N83Ff3MbvDzxsTh7cqXuCdOcDfafflmlNyv1kgUQBzXWXWmhuNmtEpDwCY/8i0Fi3ezaj5WEMBQ0bhhlZ+nolIi7V7nRevlg3hdrKVnbPc3jFb8EZCT+j0EE5Ndyn/SzxpS3abeF7t4guuHsckUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQkVlbpi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC50FC32786;
+	Thu, 15 Aug 2024 14:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731246;
-	bh=pvyO057lVB3BrKMNMaaOfh8yRiDfaaThR/hI5HoFA/o=;
+	s=korg; t=1723732274;
+	bh=MQOBFzygx2yi4JEjBD5NvZkXzd/p7acyVSIcgA9SVic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrbxsY1fD+GLwaCgZ38C9qdMFlH0qdw3hn2Xsc+UUMYcsPto1yK6o2aWUz6sL9QZ9
-	 KlzGzxepM9kNFrFGZL0j27Dg+9qs8mG02R/XxcOKyAJNrXjnvAMwvAzoVuhqMvB4o3
-	 93Dl1QGSJScap0AWgNlEdIlvdBsViwiF5xJcmgeo=
+	b=YQkVlbpicd0J9cGYQgOEDlOlOIYJczZYWP/PJyrKVy/ZxujCo5QwTbx+UEFXT0Tm8
+	 4Ie+WPn03Oxr2M3AfIqMUMcI/gJ74aOmbli4mvf2S5zy7tRf88V/WvmRiOMXKCht+e
+	 iYvUqaYF2JwL5+WhqxyDXt0pmJP22blK/56H6YlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/259] drm/qxl: Add check for drm_cvt_mode
-Date: Thu, 15 Aug 2024 15:23:14 +0200
-Message-ID: <20240815131905.165707301@linuxfoundation.org>
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 5.10 129/352] sched/fair: set_load_weight() must also call reweight_task() for SCHED_IDLE tasks
+Date: Thu, 15 Aug 2024 15:23:15 +0200
+Message-ID: <20240815131924.240080424@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 7bd09a2db0f617377027a2bb0b9179e6959edff3 ]
+commit d329605287020c3d1c3b0dadc63d8208e7251382 upstream.
 
-Add check for the return value of drm_cvt_mode() and return the error if
-it fails in order to avoid NULL pointer dereference.
+When a task's weight is being changed, set_load_weight() is called with
+@update_load set. As weight changes aren't trivial for the fair class,
+set_load_weight() calls fair.c::reweight_task() for fair class tasks.
 
-Fixes: 1b043677d4be ("drm/qxl: add qxl_add_mode helper function")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621071031.1987974-1-nichen@iscas.ac.cn
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, set_load_weight() first tests task_has_idle_policy() on entry and
+skips calling reweight_task() for SCHED_IDLE tasks. This is buggy as
+SCHED_IDLE tasks are just fair tasks with a very low weight and they would
+incorrectly skip load, vlag and position updates.
+
+Fix it by updating reweight_task() to take struct load_weight as idle weight
+can't be expressed with prio and making set_load_weight() call
+reweight_task() for SCHED_IDLE tasks too when @update_load is set.
+
+Fixes: 9059393e4ec1 ("sched/fair: Use reweight_entity() for set_user_nice()")
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org # v4.15+
+Link: http://lkml.kernel.org/r/20240624102331.GI31592@noisy.programming.kicks-ass.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/qxl/qxl_display.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/sched/core.c  |   23 ++++++++++-------------
+ kernel/sched/fair.c  |    7 +++----
+ kernel/sched/sched.h |    2 +-
+ 3 files changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/qxl/qxl_display.c b/drivers/gpu/drm/qxl/qxl_display.c
-index a6ee10cbcfdd6..677dd560c066d 100644
---- a/drivers/gpu/drm/qxl/qxl_display.c
-+++ b/drivers/gpu/drm/qxl/qxl_display.c
-@@ -230,6 +230,9 @@ static int qxl_add_mode(struct drm_connector *connector,
- 		return 0;
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -848,27 +848,24 @@ static void set_load_weight(struct task_
+ {
+ 	bool update_load = !(READ_ONCE(p->state) & TASK_NEW);
+ 	int prio = p->static_prio - MAX_RT_PRIO;
+-	struct load_weight *load = &p->se.load;
++	struct load_weight lw;
  
- 	mode = drm_cvt_mode(dev, width, height, 60, false, false, false);
-+	if (!mode)
-+		return 0;
-+
- 	if (preferred)
- 		mode->type |= DRM_MODE_TYPE_PREFERRED;
- 	mode->hdisplay = width;
--- 
-2.43.0
-
+-	/*
+-	 * SCHED_IDLE tasks get minimal weight:
+-	 */
+ 	if (task_has_idle_policy(p)) {
+-		load->weight = scale_load(WEIGHT_IDLEPRIO);
+-		load->inv_weight = WMULT_IDLEPRIO;
+-		return;
++		lw.weight = scale_load(WEIGHT_IDLEPRIO);
++		lw.inv_weight = WMULT_IDLEPRIO;
++	} else {
++		lw.weight = scale_load(sched_prio_to_weight[prio]);
++		lw.inv_weight = sched_prio_to_wmult[prio];
+ 	}
+ 
+ 	/*
+ 	 * SCHED_OTHER tasks have to update their load when changing their
+ 	 * weight
+ 	 */
+-	if (update_load && p->sched_class == &fair_sched_class) {
+-		reweight_task(p, prio);
+-	} else {
+-		load->weight = scale_load(sched_prio_to_weight[prio]);
+-		load->inv_weight = sched_prio_to_wmult[prio];
+-	}
++	if (update_load && p->sched_class == &fair_sched_class)
++		reweight_task(p, &lw);
++	else
++		p->se.load = lw;
+ }
+ 
+ #ifdef CONFIG_UCLAMP_TASK
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3119,15 +3119,14 @@ static void reweight_entity(struct cfs_r
+ 
+ }
+ 
+-void reweight_task(struct task_struct *p, int prio)
++void reweight_task(struct task_struct *p, const struct load_weight *lw)
+ {
+ 	struct sched_entity *se = &p->se;
+ 	struct cfs_rq *cfs_rq = cfs_rq_of(se);
+ 	struct load_weight *load = &se->load;
+-	unsigned long weight = scale_load(sched_prio_to_weight[prio]);
+ 
+-	reweight_entity(cfs_rq, se, weight);
+-	load->inv_weight = sched_prio_to_wmult[prio];
++	reweight_entity(cfs_rq, se, lw->weight);
++	load->inv_weight = lw->inv_weight;
+ }
+ 
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1938,7 +1938,7 @@ extern void init_sched_dl_class(void);
+ extern void init_sched_rt_class(void);
+ extern void init_sched_fair_class(void);
+ 
+-extern void reweight_task(struct task_struct *p, int prio);
++extern void reweight_task(struct task_struct *p, const struct load_weight *lw);
+ 
+ extern void resched_curr(struct rq *rq);
+ extern void resched_cpu(int cpu);
 
 
 
