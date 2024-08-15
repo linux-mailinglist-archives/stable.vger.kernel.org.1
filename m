@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-69036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F081E953524
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C65B0953372
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FD7A1C2409D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6665BB242AB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F33B17BEC0;
-	Thu, 15 Aug 2024 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2D51DFDE;
+	Thu, 15 Aug 2024 14:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+bO8o+5"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/SfOzUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7C763D5;
-	Thu, 15 Aug 2024 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEE41E526;
+	Thu, 15 Aug 2024 14:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732459; cv=none; b=NZBhEhZUYydrTbXWZlrafwdf7o+2ubo03FWk64wIPmOjkR9X/GXoM73e5zGAocTP5LIdS3TbQKQjv5dmp7u3wvobIBqd6k6igTwN31Hk34u8AEEvTOPB6Nom+xueXnsgMzcGUba5N8JHyFUzHDQdf7z9F510wJjNweQHpTTaXbg=
+	t=1723731309; cv=none; b=D5cgZ+HHPuIFcSQPTwV3emgU/HOeztmrRyNJiiO/FvbyWue6+iiPUkkJh8PX10ihsTUVSHuSauEzPsFXWa7z1W7acG9AyV1KiCfVYJUfbk45KEwRxl8kqxDD3/UwE8yE2j/rXrCrKfv/4Fc+YTgS9h+kGImSBRSUyhvbBv9qLBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732459; c=relaxed/simple;
-	bh=6PXvzBLx3jQ0OAIq9sabNNk2XtfUVhxZbFl96Udth9Y=;
+	s=arc-20240116; t=1723731309; c=relaxed/simple;
+	bh=oZLGp73WxzAiAVITevMU3SDmI8VnWJzjHBNaCGArhXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELnZVUErItT2Yrn0PGgKBn3mKg8PWUSYfOkaMftmiZYapqWZuJlJn8TS3cFY/3pnHrba1jMV4v0TWBb06t1cAD8nKgm6cVHNIdr5GBdRcBKbihO7e2Q6HQp0RItDrs9HfLDG+mnPTuZE63o9vuyEypdaki+mJuR2bcHMh9yFwiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+bO8o+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD482C32786;
-	Thu, 15 Aug 2024 14:34:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XZv+sJCaN7ZGv+nhPj+tRLZnc030W9cBEDYIog+5FeEx+fZ+chZdlIgieMLLJmTQJhMdHtWcRRwtb40yAadUydi8OUKAzW6mNpH/niziue5RtB5aUvDCxlvsF3ipH1FpOP9qJ85DfPSWXrQvWbk9b0UHFwEj5jj0Ba8/gFmdB/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/SfOzUu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55274C32786;
+	Thu, 15 Aug 2024 14:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732459;
-	bh=6PXvzBLx3jQ0OAIq9sabNNk2XtfUVhxZbFl96Udth9Y=;
+	s=korg; t=1723731309;
+	bh=oZLGp73WxzAiAVITevMU3SDmI8VnWJzjHBNaCGArhXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+bO8o+5WNa4P0xKKYXBA/AxUGiaz1jY+HxU7v66S7I7VdG1201+Cd+fi1PmmffpS
-	 CdRF49y3QlqstFj0IFMa0tdllU75TUSmXLncROF6TdfV/q1iTAQgkbVPix83zaBHpH
-	 aqcsQUKZRQk/5JItka5t+OiI5EAD87q93tpR73lQ=
+	b=H/SfOzUutRjKMFClb/ThuOYIRNNB63qW2ULyqoXJxLwQA8nVFyeiDHZwX6IAc2+Jc
+	 5hB06mJ4Gn3prNYVzi8krftshLfy+ZonpNTnzVhHNVZ/z9J+Ju68H4omElmIpFAQrd
+	 oR9SrGYcSap71Q+zooQg7pnZa3lyls5c6WsvR5bQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tuhaowen <tuhaowen@uniontech.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 155/352] dev/parport: fix the array out-of-bounds risk
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 088/259] rtc: interface: Add RTC offset to alarm after fix-up
 Date: Thu, 15 Aug 2024 15:23:41 +0200
-Message-ID: <20240815131925.260070511@linuxfoundation.org>
+Message-ID: <20240815131906.198135706@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,132 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: tuhaowen <tuhaowen@uniontech.com>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-commit ab11dac93d2d568d151b1918d7b84c2d02bacbd5 upstream.
+[ Upstream commit 463927a8902a9f22c3633960119410f57d4c8920 ]
 
-Fixed array out-of-bounds issues caused by sprintf
-by replacing it with snprintf for safer data copying,
-ensuring the destination buffer is not overflowed.
+`rtc_add_offset()` is called by `__rtc_read_time()`
+and `__rtc_read_alarm()` to add the RTC's offset to
+the raw read-outs from the device drivers. However,
+in the latter case, a fix-up algorithm is run if
+the RTC device does not report a full `struct rtc_time`
+alarm value. In that case, the offset was forgot to be
+added.
 
-Below is the stack trace I encountered during the actual issue:
+Fixes: fd6792bb022e ("rtc: fix alarm read and set offset")
 
-[ 66.575408s] [pid:5118,cpu4,QThread,4]Kernel panic - not syncing: stack-protector:
-Kernel stack is corrupted in: do_hardware_base_addr+0xcc/0xd0 [parport]
-[ 66.575408s] [pid:5118,cpu4,QThread,5]CPU: 4 PID: 5118 Comm:
-QThread Tainted: G S W O 5.10.97-arm64-desktop #7100.57021.2
-[ 66.575439s] [pid:5118,cpu4,QThread,6]TGID: 5087 Comm: EFileApp
-[ 66.575439s] [pid:5118,cpu4,QThread,7]Hardware name: HUAWEI HUAWEI QingYun
-PGUX-W515x-B081/SP1PANGUXM, BIOS 1.00.07 04/29/2024
-[ 66.575439s] [pid:5118,cpu4,QThread,8]Call trace:
-[ 66.575469s] [pid:5118,cpu4,QThread,9] dump_backtrace+0x0/0x1c0
-[ 66.575469s] [pid:5118,cpu4,QThread,0] show_stack+0x14/0x20
-[ 66.575469s] [pid:5118,cpu4,QThread,1] dump_stack+0xd4/0x10c
-[ 66.575500s] [pid:5118,cpu4,QThread,2] panic+0x1d8/0x3bc
-[ 66.575500s] [pid:5118,cpu4,QThread,3] __stack_chk_fail+0x2c/0x38
-[ 66.575500s] [pid:5118,cpu4,QThread,4] do_hardware_base_addr+0xcc/0xd0 [parport]
-
-Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240708080430.8221-1-tuhaowen@uniontech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Link: https://lore.kernel.org/r/20240619140451.2800578-1-csokas.bence@prolan.hu
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/procfs.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/rtc/interface.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/parport/procfs.c
-+++ b/drivers/parport/procfs.c
-@@ -51,12 +51,12 @@ static int do_active_device(struct ctl_t
- 	
- 	for (dev = port->devices; dev ; dev = dev->next) {
- 		if(dev == port->cad) {
--			len += sprintf(buffer, "%s\n", dev->name);
-+			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
- 		}
- 	}
+diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+index ba345a379e262..d858cd819932f 100644
+--- a/drivers/rtc/interface.c
++++ b/drivers/rtc/interface.c
+@@ -274,10 +274,9 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+ 			return err;
  
- 	if(!len) {
--		len += sprintf(buffer, "%s\n", "none");
-+		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
- 	}
+ 		/* full-function RTCs won't have such missing fields */
+-		if (rtc_valid_tm(&alarm->time) == 0) {
+-			rtc_add_offset(rtc, &alarm->time);
+-			return 0;
+-		}
++		err = rtc_valid_tm(&alarm->time);
++		if (!err)
++			goto done;
  
- 	if (len > *lenp)
-@@ -87,19 +87,19 @@ static int do_autoprobe(struct ctl_table
- 	}
- 	
- 	if ((str = info->class_name) != NULL)
--		len += sprintf (buffer + len, "CLASS:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
+ 		/* get the "after" timestamp, to detect wrapped fields */
+ 		err = rtc_read_time(rtc, &now);
+@@ -379,6 +378,8 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+ 	if (err)
+ 		dev_warn(&rtc->dev, "invalid alarm value: %ptR\n",
+ 			 &alarm->time);
++	else
++		rtc_add_offset(rtc, &alarm->time);
  
- 	if ((str = info->model) != NULL)
--		len += sprintf (buffer + len, "MODEL:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
- 
- 	if ((str = info->mfr) != NULL)
--		len += sprintf (buffer + len, "MANUFACTURER:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
- 
- 	if ((str = info->description) != NULL)
--		len += sprintf (buffer + len, "DESCRIPTION:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
- 
- 	if ((str = info->cmdset) != NULL)
--		len += sprintf (buffer + len, "COMMAND SET:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -117,7 +117,7 @@ static int do_hardware_base_addr(struct
- 				 void *result, size_t *lenp, loff_t *ppos)
- {
- 	struct parport *port = (struct parport *)table->extra1;
--	char buffer[20];
-+	char buffer[64];
- 	int len = 0;
- 
- 	if (*ppos) {
-@@ -128,7 +128,7 @@ static int do_hardware_base_addr(struct
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%lu\t%lu\n", port->base, port->base_hi);
-+	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -155,7 +155,7 @@ static int do_hardware_irq(struct ctl_ta
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%d\n", port->irq);
-+	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -182,7 +182,7 @@ static int do_hardware_dma(struct ctl_ta
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%d\n", port->dma);
-+	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -213,7 +213,7 @@ static int do_hardware_modes(struct ctl_
- #define printmode(x)							\
- do {									\
- 	if (port->modes & PARPORT_MODE_##x)				\
--		len += sprintf(buffer + len, "%s%s", f++ ? "," : "", #x); \
-+		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
- } while (0)
- 		int f = 0;
- 		printmode(PCSPP);
+ 	return err;
+ }
+-- 
+2.43.0
+
 
 
 
