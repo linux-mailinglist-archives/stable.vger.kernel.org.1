@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-68665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28E3953368
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC6C953373
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EACBE1C2098D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6EB7282E7E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE3E1A3BB6;
-	Thu, 15 Aug 2024 14:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A8919EED0;
+	Thu, 15 Aug 2024 14:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1eJwiUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdCeDP/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1593119E7FA;
-	Thu, 15 Aug 2024 14:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A0919DF8C;
+	Thu, 15 Aug 2024 14:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731281; cv=none; b=Mc7oSeo9cUcvF2SDbRjydI6jIuOKtZUPzwRi4nmQQlK/O/p6prPTIuEsfnKDnzxSAPi5Vt/l/ZXX/jfjB0HqvLSIWgDVw19R1MaWK894mp6S9jmcKY8VVet3vavavnna4UPICBAh8j/IiIvBDgZgXRDbAChIYDKibTOQHbkX2k4=
+	t=1723731316; cv=none; b=Flo02Qhwf+ukxxRDFjxmq05oLxBskPE2DUfOA1+oCIUtioP/rX9dATjWgQurRonSJnSn0o8/OP4lEAkCBdhStxXv87He4zbYVybio6U/W84916y3u8r2mOt8Ju8WtszI/EaKyXNmZ88CO5VpFCgzkXzcgam7jA7+MGCN58FDmRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731281; c=relaxed/simple;
-	bh=X4VQyc5MbCe/Od1/qJa/UbUikMOYm1I1JFNfk6Ghby0=;
+	s=arc-20240116; t=1723731316; c=relaxed/simple;
+	bh=8g5I7tvQnVDlX3XMnwiy/7kocWIv/7Wz2wjT8504tqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5+C/xMGfxUFHoJjg+OdGc2FyxaZhwYTYnXXdUxM/8LuUcHoM46C6581aNPzejH5Jlp4XYhRhuYLe6Kr9wEZ/tZupKbKpGRgesEjvRpTyN48gnHxxckeiY+4NB6Ia7F+UraNKGDSzDnC5xh8Ly7zAo7UsLqnCa0FKwrlnscXO+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1eJwiUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA5CC32786;
-	Thu, 15 Aug 2024 14:14:40 +0000 (UTC)
+	 MIME-Version; b=O+msB/FA0v4+dlLYqa6r5N9v1mMLY7RLWe+mVwow3qUMvM8AFBbtCvRQfKWFhE/aYl+H0lninARRz8OtuWU9SyzIhr7YvQlkRFewLXt99X5fc7E8/lGsMsH5HhSCyS00IvAeYoXTjaZcw9idqJD9JJuV8k02zjI9UwHnMDz3rFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdCeDP/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED86C4AF0A;
+	Thu, 15 Aug 2024 14:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731280;
-	bh=X4VQyc5MbCe/Od1/qJa/UbUikMOYm1I1JFNfk6Ghby0=;
+	s=korg; t=1723731316;
+	bh=8g5I7tvQnVDlX3XMnwiy/7kocWIv/7Wz2wjT8504tqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1eJwiUfcmFVZzs2JJcc52pSVWKgGTF7fcee4xIZMvn/ui0GwyI0AUXqRs8BTvlxs
-	 EUvoKsAYV9CVz07P2zErUvQkeyJF41B0r9qTAhhCaqtgem3YoqhIei7Un41tm37vMV
-	 /Km82y3YHe1pOUCCucooiW2FHYK3rSI+TgvTRW30=
+	b=XdCeDP/6+nmbQT8Ql8vpMxnyDqMes2LPmSIMr8FqUJUlpZX7oU9TIGO3TJ+Kc+oSP
+	 jbdGPRTQHLXlQJDFaAdJO12uev5921ivANB0rzStc0d2lc/S7c0ow6nfg6U5hsu3yD
+	 smrX236MSe9JK4m2fIowTKqIVOVqIckNEJrBrJfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/259] mfd: omap-usb-tll: Use struct_size to allocate tll
-Date: Thu, 15 Aug 2024 15:23:15 +0200
-Message-ID: <20240815131905.203199174@linuxfoundation.org>
+Subject: [PATCH 5.4 063/259] SUNRPC: avoid soft lockup when transmitting UDP to reachable server.
+Date: Thu, 15 Aug 2024 15:23:16 +0200
+Message-ID: <20240815131905.240495298@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
 References: <20240815131902.779125794@linuxfoundation.org>
@@ -67,67 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 40176714c818b0b6a2ca8213cdb7654fbd49b742 ]
+[ Upstream commit 6258cf25d5e3155c3219ab5a79b970eef7996356 ]
 
-Commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-changed the memory allocation of 'tll' to consolidate it into a single
-allocation, introducing an incorrect size calculation.
+Prior to the commit identified below, call_transmit_status() would
+handle -EPERM and other errors related to an unreachable server by
+falling through to call_status() which added a 3-second delay and
+handled the failure as a timeout.
 
-In particular, the allocation for the array of pointers was converted
-into a single-pointer allocation.
+Since that commit, call_transmit_status() falls through to
+handle_bind().  For UDP this moves straight on to handle_connect() and
+handle_transmit() so we immediately retransmit - and likely get the same
+error.
 
-The memory allocation used to occur in two steps:
+This results in an indefinite loop in __rpc_execute() which triggers a
+soft-lockup warning.
 
-tll = devm_kzalloc(dev, sizeof(struct usbtll_omap), GFP_KERNEL);
-tll->ch_clk = devm_kzalloc(dev, sizeof(struct clk *) * tll->nch,
-                           GFP_KERNEL);
+For the errors that indicate an unreachable server,
+call_transmit_status() should fall back to call_status() as it did
+before.  This cannot cause the thundering herd that the previous patch
+was avoiding, as the call_status() will insert a delay.
 
-And it turned that into the following allocation:
-
-tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
-                   GFP_KERNEL);
-
-sizeof(tll->ch_clk[nch]) returns the size of a single pointer instead of
-the expected nch pointers.
-
-This bug went unnoticed because the allocation size was small enough to
-fit within the minimum size of a memory allocation for this particular
-case [1].
-
-The complete allocation can still be done at once with the struct_size
-macro, which comes in handy for structures with a trailing flexible
-array.
-
-Fix the memory allocation to obtain the original size again.
-
-Link: https://lore.kernel.org/all/202406261121.2FFD65647@keescook/ [1]
-Fixes: 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Fixes: commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-Link: https://lore.kernel.org/r/20240626-omap-usb-tll-counted_by-v2-1-4bedf20d1b51@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: ed7dc973bd91 ("SUNRPC: Prevent thundering herd when the socket is not connected")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/omap-usb-tll.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/sunrpc/clnt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-index 265f5e350e1c7..17648dd83d669 100644
---- a/drivers/mfd/omap-usb-tll.c
-+++ b/drivers/mfd/omap-usb-tll.c
-@@ -235,8 +235,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 2e08876bf8564..f689c7b0c304d 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2236,12 +2236,13 @@ call_transmit_status(struct rpc_task *task)
+ 		task->tk_action = call_transmit;
+ 		task->tk_status = 0;
  		break;
- 	}
- 
--	tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
--			   GFP_KERNEL);
-+	tll = devm_kzalloc(dev, struct_size(tll, ch_clk, nch), GFP_KERNEL);
- 	if (!tll) {
- 		pm_runtime_put_sync(dev);
- 		pm_runtime_disable(dev);
+-	case -ECONNREFUSED:
+ 	case -EHOSTDOWN:
+ 	case -ENETDOWN:
+ 	case -EHOSTUNREACH:
+ 	case -ENETUNREACH:
+ 	case -EPERM:
++		break;
++	case -ECONNREFUSED:
+ 		if (RPC_IS_SOFTCONN(task)) {
+ 			if (!task->tk_msg.rpc_proc->p_proc)
+ 				trace_xprt_ping(task->tk_xprt,
 -- 
 2.43.0
 
