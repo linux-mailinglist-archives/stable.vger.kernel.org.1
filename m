@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-68265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6309D95316A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:53:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DCF3952F15
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E32801F25775
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:53:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25071F26119
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E8F19F49C;
-	Thu, 15 Aug 2024 13:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D6619EECD;
+	Thu, 15 Aug 2024 13:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWOQszDz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vr9H7t0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D9D18D630;
-	Thu, 15 Aug 2024 13:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C127E19E825;
+	Thu, 15 Aug 2024 13:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730018; cv=none; b=cb0F6WWsmAt46t7jqNJAGI9e7xZlohOcbXMIdkARTFBxjoW4fEDIweCfoYCRCy5mpSFS4L/ns4/xxsAB/f9POoLqEUca/cwGTN74wrLt/A3S0NBg12spWtoxFZpOmQDavOMmFd+cUCUtg3+a2FLrLPjUwLNfTvvfUr+2shT6/W8=
+	t=1723728499; cv=none; b=NFmzQNDbSckuFbgYXjmFEM8eHn081o3ArtACyUu2SIJwyppFmQ2ByDEx4C6KAzN+V/OfxfB6KeWUjxONDdtrPzq13caucCGvI0ISfuToB8cclKffzwUFXr6bo1/pvSSpUss563xfyuX5VyBC8smy9F+V6gPhqhsE/oiiujq8pjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730018; c=relaxed/simple;
-	bh=hzlm3LRFFpUQLBwHZG7/k9HDg4Qov2pHcINpDzd4Vmc=;
+	s=arc-20240116; t=1723728499; c=relaxed/simple;
+	bh=0PlMFdAZC/qvK5JC37rs+P4Tr2+r2GYa2JzjHw2vF7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7soxkAf5gZgm6e5XSUlumCgj2KC8SCO8KM0GSeKeQbCCMi3NzQ0wHX2FcXMf6SnMHAr3wztSghZGBovdOzr5eX2iabryy+buUEDwfCi5PBBqa7ipcxZY/z/0T8LWm5QvS39JDl21VjNU6WSznFMLowzlqEQw5FAVdidDUp3Ge8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWOQszDz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03C6C32786;
-	Thu, 15 Aug 2024 13:53:37 +0000 (UTC)
+	 MIME-Version; b=GyrwIotcA/Xvx8GrabhNZ0cFWPR+DzaLosF3rgjR5Ww/YtQQNCEIvIqJiFoJ5PLJjQG2rfuxUBe/+sjZryFH02MY2zNswy/9G5bUv4tOFF/8nZ05YgZ+qywP8Uaf8+9uUNfkl2m4QVGCLjc/l8eK4qzLQWHrbg6d2oroGYyImX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr9H7t0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37745C32786;
+	Thu, 15 Aug 2024 13:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730018;
-	bh=hzlm3LRFFpUQLBwHZG7/k9HDg4Qov2pHcINpDzd4Vmc=;
+	s=korg; t=1723728499;
+	bh=0PlMFdAZC/qvK5JC37rs+P4Tr2+r2GYa2JzjHw2vF7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWOQszDzUB55HZaemIJb4flWn6btLe2I35ZaMNB4e/iPzkUB5YPRcj16UL9NVClM4
-	 53hQ+Kn6dAH2eJIl0YrieDJsyOSNrZ7kQSLsPR751T8rC52IINiECYd2/Zvh4/2Ukj
-	 N0Wuetm3yrSgOXRqh/dy+lyzaY8Qi7eGfJQrNgPM=
+	b=vr9H7t0A8ilkh6jN7oiRvr48AP2Bzw9j1ypU7Qh+0Y4vdvImr9RYzxrZ83sMV1+cW
+	 kkewfIOl6CZcIK6yyreKaTifk2bRT1sYmia+3HOgOqWewpM/nkf60VlsRJec4FEVB4
+	 BrMmGkA+kFzvZ+KtLsuur9xOSTIRhtome+DSRBV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Liang <shaw.leon@gmail.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 279/484] apparmor: Fix null pointer deref when receiving skb during sock creation
+Subject: [PATCH 4.19 020/196] selftests/bpf: Check length of recv in test_sockmap
 Date: Thu, 15 Aug 2024 15:22:17 +0200
-Message-ID: <20240815131952.183420312@linuxfoundation.org>
+Message-ID: <20240815131852.854144504@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiao Liang <shaw.leon@gmail.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit fce09ea314505a52f2436397608fa0a5d0934fb1 ]
+[ Upstream commit de1b5ea789dc28066cc8dc634b6825bd6148f38b ]
 
-The panic below is observed when receiving ICMP packets with secmark set
-while an ICMP raw socket is being created. SK_CTX(sk)->label is updated
-in apparmor_socket_post_create(), but the packet is delivered to the
-socket before that, causing the null pointer dereference.
-Drop the packet if label context is not set.
+The value of recv in msg_loop may be negative, like EWOULDBLOCK, so it's
+necessary to check if it is positive before accumulating it to bytes_recvd.
 
-    BUG: kernel NULL pointer dereference, address: 000000000000004c
-    #PF: supervisor read access in kernel mode
-    #PF: error_code(0x0000) - not-present page
-    PGD 0 P4D 0
-    Oops: 0000 [#1] PREEMPT SMP NOPTI
-    CPU: 0 PID: 407 Comm: a.out Not tainted 6.4.12-arch1-1 #1 3e6fa2753a2d75925c34ecb78e22e85a65d083df
-    Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 05/28/2020
-    RIP: 0010:aa_label_next_confined+0xb/0x40
-    Code: 00 00 48 89 ef e8 d5 25 0c 00 e9 66 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f 1f 44 00 00 89 f0 <8b> 77 4c 39 c6 7e 1f 48 63 d0 48 8d 14 d7 eb 0b 83 c0 01 48 83 c2
-    RSP: 0018:ffffa92940003b08 EFLAGS: 00010246
-    RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000000000000e
-    RDX: ffffa92940003be8 RSI: 0000000000000000 RDI: 0000000000000000
-    RBP: ffff8b57471e7800 R08: ffff8b574c642400 R09: 0000000000000002
-    R10: ffffffffbd820eeb R11: ffffffffbeb7ff00 R12: ffff8b574c642400
-    R13: 0000000000000001 R14: 0000000000000001 R15: 0000000000000000
-    FS:  00007fb092ea7640(0000) GS:ffff8b577bc00000(0000) knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: 000000000000004c CR3: 00000001020f2005 CR4: 00000000007706f0
-    PKRU: 55555554
-    Call Trace:
-     <IRQ>
-     ? __die+0x23/0x70
-     ? page_fault_oops+0x171/0x4e0
-     ? exc_page_fault+0x7f/0x180
-     ? asm_exc_page_fault+0x26/0x30
-     ? aa_label_next_confined+0xb/0x40
-     apparmor_secmark_check+0xec/0x330
-     security_sock_rcv_skb+0x35/0x50
-     sk_filter_trim_cap+0x47/0x250
-     sock_queue_rcv_skb_reason+0x20/0x60
-     raw_rcv+0x13c/0x210
-     raw_local_deliver+0x1f3/0x250
-     ip_protocol_deliver_rcu+0x4f/0x2f0
-     ip_local_deliver_finish+0x76/0xa0
-     __netif_receive_skb_one_core+0x89/0xa0
-     netif_receive_skb+0x119/0x170
-     ? __netdev_alloc_skb+0x3d/0x140
-     vmxnet3_rq_rx_complete+0xb23/0x1010 [vmxnet3 56a84f9c97178c57a43a24ec073b45a9d6f01f3a]
-     vmxnet3_poll_rx_only+0x36/0xb0 [vmxnet3 56a84f9c97178c57a43a24ec073b45a9d6f01f3a]
-     __napi_poll+0x28/0x1b0
-     net_rx_action+0x2a4/0x380
-     __do_softirq+0xd1/0x2c8
-     __irq_exit_rcu+0xbb/0xf0
-     common_interrupt+0x86/0xa0
-     </IRQ>
-     <TASK>
-     asm_common_interrupt+0x26/0x40
-    RIP: 0010:apparmor_socket_post_create+0xb/0x200
-    Code: 08 48 85 ff 75 a1 eb b1 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 41 54 <55> 48 89 fd 53 45 85 c0 0f 84 b2 00 00 00 48 8b 1d 80 56 3f 02 48
-    RSP: 0018:ffffa92940ce7e50 EFLAGS: 00000286
-    RAX: ffffffffbc756440 RBX: 0000000000000000 RCX: 0000000000000001
-    RDX: 0000000000000003 RSI: 0000000000000002 RDI: ffff8b574eaab740
-    RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-    R10: ffff8b57444cec70 R11: 0000000000000000 R12: 0000000000000003
-    R13: 0000000000000002 R14: ffff8b574eaab740 R15: ffffffffbd8e4748
-     ? __pfx_apparmor_socket_post_create+0x10/0x10
-     security_socket_post_create+0x4b/0x80
-     __sock_create+0x176/0x1f0
-     __sys_socket+0x89/0x100
-     __x64_sys_socket+0x17/0x20
-     do_syscall_64+0x5d/0x90
-     ? do_syscall_64+0x6c/0x90
-     ? do_syscall_64+0x6c/0x90
-     ? do_syscall_64+0x6c/0x90
-     entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Fixes: ab9f2115081a ("apparmor: Allow filtering based on secmark policy")
-Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 16962b2404ac ("bpf: sockmap, add selftests")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/5172563f7c7b2a2e953cef02e89fc34664a7b190.1716446893.git.tanggeliang@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/lsm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/bpf/test_sockmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 10274eb90fa37..cf26ffe8cccb7 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -1057,6 +1057,13 @@ static int apparmor_socket_sock_rcv_skb(struct sock *sk, struct sk_buff *skb)
- 	if (!skb->secmark)
- 		return 0;
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index a7fc91bb9119c..b9deed81656ba 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -395,7 +395,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 				}
+ 			}
  
-+	/*
-+	 * If reach here before socket_post_create hook is called, in which
-+	 * case label is null, drop the packet.
-+	 */
-+	if (!ctx->label)
-+		return -EACCES;
-+
- 	return apparmor_secmark_check(ctx->label, OP_RECVMSG, AA_MAY_RECEIVE,
- 				      skb->secmark, sk);
- }
+-			s->bytes_recvd += recv;
++			if (recv > 0)
++				s->bytes_recvd += recv;
+ 
+ 			if (data_test) {
+ 				int j;
 -- 
 2.43.0
 
