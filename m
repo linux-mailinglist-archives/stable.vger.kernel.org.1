@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BF89532D7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A029532B3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E58A1F21996
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFB551F21A5B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8D91ABEC1;
-	Thu, 15 Aug 2024 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D295919FA7E;
+	Thu, 15 Aug 2024 14:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUseQ9vA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmuo8txP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4A91ABECF;
-	Thu, 15 Aug 2024 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9144D1A00CF;
+	Thu, 15 Aug 2024 14:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730895; cv=none; b=AwgwPLrQlYBEetPg6LGFIt9rvt9YHsyKIxa6UaAoLKCCElV1m2DmJrzWg+3k+w/3IX5FMmOdCxsNBY7s2TMiSHyBfI2RqRf7lZ5gMXlRxR0znAuf5uAu1hY8l/fun9DII2R0Fw/fbjXW4qLSDSyvRfEz7kUyeADn/9LENdHlLoM=
+	t=1723730797; cv=none; b=Uzv4jT5IAcnU3pk1iC9wMe26z8ukSy4fs0cRKxQQ15vV13nTRzD3R80wutEHj338UFNttGFN5ngOtGAvrrgmlHJt7y8a9Pw2c1kRbyIXOul8nOaB3ZPbKAf8ezRbbcvKNA0yu0qYmGGiArE1J6wgc2nV62ctcztRHKuETV7eIC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730895; c=relaxed/simple;
-	bh=DdtJ0zL6B6qj2yLtu0ZITkmjJiYcuydhaoWfx/ehFGI=;
+	s=arc-20240116; t=1723730797; c=relaxed/simple;
+	bh=8bb42/AbSsJTu0cvusXJNA/e9TDM/C5QGgEGmV7u/Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4s+hEVoabVQvj4/Ua3yVWL+Ske2dJysxJA8n2ZwS4IueeU2vlldK3iegdxw7StDXAPfWDIijc0VMPwzZLTh1jKAArOR/i7RPPAeAksi9qclvxO56GQbwQmlBHKdhxklfnsXAywcuahqoE3ZDtfBGxV6k9LQXAKZOQ/2gYjJZ8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUseQ9vA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DFCC32786;
-	Thu, 15 Aug 2024 14:08:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dnrzq+qmqeezHbEZ2V9eHtFXvVrveLhvwak/WvkqNs3OfodqqpYvJ5BD8NNKkaC1MAhJ7gs8WBVGgVSsoYQDu0HuHtzzAXpqS+K+yKd8J1Mldeg8McMCg9UYQbrw3rnJMiF8Y7xN8mZSyXR2s60wzyjiw5pAVhg8ROXgu+lido8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmuo8txP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8DFC32786;
+	Thu, 15 Aug 2024 14:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730895;
-	bh=DdtJ0zL6B6qj2yLtu0ZITkmjJiYcuydhaoWfx/ehFGI=;
+	s=korg; t=1723730797;
+	bh=8bb42/AbSsJTu0cvusXJNA/e9TDM/C5QGgEGmV7u/Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUseQ9vAWf+2gMrk7boFaeZaiAbr15HpLfLE1/S4749tcoa1RnTu7QHgeAPb29lFX
-	 i6nKQ9mhjrhV9w7KeurgQXwncws65YjSnlOsP0IRIQ0FooRCarXfW+1TYs8CJNTDSu
-	 hT6TdYKAHhqyyhliTriQmtPnh5i7sbM438VMDV4c=
+	b=cmuo8txPves96XuRZUQ0a9NppmMxIJ0LaYCoeFJpAw7/TJjGmO22zXf0DkwqzShr+
+	 bn0DLJ+V9HtklaXMFbjr4EAGsHMv/WpRGfuOUYY4GVluFWlTx02ZDDK2JALFn9lO/I
+	 y/9zcYVuGZczHSP2JgwNBxqtyXUOPtE6c7xT5TFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+23bc20037854bb335d59@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 27/67] jfs: fix log->bdev_handle null ptr deref in lbmStartIO
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 07/38] ASoC: topology: Fix route memory corruption
 Date: Thu, 15 Aug 2024 15:25:41 +0200
-Message-ID: <20240815131839.373507495@linuxfoundation.org>
+Message-ID: <20240815131833.237753634@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit 6306ff39a7fcb7e9c59a00e6860b933b71a2ed3e ]
+commit 0298f51652be47b79780833e0b63194e1231fa34 upstream.
 
-When sbi->flag is JFS_NOINTEGRITY in lmLogOpen(), log->bdev_handle can't
-be inited, so it value will be NULL.
-Therefore, add the "log ->no_integrity=1" judgment in lbmStartIO() to avoid such
-problems.
+It was reported that recent fix for memory corruption during topology
+load, causes corruption in other cases. Instead of being overeager with
+checking topology, assume that it is properly formatted and just
+duplicate strings.
 
-Reported-and-tested-by: syzbot+23bc20037854bb335d59@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://lore.kernel.org/r/20231009094557.1398920-1-lizhi.xu@windriver.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Closes: https://lore.kernel.org/linux-sound/171812236450.201359.3019210915105428447.b4-ty@kernel.org/T/#m8c4bd5abf453960fde6f826c4b7f84881da63e9d
+Suggested-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240613090126.841189-1-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_logmgr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/soc-topology.c |   12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/fs/jfs/jfs_logmgr.c b/fs/jfs/jfs_logmgr.c
-index c911d838b8ec8..cb6d1fda66a70 100644
---- a/fs/jfs/jfs_logmgr.c
-+++ b/fs/jfs/jfs_logmgr.c
-@@ -2110,10 +2110,14 @@ static void lbmStartIO(struct lbuf * bp)
- {
- 	struct bio *bio;
- 	struct jfs_log *log = bp->l_log;
-+	struct block_device *bdev = NULL;
+--- a/sound/soc/soc-topology.c
++++ b/sound/soc/soc-topology.c
+@@ -1093,21 +1093,15 @@ static int soc_tplg_dapm_graph_elems_loa
+ 			break;
+ 		}
  
- 	jfs_info("lbmStartIO");
+-		route->source = devm_kmemdup(tplg->dev, elem->source,
+-					     min(strlen(elem->source), maxlen),
+-					     GFP_KERNEL);
+-		route->sink = devm_kmemdup(tplg->dev, elem->sink,
+-					   min(strlen(elem->sink), maxlen),
+-					   GFP_KERNEL);
++		route->source = devm_kstrdup(tplg->dev, elem->source, GFP_KERNEL);
++		route->sink = devm_kstrdup(tplg->dev, elem->sink, GFP_KERNEL);
+ 		if (!route->source || !route->sink) {
+ 			ret = -ENOMEM;
+ 			break;
+ 		}
  
--	bio = bio_alloc(log->bdev_handle->bdev, 1, REQ_OP_WRITE | REQ_SYNC,
-+	if (!log->no_integrity)
-+		bdev = log->bdev_handle->bdev;
-+
-+	bio = bio_alloc(bdev, 1, REQ_OP_WRITE | REQ_SYNC,
- 			GFP_NOFS);
- 	bio->bi_iter.bi_sector = bp->l_blkno << (log->l2bsize - 9);
- 	__bio_add_page(bio, bp->l_page, LOGPSIZE, bp->l_offset);
--- 
-2.43.0
-
+ 		if (strnlen(elem->control, maxlen) != 0) {
+-			route->control = devm_kmemdup(tplg->dev, elem->control,
+-						      min(strlen(elem->control), maxlen),
+-						      GFP_KERNEL);
++			route->control = devm_kstrdup(tplg->dev, elem->control, GFP_KERNEL);
+ 			if (!route->control) {
+ 				ret = -ENOMEM;
+ 				break;
 
 
 
