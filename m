@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A486952F5C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04639531CB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D9D61C23B6A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D363C1C2351F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB2218D630;
-	Thu, 15 Aug 2024 13:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9C419D891;
+	Thu, 15 Aug 2024 13:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCf/4Tj1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8Dk+E0S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5B47DA78;
-	Thu, 15 Aug 2024 13:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21897DA7D;
+	Thu, 15 Aug 2024 13:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728704; cv=none; b=htf06g4KTfJlKXXCK1wGUTRBt/nLeO4xzQpbst/7llRzUEjY96OB/ZgMCnEnLvnhE6cL+G5adEcC8fJsZoGL7AwQOd/HNdEmq5u/If7vuyWjgWwkqsHuo4uQIfhAFy9HqYpJa8QNgu6q9LkqVctHiLhe4KPJKffwXRM8t3HqypI=
+	t=1723730300; cv=none; b=N5Ii0EAKT9i5dHp9zHrC3ABGzlO8k/Nj47+smEp/rqgBGGPCrh0oOxw2F0DbFRB7t+ZKmcmuVqdR4Ld3XseN6/On9lPeDpFHz19FxiJw25C5DFwl7s94/pbVTds+fQsNe2sPjhniqkTz9rUBuazbeAyKF4IcITZxfnr+UAZPy+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728704; c=relaxed/simple;
-	bh=qcBsBM7TsC2XNkoZd+j+DIf+0hol449Wj14D5h1Cawk=;
+	s=arc-20240116; t=1723730300; c=relaxed/simple;
+	bh=IEbPbYbr+00EaTj+UIVOgrHuuUmpTrkapmZZ9qiLHEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buq8aKGA/cO9se1Ks+NdaZasu+FTrbnCCjH3Y3tVWc7sByGUiat1YBLVOPakz0ctG5kk4H9+yKSk2gftJOdjI61jpBjRjsj7KRiUKUFgbvHwyn0nVk7UNYi0jCr4RsOMoBx02hxtWMPWRJDstQnpBE6pQsqJV1x6bVKrI11d4V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCf/4Tj1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4FFC32786;
-	Thu, 15 Aug 2024 13:31:43 +0000 (UTC)
+	 MIME-Version; b=X6bOMOvTyQ7hR8am5qKiBJbJUhc+H3fx935Ds7yz5aU+A0jSNUKL5u33zonSdZxbGVtXJXIuDHQ75nE65epPhfWRbXeYVdv1GX7EKuShJWy+xz3YzYOVxbeor2GQDhNq1rFiuY+tIZy3Z/Yp6EY5tmhwvBluKipF/xwBW+5n5jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8Dk+E0S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AD3C4AF0A;
+	Thu, 15 Aug 2024 13:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728704;
-	bh=qcBsBM7TsC2XNkoZd+j+DIf+0hol449Wj14D5h1Cawk=;
+	s=korg; t=1723730300;
+	bh=IEbPbYbr+00EaTj+UIVOgrHuuUmpTrkapmZZ9qiLHEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SCf/4Tj1SFQwYUXaOtl4y59j0+9PIvyMX7B6Y04qi1PcwX78FpeU6B3EJnRONL1dR
-	 634WO3AKmbcKZga3IiZ4w6kLeFi8BcK9eF9RScinT6wLk5TfvcexvGThyY7rJEAm5E
-	 q4b8RQvEDpgsbJzF9eX25rccRfegjQAAve8M5UR0=
+	b=c8Dk+E0Sq1l66dgxq96cOJqLrNQPTR7KNhsPEB3fURsbVLOOOeTZ5WC45IRKRU+pI
+	 +UywUgQIRibqfYO6IMFlYO01eCGxNnxQVbWgk/jpTQnDirtyXtmtf3tJ8ZmUgC/n4Y
+	 CnQwXuzbJZ9XlLWNJVPwRwGJBKYqh+Pjg0PEJ6WU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: [PATCH 4.19 076/196] tools/memory-model: Fix bug in lock.cat
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 335/484] net: mvpp2: Dont re-use loop iterator
 Date: Thu, 15 Aug 2024 15:23:13 +0200
-Message-ID: <20240815131854.985632039@linuxfoundation.org>
+Message-ID: <20240815131954.351099259@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 4c830eef806679dc243e191f962c488dd9d00708 upstream.
+[ Upstream commit 0aa3ca956c46d849775eae1816cef8fe4bc8b50e ]
 
-Andrea reported that the following innocuous litmus test:
+This function has a nested loop.  The problem is that both the inside
+and outside loop use the same variable as an iterator.  I found this
+via static analysis so I'm not sure the impact.  It could be that it
+loops forever or, more likely, the loop exits early.
 
-C T
-
-{}
-
-P0(spinlock_t *x)
-{
-	int r0;
-
-	spin_lock(x);
-	spin_unlock(x);
-	r0 = spin_is_locked(x);
-}
-
-gives rise to a nonsensical empty result with no executions:
-
-$ herd7 -conf linux-kernel.cfg T.litmus
-Test T Required
-States 0
-Ok
-Witnesses
-Positive: 0 Negative: 0
-Condition forall (true)
-Observation T Never 0 0
-Time T 0.00
-Hash=6fa204e139ddddf2cb6fa963bad117c0
-
-The problem is caused by a bug in the lock.cat part of the LKMM.  Its
-computation of the rf relation for RU (read-unlocked) events is
-faulty; it implicitly assumes that every RU event must read from
-either a UL (unlock) event in another thread or from the lock's
-initial state.  Neither is true in the litmus test above, so the
-computation yields no possible executions.
-
-The lock.cat code tries to make up for this deficiency by allowing RU
-events outside of critical sections to read from the last po-previous
-UL event.  But it does this incorrectly, trying to keep these rfi links
-separate from the rfe links that might also be needed, and passing only
-the latter to herd7's cross() macro.
-
-The problem is fixed by merging the two sets of possible rf links for
-RU events and using them all in the call to cross().
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-by: Andrea Parri <parri.andrea@gmail.com>
-Closes: https://lore.kernel.org/linux-arch/ZlC0IkzpQdeGj+a3@andrea/
-Tested-by: Andrea Parri <parri.andrea@gmail.com>
-Acked-by: Andrea Parri <parri.andrea@gmail.com>
-Fixes: 15553dcbca06 ("tools/memory-model: Add model support for spin_is_locked()")
-CC: <stable@vger.kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/eaa8f403-7779-4d81-973d-a9ecddc0bf6f@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/memory-model/lock.cat |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/tools/memory-model/lock.cat
-+++ b/tools/memory-model/lock.cat
-@@ -105,19 +105,19 @@ let rf-lf = rfe-lf | rfi-lf
-  * within one of the lock's critical sections returns False.
-  *)
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index ba44d1d9cfcd4..2a60f949d9532 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -953,13 +953,13 @@ static void mvpp2_bm_pool_update_fc(struct mvpp2_port *port,
+ static void mvpp2_bm_pool_update_priv_fc(struct mvpp2 *priv, bool en)
+ {
+ 	struct mvpp2_port *port;
+-	int i;
++	int i, j;
  
--(* rfi for RU events: an RU may read from the last po-previous UL *)
--let rfi-ru = ([UL] ; po-loc ; [RU]) \ ([UL] ; po-loc ; [LKW] ; po-loc)
--
--(* rfe for RU events: an RU may read from an external UL or the initial write *)
--let all-possible-rfe-ru =
--	let possible-rfe-ru r =
-+(*
-+ * rf for RU events: an RU may read from an external UL or the initial write,
-+ * or from the last po-previous UL
-+ *)
-+let all-possible-rf-ru =
-+	let possible-rf-ru r =
- 		let pair-to-relation p = p ++ 0
--		in map pair-to-relation (((UL | IW) * {r}) & loc & ext)
--	in map possible-rfe-ru RU
-+		in map pair-to-relation ((((UL | IW) * {r}) & loc & ext) |
-+			(((UL * {r}) & po-loc) \ ([UL] ; po-loc ; [LKW] ; po-loc)))
-+	in map possible-rf-ru RU
- 
- (* Generate all rf relations for RU events *)
--with rfe-ru from cross(all-possible-rfe-ru)
--let rf-ru = rfe-ru | rfi-ru
-+with rf-ru from cross(all-possible-rf-ru)
- 
- (* Final rf relation *)
- let rf = rf | rf-lf | rf-ru
+ 	for (i = 0; i < priv->port_count; i++) {
+ 		port = priv->port_list[i];
+ 		if (port->priv->percpu_pools) {
+-			for (i = 0; i < port->nrxqs; i++)
+-				mvpp2_bm_pool_update_fc(port, &port->priv->bm_pools[i],
++			for (j = 0; j < port->nrxqs; j++)
++				mvpp2_bm_pool_update_fc(port, &port->priv->bm_pools[j],
+ 							port->tx_fc & en);
+ 		} else {
+ 			mvpp2_bm_pool_update_fc(port, port->pool_long, port->tx_fc & en);
+-- 
+2.43.0
+
 
 
 
