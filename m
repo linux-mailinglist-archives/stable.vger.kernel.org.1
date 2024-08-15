@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-67903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1685E952FAF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EA4953207
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:01:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF54C1F21941
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F1D1F21FE3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E771A00F7;
-	Thu, 15 Aug 2024 13:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CBF1684AC;
+	Thu, 15 Aug 2024 14:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQ20On63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcNpI1R3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B823718D639;
-	Thu, 15 Aug 2024 13:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1EF1AC8BB;
+	Thu, 15 Aug 2024 14:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728883; cv=none; b=sRmIc+wIHOJq0rO/x0V++Z8FGeC+4GPDgDBWZVs68gKv9NcymXjYYHkoZW63tzM9qPWPc5A3LHQQO2CJu0aaLJ8LdcXetlXQivMq2XNLDhqBbj3gnj8mwmWSODY6KmMqA+dD7gj/pX7os2ibHCW1qzIUgVnWMYZSw1sUffmoAR8=
+	t=1723730461; cv=none; b=QmIeXSu3+3wr5vxo8x14Chd+HLAa0klyl1wt2FjFmjm9MSCBdf63+ZrAUwhUj+mN2mgtaUi8XhJ+e+xpOpXMOGCyuK9faD4PGo1xEi9PgaUeIFnc6aY9Hrh2v5occZRJ9A6UTeiHNGJmB1TRmos8j6PMWxuOT1z4xwAjOSXr3IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728883; c=relaxed/simple;
-	bh=l/tOq+8Vk38S2lvad4KYhTSn55QWvaaEVZsAGzv/UnE=;
+	s=arc-20240116; t=1723730461; c=relaxed/simple;
+	bh=WpYXaOFN/HNzaG3nSRZM29on0Yc+YFFh/HfSpEp46+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/gBZ3g6ZWY7VNcvC5YtDPBmDgFj8rAQKWNTW7EWIF7dAO6jLCaP1P1ZBijqJwbsm/ej29RurnwlIVXH/ILu6Zon3/kBLB6DWhwTGpMgOqUrVPRf6M7z9us7CDyFA52Lho36LoUDIrRysJrsjMMKbvT3cGJj7Twjlgx4MwY4PxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQ20On63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF815C32786;
-	Thu, 15 Aug 2024 13:34:42 +0000 (UTC)
+	 MIME-Version; b=CLw0eE5FPvZrs+JhR7+b/Upkcm/wU4Adb1zeexuTRJvndJqNTA/PkwDWChtS+j67Jwrohy/PtiDXqz9gBN5+gLvZAYdxJqzeJ9bMXfW1RjVOv1wpH6LWeGautzSpwtNh/n3RwnvxNykT9V9u+WJ74zk34g2e8iGHYyKpMcb9wgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcNpI1R3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F86C32786;
+	Thu, 15 Aug 2024 14:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728883;
-	bh=l/tOq+8Vk38S2lvad4KYhTSn55QWvaaEVZsAGzv/UnE=;
+	s=korg; t=1723730461;
+	bh=WpYXaOFN/HNzaG3nSRZM29on0Yc+YFFh/HfSpEp46+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQ20On63pRRlnu4D2dWlekYUPpP+M9pp0OVEvCmzlWFkkjJ4SGZGd5IvJFEBFsJjU
-	 ydmLPPDPpNXATR0G3953UbK0381FkTmVEC5LXQYEXo1vSm7Nvt4lSffsezRh6LkGay
-	 rsbKGYP38CD0Javmfd4vDx4v841m4aDqD+p8qvJk=
+	b=TcNpI1R3n4nXrlRfCrgLAEi3vWtaGAdfybIqe3mPu9e2eJw7xedjnc3i2dOmYaz3f
+	 O9PFZltmP8ZUhE6rLWmIFY3b2qvozWq6IUW/Xk5TTdHRZcWVfUPx62I0tiERrWxND+
+	 tqXRAt2ycviRFh+CbHCBuImzX/14BIqpM3KWLfWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 139/196] wifi: nl80211: dont give key data to userspace
+Subject: [PATCH 5.15 398/484] arm64: cputype: Add Cortex-X3 definitions
 Date: Thu, 15 Aug 2024 15:24:16 +0200
-Message-ID: <20240815131857.392772968@linuxfoundation.org>
+Message-ID: <20240815131956.823469458@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit a7e5793035792cc46a1a4b0a783655ffa897dfe9 ]
+[ Upstream commit be5a6f238700f38b534456608588723fba96c5ab ]
 
-When a key is requested by userspace, there's really no need
-to include the key data, the sequence counter is really what
-userspace needs in this case. The fact that it's included is
-just a historic quirk.
+Add cputype definitions for Cortex-X3. These will be used for errata
+detection in subsequent patches.
 
-Remove the key data.
+These values can be found in Table A-263 ("MIDR_EL1 bit descriptions")
+in issue 07 of the Cortex-X3 TRM, which can be found at:
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240627104411.b6a4f097e4ea.I7e6cc976cb9e8a80ef25a3351330f313373b4578@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+  https://developer.arm.com/documentation/101593/0102/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 15f28203445cb..ebd8449f2fcf1 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -3383,10 +3383,7 @@ static void get_key_callback(void *c, struct key_params *params)
- 	struct nlattr *key;
- 	struct get_key_cookie *cookie = c;
- 
--	if ((params->key &&
--	     nla_put(cookie->msg, NL80211_ATTR_KEY_DATA,
--		     params->key_len, params->key)) ||
--	    (params->seq &&
-+	if ((params->seq &&
- 	     nla_put(cookie->msg, NL80211_ATTR_KEY_SEQ,
- 		     params->seq_len, params->seq)) ||
- 	    (params->cipher &&
-@@ -3398,10 +3395,7 @@ static void get_key_callback(void *c, struct key_params *params)
- 	if (!key)
- 		goto nla_put_failure;
- 
--	if ((params->key &&
--	     nla_put(cookie->msg, NL80211_KEY_DATA,
--		     params->key_len, params->key)) ||
--	    (params->seq &&
-+	if ((params->seq &&
- 	     nla_put(cookie->msg, NL80211_KEY_SEQ,
- 		     params->seq_len, params->seq)) ||
- 	    (params->cipher &&
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 17fb978191d68..e246d7fad17a9 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -85,6 +85,7 @@
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
++#define ARM_CPU_PART_CORTEX_X3		0xD4E
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+@@ -142,6 +143,7 @@
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
++#define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
 -- 
 2.43.0
 
