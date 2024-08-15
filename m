@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79376953428
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59D7953290
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22AD81F291DB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:24:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 903211F21C8F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E7D1A08DD;
-	Thu, 15 Aug 2024 14:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E11D1AAE01;
+	Thu, 15 Aug 2024 14:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trT+cWx7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0i2mbOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808D91A0712;
-	Thu, 15 Aug 2024 14:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FF41A08DD;
+	Thu, 15 Aug 2024 14:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731776; cv=none; b=DYkrwNom39lC60CZlQ6kV/JS8j7mkd+pDdtsjb248cvfEcxzbQlJA5bx2vOcuP4Wx34N3fMY9uEJ+IrBppDK5u/M9lKLBMuBjaxHX6aed5HsBXimG/xDd/iZqJGSJLBlxP7wS9N325vGDnsSr/lfqRYifxC6W1X8bNdmInV+xh0=
+	t=1723730719; cv=none; b=l2Ht0rFIOOyXXPa6+Y/MDrORaFSgXxY0wchj+zqS2s6vr2yp7ogSh2CzD8PBwz8sq1Rehh7H2UiUV7ZYnU3ugtHdSOT+AnGi/HXwYhjwjFJAqip8VjZ3fsiuwZIcXijMX8mFD3NakEojMHBXc1/1YY9qas4Rym64J+AAsY/ecLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731776; c=relaxed/simple;
-	bh=yWacTcBgDeFodIvbBDbg+fWCTQMxGTRMXoukIsRrPpQ=;
+	s=arc-20240116; t=1723730719; c=relaxed/simple;
+	bh=9cEtTATly220fqMeRG/NqlAkNYEuC1p1ODhJltaT1UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ettxX2sPx5SEWHAnAD2ahZwQUK/tLqdF5r5R8iOZUyVLIl66s+/hWVtDdfBX9pLYiEZOwVsjZauWRybg/4YBgbSHK60OXusCXB+Yjnfo05p91u4j1Ot74+ykYXYSSBxDbRhIjVI1G9oZ1U8m1flgBm9ygImllcuRMgU+gYYwik8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trT+cWx7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92952C32786;
-	Thu, 15 Aug 2024 14:22:55 +0000 (UTC)
+	 MIME-Version; b=gTuRmNINA/zU47gWFhNXR5k+fe0W83ioPmBH86xUI8dogyPtfxC1/5q+MlEwoj5xzp2xvywWk064FOJ6z95aqp+zMsusDvY+I/TeBqm6vEq1sPZa23M4ocWlc4Bz8cmq+qr86lxRfe3/ZgKEtSTFhq2K7hVLx/IE4NDCMSjotDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0i2mbOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6828C32786;
+	Thu, 15 Aug 2024 14:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731776;
-	bh=yWacTcBgDeFodIvbBDbg+fWCTQMxGTRMXoukIsRrPpQ=;
+	s=korg; t=1723730719;
+	bh=9cEtTATly220fqMeRG/NqlAkNYEuC1p1ODhJltaT1UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trT+cWx7DtiVeug4A4W1dxTjVm2zczEf23kjW2hXgOIFTLoQdZXbQ3Z8kH4lJ3AFO
-	 DjDYFUVPd4suaYIVR8e41yQYcBpXTkO9ZTMv+CgzAt3135ECsxNFXRb6vyUxgHwBqq
-	 HlxS5iX742kDFkh8ORfAud8HNIGF8ZvqYWKtxzks=
+	b=d0i2mbOtgTFvuEoLYg8uTKdB/d/xhK7ZXixjN3C+mcMuFwt66R2Gwr29dRPCXLT38
+	 mnAz5E5Jmq1KvA3iJe2UBZ7Pa0M7TTHI8TEKSH5bcVoxLEa0xXv+0r35+tPhRWi9PD
+	 lhfS7k4Wyqj4S8FmpU0zfFXs2GuWsd0QEQV6R6eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 204/259] jbd2: avoid memleak in jbd2_journal_write_metadata_buffer
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 03/38] mptcp: pm: dont try to create sf if alloc failed
 Date: Thu, 15 Aug 2024 15:25:37 +0200
-Message-ID: <20240815131910.651046115@linuxfoundation.org>
+Message-ID: <20240815131833.084805074@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit cc102aa24638b90e04364d64e4f58a1fa91a1976 ]
+commit cd7c957f936f8cb80d03e5152f4013aae65bd986 upstream.
 
-The new_bh is from alloc_buffer_head, we should call free_buffer_head to
-free it in error case.
+It sounds better to avoid wasting cycles and / or put extreme memory
+pressure on the system by trying to create new subflows if it was not
+possible to add a new item in the announce list.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240514112438.1269037-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While at it, a warning is now printed if the entry was already in the
+list as it should not happen with the in-kernel path-manager. With this
+PM, mptcp_pm_alloc_anno_list() should only fail in case of memory
+pressure.
+
+Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-4-c8a9b036493b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/pm_netlink.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 81bd7b29a10b6..cfa21c29f3123 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -408,6 +408,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
- 		tmp = jbd2_alloc(bh_in->b_size, GFP_NOFS);
- 		if (!tmp) {
- 			brelse(new_bh);
-+			free_buffer_head(new_bh);
- 			return -ENOMEM;
- 		}
- 		jbd_lock_bh_state(bh_in);
--- 
-2.43.0
-
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -363,7 +363,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
+ 	add_entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
+ 
+ 	if (add_entry) {
+-		if (mptcp_pm_is_kernel(msk))
++		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
+ 			return false;
+ 
+ 		sk_reset_timer(sk, &add_entry->add_timer,
+@@ -567,8 +567,6 @@ static void mptcp_pm_create_subflow_or_s
+ 
+ 	/* check first for announce */
+ 	if (msk->pm.add_addr_signaled < add_addr_signal_max) {
+-		local = select_signal_address(pernet, msk);
+-
+ 		/* due to racing events on both ends we can reach here while
+ 		 * previous add address is still running: if we invoke now
+ 		 * mptcp_pm_announce_addr(), that will fail and the
+@@ -579,11 +577,15 @@ static void mptcp_pm_create_subflow_or_s
+ 		if (msk->pm.addr_signal & BIT(MPTCP_ADD_ADDR_SIGNAL))
+ 			return;
+ 
++		local = select_signal_address(pernet, msk);
+ 		if (!local)
+ 			goto subflow;
+ 
++		/* If the alloc fails, we are on memory pressure, not worth
++		 * continuing, and trying to create subflows.
++		 */
+ 		if (!mptcp_pm_alloc_anno_list(msk, &local->addr))
+-			goto subflow;
++			return;
+ 
+ 		__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
+ 		msk->pm.add_addr_signaled++;
 
 
 
