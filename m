@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-69113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E48395357F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:38:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF419532C9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A286C1C20C62
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:38:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C8A288580
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9951A01DA;
-	Thu, 15 Aug 2024 14:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61891A2564;
+	Thu, 15 Aug 2024 14:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wr1x5jry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWpyGtEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4FF1A00CF;
-	Thu, 15 Aug 2024 14:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DE71A08CB;
+	Thu, 15 Aug 2024 14:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732710; cv=none; b=jjDUxlwNp9Wgy6PDiieru8YBElJt/bJ5Al8o3FrjV+tBfTsGbvb5eqNlKCtIUgL7nZr2Aetd3ETfjbnJdzD7Qsa+5zd0rwp4JfuPJvNjtJIFgRNiusHnwBFERz8j5WqljrI46HWDFAEK28zucJrKSZaoePHPGxteQbdz8PtvHeY=
+	t=1723730857; cv=none; b=UxBAY3YI/wfMDtgL+0u0NkO7Z6SuYWWYpjdSdCFRhvVQ2Ss/cIc6dthk5+LKV3VRxwdfFPEnVkMtoQQALUhITic44lEnwo3kcmgqTAqVmlh4U/oEnoYG3hvnbIDlG6djbcHQQh2SGrXxLOzZb/tBYYg3VPcfh/W1jQYBcVHfI8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732710; c=relaxed/simple;
-	bh=4OD5V+kGVfEMOR/YvdKl0UBbtlb+eb04ONv6oSKYOm8=;
+	s=arc-20240116; t=1723730857; c=relaxed/simple;
+	bh=yHq5sh1hGY2dmajnct871LO+fduSXKSig9VyxIh1Gyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bm2goacwmNMY/JeVF4e2Gm9E0f/bzZeZqJV7+6uViO1iZ2yFJLYxwFLoTfWRn2qOC6xsETteohrZA5ZiVXxbP1IMYarBziL8KFf7UBFD65DHb9uZPnYYlHESCf/wIlptM0D+autEZ1IrPpaMXJm04LT5FU20flPgt4vliqJXr0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wr1x5jry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A6BC32786;
-	Thu, 15 Aug 2024 14:38:29 +0000 (UTC)
+	 MIME-Version; b=YRhHrzqiLwbt4/+XntR4t3L946EWT7lT8yki45RUJQ/JdRuMVod0YfXSj3z8yhbCBobS5x8sEQSMUcks5safrz2X/DkDMQ89NDahjeIqlhdmF8niHOiWoQwP9P8W1hs96ojmXaWEXDSr1x+frKbNs0T7n9LFhTeSvVdOt2TR510=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWpyGtEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9C0C32786;
+	Thu, 15 Aug 2024 14:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732710;
-	bh=4OD5V+kGVfEMOR/YvdKl0UBbtlb+eb04ONv6oSKYOm8=;
+	s=korg; t=1723730857;
+	bh=yHq5sh1hGY2dmajnct871LO+fduSXKSig9VyxIh1Gyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wr1x5jryRM5Gq31O1grgfMae2NdJmyiR7s8VUI7GlTQywhSeA0eW9cCQIfo5qfatP
-	 +hD1EIcHOljqEFNesogCPhjHY0YY1KL4SyM2kHqUhWBFRB3GmHXTAhhLsk/p+WjViC
-	 eYsFVtpkrl72FbHPKTgxwu7ELVJkcWrEQXyfpnh0=
+	b=nWpyGtEg843a2N+hubWZ/A1mUBVwBRLnySE5p/FjQh6F+HXgLMMIGyBrFDbgqJ4fl
+	 BjzwdPxPoSqQNgRD49CK7mBad3BaiCB160b0SfN6g+7oYFjYKOtJdV0D2ggXje/ndL
+	 rd2D5ib1ktD8C7QpOaPwiRFEAcaGcKU2MSpN2RXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 263/352] md/raid5: avoid BUG_ON() while continue reshape after reassembling
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 15/67] nfsd: remove nfsd_stats, make th_cnt a global counter
 Date: Thu, 15 Aug 2024 15:25:29 +0200
-Message-ID: <20240815131929.607443608@linuxfoundation.org>
+Message-ID: <20240815131838.918225561@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 305a5170dc5cf3d395bb4c4e9239bca6d0b54b49 ]
+[ Upstream commit e41ee44cc6a473b1f414031782c3b4283d7f3e5f ]
 
-Currently, mdadm support --revert-reshape to abort the reshape while
-reassembling, as the test 07revert-grow. However, following BUG_ON()
-can be triggerred by the test:
+This is the last global stat, take it out of the nfsd_stats struct and
+make it a global part of nfsd, report it the same as always.
 
-kernel BUG at drivers/md/raid5.c:6278!
-invalid opcode: 0000 [#1] PREEMPT SMP PTI
-irq event stamp: 158985
-CPU: 6 PID: 891 Comm: md0_reshape Not tainted 6.9.0-03335-g7592a0b0049a #94
-RIP: 0010:reshape_request+0x3f1/0xe60
-Call Trace:
- <TASK>
- raid5_sync_request+0x43d/0x550
- md_do_sync+0xb7a/0x2110
- md_thread+0x294/0x2b0
- kthread+0x147/0x1c0
- ret_from_fork+0x59/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Root cause is that --revert-reshape update the raid_disks from 5 to 4,
-while reshape position is still set, and after reassembling the array,
-reshape position will be read from super block, then during reshape the
-checking of 'writepos' that is caculated by old reshape position will
-fail.
-
-Fix this panic the easy way first, by converting the BUG_ON() to
-WARN_ON(), and stop the reshape if checkings fail.
-
-Noted that mdadm must fix --revert-shape as well, and probably md/raid
-should enhance metadata validation as well, however this means
-reassemble will fail and there must be user tools to fix the wrong
-metadata.
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240611132251.1967786-13-yukuai1@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ fs/nfsd/nfsd.h   |    1 +
+ fs/nfsd/nfssvc.c |    5 +++--
+ fs/nfsd/stats.c  |    3 +--
+ fs/nfsd/stats.h  |    6 ------
+ 4 files changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 66167c4c7bc9e..7cdc6f20f5043 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -6005,7 +6005,9 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
- 	safepos = conf->reshape_safe;
- 	sector_div(safepos, data_disks);
- 	if (mddev->reshape_backwards) {
--		BUG_ON(writepos < reshape_sectors);
-+		if (WARN_ON(writepos < reshape_sectors))
-+			return MaxSector;
-+
- 		writepos -= reshape_sectors;
- 		readpos += reshape_sectors;
- 		safepos += reshape_sectors;
-@@ -6023,14 +6025,18 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
- 	 * to set 'stripe_addr' which is where we will write to.
- 	 */
- 	if (mddev->reshape_backwards) {
--		BUG_ON(conf->reshape_progress == 0);
-+		if (WARN_ON(conf->reshape_progress == 0))
-+			return MaxSector;
-+
- 		stripe_addr = writepos;
--		BUG_ON((mddev->dev_sectors &
--			~((sector_t)reshape_sectors - 1))
--		       - reshape_sectors - stripe_addr
--		       != sector_nr);
-+		if (WARN_ON((mddev->dev_sectors &
-+		    ~((sector_t)reshape_sectors - 1)) -
-+		    reshape_sectors - stripe_addr != sector_nr))
-+			return MaxSector;
- 	} else {
--		BUG_ON(writepos != sector_nr + reshape_sectors);
-+		if (WARN_ON(writepos != sector_nr + reshape_sectors))
-+			return MaxSector;
-+
- 		stripe_addr = sector_nr;
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -69,6 +69,7 @@ extern struct mutex		nfsd_mutex;
+ extern spinlock_t		nfsd_drc_lock;
+ extern unsigned long		nfsd_drc_max_mem;
+ extern unsigned long		nfsd_drc_mem_used;
++extern atomic_t			nfsd_th_cnt;		/* number of available threads */
+ 
+ extern const struct seq_operations nfs_exports_op;
+ 
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -34,6 +34,7 @@
+ 
+ #define NFSDDBG_FACILITY	NFSDDBG_SVC
+ 
++atomic_t			nfsd_th_cnt = ATOMIC_INIT(0);
+ extern struct svc_program	nfsd_program;
+ static int			nfsd(void *vrqstp);
+ #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
+@@ -945,7 +946,7 @@ nfsd(void *vrqstp)
+ 
+ 	current->fs->umask = 0;
+ 
+-	atomic_inc(&nfsdstats.th_cnt);
++	atomic_inc(&nfsd_th_cnt);
+ 
+ 	set_freezable();
+ 
+@@ -959,7 +960,7 @@ nfsd(void *vrqstp)
+ 		svc_recv(rqstp);
  	}
  
--- 
-2.43.0
-
+-	atomic_dec(&nfsdstats.th_cnt);
++	atomic_dec(&nfsd_th_cnt);
+ 
+ out:
+ 	/* Release the thread */
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -27,7 +27,6 @@
+ 
+ #include "nfsd.h"
+ 
+-struct nfsd_stats	nfsdstats;
+ struct svc_stat		nfsd_svcstats = {
+ 	.program	= &nfsd_program,
+ };
+@@ -47,7 +46,7 @@ static int nfsd_show(struct seq_file *se
+ 		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_IO_WRITE]));
+ 
+ 	/* thread usage: */
+-	seq_printf(seq, "th %u 0", atomic_read(&nfsdstats.th_cnt));
++	seq_printf(seq, "th %u 0", atomic_read(&nfsd_th_cnt));
+ 
+ 	/* deprecated thread usage histogram stats */
+ 	for (i = 0; i < 10; i++)
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -10,12 +10,6 @@
+ #include <uapi/linux/nfsd/stats.h>
+ #include <linux/percpu_counter.h>
+ 
+-struct nfsd_stats {
+-	atomic_t	th_cnt;		/* number of available threads */
+-};
+-
+-extern struct nfsd_stats	nfsdstats;
+-
+ extern struct svc_stat		nfsd_svcstats;
+ 
+ int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
 
 
 
