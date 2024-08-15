@@ -1,118 +1,264 @@
-Return-Path: <stable+bounces-69239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A5B953A6C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 20:55:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9479E953A7B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 21:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 647DF1F22206
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 18:55:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B838C1C25728
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 19:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65944433D6;
-	Thu, 15 Aug 2024 18:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5BB57CB4;
+	Thu, 15 Aug 2024 19:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="IDqP/swn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dp+bqPL/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A7B44384;
-	Thu, 15 Aug 2024 18:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA10C43ABD
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 19:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723748141; cv=none; b=pr9ABBYawIig29sDF2H9JBRWFhnDOlAHp6/D5RQn8NnsrxjTM60IoAhp24BBuXGL6OC0fvUfxnu/I7XVjKXnCs5EtlrKwVRXpR7x2+gB+31fsGmGO4OxlTkL30El6KGcQriwFGBjEeXWdtAkqDlbwUtOSNbtWoYM0MIHmuibFkk=
+	t=1723748524; cv=none; b=g7sjTTfkl0WIsgy+j+ZNuICzAGViz0euWj2aFbhSLT4L/8IZLog3208JBirKxwcss2Er77cmXny3KcDaI2HN+RiM+UObUdtWls14zcbZtgg7LgyJGBunkHWsq99Pgbp1wa+JJJRkh4f5W/PUIjaN19cKFPnM/Z2LaysRzHFglbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723748141; c=relaxed/simple;
-	bh=+WiC+20mb0M7izfKeq3bTC2m86+ALtg88CvFWbkwrr8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rNL/9YduUwQYqi/thvo21l8kb444rUS8QF8HTqwuZIEz9EO1Mh7uGtsChjKirGRl00U9NWy0NAZ8K8xmT4O5GewN8Z4tcC9SuFCMcbTc6gmHxhn+PIkqf4yEhybXESUpkAfj6gdFOSAR+0V4rF+eDi4lCyEU2bgbYKSOu4SbxW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=IDqP/swn; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52ed741fe46so1405816e87.0;
-        Thu, 15 Aug 2024 11:55:39 -0700 (PDT)
+	s=arc-20240116; t=1723748524; c=relaxed/simple;
+	bh=t3XtTvV0ap02WYG0Q21Olr6DvlD/yIW7LQ4zenDt2eE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=gMuHNhscCv4ErRN7ULLFmEuL9AJK9oetlrXND3eCjq9rAqm1LhBcbR7k5TuuydeaupNBpGdZfCkt3hjQYqI9suoOg/qP7b8DsfSB7hzbeGv08sqwFdE2Qb6OfP6Yh0aSbOHWce0c9K0t5qRxxK6+q9nAphxVrq3Zt5IoFhiVONk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dp+bqPL/; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-429ec9f2155so2630895e9.2
+        for <stable@vger.kernel.org>; Thu, 15 Aug 2024 12:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1723748138; x=1724352938; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=s8t4LbaqxGXXUmZDL4qWEA0g6Vmf9VaqwrZ3UrCArZ8=;
-        b=IDqP/swnnYGuiLGOiWX7nmONMKLmQo4sRvJpNA3ZbDTrEXRvDvJxtgiJUqPUYD3M5Z
-         KMsBicPvL9N6fdPnB1eGxEoL8EvrlfGxYjKSJKHj4/PTdGiOdNXrZjepnkE4YFENTZ3p
-         6dyzthYfj/fjT1c60I7PWtINeHz0jDsUEtPojdSUBIwvb5/PQgxBvg0rPjajS+xBmAgq
-         iLf/BsxKyrd2z2PPdobbTKod9bsXqYY+MnODx36kexjWWeM/q4iFy6I7AIjKO2+gAC30
-         Hf6R/CZC+a2lSjorGy/HNIjMzwvFKcZantkfsvIQ4cTPqssVMkgbMBdSuRhQ4BMcn4nS
-         pWwA==
+        d=gmail.com; s=20230601; t=1723748521; x=1724353321; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JgKMJ1HeT+Y5L/2mSS+GUzuavnitivMNbk+dGKKKO/U=;
+        b=Dp+bqPL/BhhQjXxk7r7OwHCNxh1hkPsqFqCHYUmOOeaxMAkxMT11jMgU9hjjSV7xWt
+         eEmkDXi+HKQINQI8iwpnwvjUgDXB6VYrAhMidzoVXuK++eRL7Py+v+M2/z4AFxssNWAp
+         aPtWb5tUS3q3fEyU/2amQwsQcIH9+g7VVDO31JJJutSlWroulkueVvgHqSIpkb6Hikwv
+         8KF/bLllLgr7VGe7oZOa63HueJf8SO7IQieuWYvUPTiJXlpoBuKNvlXuuFdQFYgzKSzS
+         uoyDfy1LrMynLTp4BWMKQQbt9hvAI+X6zszkJpVpuuTb61EhJpIsKoM7y00hUcOZM0pn
+         6BLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723748138; x=1724352938;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s8t4LbaqxGXXUmZDL4qWEA0g6Vmf9VaqwrZ3UrCArZ8=;
-        b=XqEfbRN5aAEoP0pOKLT4JA16H7PlGjUZCo3Wf11UK7euDDC2RU6ZG6IW1yjUR3+uFQ
-         lng57py2Jy0UBRffoNn/dKTzpRQNvTqblSm26dMXCTa2uLW4KTO1Jx3MtRhCbSS8A8+j
-         8y6Cg0UILPSFJfDEBobU+zAvSYKvO3fzVyZJ5pvohvOq4p6JEn9fDSW8b4aQAUySopip
-         7OkXw+FRAKq3XgLzU2/YCPX3F7OYSMx4AsN+WxMZZsR8dp/jUkynN8B0gf42+cB0Xdqz
-         5APlx9v3i1z6Zf6ApWi8gJ+a9xZeFu2bxFM+tDT7sfapdraC4AfjM43hStRNdoIrcQrg
-         rMWg==
-X-Forwarded-Encrypted: i=1; AJvYcCXEys9aFDBmHVqeMeim928TBKQ7aB4g3FQaLDSb1TQk0nWDdzdhn+KWjmJUALfGdE9R2DTvzv0UrkFNRGXhMfiAElz9xD3kuf861c4xhRLEsBHC8wAzi37EqEKR0OtiZ7WTKyNz
-X-Gm-Message-State: AOJu0Yw3pSaEmwz6PFMaDnHGuQKblj6H9Pu3Yry6gxEmrolt5qW09Lph
-	eBZo/ljtTFbzRUlGxiS56weMbXKkx3PzfyhIMWQDyGv0zX3qW3c=
-X-Google-Smtp-Source: AGHT+IGRhxlsxPmI6bVrs07CuCScyrJazBxE9Li8/BBgM+fNKEr4kO8v+nkm6+Orl4D9iQBYCpL4ZA==
-X-Received: by 2002:a05:6512:b9d:b0:52e:7f6b:5786 with SMTP id 2adb3069b0e04-5331c6f1de2mr195791e87.61.1723748137328;
-        Thu, 15 Aug 2024 11:55:37 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b41e6.dip0.t-ipconnect.de. [91.43.65.230])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83838cfe70sm138944766b.75.2024.08.15.11.55.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Aug 2024 11:55:36 -0700 (PDT)
-Message-ID: <49c758fd-5839-4141-bfb1-8c9157dae0e3@googlemail.com>
-Date: Thu, 15 Aug 2024 20:55:34 +0200
+        d=1e100.net; s=20230601; t=1723748521; x=1724353321;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JgKMJ1HeT+Y5L/2mSS+GUzuavnitivMNbk+dGKKKO/U=;
+        b=vgH4OktBMnVmxgvSsrpSJfKkjlE/0Y8wJLiC5PqLr9otd0i6tskLYbr6lvSMo6WP7P
+         enYG1CBDmqtMR2JkH1wBqVZazvzPaRfwWd+F7WvMH8DYmROKUDeaL2hMk8BO3r0uWQvq
+         Evcnmw74rQskFto399hly6gPnseiYf8agSJGXwxTrYw0Yb9xH+PnT7EUbDa5twKvFa5h
+         J/QepRTo84w8PX9uEdva9kmnw30zU3MQdDpTJUeQgEh3hIfPQqie1tIwcAtMbTDngl2h
+         yBc6tPMLMqUL08Bsa131WIry7oQ1G5k6lIiYdmGKcRTPHmdjVzdZVjFS3aE1MGuEVQRq
+         7EBw==
+X-Gm-Message-State: AOJu0YwdtgH+7IpABqh7ZVxGww3fS9pCVRY5jbZTL5vfpu8iPZPCDi7t
+	SG+144oC3oq9CjDItz0HiiQhRh9TU9cKwmH7FvKDeWo7AOJ8trEg26nJrV/Y
+X-Google-Smtp-Source: AGHT+IFFbMUXxKsVhLl9G5Hms3sI553zSJDjdFk2GPezFIPom2a76XbCmOaOCCfAoWLHxAtTpb2UZQ==
+X-Received: by 2002:a05:600c:458b:b0:427:d8f2:550 with SMTP id 5b1f17b1804b1-429ed789223mr2041415e9.14.1723748520617;
+        Thu, 15 Aug 2024 12:02:00 -0700 (PDT)
+Received: from laptop.. (117.red-83-52-251.dynamicip.rima-tde.net. [83.52.251.117])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded80241sm55840305e9.48.2024.08.15.12.01.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Aug 2024 12:02:00 -0700 (PDT)
+From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
+To: stable@vger.kernel.org
+Cc: linux-kernel-mentees@lists.linuxfoundation.org,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
+Subject: [PATCH 6.5.y] jfs: define xtree root and page independently
+Date: Thu, 15 Aug 2024 21:01:46 +0200
+Message-Id: <20240815190146.9213-1-sergio.collado@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.1 00/38] 6.1.106-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240815131832.944273699@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Am 15.08.2024 um 15:25 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.1.106 release.
-> There are 38 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+[ Upstream commit a779ed754e52d582b8c0e17959df063108bd0656 ]
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+In order to make array bounds checking sane, provide a separate
+definition of the in-inode xtree root and the external xtree page.
 
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Tested-by: Manas Ghandat <ghandatmanas@gmail.com>
+(cherry picked from commit a779ed754e52d582b8c0e17959df063108bd0656)
+Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
+---
+ fs/jfs/jfs_dinode.h |  2 +-
+ fs/jfs/jfs_imap.c   |  6 +++---
+ fs/jfs/jfs_incore.h |  2 +-
+ fs/jfs/jfs_txnmgr.c |  4 ++--
+ fs/jfs/jfs_xtree.c  |  4 ++--
+ fs/jfs/jfs_xtree.h  | 37 +++++++++++++++++++++++--------------
+ 6 files changed, 32 insertions(+), 23 deletions(-)
 
-Beste Grüße,
-Peter Schneider
+diff --git a/fs/jfs/jfs_dinode.h b/fs/jfs/jfs_dinode.h
+index 6b231d0d0071..603aae17a693 100644
+--- a/fs/jfs/jfs_dinode.h
++++ b/fs/jfs/jfs_dinode.h
+@@ -96,7 +96,7 @@ struct dinode {
+ #define di_gengen	u._file._u1._imap._gengen
+ 
+ 			union {
+-				xtpage_t _xtroot;
++				xtroot_t _xtroot;
+ 				struct {
+ 					u8 unused[16];	/* 16: */
+ 					dxd_t _dxd;	/* 16: */
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 34f1358264e2..8984f9548e24 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -670,7 +670,7 @@ int diWrite(tid_t tid, struct inode *ip)
+ 		 * This is the special xtree inside the directory for storing
+ 		 * the directory table
+ 		 */
+-		xtpage_t *p, *xp;
++		xtroot_t *p, *xp;
+ 		xad_t *xad;
+ 
+ 		jfs_ip->xtlid = 0;
+@@ -684,7 +684,7 @@ int diWrite(tid_t tid, struct inode *ip)
+ 		 * copy xtree root from inode to dinode:
+ 		 */
+ 		p = &jfs_ip->i_xtroot;
+-		xp = (xtpage_t *) &dp->di_dirtable;
++		xp = (xtroot_t *) &dp->di_dirtable;
+ 		lv = ilinelock->lv;
+ 		for (n = 0; n < ilinelock->index; n++, lv++) {
+ 			memcpy(&xp->xad[lv->offset], &p->xad[lv->offset],
+@@ -713,7 +713,7 @@ int diWrite(tid_t tid, struct inode *ip)
+ 	 *	regular file: 16 byte (XAD slot) granularity
+ 	 */
+ 	if (type & tlckXTREE) {
+-		xtpage_t *p, *xp;
++		xtroot_t *p, *xp;
+ 		xad_t *xad;
+ 
+ 		/*
+diff --git a/fs/jfs/jfs_incore.h b/fs/jfs/jfs_incore.h
+index 721def69e732..dd4264aa9bed 100644
+--- a/fs/jfs/jfs_incore.h
++++ b/fs/jfs/jfs_incore.h
+@@ -66,7 +66,7 @@ struct jfs_inode_info {
+ 	lid_t	xtlid;		/* lid of xtree lock on directory */
+ 	union {
+ 		struct {
+-			xtpage_t _xtroot;	/* 288: xtree root */
++			xtroot_t _xtroot;	/* 288: xtree root */
+ 			struct inomap *_imap;	/* 4: inode map header	*/
+ 		} file;
+ 		struct {
+diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
+index ce4b4760fcb1..dccc8b3f1045 100644
+--- a/fs/jfs/jfs_txnmgr.c
++++ b/fs/jfs/jfs_txnmgr.c
+@@ -783,7 +783,7 @@ struct tlock *txLock(tid_t tid, struct inode *ip, struct metapage * mp,
+ 			if (mp->xflag & COMMIT_PAGE)
+ 				p = (xtpage_t *) mp->data;
+ 			else
+-				p = &jfs_ip->i_xtroot;
++				p = (xtpage_t *) &jfs_ip->i_xtroot;
+ 			xtlck->lwm.offset =
+ 			    le16_to_cpu(p->header.nextindex);
+ 		}
+@@ -1676,7 +1676,7 @@ static void xtLog(struct jfs_log * log, struct tblock * tblk, struct lrd * lrd,
+ 
+ 	if (tlck->type & tlckBTROOT) {
+ 		lrd->log.redopage.type |= cpu_to_le16(LOG_BTROOT);
+-		p = &JFS_IP(ip)->i_xtroot;
++		p = (xtpage_t *) &JFS_IP(ip)->i_xtroot;
+ 		if (S_ISDIR(ip->i_mode))
+ 			lrd->log.redopage.type |=
+ 			    cpu_to_le16(LOG_DIR_XTREE);
+diff --git a/fs/jfs/jfs_xtree.c b/fs/jfs/jfs_xtree.c
+index 2d304cee884c..5ee618d17e77 100644
+--- a/fs/jfs/jfs_xtree.c
++++ b/fs/jfs/jfs_xtree.c
+@@ -1213,7 +1213,7 @@ xtSplitRoot(tid_t tid,
+ 	struct xtlock *xtlck;
+ 	int rc;
+ 
+-	sp = &JFS_IP(ip)->i_xtroot;
++	sp = (xtpage_t *) &JFS_IP(ip)->i_xtroot;
+ 
+ 	INCREMENT(xtStat.split);
+ 
+@@ -2098,7 +2098,7 @@ int xtAppend(tid_t tid,		/* transaction id */
+  */
+ void xtInitRoot(tid_t tid, struct inode *ip)
+ {
+-	xtpage_t *p;
++	xtroot_t *p;
+ 
+ 	/*
+ 	 * acquire a transaction lock on the root
+diff --git a/fs/jfs/jfs_xtree.h b/fs/jfs/jfs_xtree.h
+index ad7592191d76..0f6cf5a1ce75 100644
+--- a/fs/jfs/jfs_xtree.h
++++ b/fs/jfs/jfs_xtree.h
+@@ -65,24 +65,33 @@ struct xadlist {
+ #define XTPAGEMAXSLOT	256
+ #define XTENTRYSTART	2
+ 
+-/*
+- *	xtree page:
+- */
+-typedef union {
+-	struct xtheader {
+-		__le64 next;	/* 8: */
+-		__le64 prev;	/* 8: */
++struct xtheader {
++	__le64 next;	/* 8: */
++	__le64 prev;	/* 8: */
+ 
+-		u8 flag;	/* 1: */
+-		u8 rsrvd1;	/* 1: */
+-		__le16 nextindex;	/* 2: next index = number of entries */
+-		__le16 maxentry;	/* 2: max number of entries */
+-		__le16 rsrvd2;	/* 2: */
++	u8 flag;	/* 1: */
++	u8 rsrvd1;	/* 1: */
++	__le16 nextindex;	/* 2: next index = number of entries */
++	__le16 maxentry;	/* 2: max number of entries */
++	__le16 rsrvd2;	/* 2: */
+ 
+-		pxd_t self;	/* 8: self */
+-	} header;		/* (32) */
++	pxd_t self;	/* 8: self */
++};
+ 
++/*
++ *	xtree root (in inode):
++ */
++typedef union {
++	struct xtheader header;
+ 	xad_t xad[XTROOTMAXSLOT];	/* 16 * maxentry: xad array */
++} xtroot_t;
++
++/*
++ *	xtree page:
++ */
++typedef union {
++	struct xtheader header;
++	xad_t xad[XTPAGEMAXSLOT];	/* 16 * maxentry: xad array */
+ } xtpage_t;
+ 
+ /*
 
+base-commit: 4631960b4700dd53f5cebb4f7055fd00ccd556ce
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.39.2
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
