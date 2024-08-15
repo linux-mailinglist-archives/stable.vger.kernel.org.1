@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53514952F55
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310CD9531A8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01CE92893B6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE8C81F21940
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BF517C984;
-	Thu, 15 Aug 2024 13:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEC319FA92;
+	Thu, 15 Aug 2024 13:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlqdKgU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGbXBE++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667D17DA78;
-	Thu, 15 Aug 2024 13:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCC219FA7E;
+	Thu, 15 Aug 2024 13:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728681; cv=none; b=bDZlyyIQu8fjCjoZtq6Kon8rUsaUmNaZVJ9KlM12gwdKOXEFKGh/M6mN5mcbsvkP00cuco+KUhtPEqb4MWkRYjj1Hy0s+10g2AY2rfImReGu5VVJ/w0mD7HgrKwyuDcMBHCxD1bHVNAuHx83hGRERN/SmWT779TIIvq0sBxS5Zc=
+	t=1723730206; cv=none; b=G8ptaVpA01hXPvQ3azCCO6Pj1LJdrynMigrWLuv9J3mGpgaKf/VMbzwkhED/jFBQpMuc62kqgyFm+vvsXzMFG4FF41zR3kucMEIw4aAdZ1HEIRijtP+0mxvu17Gu3Is1Ex07xKv3UASPJqE/Lj/bwJ6uyEXDzO/jSq21xceJhXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728681; c=relaxed/simple;
-	bh=de//cc2XRfoa0mohWZuatx0JMP6C47iF8lwcxYfPdPg=;
+	s=arc-20240116; t=1723730206; c=relaxed/simple;
+	bh=byGt94+Jlib/K9BbGGt5ysOAz7sDK65C0l6JxDrSqzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H/EqIJFBpGQR3HqCNhP0D9yCF9hvZrBbHUfnOFX7i0G/RkPl82KeEZ2vNaCjePXhI1S+b6Mv/lecJFvCd3Ku8BCThzXCvbLNAQef1M6WLqa5M0vCKKgaFxZA++AAqwlmPax+YxmB6zIPNK4yY/wzooj1iCCLrWgvHTkOpRLltIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlqdKgU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D654EC32786;
-	Thu, 15 Aug 2024 13:31:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XJmKGVb2x/awMu30iXjcB94ZRYv4s1Hp3KupaD0IBxc83MWCBLjeQWwQRpqsNa5LrpN56v1DWwmm4uJbIlmtQruENxTPtc7c3mDyo9jl8NbHsmE+VJdunALEuSboWNRW9WIZE9ub+9zQnY8ERKaWBVI4N/cLyp/SWnt7PEBkgrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGbXBE++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFF9C4AF0C;
+	Thu, 15 Aug 2024 13:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728681;
-	bh=de//cc2XRfoa0mohWZuatx0JMP6C47iF8lwcxYfPdPg=;
+	s=korg; t=1723730206;
+	bh=byGt94+Jlib/K9BbGGt5ysOAz7sDK65C0l6JxDrSqzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlqdKgU2fHWEWmnNNNC1KBIkJAHchn5toNs4LUm2oN8PnkaEGxlQK539J0uYzwacJ
-	 yoQsdQ/GvVbTGjtFL9dqBtDFGrzsCraBUEduoC+vamkuCMmi8tS0uahoRTt+eqUlY0
-	 F0WIwSL0LcmPm4FRJ1qsCwcU60h/tkIZAQ2Mpku0=
+	b=jGbXBE++IsOSWqPwTBzOs/Vf6sSRvjV/H6Y3GAe9iCgw2ZNSDccmI2jaxP2evccDt
+	 +BeRDz7urMppOfcIvsurXk96XOK0XUcJoDszVXzkRzW/RFASkR65jgDYOsQ+69TD3K
+	 C9qYn72IO5C4bqcbmfCOXiS0f3PQ+HEeSdzTwlvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Joel Granados <j.granados@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 045/196] RDMA/mlx4: Fix truncated output warning in alias_GUID.c
+Subject: [PATCH 5.15 304/484] sysctl: always initialize i_uid/i_gid
 Date: Thu, 15 Aug 2024 15:22:42 +0200
-Message-ID: <20240815131853.806578265@linuxfoundation.org>
+Message-ID: <20240815131953.148941968@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 5953e0647cec703ef436ead37fed48943507b433 ]
+[ Upstream commit 98ca62ba9e2be5863c7d069f84f7166b45a5b2f4 ]
 
-drivers/infiniband/hw/mlx4/alias_GUID.c: In function ‘mlx4_ib_init_alias_guid_service’:
-drivers/infiniband/hw/mlx4/alias_GUID.c:878:74: error: ‘%d’ directive
-output may be truncated writing between 1 and 11 bytes into a region of
-size 5 [-Werror=format-truncation=]
-  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
-      |                                                                          ^~
-drivers/infiniband/hw/mlx4/alias_GUID.c:878:63: note: directive argument in the range [-2147483641, 2147483646]
-  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
-      |                                                               ^~~~~~~~~~~~~~
-drivers/infiniband/hw/mlx4/alias_GUID.c:878:17: note: ‘snprintf’ output
-between 12 and 22 bytes into a destination of size 15
-  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+Always initialize i_uid/i_gid inside the sysfs core so set_ownership()
+can safely skip setting them.
 
-Fixes: a0c64a17aba8 ("mlx4: Add alias_guid mechanism")
-Link: https://lore.kernel.org/r/1951c9500109ca7e36dcd523f8a5f2d0d2a608d1.1718554641.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Commit 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of
+i_uid/i_gid on /proc/sys inodes.") added defaults for i_uid/i_gid when
+set_ownership() was not implemented. It also missed adjusting
+net_ctl_set_ownership() to use the same default values in case the
+computation of a better value failed.
+
+Fixes: 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of i_uid/i_gid on /proc/sys inodes.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Joel Granados <j.granados@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/alias_GUID.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/proc_sysctl.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx4/alias_GUID.c b/drivers/infiniband/hw/mlx4/alias_GUID.c
-index baab9afa9174b..f2d975c2659d8 100644
---- a/drivers/infiniband/hw/mlx4/alias_GUID.c
-+++ b/drivers/infiniband/hw/mlx4/alias_GUID.c
-@@ -832,7 +832,7 @@ void mlx4_ib_destroy_alias_guid_service(struct mlx4_ib_dev *dev)
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -466,12 +466,10 @@ static struct inode *proc_sys_make_inode
+ 			make_empty_dir_inode(inode);
+ 	}
  
- int mlx4_ib_init_alias_guid_service(struct mlx4_ib_dev *dev)
- {
--	char alias_wq_name[15];
-+	char alias_wq_name[22];
- 	int ret = 0;
- 	int i, j;
- 	union ib_gid gid;
--- 
-2.43.0
-
++	inode->i_uid = GLOBAL_ROOT_UID;
++	inode->i_gid = GLOBAL_ROOT_GID;
+ 	if (root->set_ownership)
+ 		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
+-	else {
+-		inode->i_uid = GLOBAL_ROOT_UID;
+-		inode->i_gid = GLOBAL_ROOT_GID;
+-	}
+ 
+ 	return inode;
+ }
 
 
 
