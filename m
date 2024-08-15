@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-68266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D54095316B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:53:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79FA9952F16
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08B5128B24A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:53:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21AA0288559
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40CB19FA99;
-	Thu, 15 Aug 2024 13:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E985219F460;
+	Thu, 15 Aug 2024 13:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYhZGXA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z75YGCNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C131714A1;
-	Thu, 15 Aug 2024 13:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42E819E811;
+	Thu, 15 Aug 2024 13:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730021; cv=none; b=OdqJG+PMDNnJg1Yegw6fOvcsMD3SLyDTtxx0KSG5EoeQT0Eke1G/Wmuf/pn10RlHCcicqu1291dxV0QJBUFEe9yPbVkBFE7OhouD+2pfD/3c3LhvJCeG7chyFzt50wJV6B9aKdHJ9xTf0uIJg3ndu47hABSB/DbABxFJ6tybcYI=
+	t=1723728506; cv=none; b=c3zm7N6acmMmvaeT6DmK02/fvD/sn2z5z+7Q0MM7kmyZWqAzXtTGvRWRuK9X758a/EAnuH6ATHdk6idty7GGS/jxwIiEHlkn7SW6RIF76e2UzD1brjD4c0U3z5jr8uOqHX4IY/4HEh4bCsw8jiWP9q0BuFhsDp5HKVKJoyZxdhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730021; c=relaxed/simple;
-	bh=5XU2PvKxBYu0y+kfu+Ef5N+1u7z1bIpEn4EGstH5OEc=;
+	s=arc-20240116; t=1723728506; c=relaxed/simple;
+	bh=xUOXEvF1HaJHJRjhVymQQPqJdAW4r3R5HcEDlPtpeLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcnR4vkV8O8W9RjpGSQszu+g+BinEdglgU8TqwwEjWPUIrgnz4B6MuXmnKFDBE15RfvYLuOOBkLUtXRw2GgshjjEe9Sb3/oPkmfLSNIcvUvP8hzn5I8mmLPdSImFZQKlrWke6lnghHs07uf4kF0tIhRxHCmV1Fkek8UTDgRNn+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYhZGXA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05601C4AF0A;
-	Thu, 15 Aug 2024 13:53:40 +0000 (UTC)
+	 MIME-Version; b=uq9VCO2+hw4Upldmv/8Kqpv/ECUMTEWGdgkTrPHjBMcl9RCN/m2JpIj44iJUaeMqjx9tTaPQXxNxtDnUnEW22OX6lrM1aN9205S1vwE6SiVJQ6RcAwIbG+DyKUkHwE+YS6bmZWoz/Qrmz8XKC5jyJrJWpz6hC0MVimm3e6/24dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z75YGCNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D36FC32786;
+	Thu, 15 Aug 2024 13:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730021;
-	bh=5XU2PvKxBYu0y+kfu+Ef5N+1u7z1bIpEn4EGstH5OEc=;
+	s=korg; t=1723728506;
+	bh=xUOXEvF1HaJHJRjhVymQQPqJdAW4r3R5HcEDlPtpeLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYhZGXA0yZj9RywDhzg6gE77dTTpkPWfjFP/2QZk82lTd/ZsYdEnd6Iko6NnVU8cE
-	 8g66tr46LCMCxhUwvQ81QcjFPJarRYNf00pzpMC40zURU3HfnhHR2ILAoj8IdU4MxI
-	 rA2ZWn1eQjFm0gEznNklJtMoa6809URXzGiou8pc=
+	b=Z75YGCNAzX+5QswoWm2cl/TaletEu0N9iGwqPNotVbBc9wfO/OKAsu/ZczkSYkPVz
+	 JzXpHD38B35GelatYWFUOJvryQYrPT1hDzz/emWHljVA81W4iGzTmVNlj4NO9MZlWI
+	 AWFRmlmDt3p51Ovs1h/C4iYx0Yow85TB38e2AcX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 280/484] powerpc: fix a file leak in kvm_vcpu_ioctl_enable_cap()
-Date: Thu, 15 Aug 2024 15:22:18 +0200
-Message-ID: <20240815131952.221828011@linuxfoundation.org>
+Subject: [PATCH 4.19 022/196] wifi: cfg80211: handle 2x996 RU allocation in cfg80211_calculate_bitrate_he()
+Date: Thu, 15 Aug 2024 15:22:19 +0200
+Message-ID: <20240815131852.933068712@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit b4cf5fc01ce83e5c0bcf3dbb9f929428646b9098 ]
+[ Upstream commit bcbd771cd5d68c0c52567556097d75f9fc4e7cd6 ]
 
-missing fdput() on one of the failure exits
+Currently NL80211_RATE_INFO_HE_RU_ALLOC_2x996 is not handled in
+cfg80211_calculate_bitrate_he(), leading to below warning:
 
-Fixes: eacc56bb9de3e # v5.2
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+kernel: invalid HE MCS: bw:6, ru:6
+kernel: WARNING: CPU: 0 PID: 2312 at net/wireless/util.c:1501 cfg80211_calculate_bitrate_he+0x22b/0x270 [cfg80211]
+
+Fix it by handling 2x996 RU allocation in the same way as 160 MHz bandwidth.
+
+Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://msgid.link/20240606020653.33205-3-quic_bqiang@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/powerpc.c | 4 +++-
+ net/wireless/util.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index ee305455bd8db..fc7174b32e982 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -1963,8 +1963,10 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
- 			break;
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index eff4877bb4383..7886f26043ed4 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1226,7 +1226,9 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
+ 	if (WARN_ON_ONCE(rate->nss < 1 || rate->nss > 8))
+ 		return 0;
  
- 		r = -ENXIO;
--		if (!xive_enabled())
-+		if (!xive_enabled()) {
-+			fdput(f);
- 			break;
-+		}
- 
- 		r = -EPERM;
- 		dev = kvm_device_from_filp(f.file);
+-	if (rate->bw == RATE_INFO_BW_160)
++	if (rate->bw == RATE_INFO_BW_160 ||
++	    (rate->bw == RATE_INFO_BW_HE_RU &&
++	     rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_2x996))
+ 		result = rates_160M[rate->he_gi];
+ 	else if (rate->bw == RATE_INFO_BW_80 ||
+ 		 (rate->bw == RATE_INFO_BW_HE_RU &&
 -- 
 2.43.0
 
