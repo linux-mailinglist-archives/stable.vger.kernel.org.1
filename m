@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-69111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341AA95357D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 727C29533F1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDC3C1F2A7BF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274711F27AEA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E941684AC;
-	Thu, 15 Aug 2024 14:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6C11A3BCE;
+	Thu, 15 Aug 2024 14:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4S/LXyJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRokMKeB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FD53214;
-	Thu, 15 Aug 2024 14:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1CE14AD0A;
+	Thu, 15 Aug 2024 14:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732703; cv=none; b=m8AgpmlnglmXMCjhu6YEx3QcV/EWP7eW7kEkmbSOKrEGTMDY+GTsLXXq0Dxo24M974A00K/rM1OZHsD9iL5cZroy/KtsbdiTFoL2ITRmJXn1vVmLJqCVy50ptHnVuYZTgAKeBDXbFmHGG1jgNHWJK9ZwToTlKzWrtrERCWm1pPI=
+	t=1723731652; cv=none; b=MykUTrUzYXBGFLtrSHQDKq+YBKXyXM4Zhd2Ny1LiqFzDhus+A0dF8ig5c/gKhClmIqsykCueEqsfuFEOcogdYUB6YPIfBp3VDsnSRH7tTWDytKJbjGUclU0G8+6W/vUGzy2YOOnF9iBu0NMIs+cstvvriYVvcuVZTjWoZeLIc+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732703; c=relaxed/simple;
-	bh=SEZeZcGDfxufyOpqQDNSoebr1aSptnBMhVa61sr83ss=;
+	s=arc-20240116; t=1723731652; c=relaxed/simple;
+	bh=8J/PpZ4FZnVdVScWxf62p8tesHaJh74d5IV/USSh9Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzLOJHYXbBVp0PAojSoHqt4ynR1rMQmUXTgqr7mmnt0SpesEYcF08DX1zC5WYPQsDtZBPlt9GR/c3uSR2rDdmlqX09EIYxhAMhhOrQEpVYN8PpMfcT3GaMW8JKvTSwvjVrGoo8xJ0MP5pyUuxHJwsmGpyZvSOKSFkebzCfxBBO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4S/LXyJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E88C32786;
-	Thu, 15 Aug 2024 14:38:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZOuhJu/EYZUspZd7Ll9gHrfxYcn/Zpb35xEl7ngtW6K1P+ZuGex731/xXsUqxaBoyHF/6C9VRw3bKBvkgm5NFeImla85PGZB05xqPhdYzuCdayG9lQJFzX0ZQBfD+u3jneHwkZkjQD1HS6sn7Ba/FwwbMwar6DIwCIMjc8q3o80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRokMKeB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE71C32786;
+	Thu, 15 Aug 2024 14:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732702;
-	bh=SEZeZcGDfxufyOpqQDNSoebr1aSptnBMhVa61sr83ss=;
+	s=korg; t=1723731651;
+	bh=8J/PpZ4FZnVdVScWxf62p8tesHaJh74d5IV/USSh9Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k4S/LXyJqmFk/XT2b/zq4ZJ5IQTUU9grNNb0rxJL9efLyBWWg7BzxbSWiu3pTfGQI
-	 gEonbAGZU+wESs1l82HyBUIFpoD+SIJphGVVbw1w+WG/BcO6dHBS+0BK1v54rmNDmX
-	 YTcM2TtithjBEd3wIMA0iVIaakVb/5aNAEWbKhBk=
+	b=YRokMKeBY61Om0KmRmG+9XmFBBySwhBa8jRpuS7+CylOK9ECWvbHAIYaTbF//zmYM
+	 FD6/BYEIS0Z5SO103S3dh0tHbvEjY66NQ3UY3tI/7GDEZ+Pw2bg0kFhVlhxHzsC/v/
+	 ecAl5J8J2dwKs/ZhCdh/Z3SApUzMqfpUxrV16EPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	kasan-dev@googlegroups.com,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 261/352] rcutorture: Fix rcu_torture_fwd_cb_cr() data race
+Subject: [PATCH 5.4 194/259] ACPI: battery: create alarm sysfs attribute atomically
 Date: Thu, 15 Aug 2024 15:25:27 +0200
-Message-ID: <20240815131929.532094273@linuxfoundation.org>
+Message-ID: <20240815131910.270781768@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 6040072f4774a575fa67b912efe7722874be337b ]
+[ Upstream commit a231eed10ed5a290129fda36ad7bcc263c53ff7d ]
 
-On powerpc systems, spinlock acquisition does not order prior stores
-against later loads.  This means that this statement:
+Let the power supply core register the attribute.
+This ensures that the attribute is created before the device is
+announced to userspace, avoid a race condition.
 
-	rfcp->rfc_next = NULL;
-
-Can be reordered to follow this statement:
-
-	WRITE_ONCE(*rfcpp, rfcp);
-
-Which is then a data race with rcu_torture_fwd_prog_cr(), specifically,
-this statement:
-
-	rfcpn = READ_ONCE(rfcp->rfc_next)
-
-KCSAN located this data race, which represents a real failure on powerpc.
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: <kasan-dev@googlegroups.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/battery.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 9f505688291e5..5c4bdbe76df04 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1867,7 +1867,7 @@ static void rcu_torture_fwd_cb_cr(struct rcu_head *rhp)
- 	spin_lock_irqsave(&rfp->rcu_fwd_lock, flags);
- 	rfcpp = rfp->rcu_fwd_cb_tail;
- 	rfp->rcu_fwd_cb_tail = &rfcp->rfc_next;
--	WRITE_ONCE(*rfcpp, rfcp);
-+	smp_store_release(rfcpp, rfcp);
- 	WRITE_ONCE(rfp->n_launders_cb, rfp->n_launders_cb + 1);
- 	i = ((jiffies - rfp->rcu_fwd_startat) / (HZ / FWD_CBS_HIST_DIV));
- 	if (i >= ARRAY_SIZE(rfp->n_launders_hist))
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index a49a09e3de1b3..af78f76a28729 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -681,12 +681,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
+ 	return count;
+ }
+ 
+-static const struct device_attribute alarm_attr = {
++static struct device_attribute alarm_attr = {
+ 	.attr = {.name = "alarm", .mode = 0644},
+ 	.show = acpi_battery_alarm_show,
+ 	.store = acpi_battery_alarm_store,
+ };
+ 
++static struct attribute *acpi_battery_attrs[] = {
++	&alarm_attr.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(acpi_battery);
++
+ /*
+  * The Battery Hooking API
+  *
+@@ -823,7 +829,10 @@ static void __exit battery_hook_exit(void)
+ 
+ static int sysfs_add_battery(struct acpi_battery *battery)
+ {
+-	struct power_supply_config psy_cfg = { .drv_data = battery, };
++	struct power_supply_config psy_cfg = {
++		.drv_data = battery,
++		.attr_grp = acpi_battery_groups,
++	};
+ 	bool full_cap_broken = false;
+ 
+ 	if (!ACPI_BATTERY_CAPACITY_VALID(battery->full_charge_capacity) &&
+@@ -868,7 +877,7 @@ static int sysfs_add_battery(struct acpi_battery *battery)
+ 		return result;
+ 	}
+ 	battery_hook_add_battery(battery);
+-	return device_create_file(&battery->bat->dev, &alarm_attr);
++	return 0;
+ }
+ 
+ static void sysfs_remove_battery(struct acpi_battery *battery)
+@@ -879,7 +888,6 @@ static void sysfs_remove_battery(struct acpi_battery *battery)
+ 		return;
+ 	}
+ 	battery_hook_remove_battery(battery);
+-	device_remove_file(&battery->bat->dev, &alarm_attr);
+ 	power_supply_unregister(battery->bat);
+ 	battery->bat = NULL;
+ 	mutex_unlock(&battery->sysfs_lock);
 -- 
 2.43.0
 
