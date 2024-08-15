@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-68819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F31953421
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:23:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3122E95326D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D96E81C25943
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:23:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1D03281F44
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7649D1A01AE;
-	Thu, 15 Aug 2024 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43921AD41F;
+	Thu, 15 Aug 2024 14:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJATKC8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fh3ityFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331123214;
-	Thu, 15 Aug 2024 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A8B1A7060;
+	Thu, 15 Aug 2024 14:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731763; cv=none; b=JLK5A5eqDYw/0TWcKjAXFQv37nQTv8G1TWlPki7Ppw/E6jpAYLkpFMpCLHKQEd3wq+gHegXjKX7v1LoXPsKCWzxSGxRzzUNp6GmAPjp35kpNizqzFwvGMTMp6QvPck55dlCWecIUV0CwLr9VKK1bPar6XjwD9JTH5AF1ODulYt4=
+	t=1723730651; cv=none; b=VFLwNIHdVbSAnhZ7hTvm6DeDuwFJw2pKm1ZaEAxffEHcGWueZNXcsFLFA0O/xCvRvmCJkptCJUhzORPqwQyW+Ds8UdJFInP5I6Ex5csX3WKiNSUlW+PJc3lsOJP3tM48eQeMiLFatyzxThPP8pQGTRh+kuUUdtKYugSy8hb/GTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731763; c=relaxed/simple;
-	bh=XAf1L0JX+kGP7Th2SSmuhyZbiwiz0a38VLJjVVWncvA=;
+	s=arc-20240116; t=1723730651; c=relaxed/simple;
+	bh=9ATMyHnP5pVIdhXNmz8kbczuVUgzMJNc9JvsAINgza0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMqVqxzaL8Cnosv/xs7rBmWncOgRoERLrFVaQLkP5IbKc2tqr3/BNg3hKkhP6m6xiu96+SZxl5dvxQzzUruNvsRNG6vQ2tQS+6PRn6bNGF4lPDbL37O82e4jmZHuPdDVksBajuzp9kd069Q7m9L9/EHHPbsS4capo2DyPeKSzNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJATKC8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF369C4AF0D;
-	Thu, 15 Aug 2024 14:22:42 +0000 (UTC)
+	 MIME-Version; b=XVjBHgf8LwG2Ul8QuC67cPgTYgPgoSyP3oeEDGjJhVsrE3OTXRve+Fp91BtamoML92tDxRwb6IK0WOYMA7i80kUrjVtAyjM5RdFti6Ghc7CmrOlCwWOMG9dU7nNLhNOBQ4bpQjWXJaB1OcEngS/JSGHwv5DRaBeKPFSzcgzQt4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fh3ityFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E95C4AF0A;
+	Thu, 15 Aug 2024 14:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731763;
-	bh=XAf1L0JX+kGP7Th2SSmuhyZbiwiz0a38VLJjVVWncvA=;
+	s=korg; t=1723730651;
+	bh=9ATMyHnP5pVIdhXNmz8kbczuVUgzMJNc9JvsAINgza0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJATKC8FuTVcLt71rShFNnReHnXIADmB1BkihjMl3QCPZJRmI94CuNUzk2MXbII5n
-	 2+WQVKlUA6n+MJzFN3YCRI4zo1VGlSQrGSeEu8u7dJnLkflMKfUwun9jEKFAfrv3mL
-	 aL560rlDZkBEYhl8mnQvMk8dp8pOnIVOmt3B6vPc=
+	b=fh3ityFa/0CenRKxoijf82XWLVFzPoA9wP++poMZl14tYbmm3DVbgXK3YuK4e+ak6
+	 ufECFSonJii6ICe7NJo8ft6uuLXMuN9YD5wZgj0AW2cx5/+4uKqN0seyhehbTwy0Og
+	 C3TvJSF5X5QPVmDtVfOMz4VcgOvuc5O38H/vY3eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 200/259] btrfs: fix bitmap leak when loading free space cache on duplicate entry
+	Jann Horn <jannh@google.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Jonathan Cavitt <Jonathan.cavitt@intel.com>
+Subject: [PATCH 5.15 475/484] drm/i915/gem: Fix Virtual Memory mapping boundaries calculation
 Date: Thu, 15 Aug 2024 15:25:33 +0200
-Message-ID: <20240815131910.498765463@linuxfoundation.org>
+Message-ID: <20240815131959.826627740@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +66,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-[ Upstream commit 320d8dc612660da84c3b70a28658bb38069e5a9a ]
+commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
 
-If we failed to link a free space entry because there's already a
-conflicting entry for the same offset, we free the free space entry but
-we don't free the associated bitmap that we had just allocated before.
-Fix that by freeing the bitmap before freeing the entry.
+Calculating the size of the mapped area as the lesser value
+between the requested size and the actual size does not consider
+the partial mapping offset. This can cause page fault access.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the calculation of the starting and ending addresses, the
+total size is now deduced from the difference between the end and
+start addresses.
+
+Additionally, the calculations have been rewritten in a clearer
+and more understandable form.
+
+Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
+Reported-by: Jann Horn <jannh@google.com>
+Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: <stable@vger.kernel.org> # v4.9+
+Reviewed-by: Jann Horn <jannh@google.com>
+Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
+[Joonas: Add Requires: tag]
+Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
+(cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/free-space-cache.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c |   53 +++++++++++++++++++++++++++----
+ 1 file changed, 47 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index 0cb93f73acb2d..af89fce57ff75 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -788,6 +788,7 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
- 				spin_unlock(&ctl->tree_lock);
- 				btrfs_err(fs_info,
- 					"Duplicate entries in free space cache, dumping");
-+				kmem_cache_free(btrfs_free_space_bitmap_cachep, e->bitmap);
- 				kmem_cache_free(btrfs_free_space_cachep, e);
- 				goto free_cache;
- 			}
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -286,6 +286,41 @@ out:
+ 	return i915_error_to_vmf_fault(err);
+ }
+ 
++static void set_address_limits(struct vm_area_struct *area,
++			       struct i915_vma *vma,
++			       unsigned long obj_offset,
++			       unsigned long *start_vaddr,
++			       unsigned long *end_vaddr)
++{
++	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
++	long start, end; /* memory boundaries */
++
++	/*
++	 * Let's move into the ">> PAGE_SHIFT"
++	 * domain to be sure not to lose bits
++	 */
++	vm_start = area->vm_start >> PAGE_SHIFT;
++	vm_end = area->vm_end >> PAGE_SHIFT;
++	vma_size = vma->size >> PAGE_SHIFT;
++
++	/*
++	 * Calculate the memory boundaries by considering the offset
++	 * provided by the user during memory mapping and the offset
++	 * provided for the partial mapping.
++	 */
++	start = vm_start;
++	start -= obj_offset;
++	start += vma->ggtt_view.partial.offset;
++	end = start + vma_size;
++
++	start = max_t(long, start, vm_start);
++	end = min_t(long, end, vm_end);
++
++	/* Let's move back into the "<< PAGE_SHIFT" domain */
++	*start_vaddr = (unsigned long)start << PAGE_SHIFT;
++	*end_vaddr = (unsigned long)end << PAGE_SHIFT;
++}
++
+ static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
+ {
+ #define MIN_CHUNK_PAGES (SZ_1M >> PAGE_SHIFT)
+@@ -298,14 +333,18 @@ static vm_fault_t vm_fault_gtt(struct vm
+ 	struct i915_ggtt *ggtt = &i915->ggtt;
+ 	bool write = area->vm_flags & VM_WRITE;
+ 	struct i915_gem_ww_ctx ww;
++	unsigned long obj_offset;
++	unsigned long start, end; /* memory boundaries */
+ 	intel_wakeref_t wakeref;
+ 	struct i915_vma *vma;
+ 	pgoff_t page_offset;
++	unsigned long pfn;
+ 	int srcu;
+ 	int ret;
+ 
+-	/* We don't use vmf->pgoff since that has the fake offset */
++	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
+ 	page_offset = (vmf->address - area->vm_start) >> PAGE_SHIFT;
++	page_offset += obj_offset;
+ 
+ 	trace_i915_gem_object_fault(obj, page_offset, true, write);
+ 
+@@ -376,12 +415,14 @@ retry:
+ 	if (ret)
+ 		goto err_unpin;
+ 
++	set_address_limits(area, vma, obj_offset, &start, &end);
++
++	pfn = (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
++	pfn += (start - area->vm_start) >> PAGE_SHIFT;
++	pfn += obj_offset - vma->ggtt_view.partial.offset;
++
+ 	/* Finally, remap it using the new GTT offset */
+-	ret = remap_io_mapping(area,
+-			       area->vm_start + (vma->ggtt_view.partial.offset << PAGE_SHIFT),
+-			       (ggtt->gmadr.start + vma->node.start) >> PAGE_SHIFT,
+-			       min_t(u64, vma->size, area->vm_end - area->vm_start),
+-			       &ggtt->iomap);
++	ret = remap_io_mapping(area, start, pfn, end - start, &ggtt->iomap);
+ 	if (ret)
+ 		goto err_fence;
+ 
 
 
 
