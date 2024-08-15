@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-68669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843E895336B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31782953520
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6DF11C21ECE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C46FAB28482
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA291ABEB4;
-	Thu, 15 Aug 2024 14:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3835817C995;
+	Thu, 15 Aug 2024 14:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVFU/vmX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMfJDCfK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC17244376;
-	Thu, 15 Aug 2024 14:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C4863D5;
+	Thu, 15 Aug 2024 14:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731294; cv=none; b=IgYCaDNPSh32YQm6scFFRHRAuoLAGxUKsFN23GZsepvEZtqmFYwiiFz7yjW8LrPmM/xuuTrdDAPyLRULo6FsH48asyvjunAK7rcrabR8Xq11qqA0Sz0C5WMkMV9Xe98cx2lNrLdVu7w8o56X6gj4Y1cZo65glfPhew92ueLrI2M=
+	t=1723732445; cv=none; b=jnOGFOMeG7Uchl/cn7t9390QAlxyGfSuXbwCp6nQ4s/InotUx57k0fBASdlX6vCnDTMMPCyQw47aMwreB4KxgZ5ISoQSRIsnYZyydJsD49m7U/5h6ERUmNJIe/H6gPSWGtqAKtziosC5RQ+QPhIO9rzpRMC6p1uODvZ41b8Y7u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731294; c=relaxed/simple;
-	bh=r0rZSvwnjA+NEFgatorQn2JtgXlrI+8Fq5jo9lDq0DA=;
+	s=arc-20240116; t=1723732445; c=relaxed/simple;
+	bh=PjGMRq7+1RF8dKlZFbZyYtDQer8NAjXBPPAkfJZDlSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pvuEYTYALusz7St3BEr95b2y/id0vgOTKiKRroff/8w0nEPMeP/Ha+Sy7U8fUyaBZ56oHMy/Rvk0rP46q+KM62ZgKrLCiJcO0lYG7iISfvEeI+i++SRE4OqFm2Y21Au1vwQDvnM4MnCxUwhFX+DafbwTNKxxyK30j25oX1cIp8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVFU/vmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E7DC32786;
-	Thu, 15 Aug 2024 14:14:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RHVYK8TJl/d167COM61WaGW07p+Ih0DxnbhyHwsVXbuEw3mqPGLog/ND+4EWYivimz/hXVWOZWGmQunhkSQURjL/uZEVU+VfjaEQZ/09ZNfEk5mNf8RCyV7eee7kACgkU7TDpg6A2Oa31Qlh6snq//XF+gro7KEfJDV1hZCZVqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMfJDCfK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA28C4AF0D;
+	Thu, 15 Aug 2024 14:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731293;
-	bh=r0rZSvwnjA+NEFgatorQn2JtgXlrI+8Fq5jo9lDq0DA=;
+	s=korg; t=1723732444;
+	bh=PjGMRq7+1RF8dKlZFbZyYtDQer8NAjXBPPAkfJZDlSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVFU/vmXuSoGOtQwvybTX0CSWJfVvFXTUku1jimrd9HMyc5q71+8cKujns3AnYeP3
-	 eJRkdVDcTUpih5QsE8E1+fEKGGsDYukGkhGZLghMUEFHgT2RcBqp617I07xjheNEeS
-	 NLB8yC4siIGzKn++SEr7DOZ2pp9CRKEe46Dn7M9A=
+	b=YMfJDCfK+m+3jTIPEbiBC8K7TtAHfzo20UGOxo+aVBJYofqhGakQcv3N5otM7gCdA
+	 9eXoDgmGiB1s/AJmxYpYGOvhJ9t4Ugjmw9JXJFLoKCFppyjJWh//tUqkXYfXKiNCaA
+	 0ghBmXVSp6a5ULgJYW8mOEQAClqHvfXAjN8MP9/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 083/259] pinctrl: ti: ti-iodelay: Drop if block with always false condition
-Date: Thu, 15 Aug 2024 15:23:36 +0200
-Message-ID: <20240815131906.007859083@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 151/352] hwrng: amd - Convert PCIBIOS_* return codes to errnos
+Date: Thu, 15 Aug 2024 15:23:37 +0200
+Message-ID: <20240815131925.102077545@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 88b3f108502bc45e6ebd005702add46759f3f45a ]
+commit 14cba6ace79627a57fb9058582b03f0ed3832390 upstream.
 
-ti_iodelay_remove() is only called after ti_iodelay_probe() completed
-successfully. In this case platform_set_drvdata() was called with a
-non-NULL argument and so platform_get_drvdata() won't return NULL.
+amd_rng_mod_init() uses pci_read_config_dword() that returns PCIBIOS_*
+codes. The return code is then returned as is but amd_rng_mod_init() is
+a module_init() function that should return normal errnos.
 
-Simplify by removing the if block with the always false condition.
+Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+errno before returning it.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231009083856.222030-4-u.kleine-koenig@pengutronix.de
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: 9b401f4a7170 ("pinctrl: ti: ti-iodelay: fix possible memory leak when pinctrl_enable() fails")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 96d63c0297cc ("[PATCH] Add AMD HW RNG driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/char/hw_random/amd-rng.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-index b522ca0103325..b597504ae6a46 100644
---- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-+++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-@@ -906,9 +906,6 @@ static int ti_iodelay_remove(struct platform_device *pdev)
- {
- 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
+--- a/drivers/char/hw_random/amd-rng.c
++++ b/drivers/char/hw_random/amd-rng.c
+@@ -142,8 +142,10 @@ static int __init mod_init(void)
  
--	if (!iod)
--		return 0;
--
- 	if (iod->pctl)
- 		pinctrl_unregister(iod->pctl);
+ found:
+ 	err = pci_read_config_dword(pdev, 0x58, &pmbase);
+-	if (err)
++	if (err) {
++		err = pcibios_err_to_errno(err);
+ 		goto put_dev;
++	}
  
--- 
-2.43.0
-
+ 	pmbase &= 0x0000FF00;
+ 	if (pmbase == 0) {
 
 
 
