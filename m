@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-68676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC6C953373
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7989534DF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6EB7282E7E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D7321C21542
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A8919EED0;
-	Thu, 15 Aug 2024 14:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39FE2772A;
+	Thu, 15 Aug 2024 14:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdCeDP/6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0lHcrZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A0919DF8C;
-	Thu, 15 Aug 2024 14:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DAF14AD0A;
+	Thu, 15 Aug 2024 14:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731316; cv=none; b=Flo02Qhwf+ukxxRDFjxmq05oLxBskPE2DUfOA1+oCIUtioP/rX9dATjWgQurRonSJnSn0o8/OP4lEAkCBdhStxXv87He4zbYVybio6U/W84916y3u8r2mOt8Ju8WtszI/EaKyXNmZ88CO5VpFCgzkXzcgam7jA7+MGCN58FDmRU=
+	t=1723732277; cv=none; b=GWoC04AvbesaZ0nRO1gaVDDlwHkVYDrDPaDXAckRkHHLb7SoDd7fDgZgKYA7hfjQh2E90xDngU5l19bsamRLR0i1VoQCsCfVXAf2pmfci9k2fhm4JrCwgLf9NLdRaSqBb8LKzOUa2EVhMdWtQFV6MSKdE467xI47WviF6N6cHEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731316; c=relaxed/simple;
-	bh=8g5I7tvQnVDlX3XMnwiy/7kocWIv/7Wz2wjT8504tqQ=;
+	s=arc-20240116; t=1723732277; c=relaxed/simple;
+	bh=+QOiAUjNmffHVZG8O0QE42q3QlgprsKOwQSffyOODOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+msB/FA0v4+dlLYqa6r5N9v1mMLY7RLWe+mVwow3qUMvM8AFBbtCvRQfKWFhE/aYl+H0lninARRz8OtuWU9SyzIhr7YvQlkRFewLXt99X5fc7E8/lGsMsH5HhSCyS00IvAeYoXTjaZcw9idqJD9JJuV8k02zjI9UwHnMDz3rFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdCeDP/6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED86C4AF0A;
-	Thu, 15 Aug 2024 14:15:15 +0000 (UTC)
+	 MIME-Version; b=kux5cGZm+fl+XFQHnVh0QK0T3qinfJo4GWE74f2djzxXYTuXlckzdqvPegpEYl2vXDk8wA3wt25WoahOi2LC9CLgBec7EwT7MVLyNtbs1owLYvRq1KVRVc/IiIw54c1/UrFF9F9iyC10GduR2eElz7lkTM6n8KETImGL+X2UH5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0lHcrZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0633AC4AF0D;
+	Thu, 15 Aug 2024 14:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731316;
-	bh=8g5I7tvQnVDlX3XMnwiy/7kocWIv/7Wz2wjT8504tqQ=;
+	s=korg; t=1723732277;
+	bh=+QOiAUjNmffHVZG8O0QE42q3QlgprsKOwQSffyOODOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdCeDP/6+nmbQT8Ql8vpMxnyDqMes2LPmSIMr8FqUJUlpZX7oU9TIGO3TJ+Kc+oSP
-	 jbdGPRTQHLXlQJDFaAdJO12uev5921ivANB0rzStc0d2lc/S7c0ow6nfg6U5hsu3yD
-	 smrX236MSe9JK4m2fIowTKqIVOVqIckNEJrBrJfc=
+	b=B0lHcrZXEhtA80LmX5sawb+O1lg1hemjuX0r+MU7RT2DX1IXsX/hSiVPyAnyy47Ho
+	 XMesbD8d6l8ZOzVkrj79VDaGcMhCQI4vK03lYMuJgGPOMp2UF0Ul0Xu7sdASyeQMgC
+	 m0ETqgYhnQUuj9xteAWcRTs04CS/4UU2r+AEgylw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 063/259] SUNRPC: avoid soft lockup when transmitting UDP to reachable server.
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 5.10 130/352] char: tpm: Fix possible memory leak in tpm_bios_measurements_open()
 Date: Thu, 15 Aug 2024 15:23:16 +0200
-Message-ID: <20240815131905.240495298@linuxfoundation.org>
+Message-ID: <20240815131924.279330319@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 6258cf25d5e3155c3219ab5a79b970eef7996356 ]
+commit 5d8e2971e817bb64225fc0b6327a78752f58a9aa upstream.
 
-Prior to the commit identified below, call_transmit_status() would
-handle -EPERM and other errors related to an unreachable server by
-falling through to call_status() which added a 3-second delay and
-handled the failure as a timeout.
+In tpm_bios_measurements_open(), get_device() is called on the device
+embedded in struct tpm_chip. In the error path, however, put_device() is
+not called. This results in a reference count leak, which prevents the
+device from being properly released. This commit makes sure to call
+put_device() when the seq_open() call fails.
 
-Since that commit, call_transmit_status() falls through to
-handle_bind().  For UDP this moves straight on to handle_connect() and
-handle_transmit() so we immediately retransmit - and likely get the same
-error.
-
-This results in an indefinite loop in __rpc_execute() which triggers a
-soft-lockup warning.
-
-For the errors that indicate an unreachable server,
-call_transmit_status() should fall back to call_status() as it did
-before.  This cannot cause the thundering herd that the previous patch
-was avoiding, as the call_status() will insert a delay.
-
-Fixes: ed7dc973bd91 ("SUNRPC: Prevent thundering herd when the socket is not connected")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # +v4.18
+Fixes: 9b01b5356629 ("tpm: Move shared eventlog functions to common.c")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/clnt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/tpm/eventlog/common.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 2e08876bf8564..f689c7b0c304d 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -2236,12 +2236,13 @@ call_transmit_status(struct rpc_task *task)
- 		task->tk_action = call_transmit;
- 		task->tk_status = 0;
- 		break;
--	case -ECONNREFUSED:
- 	case -EHOSTDOWN:
- 	case -ENETDOWN:
- 	case -EHOSTUNREACH:
- 	case -ENETUNREACH:
- 	case -EPERM:
-+		break;
-+	case -ECONNREFUSED:
- 		if (RPC_IS_SOFTCONN(task)) {
- 			if (!task->tk_msg.rpc_proc->p_proc)
- 				trace_xprt_ping(task->tk_xprt,
--- 
-2.43.0
-
+--- a/drivers/char/tpm/eventlog/common.c
++++ b/drivers/char/tpm/eventlog/common.c
+@@ -47,6 +47,8 @@ static int tpm_bios_measurements_open(st
+ 	if (!err) {
+ 		seq = file->private_data;
+ 		seq->private = chip;
++	} else {
++		put_device(&chip->dev);
+ 	}
+ 
+ 	return err;
 
 
 
