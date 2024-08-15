@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-69026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C801953519
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF95953388
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95481F2A646
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F0928283D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D5A1993B9;
-	Thu, 15 Aug 2024 14:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E661A00F8;
+	Thu, 15 Aug 2024 14:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijvg73vV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzZHfxPI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A130A1DFFB;
-	Thu, 15 Aug 2024 14:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EE618D64F;
+	Thu, 15 Aug 2024 14:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732428; cv=none; b=X3yafnjrjiveNC8y1dJ1062IAUv53l43UhpL5cDVSVfQ8ThNZWPSnJKrH6zNs2aqhkTwpq1c/8MYbHJNuGve827dmypMzB04mmSMSIgWcdxiujbXVpjPfUluo4u6zQ7GB7+F/yKKE2c97+wVfpGVYR1eNkteI04z+uyP52NjDU0=
+	t=1723731376; cv=none; b=Rjr2ebwmSR62x4BheAIFQoAWlPLSUDONvXL8RPZEnp6pfN4nnhalETGCL4kiS/RSF6y/iUrAqwYNcr9b+gi2O5YUlEmZZpe6OzYsSNKkrF3nUerArjSC+hn608NGKvvu0bj+jfa2UgK+rn90qMLnX7cgVJnU6oPnVXtGz2uLCjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732428; c=relaxed/simple;
-	bh=fWyb+YmGtKzPKS3XW+xnr/r2FzIbOxcnyTmXCuZv3+8=;
+	s=arc-20240116; t=1723731376; c=relaxed/simple;
+	bh=UZcyR9thul5rcQhs7ePrpUQchPOFBFHHFMYVodNNmrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Phq/VBZWeZFKW114Dy8Gj1Zocbb6Xzo28R5q/Yy9wOEXmB/+mav9OvkIukNl2D8avQGs99H3hvXh4d9axQkkFBkXjiSXe7yglt95i+rGXIJeJ0rg6hJkzCzy2jxSbFUFZ4zXOBDQ/LlpfHqYBm2GnkWpFlHa4GRJQ7p0MUGTnL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijvg73vV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180CEC32786;
-	Thu, 15 Aug 2024 14:33:47 +0000 (UTC)
+	 MIME-Version; b=fFsEAU2tWTaIZGQEozhhH5oSrN6jDQGMLb7jqsFOTQt5Ckgk5QdvLhFTVITO0wN2RhAXKM24zEQpI29aHQdnPCiiWsQRY3YnssGjvLIGuGxcw8NcM9qTNLpUu8d75XgzGS0X+NbjrBZalim6N1EARvhe3UNBQZbJfoKUumlozag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzZHfxPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4353C4AF12;
+	Thu, 15 Aug 2024 14:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732428;
-	bh=fWyb+YmGtKzPKS3XW+xnr/r2FzIbOxcnyTmXCuZv3+8=;
+	s=korg; t=1723731376;
+	bh=UZcyR9thul5rcQhs7ePrpUQchPOFBFHHFMYVodNNmrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijvg73vVAsozxApb7OuDW5uru2veijZfYhRTfVV4c6hcGcYVOAShdL3SWtD0k+2wG
-	 VPxJkeP0b8lLTtLopC90jEWqbRRKup9otrwdxlLBFj1n2/HbdD+TRr+u9/GGjeVfJz
-	 SF+vr1U6vAm1bM/E5zOKXzcSoFJ7ZpvehHCzcmEc=
+	b=zzZHfxPI9/VGnxN9/n5tpMxIExmO066eMXoj8VwknI88fzQQoE5wCf3BTyEfEnlQO
+	 nFyTRqXOuT/kbT3hVB+RXDr2uUAZA50Otf1f/sQ9VsfU2ESbo/MbfQJ9wMNB19by7T
+	 ZKIwSO0Z531E75SuPokphD+F0L5GJxao9Af8Ca+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.10 176/352] selftests/sigaltstack: Fix ppc64 GCC build
-Date: Thu, 15 Aug 2024 15:24:02 +0200
-Message-ID: <20240815131926.079041523@linuxfoundation.org>
+	syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 5.4 110/259] f2fs: fix to dont dirty inode for readonly filesystem
+Date: Thu, 15 Aug 2024 15:24:03 +0200
+Message-ID: <20240815131907.050860530@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,53 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Chao Yu <chao@kernel.org>
 
-commit 17c743b9da9e0d073ff19fd5313f521744514939 upstream.
+commit 192b8fb8d1c8ca3c87366ebbef599fa80bb626b8 upstream.
 
-Building the sigaltstack test with GCC on 64-bit powerpc errors with:
+syzbot reports f2fs bug as below:
 
-  gcc -Wall     sas.c  -o /home/michael/linux/.build/kselftest/sigaltstack/sas
-  In file included from sas.c:23:
-  current_stack_pointer.h:22:2: error: #error "implement current_stack_pointer equivalent"
-     22 | #error "implement current_stack_pointer equivalent"
-        |  ^~~~~
-  sas.c: In function ‘my_usr1’:
-  sas.c:50:13: error: ‘sp’ undeclared (first use in this function); did you mean ‘p’?
-     50 |         if (sp < (unsigned long)sstack ||
-        |             ^~
+kernel BUG at fs/f2fs/inode.c:933!
+RIP: 0010:f2fs_evict_inode+0x1576/0x1590 fs/f2fs/inode.c:933
+Call Trace:
+ evict+0x2a4/0x620 fs/inode.c:664
+ dispose_list fs/inode.c:697 [inline]
+ evict_inodes+0x5f8/0x690 fs/inode.c:747
+ generic_shutdown_super+0x9d/0x2c0 fs/super.c:675
+ kill_block_super+0x44/0x90 fs/super.c:1667
+ kill_f2fs_super+0x303/0x3b0 fs/f2fs/super.c:4894
+ deactivate_locked_super+0xc1/0x130 fs/super.c:484
+ cleanup_mnt+0x426/0x4c0 fs/namespace.c:1256
+ task_work_run+0x24a/0x300 kernel/task_work.c:180
+ ptrace_notify+0x2cd/0x380 kernel/signal.c:2399
+ ptrace_report_syscall include/linux/ptrace.h:411 [inline]
+ ptrace_report_syscall_exit include/linux/ptrace.h:473 [inline]
+ syscall_exit_work kernel/entry/common.c:251 [inline]
+ syscall_exit_to_user_mode_prepare kernel/entry/common.c:278 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:283 [inline]
+ syscall_exit_to_user_mode+0x15c/0x280 kernel/entry/common.c:296
+ do_syscall_64+0x50/0x110 arch/x86/entry/common.c:88
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-This happens because GCC doesn't define __ppc__ for 64-bit builds, only
-32-bit builds. Instead use __powerpc__ to detect powerpc builds, which
-is defined by clang and GCC for 64-bit and 32-bit builds.
+The root cause is:
+- do_sys_open
+ - f2fs_lookup
+  - __f2fs_find_entry
+   - f2fs_i_depth_write
+    - f2fs_mark_inode_dirty_sync
+     - f2fs_dirty_inode
+      - set_inode_flag(inode, FI_DIRTY_INODE)
 
-Fixes: 05107edc9101 ("selftests: sigaltstack: fix -Wuninitialized")
-Cc: stable@vger.kernel.org # v6.3+
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240520062647.688667-1-mpe@ellerman.id.au
+- umount
+ - kill_f2fs_super
+  - kill_block_super
+   - generic_shutdown_super
+    - sync_filesystem
+    : sb is readonly, skip sync_filesystem()
+    - evict_inodes
+     - iput
+      - f2fs_evict_inode
+       - f2fs_bug_on(sbi, is_inode_flag_set(inode, FI_DIRTY_INODE))
+       : trigger kernel panic
+
+When we try to repair i_current_depth in readonly filesystem, let's
+skip dirty inode to avoid panic in later f2fs_evict_inode().
+
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000e890bc0609a55cff@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/sigaltstack/current_stack_pointer.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-+++ b/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-@@ -8,7 +8,7 @@ register unsigned long sp asm("sp");
- register unsigned long sp asm("esp");
- #elif __loongarch64
- register unsigned long sp asm("$sp");
--#elif __ppc__
-+#elif __powerpc__
- register unsigned long sp asm("r1");
- #elif __s390x__
- register unsigned long sp asm("%15");
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -23,6 +23,9 @@ void f2fs_mark_inode_dirty_sync(struct i
+ 	if (is_inode_flag_set(inode, FI_NEW_INODE))
+ 		return;
+ 
++	if (f2fs_readonly(F2FS_I_SB(inode)->sb))
++		return;
++
+ 	if (f2fs_inode_dirtied(inode, sync))
+ 		return;
+ 
 
 
 
