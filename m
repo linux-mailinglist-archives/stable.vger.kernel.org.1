@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-68838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F6E95343D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 480119532B0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 098FCB290B5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAEF1F22493
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21201A00F5;
-	Thu, 15 Aug 2024 14:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C9F1AED42;
+	Thu, 15 Aug 2024 14:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G72bxEs8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/+07akh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FF11A76A4;
-	Thu, 15 Aug 2024 14:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BA71AED38;
+	Thu, 15 Aug 2024 14:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731822; cv=none; b=LzEEbTHZrcPpfcaPPN91Un8qlvH64D+9Z+SiIfvLE8sXC+xjpR03J4TyHJHytJCr8HorqNVDvsXeX30U4KQingq4t3ufnormmpHAkQLfu6VYupT9jF1knkMw3OVI9rQfHlfrUjfcI9cNQYdfnXcyFpBWhvGsTGhSSxlHNmcZPDI=
+	t=1723730784; cv=none; b=mOPcuDjGdfc3CKEbOweZJDWp46q0OJMcX4RaZo+HBZAn9ad6qomlwrmiCqcxb2h5Kq+YaSfbKagEvUy+vvryjF+0X6nCkQK8zT2KoiF7+tccVqMFuI7zQeZdeEtWON48EoeJ957yHNkqLPiOm2dsoIu6oVUaJyD4o4c3hQqIzZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731822; c=relaxed/simple;
-	bh=hDbvLinP0MSH8ozdXSL11iRlCvO1liRe7ql8qozDaV0=;
+	s=arc-20240116; t=1723730784; c=relaxed/simple;
+	bh=Ag4ajZPy8LI2KotH3sCEHQnWW0PVoEbnj6Ia1Y5osoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUjNsY165w2BsuBcOuj1XZtnDpTed2SaGF4gDKeRPZRwySRKZI+2UxUmqAzpgbw75OUIMe31g6VVB0dOaYcAt1C5HpBSR0k66pDmT6J1uNPl59qMMsWYhaR04wZA2UuDqtjxjZwGxeEwBwLXgByyX5X0Y12nPv6+pTg1094m428=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G72bxEs8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B844C32786;
-	Thu, 15 Aug 2024 14:23:41 +0000 (UTC)
+	 MIME-Version; b=lXnoUBouyLbsRSX9ZVV2rLKOyQMku6caWObtj2ZHtHgqOS7/kMFgW1pFIYF+o3I/3lC3EhLEf6T1b0E2y5V+OP6OSokRkNU2cb6wwBj1q7UQRR3mt1coq8AUt+rLo53ztwEHXgXYW1jlq18e12iXLxvVBvHpwfkPpLXgXcU4jOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/+07akh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D05C32786;
+	Thu, 15 Aug 2024 14:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731821;
-	bh=hDbvLinP0MSH8ozdXSL11iRlCvO1liRe7ql8qozDaV0=;
+	s=korg; t=1723730784;
+	bh=Ag4ajZPy8LI2KotH3sCEHQnWW0PVoEbnj6Ia1Y5osoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G72bxEs876Se+69vuJLgnVh4jsbku62FCdCx7Owy0ES3rzqmk+q95YpOoFTDPrwMD
-	 PeJF34jvjgd/TQJTVv32C9MAvFPSqRASgyoHyr2spnI63mmS/a+rwYSrwFxdZgHoLF
-	 +G0tSnXIC4/O6Bz1kawp7zsf+XRBpRkg9u7rK9sI=
+	b=h/+07akhDL4wpk94QSgzS+08XarOY/egIS3VJ5MAJnyvZ1H6ehBQg6GXQA79aIwk9
+	 tKnoAJcbfj8Jxg57LvfyxeZhOVpvRCj2GC7DPZ4LhUgbPKeEq2CVpCpa7NkSqkz0v4
+	 QwM3IMTMFlohcA5geT3njEnt63QFdWwzwVFncMsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 5.4 231/259] usb: vhci-hcd: Do not drop references before new references are gained
+	Jann Horn <jannh@google.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Jonathan Cavitt <Jonathan.cavitt@intel.com>
+Subject: [PATCH 6.1 30/38] drm/i915/gem: Fix Virtual Memory mapping boundaries calculation
 Date: Thu, 15 Aug 2024 15:26:04 +0200
-Message-ID: <20240815131911.699259059@linuxfoundation.org>
+Message-ID: <20240815131834.116000818@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +66,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-commit afdcfd3d6fcdeca2735ca8d994c5f2d24a368f0a upstream.
+commit 8bdd9ef7e9b1b2a73e394712b72b22055e0e26c3 upstream.
 
-At a few places the driver carries stale pointers
-to references that can still be used. Make sure that does not happen.
-This strictly speaking closes ZDI-CAN-22273, though there may be
-similar races in the driver.
+Calculating the size of the mapped area as the lesser value
+between the requested size and the actual size does not consider
+the partial mapping offset. This can cause page fault access.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240709113851.14691-1-oneukum@suse.com
+Fix the calculation of the starting and ending addresses, the
+total size is now deduced from the difference between the end and
+start addresses.
+
+Additionally, the calculations have been rewritten in a clearer
+and more understandable form.
+
+Fixes: c58305af1835 ("drm/i915: Use remap_io_mapping() to prefault all PTE in a single pass")
+Reported-by: Jann Horn <jannh@google.com>
+Co-developed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: <stable@vger.kernel.org> # v4.9+
+Reviewed-by: Jann Horn <jannh@google.com>
+Reviewed-by: Jonathan Cavitt <Jonathan.cavitt@intel.com>
+[Joonas: Add Requires: tag]
+Requires: 60a2066c5005 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-3-andi.shyti@linux.intel.com
+(cherry picked from commit 97b6784753da06d9d40232328efc5c5367e53417)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/usbip/vhci_hcd.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c |   53 +++++++++++++++++++++++++++----
+ 1 file changed, 47 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/usbip/vhci_hcd.c
-+++ b/drivers/usb/usbip/vhci_hcd.c
-@@ -746,6 +746,7 @@ static int vhci_urb_enqueue(struct usb_h
- 	 *
- 	 */
- 	if (usb_pipedevice(urb->pipe) == 0) {
-+		struct usb_device *old;
- 		__u8 type = usb_pipetype(urb->pipe);
- 		struct usb_ctrlrequest *ctrlreq =
- 			(struct usb_ctrlrequest *) urb->setup_packet;
-@@ -756,14 +757,15 @@ static int vhci_urb_enqueue(struct usb_h
- 			goto no_need_xmit;
- 		}
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -290,6 +290,41 @@ out:
+ 	return i915_error_to_vmf_fault(err);
+ }
  
-+		old = vdev->udev;
- 		switch (ctrlreq->bRequest) {
- 		case USB_REQ_SET_ADDRESS:
- 			/* set_address may come when a device is reset */
- 			dev_info(dev, "SetAddress Request (%d) to port %d\n",
- 				 ctrlreq->wValue, vdev->rhport);
- 
--			usb_put_dev(vdev->udev);
- 			vdev->udev = usb_get_dev(urb->dev);
-+			usb_put_dev(old);
- 
- 			spin_lock(&vdev->ud.lock);
- 			vdev->ud.status = VDEV_ST_USED;
-@@ -782,8 +784,8 @@ static int vhci_urb_enqueue(struct usb_h
- 				usbip_dbg_vhci_hc(
- 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
- 
--			usb_put_dev(vdev->udev);
- 			vdev->udev = usb_get_dev(urb->dev);
-+			usb_put_dev(old);
- 			goto out;
- 
- 		default:
-@@ -1090,6 +1092,7 @@ static void vhci_shutdown_connection(str
- static void vhci_device_reset(struct usbip_device *ud)
++static void set_address_limits(struct vm_area_struct *area,
++			       struct i915_vma *vma,
++			       unsigned long obj_offset,
++			       unsigned long *start_vaddr,
++			       unsigned long *end_vaddr)
++{
++	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
++	long start, end; /* memory boundaries */
++
++	/*
++	 * Let's move into the ">> PAGE_SHIFT"
++	 * domain to be sure not to lose bits
++	 */
++	vm_start = area->vm_start >> PAGE_SHIFT;
++	vm_end = area->vm_end >> PAGE_SHIFT;
++	vma_size = vma->size >> PAGE_SHIFT;
++
++	/*
++	 * Calculate the memory boundaries by considering the offset
++	 * provided by the user during memory mapping and the offset
++	 * provided for the partial mapping.
++	 */
++	start = vm_start;
++	start -= obj_offset;
++	start += vma->gtt_view.partial.offset;
++	end = start + vma_size;
++
++	start = max_t(long, start, vm_start);
++	end = min_t(long, end, vm_end);
++
++	/* Let's move back into the "<< PAGE_SHIFT" domain */
++	*start_vaddr = (unsigned long)start << PAGE_SHIFT;
++	*end_vaddr = (unsigned long)end << PAGE_SHIFT;
++}
++
+ static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
  {
- 	struct vhci_device *vdev = container_of(ud, struct vhci_device, ud);
-+	struct usb_device *old = vdev->udev;
- 	unsigned long flags;
+ #define MIN_CHUNK_PAGES (SZ_1M >> PAGE_SHIFT)
+@@ -302,14 +337,18 @@ static vm_fault_t vm_fault_gtt(struct vm
+ 	struct i915_ggtt *ggtt = to_gt(i915)->ggtt;
+ 	bool write = area->vm_flags & VM_WRITE;
+ 	struct i915_gem_ww_ctx ww;
++	unsigned long obj_offset;
++	unsigned long start, end; /* memory boundaries */
+ 	intel_wakeref_t wakeref;
+ 	struct i915_vma *vma;
+ 	pgoff_t page_offset;
++	unsigned long pfn;
+ 	int srcu;
+ 	int ret;
  
- 	spin_lock_irqsave(&ud->lock, flags);
-@@ -1097,8 +1100,8 @@ static void vhci_device_reset(struct usb
- 	vdev->speed  = 0;
- 	vdev->devid  = 0;
+-	/* We don't use vmf->pgoff since that has the fake offset */
++	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
+ 	page_offset = (vmf->address - area->vm_start) >> PAGE_SHIFT;
++	page_offset += obj_offset;
  
--	usb_put_dev(vdev->udev);
- 	vdev->udev = NULL;
-+	usb_put_dev(old);
+ 	trace_i915_gem_object_fault(obj, page_offset, true, write);
  
- 	if (ud->tcp_socket) {
- 		sockfd_put(ud->tcp_socket);
+@@ -393,12 +432,14 @@ retry:
+ 	if (ret)
+ 		goto err_unpin;
+ 
++	set_address_limits(area, vma, obj_offset, &start, &end);
++
++	pfn = (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
++	pfn += (start - area->vm_start) >> PAGE_SHIFT;
++	pfn += obj_offset - vma->gtt_view.partial.offset;
++
+ 	/* Finally, remap it using the new GTT offset */
+-	ret = remap_io_mapping(area,
+-			       area->vm_start + (vma->gtt_view.partial.offset << PAGE_SHIFT),
+-			       (ggtt->gmadr.start + vma->node.start) >> PAGE_SHIFT,
+-			       min_t(u64, vma->size, area->vm_end - area->vm_start),
+-			       &ggtt->iomap);
++	ret = remap_io_mapping(area, start, pfn, end - start, &ggtt->iomap);
+ 	if (ret)
+ 		goto err_fence;
+ 
 
 
 
