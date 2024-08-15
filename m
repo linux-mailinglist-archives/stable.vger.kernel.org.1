@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-68048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D465953060
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:42:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75468953061
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04A98287F54
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:42:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A5A91F244BA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6862119EED7;
-	Thu, 15 Aug 2024 13:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCF119DF60;
+	Thu, 15 Aug 2024 13:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fI5CWWhv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1kSBQ7z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2777B19E7EF;
-	Thu, 15 Aug 2024 13:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A79E18D630;
+	Thu, 15 Aug 2024 13:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729332; cv=none; b=k58APhF+yzIEyKBlCZdzml4H0VfLt9xToDEkcL9gUD4AvSFBIQBsiqTZXBcQFn8v8yp444KnjwqGPqCtNiMOh0gvhWYNsgcZEHvL8FD0BcAbcwyNRgoo2++SMX5rM1Nxcte2WYPUC8HvKN1bJQMM71D5eA7QA7GXm6TgI3Uk4IQ=
+	t=1723729335; cv=none; b=dUkQixuELdEAknFwdyGOw1W+aPezyYfcWwzEkgqqHAteL8kuljzHIgHiemIZdgiTSs2vHKBm6trLPOk+59k3VmsTmRtCFgEqOnAXQ1fHtOmkKRZEJsp1HCH/IzTS08G+PQSGAganXNyELApddUy8+lihU3KoWLEar07QGRODlyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729332; c=relaxed/simple;
-	bh=uzTXY+lF5VDsJtwUQEauuuqWq4kmiZ+6au0cdJjmy+4=;
+	s=arc-20240116; t=1723729335; c=relaxed/simple;
+	bh=p7iIJF5iJifOBiD+esPHvKOVe7qRUQkb0aCBoZuiHtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=drH7TkwYE2EJCYnpIk28HDRTNeidrKeyZfp9xkKGCJExpHf8EcDjeU8Kcj2sOjFLnpQboClPNVjlY2fSx8nd5MIxQEMQVqHfTFn0r7GilFbT1j1BLXkCAKgmEaueOKIwcTN3lqi/Yzi6A+nsGlehG8YEsT44SUIIztJlyyrsbfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fI5CWWhv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902F4C32786;
-	Thu, 15 Aug 2024 13:42:11 +0000 (UTC)
+	 MIME-Version; b=o/eHgdAyV6s3IG1B93bvocA0xQWYNV3w27t0YE9u9J2TmSOG+1YrKeT+vlVFJg7LkEzrtbfQIN0JAtPt0Y7dH9cK3cmPcKjXAofcFYVTYSZGv/0+FsV0RWkXL86I/wBcE83DSioCba1QMvvvSTMyJBSsIiWFzVrTES3xze0fz40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1kSBQ7z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE250C32786;
+	Thu, 15 Aug 2024 13:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729332;
-	bh=uzTXY+lF5VDsJtwUQEauuuqWq4kmiZ+6au0cdJjmy+4=;
+	s=korg; t=1723729335;
+	bh=p7iIJF5iJifOBiD+esPHvKOVe7qRUQkb0aCBoZuiHtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fI5CWWhvwSCvr53YcfidofmR3RU8uUB6c5BuOrELNt9UvAHIP6BypkKK5BmG6vKSY
-	 osrbMINUkrNstqNAvV6eQ5LZBM+GDjmb3PF33xJZm7abRfqgb98cFP8ovzFYXQywos
-	 jKrYvSscVTX67Qx5zhBDXcr74dzqJkYYJJO/ruFQ=
+	b=G1kSBQ7zSqcC4QvM7DPNNEcVskWIR4nmt7DEBWT7Gkbru3/KHXVm1UP5Dbp/Um32k
+	 mqgCAGZe7OwfDVAOBR5VaHUEVRPwBVswCg2kySK1mbBxidfwGg6B22hZEhsLTg+dQ3
+	 kkleWPlPXS29yCREUNQFf8PipRLOvy45lMIHoYPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 033/484] arm64: dts: mediatek: mt7622: fix "emmc" pinctrl mux
-Date: Thu, 15 Aug 2024 15:18:11 +0200
-Message-ID: <20240815131942.553609558@linuxfoundation.org>
+Subject: [PATCH 5.15 034/484] arm64: dts: mediatek: mt8183-kukui-jacuzzi: Add ports node for anx7625
+Date: Thu, 15 Aug 2024 15:18:12 +0200
+Message-ID: <20240815131942.592611474@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -60,68 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit aebba1030a5766cdf894ed4ab0cac7aed5aee9c1 ]
+[ Upstream commit 4055416e6c51347e7dd5784065263fe0ced0bb7d ]
 
-Value "emmc_rst" is a group name and should be part of the "groups"
-property.
+The anx7625 binding requires a "ports" node as a container for the
+"port" nodes. The jacuzzi dtsi file is missing it.
 
-This fixes:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
-        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
-arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
-        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
+Add a "ports" node under the anx7625 node, and move the port related
+nodes and properties under it.
 
-Fixes: 3725ba3f5574 ("arm64: dts: mt7622: add pinctrl related device nodes")
-Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240604074916.7929-1-zajec5@gmail.com
+Link: https://lore.kernel.org/r/20240131083931.3970388-1-wenst@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts | 4 ++--
- arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ .../dts/mediatek/mt8183-kukui-jacuzzi.dtsi    | 25 +++++++++++--------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-index 483f7ab4f31c7..b4aa9a9712fe5 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-@@ -285,8 +285,8 @@ asm_sel {
- 	/* eMMC is shared pin with parallel NAND */
- 	emmc_pins_default: emmc-pins-default {
- 		mux {
--			function = "emmc", "emmc_rst";
--			groups = "emmc";
-+			function = "emmc";
-+			groups = "emmc", "emmc_rst";
- 		};
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
+index 88fca67dead01..13757d7ac792a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
+@@ -169,21 +169,24 @@ anx_bridge: anx7625@58 {
+ 		vdd18-supply = <&pp1800_mipibrdg>;
+ 		vdd33-supply = <&vddio_mipibrdg>;
  
- 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-index 28e17a7e2a5a6..e1ad840dc3175 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-@@ -249,8 +249,8 @@ &pio {
- 	/* eMMC is shared pin with parallel NAND */
- 	emmc_pins_default: emmc-pins-default {
- 		mux {
--			function = "emmc", "emmc_rst";
--			groups = "emmc";
-+			function = "emmc";
-+			groups = "emmc", "emmc_rst";
- 		};
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		port@0 {
+-			reg = <0>;
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
  
- 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
+-			anx7625_in: endpoint {
+-				remote-endpoint = <&dsi_out>;
++			port@0 {
++				reg = <0>;
++
++				anx7625_in: endpoint {
++					remote-endpoint = <&dsi_out>;
++				};
+ 			};
+-		};
+ 
+-		port@1 {
+-			reg = <1>;
++			port@1 {
++				reg = <1>;
+ 
+-			anx7625_out: endpoint {
+-				remote-endpoint = <&panel_in>;
++				anx7625_out: endpoint {
++					remote-endpoint = <&panel_in>;
++				};
+ 			};
+ 		};
+ 	};
 -- 
 2.43.0
 
