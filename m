@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-68766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986839533DD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9188A953253
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAD2C1C25490
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4BC1F21DAA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1FB1A01CB;
-	Thu, 15 Aug 2024 14:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B405B176AD7;
+	Thu, 15 Aug 2024 14:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbBBayE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns4MWvFB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6811AC896;
-	Thu, 15 Aug 2024 14:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704DE1A0710;
+	Thu, 15 Aug 2024 14:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731598; cv=none; b=IALIZU8g8l8F/B3KKhMwk3rd1F3rDfBpsmbebKBhjFumyu8bIlvcpJh072uZj+N0Ewv284KGTGw2AA3Al68z5modWvjJ8xaqmMoU16mk7T2Yk9ogKC+Yhv7ErsF3xiYKlFr1PNtAIPhCGS5I1Hg8hWwT2N2dg/S2UK+HmT0q92c=
+	t=1723730589; cv=none; b=Vy7wjGGJOvOlpDikPap3ZD8UrBBXnCT2qoxZykJviwTF1qjOEkNkgz7YXF4DWPItESD4YFMQ4DFsZCc7RmxHj8Typ8Y/vsp1305eRiRcr+A2jYFK3KaoURdXwjQHXkzu2JzuTKkOfGdqzuxNUuwqsDWG/IKOAmBU8rXlg+rdY3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731598; c=relaxed/simple;
-	bh=uAJP1AjGWD+ZU8mkhg1v0JuFKJHSnQPYCU0EkR+qlP4=;
+	s=arc-20240116; t=1723730589; c=relaxed/simple;
+	bh=coubS2iPOSyG2XDTEAXXin0O+Qdo/3LH6iWskwDua28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ApWZ3UPR+7kv80z4EmTTTedh7u79W62KPYubzVsRJj7e0zoQDnUk8PwiFML+PH4oOGwJY6nkWgI8+HkuMHVrpGJ76eB1Y+24ZlhKJBDQ/dVFrRfwWeCgPtOWxYiOeJPJE2zHQHLAUdPj9DPU838zd2MiqwqBaWKnAD0gnQYy2gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbBBayE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5CFC32786;
-	Thu, 15 Aug 2024 14:19:57 +0000 (UTC)
+	 MIME-Version; b=I1sW5DiGDtvNSGa7rn0hdsTRbMkENHYMQtDdlTt2Z2XW55d3scAUGK1Ml8bk0uMJ0e9P/Z4fkpQuW1vr4CX16nhTQUvV9++v0rOp9koKlKgZxpV7GVUkY3beqaMwwR1aKDYI+VBpC9w/mrhrJHG5C+VVqDW1RDbB5+xZEeVB9ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns4MWvFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874AAC32786;
+	Thu, 15 Aug 2024 14:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731597;
-	bh=uAJP1AjGWD+ZU8mkhg1v0JuFKJHSnQPYCU0EkR+qlP4=;
+	s=korg; t=1723730589;
+	bh=coubS2iPOSyG2XDTEAXXin0O+Qdo/3LH6iWskwDua28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GbBBayE63TCBlhGI0TqgM8cBAi4whMTUHuDAuFt27ueKnlOAyj0raQ0Mr6f7GpfpC
-	 f0c0edgsSBUAjz6sr6lTwFBejpWeMb2+BK22wPtA0WZRzpQGbgcKZinlzU/1zwEBpR
-	 jHt/f2HsoZSAnZEzMe5gylZnGG6N85+7mXoc94rE=
+	b=ns4MWvFB4gEPO4dsj9ovJdTy8y39EUMwWZ3XfSpMsxdIyQsU13VKv7aD3GP48AJCs
+	 RsfdiNDCSUvVTeDXTugb6WxVI9y1tczXCRYTEBeHTCZneYO78Pnqwf5s+lgGdSBfzX
+	 MW/AcLaj8pm2K6xHimfCoPGB7mtzMrZRMShohiaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sylvain BERTRAND <sylvain.bertrand@legeek.net>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 180/259] ALSA: usb-audio: Correct surround channels in UAC1 channel map
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.15 455/484] mptcp: fix bad RCVPRUNED mib accounting
 Date: Thu, 15 Aug 2024 15:25:13 +0200
-Message-ID: <20240815131909.730064865@linuxfoundation.org>
+Message-ID: <20240815131959.041709030@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit b7b7e1ab7619deb3b299b5e5c619c3e6f183a12d upstream.
+commit 0a567c2a10033bf04ed618368d179bce6977984b upstream.
 
-USB-audio driver puts SNDRV_CHMAP_SL and _SR as left and right
-surround channels for UAC1 channel map, respectively.  But they should
-have been SNDRV_CHMAP_RL and _RR; the current value *_SL and _SR are
-rather "side" channels, not "surround".  I guess I took those
-mistakenly when I read the spec mentioning "surround left".
+Since its introduction, the mentioned MIB accounted for the wrong
+event: wake-up being skipped as not-needed on some edge condition
+instead of incoming skb being dropped after landing in the (subflow)
+receive queue.
 
-This patch corrects those entries to be the right channels.
+Move the increment in the correct location.
 
-Suggested-by: Sylvain BERTRAND <sylvain.bertrand@legeek.net>
-Closes: https://lore.kernel.orgZ/qIyJD8lhd8hFhlC@freedom
-Fixes: 04324ccc75f9 ("ALSA: usb-audio: add channel map support")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240731142018.24750-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: ce599c516386 ("mptcp: properly account bulk freed memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in protocol.c, because the commit 6511882cdd82 ("mptcp:
+  allocate fwd memory separately on the rx and tx path") is not in this
+  version. The fix can still be applied before the 'goto drop'. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -245,8 +245,8 @@ static struct snd_pcm_chmap_elem *conver
- 		SNDRV_CHMAP_FR,		/* right front */
- 		SNDRV_CHMAP_FC,		/* center front */
- 		SNDRV_CHMAP_LFE,	/* LFE */
--		SNDRV_CHMAP_SL,		/* left surround */
--		SNDRV_CHMAP_SR,		/* right surround */
-+		SNDRV_CHMAP_RL,		/* left surround */
-+		SNDRV_CHMAP_RR,		/* right surround */
- 		SNDRV_CHMAP_FLC,	/* left of center */
- 		SNDRV_CHMAP_FRC,	/* right of center */
- 		SNDRV_CHMAP_RC,		/* surround */
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -288,8 +288,10 @@ static bool __mptcp_move_skb(struct mptc
+ 	if (!sk_rmem_schedule(sk, skb, skb->truesize)) {
+ 		int amount = sk_mem_pages(skb->truesize) << SK_MEM_QUANTUM_SHIFT;
+ 
+-		if (ssk->sk_forward_alloc < amount)
++		if (ssk->sk_forward_alloc < amount) {
++			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
+ 			goto drop;
++		}
+ 
+ 		ssk->sk_forward_alloc -= amount;
+ 		sk->sk_forward_alloc += amount;
+@@ -774,10 +776,8 @@ void mptcp_data_ready(struct sock *sk, s
+ 		sk_rbuf = ssk_rbuf;
+ 
+ 	/* over limit? can't append more skbs to msk, Also, no need to wake-up*/
+-	if (__mptcp_rmem(sk) > sk_rbuf) {
+-		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
++	if (__mptcp_rmem(sk) > sk_rbuf)
+ 		return;
+-	}
+ 
+ 	/* Wake-up the reader only for in-sequence data */
+ 	mptcp_data_lock(sk);
 
 
 
