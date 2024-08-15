@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9116A9533FE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E7D953590
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E21FB2247C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D49181F26BD8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324E91A00FF;
-	Thu, 15 Aug 2024 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C561684AC;
+	Thu, 15 Aug 2024 14:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGUkc8EC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3+UN4FA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35F21E526;
-	Thu, 15 Aug 2024 14:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F83214;
+	Thu, 15 Aug 2024 14:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731685; cv=none; b=OsM8v14G7ILeRakchwm3Grz3nXVnMb+xtH+V6RbbEOSDqrRetxXNy7MyoJUzBRjkwpLjoUe3Zd1D8P3hUpCtz8RT8o7Z83hqKXV9deo4ohiVRsuD6eWPbkK40Vjb4Qcm8RWSlyH6oOcjFpum8kUPjoVcFnTIokyet3/l7xYN+BQ=
+	t=1723732746; cv=none; b=Lk1o9o8mruffMQOl7gfqDO9Vjd/Ujm7RhAyDPldFtoWTnu/vcx/l1uN5BWbLDf+sTYVCRSifrB7bwxLfP0/BzSczYbrruc+na+Mpa3TZyFHraxiSCoXgYb4QwUhb/3WpgQ3ZpWDvqU2toaa21JKt+lZNkK+gvklzSED0i6WDm08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731685; c=relaxed/simple;
-	bh=tNWRTiVbJIvOOD77ShOke4aTU00QecqYQoSlrfRePpo=;
+	s=arc-20240116; t=1723732746; c=relaxed/simple;
+	bh=WIoafgL4SwPUuZ2aaYQj04ARXJA84S1TX/6zd95Jb4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7ir87fa/S9y+z/1ZxVPuLKxaZeho4ElD/+a9S8b53nFJvn0q9f/ljspJPoWdC0Y59BddUNvzHVEv52j14Bwq5OfLghDoYZClPNaEcugaficA4TjgTLiCPWSXRnZjNpIJQegiiWx/0kDwYN9q+AdU4CJjaaNvfUpZwtZobNFEbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGUkc8EC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5514AC32786;
-	Thu, 15 Aug 2024 14:21:24 +0000 (UTC)
+	 MIME-Version; b=f1AsE6cB7GvTwnWuI/ia7hAlZJ++1se6uGJ8x9eKgWDRD/43xemEuDoLNvkNkP1r3YO2X00wLRokZzESkG2oWxtasNbIk9TEyRGerKKWJDEgCzJVZ02tyyFJW8Z0DV2X4TSB9NIgCuGoUTAFG/SrdyqcMy1rtv/TJRrTZhBsrDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3+UN4FA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177CDC32786;
+	Thu, 15 Aug 2024 14:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731684;
-	bh=tNWRTiVbJIvOOD77ShOke4aTU00QecqYQoSlrfRePpo=;
+	s=korg; t=1723732746;
+	bh=WIoafgL4SwPUuZ2aaYQj04ARXJA84S1TX/6zd95Jb4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGUkc8ECi21w/db3e0rAFt5fMxiFnkKfUkFCG3p9wSBkkVo4q3MfAg5TQ4xYOQLMH
-	 RBzfZ9CghCjotVwxQmD2G1/dGiIlmQK6+ilpbAsECp5QHj+blLKlipPZ2X67DuWydW
-	 fqV/e/5Y2VFX6ib22nsmZKAzPNRjwPKEDEs4i/CQ=
+	b=L3+UN4FAntR2RMs7gTjszxFsLYpTImfNFNYrDPT0Ozg8wlB8/L3Er32mT8A07zmxm
+	 fLBeAJ8d3xrRHIpCGx5IHdfhSHD3UdRRSbQQQyv1vhLDcAOixfBaV4PiTdPwp013Ho
+	 goeiIwcKSuBKW+BzUSCmdv4NHSr/2NrDC/XR4kJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 206/259] SUNRPC: Fix a race to wake a sync task
+Subject: [PATCH 5.10 273/352] drm/amdgpu/pm: Fix the null pointer dereference in apply_state_adjust_rules
 Date: Thu, 15 Aug 2024 15:25:39 +0200
-Message-ID: <20240815131910.727661644@linuxfoundation.org>
+Message-ID: <20240815131930.003421844@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit ed0172af5d6fc07d1b40ca82f5ca3979300369f7 ]
+[ Upstream commit d19fb10085a49b77578314f69fff21562f7cd054 ]
 
-We've observed NFS clients with sync tasks sleeping in __rpc_execute
-waiting on RPC_TASK_QUEUED that have not responded to a wake-up from
-rpc_make_runnable().  I suspect this problem usually goes unnoticed,
-because on a busy client the task will eventually be re-awoken by another
-task completion or xprt event.  However, if the state manager is draining
-the slot table, a sync task missing a wake-up can result in a hung client.
+Check the pointer value to fix potential null pointer
+dereference
 
-We've been able to prove that the waker in rpc_make_runnable() successfully
-calls wake_up_bit() (ie- there's no race to tk_runstate), but the
-wake_up_bit() call fails to wake the waiter.  I suspect the waker is
-missing the load of the bit's wait_queue_head, so waitqueue_active() is
-false.  There are some very helpful comments about this problem above
-wake_up_bit(), prepare_to_wait(), and waitqueue_active().
-
-Fix this by inserting smp_mb__after_atomic() before the wake_up_bit(),
-which pairs with prepare_to_wait() calling set_current_state().
-
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Acked-by: Yang Wang<kevinyang.wang@amd.com>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/sched.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c    |  7 +++++--
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c    | 14 ++++++++------
+ .../gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c  |  7 +++++--
+ 3 files changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index a5c6a3d05741a..df83c59cde7fe 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -368,8 +368,10 @@ static void rpc_make_runnable(struct workqueue_struct *wq,
- 	if (RPC_IS_ASYNC(task)) {
- 		INIT_WORK(&task->u.tk_work, rpc_async_schedule);
- 		queue_work(wq, &task->u.tk_work);
--	} else
-+	} else {
-+		smp_mb__after_atomic();
- 		wake_up_bit(&task->tk_runstate, RPC_TASK_QUEUED);
-+	}
- }
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 7931528bc864b..5e72b7555edae 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2983,8 +2983,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 			const struct pp_power_state *current_ps)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+-	struct smu7_power_state *smu7_ps =
+-				cast_phw_smu7_power_state(&request_ps->hardware);
++	struct smu7_power_state *smu7_ps;
+ 	uint32_t sclk;
+ 	uint32_t mclk;
+ 	struct PP_Clocks minimum_clocks = {0};
+@@ -2998,6 +2997,10 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 	int32_t count;
+ 	int32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
  
- /*
++	smu7_ps = cast_phw_smu7_power_state(&request_ps->hardware);
++	if (!smu7_ps)
++		return -EINVAL;
++
+ 	data->battery_state = (PP_StateUILabel_Battery ==
+ 			request_ps->classification.ui_label);
+ 
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+index 35ed47ebaf09d..35d0ff57a5960 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+@@ -1051,16 +1051,18 @@ static int smu8_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 				struct pp_power_state  *prequest_ps,
+ 			const struct pp_power_state *pcurrent_ps)
+ {
+-	struct smu8_power_state *smu8_ps =
+-				cast_smu8_power_state(&prequest_ps->hardware);
+-
+-	const struct smu8_power_state *smu8_current_ps =
+-				cast_const_smu8_power_state(&pcurrent_ps->hardware);
+-
++	struct smu8_power_state *smu8_ps;
++	const struct smu8_power_state *smu8_current_ps;
+ 	struct smu8_hwmgr *data = hwmgr->backend;
+ 	struct PP_Clocks clocks = {0, 0, 0, 0};
+ 	bool force_high;
+ 
++	smu8_ps = cast_smu8_power_state(&prequest_ps->hardware);
++	smu8_current_ps = cast_const_smu8_power_state(&pcurrent_ps->hardware);
++
++	if (!smu8_ps || !smu8_current_ps)
++		return -EINVAL;
++
+ 	smu8_ps->need_dfs_bypass = true;
+ 
+ 	data->battery_state = (PP_StateUILabel_Battery == prequest_ps->classification.ui_label);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index 4dc27ec4d012d..10678b5199957 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3232,8 +3232,7 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 			const struct pp_power_state *current_ps)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+-	struct vega10_power_state *vega10_ps =
+-				cast_phw_vega10_power_state(&request_ps->hardware);
++	struct vega10_power_state *vega10_ps;
+ 	uint32_t sclk;
+ 	uint32_t mclk;
+ 	struct PP_Clocks minimum_clocks = {0};
+@@ -3251,6 +3250,10 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
+ 	uint32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
+ 	uint32_t latency;
+ 
++	vega10_ps = cast_phw_vega10_power_state(&request_ps->hardware);
++	if (!vega10_ps)
++		return -EINVAL;
++
+ 	data->battery_state = (PP_StateUILabel_Battery ==
+ 			request_ps->classification.ui_label);
+ 
 -- 
 2.43.0
 
