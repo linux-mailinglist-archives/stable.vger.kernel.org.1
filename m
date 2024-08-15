@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-68891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9E395347F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:27:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C25A953486
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 655821F29269
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:27:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5C7AB274F5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56831A00DF;
-	Thu, 15 Aug 2024 14:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EF71A01CB;
+	Thu, 15 Aug 2024 14:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WxHe7aL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWQy0UWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F651AC896;
-	Thu, 15 Aug 2024 14:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD651AC8BB;
+	Thu, 15 Aug 2024 14:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731993; cv=none; b=LBStWhLpmrIACnEkqx+cuDFLkLYUZ0nsl/Jmgew/8wzJ8w800qMEsrvl0QPPxo7G5/x64qW5wxsLYTP7nsgwt/6VGmhUHlMNl+L0RY+T9xsKtQpYQO6w/GgpjMg65K4Z4+Nyq31KYg97GSVJOrfX9Yg5Ky5zeIpjvZN+LTbl+SA=
+	t=1723732009; cv=none; b=pf38Y39ATosoHlvzaPJs3bZdc1o6m3XyMxxrnX96LwHpdK/2JLgvWXp1pmitBPBx1fSDOH1qzzv05a4cwtaGHuiMEvnaoP0i0VLA55Z4J+AzBqtWbbHtASNt+16r3iNau/1M7XjIqyD1WNEb0mO9BVlvz4bGAd/x9vLAc/LhuWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731993; c=relaxed/simple;
-	bh=kDBLUUnRhrRoghIFdJ5TEOIYuvvn34ELV7z0GL1CyDw=;
+	s=arc-20240116; t=1723732009; c=relaxed/simple;
+	bh=xjIITa5PgNShWk1mlgmtKHNXm+Rsy47Eh2mvUAFtJ5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ua67fP6+Rlws/dMxCOkoyGW0Nc6SpGhvAtekvo+Kxlmp1FyOHpBmiaQc96/LOUtKfXZaWrMGfsJlbuSGtP7DcnZJ3LD3p0Cj7ILyt3wYf+XC4U4cgW9Vqas6OdbZefDyWbI6tev1kVEbrOdx7L2E2waj9iecpWshfi1dY8M5AvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WxHe7aL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D43C32786;
-	Thu, 15 Aug 2024 14:26:32 +0000 (UTC)
+	 MIME-Version; b=b2OGTf9N/q9f1E9z8AaFjgAZk3PfseW1QEeY4cp8we7l/rgnCd8RdGvvkmyF3FBAQ6xjyl8PCtY1VijvmgzDcIpi7y/xsyxMz9kzO31GjOIDOTC7Mi1/K7pjxOTTPTGMz72Qn6/OLD8GYIIoyzQ7zG7hWPyG/MzYgtFPrBw2jN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWQy0UWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8F6C32786;
+	Thu, 15 Aug 2024 14:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731993;
-	bh=kDBLUUnRhrRoghIFdJ5TEOIYuvvn34ELV7z0GL1CyDw=;
+	s=korg; t=1723732009;
+	bh=xjIITa5PgNShWk1mlgmtKHNXm+Rsy47Eh2mvUAFtJ5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1WxHe7aLElSriKb7bjvOF4py2lth73jF6bVU99M1bM+ezyTIJ2/jMeaDfAsqEiXqs
-	 fpxWvTeBV0qXjWjTMeUo90UncWM0Bfu+yV/ZpAFDM/3GokYcmqCZw5nkgVDnS4irxN
-	 LqV92+V3JSZPwxR4TszufqK0vB0hSGe7lq1kZ2FI=
+	b=rWQy0UWrrf+f3+i4E2VYZTqrxtJprg1CTBKwj50ixJudl7K7a1WWON7T1N8QzmntC
+	 hmYSHvPRzA7w1QDGMKTv4+IwVFgHLw7mJAnr+TD7E2wB2d+wTR+OIzIQoFhLChZ1Hd
+	 pNarW0/C60Ii/JtN3GwODz7x8wmwbJICkuvlpc4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <swboyd@chromium.org>,
+	Nitin Rawat <quic_nitirawa@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/352] soc: qcom: rpmh-rsc: Ensure irqs arent disabled by rpmh_rsc_send_data() callers
-Date: Thu, 15 Aug 2024 15:21:20 +0200
-Message-ID: <20240815131919.762336806@linuxfoundation.org>
+Subject: [PATCH 5.10 015/352] arm64: dts: qcom: msm8996: specify UFS core_clk frequencies
+Date: Thu, 15 Aug 2024 15:21:21 +0200
+Message-ID: <20240815131919.802157529@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -68,81 +69,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit e43111f52b9ec5c2d700f89a1d61c8d10dc2d9e9 ]
+[ Upstream commit 02f838b7f8cdfb7a96b7f08e7f6716f230bdecba ]
 
-Dan pointed out that Smatch is concerned about this code because it uses
-spin_lock_irqsave() and then calls wait_event_lock_irq() which enables
-irqs before going to sleep. The comment above the function says it
-should be called with interrupts enabled, but we simply hope that's true
-without really confirming that. Let's add a might_sleep() here to
-confirm that interrupts and preemption aren't disabled. Once we do that,
-we can change the lock to be non-saving, spin_lock_irq(), to clarify
-that we don't expect irqs to be disabled. If irqs are disabled by
-callers they're going to be enabled anyway in the wait_event_lock_irq()
-call which would be bad.
+Follow the example of other platforms and specify core_clk frequencies
+in the frequency table in addition to the core_clk_src frequencies. The
+driver should be setting the leaf frequency instead of some interim
+clock freq.
 
-This should make Smatch happier and find bad callers faster with the
-might_sleep(). We can drop the WARN_ON() in the caller because we have
-the might_sleep() now, simplifying the code.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/911181ed-c430-4592-ad26-4dc948834e08@moroto.mountain
-Fixes: 2bc20f3c8487 ("soc: qcom: rpmh-rsc: Sleep waiting for tcs slots to be free")
-Cc: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240509184129.3924422-1-swboyd@chromium.org
+Suggested-by: Nitin Rawat <quic_nitirawa@quicinc.com>
+Fixes: 57fc67ef0d35 ("arm64: dts: qcom: msm8996: Add ufs related nodes")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240408-msm8996-fix-ufs-v4-1-ee1a28bf8579@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/rpmh-rsc.c | 7 ++++---
- drivers/soc/qcom/rpmh.c     | 1 -
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
-index a297911afe571..26e6dd860b5d9 100644
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -629,13 +629,14 @@ int rpmh_rsc_send_data(struct rsc_drv *drv, const struct tcs_request *msg)
- {
- 	struct tcs_group *tcs;
- 	int tcs_id;
--	unsigned long flags;
-+
-+	might_sleep();
- 
- 	tcs = get_tcs_for_msg(drv, msg);
- 	if (IS_ERR(tcs))
- 		return PTR_ERR(tcs);
- 
--	spin_lock_irqsave(&drv->lock, flags);
-+	spin_lock_irq(&drv->lock);
- 
- 	/* Wait forever for a free tcs. It better be there eventually! */
- 	wait_event_lock_irq(drv->tcs_wait,
-@@ -654,7 +655,7 @@ int rpmh_rsc_send_data(struct rsc_drv *drv, const struct tcs_request *msg)
- 		write_tcs_reg_sync(drv, RSC_DRV_CMD_WAIT_FOR_CMPL, tcs_id, 0);
- 		enable_tcs_irq(drv, tcs_id, true);
- 	}
--	spin_unlock_irqrestore(&drv->lock, flags);
-+	spin_unlock_irq(&drv->lock);
- 
- 	/*
- 	 * These two can be done after the lock is released because:
-diff --git a/drivers/soc/qcom/rpmh.c b/drivers/soc/qcom/rpmh.c
-index b61e183ede694..707e176ed4ed8 100644
---- a/drivers/soc/qcom/rpmh.c
-+++ b/drivers/soc/qcom/rpmh.c
-@@ -193,7 +193,6 @@ static int __rpmh_write(const struct device *dev, enum rpmh_state state,
- 	rpm_msg->msg.state = state;
- 
- 	if (state == RPMH_ACTIVE_ONLY_STATE) {
--		WARN_ON(irqs_disabled());
- 		ret = rpmh_rsc_send_data(ctrlr_to_drv(ctrlr), &rpm_msg->msg);
- 	} else {
- 		/* Clean up our call by spoofing tx_done */
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index e990e727cc0fa..118fd1e47d5c4 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -927,7 +927,7 @@ ufshc: ufshc@624000 {
+ 				<&gcc GCC_UFS_RX_SYMBOL_0_CLK>;
+ 			freq-table-hz =
+ 				<100000000 200000000>,
+-				<0 0>,
++				<100000000 200000000>,
+ 				<0 0>,
+ 				<0 0>,
+ 				<0 0>,
 -- 
 2.43.0
 
