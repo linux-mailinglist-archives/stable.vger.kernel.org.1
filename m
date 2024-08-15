@@ -1,114 +1,103 @@
-Return-Path: <stable+bounces-69250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FA3953B7F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 22:32:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F6C953BAC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 22:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7099B21069
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 20:32:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3219B28263C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 20:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDA713D525;
-	Thu, 15 Aug 2024 20:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD80155C8D;
+	Thu, 15 Aug 2024 20:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RyV/ygaH"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C973F9FB;
-	Thu, 15 Aug 2024 20:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4976155757;
+	Thu, 15 Aug 2024 20:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723753955; cv=none; b=RZip+eUtyur38zBqaFz84X0D5R7yWJl+EXIYtVfl9WwUnU8E6L3CG+A63MBikLeRHE+zV5w6XvxmopLIowpkNKRYKCIxWp7sd3gARRCUqyr5GQ8RGyCsffVmp+SBdNr0EJnzI49HiKJOD3FotBuNdGOQT4xMW0GGAbGmyAnVjx8=
+	t=1723754467; cv=none; b=tnFvemv930pLwZAsFNaDlzAvCkyHO9baHC/YnqcBYWb+C/YphFPPo487Ed/JmItX2sWPj+/tqUOFc4DqxCCCuX+vLZmlEzETozbZYLx0p0BlRI+HUwdh+rxD49yyOBYtByxtZiGqHpsVfpqNtc1LwGx3j17UayQEJDXppZTHtNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723753955; c=relaxed/simple;
-	bh=vibj/4V33nbPNHml3MpuUHMM+NKK1B5C0WKKT2ETXxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t+PBtCObX1X4xbeuENOEBl3bgJjzjrAZ1rMFk2D8nszxytrsaQngn+v2qsU6SefPh6M55hFSvEzQijBMSPT1TQyZrW5Q29su+zMEktpbMcHFuAfu/bJZBvXa5OCZneaCZ2+luJPuzMOaDXTZolwkBizusZANSpFkhmEi5hLlWq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 7236E1C009C; Thu, 15 Aug 2024 22:32:30 +0200 (CEST)
-Date: Thu, 15 Aug 2024 22:32:29 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.10 00/22] 6.10.6-rc1 review
-Message-ID: <Zr5l3eldPD2ZMxmO@duo.ucw.cz>
-References: <20240815131831.265729493@linuxfoundation.org>
+	s=arc-20240116; t=1723754467; c=relaxed/simple;
+	bh=4KDaCGbSNqiZk9DvkwczOryM/7JAKZJoBwRV7J2iOQA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Oucv1yqp+5geZHklIO/7zjS5Yej1lspGa78BjtCABZwrGKwKFg604mNh62ngcgQDO2WXNI0R2QbSP/TjJE8+fZTqCBBsNXyFVEkfyrKu7KO8eFiExBSDWWzr4zXEAfFNYsDa+B69UPg9PC9aHO8ugbPs7N6Lx13lxXKa95TtJZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RyV/ygaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E154C4AF16;
+	Thu, 15 Aug 2024 20:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723754467;
+	bh=4KDaCGbSNqiZk9DvkwczOryM/7JAKZJoBwRV7J2iOQA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RyV/ygaHxqLeDKcNLkST1W9hvqTOSm9jmWb3eevfspe1avEkHl0izyJ/ICLHIVGDr
+	 FXcCSpbOUgj6QYs00c9z2hzGjnrKDlIaNGApf8FoqWmeGX69wyjuwRFDA7SHmWAp5i
+	 PB2bmFUxh8LWTRR+aYlMDcib/q6klTC9QumA0GS9r1AHZakRoVGEbGyyArjtg9wEiR
+	 1i0ViY52R1Ms2F55YvTBoRU4J8fcRbJ4Qh9Rms1BdJL+saZ+vQ7hIz67b2eg3PEKT5
+	 givQyozG7FOX+qn8LZ/kn0sCCgDhmGal23HuhaZLEIpUvzumV7ptgJqEfb3jbgDgHM
+	 xjD86fiQAawGA==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Jonathan Marek <jonathan@marek.ca>,
+	Robert Foss <rfoss@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Rob Clark <robdclark@gmail.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Georgi Djakov <djakov@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Mike Tipton <quic_mdtipton@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: Re: (subset) [PATCH 00/11] arm64: qcom: set of fixes for SM8350 platform
+Date: Thu, 15 Aug 2024 15:40:24 -0500
+Message-ID: <172375444824.1011236.1594911619896752687.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240804-sm8350-fixes-v1-0-1149dd8399fe@linaro.org>
+References: <20240804-sm8350-fixes-v1-0-1149dd8399fe@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CdRNAz8YduhKP4H5"
-Content-Disposition: inline
-In-Reply-To: <20240815131831.265729493@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
---CdRNAz8YduhKP4H5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sun, 04 Aug 2024 08:40:04 +0300, Dmitry Baryshkov wrote:
+> A set of fixes that target stability of the SM8350 platform.
+> 
+> 
 
-Hi!
+Applied, thanks!
 
-> This is the start of the stable review cycle for the 6.10.6 release.
-> There are 22 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+[11/11] arm64: defconfig: build CONFIG_REGULATOR_QCOM_REFGEN as module
+        commit: 115c14ee54aae1d61d2405f9b31f67c1e8947f4e
 
-CIP testing did not find any problems here:                                =
-            =20
-                                                                           =
-            =20
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.10.y      =20
-                                                                           =
-            =20
-6.6, 5.15, 5.4 pass our testing, too:                                      =
-            =20
-                                                                           =
-            =20
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y       =20
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.15.y      =20
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.4.y       =20
-                                                                           =
-            =20
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>                              =
-            =20
-                                                                           =
-            =20
-Best regards,                                                              =
-            =20
-                                                                Pavel      =
-            =20
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---CdRNAz8YduhKP4H5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZr5l3QAKCRAw5/Bqldv6
-8uG6AJ48SsqtSrzuyWWw9uSjZQzvvCWGDwCfXlmx1HbjUW0o+8205ExjZ2VHH8k=
-=+sHw
------END PGP SIGNATURE-----
-
---CdRNAz8YduhKP4H5--
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
 
