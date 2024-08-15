@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-68762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74179533D6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1990E953567
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 717CC28881B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CA201C23668
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294E419E808;
-	Thu, 15 Aug 2024 14:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB11017C995;
+	Thu, 15 Aug 2024 14:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4WiEpbo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtTZM6R7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1F91AC896;
-	Thu, 15 Aug 2024 14:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664CA3214;
+	Thu, 15 Aug 2024 14:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731584; cv=none; b=oH40ws93Z52DsjNnSlZk/AkqS/dqmAE6NvH3e9K5Rkuam7TXILMSTNU0/8pBtxWZfyayOhXc2n1JEnXiHRvgg9yvirSi/wTgQ2QyowiG45EKVyvkbT6BrSkSygNqCCcr/Q7dL8jWQySEFb7dxT+uXd8HZ4UvjPXcY6hyXdugFKY=
+	t=1723732647; cv=none; b=SxBf2dMAHOlS2x/VM9qSozivjUYiRZxi+dSi9rPD+yKAGBrxUpudkfy7E7KB0eURYIYN9VYXqqRMyCq+t0sBw4CrGzp1ZnP3igwxevK3p7WtlrchdFU7GmZG8MrIwnWVtoWgxnPrXeh7N4VqyWLLzDjsdBf1y75Ax9rIM7DM80w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731584; c=relaxed/simple;
-	bh=2gJSEu+6NZjD5ldX9BrLA2OisxGmYPCOJhKRY8YfKmk=;
+	s=arc-20240116; t=1723732647; c=relaxed/simple;
+	bh=/Tht8j/kmUYXF0BLFuxrVlsXs9U2JjDDVOZL8sMKlDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1bQGavuGaOk0FHJXkNmqpXDxeaghGL4WxdBL3tXxXqcJH6IKjlDGiPcyYz5h+hMnL4wkDopFl6fx2LfPPQ3QGnwz0Rm1cnyFOiIe66aIR6MyMZXG0ne2AdGX+DiBvqCzzVhrtDkorKG3ZQHKkp3HM7mm1g05hleynKOLUFMm8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4WiEpbo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A015C32786;
-	Thu, 15 Aug 2024 14:19:44 +0000 (UTC)
+	 MIME-Version; b=ab8A6cLtVsMoi6/RxNn9lez1F6ShY+7RZDxfDEqCXFlOTNifjsina0pfns2Lm4zt8hLvm/04VleUcDilNhaeYvHPXrI5MU88NTrXNBoSeB/+mkCjS8EJ51UBE1989wk/Tws2vcvAp+QsAZYaYzmpfWL8t9Z9GpJBp//IigKzc4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtTZM6R7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15C8C32786;
+	Thu, 15 Aug 2024 14:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731584;
-	bh=2gJSEu+6NZjD5ldX9BrLA2OisxGmYPCOJhKRY8YfKmk=;
+	s=korg; t=1723732647;
+	bh=/Tht8j/kmUYXF0BLFuxrVlsXs9U2JjDDVOZL8sMKlDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4WiEpbofs023fU4BABu5OGl31ZLaNyB7tl5tQCIB2YPCWoCukcpLyZGKIEMBn71k
-	 U4AQAQGpFd7EtcM9ptHN5eg3GqlzniDAGUHDM2g2NMNMzDJHRXgePZIv4tFlXiSSE0
-	 T8whN1SbjSlKNih9WGQkU2JJXL80K0Qnh/rqMq7c=
+	b=dtTZM6R7iK2znXpBU7I14C8MOy+A96DNDR0OKcDEwTcrHOLKFVY52sYeqLAk7//SU
+	 qkHcHlwRRZXv67L/CVUOQZhk3d4kcP2rpJ7C+MbbEx2ZQ773FzlnJkkhmAqswHSo9S
+	 0LgowVDgI0fCUtV4AJRnMW/FFh0koGEWDT43scFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 176/259] net/mlx5e: Add a check for the return value from mlx5_port_set_eth_ptys
+	Sylvain BERTRAND <sylvain.bertrand@legeek.net>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 243/352] ALSA: usb-audio: Correct surround channels in UAC1 channel map
 Date: Thu, 15 Aug 2024 15:25:09 +0200
-Message-ID: <20240815131909.575858221@linuxfoundation.org>
+Message-ID: <20240815131928.830025230@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3f8e82a020a5c22f9b791f4ac499b8e18007fbda ]
+commit b7b7e1ab7619deb3b299b5e5c619c3e6f183a12d upstream.
 
-Since the documentation for mlx5_toggle_port_link states that it should
-only be used after setting the port register, we add a check for the
-return value from mlx5_port_set_eth_ptys to ensure the register was
-successfully set before calling it.
+USB-audio driver puts SNDRV_CHMAP_SL and _SR as left and right
+surround channels for UAC1 channel map, respectively.  But they should
+have been SNDRV_CHMAP_RL and _RR; the current value *_SL and _SR are
+rather "side" channels, not "surround".  I guess I took those
+mistakenly when I read the spec mentioning "surround left".
 
-Fixes: 667daedaecd1 ("net/mlx5e: Toggle link only after modifying port parameters")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-9-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch corrects those entries to be the right channels.
+
+Suggested-by: Sylvain BERTRAND <sylvain.bertrand@legeek.net>
+Closes: https://lore.kernel.orgZ/qIyJD8lhd8hFhlC@freedom
+Fixes: 04324ccc75f9 ("ALSA: usb-audio: add channel map support")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240731142018.24750-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/usb/stream.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 18e0cb02aee18..10411ab89e1cf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -1104,7 +1104,12 @@ int mlx5e_ethtool_set_link_ksettings(struct mlx5e_priv *priv,
- 	if (!an_changes && link_modes == eproto.admin)
- 		goto out;
- 
--	mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
-+	err = mlx5_port_set_eth_ptys(mdev, an_disable, link_modes, ext);
-+	if (err) {
-+		netdev_err(priv->netdev, "%s: failed to set ptys reg: %d\n", __func__, err);
-+		goto out;
-+	}
-+
- 	mlx5_toggle_port_link(mdev);
- 
- out:
--- 
-2.43.0
-
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -245,8 +245,8 @@ static struct snd_pcm_chmap_elem *conver
+ 		SNDRV_CHMAP_FR,		/* right front */
+ 		SNDRV_CHMAP_FC,		/* center front */
+ 		SNDRV_CHMAP_LFE,	/* LFE */
+-		SNDRV_CHMAP_SL,		/* left surround */
+-		SNDRV_CHMAP_SR,		/* right surround */
++		SNDRV_CHMAP_RL,		/* left surround */
++		SNDRV_CHMAP_RR,		/* right surround */
+ 		SNDRV_CHMAP_FLC,	/* left of center */
+ 		SNDRV_CHMAP_FRC,	/* right of center */
+ 		SNDRV_CHMAP_RC,		/* surround */
 
 
 
