@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-67855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52384952F66
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 291DA9531BD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF7AE1F27342
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C1921C2215D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C8018D630;
-	Thu, 15 Aug 2024 13:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BFA19E7F6;
+	Thu, 15 Aug 2024 13:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwHOKYsG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eijFRNNe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D36E1714D0;
-	Thu, 15 Aug 2024 13:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776BF18D630;
+	Thu, 15 Aug 2024 13:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728733; cv=none; b=MvUIpCD078ODg7q0EZDHUUeX3hfZvPwzA3DiC+pxPPzhXuW9fjbfDNDGHmHFf5ELZqZD8vGJiQLMkBw5g4f6UuJ4e5Vm8F0YuaLwmfWVfueM+ooOIs1wgwjTz9mwwnF7MUbi1yiSWgtdHpWvFlQ4omd8jPqgkEmbQVsiv4sWKdk=
+	t=1723730260; cv=none; b=UfgfofUPXrzcBAw8JI+jxiixTB/U0RX6Htl5hUalTn6SepJONLmsYr5Zy2tcZvVvWg8b7xnVHIlquNfbLfIiYjeu7XdHOsNQkuwv5tvhtk0tgZ2Fkf6G0jWsLYyIZGn8mWOa0iJukkrAVPFpo3Zkz/DJeivoguDJ9fpUorhd2Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728733; c=relaxed/simple;
-	bh=7DirDnIUkox3H4q6lWHJmTfSuFjYH5+Lj5nQVnstqp8=;
+	s=arc-20240116; t=1723730260; c=relaxed/simple;
+	bh=fdtS5lPN43zZxR4/Oit+mruBUYQVxv1zKQ4/HK46Z+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nlpRN6WSk+Zmwcld9jrp1aoluPEa9I46FkZEQgqtzJbODIksaEiCTYbB0qfuK2i3s1de4Rme5iZt/z31lR1qvTwNzyXgLaRO5cpuJrIr5MGvECy/rP6UMmVMotIU1aNQBqjcR5jy0t4BANxjEYYMUJb0DAE212UxfTrDtAtn7P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwHOKYsG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE44C32786;
-	Thu, 15 Aug 2024 13:32:12 +0000 (UTC)
+	 MIME-Version; b=hsiRlKIbyy97sfC39W6nx5fpiPWl3fDIl+qxQWB7HtfEXuSeICSpNnNXFYI2iAAQntEEJY2E/1bME+KmyAHom3H3e1YPb9XZ/Kfq0vIVYsObw2SeBu8kVF5jLMIC6mg3HpiwDDUQTqUselO+oST3+XlhdfaF5WrH5GT8u/zpsPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eijFRNNe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40D2C32786;
+	Thu, 15 Aug 2024 13:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728733;
-	bh=7DirDnIUkox3H4q6lWHJmTfSuFjYH5+Lj5nQVnstqp8=;
+	s=korg; t=1723730260;
+	bh=fdtS5lPN43zZxR4/Oit+mruBUYQVxv1zKQ4/HK46Z+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwHOKYsGKOqNzDvshStGaFpAD/SQ79hd4lsJ7KJ6mU80hfAfYdIw9YAuUyMy3RZzk
-	 0y6WCCeaqk1y7JFsDcCPLiXPnU2xCQM6zem+SGocnGfpOPlD4VLDyqZLrH7NiuH18N
-	 BbQsa1/4Zzkp1/0PKrVQ55JWyKFeStXicEA87y58=
+	b=eijFRNNeNAqEPdBYEBQcg9/tCv5ze1/vatz2TJMJGmwbP6f8yv8oUuciz0nqQHVhk
+	 f/GO5rzJHosogRowVp2HjRsJcitK+St/M2m8THwvUvWXGC2hY9AMonf2pwBeuu/wou
+	 X5WCDZa9m3J31/BnoY55AiIFdSTnWJRRlaB/QoHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 4.19 093/196] selftests/sigaltstack: Fix ppc64 GCC build
-Date: Thu, 15 Aug 2024 15:23:30 +0200
-Message-ID: <20240815131855.640439996@linuxfoundation.org>
+	Alexander Maltsev <keltar.gw@gmail.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 353/484] netfilter: ipset: Add list flush to cancel_gc
+Date: Thu, 15 Aug 2024 15:23:31 +0200
+Message-ID: <20240815131955.062612388@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,53 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Alexander Maltsev <keltar.gw@gmail.com>
 
-commit 17c743b9da9e0d073ff19fd5313f521744514939 upstream.
+[ Upstream commit c1193d9bbbd379defe9be3c6de566de684de8a6f ]
 
-Building the sigaltstack test with GCC on 64-bit powerpc errors with:
+Flushing list in cancel_gc drops references to other lists right away,
+without waiting for RCU to destroy list. Fixes race when referenced
+ipsets can't be destroyed while referring list is scheduled for destroy.
 
-  gcc -Wall     sas.c  -o /home/michael/linux/.build/kselftest/sigaltstack/sas
-  In file included from sas.c:23:
-  current_stack_pointer.h:22:2: error: #error "implement current_stack_pointer equivalent"
-     22 | #error "implement current_stack_pointer equivalent"
-        |  ^~~~~
-  sas.c: In function ‘my_usr1’:
-  sas.c:50:13: error: ‘sp’ undeclared (first use in this function); did you mean ‘p’?
-     50 |         if (sp < (unsigned long)sstack ||
-        |             ^~
-
-This happens because GCC doesn't define __ppc__ for 64-bit builds, only
-32-bit builds. Instead use __powerpc__ to detect powerpc builds, which
-is defined by clang and GCC for 64-bit and 32-bit builds.
-
-Fixes: 05107edc9101 ("selftests: sigaltstack: fix -Wuninitialized")
-Cc: stable@vger.kernel.org # v6.3+
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240520062647.688667-1-mpe@ellerman.id.au
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 97f7cf1cd80e ("netfilter: ipset: fix performance regression in swap operation")
+Signed-off-by: Alexander Maltsev <keltar.gw@gmail.com>
+Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/sigaltstack/current_stack_pointer.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_list_set.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-+++ b/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-@@ -8,7 +8,7 @@ register unsigned long sp asm("sp");
- register unsigned long sp asm("esp");
- #elif __loongarch64
- register unsigned long sp asm("$sp");
--#elif __ppc__
-+#elif __powerpc__
- register unsigned long sp asm("r1");
- #elif __s390x__
- register unsigned long sp asm("%15");
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index e839c356bcb56..902ff2f3bc72b 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -547,6 +547,9 @@ list_set_cancel_gc(struct ip_set *set)
+ 
+ 	if (SET_WITH_TIMEOUT(set))
+ 		del_timer_sync(&map->gc);
++
++	/* Flush list to drop references to other ipsets */
++	list_set_flush(set);
+ }
+ 
+ static const struct ip_set_type_variant set_variant = {
+-- 
+2.43.0
+
 
 
 
