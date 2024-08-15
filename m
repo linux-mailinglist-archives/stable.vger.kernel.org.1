@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-67953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8126B952FF0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:38:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F16F953005
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:38:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4DEC1C244B5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:38:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A6B028808D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB28D1A76BC;
-	Thu, 15 Aug 2024 13:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0374A19FA7A;
+	Thu, 15 Aug 2024 13:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPasz6pY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uATWUX7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8679819DF6A;
-	Thu, 15 Aug 2024 13:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB68629CE6;
+	Thu, 15 Aug 2024 13:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729037; cv=none; b=hqJb5c2cQfebdnvf6uRxJQOy5eVa+lafZR+CimU+575o/epMz2dpn7yfuQMmDm2S/NpWMXh+cFkZhAxajl+w1E/XNihknkHnLm2Pu67ukaRvVTjLZhlUETn+k3Isg32iZYmDoJpqGE3+6ZsW197thcdMltIunAvC++SusodaGFo=
+	t=1723729083; cv=none; b=Z/lVclGQVXkIgZd/STPfsGCHy560kGAGXC8scsD+daugF+ZiNO4pBi6iVWWO4nRwz2qIrTKQsbU7FP1mybT7tR2sTQJYybmwHRPz1gHNym6WMgojmFQcdbq0ScVjRng9CKFaXlKlVfHAuf9CVqATd56tXJPoLf/49O3oyEBOLnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729037; c=relaxed/simple;
-	bh=EB++U3eDi29KH1j6UKuznAoMY5lcLYHpTTQ46ZcLksk=;
+	s=arc-20240116; t=1723729083; c=relaxed/simple;
+	bh=eb3JAPrLAYNOMoaXGIIUOFFxQsOWp+8l1qmbf6fupJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tsRaHofkUExSZXRdhxhNX+5KBrHyRuRMWdlxu8ee1wfFA785PhmYvAt4u3MEnJaD4KnPhtOdeG98s7G2mgC5WcTmIJ08O/Fx+aBx04MtepbC21ZO541vYVEEdlHKRkMU1Rn6Llex4JkeyaEOMuUF3RhMQNOMA1TedEd6/TCplnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPasz6pY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FFBC4AF0E;
-	Thu, 15 Aug 2024 13:37:16 +0000 (UTC)
+	 MIME-Version; b=KagioWPUdOGUug2cjZUV5BFyVBTP01vzoGpNyo1q6ayWTE0t9xpj3udJ7KVsqDB9SA5yL3dbHZZvIp3PYTD2S4yiaxf32aBPM+p+kzkaBgMlglO0xLpisYEdweRosL7PL5uL+7Q2GiSGt59G60ExwxGYG2HFYax59fig+/ISWno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uATWUX7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30351C32786;
+	Thu, 15 Aug 2024 13:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729037;
-	bh=EB++U3eDi29KH1j6UKuznAoMY5lcLYHpTTQ46ZcLksk=;
+	s=korg; t=1723729083;
+	bh=eb3JAPrLAYNOMoaXGIIUOFFxQsOWp+8l1qmbf6fupJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPasz6pYPObeET3XVHHNCcM3gcByp2q8uKYQj6b384sSx/VhOTvIftTaO7hN7/Kzc
-	 uZwCSoxH8DpWMItjln0nnwVFgENJtcpzDpfXxAu5k6zg53f4Ewx8VUXjsM5uT9Sw0t
-	 UXfuHcq7ELZIuqY/K/T+fuu0HZNRar819K/vq52E=
+	b=uATWUX7TiMb6ythTY87mdgb4+ZcdMT/S6j8ng9ugXny3IxgurpZQLveLJOFid4KWj
+	 GnnEpssM/xCJZPXYb7lbpPbBH7b2XtWhgRYRDb2ER5fFSKOM3wtj9qb2tdZ7LkpxFp
+	 jsmFCHqXBx0RNiarfQEIpIhld8I+UmDgndL4wNjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 191/196] netfilter: nf_tables: prefer nft_chain_validate
-Date: Thu, 15 Aug 2024 15:25:08 +0200
-Message-ID: <20240815131859.378766438@linuxfoundation.org>
+	Marco Vanotti <mvanotti@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.10 01/22] exec: Fix ToCToU between perm check and set-uid/gid usage
+Date: Thu, 15 Aug 2024 15:25:09 +0200
+Message-ID: <20240815131831.324130264@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131831.265729493@linuxfoundation.org>
+References: <20240815131831.265729493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,193 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Kees Cook <kees@kernel.org>
 
-commit cff3bd012a9512ac5ed858d38e6ed65f6391008c upstream
+commit f50733b45d865f91db90919f8311e2127ce5a0cb upstream.
 
-nft_chain_validate already performs loop detection because a cycle will
-result in a call stack overflow (ctx->level >= NFT_JUMP_STACK_SIZE).
+When opening a file for exec via do_filp_open(), permission checking is
+done against the file's metadata at that moment, and on success, a file
+pointer is passed back. Much later in the execve() code path, the file
+metadata (specifically mode, uid, and gid) is used to determine if/how
+to set the uid and gid. However, those values may have changed since the
+permissions check, meaning the execution may gain unintended privileges.
 
-It also follows maps via ->validate callback in nft_lookup, so there
-appears no reason to iterate the maps again.
+For example, if a file could change permissions from executable and not
+set-id:
 
-nf_tables_check_loops() and all its helper functions can be removed.
-This improves ruleset load time significantly, from 23s down to 12s.
+---------x 1 root root 16048 Aug  7 13:16 target
 
-This also fixes a crash bug. Old loop detection code can result in
-unbounded recursion:
+to set-id and non-executable:
 
-BUG: TASK stack guard page was hit at ....
-Oops: stack guard page: 0000 [#1] PREEMPT SMP KASAN
-CPU: 4 PID: 1539 Comm: nft Not tainted 6.10.0-rc5+ #1
-[..]
+---S------ 1 root root 16048 Aug  7 13:16 target
 
-with a suitable ruleset during validation of register stores.
+it is possible to gain root privileges when execution should have been
+disallowed.
 
-I can't see any actual reason to attempt to check for this from
-nft_validate_register_store(), at this point the transaction is still in
-progress, so we don't have a full picture of the rule graph.
+While this race condition is rare in real-world scenarios, it has been
+observed (and proven exploitable) when package managers are updating
+the setuid bits of installed programs. Such files start with being
+world-executable but then are adjusted to be group-exec with a set-uid
+bit. For example, "chmod o-x,u+s target" makes "target" executable only
+by uid "root" and gid "cdrom", while also becoming setuid-root:
 
-For nf-next it might make sense to either remove it or make this depend
-on table->validate_state in case we could catch an error earlier
-(for improved error reporting to userspace).
+-rwxr-xr-x 1 root cdrom 16048 Aug  7 13:16 target
 
-Fixes: 20a69341f2d0 ("netfilter: nf_tables: add netlink set API")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+becomes:
+
+-rwsr-xr-- 1 root cdrom 16048 Aug  7 13:16 target
+
+But racing the chmod means users without group "cdrom" membership can
+get the permission to execute "target" just before the chmod, and when
+the chmod finishes, the exec reaches brpm_fill_uid(), and performs the
+setuid to root, violating the expressed authorization of "only cdrom
+group members can setuid to root".
+
+Re-check that we still have execute permissions in case the metadata
+has changed. It would be better to keep a copy from the perm-check time,
+but until we can do that refactoring, the least-bad option is to do a
+full inode_permission() call (under inode lock). It is understood that
+this is safe against dead-locks, but hardly optimal.
+
+Reported-by: Marco Vanotti <mvanotti@google.com>
+Tested-by: Marco Vanotti <mvanotti@google.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |  114 ++++--------------------------------------
- 1 file changed, 13 insertions(+), 101 deletions(-)
+ fs/exec.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2698,6 +2698,15 @@ static void nf_tables_rule_release(const
- 	nf_tables_rule_destroy(ctx, rule);
- }
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1668,6 +1668,7 @@ static void bprm_fill_uid(struct linux_b
+ 	unsigned int mode;
+ 	vfsuid_t vfsuid;
+ 	vfsgid_t vfsgid;
++	int err;
  
-+/** nft_chain_validate - loop detection and hook validation
-+ *
-+ * @ctx: context containing call depth and base chain
-+ * @chain: chain to validate
-+ *
-+ * Walk through the rules of the given chain and chase all jumps/gotos
-+ * and set lookups until either the jump limit is hit or all reachable
-+ * chains have been validated.
-+ */
- int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
- {
- 	struct nft_expr *expr, *last;
-@@ -2716,6 +2725,9 @@ int nft_chain_validate(const struct nft_
- 			if (!expr->ops->validate)
- 				continue;
+ 	if (!mnt_may_suid(file->f_path.mnt))
+ 		return;
+@@ -1684,12 +1685,17 @@ static void bprm_fill_uid(struct linux_b
+ 	/* Be careful if suid/sgid is set */
+ 	inode_lock(inode);
  
-+			/* This may call nft_chain_validate() recursively,
-+			 * callers that do so must increment ctx->level.
-+			 */
- 			err = expr->ops->validate(ctx, expr, &data);
- 			if (err < 0)
- 				return err;
-@@ -7418,106 +7430,6 @@ int nft_chain_validate_hooks(const struc
- }
- EXPORT_SYMBOL_GPL(nft_chain_validate_hooks);
+-	/* reload atomically mode/uid/gid now that lock held */
++	/* Atomically reload and check mode/uid/gid now that lock held. */
+ 	mode = inode->i_mode;
+ 	vfsuid = i_uid_into_vfsuid(idmap, inode);
+ 	vfsgid = i_gid_into_vfsgid(idmap, inode);
++	err = inode_permission(idmap, inode, MAY_EXEC);
+ 	inode_unlock(inode);
  
--/*
-- * Loop detection - walk through the ruleset beginning at the destination chain
-- * of a new jump until either the source chain is reached (loop) or all
-- * reachable chains have been traversed.
-- *
-- * The loop check is performed whenever a new jump verdict is added to an
-- * expression or verdict map or a verdict map is bound to a new chain.
-- */
--
--static int nf_tables_check_loops(const struct nft_ctx *ctx,
--				 const struct nft_chain *chain);
--
--static int nf_tables_loop_check_setelem(const struct nft_ctx *ctx,
--					struct nft_set *set,
--					const struct nft_set_iter *iter,
--					struct nft_set_elem *elem)
--{
--	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
--	const struct nft_data *data;
--
--	if (nft_set_ext_exists(ext, NFT_SET_EXT_FLAGS) &&
--	    *nft_set_ext_flags(ext) & NFT_SET_ELEM_INTERVAL_END)
--		return 0;
--
--	data = nft_set_ext_data(ext);
--	switch (data->verdict.code) {
--	case NFT_JUMP:
--	case NFT_GOTO:
--		return nf_tables_check_loops(ctx, data->verdict.chain);
--	default:
--		return 0;
--	}
--}
--
--static int nf_tables_check_loops(const struct nft_ctx *ctx,
--				 const struct nft_chain *chain)
--{
--	const struct nft_rule *rule;
--	const struct nft_expr *expr, *last;
--	struct nft_set *set;
--	struct nft_set_binding *binding;
--	struct nft_set_iter iter;
--
--	if (ctx->chain == chain)
--		return -ELOOP;
--
--	list_for_each_entry(rule, &chain->rules, list) {
--		nft_rule_for_each_expr(expr, last, rule) {
--			struct nft_immediate_expr *priv;
--			const struct nft_data *data;
--			int err;
--
--			if (strcmp(expr->ops->type->name, "immediate"))
--				continue;
--
--			priv = nft_expr_priv(expr);
--			if (priv->dreg != NFT_REG_VERDICT)
--				continue;
--
--			data = &priv->data;
--			switch (data->verdict.code) {
--			case NFT_JUMP:
--			case NFT_GOTO:
--				err = nf_tables_check_loops(ctx,
--							data->verdict.chain);
--				if (err < 0)
--					return err;
--			default:
--				break;
--			}
--		}
--	}
--
--	list_for_each_entry(set, &ctx->table->sets, list) {
--		if (!nft_is_active_next(ctx->net, set))
--			continue;
--		if (!(set->flags & NFT_SET_MAP) ||
--		    set->dtype != NFT_DATA_VERDICT)
--			continue;
--
--		list_for_each_entry(binding, &set->bindings, list) {
--			if (!(binding->flags & NFT_SET_MAP) ||
--			    binding->chain != chain)
--				continue;
--
--			iter.genmask	= nft_genmask_next(ctx->net);
--			iter.skip 	= 0;
--			iter.count	= 0;
--			iter.err	= 0;
--			iter.fn		= nf_tables_loop_check_setelem;
--
--			set->ops->walk(ctx, set, &iter);
--			if (iter.err < 0)
--				return iter.err;
--		}
--	}
--
--	return 0;
--}
--
- /**
-  *	nft_parse_u32_check - fetch u32 attribute and check for maximum value
-  *
-@@ -7653,7 +7565,7 @@ static int nft_validate_register_store(c
- 		if (data != NULL &&
- 		    (data->verdict.code == NFT_GOTO ||
- 		     data->verdict.code == NFT_JUMP)) {
--			err = nf_tables_check_loops(ctx, data->verdict.chain);
-+			err = nft_chain_validate(ctx, data->verdict.chain);
- 			if (err < 0)
- 				return err;
- 		}
++	/* Did the exec bit vanish out from under us? Give up. */
++	if (err)
++		return;
++
+ 	/* We ignore suid/sgid if there are no mappings for them in the ns */
+ 	if (!vfsuid_has_mapping(bprm->cred->user_ns, vfsuid) ||
+ 	    !vfsgid_has_mapping(bprm->cred->user_ns, vfsgid))
 
 
 
