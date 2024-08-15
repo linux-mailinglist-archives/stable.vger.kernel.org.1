@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-69169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3779535D4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E955953299
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EF7AB295C0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA2CF1C2419A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637B11A01CB;
-	Thu, 15 Aug 2024 14:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1711A4F22;
+	Thu, 15 Aug 2024 14:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIuBEN4m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQUOZPKP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215D21AC893;
-	Thu, 15 Aug 2024 14:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5101684AC;
+	Thu, 15 Aug 2024 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732893; cv=none; b=HlixoHstaFVf4lhn2od1Sl1q415fT/GTcDj4t2KebXsrBW+4AoYMaiBBo6S2gTBvPRE5b0fSJJNxpKDXRslq0pqmqE81q90Mta7zu30oFJofv3ufIUb7Uk+czh1jbYKK87o2WO99pk2A/ncVuXCPC1JM/7f+u6dGZX+g9Qsa7d8=
+	t=1723730745; cv=none; b=WgczGgiV+5N5ZQk8Sr2ETbW0VKXIRXmyrIzBOzZlhxXIVNDq3jO1Q/M18n6oG2F65Mm8J0W4JrrCdzIeCC+Z5FU33DHFAp1jCLfhBPqK0w/bJNbum2jxoxc6g2NOB2ucyWzV/plJC4VTjgUaarjpgqTiTQVNVbYVKnoCkRuIQZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732893; c=relaxed/simple;
-	bh=H9YD5wKnUHrqxJizJPFHMXLN1o7pcvq/0Gljl3j0fKY=;
+	s=arc-20240116; t=1723730745; c=relaxed/simple;
+	bh=xnWUfUDTtAFCD34BnE8O6EWZQLlx6LZGdHp7r6NnuIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUKU3/gBf9AxHYsF8hl2t3xER638vVD61a4zbrH6g9jtCZuP8750GAB47leVN0Fgn/NSDmgp+X+k0YxzTQImXHRfFQZzUXaHdxz5GZGwFMvlHvuTkF6DHId5oKGrTPFWOjDLHlf3stnJbFazLSv4FRwxxcDv49qPiEDBX3eEdOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIuBEN4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4F4C32786;
-	Thu, 15 Aug 2024 14:41:31 +0000 (UTC)
+	 MIME-Version; b=d+HiFSRLc4/5oEJrdexwjg0a5TtBBzyPRfxHuC2o1djtvbYML0F5zmPs4dJow+w26bGgtaM6ohfs25IrZ7pAhr4bNd1I/kXpSlRav3tljHTAVt0eWvsKbhmdg1qM/xW9fHW8/dyhmCvRnmTJr903N1iYu8S3IcFi0Fg5VQmE0Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQUOZPKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8467C32786;
+	Thu, 15 Aug 2024 14:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732892;
-	bh=H9YD5wKnUHrqxJizJPFHMXLN1o7pcvq/0Gljl3j0fKY=;
+	s=korg; t=1723730745;
+	bh=xnWUfUDTtAFCD34BnE8O6EWZQLlx6LZGdHp7r6NnuIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIuBEN4mBEHkPbx9lQFqbRfmeDDHZfFgArjszDeZUu21Oj/A7+DmEKBvCibWAC2OX
-	 IUapyds58PMYWft9S7jcmun4A2y/mQ+J08pXr53P9f40NXejwpJrLtQ/EkhlJFRsuN
-	 dboNMoVD7lBscf601FxONRxLCu+bPTWaMqZKY4sI=
+	b=GQUOZPKP150wprYydazH0MnPBCIgz4if7Ktx1Msw+H63vqklC08zGd232liVoqWB9
+	 M9mP4wiUICuP4IYfd+6vRs5IIso7lwqJSX6/+6GpNGenSe3LUea9WGz2MKIwW9o5Af
+	 21VxLWPWwbTUd8T1FaXd1rFWbiLBgGfbtJttDtGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 287/352] arm64: cputype: Add Cortex-A720 definitions
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 19/38] nfsd: stop setting ->pg_stats for unused stats
 Date: Thu, 15 Aug 2024 15:25:53 +0200
-Message-ID: <20240815131930.542260784@linuxfoundation.org>
+Message-ID: <20240815131833.691385406@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit add332c40328cf06fe35e4b3cde8ec315c4629e5 ]
+[ Upstream commit a2214ed588fb3c5b9824a21cff870482510372bb ]
 
-Add cputype definitions for Cortex-A720. These will be used for errata
-detection in subsequent patches.
+A lot of places are setting a blank svc_stats in ->pg_stats and never
+utilizing these stats.  Remove all of these extra structs as we're not
+reporting these stats anywhere.
 
-These values can be found in Table A-186 ("MIDR_EL1 bit descriptions")
-in issue 0002-05 of the Cortex-A720 TRM, which can be found at:
-
-  https://developer.arm.com/documentation/102530/0002/?lang=en
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-3-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/lockd/svc.c    |    3 ---
+ fs/nfs/callback.c |    3 ---
+ fs/nfsd/nfssvc.c  |    5 -----
+ 3 files changed, 11 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index e8ceddaba7a06..4f08438344e2a 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -86,6 +86,7 @@
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
- #define ARM_CPU_PART_CORTEX_X3		0xD4E
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
-+#define ARM_CPU_PART_CORTEX_A720	0xD81
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+--- a/fs/lockd/svc.c
++++ b/fs/lockd/svc.c
+@@ -759,8 +759,6 @@ static const struct svc_version *nlmsvc_
+ #endif
+ };
  
-@@ -142,6 +143,7 @@
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
- #define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
-+#define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
--- 
-2.43.0
-
+-static struct svc_stat		nlmsvc_stats;
+-
+ #define NLM_NRVERS	ARRAY_SIZE(nlmsvc_version)
+ static struct svc_program	nlmsvc_program = {
+ 	.pg_prog		= NLM_PROGRAM,		/* program number */
+@@ -768,7 +766,6 @@ static struct svc_program	nlmsvc_program
+ 	.pg_vers		= nlmsvc_version,	/* version table */
+ 	.pg_name		= "lockd",		/* service name */
+ 	.pg_class		= "nfsd",		/* share authentication with nfsd */
+-	.pg_stats		= &nlmsvc_stats,	/* stats table */
+ 	.pg_authenticate	= &lockd_authenticate,	/* export authentication */
+ 	.pg_init_request	= svc_generic_init_request,
+ 	.pg_rpcbind_set		= svc_generic_rpcbind_set,
+--- a/fs/nfs/callback.c
++++ b/fs/nfs/callback.c
+@@ -407,15 +407,12 @@ static const struct svc_version *nfs4_ca
+ 	[4] = &nfs4_callback_version4,
+ };
+ 
+-static struct svc_stat nfs4_callback_stats;
+-
+ static struct svc_program nfs4_callback_program = {
+ 	.pg_prog = NFS4_CALLBACK,			/* RPC service number */
+ 	.pg_nvers = ARRAY_SIZE(nfs4_callback_version),	/* Number of entries */
+ 	.pg_vers = nfs4_callback_version,		/* version table */
+ 	.pg_name = "NFSv4 callback",			/* service name */
+ 	.pg_class = "nfs",				/* authentication class */
+-	.pg_stats = &nfs4_callback_stats,
+ 	.pg_authenticate = nfs_callback_authenticate,
+ 	.pg_init_request = svc_generic_init_request,
+ 	.pg_rpcbind_set	= svc_generic_rpcbind_set,
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -89,7 +89,6 @@ unsigned long	nfsd_drc_max_mem;
+ unsigned long	nfsd_drc_mem_used;
+ 
+ #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
+-static struct svc_stat	nfsd_acl_svcstats;
+ static const struct svc_version *nfsd_acl_version[] = {
+ # if defined(CONFIG_NFSD_V2_ACL)
+ 	[2] = &nfsd_acl_version2,
+@@ -108,15 +107,11 @@ static struct svc_program	nfsd_acl_progr
+ 	.pg_vers		= nfsd_acl_version,
+ 	.pg_name		= "nfsacl",
+ 	.pg_class		= "nfsd",
+-	.pg_stats		= &nfsd_acl_svcstats,
+ 	.pg_authenticate	= &svc_set_client,
+ 	.pg_init_request	= nfsd_acl_init_request,
+ 	.pg_rpcbind_set		= nfsd_acl_rpcbind_set,
+ };
+ 
+-static struct svc_stat	nfsd_acl_svcstats = {
+-	.program	= &nfsd_acl_program,
+-};
+ #endif /* defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL) */
+ 
+ static const struct svc_version *nfsd_version[] = {
 
 
 
