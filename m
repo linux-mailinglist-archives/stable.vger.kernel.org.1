@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-68638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB1495334A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A0C9534F9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DB8F1C23D23
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B1828107C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108F21AED25;
-	Thu, 15 Aug 2024 14:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AE317C995;
+	Thu, 15 Aug 2024 14:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJ8ZLar/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwO07DjB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EFE1AE84C;
-	Thu, 15 Aug 2024 14:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6E463D5;
+	Thu, 15 Aug 2024 14:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731198; cv=none; b=l79aCiG/O7XN6bkwQXqQrjLIonq33RNg9XezlV2RDRkx7q1c1hKSmkzvg10+hZaM8UftaOl/F45eDM6r8ojNfam/Qgkyrgr5r2XO4EVNByxkYZDhLIcOv+9Pll7PcuMOjtiNWwkbSmCotYA8Zzrz/np9iN9VcK0dYXMhWIO6c94=
+	t=1723732346; cv=none; b=g1F1UqOmP6TM1WqlavhGU8E0xrcnW2FWbNmV7dy9jZ6x1jGKxnqdN7BVjHDCZeldBrVFGDR8dD4/OlpXCR9cEfrJSSN1fMaNTkNcKKHCJ7yvOdcJFAQMsdP8d3EtmE1wkbOHXBwwhydxW/kyJfyIewumc5XGp6eQFmQRLTveAqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731198; c=relaxed/simple;
-	bh=K4tryUIfjziYn2OCHfSl7PllJIM5KIaRkBbWHqHLOAE=;
+	s=arc-20240116; t=1723732346; c=relaxed/simple;
+	bh=WR9MClY/hGyRgRVeacXAyx96sViRYNE6baxO7vN/CmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tuRegmLLvsf+iXNwUZ85LcRNjRgrG4BarkJ5kGpP9hyVZrD9vINK3fqTnC8rK5SA9M+3se3k0v2JQNlgEZY/6rm1lUqv47vCq4zbp8OljueKMWcV8luCDX4mvw1Q4rxsB4X28cP595zTfw/x50sc0Q+HrmqQXTrvPVA+Kxc/9xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJ8ZLar/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFD3C32786;
-	Thu, 15 Aug 2024 14:13:18 +0000 (UTC)
+	 MIME-Version; b=e1ds3UTAP1cXqxsOAhj9VXj6QqtPYJDl2kF7Ywk3GdV6OTWB+VQ7pVjredNJCWA2FV4+ccPWec6egswMaMd1Llzolkz1bFzzxf2gsxoD3oFmY/7QB12E6gk9osz0hwNPd+DYP2r8M63OPgrhGYWfBhrP9qJ9WL9YRVZUzr7CjOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwO07DjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FB7C32786;
+	Thu, 15 Aug 2024 14:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731198;
-	bh=K4tryUIfjziYn2OCHfSl7PllJIM5KIaRkBbWHqHLOAE=;
+	s=korg; t=1723732346;
+	bh=WR9MClY/hGyRgRVeacXAyx96sViRYNE6baxO7vN/CmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJ8ZLar/yjL3ZOsjJH8fJxJxTOIFpB5qnvDshJc+M20TLVj9EF/smjH6vHrXCh3Ga
-	 acTblcfMf/q8hrd+ZuF6jBfGT6Q0sz8FL9THMAjL0bjoqnQDWHOtTPOTMFQENNa7kE
-	 g+nL2v2ueQu0Pax6B/VXSYKQDGXc4s8KRv8KOCwo=
+	b=gwO07DjBlXnkVAqG4KU/Tp3VJ2Ii+TRzaJFhLjrDjL0fVEpk5Fu8mFHF7wSydX63j
+	 dSIUr9XKryyEHxOTmhFPD6hjn1rI6URJK2WgrldydE95NI694X8eh6od1sq/gtiihg
+	 I1SRfXbhJJff6bIBCPwAz7brTI+U9vrTEHJsJ+Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Burakov <a.burakov@rosalinux.ru>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	David Hildenbrand <david@redhat.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 053/259] saa7134: Unchecked i2c_transfer function result fixed
+Subject: [PATCH 5.10 120/352] fs/proc/task_mmu: indicate PM_FILE for PMD-mapped file THP
 Date: Thu, 15 Aug 2024 15:23:06 +0200
-Message-ID: <20240815131904.855026854@linuxfoundation.org>
+Message-ID: <20240815131923.890372142@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +67,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Burakov <a.burakov@rosalinux.ru>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 9d8683b3fd93f0e378f24dc3d9604e5d7d3e0a17 ]
+[ Upstream commit 3f9f022e975d930709848a86a1c79775b0585202 ]
 
-Return value of function 'i2c_transfer' is not checked that
-may cause undefined behaviour.
+Patch series "fs/proc: move page_mapcount() to fs/proc/internal.h".
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+With all other page_mapcount() users in the tree gone, move
+page_mapcount() to fs/proc/internal.h, rename it and extend the
+documentation to prevent future (ab)use.
 
-Fixes: 2cf36ac44730 ("[PATCH] v4l: 656: added support for the following cards")
-Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+... of course, I find some issues while working on that code that I sort
+first ;)
+
+We'll now only end up calling page_mapcount() [now
+folio_precise_page_mapcount()] on pages mapped via present page table
+entries.  Except for /proc/kpagecount, that still does questionable
+things, but we'll leave that legacy interface as is for now.
+
+Did a quick sanity check.  Likely we would want some better selfestest for
+/proc/$/pagemap + smaps.  I'll see if I can find some time to write some
+more.
+
+This patch (of 6):
+
+Looks like we never taught pagemap_pmd_range() about the existence of
+PMD-mapped file THPs.  Seems to date back to the times when we first added
+support for non-anon THPs in the form of shmem THP.
+
+Link: https://lkml.kernel.org/r/20240607122357.115423-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20240607122357.115423-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Lance Yang <ioworker0@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/saa7134/saa7134-dvb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/proc/task_mmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/pci/saa7134/saa7134-dvb.c b/drivers/media/pci/saa7134/saa7134-dvb.c
-index f359cd5c006a7..c786b83a69d2b 100644
---- a/drivers/media/pci/saa7134/saa7134-dvb.c
-+++ b/drivers/media/pci/saa7134/saa7134-dvb.c
-@@ -466,7 +466,9 @@ static int philips_europa_tuner_sleep(struct dvb_frontend *fe)
- 	/* switch the board to analog mode */
- 	if (fe->ops.i2c_gate_ctrl)
- 		fe->ops.i2c_gate_ctrl(fe, 1);
--	i2c_transfer(&dev->i2c_adap, &analog_msg, 1);
-+	if (i2c_transfer(&dev->i2c_adap, &analog_msg, 1) != 1)
-+		return -EIO;
-+
- 	return 0;
- }
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 39b1038076c3e..97023c0dca60a 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1468,6 +1468,8 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		}
+ #endif
  
-@@ -1018,7 +1020,9 @@ static int md8800_set_voltage2(struct dvb_frontend *fe,
- 	else
- 		wbuf[1] = rbuf & 0xef;
- 	msg[0].len = 2;
--	i2c_transfer(&dev->i2c_adap, msg, 1);
-+	if (i2c_transfer(&dev->i2c_adap, msg, 1) != 1)
-+		return -EIO;
-+
- 	return 0;
- }
++		if (page && !PageAnon(page))
++			flags |= PM_FILE;
+ 		if (page && !migration && page_mapcount(page) == 1)
+ 			flags |= PM_MMAP_EXCLUSIVE;
  
 -- 
 2.43.0
