@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FC1952F6C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315529531C0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51BCAB20F09
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D357D1F228E9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B1A19F473;
-	Thu, 15 Aug 2024 13:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7465E19FA7E;
+	Thu, 15 Aug 2024 13:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7xx7qsa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SAs9HH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CFF7DA78;
-	Thu, 15 Aug 2024 13:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3115219F47A;
+	Thu, 15 Aug 2024 13:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728743; cv=none; b=hs0cJnkmwAJOSaUzfKT4a9D8RASoBOGnrnUpSI4u1kGgXPiQRUS6vMg246o7WpCdyNez5RIs3cT6Eef5pGQoUmjSlXoGNAjxUZPZ3+KST9xHV6fWvHkaZi5yiWtEjmmgHFXP7Bg+ddsGF20Xb2A2mFFYE+XPCsuaqdTLOx4iJxs=
+	t=1723730264; cv=none; b=apVRkwaU08lj4Tnda2t45dVg61N2Ftjk7LCarTjqFcPcoZTamvZljILs7ph6WArDkXjHaNMBvmhgjYhrbCnNvQhMPL46aF/LCzx2puaknOdCbKkVNyEr1KL/Ud9T73kEyhGNZQt3BkFNRxxwH6kOVtqXckc53PdXfNfHvkUBhqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728743; c=relaxed/simple;
-	bh=w+ulAHe4Zcr9YZszLM71nnTOS0/1gez5NFwnRvRwiic=;
+	s=arc-20240116; t=1723730264; c=relaxed/simple;
+	bh=WF8zw4iQ9ad+Aj2yuZI7PjkyM51jXSzIiBrHIDTwixI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azXaD5AudpdbHGThNmeXyTdfTWEhA1LtLebHLjkzrx+lAhx3FShcDBqKoMIm8d+2SUOdnza+MGI06ovDo840GkEqNaKsKvZQiMLJ7K0dq1BUvb4LygRe8cyCnCePmPpYcy2ixgV+VDPbJk9tS2RjkseUG9KXmf4B0Ijv3dN5dQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7xx7qsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97596C4AF0F;
-	Thu, 15 Aug 2024 13:32:22 +0000 (UTC)
+	 MIME-Version; b=ajjCUjGnOsaI+DtV32rZo5v1iU/ytmgKb2mOiBxR+zHnsrUG0e1GBJiFD8hLf/8gFONT0aW6m/lbM+NFFmKOCsLpYUdixiEFCg7009HvLNwiDkgtfuz3ZAkIeM7E7cSp32INKZvei/pJI0TOivCQdS1S7+pW0yBzIk+yvVB5rJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SAs9HH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D82C32786;
+	Thu, 15 Aug 2024 13:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728743;
-	bh=w+ulAHe4Zcr9YZszLM71nnTOS0/1gez5NFwnRvRwiic=;
+	s=korg; t=1723730264;
+	bh=WF8zw4iQ9ad+Aj2yuZI7PjkyM51jXSzIiBrHIDTwixI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M7xx7qsaCWdH/XbR7zjOyOJPjNzXAU2etHakvTKGkc6Hr/co1wyiDu+auQy7UqUez
-	 VLSd6nKig4njsB7j5bfD/M6jFhvj2XKOQ/9Q1KSdOxX0kXw5IqFZu/9jLcslKaNHPM
-	 S5GZfm77JRO7dCP/jA0hAI3Tlh3k0TKUf4BRp4ME=
+	b=2SAs9HH7GKxfvgPlwjyRllQ3XG7DIJhHCUqnFL3238h+YUBoiyllajqMjcjVcydwZ
+	 DozLElFXwngUaa/jAFgiQdW8Q0jjOPetv+S3XPbEBMNR2tkEn9RdSJdPNGgwpKewOh
+	 1rpfKRPKfV3EMEZbusGiO3KVAGmNAwwpFYX34UAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenlin Kang <wenlin.kang@windriver.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 095/196] kdb: Fix bound check compiler warning
+Subject: [PATCH 5.15 354/484] genirq: Allow irq_chip registration functions to take a const irq_chip
 Date: Thu, 15 Aug 2024 15:23:32 +0200
-Message-ID: <20240815131855.717225484@linuxfoundation.org>
+Message-ID: <20240815131955.100470699@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenlin Kang <wenlin.kang@windriver.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit ca976bfb3154c7bc67c4651ecd144fdf67ccaee7 ]
+[ Upstream commit 393e1280f765661cf39785e967676a4e57324126 ]
 
-The strncpy() function may leave the destination string buffer
-unterminated, better use strscpy() instead.
+In order to let a const irqchip be fed to the irqchip layer, adjust
+the various prototypes. An extra cast in irq_set_chip()() is required
+to avoid a warning.
 
-This fixes the following warning with gcc 8.2:
-
-kernel/debug/kdb/kdb_io.c: In function 'kdb_getstr':
-kernel/debug/kdb/kdb_io.c:449:3: warning: 'strncpy' specified bound 256 equals destination size [-Wstringop-truncation]
-   strncpy(kdb_prompt_str, prompt, CMD_BUFLEN);
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Signed-off-by: Wenlin Kang <wenlin.kang@windriver.com>
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-Stable-dep-of: 70867efacf43 ("kdb: address -Wformat-security warnings")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20220209162607.1118325-3-maz@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/debug/kdb/kdb_io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/irq.h | 7 ++++---
+ kernel/irq/chip.c   | 9 +++------
+ 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
-index acc8e13b823b2..5358e8a8b6f11 100644
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -459,7 +459,7 @@ static char *kdb_read(char *buffer, size_t bufsize)
- char *kdb_getstr(char *buffer, size_t bufsize, const char *prompt)
+diff --git a/include/linux/irq.h b/include/linux/irq.h
+index f9e6449fbbbae..4fd8d900a1b86 100644
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -709,10 +709,11 @@ extern struct irq_chip no_irq_chip;
+ extern struct irq_chip dummy_irq_chip;
+ 
+ extern void
+-irq_set_chip_and_handler_name(unsigned int irq, struct irq_chip *chip,
++irq_set_chip_and_handler_name(unsigned int irq, const struct irq_chip *chip,
+ 			      irq_flow_handler_t handle, const char *name);
+ 
+-static inline void irq_set_chip_and_handler(unsigned int irq, struct irq_chip *chip,
++static inline void irq_set_chip_and_handler(unsigned int irq,
++					    const struct irq_chip *chip,
+ 					    irq_flow_handler_t handle)
  {
- 	if (prompt && kdb_prompt_str != prompt)
--		strncpy(kdb_prompt_str, prompt, CMD_BUFLEN);
-+		strscpy(kdb_prompt_str, prompt, CMD_BUFLEN);
- 	kdb_printf(kdb_prompt_str);
- 	kdb_nextline = 1;	/* Prompt and input resets line number */
- 	return kdb_read(buffer, bufsize);
+ 	irq_set_chip_and_handler_name(irq, chip, handle, NULL);
+@@ -802,7 +803,7 @@ static inline void irq_set_percpu_devid_flags(unsigned int irq)
+ }
+ 
+ /* Set/get chip/data for an IRQ: */
+-extern int irq_set_chip(unsigned int irq, struct irq_chip *chip);
++extern int irq_set_chip(unsigned int irq, const struct irq_chip *chip);
+ extern int irq_set_handler_data(unsigned int irq, void *data);
+ extern int irq_set_chip_data(unsigned int irq, void *data);
+ extern int irq_set_irq_type(unsigned int irq, unsigned int type);
+diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+index 7ea66e55ef86b..0a893df1b8099 100644
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -38,7 +38,7 @@ struct irqaction chained_action = {
+  *	@irq:	irq number
+  *	@chip:	pointer to irq chip description structure
+  */
+-int irq_set_chip(unsigned int irq, struct irq_chip *chip)
++int irq_set_chip(unsigned int irq, const struct irq_chip *chip)
+ {
+ 	unsigned long flags;
+ 	struct irq_desc *desc = irq_get_desc_lock(irq, &flags, 0);
+@@ -46,10 +46,7 @@ int irq_set_chip(unsigned int irq, struct irq_chip *chip)
+ 	if (!desc)
+ 		return -EINVAL;
+ 
+-	if (!chip)
+-		chip = &no_irq_chip;
+-
+-	desc->irq_data.chip = chip;
++	desc->irq_data.chip = (struct irq_chip *)(chip ?: &no_irq_chip);
+ 	irq_put_desc_unlock(desc, flags);
+ 	/*
+ 	 * For !CONFIG_SPARSE_IRQ make the irq show up in
+@@ -1075,7 +1072,7 @@ irq_set_chained_handler_and_data(unsigned int irq, irq_flow_handler_t handle,
+ EXPORT_SYMBOL_GPL(irq_set_chained_handler_and_data);
+ 
+ void
+-irq_set_chip_and_handler_name(unsigned int irq, struct irq_chip *chip,
++irq_set_chip_and_handler_name(unsigned int irq, const struct irq_chip *chip,
+ 			      irq_flow_handler_t handle, const char *name)
+ {
+ 	irq_set_chip(irq, chip);
 -- 
 2.43.0
 
