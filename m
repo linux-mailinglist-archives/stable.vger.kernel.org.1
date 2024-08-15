@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D474A9531C7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6122D952F8C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B2DA285DC3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93D021C24765
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D39319DF58;
-	Thu, 15 Aug 2024 13:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858FE1A00DF;
+	Thu, 15 Aug 2024 13:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7HZPkgo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9gap4+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB0E19DFA6;
-	Thu, 15 Aug 2024 13:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431051714D0;
+	Thu, 15 Aug 2024 13:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730288; cv=none; b=ufAfZ0U6JY1QC5e+MJPcnZa/VF38p1saKLF2D3k4EH0q5UaxZ79/WD4aZdTJyCwM0pCzi8xQGK0LI6u442KrH6Ua0cXm2BSh105ChXIgICuMvXQy27HAhciVX7EBlcyNE6DLSxbcWwxdtAfNCNkzNkNJiLHPZTofd4IaKMY1fYc=
+	t=1723728808; cv=none; b=Hr8V7xdLtpW1zCyJGuXKK/o+leelLC3uw/Te1OCJa8aZwBFSc+Eznaj9dhJLRG2YeJzkoBfMDk9ZjyI8wI+RX0mRIymULR6ubDgdfE3+IBC12DzYsq+/V6UdlDf6XBkwcCHJL2YJOGQdoyVp88LDijg1FpFr2wUkN8mHlD2vnRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730288; c=relaxed/simple;
-	bh=LPAya4r9n4VN0lCSg/+Bzkbc7UZCBDhc+iGgtVD+a2E=;
+	s=arc-20240116; t=1723728808; c=relaxed/simple;
+	bh=U4C3eLcLCxrrPoJ+5WaYAxGyiNRDwIFOUkZCoGN53JQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l79tQS9vvkLQCK2s0VwsKC47wu7U5cHIcxMtx3Sq5Cu01ZS85KueZV6HS4FYBVcL7arjmmHdNDDulwD7308saI8fIiUIAgxN0PROYmd83/aKbGLWVcbQbxw0IQd25BPolZ7EojPRKkCrn65Gp11anh9wdIdW1GG4ocC1DHmhWH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7HZPkgo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469C9C32786;
-	Thu, 15 Aug 2024 13:58:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nWPA0pkqULgORsn0KVk59wdzah62rkfxDJe7Ghfne/cNoXCUBMpFRm6ruLWnmJAsTi61ECoFvCw0NmzAmX3c2Rp2AEst1S7obaNiwYVCoAaeaj+LJvfSTNiHXC7TJao585QoiWKYv5yxRNWV1B1B9R8uWulQ1WsVx5p5VUCsoHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9gap4+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F88C4AF0A;
+	Thu, 15 Aug 2024 13:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730287;
-	bh=LPAya4r9n4VN0lCSg/+Bzkbc7UZCBDhc+iGgtVD+a2E=;
+	s=korg; t=1723728808;
+	bh=U4C3eLcLCxrrPoJ+5WaYAxGyiNRDwIFOUkZCoGN53JQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7HZPkgo/hyP91fLAbbjFXPH20tVG5qYRDwa1ZMlGaDDgP7kEj5qh33UI1+z/vQ7l
-	 pm/ezInJFFBkO2+8ZLrxf/DdwMDcreaOIctT1bxrwFB8J8rwN9cJIImVc3q7vQBYZ+
-	 ec40IAn8rGLj9pNGK80AKJSYOatRaIHzPm7KSJrY=
+	b=a9gap4+M/7sWzDlLO1ozuYTEDb9I8MQKBAfzfIxm2CS96EylirNIXG95FQlwN0xkb
+	 +RwNyDvXbySHHpFr3eCKaBMqkY/TJluIl83rC+3djB78atkacHDu6weSaYu00EHKaH
+	 FlYwPGYFP8anGOTwuAeVWLtSUJZZhEFAlAEdDF/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 334/484] net/iucv: fix use after free in iucv_sock_close()
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 4.19 075/196] leds: ss4200: Convert PCIBIOS_* return codes to errnos
 Date: Thu, 15 Aug 2024 15:23:12 +0200
-Message-ID: <20240815131954.311661775@linuxfoundation.org>
+Message-ID: <20240815131854.947920317@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit f558120cd709682b739207b48cf7479fd9568431 ]
+commit ce068e83976140badb19c7f1307926b4b562fac4 upstream.
 
-iucv_sever_path() is called from process context and from bh context.
-iucv->path is used as indicator whether somebody else is taking care of
-severing the path (or it is already removed / never existed).
-This needs to be done with atomic compare and swap, otherwise there is a
-small window where iucv_sock_close() will try to work with a path that has
-already been severed and freed by iucv_callback_connrej() called by
-iucv_tasklet_fn().
+ich7_lpc_probe() uses pci_read_config_dword() that returns PCIBIOS_*
+codes. The error handling code assumes incorrectly it's a normal errno
+and checks for < 0. The return code is returned from the probe function
+as is but probe functions should return normal errnos.
 
-Example:
-[452744.123844] Call Trace:
-[452744.123845] ([<0000001e87f03880>] 0x1e87f03880)
-[452744.123966]  [<00000000d593001e>] iucv_path_sever+0x96/0x138
-[452744.124330]  [<000003ff801ddbca>] iucv_sever_path+0xc2/0xd0 [af_iucv]
-[452744.124336]  [<000003ff801e01b6>] iucv_sock_close+0xa6/0x310 [af_iucv]
-[452744.124341]  [<000003ff801e08cc>] iucv_sock_release+0x3c/0xd0 [af_iucv]
-[452744.124345]  [<00000000d574794e>] __sock_release+0x5e/0xe8
-[452744.124815]  [<00000000d5747a0c>] sock_close+0x34/0x48
-[452744.124820]  [<00000000d5421642>] __fput+0xba/0x268
-[452744.124826]  [<00000000d51b382c>] task_work_run+0xbc/0xf0
-[452744.124832]  [<00000000d5145710>] do_notify_resume+0x88/0x90
-[452744.124841]  [<00000000d5978096>] system_call+0xe2/0x2c8
-[452744.125319] Last Breaking-Event-Address:
-[452744.125321]  [<00000000d5930018>] iucv_path_sever+0x90/0x138
-[452744.125324]
-[452744.125325] Kernel panic - not syncing: Fatal exception in interrupt
+Remove < 0 from the check and convert PCIBIOS_* returns code using
+pcibios_err_to_errno() into normal errno before returning it.
 
-Note that bh_lock_sock() is not serializing the tasklet context against
-process context, because the check for sock_owned_by_user() and
-corresponding handling is missing.
-
-Ideas for a future clean-up patch:
-A) Correct usage of bh_lock_sock() in tasklet context, as described in
-Link: https://lore.kernel.org/netdev/1280155406.2899.407.camel@edumazet-laptop/
-Re-enqueue, if needed. This may require adding return values to the
-tasklet functions and thus changes to all users of iucv.
-
-B) Change iucv tasklet into worker and use only lock_sock() in af_iucv.
-
-Fixes: 7d316b945352 ("af_iucv: remove IUCV-pathes completely")
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://patch.msgid.link/20240729122818.947756-1-wintera@linux.ibm.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a328e95b82c1 ("leds: LED driver for Intel NAS SS4200 series (v5)")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240527132700.14260-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/iucv/af_iucv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/leds/leds-ss4200.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-index 18316ee3c6921..e6cb3e1cbbf9b 100644
---- a/net/iucv/af_iucv.c
-+++ b/net/iucv/af_iucv.c
-@@ -336,8 +336,8 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
- 	struct iucv_sock *iucv = iucv_sk(sk);
- 	struct iucv_path *path = iucv->path;
+--- a/drivers/leds/leds-ss4200.c
++++ b/drivers/leds/leds-ss4200.c
+@@ -368,8 +368,10 @@ static int ich7_lpc_probe(struct pci_dev
  
--	if (iucv->path) {
--		iucv->path = NULL;
-+	/* Whoever resets the path pointer, must sever and free it. */
-+	if (xchg(&iucv->path, NULL)) {
- 		if (with_user_data) {
- 			low_nmcpy(user_data, iucv->src_name);
- 			high_nmcpy(user_data, iucv->dst_name);
--- 
-2.43.0
-
+ 	nas_gpio_pci_dev = dev;
+ 	status = pci_read_config_dword(dev, PMBASE, &g_pm_io_base);
+-	if (status)
++	if (status) {
++		status = pcibios_err_to_errno(status);
+ 		goto out;
++	}
+ 	g_pm_io_base &= 0x00000ff80;
+ 
+ 	status = pci_read_config_dword(dev, GPIO_CTRL, &gc);
+@@ -381,8 +383,9 @@ static int ich7_lpc_probe(struct pci_dev
+ 	}
+ 
+ 	status = pci_read_config_dword(dev, GPIO_BASE, &nas_gpio_io_base);
+-	if (0 > status) {
++	if (status) {
+ 		dev_info(&dev->dev, "Unable to read GPIOBASE.\n");
++		status = pcibios_err_to_errno(status);
+ 		goto out;
+ 	}
+ 	dev_dbg(&dev->dev, ": GPIOBASE = 0x%08x\n", nas_gpio_io_base);
 
 
 
