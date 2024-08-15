@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-68403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E80953206
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0C6952FC1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AFF1288367
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:01:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C508128A03E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0D41A01B6;
-	Thu, 15 Aug 2024 14:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263CB7DA78;
+	Thu, 15 Aug 2024 13:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1wV2ood"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mN6j9kCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4A71AC8BB;
-	Thu, 15 Aug 2024 14:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87781DA4E;
+	Thu, 15 Aug 2024 13:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730458; cv=none; b=kXZ7FtAz5bRtVHWaSVcLivRMuVHqnLTGCKtvez4IFc6Znsx2Q7MB/pCLcGApxMpoPVSziEPuSmrpAdGGJy04H3Yjho0AqLV8xUNI2i0OJXweAUb1HP4QmHq/RVNSCtKjuiRQyLWiVKoN//8g4F7RSxWktW34KDTOdkQTBxsR2zk=
+	t=1723728931; cv=none; b=Jz1tV6zVM1Og+zQE1Q2bOqp7V9+nrS3ZGOEwKKapq3vWeCcwdpx4DoQgZ49wNKkWtfh/InlAtguoj2y/+OThkEyXFvc7R5M/RsafaHLsEn0h0C6Pbm7X2i10wKVmbmj4L0O8typ6BuC+e/4Yp0c1Zdi3Rpn/owPjBQFYlaoWJVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730458; c=relaxed/simple;
-	bh=YAc/h1mCbm3ffBIhuyRtW0NrOsk12evT2d2BD1Ksr/c=;
+	s=arc-20240116; t=1723728931; c=relaxed/simple;
+	bh=f1KrxnsmAx32rQfbF5ndHZTWqIl+MDZMkZRXZj6qP14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etHUXus7ljpcqPU+jiaFtlaehnU+YYgCuodrrLqe/Lg1krG1AGaPf/JANRnDLVoCiomr2OSpj/vkZGB40Cem7cpB9r592e3o3NPnyVYczIqcn6JejXz1vYZYD+9pIU/0+Tyzf9nDsH4WAAgROoDHN+oFLJV9j2v3bib+/evbupg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1wV2ood; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301B7C32786;
-	Thu, 15 Aug 2024 14:00:57 +0000 (UTC)
+	 MIME-Version; b=A/2zUuLRLDQ9WTsytToUxJFbnK7XZDNBRPiPWkLpmuMg3RfivHRp4PJj6t/zJtIXYctfFfm6DdIfuKzSFVxpymtggndOnTx9Pafcgtmucajkwj3QiU/OsaD3keET9x9P5qu5BDBJTie3GmKH0nKwpe2y/qIMvaCBi4Q5bq26r0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mN6j9kCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEEFC32786;
+	Thu, 15 Aug 2024 13:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730458;
-	bh=YAc/h1mCbm3ffBIhuyRtW0NrOsk12evT2d2BD1Ksr/c=;
+	s=korg; t=1723728931;
+	bh=f1KrxnsmAx32rQfbF5ndHZTWqIl+MDZMkZRXZj6qP14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x1wV2ood8FKkGKs76IHg+NxArEok4RKbC6a/HeBE6E+Gw4GYdzCwHXJq7OOCnj90U
-	 QyEAdi6yGOMiQha4tT0GEZzA+2FGTW1w4+e85wZjicemayy4vIh98FdAhnFtZggwC8
-	 +vC/OYfVMw5Zv2C45Xclh3v7NEBVRHElQiZICcvA=
+	b=mN6j9kCwgLRk4W5h7o29jRqr7MN3/HNQ5l+vO9wK2RAb/0WHgpXHajfn7g8pvn1Pa
+	 xBJ4/JGV7yAj8Y3++Pk5neufYh2EjfWb+M90K4nV+S4yFhXDpCAC4Kt5Md2b7ibUaN
+	 jKA3iyXBHbi7MCZ5L0ZAfUmtSCiU7snfDX8gmi5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 415/484] ASoC: meson: axg-fifo: fix irq scheduling issue with PREEMPT_RT
-Date: Thu, 15 Aug 2024 15:24:33 +0200
-Message-ID: <20240815131957.483296266@linuxfoundation.org>
+Subject: [PATCH 4.19 157/196] arm64: errata: Expand speculative SSBS workaround
+Date: Thu, 15 Aug 2024 15:24:34 +0200
+Message-ID: <20240815131858.080911705@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +64,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 5003d0ce5c7da3a02c0aff771f516f99731e7390 ]
+[ Upstream commit 75b3c43eab594bfbd8184ec8ee1a6b820950819a ]
 
-With PREEMPT_RT enabled a spinlock_t becomes a sleeping lock.
+A number of Arm Ltd CPUs suffer from errata whereby an MSR to the SSBS
+special-purpose register does not affect subsequent speculative
+instructions, permitting speculative store bypassing for a window of
+time.
 
-This is usually not a problem with spinlocks used in IRQ context since
-IRQ handlers get threaded. However, if IRQF_ONESHOT is set, the primary
-handler won't be force-threaded and runs always in hardirq context. This is
-a problem because spinlock_t requires a preemptible context on PREEMPT_RT.
+We worked around this for Cortex-X4 and Neoverse-V3, in commit:
 
-In this particular instance, regmap mmio uses spinlock_t to protect the
-register access and IRQF_ONESHOT is set on the IRQ. In this case, it is
-actually better to do everything in threaded handler and it solves the
-problem with PREEMPT_RT.
+  7187bb7d0b5c7dfa ("arm64: errata: Add workaround for Arm errata 3194386 and 3312417")
 
-Reported-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Closes: https://lore.kernel.org/linux-amlogic/20240729131652.3012327-1-avkrasnov@salutedevices.com
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Fixes: b11d26660dff ("ASoC: meson: axg-fifo: use threaded irq to check periods")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20240807162705.4024136-1-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+... as per their Software Developer Errata Notice (SDEN) documents:
+
+* Cortex-X4 SDEN v8.0, erratum 3194386:
+  https://developer.arm.com/documentation/SDEN-2432808/0800/
+
+* Neoverse-V3 SDEN v6.0, erratum 3312417:
+  https://developer.arm.com/documentation/SDEN-2891958/0600/
+
+Since then, similar errata have been published for a number of other Arm Ltd
+CPUs, for which the mitigation is the same. This is described in their
+respective SDEN documents:
+
+* Cortex-A710 SDEN v19.0, errataum 3324338
+  https://developer.arm.com/documentation/SDEN-1775101/1900/?lang=en
+
+* Cortex-A720 SDEN v11.0, erratum 3456091
+  https://developer.arm.com/documentation/SDEN-2439421/1100/?lang=en
+
+* Cortex-X2 SDEN v19.0, erratum 3324338
+  https://developer.arm.com/documentation/SDEN-1775100/1900/?lang=en
+
+* Cortex-X3 SDEN v14.0, erratum 3324335
+  https://developer.arm.com/documentation/SDEN-2055130/1400/?lang=en
+
+* Cortex-X925 SDEN v8.0, erratum 3324334
+  https://developer.arm.com/documentation/109108/800/?lang=en
+
+* Neoverse-N2 SDEN v17.0, erratum 3324339
+  https://developer.arm.com/documentation/SDEN-1982442/1700/?lang=en
+
+* Neoverse-V2 SDEN v9.0, erratum 3324336
+  https://developer.arm.com/documentation/SDEN-2332927/900/?lang=en
+
+Note that due to shared design lineage, some CPUs share the same erratum
+number.
+
+Add these to the existing mitigation under CONFIG_ARM64_ERRATUM_3194386.
+As listing all of the erratum IDs in the runtime description would be
+unwieldy, this is reduced to:
+
+	"SSBS not fully self-synchronizing"
+
+... matching the description of the errata in all of the SDENs.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-6-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: fix conflicts and renames ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-fifo.c | 26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
+ Documentation/arm64/silicon-errata.txt | 7 +++++++
+ arch/arm64/Kconfig                     | 9 ++++++++-
+ arch/arm64/kernel/cpu_errata.c         | 9 ++++++++-
+ 3 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/meson/axg-fifo.c b/sound/soc/meson/axg-fifo.c
-index 94b169a5493b5..5218e40aeb1bb 100644
---- a/sound/soc/meson/axg-fifo.c
-+++ b/sound/soc/meson/axg-fifo.c
-@@ -207,25 +207,18 @@ static irqreturn_t axg_fifo_pcm_irq_block(int irq, void *dev_id)
- 	status = FIELD_GET(STATUS1_INT_STS, status);
- 	axg_fifo_ack_irq(fifo, status);
+diff --git a/Documentation/arm64/silicon-errata.txt b/Documentation/arm64/silicon-errata.txt
+index c7bdac13e3071..8e978776f799e 100644
+--- a/Documentation/arm64/silicon-errata.txt
++++ b/Documentation/arm64/silicon-errata.txt
+@@ -61,8 +61,15 @@ stable kernels.
+ | ARM            | Cortex-A73      | #858921         | ARM64_ERRATUM_858921        |
+ | ARM            | Cortex-A55      | #1024718        | ARM64_ERRATUM_1024718       |
+ | ARM            | Cortex-A76      | #1463225        | ARM64_ERRATUM_1463225       |
++| ARM            | Cortex-A710     | #3324338        | ARM64_ERRATUM_3194386       |
++| ARM            | Cortex-A720     | #3456091        | ARM64_ERRATUM_3194386       |
++| ARM            | Cortex-X2       | #3324338        | ARM64_ERRATUM_3194386       |
++| ARM            | Cortex-X3       | #3324335        | ARM64_ERRATUM_3194386       |
+ | ARM            | Cortex-X4       | #3194386        | ARM64_ERRATUM_3194386       |
++| ARM            | Cortex-X925     | #3324334        | ARM64_ERRATUM_3194386       |
+ | ARM            | Neoverse-N1     | #1542419        | ARM64_ERRATUM_1542419       |
++| ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
++| ARM            | Neoverse-V2     | #3324336        | ARM64_ERRATUM_3194386       |
+ | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ | ARM            | MMU-500         | #841119,#826419 | N/A                         |
+ |                |                 |                 |                             |
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 747d055627362..a46fe8d14e56d 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -532,12 +532,19 @@ config ARM64_ERRATUM_1742098
+ 	  If unsure, say Y.
  
--	/* Use the thread to call period elapsed on nonatomic links */
--	if (status & FIFO_INT_COUNT_REPEAT)
--		return IRQ_WAKE_THREAD;
-+	if (status & ~FIFO_INT_COUNT_REPEAT)
-+		dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
-+			status);
+ config ARM64_ERRATUM_3194386
+-	bool "Cortex-X4/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
++	bool "Cortex-{A720,X4,X925}/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
+ 	default y
+ 	help
+ 	  This option adds the workaround for the following errata:
  
--	dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
--		status);
-+	if (status & FIFO_INT_COUNT_REPEAT) {
-+		snd_pcm_period_elapsed(ss);
-+		return IRQ_HANDLED;
-+	}
++	  * ARM Cortex-A710 erratam 3324338
++	  * ARM Cortex-A720 erratum 3456091
++	  * ARM Cortex-X2 erratum 3324338
++	  * ARM Cortex-X3 erratum 3324335
+ 	  * ARM Cortex-X4 erratum 3194386
++	  * ARM Cortex-X925 erratum 3324334
++	  * ARM Neoverse N2 erratum 3324339
++	  * ARM Neoverse V2 erratum 3324336
+ 	  * ARM Neoverse-V3 erratum 3312417
  
- 	return IRQ_NONE;
- }
+ 	  On affected cores "MSR SSBS, #0" instructions may not affect
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index 61d3929fafae4..487bab3948f8f 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -709,8 +709,15 @@ static struct midr_range broken_aarch32_aes[] = {
  
--static irqreturn_t axg_fifo_pcm_irq_block_thread(int irq, void *dev_id)
--{
--	struct snd_pcm_substream *ss = dev_id;
--
--	snd_pcm_period_elapsed(ss);
--
--	return IRQ_HANDLED;
--}
--
- int axg_fifo_pcm_open(struct snd_soc_component *component,
- 		      struct snd_pcm_substream *ss)
- {
-@@ -251,8 +244,9 @@ int axg_fifo_pcm_open(struct snd_soc_component *component,
- 	if (ret)
- 		return ret;
- 
--	ret = request_threaded_irq(fifo->irq, axg_fifo_pcm_irq_block,
--				   axg_fifo_pcm_irq_block_thread,
-+	/* Use the threaded irq handler only with non-atomic links */
-+	ret = request_threaded_irq(fifo->irq, NULL,
-+				   axg_fifo_pcm_irq_block,
- 				   IRQF_ONESHOT, dev_name(dev), ss);
- 	if (ret)
- 		return ret;
+ #ifdef CONFIG_ARM64_ERRATUM_3194386
+ static const struct midr_range erratum_spec_ssbs_list[] = {
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+ 	{}
+ };
+ #endif
+@@ -926,7 +933,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ #endif
+ #ifdef CONFIG_ARM64_ERRATUM_3194386
+ 	{
+-		.desc = "ARM errata 3194386, 3312417",
++		.desc = "SSBS not fully self-synchronizing",
+ 		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
+ 		ERRATA_MIDR_RANGE_LIST(erratum_spec_ssbs_list),
+ 	},
 -- 
 2.43.0
 
