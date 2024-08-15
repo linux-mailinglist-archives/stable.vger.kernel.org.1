@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-68694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5812C953387
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C801953519
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F32E3282B57
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95481F2A646
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8862B1A01B6;
-	Thu, 15 Aug 2024 14:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D5A1993B9;
+	Thu, 15 Aug 2024 14:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W42/Syde"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijvg73vV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FA21A706F;
-	Thu, 15 Aug 2024 14:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A130A1DFFB;
+	Thu, 15 Aug 2024 14:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731373; cv=none; b=TcH0pjnoeVgRddVZakrInK6b1efpkh7KbfCkdat+zyR3VZYxl7AXAbtG877kJZ7TxbHTcaLkb/j52+JNjAXR6ElHwHxjGM9h9iRrrWuBp47ElFp9ipS2a4NjU71WbPINi/6EPXoGjNUrJ5zaT3SuxqxT9RMk+vpOUMQpP7Grm/Y=
+	t=1723732428; cv=none; b=X3yafnjrjiveNC8y1dJ1062IAUv53l43UhpL5cDVSVfQ8ThNZWPSnJKrH6zNs2aqhkTwpq1c/8MYbHJNuGve827dmypMzB04mmSMSIgWcdxiujbXVpjPfUluo4u6zQ7GB7+F/yKKE2c97+wVfpGVYR1eNkteI04z+uyP52NjDU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731373; c=relaxed/simple;
-	bh=+Q5vrW/vXQkLpHuHgQ39uG1Yv9mwsIA7Eg+yxE9Gwas=;
+	s=arc-20240116; t=1723732428; c=relaxed/simple;
+	bh=fWyb+YmGtKzPKS3XW+xnr/r2FzIbOxcnyTmXCuZv3+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBqlMLnR9PO743Skx2XCjcTAh7jQ2Urfr2wsXHnSdJz720Q/ZIFMwYptbt5W1hH/0eiuQfrG/VwGrQq4j/DWQbBhPOLkCu4UG48cflfshU33PEFSCUJWZmg7dqJxK5cuZr8e+WT1EPhsElz7DrAK9z7qDVROxrLaWX41cmX75rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W42/Syde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE60C4AF0E;
-	Thu, 15 Aug 2024 14:16:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Phq/VBZWeZFKW114Dy8Gj1Zocbb6Xzo28R5q/Yy9wOEXmB/+mav9OvkIukNl2D8avQGs99H3hvXh4d9axQkkFBkXjiSXe7yglt95i+rGXIJeJ0rg6hJkzCzy2jxSbFUFZ4zXOBDQ/LlpfHqYBm2GnkWpFlHa4GRJQ7p0MUGTnL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijvg73vV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180CEC32786;
+	Thu, 15 Aug 2024 14:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731372;
-	bh=+Q5vrW/vXQkLpHuHgQ39uG1Yv9mwsIA7Eg+yxE9Gwas=;
+	s=korg; t=1723732428;
+	bh=fWyb+YmGtKzPKS3XW+xnr/r2FzIbOxcnyTmXCuZv3+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W42/SydeSt8bkzdvC9OchJ6npV9W28GeRjlMAXCCwqLmewo5TrrzA/N9UwccyGG5h
-	 XQShAv/lMZi6B6S1IGM/miS5ehqCTNY2m1bRrHlJ9vIKEM1kUyd7MnU93n41D5gePP
-	 K3YcsL8t/P19RvbNyJy4kGO0QaCp5wiV+NJcLUZg=
+	b=ijvg73vVAsozxApb7OuDW5uru2veijZfYhRTfVV4c6hcGcYVOAShdL3SWtD0k+2wG
+	 VPxJkeP0b8lLTtLopC90jEWqbRRKup9otrwdxlLBFj1n2/HbdD+TRr+u9/GGjeVfJz
+	 SF+vr1U6vAm1bM/E5zOKXzcSoFJ7ZpvehHCzcmEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 109/259] scsi: qla2xxx: Return ENOBUFS if sg_cnt is more than one for ELS cmds
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.10 176/352] selftests/sigaltstack: Fix ppc64 GCC build
 Date: Thu, 15 Aug 2024 15:24:02 +0200
-Message-ID: <20240815131907.013353067@linuxfoundation.org>
+Message-ID: <20240815131926.079041523@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit ce2065c4cc4f05635413f63f6dc038d7d4842e31 upstream.
+commit 17c743b9da9e0d073ff19fd5313f521744514939 upstream.
 
-Firmware only supports single DSDs in ELS Pass-through IOCB (0x53h), sg cnt
-is decided by the SCSI ML. User is not aware of the cause of an acutal
-error.
+Building the sigaltstack test with GCC on 64-bit powerpc errors with:
 
-Return the appropriate return code that will be decoded by API and
-application and proper error message will be displayed to user.
+  gcc -Wall     sas.c  -o /home/michael/linux/.build/kselftest/sigaltstack/sas
+  In file included from sas.c:23:
+  current_stack_pointer.h:22:2: error: #error "implement current_stack_pointer equivalent"
+     22 | #error "implement current_stack_pointer equivalent"
+        |  ^~~~~
+  sas.c: In function ‘my_usr1’:
+  sas.c:50:13: error: ‘sp’ undeclared (first use in this function); did you mean ‘p’?
+     50 |         if (sp < (unsigned long)sstack ||
+        |             ^~
 
-Fixes: 6e98016ca077 ("[SCSI] qla2xxx: Re-organized BSG interface specific code.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-5-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This happens because GCC doesn't define __ppc__ for 64-bit builds, only
+32-bit builds. Instead use __powerpc__ to detect powerpc builds, which
+is defined by clang and GCC for 64-bit and 32-bit builds.
+
+Fixes: 05107edc9101 ("selftests: sigaltstack: fix -Wuninitialized")
+Cc: stable@vger.kernel.org # v6.3+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240520062647.688667-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |    2 +-
+ tools/testing/selftests/sigaltstack/current_stack_pointer.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -297,7 +297,7 @@ qla2x00_process_els(struct bsg_job *bsg_
- 		    "request_sg_cnt=%x reply_sg_cnt=%x.\n",
- 		    bsg_job->request_payload.sg_cnt,
- 		    bsg_job->reply_payload.sg_cnt);
--		rval = -EPERM;
-+		rval = -ENOBUFS;
- 		goto done;
- 	}
- 
+--- a/tools/testing/selftests/sigaltstack/current_stack_pointer.h
++++ b/tools/testing/selftests/sigaltstack/current_stack_pointer.h
+@@ -8,7 +8,7 @@ register unsigned long sp asm("sp");
+ register unsigned long sp asm("esp");
+ #elif __loongarch64
+ register unsigned long sp asm("$sp");
+-#elif __ppc__
++#elif __powerpc__
+ register unsigned long sp asm("r1");
+ #elif __s390x__
+ register unsigned long sp asm("%15");
 
 
 
