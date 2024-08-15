@@ -1,145 +1,97 @@
-Return-Path: <stable+bounces-67982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6924953013
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:39:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC3495305F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91A221F2448F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:39:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0788FB21717
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08918198E78;
-	Thu, 15 Aug 2024 13:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953F619DF58;
+	Thu, 15 Aug 2024 13:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8k9N5mV"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="Bq41KcuO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D271AC8A2;
-	Thu, 15 Aug 2024 13:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974691714A8
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 13:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729128; cv=none; b=j/xJBqqp8bxWte+Zgoig1Fk1xmJGPYAkEcP6cSeDe5AGjJKTPB2+l/sbSqElVaYXO7wlZ2IVXuONyJNoxoKo1kbhssVSZPw9nXwuyd7kk/ny0pTxLEsYT8yVNLiDEKfqz0bGfEQ3NJ7hV5wdtxxKQWrlZkhAuSL/Na2CpGifHdk=
+	t=1723729324; cv=none; b=gC5L6IV1kNrUToHhF88WDjNo5XSmdwM+IrJV7aGKnNmM0ZfdlpgOjX5DUidUYQvF6vEoVqw0b+bL1sqrrscFr9bGzzIRwnBLfU6KtBroigtmQJ3luKt/egwqy+XzQtZ9WsAQtklidIlDdkEihmcWxw+u8B1TjZxZYDmSBSKBgbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729128; c=relaxed/simple;
-	bh=pCZlyR5SklaQDaxaA9wd6flreForvcy3ExLbALzU8RU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+WTAKl1Ak22gQgIsCWcjBPNeZFtA4KENvs9qt+eYM1kngkf7Rdd5Snpx+u0i86UvGWaIRkm3p2vp0E4iLeAYzBrAFmQWKYh+PICSowUunDcug6DQjqZpW1fXFbhgL0H9KJmbWuJhad6te+NxFHtKf8tfmwiyuwVBVIT3ef7dJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8k9N5mV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DB9C4AF0C;
-	Thu, 15 Aug 2024 13:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729128;
-	bh=pCZlyR5SklaQDaxaA9wd6flreForvcy3ExLbALzU8RU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8k9N5mVznuCuwiOBz0K7Lh0cUkNIY5OGMrh61o9XIPRWjzK4S6EakWg0I+24Bhgk
-	 KbERfnlewVWzAZ7eEkHoan37Jg90hUEJatpslHwmdgdjvT/CrNhUc1tBRneLX2J9PR
-	 D0Rqif3v3ovV1d1FrcLMizXA3OgvniJts9PMI7vo=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 22/22] drm/amdgpu/display: Fix null pointer dereference in dc_stream_program_cursor_position
-Date: Thu, 15 Aug 2024 15:25:30 +0200
-Message-ID: <20240815131832.111555892@linuxfoundation.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131831.265729493@linuxfoundation.org>
-References: <20240815131831.265729493@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1723729324; c=relaxed/simple;
+	bh=WsmPYdjM3t0L/W4ViuIdjVED78UDOOasuWoKZjTtMvE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eLaIoNk8QUkhnRYrsfoRNQCv0/tP6KSOXKh8M288X9txjNKyeZfEYJU+KAoU4QHRyLgwBUKEoZYlbWuSsgaaXbP/8nnUaWNMi7dQb8hRXlMXrZCXo4mwHhlrMcgq2pFWKfCnHBSLN78hdc/I8f4EwkU34XqZfT79wGGL4yttSKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Bq41KcuO; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4Wl5rh3BwSzlgT1H;
+	Thu, 15 Aug 2024 13:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1723729315; x=1726321316; bh=WsmPYdjM3t0L/W4ViuIdjVED
+	78UDOOasuWoKZjTtMvE=; b=Bq41KcuOIfQMbB2ycjicRZ5cO7Tq5Ei9nZo4i4Nr
+	w2xOCy+LNTztGirqY6ORVbEHHTcaoPSK7ytbvZ2c1FyRuLDAQKoeRpBB4h7whlR0
+	YXSI5B470bBEQQpkLJZ27yeuwmhwyXqWxxOIq631b5MdgqpWBI9YZCjBVibxlLNg
+	G9+7gAteYIIpu5MLu7Q46rN3cyCAM/WptrZpngnsw7jVf5UDcg1EmP6sFnhCM/LH
+	dHqIGOTcp4q6IUq8BtZLiImCxEjQmfBsvUqxnI7QhhyOMg8y1ZN1u/Mo1ZR6jOHo
+	yyfhPpp61mf5WonR9LiaT/j3luzGUx1+VRiH6LKkS99pJQ==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id AqG-30HdzS38; Thu, 15 Aug 2024 13:41:55 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4Wl5rd4QZqzlgVnW;
+	Thu, 15 Aug 2024 13:41:53 +0000 (UTC)
+Message-ID: <44c8337f-2ce7-48ae-bed5-d5f454e34b3b@acm.org>
+Date: Thu, 15 Aug 2024 06:41:45 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 1/2] genirq/cpuhotplug: Skip suspended interrupts when
+ restoring affinity
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: David Stevens <stevensd@chromium.org>,
+ Dongli Zhang <dongli.zhang@oracle.com>, Thomas Gleixner
+ <tglx@linutronix.de>, stable@vger.kernel.org
+References: <20240814182826.1731442-1-bvanassche@acm.org>
+ <20240814182826.1731442-2-bvanassche@acm.org>
+ <2024081532-excluding-subpanel-2424@gregkh>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <2024081532-excluding-subpanel-2424@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+On 8/15/24 1:35 AM, Greg Kroah-Hartman wrote:
+> When forwarding patches on from others, you always have to sign off on
+> them :(
 
-------------------
+I will keep this in mind for the future. If the patch can still be
+modified, feel free to add my signed-off-by to both patches in this
+series:
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 
-commit fa4c500ce93f4f933c38e6d6388970e121e27b21 upstream.
+Thanks,
 
-The fix involves adding a null check for 'stream' at the beginning of
-the function. If 'stream' is NULL, the function immediately returns
-false. This ensures that 'stream' is not NULL when we dereference it to
-access 'ctx' in 'dc = stream->ctx->dc;' the function.
-
-Fixes the below:
-	drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_stream.c:398 dc_stream_program_cursor_position()
-	error: we previously assumed 'stream' could be null (see line 397)
-
-drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_stream.c
-    389 bool dc_stream_program_cursor_position(
-    390         struct dc_stream_state *stream,
-    391         const struct dc_cursor_position *position)
-    392 {
-    393         struct dc *dc;
-    394         bool reset_idle_optimizations = false;
-    395         const struct dc_cursor_position *old_position;
-    396
-    397         old_position = stream ? &stream->cursor_position : NULL;
-                               ^^^^^^^^
-The patch adds a NULL check
-
---> 398         dc = stream->ctx->dc;
-                     ^^^^^^^^
-The old code didn't check
-
-    399
-    400         if (dc_stream_set_cursor_position(stream, position)) {
-    401                 dc_z10_restore(dc);
-    402
-    403                 /* disable idle optimizations if enabling cursor */
-    404                 if (dc->idle_optimizations_allowed &&
-    405                     (!old_position->enable || dc->debug.exit_idle_opt_for_cursor_updates) &&
-    406                     position->enable) {
-    407                         dc_allow_idle_optimizations(dc, false);
-
-Fixes: f63f86b5affc ("drm/amd/display: Separate setting and programming of cursor")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -394,7 +394,10 @@ bool dc_stream_program_cursor_position(
- 	bool reset_idle_optimizations = false;
- 	const struct dc_cursor_position *old_position;
- 
--	old_position = stream ? &stream->cursor_position : NULL;
-+	if (!stream)
-+		return false;
-+
-+	old_position = &stream->cursor_position;
- 	dc = stream->ctx->dc;
- 
- 	if (dc_stream_set_cursor_position(stream, position)) {
-
+Bart.
 
 
