@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-68853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0715B953451
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E769532B4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE76028A175
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4295E1C20E23
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325CE63C;
-	Thu, 15 Aug 2024 14:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088CD1A706A;
+	Thu, 15 Aug 2024 14:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1+k2Cpy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcV9coWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57D419F473;
-	Thu, 15 Aug 2024 14:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF0D19F473;
+	Thu, 15 Aug 2024 14:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731872; cv=none; b=QglxiYbSD3x8nThJruQ5/tiUU6JWXqC3jTlyq3WPXhyv6NN/iVnt0b0AEk90mTL0H1Ei04+n8ecWj5Ut+YNcOfqEssyKR4Socfq97qqbJ62aiiiqb09nlowWgdbfeIlSaTbt1uPQl8J6vqHYZOXcm6iRM4ZTr4WNEuXjGy9KIzc=
+	t=1723730800; cv=none; b=KyVOcHoMV25759fQIWsn7+NSshX52bAQiolOEY0ATDTcyaSKvIbeRys1uScpSq3YNVLS7j/chcXEawYAgKAGBfeyC6qaHv3DLU6Og+ckq/6ORj9bREYM+F3GU9l/y9UJqEatIfpwsznWT3+ob4UzITdi3FBzWvk+rRKmTErnuac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731872; c=relaxed/simple;
-	bh=XRCplMXi57a1UbsEGAsWnoN9I4wmbJAgQfyqfVK3oBA=;
+	s=arc-20240116; t=1723730800; c=relaxed/simple;
+	bh=IJy+5fuvu9hJ9IvkgQefMtM9rlKNJpRZT4DaAEa7U9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kT3lmWJ3KPre5ME/UEFpydjctDqu/2MA+Kub5zlC8OfTN8lmqAkCvrBA231WWiit+G5NVqyTiq6PIhwkzCIYOAsbn2r+n0X8jS4Bj+ylWh7KsEZb2JV3fR83IrGnSYhT8+M2AjLCFC65zonqbZEkgsQS4FjAigrXKHZjPpmQzgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1+k2Cpy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAB4C32786;
-	Thu, 15 Aug 2024 14:24:31 +0000 (UTC)
+	 MIME-Version; b=VmskQAbgh8pEwzDzjNnbP5pd9v9TwZIhZEheuJy3b2H8+yQ7TsigjIUYaNLMpgiMrbAx4HU00zQdo+dKorwVqfiAbH4gyDkfUbtycY/iNuZWi4e8O6Z1C9gwBSpra9TjWH7IGn+FliVzqzokVnJGLIN2Zr5ZK4IPKedgjRqEUPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcV9coWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBBCC32786;
+	Thu, 15 Aug 2024 14:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731871;
-	bh=XRCplMXi57a1UbsEGAsWnoN9I4wmbJAgQfyqfVK3oBA=;
+	s=korg; t=1723730800;
+	bh=IJy+5fuvu9hJ9IvkgQefMtM9rlKNJpRZT4DaAEa7U9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1+k2CpyTffQws1Va3AlzwHBMD0ZWiD55rhYk1Og66kgCMw4+/Dq4THag5Y6reChr
-	 l8ZXOIOlQG9guWkftCZEzfap3ULUn+wY+gOp652ouU/TlaHEyDW4oL5LFaHYEXbRBH
-	 H89vtVVBXqrmRH7i8eKn5G/Zt+18TToz2nT3m8eA=
+	b=BcV9coWyBW4I9J5kSoQwjyurmAHt6bYV7k8NsBysdfJRVk5F1LGijSr/sY0WK8tc5
+	 7IoN7ASN9dCj7SbSFTOTBXQ3+Hdy+cTBBEhrYp7R27+U8ZlTdy5BytqR1aGGbJch+x
+	 klZl60+mA8haOLcsE15XyGuc+pHKixkdfftov4Cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yu Liao <liaoyu15@huawei.com>
-Subject: [PATCH 5.4 235/259] tick/broadcast: Move per CPU pointer access into the atomic section
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 34/38] drm/i915/gem: Adjust vma offset for framebuffer mmap offset
 Date: Thu, 15 Aug 2024 15:26:08 +0200
-Message-ID: <20240815131911.850207006@linuxfoundation.org>
+Message-ID: <20240815131834.267200726@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-commit 6881e75237a84093d0986f56223db3724619f26e upstream.
+[ Upstream commit 1ac5167b3a90c9820daa64cc65e319b2d958d686 ]
 
-The recent fix for making the take over of the broadcast timer more
-reliable retrieves a per CPU pointer in preemptible context.
+When mapping a framebuffer object, the virtual memory area (VMA)
+offset ('vm_pgoff') should be adjusted by the start of the
+'vma_node' associated with the object. This ensures that the VMA
+offset is correctly aligned with the corresponding offset within
+the GGTT aperture.
 
-This went unnoticed as compilers hoist the access into the non-preemptible
-region where the pointer is actually used. But of course it's valid that
-the compiler keeps it at the place where the code puts it which rightfully
-triggers:
+Increment vm_pgoff by the start of the vma_node with the offset=
+provided by the user.
 
-  BUG: using smp_processor_id() in preemptible [00000000] code:
-       caller is hotplug_cpu__broadcast_tick_pull+0x1c/0xc0
-
-Move it to the actual usage site which is in a non-preemptible region.
-
-Fixes: f7d43dd206e7 ("tick/broadcast: Make takeover of broadcast hrtimer reliable")
-Reported-by: David Wang <00107082@163.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Yu Liao <liaoyu15@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/87ttg56ers.ffs@tglx
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: <stable@vger.kernel.org> # v4.9+
+[Joonas: Add Cc: stable]
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240802083850.103694-2-andi.shyti@linux.intel.com
+(cherry picked from commit 60a2066c50058086510c91f404eb582029650970)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-broadcast.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -944,7 +944,6 @@ void tick_broadcast_switch_to_oneshot(vo
- #ifdef CONFIG_HOTPLUG_CPU
- void hotplug_cpu__broadcast_tick_pull(int deadcpu)
- {
--	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
- 	struct clock_event_device *bc;
- 	unsigned long flags;
- 
-@@ -970,6 +969,8 @@ void hotplug_cpu__broadcast_tick_pull(in
- 		 * device to avoid the starvation.
- 		 */
- 		if (tick_check_broadcast_expired()) {
-+			struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+index 4a291d29c5af5..7e9310d01dfdd 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -1120,6 +1120,8 @@ int i915_gem_fb_mmap(struct drm_i915_gem_object *obj, struct vm_area_struct *vma
+ 		mmo = mmap_offset_attach(obj, mmap_type, NULL);
+ 		if (IS_ERR(mmo))
+ 			return PTR_ERR(mmo);
 +
- 			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
- 			tick_program_event(td->evtdev->next_event, 1);
- 		}
++		vma->vm_pgoff += drm_vma_node_start(&mmo->vma_node);
+ 	}
+ 
+ 	/*
+-- 
+2.43.0
+
 
 
 
