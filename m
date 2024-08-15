@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A839533D5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571DA95324B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 169A1B269F5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E84D5289140
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97785180021;
-	Thu, 15 Aug 2024 14:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0145D1A01CC;
+	Thu, 15 Aug 2024 14:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ifp8Sq36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmIO6gU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5619C1AC896;
-	Thu, 15 Aug 2024 14:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B415A19F49A;
+	Thu, 15 Aug 2024 14:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731578; cv=none; b=GZaWjXHSTIuV8mtbKKzuCLXQJ3vJbuHzMGjCw88tzYTW6uqOCRlsDD03B+xraIHJuntCbsegW5Up8bEjCI91T0vvhKW0nrt/q+FqSyIf20ggNY7meSglm5CNkivM6KnUAt0k/BHLxelNfybHmwQK1HkOnRIU/L6lQFlXVrV2ETs=
+	t=1723730565; cv=none; b=uXn30/rpfK6FakqPUS3kvcZe1w62jqOiPud5rUX1S53K69DT52tdIkXz5g3ZDIsRepEhakdCZn8rCQmXQwh1DTjWtba/048bALmZaheyn7/2dGIEe9vINVCH/aCe6jJIy6dLKYfESskcxv/kOtpvRM8xBgpusWyrNJZSg8Spl24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731578; c=relaxed/simple;
-	bh=rLhK/IYwpkowLg05Sf5Ft79nKcVxqsygNVzSeqa5teo=;
+	s=arc-20240116; t=1723730565; c=relaxed/simple;
+	bh=IDFTU2iSid7MbSUwoj3UHn9NyxS0YghCbkBmkmxg4S4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJ994Z3XMYmxjgKOyz83F6UP3VpApe5XjS/VBqmbE55T+HfI1XN4x8v29hYaByaBXhQX/RLrY5Dmf5nDv2tdeNTN8UOAm1fvNb22YoUDDboidHDT6c2IgmRQxo94AE6dinJ8ZxEvesENBqOwsVX9N33yLLP8dq2rM6FAVipu1cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ifp8Sq36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFDB3C32786;
-	Thu, 15 Aug 2024 14:19:37 +0000 (UTC)
+	 MIME-Version; b=ffcO8fffPSHIqRgJQRizIygep5iygtMMTn4Y8OLea13HPxZCxzsgYA2WGHDtOMWlEArPlU6d3ZPK0R43jYZ0NPgsCpx+SxDzUK/SeZnplL6hW2ciocejJ+blmQUMdfaGH1D7EOu0fEaAZ1P/lxC5/BVxP2qrcXoLm4b/WUFwWsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmIO6gU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C962C32786;
+	Thu, 15 Aug 2024 14:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731578;
-	bh=rLhK/IYwpkowLg05Sf5Ft79nKcVxqsygNVzSeqa5teo=;
+	s=korg; t=1723730565;
+	bh=IDFTU2iSid7MbSUwoj3UHn9NyxS0YghCbkBmkmxg4S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ifp8Sq364QXxKFEFRjsK4pSr6SjLS8veRL40KBuNRp2rz7lZM1iOTYP6+4mQ2FxOy
-	 odS5OOrDgD7dSebDDvGZIotDJNXEFQYLr6LrwCE31IgSJIqROs9uIHQdCMM4thJDfb
-	 tonGFbt5nMvRW3+j6Frcbn3A+px7czwXBxjBtnsY=
+	b=TmIO6gU2PSWnSrW7zzSSDGwd7lrEq1jrhzRvrGg1wrjHu5PWuwyS5zchj2DsgEThL
+	 cxQsHwxwBjyfRSqVK0jhFjZOZMRfCcyRjZgSqC+KrfVm6hUjUBTtWi2yqbMKY5t9YA
+	 uVzcyayMhertZreOTbO2RaznBE54cYIkFcqiPnQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Brown <doug@schmorgal.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 174/259] drm/vmwgfx: Fix overlay when using Screen Targets
+	Lucas Stach <l.stach@pengutronix.de>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 5.15 449/484] drm/bridge: analogix_dp: properly handle zero sized AUX transactions
 Date: Thu, 15 Aug 2024 15:25:07 +0200
-Message-ID: <20240815131909.496655944@linuxfoundation.org>
+Message-ID: <20240815131958.803395732@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit cb372a505a994cb39aa75acfb8b3bcf94787cf94 ]
+commit e82290a2e0e8ec5e836ecad1ca025021b3855c2d upstream.
 
-This code was never updated to support Screen Targets.
-Fixes a bug where Xv playback displays a green screen instead of actual
-video contents when 3D acceleration is disabled in the guest.
+Address only transactions without any data are valid and should not
+be flagged as short transactions. Simply return the message size when
+no transaction errors occured.
 
-Fixes: c8261a961ece ("vmwgfx: Major KMS refactoring / cleanup in preparation of screen targets")
-Reported-by: Doug Brown <doug@schmorgal.com>
-Closes: https://lore.kernel.org/all/bd9cb3c7-90e8-435d-bc28-0e38fee58977@schmorgal.com
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Tested-by: Doug Brown <doug@schmorgal.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240719163627.20888-1-ian.forbes@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240318203925.2837689-1-l.stach@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-index fdb52f6d29fb1..395614f2b7bd4 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-@@ -98,7 +98,7 @@ static int vmw_overlay_send_put(struct vmw_private *dev_priv,
- {
- 	struct vmw_escape_video_flush *flush;
- 	size_t fifo_size;
--	bool have_so = (dev_priv->active_display_unit == vmw_du_screen_object);
-+	bool have_so = (dev_priv->active_display_unit != vmw_du_legacy);
- 	int i, num_items;
- 	SVGAGuestPtr ptr;
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
+@@ -1027,7 +1027,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 	u32 status_reg;
+ 	u8 *buffer = msg->buffer;
+ 	unsigned int i;
+-	int num_transferred = 0;
+ 	int ret;
  
--- 
-2.43.0
-
+ 	/* Buffer size of AUX CH is 16 bytes */
+@@ -1079,7 +1078,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = buffer[i];
+ 			writel(reg, dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 			       4 * i);
+-			num_transferred++;
+ 		}
+ 	}
+ 
+@@ -1127,7 +1125,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = readl(dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 				    4 * i);
+ 			buffer[i] = (unsigned char)reg;
+-			num_transferred++;
+ 		}
+ 	}
+ 
+@@ -1144,7 +1141,7 @@ ssize_t analogix_dp_transfer(struct anal
+ 		 (msg->request & ~DP_AUX_I2C_MOT) == DP_AUX_NATIVE_READ)
+ 		msg->reply = DP_AUX_NATIVE_REPLY_ACK;
+ 
+-	return num_transferred > 0 ? num_transferred : -EBUSY;
++	return msg->size;
+ 
+ aux_error:
+ 	/* if aux err happen, reset aux */
 
 
 
