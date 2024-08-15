@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C879953258
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BB49533C5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4CCD2896C5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A1DF1C251B4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70391ABEAB;
-	Thu, 15 Aug 2024 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA52E1A00F5;
+	Thu, 15 Aug 2024 14:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RT8tm4gU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxWCehLV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643EB1A2C04;
-	Thu, 15 Aug 2024 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E511A00DF;
+	Thu, 15 Aug 2024 14:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730605; cv=none; b=TPamDgsz/HTZ4RXtjw6sEuGTMWf6EeBGqb1kNFy3K+HDGnce6Wa/h7tHqNXLnpEKBqqlBORoZSJLH1u0h4A4NLzALcyXdJtkfJ8V0y79nT1vmdIHUnNol4CvidcyzGr6TwUfefAVtsK3tBr69J4xktD8Z71/HmQ5tWD4a+yKsY4=
+	t=1723731533; cv=none; b=sOuoKZOSDluA7iy/l71qIYcQxzZejK5U/zqX2kH/p11cqxN6/TWoaB6/b73OB/7PgMgP7ohM8ayXcFlly8fAM6przzYw63N1Vq5MHSnLENu/ADJTLs+rfUReuHQocj9ivZ43pcx5FlHNTOBvY0IXtdbovMNo58IUFMlb8Sy042g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730605; c=relaxed/simple;
-	bh=4eiUy4qG0gWoQVDW8qiFc/56yXCiPi5VAcLrzupn2YE=;
+	s=arc-20240116; t=1723731533; c=relaxed/simple;
+	bh=4wmkJFnh6gGcMKak5mVQ3OKHFg1abCfSyzjba+ymTbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSQY/x4/B8K6HAMNZ/+HTThWq7vETVDva56lA2rjg5fiZpc1rpT7RCm+JM2zy3Omro9Q1lzkMfyC01YcIzrLMVewe4mvjGEJ8RIcyUgBnBQQjO/kygN0EH/MKaiJxJH1kb2I9+k5QFCgDuSQFwiv2mqb8uVIW7z/0T87lMoJZjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RT8tm4gU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BADC32786;
-	Thu, 15 Aug 2024 14:03:24 +0000 (UTC)
+	 MIME-Version; b=lXxsvlZw7jUYe7Kd3eeqnY1jg+KglCiGKlkyZRF/ENxUtyj/HKJTwrsSkP5AjImbTLLtHRcdN3WWyyCP/DtiemWBUcMz3uQa68+N3mL+2SX02ppyqg0zJvFGY8Py0u8GSdmoIT/gNM3RYlCSJVkACtlP+qlmZ9MdjY2OGgKXJ4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxWCehLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91B5C32786;
+	Thu, 15 Aug 2024 14:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730605;
-	bh=4eiUy4qG0gWoQVDW8qiFc/56yXCiPi5VAcLrzupn2YE=;
+	s=korg; t=1723731533;
+	bh=4wmkJFnh6gGcMKak5mVQ3OKHFg1abCfSyzjba+ymTbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RT8tm4gUYEt3FRZ+6CA2ATceLrRfzS5HgMPtZglNU0hSrBFXTgt9mHfbzRDoFO3FA
-	 4h31fhud0YwmlwZ6Pa6WIGpYDdFwSzr9KCHMW+lHT7a9OkxOpq8njFULVz7wCdDMHP
-	 4Qw3PLSgYkWFO7ZzPVw4WPkkI+zQpEFGIj2L4loc=
+	b=nxWCehLVr5JFYTiRxcLvz7zNN8Dp0m2R4ubV+L1xMnFtqzTu75RIg51J3+p6iamXU
+	 OyTduiO8iHHz8PLGTg1MbY0GXTcYllU4ZogYl1CBckN+KqszacoDjERvkX5VS9BXOF
+	 ps01Lt0EtMa2NrHFJDixXfU/sJYMoz+IqRJSzQ0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianggui Song <qianggui.song@amlogic.com>,
-	Marc Zyngier <maz@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Zach OKeefe <zokeefe@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 433/484] irqchip/meson-gpio: support more than 8 channels gpio irq
+Subject: [PATCH 5.4 158/259] mm: avoid overflows in dirty throttling logic
 Date: Thu, 15 Aug 2024 15:24:51 +0200
-Message-ID: <20240815131958.184425632@linuxfoundation.org>
+Message-ID: <20240815131908.886755109@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianggui Song <qianggui.song@amlogic.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit cc311074f681443266ed9f5969a5b5a0e833c5bc ]
+[ Upstream commit 385d838df280eba6c8680f9777bfa0d0bfe7e8b2 ]
 
-Current meson gpio irqchip driver only support 8 channels for gpio irq
-line, later chips may have more then 8 channels, so need to modify code
-to support more.
+The dirty throttling logic is interspersed with assumptions that dirty
+limits in PAGE_SIZE units fit into 32-bit (so that various multiplications
+fit into 64-bits).  If limits end up being larger, we will hit overflows,
+possible divisions by 0 etc.  Fix these problems by never allowing so
+large dirty limits as they have dubious practical value anyway.  For
+dirty_bytes / dirty_background_bytes interfaces we can just refuse to set
+so large limits.  For dirty_ratio / dirty_background_ratio it isn't so
+simple as the dirty limit is computed from the amount of available memory
+which can change due to memory hotplug etc.  So when converting dirty
+limits from ratios to numbers of pages, we just don't allow the result to
+exceed UINT_MAX.
 
-Signed-off-by: Qianggui Song <qianggui.song@amlogic.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20220225055207.1048-3-qianggui.song@amlogic.com
-Stable-dep-of: f872d4af79fe ("irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock to 'raw_spinlock_t'")
+This is root-only triggerable problem which occurs when the operator
+sets dirty limits to >16 TB.
+
+Link: https://lkml.kernel.org/r/20240621144246.11148-2-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reported-by: Zach O'Keefe <zokeefe@google.com>
+Reviewed-By: Zach O'Keefe <zokeefe@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-meson-gpio.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ mm/page-writeback.c | 30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-meson-gpio.c b/drivers/irqchip/irq-meson-gpio.c
-index e50676ce2ec84..89dab14406e69 100644
---- a/drivers/irqchip/irq-meson-gpio.c
-+++ b/drivers/irqchip/irq-meson-gpio.c
-@@ -16,7 +16,7 @@
- #include <linux/of.h>
- #include <linux/of_address.h>
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 5cc892b26339a..fd00a511644ed 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -433,13 +433,20 @@ static void domain_dirty_limits(struct dirty_throttle_control *dtc)
+ 	else
+ 		bg_thresh = (bg_ratio * available_memory) / PAGE_SIZE;
  
--#define NUM_CHANNEL 8
-+#define MAX_NUM_CHANNEL 64
- #define MAX_INPUT_MUX 256
- 
- #define REG_EDGE_POL	0x00
-@@ -60,6 +60,7 @@ struct irq_ctl_ops {
- 
- struct meson_gpio_irq_params {
- 	unsigned int nr_hwirq;
-+	unsigned int nr_channels;
- 	bool support_edge_both;
- 	unsigned int edge_both_offset;
- 	unsigned int edge_single_offset;
-@@ -81,6 +82,7 @@ struct meson_gpio_irq_params {
- 	.edge_single_offset = 0,				\
- 	.pol_low_offset = 16,					\
- 	.pin_sel_mask = 0xff,					\
-+	.nr_channels = 8,					\
- 
- #define INIT_MESON_A1_COMMON_DATA(irqs)				\
- 	INIT_MESON_COMMON(irqs, meson_a1_gpio_irq_init,		\
-@@ -90,6 +92,7 @@ struct meson_gpio_irq_params {
- 	.edge_single_offset = 8,				\
- 	.pol_low_offset = 0,					\
- 	.pin_sel_mask = 0x7f,					\
-+	.nr_channels = 8,					\
- 
- static const struct meson_gpio_irq_params meson8_params = {
- 	INIT_MESON8_COMMON_DATA(134)
-@@ -136,8 +139,8 @@ static const struct of_device_id meson_irq_gpio_matches[] = {
- struct meson_gpio_irq_controller {
- 	const struct meson_gpio_irq_params *params;
- 	void __iomem *base;
--	u32 channel_irqs[NUM_CHANNEL];
--	DECLARE_BITMAP(channel_map, NUM_CHANNEL);
-+	u32 channel_irqs[MAX_NUM_CHANNEL];
-+	DECLARE_BITMAP(channel_map, MAX_NUM_CHANNEL);
- 	spinlock_t lock;
- };
- 
-@@ -207,8 +210,8 @@ meson_gpio_irq_request_channel(struct meson_gpio_irq_controller *ctl,
- 	spin_lock_irqsave(&ctl->lock, flags);
- 
- 	/* Find a free channel */
--	idx = find_first_zero_bit(ctl->channel_map, NUM_CHANNEL);
--	if (idx >= NUM_CHANNEL) {
-+	idx = find_first_zero_bit(ctl->channel_map, ctl->params->nr_channels);
-+	if (idx >= ctl->params->nr_channels) {
- 		spin_unlock_irqrestore(&ctl->lock, flags);
- 		pr_err("No channel available\n");
- 		return -ENOSPC;
-@@ -451,10 +454,10 @@ static int __init meson_gpio_irq_parse_dt(struct device_node *node,
- 	ret = of_property_read_variable_u32_array(node,
- 						  "amlogic,channel-interrupts",
- 						  ctl->channel_irqs,
--						  NUM_CHANNEL,
--						  NUM_CHANNEL);
-+						  ctl->params->nr_channels,
-+						  ctl->params->nr_channels);
- 	if (ret < 0) {
--		pr_err("can't get %d channel interrupts\n", NUM_CHANNEL);
-+		pr_err("can't get %d channel interrupts\n", ctl->params->nr_channels);
- 		return ret;
+-	if (bg_thresh >= thresh)
+-		bg_thresh = thresh / 2;
+ 	tsk = current;
+ 	if (tsk->flags & PF_LESS_THROTTLE || rt_task(tsk)) {
+ 		bg_thresh += bg_thresh / 4 + global_wb_domain.dirty_limit / 32;
+ 		thresh += thresh / 4 + global_wb_domain.dirty_limit / 32;
  	}
++	/*
++	 * Dirty throttling logic assumes the limits in page units fit into
++	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
++	 */
++	if (thresh > UINT_MAX)
++		thresh = UINT_MAX;
++	/* This makes sure bg_thresh is within 32-bits as well */
++	if (bg_thresh >= thresh)
++		bg_thresh = thresh / 2;
+ 	dtc->thresh = thresh;
+ 	dtc->bg_thresh = bg_thresh;
  
-@@ -509,7 +512,7 @@ static int __init meson_gpio_irq_of_init(struct device_node *node,
+@@ -489,7 +496,11 @@ static unsigned long node_dirty_limit(struct pglist_data *pgdat)
+ 	if (tsk->flags & PF_LESS_THROTTLE || rt_task(tsk))
+ 		dirty += dirty / 4;
+ 
+-	return dirty;
++	/*
++	 * Dirty throttling logic assumes the limits in page units fit into
++	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
++	 */
++	return min_t(unsigned long, dirty, UINT_MAX);
+ }
+ 
+ /**
+@@ -528,10 +539,17 @@ int dirty_background_bytes_handler(struct ctl_table *table, int write,
+ 		loff_t *ppos)
+ {
+ 	int ret;
++	unsigned long old_bytes = dirty_background_bytes;
+ 
+ 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
+-	if (ret == 0 && write)
++	if (ret == 0 && write) {
++		if (DIV_ROUND_UP(dirty_background_bytes, PAGE_SIZE) >
++								UINT_MAX) {
++			dirty_background_bytes = old_bytes;
++			return -ERANGE;
++		}
+ 		dirty_background_ratio = 0;
++	}
+ 	return ret;
+ }
+ 
+@@ -559,6 +577,10 @@ int dirty_bytes_handler(struct ctl_table *table, int write,
+ 
+ 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (ret == 0 && write && vm_dirty_bytes != old_bytes) {
++		if (DIV_ROUND_UP(vm_dirty_bytes, PAGE_SIZE) > UINT_MAX) {
++			vm_dirty_bytes = old_bytes;
++			return -ERANGE;
++		}
+ 		writeback_set_ratelimit();
+ 		vm_dirty_ratio = 0;
  	}
- 
- 	pr_info("%d to %d gpio interrupt mux initialized\n",
--		ctl->params->nr_hwirq, NUM_CHANNEL);
-+		ctl->params->nr_hwirq, ctl->params->nr_channels);
- 
- 	return 0;
- 
 -- 
 2.43.0
 
