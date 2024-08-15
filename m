@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8A395319F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:56:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA927952F4F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02D261F21B1A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:56:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 250651C23D03
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EFEA19DF9C;
-	Thu, 15 Aug 2024 13:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFB818D630;
+	Thu, 15 Aug 2024 13:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEg4rRoz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0sshmbJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB361714A1;
-	Thu, 15 Aug 2024 13:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0887DA78;
+	Thu, 15 Aug 2024 13:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730188; cv=none; b=QUnWvCKOJWAxugbBIcsBnlZnMhAFY7pslg6xT4hg5OtP/rWYegP3qHcMYQxX9ZHcduqpeOKGIoip+4ybfBYJMF1+3TBS9lTApH6l0pLGCaELrthUzKi2hWf63NMG25MIo3FpadbPqjhWvtHOZ9R3yLj9gb3OXlqumL8UMcJn6eg=
+	t=1723728662; cv=none; b=bdZcS8GwN9yuDlrUURUdfEhXtMNfNgRrsZ9ippH23Bw0Co2D1/9YOe86TOhB2M8SvMOuJvhvaf2J92E1S4tjT4UEXpCQoIhjT6iazHRBTvUZ49WCAIrWhhm36+Kei/PdS6WTks3w4mjVqtEKY8QyHcW7n5dmRqJ7ZNQsBC/ytmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730188; c=relaxed/simple;
-	bh=yu8aUKE1AfLYw9NsKlBnjAapuDRWByqtwBpIo1pZMt8=;
+	s=arc-20240116; t=1723728662; c=relaxed/simple;
+	bh=nfqGgK+sQijgK5ZPjKB+e7yNzbMGgXLEUlGLLJKvojQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfNtOE5xg1UHm+xzDvk6mQcFockHu3J+Cj0i9BswPHAL0xXmryEHHyDIYtGfH693fKSy7VdH++t6HWDMKwJDoAO/aDzFYU+BuPDuCIUmNosCmVw3Nt7Z83az29ItsyhUWpQ7LZ3mgzphzh87jEJXG44v8DrkHyIe6pLTZ4Uj4iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEg4rRoz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B585C4AF0A;
-	Thu, 15 Aug 2024 13:56:27 +0000 (UTC)
+	 MIME-Version; b=nPiLiqkYXGhw33j4jGUkPOD2gbcKA2IDCnCMk3uMy1cPha5Sxca751sc3rgcjtcJE+vI0/GLpwEdmtLj90D/KVSNfwQ0j/ucUI1ZglzsL/RSHoynhMCrAD5Efa47G9Rp+QVwpbXbasXyHKpmDkLRv3Rj3JxoqaqhVENPV2NzAxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0sshmbJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D29C32786;
+	Thu, 15 Aug 2024 13:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730188;
-	bh=yu8aUKE1AfLYw9NsKlBnjAapuDRWByqtwBpIo1pZMt8=;
+	s=korg; t=1723728662;
+	bh=nfqGgK+sQijgK5ZPjKB+e7yNzbMGgXLEUlGLLJKvojQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEg4rRozDkBql3AjWqnsS0GnqT2gXi7GGr/B+cQkG+ZT89jsZxyOo24MXXSimXWRO
-	 4I6I8L2A000Zc6qYzYQNzjb7A88V5Fbbw3tUvdpp97A0skh2grySeuKBcxVZFtAwnB
-	 iYs33coG+msF2vbHCcNO8WRdSonZ4tTC6nLKW33k=
+	b=T0sshmbJIF2IxhA2301jMOFcf9g4ta7wH1mta97VGNuEVwTkSOdeJ2Pv1wNiZ4Srv
+	 UYsoDnai5tYiOJhqn5zXmbQVg3AEautQhyeouwMiT48NdwVUSWdZ2dMZhkDKnafgsD
+	 pMZqWBzwZWhHVexEmOEWG5oLA1jBCTDqZZDZKyms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Brown <doug@schmorgal.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 329/484] drm/vmwgfx: Fix overlay when using Screen Targets
+	Ma Ke <make24@iscas.ac.cn>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 4.19 070/196] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
 Date: Thu, 15 Aug 2024 15:23:07 +0200
-Message-ID: <20240815131954.119452641@linuxfoundation.org>
+Message-ID: <20240815131854.755561403@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit cb372a505a994cb39aa75acfb8b3bcf94787cf94 ]
+commit 2df7aac81070987b0f052985856aa325a38debf6 upstream.
 
-This code was never updated to support Screen Targets.
-Fixes a bug where Xv playback displays a green screen instead of actual
-video contents when 3D acceleration is disabled in the guest.
+In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Fixes: c8261a961ece ("vmwgfx: Major KMS refactoring / cleanup in preparation of screen targets")
-Reported-by: Doug Brown <doug@schmorgal.com>
-Closes: https://lore.kernel.org/all/bd9cb3c7-90e8-435d-bc28-0e38fee58977@schmorgal.com
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Tested-by: Doug Brown <doug@schmorgal.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240719163627.20888-1-ian.forbes@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240709092011.3204970-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/gma500/psb_intel_lvds.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-index 54c5d16eb3b79..ec46b3b70d04d 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-@@ -98,7 +98,7 @@ static int vmw_overlay_send_put(struct vmw_private *dev_priv,
- {
- 	struct vmw_escape_video_flush *flush;
- 	size_t fifo_size;
--	bool have_so = (dev_priv->active_display_unit == vmw_du_screen_object);
-+	bool have_so = (dev_priv->active_display_unit != vmw_du_legacy);
- 	int i, num_items;
- 	SVGAGuestPtr ptr;
- 
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
++++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
+@@ -519,6 +519,9 @@ static int psb_intel_lvds_get_modes(stru
+ 	if (mode_dev->panel_fixed_mode != NULL) {
+ 		struct drm_display_mode *mode =
+ 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
++		if (!mode)
++			return 0;
++
+ 		drm_mode_probed_add(connector, mode);
+ 		return 1;
+ 	}
 
 
 
