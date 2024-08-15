@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0DC9532FE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:12:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1647953272
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45F76B26139
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:12:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7811F21230
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AC01BA880;
-	Thu, 15 Aug 2024 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599DF1A7056;
+	Thu, 15 Aug 2024 14:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHE3aSTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc369fgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CBE1BA868;
-	Thu, 15 Aug 2024 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182551AED25;
+	Thu, 15 Aug 2024 14:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730988; cv=none; b=TboO8Tes7KbwRVUvxx6vnVjpytT3gys02zz7Lrv0fJTaip5mOOtoG9T4ONWlSM5CCFYT+u/xYsBJVWWw5cTTCtSjSer+dSBUens+stqAsDr+uQfnw8/vtAb7IuhTN8a4lzVY58GShK6OVWO62AtTPwOwh2GcTzUSJ9XZdU2es00=
+	t=1723730668; cv=none; b=MEiE4KKfjUZ+Q/BR5l+tn3pK6KjZnJzkYXf545w6EO/waNUccqf56BDdlcGfqkLpCVyj2Nurz1oUBRtVBj8vfEmcO46g4d8BlVWHbmIWCkUb9EZw9d0UAWYepGF0sMjFcOjoJE4/hfoUBPb7NZCjc2NDka1DqVtD9zqhddOiUhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730988; c=relaxed/simple;
-	bh=IJV4OzBsGWmswCn/fhrJdKR+FrsgpSKvRY9DKjPkJB8=;
+	s=arc-20240116; t=1723730668; c=relaxed/simple;
+	bh=7R+K/wTD6GeFEEKC3Wvye7kS5fPluJegHfLVMG8dOSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPe2mfyDd2C5PBklfLrQbuIUsrIUz0mrLMEM2H1Kwqf4WWakuIfwW+09GOjs6Khy9PncIQceOCHuhEfIm0sPofvTpoSPueNMFTcvgcHOS2HTTzM836AR1NChtLex3/vb87PL4piiItes/FYqPliG8glkQX3Dl3FAVvi/HiJUCiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHE3aSTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A876FC32786;
-	Thu, 15 Aug 2024 14:09:47 +0000 (UTC)
+	 MIME-Version; b=qqT2PB5ZyvXrN7BmS3iW1JSJqUEs+X9NLARffIXyNeSYSxHJP0teyDyTsWtiDd7SMc/rfJXppTzkkDpjKUvqif8H2oSjwz4gUHSSfZWXfV1NvWYMCDLcvsxoSsq8JPLadcIy2F8S2ZgjtqMHn9B/PkpkWUscyk3lzgPxL9utKKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc369fgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309CCC32786;
+	Thu, 15 Aug 2024 14:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730988;
-	bh=IJV4OzBsGWmswCn/fhrJdKR+FrsgpSKvRY9DKjPkJB8=;
+	s=korg; t=1723730667;
+	bh=7R+K/wTD6GeFEEKC3Wvye7kS5fPluJegHfLVMG8dOSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHE3aSTkRfI2f3rQAVJE7QoTguC5BwhPcekNwzZ8B5CUFEIC6pqNfCxum/KtN6RZU
-	 9O5HI+v8cNSvNQrABjVG68CUhaSq1OwUyTS+ZSwH+EKys0uD9/WaVeILyU5kumefnV
-	 ZCh8r58rhGqMBF/xhWGrOVyoNAg71L8yJ0M07skI=
+	b=mc369fgsSx4s5dG4aLKSCCBqI717M8lc+Ziem9efbkJbBOr9Gqo6Z1rlYAc6m2Xa9
+	 KIKiFFlOjMdpYm/Y3f2mWEAHX7FBnljqm5Dx3xS/Lpe9PFt438yFAypdKumm9zT5t0
+	 TOP6EMERmcsPnol7ZqzWLg19QdAvSOSAvCVlFGdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+25b3a0b24216651bc2af@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 24/67] wifi: mac80211: fix change_address deadlock during unregister
+	hmy <huanglin@uniontech.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.15 480/484] nvme/pci: Add APST quirk for Lenovo N60z laptop
 Date: Thu, 15 Aug 2024 15:25:38 +0200
-Message-ID: <20240815131839.261722363@linuxfoundation.org>
+Message-ID: <20240815132000.026107661@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 74a7c93f45abba538914a65dd2ef2ea7cf7150e2 ]
+commit ab091ec536cb7b271983c0c063b17f62f3591583 upstream.
 
-When using e.g. bonding, and doing a sequence such as
+There is a hardware power-saving problem with the Lenovo N60z
+board. When turn it on and leave it for 10 hours, there is a
+20% chance that a nvme disk will not wake up until reboot.
 
- # iw wlan0 set type __ap
- # ip link add name bond1 type bond
- # ip link set wlan0 master bond1
- # iw wlan0 interface del
-
-we deadlock, since the wlan0 interface removal will cause
-bonding to reset the MAC address of wlan0.
-
-The locking would be somewhat difficult to fix, but since
-this only happens during removal, we can simply ignore the
-MAC address change at this time.
-
-Reported-by: syzbot+25b3a0b24216651bc2af@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://lore.kernel.org/r/20231012123447.9f9d7fd1f237.Ic3a5ef4391b670941a69cec5592aefc79d9c2890@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/2B5581C46AC6E335+9c7a81f1-05fb-4fd0-9fbb-108757c21628@uniontech.com
+Signed-off-by: hmy <huanglin@uniontech.com>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/iface.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/nvme/host/pci.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 9ac5252c3da00..52b048807feae 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -300,6 +300,14 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
- 	struct ieee80211_local *local = sdata->local;
- 	int ret;
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2976,6 +2976,13 @@ static unsigned long check_vendor_combin
+ 			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
+ 	}
  
 +	/*
-+	 * This happens during unregistration if there's a bond device
-+	 * active (maybe other cases?) and we must get removed from it.
-+	 * But we really don't care anymore if it's not registered now.
++	 * NVMe SSD drops off the PCIe bus after system idle
++	 * for 10 hours on a Lenovo N60z board.
 +	 */
-+	if (!dev->ieee80211_ptr->registered)
-+		return 0;
++	if (dmi_match(DMI_BOARD_NAME, "LXKT-ZXEG-N6"))
++		return NVME_QUIRK_NO_APST;
 +
- 	wiphy_lock(local->hw.wiphy);
- 	ret = _ieee80211_change_mac(sdata, addr);
- 	wiphy_unlock(local->hw.wiphy);
--- 
-2.43.0
-
+ 	return 0;
+ }
+ 
 
 
 
