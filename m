@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-68659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB96953362
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6B79534EF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A00041F2447C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BF7128574F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCB31B1417;
-	Thu, 15 Aug 2024 14:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AF919FA99;
+	Thu, 15 Aug 2024 14:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecG8LeT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGgk2Hsh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5B41B0117;
-	Thu, 15 Aug 2024 14:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D122772A;
+	Thu, 15 Aug 2024 14:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731262; cv=none; b=pL2RrpA/IPcKrdIKYg81wVLoJrz3Lz2iY7HsWkXqlpWeWtU+bpQTfbUKEfYawUZbjSFQD/mN+ahmPMAuFueE7y8ySoC+qxBBb3GdFblvCev1nrWQh304ERyu1x7XaGOQCMeg1BCY4nHA2NwmNH7tjyULwWAFMoI06cp8We6wGys=
+	t=1723732314; cv=none; b=tnjZoL0usswWu1xPAJ/jQSBUpdweXGroWOvgyoz2sCB4HNpOk7FZBB8JLJSwofkTLVipKpITPkyBWddPAGVuOjfMViM/J9NmcIXKtwWbzzG6nuv6D2MGx2fKJLRUEGGrDZwnhORoXVoA9MvkeLOxuWlvk9Jx5U8CribcGdkt2B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731262; c=relaxed/simple;
-	bh=gYrMKAo0Li5Lz/2XCOQU6mBYDlIx7WdjfTl5uV8Fdq0=;
+	s=arc-20240116; t=1723732314; c=relaxed/simple;
+	bh=MzF0FVwVZRNJlMM+Y+smcHnTKZPgRqXru9DMd3zx+44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHG8TXKgnDmRsOO/lC8V3awTI2ZfXr2QqHxaV37rN0t25R8YHthrl96K68HocdqF9jYoT+k09gV53xlH4Xv6iZrHsTts1wskHg22bjfrQr+ul68/pLo2vev7YxNjqCCH4ieeEhtOlc/Wcfttn/4lhfqQljlLlQqGTrotvnh6kP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecG8LeT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDDEC32786;
-	Thu, 15 Aug 2024 14:14:21 +0000 (UTC)
+	 MIME-Version; b=JFEs2md3bBI4FItFNTILiuIc7suw2xD497EaiwpoKDV+PLcNuvkjlYCx3rjmNcXNdK2oCa21v0TNImUnmg6QFtsJ1dEjAHTUyplipsPqivm/YeWTbGN/oyUuu3WjouTDWri1jVNfzQRRaYf7koqepojlFfH0iemLnCYPazG1YXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGgk2Hsh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3ADC32786;
+	Thu, 15 Aug 2024 14:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731262;
-	bh=gYrMKAo0Li5Lz/2XCOQU6mBYDlIx7WdjfTl5uV8Fdq0=;
+	s=korg; t=1723732314;
+	bh=MzF0FVwVZRNJlMM+Y+smcHnTKZPgRqXru9DMd3zx+44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecG8LeT8zAfa5ZPPof0oMS6x7RlSE5ImJOhaf46Umv13U8jbkTAZTebl645SPyvhR
-	 0Ze09da6kQDAcHparCDFRUVmfvnqaf67ZbISy1pXKHBBf9iIb/q5vQflXrlsqzFUY6
-	 8hH4o3UHFzz8ROuuGFy1+W50WNRAZrqQGpAr3fds=
+	b=ZGgk2Hshfet3ga1XJc1PiE17SnNWvZm03/WI/G1XiP0YwhCgjqtQQShIyG4MBGZ+y
+	 ZcMGj6d6SKuka9kyzJZ3LKijww6eNmYhD5hBFZCtzq8L10Po5u3U5syVTxATH+UnSi
+	 dIacXnx1dGrP/wjRKeJzmh0fVQS1Z3VxKtvmRKUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 074/259] RDMA/device: Return error earlier if port in not valid
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.10 141/352] task_work: Introduce task_work_cancel() again
 Date: Thu, 15 Aug 2024 15:23:27 +0200
-Message-ID: <20240815131905.660829708@linuxfoundation.org>
+Message-ID: <20240815131924.709749252@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit 917918f57a7b139c043e78c502876f2c286f4f0a ]
+commit f409530e4db9dd11b88cb7703c97c8f326ff6566 upstream.
 
-There is no need to allocate port data if port provided is not valid.
+Re-introduce task_work_cancel(), this time to cancel an actual callback
+and not *any* callback pointing to a given function. This is going to be
+needed for perf events event freeing.
 
-Fixes: c2261dd76b54 ("RDMA/device: Add ib_device_set_netdev() as an alternative to get_netdev")
-Link: https://lore.kernel.org/r/022047a8b16988fc88d4426da50bf60a4833311b.1719235449.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240621091601.18227-3-frederic@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/device.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/task_work.h |    1 +
+ kernel/task_work.c        |   24 ++++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index c7c3b9bae938c..c46d68e6ccd0e 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -2125,6 +2125,9 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
- 	unsigned long flags;
- 	int ret;
+--- a/include/linux/task_work.h
++++ b/include/linux/task_work.h
+@@ -25,6 +25,7 @@ int task_work_add(struct task_struct *ta
+ struct callback_head *task_work_cancel_match(struct task_struct *task,
+ 	bool (*match)(struct callback_head *, void *data), void *data);
+ struct callback_head *task_work_cancel_func(struct task_struct *, task_work_func_t);
++bool task_work_cancel(struct task_struct *task, struct callback_head *cb);
+ void task_work_run(void);
  
-+	if (!rdma_is_port_valid(ib_dev, port))
-+		return -EINVAL;
+ static inline void exit_task_work(struct task_struct *task)
+--- a/kernel/task_work.c
++++ b/kernel/task_work.c
+@@ -117,6 +117,30 @@ task_work_cancel_func(struct task_struct
+ 	return task_work_cancel_match(task, task_work_func_match, func);
+ }
+ 
++static bool task_work_match(struct callback_head *cb, void *data)
++{
++	return cb == data;
++}
 +
- 	/*
- 	 * Drivers wish to call this before ib_register_driver, so we have to
- 	 * setup the port data early.
-@@ -2133,9 +2136,6 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
- 	if (ret)
- 		return ret;
- 
--	if (!rdma_is_port_valid(ib_dev, port))
--		return -EINVAL;
--
- 	pdata = &ib_dev->port_data[port];
- 	spin_lock_irqsave(&pdata->netdev_lock, flags);
- 	old_ndev = rcu_dereference_protected(
--- 
-2.43.0
-
++/**
++ * task_work_cancel - cancel a pending work added by task_work_add()
++ * @task: the task which should execute the work
++ * @cb: the callback to remove if queued
++ *
++ * Remove a callback from a task's queue if queued.
++ *
++ * RETURNS:
++ * True if the callback was queued and got cancelled, false otherwise.
++ */
++bool task_work_cancel(struct task_struct *task, struct callback_head *cb)
++{
++	struct callback_head *ret;
++
++	ret = task_work_cancel_match(task, task_work_match, cb);
++
++	return ret == cb;
++}
++
+ /**
+  * task_work_run - execute the works added by task_work_add()
+  *
 
 
 
