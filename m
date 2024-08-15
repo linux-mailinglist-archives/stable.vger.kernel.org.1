@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-69208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE1D95360C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:46:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCD79535DC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30D91F21429
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:46:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B08DAB22CA1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1741AAE30;
-	Thu, 15 Aug 2024 14:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6121ABED3;
+	Thu, 15 Aug 2024 14:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxFRkfxZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bi4e2mxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4661AAE01;
-	Thu, 15 Aug 2024 14:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200CA1ABEC7;
+	Thu, 15 Aug 2024 14:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723733018; cv=none; b=CRNiWK8h90bNgip1uyS5DueWcuYp1mcP1jMSwgwWuGGZ9a4KdRSr5YI9ntHGZNXMMaLh/a0zyB+oBMRuz1s4o2bmcF7YUiAjdBFZJt6HBy9PwxtLLIo3tsjm9Tdsno2cVW0pWs/wuRs8VgC83Vzju84pOO+tOcKN7Efbd/HPp44=
+	t=1723732915; cv=none; b=sILdKUtMcHioTZZukzDnvpDOk4qb4gW3DU5JqCJfePrl7gH/JEx4OWznAyG1rIwUt6A9LkbfcY7CJptTTU1hNEWqFMDF8/etCYBbOe1+KP8OHj+jnbLWNayWd31Zc5FaHrCpxZxHlArYex2oAmQwA7KJfs4Prg5cl2pSoZlxyIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723733018; c=relaxed/simple;
-	bh=DIQwabo72AJN272cTtNVi2iOTvWYmkxMuJfmtgfVQHU=;
+	s=arc-20240116; t=1723732915; c=relaxed/simple;
+	bh=I6+1YD+8w2NEmN8WzAGrBOc1OnrLZ3KiNmKxXhkw2lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AG3hpC2+4KhrG+tfRzZF31KMuJxLl3H1TIrJ82cAPKpU2hvV8b+A4R609lnJZXcp/8yK7ohryOD8Oi07W5nIRKbbX3+6l9cVk9oxywTPbHndRzZTvGdgPfimaddCvXgHs+DBivBsS7WgP1SRTHWCOdAFl114PvBIIxK/obK9GGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxFRkfxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C223EC32786;
-	Thu, 15 Aug 2024 14:43:37 +0000 (UTC)
+	 MIME-Version; b=bJ+yJ9zhBm72JRsltUX0AZV8V5Q3RL5INnba1JrcebF6ffpadP9SZXoT+vSduTPa3gnBG114mpFAzv4nnXMeAif9spOx9amA+OiyJOMdWK8i0+vbqCTDaF7Tuj7YIQvqXpv+vjJhbix6qLRQ2cZSHw8BqDXk7kVBUhAzwgYFPRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bi4e2mxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8836FC4AF0D;
+	Thu, 15 Aug 2024 14:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723733018;
-	bh=DIQwabo72AJN272cTtNVi2iOTvWYmkxMuJfmtgfVQHU=;
+	s=korg; t=1723732915;
+	bh=I6+1YD+8w2NEmN8WzAGrBOc1OnrLZ3KiNmKxXhkw2lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxFRkfxZFnnot+zkhbmsujaT0vMs2XD1vxw1ypJKUk3gI7UoTD4dyxCtt2ii7L8+Z
-	 SJzozjOL5pv9vk5klsPPJN2N4mwn0LvRc2kryoloEPgBvN7aBjUO7/yNSfUVZH3jJQ
-	 5ZXtfZACAq/s9LC0Z6iyCXUR+F1CBM/KOQNWuvgA=
+	b=Bi4e2mxodFhgPgZbUJcu71M1cPHuPwmJWxwPCTWUAfpUSkW+myxEDoHkIM6O+nDIp
+	 cy417Z0n9s+0LdR85Cagp9+nWyeFEEOMjjz+hp0F+bnjR5lN8ueIa5idLKqGN+Ic3s
+	 KHrWfVKpgAbwII+NTXOmOcW+xA61m4kcmxyFghTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Kleen <ak@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.10 325/352] x86/mtrr: Check if fixed MTRRs exist before saving them
-Date: Thu, 15 Aug 2024 15:26:31 +0200
-Message-ID: <20240815131932.014688294@linuxfoundation.org>
+	Lucas Stach <l.stach@pengutronix.de>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 5.10 326/352] drm/bridge: analogix_dp: properly handle zero sized AUX transactions
+Date: Thu, 15 Aug 2024 15:26:32 +0200
+Message-ID: <20240815131932.052608616@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -65,45 +65,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andi Kleen <ak@linux.intel.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-commit 919f18f961c03d6694aa726c514184f2311a4614 upstream.
+commit e82290a2e0e8ec5e836ecad1ca025021b3855c2d upstream.
 
-MTRRs have an obsolete fixed variant for fine grained caching control
-of the 640K-1MB region that uses separate MSRs. This fixed variant has
-a separate capability bit in the MTRR capability MSR.
+Address only transactions without any data are valid and should not
+be flagged as short transactions. Simply return the message size when
+no transaction errors occured.
 
-So far all x86 CPUs which support MTRR have this separate bit set, so it
-went unnoticed that mtrr_save_state() does not check the capability bit
-before accessing the fixed MTRR MSRs.
-
-Though on a CPU that does not support the fixed MTRR capability this
-results in a #GP.  The #GP itself is harmless because the RDMSR fault is
-handled gracefully, but results in a WARN_ON().
-
-Add the missing capability check to prevent this.
-
-Fixes: 2b1f6278d77c ("[PATCH] x86: Save the MTRRs of the BSP before booting an AP")
-Signed-off-by: Andi Kleen <ak@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240808000244.946864-1-ak@linux.intel.com
+CC: stable@vger.kernel.org
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240318203925.2837689-1-l.stach@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mtrr/mtrr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/x86/kernel/cpu/mtrr/mtrr.c
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
-@@ -817,7 +817,7 @@ void mtrr_save_state(void)
- {
- 	int first_cpu;
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
+@@ -1115,7 +1115,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 	u32 status_reg;
+ 	u8 *buffer = msg->buffer;
+ 	unsigned int i;
+-	int num_transferred = 0;
+ 	int ret;
  
--	if (!mtrr_enabled())
-+	if (!mtrr_enabled() || !mtrr_state.have_fixed)
- 		return;
+ 	/* Buffer size of AUX CH is 16 bytes */
+@@ -1167,7 +1166,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = buffer[i];
+ 			writel(reg, dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 			       4 * i);
+-			num_transferred++;
+ 		}
+ 	}
  
- 	first_cpu = cpumask_first(cpu_online_mask);
+@@ -1215,7 +1213,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = readl(dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 				    4 * i);
+ 			buffer[i] = (unsigned char)reg;
+-			num_transferred++;
+ 		}
+ 	}
+ 
+@@ -1232,7 +1229,7 @@ ssize_t analogix_dp_transfer(struct anal
+ 		 (msg->request & ~DP_AUX_I2C_MOT) == DP_AUX_NATIVE_READ)
+ 		msg->reply = DP_AUX_NATIVE_REPLY_ACK;
+ 
+-	return num_transferred > 0 ? num_transferred : -EBUSY;
++	return msg->size;
+ 
+ aux_error:
+ 	/* if aux err happen, reset aux */
 
 
 
