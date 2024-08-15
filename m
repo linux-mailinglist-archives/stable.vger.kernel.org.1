@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-68391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E848D9531F8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:00:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83D7952FB7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40EAFB20CD9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:00:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62AB01F21022
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BD01A00E2;
-	Thu, 15 Aug 2024 14:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9B31A2C11;
+	Thu, 15 Aug 2024 13:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kuh5VpDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2m4G3Pz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4361714DD;
-	Thu, 15 Aug 2024 14:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C15B1A08DD;
+	Thu, 15 Aug 2024 13:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730420; cv=none; b=SgGdvlMRV+ouyqcVdGEQb4VRR/lLbqVPJNYycp5ytCVvq32Tjc6nCOX3uKs3f2Zc8GjmW3QCz4brxRMd6ewfjCOfN1hGd7H1ukSD+6causcunH/8OSdF1IGEMrdgfD7bH1wuDPG4FTQoh/B0RJ7AZYXxTWvs4ZjVRWipIKsgyxs=
+	t=1723728901; cv=none; b=bEHLynRW3HikIIfc7Yn0ObuJSHPG6wYTR8dyl4lzzNYJcYP+E3xOMWSrQS05WKZOprfiZl5sWaFqM4gEnxnJYD4Ym3Vi9/vL8iGDpNcwAAgXi7vFApMpk2XXX1/1S7wxP/1UyS5n3o1H7useinGCsw6RgM7zSawL76n2rhPK/Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730420; c=relaxed/simple;
-	bh=ggcXLdPg6W3AwuH+eFtmTKpALFjLXVJl0ZaVzpIgptE=;
+	s=arc-20240116; t=1723728901; c=relaxed/simple;
+	bh=PnjdFXw3yznsNnZmIPmCHfIue5dAOm+qfPe6xzx9kJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJOj+xdvVwSO47MyzHJsvkGpFXO30YKhPtKrpppRDW9PjlcHz/Sb0OeUhBDzCGaRA8G4bLJtUoo3l0QKyEW3q8zjVPw6iONNzGAgCygsxLHjWM31EwF2RWdUOw/0YlVAMqRgDKvQ2jwenMykvKdK0uQMjxzHGDr4JpnXyx1ofCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kuh5VpDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28BBC32786;
-	Thu, 15 Aug 2024 14:00:19 +0000 (UTC)
+	 MIME-Version; b=mXDCbsztSNjJlPxLVigdiaUDDkmKCZkdjyqJSWyCdFvT4qTIdS3tGNCRaTDGGBl4MWEnMIfTi8Ng3m5qOujulcqXWOii629J0bvbHScyWTgFUH3Q4hAWqKxjB8T3id2lXNLWMiBLwBO+dgn4W6dKfY2sJHDrK2LAYUPTN6s1zqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2m4G3Pz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA3EC4AF0C;
+	Thu, 15 Aug 2024 13:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730420;
-	bh=ggcXLdPg6W3AwuH+eFtmTKpALFjLXVJl0ZaVzpIgptE=;
+	s=korg; t=1723728901;
+	bh=PnjdFXw3yznsNnZmIPmCHfIue5dAOm+qfPe6xzx9kJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kuh5VpDRoVdzItzAUcwlN5XUqHlRPiJj5pWtvcSksGXB3QQ/okoY64HC6yxaWVOZF
-	 lVZjc/2mkyso8NUaBPKraWJwofAEg3bE/rU/iz76tO0aOu8o21+FkgGIPkFuE84uNg
-	 StYNwiHLRp9JK1Hr4QMvv69tKUtrjHGmyv7aPu6w=
+	b=p2m4G3PzC1tPNEP/vAwNf8N3iT17Luj64LdiFol6OC1bxXiKa3gyzdpS3b5oz1LDJ
+	 m0IQvFG4maIBOME30An+wdMfsyKQm6PZWkJtG21b+SntE3cIQeS2a6U77y2yqY9DIK
+	 gVSMC7zoh1QLbjKqGxKAL6hc1tP3rvUylZMIbsJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Song Liu <songliubraving@fb.com>,
+	Chao Peng <chao.p.peng@linux.intel.com>,
+	Luwei Kang <luwei.kang@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 373/484] selftests/bpf: Fix send_signal test with nested CONFIG_PARAVIRT
-Date: Thu, 15 Aug 2024 15:23:51 +0200
-Message-ID: <20240815131955.849216912@linuxfoundation.org>
+Subject: [PATCH 4.19 115/196] perf/x86/intel/pt: Export pt_cap_get()
+Date: Thu, 15 Aug 2024 15:23:52 +0200
+Message-ID: <20240815131856.478494786@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +64,308 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Chao Peng <chao.p.peng@linux.intel.com>
 
-[ Upstream commit 7015843afcaf68c132784c89528dfddc0005e483 ]
+[ Upstream commit f6d079ce867d679e4dffef5b3112c7634215fd88 ]
 
-Alexei reported that send_signal test may fail with nested CONFIG_PARAVIRT
-configs. In this particular case, the base VM is AMD with 166 cpus, and I
-run selftests with regular qemu on top of that and indeed send_signal test
-failed. I also tried with an Intel box with 80 cpus and there is no issue.
+pt_cap_get() is required by the upcoming PT support in KVM guests.
 
-The main qemu command line includes:
+Export it and move the capabilites enum to a global header.
 
-  -enable-kvm -smp 16 -cpu host
+As a global functions, "pt_*" is already used for ptrace and
+other things, so it makes sense to use "intel_pt_*" as a prefix.
 
-The failure log looks like:
-
-  $ ./test_progs -t send_signal
-  [   48.501588] watchdog: BUG: soft lockup - CPU#9 stuck for 26s! [test_progs:2225]
-  [   48.503622] Modules linked in: bpf_testmod(O)
-  [   48.503622] CPU: 9 PID: 2225 Comm: test_progs Tainted: G           O       6.9.0-08561-g2c1713a8f1c9-dirty #69
-  [   48.507629] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014
-  [   48.511635] RIP: 0010:handle_softirqs+0x71/0x290
-  [   48.511635] Code: [...] 10 0a 00 00 00 31 c0 65 66 89 05 d5 f4 fa 7e fb bb ff ff ff ff <49> c7 c2 cb
-  [   48.518527] RSP: 0018:ffffc90000310fa0 EFLAGS: 00000246
-  [   48.519579] RAX: 0000000000000000 RBX: 00000000ffffffff RCX: 00000000000006e0
-  [   48.522526] RDX: 0000000000000006 RSI: ffff88810791ae80 RDI: 0000000000000000
-  [   48.523587] RBP: ffffc90000fabc88 R08: 00000005a0af4f7f R09: 0000000000000000
-  [   48.525525] R10: 0000000561d2f29c R11: 0000000000006534 R12: 0000000000000280
-  [   48.528525] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-  [   48.528525] FS:  00007f2f2885cd00(0000) GS:ffff888237c40000(0000) knlGS:0000000000000000
-  [   48.531600] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [   48.535520] CR2: 00007f2f287059f0 CR3: 0000000106a28002 CR4: 00000000003706f0
-  [   48.537538] Call Trace:
-  [   48.537538]  <IRQ>
-  [   48.537538]  ? watchdog_timer_fn+0x1cd/0x250
-  [   48.539590]  ? lockup_detector_update_enable+0x50/0x50
-  [   48.539590]  ? __hrtimer_run_queues+0xff/0x280
-  [   48.542520]  ? hrtimer_interrupt+0x103/0x230
-  [   48.544524]  ? __sysvec_apic_timer_interrupt+0x4f/0x140
-  [   48.545522]  ? sysvec_apic_timer_interrupt+0x3a/0x90
-  [   48.547612]  ? asm_sysvec_apic_timer_interrupt+0x1a/0x20
-  [   48.547612]  ? handle_softirqs+0x71/0x290
-  [   48.547612]  irq_exit_rcu+0x63/0x80
-  [   48.551585]  sysvec_apic_timer_interrupt+0x75/0x90
-  [   48.552521]  </IRQ>
-  [   48.553529]  <TASK>
-  [   48.553529]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-  [   48.555609] RIP: 0010:finish_task_switch.isra.0+0x90/0x260
-  [   48.556526] Code: [...] 9f 58 0a 00 00 48 85 db 0f 85 89 01 00 00 4c 89 ff e8 53 d9 bd 00 fb 66 90 <4d> 85 ed 74
-  [   48.562524] RSP: 0018:ffffc90000fabd38 EFLAGS: 00000282
-  [   48.563589] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff83385620
-  [   48.563589] RDX: ffff888237c73ae4 RSI: 0000000000000000 RDI: ffff888237c6fd00
-  [   48.568521] RBP: ffffc90000fabd68 R08: 0000000000000000 R09: 0000000000000000
-  [   48.569528] R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881009d0000
-  [   48.573525] R13: ffff8881024e5400 R14: ffff88810791ae80 R15: ffff888237c6fd00
-  [   48.575614]  ? finish_task_switch.isra.0+0x8d/0x260
-  [   48.576523]  __schedule+0x364/0xac0
-  [   48.577535]  schedule+0x2e/0x110
-  [   48.578555]  pipe_read+0x301/0x400
-  [   48.579589]  ? destroy_sched_domains_rcu+0x30/0x30
-  [   48.579589]  vfs_read+0x2b3/0x2f0
-  [   48.579589]  ksys_read+0x8b/0xc0
-  [   48.583590]  do_syscall_64+0x3d/0xc0
-  [   48.583590]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  [   48.586525] RIP: 0033:0x7f2f28703fa1
-  [   48.587592] Code: [...] 00 00 00 0f 1f 44 00 00 f3 0f 1e fa 80 3d c5 23 14 00 00 74 13 31 c0 0f 05 <48> 3d 00 f0
-  [   48.593534] RSP: 002b:00007ffd90f8cf88 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-  [   48.595589] RAX: ffffffffffffffda RBX: 00007ffd90f8d5e8 RCX: 00007f2f28703fa1
-  [   48.595589] RDX: 0000000000000001 RSI: 00007ffd90f8cfb0 RDI: 0000000000000006
-  [   48.599592] RBP: 00007ffd90f8d2f0 R08: 0000000000000064 R09: 0000000000000000
-  [   48.602527] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  [   48.603589] R13: 00007ffd90f8d608 R14: 00007f2f288d8000 R15: 0000000000f6bdb0
-  [   48.605527]  </TASK>
-
-In the test, two processes are communicating through pipe. Further debugging
-with strace found that the above splat is triggered as read() syscall could
-not receive the data even if the corresponding write() syscall in another
-process successfully wrote data into the pipe.
-
-The failed subtest is "send_signal_perf". The corresponding perf event has
-sample_period 1 and config PERF_COUNT_SW_CPU_CLOCK. sample_period 1 means every
-overflow event will trigger a call to the BPF program. So I suspect this may
-overwhelm the system. So I increased the sample_period to 100,000 and the test
-passed. The sample_period 10,000 still has the test failed.
-
-In other parts of selftest, e.g., [1], sample_freq is used instead. So I
-decided to use sample_freq = 1,000 since the test can pass as well.
-
-  [1] https://lore.kernel.org/bpf/20240604070700.3032142-1-song@kernel.org/
-
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240605201203.2603846-1-yonghong.song@linux.dev
+Acked-by: Song Liu <songliubraving@fb.com>
+Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+Signed-off-by: Luwei Kang <luwei.kang@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: ad97196379d0 ("perf/x86/intel/pt: Fix a topa_entry base address calculation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/send_signal.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/pt.c      | 49 +++++++++++++++++----------------
+ arch/x86/events/intel/pt.h      | 21 --------------
+ arch/x86/include/asm/intel_pt.h | 23 ++++++++++++++++
+ 3 files changed, 49 insertions(+), 44 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/send_signal.c b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-index 776916b61c406..7b1343f70e65a 100644
---- a/tools/testing/selftests/bpf/prog_tests/send_signal.c
-+++ b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-@@ -149,7 +149,8 @@ static void test_send_signal_tracepoint(bool signal_thread)
- static void test_send_signal_perf(bool signal_thread)
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index 49b3ea1c1ea19..62ef4b68f04c6 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -75,7 +75,7 @@ static struct pt_cap_desc {
+ 	PT_CAP(psb_periods,		1, CPUID_EBX, 0xffff0000),
+ };
+ 
+-static u32 pt_cap_get(enum pt_capabilities cap)
++u32 intel_pt_validate_hw_cap(enum pt_capabilities cap)
  {
- 	struct perf_event_attr attr = {
--		.sample_period = 1,
-+		.freq = 1,
-+		.sample_freq = 1000,
- 		.type = PERF_TYPE_SOFTWARE,
- 		.config = PERF_COUNT_SW_CPU_CLOCK,
- 	};
+ 	struct pt_cap_desc *cd = &pt_caps[cap];
+ 	u32 c = pt_pmu.caps[cd->leaf * PT_CPUID_REGS_NUM + cd->reg];
+@@ -83,6 +83,7 @@ static u32 pt_cap_get(enum pt_capabilities cap)
+ 
+ 	return (c & cd->mask) >> shift;
+ }
++EXPORT_SYMBOL_GPL(intel_pt_validate_hw_cap);
+ 
+ static ssize_t pt_cap_show(struct device *cdev,
+ 			   struct device_attribute *attr,
+@@ -92,7 +93,7 @@ static ssize_t pt_cap_show(struct device *cdev,
+ 		container_of(attr, struct dev_ext_attribute, attr);
+ 	enum pt_capabilities cap = (long)ea->var;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%x\n", pt_cap_get(cap));
++	return snprintf(buf, PAGE_SIZE, "%x\n", intel_pt_validate_hw_cap(cap));
+ }
+ 
+ static struct attribute_group pt_cap_group = {
+@@ -310,16 +311,16 @@ static bool pt_event_valid(struct perf_event *event)
+ 		return false;
+ 
+ 	if (config & RTIT_CTL_CYC_PSB) {
+-		if (!pt_cap_get(PT_CAP_psb_cyc))
++		if (!intel_pt_validate_hw_cap(PT_CAP_psb_cyc))
+ 			return false;
+ 
+-		allowed = pt_cap_get(PT_CAP_psb_periods);
++		allowed = intel_pt_validate_hw_cap(PT_CAP_psb_periods);
+ 		requested = (config & RTIT_CTL_PSB_FREQ) >>
+ 			RTIT_CTL_PSB_FREQ_OFFSET;
+ 		if (requested && (!(allowed & BIT(requested))))
+ 			return false;
+ 
+-		allowed = pt_cap_get(PT_CAP_cycle_thresholds);
++		allowed = intel_pt_validate_hw_cap(PT_CAP_cycle_thresholds);
+ 		requested = (config & RTIT_CTL_CYC_THRESH) >>
+ 			RTIT_CTL_CYC_THRESH_OFFSET;
+ 		if (requested && (!(allowed & BIT(requested))))
+@@ -334,10 +335,10 @@ static bool pt_event_valid(struct perf_event *event)
+ 		 * Spec says that setting mtc period bits while mtc bit in
+ 		 * CPUID is 0 will #GP, so better safe than sorry.
+ 		 */
+-		if (!pt_cap_get(PT_CAP_mtc))
++		if (!intel_pt_validate_hw_cap(PT_CAP_mtc))
+ 			return false;
+ 
+-		allowed = pt_cap_get(PT_CAP_mtc_periods);
++		allowed = intel_pt_validate_hw_cap(PT_CAP_mtc_periods);
+ 		if (!allowed)
+ 			return false;
+ 
+@@ -349,11 +350,11 @@ static bool pt_event_valid(struct perf_event *event)
+ 	}
+ 
+ 	if (config & RTIT_CTL_PWR_EVT_EN &&
+-	    !pt_cap_get(PT_CAP_power_event_trace))
++	    !intel_pt_validate_hw_cap(PT_CAP_power_event_trace))
+ 		return false;
+ 
+ 	if (config & RTIT_CTL_PTW) {
+-		if (!pt_cap_get(PT_CAP_ptwrite))
++		if (!intel_pt_validate_hw_cap(PT_CAP_ptwrite))
+ 			return false;
+ 
+ 		/* FUPonPTW without PTW doesn't make sense */
+@@ -598,7 +599,7 @@ static struct topa *topa_alloc(int cpu, gfp_t gfp)
+ 	 * In case of singe-entry ToPA, always put the self-referencing END
+ 	 * link as the 2nd entry in the table
+ 	 */
+-	if (!pt_cap_get(PT_CAP_topa_multiple_entries)) {
++	if (!intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries)) {
+ 		TOPA_ENTRY(topa, 1)->base = topa->phys >> TOPA_SHIFT;
+ 		TOPA_ENTRY(topa, 1)->end = 1;
+ 	}
+@@ -638,7 +639,7 @@ static void topa_insert_table(struct pt_buffer *buf, struct topa *topa)
+ 	topa->offset = last->offset + last->size;
+ 	buf->last = topa;
+ 
+-	if (!pt_cap_get(PT_CAP_topa_multiple_entries))
++	if (!intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries))
+ 		return;
+ 
+ 	BUG_ON(last->last != TENTS_PER_PAGE - 1);
+@@ -654,7 +655,7 @@ static void topa_insert_table(struct pt_buffer *buf, struct topa *topa)
+ static bool topa_table_full(struct topa *topa)
+ {
+ 	/* single-entry ToPA is a special case */
+-	if (!pt_cap_get(PT_CAP_topa_multiple_entries))
++	if (!intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries))
+ 		return !!topa->last;
+ 
+ 	return topa->last == TENTS_PER_PAGE - 1;
+@@ -690,7 +691,8 @@ static int topa_insert_pages(struct pt_buffer *buf, gfp_t gfp)
+ 
+ 	TOPA_ENTRY(topa, -1)->base = page_to_phys(p) >> TOPA_SHIFT;
+ 	TOPA_ENTRY(topa, -1)->size = order;
+-	if (!buf->snapshot && !pt_cap_get(PT_CAP_topa_multiple_entries)) {
++	if (!buf->snapshot &&
++	    !intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries)) {
+ 		TOPA_ENTRY(topa, -1)->intr = 1;
+ 		TOPA_ENTRY(topa, -1)->stop = 1;
+ 	}
+@@ -725,7 +727,7 @@ static void pt_topa_dump(struct pt_buffer *buf)
+ 				 topa->table[i].intr ? 'I' : ' ',
+ 				 topa->table[i].stop ? 'S' : ' ',
+ 				 *(u64 *)&topa->table[i]);
+-			if ((pt_cap_get(PT_CAP_topa_multiple_entries) &&
++			if ((intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries) &&
+ 			     topa->table[i].stop) ||
+ 			    topa->table[i].end)
+ 				break;
+@@ -828,7 +830,7 @@ static void pt_handle_status(struct pt *pt)
+ 		 * means we are already losing data; need to let the decoder
+ 		 * know.
+ 		 */
+-		if (!pt_cap_get(PT_CAP_topa_multiple_entries) ||
++		if (!intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries) ||
+ 		    buf->output_off == sizes(TOPA_ENTRY(buf->cur, buf->cur_idx)->size)) {
+ 			perf_aux_output_flag(&pt->handle,
+ 			                     PERF_AUX_FLAG_TRUNCATED);
+@@ -840,7 +842,8 @@ static void pt_handle_status(struct pt *pt)
+ 	 * Also on single-entry ToPA implementations, interrupt will come
+ 	 * before the output reaches its output region's boundary.
+ 	 */
+-	if (!pt_cap_get(PT_CAP_topa_multiple_entries) && !buf->snapshot &&
++	if (!intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries) &&
++	    !buf->snapshot &&
+ 	    pt_buffer_region_size(buf) - buf->output_off <= TOPA_PMI_MARGIN) {
+ 		void *head = pt_buffer_region(buf);
+ 
+@@ -931,7 +934,7 @@ static int pt_buffer_reset_markers(struct pt_buffer *buf,
+ 
+ 
+ 	/* single entry ToPA is handled by marking all regions STOP=1 INT=1 */
+-	if (!pt_cap_get(PT_CAP_topa_multiple_entries))
++	if (!intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries))
+ 		return 0;
+ 
+ 	/* clear STOP and INT from current entry */
+@@ -1082,7 +1085,7 @@ static int pt_buffer_init_topa(struct pt_buffer *buf, unsigned long nr_pages,
+ 	pt_buffer_setup_topa_index(buf);
+ 
+ 	/* link last table to the first one, unless we're double buffering */
+-	if (pt_cap_get(PT_CAP_topa_multiple_entries)) {
++	if (intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries)) {
+ 		TOPA_ENTRY(buf->last, -1)->base = buf->first->phys >> TOPA_SHIFT;
+ 		TOPA_ENTRY(buf->last, -1)->end = 1;
+ 	}
+@@ -1154,7 +1157,7 @@ static int pt_addr_filters_init(struct perf_event *event)
+ 	struct pt_filters *filters;
+ 	int node = event->cpu == -1 ? -1 : cpu_to_node(event->cpu);
+ 
+-	if (!pt_cap_get(PT_CAP_num_address_ranges))
++	if (!intel_pt_validate_hw_cap(PT_CAP_num_address_ranges))
+ 		return 0;
+ 
+ 	filters = kzalloc_node(sizeof(struct pt_filters), GFP_KERNEL, node);
+@@ -1203,7 +1206,7 @@ static int pt_event_addr_filters_validate(struct list_head *filters)
+ 				return -EINVAL;
+ 		}
+ 
+-		if (++range > pt_cap_get(PT_CAP_num_address_ranges))
++		if (++range > intel_pt_validate_hw_cap(PT_CAP_num_address_ranges))
+ 			return -EOPNOTSUPP;
+ 	}
+ 
+@@ -1509,12 +1512,12 @@ static __init int pt_init(void)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (!pt_cap_get(PT_CAP_topa_output)) {
++	if (!intel_pt_validate_hw_cap(PT_CAP_topa_output)) {
+ 		pr_warn("ToPA output is not supported on this CPU\n");
+ 		return -ENODEV;
+ 	}
+ 
+-	if (!pt_cap_get(PT_CAP_topa_multiple_entries))
++	if (!intel_pt_validate_hw_cap(PT_CAP_topa_multiple_entries))
+ 		pt_pmu.pmu.capabilities =
+ 			PERF_PMU_CAP_AUX_NO_SG | PERF_PMU_CAP_AUX_SW_DOUBLEBUF;
+ 
+@@ -1532,7 +1535,7 @@ static __init int pt_init(void)
+ 	pt_pmu.pmu.addr_filters_sync     = pt_event_addr_filters_sync;
+ 	pt_pmu.pmu.addr_filters_validate = pt_event_addr_filters_validate;
+ 	pt_pmu.pmu.nr_addr_filters       =
+-		pt_cap_get(PT_CAP_num_address_ranges);
++		intel_pt_validate_hw_cap(PT_CAP_num_address_ranges);
+ 
+ 	ret = perf_pmu_register(&pt_pmu.pmu, "intel_pt", -1);
+ 
+diff --git a/arch/x86/events/intel/pt.h b/arch/x86/events/intel/pt.h
+index df6ecf702a3cd..ad4ac27f04688 100644
+--- a/arch/x86/events/intel/pt.h
++++ b/arch/x86/events/intel/pt.h
+@@ -82,30 +82,9 @@ struct topa_entry {
+ 	u64	rsvd4	: 12;
+ };
+ 
+-#define PT_CPUID_LEAVES		2
+-#define PT_CPUID_REGS_NUM	4 /* number of regsters (eax, ebx, ecx, edx) */
+-
+ /* TSC to Core Crystal Clock Ratio */
+ #define CPUID_TSC_LEAF		0x15
+ 
+-enum pt_capabilities {
+-	PT_CAP_max_subleaf = 0,
+-	PT_CAP_cr3_filtering,
+-	PT_CAP_psb_cyc,
+-	PT_CAP_ip_filtering,
+-	PT_CAP_mtc,
+-	PT_CAP_ptwrite,
+-	PT_CAP_power_event_trace,
+-	PT_CAP_topa_output,
+-	PT_CAP_topa_multiple_entries,
+-	PT_CAP_single_range_output,
+-	PT_CAP_payloads_lip,
+-	PT_CAP_num_address_ranges,
+-	PT_CAP_mtc_periods,
+-	PT_CAP_cycle_thresholds,
+-	PT_CAP_psb_periods,
+-};
+-
+ struct pt_pmu {
+ 	struct pmu		pmu;
+ 	u32			caps[PT_CPUID_REGS_NUM * PT_CPUID_LEAVES];
+diff --git a/arch/x86/include/asm/intel_pt.h b/arch/x86/include/asm/intel_pt.h
+index b523f51c5400d..fa4b4fd2dbedd 100644
+--- a/arch/x86/include/asm/intel_pt.h
++++ b/arch/x86/include/asm/intel_pt.h
+@@ -2,10 +2,33 @@
+ #ifndef _ASM_X86_INTEL_PT_H
+ #define _ASM_X86_INTEL_PT_H
+ 
++#define PT_CPUID_LEAVES		2
++#define PT_CPUID_REGS_NUM	4 /* number of regsters (eax, ebx, ecx, edx) */
++
++enum pt_capabilities {
++	PT_CAP_max_subleaf = 0,
++	PT_CAP_cr3_filtering,
++	PT_CAP_psb_cyc,
++	PT_CAP_ip_filtering,
++	PT_CAP_mtc,
++	PT_CAP_ptwrite,
++	PT_CAP_power_event_trace,
++	PT_CAP_topa_output,
++	PT_CAP_topa_multiple_entries,
++	PT_CAP_single_range_output,
++	PT_CAP_payloads_lip,
++	PT_CAP_num_address_ranges,
++	PT_CAP_mtc_periods,
++	PT_CAP_cycle_thresholds,
++	PT_CAP_psb_periods,
++};
++
+ #if defined(CONFIG_PERF_EVENTS) && defined(CONFIG_CPU_SUP_INTEL)
+ void cpu_emergency_stop_pt(void);
++extern u32 intel_pt_validate_hw_cap(enum pt_capabilities cap);
+ #else
+ static inline void cpu_emergency_stop_pt(void) {}
++static inline u32 intel_pt_validate_hw_cap(enum pt_capabilities cap) { return 0; }
+ #endif
+ 
+ #endif /* _ASM_X86_INTEL_PT_H */
 -- 
 2.43.0
 
