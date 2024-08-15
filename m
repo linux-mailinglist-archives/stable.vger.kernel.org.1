@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-67857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1008952F69
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52FA952F80
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3F741C24393
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E7AE289D8C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263A019E7F5;
-	Thu, 15 Aug 2024 13:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9601A76C1;
+	Thu, 15 Aug 2024 13:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JywvbMEr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arEDeeIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95EA19DF9E;
-	Thu, 15 Aug 2024 13:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60E41A76B7;
+	Thu, 15 Aug 2024 13:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728739; cv=none; b=RvxJwh+/DwHydo+64PSH2yIXDfRTi+QYok9+7rrjNW0ZNFecCn/r2H1odwz+1mhFjsxpTjbsNVNJyQVEYl3gYV53SRCIfiutoOhbgF8KGuDiGnfaR2u5CZQPVwT5h9DwBNj0FTL1ZYsGoFa6WtcdId50SaqkFi1m9XkD9T+yXFo=
+	t=1723728774; cv=none; b=tUhjBgNkEn7TXYylE3p/2f++DyAw/iLrYVxfbzg8GwQTSF3gAyLZRPAQal2MCTS0ltuPwJyQ8Sjh90qcS5M8atI1/fpd2Rl8CLKv/SNqOhUFA+FFgyh61qGILD5YS/rZBIUMtzDAZjBjR6W94+XcJp9ocufU100Ta/FhB9KVsL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728739; c=relaxed/simple;
-	bh=TMHc0xpxg41PjAHLVi67PghdfrbzEyPuqTmInnKJWRo=;
+	s=arc-20240116; t=1723728774; c=relaxed/simple;
+	bh=CTBsuA7LxTZt/eZfFw4Ukm5h8RCIpWpDHwkzyPj26iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TAROpEKJXWIFaidI56TcGOrDrwHbMbdclVpXPT59p7f/WC3qehb0HN8jq/B3NaA1eOjg62eTF+f0oFsO4C1ejwenwVTqi30qrCf+w6QdMOVS/Iqw3DNB2LnxzmHP53J0/fVeY1T1KxWDGNV94XLlDiysnkp9HsvZKs6dfFEOdyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JywvbMEr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F95EC32786;
-	Thu, 15 Aug 2024 13:32:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=unugrDh8rKMC3aG3aePQyH+MCZW3Zp6pVHdSCpRFz4+KaGomWhiFTFEypYJcr7dCQGxk78AeJsVenD2f0g2zrgH0R8/ofrMQjOd62Zt1kUF6Ea5+LRsqervxpYzZRvxNFtF2FK9Osi+pv8YI/cufEvmrrnULIYjlz4rdXQW4O7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arEDeeIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AB0C4AF0E;
+	Thu, 15 Aug 2024 13:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728739;
-	bh=TMHc0xpxg41PjAHLVi67PghdfrbzEyPuqTmInnKJWRo=;
+	s=korg; t=1723728774;
+	bh=CTBsuA7LxTZt/eZfFw4Ukm5h8RCIpWpDHwkzyPj26iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JywvbMErDboAsB0Upe3MEoeSsCSIXMUlKRpL3r0448j1DZkKntNi3IEAtrvEpn7Tm
-	 8xZt6EnqSWXCveCikAX5Oqm0diDccu1K/8OCOGjxbS1phskrgxH9esrmEVV2V6mhOO
-	 d8hcNxpH0r0VkelRejl4cPMMUBFTSJ4eqw3/N988=
+	b=arEDeeIoDjBDDDCpBshJ4STvCSIOL3oPE7w+QLLm4iAbkyDzLV0EZylT4j0Wi7pxQ
+	 NsdSUjRnHNekq4Yzqi+laScPHrX3bj2gEUjeUBgqlPRfJg0BPm68nljPXlxz5386Xq
+	 tARGkIRhaTqmNg6zOxeQj4GCN1dbDdQbDKpa8Guo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 4.19 077/196] hwrng: amd - Convert PCIBIOS_* return codes to errnos
-Date: Thu, 15 Aug 2024 15:23:14 +0200
-Message-ID: <20240815131855.023961228@linuxfoundation.org>
+	Wei Liu <wei.liu@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	stable@kernel.org
+Subject: [PATCH 4.19 078/196] PCI: hv: Return zero, not garbage, when reading PCI_INTERRUPT_PIN
+Date: Thu, 15 Aug 2024 15:23:15 +0200
+Message-ID: <20240815131855.061263542@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
 References: <20240815131852.063866671@linuxfoundation.org>
@@ -66,40 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Wei Liu <wei.liu@kernel.org>
 
-commit 14cba6ace79627a57fb9058582b03f0ed3832390 upstream.
+commit fea93a3e5d5e6a09eb153866d2ce60ea3287a70d upstream.
 
-amd_rng_mod_init() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is then returned as is but amd_rng_mod_init() is
-a module_init() function that should return normal errnos.
+The intent of the code snippet is to always return 0 for both
+PCI_INTERRUPT_LINE and PCI_INTERRUPT_PIN.
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it.
+The check misses PCI_INTERRUPT_PIN. This patch fixes that.
 
-Fixes: 96d63c0297cc ("[PATCH] Add AMD HW RNG driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+This is discovered by this call in VFIO:
+
+    pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+
+The old code does not set *val to 0 because it misses the check for
+PCI_INTERRUPT_PIN. Garbage is returned in that case.
+
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+Link: https://lore.kernel.org/linux-pci/20240701202606.129606-1-wei.liu@kernel.org
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/hw_random/amd-rng.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pci-hyperv.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/char/hw_random/amd-rng.c
-+++ b/drivers/char/hw_random/amd-rng.c
-@@ -142,8 +142,10 @@ static int __init mod_init(void)
- 
- found:
- 	err = pci_read_config_dword(pdev, 0x58, &pmbase);
--	if (err)
-+	if (err) {
-+		err = pcibios_err_to_errno(err);
- 		goto put_dev;
-+	}
- 
- 	pmbase &= 0x0000FF00;
- 	if (pmbase == 0) {
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -650,8 +650,8 @@ static void _hv_pcifront_read_config(str
+ 		   PCI_CAPABILITY_LIST) {
+ 		/* ROM BARs are unimplemented */
+ 		*val = 0;
+-	} else if (where >= PCI_INTERRUPT_LINE && where + size <=
+-		   PCI_INTERRUPT_PIN) {
++	} else if ((where >= PCI_INTERRUPT_LINE && where + size <= PCI_INTERRUPT_PIN) ||
++		   (where >= PCI_INTERRUPT_PIN && where + size <= PCI_MIN_GNT)) {
+ 		/*
+ 		 * Interrupt Line and Interrupt PIN are hard-wired to zero
+ 		 * because this front-end only supports message-signaled
 
 
 
