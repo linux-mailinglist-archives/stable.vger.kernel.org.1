@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65A1953323
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A769534CF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 284861F221E5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BF38288F1D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E311ABEB4;
-	Thu, 15 Aug 2024 14:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF8619FA7A;
+	Thu, 15 Aug 2024 14:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YS3OIAxc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRiI3F3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7566119E7FA;
-	Thu, 15 Aug 2024 14:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10C963D5;
+	Thu, 15 Aug 2024 14:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731083; cv=none; b=qix1yhrva3kVcQzLK989sJCR+mM8ITShtjs8iwkvUX9NTAOuB5yhs6L43PJr5mu45fc/N/FikMITFkQHHzL9SJ2R216zddJ0DC73rcR69cnyGPmmJuvq9x1SCutdgcef1CGGrQF2J1HNYPxEKBB/i92nIRcEt37JWxKgWD+8oi0=
+	t=1723732239; cv=none; b=HTVrP0sFMXp0zk6cigF3sosGMxVlLXkZpXTe0ZzdwVH/VcHKg1ZMdpoJdbOpVcDIXxcQPnCF/3tAWSMDmHyiZOo5fIMhqC61XwAIxXBZFiBpSQXfuSImYG+Yey4oEvsvRz/5gy9lrVV/ORvMD4eNDLZkIAfX2lc1Fa9ZAZiXnjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731083; c=relaxed/simple;
-	bh=faDgAkz2fo+bpVw899jaG0stFIFl85f1qs43SXZqOuo=;
+	s=arc-20240116; t=1723732239; c=relaxed/simple;
+	bh=/CH5aUibDzh5kNas+aXxPPT0tZefMc3kwpW/Myf7TQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPTX2dRDu/sdGqWTxhkL8gv7IIwlLVmwHvjXSZCfMUHTUrzu4t4kUsScUT9TEht9LSEFgxdl7F8NOl3h3u7pqTsA6JIJRvoWKvhLB6r7/Lptp5Wz16J6N17q3h4xfUB0LDtc47pGh9ClDkOP0OHzvuNSi8eux3JDX3w1It8PDoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YS3OIAxc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13FEC32786;
-	Thu, 15 Aug 2024 14:11:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sILggHey3kMe32FCPBi3NqUWsHQLdqwyBfrOZAuLTlwwzX6rSGhsiu7lJVZsI87r0Ohaoh/I2K/IcwzVXLQsvZWe3Y/44U2tXaM6d9tmyJAOWZ1GZ06DGvQ4DEaqgDAEWqLRVYeZNj+rNDhlPF0MhSLxzGtFJUGfiyu1l8klse0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRiI3F3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F00C32786;
+	Thu, 15 Aug 2024 14:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731083;
-	bh=faDgAkz2fo+bpVw899jaG0stFIFl85f1qs43SXZqOuo=;
+	s=korg; t=1723732239;
+	bh=/CH5aUibDzh5kNas+aXxPPT0tZefMc3kwpW/Myf7TQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YS3OIAxcvf+I9J0YIHOnUUvnYe66YlyIx046uR7ODrAdSNondZ5ovI7Dsr6HlfBem
-	 ICHJMAHOZgQjxGNVoWnA/CWfuFlnwmrpaHsMMun0siIerSL+X0ynUvJE7CaCRqs0fn
-	 Dm3cHOEDXiwfUiQRoue10Pwszk3MrHx7s+XjvBnw=
+	b=PRiI3F3yCFCCP5imHeiXCLVb8BVoeDwHGnYmIlhCsbIWsHhu8TGOETWbArR0Es4FJ
+	 HqoTxnOtNYjGN5+7rUjvNGzk/wiCJAGkVsx+gYNSjma8DT1HGekMk5IhrPuXgQp/bc
+	 Rm6JAxfsU8KBVfif6x8yuYZUbaqHLnEkisrff17E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	=?UTF-8?q?Herv=C3=A9=20Codina?= <herve.codina@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 018/259] ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node
-Date: Thu, 15 Aug 2024 15:22:31 +0200
-Message-ID: <20240815131903.501252890@linuxfoundation.org>
+Subject: [PATCH 5.10 086/352] Revert "leds: led-core: Fix refcount leak in of_led_get()"
+Date: Thu, 15 Aug 2024 15:22:32 +0200
+Message-ID: <20240815131922.572132092@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit 5694eed98cca5c164ebb5b831b65b4c9eee4b2d5 ]
+[ Upstream commit 940b27161afc6ec53fc66245a4fb3518394cdc92 ]
 
-Add ethernet-phy node so we can drop the deprecated fec phy-reset-gpios
-property. The reset-assert-us value is taken from the existing logic
-since the fec driver will add an 1ms assert delay per default if
-phy-reset-gpios is used and phy-reset-duration is not specified.
+This reverts commit da1afe8e6099980fe1e2fd7436dca284af9d3f29.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: edfea889a049 ("ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset")
+Commit 699a8c7c4bd3 ("leds: Add of_led_get() and led_put()"), introduced in
+5.5, added of_led_get() and led_put() but missed a put_device() in
+led_put(), thus creating a leak in case the consumer device is removed.
+
+Arguably device removal was not very popular, so this went apparently
+unnoticed until 2022. In January 2023 two different patches got merged to
+fix the same bug:
+
+ - commit da1afe8e6099 ("leds: led-core: Fix refcount leak in of_led_get()")
+ - commit 445110941eb9 ("leds: led-class: Add missing put_device() to led_put()")
+
+They fix the bug in two different ways, which creates no patch conflicts,
+and both were merged in v6.2. The result is that now there is one more
+put_device() than get_device()s, instead of one less.
+
+Arguably device removal is not very popular yet, so this apparently hasn't
+been noticed as well up to now. But it blew up here while I'm working with
+device tree overlay insertion and removal. The symptom is an apparently
+unrelated list of oopses on device removal, with reasons:
+
+  kernfs: can not remove 'uevent', no directory
+  kernfs: can not remove 'brightness', no directory
+  kernfs: can not remove 'max_brightness', no directory
+  ...
+
+Here sysfs fails removing attribute files, which is because the device name
+changed and so the sysfs path. This is because the device name string got
+corrupted, which is because it got freed too early and its memory reused.
+
+Different symptoms could appear in different use cases.
+
+Fix by removing one of the two fixes.
+
+The choice was to remove commit da1afe8e6099 because:
+
+ * it is calling put_device() inside of_led_get() just after getting the
+   device, thus it is basically not refcounting the LED device at all
+   during its entire lifetime
+ * it does not add a corresponding put_device() in led_get(), so it fixes
+   only the OF case
+
+The other fix (445110941eb9) is adding the put_device() in led_put() so it
+covers the entire lifetime, and it works even in the non-DT case.
+
+Fixes: da1afe8e6099 ("leds: led-core: Fix refcount leak in of_led_get()")
+Co-developed-by: Hervé Codina <herve.codina@bootlin.com>
+Signed-off-by: Hervé Codina <herve.codina@bootlin.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/r/20240625-led-class-device-leak-v2-1-75fdccf47421@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/leds/led-class.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
-index 5e454a694b78a..1b9e38ec74489 100644
---- a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
-+++ b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
-@@ -260,7 +260,19 @@ &fec {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet>;
- 	phy-mode = "rgmii";
--	phy-reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
-+	phy-handle = <&ethphy>;
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy: ethernet-phy@1 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <1>;
-+			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <1000>;
-+		};
-+	};
- };
+diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+index fcb9eee3b6097..e28a4bb716032 100644
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -236,7 +236,6 @@ struct led_classdev *of_led_get(struct device_node *np, int index)
  
- &i2c_intern {
+ 	led_dev = class_find_device_by_of_node(leds_class, led_node);
+ 	of_node_put(led_node);
+-	put_device(led_dev);
+ 
+ 	if (!led_dev)
+ 		return ERR_PTR(-EPROBE_DEFER);
 -- 
 2.43.0
 
