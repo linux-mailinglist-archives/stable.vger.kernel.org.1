@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E11D953180
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30CF952F2C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D978E28B5FA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 915D81F26517
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5584119DF9C;
-	Thu, 15 Aug 2024 13:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EDC19DFAE;
+	Thu, 15 Aug 2024 13:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewEMWh/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11h0h435"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117021714A1;
-	Thu, 15 Aug 2024 13:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFAF1DDF5;
+	Thu, 15 Aug 2024 13:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730091; cv=none; b=B2LNXYmGTKOqW17cLl6F1qo3hN5obGeLavzAD1C3eJZJmnKunsGwMffJOPQ6iXk+74fmBICgqvF99kuDXcdjp9Xj+lNsBbE8zc1VZtx22lg/38S6gzRkmG39YsSdx1Td3t+wrK1BnykKb0rymeajAG/04EwnDoHVzBjJuMeQEXw=
+	t=1723728573; cv=none; b=pY75ee+j2v7ksJEBaTb38zYv71g+OPWBe61HHUT4g5WBdRsv7PPXZkEkKZjyjfiEbgxvm+8hDSOu9SHuDQoc6wGpsx2PyGRQ0foeCleTWuoVC3jtfbiAD4OjWpE0bOgD5w9CS2dYnJ73bdYqwzvQdxfIwn/YBK/6WoaG51v9bwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730091; c=relaxed/simple;
-	bh=p+MI1xfsFbkhWbXr9pEVWpLA/gy0Q8KACboGhvRmDIM=;
+	s=arc-20240116; t=1723728573; c=relaxed/simple;
+	bh=yJLpZIpegTTCny5cMvp1eKVP3r9uU7jwKlOf2nKcrMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjsBIe/4PM36w++kSYepmHquCr6ME1rhBWIPC/Lpy4j1Ulhj3sfbnImm89ibHpiaMW/OjTIFj4qNv2ugDXH/+14gSB5S7p75tdzxdf7HqIRTLmlkQ7p1OzZc52CMtzIT5nLqtDPTQ2M49uq4X0ej0JUIsOg/uwuvAw7+PpBe+ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewEMWh/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D670C32786;
-	Thu, 15 Aug 2024 13:54:50 +0000 (UTC)
+	 MIME-Version; b=lmywEceRZRePyVwUb/U23K1IPqvahKI39bJMZQsYZB9undqTlVZVtO9fGOg+nQvnLWhfdHEWbR/FnBvXixz7uoSqB7N+9+4K7uVpmQ9uT982jmK8i/Gl88GjyWnUeTfAsbyq4BrSVmUdk9em5Ni8tTQyWrJWKNjhWP+3eE5kPBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11h0h435; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F17C32786;
+	Thu, 15 Aug 2024 13:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730090;
-	bh=p+MI1xfsFbkhWbXr9pEVWpLA/gy0Q8KACboGhvRmDIM=;
+	s=korg; t=1723728573;
+	bh=yJLpZIpegTTCny5cMvp1eKVP3r9uU7jwKlOf2nKcrMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewEMWh/qFd/k2p6ltpG2wK2DffPGg7z+Mwx3kAULduZ62jvEhdnSDydcnxYo6SXvj
-	 fy8pG6nh6+pslNi21dOrEsgrwl6Opqk74xXPchEiusg9u7OmAT6+eTsmAcRRtPghpc
-	 a74Q/CD6cqwY2AfSYtySxoEcgbCjA9MIbYevf12I=
+	b=11h0h435vVFsCR3Yk6zyjizx8gk+eO6M4jGF/ZlQWB9okZjUZt+0AVjA/m3/kZG1I
+	 PPjrnkXkb4fKiLsN3VGeZqQRWGp+Ff8Ye3BcEvdj4w1WJ9qFkZ3dAwNMDbpCZU3s09
+	 p96D/SI98VMTQhaiStS/ECk/3gXr+iy/69RHeXs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 271/484] ipv4: Fix incorrect source address in Record Route option
+Subject: [PATCH 4.19 012/196] hwmon: (max6697) Fix swapped temp{1,8} critical alarms
 Date: Thu, 15 Aug 2024 15:22:09 +0200
-Message-ID: <20240815131951.874426369@linuxfoundation.org>
+Message-ID: <20240815131852.544250473@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit cc73bbab4b1fb8a4f53a24645871dafa5f81266a ]
+[ Upstream commit 1ea3fd1eb9869fcdcbc9c68f9728bfc47b9503f1 ]
 
-The Record Route IP option records the addresses of the routers that
-routed the packet. In the case of forwarded packets, the kernel performs
-a route lookup via fib_lookup() and fills in the preferred source
-address of the matched route.
+The critical alarm bit for the local temperature sensor (temp1) is in
+bit 7 of register 0x45 (not bit 6), and the critical alarm bit for remote
+temperature sensor 7 (temp8) is in bit 6 (not bit 7).
 
-The lookup is performed with the DS field of the forwarded packet, but
-using the RT_TOS() macro which only masks one of the two ECN bits. If
-the packet is ECT(0) or CE, the matched route might be different than
-the route via which the packet was forwarded as the input path masks
-both of the ECN bits, resulting in the wrong address being filled in the
-Record Route option.
+This only affects MAX6581 since all other chips supported by this driver
+do not support those critical alarms.
 
-Fix by masking both of the ECN bits.
-
-Fixes: 8e36360ae876 ("ipv4: Remove route key identity dependencies in ip_rt_get_source().")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20240718123407.434778-1-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/max6697.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index e7130a9f0e1a9..60fc35defdf8b 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1282,7 +1282,7 @@ void ip_rt_get_source(u8 *addr, struct sk_buff *skb, struct rtable *rt)
- 		struct flowi4 fl4 = {
- 			.daddr = iph->daddr,
- 			.saddr = iph->saddr,
--			.flowi4_tos = RT_TOS(iph->tos),
-+			.flowi4_tos = iph->tos & IPTOS_RT_MASK,
- 			.flowi4_oif = rt->dst.dev->ifindex,
- 			.flowi4_iif = skb->dev->ifindex,
- 			.flowi4_mark = skb->mark,
+diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
+index 2103ba45de745..14c34a2d36af3 100644
+--- a/drivers/hwmon/max6697.c
++++ b/drivers/hwmon/max6697.c
+@@ -368,14 +368,14 @@ static SENSOR_DEVICE_ATTR_RO(temp6_max_alarm, alarm, 20);
+ static SENSOR_DEVICE_ATTR_RO(temp7_max_alarm, alarm, 21);
+ static SENSOR_DEVICE_ATTR_RO(temp8_max_alarm, alarm, 23);
+ 
+-static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 14);
++static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 15);
+ static SENSOR_DEVICE_ATTR_RO(temp2_crit_alarm, alarm, 8);
+ static SENSOR_DEVICE_ATTR_RO(temp3_crit_alarm, alarm, 9);
+ static SENSOR_DEVICE_ATTR_RO(temp4_crit_alarm, alarm, 10);
+ static SENSOR_DEVICE_ATTR_RO(temp5_crit_alarm, alarm, 11);
+ static SENSOR_DEVICE_ATTR_RO(temp6_crit_alarm, alarm, 12);
+ static SENSOR_DEVICE_ATTR_RO(temp7_crit_alarm, alarm, 13);
+-static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 15);
++static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 14);
+ 
+ static SENSOR_DEVICE_ATTR_RO(temp2_fault, alarm, 1);
+ static SENSOR_DEVICE_ATTR_RO(temp3_fault, alarm, 2);
 -- 
 2.43.0
 
