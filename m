@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC531953379
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0439534E0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B2041C22D8D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C72BA289538
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29C21AC426;
-	Thu, 15 Aug 2024 14:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29EFC19FA99;
+	Thu, 15 Aug 2024 14:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZLFLtwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyviLQSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC7D19EED7;
-	Thu, 15 Aug 2024 14:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2AD63D5;
+	Thu, 15 Aug 2024 14:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731331; cv=none; b=Iywa1GYV1MqvGeXEWrpezofwITsYs0hkMf4ZnopJR32bgpeuN8217Mcw0zcwVBDRMckElR+aS/lJfNYz/bnJOskV4qxqqoowwOjgrwhdJuxJ1lspPsLKRIgldBZUAIkhqUI1wcmfaVBT8+Hz3dPNqEdmjIkmg0JjWI9mIWDRRVY=
+	t=1723732281; cv=none; b=Ji2e4PqVyZeb3N9so9+Q7/Q2E+MlfUfpDv+NraNJethZnfvL8bk/NTsG7g+nzhN6m1dR2aoKXcXZqdraOVrJxlZFz1eI8dbKyvZpuw5X2ympXqsQPpx8D8hvEAops2o2LasxV/k+uGnZNekIJ2r1k9HcPICUFEn7TEL40Hplxl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731331; c=relaxed/simple;
-	bh=3DYFirHrInlbN7cZ/XxuHGqEGJWFoY6EpKrcjF8BL9o=;
+	s=arc-20240116; t=1723732281; c=relaxed/simple;
+	bh=gOrxdRKLrx1CVJqMW9aLAIIRCGf0itMZzPX4O52BZX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQdCz8LTNFB9a8zZzBz9sy5dHurKb5VORC/4yAgJ5Vm06WcYzH61vW89czyPdNl7wwj6nUu6i30G59IqZDsPCyBvP9uUrcdaPprSgJpV9s5mr24rWHGBtcf0ZSij1vviCVfbBXFs/PndIWorRu/J6Glbe4wYT7whbRwGS1lJg5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZLFLtwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F72C4AF0A;
-	Thu, 15 Aug 2024 14:15:30 +0000 (UTC)
+	 MIME-Version; b=oy0N7+dlLO7Xy0QepkfxarX87qdUQXjupgPZFZRpMj0Oas4snvZLsSckSqzazgKtBUqhvmGTyN+Zt154r9Fsl76ZxtA1IrJC/vi2MeCQiELyHB/wIc3JvClbb9VytJ3LZ1WX323nvT2qYAHsNvFfLoJfuoKiRFX03EtEeBDnylY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyviLQSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB99C32786;
+	Thu, 15 Aug 2024 14:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731331;
-	bh=3DYFirHrInlbN7cZ/XxuHGqEGJWFoY6EpKrcjF8BL9o=;
+	s=korg; t=1723732280;
+	bh=gOrxdRKLrx1CVJqMW9aLAIIRCGf0itMZzPX4O52BZX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZLFLtwAI7GdOy4Mp59HC75Or1R+0QmVFf720kx98uGB8KHi1b1W4Trnq+JESxv5r
-	 iZtp/qcwNR3AKRyso8vzcGjOVK36xF3xdS/6TyQvRx77/KboJAZS5tAbO2kI70BBuA
-	 VbFuLGa/o0cLpPx5306PBz1KG9VJnO3bNQFrVS5w=
+	b=AyviLQSLreqxz/5KiIMIp2L5Z9CIhWduJ7AIBnluBZz5LoEoIo9rjMOlQzN/NiUYs
+	 Nd19G1xZueWY9OmhN+/qhVn+iIbsay7JhrBS/P9whbBM1y5K5tVpoMNtnEjJcv3aNP
+	 9n63j/NttDCQ+mvu6D0os6a6JgtryFZzUrO/fu9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com,
-	Hugh Dickins <hughd@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/259] ext4: avoid writing unitialized memory to disk in EA inodes
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.10 131/352] media: venus: fix use after free in vdec_close
 Date: Thu, 15 Aug 2024 15:23:17 +0200
-Message-ID: <20240815131905.278604719@linuxfoundation.org>
+Message-ID: <20240815131924.320388606@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-[ Upstream commit 65121eff3e4c8c90f8126debf3c369228691c591 ]
+commit a0157b5aa34eb43ec4c5510f9c260bbb03be937e upstream.
 
-If the extended attribute size is not a multiple of block size, the last
-block in the EA inode will have uninitialized tail which will get
-written to disk. We will never expose the data to userspace but still
-this is not a good practice so just zero out the tail of the block as it
-isn't going to cause a noticeable performance overhead.
+There appears to be a possible use after free with vdec_close().
+The firmware will add buffer release work to the work queue through
+HFI callbacks as a normal part of decoding. Randomly closing the
+decoder device from userspace during normal decoding can incur
+a read after free for inst.
 
-Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
-Reported-by: syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com
-Reported-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240613150234.25176-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by cancelling the work in vdec_close.
+
+Cc: stable@vger.kernel.org
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/platform/qcom/venus/vdec.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index cb7faaa935cc6..d65f1eb85a924 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1396,6 +1396,12 @@ static int ext4_xattr_inode_write(handle_t *handle, struct inode *ea_inode,
- 			goto out;
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -1587,6 +1587,7 @@ static int vdec_close(struct file *file)
  
- 		memcpy(bh->b_data, buf, csize);
-+		/*
-+		 * Zero out block tail to avoid writing uninitialized memory
-+		 * to disk.
-+		 */
-+		if (csize < blocksize)
-+			memset(bh->b_data + csize, 0, blocksize - csize);
- 		set_buffer_uptodate(bh);
- 		ext4_handle_dirty_metadata(handle, ea_inode, bh);
+ 	vdec_pm_get(inst);
  
--- 
-2.43.0
-
++	cancel_work_sync(&inst->delayed_process_work);
+ 	v4l2_m2m_ctx_release(inst->m2m_ctx);
+ 	v4l2_m2m_release(inst->m2m_dev);
+ 	vdec_ctrl_deinit(inst);
 
 
 
