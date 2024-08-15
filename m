@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-67874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3271952F87
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333309531CF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60821C243B9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 585171C2384F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758BC19DF9D;
-	Thu, 15 Aug 2024 13:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF4019EEB6;
+	Thu, 15 Aug 2024 13:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9wAABje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfJKh+m9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3019919E7FA;
-	Thu, 15 Aug 2024 13:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3D97DA7D;
+	Thu, 15 Aug 2024 13:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728793; cv=none; b=a8dO5NMufv2QcPAW+UffpSUp2T7/TSIJaYvddejs3jZUh70VRqHIQtoxA+bENEhqCvX6lfXr+mP8Ttjr9e66OWrc1CtjOREBEmPwQtVCkORsoyH1QzIS6LcowvFnd3R8GmlvHbsjJLNCvaseICmbaS+YO9CQ1m3T8YNjmd8nrZc=
+	t=1723730313; cv=none; b=aVJC7XkbgUSJicThwfBqfAVfcWBKGKrhCiRQdEv2XPoZMUFQYohALVR18fLTbvhZOPEpgt5n6T7ZKzn7IYSXv0TZbW/Dp7q1lzXavdRo1i51HCA81EvgNH5SYDtyWJl7PtjgVfeenhiyQt4V39xprz38IQSBKNbEXH7l/NkicLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728793; c=relaxed/simple;
-	bh=TRslK+USR1uVIjq9+65XrZkRn55nq3AB2NfQmt+OLck=;
+	s=arc-20240116; t=1723730313; c=relaxed/simple;
+	bh=rLALTX5ZYjD8ckO/+ATdlyAd2XpTQQON8DAX7LGlXSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSJtQKdFMIcUhU3qgl0ESaeFKoGGx11NcvXRuc9oxol05TvS+nCcTp46ikUSu0r5b62rFG2htsKYbMR8LOQCKJWh1JDZZRHQgMqwj089y/52xd2gPVKywze7Pw0U5ym+7QEppIBDmrJUcZG2U3+kTaNZ0ZQxUSLPVLS2kQeunDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9wAABje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3056C32786;
-	Thu, 15 Aug 2024 13:33:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mtLKHKW9jdwAn5Lt3BpjQmxuRbb2De+z40n3+PsaOhYAVqWzsWp4bsAQKKsn4DQrTh+u3ibER2Yta4FQkhz74+/o+hKbSkdn97DMPRxPnJf2ZxftnYZ/dzbr9xWeBLH6BfMVFhgzuQp0b6Hz8c0X3QDTVEfSBMhgsaQDh1U+DXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfJKh+m9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6844C32786;
+	Thu, 15 Aug 2024 13:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728793;
-	bh=TRslK+USR1uVIjq9+65XrZkRn55nq3AB2NfQmt+OLck=;
+	s=korg; t=1723730313;
+	bh=rLALTX5ZYjD8ckO/+ATdlyAd2XpTQQON8DAX7LGlXSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9wAABje+vamgU0LHKHSZjtcEei2IwSi0xES7ieaY2gujNWzgOX/SxZjQwk2L/9p9
-	 +IkVA3e8+lGGKDYjdj6bfaJbv2N6ioyNUb7gqiydgODqbEgD5mOUAReYz1H3/XaWlG
-	 60iCAlI3HkN1yPCgsj6qbenzHCr1zCI8kM2WYKRk=
+	b=AfJKh+m9Lv4v5w9fWGss40zchlBSkCUcOW+nTAKGQWr0SVa2/TpK8yz+LT/Iypxbr
+	 Jq0F1HBqExgIAaumb10gDTM4qv9Ygzri63P4H5sLEIBIdyboVczSNUWMcGetiUCJvB
+	 6BItsifNabp7w2ZWktkrJpwcX6QHkiN6zEWQULh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.19 080/196] scsi: qla2xxx: Return ENOBUFS if sg_cnt is more than one for ELS cmds
+	Jen Linkova <furry@google.com>,
+	Lorenzo Colitti <lorenzo@google.com>,
+	Patrick Rohr <prohr@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	=?UTF-8?q?YOSHIFUJI=20Hideaki=20/=20=E5=90=89=E8=97=A4=E8=8B=B1=E6=98=8E?= <yoshfuji@linux-ipv6.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 339/484] ipv6: fix ndisc_is_useropt() handling for PIO
 Date: Thu, 15 Aug 2024 15:23:17 +0200
-Message-ID: <20240815131855.136919306@linuxfoundation.org>
+Message-ID: <20240815131954.506467757@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +66,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Maciej Żenczykowski <maze@google.com>
 
-commit ce2065c4cc4f05635413f63f6dc038d7d4842e31 upstream.
+[ Upstream commit a46c68debf3be3a477a69ccbf0a1d050df841676 ]
 
-Firmware only supports single DSDs in ELS Pass-through IOCB (0x53h), sg cnt
-is decided by the SCSI ML. User is not aware of the cause of an acutal
-error.
+The current logic only works if the PIO is between two
+other ND user options.  This fixes it so that the PIO
+can also be either before or after other ND user options
+(for example the first or last option in the RA).
 
-Return the appropriate return code that will be decoded by API and
-application and proper error message will be displayed to user.
+side note: there's actually Android tests verifying
+a portion of the old broken behaviour, so:
+  https://android-review.googlesource.com/c/kernel/tests/+/3196704
+fixes those up.
 
-Fixes: 6e98016ca077 ("[SCSI] qla2xxx: Re-organized BSG interface specific code.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-5-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jen Linkova <furry@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Cc: Patrick Rohr <prohr@google.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: YOSHIFUJI Hideaki / 吉藤英明 <yoshfuji@linux-ipv6.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Maciej Żenczykowski <maze@google.com>
+Fixes: 048c796beb6e ("ipv6: adjust ndisc_is_useropt() to also return true for PIO")
+Link: https://patch.msgid.link/20240730001748.147636-1-maze@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ndisc.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -302,7 +302,7 @@ qla2x00_process_els(struct bsg_job *bsg_
- 		    "request_sg_cnt=%x reply_sg_cnt=%x.\n",
- 		    bsg_job->request_payload.sg_cnt,
- 		    bsg_job->reply_payload.sg_cnt);
--		rval = -EPERM;
-+		rval = -ENOBUFS;
- 		goto done;
- 	}
- 
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 856edbe81e11a..d56e80741c5ba 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -226,6 +226,7 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
+ 		return NULL;
+ 	memset(ndopts, 0, sizeof(*ndopts));
+ 	while (opt_len) {
++		bool unknown = false;
+ 		int l;
+ 		if (opt_len < sizeof(struct nd_opt_hdr))
+ 			return NULL;
+@@ -261,22 +262,23 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
+ 			break;
+ #endif
+ 		default:
+-			if (ndisc_is_useropt(dev, nd_opt)) {
+-				ndopts->nd_useropts_end = nd_opt;
+-				if (!ndopts->nd_useropts)
+-					ndopts->nd_useropts = nd_opt;
+-			} else {
+-				/*
+-				 * Unknown options must be silently ignored,
+-				 * to accommodate future extension to the
+-				 * protocol.
+-				 */
+-				ND_PRINTK(2, notice,
+-					  "%s: ignored unsupported option; type=%d, len=%d\n",
+-					  __func__,
+-					  nd_opt->nd_opt_type,
+-					  nd_opt->nd_opt_len);
+-			}
++			unknown = true;
++		}
++		if (ndisc_is_useropt(dev, nd_opt)) {
++			ndopts->nd_useropts_end = nd_opt;
++			if (!ndopts->nd_useropts)
++				ndopts->nd_useropts = nd_opt;
++		} else if (unknown) {
++			/*
++			 * Unknown options must be silently ignored,
++			 * to accommodate future extension to the
++			 * protocol.
++			 */
++			ND_PRINTK(2, notice,
++				  "%s: ignored unsupported option; type=%d, len=%d\n",
++				  __func__,
++				  nd_opt->nd_opt_type,
++				  nd_opt->nd_opt_len);
+ 		}
+ next_opt:
+ 		opt_len -= l;
+-- 
+2.43.0
+
 
 
 
