@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-68494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E955953299
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3B19532E7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA2CF1C2419A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:08:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1704288FA5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1711A4F22;
-	Thu, 15 Aug 2024 14:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40031AD419;
+	Thu, 15 Aug 2024 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQUOZPKP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6/CRC7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5101684AC;
-	Thu, 15 Aug 2024 14:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721E31AC450;
+	Thu, 15 Aug 2024 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730745; cv=none; b=WgczGgiV+5N5ZQk8Sr2ETbW0VKXIRXmyrIzBOzZlhxXIVNDq3jO1Q/M18n6oG2F65Mm8J0W4JrrCdzIeCC+Z5FU33DHFAp1jCLfhBPqK0w/bJNbum2jxoxc6g2NOB2ucyWzV/plJC4VTjgUaarjpgqTiTQVNVbYVKnoCkRuIQZQ=
+	t=1723730937; cv=none; b=ch3wkS6PWy4DHpZzbVpzQfsEAI2dz2BbCzndRbugRK/euf4q7y+HYIwENORBfPTjq3DhrZNhPnyuSb7zy0cgWTbDTVjvO+FvWpYtHgY+rwpTaWSXVYGn23hpkCaoHCxfXtztE5FczdBdtUOLr/yRLK27wxASl3vKGFBlfVtUiaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730745; c=relaxed/simple;
-	bh=xnWUfUDTtAFCD34BnE8O6EWZQLlx6LZGdHp7r6NnuIY=;
+	s=arc-20240116; t=1723730937; c=relaxed/simple;
+	bh=XcZ3SPA6wpIWfqLmk+ErnO3OHLfhzQb0jLkOT468GHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+HiFSRLc4/5oEJrdexwjg0a5TtBBzyPRfxHuC2o1djtvbYML0F5zmPs4dJow+w26bGgtaM6ohfs25IrZ7pAhr4bNd1I/kXpSlRav3tljHTAVt0eWvsKbhmdg1qM/xW9fHW8/dyhmCvRnmTJr903N1iYu8S3IcFi0Fg5VQmE0Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQUOZPKP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8467C32786;
-	Thu, 15 Aug 2024 14:05:44 +0000 (UTC)
+	 MIME-Version; b=IrbWclQRmZJdRvhR4yZrfIXshHMY/Sc/y1HdVXkvg5wvHUHytoWBcx4W//aWn5S6mSXblmVYB/kGMkhikYbNiy9IXdkJogZvOpbKPEB/55Aj6bTFvHAeSkjQ4mCHo5Aov/jAKL1n85Jg1cU3W76YoGOShhSTVdQuMd2sOAzG2jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6/CRC7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CA5C32786;
+	Thu, 15 Aug 2024 14:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730745;
-	bh=xnWUfUDTtAFCD34BnE8O6EWZQLlx6LZGdHp7r6NnuIY=;
+	s=korg; t=1723730937;
+	bh=XcZ3SPA6wpIWfqLmk+ErnO3OHLfhzQb0jLkOT468GHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQUOZPKP150wprYydazH0MnPBCIgz4if7Ktx1Msw+H63vqklC08zGd232liVoqWB9
-	 M9mP4wiUICuP4IYfd+6vRs5IIso7lwqJSX6/+6GpNGenSe3LUea9WGz2MKIwW9o5Af
-	 21VxLWPWwbTUd8T1FaXd1rFWbiLBgGfbtJttDtGc=
+	b=g6/CRC7p4Xz/oKySxhaPeM4PzYDSeluBKDDimhmObadtkI9uaExzgzH5L4QwLYp6M
+	 WF2cJP6LRB9fd+SK+MjNlgjwyMWeWmldpA/W6a3GbThBDWWHoP/aT4gT+TPjk6peKR
+	 MZG42hpuCgW3MBoDLF9c7XxDTtCdFTg3gFTmrXgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 19/38] nfsd: stop setting ->pg_stats for unused stats
+	syzbot+6bdfd184eac7709e5cc9@syzkaller.appspotmail.com,
+	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+	Guillaume Nault <gnault@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 39/67] pppoe: Fix memory leak in pppoe_sendmsg()
 Date: Thu, 15 Aug 2024 15:25:53 +0200
-Message-ID: <20240815131833.691385406@linuxfoundation.org>
+Message-ID: <20240815131839.819941430@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit a2214ed588fb3c5b9824a21cff870482510372bb ]
+[ Upstream commit dc34ebd5c018b0edf47f39d11083ad8312733034 ]
 
-A lot of places are setting a blank svc_stats in ->pg_stats and never
-utilizing these stats.  Remove all of these extra structs as we're not
-reporting these stats anywhere.
+syzbot reports a memory leak in pppoe_sendmsg [1].
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The problem is in the pppoe_recvmsg() function that handles errors
+in the wrong order. For the skb_recv_datagram() function, check
+the pointer to skb for NULL first, and then check the 'error' variable,
+because the skb_recv_datagram() function can set 'error'
+to -EAGAIN in a loop but return a correct pointer to socket buffer
+after a number of attempts, though 'error' remains set to -EAGAIN.
+
+skb_recv_datagram
+      __skb_recv_datagram          // Loop. if (err == -EAGAIN) then
+                                   // go to the next loop iteration
+          __skb_try_recv_datagram  // if (skb != NULL) then return 'skb'
+                                   // else if a signal is received then
+                                   // return -EAGAIN
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with Syzkaller.
+
+Link: https://syzkaller.appspot.com/bug?extid=6bdfd184eac7709e5cc9 [1]
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+6bdfd184eac7709e5cc9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6bdfd184eac7709e5cc9
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Link: https://lore.kernel.org/r/20240214085814.3894917-1-Ilia.Gavrilov@infotecs.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svc.c    |    3 ---
- fs/nfs/callback.c |    3 ---
- fs/nfsd/nfssvc.c  |    5 -----
- 3 files changed, 11 deletions(-)
+ drivers/net/ppp/pppoe.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
---- a/fs/lockd/svc.c
-+++ b/fs/lockd/svc.c
-@@ -759,8 +759,6 @@ static const struct svc_version *nlmsvc_
- #endif
- };
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index ba8b6bd8233ca..96cca4ee470a4 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -1007,26 +1007,21 @@ static int pppoe_recvmsg(struct socket *sock, struct msghdr *m,
+ 	struct sk_buff *skb;
+ 	int error = 0;
  
--static struct svc_stat		nlmsvc_stats;
--
- #define NLM_NRVERS	ARRAY_SIZE(nlmsvc_version)
- static struct svc_program	nlmsvc_program = {
- 	.pg_prog		= NLM_PROGRAM,		/* program number */
-@@ -768,7 +766,6 @@ static struct svc_program	nlmsvc_program
- 	.pg_vers		= nlmsvc_version,	/* version table */
- 	.pg_name		= "lockd",		/* service name */
- 	.pg_class		= "nfsd",		/* share authentication with nfsd */
--	.pg_stats		= &nlmsvc_stats,	/* stats table */
- 	.pg_authenticate	= &lockd_authenticate,	/* export authentication */
- 	.pg_init_request	= svc_generic_init_request,
- 	.pg_rpcbind_set		= svc_generic_rpcbind_set,
---- a/fs/nfs/callback.c
-+++ b/fs/nfs/callback.c
-@@ -407,15 +407,12 @@ static const struct svc_version *nfs4_ca
- 	[4] = &nfs4_callback_version4,
- };
+-	if (sk->sk_state & PPPOX_BOUND) {
+-		error = -EIO;
+-		goto end;
+-	}
++	if (sk->sk_state & PPPOX_BOUND)
++		return -EIO;
  
--static struct svc_stat nfs4_callback_stats;
--
- static struct svc_program nfs4_callback_program = {
- 	.pg_prog = NFS4_CALLBACK,			/* RPC service number */
- 	.pg_nvers = ARRAY_SIZE(nfs4_callback_version),	/* Number of entries */
- 	.pg_vers = nfs4_callback_version,		/* version table */
- 	.pg_name = "NFSv4 callback",			/* service name */
- 	.pg_class = "nfs",				/* authentication class */
--	.pg_stats = &nfs4_callback_stats,
- 	.pg_authenticate = nfs_callback_authenticate,
- 	.pg_init_request = svc_generic_init_request,
- 	.pg_rpcbind_set	= svc_generic_rpcbind_set,
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -89,7 +89,6 @@ unsigned long	nfsd_drc_max_mem;
- unsigned long	nfsd_drc_mem_used;
+ 	skb = skb_recv_datagram(sk, flags, &error);
+-	if (error < 0)
+-		goto end;
++	if (!skb)
++		return error;
  
- #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
--static struct svc_stat	nfsd_acl_svcstats;
- static const struct svc_version *nfsd_acl_version[] = {
- # if defined(CONFIG_NFSD_V2_ACL)
- 	[2] = &nfsd_acl_version2,
-@@ -108,15 +107,11 @@ static struct svc_program	nfsd_acl_progr
- 	.pg_vers		= nfsd_acl_version,
- 	.pg_name		= "nfsacl",
- 	.pg_class		= "nfsd",
--	.pg_stats		= &nfsd_acl_svcstats,
- 	.pg_authenticate	= &svc_set_client,
- 	.pg_init_request	= nfsd_acl_init_request,
- 	.pg_rpcbind_set		= nfsd_acl_rpcbind_set,
- };
+-	if (skb) {
+-		total_len = min_t(size_t, total_len, skb->len);
+-		error = skb_copy_datagram_msg(skb, 0, m, total_len);
+-		if (error == 0) {
+-			consume_skb(skb);
+-			return total_len;
+-		}
++	total_len = min_t(size_t, total_len, skb->len);
++	error = skb_copy_datagram_msg(skb, 0, m, total_len);
++	if (error == 0) {
++		consume_skb(skb);
++		return total_len;
+ 	}
  
--static struct svc_stat	nfsd_acl_svcstats = {
--	.program	= &nfsd_acl_program,
--};
- #endif /* defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL) */
+ 	kfree_skb(skb);
+-end:
+ 	return error;
+ }
  
- static const struct svc_version *nfsd_version[] = {
+-- 
+2.43.0
+
 
 
 
