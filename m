@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-68740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D819533BE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D86953570
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DA29B26443
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBF231F2A7B8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484951E526;
-	Thu, 15 Aug 2024 14:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317A219FA7A;
+	Thu, 15 Aug 2024 14:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvROlnto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyKis0WX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A371DFDE;
-	Thu, 15 Aug 2024 14:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10EB3214;
+	Thu, 15 Aug 2024 14:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731514; cv=none; b=NUgvAMQm/Tmhdkez4acKv5NdgCPhJjV5en5BpnLBKA7jf7KmvVBUP6DA43+yn97Vlu1VeVv2Mh8MzA+jOUu71tbgrpHw4XilcmgSWFFOeIZH1EZI/V/Auo6JQ34XvsWZAMMCt0s8ZwVToLxiAYs3COORY/q7253evtQX6u9Q5PU=
+	t=1723732674; cv=none; b=S9RQWp6dQLmnYB1UbVNF31aSw78VTsQOLOjMO1KqiHDR/tnAvmgaVQcORjv67U8pkgGhBRI9OnZLas4upIwRMYwAsvw775mJMCvpdRt8ntFgWy2u6yvWNoTcd0TfRKH7us7DL86W2O+/NJSqYNiUTP9KWL7LFsx9Jf7DJ4qofgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731514; c=relaxed/simple;
-	bh=LVBbfHmXgKmWJ897t+IX7Ug/UnN+8eCendhbaairmDE=;
+	s=arc-20240116; t=1723732674; c=relaxed/simple;
+	bh=hK2VpwBIrzsv8E+AWHYDCtphyIuZDfITG2ij1BtqkG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRRfMel1VJttVuiXWtyzFohlS0n3S8QRRFKCLQ72/WfhyY7hS2WfauXCFyOJONAJHTAQDz3phZr1vLLgK1+iwWMWD4o8QPEIdZXQfp2nDSChffia0n80NwNmb6Zp8gRDTwxobP3M/vpcDZ9ZJH7qotJeeDmnkcfKLOgiGOFQ5Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvROlnto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B998C32786;
-	Thu, 15 Aug 2024 14:18:33 +0000 (UTC)
+	 MIME-Version; b=VA4nowU4DHiQdHc1tJdviVYLbzZub7lgNmIHOH/4p9z8vzs+bX3djmJ7k27TzTd/azeZ1NpRM+q5Ih/2ko0JPWK2xO+W5Rk1OTAWoM9ddY0IcIDqaKhLlAd7xSLZXgLsBns1l2yNd7+CXbKnwo14ZB8XOTt3tiO1WazfNA0o0+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyKis0WX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533F3C32786;
+	Thu, 15 Aug 2024 14:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731513;
-	bh=LVBbfHmXgKmWJ897t+IX7Ug/UnN+8eCendhbaairmDE=;
+	s=korg; t=1723732673;
+	bh=hK2VpwBIrzsv8E+AWHYDCtphyIuZDfITG2ij1BtqkG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zvROlntoF3wugnU7fBA04qO0Ix0YicgcfO3+UunO/HyEk3+mRPNVlwrwItKSCL2lI
-	 rhmjDMxXzSirI8XEVp31zCYZWa+SYMCPKQGY6oMep/Mi9PzSi4TtlyL4F8mHvCCyHv
-	 zL0N2+0SetUpZzbmZzFrrMkEOZMRoTPUsRCUAMmM=
+	b=DyKis0WXsl4bwkCcsuwCBwpJLk2plcX9Lj8UEbLDD+EeFB+gQF0vRKa+RjgDKErqg
+	 z7v34VgDEqdSMP58fGAa6r0riwVeDXpd5q2cK8HoeRycEvapf5W4BzKHew9taBBl2b
+	 IB76gV6C6GpgEm+sWyxDcPUF1Yg0e6yJuFzEYfsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Marc Zyngier <maz@kernel.org>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 153/259] s390/pci: Do not mask MSI[-X] entries on teardown
+Subject: [PATCH 5.10 220/352] ext4: factor out a common helper to query extent map
 Date: Thu, 15 Aug 2024 15:24:46 +0200
-Message-ID: <20240815131908.696424366@linuxfoundation.org>
+Message-ID: <20240815131927.794130774@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 3998527d2e3ee2bfdf710a45b7b90968ff87babc ]
+[ Upstream commit 8e4e5cdf2fdeb99445a468b6b6436ad79b9ecb30 ]
 
-The PCI core already ensures that the MSI[-X] state is correct when MSI[-X]
-is disabled. For MSI the reset state is all entries unmasked and for MSI-X
-all vectors are masked.
+Factor out a new common helper ext4_map_query_blocks() from the
+ext4_da_map_blocks(), it query and return the extent map status on the
+inode's extent path, no logic changes.
 
-S390 masks all MSI entries and masks the already masked MSI-X entries
-again. Remove it and let the device in the correct state.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Tested-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Link: https://lore.kernel.org/r/20210729222542.939798136@linutronix.de
-Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://patch.msgid.link/20240517124005.347221-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 4 ----
- drivers/pci/msi.c       | 4 ++--
- include/linux/msi.h     | 2 --
- 3 files changed, 2 insertions(+), 8 deletions(-)
+ fs/ext4/inode.c | 57 +++++++++++++++++++++++++++----------------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 75217fb63d7b3..5036e00b7ec1b 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -341,10 +341,6 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
- 	for_each_pci_msi_entry(msi, pdev) {
- 		if (!msi->irq)
- 			continue;
--		if (msi->msi_attrib.is_msix)
--			__pci_msix_desc_mask_irq(msi, 1);
--		else
--			__pci_msi_desc_mask_irq(msi, 1, 1);
- 		irq_set_msi_desc(msi->irq, NULL);
- 		irq_free_desc(msi->irq);
- 		msi->msg.address_lo = 0;
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 1701d3de24da7..a37e3541c9377 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -170,7 +170,7 @@ static inline __attribute_const__ u32 msi_mask(unsigned x)
-  * reliably as devices without an INTx disable bit will then generate a
-  * level IRQ which will never be cleared.
-  */
--void __pci_msi_desc_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
-+static void __pci_msi_desc_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
- {
- 	raw_spinlock_t *lock = &desc->dev->msi_lock;
- 	unsigned long flags;
-@@ -207,7 +207,7 @@ static void __iomem *pci_msix_desc_addr(struct msi_desc *desc)
-  * file.  This saves a few milliseconds when initialising devices with lots
-  * of MSI-X interrupts.
-  */
--u32 __pci_msix_desc_mask_irq(struct msi_desc *desc, u32 flag)
-+static u32 __pci_msix_desc_mask_irq(struct msi_desc *desc, u32 flag)
- {
- 	u32 mask_bits = desc->masked;
- 	void __iomem *desc_addr;
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index 758e32f0d4434..31193305807d0 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -193,8 +193,6 @@ void free_msi_entry(struct msi_desc *entry);
- void __pci_read_msi_msg(struct msi_desc *entry, struct msi_msg *msg);
- void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg);
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 8b48ed351c4b9..a252c84edac8c 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -484,6 +484,35 @@ static void ext4_map_blocks_es_recheck(handle_t *handle,
+ }
+ #endif /* ES_AGGRESSIVE_TEST */
  
--u32 __pci_msix_desc_mask_irq(struct msi_desc *desc, u32 flag);
--void __pci_msi_desc_mask_irq(struct msi_desc *desc, u32 mask, u32 flag);
- void pci_msi_mask_irq(struct irq_data *data);
- void pci_msi_unmask_irq(struct irq_data *data);
++static int ext4_map_query_blocks(handle_t *handle, struct inode *inode,
++				 struct ext4_map_blocks *map)
++{
++	unsigned int status;
++	int retval;
++
++	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
++		retval = ext4_ext_map_blocks(handle, inode, map, 0);
++	else
++		retval = ext4_ind_map_blocks(handle, inode, map, 0);
++
++	if (retval <= 0)
++		return retval;
++
++	if (unlikely(retval != map->m_len)) {
++		ext4_warning(inode->i_sb,
++			     "ES len assertion failed for inode "
++			     "%lu: retval %d != map->m_len %d",
++			     inode->i_ino, retval, map->m_len);
++		WARN_ON(1);
++	}
++
++	status = map->m_flags & EXT4_MAP_UNWRITTEN ?
++			EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
++	ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
++			      map->m_pblk, status);
++	return retval;
++}
++
+ /*
+  * The ext4_map_blocks() function tries to look up the requested blocks,
+  * and returns if the blocks are already mapped.
+@@ -1767,33 +1796,11 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 	down_read(&EXT4_I(inode)->i_data_sem);
+ 	if (ext4_has_inline_data(inode))
+ 		retval = 0;
+-	else if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
+-		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
+ 	else
+-		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
+-	if (retval < 0) {
+-		up_read(&EXT4_I(inode)->i_data_sem);
+-		return retval;
+-	}
+-	if (retval > 0) {
+-		unsigned int status;
+-
+-		if (unlikely(retval != map->m_len)) {
+-			ext4_warning(inode->i_sb,
+-				     "ES len assertion failed for inode "
+-				     "%lu: retval %d != map->m_len %d",
+-				     inode->i_ino, retval, map->m_len);
+-			WARN_ON(1);
+-		}
+-
+-		status = map->m_flags & EXT4_MAP_UNWRITTEN ?
+-				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
+-		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
+-				      map->m_pblk, status);
+-		up_read(&EXT4_I(inode)->i_data_sem);
+-		return retval;
+-	}
++		retval = ext4_map_query_blocks(NULL, inode, map);
+ 	up_read(&EXT4_I(inode)->i_data_sem);
++	if (retval)
++		return retval;
  
+ add_delayed:
+ 	down_write(&EXT4_I(inode)->i_data_sem);
 -- 
 2.43.0
 
