@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-68559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D6C9532EE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:12:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5B59535A4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC9092838F7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:12:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6835C1F27436
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6AA1AD9D9;
-	Thu, 15 Aug 2024 14:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C041A7067;
+	Thu, 15 Aug 2024 14:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRfnInnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRAQVK1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B7D1B32D9;
-	Thu, 15 Aug 2024 14:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036851AC893;
+	Thu, 15 Aug 2024 14:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730953; cv=none; b=S5MhXzVVRxHIUPCvJU/q3LoEVw1qxdc6jf9Qp3LUJlfvTC2Pzn8Rt7EwXX6iy40LGeUtVjGv/IM33mjZquCmVZH/w0JLS0wTe+QD+KyTagLwHBcu5SOqSa0MkMDx9l4LTofvMozZKPOu/gaH8c32pZ7N445ioAPUDvTmbHQr+8A=
+	t=1723732805; cv=none; b=D3gOJ4otsCZ2FjeTXCORxqZaqIPvM+GwXoNVarnMLIefF5qnEDPjZwDiwkqaFQWTCEtlrRRuoN5RlA5/xbIHdupn8ZcVVygXZuoUOdwifsKgMSbhFvVhDxBqEP73GWHPiCtxWOkZBL/rSG/4zaq7qqVRmNHVATxt7GBXl/jKjsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730953; c=relaxed/simple;
-	bh=leZhJWtvw4rBYeR3QFyIHWlo3i3+Q572wjH6U9D1KHk=;
+	s=arc-20240116; t=1723732805; c=relaxed/simple;
+	bh=DQ4UzZs4p1ifvckySqlsl001eKVoU1bHG4x8qsy/DRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgJCDwQBMUzLi1GiAwaOmtH1SCBct5O84/yYtdO0gUQXb7amZCfuPvo+KEpVA6Qwftmumd3rLfQMhpgDZPV3PdfJHVPRHjLgHLzyvTtw6FZT/XIg6HqeRafAtOqVslEXTjnC+Q7SwJQ/b580/EazDO+Q0DhjcHvqifNfd6w98h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRfnInnX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA52EC32786;
-	Thu, 15 Aug 2024 14:09:12 +0000 (UTC)
+	 MIME-Version; b=l7aL+6GhRba/LgBkJAe9r+Sy5fd9Zpqff1ZdVPIZ+Or6NEvZujEi87cmpNHAbisnz5phdzzxIqUcIoN9QacK8wjMO8DwmmYe7r44pu33mURerLAjnQXwr7Kuiq0lgoHSo80mEB0IY3D56HGBh6UsdbqVkOzFOIThslKkC9zMDSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRAQVK1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEF5C4AF0D;
+	Thu, 15 Aug 2024 14:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730953;
-	bh=leZhJWtvw4rBYeR3QFyIHWlo3i3+Q572wjH6U9D1KHk=;
+	s=korg; t=1723732804;
+	bh=DQ4UzZs4p1ifvckySqlsl001eKVoU1bHG4x8qsy/DRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bRfnInnXOPkKoTwHzC4ciWsbbge5qNOpZkxKMYFn0eaOq+cZjvYGD2M5fMCzuCpUv
-	 XLgEaEdY0lDP1VY+qtycIkE8MgLhOB7+6etAty5l3VtZfiW4YVPww5UKCUy1UQrF9P
-	 YZn59maW6FoSSe3NrLn7bqwjCzoG2N3yNZ8s9JXQ=
+	b=jRAQVK1B96053nSWbauN0YoQIQDP7mtjQfwPHkRfp2JV+AvnFfDbOJ5rp8yl5ASjs
+	 JMD5ydUiqRKasDoLImwqqi5bFigNjjLjgqxmdxl6L9SliLGmczds8J7p5D9GaldOXG
+	 MyAdJrGgoCn9i6Dx+j9YqVWZ/zuzEWG6xUx4bAws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 44/67] net: add copy_safe_from_sockptr() helper
+Subject: [PATCH 5.10 292/352] arm64: cputype: Add Cortex-A725 definitions
 Date: Thu, 15 Aug 2024 15:25:58 +0200
-Message-ID: <20240815131840.008697510@linuxfoundation.org>
+Message-ID: <20240815131930.740166691@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 6309863b31dd80317cd7d6824820b44e254e2a9c ]
+[ Upstream commit 9ef54a384526911095db465e77acc1cb5266b32c ]
 
-copy_from_sockptr() helper is unsafe, unless callers
-did the prior check against user provided optlen.
+Add cputype definitions for Cortex-A725. These will be used for errata
+detection in subsequent patches.
 
-Too many callers get this wrong, lets add a helper to
-fix them and avoid future copy/paste bugs.
+These values can be found in the Cortex-A725 TRM:
 
-Instead of :
+  https://developer.arm.com/documentation/107652/0001/
 
-   if (optlen < sizeof(opt)) {
-       err = -EINVAL;
-       break;
-   }
-   if (copy_from_sockptr(&opt, optval, sizeof(opt)) {
-       err = -EFAULT;
-       break;
-   }
+... in table A-247 ("MIDR_EL1 bit descriptions").
 
-Use :
-
-   err = copy_safe_from_sockptr(&opt, sizeof(opt),
-                                optval, optlen);
-   if (err)
-       break;
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240408082845.3957374-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 7a87441c9651 ("nfc: llcp: fix nfc_llcp_setsockopt() unsafe copies")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20240801101803.1982459-3-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sockptr.h | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/sockptr.h b/include/linux/sockptr.h
-index bae5e2369b4f7..1c1a5d926b171 100644
---- a/include/linux/sockptr.h
-+++ b/include/linux/sockptr.h
-@@ -50,11 +50,36 @@ static inline int copy_from_sockptr_offset(void *dst, sockptr_t src,
- 	return 0;
- }
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 8dccfd2052691..91890e9fcb6c8 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -91,6 +91,7 @@
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+ #define ARM_CPU_PART_CORTEX_X925	0xD85
++#define ARM_CPU_PART_CORTEX_A725	0xD87
  
-+/* Deprecated.
-+ * This is unsafe, unless caller checked user provided optlen.
-+ * Prefer copy_safe_from_sockptr() instead.
-+ */
- static inline int copy_from_sockptr(void *dst, sockptr_t src, size_t size)
- {
- 	return copy_from_sockptr_offset(dst, src, 0, size);
- }
+ #define APM_CPU_PART_POTENZA		0x000
  
-+/**
-+ * copy_safe_from_sockptr: copy a struct from sockptr
-+ * @dst:   Destination address, in kernel space. This buffer must be @ksize
-+ *         bytes long.
-+ * @ksize: Size of @dst struct.
-+ * @optval: Source address. (in user or kernel space)
-+ * @optlen: Size of @optval data.
-+ *
-+ * Returns:
-+ *  * -EINVAL: @optlen < @ksize
-+ *  * -EFAULT: access to userspace failed.
-+ *  * 0 : @ksize bytes were copied
-+ */
-+static inline int copy_safe_from_sockptr(void *dst, size_t ksize,
-+					 sockptr_t optval, unsigned int optlen)
-+{
-+	if (optlen < ksize)
-+		return -EINVAL;
-+	return copy_from_sockptr(dst, optval, ksize);
-+}
-+
- static inline int copy_to_sockptr_offset(sockptr_t dst, size_t offset,
- 		const void *src, size_t size)
- {
+@@ -150,6 +151,7 @@
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
++#define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 -- 
 2.43.0
 
