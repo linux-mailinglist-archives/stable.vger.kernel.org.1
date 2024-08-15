@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-68777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551489533EA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5341995359F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE591F2772D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF1A51F26FA6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB60119DFB9;
-	Thu, 15 Aug 2024 14:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693791993B9;
+	Thu, 15 Aug 2024 14:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyPJLnPt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVqy96kw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8732719DF92;
-	Thu, 15 Aug 2024 14:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EF21AC893;
+	Thu, 15 Aug 2024 14:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731633; cv=none; b=VS596LcoXUUrHqWYyTJDo2EBFuVj6W836H4McUv0Woxju1RH0I00fM9SSokgRQ8c8CNdo2+UoELMPxieMOJfq77iV7Q7DFh+gd4uAYA0UC9Q+sKc4PWYbwmKUBcA+0DvusDeBnA9uoDLrREB/3ogQb305jebMfdoAi8QwLJROMY=
+	t=1723732795; cv=none; b=r31Sd28xicKb7bcDyFqAJiNXR2GxUwFRrMt82arH6dc9rc1Ad1q4RkbhyylVnBa8UZ3VS3aaWLq8tTOnv9KmKAVDt1855vgrHslm+VAWnDITZv3O/owB9nSuh40SQ61avmGYCA4fDfIiyKRZLiht7HnP/kRyaRE0v+1t473MQPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731633; c=relaxed/simple;
-	bh=1625YSnUNmWcwDHvfr2Lon89lN+eYCcNI3L/Cwygod8=;
+	s=arc-20240116; t=1723732795; c=relaxed/simple;
+	bh=FKV8PMejnlAujtY8rvAhW0om8knqWLw9DWfS+tW/qFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7Ylk3RVQj6iD6M/3NaPxts1hbxJB8CrSNlCPFSyWEg+dUk+8EAtKRCpZZppLDCa2Hx88oDr2UtblwgeKn8As0+miiKvlXo53f5q8izs2rM9jte03/7qfc9X1Bly1adVVRSU6Cc/VtnbKhWDt/Asd1LU/UW70jgmqeFk/OJjdNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyPJLnPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51B7C32786;
-	Thu, 15 Aug 2024 14:20:32 +0000 (UTC)
+	 MIME-Version; b=XVR/3Bo9Sj61F/UJ82gIEZ5/0km17sk6maiwllgaP27oOhyPflIS36OCh4bVlByFPsRkP0E9x6ZsCTK/3esJ09B+c24xXJU7MmADgGcZpCxn9N1rqViR1Xee6gZvMPsnW1l5nvZrZgbLW5BbJTHbN6+kMIGJ85mF94Jz4tsOCAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVqy96kw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E45FC32786;
+	Thu, 15 Aug 2024 14:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731633;
-	bh=1625YSnUNmWcwDHvfr2Lon89lN+eYCcNI3L/Cwygod8=;
+	s=korg; t=1723732795;
+	bh=FKV8PMejnlAujtY8rvAhW0om8knqWLw9DWfS+tW/qFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lyPJLnPtbnh/Gzqe3xnhuOrnEJz1l83MSD2Njfy3IZnFypOEYIas79/rhL2Ax1B2e
-	 eOVluaxX2SxzUD1apijivvv9woAdltEjvRN7tyRPU9Lk8YJBWg6uZwbW8GrSAtKdUT
-	 bbss6MeJVG6pYcMAHuTpnaS5UIpWBZiQHgeE3PE8=
+	b=WVqy96kw3wPMvVe/JcjeHCfTtSAUqytQHCER15ms7kmD36+IF253D363xPDLiLaJK
+	 23luN7vC1AIx3+6M4Hgki06ipnZ0QMM1sbc8upbvHppTGc/FxbpYOBsnpSoqHb+cQ6
+	 jlF7xFTXyDE0cTUj2R97zDQwrII1jgUsxOKiWgPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Antipov <dmantipov@yandex.ru>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 190/259] Bluetooth: l2cap: always unlock channel in l2cap_conless_channel()
+Subject: [PATCH 5.10 257/352] Bluetooth: l2cap: always unlock channel in l2cap_conless_channel()
 Date: Thu, 15 Aug 2024 15:25:23 +0200
-Message-ID: <20240815131910.117206431@linuxfoundation.org>
+Message-ID: <20240815131929.377484542@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 2eea802a9cb2f..874f12d93bfa2 100644
+index 9cc034e6074c1..23fc03f7bf312 100644
 --- a/net/bluetooth/l2cap_core.c
 +++ b/net/bluetooth/l2cap_core.c
-@@ -7089,6 +7089,7 @@ static void l2cap_conless_channel(struct l2cap_conn *conn, __le16 psm,
+@@ -7762,6 +7762,7 @@ static void l2cap_conless_channel(struct l2cap_conn *conn, __le16 psm,
  	bt_cb(skb)->l2cap.psm = psm;
  
  	if (!chan->ops->recv(chan, skb)) {
