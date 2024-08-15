@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-68552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7C89532E5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2267495340F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E9ADB23557
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9CF1F284DF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0E51AD40C;
-	Thu, 15 Aug 2024 14:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0D717C987;
+	Thu, 15 Aug 2024 14:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcYpmGHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JY1m+QUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE8338DC8;
-	Thu, 15 Aug 2024 14:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5889F1AC896;
+	Thu, 15 Aug 2024 14:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730931; cv=none; b=SGJ1ntmqCT7q7tLBOI6rs2jo9I38/94gnaQUVk/KmqThK7OxajweAUpAcUEpLYbhR10NolKAswWVc0ZF8JB+zwhE4fBeHBSUXYAlrVGwgYLFQYaihpQr1xD2Deg3BS803rTYWHDlabI8ZAQHysRTo716A8qYfouuIa2wNzWhmBo=
+	t=1723731725; cv=none; b=B9NwFKrG528LJjWsSeMe52zR46zcUkkhqV/Ucr0ikX/Wdlx3u2jZNZtgruxVOzGQYXie0d+pcDjDXZFqfsz7lRSBKj8AB4rLy2mVDPR1a3wV3wRHky6DJl/YFgflZMqoO9yXpjm0dMbjFhjxfjxAHDRmjyLeY8/QP16qH+zbh60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730931; c=relaxed/simple;
-	bh=RIEJGtCzt3m+yd+QEwFM+bExX14r/3V4Hq4Y9cXOzX8=;
+	s=arc-20240116; t=1723731725; c=relaxed/simple;
+	bh=VAAzlOIvituiLZs7CVg7vgma/SQFOe2NCwWP7wQe9Vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAfA6pCbpWgUXxlLirMYHJZNrvcMgRlwUgTDf1FuLKZEx3PJ86M4z0fjJ+cmRidmmFEiBRcmf5btvf+I7I+AvXcmrJAkK+g3O0KhgRY1DPUmCxlIRgVf43YzN//rsgeig+Vqpb19CL4yoryg2GrYOpHbqTqZ6rI/avgira+wb0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcYpmGHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E61EC32786;
-	Thu, 15 Aug 2024 14:08:49 +0000 (UTC)
+	 MIME-Version; b=ccpCTvwxqLomQJXCcK9nB1LqQYJhIZ967iv6IPj6Fq0AdZPOIHCWjj5NacoaHGDK8kpnSbpXGUpEKe9EoyVFU6MhZx+Ec5hegPH87jDphV+dRy9MwZckcqBk4+x56Fnhc0yrG/ye+xhWZtY4Jy1vxz2nL77M12aBzeAq4GJbu9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JY1m+QUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3690C32786;
+	Thu, 15 Aug 2024 14:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730931;
-	bh=RIEJGtCzt3m+yd+QEwFM+bExX14r/3V4Hq4Y9cXOzX8=;
+	s=korg; t=1723731725;
+	bh=VAAzlOIvituiLZs7CVg7vgma/SQFOe2NCwWP7wQe9Vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcYpmGHwIjkmCpFoc3lJmCzD+s2ZSj3WvkDrrPBwZHy2OYmOjw1jKLWG+ZqonDB/z
-	 ebDbCFiOxdd96Kl3MHbkOG0breB5ubJ4JP9WuzVVdXpfTx/QAyh6DkHn3TcdoA26AO
-	 Zhkj3znzZ7Npn/fB6l5vtXW7gNrLDDfbbuixXaY4=
+	b=JY1m+QUd4b1Mhd4py+YoYOnk1hfGkPur085Vu2eqVseXR4YKGhYLoYj2woC1YO5GW
+	 1j2TsWsq7g+yFs93Zh6MCQfqbPomWRJFZCHbOe50eYpX1sL11WUPUGGApdkJVnqZ02
+	 9leBKicgPSAlDsAWKIRFsL+/jYndqhjLlJ+2Kd9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f9db6ff27b9bfdcfeca0@syzkaller.appspotmail.com,
-	syzbot+dcd73ff9291e6d34b3ab@syzkaller.appspotmail.com,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 37/67] net:rds: Fix possible deadlock in rds_message_put
+Subject: [PATCH 5.4 218/259] arm64: cputype: Add Cortex-X1C definitions
 Date: Thu, 15 Aug 2024 15:25:51 +0200
-Message-ID: <20240815131839.743957868@linuxfoundation.org>
+Message-ID: <20240815131911.187722176@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Allison Henderson <allison.henderson@oracle.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit f1acf1ac84d2ae97b7889b87223c1064df850069 ]
+[ Upstream commit 58d245e03c324d083a0ec3b9ab8ebd46ec9848d7 ]
 
-Functions rds_still_queued and rds_clear_recv_queue lock a given socket
-in order to safely iterate over the incoming rds messages. However
-calling rds_inc_put while under this lock creates a potential deadlock.
-rds_inc_put may eventually call rds_message_purge, which will lock
-m_rs_lock. This is the incorrect locking order since m_rs_lock is
-meant to be locked before the socket. To fix this, we move the message
-item to a local list or variable that wont need rs_recv_lock protection.
-Then we can safely call rds_inc_put on any item stored locally after
-rs_recv_lock is released.
+Add cputype definitions for Cortex-X1C. These will be used for errata
+detection in subsequent patches.
 
-Fixes: bdbe6fbc6a2f ("RDS: recv.c")
-Reported-by: syzbot+f9db6ff27b9bfdcfeca0@syzkaller.appspotmail.com
-Reported-by: syzbot+dcd73ff9291e6d34b3ab@syzkaller.appspotmail.com
-Signed-off-by: Allison Henderson <allison.henderson@oracle.com>
-Link: https://lore.kernel.org/r/20240209022854.200292-1-allison.henderson@oracle.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+These values can be found in the Cortex-X1C TRM:
+
+  https://developer.arm.com/documentation/101968/0002/
+
+... in section B2.107 ("MIDR_EL1, Main ID Register, EL1").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20240801101803.1982459-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/recv.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/rds/recv.c b/net/rds/recv.c
-index c71b923764fd7..5627f80013f8b 100644
---- a/net/rds/recv.c
-+++ b/net/rds/recv.c
-@@ -425,6 +425,7 @@ static int rds_still_queued(struct rds_sock *rs, struct rds_incoming *inc,
- 	struct sock *sk = rds_rs_to_sk(rs);
- 	int ret = 0;
- 	unsigned long flags;
-+	struct rds_incoming *to_drop = NULL;
- 
- 	write_lock_irqsave(&rs->rs_recv_lock, flags);
- 	if (!list_empty(&inc->i_item)) {
-@@ -435,11 +436,14 @@ static int rds_still_queued(struct rds_sock *rs, struct rds_incoming *inc,
- 					      -be32_to_cpu(inc->i_hdr.h_len),
- 					      inc->i_hdr.h_dport);
- 			list_del_init(&inc->i_item);
--			rds_inc_put(inc);
-+			to_drop = inc;
- 		}
- 	}
- 	write_unlock_irqrestore(&rs->rs_recv_lock, flags);
- 
-+	if (to_drop)
-+		rds_inc_put(to_drop);
-+
- 	rdsdebug("inc %p rs %p still %d dropped %d\n", inc, rs, ret, drop);
- 	return ret;
- }
-@@ -758,16 +762,21 @@ void rds_clear_recv_queue(struct rds_sock *rs)
- 	struct sock *sk = rds_rs_to_sk(rs);
- 	struct rds_incoming *inc, *tmp;
- 	unsigned long flags;
-+	LIST_HEAD(to_drop);
- 
- 	write_lock_irqsave(&rs->rs_recv_lock, flags);
- 	list_for_each_entry_safe(inc, tmp, &rs->rs_recv_queue, i_item) {
- 		rds_recv_rcvbuf_delta(rs, sk, inc->i_conn->c_lcong,
- 				      -be32_to_cpu(inc->i_hdr.h_len),
- 				      inc->i_hdr.h_dport);
-+		list_move(&inc->i_item, &to_drop);
-+	}
-+	write_unlock_irqrestore(&rs->rs_recv_lock, flags);
-+
-+	list_for_each_entry_safe(inc, tmp, &to_drop, i_item) {
- 		list_del_init(&inc->i_item);
- 		rds_inc_put(inc);
- 	}
--	write_unlock_irqrestore(&rs->rs_recv_lock, flags);
- }
- 
- /*
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 6322263063887..bb8efde2c8b10 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -80,6 +80,7 @@
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
++#define ARM_CPU_PART_CORTEX_X1C		0xD4C
+ #define ARM_CPU_PART_CORTEX_X3		0xD4E
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+@@ -127,6 +128,7 @@
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
++#define MIDR_CORTEX_X1C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
+ #define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
 -- 
 2.43.0
 
