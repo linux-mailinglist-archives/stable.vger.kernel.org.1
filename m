@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-68444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9188A953253
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDEF95356B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4BC1F21DAA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A4C1F2A7A2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B405B176AD7;
-	Thu, 15 Aug 2024 14:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2061993B9;
+	Thu, 15 Aug 2024 14:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns4MWvFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDkLxzcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704DE1A0710;
-	Thu, 15 Aug 2024 14:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198CF3214;
+	Thu, 15 Aug 2024 14:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730589; cv=none; b=Vy7wjGGJOvOlpDikPap3ZD8UrBBXnCT2qoxZykJviwTF1qjOEkNkgz7YXF4DWPItESD4YFMQ4DFsZCc7RmxHj8Typ8Y/vsp1305eRiRcr+A2jYFK3KaoURdXwjQHXkzu2JzuTKkOfGdqzuxNUuwqsDWG/IKOAmBU8rXlg+rdY3U=
+	t=1723732664; cv=none; b=X6FCmwx7k7QoD7Earzh2OmYmJdYbB3elZrrrZjaTqXvLZPoBu1k93EX2tjBrgN3EcgJUnuIi4CQuOjsR3pmx/FuAIBqoAFh6XP0eGPaRhGKbCm1YH8QVhGPEm3Gc2XIHl2/ODOYn+9+K992FMxpguzlKzHX4u6TnAGHf5np66BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730589; c=relaxed/simple;
-	bh=coubS2iPOSyG2XDTEAXXin0O+Qdo/3LH6iWskwDua28=;
+	s=arc-20240116; t=1723732664; c=relaxed/simple;
+	bh=zogJCYDhq16CHU6ojYro5f4X8782hpQ9D3L9kEgIjG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1sW5DiGDtvNSGa7rn0hdsTRbMkENHYMQtDdlTt2Z2XW55d3scAUGK1Ml8bk0uMJ0e9P/Z4fkpQuW1vr4CX16nhTQUvV9++v0rOp9koKlKgZxpV7GVUkY3beqaMwwR1aKDYI+VBpC9w/mrhrJHG5C+VVqDW1RDbB5+xZEeVB9ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns4MWvFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874AAC32786;
-	Thu, 15 Aug 2024 14:03:08 +0000 (UTC)
+	 MIME-Version; b=hGVLOGb1Kpj+ruoqsMAt6HFC6kctxAuQTG2Q8bx1tNeJdf82FHb1rvbkdGiqQ+TLmh5fnEsKB2mYy4I4MPwMqKvr/R3NLmUdT1FklG04DDrsne+p4Vzi9MWW8aNWdNUuDJHjsyiV4F+J1fbVipoUpNRN4SME/ATf0IQn+Szlu0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDkLxzcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9BDC4AF0C;
+	Thu, 15 Aug 2024 14:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730589;
-	bh=coubS2iPOSyG2XDTEAXXin0O+Qdo/3LH6iWskwDua28=;
+	s=korg; t=1723732664;
+	bh=zogJCYDhq16CHU6ojYro5f4X8782hpQ9D3L9kEgIjG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ns4MWvFB4gEPO4dsj9ovJdTy8y39EUMwWZ3XfSpMsxdIyQsU13VKv7aD3GP48AJCs
-	 RsfdiNDCSUvVTeDXTugb6WxVI9y1tczXCRYTEBeHTCZneYO78Pnqwf5s+lgGdSBfzX
-	 MW/AcLaj8pm2K6xHimfCoPGB7mtzMrZRMShohiaE=
+	b=KDkLxzcKoPlN3asgVOWosOuLAWntEGLYpVoy2dOYGYcVdlu7/1JffrQ0S57Z8JU9C
+	 el0ATW2Jt+FdIrSG1EmKJ6QpEPGFjAH4/J5KG3Axy7OeNvT99R/zE6Nh8lY+nrpvHq
+	 9Yye1B9lDFCNqYgUNamxJk/xdkUNCodtaKY0rPMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.15 455/484] mptcp: fix bad RCVPRUNED mib accounting
+Subject: [PATCH 5.10 247/352] mptcp: fix duplicate data handling
 Date: Thu, 15 Aug 2024 15:25:13 +0200
-Message-ID: <20240815131959.041709030@linuxfoundation.org>
+Message-ID: <20240815131928.985734907@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit 0a567c2a10033bf04ed618368d179bce6977984b upstream.
+commit 68cc924729ffcfe90d0383177192030a9aeb2ee4 upstream.
 
-Since its introduction, the mentioned MIB accounted for the wrong
-event: wake-up being skipped as not-needed on some edge condition
-instead of incoming skb being dropped after landing in the (subflow)
-receive queue.
+When a subflow receives and discards duplicate data, the mptcp
+stack assumes that the consumed offset inside the current skb is
+zero.
 
-Move the increment in the correct location.
+With multiple subflows receiving data simultaneously such assertion
+does not held true. As a result the subflow-level copied_seq will
+be incorrectly increased and later on the same subflow will observe
+a bad mapping, leading to subflow reset.
 
-Fixes: ce599c516386 ("mptcp: properly account bulk freed memory")
+Address the issue taking into account the skb consumed offset in
+mptcp_subflow_discard_data().
+
+Fixes: 04e4cd4f7ca4 ("mptcp: cleanup mptcp_subflow_discard_data()")
 Cc: stable@vger.kernel.org
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/501
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in protocol.c, because the commit 6511882cdd82 ("mptcp:
-  allocate fwd memory separately on the rx and tx path") is not in this
-  version. The fix can still be applied before the 'goto drop'. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/mptcp/subflow.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -288,8 +288,10 @@ static bool __mptcp_move_skb(struct mptc
- 	if (!sk_rmem_schedule(sk, skb, skb->truesize)) {
- 		int amount = sk_mem_pages(skb->truesize) << SK_MEM_QUANTUM_SHIFT;
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -863,14 +863,22 @@ static void mptcp_subflow_discard_data(s
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
+ 	bool fin = TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN;
+-	u32 incr;
++	struct tcp_sock *tp = tcp_sk(ssk);
++	u32 offset, incr, avail_len;
  
--		if (ssk->sk_forward_alloc < amount)
-+		if (ssk->sk_forward_alloc < amount) {
-+			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
- 			goto drop;
-+		}
+-	incr = limit >= skb->len ? skb->len + fin : limit;
++	offset = tp->copied_seq - TCP_SKB_CB(skb)->seq;
++	if (WARN_ON_ONCE(offset > skb->len))
++		goto out;
  
- 		ssk->sk_forward_alloc -= amount;
- 		sk->sk_forward_alloc += amount;
-@@ -774,10 +776,8 @@ void mptcp_data_ready(struct sock *sk, s
- 		sk_rbuf = ssk_rbuf;
- 
- 	/* over limit? can't append more skbs to msk, Also, no need to wake-up*/
--	if (__mptcp_rmem(sk) > sk_rbuf) {
--		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
-+	if (__mptcp_rmem(sk) > sk_rbuf)
- 		return;
--	}
- 
- 	/* Wake-up the reader only for in-sequence data */
- 	mptcp_data_lock(sk);
+-	pr_debug("discarding=%d len=%d seq=%d", incr, skb->len,
+-		 subflow->map_subflow_seq);
++	avail_len = skb->len - offset;
++	incr = limit >= avail_len ? avail_len + fin : limit;
++
++	pr_debug("discarding=%d len=%d offset=%d seq=%d", incr, skb->len,
++		 offset, subflow->map_subflow_seq);
+ 	MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DUPDATA);
+ 	tcp_sk(ssk)->copied_seq += incr;
++
++out:
+ 	if (!before(tcp_sk(ssk)->copied_seq, TCP_SKB_CB(skb)->end_seq))
+ 		sk_eat_skb(ssk, skb);
+ 	if (mptcp_subflow_get_map_offset(subflow) >= subflow->map_data_len)
 
 
 
