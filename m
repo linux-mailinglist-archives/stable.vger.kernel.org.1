@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC1CD95318C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A41E952F3B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7463628B6FD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3EA1C24231
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2654419DF58;
-	Thu, 15 Aug 2024 13:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27DA18D639;
+	Thu, 15 Aug 2024 13:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdjNjYTb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFW0KjPv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F9C1714A1;
-	Thu, 15 Aug 2024 13:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0211714D0;
+	Thu, 15 Aug 2024 13:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730126; cv=none; b=iYPzFtyoDKrdPkzL+BGQO4edds9FvhST/1erUJCwwmNr3EFf+7axQNy9BoV9tOzhSTvMR/q/17IrbBgYyHVhQ+agIjJvYEvdEFxXcS/2hLzooXeB39ClZSM0PdBRPKOuclMV/AtrzYpQOkKJueFLBOVbsjn2ixmvqUeqXiWMaUs=
+	t=1723728606; cv=none; b=bkYsZ6mCVerAX2NH0Z8CU39DwUY762fOCzgDZ2E1rC/uWL4vURRMt9YoBLt1DbikP8rxLba1OwSMC0ImgnTYZatp4BA1n45Qi3KKRNwqecn9ONY6Yzajqksr0MZW+3gfphOm3lhpVef/QliB2pF2GoJQz0Hqz9iXOP9TzulJa2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730126; c=relaxed/simple;
-	bh=BPq4nr9MUu734R4K1V3aXiwbCu4B8GK/y6EYxH/oj+o=;
+	s=arc-20240116; t=1723728606; c=relaxed/simple;
+	bh=nuejmWtq2x+68voBFiFmBZKG/AnE83J5QdcRWVJ3lgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIuetHpH8EIJgfzOFRa4tmBENA4K2BBZLVvOkxX3Kkp09dtBR6klpjgPwvo8Y++O61onntpUb6ImrlJHJmjr76BbHYfOgUghXWaLVowGAOVrkIg4O6c/noCNOuWr877czw8kF/KuNnbch4dLL9fYhxElXBlNGEGqPAm0KCTE88s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdjNjYTb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6455BC32786;
-	Thu, 15 Aug 2024 13:55:26 +0000 (UTC)
+	 MIME-Version; b=K4kEfiEBDHIRnmBcEE+TAOiMuOpdAc4mwnXfFwynrygaWP7DdVtwiTRCSmt/dkGDzfqkDe80y4cb6I4bcWUv6ho9FjXqew6Vj9nRUMkAWCCsSWNfdAwiNiKg6ET85FoYJtoE3G8471fu74ftDi8XMeS2LgJiJHA0pZkhINHFYoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFW0KjPv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32D3C4AF0A;
+	Thu, 15 Aug 2024 13:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730126;
-	bh=BPq4nr9MUu734R4K1V3aXiwbCu4B8GK/y6EYxH/oj+o=;
+	s=korg; t=1723728606;
+	bh=nuejmWtq2x+68voBFiFmBZKG/AnE83J5QdcRWVJ3lgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EdjNjYTbQjh3PrgCQVFB+eO7TF+xQq/4J5DSK+o8Kd4R/zUnbPL2euhPqxm4/H2lP
-	 2Hc+JRTk40wEF1SmCNWkPi2Lw/q0a1VCyVq/vxiChAB6j+nGljUfJZ6+Iy5ueXovhs
-	 +l4QVaDs8C8YY5oM9GvIObpSXIBysMaUZPssWB+M=
+	b=aFW0KjPvexzNaH1I+5Xpi66KYMaNfkYtiA0HTRDcRvGvI9s3P2z5jWHmr1we011Cx
+	 hq7MDx7SeGxnxfO6uTOSCxVlVcXTd837iF3Pb7EvqsEh+qhx5TSac4QWUbooHof0dr
+	 qVP8anbI1SwE84W+9TlnamnGJPzvHwIR9NUAfxvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Pavel Machek <pavel@ucw.cz>,
+	Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>,
+	Tony Brelinski <tonyx.brelinski@intel.com>,
+	Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 312/484] leds: trigger: use RCU to protect the led_cdevs list
+Subject: [PATCH 4.19 053/196] ice: Rework flex descriptor programming
 Date: Thu, 15 Aug 2024 15:22:50 +0200
-Message-ID: <20240815131953.458005260@linuxfoundation.org>
+Message-ID: <20240815131854.109703267@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,168 +63,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>
 
-[ Upstream commit 2a5a8fa8b23144d14567d6f8293dd6fbeecee393 ]
+[ Upstream commit 22ef683b48182f4d6125a2fb2725eb8a141514ff ]
 
-Even with the previous commit 27af8e2c90fb
-("leds: trigger: fix potential deadlock with libata")
-to this file, we still get lockdep unhappy, and Boqun
-explained the report here:
-https://lore.kernel.org/r/YNA+d1X4UkoQ7g8a@boqun-archlinux
+The driver can support two flex descriptor profiles, ICE_RXDID_FLEX_NIC
+and ICE_RXDID_FLEX_NIC_2. This patch reworks the current flex programming
+logic to add support for the latter profile.
 
-Effectively, this means that the read_lock_irqsave() isn't
-enough here because another CPU might be trying to do a
-write lock, and thus block the readers.
-
-This is all pretty messy, but it doesn't seem right that
-the LEDs framework imposes some locking requirements on
-users, in particular we'd have to make the spinlock in the
-iwlwifi driver always disable IRQs, even if we don't need
-that for any other reason, just to avoid this deadlock.
-
-Since writes to the led_cdevs list are rare (and are done
-by userspace), just switch the list to RCU. This costs a
-synchronize_rcu() at removal time so we can ensure things
-are correct, but that seems like a small price to pay for
-getting lock-free iterations and no deadlocks (nor any
-locking requirements imposed on users.)
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Pavel Machek <pavel@ucw.cz>
-Stable-dep-of: ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
+Signed-off-by: Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>
+Tested-by: Tony Brelinski <tonyx.brelinski@intel.com>
+Signed-off-by: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
+Stable-dep-of: 782161895eb4 ("netfilter: ctnetlink: use helper function to calculate expect ID")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-triggers.c | 41 +++++++++++++++++++------------------
- include/linux/leds.h        |  2 +-
- 2 files changed, 22 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_common.c   | 102 ++++++++++++++----
+ .../net/ethernet/intel/ice/ice_lan_tx_rx.h    |  24 +++--
+ 2 files changed, 92 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-index cbe70f38cb572..024b73f84ce0c 100644
---- a/drivers/leds/led-triggers.c
-+++ b/drivers/leds/led-triggers.c
-@@ -157,7 +157,6 @@ EXPORT_SYMBOL_GPL(led_trigger_read);
- /* Caller must ensure led_cdev->trigger_lock held */
- int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
- {
--	unsigned long flags;
- 	char *event = NULL;
- 	char *envp[2];
- 	const char *name;
-@@ -171,10 +170,13 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+index f8d00263d9019..72a6f22ee423f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -7,16 +7,16 @@
  
- 	/* Remove any existing trigger */
- 	if (led_cdev->trigger) {
--		write_lock_irqsave(&led_cdev->trigger->leddev_list_lock, flags);
--		list_del(&led_cdev->trig_list);
--		write_unlock_irqrestore(&led_cdev->trigger->leddev_list_lock,
--			flags);
-+		spin_lock(&led_cdev->trigger->leddev_list_lock);
-+		list_del_rcu(&led_cdev->trig_list);
-+		spin_unlock(&led_cdev->trigger->leddev_list_lock);
-+
-+		/* ensure it's no longer visible on the led_cdevs list */
-+		synchronize_rcu();
-+
- 		cancel_work_sync(&led_cdev->set_brightness_work);
- 		led_stop_software_blink(led_cdev);
- 		device_remove_groups(led_cdev->dev, led_cdev->trigger->groups);
-@@ -186,9 +188,9 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
- 		led_set_brightness(led_cdev, LED_OFF);
- 	}
- 	if (trig) {
--		write_lock_irqsave(&trig->leddev_list_lock, flags);
--		list_add_tail(&led_cdev->trig_list, &trig->led_cdevs);
--		write_unlock_irqrestore(&trig->leddev_list_lock, flags);
-+		spin_lock(&trig->leddev_list_lock);
-+		list_add_tail_rcu(&led_cdev->trig_list, &trig->led_cdevs);
-+		spin_unlock(&trig->leddev_list_lock);
- 		led_cdev->trigger = trig;
+ #define ICE_PF_RESET_WAIT_COUNT	200
  
- 		if (trig->activate)
-@@ -223,9 +225,10 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
- 		trig->deactivate(led_cdev);
- err_activate:
+-#define ICE_NIC_FLX_ENTRY(hw, mdid, idx) \
+-	wr32((hw), GLFLXP_RXDID_FLX_WRD_##idx(ICE_RXDID_FLEX_NIC), \
++#define ICE_PROG_FLEX_ENTRY(hw, rxdid, mdid, idx) \
++	wr32((hw), GLFLXP_RXDID_FLX_WRD_##idx(rxdid), \
+ 	     ((ICE_RX_OPC_MDID << \
+ 	       GLFLXP_RXDID_FLX_WRD_##idx##_RXDID_OPCODE_S) & \
+ 	      GLFLXP_RXDID_FLX_WRD_##idx##_RXDID_OPCODE_M) | \
+ 	     (((mdid) << GLFLXP_RXDID_FLX_WRD_##idx##_PROT_MDID_S) & \
+ 	      GLFLXP_RXDID_FLX_WRD_##idx##_PROT_MDID_M))
  
--	write_lock_irqsave(&led_cdev->trigger->leddev_list_lock, flags);
--	list_del(&led_cdev->trig_list);
--	write_unlock_irqrestore(&led_cdev->trigger->leddev_list_lock, flags);
-+	spin_lock(&led_cdev->trigger->leddev_list_lock);
-+	list_del_rcu(&led_cdev->trig_list);
-+	spin_unlock(&led_cdev->trigger->leddev_list_lock);
-+	synchronize_rcu();
- 	led_cdev->trigger = NULL;
- 	led_cdev->trigger_data = NULL;
- 	led_set_brightness(led_cdev, LED_OFF);
-@@ -285,7 +288,7 @@ int led_trigger_register(struct led_trigger *trig)
- 	struct led_classdev *led_cdev;
- 	struct led_trigger *_trig;
- 
--	rwlock_init(&trig->leddev_list_lock);
-+	spin_lock_init(&trig->leddev_list_lock);
- 	INIT_LIST_HEAD(&trig->led_cdevs);
- 
- 	down_write(&triggers_list_lock);
-@@ -378,15 +381,14 @@ void led_trigger_event(struct led_trigger *trig,
- 			enum led_brightness brightness)
- {
- 	struct led_classdev *led_cdev;
--	unsigned long flags;
- 
- 	if (!trig)
- 		return;
- 
--	read_lock_irqsave(&trig->leddev_list_lock, flags);
--	list_for_each_entry(led_cdev, &trig->led_cdevs, trig_list)
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(led_cdev, &trig->led_cdevs, trig_list)
- 		led_set_brightness(led_cdev, brightness);
--	read_unlock_irqrestore(&trig->leddev_list_lock, flags);
-+	rcu_read_unlock();
- }
- EXPORT_SYMBOL_GPL(led_trigger_event);
- 
-@@ -397,20 +399,19 @@ static void led_trigger_blink_setup(struct led_trigger *trig,
- 			     int invert)
- {
- 	struct led_classdev *led_cdev;
--	unsigned long flags;
- 
- 	if (!trig)
- 		return;
- 
--	read_lock_irqsave(&trig->leddev_list_lock, flags);
--	list_for_each_entry(led_cdev, &trig->led_cdevs, trig_list) {
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(led_cdev, &trig->led_cdevs, trig_list) {
- 		if (oneshot)
- 			led_blink_set_oneshot(led_cdev, delay_on, delay_off,
- 					      invert);
- 		else
- 			led_blink_set(led_cdev, delay_on, delay_off);
- 	}
--	read_unlock_irqrestore(&trig->leddev_list_lock, flags);
-+	rcu_read_unlock();
+-#define ICE_NIC_FLX_FLG_ENTRY(hw, flg_0, flg_1, flg_2, flg_3, idx) \
+-	wr32((hw), GLFLXP_RXDID_FLAGS(ICE_RXDID_FLEX_NIC, idx), \
++#define ICE_PROG_FLG_ENTRY(hw, rxdid, flg_0, flg_1, flg_2, flg_3, idx) \
++	wr32((hw), GLFLXP_RXDID_FLAGS(rxdid, idx), \
+ 	     (((flg_0) << GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_S) & \
+ 	      GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_M) | \
+ 	     (((flg_1) << GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_1_S) & \
+@@ -290,30 +290,85 @@ ice_aq_get_link_info(struct ice_port_info *pi, bool ena_lse,
  }
  
- void led_trigger_blink(struct led_trigger *trig,
-diff --git a/include/linux/leds.h b/include/linux/leds.h
-index a0b730be40ad2..ba4861ec73d30 100644
---- a/include/linux/leds.h
-+++ b/include/linux/leds.h
-@@ -360,7 +360,7 @@ struct led_trigger {
- 	struct led_hw_trigger_type *trigger_type;
+ /**
+- * ice_init_flex_parser - initialize rx flex parser
++ * ice_init_flex_flags
+  * @hw: pointer to the hardware structure
++ * @prof_id: Rx Descriptor Builder profile ID
+  *
+- * Function to initialize flex descriptors
++ * Function to initialize Rx flex flags
+  */
+-static void ice_init_flex_parser(struct ice_hw *hw)
++static void ice_init_flex_flags(struct ice_hw *hw, enum ice_rxdid prof_id)
+ {
+ 	u8 idx = 0;
  
- 	/* LEDs under control by this trigger (for simple triggers) */
--	rwlock_t	  leddev_list_lock;
-+	spinlock_t	  leddev_list_lock;
- 	struct list_head  led_cdevs;
+-	ICE_NIC_FLX_ENTRY(hw, ICE_RX_MDID_HASH_LOW, 0);
+-	ICE_NIC_FLX_ENTRY(hw, ICE_RX_MDID_HASH_HIGH, 1);
+-	ICE_NIC_FLX_ENTRY(hw, ICE_RX_MDID_FLOW_ID_LOWER, 2);
+-	ICE_NIC_FLX_ENTRY(hw, ICE_RX_MDID_FLOW_ID_HIGH, 3);
+-	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_PKT_FRG, ICE_RXFLG_UDP_GRE,
+-			      ICE_RXFLG_PKT_DSI, ICE_RXFLG_FIN, idx++);
+-	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_SYN, ICE_RXFLG_RST,
+-			      ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI, idx++);
+-	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI,
+-			      ICE_RXFLG_EVLAN_x8100, ICE_RXFLG_EVLAN_x9100,
+-			      idx++);
+-	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_VLAN_x8100, ICE_RXFLG_TNL_VLAN,
+-			      ICE_RXFLG_TNL_MAC, ICE_RXFLG_TNL0, idx++);
+-	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_TNL1, ICE_RXFLG_TNL2,
+-			      ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI, idx);
++	/* Flex-flag fields (0-2) are programmed with FLG64 bits with layout:
++	 * flexiflags0[5:0] - TCP flags, is_packet_fragmented, is_packet_UDP_GRE
++	 * flexiflags1[3:0] - Not used for flag programming
++	 * flexiflags2[7:0] - Tunnel and VLAN types
++	 * 2 invalid fields in last index
++	 */
++	switch (prof_id) {
++	/* Rx flex flags are currently programmed for the NIC profiles only.
++	 * Different flag bit programming configurations can be added per
++	 * profile as needed.
++	 */
++	case ICE_RXDID_FLEX_NIC:
++	case ICE_RXDID_FLEX_NIC_2:
++		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_PKT_FRG,
++				   ICE_RXFLG_UDP_GRE, ICE_RXFLG_PKT_DSI,
++				   ICE_RXFLG_FIN, idx++);
++		/* flex flag 1 is not used for flexi-flag programming, skipping
++		 * these four FLG64 bits.
++		 */
++		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_SYN, ICE_RXFLG_RST,
++				   ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI, idx++);
++		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_PKT_DSI,
++				   ICE_RXFLG_PKT_DSI, ICE_RXFLG_EVLAN_x8100,
++				   ICE_RXFLG_EVLAN_x9100, idx++);
++		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_VLAN_x8100,
++				   ICE_RXFLG_TNL_VLAN, ICE_RXFLG_TNL_MAC,
++				   ICE_RXFLG_TNL0, idx++);
++		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_TNL1, ICE_RXFLG_TNL2,
++				   ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI, idx);
++		break;
++
++	default:
++		ice_debug(hw, ICE_DBG_INIT,
++			  "Flag programming for profile ID %d not supported\n",
++			  prof_id);
++	}
++}
++
++/**
++ * ice_init_flex_flds
++ * @hw: pointer to the hardware structure
++ * @prof_id: Rx Descriptor Builder profile ID
++ *
++ * Function to initialize flex descriptors
++ */
++static void ice_init_flex_flds(struct ice_hw *hw, enum ice_rxdid prof_id)
++{
++	enum ice_flex_rx_mdid mdid;
++
++	switch (prof_id) {
++	case ICE_RXDID_FLEX_NIC:
++	case ICE_RXDID_FLEX_NIC_2:
++		ICE_PROG_FLEX_ENTRY(hw, prof_id, ICE_RX_MDID_HASH_LOW, 0);
++		ICE_PROG_FLEX_ENTRY(hw, prof_id, ICE_RX_MDID_HASH_HIGH, 1);
++		ICE_PROG_FLEX_ENTRY(hw, prof_id, ICE_RX_MDID_FLOW_ID_LOWER, 2);
++
++		mdid = (prof_id == ICE_RXDID_FLEX_NIC_2) ?
++			ICE_RX_MDID_SRC_VSI : ICE_RX_MDID_FLOW_ID_HIGH;
++
++		ICE_PROG_FLEX_ENTRY(hw, prof_id, mdid, 3);
++
++		ice_init_flex_flags(hw, prof_id);
++		break;
++
++	default:
++		ice_debug(hw, ICE_DBG_INIT,
++			  "Field init for profile ID %d not supported\n",
++			  prof_id);
++	}
+ }
  
- 	/* Link to next registered trigger */
+ /**
+@@ -494,7 +549,8 @@ enum ice_status ice_init_hw(struct ice_hw *hw)
+ 	if (status)
+ 		goto err_unroll_fltr_mgmt_struct;
+ 
+-	ice_init_flex_parser(hw);
++	ice_init_flex_flds(hw, ICE_RXDID_FLEX_NIC);
++	ice_init_flex_flds(hw, ICE_RXDID_FLEX_NIC_2);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
+index 068dbc740b766..94504023d86e2 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
++++ b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
+@@ -188,23 +188,25 @@ struct ice_32b_rx_flex_desc_nic {
+  * with a specific metadata (profile 7 reserved for HW)
+  */
+ enum ice_rxdid {
+-	ICE_RXDID_START			= 0,
+-	ICE_RXDID_LEGACY_0		= ICE_RXDID_START,
+-	ICE_RXDID_LEGACY_1,
+-	ICE_RXDID_FLX_START,
+-	ICE_RXDID_FLEX_NIC		= ICE_RXDID_FLX_START,
+-	ICE_RXDID_FLX_LAST		= 63,
+-	ICE_RXDID_LAST			= ICE_RXDID_FLX_LAST
++	ICE_RXDID_LEGACY_0		= 0,
++	ICE_RXDID_LEGACY_1		= 1,
++	ICE_RXDID_FLEX_NIC		= 2,
++	ICE_RXDID_FLEX_NIC_2		= 6,
++	ICE_RXDID_HW			= 7,
++	ICE_RXDID_LAST			= 63,
+ };
+ 
+ /* Receive Flex Descriptor Rx opcode values */
+ #define ICE_RX_OPC_MDID		0x01
+ 
+ /* Receive Descriptor MDID values */
+-#define ICE_RX_MDID_FLOW_ID_LOWER	5
+-#define ICE_RX_MDID_FLOW_ID_HIGH	6
+-#define ICE_RX_MDID_HASH_LOW		56
+-#define ICE_RX_MDID_HASH_HIGH		57
++enum ice_flex_rx_mdid {
++	ICE_RX_MDID_FLOW_ID_LOWER	= 5,
++	ICE_RX_MDID_FLOW_ID_HIGH,
++	ICE_RX_MDID_SRC_VSI		= 19,
++	ICE_RX_MDID_HASH_LOW		= 56,
++	ICE_RX_MDID_HASH_HIGH,
++};
+ 
+ /* Rx Flag64 packet flag bits */
+ enum ice_rx_flg64_bits {
 -- 
 2.43.0
 
