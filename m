@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B28D9531E6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D42A952FA8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0413B28817A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77839B26F28
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7A819D891;
-	Thu, 15 Aug 2024 13:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D4F1A76A4;
+	Thu, 15 Aug 2024 13:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWtXFyM0"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUWP6gZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394C417C9A9;
-	Thu, 15 Aug 2024 13:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0286B1A7074;
+	Thu, 15 Aug 2024 13:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730388; cv=none; b=q4MchUotGwxRAXgbkQDww3TZ0N3AoM6rwImo34ETyivP80+adeJtYlXrMQHocQw/rSK1fjr3UGjJOlPcKYRg8Tbciz4btCf1aZnAXK36MlgdT0o9/yuZcXsgEq1lwAze9Am5LcGATm/6KMeb7RNFTO2NFXZD43aSg9S/3GZsL24=
+	t=1723728866; cv=none; b=ocLuqS4rd4nSFNg9Fqr3AmndEABqcU1VuZZG/vH3uyDL5Cpp4hAu9B6oj/nGjngrGTWQ/eqEdLLt8TChWVIQYanW9BpB7fbG+UwRzMwnKxCCIS+8bI2ZB5dBVyWGOJaTkuJFshdavfZKmGvGJh5MunT6+ztnylXgvFZ3TMVYCFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730388; c=relaxed/simple;
-	bh=gX+j+mdyA/TrailPeXgaryYPYt+enhcN9QSw1dsLsCE=;
+	s=arc-20240116; t=1723728866; c=relaxed/simple;
+	bh=mbsfryQJx3oYlze74Z4zeab6HJnRBs3ZqmRFolBFqi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYiPuewjlxJUmQQ2TnimMbXIOHZ/1Dq+mGMnYVYVqRgV1WhVv5tdJA8DFDwLpZnhweNXbATk5BzkvnZ3JDL+RUFbrsTT8Z3YrQQHquBtz55BH3oCYOsvjCIcz+qm+iPV0IWhPp3ktZCC/Z6Y9GLuUz307pE7IWvlwt1xZ+xSick=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWtXFyM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5DFC32786;
-	Thu, 15 Aug 2024 13:59:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i0cQdx0ZnCNJcxdj7Qq8/haRglybiLXwrkNtGscGAcjLpIyxBfs4c0iqlUzoGhwOHtb5RmhPJH/TIITy41hlpjOZPqguSJ+MNyCpijQbdM47vn9rBOJfxHfj++wFkLo39YCV7TNTxMV+qdmRimMgp0HIui2ADM3Plw6SjEFlpng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUWP6gZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319EAC32786;
+	Thu, 15 Aug 2024 13:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730387;
-	bh=gX+j+mdyA/TrailPeXgaryYPYt+enhcN9QSw1dsLsCE=;
+	s=korg; t=1723728864;
+	bh=mbsfryQJx3oYlze74Z4zeab6HJnRBs3ZqmRFolBFqi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWtXFyM0/889v0tadmsdhhMpY50Ue38Z4aWplPmmRJIUyeW00W0JoPrTAxY4ZgGLq
-	 fKZ89wwYivvtdZ/OIO04DgGt8WYcN8jvyuD5XpOMOadFhRjxpP7nJJ1XLHVfmbtTpO
-	 +E+HhtAuulQNgRXqai7dpaSUEUodKb1Y+Y/p0JSI=
+	b=HUWP6gZZGdPgWm79vbYJ76krwVZyFTZ0IweDLouGlYmMr+758MHn5Ndx529Z8EEbE
+	 egJi6DVSlhODr3URES2tTlJbwXWAoieziK5WFRDuc4qn6jdMkWzvTcGZ5VF+65BagX
+	 yzXrREKbCcaoJxh8SHwLEkA0T3SCsF6Mbd9GRAHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
+	patches@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
+	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 392/484] arm64: cpufeature: Force HWCAP to be based on the sysreg visible to user-space
-Date: Thu, 15 Aug 2024 15:24:10 +0200
-Message-ID: <20240815131956.588245947@linuxfoundation.org>
+Subject: [PATCH 4.19 134/196] net: fec: Stop PPS on driver remove
+Date: Thu, 15 Aug 2024 15:24:11 +0200
+Message-ID: <20240815131857.201800197@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit 237405ebef580a7352a52129b2465c117145eafa ]
+[ Upstream commit 8fee6d5ad5fa18c270eedb2a2cdf58dbadefb94b ]
 
-arm64 advertises hardware features to user-space via HWCAPs, and by
-emulating access to the CPUs id registers. The cpufeature code has a
-sanitised system-wide view of an id register, and a sanitised user-space
-view of an id register, where some features use their 'safe' value
-instead of the hardware value.
+PPS was not stopped in `fec_ptp_stop()`, called when
+the adapter was removed. Consequentially, you couldn't
+safely reload the driver with the PPS signal on.
 
-It is currently possible for a HWCAP to be advertised where the user-space
-view of the id register does not show the feature as supported.
-Erratum workaround need to remove both the HWCAP, and the feature from
-the user-space view of the id register. This involves duplicating the
-code, and spreading it over cpufeature.c and cpu_errata.c.
-
-Make the HWCAP code use the user-space view of id registers. This ensures
-the values never diverge, and allows erratum workaround to remove HWCAP
-by modifying the user-space view of the id register.
-
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20220909165938.3931307-2-james.morse@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: fixup lack of 'width' parameter ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://lore.kernel.org/netdev/CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com/T/#m01dcb810bfc451a492140f6797ca77443d0cb79f
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20240807080956.2556602-1-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/cpufeature.c | 36 +++++++++++++++++++++++++++-------
- 1 file changed, 29 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index f17d6cdea2605..1bb55f4a3421d 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -1319,17 +1319,39 @@ feature_matches(u64 reg, const struct arm64_cpu_capabilities *entry)
- 	return val >= entry->min_field_value;
- }
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index abf0b6cddf204..a5d693f51d2b1 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -635,6 +635,9 @@ void fec_ptp_stop(struct platform_device *pdev)
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
  
--static bool
--has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
-+static u64
-+read_scoped_sysreg(const struct arm64_cpu_capabilities *entry, int scope)
- {
--	u64 val;
--
- 	WARN_ON(scope == SCOPE_LOCAL_CPU && preemptible());
- 	if (scope == SCOPE_SYSTEM)
--		val = read_sanitised_ftr_reg(entry->sys_reg);
-+		return read_sanitised_ftr_reg(entry->sys_reg);
- 	else
--		val = __read_sysreg_by_encoding(entry->sys_reg);
-+		return __read_sysreg_by_encoding(entry->sys_reg);
-+}
++	if (fep->pps_enable)
++		fec_ptp_enable_pps(fep, 0);
 +
-+static bool
-+has_user_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
-+{
-+	int mask;
-+	struct arm64_ftr_reg *regp;
-+	u64 val = read_scoped_sysreg(entry, scope);
-+
-+	regp = get_arm64_ftr_reg(entry->sys_reg);
-+	if (!regp)
-+		return false;
-+
-+	mask = cpuid_feature_extract_unsigned_field(regp->user_mask,
-+						    entry->field_pos);
-+	if (!mask)
-+		return false;
-+
-+	return feature_matches(val, entry);
-+}
- 
-+static bool
-+has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
-+{
-+	u64 val = read_scoped_sysreg(entry, scope);
- 	return feature_matches(val, entry);
- }
- 
-@@ -2376,7 +2398,7 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
- };
- 
- #define HWCAP_CPUID_MATCH(reg, field, s, min_value)				\
--		.matches = has_cpuid_feature,					\
-+		.matches = has_user_cpuid_feature,				\
- 		.sys_reg = reg,							\
- 		.field_pos = field,						\
- 		.sign = s,							\
+ 	cancel_delayed_work_sync(&fep->time_keep);
+ 	if (fep->ptp_clock)
+ 		ptp_clock_unregister(fep->ptp_clock);
 -- 
 2.43.0
 
