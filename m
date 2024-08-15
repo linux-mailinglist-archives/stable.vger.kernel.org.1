@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-69132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C91953598
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D093953409
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5781B25581
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADEC81C25F2C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5321E1684AC;
-	Thu, 15 Aug 2024 14:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C654319FA7E;
+	Thu, 15 Aug 2024 14:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CIp1oa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWeynWET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102BD1AC893;
-	Thu, 15 Aug 2024 14:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835E719DF85;
+	Thu, 15 Aug 2024 14:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732773; cv=none; b=hIVp4Smw/VLlyTXSdICsrBVyJuBtM1gO+xvLhCZxUFaq9OjmZ/y+WTwrPRoUpDWg2luOXpQgdwT14mvnfBt4C0NwjCcH2BpTtRSPzqOajNhbpyeuhWMeF/9eYOv6+5RYhlhGMdomSIi4oBQpaMzO/XNxgKsAIrGdnx6HKx84ZhY=
+	t=1723731706; cv=none; b=mBkCiVFSlIUhRrpbxlRd3OL0s0bumbcX93TGkSSBB0ieHL18953NTXZrGhD1iz/umcgak5w6o58XI1NLm4NCvOwU/ghDDthYf+A/p2IsJr6hjSf25AkjN7YK/2KcHcuFg18s4jsgQignVdq8hrj5Lj0lQgUAVNWt1Z06d7AgOFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732773; c=relaxed/simple;
-	bh=y033lOFbpiBbmKAMB0agZ3Ze5ZgnIh5vjUIgs2sauXI=;
+	s=arc-20240116; t=1723731706; c=relaxed/simple;
+	bh=jhl/cUnuW1vbKORgMGc3Ns2ogNuN0KZk0JQwCEHgrcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGbKXhVTSw9aP+t7WS23snSq+7D+goQof2etcbd9egwCyaYhujawYIP4ej2vkwL07hvmg8X7dxA7MQmRgTIKRjTbEy89bsTj9B9bOmhxw1/YsI3nXoQsDPmafDWTiD1mELabtpkJCXLyrOTywBsqrlQu6NuVTT8aYklZHRpvLoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CIp1oa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31656C32786;
-	Thu, 15 Aug 2024 14:39:32 +0000 (UTC)
+	 MIME-Version; b=gZGJ6MfKswWHZbOfvXh89YSEu3Eeo8ar/37fazm7vmTg4kW+9laQZWorB3NxyWF3OrtVnOXZpi02cDpwl61PCvvLhTBzfIveuKTARoNBAnftgccIjsyn1u5InyobSqkh51aRDY94x6nritNXK5Tnqw/YbhENpykxktbbP4mfaRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWeynWET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5B2C32786;
+	Thu, 15 Aug 2024 14:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732772;
-	bh=y033lOFbpiBbmKAMB0agZ3Ze5ZgnIh5vjUIgs2sauXI=;
+	s=korg; t=1723731706;
+	bh=jhl/cUnuW1vbKORgMGc3Ns2ogNuN0KZk0JQwCEHgrcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2CIp1oa1mI7FYVSkJN63llwmR+ZXTQRS7PnMsMreLOYQ/x0Ykk0oXlhs0L6w2YMzy
-	 VKDqKQ9MlgcS3JmlmIN2ZoWj5j+6Si3dlnqQKtNDWDzO7Pb/IlSsLFa8oVlMUhPqzW
-	 g5Is3+x/srTObWFhzKIViKo6rgZkqCe2GnZxZFUU=
+	b=DWeynWETqSPicej4aDuAf76xhKK2ViwqD0oWYCWfYw5F7XOpEbbchl8UIljzxlmRD
+	 XtfVF9UhJ7V1dwNoM8h2S4vK4wDwpRZKsoaOuzbJUNmCr9WcOW410A0o5xE200+KJJ
+	 3osnI8pAQKwPXxkxiBQkcC8rLSk8gsYs5d5fENI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 280/352] ext4: fix wrong unit use in ext4_mb_find_by_goal
+Subject: [PATCH 5.4 213/259] arm64: cputype: Add Cortex-X3 definitions
 Date: Thu, 15 Aug 2024 15:25:46 +0200
-Message-ID: <20240815131930.274820284@linuxfoundation.org>
+Message-ID: <20240815131910.998618098@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 99c515e3a860576ba90c11acbc1d6488dfca6463 ]
+[ Upstream commit be5a6f238700f38b534456608588723fba96c5ab ]
 
-We need start in block unit while fe_start is in cluster unit. Use
-ext4_grp_offs_to_block helper to convert fe_start to get start in
-block unit.
+Add cputype definitions for Cortex-X3. These will be used for errata
+detection in subsequent patches.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230603150327.3596033-4-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+These values can be found in Table A-263 ("MIDR_EL1 bit descriptions")
+in issue 07 of the Cortex-X3 TRM, which can be found at:
+
+  https://developer.arm.com/documentation/101593/0102/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 87378d08a414b..bc5db22df9fe7 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1927,8 +1927,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 	if (max >= ac->ac_g_ex.fe_len && ac->ac_g_ex.fe_len == sbi->s_stripe) {
- 		ext4_fsblk_t start;
- 
--		start = ext4_group_first_block_no(ac->ac_sb, e4b->bd_group) +
--			ex.fe_start;
-+		start = ext4_grp_offs_to_block(ac->ac_sb, &ex);
- 		/* use do_div to get remainder (would be 64-bit modulo) */
- 		if (do_div(start, sbi->s_stripe) == 0) {
- 			ac->ac_found++;
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 0c3f9cc84491c..4b27bfc0d8569 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -80,6 +80,7 @@
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
++#define ARM_CPU_PART_CORTEX_X3		0xD4E
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+@@ -124,6 +125,7 @@
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
++#define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
 -- 
 2.43.0
 
