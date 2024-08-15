@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-68458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07396953263
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A98E953558
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2341C25F43
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAD28B2146E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6987C1ABECF;
-	Thu, 15 Aug 2024 14:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E214019FA7A;
+	Thu, 15 Aug 2024 14:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="188ZZFUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/+WSVxY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270EE19DF5F;
-	Thu, 15 Aug 2024 14:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4CD3214;
+	Thu, 15 Aug 2024 14:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730632; cv=none; b=Tfs603JUC+XUih24AwWzU5UWwJY/YN2SmQNqYFG9xovt2IcMMwhCgSSblm8V+1ADsRm4FIz6H8qybjNsxGWN3gckLHD1RhDbofd3d/kLg3Wv9x0/0n6eydaHbEbmCmdL8cdzWl7axBZSPlSVJz9uu+D1r8RrluBqlA8eHFFj5L4=
+	t=1723732601; cv=none; b=Cc0W+Le7413fWi9jHb3FtRGYD27td5uD5uQEap+lHM2OCCGGrq2oNLWiiGxIvPMOxCdvHdF3JLj1I2zvB6+E7XXJgZOsjIZtnS1fbOIvpzT8bs7UwEQFdL0N9f898mK1A9Tsi3xqqVkChJJXwsBFlk7KBNjFjjbP1vUG2s/hoVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730632; c=relaxed/simple;
-	bh=T3ZzHXVa+6ABWsbCdFkhCdCwT5AdGrz7wIqmOUJS7is=;
+	s=arc-20240116; t=1723732601; c=relaxed/simple;
+	bh=hrc3VkOhn3lj37N2lKSJofaqNQKDErG3Tf94bVyuWwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gg7cHiLLGgXeIKV6Dfh1ruHLB9h6SXiCKGv8ufkkSpgXGdKP8+/gNc0TYijvaw/VoDCOG+omYpUBy9NPZ8AsejOZ0ayi76W5bsM9F26KRcjrgfKdX2+kDbRA4dsVsTuR7fkyZ/NQqbRqQnny3rE6v5IK+8kdMKqlUgy7fcH1Tp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=188ZZFUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF32C32786;
-	Thu, 15 Aug 2024 14:03:51 +0000 (UTC)
+	 MIME-Version; b=jc8c0IXDcq+P4WN3nfq8D9zPqu75/vqQXX1NjSGLVW7+ku56KvX4cuuKE/M93paUtT6U2zbZU0ACYZ5zEsR0nvcnhJ3binx2FHFTlWlnC8EgOw923IXRADqLXjJY90V54PeK+M3+/SlpjB3Rtsg1IeTiELVyYXGxJTyFrfP2Zsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/+WSVxY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C507C32786;
+	Thu, 15 Aug 2024 14:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730632;
-	bh=T3ZzHXVa+6ABWsbCdFkhCdCwT5AdGrz7wIqmOUJS7is=;
+	s=korg; t=1723732601;
+	bh=hrc3VkOhn3lj37N2lKSJofaqNQKDErG3Tf94bVyuWwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=188ZZFUkt7hLyBAHswCfi3K6cmSfng4o39j8P1OFsUKhzuMKSQ2W/RUphQT+5mIfP
-	 gR6eoKIlI+07nxlrRBF5r6tVnP0w93fenRV+2ikqut+PW89P+3pXynNdJTKZxvWGa3
-	 fQ0lxJZ2sQRuEu0XfrQYo8DmTgOy+ztIdoq3xeik=
+	b=e/+WSVxYdacNj9MM9gQYCuwscV3fiIx9SW3a46VVHWYYcCwLj3rTrhwkrAdY0XNSJ
+	 3EKn8YjrUvS6EMt7NNXQA5MqBq96dHRe9XnT7Db7OqARafd1J1hTqJcALe5/su8/fH
+	 G+JBgqBCvFuABrz6NyKM9DXUfmKgr3z0VCkD+KqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	George Kennedy <george.kennedy@oracle.com>
-Subject: [PATCH 5.15 438/484] serial: core: check uartclk for zero to avoid divide by zero
+	Peng Fan <peng.fan@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 230/352] remoteproc: imx_rproc: ignore mapping vdev regions
 Date: Thu, 15 Aug 2024 15:24:56 +0200
-Message-ID: <20240815131958.375437770@linuxfoundation.org>
+Message-ID: <20240815131928.321016747@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Kennedy <george.kennedy@oracle.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 6eabce6608d6f3440f4c03aa3d3ef50a47a3d193 upstream.
+[ Upstream commit 8f2d8961640f0346cbe892273c3260a0d30c1931 ]
 
-Calling ioctl TIOCSSERIAL with an invalid baud_base can
-result in uartclk being zero, which will result in a
-divide by zero error in uart_get_divisor(). The check for
-uartclk being zero in uart_set_info() needs to be done
-before other settings are made as subsequent calls to
-ioctl TIOCSSERIAL for the same port would be impacted if
-the uartclk check was done where uartclk gets set.
+vdev regions are vdev0vring0, vdev0vring1, vdevbuffer and similar.
+They are handled by remoteproc common code, no need to map in imx
+rproc driver.
 
-Oops: divide error: 0000  PREEMPT SMP KASAN PTI
-RIP: 0010:uart_get_divisor (drivers/tty/serial/serial_core.c:580)
-Call Trace:
- <TASK>
-serial8250_get_divisor (drivers/tty/serial/8250/8250_port.c:2576
-    drivers/tty/serial/8250/8250_port.c:2589)
-serial8250_do_set_termios (drivers/tty/serial/8250/8250_port.c:502
-    drivers/tty/serial/8250/8250_port.c:2741)
-serial8250_set_termios (drivers/tty/serial/8250/8250_port.c:2862)
-uart_change_line_settings (./include/linux/spinlock.h:376
-    ./include/linux/serial_core.h:608 drivers/tty/serial/serial_core.c:222)
-uart_port_startup (drivers/tty/serial/serial_core.c:342)
-uart_startup (drivers/tty/serial/serial_core.c:368)
-uart_set_info (drivers/tty/serial/serial_core.c:1034)
-uart_set_info_user (drivers/tty/serial/serial_core.c:1059)
-tty_set_serial (drivers/tty/tty_io.c:2637)
-tty_ioctl (drivers/tty/tty_io.c:2647 drivers/tty/tty_io.c:2791)
-__x64_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:907
-    fs/ioctl.c:893 fs/ioctl.c:893)
-do_syscall_64 (arch/x86/entry/common.c:52
-    (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1))
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
-Rule: add
-Link: https://lore.kernel.org/stable/1721148848-9784-1-git-send-email-george.kennedy%40oracle.com
-Link: https://lore.kernel.org/r/1721219078-3209-1-git-send-email-george.kennedy@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Link: https://lore.kernel.org/r/1615029865-23312-10-git-send-email-peng.fan@oss.nxp.com
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Stable-dep-of: 2fa26ca8b786 ("remoteproc: imx_rproc: Skip over memory region when node value is NULL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/remoteproc/imx_rproc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -836,6 +836,14 @@ static int uart_set_info(struct tty_stru
- 	new_flags = (__force upf_t)new_info->flags;
- 	old_custom_divisor = uport->custom_divisor;
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 8957ed271d209..6e233f6289200 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -287,6 +287,9 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+ 		struct resource res;
  
-+	if (!(uport->flags & UPF_FIXED_PORT)) {
-+		unsigned int uartclk = new_info->baud_base * 16;
-+		/* check needs to be done here before other settings made */
-+		if (uartclk == 0) {
-+			retval = -EINVAL;
-+			goto exit;
-+		}
-+	}
- 	if (!capable(CAP_SYS_ADMIN)) {
- 		retval = -EPERM;
- 		if (change_irq || change_port ||
+ 		node = of_parse_phandle(np, "memory-region", a);
++		/* Not map vdev region */
++		if (!strcmp(node->name, "vdev"))
++			continue;
+ 		err = of_address_to_resource(node, 0, &res);
+ 		if (err) {
+ 			dev_err(dev, "unable to resolve memory region\n");
+-- 
+2.43.0
+
 
 
 
