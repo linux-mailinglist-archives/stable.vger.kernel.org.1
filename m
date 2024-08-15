@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-68880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3398953472
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:27:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9E395347F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34ECDB21685
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:27:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 655821F29269
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE29C1ABEAB;
-	Thu, 15 Aug 2024 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56831A00DF;
+	Thu, 15 Aug 2024 14:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZXS9UzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WxHe7aL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1F41A08C6;
-	Thu, 15 Aug 2024 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F651AC896;
+	Thu, 15 Aug 2024 14:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731959; cv=none; b=kGHP57kQ/S+LDDoevh+hQw1/fxtuq9jcO2t/0UsTX5V97L/m2fiSisu/zaAHiHFXZqrnaJpqmWnpCJkpD6wUy6PIT3b+/4RH4A7aurNEACGgh0+R28xXeOcGhAMM4/YCfWiI8ndsEqsSCCxtY7x6GUg0S9Mdnih3gwfK3RfVqLo=
+	t=1723731993; cv=none; b=LBStWhLpmrIACnEkqx+cuDFLkLYUZ0nsl/Jmgew/8wzJ8w800qMEsrvl0QPPxo7G5/x64qW5wxsLYTP7nsgwt/6VGmhUHlMNl+L0RY+T9xsKtQpYQO6w/GgpjMg65K4Z4+Nyq31KYg97GSVJOrfX9Yg5Ky5zeIpjvZN+LTbl+SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731959; c=relaxed/simple;
-	bh=2ZBIrbi8VL/XriuFx+Q31pWVNanIoxTo0l1pNSuDRlE=;
+	s=arc-20240116; t=1723731993; c=relaxed/simple;
+	bh=kDBLUUnRhrRoghIFdJ5TEOIYuvvn34ELV7z0GL1CyDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUevjPCTBnUmwj3mOx1L213Vh+uewSxBNi13y9RZmW4TPsQn7qEXtIzEG608AfdYccXPtmr92JLxLxXyHFBS4iYB2FTjqlm3Y2ZH4hasHRV204BrWPgsmUQCHi24+JPgbPwdy77Ox85XKtZu+lnOTmazpSSRkknizpNnEbX8ks0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZXS9UzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F65C32786;
-	Thu, 15 Aug 2024 14:25:58 +0000 (UTC)
+	 MIME-Version; b=Ua67fP6+Rlws/dMxCOkoyGW0Nc6SpGhvAtekvo+Kxlmp1FyOHpBmiaQc96/LOUtKfXZaWrMGfsJlbuSGtP7DcnZJ3LD3p0Cj7ILyt3wYf+XC4U4cgW9Vqas6OdbZefDyWbI6tev1kVEbrOdx7L2E2waj9iecpWshfi1dY8M5AvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WxHe7aL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D43C32786;
+	Thu, 15 Aug 2024 14:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731959;
-	bh=2ZBIrbi8VL/XriuFx+Q31pWVNanIoxTo0l1pNSuDRlE=;
+	s=korg; t=1723731993;
+	bh=kDBLUUnRhrRoghIFdJ5TEOIYuvvn34ELV7z0GL1CyDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZXS9UzC4J+Zrm25ax4Sui9UsvmjsRjfHibMjrcSlpakZJRby2v4w4UG7RA8jlqM+
-	 DTp0VEXnseoZtuVrWmNTRKpI+j4B24ZUhiMqQFwZYdgLz+3N36vmIa0UJT7xf8i72j
-	 PZCBWtavdSnasCNu8cQoqLMuUTSdiE35Q/qhIORE=
+	b=1WxHe7aLElSriKb7bjvOF4py2lth73jF6bVU99M1bM+ezyTIJ2/jMeaDfAsqEiXqs
+	 fpxWvTeBV0qXjWjTMeUo90UncWM0Bfu+yV/ZpAFDM/3GokYcmqCZw5nkgVDnS4irxN
+	 LqV92+V3JSZPwxR4TszufqK0vB0hSGe7lq1kZ2FI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <swboyd@chromium.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/352] arm64: dts: qcom: sdm845: add power-domain to UFS PHY
-Date: Thu, 15 Aug 2024 15:21:19 +0200
-Message-ID: <20240815131919.723434930@linuxfoundation.org>
+Subject: [PATCH 5.10 014/352] soc: qcom: rpmh-rsc: Ensure irqs arent disabled by rpmh_rsc_send_data() callers
+Date: Thu, 15 Aug 2024 15:21:20 +0200
+Message-ID: <20240815131919.762336806@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -67,36 +68,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit fd39ae8b9bc10419b1e4b849cdbc6755a967ade1 ]
+[ Upstream commit e43111f52b9ec5c2d700f89a1d61c8d10dc2d9e9 ]
 
-The UFS PHY is powered on via the UFS_PHY_GDSC power domain. Add
-corresponding power-domain the the PHY node.
+Dan pointed out that Smatch is concerned about this code because it uses
+spin_lock_irqsave() and then calls wait_event_lock_irq() which enables
+irqs before going to sleep. The comment above the function says it
+should be called with interrupts enabled, but we simply hope that's true
+without really confirming that. Let's add a might_sleep() here to
+confirm that interrupts and preemption aren't disabled. Once we do that,
+we can change the lock to be non-saving, spin_lock_irq(), to clarify
+that we don't expect irqs to be disabled. If irqs are disabled by
+callers they're going to be enabled anyway in the wait_event_lock_irq()
+call which would be bad.
 
-Fixes: cc16687fbd74 ("arm64: dts: qcom: sdm845: add UFS controller")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-6-f1fd15c33fb3@linaro.org
+This should make Smatch happier and find bad callers faster with the
+might_sleep(). We can drop the WARN_ON() in the caller because we have
+the might_sleep() now, simplifying the code.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/911181ed-c430-4592-ad26-4dc948834e08@moroto.mountain
+Fixes: 2bc20f3c8487 ("soc: qcom: rpmh-rsc: Sleep waiting for tcs slots to be free")
+Cc: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240509184129.3924422-1-swboyd@chromium.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/qcom/rpmh-rsc.c | 7 ++++---
+ drivers/soc/qcom/rpmh.c     | 1 -
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index b00f6d8bc8bac..da48ae60155af 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -2125,6 +2125,8 @@ ufs_mem_phy: phy@1d87000 {
- 			clocks = <&gcc GCC_UFS_MEM_CLKREF_CLK>,
- 				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>;
- 
-+			power-domains = <&gcc UFS_PHY_GDSC>;
+diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
+index a297911afe571..26e6dd860b5d9 100644
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -629,13 +629,14 @@ int rpmh_rsc_send_data(struct rsc_drv *drv, const struct tcs_request *msg)
+ {
+ 	struct tcs_group *tcs;
+ 	int tcs_id;
+-	unsigned long flags;
 +
- 			resets = <&ufs_mem_hc 0>;
- 			reset-names = "ufsphy";
- 			status = "disabled";
++	might_sleep();
+ 
+ 	tcs = get_tcs_for_msg(drv, msg);
+ 	if (IS_ERR(tcs))
+ 		return PTR_ERR(tcs);
+ 
+-	spin_lock_irqsave(&drv->lock, flags);
++	spin_lock_irq(&drv->lock);
+ 
+ 	/* Wait forever for a free tcs. It better be there eventually! */
+ 	wait_event_lock_irq(drv->tcs_wait,
+@@ -654,7 +655,7 @@ int rpmh_rsc_send_data(struct rsc_drv *drv, const struct tcs_request *msg)
+ 		write_tcs_reg_sync(drv, RSC_DRV_CMD_WAIT_FOR_CMPL, tcs_id, 0);
+ 		enable_tcs_irq(drv, tcs_id, true);
+ 	}
+-	spin_unlock_irqrestore(&drv->lock, flags);
++	spin_unlock_irq(&drv->lock);
+ 
+ 	/*
+ 	 * These two can be done after the lock is released because:
+diff --git a/drivers/soc/qcom/rpmh.c b/drivers/soc/qcom/rpmh.c
+index b61e183ede694..707e176ed4ed8 100644
+--- a/drivers/soc/qcom/rpmh.c
++++ b/drivers/soc/qcom/rpmh.c
+@@ -193,7 +193,6 @@ static int __rpmh_write(const struct device *dev, enum rpmh_state state,
+ 	rpm_msg->msg.state = state;
+ 
+ 	if (state == RPMH_ACTIVE_ONLY_STATE) {
+-		WARN_ON(irqs_disabled());
+ 		ret = rpmh_rsc_send_data(ctrlr_to_drv(ctrlr), &rpm_msg->msg);
+ 	} else {
+ 		/* Clean up our call by spoofing tx_done */
 -- 
 2.43.0
 
