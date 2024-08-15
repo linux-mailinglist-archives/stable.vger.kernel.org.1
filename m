@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-68121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0089530BD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:46:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFC09530CD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 577BAB23519
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:46:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D5381C236C5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F93718D64F;
-	Thu, 15 Aug 2024 13:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB6E17C9B6;
+	Thu, 15 Aug 2024 13:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qE2/xT90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqaG/pzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9B17DA9E;
-	Thu, 15 Aug 2024 13:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFD91714A1;
+	Thu, 15 Aug 2024 13:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729560; cv=none; b=Hco7Sm95FWtdiKLHv34SqvXGT8ZICPb8gdkVsOlHai84qHmb8ecPY3DRUJcvdLaBZVFXreZOfb6TtMi7T0brGuyItCMJw8lx0FRlD6TQ90lpqI8tW+E3gYC56dlEaTXZiK39yqkj1diugZAKAEQA0H6c5Mn92E9xczzw4hByIIM=
+	t=1723729595; cv=none; b=fe1nKqwBBeJy6t5vjSXi8RWNZobNhO8d96ZI9I0VJR7ENwy7zp7aDVUG3/+y3fMqen0A4hPhUY13kS/Kx9+uih07syR/9KtQgEMueN1mSoMSovTpBq1ZCeI/fLE+g/n7mYJBIc9wMepF6Cup7nGQjCp3HKgMCfa6Ml1Zyh4sfFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729560; c=relaxed/simple;
-	bh=fIXQiFdw5vM22u1MfVln6iTmNzhoXhssmES9LHNvw28=;
+	s=arc-20240116; t=1723729595; c=relaxed/simple;
+	bh=u5gI8gMreWvgP3qorxeLseMXLKtrwTReW2XINq5bCAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8twTrxa/ZdE1NX5y6LcoNmZBHsGNdqad5AGbEBjAaOwlvue60yJ4LEflqveDYhxTc/YZuyULiJoQa7HR8M9lqpIvZB5ke4/50uMVlKqNbnVFAlChbY+GkJxRBkliYbUa7CJQjtzWriYPSGszo0BN2H13/2amSViIfgsaQhe4Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qE2/xT90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0AAC32786;
-	Thu, 15 Aug 2024 13:45:59 +0000 (UTC)
+	 MIME-Version; b=uRyVfwpAtHSDnCiG9B3EewfFg48DzEGd/FXlih0H+TXFotgq5oAfYTw3+z3X4eIf8yc8DfqjWB8xMAcRcIu/Ea8TBK4/a3T6VG2WAtSVQdpPyvQtSO9EBSKhsfblClO2XDxjIV2gEPiF7L2Q+Fl9Mget84BFfOQ8nxOsOwu+24A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqaG/pzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D6CC32786;
+	Thu, 15 Aug 2024 13:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729560;
-	bh=fIXQiFdw5vM22u1MfVln6iTmNzhoXhssmES9LHNvw28=;
+	s=korg; t=1723729594;
+	bh=u5gI8gMreWvgP3qorxeLseMXLKtrwTReW2XINq5bCAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qE2/xT90fTUT+fpW376zTDYaEIa8T110maGJHt91tgllASx/hPN//DOC3kUBY6y7w
-	 CX1pjYjc7zDBQL/Yp46EbUB67JuMRcNO3XWRhuHChZbzf9ROH6Qd3i4EMbdyZh49Uo
-	 lt0zlFZZOGGKX5I0a53Gzk2fvOykM60FAtXmrvuA=
+	b=SqaG/pzNFhMIUSTfIjNaFvQXuJURuM+hcPZf4jX/vXPzXgDa2H8FXiHMX6k/dI99f
+	 jKhq4e4CR7MyCo320lQh6vODujWFq0NzHRoe3pk2ZWJSOUDOL8qL6j/Tzl42OBmm5j
+	 4Kj3VLXjvbtDf60Zp6nDYCT/7AiF6QLYE3FPHzFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honggang LI <honggangli@163.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/484] RDMA/rxe: Dont set BTH_ACK_MASK for UC or UD QPs
-Date: Thu, 15 Aug 2024 15:19:47 +0200
-Message-ID: <20240815131946.280965799@linuxfoundation.org>
+Subject: [PATCH 5.15 130/484] ASoC: max98088: Check for clk_prepare_enable() error
+Date: Thu, 15 Aug 2024 15:19:48 +0200
+Message-ID: <20240815131946.426808608@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -68,50 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 4adcaf969d77d3d3aa3871bbadc196258a38aec6 ]
+[ Upstream commit 1a70579723fde3624a72dfea6e79e55be6e36659 ]
 
-BTH_ACK_MASK bit is used to indicate that an acknowledge
-(for this packet) should be scheduled by the responder.
-Both UC and UD QPs are unacknowledged, so don't set
-BTH_ACK_MASK for UC or UD QPs.
+clk_prepare_enable() may fail, so we should better check its return
+value and propagate it in the case of error.
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://lore.kernel.org/r/20240624020348.494338-1-honggangli@163.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 62a7fc32a628 ("ASoC: max98088: Add master clock handling")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20240628080534.843815-1-nichen@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_req.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/codecs/max98088.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-index 8c0e7ecd41414..0938084192072 100644
---- a/drivers/infiniband/sw/rxe/rxe_req.c
-+++ b/drivers/infiniband/sw/rxe/rxe_req.c
-@@ -374,7 +374,7 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	int			solicited;
- 	u16			pkey;
- 	u32			qp_num;
--	int			ack_req;
-+	int			ack_req = 0;
+diff --git a/sound/soc/codecs/max98088.c b/sound/soc/codecs/max98088.c
+index f8e49e45ce33f..a71fbfddc29a7 100644
+--- a/sound/soc/codecs/max98088.c
++++ b/sound/soc/codecs/max98088.c
+@@ -1319,6 +1319,7 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
+                                   enum snd_soc_bias_level level)
+ {
+ 	struct max98088_priv *max98088 = snd_soc_component_get_drvdata(component);
++	int ret;
  
- 	/* length from start of bth to end of icrc */
- 	paylen = rxe_opcode[opcode].length + payload + pad + RXE_ICRC_SIZE;
-@@ -407,8 +407,9 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	qp_num = (pkt->mask & RXE_DETH_MASK) ? ibwr->wr.ud.remote_qpn :
- 					 qp->attr.dest_qp_num;
- 
--	ack_req = ((pkt->mask & RXE_END_MASK) ||
--		(qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
-+	if (qp_type(qp) != IB_QPT_UD && qp_type(qp) != IB_QPT_UC)
-+		ack_req = ((pkt->mask & RXE_END_MASK) ||
-+			   (qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
- 	if (ack_req)
- 		qp->req.noack_pkts = 0;
+ 	switch (level) {
+ 	case SND_SOC_BIAS_ON:
+@@ -1334,10 +1335,13 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
+ 		 */
+ 		if (!IS_ERR(max98088->mclk)) {
+ 			if (snd_soc_component_get_bias_level(component) ==
+-			    SND_SOC_BIAS_ON)
++			    SND_SOC_BIAS_ON) {
+ 				clk_disable_unprepare(max98088->mclk);
+-			else
+-				clk_prepare_enable(max98088->mclk);
++			} else {
++				ret = clk_prepare_enable(max98088->mclk);
++				if (ret)
++					return ret;
++			}
+ 		}
+ 		break;
  
 -- 
 2.43.0
