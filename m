@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8402C953358
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E739534C1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39B3A1F24329
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37B8F2888E8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059D41B0127;
-	Thu, 15 Aug 2024 14:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A57D17C995;
+	Thu, 15 Aug 2024 14:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWUu5n4l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnQoKyk5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86AE1A76A2;
-	Thu, 15 Aug 2024 14:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088E863C;
+	Thu, 15 Aug 2024 14:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731240; cv=none; b=rVcJ99ZFnt30QRgh02yDcdna8/AyT5N+aaprgxBbWqh9Z9usStrNiL8Nhk0Yk6ZX2UhfPCoGNNpUN7eMx4FiILY36ZtejCI0Udws0Lw7MigabAilN+qRvxz9R/uYeFu9MuJvknsGQAdV+dYnlsUhxgXinf/kj1ZtM4Q47PTvSfQ=
+	t=1723732195; cv=none; b=DWYCYMbJG1hwmgyJzna/i5BFUONKpkmW+TBAZwkusN2kwAur0YkR5hHFeddKhCpiXwSKOQmVjD9i77Rzh4UZjSwEZC+B2SuJJw+jLKlXRu4QrX+x9mnnZI1vqMytlFyGpNUe0GdLmJmD2DAX+ls/S+Nijul1zZN1k56ropipCqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731240; c=relaxed/simple;
-	bh=+E2tsID6VUq5lo+bIM61jfNSO4O0Jv3jX57t43ZUbRE=;
+	s=arc-20240116; t=1723732195; c=relaxed/simple;
+	bh=zR9K5YdLnax9I1ZscuSy8ylG+YOUPtKdBNzbwyzXGfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgzxPZQO56/ktgpPI6Vx6SBxNCvo3KMwL0+E8ZLcHKFC/EBzHWNjDUhaVsrL8wDp/ieHi13OHj8jvFr0ulpUKS7vVicTPbMkaI6Oyvgii5OmICAffSsXTnuo+eWkAwqNHc2qjqb1xC0yVPIeJYxzyMZ5h0vSIB6ioN+rlW1sZ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWUu5n4l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC51C32786;
-	Thu, 15 Aug 2024 14:13:59 +0000 (UTC)
+	 MIME-Version; b=DK6Q2JeYxDPQfNdS0DtMRVF2SEQgInTWXR6iEsZULR0OTLK9aJMGTGU6Pq2woCdIAaxtFFqiASHOHw8y3uRHfCeneX9+jzrWBVnivD3PDi9cMPT+RqahSzfzULWUKwrG87idu51Dm3AiEYYA4UosUd6D95HajqzrLFrGt3WgWuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnQoKyk5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A3CC32786;
+	Thu, 15 Aug 2024 14:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731240;
-	bh=+E2tsID6VUq5lo+bIM61jfNSO4O0Jv3jX57t43ZUbRE=;
+	s=korg; t=1723732194;
+	bh=zR9K5YdLnax9I1ZscuSy8ylG+YOUPtKdBNzbwyzXGfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWUu5n4l1N85TG/AA/gdbbxL+us2YggYc8zjDws01LqUnHqNeaGTLyVoe4SLM3qs4
-	 VWiBdkaCCphcZ8TczWeBeZVUogBN92QuS7nKzqZX2VWwRYFnXAXxL/bGbW8sdEX+fB
-	 h5B4r3jj3jjKuDRSnW+q+yKvjxj+hu44rOkRAjOQ=
+	b=OnQoKyk57yQ1EcMTvLMIgJ4z99/sENdUGDZtqk78jmzJiImu7OJe7YRHUgUhvD+h6
+	 vk1sqm4Kx3LvJ8yMd7V0mPo8sAFicTpBDRgtCDeKHnx5OYagtQAjW8nfV9hgi6OKUE
+	 PCNj+HmT90s2uUnMBGgd+qRv/x40avGOCY11XTwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/259] wifi: cfg80211: fix typo in cfg80211_calculate_bitrate_he()
-Date: Thu, 15 Aug 2024 15:22:48 +0200
-Message-ID: <20240815131904.154007274@linuxfoundation.org>
+Subject: [PATCH 5.10 103/352] mtd: make mtd_test.c a separate module
+Date: Thu, 15 Aug 2024 15:22:49 +0200
+Message-ID: <20240815131923.239627890@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 9ee0d44f055276fe2802b2f65058e920853f4f99 ]
+[ Upstream commit a5cf054d325e6f362e82fe6d124a1871a4af8174 ]
 
-rates_996 is mistakenly written as rates_969, fix it.
+This file gets linked into nine different modules, which causes a warning:
 
-Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://msgid.link/20240606020653.33205-2-quic_bqiang@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+scripts/Makefile.build:236: drivers/mtd/tests/Makefile: mtd_test.o is added to multiple modules: mtd_nandbiterrs mtd_oobtest mtd_pagetest mtd_readtest mtd_speedtest mtd_stresstest mtd_subpagetest mtd_torturetest
+
+Make it a separate module instead.
+
+Fixes: a995c792280d ("mtd: tests: rename sources in order to link a helper object")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240529095049.1915393-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/util.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/tests/Makefile   | 34 +++++++++++++++++-----------------
+ drivers/mtd/tests/mtd_test.c |  9 +++++++++
+ 2 files changed, 26 insertions(+), 17 deletions(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 95533732f9d6f..3557a81037cc1 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1281,7 +1281,7 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 		 2048, /*  1.000000... */
- 	};
- 	u32 rates_160M[3] = { 960777777, 907400000, 816666666 };
--	u32 rates_969[3] =  { 480388888, 453700000, 408333333 };
-+	u32 rates_996[3] =  { 480388888, 453700000, 408333333 };
- 	u32 rates_484[3] =  { 229411111, 216666666, 195000000 };
- 	u32 rates_242[3] =  { 114711111, 108333333,  97500000 };
- 	u32 rates_106[3] =  {  40000000,  37777777,  34000000 };
-@@ -1306,7 +1306,7 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 	else if (rate->bw == RATE_INFO_BW_80 ||
- 		 (rate->bw == RATE_INFO_BW_HE_RU &&
- 		  rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_996))
--		result = rates_969[rate->he_gi];
-+		result = rates_996[rate->he_gi];
- 	else if (rate->bw == RATE_INFO_BW_40 ||
- 		 (rate->bw == RATE_INFO_BW_HE_RU &&
- 		  rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_484))
+diff --git a/drivers/mtd/tests/Makefile b/drivers/mtd/tests/Makefile
+index 5de0378f90dbd..7dae831ee8b6b 100644
+--- a/drivers/mtd/tests/Makefile
++++ b/drivers/mtd/tests/Makefile
+@@ -1,19 +1,19 @@
+ # SPDX-License-Identifier: GPL-2.0
+-obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o
++obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o mtd_test.o
+ 
+-mtd_oobtest-objs := oobtest.o mtd_test.o
+-mtd_pagetest-objs := pagetest.o mtd_test.o
+-mtd_readtest-objs := readtest.o mtd_test.o
+-mtd_speedtest-objs := speedtest.o mtd_test.o
+-mtd_stresstest-objs := stresstest.o mtd_test.o
+-mtd_subpagetest-objs := subpagetest.o mtd_test.o
+-mtd_torturetest-objs := torturetest.o mtd_test.o
+-mtd_nandbiterrs-objs := nandbiterrs.o mtd_test.o
++mtd_oobtest-objs := oobtest.o
++mtd_pagetest-objs := pagetest.o
++mtd_readtest-objs := readtest.o
++mtd_speedtest-objs := speedtest.o
++mtd_stresstest-objs := stresstest.o
++mtd_subpagetest-objs := subpagetest.o
++mtd_torturetest-objs := torturetest.o
++mtd_nandbiterrs-objs := nandbiterrs.o
+diff --git a/drivers/mtd/tests/mtd_test.c b/drivers/mtd/tests/mtd_test.c
+index c84250beffdc9..f391e0300cdc9 100644
+--- a/drivers/mtd/tests/mtd_test.c
++++ b/drivers/mtd/tests/mtd_test.c
+@@ -25,6 +25,7 @@ int mtdtest_erase_eraseblock(struct mtd_info *mtd, unsigned int ebnum)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_erase_eraseblock);
+ 
+ static int is_block_bad(struct mtd_info *mtd, unsigned int ebnum)
+ {
+@@ -57,6 +58,7 @@ int mtdtest_scan_for_bad_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_scan_for_bad_eraseblocks);
+ 
+ int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
+ 				unsigned int eb, int ebcnt)
+@@ -75,6 +77,7 @@ int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_erase_good_eraseblocks);
+ 
+ int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
+ {
+@@ -92,6 +95,7 @@ int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
+ 
+ 	return err;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_read);
+ 
+ int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
+ 		const void *buf)
+@@ -107,3 +111,8 @@ int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
+ 
+ 	return err;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_write);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("MTD function test helpers");
++MODULE_AUTHOR("Akinobu Mita");
 -- 
 2.43.0
 
