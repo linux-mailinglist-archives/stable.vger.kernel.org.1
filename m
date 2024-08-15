@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00169533E3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85EA59532CF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5540B288ECC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B0231F20C79
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B296B1A2C11;
-	Thu, 15 Aug 2024 14:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BBE1AD3FC;
+	Thu, 15 Aug 2024 14:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCpvnRxb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efOta9f3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFBB1A0712;
-	Thu, 15 Aug 2024 14:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B693A1A2570;
+	Thu, 15 Aug 2024 14:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731617; cv=none; b=afZSEE83VH068zBXsXuFKpjk1yU6lHpRSutgr3tX4FbyKXjfIMl0X4cIMPW70Ma3y6vspR/N8zdnGa3uyormlbl1xMFX2cEpE8HlvX50OJKVIRfMzSxpX/4kDsFlupOG60iXFJK2YoC0dHDLV9f7iks+ICMEKFfCvq/mJ3dUBHE=
+	t=1723730872; cv=none; b=bpzZDVKhdcYVjQw6dNHBtDmk8VlWeky2gaOO2XzBCiEA5zcZ6kuvDrBLVe5BUXun6tCqjQAzszFrzKscsEZs5nCTTGisWLoZdW+8oNhROoAbV+UgdoMitH/jlsrUUYmSE+SjrjZNB64SyIkswyNhU9gM34fbLelPAUJX3lMyP9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731617; c=relaxed/simple;
-	bh=uDnKTNjnYEOABhkcfEJYUKZzPEZDn3n5XWJjk8hVEhs=;
+	s=arc-20240116; t=1723730872; c=relaxed/simple;
+	bh=WHpvYB7wKGMkAXy8ZJzYGRiqjcWrPD54mRz5OO5e0NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxcY2OYaGAcrWGDHJ3uQLXDZsxOAWu2EEECEJ5KgwpMMmmcwhVerwrI96e0cUv87Mjr213C4uhqG6odElIPeOwxCO/o1DpFyZglfgPNHMzks3n/EfY8G/0A6IBghGdWggNdcgia0Vej2D4ZKu1B3915fGCMKYpZ5H3JXJJE+CYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCpvnRxb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61FCC32786;
-	Thu, 15 Aug 2024 14:20:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VZzh82kC2h7d4lS2b0ewnxaizczeFEOLDLJsPxcfAmiUopJNvYDuQbljYjP8kQkxlnUiZyStchB0GyzUGZvKvHR+KZn1o/6My4j7FCYKEd3FqYGTJRtHsIQGem0mMJjEKyXZPioj/KppbRmC/MX+qUea9zsN8eQdxhvmOuN+Xtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efOta9f3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2543AC32786;
+	Thu, 15 Aug 2024 14:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731617;
-	bh=uDnKTNjnYEOABhkcfEJYUKZzPEZDn3n5XWJjk8hVEhs=;
+	s=korg; t=1723730872;
+	bh=WHpvYB7wKGMkAXy8ZJzYGRiqjcWrPD54mRz5OO5e0NQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCpvnRxbSb6XK2CRsv6hgA7Y8oR5PbwFyP3YBYjZKyJBZ0SA+2IK36n7Jh6U4d2g6
-	 e8k2ZafO+SVU7wl7+cMNrY/HWBX6QWVbUVG5WXMGjWSG9kelkEMabCETqwynaCjRSB
-	 k0KDDi1/rBUn6wuAdmNEBfNI4MQVdqrZI9Z5vK8s=
+	b=efOta9f3s+tSklraDPn+xelpiMf+uUR65vjOU3hindqE7wZHngWxAwGTfCZ8I16mK
+	 F7/8dBPzHJkN5/U4kzDuZretdrpVap870Dx0BUR9QV9oZl3AlentLRJhxDp3YWWO72
+	 GxC0Xa4uKh/9AVsUY/Mnvtl/04fsKT6sm5pe9jtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 185/259] x86/mm: Fix pti_clone_pgtable() alignment assumption
-Date: Thu, 15 Aug 2024 15:25:18 +0200
-Message-ID: <20240815131909.924567110@linuxfoundation.org>
+	Amir Goldstein <amir73il@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 05/67] NFSD: Rewrite synopsis of nfsd_percpu_counters_init()
+Date: Thu, 15 Aug 2024 15:25:19 +0200
+Message-ID: <20240815131838.523984124@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 41e71dbb0e0a0fe214545fe64af031303a08524c ]
+[ Upstream commit 5ec39944f874e1ecc09f624a70dfaa8ac3bf9d08 ]
 
-Guenter reported dodgy crashes on an i386-nosmp build using GCC-11
-that had the form of endless traps until entry stack exhaust and then
-#DF from the stack guard.
+In function ‘export_stats_init’,
+    inlined from ‘svc_export_alloc’ at fs/nfsd/export.c:866:6:
+fs/nfsd/export.c:337:16: warning: ‘nfsd_percpu_counters_init’ accessing 40 bytes in a region of size 0 [-Wstringop-overflow=]
+  337 |         return nfsd_percpu_counters_init(&stats->counter, EXP_STATS_COUNTERS_NUM);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fs/nfsd/export.c:337:16: note: referencing argument 1 of type ‘struct percpu_counter[0]’
+fs/nfsd/stats.h: In function ‘svc_export_alloc’:
+fs/nfsd/stats.h:40:5: note: in a call to function ‘nfsd_percpu_counters_init’
+   40 | int nfsd_percpu_counters_init(struct percpu_counter counters[], int num);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~
 
-It turned out that pti_clone_pgtable() had alignment assumptions on
-the start address, notably it hard assumes start is PMD aligned. This
-is true on x86_64, but very much not true on i386.
-
-These assumptions can cause the end condition to malfunction, leading
-to a 'short' clone. Guess what happens when the user mapping has a
-short copy of the entry text?
-
-Use the correct increment form for addr to avoid alignment
-assumptions.
-
-Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240731163105.GG33588@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: 93483ac5fec6 ("nfsd: expose /proc/net/sunrpc/nfsd in net namespaces")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/pti.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfsd/stats.c |    2 +-
+ fs/nfsd/stats.h |    6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 7f2140414440d..29eaf3cd9bbdb 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -375,14 +375,14 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
- 			 */
- 			*target_pmd = *pmd;
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -76,7 +76,7 @@ static int nfsd_show(struct seq_file *se
  
--			addr += PMD_SIZE;
-+			addr = round_up(addr + 1, PMD_SIZE);
+ DEFINE_PROC_SHOW_ATTRIBUTE(nfsd);
  
- 		} else if (level == PTI_CLONE_PTE) {
+-int nfsd_percpu_counters_init(struct percpu_counter counters[], int num)
++int nfsd_percpu_counters_init(struct percpu_counter *counters, int num)
+ {
+ 	int i, err = 0;
  
- 			/* Walk the page-table down to the pte level */
- 			pte = pte_offset_kernel(pmd, addr);
- 			if (pte_none(*pte)) {
--				addr += PAGE_SIZE;
-+				addr = round_up(addr + 1, PAGE_SIZE);
- 				continue;
- 			}
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -37,9 +37,9 @@ extern struct nfsd_stats	nfsdstats;
  
-@@ -402,7 +402,7 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
- 			/* Clone the PTE */
- 			*target_pte = *pte;
+ extern struct svc_stat		nfsd_svcstats;
  
--			addr += PAGE_SIZE;
-+			addr = round_up(addr + 1, PAGE_SIZE);
+-int nfsd_percpu_counters_init(struct percpu_counter counters[], int num);
+-void nfsd_percpu_counters_reset(struct percpu_counter counters[], int num);
+-void nfsd_percpu_counters_destroy(struct percpu_counter counters[], int num);
++int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
++void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
++void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
+ int nfsd_stat_init(void);
+ void nfsd_stat_shutdown(void);
  
- 		} else {
- 			BUG();
--- 
-2.43.0
-
 
 
 
