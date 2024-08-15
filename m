@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-68374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCDE9531E7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C3E952F9B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4D3B1F25C7B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDB2A1F2120B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E05C19DF58;
-	Thu, 15 Aug 2024 13:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE17219F48D;
+	Thu, 15 Aug 2024 13:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9pIlmja"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFjx6qD/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB317DA7D;
-	Thu, 15 Aug 2024 13:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A28817CA1D;
+	Thu, 15 Aug 2024 13:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730365; cv=none; b=Cd9Gg63v69GFzd/0gbSdJDaZK4pQCW+OS66hW/zLzwKCZv2fdwAUBMROnJtDZnQJ5sG2WJwkG3a39uhSfKduL3aUAexSXK3t5LwkhK1kpCuu5m3U64rXJLLcdu/6G+VIMuPwddVthhX/VJREe5sMSkpMiYH5i56tIdQdIN1keJk=
+	t=1723728836; cv=none; b=SxvlOx8xCkYpceSjfhrCLMf1GZQL6ASIPI0jwLZF5gFnZfC/Y3lY7UEV9ns2UuQSAph+RLclncODTTBAdVb5ks7uWk6HgZVCsfXd/Y5Fe/dFbLb7Id+zV1p5PCB3xduLVh5z3MdyN8j41hO4NY6ccs4yBnmc6M2zDqbN4kBqZsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730365; c=relaxed/simple;
-	bh=MMcsLKUAnNl9kyBt5CaW93z1h4DI5VMV2YSwP9hzyOo=;
+	s=arc-20240116; t=1723728836; c=relaxed/simple;
+	bh=o5yAfhIEhXWqgat/wTBk/aBdHtmaGPkbA1C0UBsf6AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqqiyCLHCoE1X9Y60jO5TXFONJ2qggwaWCVGbG/kk8dv9HGc7iW5zmnwhMJ1+ESdIt8VNMi5iMC+yO1kYdlba2j9EoZurkRA8IifcrlfNcRMDLbc/6Hm30AN1KQoYLMP5X80wMA6mM6HdLsmsRRx++ggfqJtptyY/TYTD41mZEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9pIlmja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FCDC32786;
-	Thu, 15 Aug 2024 13:59:24 +0000 (UTC)
+	 MIME-Version; b=WZdVqRa5JmtvbGJHimBe9Rue3gBQMw5j9FAvhXIswPhJqNQML3+uxqBpbe5Zgri2I+6er0kWllAREEeucXMUUpK9rfupxqoqqrpnvfZOBJ/Ng0bM+e57Hizo7ZvZVqdv1WMH+Vl23mgLNeSS26lNpkI52OWesPTJwdXGqkwWNqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFjx6qD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81C0C32786;
+	Thu, 15 Aug 2024 13:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730365;
-	bh=MMcsLKUAnNl9kyBt5CaW93z1h4DI5VMV2YSwP9hzyOo=;
+	s=korg; t=1723728836;
+	bh=o5yAfhIEhXWqgat/wTBk/aBdHtmaGPkbA1C0UBsf6AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9pIlmjacw5b1QYCYh+5fDGjVMI+GcmtSJZfxjYlAHdUU5gX2hMl7msFvcZMts67L
-	 vAHcIpoc5XFf9M6HVsOYrhgBEIDCU6IYEzSWf2fzeX2uVPtQVPFmL6qZQnqpFTmknG
-	 Omtgsjb5Oix2QvarEM3sGcUPnOHrb/+W3shBJdiw=
+	b=tFjx6qD/FFATdshZnFtc+embikqPq+3ptsPwYWd+PJYEQEqkHgNjrwwR9gTc5b/ip
+	 hWCATuGWcRE5qCKDYAirYIKks/iMRcCa2U9t0jnMw55LT4ftjjIsgtGetdI9mAjZUF
+	 6nsEcT5XokAWeUKeHOf3ZKAgwDIDnM9NRluyLPQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 385/484] jbd2: avoid memleak in jbd2_journal_write_metadata_buffer
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 4.19 126/196] protect the fetch of ->fd[fd] in do_dup2() from mispredictions
 Date: Thu, 15 Aug 2024 15:24:03 +0200
-Message-ID: <20240815131956.317886442@linuxfoundation.org>
+Message-ID: <20240815131856.897342172@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit cc102aa24638b90e04364d64e4f58a1fa91a1976 ]
+commit 8aa37bde1a7b645816cda8b80df4753ecf172bf1 upstream.
 
-The new_bh is from alloc_buffer_head, we should call free_buffer_head to
-free it in error case.
+both callers have verified that fd is not greater than ->max_fds;
+however, misprediction might end up with
+        tofree = fdt->fd[fd];
+being speculatively executed.  That's wrong for the same reasons
+why it's wrong in close_fd()/file_close_fd_locked(); the same
+solution applies - array_index_nospec(fd, fdt->max_fds) could differ
+from fd only in case of speculative execution on mispredicted path.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240514112438.1269037-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c | 1 +
+ fs/file.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 78163ef09cd2d..b10c144c60846 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -412,6 +412,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
- 		tmp = jbd2_alloc(bh_in->b_size, GFP_NOFS);
- 		if (!tmp) {
- 			brelse(new_bh);
-+			free_buffer_head(new_bh);
- 			return -ENOMEM;
- 		}
- 		spin_lock(&jh_in->b_state_lock);
--- 
-2.43.0
-
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -879,6 +879,7 @@ __releases(&files->file_lock)
+ 	 * tables and this condition does not arise without those.
+ 	 */
+ 	fdt = files_fdtable(files);
++	fd = array_index_nospec(fd, fdt->max_fds);
+ 	tofree = fdt->fd[fd];
+ 	if (!tofree && fd_is_open(fd, fdt))
+ 		goto Ebusy;
 
 
 
