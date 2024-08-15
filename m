@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-69044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC0295352C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A4E95339E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D99F11F2A6D5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C64571C24CF1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED87617C995;
-	Thu, 15 Aug 2024 14:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069FC3214;
+	Thu, 15 Aug 2024 14:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2nOrVVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUH+UzQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC01314AD0A;
-	Thu, 15 Aug 2024 14:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D9114AD0A;
+	Thu, 15 Aug 2024 14:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732484; cv=none; b=pqtSsdCvHGK4cjVrU77iuqqTXKr8Rf7vCd+9iDHYUaf/rPCtWe+0H4JparqVOu3xGMvzOJW33XpveWEDYqJtWSGg/LiAPwzGRXYjrwlbk/vfpKKnzoOn4kSiG9zHD4phUn2lR0VxsGWld6/9a7f8zGwSYwwDyIONbVQ2dtn+Kpg=
+	t=1723731435; cv=none; b=K+TKbv7df2IoE5P4nS4jn+flZvFlwOK3CfRZnGIbuUn4VAUrscAW/Zojli75+Wl1XJmCcykd8HPdEhypsbXqC5BK4q7oTrmdrmlAGoqWh/YLso8cnSUc+g5+BI0mOjl2W4Ze5iHvjFlUd6gGop2TO+QRc8rXZasDHiWGo93UNQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732484; c=relaxed/simple;
-	bh=GzCx5ipOeh+lfknPm7p/IxmC8bWeNtR47GEqrmLwzKg=;
+	s=arc-20240116; t=1723731435; c=relaxed/simple;
+	bh=mdit0r/eklCCkjoPzQJH29MnH8XHEhpQCqRTW37DDfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdLqqyj4hiY5ajwdKBLj6A7cdyDP7g8JYdN9wyl9IR+noFw15v/pV18emmdE7lDxlfY4yT65XgSOleluaNR1OhXiuHKZ2zWf2l/R5M9NiIYrw2Tw7QPBaIFdxx67CNNlY/KQUAwD0EuOa8miqn/kcmNV4DifupOOcIn7Z/oYTng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2nOrVVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32621C32786;
-	Thu, 15 Aug 2024 14:34:44 +0000 (UTC)
+	 MIME-Version; b=GXmnlirBDIoboiqCIiuomQ/z9qA8JhRerQAUkgL3eZUbpiXUNo74uR/EI8vXE23eKwb9Lb5of6cHHLETjUqYdFZb3FBYM+KhmTJqw7HrmCWcsNGJhf9AFWC5feCXzVzP9kNcYLuuQSxkypN/0ABXH+OF5BOJr/7OxCOsoACyfs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUH+UzQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB867C32786;
+	Thu, 15 Aug 2024 14:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732484;
-	bh=GzCx5ipOeh+lfknPm7p/IxmC8bWeNtR47GEqrmLwzKg=;
+	s=korg; t=1723731435;
+	bh=mdit0r/eklCCkjoPzQJH29MnH8XHEhpQCqRTW37DDfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2nOrVVEnkjpLFt1VAYu+ezmcuM3hfA0JwDSub1PqmZ7FX0XAlr5lm26QMx8WQip3
-	 RTagY8qtTDbFWuSUbTsC8r3D13w164+sVqr7Z8E/Zls5WUMSJv1xybjZdN3zH+f7PE
-	 CaxN72jm6lBxmiCX9+YAdDggoJXhrY4cfCOgBTYM=
+	b=qUH+UzQM6ria/BM/NuRuAqQuxdYKon/EoS3rgJCpPJkxx3GsJIu2OzrkBShG91V/0
+	 Jl8Vvq7jCddcJN7wxqo83OPSXy7T6OaOMsMKmv73GW3gU5WwsInUsNmkTfl7XsvxNW
+	 MCD1n+U2XsNaziWOmGnHkF1RH6G7ClQtsUhyvHQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Richardson <rlance@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 194/352] dma: fix call order in dmam_free_coherent
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 5.4 127/259] rbd: dont assume rbd_is_lock_owner() for exclusive mappings
 Date: Thu, 15 Aug 2024 15:24:20 +0200
-Message-ID: <20240815131926.775653901@linuxfoundation.org>
+Message-ID: <20240815131907.698930138@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lance Richardson <rlance@google.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit 28e8b7406d3a1f5329a03aa25a43aa28e087cb20 ]
+commit 3ceccb14f5576e02b81cc8b105ab81f224bd87f6 upstream.
 
-dmam_free_coherent() frees a DMA allocation, which makes the
-freed vaddr available for reuse, then calls devres_destroy()
-to remove and free the data structure used to track the DMA
-allocation. Between the two calls, it is possible for a
-concurrent task to make an allocation with the same vaddr
-and add it to the devres list.
+Expanding on the previous commit, assuming that rbd_is_lock_owner()
+always returns true (i.e. that we are either in RBD_LOCK_STATE_LOCKED
+or RBD_LOCK_STATE_QUIESCING) if the mapping is exclusive is wrong too.
+In case ceph_cls_set_cookie() fails, the lock would be temporarily
+released even if the mapping is exclusive, meaning that we can end up
+even in RBD_LOCK_STATE_UNLOCKED.
 
-If this happens, there will be two entries in the devres list
-with the same vaddr and devres_destroy() can free the wrong
-entry, triggering the WARN_ON() in dmam_match.
+IOW, exclusive mappings are really "just" about disabling automatic
+lock transitions (as documented in the man page), not about grabbing
+the lock and holding on to it whatever it takes.
 
-Fix by destroying the devres entry before freeing the DMA
-allocation.
-
-Tested:
-  kokonut //net/encryption
-    http://sponge2/b9145fe6-0f72-4325-ac2f-a84d81075b03
-
-Fixes: 9ac7849e35f7 ("devres: device resource management")
-Signed-off-by: Lance Richardson <rlance@google.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/mapping.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/rbd.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 51bb8fa8eb894..453c0fbe87ff4 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -60,8 +60,8 @@ void dmam_free_coherent(struct device *dev, size_t size, void *vaddr,
- {
- 	struct dma_devres match_data = { size, vaddr, dma_handle };
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -6618,11 +6618,6 @@ static int rbd_add_acquire_lock(struct r
+ 		return ret;
+ 	}
  
--	dma_free_coherent(dev, size, vaddr, dma_handle);
- 	WARN_ON(devres_destroy(dev, dmam_release, dmam_match, &match_data));
-+	dma_free_coherent(dev, size, vaddr, dma_handle);
+-	/*
+-	 * The lock may have been released by now, unless automatic lock
+-	 * transitions are disabled.
+-	 */
+-	rbd_assert(!rbd_dev->opts->exclusive || rbd_is_lock_owner(rbd_dev));
+ 	return 0;
  }
- EXPORT_SYMBOL(dmam_free_coherent);
  
--- 
-2.43.0
-
 
 
 
