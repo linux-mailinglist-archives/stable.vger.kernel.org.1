@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28159534DD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4200F95335B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313E91C211F7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3762B287AD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59411A4F20;
-	Thu, 15 Aug 2024 14:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4FF1AC8BB;
+	Thu, 15 Aug 2024 14:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dp4+oa/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrbxsY1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CD51DFFB;
-	Thu, 15 Aug 2024 14:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7AC1A76C1;
+	Thu, 15 Aug 2024 14:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732271; cv=none; b=Jj38ndZzT53loGoEFbbAPLWqTloQrCd5XeBQhCxvgkXg54ipBsO4H1H8G79j1rLrSZU18w+mDCs6lz2fMA97Pd/Gb/KHW/fxy8gXBMddmPud8LcJY46vpSoAF6EK/X+oPSyNt+QBzJlYRDbWZSo31BThI+7qeiPmdL4K6XtbcuU=
+	t=1723731247; cv=none; b=rxmY+ZNdagphRLMkorAC+b3W4Q2H7OVPJHtG3lxZiPoPK7hczKIBQBVUQ0/fsGxrf+KpJadhrmzOR8rhCV+NVsVeesIn3DbikUUNazbPCyLVyNr/OfWjwh1w3R1n3CdbW10+qafRg7twaI8gzggWrBPs4GLd6JGba6W8AAPEQWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732271; c=relaxed/simple;
-	bh=0MLEfnPBHog+ghEUW76Ws6lgsQuJ04S89wFitB+ZFQE=;
+	s=arc-20240116; t=1723731247; c=relaxed/simple;
+	bh=pvyO057lVB3BrKMNMaaOfh8yRiDfaaThR/hI5HoFA/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PP7fwUmOJEdOOth68P9v5iz7kkBI638hz24NK/jJWda0mG/wCMCz8awTJo4WRdHYTJwkmmH+TD00pxyi2+aZDhPB4oyp86tJeesRrqVlAGibavV21pR5V9NQ75jCh4p366wqvqQTbHyJW2RpJz+ntR723vi2MYtWRn7i/hiXpc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dp4+oa/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A60C4AF10;
-	Thu, 15 Aug 2024 14:31:10 +0000 (UTC)
+	 MIME-Version; b=ROP3rVjqz9UvkMhSJZtD/1566EzNZ/roc6Hy3rcBbvu8YetTHoOJxcqlw0wEo6DAOEQKDmowmnFeQyHm1j4fW6Gd0HeN8x8aexc9Ph+DhEs7Ttx82pSk4RpyS48TZ0WlaCA9ZUkTcEqeZoqbIauQa1XZdcATenHFOvZ4Nd56QlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrbxsY1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5A2C32786;
+	Thu, 15 Aug 2024 14:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732271;
-	bh=0MLEfnPBHog+ghEUW76Ws6lgsQuJ04S89wFitB+ZFQE=;
+	s=korg; t=1723731246;
+	bh=pvyO057lVB3BrKMNMaaOfh8yRiDfaaThR/hI5HoFA/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dp4+oa/341eNyAChq3ksmKaJjHSGHNwQjVUI2kcdak5iwH9lbxsnlj2++R2v5sNsb
-	 HELp0RU6wPhZ6G4csaEny7yXEI2Snc0yrJkOkpbonMWPhyLtSjab3EvMgrwTR/6uoc
-	 oKfODou1RGcE66m53oLuhEJxbRxO0oP7RUB7RBiU=
+	b=LrbxsY1fD+GLwaCgZ38C9qdMFlH0qdw3hn2Xsc+UUMYcsPto1yK6o2aWUz6sL9QZ9
+	 KlzGzxepM9kNFrFGZL0j27Dg+9qs8mG02R/XxcOKyAJNrXjnvAMwvAzoVuhqMvB4o3
+	 93Dl1QGSJScap0AWgNlEdIlvdBsViwiF5xJcmgeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 128/352] ipv6: take care of scope when choosing the src addr
+	Chen Ni <nichen@iscas.ac.cn>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 061/259] drm/qxl: Add check for drm_cvt_mode
 Date: Thu, 15 Aug 2024 15:23:14 +0200
-Message-ID: <20240815131924.202432331@linuxfoundation.org>
+Message-ID: <20240815131905.165707301@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit abb9a68d2c64dd9b128ae1f2e635e4d805e7ce64 upstream.
+[ Upstream commit 7bd09a2db0f617377027a2bb0b9179e6959edff3 ]
 
-When the source address is selected, the scope must be checked. For
-example, if a loopback address is assigned to the vrf device, it must not
-be chosen for packets sent outside.
+Add check for the return value of drm_cvt_mode() and return the error if
+it fails in order to avoid NULL pointer dereference.
 
-CC: stable@vger.kernel.org
-Fixes: afbac6010aec ("net: ipv6: Address selection needs to consider L3 domains")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240710081521.3809742-4-nicolas.dichtel@6wind.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b043677d4be ("drm/qxl: add qxl_add_mode helper function")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621071031.1987974-1-nichen@iscas.ac.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/qxl/qxl_display.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1822,7 +1822,8 @@ int ipv6_dev_get_saddr(struct net *net,
- 							    master, &dst,
- 							    scores, hiscore_idx);
+diff --git a/drivers/gpu/drm/qxl/qxl_display.c b/drivers/gpu/drm/qxl/qxl_display.c
+index a6ee10cbcfdd6..677dd560c066d 100644
+--- a/drivers/gpu/drm/qxl/qxl_display.c
++++ b/drivers/gpu/drm/qxl/qxl_display.c
+@@ -230,6 +230,9 @@ static int qxl_add_mode(struct drm_connector *connector,
+ 		return 0;
  
--			if (scores[hiscore_idx].ifa)
-+			if (scores[hiscore_idx].ifa &&
-+			    scores[hiscore_idx].scopedist >= 0)
- 				goto out;
- 		}
- 
+ 	mode = drm_cvt_mode(dev, width, height, 60, false, false, false);
++	if (!mode)
++		return 0;
++
+ 	if (preferred)
+ 		mode->type |= DRM_MODE_TYPE_PREFERRED;
+ 	mode->hdisplay = width;
+-- 
+2.43.0
+
 
 
 
