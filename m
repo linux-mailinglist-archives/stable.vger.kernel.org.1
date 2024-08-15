@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-67849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9BD952F60
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8479531B4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A83428992F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53D281F21E47
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05310198E78;
-	Thu, 15 Aug 2024 13:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9179919EEB6;
+	Thu, 15 Aug 2024 13:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TG3GXNCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDoj0BXU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A3518D639;
-	Thu, 15 Aug 2024 13:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5033618D630;
+	Thu, 15 Aug 2024 13:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728714; cv=none; b=s13wo74oJaQrBIb5g3fas7qOCOcF/pg29rFVbYhAnBZOPJm+BH467RA15lz/3r9c2dAttH+Ar/LlX+l1K5V5ApKztzXyCwKNe34KkAMIWZkktCLlmI0Himm0Idz4rfqWvacdjBhfvVkKWuZumTtUWgi7cOY3EqbsaDcFAM/9lyA=
+	t=1723730234; cv=none; b=NZqtPgZbB+zJNouoduwqNv9XdBrwNhOiqJG5Qo9iCqWvVnKFC9jESmaoGO73VjbinwEKrS74T919RZ5gSTHYGGVtxzX+vPBGzQIK6V2NWFoBBE3d4noN7LAm8vUTfG3TzSN+DLTaVMpm8wtJz055Y3otTu3Ck8zcJYX3E67w+c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728714; c=relaxed/simple;
-	bh=9DJ69p3pqqA40NmZ8EjFDJU5NYv6W8gsZfAnFSix9Ho=;
+	s=arc-20240116; t=1723730234; c=relaxed/simple;
+	bh=FCaLqliKHeN8EHThxugciVZEWIYP1VueF7Uszz+urt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtDCFkyfRKZ0zHUuP+q27g84WBDmZuUsN+RBsg8drNHDB5J5Go5bY+DjX8JMG9Ny9QQ/tze67CQQjhn3k0O3o5nRn8y2amKsVe8xOQvJZSlWcpht05CVY0l9jgWTkWFqyaWLTbQgbDA5wR1ZaU2gPsf9J4nE6onEKBR4xXaT9s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TG3GXNCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD85C32786;
-	Thu, 15 Aug 2024 13:31:53 +0000 (UTC)
+	 MIME-Version; b=CtcUI4+TnN9mGj00n3+pWFfzHJ+eULCB1CJ3gTsbAQyNFaeizmsk0UgQR8r90JEzJ1YspSWQ7OIYOXNkFOLmsB+vIvgcLRD0Dref44qIGguKfbVuVd4vF7owz+68QzoEz/uO5uKHQ3XTco68p2e8f1U7l32jR/1Q66q0x6F+lW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDoj0BXU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC152C32786;
+	Thu, 15 Aug 2024 13:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728714;
-	bh=9DJ69p3pqqA40NmZ8EjFDJU5NYv6W8gsZfAnFSix9Ho=;
+	s=korg; t=1723730234;
+	bh=FCaLqliKHeN8EHThxugciVZEWIYP1VueF7Uszz+urt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TG3GXNCVHGAWvcNbiEAAt8s+RzXzwUs37CIN4MNYR0418kLRR7IKtTzA9I6CdKLcg
-	 XBOvUljaZsuVYhEEe2nfc8LNiRjUyl0zdeJamHWdjsdnNzvoQCkv9nkBbzONkilVem
-	 bFcwze0kLYInMikRptyELaX2Xd96Y0dWZMmz/Y/E=
+	b=uDoj0BXUCF4btRiwqB1PmR5Mdu3Q/Q27nVjgLSwAnUSY/kKtNMjOfmOBGNoNuaFHv
+	 0+bziXCQYwxUuKLRj2OfufhBBfEA85xMLL5QxBUb0yEC4+2MbL1aCRD+Ob7tksX4HL
+	 teLjMgVWezbbzOqe4oUcj4IP0jf8CTsF/z1utDZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manish Rangankar <mrangankar@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.19 087/196] scsi: qla2xxx: During vport delete send async logout explicitly
+	Mavroudis Chatzilazaridis <mavchatz@protonmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 346/484] ALSA: hda/realtek: Add quirk for Acer Aspire E5-574G
 Date: Thu, 15 Aug 2024 15:23:24 +0200
-Message-ID: <20240815131855.410993257@linuxfoundation.org>
+Message-ID: <20240815131954.786528128@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Rangankar <mrangankar@marvell.com>
+From: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
 
-commit 76f480d7c717368f29a3870f7d64471ce0ff8fb2 upstream.
+commit 3c0b6f924e1259ade38587ea719b693f6f6f2f3e upstream.
 
-During vport delete, it is observed that during unload we hit a crash
-because of stale entries in outstanding command array.  For all these stale
-I/O entries, eh_abort was issued and aborted (fast_fail_io = 2009h) but
-I/Os could not complete while vport delete is in process of deleting.
+ALC255_FIXUP_ACER_LIMIT_INT_MIC_BOOST fixes combo jack detection and
+limits the internal microphone boost that causes clipping on this model.
 
-  BUG: kernel NULL pointer dereference, address: 000000000000001c
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  Workqueue: qla2xxx_wq qla_do_work [qla2xxx]
-  RIP: 0010:dma_direct_unmap_sg+0x51/0x1e0
-  RSP: 0018:ffffa1e1e150fc68 EFLAGS: 00010046
-  RAX: 0000000000000000 RBX: 0000000000000021 RCX: 0000000000000001
-  RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff8ce208a7a0d0
-  RBP: ffff8ce208a7a0d0 R08: 0000000000000000 R09: ffff8ce378aac9c8
-  R10: ffff8ce378aac8a0 R11: ffffa1e1e150f9d8 R12: 0000000000000000
-  R13: 0000000000000000 R14: ffff8ce378aac9c8 R15: 0000000000000000
-  FS:  0000000000000000(0000) GS:ffff8d217f000000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 000000000000001c CR3: 0000002089acc000 CR4: 0000000000350ee0
-  Call Trace:
-  <TASK>
-  qla2xxx_qpair_sp_free_dma+0x417/0x4e0
-  ? qla2xxx_qpair_sp_compl+0x10d/0x1a0
-  ? qla2x00_status_entry+0x768/0x2830
-  ? newidle_balance+0x2f0/0x430
-  ? dequeue_entity+0x100/0x3c0
-  ? qla24xx_process_response_queue+0x6a1/0x19e0
-  ? __schedule+0x2d5/0x1140
-  ? qla_do_work+0x47/0x60
-  ? process_one_work+0x267/0x440
-  ? process_one_work+0x440/0x440
-  ? worker_thread+0x2d/0x3d0
-  ? process_one_work+0x440/0x440
-  ? kthread+0x156/0x180
-  ? set_kthread_struct+0x50/0x50
-  ? ret_from_fork+0x22/0x30
-  </TASK>
-
-Send out async logout explicitly for all the ports during vport delete.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-8-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240728123601.144017-1-mavchatz@protonmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_mid.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/qla2xxx/qla_mid.c
-+++ b/drivers/scsi/qla2xxx/qla_mid.c
-@@ -161,7 +161,7 @@ qla24xx_disable_vp(scsi_qla_host_t *vha)
- 	atomic_set(&vha->loop_state, LOOP_DOWN);
- 	atomic_set(&vha->loop_down_timer, LOOP_DOWN_TIME);
- 	list_for_each_entry(fcport, &vha->vp_fcports, list)
--		fcport->logout_on_delete = 0;
-+		fcport->logout_on_delete = 1;
- 
- 	qla2x00_mark_all_devices_lost(vha, 0);
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8958,6 +8958,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1025, 0x079b, "Acer Aspire V5-573G", ALC282_FIXUP_ASPIRE_V5_PINS),
+ 	SND_PCI_QUIRK(0x1025, 0x080d, "Acer Aspire V5-122P", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0840, "Acer Aspire E1", ALC269VB_FIXUP_ASPIRE_E1_COEF),
++	SND_PCI_QUIRK(0x1025, 0x100c, "Acer Aspire E5-574G", ALC255_FIXUP_ACER_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1025, 0x101c, "Acer Veriton N2510G", ALC269_FIXUP_LIFEBOOK),
+ 	SND_PCI_QUIRK(0x1025, 0x102b, "Acer Aspire C24-860", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1025, 0x1065, "Acer Aspire C20-820", ALC269VC_FIXUP_ACER_HEADSET_MIC),
 
 
 
