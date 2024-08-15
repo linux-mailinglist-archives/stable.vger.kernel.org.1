@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174EF9533F3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6997195357E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D7C0B26EA1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CF98285973
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880511A0712;
-	Thu, 15 Aug 2024 14:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58AD81A01BB;
+	Thu, 15 Aug 2024 14:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiX5WOvX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4pgvFW1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4614914AD0A;
-	Thu, 15 Aug 2024 14:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1556D1AC893;
+	Thu, 15 Aug 2024 14:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731655; cv=none; b=FQiFhgpTjEaAo9EuSPACNMhU9I/goMHQzM2wr0LYb3EpcRSbIvhHETfktFHem9IyfGUiywGtEzRKj0c9JZ7qiRKXPtqeXTERvXPWZrsE4fGH+4EJzupqEnfCq571iUeF8UQLQY1eFnzRdkQuJJ18uxrTARuo8LFf1kJFZXaxTw4=
+	t=1723732706; cv=none; b=QEJyCRgyMpx5sMv2H3SnzFTMza2YwqSkhnrX9mi0wRYEtFVE3bmgTUZUAILpsmuFiaTX6wgguZIRx4qDtE1fM9xOGP5ROslxKNWj4CJxTl/20MuBmt5pEaTvj3d1Hz/mhIPxoX79iFzLwW42DLId0uBYC9o1hHd+a7jGWm9tw6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731655; c=relaxed/simple;
-	bh=8T07X+o5nZuYaZejah8nM3D1NRkytSodn3uiZDfq108=;
+	s=arc-20240116; t=1723732706; c=relaxed/simple;
+	bh=Wk7oNtPC2YkYjaG95NfIl7iUexwF7I0U6yqm/nJl2TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pItr5+lJD/8TD2tJH9Sn7Sx/PMG7M67/kQPnxjdVW08wR48Za6u3WxSvVtspZpFmFjIHmoI/riHCRBsMEG1cJ1lS4XdDwoa26ezW3n9buJk9uo4xGotQVSCTSUQyACvvUnaIZH9hmlmIMjs2zGS0sL0NbDRJcwz6lyVNjEpAXI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiX5WOvX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6300C32786;
-	Thu, 15 Aug 2024 14:20:54 +0000 (UTC)
+	 MIME-Version; b=hnQjOJTlPD4Ik9YXvhqIOt86+e9uC2lyvAigAi9Mzv8qaAPcpdHFiscuzTBSXxbEE65KYnNTyt3S+/h4nHBlCds0b0Jmh1mWTqFRjdKNf0N1Wqsv15tfKM6L3NGk0DRMkfaglpM6XqNoLx2b0A+Y8XeJahEaG3bKOphzCMvauYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4pgvFW1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A9CC32786;
+	Thu, 15 Aug 2024 14:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731655;
-	bh=8T07X+o5nZuYaZejah8nM3D1NRkytSodn3uiZDfq108=;
+	s=korg; t=1723732706;
+	bh=Wk7oNtPC2YkYjaG95NfIl7iUexwF7I0U6yqm/nJl2TQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiX5WOvXr8HqBWVPSEU6xCZfYsjkNt55UWXCuu4WR121IUdQTOcYv/xYI1zGLv14F
-	 TwiMh4+VcAxwNaevis9COyK6D+t6qD8lquVGBp68atWclTvJf7GFT9GIm2wFWHncQZ
-	 FrFYWGjjA3XWo9sPydGVe7VPzkp8LFicLymruVlE=
+	b=O4pgvFW1BUHHUmPG0f7psVavj3C+8ENZ9Z52/6T6tzEMNEAArFj4e7Uo0zKeUTJbD
+	 ntSHn1K3x8VCUUx8uWOUFZj8KaGtppsx5LIVj2FzgpE7vNWKil8R1qx6/QfPWgmtgH
+	 41kD/4Vn3Li9SS7e3xSc/8W6Zllt7ekfXhA8G6/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 195/259] ACPI: SBS: manage alarm sysfs attribute through psy core
+Subject: [PATCH 5.10 262/352] md: do not delete safemode_timer in mddev_suspend
 Date: Thu, 15 Aug 2024 15:25:28 +0200
-Message-ID: <20240815131910.308733209@linuxfoundation.org>
+Message-ID: <20240815131929.569886805@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 6bad28cfc30988a845fb3f59a99f4b8a4ce8fe95 ]
+[ Upstream commit a8768a134518e406d41799a3594aeb74e0889cf7 ]
 
-Let the power supply core register the attribute.
+The deletion of safemode_timer in mddev_suspend() is redundant and
+potentially harmful now. If timer is about to be woken up but gets
+deleted, 'in_sync' will remain 0 until the next write, causing array
+to stay in the 'active' state instead of transitioning to 'clean'.
 
-This ensures that the attribute is created before the device is
-announced to userspace, avoiding a race condition.
+Commit 0d9f4f135eb6 ("MD: Add del_timer_sync to mddev_suspend (fix
+nasty panic))" introduced this deletion for dm, because if timer fired
+after dm is destroyed, the resource which the timer depends on might
+have been freed.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+However, commit 0dd84b319352 ("md: call __md_stop_writes in md_stop")
+added __md_stop_writes() to md_stop(), which is called before freeing
+resource. Timer is deleted in __md_stop_writes(), and the origin issue
+is resolved. Therefore, delete safemode_timer can be removed safely now.
+
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240508092053.1447930-1-linan666@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/sbs.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/md/md.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index 6e88224f60f09..4aa55d8d43859 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -80,7 +80,6 @@ struct acpi_battery {
- 	u16 spec;
- 	u8 id;
- 	u8 present:1;
--	u8 have_sysfs_alarm:1;
- };
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 67ceab4573be4..f1f029243e0cb 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -524,7 +524,6 @@ void mddev_suspend(struct mddev *mddev)
+ 	clear_bit_unlock(MD_ALLOW_SB_UPDATE, &mddev->flags);
+ 	wait_event(mddev->sb_wait, !test_bit(MD_UPDATING_SB, &mddev->flags));
  
- #define to_acpi_battery(x) power_supply_get_drvdata(x)
-@@ -465,12 +464,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
- 	return count;
+-	del_timer_sync(&mddev->safemode_timer);
+ 	/* restrict memory reclaim I/O during raid array is suspend */
+ 	mddev->noio_flag = memalloc_noio_save();
  }
- 
--static const struct device_attribute alarm_attr = {
-+static struct device_attribute alarm_attr = {
- 	.attr = {.name = "alarm", .mode = 0644},
- 	.show = acpi_battery_alarm_show,
- 	.store = acpi_battery_alarm_store,
- };
- 
-+static struct attribute *acpi_battery_attrs[] = {
-+	&alarm_attr.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(acpi_battery);
-+
- /* --------------------------------------------------------------------------
-                                  Driver Interface
-    -------------------------------------------------------------------------- */
-@@ -512,7 +517,10 @@ static int acpi_battery_read(struct acpi_battery *battery)
- static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
--	struct power_supply_config psy_cfg = { .drv_data = battery, };
-+	struct power_supply_config psy_cfg = {
-+		.drv_data = battery,
-+		.attr_grp = acpi_battery_groups,
-+	};
- 	int result;
- 
- 	battery->id = id;
-@@ -542,10 +550,6 @@ static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- 		goto end;
- 	}
- 
--	result = device_create_file(&battery->bat->dev, &alarm_attr);
--	if (result)
--		goto end;
--	battery->have_sysfs_alarm = 1;
-       end:
- 	printk(KERN_INFO PREFIX "%s [%s]: Battery Slot [%s] (battery %s)\n",
- 	       ACPI_SBS_DEVICE_NAME, acpi_device_bid(sbs->device),
-@@ -557,11 +561,8 @@ static void acpi_battery_remove(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
- 
--	if (battery->bat) {
--		if (battery->have_sysfs_alarm)
--			device_remove_file(&battery->bat->dev, &alarm_attr);
-+	if (battery->bat)
- 		power_supply_unregister(battery->bat);
--	}
- }
- 
- static int acpi_charger_add(struct acpi_sbs *sbs)
 -- 
 2.43.0
 
