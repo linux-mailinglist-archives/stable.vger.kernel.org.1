@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB88953289
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6919533E9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 452AC1F21E83
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74E28B23147
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324421A01CB;
-	Thu, 15 Aug 2024 14:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7985518CBE1;
+	Thu, 15 Aug 2024 14:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ml1q9bfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXROF7cD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14E044376;
-	Thu, 15 Aug 2024 14:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EFC176AD7;
+	Thu, 15 Aug 2024 14:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730710; cv=none; b=htsN4GtWqHj8nH8/c8hU1dgR7kvjwqwlATjKV1lyetzZgsvXsAjPMUVgC4UVraFJkBthsxXHesUD1Q4DegZGxVsB9EUMCjiDCdBZOhhiZ4rbng61bPuI5qbRy7oAdYFiY0wL1w3nxubiFPNrzaS9fKwwFKI1ZwQDCwhHhHwQgtY=
+	t=1723731627; cv=none; b=PM6Gis6jfjS35ciZKnClbjO3PbNQGeWD9zdQduzK7gHAAdSTYoegKqJfvBT+b9k+PrIdVNftiowhfwgug+G6HAn7UX1hJYocjaH8bW4CoSAbFVmwxY3PLPzOdUACVZitAfp9SycoWNWq9THqxUatt/nJ8jhM0nRKpX0YdTxFVXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730710; c=relaxed/simple;
-	bh=LZBVgxTukcRAI/MF/uftCkgLYeQ/2fOXZUR7ovrztHs=;
+	s=arc-20240116; t=1723731627; c=relaxed/simple;
+	bh=acfLIx3YC9kndQ1SkP3xWWnJ+dfnDTwXP4Ffnm/k3U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7bSLXQbdj/VbZwiFlc/jVWQ5HrNvZRYqX1RoHw4PSkASWenndnA/je/qhkjcexJuc5cKN4uwybKVrKVYAcDAWvbgvNVy9+n4Nw+6PEY/Z3Iia4c7MzhHp3349GquaNbfSIXT9QKWhqwo/nodXC/RQBzbE/UnCaZcQhMuCf0dVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ml1q9bfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAABC32786;
-	Thu, 15 Aug 2024 14:05:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nDvwUvWOno4Hpm/3579fnFJHWP3PQ4EOIvQlj9vvHWz98XPhYDq99lBXYUNKpP9WaIfrnNVBBu/GTEmQPyIux2v6zXg76aGZDXzEUo0Y1vhFxZsA/uHWfyP6/yRnJZ0gP3IGvdn2CdMGynHUrRuChl2xZznLFNF0FuzdD/BFTzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXROF7cD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B162BC32786;
+	Thu, 15 Aug 2024 14:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730709;
-	bh=LZBVgxTukcRAI/MF/uftCkgLYeQ/2fOXZUR7ovrztHs=;
+	s=korg; t=1723731627;
+	bh=acfLIx3YC9kndQ1SkP3xWWnJ+dfnDTwXP4Ffnm/k3U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ml1q9bfz7bembGyVt7AiHcTTx9e/F896hJL4UeulAQ1kGMJ5bUlzoH+SgKYPQ+m+H
-	 UNee1St5RVB/cdI/03Q93No18OHDf6ThLNQV1qVBCzCqtYIxQRJRLRgDQN1pBUKpBO
-	 pt52jtenOLY40MLGhoMLlkf+s1IeSH/Rm+1alnVk=
+	b=SXROF7cDZIyCOLqvfkWXVEuVmR21mCnJabLGXTSKRiUc4zXO4m0Q9KqXO/UemtZbY
+	 FDUO8WSVRikL5W5Ihh1D2x1B1UHThPPsDaBYxKlpI5TJVSZoRD0D564bKKj+Np4Qaf
+	 zVQ861bMN5Zw9b8XUNeH4tfvsJ6k01gnc6bz0Rsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 463/484] btrfs: fix double inode unlock for direct IO sync writes
+	Daniele Palmas <dnlplm@gmail.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 188/259] net: usb: qmi_wwan: fix memory leak for not ip packets
 Date: Thu, 15 Aug 2024 15:25:21 +0200
-Message-ID: <20240815131959.359683022@linuxfoundation.org>
+Message-ID: <20240815131910.038598241@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-commit e0391e92f9ab4fb3dbdeb139c967dcfa7ac4b115 upstream.
+[ Upstream commit 7ab107544b777c3bd7feb9fe447367d8edd5b202 ]
 
-If we do a direct IO sync write, at btrfs_sync_file(), and we need to skip
-inode logging or we get an error starting a transaction or an error when
-flushing delalloc, we end up unlocking the inode when we shouldn't under
-the 'out_release_extents' label, and then unlock it again at
-btrfs_direct_write().
+Free the unused skb when not ip packets arrive.
 
-Fix that by checking if we have to skip inode unlocking under that label.
-
-Reported-by: syzbot+7dbbb74af6291b5a5a8b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/000000000000dfd631061eaeb4bc@google.com/
-Fixes: 939b656bc8ab ("btrfs: fix corruption after buffer fault in during direct IO append write")
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/file.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -2433,7 +2433,10 @@ out:
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 17aa52ed892b5..3e219cf4dd851 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -238,6 +238,7 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			break;
+ 		default:
+ 			/* not ip - do not know what to do */
++			kfree_skb(skbn);
+ 			goto skip;
+ 		}
  
- out_release_extents:
- 	btrfs_release_log_ctx_extents(&ctx);
--	btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
-+	if (skip_ilock)
-+		up_write(&BTRFS_I(inode)->i_mmap_lock);
-+	else
-+		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
- 	goto out;
- }
- 
+-- 
+2.43.0
+
 
 
 
