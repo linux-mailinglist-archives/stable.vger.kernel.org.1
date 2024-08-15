@@ -1,264 +1,211 @@
-Return-Path: <stable+bounces-69232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27945953A38
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 20:36:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CF2953A39
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 20:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDFF828321F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 18:36:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F22F1282405
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 18:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE4753E24;
-	Thu, 15 Aug 2024 18:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B88C57CB4;
+	Thu, 15 Aug 2024 18:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SLI64Had"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YluXFRO2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1423D64A8F
-	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 18:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E4F52F9B;
+	Thu, 15 Aug 2024 18:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723747010; cv=none; b=W1D1mMGqRWiwbhdOha6nzlbWdsIF7hUeuiBIty42VrupNwsq2XL9Wh9y1WMkqm9Mw2JdBn8jGWdk4wLZPtL3ZcbrakZZUo7WlEebZGdWqZOybK+Wjht3P/NlDH59sVAA/Ps2FCvVT41RdrCI6KjDpjGJTzjsne1VfWo12qe8+sk=
+	t=1723747028; cv=none; b=jlta5hOBqwEU7jgWUeFTkQo0wcgw0/41GiNLYEcTf40azJjYYwku+iyOgo/ndBj5Kn1WCRUH7O1+mR5EFd8W70S1a9TzY2jzOcZAQT0hidleJUdLpD8jdGvkSz1WGq8PjlmmY1lK6LeRJkDNONBgW0RZ0n8islGd84XD8i787uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723747010; c=relaxed/simple;
-	bh=CH3Q4mZC1NmlZIsFwg6vDRv9m2p5wKSARo25MCdeeZE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=dnsOva1yx0wOEWajSI3OuGYb8HOzhou+hez728Yc6sTNTd/6yJckSCdCJE5H15T2rJTgMfJMkRwYYGUbGNiLz9N4GRSdwFGvBbFPhrnOvEB/pZIOq+L4HJ6q4O7/p8pKgfdhaOdkTMUo0HGTesQUdWxRR1zjpjdh/9hCsPZBC5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SLI64Had; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1723747028; c=relaxed/simple;
+	bh=4lG2s/rEVm2gjXFIWtarixG3gAlFPSX+ad51Mmftc1A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Iru73gL7NwnP3mfCZwt1t50wqMcvVUWnrkd0+CxcGzqmsEnaXqHkARlxsFf+ys6vSExiuTlsj5mIw/LWf16T796U8U9fuFMXLNWOweX1izJ7jvcUXqw+EZ7cifXyCK4su5RTsYKVKyAuN0alVekrMZHX9hZR8PqsZYwz3oa2yBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YluXFRO2; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-428243f928fso11887605e9.0
-        for <stable@vger.kernel.org>; Thu, 15 Aug 2024 11:36:48 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-201f44ad998so5008395ad.0;
+        Thu, 15 Aug 2024 11:37:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723747007; x=1724351807; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zt76OlTMgOTV1PjOkL70MRE2Kp+dw68kf6to76VKlEc=;
-        b=SLI64HadNQCa0zbN7vrCahx6Ju7JQpErjVUS8mG5eLEuYtMdHitu+ocj3luFOe55zT
-         lQO2gbbIASBVnEOyxNsh9grPERTO9khX5IsrNq4qVy+wFm7rkngs8q5ATKcwbVgVxPFh
-         YXbUdPvC72kiCOaoLBMIhFi6x+xbdAUgKj4Bf6nOgQx+PgpYkg3OJ+qTGF+hSvWSuvMr
-         iOuNWpmxsk+Ami8X0pB7SpcFbhe06AD9u//jos85FWqlEwkdWKzZGmhhqhNzwn1KOKBW
-         7fdaPW0XaCxOZRw+DbPm8yMYFCQrusPtxjk5gLDTYVGv37bHKVc85/AIEV7RPjjCKDhY
-         k/Dg==
+        d=gmail.com; s=20230601; t=1723747025; x=1724351825; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gKTqjT3TquwJ/r4IxNLWBpgHb1WkHVd2dOTyt8t8Mag=;
+        b=YluXFRO2/deCKe/VQK6EC8n84jZyOj2LGZuobgj7JjXuStf4aFP+KGNEDp4FpuVlYf
+         gF/I8zIuJIUYMJbp81HqjWFRrgCfEZFccNvpXIeUM5pbm92IqViSvd8sd6ZUW5c2jAr3
+         wkiEn8nCoTg0xYvt5KmD9o3XvYapG7w23z7ujN/0cV5wWrHHD3z08lPkDP0BgEkPLlF1
+         wemKiWBZEQj+wr3PP8nYXVppfS6mrs9ztcZj7AM71J+VY2PjAvo/fKGz0b0BZff1ZYl+
+         Bz0dxawymp+nSraB07S0dHzQJE/w2AH7E8aQrKUlPv5IuRwSR/+2GB3Fv1q1HoWmQwAH
+         yyVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723747007; x=1724351807;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Zt76OlTMgOTV1PjOkL70MRE2Kp+dw68kf6to76VKlEc=;
-        b=rYpS8qCKyvmcnlhSMfs/GozMVB15Hoszr2bCLbpmbZ/ADkt6LZ2EqDhxsdVU3BVM38
-         Y823kGvIUJIeJJ71jc9rDYMONbBGt4RjoqpYn/QodBS0LUYxxt8S5Ny40Qqq5mmbXD1+
-         AHh5DTQBe3GjWvIHOfm0+cMZLrH0bEvT/Or4uUMh0UXqkLZDSpBXKY2+hESjCo82OSQ8
-         1DORdWbtmgdCnKvV0vG9UiBsR2HKtqSb6wUlc7QdH+P0UI0HzP1hp3CH8VGehxh4/oTv
-         hxWYW7+WgrZx/DFTRMX3aT0lDdm0tlg1w5oq8vRP+VPVwZFdvXIvJL2dsTRi59J1qCgX
-         Fpdg==
-X-Gm-Message-State: AOJu0YyVvNN9/BsK91wwEF4THCM+rLz1Qb/qxGsQ+t02WWzkiHq7gCH+
-	gAD/uXZshSpYHef8ECvf0gGkXMF0MtIsVjIVX2SDE68UCYUpSbLfwg3oKJdt
-X-Google-Smtp-Source: AGHT+IH9UZSAnhCsMx9MvtdFjJC2LyfA9DQa3xzW6lHppJmeOQJX0mqL4ZkOF/cyhNCCsNgC4raxBw==
-X-Received: by 2002:a05:600c:4aa9:b0:426:62c5:4731 with SMTP id 5b1f17b1804b1-429ed7d648cmr2248045e9.29.1723747006711;
-        Thu, 15 Aug 2024 11:36:46 -0700 (PDT)
-Received: from laptop.. (117.red-83-52-251.dynamicip.rima-tde.net. [83.52.251.117])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded19839sm57949905e9.6.2024.08.15.11.36.46
+        d=1e100.net; s=20230601; t=1723747025; x=1724351825;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gKTqjT3TquwJ/r4IxNLWBpgHb1WkHVd2dOTyt8t8Mag=;
+        b=EcQFHA9hguS0CtNUk6zl86Js0KQ5p2EkjhYPH7l+9MRECDAeljgd1+/xw/NVUGuXTa
+         ji+pfKDMW4y/F4DjkW33NGQhoNoDtasFS/Mj5TtGUIQn0nHEfQAspUAva5jYXUwCj6aj
+         dXRYxvPE+8pycVQuOZZAE4VFJDcHjgI2ocuErYahmORfDbZEMTvCaAf5yq6na/6xIA1j
+         c8B81ChdldhUBSqb2Q38MN/uHnWW1LY+OIAv/wkSiceZq3IF8Q/yUIZk+YhFBUhTiwVC
+         GggC8d86o8+7quRWFxYpq9G97r0NSFAZYA8tyi31FfEwFTkZO6LL9q18xqAa1LCESjHW
+         wzlw==
+X-Gm-Message-State: AOJu0Yzv1KhbOuiUgPXcp2EZQaCw/TAUZFBmillAWiNSOortAdorilQW
+	9JFxsb2tn7zmKjAPbAvJdYqBBO/NXYttx1Xh/6g+gRsaZMg0Lcfe3NXeAA==
+X-Google-Smtp-Source: AGHT+IFvQoh+5iEK4YTMqw3Pbc5USAXefKLvdjZzPfx2L8B8aUMLk5wwA8vterucXvmbo0xxCOtT+A==
+X-Received: by 2002:a17:903:2303:b0:1fb:9b91:d7d9 with SMTP id d9443c01a7336-202062963e7mr2105505ad.26.1723747025294;
+        Thu, 15 Aug 2024 11:37:05 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:1ffe:470a:d451:c59])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f03756f6sm13013345ad.172.2024.08.15.11.37.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Aug 2024 11:36:46 -0700 (PDT)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
+        Thu, 15 Aug 2024 11:37:04 -0700 (PDT)
+Date: Thu, 15 Aug 2024 11:37:02 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: stable@vger.kernel.org
-Cc: linux-kernel-mentees@lists.linuxfoundation.org,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-Subject: [PATCH 6.2.y] jfs: define xtree root and page independently
-Date: Thu, 15 Aug 2024 20:36:41 +0200
-Message-Id: <20240815183641.7875-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+Cc: stable-commits@vger.kernel.org, javier.carrasco.cruz@gmail.com,
+	Henrik Rydberg <rydberg@bitmath.org>
+Subject: Re: Patch "Input: bcm5974 - check endpoint type before starting
+ traffic" has been added to the 6.6-stable tree
+Message-ID: <Zr5KzoHvfO_F5e6k@google.com>
+References: <20240815122130.72190-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240815122130.72190-1-sashal@kernel.org>
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+On Thu, Aug 15, 2024 at 08:21:29AM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     Input: bcm5974 - check endpoint type before starting traffic
+> 
+> to the 6.6-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      input-bcm5974-check-endpoint-type-before-starting-tr.patch
+> and it can be found in the queue-6.6 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-[ Upstream commit a779ed754e52d582b8c0e17959df063108bd0656 ]
+I am confused why to pick this up only to have to pick up the revert? It
+was not tagged for stable explicitly.
 
-In order to make array bounds checking sane, provide a separate
-definition of the in-inode xtree root and the external xtree page.
+I'd expects stable scripts to check for reverts that happen almost
+immediately...
 
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Tested-by: Manas Ghandat <ghandatmanas@gmail.com>
-(cherry picked from commit a779ed754e52d582b8c0e17959df063108bd0656)
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
----
- fs/jfs/jfs_dinode.h |  2 +-
- fs/jfs/jfs_imap.c   |  6 +++---
- fs/jfs/jfs_incore.h |  2 +-
- fs/jfs/jfs_txnmgr.c |  4 ++--
- fs/jfs/jfs_xtree.c  |  4 ++--
- fs/jfs/jfs_xtree.h  | 37 +++++++++++++++++++++++--------------
- 6 files changed, 32 insertions(+), 23 deletions(-)
+> 
+> 
+> 
+> commit 16ae8b10b473f96b7f63add2e928d8d437c83b07
+> Author: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Date:   Sat Oct 14 12:20:15 2023 +0200
+> 
+>     Input: bcm5974 - check endpoint type before starting traffic
+>     
+>     [ Upstream commit 2b9c3eb32a699acdd4784d6b93743271b4970899 ]
+>     
+>     syzbot has found a type mismatch between a USB pipe and the transfer
+>     endpoint, which is triggered by the bcm5974 driver[1].
+>     
+>     This driver expects the device to provide input interrupt endpoints and
+>     if that is not the case, the driver registration should terminate.
+>     
+>     Repros are available to reproduce this issue with a certain setup for
+>     the dummy_hcd, leading to an interrupt/bulk mismatch which is caught in
+>     the USB core after calling usb_submit_urb() with the following message:
+>     "BOGUS urb xfer, pipe 1 != type 3"
+>     
+>     Some other device drivers (like the appletouch driver bcm5974 is mainly
+>     based on) provide some checking mechanism to make sure that an IN
+>     interrupt endpoint is available. In this particular case the endpoint
+>     addresses are provided by a config table, so the checking can be
+>     targeted to the provided endpoints.
+>     
+>     Add some basic checking to guarantee that the endpoints available match
+>     the expected type for both the trackpad and button endpoints.
+>     
+>     This issue was only found for the trackpad endpoint, but the checking
+>     has been added to the button endpoint as well for the same reasons.
+>     
+>     Given that there was never a check for the endpoint type, this bug has
+>     been there since the first implementation of the driver (f89bd95c5c94).
+>     
+>     [1] https://syzkaller.appspot.com/bug?extid=348331f63b034f89b622
+>     
+>     Fixes: f89bd95c5c94 ("Input: bcm5974 - add driver for Macbook Air and Pro Penryn touchpads")
+>     Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>     Reported-and-tested-by: syzbot+348331f63b034f89b622@syzkaller.appspotmail.com
+>     Link: https://lore.kernel.org/r/20231007-topic-bcm5974_bulk-v3-1-d0f38b9d2935@gmail.com
+>     Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/drivers/input/mouse/bcm5974.c b/drivers/input/mouse/bcm5974.c
+> index ca150618d32f1..953992b458e9f 100644
+> --- a/drivers/input/mouse/bcm5974.c
+> +++ b/drivers/input/mouse/bcm5974.c
+> @@ -19,6 +19,7 @@
+>   * Copyright (C) 2006	   Nicolas Boichat (nicolas@boichat.ch)
+>   */
+>  
+> +#include "linux/usb.h"
+>  #include <linux/kernel.h>
+>  #include <linux/errno.h>
+>  #include <linux/slab.h>
+> @@ -193,6 +194,8 @@ enum tp_type {
+>  
+>  /* list of device capability bits */
+>  #define HAS_INTEGRATED_BUTTON	1
+> +/* maximum number of supported endpoints (currently trackpad and button) */
+> +#define MAX_ENDPOINTS	2
+>  
+>  /* trackpad finger data block size */
+>  #define FSIZE_TYPE1		(14 * sizeof(__le16))
+> @@ -891,6 +894,18 @@ static int bcm5974_resume(struct usb_interface *iface)
+>  	return error;
+>  }
+>  
+> +static bool bcm5974_check_endpoints(struct usb_interface *iface,
+> +				    const struct bcm5974_config *cfg)
+> +{
+> +	u8 ep_addr[MAX_ENDPOINTS + 1] = {0};
+> +
+> +	ep_addr[0] = cfg->tp_ep;
+> +	if (cfg->tp_type == TYPE1)
+> +		ep_addr[1] = cfg->bt_ep;
+> +
+> +	return usb_check_int_endpoints(iface, ep_addr);
+> +}
+> +
+>  static int bcm5974_probe(struct usb_interface *iface,
+>  			 const struct usb_device_id *id)
+>  {
+> @@ -903,6 +918,11 @@ static int bcm5974_probe(struct usb_interface *iface,
+>  	/* find the product index */
+>  	cfg = bcm5974_get_config(udev);
+>  
+> +	if (!bcm5974_check_endpoints(iface, cfg)) {
+> +		dev_err(&iface->dev, "Unexpected non-int endpoint\n");
+> +		return -ENODEV;
+> +	}
+> +
+>  	/* allocate memory for our device state and initialize it */
+>  	dev = kzalloc(sizeof(struct bcm5974), GFP_KERNEL);
+>  	input_dev = input_allocate_device();
 
-diff --git a/fs/jfs/jfs_dinode.h b/fs/jfs/jfs_dinode.h
-index 6b231d0d0071..603aae17a693 100644
---- a/fs/jfs/jfs_dinode.h
-+++ b/fs/jfs/jfs_dinode.h
-@@ -96,7 +96,7 @@ struct dinode {
- #define di_gengen	u._file._u1._imap._gengen
- 
- 			union {
--				xtpage_t _xtroot;
-+				xtroot_t _xtroot;
- 				struct {
- 					u8 unused[16];	/* 16: */
- 					dxd_t _dxd;	/* 16: */
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 390cbfce391f..85918c0d852b 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -669,7 +669,7 @@ int diWrite(tid_t tid, struct inode *ip)
- 		 * This is the special xtree inside the directory for storing
- 		 * the directory table
- 		 */
--		xtpage_t *p, *xp;
-+		xtroot_t *p, *xp;
- 		xad_t *xad;
- 
- 		jfs_ip->xtlid = 0;
-@@ -683,7 +683,7 @@ int diWrite(tid_t tid, struct inode *ip)
- 		 * copy xtree root from inode to dinode:
- 		 */
- 		p = &jfs_ip->i_xtroot;
--		xp = (xtpage_t *) &dp->di_dirtable;
-+		xp = (xtroot_t *) &dp->di_dirtable;
- 		lv = ilinelock->lv;
- 		for (n = 0; n < ilinelock->index; n++, lv++) {
- 			memcpy(&xp->xad[lv->offset], &p->xad[lv->offset],
-@@ -712,7 +712,7 @@ int diWrite(tid_t tid, struct inode *ip)
- 	 *	regular file: 16 byte (XAD slot) granularity
- 	 */
- 	if (type & tlckXTREE) {
--		xtpage_t *p, *xp;
-+		xtroot_t *p, *xp;
- 		xad_t *xad;
- 
- 		/*
-diff --git a/fs/jfs/jfs_incore.h b/fs/jfs/jfs_incore.h
-index 721def69e732..dd4264aa9bed 100644
---- a/fs/jfs/jfs_incore.h
-+++ b/fs/jfs/jfs_incore.h
-@@ -66,7 +66,7 @@ struct jfs_inode_info {
- 	lid_t	xtlid;		/* lid of xtree lock on directory */
- 	union {
- 		struct {
--			xtpage_t _xtroot;	/* 288: xtree root */
-+			xtroot_t _xtroot;	/* 288: xtree root */
- 			struct inomap *_imap;	/* 4: inode map header	*/
- 		} file;
- 		struct {
-diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
-index ffd4feece078..997cc1b9e628 100644
---- a/fs/jfs/jfs_txnmgr.c
-+++ b/fs/jfs/jfs_txnmgr.c
-@@ -778,7 +778,7 @@ struct tlock *txLock(tid_t tid, struct inode *ip, struct metapage * mp,
- 			if (mp->xflag & COMMIT_PAGE)
- 				p = (xtpage_t *) mp->data;
- 			else
--				p = &jfs_ip->i_xtroot;
-+				p = (xtpage_t *) &jfs_ip->i_xtroot;
- 			xtlck->lwm.offset =
- 			    le16_to_cpu(p->header.nextindex);
- 		}
-@@ -1671,7 +1671,7 @@ static void xtLog(struct jfs_log * log, struct tblock * tblk, struct lrd * lrd,
- 
- 	if (tlck->type & tlckBTROOT) {
- 		lrd->log.redopage.type |= cpu_to_le16(LOG_BTROOT);
--		p = &JFS_IP(ip)->i_xtroot;
-+		p = (xtpage_t *) &JFS_IP(ip)->i_xtroot;
- 		if (S_ISDIR(ip->i_mode))
- 			lrd->log.redopage.type |=
- 			    cpu_to_le16(LOG_DIR_XTREE);
-diff --git a/fs/jfs/jfs_xtree.c b/fs/jfs/jfs_xtree.c
-index 2d304cee884c..5ee618d17e77 100644
---- a/fs/jfs/jfs_xtree.c
-+++ b/fs/jfs/jfs_xtree.c
-@@ -1213,7 +1213,7 @@ xtSplitRoot(tid_t tid,
- 	struct xtlock *xtlck;
- 	int rc;
- 
--	sp = &JFS_IP(ip)->i_xtroot;
-+	sp = (xtpage_t *) &JFS_IP(ip)->i_xtroot;
- 
- 	INCREMENT(xtStat.split);
- 
-@@ -2098,7 +2098,7 @@ int xtAppend(tid_t tid,		/* transaction id */
-  */
- void xtInitRoot(tid_t tid, struct inode *ip)
- {
--	xtpage_t *p;
-+	xtroot_t *p;
- 
- 	/*
- 	 * acquire a transaction lock on the root
-diff --git a/fs/jfs/jfs_xtree.h b/fs/jfs/jfs_xtree.h
-index ad7592191d76..0f6cf5a1ce75 100644
---- a/fs/jfs/jfs_xtree.h
-+++ b/fs/jfs/jfs_xtree.h
-@@ -65,24 +65,33 @@ struct xadlist {
- #define XTPAGEMAXSLOT	256
- #define XTENTRYSTART	2
- 
--/*
-- *	xtree page:
-- */
--typedef union {
--	struct xtheader {
--		__le64 next;	/* 8: */
--		__le64 prev;	/* 8: */
-+struct xtheader {
-+	__le64 next;	/* 8: */
-+	__le64 prev;	/* 8: */
- 
--		u8 flag;	/* 1: */
--		u8 rsrvd1;	/* 1: */
--		__le16 nextindex;	/* 2: next index = number of entries */
--		__le16 maxentry;	/* 2: max number of entries */
--		__le16 rsrvd2;	/* 2: */
-+	u8 flag;	/* 1: */
-+	u8 rsrvd1;	/* 1: */
-+	__le16 nextindex;	/* 2: next index = number of entries */
-+	__le16 maxentry;	/* 2: max number of entries */
-+	__le16 rsrvd2;	/* 2: */
- 
--		pxd_t self;	/* 8: self */
--	} header;		/* (32) */
-+	pxd_t self;	/* 8: self */
-+};
- 
-+/*
-+ *	xtree root (in inode):
-+ */
-+typedef union {
-+	struct xtheader header;
- 	xad_t xad[XTROOTMAXSLOT];	/* 16 * maxentry: xad array */
-+} xtroot_t;
-+
-+/*
-+ *	xtree page:
-+ */
-+typedef union {
-+	struct xtheader header;
-+	xad_t xad[XTPAGEMAXSLOT];	/* 16 * maxentry: xad array */
- } xtpage_t;
- 
- /*
+Thanks.
 
-base-commit: 46df6964c1a9eb72027710f626cb1c6bfb5d58c9
 -- 
-2.39.2
-
+Dmitry
 
