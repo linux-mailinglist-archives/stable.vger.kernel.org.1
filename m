@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F4C95318F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A466D952F3E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C0771C22999
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8E8288CF8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE8319DF58;
-	Thu, 15 Aug 2024 13:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D247117CA1D;
+	Thu, 15 Aug 2024 13:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LayFKaMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e967dHDl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F6D1714A1;
-	Thu, 15 Aug 2024 13:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F11918D630;
+	Thu, 15 Aug 2024 13:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730136; cv=none; b=BdvGSqMexkHCkjqed3oL+ibJNRN62I3e3U2GH0OPzyYvJtZtRuLhEKNKjeX21Fx8d0CGaYRMnLiok9WdUpSakPYEn7ZtZ5uMXKkXXUUEsyhxahdIL/HHHMCVyy7cG36raYn/LoXrAwUtkWgNgHAL8i1SKFOeGCOxQunvuqMhIPQ=
+	t=1723728615; cv=none; b=YqAjL2sLqW72IAi5ttvf/VOmk39350Y8G0Xjn7SwZUk2O327ymvVsXvnY57yaehbY0d50DcvS1RhD7y3jGzgmcNOOgVgKEEIenLqsM+0HHh7VJ42GlGZzdl2i5lJijrg6gRZ+9To5zdx1g8K6s7mP2gWjEE7TJX4wVHHjMwjmt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730136; c=relaxed/simple;
-	bh=0HIDXnwwC/FgxJsuoyFNL4I0kUagwyPb2ee1SIJkzw4=;
+	s=arc-20240116; t=1723728615; c=relaxed/simple;
+	bh=a93V6jKELko8y9DL8AdlLSXeyTG7FevgePc7qwqbyd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cci+RQoRJGvo67FFYlMIS9ku6h/xOD3GjIra3e+AeIWDcnVXk6sVc1QQXjadO7R1qEVo7exu72qmtzfV3GcwHTxXfYWChEHsLvOQa6oNgKUVgcPhtqiiW5hx5aHuXHl4Yn1/e/hNqTRZxU9/k028QK8YbOB9kI9IFLJZjo6FyxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LayFKaMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F1DC32786;
-	Thu, 15 Aug 2024 13:55:35 +0000 (UTC)
+	 MIME-Version; b=sX0cPN6aMzbyftyz2vL35P1LlpYg2gXSxO9dg6WDXf0GY0vZJWCyfNtTdHCpZjORqP6WbbUc/4RBGNSrV1myidxRd7rVyP9ZVp1RK5SqQ9B227At8qbHcZm1rxKRvyWzqLIIHHA9y4UbkutQwUMI0Mif1VoRr/g+JyYQXQVBxPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e967dHDl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2AFC32786;
+	Thu, 15 Aug 2024 13:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730136;
-	bh=0HIDXnwwC/FgxJsuoyFNL4I0kUagwyPb2ee1SIJkzw4=;
+	s=korg; t=1723728615;
+	bh=a93V6jKELko8y9DL8AdlLSXeyTG7FevgePc7qwqbyd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LayFKaMiv8efFjbRMUb9Q9daMQAXVMEL67ObZ2Tr9vRua9Y9NIJ8a2aQlkzEo5AJX
-	 rBcFxgVE79CQv8WBhf7hAAd9036reAZrMoaForlhMyB3ewJyrfM9MXElXCuELoEG/5
-	 YoM7dRV6HITJBu6K+rDlmQyEF/LAcHL6kYm3jzxQ=
+	b=e967dHDlpe41A7bs0NQHIR4kBskZ+x+2LzQMzPTPl/lD0CJe4+8OHuaX679C9TIZw
+	 twAEvTiiz3u2UDkyrBW+c8fM+ihqyrqw7HopRfkYAjIWz6smBScwZrIUBfHIQUNkix
+	 GLT5R/EyvvTw5TClWnBVmpLOVwRH1imQLV38/B1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Lee Jones <lee@kernel.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 315/484] leds: trigger: Call synchronize_rcu() before calling trig->activate()
+Subject: [PATCH 4.19 056/196] pinctrl: single: fix possible memory leak when pinctrl_enable() fails
 Date: Thu, 15 Aug 2024 15:22:53 +0200
-Message-ID: <20240815131953.570324130@linuxfoundation.org>
+Message-ID: <20240815131854.222167546@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit b1bbd20f35e19774ea01989320495e09ac44fba3 ]
+[ Upstream commit 8f773bfbdd428819328a2d185976cfc6ae811cd3 ]
 
-Some triggers call led_trigger_event() from their activate() callback
-to initialize the brightness of the LED for which the trigger is being
-activated.
+This driver calls pinctrl_register_and_init() which is not
+devm_ managed, it will leads memory leak if pinctrl_enable()
+fails. Replace it with devm_pinctrl_register_and_init().
+And call pcs_free_resources() if pinctrl_enable() fails.
 
-In order for the LED's initial state to be set correctly this requires that
-the led_trigger_event() call uses the new version of trigger->led_cdevs,
-which has the new LED.
-
-AFAICT led_trigger_event() will always use the new version when it is
-running on the same CPU as where the list_add_tail_rcu() call was made,
-which is why the missing synchronize_rcu() has not lead to bug reports.
-But if activate() is pre-empted, sleeps or uses a worker then
-the led_trigger_event() call may run on another CPU which may still use
-the old trigger->led_cdevs list.
-
-Add a synchronize_rcu() call to ensure that any led_trigger_event() calls
-done from activate() always use the new list.
-
-Triggers using led_trigger_event() from their activate() callback are:
-net/bluetooth/leds.c, net/rfkill/core.c and drivers/tty/vt/keyboard.c.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240531120124.75662-1-hdegoede@redhat.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
+Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240606023704.3931561-3-yangyingliang@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-triggers.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/pinctrl/pinctrl-single.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-index cdb446cb84af2..fe7fb2e7149c5 100644
---- a/drivers/leds/led-triggers.c
-+++ b/drivers/leds/led-triggers.c
-@@ -193,6 +193,13 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
- 		spin_unlock(&trig->leddev_list_lock);
- 		led_cdev->trigger = trig;
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 4143cafbf7e73..3699843e9a6e8 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -1311,7 +1311,6 @@ static void pcs_irq_free(struct pcs_device *pcs)
+ static void pcs_free_resources(struct pcs_device *pcs)
+ {
+ 	pcs_irq_free(pcs);
+-	pinctrl_unregister(pcs->pctl);
  
-+		/*
-+		 * Some activate() calls use led_trigger_event() to initialize
-+		 * the brightness of the LED for which the trigger is being set.
-+		 * Ensure the led_cdev is visible on trig->led_cdevs for this.
-+		 */
-+		synchronize_rcu();
-+
- 		ret = 0;
- 		if (trig->activate)
- 			ret = trig->activate(led_cdev);
+ #if IS_BUILTIN(CONFIG_PINCTRL_SINGLE)
+ 	if (pcs->missing_nr_pinctrl_cells)
+@@ -1864,7 +1863,7 @@ static int pcs_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto free;
+ 
+-	ret = pinctrl_register_and_init(&pcs->desc, pcs->dev, pcs, &pcs->pctl);
++	ret = devm_pinctrl_register_and_init(pcs->dev, &pcs->desc, pcs, &pcs->pctl);
+ 	if (ret) {
+ 		dev_err(pcs->dev, "could not register single pinctrl driver\n");
+ 		goto free;
+@@ -1897,8 +1896,10 @@ static int pcs_probe(struct platform_device *pdev)
+ 
+ 	dev_info(pcs->dev, "%i pins, size %u\n", pcs->desc.npins, pcs->size);
+ 
+-	return pinctrl_enable(pcs->pctl);
++	if (pinctrl_enable(pcs->pctl))
++		goto free;
+ 
++	return 0;
+ free:
+ 	pcs_free_resources(pcs);
+ 
 -- 
 2.43.0
 
