@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-67734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D889527B1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 03:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1742D9527C5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 04:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EF181F23623
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 01:54:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DCAB1F22B17
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 02:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AF04A3E;
-	Thu, 15 Aug 2024 01:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246F279EA;
+	Thu, 15 Aug 2024 02:00:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB9B22094;
-	Thu, 15 Aug 2024 01:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEFF8F6D;
+	Thu, 15 Aug 2024 02:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723686870; cv=none; b=hxQpJUPmMwul+pkGsNXJyKcmwqv0RyIA4b04PhcHKGkXcbobvjOFK0oKv2vy/TwhT0uf8lDUarIbvZjINZ3pQ2+T+sYWDBOKSEcMThX/g4FFNOBeMgdOefBxqaZUQ7rUsubBNSZqx0ddUOtVJ6tyFvzstO4vneGkEt0fpoRwt/E=
+	t=1723687233; cv=none; b=cyeJDs6ROPlEPb0WFaXbQlSM0slmgVVtedCtcp2Zagd+y/h9738oCdPAdRSVi5E1luNqPE+N1EyUZKe8IoSS87sy2vVYzA4JhYtzzj/M5kKzeQYMKQ9D9Efwkrgv0RgQINzjYvnE5qQQ0wEIsvXUYZD/zCL1QdyZwqbTQrkHqKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723686870; c=relaxed/simple;
-	bh=2XgjUA3+Jq76hc3frjNsDmVolGe3r+NnQBfF+T8bkz4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WZhwapPX+tCjmbN1lbGMttenYwcnNvEUIZbobIZcEwvZlNVsXSG4XXm7lWihdn2lbL/e5CyKOVywDsuNnno84mLGEThhAc6CpQpcK2YQQXpMyaRZgfAb/o14AOWASVfYumI2THhlpn1DZ0ZJzN6dV+ZX5yYAK/NfgC7sWH4jq/U=
+	s=arc-20240116; t=1723687233; c=relaxed/simple;
+	bh=glhbN7dVT4zQpN3na6hmnR2DxrICAvbg2AdlboJlrmM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qrdmUl/MJ+lP+FA0SkZKRvhz35s2/LAgldivdqljowXuKGMJt0r08hwOZ0PEIjNYDmMBwiR47BpHv3NoKxtSOzOPsT3sevSeiNcIEH9+HXjbZPCbAicDLtFNSoy9u6XYw7fTF0C/uzAXCNhwkHcu/uLU5svuIlJuzE1jPwvTf1c=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowACHj0fCX71mwUKIBg--.7688S2;
-	Thu, 15 Aug 2024 09:54:18 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAAHDvovYb1mXpiIBg--.8052S2;
+	Thu, 15 Aug 2024 10:00:22 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: dinguyen@kernel.org,
-	bp@alien8.de,
-	tony.luck@intel.com,
-	james.morse@arm.com,
-	mchehab@kernel.org,
-	rric@kernel.org,
-	niravkumar.l.rabara@intel.com,
+To: tony@atomide.com,
+	haojian.zhuang@linaro.org,
+	linus.walleij@linaro.org,
 	akpm@linux-foundation.org
-Cc: linux-edac@vger.kernel.org,
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 RESEND] EDAC/altera: Fix possible null pointer dereference
-Date: Thu, 15 Aug 2024 09:54:09 +0800
-Message-Id: <20240815015409.148443-1-make24@iscas.ac.cn>
+Subject: [PATCH RESEND] pinctrl: single: fix potential NULL dereference in pcs_get_function()
+Date: Thu, 15 Aug 2024 10:00:14 +0800
+Message-Id: <20240815020014.149431-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,14 +53,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACHj0fCX71mwUKIBg--.7688S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw1fCr17Ww4rWFWDuw45KFg_yoW8Xw4xpr
-	W7W345tryUKa4UWr4vvws5XFy5C3Z3Xay0qrWIyayY93y3Xw15Jryj9FWUta4jqrW8Cay3
-	tr45tw45AayUJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBS14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+X-CM-TRANSID:rQCowAAHDvovYb1mXpiIBg--.8052S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrury8WFW5Xr4DZF4fCFW8tFb_yoWDZFg_CF
+	WxXryxJryUGF4DXw17K3yrZFy0ka1UZFW0vr4vg34akryUAw4q93ykG390kwn7Gr4fGrZa
+	yFy5Zr93J347AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbh8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
 	4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
 	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r
 	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
@@ -74,51 +72,32 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7Zw1fCr17Ww4rWFWDuw45KFg_yoW8Xw4xpr
 	Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUF0eHDUUUU
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-In altr_s10_sdram_check_ecc_deps(), of_get_address() may return NULL which
-is later dereferenced. Fix this bug by adding NULL check.
-of_translate_address() is the same.
+pinmux_generic_get_function() can return NULL and the pointer 'function'
+was dereferenced without checking against NULL. Add checking of pointer
+'function' in pcs_get_function().
 
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: e1bca853dddc ("EDAC/altera: Add SDRAM ECC check for U-Boot")
+Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
-Changes in v2:
-- modified the check of of_translate_address() as suggestions.
----
- drivers/edac/altera_edac.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-single.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
-index fe89f5c4837f..4fbfa338e05f 100644
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1086,6 +1086,7 @@ static int altr_s10_sdram_check_ecc_deps(struct altr_edac_device_dev *device)
- 	struct arm_smccc_res result;
- 	struct device_node *np;
- 	phys_addr_t sdram_addr;
-+	const __be32 *sdram_addrp;
- 	u32 read_reg;
- 	int ret;
- 
-@@ -1093,8 +1094,14 @@ static int altr_s10_sdram_check_ecc_deps(struct altr_edac_device_dev *device)
- 	if (!np)
- 		goto sdram_err;
- 
--	sdram_addr = of_translate_address(np, of_get_address(np, 0,
--							     NULL, NULL));
-+	sdram_addrp = of_get_address(np, 0, NULL, NULL);
-+	if (!sdram_addrp)
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 4c6bfabb6bd7..4da3c3f422b6 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -345,6 +345,8 @@ static int pcs_get_function(struct pinctrl_dev *pctldev, unsigned pin,
+ 		return -ENOTSUPP;
+ 	fselector = setting->func;
+ 	function = pinmux_generic_get_function(pctldev, fselector);
++	if (!function)
 +		return -EINVAL;
-+
-+	sdram_addr = of_translate_address(np, sdram_addrp);
-+	if (sdram_addr == OF_BAD_ADDR)
-+		return -EINVAL;
-+
- 	of_node_put(np);
- 	sdram_ecc_addr = (unsigned long)sdram_addr + prv->ecc_en_ofst;
- 	arm_smccc_smc(INTEL_SIP_SMC_REG_READ, sdram_ecc_addr,
+ 	*func = function->data;
+ 	if (!(*func)) {
+ 		dev_err(pcs->dev, "%s could not find function%i\n",
 -- 
 2.25.1
 
