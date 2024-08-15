@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-69109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2475695357B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:38:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F068995327C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 486AB1C23BEC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:38:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97075283194
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC53B1A00D1;
-	Thu, 15 Aug 2024 14:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C6D1B1429;
+	Thu, 15 Aug 2024 14:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGWhufHq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIdfaWJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889F63214;
-	Thu, 15 Aug 2024 14:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D631A7072;
+	Thu, 15 Aug 2024 14:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732696; cv=none; b=tYCxvHvd59BBv2W5Z9+zUP9Mpo6aupyh/XjHpSTH/DOhLUBHsFFUNX9KYRJ21PCSyj9uV7PgN2hLDgx3vyShkVIOgANK7PcNNKo1FBL+F1b54duzvY3ZiJ4TIKab6+EW2zPZx3BtzpYTAu3+6yN753JAfkYQlSmStfVt1B4RQKw=
+	t=1723730690; cv=none; b=izRAVZQ0gfcoBktugzuIuTvjNStuOGsO3FJLJEAwgk+MkUB1Oeq8zxZOwkzv/eZd4W+A8L9JH/FuBebtiizLgcbOvwSsMF4bdvKnHcvr2p0VcOPRgRQeU3O5TZEWeTCIcLDXSbtvzn01ojNe322OvmELx9bIw6N6giY8heSq0GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732696; c=relaxed/simple;
-	bh=i0Hgpl1F/JGvMUUWpyk/mj5CYtBBNeQ5MzlWPKNDFFU=;
+	s=arc-20240116; t=1723730690; c=relaxed/simple;
+	bh=rW6wXnqzvhwlupg7FpisrxozCbWYHHc8ElQNb9WTKEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZJpYzUm21Ds+NDYb3q3dc42cBvQ0BuF/S3nAIC+0EC8mZbenNT5Pfl3278trecr8CcpoVxg72U5a/0Ht1OdT6kYhJNGSIfBBfvBq8znbYyJ00tlofKlWPGD/lHKhOzhHYPJFVdZNwvEVBLhhpuQw+TtV5bZeKuuVt1CBHqxVGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGWhufHq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCEDC32786;
-	Thu, 15 Aug 2024 14:38:15 +0000 (UTC)
+	 MIME-Version; b=esUXvRO07h9ExJNMdBehj8jIaMz5B7iDT0WHtw2H1g6B3shIDw7oIJM5FDYSaeABRXla39nI8KqQRuCQjUOw1e2VAfo+dAWNPLkgPFgmKblp7OixeT9174D2bz90+XpGqxHqgWEVxZslzS8GORHVlrvNlH8KjtCetYHgwPW/tvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIdfaWJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AF4C32786;
+	Thu, 15 Aug 2024 14:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732696;
-	bh=i0Hgpl1F/JGvMUUWpyk/mj5CYtBBNeQ5MzlWPKNDFFU=;
+	s=korg; t=1723730690;
+	bh=rW6wXnqzvhwlupg7FpisrxozCbWYHHc8ElQNb9WTKEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGWhufHqWpE7QpRKX3soQ621Gc6ASZV9yggLCOdD6AuKJatmVR1yC20B52xWtPUod
-	 Ft2lFNIjzjQJW+It2LvF8EZRmIhpL3c/JVQOo32AvhK0478Q2XfOdiHl/jH4UmI0aK
-	 jhiw4ZHsFDSTgxo9omkZzB6FMV6TmyC1anEODe4o=
+	b=tIdfaWJxl8gel9IYYbzNMwAGExJw+9PLMHNNCnoixXzSFFiJqaSGtHgizN+zvIIaG
+	 RUQXDe3DLFGHzBSesROucBJYx6DbyiqOxjI8Dk+32FDG5dp0V1+03r6bAfMcpqmqfN
+	 21UErKjzVlCIaPGC0sI9LrKM+ns0ZeYeaPGaBFnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot+6acef9e0a4d1f46c83d4@syzkaller.appspotmail.com,
-	gnault@redhat.com,
-	cong.wang@bytedance.com,
-	James Chapman <jchapman@katalix.com>,
-	Tom Parkin <tparkin@katalix.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 259/352] l2tp: fix lockdep splat
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 467/484] netfilter: nf_tables: use timestamp to check for set element timeout
 Date: Thu, 15 Aug 2024 15:25:25 +0200
-Message-ID: <20240815131929.454577408@linuxfoundation.org>
+Message-ID: <20240815131959.516586312@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,221 +61,289 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Chapman <jchapman@katalix.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 86a41ea9fd79ddb6145cb8ebf5aeafceabca6f7d ]
+commit 7395dfacfff65e9938ac0889dafa1ab01e987d15 upstream
 
-When l2tp tunnels use a socket provided by userspace, we can hit
-lockdep splats like the below when data is transmitted through another
-(unrelated) userspace socket which then gets routed over l2tp.
+Add a timestamp field at the beginning of the transaction, store it
+in the nftables per-netns area.
 
-This issue was previously discussed here:
-https://lore.kernel.org/netdev/87sfialu2n.fsf@cloudflare.com/
+Update set backend .insert, .deactivate and sync gc path to use the
+timestamp, this avoids that an element expires while control plane
+transaction is still unfinished.
 
-The solution is to have lockdep treat socket locks of l2tp tunnel
-sockets separately than those of standard INET sockets. To do so, use
-a different lockdep subclass where lock nesting is possible.
+.lookup and .update, which are used from packet path, still use the
+current time to check if the element has expired. And .get path and dump
+also since this runs lockless under rcu read size lock. Then, there is
+async gc which also needs to check the current time since it runs
+asynchronously from a workqueue.
 
-  ============================================
-  WARNING: possible recursive locking detected
-  6.10.0+ #34 Not tainted
-  --------------------------------------------
-  iperf3/771 is trying to acquire lock:
-  ffff8881027601d8 (slock-AF_INET/1){+.-.}-{2:2}, at: l2tp_xmit_skb+0x243/0x9d0
-
-  but task is already holding lock:
-  ffff888102650d98 (slock-AF_INET/1){+.-.}-{2:2}, at: tcp_v4_rcv+0x1848/0x1e10
-
-  other info that might help us debug this:
-   Possible unsafe locking scenario:
-
-         CPU0
-         ----
-    lock(slock-AF_INET/1);
-    lock(slock-AF_INET/1);
-
-   *** DEADLOCK ***
-
-   May be due to missing lock nesting notation
-
-  10 locks held by iperf3/771:
-   #0: ffff888102650258 (sk_lock-AF_INET){+.+.}-{0:0}, at: tcp_sendmsg+0x1a/0x40
-   #1: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x4b/0xbc0
-   #2: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x17a/0x1130
-   #3: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: process_backlog+0x28b/0x9f0
-   #4: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_local_deliver_finish+0xf9/0x260
-   #5: ffff888102650d98 (slock-AF_INET/1){+.-.}-{2:2}, at: tcp_v4_rcv+0x1848/0x1e10
-   #6: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x4b/0xbc0
-   #7: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x17a/0x1130
-   #8: ffffffff822ac1e0 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0xcc/0x1450
-   #9: ffff888101f33258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock#2){+...}-{2:2}, at: __dev_queue_xmit+0x513/0x1450
-
-  stack backtrace:
-  CPU: 2 UID: 0 PID: 771 Comm: iperf3 Not tainted 6.10.0+ #34
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x69/0xa0
-   dump_stack+0xc/0x20
-   __lock_acquire+0x135d/0x2600
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   lock_acquire+0xc4/0x2a0
-   ? l2tp_xmit_skb+0x243/0x9d0
-   ? __skb_checksum+0xa3/0x540
-   _raw_spin_lock_nested+0x35/0x50
-   ? l2tp_xmit_skb+0x243/0x9d0
-   l2tp_xmit_skb+0x243/0x9d0
-   l2tp_eth_dev_xmit+0x3c/0xc0
-   dev_hard_start_xmit+0x11e/0x420
-   sch_direct_xmit+0xc3/0x640
-   __dev_queue_xmit+0x61c/0x1450
-   ? ip_finish_output2+0xf4c/0x1130
-   ip_finish_output2+0x6b6/0x1130
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __ip_finish_output+0x217/0x380
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   __ip_finish_output+0x217/0x380
-   ip_output+0x99/0x120
-   __ip_queue_xmit+0xae4/0xbc0
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? tcp_options_write.constprop.0+0xcb/0x3e0
-   ip_queue_xmit+0x34/0x40
-   __tcp_transmit_skb+0x1625/0x1890
-   __tcp_send_ack+0x1b8/0x340
-   tcp_send_ack+0x23/0x30
-   __tcp_ack_snd_check+0xa8/0x530
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   tcp_rcv_established+0x412/0xd70
-   tcp_v4_do_rcv+0x299/0x420
-   tcp_v4_rcv+0x1991/0x1e10
-   ip_protocol_deliver_rcu+0x50/0x220
-   ip_local_deliver_finish+0x158/0x260
-   ip_local_deliver+0xc8/0xe0
-   ip_rcv+0xe5/0x1d0
-   ? __pfx_ip_rcv+0x10/0x10
-   __netif_receive_skb_one_core+0xce/0xe0
-   ? process_backlog+0x28b/0x9f0
-   __netif_receive_skb+0x34/0xd0
-   ? process_backlog+0x28b/0x9f0
-   process_backlog+0x2cb/0x9f0
-   __napi_poll.constprop.0+0x61/0x280
-   net_rx_action+0x332/0x670
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? find_held_lock+0x2b/0x80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   handle_softirqs+0xda/0x480
-   ? __dev_queue_xmit+0xa2c/0x1450
-   do_softirq+0xa1/0xd0
-   </IRQ>
-   <TASK>
-   __local_bh_enable_ip+0xc8/0xe0
-   ? __dev_queue_xmit+0xa2c/0x1450
-   __dev_queue_xmit+0xa48/0x1450
-   ? ip_finish_output2+0xf4c/0x1130
-   ip_finish_output2+0x6b6/0x1130
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __ip_finish_output+0x217/0x380
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   __ip_finish_output+0x217/0x380
-   ip_output+0x99/0x120
-   __ip_queue_xmit+0xae4/0xbc0
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? tcp_options_write.constprop.0+0xcb/0x3e0
-   ip_queue_xmit+0x34/0x40
-   __tcp_transmit_skb+0x1625/0x1890
-   tcp_write_xmit+0x766/0x2fb0
-   ? __entry_text_end+0x102ba9/0x102bad
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __might_fault+0x74/0xc0
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   __tcp_push_pending_frames+0x56/0x190
-   tcp_push+0x117/0x310
-   tcp_sendmsg_locked+0x14c1/0x1740
-   tcp_sendmsg+0x28/0x40
-   inet_sendmsg+0x5d/0x90
-   sock_write_iter+0x242/0x2b0
-   vfs_write+0x68d/0x800
-   ? __pfx_sock_write_iter+0x10/0x10
-   ksys_write+0xc8/0xf0
-   __x64_sys_write+0x3d/0x50
-   x64_sys_call+0xfaf/0x1f50
-   do_syscall_64+0x6d/0x140
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f4d143af992
-  Code: c3 8b 07 85 c0 75 24 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> e9 01 cc ff ff 41 54 b8 02 00 00 0
-  RSP: 002b:00007ffd65032058 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-  RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f4d143af992
-  RDX: 0000000000000025 RSI: 00007f4d143f3bcc RDI: 0000000000000005
-  RBP: 00007f4d143f2b28 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f4d143f3bcc
-  R13: 0000000000000005 R14: 0000000000000000 R15: 00007ffd650323f0
-   </TASK>
-
-Fixes: 0b2c59720e65 ("l2tp: close all race conditions in l2tp_tunnel_register()")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot+6acef9e0a4d1f46c83d4@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6acef9e0a4d1f46c83d4
-CC: gnault@redhat.com
-CC: cong.wang@bytedance.com
-Signed-off-by: James Chapman <jchapman@katalix.com>
-Signed-off-by: Tom Parkin <tparkin@katalix.com>
-Link: https://patch.msgid.link/20240806160626.1248317-1-jchapman@katalix.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c3e1b005ed1c ("netfilter: nf_tables: add set element timeout support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_core.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ include/net/netfilter/nf_tables.h |   16 ++++++++++++++--
+ net/netfilter/nf_tables_api.c     |    4 +++-
+ net/netfilter/nft_set_hash.c      |    8 +++++++-
+ net/netfilter/nft_set_pipapo.c    |   18 +++++++++++-------
+ net/netfilter/nft_set_rbtree.c    |    6 ++++--
+ 5 files changed, 39 insertions(+), 13 deletions(-)
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index a4b793d1b7d76..b6dcfca740c1c 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -88,6 +88,11 @@
- /* Default trace flags */
- #define L2TP_DEFAULT_DEBUG_FLAGS	0
- 
-+#define L2TP_DEPTH_NESTING		2
-+#if L2TP_DEPTH_NESTING == SINGLE_DEPTH_NESTING
-+#error "L2TP requires its own lockdep subclass"
-+#endif
-+
- /* Private data stored for received packets in the skb.
-  */
- struct l2tp_skb_cb {
-@@ -1041,7 +1046,13 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
- 	IPCB(skb)->flags &= ~(IPSKB_XFRM_TUNNEL_SIZE | IPSKB_XFRM_TRANSFORMED | IPSKB_REROUTED);
- 	nf_reset_ct(skb);
- 
--	bh_lock_sock_nested(sk);
-+	/* L2TP uses its own lockdep subclass to avoid lockdep splats caused by
-+	 * nested socket calls on the same lockdep socket class. This can
-+	 * happen when data from a user socket is routed over l2tp, which uses
-+	 * another userspace socket.
-+	 */
-+	spin_lock_nested(&sk->sk_lock.slock, L2TP_DEPTH_NESTING);
-+
- 	if (sock_owned_by_user(sk)) {
- 		kfree_skb(skb);
- 		ret = NET_XMIT_DROP;
-@@ -1093,7 +1104,7 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
- 	ret = l2tp_xmit_queue(tunnel, skb, &inet->cork.fl);
- 
- out_unlock:
--	bh_unlock_sock(sk);
-+	spin_unlock(&sk->sk_lock.slock);
- 
- 	return ret;
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -772,10 +772,16 @@ static inline struct nft_set_elem_expr *
+ 	return nft_set_ext(ext, NFT_SET_EXT_EXPRESSIONS);
  }
--- 
-2.43.0
-
+ 
+-static inline bool nft_set_elem_expired(const struct nft_set_ext *ext)
++static inline bool __nft_set_elem_expired(const struct nft_set_ext *ext,
++					  u64 tstamp)
+ {
+ 	return nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION) &&
+-	       time_is_before_eq_jiffies64(*nft_set_ext_expiration(ext));
++	       time_after_eq64(tstamp, *nft_set_ext_expiration(ext));
++}
++
++static inline bool nft_set_elem_expired(const struct nft_set_ext *ext)
++{
++	return __nft_set_elem_expired(ext, get_jiffies_64());
+ }
+ 
+ static inline struct nft_set_ext *nft_set_elem_ext(const struct nft_set *set,
+@@ -1679,6 +1685,7 @@ struct nftables_pernet {
+ 	struct list_head	notify_list;
+ 	struct mutex		commit_mutex;
+ 	u64			table_handle;
++	u64			tstamp;
+ 	unsigned int		base_seq;
+ 	u8			validate_state;
+ 	unsigned int		gc_seq;
+@@ -1691,4 +1698,9 @@ static inline struct nftables_pernet *nf
+ 	return net_generic(net, nf_tables_net_id);
+ }
+ 
++static inline u64 nft_net_tstamp(const struct net *net)
++{
++	return nft_pernet(net)->tstamp;
++}
++
+ #endif /* _NET_NF_TABLES_H */
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9185,6 +9185,7 @@ dead_elem:
+ struct nft_trans_gc *nft_trans_gc_catchall_sync(struct nft_trans_gc *gc)
+ {
+ 	struct nft_set_elem_catchall *catchall, *next;
++	u64 tstamp = nft_net_tstamp(gc->net);
+ 	const struct nft_set *set = gc->set;
+ 	struct nft_set_elem elem;
+ 	struct nft_set_ext *ext;
+@@ -9194,7 +9195,7 @@ struct nft_trans_gc *nft_trans_gc_catcha
+ 	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+ 
+-		if (!nft_set_elem_expired(ext))
++		if (!__nft_set_elem_expired(ext, tstamp))
+ 			continue;
+ 
+ 		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
+@@ -9946,6 +9947,7 @@ static bool nf_tables_valid_genid(struct
+ 	bool genid_ok;
+ 
+ 	mutex_lock(&nft_net->commit_mutex);
++	nft_net->tstamp = get_jiffies_64();
+ 
+ 	genid_ok = genid == 0 || nft_net->base_seq == genid;
+ 	if (!genid_ok)
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -35,6 +35,7 @@ struct nft_rhash_cmp_arg {
+ 	const struct nft_set		*set;
+ 	const u32			*key;
+ 	u8				genmask;
++	u64				tstamp;
+ };
+ 
+ static inline u32 nft_rhash_key(const void *data, u32 len, u32 seed)
+@@ -61,7 +62,7 @@ static inline int nft_rhash_cmp(struct r
+ 		return 1;
+ 	if (nft_set_elem_is_dead(&he->ext))
+ 		return 1;
+-	if (nft_set_elem_expired(&he->ext))
++	if (__nft_set_elem_expired(&he->ext, x->tstamp))
+ 		return 1;
+ 	if (!nft_set_elem_active(&he->ext, x->genmask))
+ 		return 1;
+@@ -86,6 +87,7 @@ bool nft_rhash_lookup(const struct net *
+ 		.genmask = nft_genmask_cur(net),
+ 		.set	 = set,
+ 		.key	 = key,
++		.tstamp  = get_jiffies_64(),
+ 	};
+ 
+ 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
+@@ -104,6 +106,7 @@ static void *nft_rhash_get(const struct
+ 		.genmask = nft_genmask_cur(net),
+ 		.set	 = set,
+ 		.key	 = elem->key.val.data,
++		.tstamp  = get_jiffies_64(),
+ 	};
+ 
+ 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
+@@ -127,6 +130,7 @@ static bool nft_rhash_update(struct nft_
+ 		.genmask = NFT_GENMASK_ANY,
+ 		.set	 = set,
+ 		.key	 = key,
++		.tstamp  = get_jiffies_64(),
+ 	};
+ 
+ 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
+@@ -170,6 +174,7 @@ static int nft_rhash_insert(const struct
+ 		.genmask = nft_genmask_next(net),
+ 		.set	 = set,
+ 		.key	 = elem->key.val.data,
++		.tstamp	 = nft_net_tstamp(net),
+ 	};
+ 	struct nft_rhash_elem *prev;
+ 
+@@ -212,6 +217,7 @@ static void *nft_rhash_deactivate(const
+ 		.genmask = nft_genmask_next(net),
+ 		.set	 = set,
+ 		.key	 = elem->key.val.data,
++		.tstamp	 = nft_net_tstamp(net),
+ 	};
+ 
+ 	rcu_read_lock();
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -504,6 +504,7 @@ out:
+  * @set:	nftables API set representation
+  * @data:	Key data to be matched against existing elements
+  * @genmask:	If set, check that element is active in given genmask
++ * @tstamp:	timestamp to check for expired elements
+  *
+  * This is essentially the same as the lookup function, except that it matches
+  * key data against the uncommitted copy and doesn't use preallocated maps for
+@@ -513,7 +514,8 @@ out:
+  */
+ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ 					  const struct nft_set *set,
+-					  const u8 *data, u8 genmask)
++					  const u8 *data, u8 genmask,
++					  u64 tstamp)
+ {
+ 	struct nft_pipapo_elem *ret = ERR_PTR(-ENOENT);
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+@@ -568,7 +570,7 @@ next_match:
+ 			goto out;
+ 
+ 		if (last) {
+-			if (nft_set_elem_expired(&f->mt[b].e->ext))
++			if (__nft_set_elem_expired(&f->mt[b].e->ext, tstamp))
+ 				goto next_match;
+ 			if ((genmask &&
+ 			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
+@@ -605,7 +607,7 @@ static void *nft_pipapo_get(const struct
+ 			    const struct nft_set_elem *elem, unsigned int flags)
+ {
+ 	return pipapo_get(net, set, (const u8 *)elem->key.val.data,
+-			 nft_genmask_cur(net));
++			 nft_genmask_cur(net), get_jiffies_64());
+ }
+ 
+ /**
+@@ -1199,6 +1201,7 @@ static int nft_pipapo_insert(const struc
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct nft_pipapo_match *m = priv->clone;
+ 	u8 genmask = nft_genmask_next(net);
++	u64 tstamp = nft_net_tstamp(net);
+ 	struct nft_pipapo_field *f;
+ 	const u8 *start_p, *end_p;
+ 	int i, bsize_max, err = 0;
+@@ -1208,7 +1211,7 @@ static int nft_pipapo_insert(const struc
+ 	else
+ 		end = start;
+ 
+-	dup = pipapo_get(net, set, start, genmask);
++	dup = pipapo_get(net, set, start, genmask, tstamp);
+ 	if (!IS_ERR(dup)) {
+ 		/* Check if we already have the same exact entry */
+ 		const struct nft_data *dup_key, *dup_end;
+@@ -1230,7 +1233,7 @@ static int nft_pipapo_insert(const struc
+ 
+ 	if (PTR_ERR(dup) == -ENOENT) {
+ 		/* Look for partially overlapping entries */
+-		dup = pipapo_get(net, set, end, nft_genmask_next(net));
++		dup = pipapo_get(net, set, end, nft_genmask_next(net), tstamp);
+ 	}
+ 
+ 	if (PTR_ERR(dup) != -ENOENT) {
+@@ -1583,6 +1586,7 @@ static void pipapo_gc(const struct nft_s
+ 	struct nft_set *set = (struct nft_set *) _set;
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct net *net = read_pnet(&set->net);
++	u64 tstamp = nft_net_tstamp(net);
+ 	int rules_f0, first_rule = 0;
+ 	struct nft_pipapo_elem *e;
+ 	struct nft_trans_gc *gc;
+@@ -1617,7 +1621,7 @@ static void pipapo_gc(const struct nft_s
+ 		/* synchronous gc never fails, there is no need to set on
+ 		 * NFT_SET_ELEM_DEAD_BIT.
+ 		 */
+-		if (nft_set_elem_expired(&e->ext)) {
++		if (__nft_set_elem_expired(&e->ext, tstamp)) {
+ 			priv->dirty = true;
+ 
+ 			gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+@@ -1788,7 +1792,7 @@ static void *pipapo_deactivate(const str
+ {
+ 	struct nft_pipapo_elem *e;
+ 
+-	e = pipapo_get(net, set, data, nft_genmask_next(net));
++	e = pipapo_get(net, set, data, nft_genmask_next(net), nft_net_tstamp(net));
+ 	if (IS_ERR(e))
+ 		return NULL;
+ 
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -314,6 +314,7 @@ static int __nft_rbtree_insert(const str
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u8 cur_genmask = nft_genmask_cur(net);
+ 	u8 genmask = nft_genmask_next(net);
++	u64 tstamp = nft_net_tstamp(net);
+ 	int d;
+ 
+ 	/* Descend the tree to search for an existing element greater than the
+@@ -361,7 +362,7 @@ static int __nft_rbtree_insert(const str
+ 		/* perform garbage collection to avoid bogus overlap reports
+ 		 * but skip new elements in this transaction.
+ 		 */
+-		if (nft_set_elem_expired(&rbe->ext) &&
++		if (__nft_set_elem_expired(&rbe->ext, tstamp) &&
+ 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
+ 			const struct nft_rbtree_elem *removed_end;
+ 
+@@ -548,6 +549,7 @@ static void *nft_rbtree_deactivate(const
+ 	const struct rb_node *parent = priv->root.rb_node;
+ 	struct nft_rbtree_elem *rbe, *this = elem->priv;
+ 	u8 genmask = nft_genmask_next(net);
++	u64 tstamp = nft_net_tstamp(net);
+ 	int d;
+ 
+ 	while (parent != NULL) {
+@@ -568,7 +570,7 @@ static void *nft_rbtree_deactivate(const
+ 				   nft_rbtree_interval_end(this)) {
+ 				parent = parent->rb_right;
+ 				continue;
+-			} else if (nft_set_elem_expired(&rbe->ext)) {
++			} else if (__nft_set_elem_expired(&rbe->ext, tstamp)) {
+ 				break;
+ 			} else if (!nft_set_elem_active(&rbe->ext, genmask)) {
+ 				parent = parent->rb_left;
 
 
 
