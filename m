@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-68281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347A695317A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBA8952F12
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C429FB2445D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C673F1F24064
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7A019AA53;
-	Thu, 15 Aug 2024 13:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4B319F49D;
+	Thu, 15 Aug 2024 13:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fqMpTqc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJiTLMlb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9471714A1;
-	Thu, 15 Aug 2024 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C5019F49C;
+	Thu, 15 Aug 2024 13:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730072; cv=none; b=hGTdK77yGJmlWKUflMiQnUf0ihkcFD2KbKvB33Ci6b+CWypEINQS5PWZ/uUYy1gYO0uRA93djOdN6A8qWMxhgOyB9aB3JeBag5N4Lw9CSbhYd1BjCylwCFOh87SxD2QUmj99KdLQSpbZRTSe5Ard6tEmCwq2KUy/0irl1TZsfyI=
+	t=1723728490; cv=none; b=gShM9wl+ajB2rXWfosFblb/s53d1yMqk9+0yAe+bU0TuJCwEzaHomtinMpVeDi+CTALxp+VRYUEvB8sBa/59Hi6+Z2Nw0miz5WPxJl9n8bJLL1yol8R4KIvUeGP8QbkaxX10FSgjVHqwJ4llQkrN7+SQKbjpNLO95ail8yagZ8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730072; c=relaxed/simple;
-	bh=/o1MFYyARfsr1bTELjdyECEo3xJ+W7D5+sB14SvkhvI=;
+	s=arc-20240116; t=1723728490; c=relaxed/simple;
+	bh=36+Ld6l1CqKyI4o5hjbb604YL057ctXwX10jXu2ic8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPn8TxVmJu9KTXzSAwU9GLBlkrzyK4QXdTOCkQJfyduUgTJzR8DEVIskGmLf87zY3W+S9npXbhRxSSziZcqPcJH403pFKTTqzJIzkh4HKSgiF2GC/Xef9VDFSN9Gk5YFKWTcvcrHtbMI5qxKgUXD1Ub+nj+BQbflMY7k5hAquWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fqMpTqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500FAC32786;
-	Thu, 15 Aug 2024 13:54:31 +0000 (UTC)
+	 MIME-Version; b=uTXwCRclGgymXribRvbs75cmkWecGEz+4wDcbqhAW39Y9D4st1WdDH76hYbz+I5mxc1wRitzWx304/Bh8M5pvyDbXwab35IJzDCOfKkip2gQMZqqObC0P1fHIR3gQ8HWxiO08bJKAZ3a7g1hcS2bfIWB+xQ0tqvWWfcfopw2DrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJiTLMlb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B798C32786;
+	Thu, 15 Aug 2024 13:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730071;
-	bh=/o1MFYyARfsr1bTELjdyECEo3xJ+W7D5+sB14SvkhvI=;
+	s=korg; t=1723728490;
+	bh=36+Ld6l1CqKyI4o5hjbb604YL057ctXwX10jXu2ic8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0fqMpTqcTTP/8DRb6lf9W8mgltjSJRo4M1Za9OcK+t5HMa7HEDlrODSGKPgKbOU/i
-	 d5JAjgOrYXZyXgmL+i4Nw8DVUntTwN1b/X70AuysbimwGRPPIaycu0JSBROBh5L5+d
-	 85n/n1tpu6fbMslSmNUopAJ0s0YuNms+VWzdIii8=
+	b=rJiTLMlbFWYEgLgmnocbMQgMxM1WLdIZvwN8cJkcGXR8TIBVG5Ud9WHpYPihG5AEr
+	 TSqrRFKSqyFz3Il8qDTyLBlU0ueF19v4RSMZeX3ByoVHmZRoeeSK6/i4iY+jWKB3Lw
+	 cOLG9E0y6WWGLUBn+erF3hHGwBkDb8MuXVHBvp9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 267/484] libbpf: Fix no-args func prototype BTF dumping syntax
-Date: Thu, 15 Aug 2024 15:22:05 +0200
-Message-ID: <20240815131951.714781670@linuxfoundation.org>
+Subject: [PATCH 4.19 009/196] hwmon: (max6697) Fix underflow when writing limit attributes
+Date: Thu, 15 Aug 2024 15:22:06 +0200
+Message-ID: <20240815131852.429364184@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 189f1a976e426011e6a5588f1d3ceedf71fe2965 ]
+[ Upstream commit cbf7467828cd4ec7ceac7a8b5b5ddb2f69f07b0e ]
 
-For all these years libbpf's BTF dumper has been emitting not strictly
-valid syntax for function prototypes that have no input arguments.
+Using DIV_ROUND_CLOSEST() on an unbound value can result in underflows.
+Indeed, module test scripts report:
 
-Instead of `int (*blah)()` we should emit `int (*blah)(void)`.
+temp1_max: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
+temp1_crit: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
 
-This is not normally a problem, but it manifests when we get kfuncs in
-vmlinux.h that have no input arguments. Due to compiler internal
-specifics, we get no BTF information for such kfuncs, if they are not
-declared with proper `(void)`.
+Fix by introducing an extra set of clamping.
 
-The fix is trivial. We also need to adjust a few ancient tests that
-happily assumed `()` is correct.
-
-Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
-Reported-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://lore.kernel.org/bpf/20240712224442.282823-1-andrii@kernel.org
+Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/btf_dump.c                                  | 8 +++++---
- .../selftests/bpf/progs/btf_dump_test_case_multidim.c     | 4 ++--
- .../selftests/bpf/progs/btf_dump_test_case_syntax.c       | 4 ++--
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ drivers/hwmon/max6697.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
-index b91dd7cd4ffb0..c2bf996fcba82 100644
---- a/tools/lib/bpf/btf_dump.c
-+++ b/tools/lib/bpf/btf_dump.c
-@@ -1458,10 +1458,12 @@ static void btf_dump_emit_type_chain(struct btf_dump *d,
- 			 * Clang for BPF target generates func_proto with no
- 			 * args as a func_proto with a single void arg (e.g.,
- 			 * `int (*f)(void)` vs just `int (*f)()`). We are
--			 * going to pretend there are no args for such case.
-+			 * going to emit valid empty args (void) syntax for
-+			 * such case. Similarly and conveniently, valid
-+			 * no args case can be special-cased here as well.
- 			 */
--			if (vlen == 1 && p->type == 0) {
--				btf_dump_printf(d, ")");
-+			if (vlen == 0 || (vlen == 1 && p->type == 0)) {
-+				btf_dump_printf(d, "void)");
- 				return;
- 			}
+diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
+index 6df28fe0577da..7e7f59c68ce6e 100644
+--- a/drivers/hwmon/max6697.c
++++ b/drivers/hwmon/max6697.c
+@@ -314,6 +314,7 @@ static ssize_t set_temp(struct device *dev,
+ 		return ret;
  
-diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
-index ba97165bdb282..a657651eba523 100644
---- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
-+++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
-@@ -14,9 +14,9 @@ typedef int *ptr_arr_t[6];
- 
- typedef int *ptr_multiarr_t[7][8][9][10];
- 
--typedef int * (*fn_ptr_arr_t[11])();
-+typedef int * (*fn_ptr_arr_t[11])(void);
- 
--typedef int * (*fn_ptr_multiarr_t[12][13])();
-+typedef int * (*fn_ptr_multiarr_t[12][13])(void);
- 
- struct root_struct {
- 	arr_t _1;
-diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
-index 970598dda7322..7fda004c153a6 100644
---- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
-+++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
-@@ -67,7 +67,7 @@ typedef void (*printf_fn_t)(const char *, ...);
-  *   `int -> char *` function and returns pointer to a char. Equivalent:
-  *   typedef char * (*fn_input_t)(int);
-  *   typedef char * (*fn_output_outer_t)(fn_input_t);
-- *   typedef const fn_output_outer_t (* fn_output_inner_t)();
-+ *   typedef const fn_output_outer_t (* fn_output_inner_t)(void);
-  *   typedef const fn_output_inner_t fn_ptr_arr2_t[5];
-  */
- /* ----- START-EXPECTED-OUTPUT ----- */
-@@ -94,7 +94,7 @@ typedef void (* (*signal_t)(int, void (*)(int)))(int);
- 
- typedef char * (*fn_ptr_arr1_t[10])(int **);
- 
--typedef char * (* (* const fn_ptr_arr2_t[5])())(char * (*)(int));
-+typedef char * (* (* const fn_ptr_arr2_t[5])(void))(char * (*)(int));
- 
- struct struct_w_typedefs {
- 	int_t a;
+ 	mutex_lock(&data->update_lock);
++	temp = clamp_val(temp, -1000000, 1000000);	/* prevent underflow */
+ 	temp = DIV_ROUND_CLOSEST(temp, 1000) + data->temp_offset;
+ 	temp = clamp_val(temp, 0, data->type == max6581 ? 255 : 127);
+ 	data->temp[nr][index] = temp;
 -- 
 2.43.0
 
