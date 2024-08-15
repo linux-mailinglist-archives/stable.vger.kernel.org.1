@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-68439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46AE95324E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AA4953566
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D05FC1C25C2F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CFE71F2A7C3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687CA1A76C9;
-	Thu, 15 Aug 2024 14:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A4619FA7A;
+	Thu, 15 Aug 2024 14:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6oeXaro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmdKgkBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D9A1A76C0;
-	Thu, 15 Aug 2024 14:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EC21DFFB;
+	Thu, 15 Aug 2024 14:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730572; cv=none; b=ahRSp/5SGARP2IhpdJc1zUDjtOtgANP7o6emkrkVQjvc/nqkleF4xC+O5NIfW08ocgXr7mU0bc3q5Bif7hoDBZgJ0b4P4L9c9dujbf57Jj42ZQ+tmLa1n6831+Pl/2XSpYbSnZnLjh/IRoaLYpzlB1oBHuVw3XgzBvJcXkkMMas=
+	t=1723732643; cv=none; b=OD4BkXMzewJ4WLpP7QiDv3PeECTDpdJubWbk3FaDvmKlmSy1lG5Hw0Xf2JVxUWTMQ/wIX3GifHIELB4W7YF7tjaTgHW7U6H9NKFNUzTa5xtsr8WSmX5siKxWx8st5Wlopq+N9J332X0k+yw6+ew/NWqetlSJPLVBgB866irIRoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730572; c=relaxed/simple;
-	bh=IH3teq22bxzKy6o2uyj+PG2VdGtS3eSxnEz/sab6pE4=;
+	s=arc-20240116; t=1723732643; c=relaxed/simple;
+	bh=neQZ21esSGT9WWRN7v33G3UeO/I2VhgNQPHhwV093Ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3W8wa1RB45WNOCdQSSOk00IZIvrex7Kyq/ZtosYKslZec5/hEEwzwhWuqs9ZrzT02OBmEJt5/QcChweP9A03IJIT0mURsjlo1PFEhKHWigV5W96g+MphynM57kg4JOSVhjLvLbR7PXmsd1qvKTwboI04jls3FKDJT1JyXk0uX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6oeXaro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F48C32786;
-	Thu, 15 Aug 2024 14:02:51 +0000 (UTC)
+	 MIME-Version; b=Wk5IXn23hFSmtoOadE86Al8rHTY9hkVtc21DTSUEtEq12VtDGjbuz54A9e0rbnd2nCSHEnJBW9Bl7G4x/IDjU21HfRjMh2HPu4vI+wBnJFEcUSmUONkNNFBssigVsy9cD5fr3wLx8EbjgrxMuX2e5eUMs1HRNDEMQV+D7yO3PNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmdKgkBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3EAC32786;
+	Thu, 15 Aug 2024 14:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730572;
-	bh=IH3teq22bxzKy6o2uyj+PG2VdGtS3eSxnEz/sab6pE4=;
+	s=korg; t=1723732643;
+	bh=neQZ21esSGT9WWRN7v33G3UeO/I2VhgNQPHhwV093Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6oeXaroohQenvp30HdSUoE8RxBk6Wb/WLf7Ae/x9xedJRbiHUg6Xcib3VZ2Bocjc
-	 vPOCcLzuRgDHjeALTh0fYdMw14fIZ9Ak7HONWLTamFy/QjO4IxaSV4WiICl6ZcwgJg
-	 n41820rvZXs12GiMnQ3ycxgzyXv5X9ij2BDqO+Zk=
+	b=rmdKgkBSHu9a5ILJH5Nwtb9N8pSLk3gr5FeykWT/YgX1H4xJ68NjxhFhDU0SoyoB3
+	 SCnWnMIF8dF5acfXpzhsPYVhp0gxEExJwvcS2h4gnL6W3pvBWEZlDvP44JZlrzOs5N
+	 ZjyqYFzu0VpO0wuU7rOJUr75FY0j2re+1H7NJijk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 5.15 450/484] drm/mgag200: Set DDC timeout in milliseconds
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 5.10 242/352] protect the fetch of ->fd[fd] in do_dup2() from mispredictions
 Date: Thu, 15 Aug 2024 15:25:08 +0200
-Message-ID: <20240815131958.842779796@linuxfoundation.org>
+Message-ID: <20240815131928.791057254@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit ecde5db1598aecab54cc392282c15114f526f05f upstream.
+commit 8aa37bde1a7b645816cda8b80df4753ecf172bf1 upstream.
 
-Compute the i2c timeout in jiffies from a value in milliseconds. The
-original values of 2 jiffies equals 2 milliseconds if HZ has been
-configured to a value of 1000. This corresponds to 2.2 milliseconds
-used by most other DRM drivers. Update mgag200 accordingly.
+both callers have verified that fd is not greater than ->max_fds;
+however, misprediction might end up with
+        tofree = fdt->fd[fd];
+being speculatively executed.  That's wrong for the same reasons
+why it's wrong in close_fd()/file_close_fd_locked(); the same
+solution applies - array_index_nospec(fd, fdt->max_fds) could differ
+from fd only in case of speculative execution on mispredicted path.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240513125620.6337-2-tzimmermann@suse.de
+Cc: stable@vger.kernel.org
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mgag200/mgag200_i2c.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/file.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
-@@ -134,7 +134,7 @@ struct mga_i2c_chan *mgag200_i2c_create(
- 	i2c->adapter.algo_data = &i2c->bit;
- 
- 	i2c->bit.udelay = 10;
--	i2c->bit.timeout = 2;
-+	i2c->bit.timeout = usecs_to_jiffies(2200);
- 	i2c->bit.data = i2c;
- 	i2c->bit.setsda		= mga_gpio_setsda;
- 	i2c->bit.setscl		= mga_gpio_setscl;
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1057,6 +1057,7 @@ __releases(&files->file_lock)
+ 	 * tables and this condition does not arise without those.
+ 	 */
+ 	fdt = files_fdtable(files);
++	fd = array_index_nospec(fd, fdt->max_fds);
+ 	tofree = fdt->fd[fd];
+ 	if (!tofree && fd_is_open(fd, fdt))
+ 		goto Ebusy;
 
 
 
