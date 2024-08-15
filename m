@@ -1,98 +1,113 @@
-Return-Path: <stable+bounces-69225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE5E953972
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 19:50:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534AF953994
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 20:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B373B1F23FC9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 17:50:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F04B21F244B2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 18:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6881141C64;
-	Thu, 15 Aug 2024 17:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CAE548E1;
+	Thu, 15 Aug 2024 18:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="be3LTV+m"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="ESBuG04Y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251801AC8AE;
-	Thu, 15 Aug 2024 17:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA3D1388
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 18:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723744236; cv=none; b=Uo35oKRYWkWIT/fKsIpv6vm8Vl/0pxoho1cTAg3aKZK1RaR+xQPF894+SYWtIf8PGUlJ6dNf/YCkWPELNN9OFCLrQprW/gHnP3v2pX+mbnfDx+nGRzjoFiuFf7IevGt5hrOs1IlzM90IryeyJAouAblZedwwHhQVvzcFh6svkHs=
+	t=1723744888; cv=none; b=q3hXZWBkG8kTHvhp1F0e6D9uat1CUxl0/cOqWTNhJ1Ma5SJOyEW5UFHfkXZTIBET2gpUSslBcThu9/zZEfp4RGWwt+84tamP+G7wdxemxYN3x2/PhlhPmOyAHvczTcNrwhRW2TkVdsk+hwvIACaI0MIeadTOrD/tPFalmVCAZ2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723744236; c=relaxed/simple;
-	bh=mPwQMWmaE58h5WbJPFCinD0DF0R538hkvKeIfgExaZo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qVhK6pH1KWpqgf1JORLItrwc3qA8qffrYDP44A41XD58l3gmduPXHQcvZeUAWdVyApS9VWAgKWnGwkqPxa3EyNO+w3IFLsmMpRChDlfOE5HlD23cXvcg0v+ZbqAovVT4glQoYkZoQrXbnf3jZLYCeIMFwH/dZVhw16+pZNVGi7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=be3LTV+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F87C4AF11;
-	Thu, 15 Aug 2024 17:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723744236;
-	bh=mPwQMWmaE58h5WbJPFCinD0DF0R538hkvKeIfgExaZo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=be3LTV+m4+TrThyeg+AMlMFa2Sr5e6aO9C+yrL4O4bfNBD1fyCdo0GdKsHhnTu64m
-	 Deh6qT5QIsOp7WOU6LGg92EN3BiP4ho9w9wDfvl10Q5WGnXmS3lyKfmVVdlR9Dp34l
-	 FB8T0a2mCYWKo25HY4A8pUrRZERwuk48mYttECbGsfI+HInbL2/Sc1ddh+iHnOogWu
-	 ywATzc/BdVo/em4amKowAXtEyzdtnkvIE7/yoSKx+ksZIS7l6gCo/lIMHXRDaGn4h8
-	 ++wM7hoNLlpqSPUEi3agVcKBg25V7W+7vxyKff4i5c9WQWZeySPRU63vWh/pD4vDUX
-	 Ye9Tzwgy+czJw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 643B0382327A;
-	Thu, 15 Aug 2024 17:50:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1723744888; c=relaxed/simple;
+	bh=p5CFD/hz48mXaQtx+PagRNm416H5ts4dtuVJW5kR9Fg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cR6zzRgiPUl3Ucp0SykSPQoGdzzrRWcLAxn5dMIYndmmkFvzYIrutOcqMivAO05hsRNrcHxhePH1YPKntPH+wCcoTV1wT/8jAQ+AdSGlFSapy7q+FjZaQstrBrKF8XHv5szzFibzpbFawyfiuxWhaHoxqfb4TGcYOoCGsX6RLKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=ESBuG04Y; arc=none smtp.client-ip=209.85.166.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-81fd520fee5so52448439f.2
+        for <stable@vger.kernel.org>; Thu, 15 Aug 2024 11:01:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1723744884; x=1724349684; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7p/I1Ifd1C+sbOJNrkMm3G9GQ4/rpO39owsvu2wqEY0=;
+        b=ESBuG04Yv/RjP1+tqlo773SRFJKaO84YTn8YhvwFWwj3NvW67mIHkh0QHbSC+aCpxi
+         1fvqwFFT2oUgo+cIDhUudTdaFy+KO10TwncBJakRN2e3+csnydvRZ/9vmbulSdEo3THQ
+         R7//90wMH9a87dNAyfvOhyapz1zkeNRM4AWMA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723744884; x=1724349684;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7p/I1Ifd1C+sbOJNrkMm3G9GQ4/rpO39owsvu2wqEY0=;
+        b=YAbIeQUIKRwHu0qyiRVZEN7IwONSEfF7iXPtKjkZ88P2Si+zReanDwe6gy6yWX08x+
+         osd19PkNVL5pWOuKeXKgo34xpfEXMHABHLA1mk7JOQJlrEkbImbQ0Xt4yJYffNMCIZyX
+         fcEDx796ZriW3nRXuZVXJbt0N8+hkJu9HxEHJe/dFS3j8uBKEb25QGg6ShZ/WFSoLX/T
+         FmfNa3yg73Hy+1NrMiJ/nznWovwR4hz1m3odANe41caHp/zKyfJIJ8D5coznmyMT/xMJ
+         XRFImvvS8LTdcpUijTUQwmZuLTrZ04i6gnaq+Vo6zuWAFjvsRfXulRaF9UsmyHMxFWwB
+         wGaQ==
+X-Gm-Message-State: AOJu0YzzqjaLKzzEbXGxivlxKLdNnJxXsmqYuzSpenL/V6efIhOl62fn
+	NsIetzXavoO/d2tdg/3wn7IzB6snODcQJXKcjch6ofbH7Jh8pwonygpnd6Djlw==
+X-Google-Smtp-Source: AGHT+IG1BCFoeSQYyuZLRltaAhHPgxyHK54Z6wNBqWVndWOortWFbIRyHExDA0GIirWvVECf9j2goQ==
+X-Received: by 2002:a05:6e02:12c7:b0:39d:1cef:2f49 with SMTP id e9e14a558f8ab-39d26d7c847mr7678215ab.27.1723744884267;
+        Thu, 15 Aug 2024 11:01:24 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([72.42.103.70])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-39d1ed76533sm7152115ab.83.2024.08.15.11.01.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Aug 2024 11:01:23 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Thu, 15 Aug 2024 12:01:20 -0600
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.10 00/22] 6.10.6-rc1 review
+Message-ID: <Zr5CcFhTtIHgtj_Z@fedora64.linuxtx.org>
+References: <20240815131831.265729493@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] riscv: entry: always initialize regs->a0 to -ENOSYS
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <172374423527.2967007.4867324910866661414.git-patchwork-notify@kernel.org>
-Date: Thu, 15 Aug 2024 17:50:35 +0000
-References: <20240627142338.5114-2-CoelacanthusHex@gmail.com>
-In-Reply-To: <20240627142338.5114-2-CoelacanthusHex@gmail.com>
-To: Celeste Liu <coelacanthushex@gmail.com>
-Cc: linux-riscv@lists.infradead.org, bjorn@rivosinc.com,
- linux-kernel@vger.kernel.org, ldv@strace.io, guoren@kernel.org,
- palmer@rivosinc.com, emil.renner.berthing@canonical.com,
- felixonmars@archlinux.org, c141028@gmail.com, CoelacanthusHex@gmail.com,
- stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240815131831.265729493@linuxfoundation.org>
 
-Hello:
-
-This patch was applied to riscv/linux.git (fixes)
-by Palmer Dabbelt <palmer@rivosinc.com>:
-
-On Thu, 27 Jun 2024 22:23:39 +0800 you wrote:
-> Otherwise when the tracer changes syscall number to -1, the kernel fails
-> to initialize a0 with -ENOSYS and subsequently fails to return the error
-> code of the failed syscall to userspace. For example, it will break
-> strace syscall tampering.
+On Thu, Aug 15, 2024 at 03:25:08PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.6 release.
+> There are 22 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Fixes: 52449c17bdd1 ("riscv: entry: set a0 = -ENOSYS only when syscall != -1")
-> Reported-by: "Dmitry V. Levin" <ldv@strace.io>
-> Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+> Responses should be made by Sat, 17 Aug 2024 13:18:17 +0000.
+> Anything received after that time might be too late.
 > 
-> [...]
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.6-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Here is the summary with links:
-  - [v2] riscv: entry: always initialize regs->a0 to -ENOSYS
-    https://git.kernel.org/riscv/c/61119394631f
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
