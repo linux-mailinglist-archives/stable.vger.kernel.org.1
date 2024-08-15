@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86339533BD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3124A953571
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAC371C254BD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADBF8B22A92
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017451A76CC;
-	Thu, 15 Aug 2024 14:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602D21A00CF;
+	Thu, 15 Aug 2024 14:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGOaRoHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgHzO5BC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EFC17C987;
-	Thu, 15 Aug 2024 14:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAEB3214;
+	Thu, 15 Aug 2024 14:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731517; cv=none; b=nN8sTVBf0GmAQmAoyQ4TWFUmJ+VeY0BQyXnrn7cQoi46JBGT8XP7OxgxpTOY4PPbKu5KXoAALCZe28ik4E4nkXX/no3iOX2S71C7IHdgg22nKwr7O4rDBtTcwTn406AeTM1oftE4gzdgfYqyLE5Ajl5g0yxqcmPfMHkPvZmVDMM=
+	t=1723732677; cv=none; b=GEUudFhkIJXC0sYbwv79pbgQEtY3W0OCfvNxP0ELNKImfGlq3nytuUxJqqbdNsBiZIS9Qbpt4OfrZ8T5z5TTH0UhpSXAKXOd6EPXjSEeaMLZSw/Z0d3QrZzKJwvDupo2jq2Td2WNCvB0BdZ0QMgtIC5+j7iiOr8n6xTbXZCqEUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731517; c=relaxed/simple;
-	bh=1Pq3Hm6ravv1EfWVdGck0oSBYHdexn2LYoMwmxa3DXI=;
+	s=arc-20240116; t=1723732677; c=relaxed/simple;
+	bh=dkaPzhXs3wQWH3uf83XxSwZ1YYBCBR7DW23qmm/JBi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHkZX8vocSo/NNH5Vbn++C/br93NlXTLjZY3Ta3eCS2pUvMM/EFpg73S2M2VL1+HP8vah+I6/k4K1I5zlKsX1hz43QLI8qbgnpKTAZt2Q0b9N2x+x/C5wqJV8QgolLbXKO1lZzr7E3LvzBrYY9O5YjhZ1POPH7p8kRBfhkGu1S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGOaRoHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89AAC32786;
-	Thu, 15 Aug 2024 14:18:36 +0000 (UTC)
+	 MIME-Version; b=f6ex5WaZE3r2JawRTgJQH85mNBtvzFpMhP4gWmKw8AdM1W2jHQBfhCnWryiQvKFQxrc5SnoOsFYNbf0cOypauQCnGMnqigeki1Kst2lxL/ZipBnAcrMz6Ukyf3AJ1EpQYjiuLK2X25kRPUrGXSEQ3zGwaJOY5heWxsHH4iX16hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgHzO5BC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F726C32786;
+	Thu, 15 Aug 2024 14:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731517;
-	bh=1Pq3Hm6ravv1EfWVdGck0oSBYHdexn2LYoMwmxa3DXI=;
+	s=korg; t=1723732677;
+	bh=dkaPzhXs3wQWH3uf83XxSwZ1YYBCBR7DW23qmm/JBi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGOaRoHnHpkWSomkmjbbdOoJtoxJO0IOH0wXV0VjEGhmWp/4mD0Ure8v1TKvykOhs
-	 BwwtvAGXVfKM3Ihc/9F9eEB6iR0Lx52bEnlCD1ABB23DzHMt7aXGo9x/+B860TOrzf
-	 u512oqvVjtZaiG9aWK/ZTKT/nuFe/Gr36npPZ0fs=
+	b=pgHzO5BCytW5UpQz1x8DdJnjGVmpa5UD26fzKmsh3dlnNT+C/r1yX9ajdFLE6D+H8
+	 xiHSQq1FtGvWSk6TQbmknHFScz78G/FE7ItrzRds8MJTvUaP08LPBUGRvbY9Z4Dey6
+	 aeQ9/EFkJdmKhtGXCwufsP7Rw6mJ7xcUFkAxwrZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 154/259] s390/pci: Rework MSI descriptor walk
+Subject: [PATCH 5.10 221/352] ext4: check the extent status again before inserting delalloc block
 Date: Thu, 15 Aug 2024 15:24:47 +0200
-Message-ID: <20240815131908.734471037@linuxfoundation.org>
+Message-ID: <20240815131927.972105722@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 2ca5e908d0f4cde61d9d3595e8314adca5d914a1 ]
+[ Upstream commit 0ea6560abb3bac1ffcfa4bf6b2c4d344fdc27b3c ]
 
-Replace the about to vanish iterators and make use of the filtering.
+ext4_da_map_blocks looks up for any extent entry in the extent status
+tree (w/o i_data_sem) and then the looks up for any ondisk extent
+mapping (with i_data_sem in read mode).
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Link: https://lore.kernel.org/r/20211206210748.305656158@linutronix.de
-Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
+If it finds a hole in the extent status tree or if it couldn't find any
+entry at all, it then takes the i_data_sem in write mode to add a da
+entry into the extent status tree. This can actually race with page
+mkwrite & fallocate path.
+
+Note that this is ok between
+1. ext4 buffered-write path v/s ext4_page_mkwrite(), because of the
+   folio lock
+2. ext4 buffered write path v/s ext4 fallocate because of the inode
+   lock.
+
+But this can race between ext4_page_mkwrite() & ext4 fallocate path
+
+ext4_page_mkwrite()             ext4_fallocate()
+ block_page_mkwrite()
+  ext4_da_map_blocks()
+   //find hole in extent status tree
+                                 ext4_alloc_file_blocks()
+                                  ext4_map_blocks()
+                                   //allocate block and unwritten extent
+   ext4_insert_delayed_block()
+    ext4_da_reserve_space()
+     //reserve one more block
+    ext4_es_insert_delayed_block()
+     //drop unwritten extent and add delayed extent by mistake
+
+Then, the delalloc extent is wrong until writeback and the extra
+reserved block can't be released any more and it triggers below warning:
+
+ EXT4-fs (pmem2): Inode 13 (00000000bbbd4d23): i_reserved_data_blocks(1) not cleared!
+
+Fix the problem by looking up extent status tree again while the
+i_data_sem is held in write mode. If it still can't find any entry, then
+we insert a new da entry into the extent status tree.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240517124005.347221-3-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/ext4/inode.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 5036e00b7ec1b..9ed76fa9391cb 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -273,7 +273,7 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index a252c84edac8c..6e9323a56d289 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1760,6 +1760,7 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 		if (ext4_es_is_hole(&es))
+ 			goto add_delayed;
  
- 	/* Request MSI interrupts */
- 	hwirq = bit;
--	for_each_pci_msi_entry(msi, pdev) {
-+	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
- 		rc = -EIO;
- 		if (hwirq - bit >= msi_vecs)
- 			break;
-@@ -338,9 +338,7 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
- 		return;
++found:
+ 		/*
+ 		 * Delayed extent could be allocated by fallocate.
+ 		 * So we need to check it.
+@@ -1804,6 +1805,26 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
  
- 	/* Release MSI interrupts */
--	for_each_pci_msi_entry(msi, pdev) {
--		if (!msi->irq)
--			continue;
-+	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_ASSOCIATED) {
- 		irq_set_msi_desc(msi->irq, NULL);
- 		irq_free_desc(msi->irq);
- 		msi->msg.address_lo = 0;
+ add_delayed:
+ 	down_write(&EXT4_I(inode)->i_data_sem);
++	/*
++	 * Page fault path (ext4_page_mkwrite does not take i_rwsem)
++	 * and fallocate path (no folio lock) can race. Make sure we
++	 * lookup the extent status tree here again while i_data_sem
++	 * is held in write mode, before inserting a new da entry in
++	 * the extent status tree.
++	 */
++	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
++		if (!ext4_es_is_hole(&es)) {
++			up_write(&EXT4_I(inode)->i_data_sem);
++			goto found;
++		}
++	} else if (!ext4_has_inline_data(inode)) {
++		retval = ext4_map_query_blocks(NULL, inode, map);
++		if (retval) {
++			up_write(&EXT4_I(inode)->i_data_sem);
++			return retval;
++		}
++	}
++
+ 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
+ 	up_write(&EXT4_I(inode)->i_data_sem);
+ 	if (retval)
 -- 
 2.43.0
 
