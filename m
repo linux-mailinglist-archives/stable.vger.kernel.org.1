@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-68380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290F49531E5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B92D2952FA2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CD681C21EE7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6F6289FAE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A872919DFA6;
-	Thu, 15 Aug 2024 13:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2199F1DA4E;
+	Thu, 15 Aug 2024 13:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDmMdo7A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkFCHV+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B27D17C9A9;
-	Thu, 15 Aug 2024 13:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DF37DA8A;
+	Thu, 15 Aug 2024 13:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730385; cv=none; b=gdcalMTkncvGUpgbFdSyqohNPCPDwLsoRgrBn57qC8GG2qDz94wyrl5PrUFfhem4WNLwUAyCbqSftYjO9jIEaFBAaAXq8VeXD9qPb81slIaBofwas1PpdnR4RLW5C9el/o3vJt95eQUqGS6IVChJff4JD+piz4f6VWeoTSbRGYg=
+	t=1723728858; cv=none; b=CRLNfRtBl44EoOskjBO/P2dM7Mut/W+G6jFFQOYavNzb+9AaRfuVX0OegBY0S8e0jodXvv/+2iYLqoAibC3hxJpc4pheHU538Yscztw6yxaDKlWQ6qmkD+Uhw6XzF9K6gMQ2n7nTMtBmQX1g0TBxM2nNKAGpBv4GonlHqQv+4TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730385; c=relaxed/simple;
-	bh=fszcxlRCXMlTf4SNJdprPXYfopXXY9/X0BpVmXbqWd4=;
+	s=arc-20240116; t=1723728858; c=relaxed/simple;
+	bh=+7SHDBYu4nj1hHczRDb0FZ3yNHSfrTY6dMUJCmbamAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FmZfQmbImGqO9b4r+t0I8pz51hVuk/HxLixt/0kWJLup4xVqCJmuhfOBdCv1B5TXRq1m3p2YJjzmILkA8LRwDqPsx5hREy2JOZOOtttJKy5gpDZZvLdnC7NCwGDmYZ4WtHq76iw7LsaQ7jui/yE4Pf2IhSlT8PrZCcWjKiPnYNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDmMdo7A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59431C4AF10;
-	Thu, 15 Aug 2024 13:59:44 +0000 (UTC)
+	 MIME-Version; b=gPyCkF8CMOP5eb5RR8tCWXrKJo2/khuJrx6XKaSE0LJ7hfStUCktgYCk8HjKrvjd2Ok92MukmPFosHJIvEy/xNLKLGCYhr7yMaH0tY2KyQvdB4Wd0puBXe+3AwuOqho83FAAKF353kJunJ/ZTMoRCOxyFQ6lJsrO7E+1LjLyEn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkFCHV+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D24C32786;
+	Thu, 15 Aug 2024 13:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730384;
-	bh=fszcxlRCXMlTf4SNJdprPXYfopXXY9/X0BpVmXbqWd4=;
+	s=korg; t=1723728858;
+	bh=+7SHDBYu4nj1hHczRDb0FZ3yNHSfrTY6dMUJCmbamAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lDmMdo7AV0Wyg0GteVLuCc1AhbtOab1XCT5+uI4b9ua3iUU47b9NTSEgdRMKcUIqL
-	 Qd6AUPGWHZYLjOKJq8s7fXRMK0WqAMbCtptVauav2hGHKuxDg/wJSqp5kFr5Krr+FL
-	 6/ms7okD/fJTCrXGUrwkuc6RxAkCHNMMeRqi/61M=
+	b=HkFCHV+GiyKvz6zfs9JS474Go3dzjhG0agSk+EAZT4miqbHuNCCoHp1rH0r1/wS11
+	 f6qf1ex8gy43Ahbi2RBMcZVK/MsB6DyXFYkFKfebd+IfV+6/0DYSCqqhrV2bG37Yzl
+	 fSPwY4WQ1Xlv+jnAnrEgaoBbebjcmkvFIq3yqS98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 391/484] ext4: fix wrong unit use in ext4_mb_find_by_goal
+Subject: [PATCH 4.19 132/196] net: linkwatch: use system_unbound_wq
 Date: Thu, 15 Aug 2024 15:24:09 +0200
-Message-ID: <20240815131956.549031842@linuxfoundation.org>
+Message-ID: <20240815131857.125445887@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 99c515e3a860576ba90c11acbc1d6488dfca6463 ]
+[ Upstream commit 3e7917c0cdad835a5121520fc5686d954b7a61ab ]
 
-We need start in block unit while fe_start is in cluster unit. Use
-ext4_grp_offs_to_block helper to convert fe_start to get start in
-block unit.
+linkwatch_event() grabs possibly very contended RTNL mutex.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230603150327.3596033-4-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+system_wq is not suitable for such work.
+
+Inspired by many noisy syzbot reports.
+
+3 locks held by kworker/0:7/5266:
+ #0: ffff888015480948 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3206 [inline]
+ #0: ffff888015480948 ((wq_completion)events){+.+.}-{0:0}, at: process_scheduled_works+0x90a/0x1830 kernel/workqueue.c:3312
+ #1: ffffc90003f6fd00 ((linkwatch_work).work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3207 [inline]
+ , at: process_scheduled_works+0x945/0x1830 kernel/workqueue.c:3312
+ #2: ffffffff8fa6f208 (rtnl_mutex){+.+.}-{3:3}, at: linkwatch_event+0xe/0x60 net/core/link_watch.c:276
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240805085821.1616528-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/core/link_watch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 1145664a0bb71..630a5e5a380e2 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2270,8 +2270,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 	if (max >= ac->ac_g_ex.fe_len && ac->ac_g_ex.fe_len == sbi->s_stripe) {
- 		ext4_fsblk_t start;
+diff --git a/net/core/link_watch.c b/net/core/link_watch.c
+index e38e641e98d5b..320be467b7851 100644
+--- a/net/core/link_watch.c
++++ b/net/core/link_watch.c
+@@ -135,9 +135,9 @@ static void linkwatch_schedule_work(int urgent)
+ 	 * override the existing timer.
+ 	 */
+ 	if (test_bit(LW_URGENT, &linkwatch_flags))
+-		mod_delayed_work(system_wq, &linkwatch_work, 0);
++		mod_delayed_work(system_unbound_wq, &linkwatch_work, 0);
+ 	else
+-		schedule_delayed_work(&linkwatch_work, delay);
++		queue_delayed_work(system_unbound_wq, &linkwatch_work, delay);
+ }
  
--		start = ext4_group_first_block_no(ac->ac_sb, e4b->bd_group) +
--			ex.fe_start;
-+		start = ext4_grp_offs_to_block(ac->ac_sb, &ex);
- 		/* use do_div to get remainder (would be 64-bit modulo) */
- 		if (do_div(start, sbi->s_stripe) == 0) {
- 			ac->ac_found++;
+ 
 -- 
 2.43.0
 
