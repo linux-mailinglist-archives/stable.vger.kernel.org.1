@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D4195325B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C599532D2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 877711F21C58
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DB6EB20150
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D22D1A3BDC;
-	Thu, 15 Aug 2024 14:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B011A2C0F;
+	Thu, 15 Aug 2024 14:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qL0JJQtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mADAuw7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2311A3BB6;
-	Thu, 15 Aug 2024 14:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141B044376;
+	Thu, 15 Aug 2024 14:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730612; cv=none; b=s31xUvGSWzlUnIwfgXWBtBt/OGJi+INQ1pPq6Cz50IMOLhjhY1sGXEBGuKXIMOnz+W6AsXalrx/CdndU3mzfXEO8ZJ+KaHK7kqoVeVLlepn/R3IhRG+W+/maborxYCNBSYlCUko/Y8pP+pL/DBIy1Xu2QZJY7lvIjYzI6m8S3MQ=
+	t=1723730876; cv=none; b=PGN6Nvxj1BoGXGvFiBMW2Y+GKrX0pA4Q70LcEXuqAbR5Y0IZGawAa197oXOrdBuwDOxMJvOGF39pqlK46iLYNTGzCLevLg5zHKiO3rWmEqqALqRyjQQojm1Ez4f4gPzlFwrhpU1ZXBGlIl1KSABA2bpYFRbxW79LSU0luRaVd6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730612; c=relaxed/simple;
-	bh=M/2bMTSPRyQxSHu6BUigwSY3PtZbsF9HxwTVCUGdpcs=;
+	s=arc-20240116; t=1723730876; c=relaxed/simple;
+	bh=6lpGLSoZGlgKZBpimTz03TSBAOfu81ZZ7Wzzvisj4LY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DtYj4DoNTl3S7RFUSszVMT5N56qBHCmdurRlTY3/+J2ldzefCHyummxgH6bAc2JnrcDCiBZsRZO0yXxWoVjRcb84UvBcwOIklEaFPGo1Ve3igcJAxWH6LfmsxayZeBlm9b67TDoiV+KF4vWu/U7tlPcITxDwCA/9pjeomar4+1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qL0JJQtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8CBC32786;
-	Thu, 15 Aug 2024 14:03:31 +0000 (UTC)
+	 MIME-Version; b=TmqNHvzm5uVB4bMKCVDZQGCos+jWJiSUgEPX/Ic7YFj/KZsyNVQU86aEWZzY+F4GW6jGd3fHWuS9H8Z8S3g3P6/2byQk3BGUKigBdGKmmatXKEciAqy1/ph4E1JS8E9oMVsmE+hX1/1TiA3gDVsy84iY2+sOOf3A1dONM8PTU4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mADAuw7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EBAC32786;
+	Thu, 15 Aug 2024 14:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730612;
-	bh=M/2bMTSPRyQxSHu6BUigwSY3PtZbsF9HxwTVCUGdpcs=;
+	s=korg; t=1723730875;
+	bh=6lpGLSoZGlgKZBpimTz03TSBAOfu81ZZ7Wzzvisj4LY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qL0JJQtDPQ83mGHGxqb/n4RGPbjvVKRghnGs6l0Big+6/izZtIJ7nOHTDI+deJgb4
-	 xNLkb4E+qQDFP9OFbfIQ0FSErfAo1lUmR5NLtY52hMcFOm8ZDibTY2L+ZwjEDwmZWZ
-	 BT6c8pF8c8PksVgJzxyAsmbqN+vYjg9HhP6nK2eA=
+	b=mADAuw7IcWUj1DZmKLQYptkj4gpQj7V7RIVNH/UX+2uLVPp+KMHKxhlcC974Bj/GF
+	 bXFskwIa/cEx4NSMrqXfUaYCpChiz9ap/mgBxvrEmUYYaXSCK+F/sHuVrWJkqkforF
+	 zm0aRuX7h12W+MFAdGrQywGD8QtjRdYNJ9OU476c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hanna Czenczek <hreitz@redhat.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 461/484] btrfs: fix corruption after buffer fault in during direct IO append write
-Date: Thu, 15 Aug 2024 15:25:19 +0200
-Message-ID: <20240815131959.282269547@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 06/67] NFSD: Fix frame size warning in svc_export_parse()
+Date: Thu, 15 Aug 2024 15:25:20 +0200
+Message-ID: <20240815131838.563402108@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,258 +63,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 939b656bc8ab203fdbde26ccac22bcb7f0985be5 upstream.
+[ Upstream commit 6939ace1f22681fface7841cdbf34d3204cc94b5 ]
 
-During an append (O_APPEND write flag) direct IO write if the input buffer
-was not previously faulted in, we can corrupt the file in a way that the
-final size is unexpected and it includes an unexpected hole.
+fs/nfsd/export.c: In function 'svc_export_parse':
+fs/nfsd/export.c:737:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+    737 | }
 
-The problem happens like this:
+On my systems, svc_export_parse() has a stack frame of over 800
+bytes, not 1040, but nonetheless, it could do with some reduction.
 
-1) We have an empty file, with size 0, for example;
+When a struct svc_export is on the stack, it's a temporary structure
+used as an argument, and not visible as an actual exported FS. No
+need to reserve space for export_stats in such cases.
 
-2) We do an O_APPEND direct IO with a length of 4096 bytes and the input
-   buffer is not currently faulted in;
-
-3) We enter btrfs_direct_write(), lock the inode and call
-   generic_write_checks(), which calls generic_write_checks_count(), and
-   that function sets the iocb position to 0 with the following code:
-
-	if (iocb->ki_flags & IOCB_APPEND)
-		iocb->ki_pos = i_size_read(inode);
-
-4) We call btrfs_dio_write() and enter into iomap, which will end up
-   calling btrfs_dio_iomap_begin() and that calls
-   btrfs_get_blocks_direct_write(), where we update the i_size of the
-   inode to 4096 bytes;
-
-5) After btrfs_dio_iomap_begin() returns, iomap will attempt to access
-   the page of the write input buffer (at iomap_dio_bio_iter(), with a
-   call to bio_iov_iter_get_pages()) and fail with -EFAULT, which gets
-   returned to btrfs at btrfs_direct_write() via btrfs_dio_write();
-
-6) At btrfs_direct_write() we get the -EFAULT error, unlock the inode,
-   fault in the write buffer and then goto to the label 'relock';
-
-7) We lock again the inode, do all the necessary checks again and call
-   again generic_write_checks(), which calls generic_write_checks_count()
-   again, and there we set the iocb's position to 4K, which is the current
-   i_size of the inode, with the following code pointed above:
-
-        if (iocb->ki_flags & IOCB_APPEND)
-                iocb->ki_pos = i_size_read(inode);
-
-8) Then we go again to btrfs_dio_write() and enter iomap and the write
-   succeeds, but it wrote to the file range [4K, 8K), leaving a hole in
-   the [0, 4K) range and an i_size of 8K, which goes against the
-   expectations of having the data written to the range [0, 4K) and get an
-   i_size of 4K.
-
-Fix this by not unlocking the inode before faulting in the input buffer,
-in case we get -EFAULT or an incomplete write, and not jumping to the
-'relock' label after faulting in the buffer - instead jump to a location
-immediately before calling iomap, skipping all the write checks and
-relocking. This solves this problem and it's fine even in case the input
-buffer is memory mapped to the same file range, since only holding the
-range locked in the inode's io tree can cause a deadlock, it's safe to
-keep the inode lock (VFS lock), as was fixed and described in commit
-51bd9563b678 ("btrfs: fix deadlock due to page faults during direct IO
-reads and writes").
-
-A sample reproducer provided by a reporter is the following:
-
-   $ cat test.c
-   #ifndef _GNU_SOURCE
-   #define _GNU_SOURCE
-   #endif
-
-   #include <fcntl.h>
-   #include <stdio.h>
-   #include <sys/mman.h>
-   #include <sys/stat.h>
-   #include <unistd.h>
-
-   int main(int argc, char *argv[])
-   {
-       if (argc < 2) {
-           fprintf(stderr, "Usage: %s <test file>\n", argv[0]);
-           return 1;
-       }
-
-       int fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC | O_DIRECT |
-                     O_APPEND, 0644);
-       if (fd < 0) {
-           perror("creating test file");
-           return 1;
-       }
-
-       char *buf = mmap(NULL, 4096, PROT_READ,
-                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-       ssize_t ret = write(fd, buf, 4096);
-       if (ret < 0) {
-           perror("pwritev2");
-           return 1;
-       }
-
-       struct stat stbuf;
-       ret = fstat(fd, &stbuf);
-       if (ret < 0) {
-           perror("stat");
-           return 1;
-       }
-
-       printf("size: %llu\n", (unsigned long long)stbuf.st_size);
-       return stbuf.st_size == 4096 ? 0 : 1;
-   }
-
-A test case for fstests will be sent soon.
-
-Reported-by: Hanna Czenczek <hreitz@redhat.com>
-Link: https://lore.kernel.org/linux-btrfs/0b841d46-12fe-4e64-9abb-871d8d0de271@redhat.com/
-Fixes: 8184620ae212 ("btrfs: fix lost file sync on direct IO write with nowait and dsync iocb")
-CC: stable@vger.kernel.org # 6.1+
-Tested-by: Hanna Czenczek <hreitz@redhat.com>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310012359.YEw5IrK6-lkp@intel.com/
+Cc: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: 4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.h |    1 +
- fs/btrfs/file.c  |   55 ++++++++++++++++++++++++++++++++++++++++++-------------
- 2 files changed, 43 insertions(+), 13 deletions(-)
+ fs/nfsd/export.c |   32 +++++++++++++++++++++++---------
+ fs/nfsd/export.h |    4 ++--
+ fs/nfsd/stats.h  |   12 ++++++------
+ 3 files changed, 31 insertions(+), 17 deletions(-)
 
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -1383,6 +1383,7 @@ struct btrfs_drop_extents_args {
- struct btrfs_file_private {
- 	void *filldir_buf;
- 	u64 last_index;
-+	bool fsync_skip_inode_lock;
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -339,12 +339,16 @@ static int export_stats_init(struct expo
+ 
+ static void export_stats_reset(struct export_stats *stats)
+ {
+-	nfsd_percpu_counters_reset(stats->counter, EXP_STATS_COUNTERS_NUM);
++	if (stats)
++		nfsd_percpu_counters_reset(stats->counter,
++					   EXP_STATS_COUNTERS_NUM);
+ }
+ 
+ static void export_stats_destroy(struct export_stats *stats)
+ {
+-	nfsd_percpu_counters_destroy(stats->counter, EXP_STATS_COUNTERS_NUM);
++	if (stats)
++		nfsd_percpu_counters_destroy(stats->counter,
++					     EXP_STATS_COUNTERS_NUM);
+ }
+ 
+ static void svc_export_put(struct kref *ref)
+@@ -353,7 +357,8 @@ static void svc_export_put(struct kref *
+ 	path_put(&exp->ex_path);
+ 	auth_domain_put(exp->ex_client);
+ 	nfsd4_fslocs_free(&exp->ex_fslocs);
+-	export_stats_destroy(&exp->ex_stats);
++	export_stats_destroy(exp->ex_stats);
++	kfree(exp->ex_stats);
+ 	kfree(exp->ex_uuid);
+ 	kfree_rcu(exp, ex_rcu);
+ }
+@@ -767,13 +772,15 @@ static int svc_export_show(struct seq_fi
+ 	seq_putc(m, '\t');
+ 	seq_escape(m, exp->ex_client->name, " \t\n\\");
+ 	if (export_stats) {
+-		seq_printf(m, "\t%lld\n", exp->ex_stats.start_time);
++		struct percpu_counter *counter = exp->ex_stats->counter;
++
++		seq_printf(m, "\t%lld\n", exp->ex_stats->start_time);
+ 		seq_printf(m, "\tfh_stale: %lld\n",
+-			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_FH_STALE]));
++			   percpu_counter_sum_positive(&counter[EXP_STATS_FH_STALE]));
+ 		seq_printf(m, "\tio_read: %lld\n",
+-			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_READ]));
++			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_READ]));
+ 		seq_printf(m, "\tio_write: %lld\n",
+-			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_WRITE]));
++			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_WRITE]));
+ 		seq_putc(m, '\n');
+ 		return 0;
+ 	}
+@@ -819,7 +826,7 @@ static void svc_export_init(struct cache
+ 	new->ex_layout_types = 0;
+ 	new->ex_uuid = NULL;
+ 	new->cd = item->cd;
+-	export_stats_reset(&new->ex_stats);
++	export_stats_reset(new->ex_stats);
+ }
+ 
+ static void export_update(struct cache_head *cnew, struct cache_head *citem)
+@@ -856,7 +863,14 @@ static struct cache_head *svc_export_all
+ 	if (!i)
+ 		return NULL;
+ 
+-	if (export_stats_init(&i->ex_stats)) {
++	i->ex_stats = kmalloc(sizeof(*(i->ex_stats)), GFP_KERNEL);
++	if (!i->ex_stats) {
++		kfree(i);
++		return NULL;
++	}
++
++	if (export_stats_init(i->ex_stats)) {
++		kfree(i->ex_stats);
+ 		kfree(i);
+ 		return NULL;
+ 	}
+--- a/fs/nfsd/export.h
++++ b/fs/nfsd/export.h
+@@ -64,10 +64,10 @@ struct svc_export {
+ 	struct cache_head	h;
+ 	struct auth_domain *	ex_client;
+ 	int			ex_flags;
++	int			ex_fsid;
+ 	struct path		ex_path;
+ 	kuid_t			ex_anon_uid;
+ 	kgid_t			ex_anon_gid;
+-	int			ex_fsid;
+ 	unsigned char *		ex_uuid; /* 16 byte fsid */
+ 	struct nfsd4_fs_locations ex_fslocs;
+ 	uint32_t		ex_nflavors;
+@@ -76,8 +76,8 @@ struct svc_export {
+ 	struct nfsd4_deviceid_map *ex_devid_map;
+ 	struct cache_detail	*cd;
+ 	struct rcu_head		ex_rcu;
+-	struct export_stats	ex_stats;
+ 	unsigned long		ex_xprtsec_modes;
++	struct export_stats	*ex_stats;
  };
  
- 
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -1983,22 +1983,38 @@ relock:
- 	 * So here we disable page faults in the iov_iter and then retry if we
- 	 * got -EFAULT, faulting in the pages before the retry.
- 	 */
-+again:
- 	from->nofault = true;
- 	dio = __iomap_dio_rw(iocb, from, &btrfs_dio_iomap_ops, &btrfs_dio_ops,
- 			     IOMAP_DIO_PARTIAL, written);
- 	from->nofault = false;
- 
--	/*
--	 * iomap_dio_complete() will call btrfs_sync_file() if we have a dsync
--	 * iocb, and that needs to lock the inode. So unlock it before calling
--	 * iomap_dio_complete() to avoid a deadlock.
--	 */
--	btrfs_inode_unlock(inode, ilock_flags);
--
--	if (IS_ERR_OR_NULL(dio))
-+	if (IS_ERR_OR_NULL(dio)) {
- 		err = PTR_ERR_OR_ZERO(dio);
--	else
-+	} else {
-+		struct btrfs_file_private stack_private = { 0 };
-+		struct btrfs_file_private *private;
-+		const bool have_private = (file->private_data != NULL);
-+
-+		if (!have_private)
-+			file->private_data = &stack_private;
-+
-+		/*
-+		 * If we have a synchoronous write, we must make sure the fsync
-+		 * triggered by the iomap_dio_complete() call below doesn't
-+		 * deadlock on the inode lock - we are already holding it and we
-+		 * can't call it after unlocking because we may need to complete
-+		 * partial writes due to the input buffer (or parts of it) not
-+		 * being already faulted in.
-+		 */
-+		private = file->private_data;
-+		private->fsync_skip_inode_lock = true;
- 		err = iomap_dio_complete(dio);
-+		private->fsync_skip_inode_lock = false;
-+
-+		if (!have_private)
-+			file->private_data = NULL;
-+	}
- 
- 	/* No increment (+=) because iomap returns a cumulative value. */
- 	if (err > 0)
-@@ -2025,10 +2041,12 @@ relock:
- 		} else {
- 			fault_in_iov_iter_readable(from, left);
- 			prev_left = left;
--			goto relock;
-+			goto again;
- 		}
- 	}
- 
-+	btrfs_inode_unlock(inode, ilock_flags);
-+
- 	/* If 'err' is -ENOTBLK then it means we must fallback to buffered IO. */
- 	if ((err < 0 && err != -ENOTBLK) || !iov_iter_count(from))
- 		goto out;
-@@ -2177,6 +2195,7 @@ static inline bool skip_inode_logging(co
-  */
- int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ /* an "export key" (expkey) maps a filehandlefragement to an
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -61,22 +61,22 @@ static inline void nfsd_stats_rc_nocache
+ static inline void nfsd_stats_fh_stale_inc(struct svc_export *exp)
  {
-+	struct btrfs_file_private *private = file->private_data;
- 	struct dentry *dentry = file_dentry(file);
- 	struct inode *inode = d_inode(dentry);
- 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
-@@ -2186,6 +2205,7 @@ int btrfs_sync_file(struct file *file, l
- 	int ret = 0, err;
- 	u64 len;
- 	bool full_sync;
-+	const bool skip_ilock = (private ? private->fsync_skip_inode_lock : false);
+ 	percpu_counter_inc(&nfsdstats.counter[NFSD_STATS_FH_STALE]);
+-	if (exp)
+-		percpu_counter_inc(&exp->ex_stats.counter[EXP_STATS_FH_STALE]);
++	if (exp && exp->ex_stats)
++		percpu_counter_inc(&exp->ex_stats->counter[EXP_STATS_FH_STALE]);
+ }
  
- 	trace_btrfs_sync_file(file, datasync);
+ static inline void nfsd_stats_io_read_add(struct svc_export *exp, s64 amount)
+ {
+ 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_READ], amount);
+-	if (exp)
+-		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_READ], amount);
++	if (exp && exp->ex_stats)
++		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_READ], amount);
+ }
  
-@@ -2213,7 +2233,10 @@ int btrfs_sync_file(struct file *file, l
- 	if (ret)
- 		goto out;
+ static inline void nfsd_stats_io_write_add(struct svc_export *exp, s64 amount)
+ {
+ 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_WRITE], amount);
+-	if (exp)
+-		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_WRITE], amount);
++	if (exp && exp->ex_stats)
++		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_WRITE], amount);
+ }
  
--	btrfs_inode_lock(inode, BTRFS_ILOCK_MMAP);
-+	if (skip_ilock)
-+		down_write(&BTRFS_I(inode)->i_mmap_lock);
-+	else
-+		btrfs_inode_lock(inode, BTRFS_ILOCK_MMAP);
- 
- 	atomic_inc(&root->log_batch);
- 
-@@ -2245,7 +2268,10 @@ int btrfs_sync_file(struct file *file, l
- 	 */
- 	ret = start_ordered_ops(inode, start, end);
- 	if (ret) {
--		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
-+		if (skip_ilock)
-+			up_write(&BTRFS_I(inode)->i_mmap_lock);
-+		else
-+			btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
- 		goto out;
- 	}
- 
-@@ -2337,7 +2363,10 @@ int btrfs_sync_file(struct file *file, l
- 	 * file again, but that will end up using the synchronization
- 	 * inside btrfs_sync_log to keep things safe.
- 	 */
--	btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
-+	if (skip_ilock)
-+		up_write(&BTRFS_I(inode)->i_mmap_lock);
-+	else
-+		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
- 
- 	if (ret == BTRFS_NO_LOG_SYNC) {
- 		ret = btrfs_end_transaction(trans);
+ static inline void nfsd_stats_payload_misses_inc(struct nfsd_net *nn)
 
 
 
