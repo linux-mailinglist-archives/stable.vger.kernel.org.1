@@ -1,205 +1,254 @@
-Return-Path: <stable+bounces-67990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC3595301E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:39:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8126B952FF0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 741371F2611B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:39:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4DEC1C244B5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F2519EED2;
-	Thu, 15 Aug 2024 13:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB28D1A76BC;
+	Thu, 15 Aug 2024 13:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RD1ZA3IO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPasz6pY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C424D19EECF;
-	Thu, 15 Aug 2024 13:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8679819DF6A;
+	Thu, 15 Aug 2024 13:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729153; cv=none; b=HRwFSGCQk02DnhZOhDhI7odVzrFQjL6+2vI5GrLDWnbhI4BphVWzbEevCMM1e6lJzLWkUE/LI7QWIGFhK6sro+A2Hv/AYKLNJC7mV5qlMXcGzSpfB6I9lMXo5FXZRXIepNd6tvEwN0k700mkkwYtFD4s0waMroONy7X96Cec3rI=
+	t=1723729037; cv=none; b=hqJb5c2cQfebdnvf6uRxJQOy5eVa+lafZR+CimU+575o/epMz2dpn7yfuQMmDm2S/NpWMXh+cFkZhAxajl+w1E/XNihknkHnLm2Pu67ukaRvVTjLZhlUETn+k3Isg32iZYmDoJpqGE3+6ZsW197thcdMltIunAvC++SusodaGFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729153; c=relaxed/simple;
-	bh=wfNjkiwjF3OQQaLpX0or6c2Q95TUZGbxbvgApXQCKn4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=swHAAVpJ+fek+9qF4hufrSQvXe1SpHHVfh6DUS2nuTHr15zIplKEMMQtAkCr/HfzafiaJTRIMR+XEfYJeOSBtjl3/i5giovrrjOZwbxQukrZ5wMhPZPm4mkJIE1bmg6CjSeKwgmeCkFZZEe8zpiLdLXlFfkA1bz3hyrkFOgQODo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RD1ZA3IO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50C9C4AF0A;
-	Thu, 15 Aug 2024 13:39:12 +0000 (UTC)
+	s=arc-20240116; t=1723729037; c=relaxed/simple;
+	bh=EB++U3eDi29KH1j6UKuznAoMY5lcLYHpTTQ46ZcLksk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tsRaHofkUExSZXRdhxhNX+5KBrHyRuRMWdlxu8ee1wfFA785PhmYvAt4u3MEnJaD4KnPhtOdeG98s7G2mgC5WcTmIJ08O/Fx+aBx04MtepbC21ZO541vYVEEdlHKRkMU1Rn6Llex4JkeyaEOMuUF3RhMQNOMA1TedEd6/TCplnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPasz6pY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FFBC4AF0E;
+	Thu, 15 Aug 2024 13:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729153;
-	bh=wfNjkiwjF3OQQaLpX0or6c2Q95TUZGbxbvgApXQCKn4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=RD1ZA3IODvwLqwVDN+JLa1dWLE1WA+A3i7sWEUi62zpwIhS23RgIw7DEf44lM3Ft+
-	 l4b+/2cn/ItD7TvTYDzndkJ9SrT45QAkfhT0GxzTumv+FsBYwOfibkpvSexup2jFOt
-	 vcvaQnP06Ynm5owTVJaOFHb4cN3ToFnQXmwRvVN0=
+	s=korg; t=1723729037;
+	bh=EB++U3eDi29KH1j6UKuznAoMY5lcLYHpTTQ46ZcLksk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tPasz6pYPObeET3XVHHNCcM3gcByp2q8uKYQj6b384sSx/VhOTvIftTaO7hN7/Kzc
+	 uZwCSoxH8DpWMItjln0nnwVFgENJtcpzDpfXxAu5k6zg53f4Ewx8VUXjsM5uT9Sw0t
+	 UXfuHcq7ELZIuqY/K/T+fuu0HZNRar819K/vq52E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org
-Subject: [PATCH 6.10 00/22] 6.10.6-rc1 review
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 191/196] netfilter: nf_tables: prefer nft_chain_validate
 Date: Thu, 15 Aug 2024 15:25:08 +0200
-Message-ID: <20240815131831.265729493@linuxfoundation.org>
+Message-ID: <20240815131859.378766438@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.6-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.10.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.10.6-rc1
-X-KernelTest-Deadline: 2024-08-17T13:18+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.10.6 release.
-There are 22 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Sat, 17 Aug 2024 13:18:17 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.6-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-and the diffstat can be found below.
+From: Florian Westphal <fw@strlen.de>
 
-thanks,
+commit cff3bd012a9512ac5ed858d38e6ed65f6391008c upstream
 
-greg k-h
+nft_chain_validate already performs loop detection because a cycle will
+result in a call stack overflow (ctx->level >= NFT_JUMP_STACK_SIZE).
 
--------------
-Pseudo-Shortlog of commits:
+It also follows maps via ->validate callback in nft_lookup, so there
+appears no reason to iterate the maps again.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.10.6-rc1
+nf_tables_check_loops() and all its helper functions can be removed.
+This improves ruleset load time significantly, from 23s down to 12s.
 
-Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-    drm/amdgpu/display: Fix null pointer dereference in dc_stream_program_cursor_position
+This also fixes a crash bug. Old loop detection code can result in
+unbounded recursion:
 
-Wayne Lin <Wayne.Lin@amd.com>
-    drm/amd/display: Solve mst monitors blank out problem after resume
+BUG: TASK stack guard page was hit at ....
+Oops: stack guard page: 0000 [#1] PREEMPT SMP KASAN
+CPU: 4 PID: 1539 Comm: nft Not tainted 6.10.0-rc5+ #1
+[..]
 
-Kees Cook <kees@kernel.org>
-    binfmt_flat: Fix corruption when not offsetting data start
+with a suitable ruleset during validation of register stores.
 
-Gergo Koteles <soyer@irl.hu>
-    platform/x86: ideapad-laptop: add a mutex to synchronize VPC commands
+I can't see any actual reason to attempt to check for this from
+nft_validate_register_store(), at this point the transaction is still in
+progress, so we don't have a full picture of the rule graph.
 
-Gergo Koteles <soyer@irl.hu>
-    platform/x86: ideapad-laptop: move ymc_trigger_ec from lenovo-ymc
+For nf-next it might make sense to either remove it or make this depend
+on table->validate_state in case we could catch an error earlier
+(for improved error reporting to userspace).
 
-Gergo Koteles <soyer@irl.hu>
-    platform/x86: ideapad-laptop: introduce a generic notification chain
+Fixes: 20a69341f2d0 ("netfilter: nf_tables: add netlink set API")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/netfilter/nf_tables_api.c |  114 ++++--------------------------------------
+ 1 file changed, 13 insertions(+), 101 deletions(-)
 
-Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-    platform/x86/amd/pmf: Fix to Update HPD Data When ALS is Disabled
-
-Takashi Iwai <tiwai@suse.de>
-    ALSA: usb: Fix UBSAN warning in parse_audio_unit()
-
-Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-    fs/ntfs3: Do copy_to_user out of run_lock
-
-Pei Li <peili.dev@gmail.com>
-    jfs: Fix shift-out-of-bounds in dbDiscardAG
-
-Edward Adam Davis <eadavis@qq.com>
-    jfs: fix null ptr deref in dtInsertEntry
-
-Willem de Bruijn <willemb@google.com>
-    fou: remove warn in gue_gro_receive on unsupported protocol
-
-Chao Yu <chao@kernel.org>
-    f2fs: fix to cover read extent cache access with lock
-
-Chao Yu <chao@kernel.org>
-    f2fs: fix to do sanity check on F2FS_INLINE_DATA flag in inode during GC
-
-yunshui <jiangyunshui@kylinos.cn>
-    bpf, net: Use DEV_STAT_INC()
-
-Simon Trimmer <simont@opensource.cirrus.com>
-    ASoC: cs35l56: Patch CS35L56_IRQ1_MASK_18 to the default value
-
-WangYuli <wangyuli@uniontech.com>
-    nvme/pci: Add APST quirk for Lenovo N60z laptop
-
-Huacai Chen <chenhuacai@kernel.org>
-    LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
-
-Fangzhi Zuo <jerry.zuo@amd.com>
-    drm/amd/display: Prevent IPX From Link Detect and Set Mode
-
-Harry Wentland <harry.wentland@amd.com>
-    drm/amd/display: Separate setting and programming of cursor
-
-Wayne Lin <wayne.lin@amd.com>
-    drm/amd/display: Defer handling mst up request in resume
-
-Kees Cook <kees@kernel.org>
-    exec: Fix ToCToU between perm check and set-uid/gid usage
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- arch/loongarch/include/uapi/asm/unistd.h           |   1 +
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  |  14 +-
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c    |   6 +-
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c    |  94 ++++++++-----
- drivers/gpu/drm/amd/display/dc/dc_stream.h         |   8 ++
- .../drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c    |   2 +-
- drivers/nvme/host/pci.c                            |   7 +
- drivers/platform/x86/Kconfig                       |   1 +
- drivers/platform/x86/amd/pmf/spc.c                 |  32 ++---
- drivers/platform/x86/ideapad-laptop.c              | 148 ++++++++++++++++++---
- drivers/platform/x86/ideapad-laptop.h              |   9 ++
- drivers/platform/x86/lenovo-ymc.c                  |  60 +--------
- fs/binfmt_flat.c                                   |   4 +-
- fs/exec.c                                          |   8 +-
- fs/f2fs/extent_cache.c                             |  50 +++----
- fs/f2fs/f2fs.h                                     |   2 +-
- fs/f2fs/gc.c                                       |  10 ++
- fs/f2fs/inode.c                                    |  10 +-
- fs/jfs/jfs_dmap.c                                  |   2 +
- fs/jfs/jfs_dtree.c                                 |   2 +
- fs/ntfs3/frecord.c                                 |  75 ++++++++++-
- net/core/filter.c                                  |   8 +-
- net/ipv4/fou_core.c                                |   2 +-
- sound/soc/codecs/cs35l56-shared.c                  |   1 +
- sound/usb/mixer.c                                  |   7 +
- 26 files changed, 388 insertions(+), 179 deletions(-)
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2698,6 +2698,15 @@ static void nf_tables_rule_release(const
+ 	nf_tables_rule_destroy(ctx, rule);
+ }
+ 
++/** nft_chain_validate - loop detection and hook validation
++ *
++ * @ctx: context containing call depth and base chain
++ * @chain: chain to validate
++ *
++ * Walk through the rules of the given chain and chase all jumps/gotos
++ * and set lookups until either the jump limit is hit or all reachable
++ * chains have been validated.
++ */
+ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
+ {
+ 	struct nft_expr *expr, *last;
+@@ -2716,6 +2725,9 @@ int nft_chain_validate(const struct nft_
+ 			if (!expr->ops->validate)
+ 				continue;
+ 
++			/* This may call nft_chain_validate() recursively,
++			 * callers that do so must increment ctx->level.
++			 */
+ 			err = expr->ops->validate(ctx, expr, &data);
+ 			if (err < 0)
+ 				return err;
+@@ -7418,106 +7430,6 @@ int nft_chain_validate_hooks(const struc
+ }
+ EXPORT_SYMBOL_GPL(nft_chain_validate_hooks);
+ 
+-/*
+- * Loop detection - walk through the ruleset beginning at the destination chain
+- * of a new jump until either the source chain is reached (loop) or all
+- * reachable chains have been traversed.
+- *
+- * The loop check is performed whenever a new jump verdict is added to an
+- * expression or verdict map or a verdict map is bound to a new chain.
+- */
+-
+-static int nf_tables_check_loops(const struct nft_ctx *ctx,
+-				 const struct nft_chain *chain);
+-
+-static int nf_tables_loop_check_setelem(const struct nft_ctx *ctx,
+-					struct nft_set *set,
+-					const struct nft_set_iter *iter,
+-					struct nft_set_elem *elem)
+-{
+-	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+-	const struct nft_data *data;
+-
+-	if (nft_set_ext_exists(ext, NFT_SET_EXT_FLAGS) &&
+-	    *nft_set_ext_flags(ext) & NFT_SET_ELEM_INTERVAL_END)
+-		return 0;
+-
+-	data = nft_set_ext_data(ext);
+-	switch (data->verdict.code) {
+-	case NFT_JUMP:
+-	case NFT_GOTO:
+-		return nf_tables_check_loops(ctx, data->verdict.chain);
+-	default:
+-		return 0;
+-	}
+-}
+-
+-static int nf_tables_check_loops(const struct nft_ctx *ctx,
+-				 const struct nft_chain *chain)
+-{
+-	const struct nft_rule *rule;
+-	const struct nft_expr *expr, *last;
+-	struct nft_set *set;
+-	struct nft_set_binding *binding;
+-	struct nft_set_iter iter;
+-
+-	if (ctx->chain == chain)
+-		return -ELOOP;
+-
+-	list_for_each_entry(rule, &chain->rules, list) {
+-		nft_rule_for_each_expr(expr, last, rule) {
+-			struct nft_immediate_expr *priv;
+-			const struct nft_data *data;
+-			int err;
+-
+-			if (strcmp(expr->ops->type->name, "immediate"))
+-				continue;
+-
+-			priv = nft_expr_priv(expr);
+-			if (priv->dreg != NFT_REG_VERDICT)
+-				continue;
+-
+-			data = &priv->data;
+-			switch (data->verdict.code) {
+-			case NFT_JUMP:
+-			case NFT_GOTO:
+-				err = nf_tables_check_loops(ctx,
+-							data->verdict.chain);
+-				if (err < 0)
+-					return err;
+-			default:
+-				break;
+-			}
+-		}
+-	}
+-
+-	list_for_each_entry(set, &ctx->table->sets, list) {
+-		if (!nft_is_active_next(ctx->net, set))
+-			continue;
+-		if (!(set->flags & NFT_SET_MAP) ||
+-		    set->dtype != NFT_DATA_VERDICT)
+-			continue;
+-
+-		list_for_each_entry(binding, &set->bindings, list) {
+-			if (!(binding->flags & NFT_SET_MAP) ||
+-			    binding->chain != chain)
+-				continue;
+-
+-			iter.genmask	= nft_genmask_next(ctx->net);
+-			iter.skip 	= 0;
+-			iter.count	= 0;
+-			iter.err	= 0;
+-			iter.fn		= nf_tables_loop_check_setelem;
+-
+-			set->ops->walk(ctx, set, &iter);
+-			if (iter.err < 0)
+-				return iter.err;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+ /**
+  *	nft_parse_u32_check - fetch u32 attribute and check for maximum value
+  *
+@@ -7653,7 +7565,7 @@ static int nft_validate_register_store(c
+ 		if (data != NULL &&
+ 		    (data->verdict.code == NFT_GOTO ||
+ 		     data->verdict.code == NFT_JUMP)) {
+-			err = nf_tables_check_loops(ctx, data->verdict.chain);
++			err = nft_chain_validate(ctx, data->verdict.chain);
+ 			if (err < 0)
+ 				return err;
+ 		}
 
 
 
