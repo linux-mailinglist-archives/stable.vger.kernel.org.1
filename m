@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-69155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5E29535B3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A909095330E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 161CD1F277A0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:41:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 521961F22016
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769F91A0710;
-	Thu, 15 Aug 2024 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921B01A01B6;
+	Thu, 15 Aug 2024 14:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXpojyEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtleWEQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACD71AC893;
-	Thu, 15 Aug 2024 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD351714DD;
+	Thu, 15 Aug 2024 14:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732848; cv=none; b=GaRRAaIZt4qh7x1wioKWo4vIbdz5CUH/ozVPYLia0KuUDg/DZ32fZBQpIT9QiobWa1S+TYi25aO4PMTxg2L9SZwigTjtEGG64WCNnmWNWjTT3/95SHtxA57M2qdgEZQVuPFrjQ0u1Sf95EiCH9YTRHJo7lhwREoeFtk+EEdDo98=
+	t=1723731035; cv=none; b=RlJfpzMHj7t1t3lqYjDhOg+jUfKrsbRxy6CIACyDDlFMouN5NfBVI9tkT/bY0oJl4WPoVBHEAzAtB2mUCiIataozuodr4NReZTrQ9zUnaWtGeMF5qtrJ7kE69jpi1wMOP7waQjgncWdEqDLo/Br3E2qFA+vi0W8wU+lq4Lg6K/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732848; c=relaxed/simple;
-	bh=isU8ahgRaF1vpRg+h2VEZNYwTI9lI1LgUKcyF08AMhQ=;
+	s=arc-20240116; t=1723731035; c=relaxed/simple;
+	bh=MM4asV3Zk2RSx86yBZe5BsC8gnst1I4kXwqqTsSoxbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LX5j20capYU/PPFz5ScRG1WocChddgmcbGBKGbYG2Fu5m+iPtSekA7yUoZSZZxDxWzlFN00JiObsX1B0XYw7ibu8SPnnQAVdaInrU8v8vAS6ST27tv1Ww0HqZ6O+DiyQM9EGhpY7AvAGszpPRgGqu6vUrciICrsSeD8VM78XGSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXpojyEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2409BC4AF0C;
-	Thu, 15 Aug 2024 14:40:46 +0000 (UTC)
+	 MIME-Version; b=uifhdfa0tpgf6H5HXaaCFQdzzZts9oDFUeX76fktE9jvVacvJQEdMCWSeoQ3UydCSvP6hypG7Ny63Pf91wEWX62evz3MgPu0+x8t7whUP7RZIO4wvL60WG1Kyp0IVD1Zqg6Zw9ARtU+gwFMkAqJH49+kERmziIh17icRghCOANk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtleWEQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEDEC32786;
+	Thu, 15 Aug 2024 14:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732848;
-	bh=isU8ahgRaF1vpRg+h2VEZNYwTI9lI1LgUKcyF08AMhQ=;
+	s=korg; t=1723731035;
+	bh=MM4asV3Zk2RSx86yBZe5BsC8gnst1I4kXwqqTsSoxbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXpojyEkj4zFTQbMxeB1eYV/OdLmunYXuXWaxGwsUmU2+rVfUX/vOOGkTBuuP1DTY
-	 /ttMld7HqwN0iMBmr+mfIK4aX9blSUv04gstYRgeOCFbORJHclnYDX2196a0hZe77t
-	 sPc5+CUtBw62hHyNvaBjv2RPYg8pJGjDZ/Ad6hso=
+	b=vtleWEQUKwIrsJ1PfUGpuO0a/JlNAF824ccjgry9wHblUrT+6URCqrD3nTrSzJnhu
+	 W6lKNjp9XhRJsKd6m2xKK1Mptq02wImGkH0oNYh96DO18cS7HUum0Vr11EEYjwj710
+	 8ECKUIEkGxSNnfkCphlnKrM83DWK5fjIuqVOX3S0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 304/352] ALSA: hda/hdmi: Yet more pin fix for HP EliteDesk 800 G4
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 56/67] fou: remove warn in gue_gro_receive on unsupported protocol
 Date: Thu, 15 Aug 2024 15:26:10 +0200
-Message-ID: <20240815131931.208328586@linuxfoundation.org>
+Message-ID: <20240815131840.457726013@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,35 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 176fd1511dd9086ab4fa9323cb232177c6235288 upstream.
+[ Upstream commit dd89a81d850fa9a65f67b4527c0e420d15bf836c ]
 
-HP EliteDesk 800 G4 (PCI SSID 103c:83e2) is another Kabylake machine
-where BIOS misses the HDMI pin initializations.  Add the quirk entry.
+Drop the WARN_ON_ONCE inn gue_gro_receive if the encapsulated type is
+not known or does not have a GRO handler.
 
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240806064918.11132-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Such a packet is easily constructed. Syzbot generates them and sets
+off this warning.
+
+Remove the warning as it is expected and not actionable.
+
+The warning was previously reduced from WARN_ON to WARN_ON_ONCE in
+commit 270136613bf7 ("fou: Do WARN_ON_ONCE in gue_gro_receive for bad
+proto callbacks").
+
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240614122552.1649044-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_hdmi.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/fou_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -1963,6 +1963,7 @@ static int hdmi_add_cvt(struct hda_codec
- }
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index 0c41076e31eda..b38b82ae903de 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -433,7 +433,7 @@ static struct sk_buff *gue_gro_receive(struct sock *sk,
  
- static const struct snd_pci_quirk force_connect_list[] = {
-+	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
- 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
- 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
+ 	offloads = NAPI_GRO_CB(skb)->is_ipv6 ? inet6_offloads : inet_offloads;
+ 	ops = rcu_dereference(offloads[proto]);
+-	if (WARN_ON_ONCE(!ops || !ops->callbacks.gro_receive))
++	if (!ops || !ops->callbacks.gro_receive)
+ 		goto out;
+ 
+ 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
+-- 
+2.43.0
+
 
 
 
