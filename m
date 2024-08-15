@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-68992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCAD9534F0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2CA953363
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78F2A283306
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9BEE1F23580
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DB71A01B6;
-	Thu, 15 Aug 2024 14:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7661A76B5;
+	Thu, 15 Aug 2024 14:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIGVatQe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFDzIFNY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9060B7DA8C;
-	Thu, 15 Aug 2024 14:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89F01AB53B;
+	Thu, 15 Aug 2024 14:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732317; cv=none; b=Fw1yqRPZabcm5X7B7V/eWu4UUux0w2OuK0k566kE8woyi86cI3xwWUfaLgKGw0OW0kdFKby3M+ZqAdnu9n/xUPs5bsSJgTNV2Wpr9vzglV35bmX/7XGYJ6tCC5lENfyz0esDDZZlHLesKwG9t9SMOHRkwvvam1u6VW66IOuaRXY=
+	t=1723731265; cv=none; b=I10z3eD2egoXI3Xmwpe7W1utE5xhFE3B7W2ogHFhwpqfjNFBwEwBZXgc6W3vTqWRIHNbnMY4aIxLG8ugVoWHqZ9soR2jAQIXXVh1ffWSeIBDz6RGuSw9Mixx+zb6D7z13Tmf6xu77kh3eAtpHhfDWcjkyfNQdvgxIKLvDibah2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732317; c=relaxed/simple;
-	bh=H9JHaQcy5vgwRBGKoTTrx5FBYtEYD0XZFyp6JKAVqK0=;
+	s=arc-20240116; t=1723731265; c=relaxed/simple;
+	bh=Y9q130KcbAxiPn7Xh+PmbHBDv2ozXNjrFG/o7Kf/tkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3pqOiTlXDS0Tfs7Q9xWXQKrL5eXI95QgzTSpMX4c7GnnmhzeylBeuThmGvTFIoQCXbfihF+agoTk9tIsM/wjWTuMkZKZsYa6W2dyN4TIanjWRhJ6UDn5eNSauPvlK03zu7IfpnfHi34gIMyRiW/Nu1ORZhJmHUdhlL48FDzXV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIGVatQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6EFC4AF0D;
-	Thu, 15 Aug 2024 14:31:56 +0000 (UTC)
+	 MIME-Version; b=r3K6w8aEBwPvv2SzMdq8UIZ9F2RgE3kNpYPLnk5tkouP9v0BEU409KKiKodcmWMjtWBC4remTuc6bVT5ZWOSOOzxDGc22azrcdsGT7oVyCdJFayWsK4B0D6NCeXXek0XFS9ZQ+IeDeSFVzN3bigcepkSryczbMHMe7s9Q62uweU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFDzIFNY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A0FC4AF0A;
+	Thu, 15 Aug 2024 14:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732317;
-	bh=H9JHaQcy5vgwRBGKoTTrx5FBYtEYD0XZFyp6JKAVqK0=;
+	s=korg; t=1723731265;
+	bh=Y9q130KcbAxiPn7Xh+PmbHBDv2ozXNjrFG/o7Kf/tkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RIGVatQewPugek5/Ulh+bweoa7t1haSodTt/wnM3Qvxr4CgMF9lg5EasHntNVdMuT
-	 Vlv7CARg/5uuNLp2diGiCnp2mRg1o3ujEulz+Z5hGtDRVoGdl+K9lvZpvZDrGz/bg+
-	 zsygFpG+nV/akRTq3q1e+wpumI6A64rbYm7KD+L0=
+	b=VFDzIFNYMW8HedAsE9juQUDfZk80rXNr6xFjrnXHVPPDpI/uO9gcxWiy4EnMoPLdC
+	 vYgZyqr0Kn6DxQMnMSn5KK4/kDyhXnuSncDvufjhdyyASeIvSlYfVwKzVOB0UJgudN
+	 ltvn7mmF04siAJGlohl36Jp9Jvsjf0WIlYZ5JlmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5f682cd029581f9edfd1@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 142/352] udf: Avoid using corrupted block bitmap buffer
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 075/259] Input: elan_i2c - do not leave interrupt disabled on suspend failure
 Date: Thu, 15 Aug 2024 15:23:28 +0200
-Message-ID: <20240815131924.749129107@linuxfoundation.org>
+Message-ID: <20240815131905.699036298@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit a90d4471146de21745980cba51ce88e7926bcc4f upstream.
+[ Upstream commit 5f82c1e04721e7cd98e604eb4e58f0724d8e5a65 ]
 
-When the filesystem block bitmap is corrupted, we detect the corruption
-while loading the bitmap and fail the allocation with error. However the
-next allocation from the same bitmap will notice the bitmap buffer is
-already loaded and tries to allocate from the bitmap with mixed results
-(depending on the exact nature of the bitmap corruption). Fix the
-problem by using BH_verified bit to indicate whether the bitmap is valid
-or not.
+Make sure interrupts are not left disabled when we fail to suspend the
+touch controller.
 
-Reported-by: syzbot+5f682cd029581f9edfd1@syzkaller.appspotmail.com
-CC: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240617154201.29512-2-jack@suse.cz
-Fixes: 1e0d4adf17e7 ("udf: Check consistency of Space Bitmap Descriptor")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6696777c6506 ("Input: add driver for Elan I2C/SMbus touchpad")
+Link: https://lore.kernel.org/r/ZmKiiL-1wzKrhqBj@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/balloc.c |   15 +++++++++++++--
- fs/udf/super.c  |    3 ++-
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ drivers/input/mouse/elan_i2c_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/udf/balloc.c
-+++ b/fs/udf/balloc.c
-@@ -68,8 +68,12 @@ static int read_block_bitmap(struct supe
+diff --git a/drivers/input/mouse/elan_i2c_core.c b/drivers/input/mouse/elan_i2c_core.c
+index aaef8847f8862..5fc4edbb70a9a 100644
+--- a/drivers/input/mouse/elan_i2c_core.c
++++ b/drivers/input/mouse/elan_i2c_core.c
+@@ -1295,6 +1295,8 @@ static int __maybe_unused elan_suspend(struct device *dev)
  	}
  
- 	for (i = 0; i < count; i++)
--		if (udf_test_bit(i + off, bh->b_data))
-+		if (udf_test_bit(i + off, bh->b_data)) {
-+			bitmap->s_block_bitmap[bitmap_nr] =
-+							ERR_PTR(-EFSCORRUPTED);
-+			brelse(bh);
- 			return -EFSCORRUPTED;
-+		}
- 	return 0;
+ err:
++	if (ret)
++		enable_irq(client->irq);
+ 	mutex_unlock(&data->sysfs_mutex);
+ 	return ret;
  }
- 
-@@ -85,8 +89,15 @@ static int __load_block_bitmap(struct su
- 			  block_group, nr_groups);
- 	}
- 
--	if (bitmap->s_block_bitmap[block_group])
-+	if (bitmap->s_block_bitmap[block_group]) {
-+		/*
-+		 * The bitmap failed verification in the past. No point in
-+		 * trying again.
-+		 */
-+		if (IS_ERR(bitmap->s_block_bitmap[block_group]))
-+			return PTR_ERR(bitmap->s_block_bitmap[block_group]);
- 		return block_group;
-+	}
- 
- 	retval = read_block_bitmap(sb, bitmap, block_group, block_group);
- 	if (retval < 0)
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -266,7 +266,8 @@ static void udf_sb_free_bitmap(struct ud
- 	int nr_groups = bitmap->s_nr_groups;
- 
- 	for (i = 0; i < nr_groups; i++)
--		brelse(bitmap->s_block_bitmap[i]);
-+		if (!IS_ERR_OR_NULL(bitmap->s_block_bitmap[i]))
-+			brelse(bitmap->s_block_bitmap[i]);
- 
- 	kvfree(bitmap);
- }
+-- 
+2.43.0
+
 
 
 
