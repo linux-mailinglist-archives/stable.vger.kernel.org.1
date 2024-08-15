@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B1C953222
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:02:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C48E952FD0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB76F288178
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:02:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FFF21C22922
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D411A00E2;
-	Thu, 15 Aug 2024 14:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F8619DF9E;
+	Thu, 15 Aug 2024 13:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMgTtJBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vG68T85O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD6519FA9D;
-	Thu, 15 Aug 2024 14:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF9B7DA78;
+	Thu, 15 Aug 2024 13:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730509; cv=none; b=OMd6t512jySywtki3JQz+9Nes1+MG/iTSriSD/MxVPS08z01/iUFVdij/ilS4WWZXvBo55sGtMcJWLh8cRKCVtO8He+0aIAP4sm0HI6lo8eoKPHg/sqoCztfL4XrNQUE0layJsPSarMIy316xMLIFmODuQS4IrdqbH2U/n0RK9Y=
+	t=1723728974; cv=none; b=ghAH2Uw9qGU5XKaU/Y2RWuiZYMUgwBNHdpxW59G0EiayWPy2lcBLr3qdzz8sLxoK8l4gwXmfQFDaFnwQbBt0d2NRb308Faj44tIrCamGYo5jiu5GKOPzrn2aQ5iUEsp6UHRhLVUSToE9AHr21fplfcfMNmuv32NN/4FI4TkA0tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730509; c=relaxed/simple;
-	bh=WeQlKytbYjG/ce8RDe0fJs9FdTZLoaNldIEE/rx7S3g=;
+	s=arc-20240116; t=1723728974; c=relaxed/simple;
+	bh=6IiyBH8b9u3M6I/iaQYfgfCVX6ECxKAn7G6haKDCSEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AhWYEh+4QzqzHmGdABRDC09QGCzyhDEmpTB8Mn+BZfpuZG1hQIhcCtEvHjpyhbeTiyk0TXm3Vn1W/6/x+5NBk2bVbxQd7tYykxJjH4pGiCOixwrlYCHhNwOYwjy/t38rJrwtM3e6d5NUom6/VreIzf3wo6wlU68ofNZ5iBQU6h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMgTtJBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B649C4AF0C;
-	Thu, 15 Aug 2024 14:01:48 +0000 (UTC)
+	 MIME-Version; b=X3bZhc6veCr1mFgaK1wSqNwylGqlMK+A9Mxq78CzbLBozwAnoWK0y+/Ss26mip+Xgc7MekJS3dk1DfvoLj+WCt8/TqEzVvmw3hyZEktB/bHuIrD+dLMUSCB7XqeQOCGpsQax/vk3gTWia6Au2wfkbIIFq8lfK625kopBvFhMrIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vG68T85O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40B9C32786;
+	Thu, 15 Aug 2024 13:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730508;
-	bh=WeQlKytbYjG/ce8RDe0fJs9FdTZLoaNldIEE/rx7S3g=;
+	s=korg; t=1723728974;
+	bh=6IiyBH8b9u3M6I/iaQYfgfCVX6ECxKAn7G6haKDCSEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMgTtJBr5h743OTVhXVJJnH0XDVsihr5rP36e7McrtfYnxQoS5Cxdi/CblmH1dZSz
-	 UriwW70QYJgTJJiGyx7E05xkfqfbNVX00xP7LKGNJb5JiEgYkytXFCWNvL+7VALr2z
-	 qodwuei+egPcD+k3meYFlydQi/fRe1ak6v/tKv3o=
+	b=vG68T85OnoUGlBRjCyPK/IQ4V78/jqAwezb0c1njVxOZoCUNRBEtkaKiBh+v3Ri8l
+	 G9gRM+chH1G5P72D81IJylBPMXI0GzakqWdkGYu8iHZwRqZ1yw5EXhahXDZTwS2LXl
+	 EBJeOyNqIHnPj7gGFhb+UIlvrkQIvqdfe1vEi4GI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Waiman Long <longman@redhat.com>,
+	Oleksandr Suvorov <oleksandr.suvorov@toradex.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 429/484] clocksource: Reduce the default clocksource_watchdog() retries to 2
+Subject: [PATCH 4.19 170/196] spi: fsl-lpspi: remove unneeded array
 Date: Thu, 15 Aug 2024 15:24:47 +0200
-Message-ID: <20240815131958.028128688@linuxfoundation.org>
+Message-ID: <20240815131858.575215374@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
 
-[ Upstream commit 1a5620671a1b6fd9cc08761677d050f1702f910c ]
+[ Upstream commit 2fa98705a9289c758b6154a22174aa8d4041a285 ]
 
-With the previous patch, there is an extra watchdog read in each retry.
-Now the total number of clocksource reads is increased to 4 per iteration.
-In order to avoid increasing the clock skew check overhead, the default
-maximum number of retries is reduced from 3 to 2 to maintain the same 12
-clocksource reads in the worst case.
+- replace the array with the shift operation
+- remove the extra comparing operation.
 
-Suggested-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Stable-dep-of: f2655ac2c06a ("clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()")
+Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
+Link: https://lore.kernel.org/r/20200220141143.3902922-2-oleksandr.suvorov@toradex.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 730bbfaf7d48 ("spi: spi-fsl-lpspi: Fix scldiv calculation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 4 ++--
- kernel/time/clocksource.c                       | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index d49e11962333c..2db3d5b6fc038 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -603,8 +603,8 @@
- 	clocksource.max_cswd_read_retries= [KNL]
- 			Number of clocksource_watchdog() retries due to
- 			external delays before the clock will be marked
--			unstable.  Defaults to three retries, that is,
--			four attempts to read the clock under test.
-+			unstable.  Defaults to two retries, that is,
-+			three attempts to read the clock under test.
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 8e1f6ee0a7993..21c8866ebbd12 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -67,8 +67,6 @@
+ #define TCR_RXMSK	BIT(19)
+ #define TCR_TXMSK	BIT(18)
  
- 	clocksource.verify_n_cpus= [KNL]
- 			Limit the number of CPUs checked for clocksources
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 7d6d87a22ad55..38bb654d2a7e1 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -201,7 +201,7 @@ void clocksource_mark_unstable(struct clocksource *cs)
- 	spin_unlock_irqrestore(&watchdog_lock, flags);
- }
+-static int clkdivs[] = {1, 2, 4, 8, 16, 32, 64, 128};
+-
+ struct lpspi_config {
+ 	u8 bpw;
+ 	u8 chip_select;
+@@ -271,15 +269,14 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 	}
  
--ulong max_cswd_read_retries = 3;
-+ulong max_cswd_read_retries = 2;
- module_param(max_cswd_read_retries, ulong, 0644);
- EXPORT_SYMBOL_GPL(max_cswd_read_retries);
- static int verify_n_cpus = 8;
+ 	for (prescale = 0; prescale < 8; prescale++) {
+-		scldiv = perclk_rate /
+-			 (clkdivs[prescale] * config.speed_hz) - 2;
++		scldiv = perclk_rate / config.speed_hz / (1 << prescale) - 2;
+ 		if (scldiv < 256) {
+ 			fsl_lpspi->config.prescale = prescale;
+ 			break;
+ 		}
+ 	}
+ 
+-	if (prescale == 8 && scldiv >= 256)
++	if (scldiv >= 256)
+ 		return -EINVAL;
+ 
+ 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
 -- 
 2.43.0
 
