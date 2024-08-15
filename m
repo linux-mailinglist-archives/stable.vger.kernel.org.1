@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6F7952F51
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755BE9531D1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A317E1C23013
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCCE21F21010
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA037DA78;
-	Thu, 15 Aug 2024 13:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2240B19E7F6;
+	Thu, 15 Aug 2024 13:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7x56szZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2r6ZAPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17207DA8A;
-	Thu, 15 Aug 2024 13:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42C07DA7D;
+	Thu, 15 Aug 2024 13:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728668; cv=none; b=uunOXuZ0c5hawY0ebE5wHS7SWqzjDHxnzBEm5wf9EPhM4UqRFtkhc3PFHKZty1NWtiOEdKmSZZOCMNvK+aZjXhyi4hqxDls+ymOHzFqWMOMxbtlZDvXY/pFDZSejARS+pQgLMP0EMoUvmMwXsttzV4ZE5hjjC0gf9VMO81pW0Qg=
+	t=1723730319; cv=none; b=OigroGx5AzhhrmadRp0QtEggjIUAiWb50vAqrGdc7vwJr0hcAFOxnIRCsxpzQmyp00XBnzGAeqec0n23vwJmjFf551LMbZJAqcIh8Tkk3ug7m0PPfM4XKt4DqOtcnFXSRWtKIsuVIpdoXmVgWnOEFczmXqQdYknyToEwQeOCeHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728668; c=relaxed/simple;
-	bh=xgyQ/IXZCl58k07WbhLBBERJjwrraNhmDTc5JRyaHUI=;
+	s=arc-20240116; t=1723730319; c=relaxed/simple;
+	bh=MNeAal1Wx9Fp14T6HbrQ2fiZ2gmxzoTFGpBllQf7zsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCF30wApVPiSj3lnbqAW0MzTR/FtdQMrL9jmFjzZ+7kEe8G5QC9Um2UyAolDg4bBRYwG96gr9JZ4nJggbFwm5mzs2RoC/eY1eX/lrLeUdVUPXNVFPfrcAQLIig8RWTiOiW5eiIDj/NlRvi3GnnVzkdN9/zsZPQ6TzDHx2tj3Ydo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7x56szZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED14C32786;
-	Thu, 15 Aug 2024 13:31:07 +0000 (UTC)
+	 MIME-Version; b=dV0426Lnc2tNe/nsRVZMRAD3huFyCXBsD1ZHPDmpzeUZ5d/khs2cEOUmoAkn1fMhThOLDfwuh/t5WkvOdjkVG6YG/kjus6h6MVhWRMAsOqnTCesM0zGOJACeTIA9XeluLnqVHl/IdRZ08FlCqj8et1kmpgNz1f/V7sXH5Hm5HRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2r6ZAPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5391AC32786;
+	Thu, 15 Aug 2024 13:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728668;
-	bh=xgyQ/IXZCl58k07WbhLBBERJjwrraNhmDTc5JRyaHUI=;
+	s=korg; t=1723730319;
+	bh=MNeAal1Wx9Fp14T6HbrQ2fiZ2gmxzoTFGpBllQf7zsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7x56szZQKVVGp3JEfz8YgwmOUAKQpVRbIDhmRPn8ffXx9JyUAeCnG9PAfDb1D1EE
-	 Rk1Az/31XE8nfrJLJT5gjqAyxdTPDvFAnYRxGbBaqgXhVlAqlLfBV5m3+617TvFAlI
-	 weXmmcthiSPzUbNCxgAy7g/b3QsRmtPsVzybW3CI=
+	b=f2r6ZAPAacLvh/QGY7ZuHnMBboEy+wJzYHXL0ANg4iQOZnwr1rg0UsK/nZffmObJ2
+	 RbJnKxAlo2EOrzZTC2vc9kvIfHmDi4D2Zxgm6REhxUCB8OJ2pGGOQFZG1iSq7whzbk
+	 ndm3VG6LorBp1495nMClKEYzdO0VHUFNJkxWgbVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Paolo Pisati <p.pisati@gmail.com>,
-	Michael Schmitz <schmitzmic@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 4.19 071/196] m68k: amiga: Turn off Warp1260 interrupts during boot
-Date: Thu, 15 Aug 2024 15:23:08 +0200
-Message-ID: <20240815131854.793902302@linuxfoundation.org>
+	bo liu <bo.liu@senarytech.com>,
+	songxiebing <songxiebing@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 331/484] ALSA: hda: conexant: Fix headset auto detect fail in the polling mode
+Date: Thu, 15 Aug 2024 15:23:09 +0200
+Message-ID: <20240815131954.196704748@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Pisati <p.pisati@gmail.com>
+From: songxiebing <songxiebing@kylinos.cn>
 
-commit 1d8491d3e726984343dd8c3cdbe2f2b47cfdd928 upstream.
+[ Upstream commit e60dc98122110594d0290845160f12916192fc6d ]
 
-On an Amiga 1200 equipped with a Warp1260 accelerator, an interrupt
-storm coming from the accelerator board causes the machine to crash in
-local_irq_enable() or auto_irq_enable().  Disabling interrupts for the
-Warp1260 in amiga_parse_bootinfo() fixes the problem.
+The previous fix (7aeb25908648) only handles the unsol_event reporting
+during interrupts and does not include the polling mode used to set
+jackroll_ms, so now we are replacing it with
+snd_hda_jack_detect_enable_callback.
 
-Link: https://lore.kernel.org/r/ZkjwzVwYeQtyAPrL@amaterasu.local
-Cc: stable <stable@kernel.org>
-Signed-off-by: Paolo Pisati <p.pisati@gmail.com>
-Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/20240601153254.186225-1-p.pisati@gmail.com
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7aeb25908648 ("ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140")
+Co-developed-by: bo liu <bo.liu@senarytech.com>
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Signed-off-by: songxiebing <songxiebing@kylinos.cn>
+Link: https://patch.msgid.link/20240726100726.50824-1-soxiebing@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/amiga/config.c       |    9 +++++++++
- include/uapi/linux/zorro_ids.h |    3 +++
- 2 files changed, 12 insertions(+)
+ sound/pci/hda/patch_conexant.c |   54 ++++++-----------------------------------
+ 1 file changed, 9 insertions(+), 45 deletions(-)
 
---- a/arch/m68k/amiga/config.c
-+++ b/arch/m68k/amiga/config.c
-@@ -181,6 +181,15 @@ int __init amiga_parse_bootinfo(const st
- 			dev->slotsize = be16_to_cpu(cd->cd_SlotSize);
- 			dev->boardaddr = be32_to_cpu(cd->cd_BoardAddr);
- 			dev->boardsize = be32_to_cpu(cd->cd_BoardSize);
-+
-+			/* CS-LAB Warp 1260 workaround */
-+			if (be16_to_cpu(dev->rom.er_Manufacturer) == ZORRO_MANUF(ZORRO_PROD_CSLAB_WARP_1260) &&
-+			    dev->rom.er_Product == ZORRO_PROD(ZORRO_PROD_CSLAB_WARP_1260)) {
-+
-+				/* turn off all interrupts */
-+				pr_info("Warp 1260 card detected: applying interrupt storm workaround\n");
-+				*(uint32_t *)(dev->boardaddr + 0x1000) = 0xfff;
-+			}
- 		} else
- 			pr_warn("amiga_parse_bootinfo: too many AutoConfig devices\n");
- #endif /* CONFIG_ZORRO */
---- a/include/uapi/linux/zorro_ids.h
-+++ b/include/uapi/linux/zorro_ids.h
-@@ -449,6 +449,9 @@
- #define  ZORRO_PROD_VMC_ISDN_BLASTER_Z2				ZORRO_ID(VMC, 0x01, 0)
- #define  ZORRO_PROD_VMC_HYPERCOM_4				ZORRO_ID(VMC, 0x02, 0)
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -21,12 +21,6 @@
+ #include "hda_jack.h"
+ #include "hda_generic.h"
  
-+#define ZORRO_MANUF_CSLAB					0x1400
-+#define  ZORRO_PROD_CSLAB_WARP_1260				ZORRO_ID(CSLAB, 0x65, 0)
-+
- #define ZORRO_MANUF_INFORMATION					0x157C
- #define  ZORRO_PROD_INFORMATION_ISDN_ENGINE_I			ZORRO_ID(INFORMATION, 0x64, 0)
+-enum {
+-	CX_HEADSET_NOPRESENT = 0,
+-	CX_HEADSET_PARTPRESENT,
+-	CX_HEADSET_ALLPRESENT,
+-};
+-
+ struct conexant_spec {
+ 	struct hda_gen_spec gen;
+ 
+@@ -48,7 +42,6 @@ struct conexant_spec {
+ 	unsigned int gpio_led;
+ 	unsigned int gpio_mute_led_mask;
+ 	unsigned int gpio_mic_led_mask;
+-	unsigned int headset_present_flag;
+ 	bool is_cx8070_sn6140;
+ };
+ 
+@@ -250,48 +243,19 @@ static void cx_process_headset_plugin(st
+ 	}
+ }
+ 
+-static void cx_update_headset_mic_vref(struct hda_codec *codec, unsigned int res)
++static void cx_update_headset_mic_vref(struct hda_codec *codec, struct hda_jack_callback *event)
+ {
+-	unsigned int phone_present, mic_persent, phone_tag, mic_tag;
+-	struct conexant_spec *spec = codec->spec;
++	unsigned int mic_present;
+ 
+ 	/* In cx8070 and sn6140, the node 16 can only be config to headphone or disabled,
+ 	 * the node 19 can only be config to microphone or disabled.
+ 	 * Check hp&mic tag to process headset pulgin&plugout.
+ 	 */
+-	phone_tag = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
+-	mic_tag = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
+-	if ((phone_tag & (res >> AC_UNSOL_RES_TAG_SHIFT)) ||
+-	    (mic_tag & (res >> AC_UNSOL_RES_TAG_SHIFT))) {
+-		phone_present = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_PIN_SENSE, 0x0);
+-		if (!(phone_present & AC_PINSENSE_PRESENCE)) {/* headphone plugout */
+-			spec->headset_present_flag = CX_HEADSET_NOPRESENT;
+-			snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
+-			return;
+-		}
+-		if (spec->headset_present_flag == CX_HEADSET_NOPRESENT) {
+-			spec->headset_present_flag = CX_HEADSET_PARTPRESENT;
+-		} else if (spec->headset_present_flag == CX_HEADSET_PARTPRESENT) {
+-			mic_persent = snd_hda_codec_read(codec, 0x19, 0,
+-							 AC_VERB_GET_PIN_SENSE, 0x0);
+-			/* headset is present */
+-			if ((phone_present & AC_PINSENSE_PRESENCE) &&
+-			    (mic_persent & AC_PINSENSE_PRESENCE)) {
+-				cx_process_headset_plugin(codec);
+-				spec->headset_present_flag = CX_HEADSET_ALLPRESENT;
+-			}
+-		}
+-	}
+-}
+-
+-static void cx_jack_unsol_event(struct hda_codec *codec, unsigned int res)
+-{
+-	struct conexant_spec *spec = codec->spec;
+-
+-	if (spec->is_cx8070_sn6140)
+-		cx_update_headset_mic_vref(codec, res);
+-
+-	snd_hda_jack_unsol_event(codec, res);
++	mic_present = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
++	if (!(mic_present & AC_PINSENSE_PRESENCE)) /* mic plugout */
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
++	else
++		cx_process_headset_plugin(codec);
+ }
+ 
+ #ifdef CONFIG_PM
+@@ -307,7 +271,7 @@ static const struct hda_codec_ops cx_aut
+ 	.build_pcms = snd_hda_gen_build_pcms,
+ 	.init = cx_auto_init,
+ 	.free = cx_auto_free,
+-	.unsol_event = cx_jack_unsol_event,
++	.unsol_event = snd_hda_jack_unsol_event,
+ #ifdef CONFIG_PM
+ 	.suspend = cx_auto_suspend,
+ 	.check_power_status = snd_hda_gen_check_power_status,
+@@ -1167,7 +1131,7 @@ static int patch_conexant_auto(struct hd
+ 	case 0x14f11f86:
+ 	case 0x14f11f87:
+ 		spec->is_cx8070_sn6140 = true;
+-		spec->headset_present_flag = CX_HEADSET_NOPRESENT;
++		snd_hda_jack_detect_enable_callback(codec, 0x19, cx_update_headset_mic_vref);
+ 		break;
+ 	}
  
 
 
