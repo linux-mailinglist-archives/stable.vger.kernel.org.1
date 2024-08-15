@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-68854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067CC953452
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8C09532B6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 369171C22578
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676E51F21988
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E4219DF6A;
-	Thu, 15 Aug 2024 14:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1ED21714DD;
+	Thu, 15 Aug 2024 14:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lg1qD5lE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ml4jFpu2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E7D19F473;
-	Thu, 15 Aug 2024 14:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F06B19F473;
+	Thu, 15 Aug 2024 14:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731875; cv=none; b=JfmvYScAQO3X9INoXdiTtbWlwMrYxwqm3NBbedAv7EqgaZZkIb8CXV2jkazRlEGBb9UwBBKrWElIBO9HfevE1YdhmxuGd7K/ENL1S+94xqzNO5xVjaEVc7bb6iVKWK+NwQdjwoME7UXor0wEnAl2t6Sp5OwBMspyADek92AlzYo=
+	t=1723730807; cv=none; b=bUauKgx5f3IipK4jQgMPFDf1a3x5R/VBPcQJxmWQNoEhY/jpri9oUkyLoy+E+0KbDJnGKuN5s29VWQIKBsl9rZXFJfH7Iibz0XjlxX7FokElhrZKAcKvd0z3+Wx7nNodwasZozpiHAR4QgqNT8cT+7mosDgkvHccqpsw63tuwAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731875; c=relaxed/simple;
-	bh=yIUaENMG1Q2bXwNeK7XN4WVGC2BR3FGiwIndIU6d7Hk=;
+	s=arc-20240116; t=1723730807; c=relaxed/simple;
+	bh=jr39QDXgwB3npO4sf7Md/WRToGIRzZwOBt+vS19+dy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YC9x5Yjtd85C+7/4UWF8HSCyHxqgmJjbgZiJIFooktDBIodb2pcMdpixjkW43fywwHKvu9QK9XtwsdpXFqJg/5RjHBGIJbH0k69JtFDC4XEFlIg8XioMK9XWZcpVW8/mxDMsEYxyeeBnxEFHDRd13sSL7BpIke8WmQKfrNJl+VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lg1qD5lE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9643FC32786;
-	Thu, 15 Aug 2024 14:24:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XdtbJCqyG4SplchMlvSFQDSGQ1myqJEvOdOWWjl/zsDa2ZiMR8a7IwPOzOas/4UlugX4E++NPN93Iq6OI9em0WrKwfbX+fEEFBFxcWvBGBzD+vmMO6PQ5fDNKKix55OWV+QaVJXP2pt58LZDsa6g3ZEnZ4QKAz1lLbi+J4FjWx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ml4jFpu2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A373CC32786;
+	Thu, 15 Aug 2024 14:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731875;
-	bh=yIUaENMG1Q2bXwNeK7XN4WVGC2BR3FGiwIndIU6d7Hk=;
+	s=korg; t=1723730807;
+	bh=jr39QDXgwB3npO4sf7Md/WRToGIRzZwOBt+vS19+dy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lg1qD5lE+OZdrxurUHI5QHfLtha3yIa0YDIh55CFBZsY/SHUGDEGx/zz9Fj/UlAbD
-	 gnTh9VRLg4C/TOYNEof+z+ZLdmSnsFv8XhBWDVUAQdArp83jmidYlqqSNuYDQyFIGi
-	 1815Mat/zKVvjkbGJSJd8+zCs+A8E2498ydOPbAs=
+	b=Ml4jFpu2WHzQ1k0HhgvxPMaeQnRXO9Qzkg0+mTIuVpJqbcs1tsmO0Ji0ivDafOS+O
+	 miijbeWMrGHBt+JukCmd8oCMLXepQa8s6USfu11Rw3QUe7xE8LLNyF/bFkQiLPQCFo
+	 +FibWuHNouSulME6qm/b/zR6lTd++4LNYahlW3u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miroslav Lichvar <mlichvar@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 236/259] ntp: Clamp maxerror and esterror to operating range
-Date: Thu, 15 Aug 2024 15:26:09 +0200
-Message-ID: <20240815131911.887653489@linuxfoundation.org>
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Waiman Long <longman@redhat.com>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.1 36/38] cgroup: Move rcu_head up near the top of cgroup_root
+Date: Thu, 15 Aug 2024 15:26:10 +0200
+Message-ID: <20240815131834.342572161@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 87d571d6fb77ec342a985afa8744bb9bb75b3622 ]
+commit a7fb0423c201ba12815877a0b5a68a6a1710b23a upstream.
 
-Using syzkaller alongside the newly reintroduced signed integer overflow
-sanitizer spits out this report:
+Commit d23b5c577715 ("cgroup: Make operations on the cgroup root_list RCU
+safe") adds a new rcu_head to the cgroup_root structure and kvfree_rcu()
+for freeing the cgroup_root.
 
-UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:461:16
-9223372036854775807 + 500 cannot be represented in type 'long'
-Call Trace:
- handle_overflow+0x171/0x1b0
- second_overflow+0x2d6/0x500
- accumulate_nsecs_to_secs+0x60/0x160
- timekeeping_advance+0x1fe/0x890
- update_wall_time+0x10/0x30
+The current implementation of kvfree_rcu(), however, has the limitation
+that the offset of the rcu_head structure within the larger data
+structure must be less than 4096 or the compilation will fail. See the
+macro definition of __is_kvfree_rcu_offset() in include/linux/rcupdate.h
+for more information.
 
-time_maxerror is unconditionally incremented and the result is checked
-against NTP_PHASE_LIMIT, but the increment itself can overflow, resulting
-in wrap-around to negative space.
+By putting rcu_head below the large cgroup structure, any change to the
+cgroup structure that makes it larger run the risk of causing build
+failure under certain configurations. Commit 77070eeb8821 ("cgroup:
+Avoid false cacheline sharing of read mostly rstat_cpu") happens to be
+the last straw that breaks it. Fix this problem by moving the rcu_head
+structure up before the cgroup structure.
 
-Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
-supplied value was sanity checked to be in the operating range. That change
-removed the sanity check and relied on clamping in handle_overflow() which
-does not work correctly when the user supplied value is in the overflow
-zone of the '+ 500' operation.
-
-The operation requires CAP_SYS_TIME and the side effect of the overflow is
-NTP getting out of sync.
-
-Miroslav confirmed that the input value should be clamped to the operating
-range and the same applies to time_esterror. The latter is not used by the
-kernel, but the value still should be in the operating range as it was
-before the sanity check got removed.
-
-Clamp them to the operating range.
-
-[ tglx: Changed it to clamping and included time_esterror ]
-
-Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Miroslav Lichvar <mlichvar@redhat.com>
-Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-usec-v2-1-d539180f2b79@google.com
-Closes: https://github.com/KSPP/linux/issues/354
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ cast things to long long to fix compiler warnings - gregkh ]
+Fixes: d23b5c577715 ("cgroup: Make operations on the cgroup root_list RCU safe")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/lkml/20231207143806.114e0a74@canb.auug.org.au/
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Yafang Shao <laoar.shao@gmail.com>
+Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/ntp.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/cgroup-defs.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/kernel/time/ntp.c
-+++ b/kernel/time/ntp.c
-@@ -679,10 +679,10 @@ static inline void process_adjtimex_mode
- 	}
+--- a/include/linux/cgroup-defs.h
++++ b/include/linux/cgroup-defs.h
+@@ -525,6 +525,10 @@ struct cgroup_root {
+ 	/* Unique id for this hierarchy. */
+ 	int hierarchy_id;
  
- 	if (txc->modes & ADJ_MAXERROR)
--		time_maxerror = txc->maxerror;
-+		time_maxerror = clamp(txc->maxerror, (long long)0, (long long)NTP_PHASE_LIMIT);
++	/* A list running through the active hierarchies */
++	struct list_head root_list;
++	struct rcu_head rcu;	/* Must be near the top */
++
+ 	/*
+ 	 * The root cgroup. The containing cgroup_root will be destroyed on its
+ 	 * release. cgrp->ancestors[0] will be used overflowing into the
+@@ -538,10 +542,6 @@ struct cgroup_root {
+ 	/* Number of cgroups in the hierarchy, used only for /proc/cgroups */
+ 	atomic_t nr_cgrps;
  
- 	if (txc->modes & ADJ_ESTERROR)
--		time_esterror = txc->esterror;
-+		time_esterror = clamp(txc->esterror, (long long)0, (long long)NTP_PHASE_LIMIT);
+-	/* A list running through the active hierarchies */
+-	struct list_head root_list;
+-	struct rcu_head rcu;
+-
+ 	/* Hierarchy-specific flags */
+ 	unsigned int flags;
  
- 	if (txc->modes & ADJ_TIMECONST) {
- 		time_constant = txc->constant;
 
 
 
