@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-68393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6CD9531F7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:00:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1685E952FAF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EA03286ABF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:00:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF54C1F21941
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2553417C98A;
-	Thu, 15 Aug 2024 14:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E771A00F7;
+	Thu, 15 Aug 2024 13:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toGa0Gud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQ20On63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7676762D2;
-	Thu, 15 Aug 2024 14:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B823718D639;
+	Thu, 15 Aug 2024 13:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730426; cv=none; b=NlBNiJiY9x1TmH9F8/llavxBykCG+jFM4VYtoZ3j2mtIpXyyqTp+ayCYsxNqqFgED0iiNsy5tFA7KWKKzjXPVeAB6Rhs6JgLYY9rvTGQnA9kCpus+/hRDnNE9tAR5P8w2JzpozeG7PLcM51Q72hKk/ilcJuYU8+z97IVXAunVVU=
+	t=1723728883; cv=none; b=sRmIc+wIHOJq0rO/x0V++Z8FGeC+4GPDgDBWZVs68gKv9NcymXjYYHkoZW63tzM9qPWPc5A3LHQQO2CJu0aaLJ8LdcXetlXQivMq2XNLDhqBbj3gnj8mwmWSODY6KmMqA+dD7gj/pX7os2ibHCW1qzIUgVnWMYZSw1sUffmoAR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730426; c=relaxed/simple;
-	bh=k6HyKTs41sJ8aIs+cXTV/FJDROAdOlczD2mFRmkGq7Q=;
+	s=arc-20240116; t=1723728883; c=relaxed/simple;
+	bh=l/tOq+8Vk38S2lvad4KYhTSn55QWvaaEVZsAGzv/UnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmFjO4P36SLlC3f3JG4Bl75EJnv7+tYNWRfsW5PzPKQRGvUoojzig44zRgpl0d/dNsilJCLoZLlfSiZ2ScPNdCmqrf1wUL3PlDDmKi4LR70hCDwM9KTrAHPkvjs3CsR+vo/8RdZtq4DIl6Fb6yJh0xh6nh2dfHYzK6DDVokyq78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toGa0Gud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61777C32786;
-	Thu, 15 Aug 2024 14:00:26 +0000 (UTC)
+	 MIME-Version; b=n/gBZ3g6ZWY7VNcvC5YtDPBmDgFj8rAQKWNTW7EWIF7dAO6jLCaP1P1ZBijqJwbsm/ej29RurnwlIVXH/ILu6Zon3/kBLB6DWhwTGpMgOqUrVPRf6M7z9us7CDyFA52Lho36LoUDIrRysJrsjMMKbvT3cGJj7Twjlgx4MwY4PxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQ20On63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF815C32786;
+	Thu, 15 Aug 2024 13:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730426;
-	bh=k6HyKTs41sJ8aIs+cXTV/FJDROAdOlczD2mFRmkGq7Q=;
+	s=korg; t=1723728883;
+	bh=l/tOq+8Vk38S2lvad4KYhTSn55QWvaaEVZsAGzv/UnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toGa0GuddMm4ayDdlvbNeGoYv5Geh0/rmVeD+mjzc9WnR3mR1aVZWsnYduW3k0ZBw
-	 0kBl9U4euPS6kalzEzDQ51PArVJDg/qN2eW9BuFhwSUWeAR+kv+vLCD0B8W0LEdUEy
-	 vT7gMHsX8HPctYiJMNz5eWWEbU76TUTUSN/q8+O4=
+	b=mQ20On63pRRlnu4D2dWlekYUPpP+M9pp0OVEvCmzlWFkkjJ4SGZGd5IvJFEBFsJjU
+	 ydmLPPDPpNXATR0G3953UbK0381FkTmVEC5LXQYEXo1vSm7Nvt4lSffsezRh6LkGay
+	 rsbKGYP38CD0Javmfd4vDx4v841m4aDqD+p8qvJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 397/484] arm64: errata: Add workaround for Arm errata 3194386 and 3312417
-Date: Thu, 15 Aug 2024 15:24:15 +0200
-Message-ID: <20240815131956.783570116@linuxfoundation.org>
+Subject: [PATCH 4.19 139/196] wifi: nl80211: dont give key data to userspace
+Date: Thu, 15 Aug 2024 15:24:16 +0200
+Message-ID: <20240815131857.392772968@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,223 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7187bb7d0b5c7dfa18ca82e9e5c75e13861b1d88 ]
+[ Upstream commit a7e5793035792cc46a1a4b0a783655ffa897dfe9 ]
 
-Cortex-X4 and Neoverse-V3 suffer from errata whereby an MSR to the SSBS
-special-purpose register does not affect subsequent speculative
-instructions, permitting speculative store bypassing for a window of
-time. This is described in their Software Developer Errata Notice (SDEN)
-documents:
+When a key is requested by userspace, there's really no need
+to include the key data, the sequence counter is really what
+userspace needs in this case. The fact that it's included is
+just a historic quirk.
 
-* Cortex-X4 SDEN v8.0, erratum 3194386:
-  https://developer.arm.com/documentation/SDEN-2432808/0800/
+Remove the key data.
 
-* Neoverse-V3 SDEN v6.0, erratum 3312417:
-  https://developer.arm.com/documentation/SDEN-2891958/0600/
-
-To workaround these errata, it is necessary to place a speculation
-barrier (SB) after MSR to the SSBS special-purpose register. This patch
-adds the requisite SB after writes to SSBS within the kernel, and hides
-the presence of SSBS from EL0 such that userspace software which cares
-about SSBS will manipulate this via prctl(PR_GET_SPECULATION_CTRL, ...).
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240508081400.235362-5-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: fix conflicts & renames, drop unneeded cpucaps.h, fold in user_feature_fixup() ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240627104411.b6a4f097e4ea.I7e6cc976cb9e8a80ef25a3351330f313373b4578@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arm64/silicon-errata.rst |  4 +++
- arch/arm64/Kconfig                     | 41 ++++++++++++++++++++++++++
- arch/arm64/kernel/cpu_errata.c         | 19 ++++++++++++
- arch/arm64/kernel/cpufeature.c         | 12 ++++++++
- arch/arm64/kernel/proton-pack.c        | 12 ++++++++
- arch/arm64/tools/cpucaps               |  1 +
- 6 files changed, 89 insertions(+)
+ net/wireless/nl80211.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index df7c53102a5f9..33595bc79dea6 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -108,6 +108,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #2224489        | ARM64_ERRATUM_2224489       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X4       | #3194386        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1349291        | N/A                         |
-@@ -120,6 +122,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2253138        | ARM64_ERRATUM_2253138       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3312417       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-600         | #1076982,1209401| N/A                         |
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 68874d3856b91..bc89287d38ed1 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -848,6 +848,47 @@ config ARM64_ERRATUM_2224489
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 15f28203445cb..ebd8449f2fcf1 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3383,10 +3383,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	struct nlattr *key;
+ 	struct get_key_cookie *cookie = c;
  
- 	  If unsure, say Y.
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_ATTR_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_ATTR_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
+@@ -3398,10 +3395,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	if (!key)
+ 		goto nla_put_failure;
  
-+config ARM64_WORKAROUND_SPECULATIVE_SSBS
-+	bool
-+
-+config ARM64_ERRATUM_3194386
-+	bool "Cortex-X4: 3194386: workaround for MSR SSBS not self-synchronizing"
-+	select ARM64_WORKAROUND_SPECULATIVE_SSBS
-+	default y
-+	help
-+	  This option adds the workaround for ARM Cortex-X4 erratum 3194386.
-+
-+	  On affected cores "MSR SSBS, #0" instructions may not affect
-+	  subsequent speculative instructions, which may permit unexepected
-+	  speculative store bypassing.
-+
-+	  Work around this problem by placing a speculation barrier after
-+	  kernel changes to SSBS. The presence of the SSBS special-purpose
-+	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
-+	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
-+	  SSBS.
-+
-+	  If unsure, say Y.
-+
-+config ARM64_ERRATUM_3312417
-+	bool "Neoverse-V3: 3312417: workaround for MSR SSBS not self-synchronizing"
-+	select ARM64_WORKAROUND_SPECULATIVE_SSBS
-+	default y
-+	help
-+	  This option adds the workaround for ARM Neoverse-V3 erratum 3312417.
-+
-+	  On affected cores "MSR SSBS, #0" instructions may not affect
-+	  subsequent speculative instructions, which may permit unexepected
-+	  speculative store bypassing.
-+
-+	  Work around this problem by placing a speculation barrier after
-+	  kernel changes to SSBS. The presence of the SSBS special-purpose
-+	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
-+	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
-+	  SSBS.
-+
-+	  If unsure, say Y.
-+
- config CAVIUM_ERRATUM_22375
- 	bool "Cavium erratum 22375, 24313"
- 	default y
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index 4f12d8c1e55b9..0cf60010a0825 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -402,6 +402,18 @@ static struct midr_range trbe_write_out_of_range_cpus[] = {
- };
- #endif /* CONFIG_ARM64_WORKAROUND_TRBE_WRITE_OUT_OF_RANGE */
- 
-+#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
-+static const struct midr_range erratum_spec_ssbs_list[] = {
-+#ifdef CONFIG_ARM64_ERRATUM_3194386
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
-+#endif
-+#ifdef CONFIG_ARM64_ERRATUM_3312417
-+	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
-+#endif
-+	{}
-+};
-+#endif
-+
- const struct arm64_cpu_capabilities arm64_errata[] = {
- #ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
- 	{
-@@ -648,6 +660,13 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
- 		.type = ARM64_CPUCAP_WEAK_LOCAL_CPU_FEATURE,
- 		CAP_MIDR_RANGE_LIST(trbe_write_out_of_range_cpus),
- 	},
-+#endif
-+#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
-+	{
-+		.desc = "ARM errata 3194386, 3312417",
-+		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
-+		ERRATA_MIDR_RANGE_LIST(erratum_spec_ssbs_list),
-+	},
- #endif
- 	{
- 	}
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 1bb55f4a3421d..299c9ac6bc818 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -1939,6 +1939,17 @@ static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
- }
- #endif /* CONFIG_ARM64_MTE */
- 
-+static void user_feature_fixup(void)
-+{
-+	if (cpus_have_cap(ARM64_WORKAROUND_SPECULATIVE_SSBS)) {
-+		struct arm64_ftr_reg *regp;
-+
-+		regp = get_arm64_ftr_reg(SYS_ID_AA64PFR1_EL1);
-+		if (regp)
-+			regp->user_mask &= ~GENMASK(7, 4); /* SSBS */
-+	}
-+}
-+
- static void elf_hwcap_fixup(void)
- {
- #ifdef CONFIG_ARM64_ERRATUM_1742098
-@@ -2972,6 +2983,7 @@ void __init setup_cpu_features(void)
- 	u32 cwg;
- 
- 	setup_system_capabilities();
-+	user_feature_fixup();
- 	setup_elf_hwcaps(arm64_elf_hwcaps);
- 
- 	if (system_supports_32bit_el0()) {
-diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
-index 7515ed1f0669a..c0149af8c9e97 100644
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -558,6 +558,18 @@ static enum mitigation_state spectre_v4_enable_hw_mitigation(void)
- 
- 	/* SCTLR_EL1.DSSBS was initialised to 0 during boot */
- 	set_pstate_ssbs(0);
-+
-+	/*
-+	 * SSBS is self-synchronizing and is intended to affect subsequent
-+	 * speculative instructions, but some CPUs can speculate with a stale
-+	 * value of SSBS.
-+	 *
-+	 * Mitigate this with an unconditional speculation barrier, as CPUs
-+	 * could mis-speculate branches and bypass a conditional barrier.
-+	 */
-+	if (IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS))
-+		spec_bar();
-+
- 	return SPECTRE_MITIGATED;
- }
- 
-diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
-index fcaeec5a51258..e7f4ae17f31b0 100644
---- a/arch/arm64/tools/cpucaps
-+++ b/arch/arm64/tools/cpucaps
-@@ -70,3 +70,4 @@ WORKAROUND_NVIDIA_CARMEL_CNP
- WORKAROUND_QCOM_FALKOR_E1003
- WORKAROUND_REPEAT_TLBI
- WORKAROUND_SPECULATIVE_AT
-+WORKAROUND_SPECULATIVE_SSBS
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
 -- 
 2.43.0
 
