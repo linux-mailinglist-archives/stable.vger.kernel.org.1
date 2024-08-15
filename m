@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC289532CD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 478539533E2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76712B26F3F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F33EB288E9E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965C31A76A0;
-	Thu, 15 Aug 2024 14:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6201A01DA;
+	Thu, 15 Aug 2024 14:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oc/ADwaS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmqZ+dtQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E7D1A76B7;
-	Thu, 15 Aug 2024 14:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC018762D2;
+	Thu, 15 Aug 2024 14:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730866; cv=none; b=JxvDnIqq4cCxbJ49LefIX/P3e+8dI7F9GZtfZxHkF37DLiFR+qqFBODQ2+NooMOej5UyyMqa0yuYc5yT+2YQNJmcEeHFU60QSVSVo/83C/DaXCJvIONkx58y4WyWfLegz8FBdvxkiVDyzRMhN2BFXzGmi9VHDjTgj292/ZxL1WM=
+	t=1723731614; cv=none; b=h5I53ISh131zDeTae4uV9UoQMdiZhq4GMdD7pecuTYlSXSdJYt+UFVd93spTsgMNS/+RFyek4lvPER7Kyeic31flVO13VKutRrXy+/wuctfSi7YtEBqipAVunP/zjGlphenynH99PCJQW2HIeQNq+c6GunvIJn8Nka328a9PSsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730866; c=relaxed/simple;
-	bh=3CS/A/m/K+GQuHGgeRVdy/ABg8ggzq0sbWwXpXI5tkY=;
+	s=arc-20240116; t=1723731614; c=relaxed/simple;
+	bh=XW2fT26vCPnT9ljMGIW5qDhyEMiBlMbHYEvxacVJMpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DN+xtBtsC5yr0iS7DUKr6BMQONdFSS8cccyPU8dsGAoxpL0UlmPyFFXtxov7PMx231ia61wjqj4oAb1R8e7jdmxzAmQ6Oj1Q/zbME4JMVcjVshnFWcvnBU4MJA2umxqMtp8CraZP6Bf7oAGSLFTqRg5t6MFXLmbRKRdmKA8QeDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oc/ADwaS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BFEC32786;
-	Thu, 15 Aug 2024 14:07:45 +0000 (UTC)
+	 MIME-Version; b=GI2QIsfkaR4y0ltnKu7BscXDSnpxFELsSgL6L3o/jtfZSya6xaGuf8yVjP39fJpZ/EgJy44/aQLPNCB/IJZPyafLlV+aSnzFh1TZtSLvwCybyCcymYbtg3o3ph3+PafGMmmyPvBMJ4hFKyn2A6gHKo+5PwPZ2cWo5mJ2PGsY4gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmqZ+dtQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF75C32786;
+	Thu, 15 Aug 2024 14:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730866;
-	bh=3CS/A/m/K+GQuHGgeRVdy/ABg8ggzq0sbWwXpXI5tkY=;
+	s=korg; t=1723731614;
+	bh=XW2fT26vCPnT9ljMGIW5qDhyEMiBlMbHYEvxacVJMpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oc/ADwaSshoN6pgxtw4N8OvBou+DVxlnsa3I6m6CIVOP1CvvaO29GSrRRhuJSZHcn
-	 +qzU12tOEWzccln38rGXXyR9TA4hWpg/60XQT4W913mYozFQdLaoVWP0uz0gflpIJs
-	 hccDl6x/rTYDdfP4B9Ol5RwXsWIrfpk/qQM3o1Bc=
+	b=YmqZ+dtQM9rgp3XIBMAPVWp5+RpZyIhTKjWlo1q7hfkD+Bj5yUPDV+BabSAriwgQm
+	 vFQVFieWimDRDAHBD7IQPJMJAy8OtP9YM4sl6Q9Hrul0JDPumO8WdN5qTltdABBy8H
+	 5Ixe1IyjfWHdiIR1j97dzxZcbgnTzZbtR17BAVbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 03/67] ASoC: topology: Fix route memory corruption
+	Yipeng Zou <zouyipeng@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 184/259] irqchip/mbigen: Fix mbigen node address layout
 Date: Thu, 15 Aug 2024 15:25:17 +0200
-Message-ID: <20240815131838.446637528@linuxfoundation.org>
+Message-ID: <20240815131909.886029220@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-commit 0298f51652be47b79780833e0b63194e1231fa34 upstream.
+[ Upstream commit 6be6cba9c4371d27f78d900ccfe34bb880d9ee20 ]
 
-It was reported that recent fix for memory corruption during topology
-load, causes corruption in other cases. Instead of being overeager with
-checking topology, assume that it is properly formatted and just
-duplicate strings.
+The mbigen interrupt chip has its per node registers located in a
+contiguous region of page sized chunks. The code maps them into virtual
+address space as a contiguous region and determines the address of a node
+by using the node ID as index.
 
-Reported-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Closes: https://lore.kernel.org/linux-sound/171812236450.201359.3019210915105428447.b4-ty@kernel.org/T/#m8c4bd5abf453960fde6f826c4b7f84881da63e9d
-Suggested-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20240613090126.841189-1-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+                    mbigen chip
+       |-----------------|------------|--------------|
+   mgn_node_0         mgn_node_1     ...         mgn_node_i
+|--------------|   |--------------|       |----------------------|
+[0x0000, 0x0x0FFF] [0x1000, 0x1FFF]    [i*0x1000, (i+1)*0x1000 - 1]
+
+This works correctly up to 10 nodes, but then fails because the 11th's
+array slot is used for the MGN_CLEAR registers.
+
+                         mbigen chip
+    |-----------|--------|--------|---------------|--------|
+mgn_node_0  mgn_node_1  ...  mgn_clear_register  ...   mgn_node_i
+                            |-----------------|
+                             [0xA000, 0xAFFF]
+
+Skip the MGN_CLEAR register space when calculating the offset for node IDs
+greater than or equal to ten.
+
+Fixes: a6c2f87b8820 ("irqchip/mbigen: Implement the mbigen irq chip operation functions")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240730014400.1751530-1-zouyipeng@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-topology.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/irqchip/irq-mbigen.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/sound/soc/soc-topology.c
-+++ b/sound/soc/soc-topology.c
-@@ -1052,21 +1052,15 @@ static int soc_tplg_dapm_graph_elems_loa
- 			break;
- 		}
+diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
+index ff7627b577726..192950e9909b9 100644
+--- a/drivers/irqchip/irq-mbigen.c
++++ b/drivers/irqchip/irq-mbigen.c
+@@ -64,6 +64,20 @@ struct mbigen_device {
+ 	void __iomem		*base;
+ };
  
--		route->source = devm_kmemdup(tplg->dev, elem->source,
--					     min(strlen(elem->source), maxlen),
--					     GFP_KERNEL);
--		route->sink = devm_kmemdup(tplg->dev, elem->sink,
--					   min(strlen(elem->sink), maxlen),
--					   GFP_KERNEL);
-+		route->source = devm_kstrdup(tplg->dev, elem->source, GFP_KERNEL);
-+		route->sink = devm_kstrdup(tplg->dev, elem->sink, GFP_KERNEL);
- 		if (!route->source || !route->sink) {
- 			ret = -ENOMEM;
- 			break;
- 		}
++static inline unsigned int get_mbigen_node_offset(unsigned int nid)
++{
++	unsigned int offset = nid * MBIGEN_NODE_OFFSET;
++
++	/*
++	 * To avoid touched clear register in unexpected way, we need to directly
++	 * skip clear register when access to more than 10 mbigen nodes.
++	 */
++	if (nid >= (REG_MBIGEN_CLEAR_OFFSET / MBIGEN_NODE_OFFSET))
++		offset += MBIGEN_NODE_OFFSET;
++
++	return offset;
++}
++
+ static inline unsigned int get_mbigen_vec_reg(irq_hw_number_t hwirq)
+ {
+ 	unsigned int nid, pin;
+@@ -72,8 +86,7 @@ static inline unsigned int get_mbigen_vec_reg(irq_hw_number_t hwirq)
+ 	nid = hwirq / IRQS_PER_MBIGEN_NODE + 1;
+ 	pin = hwirq % IRQS_PER_MBIGEN_NODE;
  
- 		if (strnlen(elem->control, maxlen) != 0) {
--			route->control = devm_kmemdup(tplg->dev, elem->control,
--						      min(strlen(elem->control), maxlen),
--						      GFP_KERNEL);
-+			route->control = devm_kstrdup(tplg->dev, elem->control, GFP_KERNEL);
- 			if (!route->control) {
- 				ret = -ENOMEM;
- 				break;
+-	return pin * 4 + nid * MBIGEN_NODE_OFFSET
+-			+ REG_MBIGEN_VEC_OFFSET;
++	return pin * 4 + get_mbigen_node_offset(nid) + REG_MBIGEN_VEC_OFFSET;
+ }
+ 
+ static inline void get_mbigen_type_reg(irq_hw_number_t hwirq,
+@@ -88,8 +101,7 @@ static inline void get_mbigen_type_reg(irq_hw_number_t hwirq,
+ 	*mask = 1 << (irq_ofst % 32);
+ 	ofst = irq_ofst / 32 * 4;
+ 
+-	*addr = ofst + nid * MBIGEN_NODE_OFFSET
+-		+ REG_MBIGEN_TYPE_OFFSET;
++	*addr = ofst + get_mbigen_node_offset(nid) + REG_MBIGEN_TYPE_OFFSET;
+ }
+ 
+ static inline void get_mbigen_clear_reg(irq_hw_number_t hwirq,
+-- 
+2.43.0
+
 
 
 
