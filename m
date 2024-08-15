@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C65C953169
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:53:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4CE952F14
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4F3D1F25193
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:53:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F741C23F5A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E8219FA87;
-	Thu, 15 Aug 2024 13:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6471DDF5;
+	Thu, 15 Aug 2024 13:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqH6X4in"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkkda+9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CFF19EECF;
-	Thu, 15 Aug 2024 13:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86F119E825;
+	Thu, 15 Aug 2024 13:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730015; cv=none; b=TMKKGrVdOwcg/Zg9lssbt94sK9XdZFRACzX6syVKEDSUJOuCt4pcWjcAm4eTQ6K4yE0q6O0+gDGi1pbMwv9qgKW7IszGnsGgtNPYC4rlrQHmBElHJzW0Kte1yr0zwsIBLeR54N1ihuVzaJbvpo3tFUCr2XFG5z/dX1goUjkN/as=
+	t=1723728496; cv=none; b=fcP/qqTQ/5wV5LcmO3HWMTOx8ymwRo4SzNeJYFNClI01U8C5E6AqJCTPZEwxVygrK8LJUzyPdalwdVc5ghkyH1VrNXemmbyiem5MBPZs366AUtVO19wSdR7ZdAGVt/Klv+IaR6NJG51zC7pwRZyfvWI40EgnP8xrjWQYdtzw6ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730015; c=relaxed/simple;
-	bh=3pinJL67Ff2+lLLUL9+ZHqLt7TeGA+YCP3esFUO/P8E=;
+	s=arc-20240116; t=1723728496; c=relaxed/simple;
+	bh=VFu/EBzrLRQ7bApp6xjLzV7Waq7KoTr985HxSAVBxS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEesTWuc44RGGSfVYA+4KJSK1i9ma4Id4V33MgZS5VyTpPlybIG+q9LyOUd/NuD8wmNCiPxHcMXIcnAk+dpELpyiWx+qDmNeTHQE6eBf7GmMuHX03YZFee4FYf0BzPgRGys6nsL3+Y7JtNhRC/a+OW5Jqq/kBbX1AQ8ULbivXDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqH6X4in; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7800BC32786;
-	Thu, 15 Aug 2024 13:53:34 +0000 (UTC)
+	 MIME-Version; b=abLPPepcStFeeiDxxP+v7Yfz5WWMKkycjojkyyxs6+ZBReBD7rOYuU3CGi6MPtbNW1YqgnSoPW2u2Pnk7TFN2NRPuS6YxHjPfFJIFlvb30d9YaIQ0LRX/Ag/cTvck+Dxih4+ztyvgCEjMF/oMWbz9UIxlJOyjSB0fa7CdI5SqS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkkda+9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E54C32786;
+	Thu, 15 Aug 2024 13:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730014;
-	bh=3pinJL67Ff2+lLLUL9+ZHqLt7TeGA+YCP3esFUO/P8E=;
+	s=korg; t=1723728496;
+	bh=VFu/EBzrLRQ7bApp6xjLzV7Waq7KoTr985HxSAVBxS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqH6X4inN4LYC7wJ/6WoPduyYZOTiTg0DTL3nWHeEJst1tXg4CvXARq4HlEK+sZiI
-	 ZS3s4qMQnshoqhTTk3kcVIuWWgmHHY5wD9Nyggifmbra24r3x1poNOBafESB1j0DXO
-	 LzQk8suqIUKtkhHOWQoLqCLuOSbAWt1QJUKVF+5E=
+	b=qkkda+9eVXWCW8FDCybURhBSMWuU5WlO3lYpRyNZW3F72cSTCzWVeMsiP54zV0xDD
+	 tugkrBtUcx4iWRVhrA/7Sj5OJj3Dg1GUQFP50XMsKdAm3hqshd5TmdBlzU26B2CJN/
+	 lroLRIFC/ZEFA8SsW1EVBzitJtKRVEZo5rigWFPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 278/484] mISDN: Fix a use after free in hfcmulti_tx()
+Subject: [PATCH 4.19 019/196] net/smc: set rmbs SG_MAX_SINGLE_ALLOC limitation only when CONFIG_ARCH_NO_SG_CHAIN is defined
 Date: Thu, 15 Aug 2024 15:22:16 +0200
-Message-ID: <20240815131952.145321802@linuxfoundation.org>
+Message-ID: <20240815131852.813292256@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit 61ab751451f5ebd0b98e02276a44e23a10110402 ]
+[ Upstream commit 3ac14b9dfbd345e891d48d89f6c2fa519848f0f4 ]
 
-Don't dereference *sp after calling dev_kfree_skb(*sp).
+SG_MAX_SINGLE_ALLOC is used to limit maximum number of entries that
+will be allocated in one piece of scatterlist. When the entries of
+scatterlist exceeds SG_MAX_SINGLE_ALLOC, sg chain will be used. From
+commit 7c703e54cc71 ("arch: switch the default on ARCH_HAS_SG_CHAIN"),
+we can know that the macro CONFIG_ARCH_NO_SG_CHAIN is used to identify
+whether sg chain is supported. So, SMC-R's rmb buffer should be limited
+by SG_MAX_SINGLE_ALLOC only when the macro CONFIG_ARCH_NO_SG_CHAIN is
+defined.
 
-Fixes: af69fb3a8ffa ("Add mISDN HFC multiport driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/8be65f5a-c2dd-4ba0-8a10-bfe5980b8cfb@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a3fe3d01bd0d ("net/smc: introduce sg-logic for RMBs")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Co-developed-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/hardware/mISDN/hfcmulti.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/smc/smc_core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/isdn/hardware/mISDN/hfcmulti.c b/drivers/isdn/hardware/mISDN/hfcmulti.c
-index e840609c50eb7..2063afffd0853 100644
---- a/drivers/isdn/hardware/mISDN/hfcmulti.c
-+++ b/drivers/isdn/hardware/mISDN/hfcmulti.c
-@@ -1931,7 +1931,7 @@ hfcmulti_dtmf(struct hfc_multi *hc)
- static void
- hfcmulti_tx(struct hfc_multi *hc, int ch)
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index 691c1d9c4c560..6c19cc805abc1 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -666,7 +666,6 @@ int smc_conn_create(struct smc_sock *smc, bool is_smcd, int srv_first_contact,
+  */
+ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
  {
--	int i, ii, temp, len = 0;
-+	int i, ii, temp, tmp_len, len = 0;
- 	int Zspace, z1, z2; /* must be int for calculation */
- 	int Fspace, f1, f2;
- 	u_char *d;
-@@ -2152,14 +2152,15 @@ hfcmulti_tx(struct hfc_multi *hc, int ch)
- 		HFC_wait_nodebug(hc);
- 	}
+-	const unsigned int max_scat = SG_MAX_SINGLE_ALLOC * PAGE_SIZE;
+ 	u8 compressed;
  
-+	tmp_len = (*sp)->len;
- 	dev_kfree_skb(*sp);
- 	/* check for next frame */
- 	if (bch && get_next_bframe(bch)) {
--		len = (*sp)->len;
-+		len = tmp_len;
- 		goto next_frame;
- 	}
- 	if (dch && get_next_dframe(dch)) {
--		len = (*sp)->len;
-+		len = tmp_len;
- 		goto next_frame;
- 	}
+ 	if (size <= SMC_BUF_MIN_SIZE)
+@@ -676,9 +675,11 @@ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
+ 	compressed = min_t(u8, ilog2(size) + 1,
+ 			   is_smcd ? SMCD_DMBE_SIZES : SMCR_RMBE_SIZES);
  
++#ifdef CONFIG_ARCH_NO_SG_CHAIN
+ 	if (!is_smcd && is_rmb)
+ 		/* RMBs are backed by & limited to max size of scatterlists */
+-		compressed = min_t(u8, compressed, ilog2(max_scat >> 14));
++		compressed = min_t(u8, compressed, ilog2((SG_MAX_SINGLE_ALLOC * PAGE_SIZE) >> 14));
++#endif
+ 
+ 	return compressed;
+ }
 -- 
 2.43.0
 
