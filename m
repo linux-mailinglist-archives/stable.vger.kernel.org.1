@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-68466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4C995326F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DACE295358C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADE421C254E4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83A85284C14
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD751AD9D9;
-	Thu, 15 Aug 2024 14:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4F31A00EC;
+	Thu, 15 Aug 2024 14:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMPlh3wk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzh7zmBM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED95A1AE035;
-	Thu, 15 Aug 2024 14:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978AB1AC893;
+	Thu, 15 Aug 2024 14:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730658; cv=none; b=dIUcwabflMHUgswZGPPW+fR8gRvPSWYhQpF7AVeynvskI8MX+XTfQqgjVZEE4wX0VpGr9ZxIept8saHzsKFov6l/YkkDemE/ROTu1wvkUyfneTwvMwjYYHzJZ3UdDdp1Mkf+0oqSuGEuU7njgvUTZH5l7GEVTp99RXXRd3yf2cY=
+	t=1723732732; cv=none; b=Nl1CWligWZy/TbuugbAXP8PINeXj8gecyEZ598dL0MqtPM5yhM4WPz5JwWnNoEo5TP1Y8o3/zo3hCGsOP1mzfsypaDBYKHiHKSjxWIuetmrcgfkbewHIs3VyybyFiFCYl7TjDnYdcZOp2k7wm7C5OFOszx5dK6agrcxPXdIAL/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730658; c=relaxed/simple;
-	bh=uy7uWXD86erjX9o0BarSk0posxQh3IMIVb3R5/UPC5U=;
+	s=arc-20240116; t=1723732732; c=relaxed/simple;
+	bh=yvQuSHcRVk8hm0ccxHJa0sHSmBnrdVj99GYZfMMbiTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoERXa4kjnC1Ngo8Hkj/5+6oW5Q6YKEAUCfHnGGd9NA9CTHBpdmhZdikBhiaWxFZdeM1Y2Grhm1ceZY99Di39Bi3lLAb7UPAEm+dTIT87C767a65ehT/dlNQY5vjKF45s15Z5eeAfqsUX5LT8GQu98Ex8fwK1PVIfORZEEd0tsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMPlh3wk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C65C32786;
-	Thu, 15 Aug 2024 14:04:17 +0000 (UTC)
+	 MIME-Version; b=sLNvj7COg/QE2jEtTEM8hgX9XO4YueOexEKXvcuDIYa2cu8kOFqkaVrfnTYicZZQjJl3yadPqX87L3a+VLSXWmqasRXoM3T+MqYWISeC54UsM4xAha8NIeLoDdg5uKLaWceCJFRdrng9cafHNh4mwglmLILBPaXxX3pQ3UoU+Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzh7zmBM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F77C32786;
+	Thu, 15 Aug 2024 14:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730657;
-	bh=uy7uWXD86erjX9o0BarSk0posxQh3IMIVb3R5/UPC5U=;
+	s=korg; t=1723732732;
+	bh=yvQuSHcRVk8hm0ccxHJa0sHSmBnrdVj99GYZfMMbiTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMPlh3wkCrc5jxGRvfrKBWKDft/t+ZVpbERWwEAsaD45wQfXIFaleRBst0nnDzkCA
-	 TWQhHauegQ9ZzYXnjvkR6ftDxU/YhPw59rSJpyF8KcGSkBbXvSKG5RMIBf5rf6vDSI
-	 H1lxh7CO7+V9kKS4hOdrEoQXVxces38yYK2lXtGA=
+	b=nzh7zmBMdRK/j4qkL0SM11ZkpMJRRyWakLeINg+3CptB5Drx0oBq163ncqPhB6TRK
+	 m28uaSFhvR/BrEtVfIQRR6ssmMeL2Omm2oHPO+0SOzpciYBjVpRB5GtiLmtI3/zNm1
+	 LU7ZBh7NKfR9tQiizhhFe7eRrIo5qLIRcA9ddm08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <bjorn.andersson@linaro.org>
-Subject: [PATCH 5.15 477/484] arm64: dts: qcom: msm8996: correct #clock-cells for QMP PHY nodes
+	Jan Kara <jack@suse.com>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Jan Kara <jack@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 269/352] udf: prevent integer overflow in udf_bitmap_free_blocks()
 Date: Thu, 15 Aug 2024 15:25:35 +0200
-Message-ID: <20240815131959.905311010@linuxfoundation.org>
+Message-ID: <20240815131929.845672126@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-commit b874fff9a7683df30e5aff16d5a85b1f8a43aa5d upstream.
+[ Upstream commit 56e69e59751d20993f243fb7dd6991c4e522424c ]
 
-The commit 82d61e19fccb ("arm64: dts: qcom: msm8996: Move '#clock-cells'
-to QMP PHY child node") moved the '#clock-cells' properties to the child
-nodes. However it missed the fact that the property must have been set
-to <0> (as all pipe clocks use of_clk_hw_simple_get as the xlate
-function. Also the mentioned commit didn't add '#clock-cells' properties
-to second and third PCIe PHY nodes. Correct both these mistakes:
+An overflow may occur if the function is called with the last
+block and an offset greater than zero. It is necessary to add
+a check to avoid this.
 
-- Set '#clock-cells' to <0>,
-- Add the property to pciephy_1 and pciephy_2 nodes.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Fixes: 82d61e19fccb ("arm64: dts: qcom: msm8996: Move '#clock-cells' to QMP PHY child node")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Link: https://lore.kernel.org/r/20220620071936.1558906-3-dmitry.baryshkov@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[JK: Make test cover also unalloc table freeing]
+
+Link: https://patch.msgid.link/20240620072413.7448-1-r.smirnov@omp.ru
+Suggested-by: Jan Kara <jack@suse.com>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/udf/balloc.c | 36 +++++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 23 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -636,7 +636,7 @@
- 				      <0x00035400 0x1dc>;
- 				#phy-cells = <0>;
+diff --git a/fs/udf/balloc.c b/fs/udf/balloc.c
+index c4c18eeacb60c..aa73ab1b50a52 100644
+--- a/fs/udf/balloc.c
++++ b/fs/udf/balloc.c
+@@ -22,6 +22,7 @@
+ #include "udfdecl.h"
  
--				#clock-cells = <1>;
-+				#clock-cells = <0>;
- 				clock-output-names = "pcie_0_pipe_clk_src";
- 				clocks = <&gcc GCC_PCIE_0_PIPE_CLK>;
- 				clock-names = "pipe0";
-@@ -650,6 +650,7 @@
- 				      <0x00036400 0x1dc>;
- 				#phy-cells = <0>;
+ #include <linux/bitops.h>
++#include <linux/overflow.h>
  
-+				#clock-cells = <0>;
- 				clock-output-names = "pcie_1_pipe_clk_src";
- 				clocks = <&gcc GCC_PCIE_1_PIPE_CLK>;
- 				clock-names = "pipe1";
-@@ -663,6 +664,7 @@
- 				      <0x00037400 0x1dc>;
- 				#phy-cells = <0>;
+ #include "udf_i.h"
+ #include "udf_sb.h"
+@@ -144,7 +145,6 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
+ {
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct buffer_head *bh = NULL;
+-	struct udf_part_map *partmap;
+ 	unsigned long block;
+ 	unsigned long block_group;
+ 	unsigned long bit;
+@@ -153,19 +153,9 @@ static void udf_bitmap_free_blocks(struct super_block *sb,
+ 	unsigned long overflow;
  
-+				#clock-cells = <0>;
- 				clock-output-names = "pcie_2_pipe_clk_src";
- 				clocks = <&gcc GCC_PCIE_2_PIPE_CLK>;
- 				clock-names = "pipe2";
-@@ -2662,7 +2664,7 @@
- 				      <0x07410600 0x1a8>;
- 				#phy-cells = <0>;
+ 	mutex_lock(&sbi->s_alloc_mutex);
+-	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
+-	if (bloc->logicalBlockNum + count < count ||
+-	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
+-		udf_debug("%u < %d || %u + %u > %u\n",
+-			  bloc->logicalBlockNum, 0,
+-			  bloc->logicalBlockNum, count,
+-			  partmap->s_partition_len);
+-		goto error_return;
+-	}
+-
++	/* We make sure this cannot overflow when mounting the filesystem */
+ 	block = bloc->logicalBlockNum + offset +
+ 		(sizeof(struct spaceBitmapDesc) << 3);
+-
+ 	do {
+ 		overflow = 0;
+ 		block_group = block >> (sb->s_blocksize_bits + 3);
+@@ -395,7 +385,6 @@ static void udf_table_free_blocks(struct super_block *sb,
+ 				  uint32_t count)
+ {
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+-	struct udf_part_map *partmap;
+ 	uint32_t start, end;
+ 	uint32_t elen;
+ 	struct kernel_lb_addr eloc;
+@@ -404,16 +393,6 @@ static void udf_table_free_blocks(struct super_block *sb,
+ 	struct udf_inode_info *iinfo;
  
--				#clock-cells = <1>;
-+				#clock-cells = <0>;
- 				clock-output-names = "usb3_phy_pipe_clk_src";
- 				clocks = <&gcc GCC_USB3_PHY_PIPE_CLK>;
- 				clock-names = "pipe0";
+ 	mutex_lock(&sbi->s_alloc_mutex);
+-	partmap = &sbi->s_partmaps[bloc->partitionReferenceNum];
+-	if (bloc->logicalBlockNum + count < count ||
+-	    (bloc->logicalBlockNum + count) > partmap->s_partition_len) {
+-		udf_debug("%u < %d || %u + %u > %u\n",
+-			  bloc->logicalBlockNum, 0,
+-			  bloc->logicalBlockNum, count,
+-			  partmap->s_partition_len);
+-		goto error_return;
+-	}
+-
+ 	iinfo = UDF_I(table);
+ 	udf_add_free_space(sb, sbi->s_partition, count);
+ 
+@@ -688,6 +667,17 @@ void udf_free_blocks(struct super_block *sb, struct inode *inode,
+ {
+ 	uint16_t partition = bloc->partitionReferenceNum;
+ 	struct udf_part_map *map = &UDF_SB(sb)->s_partmaps[partition];
++	uint32_t blk;
++
++	if (check_add_overflow(bloc->logicalBlockNum, offset, &blk) ||
++	    check_add_overflow(blk, count, &blk) ||
++	    bloc->logicalBlockNum + count > map->s_partition_len) {
++		udf_debug("Invalid request to free blocks: (%d, %u), off %u, "
++			  "len %u, partition len %u\n",
++			  partition, bloc->logicalBlockNum, offset, count,
++			  map->s_partition_len);
++		return;
++	}
+ 
+ 	if (map->s_partition_flags & UDF_PART_FLAG_UNALLOC_BITMAP) {
+ 		udf_bitmap_free_blocks(sb, map->s_uspace.s_bitmap,
+-- 
+2.43.0
+
 
 
 
