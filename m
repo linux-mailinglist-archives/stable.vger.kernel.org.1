@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-68535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C599532D2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4242C95325D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DB6EB20150
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC1E11F21B64
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B011A2C0F;
-	Thu, 15 Aug 2024 14:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF471ABEBF;
+	Thu, 15 Aug 2024 14:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mADAuw7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thclKiMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141B044376;
-	Thu, 15 Aug 2024 14:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1B91A3BB6;
+	Thu, 15 Aug 2024 14:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730876; cv=none; b=PGN6Nvxj1BoGXGvFiBMW2Y+GKrX0pA4Q70LcEXuqAbR5Y0IZGawAa197oXOrdBuwDOxMJvOGF39pqlK46iLYNTGzCLevLg5zHKiO3rWmEqqALqRyjQQojm1Ez4f4gPzlFwrhpU1ZXBGlIl1KSABA2bpYFRbxW79LSU0luRaVd6k=
+	t=1723730617; cv=none; b=u2ipGSYeHDZ89LI9lvTEDsVYMOxa/+nudy6e5iQqVIOQeteBeGOMdiGzYLJrfcmOoxAwoRj6xNkmG84GfmS+YqMmdKjyNf6aP5ErmjGBDBUPK5UDNvSTxdlkpWt/v2R+RqEuhUsrKYzFykjJdTopvmEdQgrWtNNp9WMjIPhLSmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730876; c=relaxed/simple;
-	bh=6lpGLSoZGlgKZBpimTz03TSBAOfu81ZZ7Wzzvisj4LY=;
+	s=arc-20240116; t=1723730617; c=relaxed/simple;
+	bh=vfNwg45G9cUeTBHvSgnmSSC5a67cSvofHqk5cUD6hPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TmqNHvzm5uVB4bMKCVDZQGCos+jWJiSUgEPX/Ic7YFj/KZsyNVQU86aEWZzY+F4GW6jGd3fHWuS9H8Z8S3g3P6/2byQk3BGUKigBdGKmmatXKEciAqy1/ph4E1JS8E9oMVsmE+hX1/1TiA3gDVsy84iY2+sOOf3A1dONM8PTU4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mADAuw7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EBAC32786;
-	Thu, 15 Aug 2024 14:07:54 +0000 (UTC)
+	 MIME-Version; b=irQkdZthAG6qOghNWPiakDS0U+brbETV2siA7T8KFXvFplqy66c5Tp0thz/R6AdbyyxicyOzr3ZD43rAeMLFVXJfrk2j/YUNaI8sw2BGFOu2zh7JPY9vjqYqlShx/nBCIomZ+D3D+YBdvJjA1Bd7tawA/u7nIpOrmS5EUkELAGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thclKiMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB307C32786;
+	Thu, 15 Aug 2024 14:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730875;
-	bh=6lpGLSoZGlgKZBpimTz03TSBAOfu81ZZ7Wzzvisj4LY=;
+	s=korg; t=1723730615;
+	bh=vfNwg45G9cUeTBHvSgnmSSC5a67cSvofHqk5cUD6hPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mADAuw7IcWUj1DZmKLQYptkj4gpQj7V7RIVNH/UX+2uLVPp+KMHKxhlcC974Bj/GF
-	 bXFskwIa/cEx4NSMrqXfUaYCpChiz9ap/mgBxvrEmUYYaXSCK+F/sHuVrWJkqkforF
-	 zm0aRuX7h12W+MFAdGrQywGD8QtjRdYNJ9OU476c=
+	b=thclKiMIhASVOEoNaSAqU2da5Eq+ozV3kqkRiIDAm6npr3uhyce37rw/zeyeo0Mea
+	 mQSNkTldkwMFEvsNobz8jTSKJPiIO2FCeyyg0rZJ2x59EKRWAxeUGXA+yK0K5J4c0g
+	 rwJoi65aZhKmbcGMgAP12818UhBf0UkKX0UypEyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 06/67] NFSD: Fix frame size warning in svc_export_parse()
+	Sam Sun <samsun1006219@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Kevin Berry <kpberry@google.com>
+Subject: [PATCH 5.15 462/484] xfs: fix log recovery buffer allocation for the legacy h_size fixup
 Date: Thu, 15 Aug 2024 15:25:20 +0200
-Message-ID: <20240815131838.563402108@linuxfoundation.org>
+Message-ID: <20240815131959.322281678@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,169 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 6939ace1f22681fface7841cdbf34d3204cc94b5 ]
+commit 45cf976008ddef4a9c9a30310c9b4fb2a9a6602a upstream.
 
-fs/nfsd/export.c: In function 'svc_export_parse':
-fs/nfsd/export.c:737:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-    737 | }
+Commit a70f9fe52daa ("xfs: detect and handle invalid iclog size set by
+mkfs") added a fixup for incorrect h_size values used for the initial
+umount record in old xfsprogs versions.  Later commit 0c771b99d6c9
+("xfs: clean up calculation of LR header blocks") cleaned up the log
+reover buffer calculation, but stoped using the fixed up h_size value
+to size the log recovery buffer, which can lead to an out of bounds
+access when the incorrect h_size does not come from the old mkfs
+tool, but a fuzzer.
 
-On my systems, svc_export_parse() has a stack frame of over 800
-bytes, not 1040, but nonetheless, it could do with some reduction.
+Fix this by open coding xlog_logrec_hblks and taking the fixed h_size
+into account for this calculation.
 
-When a struct svc_export is on the stack, it's a temporary structure
-used as an argument, and not visible as an actual exported FS. No
-need to reserve space for export_stats in such cases.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310012359.YEw5IrK6-lkp@intel.com/
-Cc: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Stable-dep-of: 4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 0c771b99d6c9 ("xfs: clean up calculation of LR header blocks")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Kevin Berry <kpberry@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/export.c |   32 +++++++++++++++++++++++---------
- fs/nfsd/export.h |    4 ++--
- fs/nfsd/stats.h  |   12 ++++++------
- 3 files changed, 31 insertions(+), 17 deletions(-)
+ fs/xfs/xfs_log_recover.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -339,12 +339,16 @@ static int export_stats_init(struct expo
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2972,7 +2972,7 @@ xlog_do_recovery_pass(
+ 	int			error = 0, h_size, h_len;
+ 	int			error2 = 0;
+ 	int			bblks, split_bblks;
+-	int			hblks, split_hblks, wrapped_hblks;
++	int			hblks = 1, split_hblks, wrapped_hblks;
+ 	int			i;
+ 	struct hlist_head	rhash[XLOG_RHASH_SIZE];
+ 	LIST_HEAD		(buffer_list);
+@@ -3028,14 +3028,22 @@ xlog_do_recovery_pass(
+ 		if (error)
+ 			goto bread_err1;
  
- static void export_stats_reset(struct export_stats *stats)
- {
--	nfsd_percpu_counters_reset(stats->counter, EXP_STATS_COUNTERS_NUM);
-+	if (stats)
-+		nfsd_percpu_counters_reset(stats->counter,
-+					   EXP_STATS_COUNTERS_NUM);
- }
- 
- static void export_stats_destroy(struct export_stats *stats)
- {
--	nfsd_percpu_counters_destroy(stats->counter, EXP_STATS_COUNTERS_NUM);
-+	if (stats)
-+		nfsd_percpu_counters_destroy(stats->counter,
-+					     EXP_STATS_COUNTERS_NUM);
- }
- 
- static void svc_export_put(struct kref *ref)
-@@ -353,7 +357,8 @@ static void svc_export_put(struct kref *
- 	path_put(&exp->ex_path);
- 	auth_domain_put(exp->ex_client);
- 	nfsd4_fslocs_free(&exp->ex_fslocs);
--	export_stats_destroy(&exp->ex_stats);
-+	export_stats_destroy(exp->ex_stats);
-+	kfree(exp->ex_stats);
- 	kfree(exp->ex_uuid);
- 	kfree_rcu(exp, ex_rcu);
- }
-@@ -767,13 +772,15 @@ static int svc_export_show(struct seq_fi
- 	seq_putc(m, '\t');
- 	seq_escape(m, exp->ex_client->name, " \t\n\\");
- 	if (export_stats) {
--		seq_printf(m, "\t%lld\n", exp->ex_stats.start_time);
-+		struct percpu_counter *counter = exp->ex_stats->counter;
-+
-+		seq_printf(m, "\t%lld\n", exp->ex_stats->start_time);
- 		seq_printf(m, "\tfh_stale: %lld\n",
--			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_FH_STALE]));
-+			   percpu_counter_sum_positive(&counter[EXP_STATS_FH_STALE]));
- 		seq_printf(m, "\tio_read: %lld\n",
--			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_READ]));
-+			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_READ]));
- 		seq_printf(m, "\tio_write: %lld\n",
--			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_WRITE]));
-+			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_WRITE]));
- 		seq_putc(m, '\n');
- 		return 0;
+-		hblks = xlog_logrec_hblks(log, rhead);
+-		if (hblks != 1) {
+-			kmem_free(hbp);
+-			hbp = xlog_alloc_buffer(log, hblks);
++		/*
++		 * This open codes xlog_logrec_hblks so that we can reuse the
++		 * fixed up h_size value calculated above.  Without that we'd
++		 * still allocate the buffer based on the incorrect on-disk
++		 * size.
++		 */
++		if (h_size > XLOG_HEADER_CYCLE_SIZE &&
++		    (rhead->h_version & cpu_to_be32(XLOG_VERSION_2))) {
++			hblks = DIV_ROUND_UP(h_size, XLOG_HEADER_CYCLE_SIZE);
++			if (hblks > 1) {
++				kmem_free(hbp);
++				hbp = xlog_alloc_buffer(log, hblks);
++			}
+ 		}
+ 	} else {
+ 		ASSERT(log->l_sectBBsize == 1);
+-		hblks = 1;
+ 		hbp = xlog_alloc_buffer(log, 1);
+ 		h_size = XLOG_BIG_RECORD_BSIZE;
  	}
-@@ -819,7 +826,7 @@ static void svc_export_init(struct cache
- 	new->ex_layout_types = 0;
- 	new->ex_uuid = NULL;
- 	new->cd = item->cd;
--	export_stats_reset(&new->ex_stats);
-+	export_stats_reset(new->ex_stats);
- }
- 
- static void export_update(struct cache_head *cnew, struct cache_head *citem)
-@@ -856,7 +863,14 @@ static struct cache_head *svc_export_all
- 	if (!i)
- 		return NULL;
- 
--	if (export_stats_init(&i->ex_stats)) {
-+	i->ex_stats = kmalloc(sizeof(*(i->ex_stats)), GFP_KERNEL);
-+	if (!i->ex_stats) {
-+		kfree(i);
-+		return NULL;
-+	}
-+
-+	if (export_stats_init(i->ex_stats)) {
-+		kfree(i->ex_stats);
- 		kfree(i);
- 		return NULL;
- 	}
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -64,10 +64,10 @@ struct svc_export {
- 	struct cache_head	h;
- 	struct auth_domain *	ex_client;
- 	int			ex_flags;
-+	int			ex_fsid;
- 	struct path		ex_path;
- 	kuid_t			ex_anon_uid;
- 	kgid_t			ex_anon_gid;
--	int			ex_fsid;
- 	unsigned char *		ex_uuid; /* 16 byte fsid */
- 	struct nfsd4_fs_locations ex_fslocs;
- 	uint32_t		ex_nflavors;
-@@ -76,8 +76,8 @@ struct svc_export {
- 	struct nfsd4_deviceid_map *ex_devid_map;
- 	struct cache_detail	*cd;
- 	struct rcu_head		ex_rcu;
--	struct export_stats	ex_stats;
- 	unsigned long		ex_xprtsec_modes;
-+	struct export_stats	*ex_stats;
- };
- 
- /* an "export key" (expkey) maps a filehandlefragement to an
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -61,22 +61,22 @@ static inline void nfsd_stats_rc_nocache
- static inline void nfsd_stats_fh_stale_inc(struct svc_export *exp)
- {
- 	percpu_counter_inc(&nfsdstats.counter[NFSD_STATS_FH_STALE]);
--	if (exp)
--		percpu_counter_inc(&exp->ex_stats.counter[EXP_STATS_FH_STALE]);
-+	if (exp && exp->ex_stats)
-+		percpu_counter_inc(&exp->ex_stats->counter[EXP_STATS_FH_STALE]);
- }
- 
- static inline void nfsd_stats_io_read_add(struct svc_export *exp, s64 amount)
- {
- 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_READ], amount);
--	if (exp)
--		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_READ], amount);
-+	if (exp && exp->ex_stats)
-+		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_READ], amount);
- }
- 
- static inline void nfsd_stats_io_write_add(struct svc_export *exp, s64 amount)
- {
- 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_WRITE], amount);
--	if (exp)
--		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_WRITE], amount);
-+	if (exp && exp->ex_stats)
-+		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_WRITE], amount);
- }
- 
- static inline void nfsd_stats_payload_misses_inc(struct nfsd_net *nn)
 
 
 
