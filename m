@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-68516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B8A9532BA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E09953594
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E7A81F221A2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9118B282754
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCFA1A00CE;
-	Thu, 15 Aug 2024 14:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCCD2772A;
+	Thu, 15 Aug 2024 14:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5AT+8mp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrH7QvbJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B66418D64F;
-	Thu, 15 Aug 2024 14:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7513214;
+	Thu, 15 Aug 2024 14:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730816; cv=none; b=HhNxggYRYeNF4fdLvfq/HmEq7sDwoxfkoU7N4e8fSThNVevIeeIaGbZJyE7tX9ZUJhWd9xoO4aKl3KseOK0M8RBY9YHYLgSfLs9weFLshoDXUctEE8aJbXZOsQti9QVa/1eoGWIPp0WDqlzESI82MJEgNOGEkgDbcsoPM7Y723I=
+	t=1723732760; cv=none; b=fVSEqrFIQMIlf9Wej6Ds9lwnSUaFlQZsNwr6Z5Lwm1Yw3FlhJWG2s3LXKqoX9nPmGM892wi55tXlr8qWkjkUxi9zNrwIbL5liVEMry7TF2W1LoMeTv9FENWIsLxluzp5hOjV6e3EmYANM7NA1DPhPj7jGhyDbd8tiZxCWYanTcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730816; c=relaxed/simple;
-	bh=LPfnAFxnnKCHIxfhdtAr69EoRulpqK1uccA2VlwC4nc=;
+	s=arc-20240116; t=1723732760; c=relaxed/simple;
+	bh=DqGwGgbrHyykI7dj3Mx/L6hro7H/YpkbnSU82933BeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxkkQY1oNX1DnUzIAcPa+1hkfoXWUmdJq4t3bgpzm6vXbz0MZZIwfkPvtMkw4Q13cCLtlrILD2lxoH55d0uG6qQtjGq2du+v/No9kBs5zwHRRVX5ngVZ8A/0tE5XQmPzB9d1NSKfzgYW9K+WgdXEay1KTJHSDel4dEAAsEht3qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5AT+8mp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3FAC32786;
-	Thu, 15 Aug 2024 14:06:55 +0000 (UTC)
+	 MIME-Version; b=DVkQxKX1qsbjS6NasbOUJ0UBIJRMaBOboOxdiqFDw5cFo0nPCsF6VpwD7NTREvM1PCt/lVtOIA/h2uyrjKlPAKdVnEBJuFoQmoVXxbIpI/04/628ughCmoN0gngF6NBEB4Cizrt/Z/h2YFshV3ctHojmtP2T7GxvLaeAVXkV1f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrH7QvbJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6B5C4AF0C;
+	Thu, 15 Aug 2024 14:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730816;
-	bh=LPfnAFxnnKCHIxfhdtAr69EoRulpqK1uccA2VlwC4nc=;
+	s=korg; t=1723732759;
+	bh=DqGwGgbrHyykI7dj3Mx/L6hro7H/YpkbnSU82933BeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5AT+8mp/90O4MGua5NPHDlF5f19BGyY3wpO3cWJR3m4b8Ld0XNvDOoFhvMNjPfLr
-	 AoQ7/SfFJt07o3i9S3nw7wCgcIF9Liqg4HLAa+oopSvUgU0q7GjdGB0xr9SnDoEIc2
-	 6bN+ABDfnHXDl8n3Ky08UGDOkjeYQ5S+nbxc6wrA=
+	b=TrH7QvbJDWhv3sPT6nRdNA8a1pb95gE965Gkv2rzAYX2HHSzmbKtIJmjrSHWiGAR8
+	 DTS4sihYWZz6jtHGBxFqK5fgn67YkWk0y7ikHLeAs17m4nUJ47G61IA//JJ8RcHVbn
+	 bUnQL5R+A3THqREK7vVjuwBiyXDeVVnUUmRB0ruI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 09/38] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
+	Heiko Carstens <hca@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 277/352] s390/sclp: Prevent release of buffer in I/O
 Date: Thu, 15 Aug 2024 15:25:43 +0200
-Message-ID: <20240815131833.311788675@linuxfoundation.org>
+Message-ID: <20240815131930.157262428@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-commit 7697a0fe0154468f5df35c23ebd7aa48994c2cdc upstream.
+[ Upstream commit bf365071ea92b9579d5a272679b74052a5643e35 ]
 
-Chromium sandbox apparently wants to deny statx [1] so it could properly
-inspect arguments after the sandboxed process later falls back to fstat.
-Because there's currently not a "fd-only" version of statx, so that the
-sandbox has no way to ensure the path argument is empty without being
-able to peek into the sandboxed process's memory. For architectures able
-to do newfstatat though, glibc falls back to newfstatat after getting
--ENOSYS for statx, then the respective SIGSYS handler [2] takes care of
-inspecting the path argument, transforming allowed newfstatat's into
-fstat instead which is allowed and has the same type of return value.
+When a task waiting for completion of a Store Data operation is
+interrupted, an attempt is made to halt this operation. If this attempt
+fails due to a hardware or firmware problem, there is a chance that the
+SCLP facility might store data into buffers referenced by the original
+operation at a later time.
 
-But, as LoongArch is the first architecture to not have fstat nor
-newfstatat, the LoongArch glibc does not attempt falling back at all
-when it gets -ENOSYS for statx -- and you see the problem there!
+Handle this situation by not releasing the referenced data buffers if
+the halt attempt fails. For current use cases, this might result in a
+leak of few pages of memory in case of a rare hardware/firmware
+malfunction.
 
-Actually, back when the LoongArch port was under review, people were
-aware of the same problem with sandboxing clone3 [3], so clone was
-eventually kept. Unfortunately it seemed at that time no one had noticed
-statx, so besides restoring fstat/newfstatat to LoongArch uapi (and
-postponing the problem further), it seems inevitable that we would need
-to tackle seccomp deep argument inspection.
-
-However, this is obviously a decision that shouldn't be taken lightly,
-so we just restore fstat/newfstatat by defining __ARCH_WANT_NEW_STAT
-in unistd.h. This is the simplest solution for now, and so we hope the
-community will tackle the long-standing problem of seccomp deep argument
-inspection in the future [4][5].
-
-Also add "newstat" to syscall_abis_64 in Makefile.syscalls due to
-upstream asm-generic changes.
-
-More infomation please reading this thread [6].
-
-[1] https://chromium-review.googlesource.com/c/chromium/src/+/2823150
-[2] https://chromium.googlesource.com/chromium/src/sandbox/+/c085b51940bd/linux/seccomp-bpf-helpers/sigsys_handlers.cc#355
-[3] https://lore.kernel.org/linux-arch/20220511211231.GG7074@brightrain.aerifal.cx/
-[4] https://lwn.net/Articles/799557/
-[5] https://lpc.events/event/4/contributions/560/attachments/397/640/deep-arg-inspection.pdf
-[6] https://lore.kernel.org/loongarch/20240226-granit-seilschaft-eccc2433014d@brauner/T/#t
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/uapi/asm/unistd.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/s390/char/sclp_sd.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/include/uapi/asm/unistd.h
-+++ b/arch/loongarch/include/uapi/asm/unistd.h
-@@ -1,4 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#define __ARCH_WANT_NEW_STAT
- #define __ARCH_WANT_SYS_CLONE
- #define __ARCH_WANT_SYS_CLONE3
- 
+diff --git a/drivers/s390/char/sclp_sd.c b/drivers/s390/char/sclp_sd.c
+index 1e244f78f1929..64581433c3349 100644
+--- a/drivers/s390/char/sclp_sd.c
++++ b/drivers/s390/char/sclp_sd.c
+@@ -319,8 +319,14 @@ static int sclp_sd_store_data(struct sclp_sd_data *result, u8 di)
+ 			  &esize);
+ 	if (rc) {
+ 		/* Cancel running request if interrupted */
+-		if (rc == -ERESTARTSYS)
+-			sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL);
++		if (rc == -ERESTARTSYS) {
++			if (sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL)) {
++				pr_warn("Could not stop Store Data request - leaking at least %zu bytes\n",
++					(size_t)dsize * PAGE_SIZE);
++				data = NULL;
++				asce = 0;
++			}
++		}
+ 		vfree(data);
+ 		goto out;
+ 	}
+-- 
+2.43.0
+
 
 
 
