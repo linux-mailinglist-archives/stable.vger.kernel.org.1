@@ -1,344 +1,231 @@
-Return-Path: <stable+bounces-69222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0723195375F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 17:35:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE7295382C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 18:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ACE41C25300
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DA741F242DA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797381AD402;
-	Thu, 15 Aug 2024 15:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13571B374C;
+	Thu, 15 Aug 2024 16:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DrMmFI0a"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="O2d+yPr0";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="RCorKHD9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BEA1AD3F7
-	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 15:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723736067; cv=none; b=q8qD6kPvKpKQd6W1uMfXBFoNr9B3jz8cUdPOzfYShMcsPjtVIAl7lfzAGVl+RwuNlSQ4GlhHPsHVb6R1RXChTSjlYpmTRm5fYMM4rxH8SgoJkz1Azp5qOsSljv2YKH5v4YKRmpLW8qKEEgN3UTXL+1WCFruRO76uwEg81b0WcaY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723736067; c=relaxed/simple;
-	bh=0MROcCt+nQSrxdz0OvgnZx5v4RGLu8OHee6YyDvosBA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akwgvWU2doQ0u3HTV4Jv5XvxixWoRuZGklYGe/oPu9DLw5CSbkpZ4MBpkFgZQsqnfKgduIs58XisYbVXcV5reowZ3NmxoZqRLXMeQ0H2IXDDLhu8gOqVjTvgG8DX5+v3z21GxxaN0BWDVx4LcZWMYanJk7Iz6x0HWaYY3AndwBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DrMmFI0a; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a1df0a9281so67241885a.1
-        for <stable@vger.kernel.org>; Thu, 15 Aug 2024 08:34:25 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1AA37703
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 16:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723739106; cv=fail; b=VudGfnzI6m4h4umOJqPcJiu/7zWwPL3jcr3F9461FtjbezyILUKrQ9Dnq/USYkzEsPDR3vUzFtCMMJDvh3Sx0fB0qwYFFkMT1rJp7X37hRGQg57QnLVIFQyXCM0pE0mF8v7Xt7JZ7SQgsm8p5lWDR1/wwKpC5TCAIyF0RLt87Oo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723739106; c=relaxed/simple;
+	bh=0iE9As2Bl/0oW0FD/PkfjogS3gavQRlyEN3gAAmTWCg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=IxkDbOE8T6oVKbeK/7yk81mZ7NhNlldvrFJf0Yosikxdo/wVfhyK3gA+Wqub/iB/gXPQMP5w1zlUWHxmK/xFCgRg+a0L73vMN0+vZFvgboYjAPLwwmuZjdcc+zRY/EDEJElisBl9ATF7/vFYz6PWEnI4yJn12BDjGDBJw540xPY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=O2d+yPr0; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=RCorKHD9; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47FEtTnQ014149;
+	Thu, 15 Aug 2024 16:24:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=
+	corp-2023-11-20; bh=6fUUQbRGxPWkzsuErAp/WzvBZ8fX6TdUkTUoA4E+0rI=; b=
+	O2d+yPr0KRfWGQNtkYIxwZklqAIj3x0KR5Fw3JkzfDL/ZjWJXzJ+03MHm54A0K9d
+	KwXbFT7u+L3Or2dFplSUry8WM3Pohfoh2fupiASy3I2i1XV3xJoWfol4xS17U0Aa
+	oedP2h8dNc7+pvMXwZ6MPZRSdp1qITWtD0IP9BT9X6O0iy+0C1usNTOi6yjemC1T
+	j/ai0fAbyX1wBF7DpHrM90LUaTfmi72nVbc2uimnvO3QXDVCeGwVcsT3aZIGo5G0
+	ynEhyTJ9e5+A6SZJE06P2gsVVxEz+gpODzE3j/X+gM6Qe/3Mlth+6YD8E7KhPSt1
+	v27itWJO5N5DUKGHMMFVLA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4104ganjqp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Aug 2024 16:24:57 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 47FFEAJD001358;
+	Thu, 15 Aug 2024 16:24:56 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2168.outbound.protection.outlook.com [104.47.57.168])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 40wxnb8ay4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Aug 2024 16:24:56 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SQBf+zSUsdO7ANhNXoTIJ0PLUDLDcJfk2I8iov19H0dbNL509ePL93ZblP5OJsZ2N2jv1SO91SUcyoHgmeszJ3NfuWEg+0lSaQdSv61Pm27h54O2K6AMDBom7tjdkCtYOauJhWulm3tCctai82eN2vBteC5gAxyC5P0YQk8m6C+BWwQKa/EoU9kfcSDq8eRiSN1dvkgC5yC8VBSM/ZcwggYCAAkJcdOU+ey8WcilGm/t0UBxswSsJVqHyJd26vrnYt6vBHnl80QULI7zPaCEP6Y8lSy7BE8zGqBKiaSTPyyE5N3MM9wS3NhdiK/hW3p6nMXTdP/+/UyacbhBsljlSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6fUUQbRGxPWkzsuErAp/WzvBZ8fX6TdUkTUoA4E+0rI=;
+ b=Dfikd1GfCnbB831Ud7i4F8tLxWRGxXa2JVUAK+vEfaB5jXwI0YlKHqfUGAaWkX8huBnBhI+R83vxmzn+ABmP71XRiyyvcQTIEYMGs4D12rkyDzesyuOGGqypMVagW47VUMWEy3bcAl/WVilgdLTcP2lVlbK2NAp4plnNtVPhp18i5mRVUGaBN978QsIwD1Mu9du4gfD5iyq4224ZEzCcksm3UyHww5kFRovvszgzR88QFYVLB1lhqIznJcfbhz7eF239QL1anVef2BmVTf4jwC+kOL80UQYpXzruy2ABvddbEXqsULNCHItRgnX4O7ZnDHGYD1rgWEU1m3+3AacfZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1723736064; x=1724340864; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oK3JbzctTHfwicXPcY7hery4h5ZjZSeNvYcllvsZxtM=;
-        b=DrMmFI0aBBofb2RiheEq1NrQkEnOrbrG/SJblb7gYt401v58WcS2ZEnGkKUEjfyFy1
-         obrVGcqDGikiXrIJdBPrgtwoL9UKNlNPNbNfCQvemhmjcM1ilbVliH0ObsIvGQy+/4MO
-         tNoERr6LFosT32zMjdcr5YnZs4c1zqONrTPo8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723736064; x=1724340864;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oK3JbzctTHfwicXPcY7hery4h5ZjZSeNvYcllvsZxtM=;
-        b=LKCclBtA31VM0XasBrUefvY1Xsxibd/3WU1QPZIywdvyk9s84LuF66TUthVhwCluzJ
-         grDpFl3Z7cGP4+1APvgQZJ6QO/zL7r5rjPcegcYmLDIEW9g0wM5fJkdFJ5dU/kz3IXZr
-         bbQAQpaKqaC6lad9YGrefIkqjNDv8ueVhE4Sj8ufsOIH7TLw28SbS++zoGZEzzcvwHFi
-         +GosD/98zXmglO3jLTDNM0Vfx0CE4P2/6+QqbmHExLiBacRo23XC8hUZlbaIN1o8rl81
-         zwPzXrZgVzDe5oJGa6DmN/faJH3JYx7N6Q0uZH7DX6mUe2F+iCWclH8I87SWT4Ohdlt1
-         ZO1g==
-X-Forwarded-Encrypted: i=1; AJvYcCWQDrQ5xlRiDWpiqITZxQxgXvahJJAjFrHGMiWojqlBVuHp0Z0ChQ1MY6RpkzpXenev8Jlc0cYDCCB0GVIb/v+Eg6OQbQy/
-X-Gm-Message-State: AOJu0YwB78N4emSoALG83Rbb0tYjX5iU+FVK8o/rBP/GN6kBMgAQTZoo
-	Z+UWpV/jDW4HfrvmflmMFS5RT47a92XErNmdJB/SsFT075Obapn2Gi1+KpgTzw==
-X-Google-Smtp-Source: AGHT+IGgCdKzPdlrYPScVLRqYIfHAJWGQrevVdXllayGM1UtNeoJIDtu10x1+O85iKpyQe9U512YIg==
-X-Received: by 2002:a05:620a:d96:b0:79f:b89:455e with SMTP id af79cd13be357-7a50693b684mr281485a.20.1723736064067;
-        Thu, 15 Aug 2024 08:34:24 -0700 (PDT)
-Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4ff02505dsm72986685a.13.2024.08.15.08.34.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Aug 2024 08:34:23 -0700 (PDT)
-From: Zack Rusin <zack.rusin@broadcom.com>
-To: dri-devel@lists.freedesktop.org
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	ian.forbes@broadcom.com,
-	martin.krastev@broadcom.com,
-	maaz.mombasawala@broadcom.com,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] drm/vmwgfx: Fix prime with external buffers
-Date: Thu, 15 Aug 2024 11:31:43 -0400
-Message-ID: <20240815153404.630214-2-zack.rusin@broadcom.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240815153404.630214-1-zack.rusin@broadcom.com>
-References: <20240815153404.630214-1-zack.rusin@broadcom.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6fUUQbRGxPWkzsuErAp/WzvBZ8fX6TdUkTUoA4E+0rI=;
+ b=RCorKHD971LIHJCGkqoIjBpJk+Y6Yks3Mfv6NogFCcp06rJcnZ0MGqWLijO1tOqPn3l+xYYYw+46HrrDfdB3inNFNrNLtyL0smj6AIcZ2Dx2EIh//7HzVamkR4e81uYsWemm8nAn9u7CPH8YdexynfWGrRC5p27/5DQwpC6ZmmQ=
+Received: from MW5PR10MB5738.namprd10.prod.outlook.com (2603:10b6:303:19b::14)
+ by CY8PR10MB7172.namprd10.prod.outlook.com (2603:10b6:930:71::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.15; Thu, 15 Aug
+ 2024 16:24:53 +0000
+Received: from MW5PR10MB5738.namprd10.prod.outlook.com
+ ([fe80::187b:b241:398b:50eb]) by MW5PR10MB5738.namprd10.prod.outlook.com
+ ([fe80::187b:b241:398b:50eb%4]) with mapi id 15.20.7875.016; Thu, 15 Aug 2024
+ 16:24:53 +0000
+Message-ID: <583b6fed-5233-43d7-b106-f78674660b0a@oracle.com>
+Date: Thu, 15 Aug 2024 11:24:51 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 29/67] jfs: fix shift-out-of-bounds in dbJoin
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+        syzbot+411debe54d318eaed386@syzkaller.appspotmail.com,
+        Manas Ghandat <ghandatmanas@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+References: <20240815131838.311442229@linuxfoundation.org>
+ <20240815131839.446390501@linuxfoundation.org>
+ <36b8c214-3039-4fce-b27e-3558a78cfda2@oracle.com>
+ <2024081547-defrost-basin-8be3@gregkh>
+Content-Language: en-US
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
+In-Reply-To: <2024081547-defrost-basin-8be3@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0P221CA0029.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:610:11d::7) To MW5PR10MB5738.namprd10.prod.outlook.com
+ (2603:10b6:303:19b::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW5PR10MB5738:EE_|CY8PR10MB7172:EE_
+X-MS-Office365-Filtering-Correlation-Id: 75250f90-521e-4009-0ecc-08dcbd46cb49
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NHdFZzVIOHVOT1dsb25uOUdCZi8wRmVaekI0Y2VHbHowdXlubG5SRlFOU3Nx?=
+ =?utf-8?B?QldTejJLLzZxTnMvSDIwd1YrTE56czY4YmtGaFpnQ0tEYkVaZzJFcTBZd1dS?=
+ =?utf-8?B?ZEdMR0JuamhGdmdvQ1hZRlFlajJGeHVIWDBwWE43YnBJbkY2ZHdqL2xOTjZv?=
+ =?utf-8?B?Mmk1cnNYaEJ3cFE0UzF6bld1Z1RldVF1Qyt5VWZpeitLSUNkYXBhZFUwMU9o?=
+ =?utf-8?B?Q25MRXM0KzlzaUY3ME1GNWVScnVMandoOUNjK3Vub2tUY2h4UnBENUFzWjZo?=
+ =?utf-8?B?bEpCbGRsMnV3L29ybVRJOERmRTFwR3k5QVB6S1h3S1VFTThLT1hma3Q0WFNs?=
+ =?utf-8?B?dGp3WGxoQytYQ1NkVmFmY09lV2dCc2VyRjdKOWlWNmFSL3EyVW5VNUlZN3BV?=
+ =?utf-8?B?T2F6RzBOVkt4bmxWVmVhZld4UGRyTk5RRXZRQVMzcnVpUm8remRCZVdRR203?=
+ =?utf-8?B?bDEzZy9UK3RvS3BFdGJJVUcxYnhXODRWa1g3dlBUKzBOY2NVM1hJaW1lVnVD?=
+ =?utf-8?B?QnlqZDhGbDh4WG12RkR6VGVaQVU4NUdkbktJaTZEMmNjeEQ4SGNFUnRmMzYr?=
+ =?utf-8?B?eElBMkdoWEMwR1ZNdUlhWC9ZTVViQTFHK1ZKTHR1NEw2U3FLT1pOVzl2aVVo?=
+ =?utf-8?B?d0tCVGxNNkFBdUkyenlhdmRrVCtTSjRvRmlkRUZWU3JhVDVUOGx5eU5iTHVt?=
+ =?utf-8?B?TUJLNWNMSnExSU13aDlKTHF1NHdnUTNLY0tOWUhQMjRiWjRuVkgwQnZrZWtY?=
+ =?utf-8?B?VU40ZkZYRE4zSGxRMW5DWnlITzNsZTdrNkJpa1Fya3lranJmQm8rNFR1bStG?=
+ =?utf-8?B?USt6Vi9GemZ0T2gzVGxJUXpOc3ZuVms2c0ZlOTgrZjlITWxCdnpvT1U2Mm9G?=
+ =?utf-8?B?VTIrMnA4d1hrS3lydmQ3bkpXTm5PUUo5MTluZm91RUJubkRiaDloV0NzUWox?=
+ =?utf-8?B?VFViNk5ydVMzYnZCdVFEUVMxWXlnZXgyNTlVSEIvM1ZyQkgyWVd0ZDM3TFM1?=
+ =?utf-8?B?WTlWSGNhYWsxSEdHZUdmaGRZWGFwK2NXRjlQaGVyNjdTQWdmQks5cGdZWmYz?=
+ =?utf-8?B?ZHYwaUJnckhwdkJWNlRBeTllVWtVZnFuVlBHZlplR05ycDNaMDBFZkM2R2FV?=
+ =?utf-8?B?UDZPZnZKTXE1dFJGSUtWd1F6M1o2UTdEcTJSTzlXRXkzazMwMU8weUtXa281?=
+ =?utf-8?B?RkVQYmVoWEFtTW5ldStZN3ZqTFhXZmFIbW9VWDk2VjZ3blJ2MElQdGQ4TnZw?=
+ =?utf-8?B?bUtWN21wK2lHQlZDekNLL0dhK1pnYzhUY1d6UkVrZTVsaUtlS095aklWOHBV?=
+ =?utf-8?B?NGVYdFV0Tkx5V0RxTFRBU0Y1bVByWi9CcCttUnVpMEt1cDVPN1FrRExMdTFF?=
+ =?utf-8?B?V2FIMG1VWFJjOGpSYWJLV0YrSkNBTGZhMEtRWS9vS09QYThZVU5QNGs3WHJm?=
+ =?utf-8?B?TkF1b1NETjh3eHlVdnNvOUNpeXhWSjk0NUlOdEF2NVpOdFpSYUpPcldLRlcw?=
+ =?utf-8?B?bVcyM0NBWHI3MmloZ20vZUxueGFQNCtMd1pETHh3QjFwSWdIS3pIS1pwaXgw?=
+ =?utf-8?B?KzFQNW54RVpYZU9DV0RNMVQ1OVpuQkE4V1J2UmhmdWRLREw3TTBjeEh3OEFp?=
+ =?utf-8?B?bWdvR1E3YVoyZ3M0ZTZQRytvVURaVHBPbENhZWNyWU5CcjFXQzFaTUhSUVFa?=
+ =?utf-8?B?SXF6TUEvaThaZmp3Ymw1eGhQWWhuWXFkdEJNWkxvM0hjWEs1dlM3VitnNCtZ?=
+ =?utf-8?B?THdwWktVTThwSldUcVRVeHYwdERmSkJrOHZhcGxwSEVxS253OGlOVnM5Nzl3?=
+ =?utf-8?B?VVIveTMvVFY4dFV1b2lTQT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR10MB5738.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZkgvTjl5WFpMcFFiczljcEhCWkNodkZMWjJ6L0FkaHJkSWV0Y25WTFR0MnNu?=
+ =?utf-8?B?czI5eEh0ODVkTFV3ZVRQbjBBNFhSeCtoMHN4bDdyejBaR3c4RWtpUnhqV2F3?=
+ =?utf-8?B?WXU3VW1mcGZOdnAxaDFuMFpXOENNKzN3SGszenpkZ2VRRXk0aW9oQThBc05V?=
+ =?utf-8?B?bVJKWVc3YVlNV2wzY3lIT0h5YWlKSnRwdnJhTjZTcS9EMHdObXh2TmR6NnlI?=
+ =?utf-8?B?MDVsbkljYk1PR3JrTDhVQWhDV3locFNZalZLZlNVMmp1aWo3bG5VWnJKSGR2?=
+ =?utf-8?B?aXV0dkVZeWl6dDNLL1M4YTNXRXNVMzhWdE9xMDFIWUxlVFVsRXVGVGlEUGla?=
+ =?utf-8?B?SFp4MnRMR0wzRDQxTG9qVnc4U0l1RnU0Szhva1JsUDZaNXJoS2ZOcUZoVWJE?=
+ =?utf-8?B?M1pDWlZOSUxUa1dGSUNTT3R0bnM5TXRERmNYMlR1bHJHaVJ5RjVQV0x4ellj?=
+ =?utf-8?B?T2FMcSt6V3JMZk43Q0JYZzI4K29YSFd4bTM1UFFYak40N1hIdEJxemF2Vkxo?=
+ =?utf-8?B?elRRSXBzKzdmUjUweHcrOUdYaFBDSEdnMGtZQnB6T3dsNmNkSzU5c2l0bE5B?=
+ =?utf-8?B?Z3dCcFd2QzF0YVYzT0FYU0s1c2FNOC91L3o3YVNVT2R3S2F1RnpvS1ltZFE2?=
+ =?utf-8?B?dElEVFViU1cwcVZuVjJuMkxweldJbjZRamQ1RTlBTXJ0RUpmZ21VcFh2VHlx?=
+ =?utf-8?B?MGo2VE94Q25ZMDIzNG1zd3RGQmlJZS80ZjdQQncrZEdDS0x0Zk9qNVpFdUJN?=
+ =?utf-8?B?WUEzSjJ0WUFpVlRmbndQL29VbTB4ejdqaElzaXZ5dUFpRGk0aDAzbkNJZ1VW?=
+ =?utf-8?B?bUVJSGJIWmluaUtYUUo4V0d3ZFFqdDFjOWRPTlhkWWk1Q3UwV04xQmFzT1N3?=
+ =?utf-8?B?bjRmVkNjTml3THFMOUtYVUF2RnFFYURsaDNjSjlYemFzNVVKNzR5N05NaUs3?=
+ =?utf-8?B?dEN4QVh1NDEvSlNweHltZ1lpSTE1QVMzUlFONEszV0ZIYWc1VGZqdFNGalE5?=
+ =?utf-8?B?NGF1eFJwd21wcFNmMVM5MVRheVJ2a2VyT1huTnQyS21lT3c4eDY4YTk2OUhB?=
+ =?utf-8?B?TzJJSUc4WUdQb3FpMWkxanBHKzNJaDEwblBvM0o5czAyVFJNQlR0WkpKNTAr?=
+ =?utf-8?B?ZEp3VFFycHJyS0hESW1SRXNaVitCV0NaQkhKQld4OTZkOU8rQm5QRUo2WWRt?=
+ =?utf-8?B?S1d0bE9NUG1KZ2ROT1JmeWRvUDRWUXRUSXdUZ3o3aGxZOGhhS0xVRjRtVVdl?=
+ =?utf-8?B?bjBwYmpGckhaMUZEeHF3THBOMTZuL1dsbEcrZXR6R1FnVjZsU1d1VFI1WGJJ?=
+ =?utf-8?B?aDRnTUkyL3d1QTc4eTNjNERJQlVKS0V3cUVRUDlvN1FzU2pCeFkvMWdybWNL?=
+ =?utf-8?B?enkvWTYwVzREckt6cFFyUG8xSnFFNTJtc003bkFuRTVDK3pxV1BWdTA2NWVv?=
+ =?utf-8?B?ZTlvdEo1NDZtTWgyVlFKSTUyZGdWZ08vZlRmRGE4ckYxR0Uwa0VIZ2sxMVdp?=
+ =?utf-8?B?K3poTEdDWjBxRzdyRE00YUxjVUc3UEFjc2d1U2VOdVBaRGZyMy9idmZFWFlZ?=
+ =?utf-8?B?V09FMDkzWUVhaXJ2cTJ4UmxxQzZ4YWt4NktRRXRrQWo2K21oZWxwVTV3UHR5?=
+ =?utf-8?B?ZGxlTzM2c2ZhdHgyZGcwKzdFSHY0N3ZabTAxUDZNMVVYY3Y0WW5veVRicFF5?=
+ =?utf-8?B?VjFMeEk4aExVb1l2NWdxajJudkRheEI0aDRWRkxZNEV2RlJJaUdHTkNWY3hE?=
+ =?utf-8?B?QVZYZ21GSG56ejVJUlQ5RHRtS21mME13cjNoUUFZV1BtSzRTOElpVjYzTHpP?=
+ =?utf-8?B?WXl4KzFRdTRrQXY1Y2VJd0F6RHpEWmQvTldPZVdUbTJ6Zy9IT01QNUlEVXhK?=
+ =?utf-8?B?dUVQL0htMzFNMUN3YTlqcjNYUG9lSFk3TXlaOEVUZ2l1S202em4wRFZaaG1L?=
+ =?utf-8?B?NkczS0xxK3JqaFROaDN5TWQ4eUZNUExYSG94NXRYRnR6S04xaE0xcERMVHI0?=
+ =?utf-8?B?MC90Y203T3BQVHE5U3o2NzNaQjM5eUthOW9CTjNaVVlsU0dZVC9xMGVqNTNu?=
+ =?utf-8?B?OURkb01LcEVhS243L3lpa3N1a2M0RXlTRVVmVVVvb2ZZSERMKzVHUlZoUmV1?=
+ =?utf-8?B?bDNQY3RIMzVLTkdnUkpvR3lCVmMraHhMck85MWVEWkZVNW9GNkg2SzdTeXhm?=
+ =?utf-8?B?enc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	jvjIQ8LoOdACMmAdsWojLkrsWGWDOHW/+YTBO2Zcphb863s76Rd3XWXLLttV4A6L9HG0v2YRXrhcQfk3Vn9p3/TR+pWZVDsVhP6VYPUipE6HF9FV5RllVr/2mQ4VgZu23fEvAuXCwHE2+0KPBE+0F79qynSdTTOkW+JgBpPFymSDNPGseGXTpqPF49FIgFMsofeK2QUCtx7gX++xIUlcT8kCcTO97LEyfzH7WF2uAFmXY/BfvozpZ/DrEQYj9uVKKDRZ0+Ge3ZvrBqO7GRcZNLQB11TMYsvN0YeJh1oAqIWgnc9yw/rqDUoJfyk8+fOy9raIFjevsihlwC6oWuJdLXxnVca6ugMtEYsAm95RD4ba6+he6S+BjE+uQGjEOqshAvD52RCue9Uesoz4f1hcPfUcO9f5AXl/DjN/eznJ1cTgGXn9qrA24Eh1cBFYvaMWu7bJA+xIbSZSlqtGlKlOagK9GmpaVe5SjSm1EpnqQvOB69u0m+j+vL8tds+CPlbsvNAxf7DeEzfOie+wsiGp2QmQvEb7IqSEC0BnxkfPWDDrV9e1AtvWbdaxsxjD33h0IOEQPXhrqBowJqljnk4KJHLH25+2wogy48+updoFb60=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75250f90-521e-4009-0ecc-08dcbd46cb49
+X-MS-Exchange-CrossTenant-AuthSource: MW5PR10MB5738.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2024 16:24:53.7642
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qheqhMeeBbQIT8+hKAThlqHqhfKlmya4lL+tGauFr2nolqxxvALbTZ5di8bKMg5KphcqfcLRgeUq6+Xs6vnu1knuaY+9KtOdwprlbZ1Mbfs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB7172
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-15_09,2024-08-15_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ mlxlogscore=791 bulkscore=0 phishscore=0 mlxscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2407110000 definitions=main-2408150119
+X-Proofpoint-GUID: wGHuDyaRWmQEgOCq-DWBNdiuiK4h6go5
+X-Proofpoint-ORIG-GUID: wGHuDyaRWmQEgOCq-DWBNdiuiK4h6go5
 
-Make sure that for external buffers mapping goes through the dma_buf
-interface instead of trying to access pages directly.
+On 8/15/24 9:19AM, Greg Kroah-Hartman wrote:
+> On Thu, Aug 15, 2024 at 09:13:42AM -0500, Dave Kleikamp wrote:
+>> On 8/15/24 8:25AM, Greg Kroah-Hartman wrote:
+>>> 6.6-stable review patch.  If anyone has any objections, please let me know.
+>>
+>> Please do not include this patch and its revert (62/67). This was not a good
+>> fix.
+> 
+> I added both as our scripts keep picking this up and it's best to have a
+> "patch and then revert" in the stable tree so that people don't keep
+> trying to apply it over time.
 
-External buffers might not provide direct access to readable/writable
-pages so to make sure the bo's created from external dma_bufs can be
-read dma_buf interface has to be used.
+If it makes your job easier, then I'm okay with that.
 
-Fixes crashes in IGT's kms_prime with vgem. Regular desktop usage won't
-trigger this due to the fact that virtual machines will not have
-multiple GPUs but it enables better test coverage in IGT.
-
-v2: Fix the diff rectangle computation
-
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: b32233acceff ("drm/vmwgfx: Fix prime import/export")
-Cc: <stable@vger.kernel.org> # v6.6+
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.9+
----
- drivers/gpu/drm/vmwgfx/vmwgfx_blit.c | 112 ++++++++++++++++++++++++++-
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.h  |   4 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c |  12 +--
- 3 files changed, 116 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c b/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
-index 717d624e9a05..4049447d211c 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
-@@ -27,6 +27,8 @@
-  **************************************************************************/
- 
- #include "vmwgfx_drv.h"
-+
-+#include "vmwgfx_bo.h"
- #include <linux/highmem.h>
- 
- /*
-@@ -420,13 +422,103 @@ static int vmw_bo_cpu_blit_line(struct vmw_bo_blit_line_data *d,
- 	return 0;
- }
- 
-+static void *map_external(struct vmw_bo *bo, struct iosys_map *map)
-+{
-+	struct vmw_private *vmw =
-+		container_of(bo->tbo.bdev, struct vmw_private, bdev);
-+	void *ptr = NULL;
-+	int ret;
-+
-+	if (bo->tbo.base.import_attach) {
-+		ret = dma_buf_vmap(bo->tbo.base.dma_buf, map);
-+		if (ret) {
-+			drm_dbg_driver(&vmw->drm,
-+				       "Wasn't able to map external bo!\n");
-+			goto out;
-+		}
-+		ptr = map->vaddr;
-+	} else {
-+		ptr = vmw_bo_map_and_cache(bo);
-+	}
-+
-+out:
-+	return ptr;
-+}
-+
-+static void unmap_external(struct vmw_bo *bo, struct iosys_map *map)
-+{
-+	if (bo->tbo.base.import_attach)
-+		dma_buf_vunmap(bo->tbo.base.dma_buf, map);
-+	else
-+		vmw_bo_unmap(bo);
-+}
-+
-+static int vmw_external_bo_copy(struct vmw_bo *dst, u32 dst_offset,
-+				u32 dst_stride, struct vmw_bo *src,
-+				u32 src_offset, u32 src_stride,
-+				u32 width_in_bytes, u32 height,
-+				struct vmw_diff_cpy *diff)
-+{
-+	struct vmw_private *vmw =
-+		container_of(dst->tbo.bdev, struct vmw_private, bdev);
-+	size_t dst_size = dst->tbo.resource->size;
-+	size_t src_size = src->tbo.resource->size;
-+	struct iosys_map dst_map = {0};
-+	struct iosys_map src_map = {0};
-+	int ret, i;
-+	u8 *vsrc;
-+	u8 *vdst;
-+
-+	vsrc = map_external(src, &src_map);
-+	if (!vsrc) {
-+		drm_dbg_driver(&vmw->drm, "Wasn't able to map src\n");
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	vdst = map_external(dst, &dst_map);
-+	if (!vdst) {
-+		drm_dbg_driver(&vmw->drm, "Wasn't able to map dst\n");
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	vsrc += src_offset;
-+	vdst += dst_offset;
-+	if (src_stride == dst_stride) {
-+		dst_size -= dst_offset;
-+		src_size -= src_offset;
-+		memcpy(vdst, vsrc,
-+		       min(dst_stride * height, min(dst_size, src_size)));
-+	} else {
-+		WARN_ON(dst_stride < width_in_bytes);
-+		for (i = 0; i < height; ++i) {
-+			memcpy(vdst, vsrc, width_in_bytes);
-+			vsrc += src_stride;
-+			vdst += dst_stride;
-+		}
-+	}
-+
-+	diff->rect.x1 = (dst_offset % dst_stride) / diff->cpp;
-+	diff->rect.y1 = floor(dst_offset / dst_stride);
-+	diff->rect.x2 = diff->rect.x1 + width_in_bytes / diff->cpp;
-+	diff->rect.y2 = diff->rect.y1 + height;
-+
-+	ret = 0;
-+out:
-+	unmap_external(src, &src_map);
-+	unmap_external(dst, &dst_map);
-+
-+	return ret;
-+}
-+
- /**
-  * vmw_bo_cpu_blit - in-kernel cpu blit.
-  *
-- * @dst: Destination buffer object.
-+ * @vmw_dst: Destination buffer object.
-  * @dst_offset: Destination offset of blit start in bytes.
-  * @dst_stride: Destination stride in bytes.
-- * @src: Source buffer object.
-+ * @vmw_src: Source buffer object.
-  * @src_offset: Source offset of blit start in bytes.
-  * @src_stride: Source stride in bytes.
-  * @w: Width of blit.
-@@ -444,13 +536,15 @@ static int vmw_bo_cpu_blit_line(struct vmw_bo_blit_line_data *d,
-  * Neither of the buffer objects may be placed in PCI memory
-  * (Fixed memory in TTM terminology) when using this function.
-  */
--int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
-+int vmw_bo_cpu_blit(struct vmw_bo *vmw_dst,
- 		    u32 dst_offset, u32 dst_stride,
--		    struct ttm_buffer_object *src,
-+		    struct vmw_bo *vmw_src,
- 		    u32 src_offset, u32 src_stride,
- 		    u32 w, u32 h,
- 		    struct vmw_diff_cpy *diff)
- {
-+	struct ttm_buffer_object *src = &vmw_src->tbo;
-+	struct ttm_buffer_object *dst = &vmw_dst->tbo;
- 	struct ttm_operation_ctx ctx = {
- 		.interruptible = false,
- 		.no_wait_gpu = false
-@@ -460,6 +554,11 @@ int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
- 	int ret = 0;
- 	struct page **dst_pages = NULL;
- 	struct page **src_pages = NULL;
-+	bool src_external = (src->ttm->page_flags & TTM_TT_FLAG_EXTERNAL) != 0;
-+	bool dst_external = (dst->ttm->page_flags & TTM_TT_FLAG_EXTERNAL) != 0;
-+
-+	if (WARN_ON(dst == src))
-+		return -EINVAL;
- 
- 	/* Buffer objects need to be either pinned or reserved: */
- 	if (!(dst->pin_count))
-@@ -479,6 +578,11 @@ int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
- 			return ret;
- 	}
- 
-+	if (src_external || dst_external)
-+		return vmw_external_bo_copy(vmw_dst, dst_offset, dst_stride,
-+					    vmw_src, src_offset, src_stride,
-+					    w, h, diff);
-+
- 	if (!src->ttm->pages && src->ttm->sg) {
- 		src_pages = kvmalloc_array(src->ttm->num_pages,
- 					   sizeof(struct page *), GFP_KERNEL);
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-index 32f50e595809..3f4719b3c268 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -1353,9 +1353,9 @@ void vmw_diff_memcpy(struct vmw_diff_cpy *diff, u8 *dest, const u8 *src,
- 
- void vmw_memcpy(struct vmw_diff_cpy *diff, u8 *dest, const u8 *src, size_t n);
- 
--int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
-+int vmw_bo_cpu_blit(struct vmw_bo *dst,
- 		    u32 dst_offset, u32 dst_stride,
--		    struct ttm_buffer_object *src,
-+		    struct vmw_bo *src,
- 		    u32 src_offset, u32 src_stride,
- 		    u32 w, u32 h,
- 		    struct vmw_diff_cpy *diff);
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-index 5106413c14b7..3cc664384b66 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-@@ -502,7 +502,7 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_dirty *dirty)
- 		container_of(dirty->unit, typeof(*stdu), base);
- 	s32 width, height;
- 	s32 src_pitch, dst_pitch;
--	struct ttm_buffer_object *src_bo, *dst_bo;
-+	struct vmw_bo *src_bo, *dst_bo;
- 	u32 src_offset, dst_offset;
- 	struct vmw_diff_cpy diff = VMW_CPU_BLIT_DIFF_INITIALIZER(stdu->cpp);
- 
-@@ -517,11 +517,11 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_dirty *dirty)
- 
- 	/* Assume we are blitting from Guest (bo) to Host (display_srf) */
- 	src_pitch = stdu->display_srf->metadata.base_size.width * stdu->cpp;
--	src_bo = &stdu->display_srf->res.guest_memory_bo->tbo;
-+	src_bo = stdu->display_srf->res.guest_memory_bo;
- 	src_offset = ddirty->top * src_pitch + ddirty->left * stdu->cpp;
- 
- 	dst_pitch = ddirty->pitch;
--	dst_bo = &ddirty->buf->tbo;
-+	dst_bo = ddirty->buf;
- 	dst_offset = ddirty->fb_top * dst_pitch + ddirty->fb_left * stdu->cpp;
- 
- 	(void) vmw_bo_cpu_blit(dst_bo, dst_offset, dst_pitch,
-@@ -1143,7 +1143,7 @@ vmw_stdu_bo_populate_update_cpu(struct vmw_du_update_plane  *update, void *cmd,
- 	struct vmw_diff_cpy diff = VMW_CPU_BLIT_DIFF_INITIALIZER(0);
- 	struct vmw_stdu_update_gb_image *cmd_img = cmd;
- 	struct vmw_stdu_update *cmd_update;
--	struct ttm_buffer_object *src_bo, *dst_bo;
-+	struct vmw_bo *src_bo, *dst_bo;
- 	u32 src_offset, dst_offset;
- 	s32 src_pitch, dst_pitch;
- 	s32 width, height;
-@@ -1157,11 +1157,11 @@ vmw_stdu_bo_populate_update_cpu(struct vmw_du_update_plane  *update, void *cmd,
- 
- 	diff.cpp = stdu->cpp;
- 
--	dst_bo = &stdu->display_srf->res.guest_memory_bo->tbo;
-+	dst_bo = stdu->display_srf->res.guest_memory_bo;
- 	dst_pitch = stdu->display_srf->metadata.base_size.width * stdu->cpp;
- 	dst_offset = bb->y1 * dst_pitch + bb->x1 * stdu->cpp;
- 
--	src_bo = &vfbbo->buffer->tbo;
-+	src_bo = vfbbo->buffer;
- 	src_pitch = update->vfb->base.pitches[0];
- 	src_offset = bo_update->fb_top * src_pitch + bo_update->fb_left *
- 		stdu->cpp;
--- 
-2.43.0
-
+> 
+> thanks,
+> 
+> greg k-h
 
