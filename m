@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9AF953329
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 219319534B3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88756B20D3C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C09741F28363
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530AF19F471;
-	Thu, 15 Aug 2024 14:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC3317C9B6;
+	Thu, 15 Aug 2024 14:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dIz/Ok0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEvMvixy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEC21AC8AE;
-	Thu, 15 Aug 2024 14:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0958663C;
+	Thu, 15 Aug 2024 14:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731102; cv=none; b=RSKNPgB4ACCa9Cm4KVSbN6IAUX/DJDtPTyknUVeuUc+QX1pd/xrZGukYruD5VoRoCRxR3OsnFKeZkUHG72ugSp9AobCnR0fSd8uzJ0loUjb91ZbulPmut+UphGQR4aPViIcY8FmjqndQJAcWxmW43zdQYjtkB1dBkFY8SHqpvFM=
+	t=1723732150; cv=none; b=Xhy/EmLkaqBNfCqhM7SVHsXqxtrEez8ivCgiOcejhcG0TIidwGpNP43iH5MgyVE8Ur32p6PmZhfpFuqVFEItzrRgO+p5nhDgGcuEw77XBSZ+O2lXoibTpkciamfFsH9O13x2XXMs+3HU61hCBOb0iYFwTPo47/ZNMP1PFctfJmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731102; c=relaxed/simple;
-	bh=+A6HNYE4mP174co2MKTPXxaDV4lAYCwfwOQN0GONfEo=;
+	s=arc-20240116; t=1723732150; c=relaxed/simple;
+	bh=vdaeN55AAtSDuums/DF0XxD0xfzMk88dE+72nQQnpTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGHBHt5QECKvAFz4TLm8gzsylgl7hFlrmQyUGjIf8FDuNP3Y3lX6UrBpY9aw5b9o2KJKakjScKsTvUAxCUoQGvkYi3qHQl11RtVovAbntbNpkRo5rYEo2WU+TvhtsGQAPhdYRjXoAqW7RPeo+ptA6AX+30/QLoDYCf9DtH1qFaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dIz/Ok0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9D4C32786;
-	Thu, 15 Aug 2024 14:11:41 +0000 (UTC)
+	 MIME-Version; b=rpmu1rDgU06efm1j4sO3sI/YEHpDCRDXv1Kqq8k5a9mn+N3DqR3OwzGU/1QtTBpLILYC2gr8mB+x5bOzOUB750N7bOK8NslL90TWEtT7LDt+0DQ8yCqoH/KvhH7SEempTzGLcTT2BxlC5McuQvCLo5SKN8U8hORnC4I3w6q6Xyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEvMvixy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F791C32786;
+	Thu, 15 Aug 2024 14:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731101;
-	bh=+A6HNYE4mP174co2MKTPXxaDV4lAYCwfwOQN0GONfEo=;
+	s=korg; t=1723732149;
+	bh=vdaeN55AAtSDuums/DF0XxD0xfzMk88dE+72nQQnpTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0dIz/Ok0z/BsE/+8eiZY48/G79QC1lhKDyVd5SehA8Bk/d/BmtNSc873GSYyG28Pp
-	 ABYSpSKuaLh57M0piiyk1VAzvyMKVZxl7w+clApS64DQ0enCKVuqt4jw1zifXxAhyF
-	 pU9X7DwPtDb4HSA5mtGrJsd25kpRk4BpClMr+ndo=
+	b=HEvMvixy8oeDu+sCyTEmzKulzgVGf3WRoIkiyT/+GzhD117KPOIla59g3LBgZcCNj
+	 4HaaeU0LyI4IWBa24pHl1FTiWSRVb01Q3bMKJrzbjFMWA6DU6YOjatSRB4HVe+tgBI
+	 e+b/ctZojaKyL4aPoFtPFQVtNMurzdafe9G1+xpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 023/259] arm64: dts: amlogic: gx: correct hdmi clocks
+Subject: [PATCH 5.10 090/352] xprtrdma: Rename frwr_release_mr()
 Date: Thu, 15 Aug 2024 15:22:36 +0200
-Message-ID: <20240815131903.693509085@linuxfoundation.org>
+Message-ID: <20240815131922.738577782@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 0602ba0dcd0e76067a0b7543e92b2de3fb231073 ]
+[ Upstream commit f912af77e2c1ba25bd40534668b10da5b20f686a ]
 
-The clocks provided to HDMI tx are not consistent between gx and g12:
-* gx receives the peripheral clock as 'isfr' while g12 receives it as
-  'iahb'
-* g12 gets the HDMI system clock as 'isfr' but gx does not even get it.
-  It surely needs that clock since the driver is directly poking around
-  the clock controller's registers for that clock.
+Clean up: To be consistent with other functions in this source file,
+follow the naming convention of putting the object being acted upon
+before the action itself.
 
-Align gx SoCs with g12 and provide:
- * the HDMI peripheral clock as 'iahb'
- * the HDMI system clock as 'isfr'
-
-Fixes: 6939db7e0dbf ("ARM64: dts: meson-gx: Add support for HDMI output")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240626152733.1350376-2-jbrunet@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: acd9f2dd23c6 ("xprtrdma: Fix rpcrdma_reqs_reset()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi | 4 ++--
- arch/arm64/boot/dts/amlogic/meson-gxl.dtsi  | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/sunrpc/xprtrdma/frwr_ops.c  | 6 +++---
+ net/sunrpc/xprtrdma/verbs.c     | 4 ++--
+ net/sunrpc/xprtrdma/xprt_rdma.h | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-index 0cb40326b0d3f..e54473f98b022 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-@@ -326,8 +326,8 @@ &hdmi_tx {
- 		 <&reset RESET_HDMI_SYSTEM_RESET>,
- 		 <&reset RESET_HDMI_TX>;
- 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
--	clocks = <&clkc CLKID_HDMI_PCLK>,
--		 <&clkc CLKID_CLK81>,
-+	clocks = <&clkc CLKID_HDMI>,
-+		 <&clkc CLKID_HDMI_PCLK>,
- 		 <&clkc CLKID_GCLK_VENCI_INT0>;
- 	clock-names = "isfr", "iahb", "venci";
- };
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-index 6809f495a5030..308db3bc417b9 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-@@ -273,8 +273,8 @@ &hdmi_tx {
- 		 <&reset RESET_HDMI_SYSTEM_RESET>,
- 		 <&reset RESET_HDMI_TX>;
- 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
--	clocks = <&clkc CLKID_HDMI_PCLK>,
--		 <&clkc CLKID_CLK81>,
-+	clocks = <&clkc CLKID_HDMI>,
-+		 <&clkc CLKID_HDMI_PCLK>,
- 		 <&clkc CLKID_GCLK_VENCI_INT0>;
- 	clock-names = "isfr", "iahb", "venci";
- };
+diff --git a/net/sunrpc/xprtrdma/frwr_ops.c b/net/sunrpc/xprtrdma/frwr_ops.c
+index bf3627dce5529..177099f6ae182 100644
+--- a/net/sunrpc/xprtrdma/frwr_ops.c
++++ b/net/sunrpc/xprtrdma/frwr_ops.c
+@@ -50,11 +50,11 @@
+ #endif
+ 
+ /**
+- * frwr_release_mr - Destroy one MR
++ * frwr_mr_release - Destroy one MR
+  * @mr: MR allocated by frwr_mr_init
+  *
+  */
+-void frwr_release_mr(struct rpcrdma_mr *mr)
++void frwr_mr_release(struct rpcrdma_mr *mr)
+ {
+ 	int rc;
+ 
+@@ -83,7 +83,7 @@ static void frwr_mr_recycle(struct rpcrdma_mr *mr)
+ 	r_xprt->rx_stats.mrs_recycled++;
+ 	spin_unlock(&r_xprt->rx_buf.rb_lock);
+ 
+-	frwr_release_mr(mr);
++	frwr_mr_release(mr);
+ }
+ 
+ /* frwr_reset - Place MRs back on the free list
+diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
+index 9e9df38b29f74..167f0d99b8580 100644
+--- a/net/sunrpc/xprtrdma/verbs.c
++++ b/net/sunrpc/xprtrdma/verbs.c
+@@ -1100,7 +1100,7 @@ void rpcrdma_req_destroy(struct rpcrdma_req *req)
+ 		list_del(&mr->mr_all);
+ 		spin_unlock(&buf->rb_lock);
+ 
+-		frwr_release_mr(mr);
++		frwr_mr_release(mr);
+ 	}
+ 
+ 	rpcrdma_regbuf_free(req->rl_recvbuf);
+@@ -1131,7 +1131,7 @@ static void rpcrdma_mrs_destroy(struct rpcrdma_xprt *r_xprt)
+ 		list_del(&mr->mr_all);
+ 		spin_unlock(&buf->rb_lock);
+ 
+-		frwr_release_mr(mr);
++		frwr_mr_release(mr);
+ 
+ 		spin_lock(&buf->rb_lock);
+ 	}
+diff --git a/net/sunrpc/xprtrdma/xprt_rdma.h b/net/sunrpc/xprtrdma/xprt_rdma.h
+index 702f0344523cc..73c8ab89456b0 100644
+--- a/net/sunrpc/xprtrdma/xprt_rdma.h
++++ b/net/sunrpc/xprtrdma/xprt_rdma.h
+@@ -520,7 +520,7 @@ rpcrdma_data_dir(bool writing)
+ void frwr_reset(struct rpcrdma_req *req);
+ int frwr_query_device(struct rpcrdma_ep *ep, const struct ib_device *device);
+ int frwr_mr_init(struct rpcrdma_xprt *r_xprt, struct rpcrdma_mr *mr);
+-void frwr_release_mr(struct rpcrdma_mr *mr);
++void frwr_mr_release(struct rpcrdma_mr *mr);
+ struct rpcrdma_mr_seg *frwr_map(struct rpcrdma_xprt *r_xprt,
+ 				struct rpcrdma_mr_seg *seg,
+ 				int nsegs, bool writing, __be32 xid,
 -- 
 2.43.0
 
