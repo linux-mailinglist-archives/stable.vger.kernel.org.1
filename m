@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBA8952F12
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BC095317D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C673F1F24064
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C3541C22E32
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4B319F49D;
-	Thu, 15 Aug 2024 13:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B449519AA53;
+	Thu, 15 Aug 2024 13:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJiTLMlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQJzOSm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C5019F49C;
-	Thu, 15 Aug 2024 13:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A7918D630;
+	Thu, 15 Aug 2024 13:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728490; cv=none; b=gShM9wl+ajB2rXWfosFblb/s53d1yMqk9+0yAe+bU0TuJCwEzaHomtinMpVeDi+CTALxp+VRYUEvB8sBa/59Hi6+Z2Nw0miz5WPxJl9n8bJLL1yol8R4KIvUeGP8QbkaxX10FSgjVHqwJ4llQkrN7+SQKbjpNLO95ail8yagZ8I=
+	t=1723730081; cv=none; b=Nhne4qh+ckC6jorBMhZLseQLG04rEtMnkYe+k+8C/EQhG2TNIc1ZHXUkjVjS1rDZH2BdGJB0+fW7fmvB1K5xM+dSN9WhDhYOT/P+RaMni5yA9qtXJY4ibCGgZQzYcWMy+zQnE8icHzvSrwQQw9S9g4KUaiiAdbItK/0Z7SBIqLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728490; c=relaxed/simple;
-	bh=36+Ld6l1CqKyI4o5hjbb604YL057ctXwX10jXu2ic8o=;
+	s=arc-20240116; t=1723730081; c=relaxed/simple;
+	bh=lY3vCT/H3sTaGWu2i+Imcd5KK/YKESz2bR72et841zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTXwCRclGgymXribRvbs75cmkWecGEz+4wDcbqhAW39Y9D4st1WdDH76hYbz+I5mxc1wRitzWx304/Bh8M5pvyDbXwab35IJzDCOfKkip2gQMZqqObC0P1fHIR3gQ8HWxiO08bJKAZ3a7g1hcS2bfIWB+xQ0tqvWWfcfopw2DrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJiTLMlb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B798C32786;
-	Thu, 15 Aug 2024 13:28:09 +0000 (UTC)
+	 MIME-Version; b=VLHDEqXTezzuk3S9IbYsMlvwuA7t2hW9foWEgrDAJ/xkoVIqn2k3gwK+OiMY1oRmDXjjy6kJ0EM4M0vAC43CT1Iok/0me55yxrTIBFMNgaT/fP0nsND64FGoOdzZrJ4MN58+vGJsJxTUodIhFvWkvDFTwZr/MTxuPhZ831NOmIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQJzOSm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFC2C32786;
+	Thu, 15 Aug 2024 13:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728490;
-	bh=36+Ld6l1CqKyI4o5hjbb604YL057ctXwX10jXu2ic8o=;
+	s=korg; t=1723730081;
+	bh=lY3vCT/H3sTaGWu2i+Imcd5KK/YKESz2bR72et841zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJiTLMlbFWYEgLgmnocbMQgMxM1WLdIZvwN8cJkcGXR8TIBVG5Ud9WHpYPihG5AEr
-	 TSqrRFKSqyFz3Il8qDTyLBlU0ueF19v4RSMZeX3ByoVHmZRoeeSK6/i4iY+jWKB3Lw
-	 cOLG9E0y6WWGLUBn+erF3hHGwBkDb8MuXVHBvp9A=
+	b=RQJzOSm/C++5H07IFoJqawMcJFbhSEFwxh9QVMvvpLrJgkbhQi5OO0UKZfbZx9VM7
+	 aPQlpf5jcE6rMz7vnJS+YX4W6mHw7wJqAcDxCQ6PuiaUUv0ueZ4qDXng9Z8cxhkkGS
+	 /uXX5/GsQEw6J40U0i1X30eNcohBgnxiZUmkVEn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Lance Richardson <rlance@google.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 009/196] hwmon: (max6697) Fix underflow when writing limit attributes
+Subject: [PATCH 5.15 268/484] dma: fix call order in dmam_free_coherent
 Date: Thu, 15 Aug 2024 15:22:06 +0200
-Message-ID: <20240815131852.429364184@linuxfoundation.org>
+Message-ID: <20240815131951.754608393@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Lance Richardson <rlance@google.com>
 
-[ Upstream commit cbf7467828cd4ec7ceac7a8b5b5ddb2f69f07b0e ]
+[ Upstream commit 28e8b7406d3a1f5329a03aa25a43aa28e087cb20 ]
 
-Using DIV_ROUND_CLOSEST() on an unbound value can result in underflows.
-Indeed, module test scripts report:
+dmam_free_coherent() frees a DMA allocation, which makes the
+freed vaddr available for reuse, then calls devres_destroy()
+to remove and free the data structure used to track the DMA
+allocation. Between the two calls, it is possible for a
+concurrent task to make an allocation with the same vaddr
+and add it to the devres list.
 
-temp1_max: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
-temp1_crit: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
+If this happens, there will be two entries in the devres list
+with the same vaddr and devres_destroy() can free the wrong
+entry, triggering the WARN_ON() in dmam_match.
 
-Fix by introducing an extra set of clamping.
+Fix by destroying the devres entry before freeing the DMA
+allocation.
 
-Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Tested:
+  kokonut //net/encryption
+    http://sponge2/b9145fe6-0f72-4325-ac2f-a84d81075b03
+
+Fixes: 9ac7849e35f7 ("devres: device resource management")
+Signed-off-by: Lance Richardson <rlance@google.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max6697.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/dma/mapping.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
-index 6df28fe0577da..7e7f59c68ce6e 100644
---- a/drivers/hwmon/max6697.c
-+++ b/drivers/hwmon/max6697.c
-@@ -314,6 +314,7 @@ static ssize_t set_temp(struct device *dev,
- 		return ret;
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index c9dbc8f5812b8..9e1a724ae7e7d 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -62,8 +62,8 @@ void dmam_free_coherent(struct device *dev, size_t size, void *vaddr,
+ {
+ 	struct dma_devres match_data = { size, vaddr, dma_handle };
  
- 	mutex_lock(&data->update_lock);
-+	temp = clamp_val(temp, -1000000, 1000000);	/* prevent underflow */
- 	temp = DIV_ROUND_CLOSEST(temp, 1000) + data->temp_offset;
- 	temp = clamp_val(temp, 0, data->type == max6581 ? 255 : 127);
- 	data->temp[nr][index] = temp;
+-	dma_free_coherent(dev, size, vaddr, dma_handle);
+ 	WARN_ON(devres_destroy(dev, dmam_release, dmam_match, &match_data));
++	dma_free_coherent(dev, size, vaddr, dma_handle);
+ }
+ EXPORT_SYMBOL(dmam_free_coherent);
+ 
 -- 
 2.43.0
 
