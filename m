@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-68780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6F39533EE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2475695357B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F5EAB20520
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 486AB1C23BEC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783EE1A00D2;
-	Thu, 15 Aug 2024 14:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC53B1A00D1;
+	Thu, 15 Aug 2024 14:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAiEbaMV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGWhufHq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B6119FA99;
-	Thu, 15 Aug 2024 14:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889F63214;
+	Thu, 15 Aug 2024 14:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731645; cv=none; b=stVyTRdBYSsnqVybuNhjeQMHjDSdrvRJa5FaHVzpFa0lAeO6mA5D22bT/mt4RRqFP3vhDlsWttq7I2im2XUYdmBLCfOodPMxkEgeziB+YMWj6L5ouMvs2NBpYpM0GvnjIreg8r4X4qT21iwp94mfdITjrkTTnxCxZM3OWEjDlVU=
+	t=1723732696; cv=none; b=tYCxvHvd59BBv2W5Z9+zUP9Mpo6aupyh/XjHpSTH/DOhLUBHsFFUNX9KYRJ21PCSyj9uV7PgN2hLDgx3vyShkVIOgANK7PcNNKo1FBL+F1b54duzvY3ZiJ4TIKab6+EW2zPZx3BtzpYTAu3+6yN753JAfkYQlSmStfVt1B4RQKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731645; c=relaxed/simple;
-	bh=VugtW6xNAOBNbObqjL4QCxXLRQVxje+jn4IrquYMRfI=;
+	s=arc-20240116; t=1723732696; c=relaxed/simple;
+	bh=i0Hgpl1F/JGvMUUWpyk/mj5CYtBBNeQ5MzlWPKNDFFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QY7ajAGuste2wKOLE9HmiRudC6QQR0Mn/Exl0c+JjtxEp1Hf+tsmnGpENQVundsCsaaFuT2Ye/fi6bOCCKiwFv+jFWB2vGCQ/VRnm8s/dy31U53X9/19WYFsfoZiENho9cCjU2bfUhRIymD+/c9QjLkGSC7mLxkQBxKjtOAADuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAiEbaMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF19C4AF0C;
-	Thu, 15 Aug 2024 14:20:43 +0000 (UTC)
+	 MIME-Version; b=tZJpYzUm21Ds+NDYb3q3dc42cBvQ0BuF/S3nAIC+0EC8mZbenNT5Pfl3278trecr8CcpoVxg72U5a/0Ht1OdT6kYhJNGSIfBBfvBq8znbYyJ00tlofKlWPGD/lHKhOzhHYPJFVdZNwvEVBLhhpuQw+TtV5bZeKuuVt1CBHqxVGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGWhufHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCEDC32786;
+	Thu, 15 Aug 2024 14:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731645;
-	bh=VugtW6xNAOBNbObqjL4QCxXLRQVxje+jn4IrquYMRfI=;
+	s=korg; t=1723732696;
+	bh=i0Hgpl1F/JGvMUUWpyk/mj5CYtBBNeQ5MzlWPKNDFFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAiEbaMVnN61ckwjFr2YSc6UxjZRLwjn5HcY144iR8hrmnmlBFXyTt9yf3aEs6vJH
-	 OXYO7yXWnYzSh4W8JBVTLfB5ma9gjlWuwDPCUJoxvPG6hJogqUurqHeSQ/nhlj561x
-	 6UFxHOP8+Z7Ha2f5SBEs4e2cfT+5ik46LEBuO/QY=
+	b=OGWhufHqWpE7QpRKX3soQ621Gc6ASZV9yggLCOdD6AuKJatmVR1yC20B52xWtPUod
+	 Ft2lFNIjzjQJW+It2LvF8EZRmIhpL3c/JVQOo32AvhK0478Q2XfOdiHl/jH4UmI0aK
+	 jhiw4ZHsFDSTgxo9omkZzB6FMV6TmyC1anEODe4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	syzbot+6acef9e0a4d1f46c83d4@syzkaller.appspotmail.com,
+	gnault@redhat.com,
+	cong.wang@bytedance.com,
+	James Chapman <jchapman@katalix.com>,
+	Tom Parkin <tparkin@katalix.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 192/259] md/raid5: avoid BUG_ON() while continue reshape after reassembling
+Subject: [PATCH 5.10 259/352] l2tp: fix lockdep splat
 Date: Thu, 15 Aug 2024 15:25:25 +0200
-Message-ID: <20240815131910.195369253@linuxfoundation.org>
+Message-ID: <20240815131929.454577408@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +67,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: James Chapman <jchapman@katalix.com>
 
-[ Upstream commit 305a5170dc5cf3d395bb4c4e9239bca6d0b54b49 ]
+[ Upstream commit 86a41ea9fd79ddb6145cb8ebf5aeafceabca6f7d ]
 
-Currently, mdadm support --revert-reshape to abort the reshape while
-reassembling, as the test 07revert-grow. However, following BUG_ON()
-can be triggerred by the test:
+When l2tp tunnels use a socket provided by userspace, we can hit
+lockdep splats like the below when data is transmitted through another
+(unrelated) userspace socket which then gets routed over l2tp.
 
-kernel BUG at drivers/md/raid5.c:6278!
-invalid opcode: 0000 [#1] PREEMPT SMP PTI
-irq event stamp: 158985
-CPU: 6 PID: 891 Comm: md0_reshape Not tainted 6.9.0-03335-g7592a0b0049a #94
-RIP: 0010:reshape_request+0x3f1/0xe60
-Call Trace:
- <TASK>
- raid5_sync_request+0x43d/0x550
- md_do_sync+0xb7a/0x2110
- md_thread+0x294/0x2b0
- kthread+0x147/0x1c0
- ret_from_fork+0x59/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+This issue was previously discussed here:
+https://lore.kernel.org/netdev/87sfialu2n.fsf@cloudflare.com/
 
-Root cause is that --revert-reshape update the raid_disks from 5 to 4,
-while reshape position is still set, and after reassembling the array,
-reshape position will be read from super block, then during reshape the
-checking of 'writepos' that is caculated by old reshape position will
-fail.
+The solution is to have lockdep treat socket locks of l2tp tunnel
+sockets separately than those of standard INET sockets. To do so, use
+a different lockdep subclass where lock nesting is possible.
 
-Fix this panic the easy way first, by converting the BUG_ON() to
-WARN_ON(), and stop the reshape if checkings fail.
+  ============================================
+  WARNING: possible recursive locking detected
+  6.10.0+ #34 Not tainted
+  --------------------------------------------
+  iperf3/771 is trying to acquire lock:
+  ffff8881027601d8 (slock-AF_INET/1){+.-.}-{2:2}, at: l2tp_xmit_skb+0x243/0x9d0
 
-Noted that mdadm must fix --revert-shape as well, and probably md/raid
-should enhance metadata validation as well, however this means
-reassemble will fail and there must be user tools to fix the wrong
-metadata.
+  but task is already holding lock:
+  ffff888102650d98 (slock-AF_INET/1){+.-.}-{2:2}, at: tcp_v4_rcv+0x1848/0x1e10
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240611132251.1967786-13-yukuai1@huaweicloud.com
+  other info that might help us debug this:
+   Possible unsafe locking scenario:
+
+         CPU0
+         ----
+    lock(slock-AF_INET/1);
+    lock(slock-AF_INET/1);
+
+   *** DEADLOCK ***
+
+   May be due to missing lock nesting notation
+
+  10 locks held by iperf3/771:
+   #0: ffff888102650258 (sk_lock-AF_INET){+.+.}-{0:0}, at: tcp_sendmsg+0x1a/0x40
+   #1: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x4b/0xbc0
+   #2: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x17a/0x1130
+   #3: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: process_backlog+0x28b/0x9f0
+   #4: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_local_deliver_finish+0xf9/0x260
+   #5: ffff888102650d98 (slock-AF_INET/1){+.-.}-{2:2}, at: tcp_v4_rcv+0x1848/0x1e10
+   #6: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x4b/0xbc0
+   #7: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x17a/0x1130
+   #8: ffffffff822ac1e0 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0xcc/0x1450
+   #9: ffff888101f33258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock#2){+...}-{2:2}, at: __dev_queue_xmit+0x513/0x1450
+
+  stack backtrace:
+  CPU: 2 UID: 0 PID: 771 Comm: iperf3 Not tainted 6.10.0+ #34
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  Call Trace:
+   <IRQ>
+   dump_stack_lvl+0x69/0xa0
+   dump_stack+0xc/0x20
+   __lock_acquire+0x135d/0x2600
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   lock_acquire+0xc4/0x2a0
+   ? l2tp_xmit_skb+0x243/0x9d0
+   ? __skb_checksum+0xa3/0x540
+   _raw_spin_lock_nested+0x35/0x50
+   ? l2tp_xmit_skb+0x243/0x9d0
+   l2tp_xmit_skb+0x243/0x9d0
+   l2tp_eth_dev_xmit+0x3c/0xc0
+   dev_hard_start_xmit+0x11e/0x420
+   sch_direct_xmit+0xc3/0x640
+   __dev_queue_xmit+0x61c/0x1450
+   ? ip_finish_output2+0xf4c/0x1130
+   ip_finish_output2+0x6b6/0x1130
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __ip_finish_output+0x217/0x380
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __ip_finish_output+0x217/0x380
+   ip_output+0x99/0x120
+   __ip_queue_xmit+0xae4/0xbc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? tcp_options_write.constprop.0+0xcb/0x3e0
+   ip_queue_xmit+0x34/0x40
+   __tcp_transmit_skb+0x1625/0x1890
+   __tcp_send_ack+0x1b8/0x340
+   tcp_send_ack+0x23/0x30
+   __tcp_ack_snd_check+0xa8/0x530
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   tcp_rcv_established+0x412/0xd70
+   tcp_v4_do_rcv+0x299/0x420
+   tcp_v4_rcv+0x1991/0x1e10
+   ip_protocol_deliver_rcu+0x50/0x220
+   ip_local_deliver_finish+0x158/0x260
+   ip_local_deliver+0xc8/0xe0
+   ip_rcv+0xe5/0x1d0
+   ? __pfx_ip_rcv+0x10/0x10
+   __netif_receive_skb_one_core+0xce/0xe0
+   ? process_backlog+0x28b/0x9f0
+   __netif_receive_skb+0x34/0xd0
+   ? process_backlog+0x28b/0x9f0
+   process_backlog+0x2cb/0x9f0
+   __napi_poll.constprop.0+0x61/0x280
+   net_rx_action+0x332/0x670
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? find_held_lock+0x2b/0x80
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   handle_softirqs+0xda/0x480
+   ? __dev_queue_xmit+0xa2c/0x1450
+   do_softirq+0xa1/0xd0
+   </IRQ>
+   <TASK>
+   __local_bh_enable_ip+0xc8/0xe0
+   ? __dev_queue_xmit+0xa2c/0x1450
+   __dev_queue_xmit+0xa48/0x1450
+   ? ip_finish_output2+0xf4c/0x1130
+   ip_finish_output2+0x6b6/0x1130
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __ip_finish_output+0x217/0x380
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __ip_finish_output+0x217/0x380
+   ip_output+0x99/0x120
+   __ip_queue_xmit+0xae4/0xbc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? tcp_options_write.constprop.0+0xcb/0x3e0
+   ip_queue_xmit+0x34/0x40
+   __tcp_transmit_skb+0x1625/0x1890
+   tcp_write_xmit+0x766/0x2fb0
+   ? __entry_text_end+0x102ba9/0x102bad
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __might_fault+0x74/0xc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __tcp_push_pending_frames+0x56/0x190
+   tcp_push+0x117/0x310
+   tcp_sendmsg_locked+0x14c1/0x1740
+   tcp_sendmsg+0x28/0x40
+   inet_sendmsg+0x5d/0x90
+   sock_write_iter+0x242/0x2b0
+   vfs_write+0x68d/0x800
+   ? __pfx_sock_write_iter+0x10/0x10
+   ksys_write+0xc8/0xf0
+   __x64_sys_write+0x3d/0x50
+   x64_sys_call+0xfaf/0x1f50
+   do_syscall_64+0x6d/0x140
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f4d143af992
+  Code: c3 8b 07 85 c0 75 24 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> e9 01 cc ff ff 41 54 b8 02 00 00 0
+  RSP: 002b:00007ffd65032058 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+  RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f4d143af992
+  RDX: 0000000000000025 RSI: 00007f4d143f3bcc RDI: 0000000000000005
+  RBP: 00007f4d143f2b28 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f4d143f3bcc
+  R13: 0000000000000005 R14: 0000000000000000 R15: 00007ffd650323f0
+   </TASK>
+
+Fixes: 0b2c59720e65 ("l2tp: close all race conditions in l2tp_tunnel_register()")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot+6acef9e0a4d1f46c83d4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6acef9e0a4d1f46c83d4
+CC: gnault@redhat.com
+CC: cong.wang@bytedance.com
+Signed-off-by: James Chapman <jchapman@katalix.com>
+Signed-off-by: Tom Parkin <tparkin@katalix.com>
+Link: https://patch.msgid.link/20240806160626.1248317-1-jchapman@katalix.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ net/l2tp/l2tp_core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index bba5e61cc1456..41556f5d4dcba 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -5821,7 +5821,9 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
- 	safepos = conf->reshape_safe;
- 	sector_div(safepos, data_disks);
- 	if (mddev->reshape_backwards) {
--		BUG_ON(writepos < reshape_sectors);
-+		if (WARN_ON(writepos < reshape_sectors))
-+			return MaxSector;
-+
- 		writepos -= reshape_sectors;
- 		readpos += reshape_sectors;
- 		safepos += reshape_sectors;
-@@ -5839,14 +5841,18 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
- 	 * to set 'stripe_addr' which is where we will write to.
- 	 */
- 	if (mddev->reshape_backwards) {
--		BUG_ON(conf->reshape_progress == 0);
-+		if (WARN_ON(conf->reshape_progress == 0))
-+			return MaxSector;
-+
- 		stripe_addr = writepos;
--		BUG_ON((mddev->dev_sectors &
--			~((sector_t)reshape_sectors - 1))
--		       - reshape_sectors - stripe_addr
--		       != sector_nr);
-+		if (WARN_ON((mddev->dev_sectors &
-+		    ~((sector_t)reshape_sectors - 1)) -
-+		    reshape_sectors - stripe_addr != sector_nr))
-+			return MaxSector;
- 	} else {
--		BUG_ON(writepos != sector_nr + reshape_sectors);
-+		if (WARN_ON(writepos != sector_nr + reshape_sectors))
-+			return MaxSector;
-+
- 		stripe_addr = sector_nr;
- 	}
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index a4b793d1b7d76..b6dcfca740c1c 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -88,6 +88,11 @@
+ /* Default trace flags */
+ #define L2TP_DEFAULT_DEBUG_FLAGS	0
  
++#define L2TP_DEPTH_NESTING		2
++#if L2TP_DEPTH_NESTING == SINGLE_DEPTH_NESTING
++#error "L2TP requires its own lockdep subclass"
++#endif
++
+ /* Private data stored for received packets in the skb.
+  */
+ struct l2tp_skb_cb {
+@@ -1041,7 +1046,13 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
+ 	IPCB(skb)->flags &= ~(IPSKB_XFRM_TUNNEL_SIZE | IPSKB_XFRM_TRANSFORMED | IPSKB_REROUTED);
+ 	nf_reset_ct(skb);
+ 
+-	bh_lock_sock_nested(sk);
++	/* L2TP uses its own lockdep subclass to avoid lockdep splats caused by
++	 * nested socket calls on the same lockdep socket class. This can
++	 * happen when data from a user socket is routed over l2tp, which uses
++	 * another userspace socket.
++	 */
++	spin_lock_nested(&sk->sk_lock.slock, L2TP_DEPTH_NESTING);
++
+ 	if (sock_owned_by_user(sk)) {
+ 		kfree_skb(skb);
+ 		ret = NET_XMIT_DROP;
+@@ -1093,7 +1104,7 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
+ 	ret = l2tp_xmit_queue(tunnel, skb, &inet->cork.fl);
+ 
+ out_unlock:
+-	bh_unlock_sock(sk);
++	spin_unlock(&sk->sk_lock.slock);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
