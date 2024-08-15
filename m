@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-69005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089669534FD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A4495336C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B25E7282203
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 582A1B22FDA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B3917C995;
-	Thu, 15 Aug 2024 14:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87771A7060;
+	Thu, 15 Aug 2024 14:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlvF1v1l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lr6SJFWz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DAA210FB;
-	Thu, 15 Aug 2024 14:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53961AC8AE;
+	Thu, 15 Aug 2024 14:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732359; cv=none; b=BdvtievmSXFO0uZ/M23HPxnMGUN0xm+ijAaiZvef8KSfU29w6M/SCHBSLLEjFPkyeLe4dwXCdcRhYxbbxvFXOtkrt+IRf0461eh1/HBoSd5SgfT6penq6XrRdT2TRNYFlY8RwQuWRnf+ZX+/f/EFWm+6ikPIXnscrruX2y4lg20=
+	t=1723731290; cv=none; b=RLPO/lrPyo2UbVuym64sVJiRRuxxL2kBAahhfEOwVGggtSiTLCaPFBBOLsOGYbgwMO0q8ZDKL3HVXNQq41yoEkcOttzkilluG87Keuajacr8BkhO8DEGqvwR3A5+TDXmrhPiDYPwFPKnY3TSIZMAO13nv3pG24CK1aPoCnkqPaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732359; c=relaxed/simple;
-	bh=qBHMJyN+ljPvU4jLU4Qq+hxpFn5SRIlJdISJAx3/sPI=;
+	s=arc-20240116; t=1723731290; c=relaxed/simple;
+	bh=HIBp2HmDF0fD1q5WXVEs5jciEnLyMmgvqFoGIQTeIKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSMu4aXcNMBebW2YV6TG7PBOdvOS0AsgolgJ/hCjIaZBZYo8Wyw9qJKr6frPaVkddkJuUabRBXejkWhfEHohvSLNO0md/0aCigQG8KS20y7IvkVTyOdQhOpVSvD3n35dJTWFjtgJqG1jk4x4fYmm/tm3ReweUzy2TiktRT4TPDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlvF1v1l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E19C32786;
-	Thu, 15 Aug 2024 14:32:38 +0000 (UTC)
+	 MIME-Version; b=RGlq6kg9q1GLOETqeCifkNew0LOkfb8RmqyH8ocmU8FiofU+XyJQ47THyglUtXR6fv8Iw/XBOnsPTnaaNYI9avKfxcQ7sY1js1E2kLIyJ+IbrPq0CqBvJkgKQnsy+VnmVslumrHOorG+EAeP22t8vnylrHabqVqvvwTFN50ete4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lr6SJFWz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA08C32786;
+	Thu, 15 Aug 2024 14:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732359;
-	bh=qBHMJyN+ljPvU4jLU4Qq+hxpFn5SRIlJdISJAx3/sPI=;
+	s=korg; t=1723731290;
+	bh=HIBp2HmDF0fD1q5WXVEs5jciEnLyMmgvqFoGIQTeIKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlvF1v1lRlCAB6AuxDYNGcJ0VdX4iJBWUJDZ7A8T8rBCSikuQUsnOo9sLNLNt8AIa
-	 2grBKmlaU2kek5tXug0TeWiJTgxfWGGjprd3GfCSvO7SF/WK9BmAthWTeQuVgB+Nu/
-	 xWPd+SZMP14oM3A3KjXjde/KD3UDozn+vKG4+A3k=
+	b=lr6SJFWzQA8cr+TyJfvwrTXXmRg6mHkyouzSn/0liTAfC9gX/1wT0ZXr0wG8DI7PH
+	 7hSk77qnjc0lLdK2yGt5e/4InQlmmMrsfxgReJpQMiKOcGs8gXvfVlEYSbhhThepp9
+	 ipdNyOvh3kSIqCwnQXierWA7JKnOpORespnwqqaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 148/352] jbd2: make jbd2_journal_get_max_txn_bufs() internal
-Date: Thu, 15 Aug 2024 15:23:34 +0200
-Message-ID: <20240815131924.982050320@linuxfoundation.org>
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 082/259] pinctrl: single: fix possible memory leak when pinctrl_enable() fails
+Date: Thu, 15 Aug 2024 15:23:35 +0200
+Message-ID: <20240815131905.969369064@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit 4aa99c71e42ad60178c1154ec24e3df9c684fb67 upstream.
+[ Upstream commit 8f773bfbdd428819328a2d185976cfc6ae811cd3 ]
 
-There's no reason to have jbd2_journal_get_max_txn_bufs() public
-function. Currently all users are internal and can use
-journal->j_max_transaction_buffers instead. This saves some unnecessary
-recomputations of the limit as a bonus which becomes important as this
-function gets more complex in the following patch.
+This driver calls pinctrl_register_and_init() which is not
+devm_ managed, it will leads memory leak if pinctrl_enable()
+fails. Replace it with devm_pinctrl_register_and_init().
+And call pcs_free_resources() if pinctrl_enable() fails.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20240624170127.3253-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240606023704.3931561-3-yangyingliang@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/commit.c     |    2 +-
- fs/jbd2/journal.c    |    5 +++++
- include/linux/jbd2.h |    5 -----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/pinctrl/pinctrl-single.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -813,7 +813,7 @@ start_journal_io:
- 		if (first_block < journal->j_tail)
- 			freed += journal->j_last - journal->j_first;
- 		/* Update tail only if we free significant amount of space */
--		if (freed < jbd2_journal_get_max_txn_bufs(journal))
-+		if (freed < journal->j_max_transaction_buffers)
- 			update_tail = 0;
- 	}
- 	J_ASSERT(commit_transaction->t_state == T_COMMIT);
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1481,6 +1481,11 @@ static void journal_fail_superblock(jour
- 	journal->j_sb_buffer = NULL;
- }
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index ce5be6f0b7aac..13517243355ce 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -1311,7 +1311,6 @@ static void pcs_irq_free(struct pcs_device *pcs)
+ static void pcs_free_resources(struct pcs_device *pcs)
+ {
+ 	pcs_irq_free(pcs);
+-	pinctrl_unregister(pcs->pctl);
  
-+static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
-+{
-+	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
-+}
-+
- /*
-  * Given a journal_t structure, initialise the various fields for
-  * startup of a new journaling session.  We use this both when creating
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1626,11 +1626,6 @@ int jbd2_wait_inode_data(journal_t *jour
- int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
- int jbd2_fc_release_bufs(journal_t *journal);
+ #if IS_BUILTIN(CONFIG_PINCTRL_SINGLE)
+ 	if (pcs->missing_nr_pinctrl_cells)
+@@ -1864,7 +1863,7 @@ static int pcs_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto free;
  
--static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
--{
--	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
--}
--
- /*
-  * is_journal_abort
-  *
+-	ret = pinctrl_register_and_init(&pcs->desc, pcs->dev, pcs, &pcs->pctl);
++	ret = devm_pinctrl_register_and_init(pcs->dev, &pcs->desc, pcs, &pcs->pctl);
+ 	if (ret) {
+ 		dev_err(pcs->dev, "could not register single pinctrl driver\n");
+ 		goto free;
+@@ -1897,8 +1896,10 @@ static int pcs_probe(struct platform_device *pdev)
+ 
+ 	dev_info(pcs->dev, "%i pins, size %u\n", pcs->desc.npins, pcs->size);
+ 
+-	return pinctrl_enable(pcs->pctl);
++	if (pinctrl_enable(pcs->pctl))
++		goto free;
+ 
++	return 0;
+ free:
+ 	pcs_free_resources(pcs);
+ 
+-- 
+2.43.0
+
 
 
 
