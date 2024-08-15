@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-69144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E599535A6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE699532A7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20CDE282431
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C01861C23561
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A1D1A00EC;
-	Thu, 15 Aug 2024 14:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC261AD9E6;
+	Thu, 15 Aug 2024 14:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbCnmrzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOeYoUf1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235C963D5;
-	Thu, 15 Aug 2024 14:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21301BA89D;
+	Thu, 15 Aug 2024 14:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732812; cv=none; b=XocjMwannuW2DFvY4bB0ZMCSGhH+TJpPyYQBh6cNEVzgFvMnaRRMYxPEOZlYEh3W2Gbg19qDZ2Sg9NBAFClDAtmG/Nlev5Y/L161/h8QgCpGYftjVlsE5ZgDHLd6uprXMZztVnUI8Sc2hzE2MSKluDN0PG+HAaaidC/ahW/PETI=
+	t=1723730772; cv=none; b=psGNfFLLIN0FXmIUzF7wG0bpmXp3oKfifM2R3+Tb1IWhVjLIlM6Thjnu4MpAUh9EMf7mOzgdc7mLMUxBXV3Z5TotVXhiGUmhMOnAA0EMMVCPs4KzbZzHvy0ZEuwcP/2RMjK4BkdEA8AnYm53RJACe7SpoZ/B5YRey4UUuL/GFTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732812; c=relaxed/simple;
-	bh=hoObWStdEZIboGR04T4czWcmT79hz8Yfa6H87KhOREo=;
+	s=arc-20240116; t=1723730772; c=relaxed/simple;
+	bh=/HfexmrTWdfiQf1tHgTZWReh/oHpNdmzLOeL86wcDJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VoHVe4sDV1J10W4lV7FrhkDW+0JtPI1MfIVm2fnvm+OY4tdoDntIqzRLgDhDHFYRfWzkXqkeFZ7k9i4jMLacjDftuBhRDvE+4jzirXJmK1NXPqdEAib5fhq8r0neLZQ7NQfh/afva4z702U7mHPMj7nl2ZEiui9Kdca020Ryfp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbCnmrzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB0EC4AF0D;
-	Thu, 15 Aug 2024 14:40:10 +0000 (UTC)
+	 MIME-Version; b=pJXCg92lpd+7796b1CVL10v77Mzjd+kteh43lex76yVSDkxERMAmcAiTT6mqBax0uvMlG5igWVUdk/TE5Nccs2Tuk4T3DlD1tdT7MKt8j+NwkLmWqX70bb6PzvJjUfOBXT6tvxvfvyPwm5HNxWg36BE4XIjFtKwoX0y2QZdkL+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOeYoUf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6F6C32786;
+	Thu, 15 Aug 2024 14:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732812;
-	bh=hoObWStdEZIboGR04T4czWcmT79hz8Yfa6H87KhOREo=;
+	s=korg; t=1723730771;
+	bh=/HfexmrTWdfiQf1tHgTZWReh/oHpNdmzLOeL86wcDJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbCnmrznDUXYGRK60XMmFmPvNlCOs0Cb3nh3RjUga9ETdGgVxg/juyM0UzTqyWMg0
-	 qR/vfvDQjlpFunEfUkA9aaJYDjfIVQzEUhAc5qgkaxZEHLgE6El1TDZTgulIpB5/l5
-	 e8Af40TlYRZN2L3AP/py/3FLksVO8U/zkYrnzj30=
+	b=gOeYoUf1ySjcyuS8sEKID+Sb/PlUFUA4X6ln51L05OqVrNTaGsvvV9apbsxC6fyD6
+	 EmnR4mGkrGpC5Kys+t5oi4CM+NhNriYy67IT0A7pE9mF4T7z39D17PgsnSCRz0K4l0
+	 tP1+ONMMWol+xRdFgpShCp9V5H31gxCZVgnKQdqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 294/352] i2c: smbus: Improve handling of stuck alerts
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 26/38] nfsd: remove nfsd_stats, make th_cnt a global counter
 Date: Thu, 15 Aug 2024 15:26:00 +0200
-Message-ID: <20240815131930.818861030@linuxfoundation.org>
+Message-ID: <20240815131833.963794305@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 37c526f00bc1c4f847fc800085f8f009d2e11be6 ]
+[ Upstream commit e41ee44cc6a473b1f414031782c3b4283d7f3e5f ]
 
-The following messages were observed while testing alert functionality
-on systems with multiple I2C devices on a single bus if alert was active
-on more than one chip.
+This is the last global stat, take it out of the nfsd_stats struct and
+make it a global part of nfsd, report it the same as always.
 
-smbus_alert 3-000c: SMBALERT# from dev 0x0c, flag 0
-smbus_alert 3-000c: no driver alert()!
-
-and:
-
-smbus_alert 3-000c: SMBALERT# from dev 0x28, flag 0
-
-Once it starts, this message repeats forever at high rate. There is no
-device at any of the reported addresses.
-
-Analysis shows that this is seen if multiple devices have the alert pin
-active. Apparently some devices do not support SMBus arbitration correctly.
-They keep sending address bits after detecting an address collision and
-handle the collision not at all or too late.
-Specifically, address 0x0c is seen with ADT7461A at address 0x4c and
-ADM1021 at address 0x18 if alert is active on both chips. Address 0x28 is
-seen with ADT7483 at address 0x2a and ADT7461 at address 0x4c if alert is
-active on both chips.
-
-Once the system is in bad state (alert is set by more than one chip),
-it often only recovers by power cycling.
-
-To reduce the impact of this problem, abort the endless loop in
-smbus_alert() if the same address is read more than once and not
-handled by a driver.
-
-Fixes: b5527a7766f0 ("i2c: Add SMBus alert support")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-[wsa: it also fixed an interrupt storm in one of my experiments]
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-[wsa: rebased, moved a comment as well, improved the 'invalid' value]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-smbus.c | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ fs/nfsd/nfsd.h   |    1 +
+ fs/nfsd/nfssvc.c |    5 +++--
+ fs/nfsd/stats.c  |    3 +--
+ fs/nfsd/stats.h  |    6 ------
+ 4 files changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
-index d3d06e3b4f3b3..dcbc4b29aa729 100644
---- a/drivers/i2c/i2c-smbus.c
-+++ b/drivers/i2c/i2c-smbus.c
-@@ -34,6 +34,7 @@ static int smbus_do_alert(struct device *dev, void *addrp)
- 	struct i2c_client *client = i2c_verify_client(dev);
- 	struct alert_data *data = addrp;
- 	struct i2c_driver *driver;
-+	int ret;
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -69,6 +69,7 @@ extern struct mutex		nfsd_mutex;
+ extern spinlock_t		nfsd_drc_lock;
+ extern unsigned long		nfsd_drc_max_mem;
+ extern unsigned long		nfsd_drc_mem_used;
++extern atomic_t			nfsd_th_cnt;		/* number of available threads */
  
- 	if (!client || client->addr != data->addr)
- 		return 0;
-@@ -47,16 +48,21 @@ static int smbus_do_alert(struct device *dev, void *addrp)
- 	device_lock(dev);
- 	if (client->dev.driver) {
- 		driver = to_i2c_driver(client->dev.driver);
--		if (driver->alert)
-+		if (driver->alert) {
-+			/* Stop iterating after we find the device */
- 			driver->alert(client, data->type, data->data);
--		else
-+			ret = -EBUSY;
-+		} else {
- 			dev_warn(&client->dev, "no driver alert()!\n");
--	} else
-+			ret = -EOPNOTSUPP;
-+		}
-+	} else {
- 		dev_dbg(&client->dev, "alert with no driver\n");
-+		ret = -ENODEV;
-+	}
- 	device_unlock(dev);
+ extern const struct seq_operations nfs_exports_op;
  
--	/* Stop iterating after we find the device */
--	return -EBUSY;
-+	return ret;
- }
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -34,6 +34,7 @@
  
- /*
-@@ -67,6 +73,7 @@ static irqreturn_t smbus_alert(int irq, void *d)
- {
- 	struct i2c_smbus_alert *alert = d;
- 	struct i2c_client *ara;
-+	unsigned short prev_addr = I2C_CLIENT_END; /* Not a valid address */
+ #define NFSDDBG_FACILITY	NFSDDBG_SVC
  
- 	ara = alert->ara;
++atomic_t			nfsd_th_cnt = ATOMIC_INIT(0);
+ extern struct svc_program	nfsd_program;
+ static int			nfsd(void *vrqstp);
+ #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
+@@ -955,7 +956,7 @@ nfsd(void *vrqstp)
  
-@@ -94,8 +101,19 @@ static irqreturn_t smbus_alert(int irq, void *d)
- 			data.addr, data.data);
+ 	current->fs->umask = 0;
  
- 		/* Notify driver for the device which issued the alert */
--		device_for_each_child(&ara->adapter->dev, &data,
--				      smbus_do_alert);
-+		status = device_for_each_child(&ara->adapter->dev, &data,
-+					       smbus_do_alert);
-+		/*
-+		 * If we read the same address more than once, and the alert
-+		 * was not handled by a driver, it won't do any good to repeat
-+		 * the loop because it will never terminate.
-+		 * Bail out in this case.
-+		 * Note: This assumes that a driver with alert handler handles
-+		 * the alert properly and clears it if necessary.
-+		 */
-+		if (data.addr == prev_addr && status != -EBUSY)
-+			break;
-+		prev_addr = data.addr;
+-	atomic_inc(&nfsdstats.th_cnt);
++	atomic_inc(&nfsd_th_cnt);
+ 
+ 	set_freezable();
+ 
+@@ -979,7 +980,7 @@ nfsd(void *vrqstp)
+ 		validate_process_creds();
  	}
  
- 	return IRQ_HANDLED;
--- 
-2.43.0
-
+-	atomic_dec(&nfsdstats.th_cnt);
++	atomic_dec(&nfsd_th_cnt);
+ 
+ out:
+ 	/* Take an extra ref so that the svc_put in svc_exit_thread()
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -27,7 +27,6 @@
+ 
+ #include "nfsd.h"
+ 
+-struct nfsd_stats	nfsdstats;
+ struct svc_stat		nfsd_svcstats = {
+ 	.program	= &nfsd_program,
+ };
+@@ -47,7 +46,7 @@ static int nfsd_show(struct seq_file *se
+ 		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_IO_WRITE]));
+ 
+ 	/* thread usage: */
+-	seq_printf(seq, "th %u 0", atomic_read(&nfsdstats.th_cnt));
++	seq_printf(seq, "th %u 0", atomic_read(&nfsd_th_cnt));
+ 
+ 	/* deprecated thread usage histogram stats */
+ 	for (i = 0; i < 10; i++)
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -10,12 +10,6 @@
+ #include <uapi/linux/nfsd/stats.h>
+ #include <linux/percpu_counter.h>
+ 
+-struct nfsd_stats {
+-	atomic_t	th_cnt;		/* number of available threads */
+-};
+-
+-extern struct nfsd_stats	nfsdstats;
+-
+ extern struct svc_stat		nfsd_svcstats;
+ 
+ int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
 
 
 
