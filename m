@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFF19533DF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A3F953255
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF15AB2689B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE4A3289580
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDB91AC896;
-	Thu, 15 Aug 2024 14:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BBC1AB53B;
+	Thu, 15 Aug 2024 14:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ay2vy+dP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NCd8XTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A09119DF85;
-	Thu, 15 Aug 2024 14:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5154E1AC8BB;
+	Thu, 15 Aug 2024 14:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731601; cv=none; b=sBaw7dCyZkgrfYpaVdTTM05hqQsghH8J40671cp1DPPRIoAiuwBbhH+vadUoseKNHXz/EIbqOzrQkf93Ujyxx5banQMo7y8j6WMeZ0mqreRGC5HWdDz/zlwN36q/ee/4IMj2bji38P9XGRepLJ590hAHKlIZHR9zh7uPTl8W4Rc=
+	t=1723730592; cv=none; b=B9es9mBjO0zHJcTrgekgbOteCxhEY5S1m+qbqNU6iL/SLPJx4CpK4Yz2w1r+UFoPlP1Sv+lnrlRpNG7gBEv8IG4pgeQmEJg0x8g/fobeP85fwqiMmfKFeI0Lhr/sKtYlqhCzsYEiI8VF0Xu9jo6nJmJ2AX87qFK6cB+1WOv/j9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731601; c=relaxed/simple;
-	bh=tbn0l5xY3pWQvetktJBN4mTC99pvth9ZMeUa8nQFU54=;
+	s=arc-20240116; t=1723730592; c=relaxed/simple;
+	bh=XFMXoQLdaMmumu4Br9HlEyN3CDtbIAlEkLGn1ENkCI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBWUqJKstLxkTayq0zgwVSJMsQpNVn3a/Y9gCjqcYLiz5NgdX9yKV9Es4G8gvm3gfqpv9AA9+HYEaWOusym3Gn85Q9G29FPOR1d5vtCPsoJj9zmOA/Puk8eeJqJF0vDDtmgz5aNptIpGv0yEIwKdXjTRs8TX7lYM9/NPR+peUgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ay2vy+dP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E37C32786;
-	Thu, 15 Aug 2024 14:20:00 +0000 (UTC)
+	 MIME-Version; b=n4XEUHeOMDcWtRVsJtL2s5tWq1yc0shogheB0JKBsth0x3rKHueCyuct8Upvii5b8qdNbWk5WJGRucLBrq2d4bLbf0qZX8Fz4ZvpJ2MdYS0Lq9hh19sSq3nzznfB6fgx/qafltWDQ5el+jsa8qKjcPi4ERkmmOANp3WoNE1cIdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NCd8XTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B169DC32786;
+	Thu, 15 Aug 2024 14:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731601;
-	bh=tbn0l5xY3pWQvetktJBN4mTC99pvth9ZMeUa8nQFU54=;
+	s=korg; t=1723730592;
+	bh=XFMXoQLdaMmumu4Br9HlEyN3CDtbIAlEkLGn1ENkCI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ay2vy+dP0ih8FrXdKzr/aPo3HmFzduhcoOHWfjdoIqKMQkZxd73jHLPsJmBnp8FhR
-	 jU+/cTKPz+0ZzYMPR0XJ7A3Jss6QuPIJcGeXUq2/cj/yAreaJcSmabj/ocnUUa+DU5
-	 whEQkSMbuB9k1/2D+OnMdrq5LUo7tCJ2uMxv5Zmk=
+	b=1NCd8XTkRA8FrPKiFg8CqsTO6yyL07eYY2dbav1EzwNU7Jjbi0bhV3Ib1NTJzCCDX
+	 WFaG7VeJD2Dnag9nSUrC961A8u5mulwSwPU1L2zL3OFqU8iIRS1Rzlm3K05e7KmvRg
+	 Dgzn5CBJEYB8MBPHZo2BWNJgMy23uhT4bNYx2NzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 181/259] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 456/484] mptcp: pm: only set request_bkup flag when sending MP_PRIO
 Date: Thu, 15 Aug 2024 15:25:14 +0200
-Message-ID: <20240815131909.767972426@linuxfoundation.org>
+Message-ID: <20240815131959.080875055@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 08f3a5c38087d1569e982a121aad1e6acbf145ce upstream.
+commit 4258b94831bb7ff28ab80e3c8d94db37db930728 upstream.
 
-It could lead to error happen because the variable res is not updated if
-the call to sr_share_read_word returns an error. In this particular case
-error code was returned and res stayed uninitialized. Same issue also
-applies to sr_read_reg.
+The 'backup' flag from mptcp_subflow_context structure is supposed to be
+set only when the other peer flagged a subflow as backup, not the
+opposite.
 
-This can be avoided by checking the return value of sr_share_read_word
-and sr_read_reg, and propagating the error if the read operation failed.
-
-Found by code review.
-
+Fixes: 067065422fcd ("mptcp: add the outgoing MP_PRIO support")
 Cc: stable@vger.kernel.org
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in pm_netlink.c, because the commit f5360e9b314c ("mptcp:
+  introduce and use mptcp_pm_send_ack()") is not in this version. This
+  code is in mptcp_pm_nl_mp_prio_send_ack() instead of in a dedicated
+  helper. The same modification can be applied there. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/sr9700.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/mptcp/pm_netlink.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -178,6 +178,7 @@ static int sr_mdio_read(struct net_devic
- 	struct usbnet *dev = netdev_priv(netdev);
- 	__le16 res;
- 	int rc = 0;
-+	int err;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -699,7 +699,6 @@ int mptcp_pm_nl_mp_prio_send_ack(struct
  
- 	if (phy_id) {
- 		netdev_dbg(netdev, "Only internal phy supported\n");
-@@ -188,11 +189,17 @@ static int sr_mdio_read(struct net_devic
- 	if (loc == MII_BMSR) {
- 		u8 value;
- 
--		sr_read_reg(dev, SR_NSR, &value);
-+		err = sr_read_reg(dev, SR_NSR, &value);
-+		if (err < 0)
-+			return err;
-+
- 		if (value & NSR_LINKST)
- 			rc = 1;
- 	}
--	sr_share_read_word(dev, 1, loc, &res);
-+	err = sr_share_read_word(dev, 1, loc, &res);
-+	if (err < 0)
-+		return err;
-+
- 	if (rc == 1)
- 		res = le16_to_cpu(res) | BMSR_LSTATUS;
- 	else
+ 		if (subflow->backup != bkup)
+ 			msk->last_snd = NULL;
+-		subflow->backup = bkup;
+ 		subflow->send_mp_prio = 1;
+ 		subflow->request_bkup = bkup;
+ 		__MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPPRIOTX);
 
 
 
