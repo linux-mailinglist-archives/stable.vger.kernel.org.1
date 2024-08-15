@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-68579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B33953308
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6495C9535CD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA5A01C227AF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBC24B294D8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670561AED32;
-	Thu, 15 Aug 2024 14:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268AF1B1437;
+	Thu, 15 Aug 2024 14:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AL77cZnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZECXUUMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFEE1A7068;
-	Thu, 15 Aug 2024 14:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53B21AD3EE;
+	Thu, 15 Aug 2024 14:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731014; cv=none; b=r4guaqiJuBgsekwqtU5ZHdQjokEJHW+/9p1rxNeB83UQwUDlPzfbVCD653t1srlRPfDt9IqLEeYqQ1AlUYDifZX0dCCzCAWGId2ADgZTl4qzIyagxrzRFTuj2hJU9h65sTugVGhCFxn5GvM+UQ+lPPGAwLYN9uFY4K0kkU2F3BI=
+	t=1723732876; cv=none; b=ms36ST7KfhEJwrvLXndbINGW13ZRlbWlMHPsvecb/I+kxQhpMkgDVQmOacrgVZivQsTJ/vjLrNlesJn2PnhKGEPyIMO/N4g61dCntnYR/lu4dA9LYqGU7dIEGSFDrwcG6Z7kwcvXN1eGD8RjjR7SAvAwtyPdTg/ZHhU1xFhMQqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731014; c=relaxed/simple;
-	bh=OoRRYk2Xv2Bz4pZtuEjx4Z1r8g6zaT0w1qtttg25l5w=;
+	s=arc-20240116; t=1723732876; c=relaxed/simple;
+	bh=3eZq/xSKiaOEGIvYFV8A1GpTYyZdW8beA58lPVtuwSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKnaIr/lNkIE/qbGGbYLmkQRUiFcnlLu00Ssz9oPa3AIm71yE5BA9RIrI4hhgoG52pAJxzdaOcvCLcNX9OUvIQFyKG8x53rs8/NwtWdO8kaQV3NBYBG7hFufFqrz12NSfNUTrlCPIm1LNuGLtRVKY/28ufyoTLrKXosn55fEpbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AL77cZnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC72C4AF0A;
-	Thu, 15 Aug 2024 14:10:13 +0000 (UTC)
+	 MIME-Version; b=hvJXbHudUnvqnG/jiqDMNWBJyxqH8DW5XM90Uwj3PI9eq4OxvEwEHTgydje6rro5KbMTX0oXg14z5HbzOSbnDUMzWW0FeckDRF+9TpqXit1SgmQmCOqKNWQTBfpgxRn4S9HTFP++AaqICLQaWv4rQyePEvcLOJZZUV9dDfPbTnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZECXUUMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5657AC32786;
+	Thu, 15 Aug 2024 14:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731013;
-	bh=OoRRYk2Xv2Bz4pZtuEjx4Z1r8g6zaT0w1qtttg25l5w=;
+	s=korg; t=1723732876;
+	bh=3eZq/xSKiaOEGIvYFV8A1GpTYyZdW8beA58lPVtuwSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AL77cZnUOraiTLjmGm0xYAvObqc6sbG9jbhEz5BXi27m6UIYG23VcaN0YAE+fMxLo
-	 3X3Y0jY9lGm/5zI1o8M+EA8x0NgWavep1tUfuIbMc+GXEP5GQh9JwK35EklSg8w655
-	 s+Fy/EBgzEzNhttPW+c6Y+TGhrjgpQJMfMvw2qgU=
+	b=ZECXUUMoP/Y8CTXfstmtYJ38VG5uoDbvZrBWYCxyIWiXvrKFR36maSO2zoGtG3UKC
+	 zJLpqUb81V0wwxhqJY/npPa1kYjLFi+LHuQiJljHfx3YeqQ6YAw7HZgffV7pTN/8U+
+	 wuj43FXjx7xNt/jM26HIUo66G30RNNVvc9/bJ9K4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 64/67] mm/debug_vm_pgtable: drop RANDOM_ORVALUE trick
+	syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 5.10 312/352] driver core: Fix uevent_show() vs driver detach race
 Date: Thu, 15 Aug 2024 15:26:18 +0200
-Message-ID: <20240815131840.757320401@linuxfoundation.org>
+Message-ID: <20240815131931.517345689@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,136 +66,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-commit 0b1ef4fde7a24909ff2afacffd0d6afa28b73652 upstream.
+commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c upstream.
 
-Macro RANDOM_ORVALUE was used to make sure the pgtable entry will be
-populated with !none data in clear tests.
+uevent_show() wants to de-reference dev->driver->name. There is no clean
+way for a device attribute to de-reference dev->driver unless that
+attribute is defined via (struct device_driver).dev_groups. Instead, the
+anti-pattern of taking the device_lock() in the attribute handler risks
+deadlocks with code paths that remove device attributes while holding
+the lock.
 
-The RANDOM_ORVALUE tried to cover mostly all the bits in a pgtable entry,
-even if there's no discussion on whether all the bits will be vaild.  Both
-S390 and PPC64 have their own masks to avoid touching some bits.  Now it's
-the turn for x86_64.
+This deadlock is typically invisible to lockdep given the device_lock()
+is marked lockdep_set_novalidate_class(), but some subsystems allocate a
+local lockdep key for @dev->mutex to reveal reports of the form:
 
-The issue is there's a recent report from Mikhail Gavrilov showing that
-this can cause a warning with the newly added pte set check in commit
-8430557fc5 on writable v.s.  userfaultfd-wp bit, even though the check
-itself was valid, the random pte is not.  We can choose to mask more bits
-out.
+ ======================================================
+ WARNING: possible circular locking dependency detected
+ 6.10.0-rc7+ #275 Tainted: G           OE    N
+ ------------------------------------------------------
+ modprobe/2374 is trying to acquire lock:
+ ffff8c2270070de0 (kn->active#6){++++}-{0:0}, at: __kernfs_remove+0xde/0x220
 
-However the need to have such random bits setup is questionable, as now
-it's already guaranteed to be true on below:
+ but task is already holding lock:
+ ffff8c22016e88f8 (&cxl_root_key){+.+.}-{3:3}, at: device_release_driver_internal+0x39/0x210
 
-  - For pte level, the pgtable entry will be installed with value from
-    pfn_pte(), where pfn points to a valid page.  Hence the pte will be
-    !none already if populated with pfn_pte().
+ which lock already depends on the new lock.
 
-  - For upper-than-pte level, the pgtable entry should contain a directory
-    entry always, which is also !none.
+ the existing dependency chain (in reverse order) is:
 
-All the cases look like good enough to test a pxx_clear() helper.  Instead
-of extending the bitmask, drop the "set random bits" trick completely.  Add
-some warning guards to make sure the entries will be !none before clear().
+ -> #1 (&cxl_root_key){+.+.}-{3:3}:
+        __mutex_lock+0x99/0xc30
+        uevent_show+0xac/0x130
+        dev_attr_show+0x18/0x40
+        sysfs_kf_seq_show+0xac/0xf0
+        seq_read_iter+0x110/0x450
+        vfs_read+0x25b/0x340
+        ksys_read+0x67/0xf0
+        do_syscall_64+0x75/0x190
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Link: https://lkml.kernel.org/r/20240523132139.289719-1-peterx@redhat.com
-Fixes: 8430557fc584 ("mm/page_table_check: support userfault wr-protect entries")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Link: https://lore.kernel.org/r/CABXGCsMB9A8-X+Np_Q+fWLURYL_0t3Y-MdoNabDM-Lzk58-DGA@mail.gmail.com
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+ -> #0 (kn->active#6){++++}-{0:0}:
+        __lock_acquire+0x121a/0x1fa0
+        lock_acquire+0xd6/0x2e0
+        kernfs_drain+0x1e9/0x200
+        __kernfs_remove+0xde/0x220
+        kernfs_remove_by_name_ns+0x5e/0xa0
+        device_del+0x168/0x410
+        device_unregister+0x13/0x60
+        devres_release_all+0xb8/0x110
+        device_unbind_cleanup+0xe/0x70
+        device_release_driver_internal+0x1c7/0x210
+        driver_detach+0x47/0x90
+        bus_remove_driver+0x6c/0xf0
+        cxl_acpi_exit+0xc/0x11 [cxl_acpi]
+        __do_sys_delete_module.isra.0+0x181/0x260
+        do_syscall_64+0x75/0x190
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The observation though is that driver objects are typically much longer
+lived than device objects. It is reasonable to perform lockless
+de-reference of a @driver pointer even if it is racing detach from a
+device. Given the infrequency of driver unregistration, use
+synchronize_rcu() in module_remove_driver() to close any potential
+races.  It is potentially overkill to suffer synchronize_rcu() just to
+handle the rare module removal racing uevent_show() event.
+
+Thanks to Tetsuo Handa for the debug analysis of the syzbot report [1].
+
+Fixes: c0a40097f0bc ("drivers: core: synchronize really_probe() and dev_uevent()")
+Reported-by: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Closes: http://lore.kernel.org/5aa5558f-90a4-4864-b1b1-5d6784c5607d@I-love.SAKURA.ne.jp [1]
+Link: http://lore.kernel.org/669073b8ea479_5fffa294c1@dwillia2-xfh.jf.intel.com.notmuch
+Cc: stable@vger.kernel.org
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://lore.kernel.org/r/172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/debug_vm_pgtable.c |   31 +++++--------------------------
- 1 file changed, 5 insertions(+), 26 deletions(-)
+ drivers/base/core.c   |   13 ++++++++-----
+ drivers/base/module.c |    4 ++++
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -39,22 +39,7 @@
-  * Please refer Documentation/mm/arch_pgtable_helpers.rst for the semantics
-  * expectations that are being validated here. All future changes in here
-  * or the documentation need to be in sync.
-- *
-- * On s390 platform, the lower 4 bits are used to identify given page table
-- * entry type. But these bits might affect the ability to clear entries with
-- * pxx_clear() because of how dynamic page table folding works on s390. So
-- * while loading up the entries do not change the lower 4 bits. It does not
-- * have affect any other platform. Also avoid the 62nd bit on ppc64 that is
-- * used to mark a pte entry.
-  */
--#define S390_SKIP_MASK		GENMASK(3, 0)
--#if __BITS_PER_LONG == 64
--#define PPC64_SKIP_MASK		GENMASK(62, 62)
--#else
--#define PPC64_SKIP_MASK		0x0
--#endif
--#define ARCH_SKIP_MASK (S390_SKIP_MASK | PPC64_SKIP_MASK)
--#define RANDOM_ORVALUE (GENMASK(BITS_PER_LONG - 1, 0) & ~ARCH_SKIP_MASK)
- #define RANDOM_NZVALUE	GENMASK(7, 0)
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -25,6 +25,7 @@
+ #include <linux/mutex.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/netdevice.h>
++#include <linux/rcupdate.h>
+ #include <linux/sched/signal.h>
+ #include <linux/sched/mm.h>
+ #include <linux/sysfs.h>
+@@ -1909,6 +1910,7 @@ static int dev_uevent(struct kset *kset,
+ 		      struct kobj_uevent_env *env)
+ {
+ 	struct device *dev = kobj_to_dev(kobj);
++	struct device_driver *driver;
+ 	int retval = 0;
  
- struct pgtable_debug_args {
-@@ -510,8 +495,7 @@ static void __init pud_clear_tests(struc
+ 	/* add device node properties if present */
+@@ -1937,8 +1939,12 @@ static int dev_uevent(struct kset *kset,
+ 	if (dev->type && dev->type->name)
+ 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
+ 
+-	if (dev->driver)
+-		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
++	/* Synchronize with module_remove_driver() */
++	rcu_read_lock();
++	driver = READ_ONCE(dev->driver);
++	if (driver)
++		add_uevent_var(env, "DRIVER=%s", driver->name);
++	rcu_read_unlock();
+ 
+ 	/* Add common DT information about the device */
+ 	of_device_uevent(dev, env);
+@@ -2008,11 +2014,8 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
+ 
+-	/* Synchronize with really_probe() */
+-	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(kset, &dev->kobj, env);
+-	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
+ 
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -7,6 +7,7 @@
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
++#include <linux/rcupdate.h>
+ #include "base.h"
+ 
+ static char *make_driver_name(struct device_driver *drv)
+@@ -77,6 +78,9 @@ void module_remove_driver(struct device_
+ 	if (!drv)
  		return;
  
- 	pr_debug("Validating PUD clear\n");
--	pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
--	WRITE_ONCE(*args->pudp, pud);
-+	WARN_ON(pud_none(pud));
- 	pud_clear(args->pudp);
- 	pud = READ_ONCE(*args->pudp);
- 	WARN_ON(!pud_none(pud));
-@@ -547,8 +531,7 @@ static void __init p4d_clear_tests(struc
- 		return;
++	/* Synchronize with dev_uevent() */
++	synchronize_rcu();
++
+ 	sysfs_remove_link(&drv->p->kobj, "module");
  
- 	pr_debug("Validating P4D clear\n");
--	p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
--	WRITE_ONCE(*args->p4dp, p4d);
-+	WARN_ON(p4d_none(p4d));
- 	p4d_clear(args->p4dp);
- 	p4d = READ_ONCE(*args->p4dp);
- 	WARN_ON(!p4d_none(p4d));
-@@ -581,8 +564,7 @@ static void __init pgd_clear_tests(struc
- 		return;
- 
- 	pr_debug("Validating PGD clear\n");
--	pgd = __pgd(pgd_val(pgd) | RANDOM_ORVALUE);
--	WRITE_ONCE(*args->pgdp, pgd);
-+	WARN_ON(pgd_none(pgd));
- 	pgd_clear(args->pgdp);
- 	pgd = READ_ONCE(*args->pgdp);
- 	WARN_ON(!pgd_none(pgd));
-@@ -633,10 +615,8 @@ static void __init pte_clear_tests(struc
- 	if (WARN_ON(!args->ptep))
- 		return;
- 
--#ifndef CONFIG_RISCV
--	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
--#endif
- 	set_pte_at(args->mm, args->vaddr, args->ptep, pte);
-+	WARN_ON(pte_none(pte));
- 	flush_dcache_page(page);
- 	barrier();
- 	ptep_clear(args->mm, args->vaddr, args->ptep);
-@@ -649,8 +629,7 @@ static void __init pmd_clear_tests(struc
- 	pmd_t pmd = READ_ONCE(*args->pmdp);
- 
- 	pr_debug("Validating PMD clear\n");
--	pmd = __pmd(pmd_val(pmd) | RANDOM_ORVALUE);
--	WRITE_ONCE(*args->pmdp, pmd);
-+	WARN_ON(pmd_none(pmd));
- 	pmd_clear(args->pmdp);
- 	pmd = READ_ONCE(*args->pmdp);
- 	WARN_ON(!pmd_none(pmd));
+ 	if (drv->owner)
 
 
 
