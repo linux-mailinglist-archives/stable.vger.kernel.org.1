@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E36795330A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C57A59535CE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475471F211E2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79BF51F26F79
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927671A7067;
-	Thu, 15 Aug 2024 14:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB2B1A76A2;
+	Thu, 15 Aug 2024 14:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fhn67ybl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zm9qmJ20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F70419FA7E;
-	Thu, 15 Aug 2024 14:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898061A00CF;
+	Thu, 15 Aug 2024 14:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731020; cv=none; b=RZZDo9+p9EU1xqZve0w/ns7l/aD7977MEZSob6BPMvuA6Svzy8KJZKU4x94IcKWvJl9xGlG3oGW6TH/PrjtJ+n6jUYNZHu2AQ7ALpW7XmW4ZRSH40PgCQ3lDDJEp0YzxZoJYsBmUtBD2IIT8rrqk5qXkVIRGcjSmVJczMFNciYc=
+	t=1723732883; cv=none; b=TVFinskV6pCtnLFAqBRl2IANidzs1efMt53c/6cmvQ0O6f5QicCnz2ybmoBxNuVMZz27MRL/U04xYTQLYs89+oR5wrG9ILZNEsD1BCf+CSATjzpZEu344yFD3nPapdyklrQjVpMV5qrnXO64szO92cKwn6OgR2Wp+LmY/N5JlqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731020; c=relaxed/simple;
-	bh=ugS3K1+nnHkdh08wZUprrJqiLw3HyRIRjsHehbaUJXc=;
+	s=arc-20240116; t=1723732883; c=relaxed/simple;
+	bh=kAg/+b1pqdJIprs1Sy7HkwjLFU0nQyTyOKhoWyz4vEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWwxNjaeHgh8QZtfGjn1O1dqiFJx9DRQWrNyubx89f+Jyn0ntwUuUTnoINEdjnw1zjnd21A1Hldi0dKH+2rLUh88zsvBNlc5skcwpwCxj519iupRMoBh36khQHtw/HANlHzw4VjRsrqdK32Xl311cjs7qQNVDG3KJpDa3K30oRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fhn67ybl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2CBC4AF0C;
-	Thu, 15 Aug 2024 14:10:19 +0000 (UTC)
+	 MIME-Version; b=rH+OXA+PAd7gBO5npeuVdFg8DUQJGLkQ0pQU7hjxlDnyOkP/7G7mFSLeECCVoMR+WbAyYqiIwJVHFr1lRbpehR1r+3+QE22agg7K7Mjy4QSS8dywatd1K3QaU0LBoVDyRLoh25+UOmRUjdbFs8sPw5c1s4vcefrOMbAYJ1cLH9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm9qmJ20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B32C32786;
+	Thu, 15 Aug 2024 14:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731019;
-	bh=ugS3K1+nnHkdh08wZUprrJqiLw3HyRIRjsHehbaUJXc=;
+	s=korg; t=1723732883;
+	bh=kAg/+b1pqdJIprs1Sy7HkwjLFU0nQyTyOKhoWyz4vEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fhn67yblE7jUojzvtiosBcO6jyEmKdc2EeblfRQ98OuuGQXSp8UI0xqtCyLSz4jrh
-	 wKHcHGGQuuTbHG4BCw0e9tUijYOvXepm7NFSsnyMDVCaFUyPY12tZ4/vOmlMWHauz5
-	 FKb4c455GEfx7pw6CzbdAJxLHbX6VbOcS7mPmlN4=
+	b=zm9qmJ20h4AevWUJWNcJk9ctbL/dQICRhAVpZvto4Tp7V5BOkhGIjmPTi5LqW1fPU
+	 ZPTjYvW/r5QggLvpzcW6Bud6UvLHrB2COVR+GCLeRU+7jew/LtwfKB8bUcXF7rarDh
+	 MVWdKWSF1vsr6Y7m+YJRM0LO7WFr/Hl3ACcWyWGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Shaoqin Huang <shahuang@redhat.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 66/67] KVM: arm64: Dont defer TLB invalidation when zapping table entries
+	Christoph Hellwig <hch@lst.de>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 314/352] scsi: mpt3sas: Remove scsi_dma_map() error messages
 Date: Thu, 15 Aug 2024 15:26:20 +0200
-Message-ID: <20240815131840.831660720@linuxfoundation.org>
+Message-ID: <20240815131931.594081168@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
 
-commit f62d4c3eb687d87b616b4279acec7862553bda77 upstream.
+[ Upstream commit 0c25422d34b4726b2707d5f38560943155a91b80 ]
 
-Commit 7657ea920c54 ("KVM: arm64: Use TLBI range-based instructions for
-unmap") introduced deferred TLB invalidation for the stage-2 page-table
-so that range-based invalidation can be used for the accumulated
-addresses. This works fine if the structure of the page-tables remains
-unchanged, but if entire tables are zapped and subsequently freed then
-we transiently leave the hardware page-table walker with a reference
-to freed memory thanks to the translation walk caches. For example,
-stage2_unmap_walker() will free page-table pages:
+When scsi_dma_map() fails by returning a sges_left value less than zero,
+the amount of logging produced can be extremely high.  In a recent end-user
+environment, 1200 messages per second were being sent to the log buffer.
+This eventually overwhelmed the system and it stalled.
 
-	if (childp)
-		mm_ops->put_page(childp);
+These error messages are not needed. Remove them.
 
-and issue the TLB invalidation later in kvm_pgtable_stage2_unmap():
-
-	if (stage2_unmap_defer_tlb_flush(pgt))
-		/* Perform the deferred TLB invalidations */
-		kvm_tlb_flush_vmid_range(pgt->mmu, addr, size);
-
-For now, take the conservative approach and invalidate the TLB eagerly
-when we clear a table entry. Note, however, that the existing level
-hint passed to __kvm_tlb_flush_vmid_ipa() is incorrect and will be
-fixed in a subsequent patch.
-
-Cc: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Shaoqin Huang <shahuang@redhat.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240327124853.11206-2-will@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Cc: <stable@vger.kernel.org> # 6.6.y only
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20220303140203.12642-1-sreekanth.reddy@broadcom.com
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 82dbb57ac8d0 ("scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/hyp/pgtable.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
 
---- a/arch/arm64/kvm/hyp/pgtable.c
-+++ b/arch/arm64/kvm/hyp/pgtable.c
-@@ -861,9 +861,11 @@ static void stage2_unmap_put_pte(const s
- 	if (kvm_pte_valid(ctx->old)) {
- 		kvm_clear_pte(ctx->ptep);
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 2803b475dae6a..de4ec552799dd 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -2431,12 +2431,8 @@ _base_check_pcie_native_sgl(struct MPT3SAS_ADAPTER *ioc,
  
--		if (!stage2_unmap_defer_tlb_flush(pgt))
-+		if (!stage2_unmap_defer_tlb_flush(pgt) ||
-+		    kvm_pte_table(ctx->old, ctx->level)) {
- 			kvm_call_hyp(__kvm_tlb_flush_vmid_ipa, mmu,
- 					ctx->addr, ctx->level);
-+		}
- 	}
+ 	/* Get the SG list pointer and info. */
+ 	sges_left = scsi_dma_map(scmd);
+-	if (sges_left < 0) {
+-		sdev_printk(KERN_ERR, scmd->device,
+-			"scsi_dma_map failed: request for %d bytes!\n",
+-			scsi_bufflen(scmd));
++	if (sges_left < 0)
+ 		return 1;
+-	}
  
- 	mm_ops->put_page(ctx->ptep);
+ 	/* Check if we need to build a native SG list. */
+ 	if (base_is_prp_possible(ioc, pcie_device,
+@@ -2543,12 +2539,8 @@ _base_build_sg_scmd(struct MPT3SAS_ADAPTER *ioc,
+ 
+ 	sg_scmd = scsi_sglist(scmd);
+ 	sges_left = scsi_dma_map(scmd);
+-	if (sges_left < 0) {
+-		sdev_printk(KERN_ERR, scmd->device,
+-		 "scsi_dma_map failed: request for %d bytes!\n",
+-		 scsi_bufflen(scmd));
++	if (sges_left < 0)
+ 		return -ENOMEM;
+-	}
+ 
+ 	sg_local = &mpi_request->SGL;
+ 	sges_in_segment = ioc->max_sges_in_main_message;
+@@ -2691,12 +2683,8 @@ _base_build_sg_scmd_ieee(struct MPT3SAS_ADAPTER *ioc,
+ 
+ 	sg_scmd = scsi_sglist(scmd);
+ 	sges_left = scsi_dma_map(scmd);
+-	if (sges_left < 0) {
+-		sdev_printk(KERN_ERR, scmd->device,
+-			"scsi_dma_map failed: request for %d bytes!\n",
+-			scsi_bufflen(scmd));
++	if (sges_left < 0)
+ 		return -ENOMEM;
+-	}
+ 
+ 	sg_local = &mpi_request->SGL;
+ 	sges_in_segment = (ioc->request_sz -
+-- 
+2.43.0
+
 
 
 
