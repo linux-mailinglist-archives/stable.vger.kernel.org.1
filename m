@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-67815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A41E952F3B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C8F95318D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3EA1C24231
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22E2E1C2202D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27DA18D639;
-	Thu, 15 Aug 2024 13:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E8D18D64F;
+	Thu, 15 Aug 2024 13:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFW0KjPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+HwOHJK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0211714D0;
-	Thu, 15 Aug 2024 13:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113481714A1;
+	Thu, 15 Aug 2024 13:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728606; cv=none; b=bkYsZ6mCVerAX2NH0Z8CU39DwUY762fOCzgDZ2E1rC/uWL4vURRMt9YoBLt1DbikP8rxLba1OwSMC0ImgnTYZatp4BA1n45Qi3KKRNwqecn9ONY6Yzajqksr0MZW+3gfphOm3lhpVef/QliB2pF2GoJQz0Hqz9iXOP9TzulJa2g=
+	t=1723730130; cv=none; b=BW6gQmqfhz9d9zXzlZTMEwATkOC8CMH9sbQcsCK4EjxxD++5c8O4zIadeF2F1uckEnY3A/HyZ9+YIKyxtEy6xrhXkE4VOq3gjQDpbBeIZp6H/MtKOT9IqtDTGJUdg00CPvKRU22FL9hgMkaqv4LL/oy68bvWu6sb4bVm7pTxn+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728606; c=relaxed/simple;
-	bh=nuejmWtq2x+68voBFiFmBZKG/AnE83J5QdcRWVJ3lgc=;
+	s=arc-20240116; t=1723730130; c=relaxed/simple;
+	bh=XaTPKSdlxnLUzi/0dMZIFxSC8luhyzcgMjv18M5Hyj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4kEfiEBDHIRnmBcEE+TAOiMuOpdAc4mwnXfFwynrygaWP7DdVtwiTRCSmt/dkGDzfqkDe80y4cb6I4bcWUv6ho9FjXqew6Vj9nRUMkAWCCsSWNfdAwiNiKg6ET85FoYJtoE3G8471fu74ftDi8XMeS2LgJiJHA0pZkhINHFYoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFW0KjPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32D3C4AF0A;
-	Thu, 15 Aug 2024 13:30:05 +0000 (UTC)
+	 MIME-Version; b=dJPthC9ZGd++jiigIlXUiz9jtXVVZQGr4eo9xUyAwLSCNg1OMomxvo+R8EJ+r2hxMU1iqGa5aTTwVrtFSnGCVzD6UtIcZlUNKfVTl76on70UCx72pCcwICv6kA+ZaTD6UYfHaN51M6TX+6qaAUwPnr6LBCAw7LDVAkVEhnfw0dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+HwOHJK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87530C32786;
+	Thu, 15 Aug 2024 13:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728606;
-	bh=nuejmWtq2x+68voBFiFmBZKG/AnE83J5QdcRWVJ3lgc=;
+	s=korg; t=1723730129;
+	bh=XaTPKSdlxnLUzi/0dMZIFxSC8luhyzcgMjv18M5Hyj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFW0KjPvexzNaH1I+5Xpi66KYMaNfkYtiA0HTRDcRvGvI9s3P2z5jWHmr1we011Cx
-	 hq7MDx7SeGxnxfO6uTOSCxVlVcXTd837iF3Pb7EvqsEh+qhx5TSac4QWUbooHof0dr
-	 qVP8anbI1SwE84W+9TlnamnGJPzvHwIR9NUAfxvU=
+	b=N+HwOHJKJyOC9g9NOFgcWQmqEG7qg5Qcq7jot5rlWJj08KN7TwvC8VXjh+Pgrg+7q
+	 COZBWp+34DnGSU/ssjohKZKn7N9ECeKyHs4soy07YYF6Ey4UmpWJNWXoXfSR10BpaW
+	 FFyjjFYvCJOXcEpKe6Kc+9x6gft72QvTqoqG0eIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>,
-	Tony Brelinski <tonyx.brelinski@intel.com>,
-	Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 053/196] ice: Rework flex descriptor programming
-Date: Thu, 15 Aug 2024 15:22:50 +0200
-Message-ID: <20240815131854.109703267@linuxfoundation.org>
+Subject: [PATCH 5.15 313/484] leds: trigger: Remove unused function led_trigger_rename_static()
+Date: Thu, 15 Aug 2024 15:22:51 +0200
+Message-ID: <20240815131953.495400773@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,208 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 22ef683b48182f4d6125a2fb2725eb8a141514ff ]
+[ Upstream commit c82a1662d4548c454de5343b88f69b9fc82266b3 ]
 
-The driver can support two flex descriptor profiles, ICE_RXDID_FLEX_NIC
-and ICE_RXDID_FLEX_NIC_2. This patch reworks the current flex programming
-logic to add support for the latter profile.
+This function was added with a8df7b1ab70b ("leds: add led_trigger_rename
+function") 11 yrs ago, but it has no users. So remove it.
 
-Signed-off-by: Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>
-Tested-by: Tony Brelinski <tonyx.brelinski@intel.com>
-Signed-off-by: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
-Stable-dep-of: 782161895eb4 ("netfilter: ctnetlink: use helper function to calculate expect ID")
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/d90f30be-f661-4db7-b0b5-d09d07a78a68@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c   | 102 ++++++++++++++----
- .../net/ethernet/intel/ice/ice_lan_tx_rx.h    |  24 +++--
- 2 files changed, 92 insertions(+), 34 deletions(-)
+ drivers/leds/led-triggers.c | 13 -------------
+ include/linux/leds.h        | 17 -----------------
+ 2 files changed, 30 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index f8d00263d9019..72a6f22ee423f 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -7,16 +7,16 @@
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index 024b73f84ce0c..dddfc301d3414 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -268,19 +268,6 @@ void led_trigger_set_default(struct led_classdev *led_cdev)
+ }
+ EXPORT_SYMBOL_GPL(led_trigger_set_default);
  
- #define ICE_PF_RESET_WAIT_COUNT	200
+-void led_trigger_rename_static(const char *name, struct led_trigger *trig)
+-{
+-	/* new name must be on a temporary string to prevent races */
+-	BUG_ON(name == trig->name);
+-
+-	down_write(&triggers_list_lock);
+-	/* this assumes that trig->name was originaly allocated to
+-	 * non constant storage */
+-	strcpy((char *)trig->name, name);
+-	up_write(&triggers_list_lock);
+-}
+-EXPORT_SYMBOL_GPL(led_trigger_rename_static);
+-
+ /* LED Trigger Interface */
  
--#define ICE_NIC_FLX_ENTRY(hw, mdid, idx) \
--	wr32((hw), GLFLXP_RXDID_FLX_WRD_##idx(ICE_RXDID_FLEX_NIC), \
-+#define ICE_PROG_FLEX_ENTRY(hw, rxdid, mdid, idx) \
-+	wr32((hw), GLFLXP_RXDID_FLX_WRD_##idx(rxdid), \
- 	     ((ICE_RX_OPC_MDID << \
- 	       GLFLXP_RXDID_FLX_WRD_##idx##_RXDID_OPCODE_S) & \
- 	      GLFLXP_RXDID_FLX_WRD_##idx##_RXDID_OPCODE_M) | \
- 	     (((mdid) << GLFLXP_RXDID_FLX_WRD_##idx##_PROT_MDID_S) & \
- 	      GLFLXP_RXDID_FLX_WRD_##idx##_PROT_MDID_M))
- 
--#define ICE_NIC_FLX_FLG_ENTRY(hw, flg_0, flg_1, flg_2, flg_3, idx) \
--	wr32((hw), GLFLXP_RXDID_FLAGS(ICE_RXDID_FLEX_NIC, idx), \
-+#define ICE_PROG_FLG_ENTRY(hw, rxdid, flg_0, flg_1, flg_2, flg_3, idx) \
-+	wr32((hw), GLFLXP_RXDID_FLAGS(rxdid, idx), \
- 	     (((flg_0) << GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_S) & \
- 	      GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_M) | \
- 	     (((flg_1) << GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_1_S) & \
-@@ -290,30 +290,85 @@ ice_aq_get_link_info(struct ice_port_info *pi, bool ena_lse,
+ int led_trigger_register(struct led_trigger *trig)
+diff --git a/include/linux/leds.h b/include/linux/leds.h
+index ba4861ec73d30..2bbff7519b731 100644
+--- a/include/linux/leds.h
++++ b/include/linux/leds.h
+@@ -409,23 +409,6 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
+ 	return led_cdev->trigger_data;
  }
  
- /**
-- * ice_init_flex_parser - initialize rx flex parser
-+ * ice_init_flex_flags
-  * @hw: pointer to the hardware structure
-+ * @prof_id: Rx Descriptor Builder profile ID
-  *
-- * Function to initialize flex descriptors
-+ * Function to initialize Rx flex flags
-  */
--static void ice_init_flex_parser(struct ice_hw *hw)
-+static void ice_init_flex_flags(struct ice_hw *hw, enum ice_rxdid prof_id)
- {
- 	u8 idx = 0;
- 
--	ICE_NIC_FLX_ENTRY(hw, ICE_RX_MDID_HASH_LOW, 0);
--	ICE_NIC_FLX_ENTRY(hw, ICE_RX_MDID_HASH_HIGH, 1);
--	ICE_NIC_FLX_ENTRY(hw, ICE_RX_MDID_FLOW_ID_LOWER, 2);
--	ICE_NIC_FLX_ENTRY(hw, ICE_RX_MDID_FLOW_ID_HIGH, 3);
--	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_PKT_FRG, ICE_RXFLG_UDP_GRE,
--			      ICE_RXFLG_PKT_DSI, ICE_RXFLG_FIN, idx++);
--	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_SYN, ICE_RXFLG_RST,
--			      ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI, idx++);
--	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI,
--			      ICE_RXFLG_EVLAN_x8100, ICE_RXFLG_EVLAN_x9100,
--			      idx++);
--	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_VLAN_x8100, ICE_RXFLG_TNL_VLAN,
--			      ICE_RXFLG_TNL_MAC, ICE_RXFLG_TNL0, idx++);
--	ICE_NIC_FLX_FLG_ENTRY(hw, ICE_RXFLG_TNL1, ICE_RXFLG_TNL2,
--			      ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI, idx);
-+	/* Flex-flag fields (0-2) are programmed with FLG64 bits with layout:
-+	 * flexiflags0[5:0] - TCP flags, is_packet_fragmented, is_packet_UDP_GRE
-+	 * flexiflags1[3:0] - Not used for flag programming
-+	 * flexiflags2[7:0] - Tunnel and VLAN types
-+	 * 2 invalid fields in last index
-+	 */
-+	switch (prof_id) {
-+	/* Rx flex flags are currently programmed for the NIC profiles only.
-+	 * Different flag bit programming configurations can be added per
-+	 * profile as needed.
-+	 */
-+	case ICE_RXDID_FLEX_NIC:
-+	case ICE_RXDID_FLEX_NIC_2:
-+		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_PKT_FRG,
-+				   ICE_RXFLG_UDP_GRE, ICE_RXFLG_PKT_DSI,
-+				   ICE_RXFLG_FIN, idx++);
-+		/* flex flag 1 is not used for flexi-flag programming, skipping
-+		 * these four FLG64 bits.
-+		 */
-+		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_SYN, ICE_RXFLG_RST,
-+				   ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI, idx++);
-+		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_PKT_DSI,
-+				   ICE_RXFLG_PKT_DSI, ICE_RXFLG_EVLAN_x8100,
-+				   ICE_RXFLG_EVLAN_x9100, idx++);
-+		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_VLAN_x8100,
-+				   ICE_RXFLG_TNL_VLAN, ICE_RXFLG_TNL_MAC,
-+				   ICE_RXFLG_TNL0, idx++);
-+		ICE_PROG_FLG_ENTRY(hw, prof_id, ICE_RXFLG_TNL1, ICE_RXFLG_TNL2,
-+				   ICE_RXFLG_PKT_DSI, ICE_RXFLG_PKT_DSI, idx);
-+		break;
-+
-+	default:
-+		ice_debug(hw, ICE_DBG_INIT,
-+			  "Flag programming for profile ID %d not supported\n",
-+			  prof_id);
-+	}
-+}
-+
-+/**
-+ * ice_init_flex_flds
-+ * @hw: pointer to the hardware structure
-+ * @prof_id: Rx Descriptor Builder profile ID
-+ *
-+ * Function to initialize flex descriptors
-+ */
-+static void ice_init_flex_flds(struct ice_hw *hw, enum ice_rxdid prof_id)
-+{
-+	enum ice_flex_rx_mdid mdid;
-+
-+	switch (prof_id) {
-+	case ICE_RXDID_FLEX_NIC:
-+	case ICE_RXDID_FLEX_NIC_2:
-+		ICE_PROG_FLEX_ENTRY(hw, prof_id, ICE_RX_MDID_HASH_LOW, 0);
-+		ICE_PROG_FLEX_ENTRY(hw, prof_id, ICE_RX_MDID_HASH_HIGH, 1);
-+		ICE_PROG_FLEX_ENTRY(hw, prof_id, ICE_RX_MDID_FLOW_ID_LOWER, 2);
-+
-+		mdid = (prof_id == ICE_RXDID_FLEX_NIC_2) ?
-+			ICE_RX_MDID_SRC_VSI : ICE_RX_MDID_FLOW_ID_HIGH;
-+
-+		ICE_PROG_FLEX_ENTRY(hw, prof_id, mdid, 3);
-+
-+		ice_init_flex_flags(hw, prof_id);
-+		break;
-+
-+	default:
-+		ice_debug(hw, ICE_DBG_INIT,
-+			  "Field init for profile ID %d not supported\n",
-+			  prof_id);
-+	}
- }
- 
- /**
-@@ -494,7 +549,8 @@ enum ice_status ice_init_hw(struct ice_hw *hw)
- 	if (status)
- 		goto err_unroll_fltr_mgmt_struct;
- 
--	ice_init_flex_parser(hw);
-+	ice_init_flex_flds(hw, ICE_RXDID_FLEX_NIC);
-+	ice_init_flex_flds(hw, ICE_RXDID_FLEX_NIC_2);
- 
- 	return 0;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-index 068dbc740b766..94504023d86e2 100644
---- a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-@@ -188,23 +188,25 @@ struct ice_32b_rx_flex_desc_nic {
-  * with a specific metadata (profile 7 reserved for HW)
-  */
- enum ice_rxdid {
--	ICE_RXDID_START			= 0,
--	ICE_RXDID_LEGACY_0		= ICE_RXDID_START,
--	ICE_RXDID_LEGACY_1,
--	ICE_RXDID_FLX_START,
--	ICE_RXDID_FLEX_NIC		= ICE_RXDID_FLX_START,
--	ICE_RXDID_FLX_LAST		= 63,
--	ICE_RXDID_LAST			= ICE_RXDID_FLX_LAST
-+	ICE_RXDID_LEGACY_0		= 0,
-+	ICE_RXDID_LEGACY_1		= 1,
-+	ICE_RXDID_FLEX_NIC		= 2,
-+	ICE_RXDID_FLEX_NIC_2		= 6,
-+	ICE_RXDID_HW			= 7,
-+	ICE_RXDID_LAST			= 63,
- };
- 
- /* Receive Flex Descriptor Rx opcode values */
- #define ICE_RX_OPC_MDID		0x01
- 
- /* Receive Descriptor MDID values */
--#define ICE_RX_MDID_FLOW_ID_LOWER	5
--#define ICE_RX_MDID_FLOW_ID_HIGH	6
--#define ICE_RX_MDID_HASH_LOW		56
--#define ICE_RX_MDID_HASH_HIGH		57
-+enum ice_flex_rx_mdid {
-+	ICE_RX_MDID_FLOW_ID_LOWER	= 5,
-+	ICE_RX_MDID_FLOW_ID_HIGH,
-+	ICE_RX_MDID_SRC_VSI		= 19,
-+	ICE_RX_MDID_HASH_LOW		= 56,
-+	ICE_RX_MDID_HASH_HIGH,
-+};
- 
- /* Rx Flag64 packet flag bits */
- enum ice_rx_flg64_bits {
+-/**
+- * led_trigger_rename_static - rename a trigger
+- * @name: the new trigger name
+- * @trig: the LED trigger to rename
+- *
+- * Change a LED trigger name by copying the string passed in
+- * name into current trigger name, which MUST be large
+- * enough for the new string.
+- *
+- * Note that name must NOT point to the same string used
+- * during LED registration, as that could lead to races.
+- *
+- * This is meant to be used on triggers with statically
+- * allocated name.
+- */
+-void led_trigger_rename_static(const char *name, struct led_trigger *trig);
+-
+ #define module_led_trigger(__led_trigger) \
+ 	module_driver(__led_trigger, led_trigger_register, \
+ 		      led_trigger_unregister)
 -- 
 2.43.0
 
