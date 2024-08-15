@@ -1,96 +1,126 @@
-Return-Path: <stable+bounces-69262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99DA953D95
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 00:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FB0953DD0
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 01:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E5F11F21A63
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 22:52:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1BBB1F26D46
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 23:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E1A154C11;
-	Thu, 15 Aug 2024 22:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6F21547C4;
+	Thu, 15 Aug 2024 23:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GUWZFXJh"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mrhlIJJJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A18154BE3
-	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 22:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D81E12B94;
+	Thu, 15 Aug 2024 23:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723762332; cv=none; b=pG285m8LenQ1TuLGKaeNSV5G5wPa6bcoPYPkOrt3UxBs5RYRrM2PGhN/bLfO9bX1ovRqK9Afyrs5RfVfWRZbSTjHru9RiUCXmx8kYCay+O0Z5PnMyHRKiQYq1G0oOlz1FP8v+viusBh7JJ0TY86m46tfSSdvRqvUzV4gxmeHdNc=
+	t=1723763050; cv=none; b=ko/0UtD7P0K6eIN5wdU/YWGbg3K1+UsPKFS6Ap0+druDRmu7Cvwxf1SpcEK373H5B6GvXz46/QKlbwNN96VHbkeXyyWitAlCMjm8pc/WOfEJgJ7e7LfR761s+2ZrPCNSnPxnvbwjm2mrT4GWc7mWsMrpSiFP5veD+14CIAoyBkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723762332; c=relaxed/simple;
-	bh=lMzMmu7/geMeGZ+ITURZhEGMgIJMB2wbKSxaJzA6Xxc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jMHjOnBf7o2/4EzvCi9K0rsjbpg05Pk4WOgWg/utkzS1G5sbfYZ1bgQ5H9UV8Z4N9LnXET0nS+WCfBDlodLCXKnWSGCfH7KRoATYnujszUn8/vuIpbWI7gX8THdAKutbq7eIqTmXFYvPvwBiIPELrddfeoyqZZZfOm8eXXWtWiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GUWZFXJh; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1fd640a6454so14416705ad.3
-        for <stable@vger.kernel.org>; Thu, 15 Aug 2024 15:52:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1723762330; x=1724367130; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CYU6CxH2Uz2B/FnYGmoLWU4ESLYRFSEUwvofd3Trumc=;
-        b=GUWZFXJhHiyEfCgnZS7HW2ZsG+ieMXgSIKcSWpNEThp97JLsxOjCI2QdBO0aSBjthJ
-         /b2Qm4X/JuSsUf9oLgoM8S/1ius3Dsyd69fOxKgXHs6SsU0zUHJx8SvythWX9PNJcdZ0
-         E238vqc5dmU66qENZpaBBJj0yVjQrXYykaZEs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723762330; x=1724367130;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CYU6CxH2Uz2B/FnYGmoLWU4ESLYRFSEUwvofd3Trumc=;
-        b=rcbMolM7HGp0VMErbf+OoFKr8WcnJDK4wn7MJqQRWnceXPzqCwatw4mvAzbj8HXxwy
-         MGnGKMoPAKFSjaugRwuMRuOoCbK5LfHZXsir+WKaIljW9AYljHNXUigbgp+NdwusuwKy
-         2xNIRKwJlpgOQhH29iT+u5jsA8/3DczjQlFZWjUpPrfwRfl9GdxVZIg92VWvNgQkejJs
-         ND1BT/MIdwyu+XlyGSTpX7WDLD+IDWXKmCEAGYG/BcqRmXAFAgMkXFtzeBKKVU1qZQDW
-         OdOE5MY32X1iH9y7D5oh2vR7fyEf2IJdQG3IcR6MslLFVnmVB+MOCncHGok49K1aFB8z
-         7nYg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRNYTW+t+157TbgtikVV6L9UgSxfww12Ecr5UvrWJKYXqc9/gp4llIuGAELzVT38ZlVZqMNDE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvkHQhIOg3VOFp5qx1XrkMWQwKhKQLsrsPgsuJTxRjAs3EhUNN
-	LYN3fmcbGHlK1wCKORcKIb4KDQDa2puSFstTrtZnrc3k3Z3HbBC9xudmEwBrXYEkGZS52aLhUNQ
-	=
-X-Google-Smtp-Source: AGHT+IFoXzdZ0LnPXw0CcmtZGwlL/hYChyGfUbp5CmzQ2zLtfbvysoQzI7hzeaFAGMMlFaW4C+dQIQ==
-X-Received: by 2002:a17:902:ced2:b0:201:ffcb:bbcc with SMTP id d9443c01a7336-20203f082bamr17668265ad.39.1723762329798;
-        Thu, 15 Aug 2024 15:52:09 -0700 (PDT)
-Received: from [10.211.41.59] ([66.170.99.2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f063ab6csm14750485ad.77.2024.08.15.15.52.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Aug 2024 15:52:09 -0700 (PDT)
-Message-ID: <90fb16f3-f9f0-4541-926f-f4b620f3d5eb@broadcom.com>
-Date: Thu, 15 Aug 2024 15:52:08 -0700
+	s=arc-20240116; t=1723763050; c=relaxed/simple;
+	bh=IEEC+jtffX5lcp1nrDsJrcpgvd25d72MFCtAJE047JM=;
+	h=Date:To:From:Subject:Message-Id; b=CKxL+CePSOWmtnXN32GOL7vinygmWZY1m0+WNFfEBYFOGUByJyWCZAxl0ClKwbBEPEkK0nR6RxDwjMgf90iH6wNVIPTKAvxaTn5JHIyuD+g27jMD3do+n7485/TjuDBOC93M3pJP3JJik5WmUMFIQgMFAIOrNYFVw6ZGowVvrUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mrhlIJJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB69C32786;
+	Thu, 15 Aug 2024 23:04:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1723763050;
+	bh=IEEC+jtffX5lcp1nrDsJrcpgvd25d72MFCtAJE047JM=;
+	h=Date:To:From:Subject:From;
+	b=mrhlIJJJ90XRPcdDb2P5mX6YOp0iDTX8treDLHfu9KysdlNFx8BHY5tHnG5xB9wSH
+	 mlfmBGX34jBcHeIH+SXwmlxk9+WdUl00/b3mtupzMTJfQDAl13tNijN59onKw6/HNu
+	 UYdKZeM6Pkso2QW6vGK1hLCRa8DsQ7q/yo3yE2zE=
+Date: Thu, 15 Aug 2024 16:04:09 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kees@kernel.org,erhard_f@mailbox.org,davidgow@google.com,ivan.orlov0322@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kunit-overflow-fix-ub-in-overflow_allocation_test.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240815230410.2FB69C32786@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] drm/vmwgfx: Fix prime with external buffers
-To: Zack Rusin <zack.rusin@broadcom.com>, dri-devel@lists.freedesktop.org
-Cc: Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com,
- martin.krastev@broadcom.com, stable@vger.kernel.org
-References: <20240815153404.630214-1-zack.rusin@broadcom.com>
- <20240815153404.630214-2-zack.rusin@broadcom.com>
-From: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Content-Language: en-US
-In-Reply-To: <20240815153404.630214-2-zack.rusin@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-LGTM.
 
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+The patch titled
+     Subject: kunit/overflow: fix UB in overflow_allocation_test
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kunit-overflow-fix-ub-in-overflow_allocation_test.patch
 
--- 
-Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kunit-overflow-fix-ub-in-overflow_allocation_test.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Ivan Orlov <ivan.orlov0322@gmail.com>
+Subject: kunit/overflow: fix UB in overflow_allocation_test
+Date: Thu, 15 Aug 2024 01:04:31 +0100
+
+The 'device_name' array doesn't exist out of the
+'overflow_allocation_test' function scope.  However, it is being used as a
+driver name when calling 'kunit_driver_create' from
+'kunit_device_register'.  It produces the kernel panic with KASAN enabled.
+
+Since this variable is used in one place only, remove it and pass the
+device name into kunit_device_register directly as an ascii string.
+
+Link: https://lkml.kernel.org/r/20240815000431.401869-1-ivan.orlov0322@gmail.com
+Fixes: ca90800a91ba ("test_overflow: Add memory allocation overflow tests")
+Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+Tested-by: Erhard Furtner <erhard_f@mailbox.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/overflow_kunit.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+--- a/lib/overflow_kunit.c~kunit-overflow-fix-ub-in-overflow_allocation_test
++++ a/lib/overflow_kunit.c
+@@ -668,7 +668,6 @@ DEFINE_TEST_ALLOC(devm_kzalloc,  devm_kf
+ 
+ static void overflow_allocation_test(struct kunit *test)
+ {
+-	const char device_name[] = "overflow-test";
+ 	struct device *dev;
+ 	int count = 0;
+ 
+@@ -678,7 +677,7 @@ static void overflow_allocation_test(str
+ } while (0)
+ 
+ 	/* Create dummy device for devm_kmalloc()-family tests. */
+-	dev = kunit_device_register(test, device_name);
++	dev = kunit_device_register(test, "overflow-test");
+ 	KUNIT_ASSERT_FALSE_MSG(test, IS_ERR(dev),
+ 			       "Cannot register test device\n");
+ 
+_
+
+Patches currently in -mm which might be from ivan.orlov0322@gmail.com are
+
+kunit-overflow-fix-ub-in-overflow_allocation_test.patch
+
 
