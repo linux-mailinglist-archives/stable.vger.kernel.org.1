@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-69139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5341995359F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8BB9532D3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF1A51F26FA6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2E871C2549F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693791993B9;
-	Thu, 15 Aug 2024 14:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730731A3BD0;
+	Thu, 15 Aug 2024 14:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVqy96kw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZ2EMeLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EF21AC893;
-	Thu, 15 Aug 2024 14:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3034A19DFA4;
+	Thu, 15 Aug 2024 14:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732795; cv=none; b=r31Sd28xicKb7bcDyFqAJiNXR2GxUwFRrMt82arH6dc9rc1Ad1q4RkbhyylVnBa8UZ3VS3aaWLq8tTOnv9KmKAVDt1855vgrHslm+VAWnDITZv3O/owB9nSuh40SQ61avmGYCA4fDfIiyKRZLiht7HnP/kRyaRE0v+1t473MQPg=
+	t=1723730885; cv=none; b=DPzokV08b4HwEujMds99GJ6vsld1cAqb1UkiiLyhfAbIMZjNmre7lLmxXS70KKmlFTK2vYqd22syxN8fe25IdV30Z3auutsRbkROvwoLWoD9JBM+dyu4hENF+i662vQ2w/GxO347R/VxlYNWERv+zAD/KWRDPn7wh6pCdSjLYDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732795; c=relaxed/simple;
-	bh=FKV8PMejnlAujtY8rvAhW0om8knqWLw9DWfS+tW/qFI=;
+	s=arc-20240116; t=1723730885; c=relaxed/simple;
+	bh=LxAv+xha0AbJErlhmq5CKyWMRYpPY0L2cZfY6Wdt0Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVR/3Bo9Sj61F/UJ82gIEZ5/0km17sk6maiwllgaP27oOhyPflIS36OCh4bVlByFPsRkP0E9x6ZsCTK/3esJ09B+c24xXJU7MmADgGcZpCxn9N1rqViR1Xee6gZvMPsnW1l5nvZrZgbLW5BbJTHbN6+kMIGJ85mF94Jz4tsOCAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVqy96kw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E45FC32786;
-	Thu, 15 Aug 2024 14:39:54 +0000 (UTC)
+	 MIME-Version; b=JwdVLZXQspXddnsXHmSk45o84/2ygZSr1SEpfr/8hjnR0fkg0Ru5zNpH9q32+UeVphYn202/xXetZznkpqwA38xCev6X7nWyW/vdj2UonfRVnlZUsUjFRa7ZVG6YMnrJrZQUZlNOJkMI2iaUw1ulQd56StcNgmYNsuJQQenHPoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZ2EMeLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0ADC4AF0D;
+	Thu, 15 Aug 2024 14:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732795;
-	bh=FKV8PMejnlAujtY8rvAhW0om8knqWLw9DWfS+tW/qFI=;
+	s=korg; t=1723730885;
+	bh=LxAv+xha0AbJErlhmq5CKyWMRYpPY0L2cZfY6Wdt0Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVqy96kw3wPMvVe/JcjeHCfTtSAUqytQHCER15ms7kmD36+IF253D363xPDLiLaJK
-	 23luN7vC1AIx3+6M4Hgki06ipnZ0QMM1sbc8upbvHppTGc/FxbpYOBsnpSoqHb+cQ6
-	 jlF7xFTXyDE0cTUj2R97zDQwrII1jgUsxOKiWgPc=
+	b=dZ2EMeLebI+lTOyijbVz3qRara83PKiO+5F6paNUVdRvS26XKIYIN1qE+XSskJYtg
+	 HBUXW9PH7FC+N4nERKNoEZ0PnEoTch8kwMiXqBAZf7b69i9E+J4UZJgmjXA0d5L29t
+	 d5MLXcGOeZ8IOSDvId01B4SoFzOYe9grWuwPOOqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 257/352] Bluetooth: l2cap: always unlock channel in l2cap_conless_channel()
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 09/67] sunrpc: pass in the sv_stats struct through svc_create_pooled
 Date: Thu, 15 Aug 2024 15:25:23 +0200
-Message-ID: <20240815131929.377484542@linuxfoundation.org>
+Message-ID: <20240815131838.681192325@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit c531e63871c0b50c8c4e62c048535a08886fba3e ]
+[ Upstream commit f094323867668d50124886ad884b665de7319537 ]
 
-Add missing call to 'l2cap_chan_unlock()' on receive error handling
-path in 'l2cap_conless_channel()'.
+Since only one service actually reports the rpc stats there's not much
+of a reason to have a pointer to it in the svc_program struct.  Adjust
+the svc_create_pooled function to take the sv_stats as an argument and
+pass the struct through there as desired instead of getting it from the
+svc_program->pg_stats.
 
-Fixes: a24cce144b98 ("Bluetooth: Fix reference counting of global L2CAP channels")
-Reported-by: syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=45ac74737e866894acb0
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+[ cel: adjusted to apply to v6.6.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfssvc.c           |    3 ++-
+ include/linux/sunrpc/svc.h |    4 +++-
+ net/sunrpc/svc.c           |   12 +++++++-----
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 9cc034e6074c1..23fc03f7bf312 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7762,6 +7762,7 @@ static void l2cap_conless_channel(struct l2cap_conn *conn, __le16 psm,
- 	bt_cb(skb)->l2cap.psm = psm;
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -670,7 +670,8 @@ int nfsd_create_serv(struct net *net)
+ 	if (nfsd_max_blksize == 0)
+ 		nfsd_max_blksize = nfsd_get_default_max_blksize();
+ 	nfsd_reset_versions(nn);
+-	serv = svc_create_pooled(&nfsd_program, nfsd_max_blksize, nfsd);
++	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
++				 nfsd_max_blksize, nfsd);
+ 	if (serv == NULL)
+ 		return -ENOMEM;
  
- 	if (!chan->ops->recv(chan, skb)) {
-+		l2cap_chan_unlock(chan);
- 		l2cap_chan_put(chan);
- 		return;
- 	}
--- 
-2.43.0
-
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -408,7 +408,9 @@ bool		   svc_rqst_replace_page(struct sv
+ void		   svc_rqst_release_pages(struct svc_rqst *rqstp);
+ void		   svc_rqst_free(struct svc_rqst *);
+ void		   svc_exit_thread(struct svc_rqst *);
+-struct svc_serv *  svc_create_pooled(struct svc_program *, unsigned int,
++struct svc_serv *  svc_create_pooled(struct svc_program *prog,
++				     struct svc_stat *stats,
++				     unsigned int bufsize,
+ 				     int (*threadfn)(void *data));
+ int		   svc_set_num_threads(struct svc_serv *, struct svc_pool *, int);
+ int		   svc_pool_stats_open(struct svc_serv *serv, struct file *file);
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -453,8 +453,8 @@ __svc_init_bc(struct svc_serv *serv)
+  * Create an RPC service
+  */
+ static struct svc_serv *
+-__svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
+-	     int (*threadfn)(void *data))
++__svc_create(struct svc_program *prog, struct svc_stat *stats,
++	     unsigned int bufsize, int npools, int (*threadfn)(void *data))
+ {
+ 	struct svc_serv	*serv;
+ 	unsigned int vers;
+@@ -466,7 +466,7 @@ __svc_create(struct svc_program *prog, u
+ 	serv->sv_name      = prog->pg_name;
+ 	serv->sv_program   = prog;
+ 	kref_init(&serv->sv_refcnt);
+-	serv->sv_stats     = prog->pg_stats;
++	serv->sv_stats     = stats;
+ 	if (bufsize > RPCSVC_MAXPAYLOAD)
+ 		bufsize = RPCSVC_MAXPAYLOAD;
+ 	serv->sv_max_payload = bufsize? bufsize : 4096;
+@@ -532,26 +532,28 @@ __svc_create(struct svc_program *prog, u
+ struct svc_serv *svc_create(struct svc_program *prog, unsigned int bufsize,
+ 			    int (*threadfn)(void *data))
+ {
+-	return __svc_create(prog, bufsize, 1, threadfn);
++	return __svc_create(prog, NULL, bufsize, 1, threadfn);
+ }
+ EXPORT_SYMBOL_GPL(svc_create);
+ 
+ /**
+  * svc_create_pooled - Create an RPC service with pooled threads
+  * @prog: the RPC program the new service will handle
++ * @stats: the stats struct if desired
+  * @bufsize: maximum message size for @prog
+  * @threadfn: a function to service RPC requests for @prog
+  *
+  * Returns an instantiated struct svc_serv object or NULL.
+  */
+ struct svc_serv *svc_create_pooled(struct svc_program *prog,
++				   struct svc_stat *stats,
+ 				   unsigned int bufsize,
+ 				   int (*threadfn)(void *data))
+ {
+ 	struct svc_serv *serv;
+ 	unsigned int npools = svc_pool_map_get();
+ 
+-	serv = __svc_create(prog, bufsize, npools, threadfn);
++	serv = __svc_create(prog, stats, bufsize, npools, threadfn);
+ 	if (!serv)
+ 		goto out_err;
+ 	return serv;
 
 
 
