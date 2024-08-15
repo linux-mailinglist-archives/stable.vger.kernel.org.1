@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24844953301
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C759533FD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF74D1F23F87
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5803C289602
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888611BB6A9;
-	Thu, 15 Aug 2024 14:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5681A01B6;
+	Thu, 15 Aug 2024 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LczS6dl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrZtMa84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B7E1BB6A4;
-	Thu, 15 Aug 2024 14:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF30E1A00F5;
+	Thu, 15 Aug 2024 14:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730991; cv=none; b=UvPGb8/z7N3DSo2Pu+wmX674UNBrnwj7u96J3O+f4KANo/Ke9ag7oBRU8TJrnWSubvYQVXT7GsDfJD6r67ik9MnliuKgra06nNoft07j/XJIHBnLb8niuxBXqfudkobtmyfjjMN590M14bVawkG678WJXG77WnE651aPyFdGwQA=
+	t=1723731688; cv=none; b=siQdsDQFVYjH47gLEq78TjGr3mFmgeFrBPcgZ3ksy98eC1Mx+X0+KqdO5t427SsvjgalYgPMnJk8ZW/2+eO/PrEm5b0PW5hhbc5cmc1GMVPeaeVXThY2AaNbPdJECv6gPB3Sv1ie1BsrPAoGDG+6DwdAizf0BtqJJuUSWoK1cxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730991; c=relaxed/simple;
-	bh=HPhDvQuuOEc/I0FCZ9igh6o0t3+QgJqASj4uFwa5k4w=;
+	s=arc-20240116; t=1723731688; c=relaxed/simple;
+	bh=QQLffAxN1xoFKx1qAICYipIHRF2T2P05XZLOcHfiZYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqpvByMyjp5TfY03XUZjdmUBU92QyHB6ZvFHIpGQa4hlsbARpmB4HhiLHMLEKMbMAoufpQXKRCImoSQ+keCRDGXJ8CuJeGAkVAzGuYdpEm27+F2GsUvbIGS4UK1mV2yoyFPKW4XM52t3CPVxgvyoqS4iXAbajvSHqkTM5DQSwEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LczS6dl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF9EC32786;
-	Thu, 15 Aug 2024 14:09:50 +0000 (UTC)
+	 MIME-Version; b=MiJs62WSwpjMRkjWm02CHGqR58PFdC42O5wz6daWTYCK5TxeCR28jbQynDK0Uv3aYzmwoXasUcZSGSae0d+7ZBk5KOsGWeDtNG9MgkTEcUUbpzI9d+nwCjGHQYm5lxomychT9rwoIDLfaCyDvwenWek+Rxf97YNSEqKINsUdt3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrZtMa84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BAFC32786;
+	Thu, 15 Aug 2024 14:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730991;
-	bh=HPhDvQuuOEc/I0FCZ9igh6o0t3+QgJqASj4uFwa5k4w=;
+	s=korg; t=1723731687;
+	bh=QQLffAxN1xoFKx1qAICYipIHRF2T2P05XZLOcHfiZYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LczS6dlfNdW+8Ytgh2ol0xE9K3GXbPtejpYu1BQboybjtX7AH9afbxIzWIRRfqPq
-	 ewzXVw30qQPN8AbSgNUfTynchi8usOE3BV6wgUK0SVWKZHvnWK0j+HxBvKD7KTkDrM
-	 QzK8Hmin5uAThcmfa9gn2V9c7DZA8ClKpW5Yk29E=
+	b=rrZtMa84MTyW4bMnYwM8U5HRjbIiVRah6IqVyq1piabw6c35BYcb5tULzpYYI56Je
+	 x+NAGETnpS8iKrVCD4WyOfM+pcPlu/vNGLDEzITYrGXrmu4vUDBlLlhEwFCBP6bXtG
+	 riM1kXleSxbXA3VFI+t91yzjTs6x4+z4a2KnbZi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 25/67] fs: Convert to bdev_open_by_dev()
-Date: Thu, 15 Aug 2024 15:25:39 +0200
-Message-ID: <20240815131839.298190611@linuxfoundation.org>
+Subject: [PATCH 5.4 207/259] ext4: fix wrong unit use in ext4_mb_find_by_goal
+Date: Thu, 15 Aug 2024 15:25:40 +0200
+Message-ID: <20240815131910.765117427@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit f4a48bc36cdfae7c603e8e3f2a51e2a283f3f365 ]
+[ Upstream commit 99c515e3a860576ba90c11acbc1d6488dfca6463 ]
 
-Convert mount code to use bdev_open_by_dev() and propagate the handle
-around to bdev_release().
+We need start in block unit while fe_start is in cluster unit. Use
+ext4_grp_offs_to_block helper to convert fe_start to get start in
+block unit.
 
-Acked-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230927093442.25915-19-jack@suse.cz
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 6306ff39a7fc ("jfs: fix log->bdev_handle null ptr deref in lbmStartIO")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230603150327.3596033-4-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cramfs/inode.c  |  2 +-
- fs/romfs/super.c   |  2 +-
- fs/super.c         | 15 +++++++++------
- include/linux/fs.h |  1 +
- 4 files changed, 12 insertions(+), 8 deletions(-)
+ fs/ext4/mballoc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
-index 5ee7d7bbb361c..2fbf97077ce91 100644
---- a/fs/cramfs/inode.c
-+++ b/fs/cramfs/inode.c
-@@ -495,7 +495,7 @@ static void cramfs_kill_sb(struct super_block *sb)
- 		sb->s_mtd = NULL;
- 	} else if (IS_ENABLED(CONFIG_CRAMFS_BLOCKDEV) && sb->s_bdev) {
- 		sync_blockdev(sb->s_bdev);
--		blkdev_put(sb->s_bdev, sb);
-+		bdev_release(sb->s_bdev_handle);
- 	}
- 	kfree(sbi);
- }
-diff --git a/fs/romfs/super.c b/fs/romfs/super.c
-index 5c35f6c760377..b1bdfbc211c3c 100644
---- a/fs/romfs/super.c
-+++ b/fs/romfs/super.c
-@@ -593,7 +593,7 @@ static void romfs_kill_sb(struct super_block *sb)
- #ifdef CONFIG_ROMFS_ON_BLOCK
- 	if (sb->s_bdev) {
- 		sync_blockdev(sb->s_bdev);
--		blkdev_put(sb->s_bdev, sb);
-+		bdev_release(sb->s_bdev_handle);
- 	}
- #endif
- }
-diff --git a/fs/super.c b/fs/super.c
-index 576abb1ff0403..b142e71eb8dfd 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -1490,14 +1490,16 @@ int setup_bdev_super(struct super_block *sb, int sb_flags,
- 		struct fs_context *fc)
- {
- 	blk_mode_t mode = sb_open_mode(sb_flags);
-+	struct bdev_handle *bdev_handle;
- 	struct block_device *bdev;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index b2e7b1907d410..9bc590564ea1f 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1850,8 +1850,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
+ 	if (max >= ac->ac_g_ex.fe_len && ac->ac_g_ex.fe_len == sbi->s_stripe) {
+ 		ext4_fsblk_t start;
  
--	bdev = blkdev_get_by_dev(sb->s_dev, mode, sb, &fs_holder_ops);
--	if (IS_ERR(bdev)) {
-+	bdev_handle = bdev_open_by_dev(sb->s_dev, mode, sb, &fs_holder_ops);
-+	if (IS_ERR(bdev_handle)) {
- 		if (fc)
- 			errorf(fc, "%s: Can't open blockdev", fc->source);
--		return PTR_ERR(bdev);
-+		return PTR_ERR(bdev_handle);
- 	}
-+	bdev = bdev_handle->bdev;
- 
- 	/*
- 	 * This really should be in blkdev_get_by_dev, but right now can't due
-@@ -1505,7 +1507,7 @@ int setup_bdev_super(struct super_block *sb, int sb_flags,
- 	 * writable from userspace even for a read-only block device.
- 	 */
- 	if ((mode & BLK_OPEN_WRITE) && bdev_read_only(bdev)) {
--		blkdev_put(bdev, sb);
-+		bdev_release(bdev_handle);
- 		return -EACCES;
- 	}
- 
-@@ -1521,10 +1523,11 @@ int setup_bdev_super(struct super_block *sb, int sb_flags,
- 		mutex_unlock(&bdev->bd_fsfreeze_mutex);
- 		if (fc)
- 			warnf(fc, "%pg: Can't mount, blockdev is frozen", bdev);
--		blkdev_put(bdev, sb);
-+		bdev_release(bdev_handle);
- 		return -EBUSY;
- 	}
- 	spin_lock(&sb_lock);
-+	sb->s_bdev_handle = bdev_handle;
- 	sb->s_bdev = bdev;
- 	sb->s_bdi = bdi_get(bdev->bd_disk->bdi);
- 	if (bdev_stable_writes(bdev))
-@@ -1657,7 +1660,7 @@ void kill_block_super(struct super_block *sb)
- 	generic_shutdown_super(sb);
- 	if (bdev) {
- 		sync_blockdev(bdev);
--		blkdev_put(bdev, sb);
-+		bdev_release(sb->s_bdev_handle);
- 	}
- }
- 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 56dce38c47862..5ca9e859c042b 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1223,6 +1223,7 @@ struct super_block {
- 	struct hlist_bl_head	s_roots;	/* alternate root dentries for NFS */
- 	struct list_head	s_mounts;	/* list of mounts; _not_ for fs use */
- 	struct block_device	*s_bdev;
-+	struct bdev_handle	*s_bdev_handle;
- 	struct backing_dev_info *s_bdi;
- 	struct mtd_info		*s_mtd;
- 	struct hlist_node	s_instances;
+-		start = ext4_group_first_block_no(ac->ac_sb, e4b->bd_group) +
+-			ex.fe_start;
++		start = ext4_grp_offs_to_block(ac->ac_sb, &ex);
+ 		/* use do_div to get remainder (would be 64-bit modulo) */
+ 		if (do_div(start, sbi->s_stripe) == 0) {
+ 			ac->ac_found++;
 -- 
 2.43.0
 
