@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-69125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841B0953591
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D606C953303
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 261A62822B7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EB70B232A0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927C01A01B6;
-	Thu, 15 Aug 2024 14:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCFF762D2;
+	Thu, 15 Aug 2024 14:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kS9ANxN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulIYBEv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF9A2772A;
-	Thu, 15 Aug 2024 14:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940A81BA863;
+	Thu, 15 Aug 2024 14:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732750; cv=none; b=lZw3VqfWBmW7TkYdb7v4NuHq7g26ucG9/uwpA/CdtHsObo61zyYpeNYYajuqU8IsWUIkXYtimq+CLr34brlf3WR5pMLrFZCx8PnYjNgD70H3//DYu+6QWxtE8iVRLrZYeKPA9fPfF3GQF1+GGfITXTKPQT3eF9gyrBZhoy5mcfI=
+	t=1723730994; cv=none; b=uRaaQ4ER6XhiDWFiUUgn57KIWZtxCYswrPWT5PT7ITkOAzCD0MPowNmvClACFmQ+auGv1E7HvwziaFoNPHUuTCpDPbjB1z9doguSHooqqw0YFq1lfs+A760JzJvXjAOmGJSaoYQ7sR22S2kS+mFCgs2ZlfV1bndGrIFfno0rTPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732750; c=relaxed/simple;
-	bh=LjeDv2JWFoPVBD7iupPECKEtH6LVv13lXPYpXJ0rQkU=;
+	s=arc-20240116; t=1723730994; c=relaxed/simple;
+	bh=AYlJHoUxOuPG2QyyWZSD1eBAaw2nfUHDWDKyHCWVNmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D521nAF6pmj49ND5xbWqB+aqAVLxMKNzsoCmtTwl/5yxLf4bRZ20vtCw4aJqfZOQhxw4B5QEk/nAtEjzckV9OYkhvNwtRrgKJmmS5zCdmHBKkkEt6ze6Lw07nDjmOEO7jniyns/Df/BWieRh5eDLoReATlN28SP25mnOXJn/zIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kS9ANxN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A0FC32786;
-	Thu, 15 Aug 2024 14:39:09 +0000 (UTC)
+	 MIME-Version; b=PUIXVxf+6r4bc1qllwJG28BbA/WKBRU2p7jDPilDwEhZJnYndN7VkURo2IIal4T78Jaj72BlS+Dvn/nWdAH2L3BUiNyNhhUtpMqjcbcGBMCjG1HTbenZ7W7ohfv33zh26MBK/SqJh5CtLoyLu+dPCGts5/Dbs35K4TfQsiJaPAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulIYBEv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F867C32786;
+	Thu, 15 Aug 2024 14:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732749;
-	bh=LjeDv2JWFoPVBD7iupPECKEtH6LVv13lXPYpXJ0rQkU=;
+	s=korg; t=1723730994;
+	bh=AYlJHoUxOuPG2QyyWZSD1eBAaw2nfUHDWDKyHCWVNmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kS9ANxN9BRDMCOnQo/+SmSi+pCinMEnacN4mXHLSFchvyWoGPENswn/Avhlx9xv0k
-	 cmQnOH4pp0wH91gVLTfxfHzjpuaX3Hofa+qYpzk+egoNJMxoiQqYuJzVCRMiPPF0Dj
-	 35HJ9aLs8kwtPkUnma8+IiadI/hO3RkeNjrrxbx4=
+	b=ulIYBEv/EOMY2lMWWIUhVjKrgLuDGMQobcYKQR4d5/HF0OBgqmLVYZxWWQL+D12Kv
+	 0If0ty6DkIRVaBqE8ZPeETPLaDjpq2gyKc90Ds8cX/lM4CeZtQSc1AIdceXRJmc3bN
+	 +XsAVrISTcWUiMT0o5wvMifFUXFoYyoSZEnyw36I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	HungNien Chen <hn.chen@sunplusit.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	jfs-discussion@lists.sourceforge.net,
+	Christoph Hellwig <hch@lst.de>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 274/352] media: uvcvideo: Ignore empty TS packets
+Subject: [PATCH 6.6 26/67] jfs: Convert to bdev_open_by_dev()
 Date: Thu, 15 Aug 2024 15:25:40 +0200
-Message-ID: <20240815131930.042754619@linuxfoundation.org>
+Message-ID: <20240815131839.336155371@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,131 +66,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 5cd7c25f6f0576073b3d03bc4cfb1e8ca63a1195 ]
+[ Upstream commit 898c57f456b537e90493a9e9222226aa3ea66267 ]
 
-Some SunplusIT cameras took a borderline interpretation of the UVC 1.5
-standard, and fill the PTS and SCR fields with invalid data if the
-package does not contain data.
+Convert jfs to use bdev_open_by_dev() and pass the handle around.
 
-"STC must be captured when the first video data of a video frame is put
-on the USB bus."
-
-Some SunplusIT devices send, e.g.,
-
-buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
-buffer: 0xa7755c00 len 000012 header:0x8c stc 00000000 sof 0000 pts 00000000
-buffer: 0xa7755c00 len 000668 header:0x8c stc 73779dba sof 070c pts 7376d37a
-
-While the UVC specification meant that the first two packets shouldn't
-have had the SCR bit set in the header.
-
-This borderline/buggy interpretation has been implemented in a variety
-of devices, from directly SunplusIT and from other OEMs that rebrand
-SunplusIT products. So quirking based on VID:PID will be problematic.
-
-All the affected modules have the following extension unit:
-VideoControl Interface Descriptor:
-  guidExtensionCode         {82066163-7050-ab49-b8cc-b3855e8d221d}
-
-But the vendor plans to use that GUID in the future and fix the bug,
-this means that we should use heuristic to figure out the broken
-packets.
-
-This patch takes care of this.
-
-lsusb of one of the affected cameras:
-
-Bus 001 Device 003: ID 1bcf:2a01 Sunplus Innovation Technology Inc.
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.01
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 ?
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x1bcf Sunplus Innovation Technology Inc.
-  idProduct          0x2a01
-  bcdDevice            0.02
-  iManufacturer           1 SunplusIT Inc
-  iProduct                2 HanChen Wise Camera
-  iSerial                 3 01.00.00
-  bNumConfigurations      1
-
-Tested-by: HungNien Chen <hn.chen@sunplusit.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Tomasz Figa <tfiga@chromium.org>
-Link: https://lore.kernel.org/r/20240323-resend-hwtimestamp-v10-2-b08e590d97c7@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+CC: Dave Kleikamp <shaggy@kernel.org>
+CC: jfs-discussion@lists.sourceforge.net
+Acked-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230927093442.25915-24-jack@suse.cz
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 6306ff39a7fc ("jfs: fix log->bdev_handle null ptr deref in lbmStartIO")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_logmgr.c | 29 +++++++++++++++--------------
+ fs/jfs/jfs_logmgr.h |  2 +-
+ fs/jfs/jfs_mount.c  |  3 ++-
+ 3 files changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index 03dfe96bcebac..9a4c730943a90 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -468,6 +468,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	ktime_t time;
- 	u16 host_sof;
- 	u16 dev_sof;
-+	u32 dev_stc;
+diff --git a/fs/jfs/jfs_logmgr.c b/fs/jfs/jfs_logmgr.c
+index e855b8fde76ce..c911d838b8ec8 100644
+--- a/fs/jfs/jfs_logmgr.c
++++ b/fs/jfs/jfs_logmgr.c
+@@ -1058,7 +1058,7 @@ void jfs_syncpt(struct jfs_log *log, int hard_sync)
+ int lmLogOpen(struct super_block *sb)
+ {
+ 	int rc;
+-	struct block_device *bdev;
++	struct bdev_handle *bdev_handle;
+ 	struct jfs_log *log;
+ 	struct jfs_sb_info *sbi = JFS_SBI(sb);
  
- 	switch (data[1] & (UVC_STREAM_PTS | UVC_STREAM_SCR)) {
- 	case UVC_STREAM_PTS | UVC_STREAM_SCR:
-@@ -512,6 +513,34 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	if (dev_sof == stream->clock.last_sof)
- 		return;
+@@ -1070,7 +1070,7 @@ int lmLogOpen(struct super_block *sb)
  
-+	dev_stc = get_unaligned_le32(&data[header_size - 6]);
-+
-+	/*
-+	 * STC (Source Time Clock) is the clock used by the camera. The UVC 1.5
-+	 * standard states that it "must be captured when the first video data
-+	 * of a video frame is put on the USB bus". This is generally understood
-+	 * as requiring devices to clear the payload header's SCR bit before
-+	 * the first packet containing video data.
-+	 *
-+	 * Most vendors follow that interpretation, but some (namely SunplusIT
-+	 * on some devices) always set the `UVC_STREAM_SCR` bit, fill the SCR
-+	 * field with 0's,and expect that the driver only processes the SCR if
-+	 * there is data in the packet.
-+	 *
-+	 * Ignore all the hardware timestamp information if we haven't received
-+	 * any data for this frame yet, the packet contains no data, and both
-+	 * STC and SOF are zero. This heuristics should be safe on compliant
-+	 * devices. This should be safe with compliant devices, as in the very
-+	 * unlikely case where a UVC 1.1 device would send timing information
-+	 * only before the first packet containing data, and both STC and SOF
-+	 * happen to be zero for a particular frame, we would only miss one
-+	 * clock sample from many and the clock recovery algorithm wouldn't
-+	 * suffer from this condition.
-+	 */
-+	if (buf && buf->bytesused == 0 && len == header_size &&
-+	    dev_stc == 0 && dev_sof == 0)
-+		return;
-+
- 	stream->clock.last_sof = dev_sof;
+ 	mutex_lock(&jfs_log_mutex);
+ 	list_for_each_entry(log, &jfs_external_logs, journal_list) {
+-		if (log->bdev->bd_dev == sbi->logdev) {
++		if (log->bdev_handle->bdev->bd_dev == sbi->logdev) {
+ 			if (!uuid_equal(&log->uuid, &sbi->loguuid)) {
+ 				jfs_warn("wrong uuid on JFS journal");
+ 				mutex_unlock(&jfs_log_mutex);
+@@ -1100,14 +1100,14 @@ int lmLogOpen(struct super_block *sb)
+ 	 * file systems to log may have n-to-1 relationship;
+ 	 */
  
- 	host_sof = usb_get_current_frame_number(stream->dev->udev);
-@@ -549,7 +578,7 @@ uvc_video_clock_decode(struct uvc_streaming *stream, struct uvc_buffer *buf,
- 	spin_lock_irqsave(&stream->clock.lock, flags);
+-	bdev = blkdev_get_by_dev(sbi->logdev, BLK_OPEN_READ | BLK_OPEN_WRITE,
+-				 log, NULL);
+-	if (IS_ERR(bdev)) {
+-		rc = PTR_ERR(bdev);
++	bdev_handle = bdev_open_by_dev(sbi->logdev,
++			BLK_OPEN_READ | BLK_OPEN_WRITE, log, NULL);
++	if (IS_ERR(bdev_handle)) {
++		rc = PTR_ERR(bdev_handle);
+ 		goto free;
+ 	}
  
- 	sample = &stream->clock.samples[stream->clock.head];
--	sample->dev_stc = get_unaligned_le32(&data[header_size - 6]);
-+	sample->dev_stc = dev_stc;
- 	sample->dev_sof = dev_sof;
- 	sample->host_sof = host_sof;
- 	sample->host_time = time;
+-	log->bdev = bdev;
++	log->bdev_handle = bdev_handle;
+ 	uuid_copy(&log->uuid, &sbi->loguuid);
+ 
+ 	/*
+@@ -1141,7 +1141,7 @@ int lmLogOpen(struct super_block *sb)
+ 	lbmLogShutdown(log);
+ 
+       close:		/* close external log device */
+-	blkdev_put(bdev, log);
++	bdev_release(bdev_handle);
+ 
+       free:		/* free log descriptor */
+ 	mutex_unlock(&jfs_log_mutex);
+@@ -1162,7 +1162,7 @@ static int open_inline_log(struct super_block *sb)
+ 	init_waitqueue_head(&log->syncwait);
+ 
+ 	set_bit(log_INLINELOG, &log->flag);
+-	log->bdev = sb->s_bdev;
++	log->bdev_handle = sb->s_bdev_handle;
+ 	log->base = addressPXD(&JFS_SBI(sb)->logpxd);
+ 	log->size = lengthPXD(&JFS_SBI(sb)->logpxd) >>
+ 	    (L2LOGPSIZE - sb->s_blocksize_bits);
+@@ -1436,7 +1436,7 @@ int lmLogClose(struct super_block *sb)
+ {
+ 	struct jfs_sb_info *sbi = JFS_SBI(sb);
+ 	struct jfs_log *log = sbi->log;
+-	struct block_device *bdev;
++	struct bdev_handle *bdev_handle;
+ 	int rc = 0;
+ 
+ 	jfs_info("lmLogClose: log:0x%p", log);
+@@ -1482,10 +1482,10 @@ int lmLogClose(struct super_block *sb)
+ 	 *	external log as separate logical volume
+ 	 */
+ 	list_del(&log->journal_list);
+-	bdev = log->bdev;
++	bdev_handle = log->bdev_handle;
+ 	rc = lmLogShutdown(log);
+ 
+-	blkdev_put(bdev, log);
++	bdev_release(bdev_handle);
+ 
+ 	kfree(log);
+ 
+@@ -1972,7 +1972,7 @@ static int lbmRead(struct jfs_log * log, int pn, struct lbuf ** bpp)
+ 
+ 	bp->l_flag |= lbmREAD;
+ 
+-	bio = bio_alloc(log->bdev, 1, REQ_OP_READ, GFP_NOFS);
++	bio = bio_alloc(log->bdev_handle->bdev, 1, REQ_OP_READ, GFP_NOFS);
+ 	bio->bi_iter.bi_sector = bp->l_blkno << (log->l2bsize - 9);
+ 	__bio_add_page(bio, bp->l_page, LOGPSIZE, bp->l_offset);
+ 	BUG_ON(bio->bi_iter.bi_size != LOGPSIZE);
+@@ -2113,7 +2113,8 @@ static void lbmStartIO(struct lbuf * bp)
+ 
+ 	jfs_info("lbmStartIO");
+ 
+-	bio = bio_alloc(log->bdev, 1, REQ_OP_WRITE | REQ_SYNC, GFP_NOFS);
++	bio = bio_alloc(log->bdev_handle->bdev, 1, REQ_OP_WRITE | REQ_SYNC,
++			GFP_NOFS);
+ 	bio->bi_iter.bi_sector = bp->l_blkno << (log->l2bsize - 9);
+ 	__bio_add_page(bio, bp->l_page, LOGPSIZE, bp->l_offset);
+ 	BUG_ON(bio->bi_iter.bi_size != LOGPSIZE);
+diff --git a/fs/jfs/jfs_logmgr.h b/fs/jfs/jfs_logmgr.h
+index 805877ce50204..84aa2d2539074 100644
+--- a/fs/jfs/jfs_logmgr.h
++++ b/fs/jfs/jfs_logmgr.h
+@@ -356,7 +356,7 @@ struct jfs_log {
+ 				 *    before writing syncpt.
+ 				 */
+ 	struct list_head journal_list; /* Global list */
+-	struct block_device *bdev; /* 4: log lv pointer */
++	struct bdev_handle *bdev_handle; /* 4: log lv pointer */
+ 	int serial;		/* 4: log mount serial number */
+ 
+ 	s64 base;		/* @8: log extent address (inline log ) */
+diff --git a/fs/jfs/jfs_mount.c b/fs/jfs/jfs_mount.c
+index 631b8bd3e4384..9b5c6a20b30c8 100644
+--- a/fs/jfs/jfs_mount.c
++++ b/fs/jfs/jfs_mount.c
+@@ -430,7 +430,8 @@ int updateSuper(struct super_block *sb, uint state)
+ 
+ 	if (state == FM_MOUNT) {
+ 		/* record log's dev_t and mount serial number */
+-		j_sb->s_logdev = cpu_to_le32(new_encode_dev(sbi->log->bdev->bd_dev));
++		j_sb->s_logdev = cpu_to_le32(
++			new_encode_dev(sbi->log->bdev_handle->bdev->bd_dev));
+ 		j_sb->s_logserial = cpu_to_le32(sbi->log->serial);
+ 	} else if (state == FM_CLEAN) {
+ 		/*
 -- 
 2.43.0
 
