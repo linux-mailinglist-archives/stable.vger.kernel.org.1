@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-69127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8123B953593
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACB39532DA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 652711F26BE0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8C2DB22B2C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECEC19FA9D;
-	Thu, 15 Aug 2024 14:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD27E1AC427;
+	Thu, 15 Aug 2024 14:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwdV+YrM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sq6uvZrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58DA1AC893;
-	Thu, 15 Aug 2024 14:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C11A44376;
+	Thu, 15 Aug 2024 14:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732756; cv=none; b=NCeKmlMpURBUeY0s3x5LPU3pvIV+e0zmquusX14H8uja+yA33afm6mSvMXxu2yrXLp6JUiNq9zx4hPYUMSxrrvApXpkqKWvr62lKPd4lkcy3mR3WxKZv/WNF7zcBGrECqGwjcxZw3z6svsgUUwBGFSGIThiiamh/0L4UPzVsOw8=
+	t=1723730901; cv=none; b=D2XxHjOgA7kHHnOaYt/rWP85YzqH5yAYoTEbTE6eWvj1KUsf9UM0dcIHh0zhkl0YfD5TvLimpXJ2QWN5q4qlBGEHYtWH9PUNm2svOnUmmIdd2lAPueiuGDGJCHy2I/Kq5Plz2EuzS+hmWvcVXVXxe9iUXOXF+M1MTDK5Z2UM4Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732756; c=relaxed/simple;
-	bh=yo9718unBGlHVDwumQmyOc24eGEsAi/82bfzEG4QBaY=;
+	s=arc-20240116; t=1723730901; c=relaxed/simple;
+	bh=50ZwpOstUmYkDYBi2NnkghgtLvlzo/ZrLNT7DeG97Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDnJHtXnyTZOUg0GH/HuhPZWtzF5dT1BPajYfyC8rNbxIzBUbaZv2V6cO49gS8k9Z++JxC0xyvGXmCKYVBNn4GDJnvwgEp2yxtHP3Cn+rvNuAJWJ7b9XqLwGMsdkrmn4xjvPtF8HiouvQvhCVvdpTKweP9QsSGsE7SA10UhnUak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwdV+YrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5969C32786;
-	Thu, 15 Aug 2024 14:39:15 +0000 (UTC)
+	 MIME-Version; b=CoqaXk0L2pWv/+iL0s1pkoueiu2X6m6KBg6PX7Hq+JBUNVMB3lPRztKgctQsXsKr3q2Wyk9iOJz/1l3zKNz7AWClZMHFVNCPRwRQtbAfkGTg7dUaq00qsfHmIa1qfMfCol8bKhrlp6GRy1Bm2byryXzv+IMio5+08iFKyOSirAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sq6uvZrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B3FC32786;
+	Thu, 15 Aug 2024 14:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732756;
-	bh=yo9718unBGlHVDwumQmyOc24eGEsAi/82bfzEG4QBaY=;
+	s=korg; t=1723730901;
+	bh=50ZwpOstUmYkDYBi2NnkghgtLvlzo/ZrLNT7DeG97Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UwdV+YrMDZ2A0Qj/h0veWlOJRjQ8zjcc1Pao9mC47OtPmkDngE8zqU9QM50vaHn14
-	 WjqpXTTY0LekN2bH4XWjE6nLhsN5POzl2F4E5/BplfrKdtj3xr7NG/Tgnb0gyan6FU
-	 jjOu9KTpg/Hewlux4pY6JxvWYf1oKSPae5q3TX/E=
+	b=sq6uvZrNbws2EX9xLiwcudGOzsJVZWWlTisjApS0TsN2RTMGUmpygBy/Mvekhcoqu
+	 iFopNnaWTNyVwcwEvAnd4p9UqfrpOF1821ChXienuukaYMaqZuPGUErI28Ez/0f7jW
+	 JEgbYxYfAZpPseKUqNRtsPh14Jk2JTDm2wE3jqZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	syzbot+411debe54d318eaed386@syzkaller.appspotmail.com,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 276/352] jbd2: avoid memleak in jbd2_journal_write_metadata_buffer
-Date: Thu, 15 Aug 2024 15:25:42 +0200
-Message-ID: <20240815131930.120014663@linuxfoundation.org>
+Subject: [PATCH 6.6 29/67] jfs: fix shift-out-of-bounds in dbJoin
+Date: Thu, 15 Aug 2024 15:25:43 +0200
+Message-ID: <20240815131839.446390501@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-[ Upstream commit cc102aa24638b90e04364d64e4f58a1fa91a1976 ]
+[ Upstream commit cca974daeb6c43ea971f8ceff5a7080d7d49ee30 ]
 
-The new_bh is from alloc_buffer_head, we should call free_buffer_head to
-free it in error case.
+Currently while joining the leaf in a buddy system there is shift out
+of bound error in calculation of BUDSIZE. Added the required check
+to the BUDSIZE and fixed the documentation as well.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240514112438.1269037-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: syzbot+411debe54d318eaed386@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=411debe54d318eaed386
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/journal.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/jfs/jfs_dmap.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 4ae4b85ea1877..205e6c7c2fd0c 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -412,6 +412,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
- 		tmp = jbd2_alloc(bh_in->b_size, GFP_NOFS);
- 		if (!tmp) {
- 			brelse(new_bh);
-+			free_buffer_head(new_bh);
- 			return -ENOMEM;
- 		}
- 		spin_lock(&jh_in->b_state_lock);
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index cb3cda1390adb..8eec84c651bfb 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2763,7 +2763,9 @@ static int dbBackSplit(dmtree_t *tp, int leafno, bool is_ctl)
+  *	leafno	- the number of the leaf to be updated.
+  *	newval	- the new value for the leaf.
+  *
+- * RETURN VALUES: none
++ * RETURN VALUES:
++ *  0		- success
++ *	-EIO	- i/o error
+  */
+ static int dbJoin(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ {
+@@ -2790,6 +2792,10 @@ static int dbJoin(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ 		 * get the buddy size (number of words covered) of
+ 		 * the new value.
+ 		 */
++
++		if ((newval - tp->dmt_budmin) > BUDMIN)
++			return -EIO;
++
+ 		budsz = BUDSIZE(newval, tp->dmt_budmin);
+ 
+ 		/* try to join.
 -- 
 2.43.0
 
