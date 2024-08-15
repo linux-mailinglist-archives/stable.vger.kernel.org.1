@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-68318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340779531A0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:56:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6F7952F51
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF3DC28B74E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:56:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A317E1C23013
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DAD19E7F6;
-	Thu, 15 Aug 2024 13:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA037DA78;
+	Thu, 15 Aug 2024 13:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqYHi+01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7x56szZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AD117C9A9;
-	Thu, 15 Aug 2024 13:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17207DA8A;
+	Thu, 15 Aug 2024 13:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730191; cv=none; b=d4ntIt5ZIZ7sw4L/Igcdj44AE43KUexUpDyUs/73cC81h6npEjQRY858qr5PuGhxoNG/aBvIbIy44fOKv/TjSaFvwKl9HKAzgmTeoLfiLV37w020/ypnqEyAvNpjPOAFwLeM0vGTvbGs9hc9H5Scbns67MjHxshjxm4+0dzJBV8=
+	t=1723728668; cv=none; b=uunOXuZ0c5hawY0ebE5wHS7SWqzjDHxnzBEm5wf9EPhM4UqRFtkhc3PFHKZty1NWtiOEdKmSZZOCMNvK+aZjXhyi4hqxDls+ymOHzFqWMOMxbtlZDvXY/pFDZSejARS+pQgLMP0EMoUvmMwXsttzV4ZE5hjjC0gf9VMO81pW0Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730191; c=relaxed/simple;
-	bh=/TQ6ABcC5HZcACI/7ByMIBnXKGq20Iz815Ko3Pyydu4=;
+	s=arc-20240116; t=1723728668; c=relaxed/simple;
+	bh=xgyQ/IXZCl58k07WbhLBBERJjwrraNhmDTc5JRyaHUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5mNVBu6xyOXxJPjvqon9ufR4DJ9hbqAffy6hiR2bqag47mEs0ukUZTQDnYybf3scxX7R9d/WyRpThYspiitsEarBCd+kEhMaYa1TkoEZ/Ivud5wNpoIkrqCb8K/nvT4AWxm3laoHwfUiOe7v2/67Td24xy12yb2TaaOLFHpJw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqYHi+01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D0AC32786;
-	Thu, 15 Aug 2024 13:56:30 +0000 (UTC)
+	 MIME-Version; b=JCF30wApVPiSj3lnbqAW0MzTR/FtdQMrL9jmFjzZ+7kEe8G5QC9Um2UyAolDg4bBRYwG96gr9JZ4nJggbFwm5mzs2RoC/eY1eX/lrLeUdVUPXNVFPfrcAQLIig8RWTiOiW5eiIDj/NlRvi3GnnVzkdN9/zsZPQ6TzDHx2tj3Ydo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7x56szZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED14C32786;
+	Thu, 15 Aug 2024 13:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730191;
-	bh=/TQ6ABcC5HZcACI/7ByMIBnXKGq20Iz815Ko3Pyydu4=;
+	s=korg; t=1723728668;
+	bh=xgyQ/IXZCl58k07WbhLBBERJjwrraNhmDTc5JRyaHUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqYHi+0198CQ8o4mRxnM5LgERVuTB//XQ3lGsLFr4LMb7DlL6RLBJi0lTfPQVLjoL
-	 BBGuBPJUzLl+t/RLRBFLHu/cPF/SuOjkK7PSf+zpueNbuNp7mLUBWd5bs8q7I6/7BP
-	 hkn96aWo+16jHpLgPr5NLTbRFHPwWzsNEQQGIJxU=
+	b=z7x56szZQKVVGp3JEfz8YgwmOUAKQpVRbIDhmRPn8ffXx9JyUAeCnG9PAfDb1D1EE
+	 Rk1Az/31XE8nfrJLJT5gjqAyxdTPDvFAnYRxGbBaqgXhVlAqlLfBV5m3+617TvFAlI
+	 weXmmcthiSPzUbNCxgAy7g/b3QsRmtPsVzybW3CI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1b5e4e187cc586d05ea0@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 330/484] sched: act_ct: take care of padding in struct zones_ht_key
+	stable <stable@kernel.org>,
+	Paolo Pisati <p.pisati@gmail.com>,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 4.19 071/196] m68k: amiga: Turn off Warp1260 interrupts during boot
 Date: Thu, 15 Aug 2024 15:23:08 +0200
-Message-ID: <20240815131954.158364298@linuxfoundation.org>
+Message-ID: <20240815131854.793902302@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Paolo Pisati <p.pisati@gmail.com>
 
-[ Upstream commit 2191a54f63225b548fd8346be3611c3219a24738 ]
+commit 1d8491d3e726984343dd8c3cdbe2f2b47cfdd928 upstream.
 
-Blamed commit increased lookup key size from 2 bytes to 16 bytes,
-because zones_ht_key got a struct net pointer.
+On an Amiga 1200 equipped with a Warp1260 accelerator, an interrupt
+storm coming from the accelerator board causes the machine to crash in
+local_irq_enable() or auto_irq_enable().  Disabling interrupts for the
+Warp1260 in amiga_parse_bootinfo() fixes the problem.
 
-Make sure rhashtable_lookup() is not using the padding bytes
-which are not initialized.
-
- BUG: KMSAN: uninit-value in rht_ptr_rcu include/linux/rhashtable.h:376 [inline]
- BUG: KMSAN: uninit-value in __rhashtable_lookup include/linux/rhashtable.h:607 [inline]
- BUG: KMSAN: uninit-value in rhashtable_lookup include/linux/rhashtable.h:646 [inline]
- BUG: KMSAN: uninit-value in rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
- BUG: KMSAN: uninit-value in tcf_ct_flow_table_get+0x611/0x2260 net/sched/act_ct.c:329
-  rht_ptr_rcu include/linux/rhashtable.h:376 [inline]
-  __rhashtable_lookup include/linux/rhashtable.h:607 [inline]
-  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
-  rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
-  tcf_ct_flow_table_get+0x611/0x2260 net/sched/act_ct.c:329
-  tcf_ct_init+0xa67/0x2890 net/sched/act_ct.c:1408
-  tcf_action_init_1+0x6cc/0xb30 net/sched/act_api.c:1425
-  tcf_action_init+0x458/0xf00 net/sched/act_api.c:1488
-  tcf_action_add net/sched/act_api.c:2061 [inline]
-  tc_ctl_action+0x4be/0x19d0 net/sched/act_api.c:2118
-  rtnetlink_rcv_msg+0x12fc/0x1410 net/core/rtnetlink.c:6647
-  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2550
-  rtnetlink_rcv+0x34/0x40 net/core/rtnetlink.c:6665
-  netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
-  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1357
-  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1901
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  ____sys_sendmsg+0x877/0xb60 net/socket.c:2597
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2651
-  __sys_sendmsg net/socket.c:2680 [inline]
-  __do_sys_sendmsg net/socket.c:2689 [inline]
-  __se_sys_sendmsg net/socket.c:2687 [inline]
-  __x64_sys_sendmsg+0x307/0x4a0 net/socket.c:2687
-  x64_sys_call+0x2dd6/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:47
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Local variable key created at:
-  tcf_ct_flow_table_get+0x4a/0x2260 net/sched/act_ct.c:324
-  tcf_ct_init+0xa67/0x2890 net/sched/act_ct.c:1408
-
-Fixes: 88c67aeb1407 ("sched: act_ct: add netns into the key of tcf_ct_flow_table")
-Reported-by: syzbot+1b5e4e187cc586d05ea0@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/ZkjwzVwYeQtyAPrL@amaterasu.local
+Cc: stable <stable@kernel.org>
+Signed-off-by: Paolo Pisati <p.pisati@gmail.com>
+Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20240601153254.186225-1-p.pisati@gmail.com
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ct.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/m68k/amiga/config.c       |    9 +++++++++
+ include/uapi/linux/zorro_ids.h |    3 +++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index c602b0d698f29..a6c3b7145a105 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -41,6 +41,8 @@ static DEFINE_MUTEX(zones_mutex);
- struct zones_ht_key {
- 	struct net *net;
- 	u16 zone;
-+	/* Note : pad[] must be the last field. */
-+	u8  pad[];
- };
+--- a/arch/m68k/amiga/config.c
++++ b/arch/m68k/amiga/config.c
+@@ -181,6 +181,15 @@ int __init amiga_parse_bootinfo(const st
+ 			dev->slotsize = be16_to_cpu(cd->cd_SlotSize);
+ 			dev->boardaddr = be32_to_cpu(cd->cd_BoardAddr);
+ 			dev->boardsize = be32_to_cpu(cd->cd_BoardSize);
++
++			/* CS-LAB Warp 1260 workaround */
++			if (be16_to_cpu(dev->rom.er_Manufacturer) == ZORRO_MANUF(ZORRO_PROD_CSLAB_WARP_1260) &&
++			    dev->rom.er_Product == ZORRO_PROD(ZORRO_PROD_CSLAB_WARP_1260)) {
++
++				/* turn off all interrupts */
++				pr_info("Warp 1260 card detected: applying interrupt storm workaround\n");
++				*(uint32_t *)(dev->boardaddr + 0x1000) = 0xfff;
++			}
+ 		} else
+ 			pr_warn("amiga_parse_bootinfo: too many AutoConfig devices\n");
+ #endif /* CONFIG_ZORRO */
+--- a/include/uapi/linux/zorro_ids.h
++++ b/include/uapi/linux/zorro_ids.h
+@@ -449,6 +449,9 @@
+ #define  ZORRO_PROD_VMC_ISDN_BLASTER_Z2				ZORRO_ID(VMC, 0x01, 0)
+ #define  ZORRO_PROD_VMC_HYPERCOM_4				ZORRO_ID(VMC, 0x02, 0)
  
- struct tcf_ct_flow_table {
-@@ -57,7 +59,7 @@ struct tcf_ct_flow_table {
- static const struct rhashtable_params zones_params = {
- 	.head_offset = offsetof(struct tcf_ct_flow_table, node),
- 	.key_offset = offsetof(struct tcf_ct_flow_table, key),
--	.key_len = sizeof_field(struct tcf_ct_flow_table, key),
-+	.key_len = offsetof(struct zones_ht_key, pad),
- 	.automatic_shrinking = true,
- };
++#define ZORRO_MANUF_CSLAB					0x1400
++#define  ZORRO_PROD_CSLAB_WARP_1260				ZORRO_ID(CSLAB, 0x65, 0)
++
+ #define ZORRO_MANUF_INFORMATION					0x157C
+ #define  ZORRO_PROD_INFORMATION_ISDN_ENGINE_I			ZORRO_ID(INFORMATION, 0x64, 0)
  
--- 
-2.43.0
-
 
 
 
