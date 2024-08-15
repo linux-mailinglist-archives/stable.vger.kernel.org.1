@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B6C952F7C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B929531CA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6627B1C24623
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:33:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97D381C231B0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640891A3BCE;
-	Thu, 15 Aug 2024 13:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BE919DF58;
+	Thu, 15 Aug 2024 13:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWf0O8gD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHWJZhit"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AD11A2564;
-	Thu, 15 Aug 2024 13:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A567DA7D;
+	Thu, 15 Aug 2024 13:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728772; cv=none; b=o6fjukDbt25lxiXq7EKOV1wd1iQCcUKCmPQjfD2Zvrnaa34R9bNDLEQXO+AGTgPPWV8pavAaWw3oUspyVG9uQagOWso/kwFQi/awotx5LQqK6Pi1v0c109/LCBUcSEMR3zpG1u7ll/wlARC35rg5L7tbMEJmqRFUZE+16giwnOM=
+	t=1723730297; cv=none; b=H3r852sdw0tA5xDoU0fBGFxiobqM8vtg1puNCXU1VsxIX/q8RsgF7ilSOFqlzZ2ThZoslN+ybXqerCeAJblnDHSjINloz95JSMv/LTjApjGr3rR3Dwnww+Hs13Ru7Mmsy3/yzDUiaIqn7PUFylJHo0M5ep/CoadltT25oqBCfzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728772; c=relaxed/simple;
-	bh=DANKfrVSBRDYs7LpruvSwhbW00j75qypBKgOuT8oHiQ=;
+	s=arc-20240116; t=1723730297; c=relaxed/simple;
+	bh=kxNToy70nvYBkQRrCNJNUlwkpYbkzqRfoEZHLlhGN3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CSFXDvJU62A4z1lkzy8AFrcxYz6e5mw9BB4MNZWBenlESdq74+d0Ci1S61/ubCpPnlgwoIM3389BFz2OxPEhNcs4r27NsOosi9XKDxE2lUyPMNYDCHhEXx5T08jnDmeKyxNPe0E20D+XsQ3yShlJr357U3osbY6y1EubLJ/e+xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWf0O8gD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5EEC32786;
-	Thu, 15 Aug 2024 13:32:50 +0000 (UTC)
+	 MIME-Version; b=NfBOgJveUuIPPN/SW8nil8PCKFM4p1Bb7dR7XH2QdGYr4MzZwL4BJvyB7PxqAFuyk6hEmeTvl65H+PtPXmuPABzt1AmWjv1ohpJsAFhVELiTAhw/D5BLTI7a19W0/qeZW7UnaRwRIwaf2CKW2we5jOQejDk8kD54MZRrrxErcbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHWJZhit; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30EDC32786;
+	Thu, 15 Aug 2024 13:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728771;
-	bh=DANKfrVSBRDYs7LpruvSwhbW00j75qypBKgOuT8oHiQ=;
+	s=korg; t=1723730297;
+	bh=kxNToy70nvYBkQRrCNJNUlwkpYbkzqRfoEZHLlhGN3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWf0O8gDbkMCtWaVbhTXefukXX1Y7LhicIDPHIQCWQdYleWhFGBjnVL4l75w+o7T4
-	 74u0o6L5VLBaV4FSw5mbpPtPN149aoo41Cn/QEUnMz9K7DswcUvPOBn38GQOJFmiD8
-	 ykfEyGcAXuWg9AXLZNl8WPNFFSD7ynM4NpvsBecg=
+	b=mHWJZhitjPMw1HpJIYCPCUSyJG7kU+uj2Q49BTn0hZq7bqm+y5A3v5xH6HJOmMGSK
+	 Ff/Wn/62YlQFThNC1qYcLWntmtQj8TYUS7Sa8dKhWDQneTxyA4JDFCDOUZkbE24o9M
+	 UPDmXcC+0RtQNfT7peitC1G6UvB9bjsoYQTsiY/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Tung Nguyen <tung.q.nguyen@endava.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 104/196] tipc: Return non-zero value from tipc_udp_addr2str() on error
+Subject: [PATCH 5.15 363/484] Bluetooth: l2cap: always unlock channel in l2cap_conless_channel()
 Date: Thu, 15 Aug 2024 15:23:41 +0200
-Message-ID: <20240815131856.061620881@linuxfoundation.org>
+Message-ID: <20240815131955.454286862@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit fa96c6baef1b5385e2f0c0677b32b3839e716076 ]
+[ Upstream commit c531e63871c0b50c8c4e62c048535a08886fba3e ]
 
-tipc_udp_addr2str() should return non-zero value if the UDP media
-address is invalid. Otherwise, a buffer overflow access can occur in
-tipc_media_addr_printf(). Fix this by returning 1 on an invalid UDP
-media address.
+Add missing call to 'l2cap_chan_unlock()' on receive error handling
+path in 'l2cap_conless_channel()'.
 
-Fixes: d0f91938bede ("tipc: add ip/udp media type")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Tung Nguyen <tung.q.nguyen@endava.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a24cce144b98 ("Bluetooth: Fix reference counting of global L2CAP channels")
+Reported-by: syzbot+45ac74737e866894acb0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=45ac74737e866894acb0
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/udp_media.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bluetooth/l2cap_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index 1d62354797061..796309b50bb6a 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -127,8 +127,11 @@ static int tipc_udp_addr2str(struct tipc_media_addr *a, char *buf, int size)
- 		snprintf(buf, size, "%pI4:%u", &ua->ipv4, ntohs(ua->port));
- 	else if (ntohs(ua->proto) == ETH_P_IPV6)
- 		snprintf(buf, size, "%pI6:%u", &ua->ipv6, ntohs(ua->port));
--	else
-+	else {
- 		pr_err("Invalid UDP media address\n");
-+		return 1;
-+	}
-+
- 	return 0;
- }
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 43a21a90619d9..4d5dd82f26144 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7767,6 +7767,7 @@ static void l2cap_conless_channel(struct l2cap_conn *conn, __le16 psm,
+ 	bt_cb(skb)->l2cap.psm = psm;
  
+ 	if (!chan->ops->recv(chan, skb)) {
++		l2cap_chan_unlock(chan);
+ 		l2cap_chan_put(chan);
+ 		return;
+ 	}
 -- 
 2.43.0
 
