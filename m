@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-68990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A339534EE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB96953362
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99BFB1F29D6B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A00041F2447C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C5219FA9D;
-	Thu, 15 Aug 2024 14:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCB31B1417;
+	Thu, 15 Aug 2024 14:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUVcjTJQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecG8LeT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555F7210FB;
-	Thu, 15 Aug 2024 14:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5B41B0117;
+	Thu, 15 Aug 2024 14:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732311; cv=none; b=APlrJxyTqP1P2+9aHPao1XL+yc55+rbWYmZWTGTpS4BI2oeG7iBOTl3TgV3gp6M6C0cQxVut3V7g3jHyFMzauG6XDVwIB4luIzJfQJ0ZlI1AJZkaKOZbEnhd9MzL22+pMqZYH8cp7VI5+HAO0yS2G6L31HHgQNtYC4haKpj2xkw=
+	t=1723731262; cv=none; b=pL2RrpA/IPcKrdIKYg81wVLoJrz3Lz2iY7HsWkXqlpWeWtU+bpQTfbUKEfYawUZbjSFQD/mN+ahmPMAuFueE7y8ySoC+qxBBb3GdFblvCev1nrWQh304ERyu1x7XaGOQCMeg1BCY4nHA2NwmNH7tjyULwWAFMoI06cp8We6wGys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732311; c=relaxed/simple;
-	bh=E43/fLbzkgk1R6PKSBnI1nup9ifA/MhOsbQpzHKJj/s=;
+	s=arc-20240116; t=1723731262; c=relaxed/simple;
+	bh=gYrMKAo0Li5Lz/2XCOQU6mBYDlIx7WdjfTl5uV8Fdq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ul0rQKsQ8v6kreHD5f+tpoYH7nQJx6e9r/hQzFGxh0T6SvPY0uh5jISlExXYEJ8x3+EhrSzVp+HMo9F0cyFAj5mNP/B2N2hmOHqdqjVBWl7W3SFMSm/GnDDrQxdvD3S4RjAZtA0bSO7VRMs//N6C+tOQ1G2SyW8dqsuQqplBNb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUVcjTJQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A93C32786;
-	Thu, 15 Aug 2024 14:31:50 +0000 (UTC)
+	 MIME-Version; b=rHG8TXKgnDmRsOO/lC8V3awTI2ZfXr2QqHxaV37rN0t25R8YHthrl96K68HocdqF9jYoT+k09gV53xlH4Xv6iZrHsTts1wskHg22bjfrQr+ul68/pLo2vev7YxNjqCCH4ieeEhtOlc/Wcfttn/4lhfqQljlLlQqGTrotvnh6kP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecG8LeT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDDEC32786;
+	Thu, 15 Aug 2024 14:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732311;
-	bh=E43/fLbzkgk1R6PKSBnI1nup9ifA/MhOsbQpzHKJj/s=;
+	s=korg; t=1723731262;
+	bh=gYrMKAo0Li5Lz/2XCOQU6mBYDlIx7WdjfTl5uV8Fdq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUVcjTJQm6LSSEFDnv38QEBabIAKKRqXKZI49n8qeSr5RemzeX+VRabUCHPdQTpAF
-	 E8/CuVWGtMmQXaPx3w5ysOIa+peF3+tIU2Sw0FPiUNk26ZEvrd1iXq6oz2CEutcdLA
-	 R76jPPmH7zkYoP7jJg+N6kMMMTzC2tIEpDgbmaCs=
+	b=ecG8LeT8zAfa5ZPPof0oMS6x7RlSE5ImJOhaf46Umv13U8jbkTAZTebl645SPyvhR
+	 0Ze09da6kQDAcHparCDFRUVmfvnqaf67ZbISy1pXKHBBf9iIb/q5vQflXrlsqzFUY6
+	 8hH4o3UHFzz8ROuuGFy1+W50WNRAZrqQGpAr3fds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.10 140/352] task_work: s/task_work_cancel()/task_work_cancel_func()/
-Date: Thu, 15 Aug 2024 15:23:26 +0200
-Message-ID: <20240815131924.671692602@linuxfoundation.org>
+	Leon Romanovsky <leonro@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 074/259] RDMA/device: Return error earlier if port in not valid
+Date: Thu, 15 Aug 2024 15:23:27 +0200
+Message-ID: <20240815131905.660829708@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 68cbd415dd4b9c5b9df69f0f091879e56bf5907a upstream.
+[ Upstream commit 917918f57a7b139c043e78c502876f2c286f4f0a ]
 
-A proper task_work_cancel() API that actually cancels a callback and not
-*any* callback pointing to a given function is going to be needed for
-perf events event freeing. Do the appropriate rename to prepare for
-that.
+There is no need to allocate port data if port provided is not valid.
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240621091601.18227-2-frederic@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c2261dd76b54 ("RDMA/device: Add ib_device_set_netdev() as an alternative to get_netdev")
+Link: https://lore.kernel.org/r/022047a8b16988fc88d4426da50bf60a4833311b.1719235449.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/task_work.h |    2 +-
- kernel/irq/manage.c       |    2 +-
- kernel/task_work.c        |   10 +++++-----
- security/keys/keyctl.c    |    2 +-
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/infiniband/core/device.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/include/linux/task_work.h
-+++ b/include/linux/task_work.h
-@@ -24,7 +24,7 @@ int task_work_add(struct task_struct *ta
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index c7c3b9bae938c..c46d68e6ccd0e 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -2125,6 +2125,9 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
+ 	unsigned long flags;
+ 	int ret;
  
- struct callback_head *task_work_cancel_match(struct task_struct *task,
- 	bool (*match)(struct callback_head *, void *data), void *data);
--struct callback_head *task_work_cancel(struct task_struct *, task_work_func_t);
-+struct callback_head *task_work_cancel_func(struct task_struct *, task_work_func_t);
- void task_work_run(void);
++	if (!rdma_is_port_valid(ib_dev, port))
++		return -EINVAL;
++
+ 	/*
+ 	 * Drivers wish to call this before ib_register_driver, so we have to
+ 	 * setup the port data early.
+@@ -2133,9 +2136,6 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
+ 	if (ret)
+ 		return ret;
  
- static inline void exit_task_work(struct task_struct *task)
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -1230,7 +1230,7 @@ static int irq_thread(void *data)
- 	 * synchronize_hardirq(). So neither IRQTF_RUNTHREAD nor the
- 	 * oneshot mask bit can be set.
- 	 */
--	task_work_cancel(current, irq_thread_dtor);
-+	task_work_cancel_func(current, irq_thread_dtor);
- 	return 0;
- }
- 
---- a/kernel/task_work.c
-+++ b/kernel/task_work.c
-@@ -101,9 +101,9 @@ static bool task_work_func_match(struct
- }
- 
- /**
-- * task_work_cancel - cancel a pending work added by task_work_add()
-- * @task: the task which should execute the work
-- * @func: identifies the work to remove
-+ * task_work_cancel_func - cancel a pending work matching a function added by task_work_add()
-+ * @task: the task which should execute the func's work
-+ * @func: identifies the func to match with a work to remove
-  *
-  * Find the last queued pending work with ->func == @func and remove
-  * it from queue.
-@@ -112,7 +112,7 @@ static bool task_work_func_match(struct
-  * The found work or NULL if not found.
-  */
- struct callback_head *
--task_work_cancel(struct task_struct *task, task_work_func_t func)
-+task_work_cancel_func(struct task_struct *task, task_work_func_t func)
- {
- 	return task_work_cancel_match(task, task_work_func_match, func);
- }
-@@ -149,7 +149,7 @@ void task_work_run(void)
- 		if (!work)
- 			break;
- 		/*
--		 * Synchronize with task_work_cancel(). It can not remove
-+		 * Synchronize with task_work_cancel_match(). It can not remove
- 		 * the first entry == work, cmpxchg(task_works) must fail.
- 		 * But it can remove another entry from the ->next list.
- 		 */
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -1694,7 +1694,7 @@ long keyctl_session_to_parent(void)
- 		goto unlock;
- 
- 	/* cancel an already pending keyring replacement */
--	oldwork = task_work_cancel(parent, key_change_session_keyring);
-+	oldwork = task_work_cancel_func(parent, key_change_session_keyring);
- 
- 	/* the replacement session keyring is applied just prior to userspace
- 	 * restarting */
+-	if (!rdma_is_port_valid(ib_dev, port))
+-		return -EINVAL;
+-
+ 	pdata = &ib_dev->port_data[port];
+ 	spin_lock_irqsave(&pdata->netdev_lock, flags);
+ 	old_ndev = rcu_dereference_protected(
+-- 
+2.43.0
+
 
 
 
