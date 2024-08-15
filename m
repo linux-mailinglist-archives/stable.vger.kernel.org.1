@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701EA953380
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28159534DD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFA01B2138D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313E91C211F7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93361AD3F3;
-	Thu, 15 Aug 2024 14:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59411A4F20;
+	Thu, 15 Aug 2024 14:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBDyR1Mu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dp4+oa/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ABF19FA91;
-	Thu, 15 Aug 2024 14:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CD51DFFB;
+	Thu, 15 Aug 2024 14:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731350; cv=none; b=XCqtqHhqab3bOT1o/b/suaursvAZnTDN/jZzICSfZ58OMhxm9IBQasvRTxcxSvkZfMD+KWMzidMy3cw1B7IOzo4YZ5NiUxCSkMjf8AHD0qfnGGg/m1I2RAP8RCSGdul0HqcV6cVoaYmQHGuaYZIWIcH8x1p0yIJ3uj3JDvctqUU=
+	t=1723732271; cv=none; b=Jj38ndZzT53loGoEFbbAPLWqTloQrCd5XeBQhCxvgkXg54ipBsO4H1H8G79j1rLrSZU18w+mDCs6lz2fMA97Pd/Gb/KHW/fxy8gXBMddmPud8LcJY46vpSoAF6EK/X+oPSyNt+QBzJlYRDbWZSo31BThI+7qeiPmdL4K6XtbcuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731350; c=relaxed/simple;
-	bh=c2WbSisLtwYX3ZgMq+VBnx5BC7Jmyz8NxVxAkpyYNhw=;
+	s=arc-20240116; t=1723732271; c=relaxed/simple;
+	bh=0MLEfnPBHog+ghEUW76Ws6lgsQuJ04S89wFitB+ZFQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1KQwx23HYxH59k413O7kUcYGMXlgwqbT2oO71oJQO6QYEC5Cy6BEpv6WLdZsqWipu+wui6wGH1wyOh8nAp969hFm5B/uXMxt9kl2roAjKbkEUY2zzO63r3TJWtdgW4zBCOHWL24qzqCw4aQEH5UsVkeR3xCka/a6q/tjbf6ENI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBDyR1Mu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC74CC4AF0C;
-	Thu, 15 Aug 2024 14:15:49 +0000 (UTC)
+	 MIME-Version; b=PP7fwUmOJEdOOth68P9v5iz7kkBI638hz24NK/jJWda0mG/wCMCz8awTJo4WRdHYTJwkmmH+TD00pxyi2+aZDhPB4oyp86tJeesRrqVlAGibavV21pR5V9NQ75jCh4p366wqvqQTbHyJW2RpJz+ntR723vi2MYtWRn7i/hiXpc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dp4+oa/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A60C4AF10;
+	Thu, 15 Aug 2024 14:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731350;
-	bh=c2WbSisLtwYX3ZgMq+VBnx5BC7Jmyz8NxVxAkpyYNhw=;
+	s=korg; t=1723732271;
+	bh=0MLEfnPBHog+ghEUW76Ws6lgsQuJ04S89wFitB+ZFQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBDyR1MuhnhMk17bOEmttDXbtSQ9RqydJkp0YJhWoKAZo1QgV0Q8bGFz+BFMwlYoO
-	 8lA8J5QhxSgvriYbV48viluJl8bGKgnkGyo8gEdVNySQrgz7dOPNMzyNlW3aAxzBxI
-	 tV3QSrYOtB6eB94BHMLQaUzkrkBdTB3zfi98KFaA=
+	b=Dp4+oa/341eNyAChq3ksmKaJjHSGHNwQjVUI2kcdak5iwH9lbxsnlj2++R2v5sNsb
+	 HELp0RU6wPhZ6G4csaEny7yXEI2Snc0yrJkOkpbonMWPhyLtSjab3EvMgrwTR/6uoc
+	 oKfODou1RGcE66m53oLuhEJxbRxO0oP7RUB7RBiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 060/259] drm/etnaviv: fix DMA direction handling for cached RW buffers
-Date: Thu, 15 Aug 2024 15:23:13 +0200
-Message-ID: <20240815131905.127481291@linuxfoundation.org>
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 128/352] ipv6: take care of scope when choosing the src addr
+Date: Thu, 15 Aug 2024 15:23:14 +0200
+Message-ID: <20240815131924.202432331@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit 58979ad6330a70450ed78837be3095107d022ea9 ]
+commit abb9a68d2c64dd9b128ae1f2e635e4d805e7ce64 upstream.
 
-The dma sync operation needs to be done with DMA_BIDIRECTIONAL when
-the BO is prepared for both read and write operations.
+When the source address is selected, the scope must be checked. For
+example, if a loopback address is assigned to the vrf device, it must not
+be chosen for packets sent outside.
 
-Fixes: a8c21a5451d8 ("drm/etnaviv: add initial etnaviv DRM driver")
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: afbac6010aec ("net: ipv6: Address selection needs to consider L3 domains")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240710081521.3809742-4-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gem.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv6/addrconf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-index 5107a0f5bc7fe..2aabe8433cee2 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-@@ -363,9 +363,11 @@ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1822,7 +1822,8 @@ int ipv6_dev_get_saddr(struct net *net,
+ 							    master, &dst,
+ 							    scores, hiscore_idx);
  
- static inline enum dma_data_direction etnaviv_op_to_dma_dir(u32 op)
- {
--	if (op & ETNA_PREP_READ)
-+	op &= ETNA_PREP_READ | ETNA_PREP_WRITE;
-+
-+	if (op == ETNA_PREP_READ)
- 		return DMA_FROM_DEVICE;
--	else if (op & ETNA_PREP_WRITE)
-+	else if (op == ETNA_PREP_WRITE)
- 		return DMA_TO_DEVICE;
- 	else
- 		return DMA_BIDIRECTIONAL;
--- 
-2.43.0
-
+-			if (scores[hiscore_idx].ifa)
++			if (scores[hiscore_idx].ifa &&
++			    scores[hiscore_idx].scopedist >= 0)
+ 				goto out;
+ 		}
+ 
 
 
 
