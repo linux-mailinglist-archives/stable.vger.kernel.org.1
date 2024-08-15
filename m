@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-68901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A1695348A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:27:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13FD4953467
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B0811F291E3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:27:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 872B0B27092
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3801A4F16;
-	Thu, 15 Aug 2024 14:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706FD1A76AB;
+	Thu, 15 Aug 2024 14:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b80xARSG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtqP//ZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC381A3BCE;
-	Thu, 15 Aug 2024 14:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4471A706A;
+	Thu, 15 Aug 2024 14:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732025; cv=none; b=J+rVt6F00FWFwQ9ii4MNwzF5XRsQKSDagvVifZ5WTs6T7VikuMNBCAHITRYSerow+dp0Oe32h6iJFCiM/lg9401qQD3AKxTSzjcZIooqRMV65gQJzF1Vu3w465sqUXYB9x52CYnml4Wf6Xzpi7iPKJdo7V0KkxNWV3/vEzPIqEc=
+	t=1723731926; cv=none; b=CnyMCBT4UllFMW9K5+n1w+WpFQ+i8jfi5cYTj7UadDbp6mIrcPJIGan7bnN2nmg1wqHtgzuWw04NlGz7lnebYepC0u+8mby1ZtqMWuT/Ksym1mZvRi80p34QoG6uUrPhuJ68GTvXRPUi/L9ocv/1VVhuJPnlbbkwWGvzyAuoZnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732025; c=relaxed/simple;
-	bh=9o2K4zlulNDRLOp0won8FnnPxVmXDB9zRe2VNlurMiY=;
+	s=arc-20240116; t=1723731926; c=relaxed/simple;
+	bh=UH9Z1v4fKUCDNbMcUBraMe2FrAcS/mUUnYsSnw1Rxe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKNOLWbttYXIGygSgXS9VSQmDXIXpQNLGXD3KduVVWYWAbZaU8VQyxepZLAMACi35kc+/D3Z3p/9iOv0uVNTbuesfFjK2xvQ+5ekCsBFVZh/rtz71RueuCoyml0Y6qDMVnO4adJtMmtQp/iSg5IRcICElcjiFhKCrLnO6Erelks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b80xARSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AE6C32786;
-	Thu, 15 Aug 2024 14:27:04 +0000 (UTC)
+	 MIME-Version; b=H0uyS1d+l0u1sdpzavVNvFPbqGZRrDiwImISLmk53SVu4j74F6KmjaLTF4OULrBA975vXPPVHLpaP3+ggV15HL68pgEzgLdVk2asAC6McLcAbIpP80KujNoBgl/ZDLyfBzdfuzEchGMMSMelRjWazBK7yyK+pVwZ1JJFKWudnNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtqP//ZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A979FC4AF0A;
+	Thu, 15 Aug 2024 14:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732025;
-	bh=9o2K4zlulNDRLOp0won8FnnPxVmXDB9zRe2VNlurMiY=;
+	s=korg; t=1723731926;
+	bh=UH9Z1v4fKUCDNbMcUBraMe2FrAcS/mUUnYsSnw1Rxe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b80xARSGCZRoeH/mriL3NIBNfSZsZYtZHFg7q0RpPczuxI1yneFRFVpUfB4ha7JJO
-	 0RziDDGgh/S1QlqmcDhmKcLJeUbXuQhW2eNs7uyl2VjOgrQvy2sR+LTMz4gciFOgzk
-	 +nIwaRL00p6O1cvMcPiFsP7gXYxL2oxQuzpaz/s4=
+	b=JtqP//ZBStqzPaRKxihYNfgDIdnvF/unBhtxtPSbcUwXFXRsvnDWh0Hjv/PKYR//P
+	 08WNEEQTp4RF3TSlsbdW4bDN9OHPwAz45RxiUH5fOl5fVIwrQ6mI++QGyqkj9zaMtr
+	 gSzt1ZNaCXaAU1HfIk4RmTquSFwe/PMvcH7VWJgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Felsch <m.felsch@pengutronix.de>,
+	Michael Walle <mwalle@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 020/352] ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node
-Date: Thu, 15 Aug 2024 15:21:26 +0200
-Message-ID: <20240815131919.997601208@linuxfoundation.org>
+Subject: [PATCH 5.10 021/352] ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset
+Date: Thu, 15 Aug 2024 15:21:27 +0200
+Message-ID: <20240815131920.036605684@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -66,48 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit 5694eed98cca5c164ebb5b831b65b4c9eee4b2d5 ]
+[ Upstream commit edfea889a049abe80f0d55c0365bf60fbade272f ]
 
-Add ethernet-phy node so we can drop the deprecated fec phy-reset-gpios
-property. The reset-assert-us value is taken from the existing logic
-since the fec driver will add an 1ms assert delay per default if
-phy-reset-gpios is used and phy-reset-duration is not specified.
+The PHY reset line is connected to both the SoC (GPIO1_25) and
+the CPLD. We must not use the GPIO1_25 as it will drive against
+the output buffer of the CPLD. Instead there is another GPIO
+(GPIO2_01), an input to the CPLD, which will tell the CPLD to
+assert the PHY reset line.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Fixes: 2a51f9dae13d ("ARM: dts: imx6qdl-kontron-samx6i: Add iMX6-based Kontron SMARC-sAMX6i module")
+Fixes: 5694eed98cca ("ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: edfea889a049 ("ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
-index 37d94aa45a8b7..e2b7bfddedcda 100644
+index e2b7bfddedcda..cf001c251fe37 100644
 --- a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
 +++ b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
-@@ -260,7 +260,19 @@ &fec {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet>;
- 	phy-mode = "rgmii";
--	phy-reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
-+	phy-handle = <&ethphy>;
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy: ethernet-phy@1 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <1>;
-+			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <1000>;
-+		};
-+	};
- };
+@@ -269,7 +269,7 @@ mdio {
+ 		ethphy: ethernet-phy@1 {
+ 			compatible = "ethernet-phy-ieee802.3-c22";
+ 			reg = <1>;
+-			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
++			reset-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <1000>;
+ 		};
+ 	};
+@@ -512,7 +512,7 @@ MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL 0x1b0b0
+ 			MX6QDL_PAD_ENET_MDIO__ENET_MDIO       0x1b0b0
+ 			MX6QDL_PAD_ENET_MDC__ENET_MDC         0x1b0b0
+ 			MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK  0x1b0b0
+-			MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25    0x1b0b0 /* RST_GBE0_PHY# */
++			MX6QDL_PAD_NANDF_D1__GPIO2_IO01       0x1b0b0 /* RST_GBE0_PHY# */
+ 		>;
+ 	};
  
- &i2c_intern {
 -- 
 2.43.0
 
