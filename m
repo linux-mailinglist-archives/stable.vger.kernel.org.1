@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-67935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AF6952FD2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4BA952FD4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4360E289FD1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 963DA1F21407
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2000019E825;
-	Thu, 15 Aug 2024 13:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D87419EECF;
+	Thu, 15 Aug 2024 13:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THEI1J6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xEZ2vnHA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03AA1714AE;
-	Thu, 15 Aug 2024 13:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE44C7DA78;
+	Thu, 15 Aug 2024 13:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728980; cv=none; b=Vwzfg9sLbXlksJSQTgGSsnmgK1VwRDGZl7cTe4IFvOcIEj6qCvw6sN0YcUnJzbpE6Cqt3sNJ0XzCiJBX27WHwy1QajGd15DAFBUX0+qxdsDmavd6IA8+8d5CPr8YSCPjc3ym+CsY6O26HymoZ6MXd2VdTI2Xb0P5gf4NAk1orUE=
+	t=1723728986; cv=none; b=Zy3GICkPmBMkUW0okJ2s1tixJK8b93XlkEDREu039PiYpuubc5cfXrLXxFQgJNxU5R6nxgnY4EHYfm4NiwH5c5621AEXNGzT6jY9Xs8hcZ++VpaNShbkatK3sPIz86Q9zEDBtPrpf+zjZCMffgl1HP7CHmxL6qX+TzQxQ3zaRE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728980; c=relaxed/simple;
-	bh=ZxbUUQKlrXCNC7xWmZeoS9uMR8h6BCfBgxZPFcIlg/g=;
+	s=arc-20240116; t=1723728986; c=relaxed/simple;
+	bh=yuPNE6iMJbp00A3CEnYzT94jXTJj2aYl0LX3iVlg0KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GG7FDKRAcSxRBGfRCXMrJbaFOOvhdNiwR15KfTyD2lpwrnlD6uVALI2gwlBzsxqEb2AdLBUaGJ0U2GUCZ2g3B8MkFKDT6vXp98PD3nDUYJ8D6khZqTzS6jzMhFyMsE0VEC9vY1lHVzVASay8jl8f02oQOHU8+W0TX54yNV9H/nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THEI1J6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03232C32786;
-	Thu, 15 Aug 2024 13:36:19 +0000 (UTC)
+	 MIME-Version; b=chBma1TF2J8mogbnLondEtww6ul7KtivSrVd8SX/xnG9OVp5p+g3P/uhBogMKwdzjk9+9/TYztrBrcNEoWFouMsbSiaq8GhmD4+rKe5Gh+AMXqIU/JPhpJwLZo89e5eD8Z6bPMdX25fSJwNfn+amHK5CTZj1+O8YzgJw97JUwTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xEZ2vnHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EC7C32786;
+	Thu, 15 Aug 2024 13:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728980;
-	bh=ZxbUUQKlrXCNC7xWmZeoS9uMR8h6BCfBgxZPFcIlg/g=;
+	s=korg; t=1723728986;
+	bh=yuPNE6iMJbp00A3CEnYzT94jXTJj2aYl0LX3iVlg0KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THEI1J6XJUowZyCEZmxIQkQNknOY9L5V9aHQe13YIvuGSqDDwJMdKINI5eNoYMK9A
-	 zQjMIf/JdtoG0gJB7MS69Tr7jEk0tm6vGDHrvwU35N56Rw+0YS5EkmABpIZVb0vVey
-	 BuXt9IOBQqWcWS/rAdyXmY7/dKtQ88xL8htIIt8Q=
+	b=xEZ2vnHAyX+x6yGOWzS++Kms2rN8idRmPVeiJ2RS2bHmIhfbk3GnCxSRo+o3WASS6
+	 mIBSXrnRVqTJUyFiCoWCsLonf6U4C3YBXvT1bXWMiCSvSYT+VQIb3CzUBAj+hQsYkN
+	 D5sunGSYDOqc/9Jz0t/meCppwTKn4vB2eGNawfdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 172/196] ALSA: line6: Fix racy access to midibuf
-Date: Thu, 15 Aug 2024 15:24:49 +0200
-Message-ID: <20240815131858.651781774@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 4.19 173/196] usb: vhci-hcd: Do not drop references before new references are gained
+Date: Thu, 15 Aug 2024 15:24:50 +0200
+Message-ID: <20240815131858.689889024@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
 References: <20240815131852.063866671@linuxfoundation.org>
@@ -65,61 +66,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 15b7a03205b31bc5623378c190d22b7ff60026f1 upstream.
+commit afdcfd3d6fcdeca2735ca8d994c5f2d24a368f0a upstream.
 
-There can be concurrent accesses to line6 midibuf from both the URB
-completion callback and the rawmidi API access.  This could be a cause
-of KMSAN warning triggered by syzkaller below (so put as reported-by
-here).
+At a few places the driver carries stale pointers
+to references that can still be used. Make sure that does not happen.
+This strictly speaking closes ZDI-CAN-22273, though there may be
+similar races in the driver.
 
-This patch protects the midibuf call of the former code path with a
-spinlock for avoiding the possible races.
-
-Reported-by: syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/00000000000000949c061df288c5@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240805130129.10872-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240709113851.14691-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/line6/driver.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/usbip/vhci_hcd.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/sound/usb/line6/driver.c
-+++ b/sound/usb/line6/driver.c
-@@ -300,12 +300,14 @@ static void line6_data_received(struct u
- {
- 	struct usb_line6 *line6 = (struct usb_line6 *)urb->context;
- 	struct midi_buffer *mb = &line6->line6midi->midibuf_in;
-+	unsigned long flags;
- 	int done;
- 
- 	if (urb->status == -ESHUTDOWN)
- 		return;
- 
- 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
-+		spin_lock_irqsave(&line6->line6midi->lock, flags);
- 		done =
- 			line6_midibuf_write(mb, urb->transfer_buffer, urb->actual_length);
- 
-@@ -314,12 +316,15 @@ static void line6_data_received(struct u
- 			dev_dbg(line6->ifcdev, "%d %d buffer overflow - message skipped\n",
- 				done, urb->actual_length);
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -751,6 +751,7 @@ static int vhci_urb_enqueue(struct usb_h
+ 	 *
+ 	 */
+ 	if (usb_pipedevice(urb->pipe) == 0) {
++		struct usb_device *old;
+ 		__u8 type = usb_pipetype(urb->pipe);
+ 		struct usb_ctrlrequest *ctrlreq =
+ 			(struct usb_ctrlrequest *) urb->setup_packet;
+@@ -761,14 +762,15 @@ static int vhci_urb_enqueue(struct usb_h
+ 			goto no_need_xmit;
  		}
-+		spin_unlock_irqrestore(&line6->line6midi->lock, flags);
  
- 		for (;;) {
-+			spin_lock_irqsave(&line6->line6midi->lock, flags);
- 			done =
- 				line6_midibuf_read(mb, line6->buffer_message,
- 						   LINE6_MIDI_MESSAGE_MAXLEN,
- 						   LINE6_MIDIBUF_READ_RX);
-+			spin_unlock_irqrestore(&line6->line6midi->lock, flags);
++		old = vdev->udev;
+ 		switch (ctrlreq->bRequest) {
+ 		case USB_REQ_SET_ADDRESS:
+ 			/* set_address may come when a device is reset */
+ 			dev_info(dev, "SetAddress Request (%d) to port %d\n",
+ 				 ctrlreq->wValue, vdev->rhport);
  
- 			if (done <= 0)
- 				break;
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 
+ 			spin_lock(&vdev->ud.lock);
+ 			vdev->ud.status = VDEV_ST_USED;
+@@ -787,8 +789,8 @@ static int vhci_urb_enqueue(struct usb_h
+ 				usbip_dbg_vhci_hc(
+ 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+ 
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 			goto out;
+ 
+ 		default:
+@@ -1095,6 +1097,7 @@ static void vhci_shutdown_connection(str
+ static void vhci_device_reset(struct usbip_device *ud)
+ {
+ 	struct vhci_device *vdev = container_of(ud, struct vhci_device, ud);
++	struct usb_device *old = vdev->udev;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&ud->lock, flags);
+@@ -1102,8 +1105,8 @@ static void vhci_device_reset(struct usb
+ 	vdev->speed  = 0;
+ 	vdev->devid  = 0;
+ 
+-	usb_put_dev(vdev->udev);
+ 	vdev->udev = NULL;
++	usb_put_dev(old);
+ 
+ 	if (ud->tcp_socket) {
+ 		sockfd_put(ud->tcp_socket);
 
 
 
