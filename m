@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-68475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C218A95327A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA63D9533EC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 004FA1C2564F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FA1DB2169B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879631A7067;
-	Thu, 15 Aug 2024 14:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FB719DF92;
+	Thu, 15 Aug 2024 14:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ+QxUvk"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nMRMW+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD7719F49C;
-	Thu, 15 Aug 2024 14:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627DE19EED0;
+	Thu, 15 Aug 2024 14:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730687; cv=none; b=sYh6n3qySP1VkET3NxPGCS7S+G7SI7bTKpReAmHXCem06c/L6/HrlyKPZMRWNg1it+7n9lT/QGToOUJicXMgHleM08SxOVXlPmshjRE5EUTTlD3LFBBTzHydlY/WKgrZLkHjDiSakQCcrEpjhHG53OSBCVnPYqvWzlxxYk/R3SI=
+	t=1723731637; cv=none; b=nRXBVNC6lSGd2tc1A1yUSgOcWdrJOaE/Az5w3YvgqTdTQvxeLlCrH0I+U6eCelYBhFMbwtvAJ55uXYOKl78Ke4Bwqpou4iv9vGWUnepdhFscS5P4HSSX1BNHmrlbFg+sxA/eBblQq2RTFn+A0VwXcQtA9VIW35pavubIYoJEsg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730687; c=relaxed/simple;
-	bh=AsV4oErpSQF2rVODKV4dDokNSDEubvDJ1qNDOD5rgwQ=;
+	s=arc-20240116; t=1723731637; c=relaxed/simple;
+	bh=PZjAbw1nlau2qL13gnKfz82pQHKGUYFFZ0He5MFf/Cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAQ5c9XKsa1E7GZpiICEeb2jjGBI59nCCdAygsbfLM0zk8HCJLckHlmEL1TbOJ6+qUytplSYE4ZujzSPNTXTmZxlkwsM6hiQoUVjpsA4KBDGvAut5IhLw/Z06aXUfxiX1q+YmOjpGqSZz5nVj+s2ekuBVdNwoBgd9Q+q2jYu5q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ+QxUvk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A5FC32786;
-	Thu, 15 Aug 2024 14:04:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qFkBNQU1khIx6OZojtL1cKGI7uDroNk6qf/fOAnFQmFOOYV94X4+6fX29Q1fMUeQnxrCKeScxdlCcMXAjhpH0qvQA5mURPE7/EakkxlaLSIbWq+56g64TE672fXo9Ij1th+zWAQPJBmzdY20ZnpDOljSfnUMUHGmEjQa85Pq+AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nMRMW+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9698BC32786;
+	Thu, 15 Aug 2024 14:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730686;
-	bh=AsV4oErpSQF2rVODKV4dDokNSDEubvDJ1qNDOD5rgwQ=;
+	s=korg; t=1723731637;
+	bh=PZjAbw1nlau2qL13gnKfz82pQHKGUYFFZ0He5MFf/Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQ+QxUvkVzaELvK7LE+KT5auO0ndOdB2KglipYohd1vJ5VW1wpWQ7346VqGwwyafA
-	 Hc+sV6LzScVlxS2FOY9JTCmReSKJVFeDJtAgG28z+8ye3hyPiKJ2BZIk8q4DNqGrNn
-	 z8XcdDCRLie/Z5ZAeJXY0/nM0ggAJNtWVvKciHKc=
+	b=1nMRMW+gqn39mgozAnTfFHXCah/BwpxFRqYBqpBZS3zei/msrHkjUORaLldNTMiZe
+	 cQ80qyVcjf/jAvHtjpG1HakCFnmFGFzGL+c/D616jIOpbyhEUXYFKYXht7kyAd6+U6
+	 DwGCL0W/6E6rAfpEA8IptQNaFnSn/ZIYFV/sSYmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 466/484] netfilter: nf_tables: set element extended ACK reporting support
+	patches@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
+	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 191/259] net: fec: Stop PPS on driver remove
 Date: Thu, 15 Aug 2024 15:25:24 +0200
-Message-ID: <20240815131959.478016394@linuxfoundation.org>
+Message-ID: <20240815131910.155249242@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-commit b53c116642502b0c85ecef78bff4f826a7dd4145 upstream.
+[ Upstream commit 8fee6d5ad5fa18c270eedb2a2cdf58dbadefb94b ]
 
-Report the element that causes problems via netlink extended ACK for set
-element commands.
+PPS was not stopped in `fec_ptp_stop()`, called when
+the adapter was removed. Consequentially, you couldn't
+safely reload the driver with the PPS signal on.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://lore.kernel.org/netdev/CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com/T/#m01dcb810bfc451a492140f6797ca77443d0cb79f
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20240807080956.2556602-1-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5769,8 +5769,10 @@ static int nf_tables_getsetelem(struct s
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 37b8ad29b5b30..c5af845b1b253 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -635,6 +635,9 @@ void fec_ptp_stop(struct platform_device *pdev)
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
  
- 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
- 		err = nft_get_set_elem(&ctx, set, attr);
--		if (err < 0)
-+		if (err < 0) {
-+			NL_SET_BAD_ATTR(extack, attr);
- 			break;
-+		}
- 	}
- 
- 	return err;
-@@ -6589,8 +6591,10 @@ static int nf_tables_newsetelem(struct s
- 
- 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
- 		err = nft_add_set_elem(&ctx, set, attr, info->nlh->nlmsg_flags);
--		if (err < 0)
-+		if (err < 0) {
-+			NL_SET_BAD_ATTR(extack, attr);
- 			return err;
-+		}
- 	}
- 
- 	if (nft_net->validate_state == NFT_VALIDATE_DO)
-@@ -6866,8 +6870,10 @@ static int nf_tables_delsetelem(struct s
- 
- 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
- 		err = nft_del_setelem(&ctx, set, attr);
--		if (err < 0)
-+		if (err < 0) {
-+			NL_SET_BAD_ATTR(extack, attr);
- 			break;
-+		}
- 	}
- 	return err;
- }
++	if (fep->pps_enable)
++		fec_ptp_enable_pps(fep, 0);
++
+ 	cancel_delayed_work_sync(&fep->time_keep);
+ 	if (fep->ptp_clock)
+ 		ptp_clock_unregister(fep->ptp_clock);
+-- 
+2.43.0
+
 
 
 
