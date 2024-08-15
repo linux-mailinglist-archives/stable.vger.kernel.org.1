@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B379531E0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE56952F9D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55E5F1C23938
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07DFB1F211BD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50831991D0;
-	Thu, 15 Aug 2024 13:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9749B19DF9E;
+	Thu, 15 Aug 2024 13:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1bg7wRS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAyI7ZwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF1B7DA7D;
-	Thu, 15 Aug 2024 13:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5560617CA1D;
+	Thu, 15 Aug 2024 13:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730368; cv=none; b=QZAqvT9QpPz/mEUVXXouZ00trVwQfiRyvzw6bmcldoymw33NrRYc/LlLYRaYu5Pd82o8zloP+ByhUEGArugMk7pK/CxITjpnZXnnvg+3VSbpcukLVJPp9LfvV5pCO1wv1undVpxmtB8yE6I2M7Y/LYYbAZbMWcO9jOpk5jiniGc=
+	t=1723728843; cv=none; b=DN+gd6A9KbWuG6KV6r2Jd7KHGQT2eZW3cVK+2eZgqwhMnaLW4Mf6Sz4eLZItZ7ejFOOGKiyRrT4BqqsELorgRilWeDXEKnRBUXCgpv9T73G5TCabzN0U5EGL7349Of59rGs1L2MH29Io8urkF/usyCy2ZNPf3OuY6QOrGvETdOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730368; c=relaxed/simple;
-	bh=XSAk/G+Sx9XQWHFVETnwQVsJOiTRn3D2EkUYeFvdVuo=;
+	s=arc-20240116; t=1723728843; c=relaxed/simple;
+	bh=k/K5xXga6o7G6Zos+MsTFtkVWFEfiTZQyXVxXeYvTuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uk+UTxdBVglejGhy58MZvjne9RYK+ZMqmfmwJgD5KcoPFtbKrspwFzBcwdZ6IB9rbXG6VPH4aSjW5r4ica+e2P8Ya2r4id0Pdh7xZvt9fGI4Bwrx8MOyzurqf/9jZbptb2fCBg4Oqh2wKJxBJKe5KmDj6GRYzjsrO6O9ap6cJuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1bg7wRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFF4C32786;
-	Thu, 15 Aug 2024 13:59:27 +0000 (UTC)
+	 MIME-Version; b=dVtzrntruh+/RoUo0agrlMfBtX+xvqdUsB4zjrK9LlVjBj625AA2KjhxUCHXaqMJULCUGVcfzrCxTw+X0H7PPZV37j2hK4VPz/lwOwLQ6ADKVGLmfqIYSansG0a5PnE8qbjVRRHFbxauKMUPPF40xs3IPnXIiTETvceqfIarr8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAyI7ZwT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F2FC32786;
+	Thu, 15 Aug 2024 13:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730368;
-	bh=XSAk/G+Sx9XQWHFVETnwQVsJOiTRn3D2EkUYeFvdVuo=;
+	s=korg; t=1723728843;
+	bh=k/K5xXga6o7G6Zos+MsTFtkVWFEfiTZQyXVxXeYvTuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1bg7wRSkjO4PxUhEONMSYFP6rtZJrrMlQYGbejiVr79EVtoyE1UAY9eEnKaJHwZj
-	 FnA2FhKEuUFuXYFVHkcNXYfF8Erl40IzkJ+5IQK36x+RlHckJsQhTONVSURfuafj05
-	 hXgm7lFhQFkZWsWz6DPOQaUry3s9nVpqjr0G/Glk=
+	b=VAyI7ZwTfD2IgOpQWIrI4UBd1CBERxRm9SYSrzgPnFZ+KQVf9eavXPSRxDyauyKgb
+	 fyb2ueL2Rn1KZAw9FNZ/mlp6sZG1hB+YOoI94Ee5OQQlEQIlgoo2zyNWkZBd37jO0G
+	 BCmAg+OSwub4HPba7EGO5qSqIbs1Ac8fUOzvBchU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 386/484] s390/sclp: Prevent release of buffer in I/O
-Date: Thu, 15 Aug 2024 15:24:04 +0200
-Message-ID: <20240815131956.356414451@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 128/196] net: usb: sr9700: fix uninitialized variable use in sr_mdio_read
+Date: Thu, 15 Aug 2024 15:24:05 +0200
+Message-ID: <20240815131856.972983986@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit bf365071ea92b9579d5a272679b74052a5643e35 ]
+commit 08f3a5c38087d1569e982a121aad1e6acbf145ce upstream.
 
-When a task waiting for completion of a Store Data operation is
-interrupted, an attempt is made to halt this operation. If this attempt
-fails due to a hardware or firmware problem, there is a chance that the
-SCLP facility might store data into buffers referenced by the original
-operation at a later time.
+It could lead to error happen because the variable res is not updated if
+the call to sr_share_read_word returns an error. In this particular case
+error code was returned and res stayed uninitialized. Same issue also
+applies to sr_read_reg.
 
-Handle this situation by not releasing the referenced data buffers if
-the halt attempt fails. For current use cases, this might result in a
-leak of few pages of memory in case of a rare hardware/firmware
-malfunction.
+This can be avoided by checking the return value of sr_share_read_word
+and sr_read_reg, and propagating the error if the read operation failed.
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp_sd.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/usb/sr9700.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_sd.c b/drivers/s390/char/sclp_sd.c
-index 1e244f78f1929..64581433c3349 100644
---- a/drivers/s390/char/sclp_sd.c
-+++ b/drivers/s390/char/sclp_sd.c
-@@ -319,8 +319,14 @@ static int sclp_sd_store_data(struct sclp_sd_data *result, u8 di)
- 			  &esize);
- 	if (rc) {
- 		/* Cancel running request if interrupted */
--		if (rc == -ERESTARTSYS)
--			sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL);
-+		if (rc == -ERESTARTSYS) {
-+			if (sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL)) {
-+				pr_warn("Could not stop Store Data request - leaking at least %zu bytes\n",
-+					(size_t)dsize * PAGE_SIZE);
-+				data = NULL;
-+				asce = 0;
-+			}
-+		}
- 		vfree(data);
- 		goto out;
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -178,6 +178,7 @@ static int sr_mdio_read(struct net_devic
+ 	struct usbnet *dev = netdev_priv(netdev);
+ 	__le16 res;
+ 	int rc = 0;
++	int err;
+ 
+ 	if (phy_id) {
+ 		netdev_dbg(netdev, "Only internal phy supported\n");
+@@ -188,11 +189,17 @@ static int sr_mdio_read(struct net_devic
+ 	if (loc == MII_BMSR) {
+ 		u8 value;
+ 
+-		sr_read_reg(dev, SR_NSR, &value);
++		err = sr_read_reg(dev, SR_NSR, &value);
++		if (err < 0)
++			return err;
++
+ 		if (value & NSR_LINKST)
+ 			rc = 1;
  	}
--- 
-2.43.0
-
+-	sr_share_read_word(dev, 1, loc, &res);
++	err = sr_share_read_word(dev, 1, loc, &res);
++	if (err < 0)
++		return err;
++
+ 	if (rc == 1)
+ 		res = le16_to_cpu(res) | BMSR_LSTATUS;
+ 	else
 
 
 
