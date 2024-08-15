@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-69157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6B49535B8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:41:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA38095342F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798CB2828C3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:41:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CC47B28E39
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383B21A76AB;
-	Thu, 15 Aug 2024 14:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9210B1ABEC3;
+	Thu, 15 Aug 2024 14:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NN/8uOfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY8HiVUT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27001A01BB;
-	Thu, 15 Aug 2024 14:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D4019FA8D;
+	Thu, 15 Aug 2024 14:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732855; cv=none; b=lywCFQsHFWdwR9UApOE+el87tApOtubXHot1MAajLi/3t/iHAOVBJ1D4W959/+OgnSBpSiRAFbJK1eUA1xW/bF55G3yRIUh5mePeTtxSoEZnwr275+w7AtJjBfWAeL38DwlmcauTHQGN64KQAL6sQf1Zd0V3RlzBT4AwA0Hph4U=
+	t=1723731789; cv=none; b=pj95ctae0gUNLS2LZ6FLCuBDOSiR3qYyFoKovoAOXXQi1SaIrVD0I4pTCfLdx3B/5mECsagmntLmz7xHG+8CgVXgl4CuJ4t80hz2Sbu1AJjJwD5XoCLa5FuA89oAW6q0YC3amLT3pIDDx+BCM0sYQ/FO9xuq8rpto57DqNzZ0eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732855; c=relaxed/simple;
-	bh=Sc06O55l8xAxVUs8I8vHmit1N8Pf7l3mEqT2dhjpvRE=;
+	s=arc-20240116; t=1723731789; c=relaxed/simple;
+	bh=TjdMwtqE1Q7P7vwzT0GWjyRSUTts0NWBn61UyI7slCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BJTbWSIvuf7C4XrhbjRSj5S3zDlISBCk7PEAOHceCBnDL9uGaVr1T0bTM+ktFKOwfE13UFvUSzW1Rf63dh91A40R8Ok7Ik86eWa3ta62puAxNCGtDjML8dAMIlfP7TwBji/mHbcSfoGIqsj6WPP7ri0ZpgkAf7Y9ETrBrT7kaYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NN/8uOfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5E3C32786;
-	Thu, 15 Aug 2024 14:40:54 +0000 (UTC)
+	 MIME-Version; b=kiPoyqrrNiQdpRQ9cZR0EJtAVFoYQmgCont8gxwxMa6k9bwYZSkVWedzOZ4Lxr5eC6c0CAilMZmpsgFYBXXQ8x1yphfVQnWZW78F6JMqp4EedZp98130RZevx2LjIa2jgQTeTmUi/bYPq8lxYzNFXC3AAuk6vf5DRX/f91ro/Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY8HiVUT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F643C32786;
+	Thu, 15 Aug 2024 14:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732854;
-	bh=Sc06O55l8xAxVUs8I8vHmit1N8Pf7l3mEqT2dhjpvRE=;
+	s=korg; t=1723731788;
+	bh=TjdMwtqE1Q7P7vwzT0GWjyRSUTts0NWBn61UyI7slCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NN/8uOfh6y11suKQ/3sWvB9rFXhcg/zdpq7ZBOnTWYirIEdeF04k1P9Ze2ayc56i7
-	 88963m9AzRr9hpAmDc5cmWBABgfjNAuvbanD77hLD72IjRwh9DgRLQRZGU74XnQM/b
-	 bZtlEIsZi4EseansZfYQG25EGCXdWmepCui/ZoFQ=
+	b=XY8HiVUTFsJo4iZaNwMBAb7c0ysbd+2XMeCViRUjrjKKdK3mzOa1zhrVyQAgVNYkE
+	 /TYxcHa3QHglW3aYAdXaNm0WXJq0uYW8u1vxVeKJQM4nqycgKM/ZX5yjqKlz6e5w9g
+	 YQIZEBL9UmonifFEqhkY1WvHIiXepfiY7B+DXpzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 306/352] USB: serial: debug: do not echo input by default
+	Christoph Hellwig <hch@lst.de>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 239/259] scsi: mpt3sas: Remove scsi_dma_map() error messages
 Date: Thu, 15 Aug 2024 15:26:12 +0200
-Message-ID: <20240815131931.285236594@linuxfoundation.org>
+Message-ID: <20240815131912.001929951@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+From: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
 
-commit 00af4f3dda1461ec90d892edc10bec6d3c50c554 upstream.
+[ Upstream commit 0c25422d34b4726b2707d5f38560943155a91b80 ]
 
-This driver is intended as a "client" end of the console connection.
-When connected to a host it's supposed to receive debug logs, and
-possibly allow to interact with whatever debug console is available
-there. Feeding messages back, depending on a configuration may cause log
-messages be executed as shell commands (which can be really bad if one
-is unlucky, imagine a log message like "prevented running `rm -rf
-/home`"). In case of Xen, it exposes sysrq-like debug interface, and
-feeding it its own logs will pretty quickly hit 'R' for "instant
-reboot".
+When scsi_dma_map() fails by returning a sges_left value less than zero,
+the amount of logging produced can be extremely high.  In a recent end-user
+environment, 1200 messages per second were being sent to the log buffer.
+This eventually overwhelmed the system and it stalled.
 
-Contrary to a classic serial console, the USB one cannot be configured
-ahead of time, as the device shows up only when target OS is up. And at
-the time device is opened to execute relevant ioctl, it's already too
-late, especially when logs start flowing shortly after device is
-initialized.
-Avoid the issue by changing default to no echo for this type of devices.
+These error messages are not needed. Remove them.
 
-Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-[ johan: amend summary; disable also ECHONL ]
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20220303140203.12642-1-sreekanth.reddy@broadcom.com
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 82dbb57ac8d0 ("scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/usb_debug.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/serial/usb_debug.c
-+++ b/drivers/usb/serial/usb_debug.c
-@@ -69,6 +69,11 @@ static void usb_debug_process_read_urb(s
- 	usb_serial_generic_process_read_urb(urb);
- }
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 35c97bc660bd8..8d161d6075b78 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -2310,12 +2310,8 @@ _base_check_pcie_native_sgl(struct MPT3SAS_ADAPTER *ioc,
  
-+static void usb_debug_init_termios(struct tty_struct *tty)
-+{
-+	tty->termios.c_lflag &= ~(ECHO | ECHONL);
-+}
-+
- static struct usb_serial_driver debug_device = {
- 	.driver = {
- 		.owner =	THIS_MODULE,
-@@ -78,6 +83,7 @@ static struct usb_serial_driver debug_de
- 	.num_ports =		1,
- 	.bulk_out_size =	USB_DEBUG_MAX_PACKET_SIZE,
- 	.break_ctl =		usb_debug_break_ctl,
-+	.init_termios =		usb_debug_init_termios,
- 	.process_read_urb =	usb_debug_process_read_urb,
- };
+ 	/* Get the SG list pointer and info. */
+ 	sges_left = scsi_dma_map(scmd);
+-	if (sges_left < 0) {
+-		sdev_printk(KERN_ERR, scmd->device,
+-			"scsi_dma_map failed: request for %d bytes!\n",
+-			scsi_bufflen(scmd));
++	if (sges_left < 0)
+ 		return 1;
+-	}
  
-@@ -89,6 +95,7 @@ static struct usb_serial_driver dbc_devi
- 	.id_table =		dbc_id_table,
- 	.num_ports =		1,
- 	.break_ctl =		usb_debug_break_ctl,
-+	.init_termios =		usb_debug_init_termios,
- 	.process_read_urb =	usb_debug_process_read_urb,
- };
+ 	/* Check if we need to build a native SG list. */
+ 	if (base_is_prp_possible(ioc, pcie_device,
+@@ -2422,12 +2418,8 @@ _base_build_sg_scmd(struct MPT3SAS_ADAPTER *ioc,
  
+ 	sg_scmd = scsi_sglist(scmd);
+ 	sges_left = scsi_dma_map(scmd);
+-	if (sges_left < 0) {
+-		sdev_printk(KERN_ERR, scmd->device,
+-		 "scsi_dma_map failed: request for %d bytes!\n",
+-		 scsi_bufflen(scmd));
++	if (sges_left < 0)
+ 		return -ENOMEM;
+-	}
+ 
+ 	sg_local = &mpi_request->SGL;
+ 	sges_in_segment = ioc->max_sges_in_main_message;
+@@ -2570,12 +2562,8 @@ _base_build_sg_scmd_ieee(struct MPT3SAS_ADAPTER *ioc,
+ 
+ 	sg_scmd = scsi_sglist(scmd);
+ 	sges_left = scsi_dma_map(scmd);
+-	if (sges_left < 0) {
+-		sdev_printk(KERN_ERR, scmd->device,
+-			"scsi_dma_map failed: request for %d bytes!\n",
+-			scsi_bufflen(scmd));
++	if (sges_left < 0)
+ 		return -ENOMEM;
+-	}
+ 
+ 	sg_local = &mpi_request->SGL;
+ 	sges_in_segment = (ioc->request_sz -
+-- 
+2.43.0
+
 
 
 
