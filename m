@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DCA9533A6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493E4953505
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18E2C1C253E3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C5A21C251A0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D231A3BCA;
-	Thu, 15 Aug 2024 14:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9103C1A00D1;
+	Thu, 15 Aug 2024 14:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+mVtbGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="td05HDm0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AD919F473;
-	Thu, 15 Aug 2024 14:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505C72772A;
+	Thu, 15 Aug 2024 14:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731457; cv=none; b=Ppqmqq4XbeF+sK7mk5vVsq51szF0gUpNwC6KTPAfrWN2Vmnjzznlgm8bKkYbVf3/wE9PtR3Vo91YncfGXia8PeP7vV3ZSC9mg3Vt+fHZtNR1RnFEa6q1I1DQnnR6/cEEl0OXUreETHDpnaTjM+FcCingHIaRCxFGpDUBiOiEdP4=
+	t=1723732379; cv=none; b=BpQrrI/FMnsm93rCi2etUZW9ZRvWelzCsOWSFBpKo13qmpfGDnH67+0l9M9GWlMgg1/G8hNlMufC7v2AzHo+sPoi4KBhklQ1ty94YY7bmKY83BpUbLIMxgFqcNCvp2vTmTNfjTTatZmpl7atjO3kDch29zER5z8mdMyhCLtDE0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731457; c=relaxed/simple;
-	bh=qq0K9JD4Qpt9DfDPDwD22iS5qTINQCgs1k98tcAKCHQ=;
+	s=arc-20240116; t=1723732379; c=relaxed/simple;
+	bh=HkPYrUVtCEzsEOwtXSbFA6JFI3PkiR3YpqiurIDKhkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jM2lJnON0IBI0nX6rt1MYuuO14POTxUlIt9USIV5UewUq5CT6ZwEzv6NYELt0HCL0E1f3d7Wosdd8jMSQHc1J65/TKeQHAw19QJiTYbPL8w2JyFUTuOF4xeYzjsI/BO/ilUSZg5SByLrl807fDKzPl9jy+pxslEVM4DtrpMwECU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+mVtbGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0C6C4AF0A;
-	Thu, 15 Aug 2024 14:17:35 +0000 (UTC)
+	 MIME-Version; b=krJuy2Z/ygKHIE2R7szqRIfP/1zkZLABrGoPSVyOLAcsDEffU6ampyYCtUzRjzGYbnTJDjp5eEq1uKGZj3mg4rIgZhojj5ajY78/YDypuJZPVY5Dmlh9IwbM0mvsK59LOJIO1QmFk+upgRd6CqxDrJS+uJ5f+tPfgTOiPc7LaYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=td05HDm0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67C2C32786;
+	Thu, 15 Aug 2024 14:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731456;
-	bh=qq0K9JD4Qpt9DfDPDwD22iS5qTINQCgs1k98tcAKCHQ=;
+	s=korg; t=1723732379;
+	bh=HkPYrUVtCEzsEOwtXSbFA6JFI3PkiR3YpqiurIDKhkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+mVtbGTKylNDeQcCXABpiB1VEqX5Ut8ZO7CR6CQa/S+rgAVmyihiPxfbBji+/ZMF
-	 fiUQt9Vpzke8+9fQS6aY3V0GD5ELhp0Usv60A10kZpVSGkjCGY5P6AatYfcmTrs2qL
-	 c5qa3fK9vBY4ls4+Nm7Xcon/wZ/DUbPRkKOPO1Lk=
+	b=td05HDm0EkpAiTnnQAkY478mx+kL29QKQ+phnokbQHqpK8xKh+a7ml8VyyruxNG0M
+	 J7FM/manl9a3CTxA5IwiqzWwRei3BA3xbVTSSkapsIQU/ptoyfg1CNyU76yY0hWCe3
+	 5o/8B5E8sp8UhLiSfu9EtKwEFBkDQL1SFEs8wne4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.4 094/259] media: venus: fix use after free in vdec_close
-Date: Thu, 15 Aug 2024 15:23:47 +0200
-Message-ID: <20240815131906.433400799@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Lk Sii <lk_sii@163.com>
+Subject: [PATCH 5.10 162/352] kobject_uevent: Fix OOB access within zap_modalias_env()
+Date: Thu, 15 Aug 2024 15:23:48 +0200
+Message-ID: <20240815131925.532798227@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit a0157b5aa34eb43ec4c5510f9c260bbb03be937e upstream.
+commit dd6e9894b451e7c85cceb8e9dc5432679a70e7dc upstream.
 
-There appears to be a possible use after free with vdec_close().
-The firmware will add buffer release work to the work queue through
-HFI callbacks as a normal part of decoding. Randomly closing the
-decoder device from userspace during normal decoding can incur
-a read after free for inst.
+zap_modalias_env() wrongly calculates size of memory block to move, so
+will cause OOB memory access issue if variable MODALIAS is not the last
+one within its @env parameter, fixed by correcting size to memmove.
 
-Fix it by cancelling the work in vdec_close.
-
+Fixes: 9b3fa47d4a76 ("kobject: fix suppressing modalias in uevents delivered over netlink")
 Cc: stable@vger.kernel.org
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Reviewed-by: Lk Sii <lk_sii@163.com>
+Link: https://lore.kernel.org/r/1717074877-11352-1-git-send-email-quic_zijuhu@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/vdec.c |    1 +
- 1 file changed, 1 insertion(+)
+ lib/kobject_uevent.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -1400,6 +1400,7 @@ static int vdec_close(struct file *file)
- {
- 	struct venus_inst *inst = to_inst(file);
+--- a/lib/kobject_uevent.c
++++ b/lib/kobject_uevent.c
+@@ -432,8 +432,23 @@ static void zap_modalias_env(struct kobj
+ 		len = strlen(env->envp[i]) + 1;
  
-+	cancel_work_sync(&inst->delayed_process_work);
- 	v4l2_m2m_ctx_release(inst->m2m_ctx);
- 	v4l2_m2m_release(inst->m2m_dev);
- 	vdec_ctrl_deinit(inst);
+ 		if (i != env->envp_idx - 1) {
++			/* @env->envp[] contains pointers to @env->buf[]
++			 * with @env->buflen chars, and we are removing
++			 * variable MODALIAS here pointed by @env->envp[i]
++			 * with length @len as shown below:
++			 *
++			 * 0               @env->buf[]      @env->buflen
++			 * ---------------------------------------------
++			 * ^             ^              ^              ^
++			 * |             |->   @len   <-| target block |
++			 * @env->envp[0] @env->envp[i]  @env->envp[i + 1]
++			 *
++			 * so the "target block" indicated above is moved
++			 * backward by @len, and its right size is
++			 * @env->buflen - (@env->envp[i + 1] - @env->envp[0]).
++			 */
+ 			memmove(env->envp[i], env->envp[i + 1],
+-				env->buflen - len);
++				env->buflen - (env->envp[i + 1] - env->envp[0]));
+ 
+ 			for (j = i; j < env->envp_idx - 1; j++)
+ 				env->envp[j] = env->envp[j + 1] - len;
 
 
 
