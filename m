@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-69116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE01953583
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:38:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A299532D6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88683B247C4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:38:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E34A61F22A7E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CCC19FA9D;
-	Thu, 15 Aug 2024 14:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9A61ABEB1;
+	Thu, 15 Aug 2024 14:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBMu+p+x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fojPdn+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904B11AC893;
-	Thu, 15 Aug 2024 14:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CBA1ABEBD;
+	Thu, 15 Aug 2024 14:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732719; cv=none; b=A0FBh9zPJ43hwFIO/wu4qO3onf8/e8CXdFqfmDtUf9//ItqWgzjfNTqMvVa9vBGIvnQhopZOF3RFZ97CFW2Sl3a1F7VatjVXMvf8R77pNIJ9bm48cdtOw74i48Zcb1S9/VEeJPj5hrVMYQBqZq5ZB+VXJNVaWP4LX1CSc9EHAKI=
+	t=1723730891; cv=none; b=kcSsA9jxrFMmDpDkipLHpxd3BYTwZyTco7REr50e+SZwa8qZ2d48Y9nZQ8A2FYSz2sTM4IhdR5NsJcCS2FsAbJIiaWfatmswBVuahfBGNezSIqbUeSnNT8eM4xcUnj+Sf9DuLVBFUzwwOc9YavN2GTDqDsnDdBO9pTHG528kDY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732719; c=relaxed/simple;
-	bh=dWbHzC88zZWf4Vq+wu7JAGNBaFZ1qHv27+8ScWz9ehM=;
+	s=arc-20240116; t=1723730891; c=relaxed/simple;
+	bh=gxhVeNozeR/EsjWzAYamZ9EHjzZtRRlg2+e3xJDyA2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f2kHeqmD0nhic2iWwrkw4bx3ye4YPuLnZHirCQ6MRleICzRC1bX3CpOViYgQJ7UwPvrl8qIVnLoJ8JvYNY4uZSe5r+vFjWLPBswgRgy7tzqFjqQN38i2+8g3yE3RqjQqJh5c+019GddyOStBYQ8i0+MANK9wcujxNJ9jbxlewsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBMu+p+x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E92C32786;
-	Thu, 15 Aug 2024 14:38:38 +0000 (UTC)
+	 MIME-Version; b=fmFMRIbi3i61alpaq4nSbJlFqWhtRbZr5eqFAEM3GwjO2qRGw4B1kzsfwWSiqL7GOCPvYpwzqVgIHa6eEw+i+uQ7bjAgtys9Pu3OjFh/QxvYzy1qHmuNTyXcrsm4+k7j7BqVA0OMTWV0Qpp2ACvuBaL+mSrft+a1JJoDYKCOVqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fojPdn+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A64FC32786;
+	Thu, 15 Aug 2024 14:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732719;
-	bh=dWbHzC88zZWf4Vq+wu7JAGNBaFZ1qHv27+8ScWz9ehM=;
+	s=korg; t=1723730891;
+	bh=gxhVeNozeR/EsjWzAYamZ9EHjzZtRRlg2+e3xJDyA2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBMu+p+xaf7MwQ0Jnjlxna+gnjlW4fdhQrc4vBf+5LmVfgPXXIh3EbsqYkIOi1Thp
-	 2ToocOZE8IwDBIAPGNrkyIccknRM6G0Ocdovz1HmkRe7R4/FCBmXobQek7tVcU7tfN
-	 1maIape0NI026ky+mNY66q39OWjJJG4q4bqqp7KM=
+	b=0fojPdn+JZsyv0P4RTLDr9WOgx0n9a7F5RAtpWlFV9FL5ik/l6X28b4wt5cWXYn3i
+	 H/D/HfEQzWuuOhdk5ybXmFVvPYb3tuN4aySaPoTnBd/bzzaBmyHurjK8zwHhI/YGOA
+	 zBc9V2487ASsWGO7mOrcqyHNDIGGsMnB8kAJuMtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 266/352] ACPI: SBS: manage alarm sysfs attribute through psy core
+	hmy <huanglin@uniontech.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.6 18/67] nvme/pci: Add APST quirk for Lenovo N60z laptop
 Date: Thu, 15 Aug 2024 15:25:32 +0200
-Message-ID: <20240815131929.724126807@linuxfoundation.org>
+Message-ID: <20240815131839.034985081@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,100 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 6bad28cfc30988a845fb3f59a99f4b8a4ce8fe95 ]
+commit ab091ec536cb7b271983c0c063b17f62f3591583 upstream.
 
-Let the power supply core register the attribute.
+There is a hardware power-saving problem with the Lenovo N60z
+board. When turn it on and leave it for 10 hours, there is a
+20% chance that a nvme disk will not wake up until reboot.
 
-This ensures that the attribute is created before the device is
-announced to userspace, avoiding a race condition.
-
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/2B5581C46AC6E335+9c7a81f1-05fb-4fd0-9fbb-108757c21628@uniontech.com
+Signed-off-by: hmy <huanglin@uniontech.com>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/sbs.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/nvme/host/pci.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index e6d9f4de28000..54396cb8930a4 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -77,7 +77,6 @@ struct acpi_battery {
- 	u16 spec;
- 	u8 id;
- 	u8 present:1;
--	u8 have_sysfs_alarm:1;
- };
- 
- #define to_acpi_battery(x) power_supply_get_drvdata(x)
-@@ -462,12 +461,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
- 	return count;
- }
- 
--static const struct device_attribute alarm_attr = {
-+static struct device_attribute alarm_attr = {
- 	.attr = {.name = "alarm", .mode = 0644},
- 	.show = acpi_battery_alarm_show,
- 	.store = acpi_battery_alarm_store,
- };
- 
-+static struct attribute *acpi_battery_attrs[] = {
-+	&alarm_attr.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(acpi_battery);
-+
- /* --------------------------------------------------------------------------
-                                  Driver Interface
-    -------------------------------------------------------------------------- */
-@@ -509,7 +514,10 @@ static int acpi_battery_read(struct acpi_battery *battery)
- static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
--	struct power_supply_config psy_cfg = { .drv_data = battery, };
-+	struct power_supply_config psy_cfg = {
-+		.drv_data = battery,
-+		.attr_grp = acpi_battery_groups,
-+	};
- 	int result;
- 
- 	battery->id = id;
-@@ -539,10 +547,6 @@ static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- 		goto end;
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2931,6 +2931,13 @@ static unsigned long check_vendor_combin
+ 			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
  	}
  
--	result = device_create_file(&battery->bat->dev, &alarm_attr);
--	if (result)
--		goto end;
--	battery->have_sysfs_alarm = 1;
-       end:
- 	printk(KERN_INFO PREFIX "%s [%s]: Battery Slot [%s] (battery %s)\n",
- 	       ACPI_SBS_DEVICE_NAME, acpi_device_bid(sbs->device),
-@@ -554,11 +558,8 @@ static void acpi_battery_remove(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
- 
--	if (battery->bat) {
--		if (battery->have_sysfs_alarm)
--			device_remove_file(&battery->bat->dev, &alarm_attr);
-+	if (battery->bat)
- 		power_supply_unregister(battery->bat);
--	}
++	/*
++	 * NVMe SSD drops off the PCIe bus after system idle
++	 * for 10 hours on a Lenovo N60z board.
++	 */
++	if (dmi_match(DMI_BOARD_NAME, "LXKT-ZXEG-N6"))
++		return NVME_QUIRK_NO_APST;
++
+ 	return 0;
  }
  
- static int acpi_charger_add(struct acpi_sbs *sbs)
--- 
-2.43.0
-
 
 
 
