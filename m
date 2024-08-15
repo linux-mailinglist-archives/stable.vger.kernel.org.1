@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-68488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F51953294
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF2E953273
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1014B1F21FEE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC0D61C255C7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4136C1B5818;
-	Thu, 15 Aug 2024 14:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A691A706C;
+	Thu, 15 Aug 2024 14:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s28Qnf2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYts9ZnO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BFF1AB51B;
-	Thu, 15 Aug 2024 14:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0002E1A705B;
+	Thu, 15 Aug 2024 14:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730726; cv=none; b=VFK7Wq6ToMeh7t/pS05SOJdpqPeZoBBbjYzuSVQCzAexrUiZUpaAlk1GC2CYnQRE0Iv12qJZ23RDqT06BSDhFYvehojOho4s2DH2zi/bX4g8+lhRAcS/6n57rf8/GRJzYe2yXQPRbjeesTJ75EUuDEFECGRToPawZMT8POL04/g=
+	t=1723730671; cv=none; b=hLuWXJ2sXaaqvbANAnlh5QyKsmobHkyVw7zBUUAnM8VmMLKhvj0Xssg/PvgO9RE6V9GnVs8Z+TBi3qhT8fmrCjpLx2N0GlAeWiLfoALtB2GXQKjyLR/p4YpMpcZrZP3po3jmHialJyFnF2SMmWOigT0w7e54EsZqVFvK64PxQZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730726; c=relaxed/simple;
-	bh=bGzmPexXs+za00+EKWikSYOM/Cd6JvaWIp+/RmI8gcc=;
+	s=arc-20240116; t=1723730671; c=relaxed/simple;
+	bh=fIkNjniE7my9/YWQapxFJo80R+jgKR5ebwOPWa3nAeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IOIMTDTdyhIOL0EqrIyEtmfdJ5/j4EVMdpln17Z9l6Fg5dpG10dBecMsGRl8bBV8aoHFBZtg6cAaiaNii0He+au+ZYvUeOBtuw9Fs/LoG5wwD48ZdaJOUBbwh18cn9vYUWbHsxGeXDAqF9p3uTFowgYwfCl3LK+bkS1RNluRMLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s28Qnf2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72410C4AF0C;
-	Thu, 15 Aug 2024 14:05:25 +0000 (UTC)
+	 MIME-Version; b=XK+0wEOoySeJIxaIuwYWAWjFy7UaIIDX9rfq3j9MDZc5MZzIvDLF8z1Ibe5fdoWSa2FV2C9FELHghPFg8ZtPdVu/YYB7pOP+zHp2qbwU0R6LY8qGqpnJmm1MGW6nHKsqUnkEDqKuuYDvTg3qB55PDmlOyEa40mS4dgxtst1WrEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYts9ZnO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5DFC32786;
+	Thu, 15 Aug 2024 14:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730725;
-	bh=bGzmPexXs+za00+EKWikSYOM/Cd6JvaWIp+/RmI8gcc=;
+	s=korg; t=1723730670;
+	bh=fIkNjniE7my9/YWQapxFJo80R+jgKR5ebwOPWa3nAeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s28Qnf2/2j9fa8APriBCf6wPZ/LtBgomfQl3yW9kq0HhYoF407+fdeHfUgtp2KhAf
-	 7tkYgEqwVRofYrXg9TCpmJuzFgQVQu5hslGANWQJZcJmb7AOLKrqwfb9ZeOB8DL4JX
-	 88FZk9csjl0zUTjS6YXaYJYkgZveqJ4rFnpbS4RA=
+	b=tYts9ZnOS85f6zkLTo4vkPsN+H74z0nAI0qz35U6sENKITaMx6mFJu2UiRbbTwQj2
+	 kyTNfRnN9I05ARyPLPRuo4BsiKWVOsE+TP3z6qJnPqxPA+S4VrkzxbTU5igkPIQ1mq
+	 xf3DSFoDU7Rwlqtn3ajaSdECS213iraT5zNt5ST8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 05/38] selftests: mptcp: join: test both signal & subflow
+	Chris Wulff <crwulff@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 481/484] usb: gadget: u_audio: Check return codes from usb_ep_enable and config_ep_by_speed.
 Date: Thu, 15 Aug 2024 15:25:39 +0200
-Message-ID: <20240815131833.163060005@linuxfoundation.org>
+Message-ID: <20240815132000.063951462@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Chris Wulff <crwulff@gmail.com>
 
-commit 4d2868b5d191c74262f7407972d68d1bf3245d6a upstream.
+[ Upstream commit 76a7bfc445b8e9893c091e24ccfd4f51dfdc0a70 ]
 
-It should be quite uncommon to set both the subflow and the signal
-flags: the initiator of the connection is typically the one creating new
-subflows, not the other peer, then no need to announce additional local
-addresses, and use it to create subflows.
+These functions can fail if descriptors are malformed, or missing,
+for the selected USB speed.
 
-But some people might be confused about the flags, and set both "just to
-be sure at least the right one is set". To verify the previous fix, and
-avoid future regressions, this specific case is now validated: the
-client announces a new address, and initiates a new subflow from the
-same address.
-
-While working on this, another bug has been noticed, where the client
-reset the new subflow because an ADD_ADDR echo got received as the 3rd
-ACK: this new test also explicitly checks that no RST have been sent by
-the client and server.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-7-c8a9b036493b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ No conflicts, but not using 'chk_add_nr 1 1 0 invert': in this
-  version, 'chk_add_nr' cannot be used with 'invert': d73bb9d3957b
-  ("selftests: mptcp: join: ability to invert ADD_ADDR check") is not in
-  this version, and backporting it causes a lot of conflicts. That's
-  fine, checking that there is an additional subflow should be enough. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: eb9fecb9e69b ("usb: gadget: f_uac2: split out audio core")
+Fixes: 24f779dac8f3 ("usb: gadget: f_uac2/u_audio: add feedback endpoint support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chris Wulff <crwulff@gmail.com>
+Link: https://lore.kernel.org/r/20240721192314.3532697-2-crwulff@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/usb/gadget/function/u_audio.c | 42 ++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 8 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2090,6 +2090,20 @@ signal_address_tests()
- 		chk_add_nr 1 1
- 	fi
+diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/function/u_audio.c
+index 5e34a7ff1b63d..6bd908c7bfe63 100644
+--- a/drivers/usb/gadget/function/u_audio.c
++++ b/drivers/usb/gadget/function/u_audio.c
+@@ -474,15 +474,24 @@ int u_audio_start_capture(struct g_audio *audio_dev)
+ 	struct usb_ep *ep, *ep_fback;
+ 	struct uac_rtd_params *prm;
+ 	struct uac_params *params = &audio_dev->params;
+-	int req_len, i;
++	int req_len, i, ret;
  
-+	# uncommon: subflow and signal flags on the same endpoint
-+	# or because the user wrongly picked both, but still expects the client
-+	# to create additional subflows
-+	if reset "subflow and signal together"; then
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 0 2
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags signal,subflow
-+		run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 1 1 1
-+		chk_add_nr 0 0 0         # none initiated by ns1
-+		chk_rst_nr 0 0 invert    # no RST sent by the client
-+		chk_rst_nr 0 0           # no RST sent by the server
-+	fi
+ 	ep = audio_dev->out_ep;
+ 	prm = &uac->c_prm;
+-	config_ep_by_speed(gadget, &audio_dev->func, ep);
++	ret = config_ep_by_speed(gadget, &audio_dev->func, ep);
++	if (ret < 0) {
++		dev_err(dev, "config_ep_by_speed for out_ep failed (%d)\n", ret);
++		return ret;
++	}
 +
- 	# accept and use add_addr with additional subflows
- 	if reset "multiple subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
+ 	req_len = ep->maxpacket;
+ 
+ 	prm->ep_enabled = true;
+-	usb_ep_enable(ep);
++	ret = usb_ep_enable(ep);
++	if (ret < 0) {
++		dev_err(dev, "usb_ep_enable failed for out_ep (%d)\n", ret);
++		return ret;
++	}
+ 
+ 	for (i = 0; i < params->req_number; i++) {
+ 		if (!prm->reqs[i]) {
+@@ -508,9 +517,18 @@ int u_audio_start_capture(struct g_audio *audio_dev)
+ 		return 0;
+ 
+ 	/* Setup feedback endpoint */
+-	config_ep_by_speed(gadget, &audio_dev->func, ep_fback);
++	ret = config_ep_by_speed(gadget, &audio_dev->func, ep_fback);
++	if (ret < 0) {
++		dev_err(dev, "config_ep_by_speed in_ep_fback failed (%d)\n", ret);
++		return ret; // TODO: Clean up out_ep
++	}
++
+ 	prm->fb_ep_enabled = true;
+-	usb_ep_enable(ep_fback);
++	ret = usb_ep_enable(ep_fback);
++	if (ret < 0) {
++		dev_err(dev, "usb_ep_enable failed for in_ep_fback (%d)\n", ret);
++		return ret; // TODO: Clean up out_ep
++	}
+ 	req_len = ep_fback->maxpacket;
+ 
+ 	req_fback = usb_ep_alloc_request(ep_fback, GFP_ATOMIC);
+@@ -565,11 +583,15 @@ int u_audio_start_playback(struct g_audio *audio_dev)
+ 	struct uac_params *params = &audio_dev->params;
+ 	unsigned int factor;
+ 	const struct usb_endpoint_descriptor *ep_desc;
+-	int req_len, i;
++	int req_len, i, ret;
+ 
+ 	ep = audio_dev->in_ep;
+ 	prm = &uac->p_prm;
+-	config_ep_by_speed(gadget, &audio_dev->func, ep);
++	ret = config_ep_by_speed(gadget, &audio_dev->func, ep);
++	if (ret < 0) {
++		dev_err(dev, "config_ep_by_speed for in_ep failed (%d)\n", ret);
++		return ret;
++	}
+ 
+ 	ep_desc = ep->desc;
+ 
+@@ -598,7 +620,11 @@ int u_audio_start_playback(struct g_audio *audio_dev)
+ 	uac->p_residue = 0;
+ 
+ 	prm->ep_enabled = true;
+-	usb_ep_enable(ep);
++	ret = usb_ep_enable(ep);
++	if (ret < 0) {
++		dev_err(dev, "usb_ep_enable failed for in_ep (%d)\n", ret);
++		return ret;
++	}
+ 
+ 	for (i = 0; i < params->req_number; i++) {
+ 		if (!prm->reqs[i]) {
+-- 
+2.43.0
+
 
 
 
