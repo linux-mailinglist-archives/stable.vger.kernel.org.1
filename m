@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-68489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659A3953295
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B379535A3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 162B6287F2A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69CBD282061
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9DD1AB51B;
-	Thu, 15 Aug 2024 14:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0826D1A08DD;
+	Thu, 15 Aug 2024 14:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GK2xEQ/L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mul/r5As"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DFC1991D0;
-	Thu, 15 Aug 2024 14:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95961A01CB;
+	Thu, 15 Aug 2024 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730729; cv=none; b=mGQh+CFDW42Y00Jp5YzJpQbsGZlf8nJlTYmoU083pyX5ruCl8W7lrQQYa83pOPOosnoJxwO+OptMgDDmXZQrzUffRzhBZiiXFB06Oe3KlxLg4H8D11IWuR6w9Yvw3U4A21FtVLk2WxoVVfpaxOZeaZJAieNISBnBV0dF17LfkhE=
+	t=1723732801; cv=none; b=PI61pK3jJp2UONjK88qku/VsWoJPG8QRmlDY0SrXJFQW+qDPnru3vHSQJp4IMzogityUALNLO1hPpRRrD07927Z+VhCMDjyWFyxSry0BVprq4+0lq2qLziJGlkyENRpZZ45LSmrjMm3mPAfHS47VxC2++FzcdIJduqMIFp+kZiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730729; c=relaxed/simple;
-	bh=Ja1Ff6zeFvwYUs6ECbw1MuAt09s6AXeZ83ldSA3EFc0=;
+	s=arc-20240116; t=1723732801; c=relaxed/simple;
+	bh=W1hp3kzIy7RW+6ylKiKnAvlJMX5hpEXPI/K4ayjZznw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzA1hIszKtRotfM3zrWpSZ8AI0lh47WqneUjE2AvAvJMfLveXv2sraBoc0DV0vqyGRRfVbRKdGy9z8P2Dog08ryYfZ8v1r1ZbLoHXTOCfUr8sgTW2NH3vWxb2qdiFSl/WTpt0YTjH5ienoAzUfWYrkGnRbZVR1wkBEFyVtjp4E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GK2xEQ/L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0FFC4AF0C;
-	Thu, 15 Aug 2024 14:05:28 +0000 (UTC)
+	 MIME-Version; b=lpl0qpaVtL3ejXV9mGPAk3vvnZeHP/fQFx1H5edSYnRMJwv+ZHksmtvl4rCuR5NUxuxJ20YSTMZON4U8vloUhst9u+k5pL9L7VYwqIS54WZlns6XNLTKtEEX+K7EOuVTL2GuUzsW3Ss+JthPprQxau5BgO4fuALIebU8tp+xMNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mul/r5As; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C397C32786;
+	Thu, 15 Aug 2024 14:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730729;
-	bh=Ja1Ff6zeFvwYUs6ECbw1MuAt09s6AXeZ83ldSA3EFc0=;
+	s=korg; t=1723732801;
+	bh=W1hp3kzIy7RW+6ylKiKnAvlJMX5hpEXPI/K4ayjZznw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GK2xEQ/LWOcaN6JZrsB0eptvNFaAbNlybRPMFr1RJFKJK+Xj2/xcjJzShHAYCVBtr
-	 nXQnSPHCl9GbrACBj/0RVMyVAsrTMyjbCl6QStWQ5bRPz2PovCseHr/DJPhIDMhTAt
-	 XdPF5uPogq1pDJkeajxVscMvbp/aKd0XYsYcZQ2M=
+	b=Mul/r5Asa7shE08QxPmhqxCnsE2Z9S5tuKB0Pqt4m3HHEdy9RYrXKAKzTQcPPG15E
+	 zvqOf0aDcTiwtmm5m4Q1kWXXVpwswBTanF71Yc7aCZBEgulK1QFCKQBhlmU2iLAD1a
+	 8e1Bz87k9EgxcCETB1AMS3kWOw/Lm2CKaB5HbxXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 14/38] NFSD: Replace nfsd_prune_bucket()
-Date: Thu, 15 Aug 2024 15:25:48 +0200
-Message-ID: <20240815131833.501178263@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 283/352] arm64: cputype: Add Cortex-X4 definitions
+Date: Thu, 15 Aug 2024 15:25:49 +0200
+Message-ID: <20240815131930.388492758@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,189 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit a9507f6af1450ed26a4a36d979af518f5bb21e5d ]
+[ Upstream commit 02a0a04676fa7796d9cbc9eb5ca120aaa194d2dd ]
 
-Enable nfsd_prune_bucket() to drop the bucket lock while calling
-kfree(). Use the same pattern that Jeff recently introduced in the
-NFSD filecache.
+Add cputype definitions for Cortex-X4. These will be used for errata
+detection in subsequent patches.
 
-A few percpu operations are moved outside the lock since they
-temporarily disable local IRQs which is expensive and does not
-need to be done while the lock is held.
+These values can be found in Table B-249 ("MIDR_EL1 bit descriptions")
+in issue 0002-05 of the Cortex-X4 TRM, which can be found at:
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Stable-dep-of: c135e1269f34 ("NFSD: Refactor the duplicate reply cache shrinker")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  https://developer.arm.com/documentation/102484/0002/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240508081400.235362-3-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Mark: fix conflict (dealt with upstream via a later merge) ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfscache.c |   78 ++++++++++++++++++++++++++++++++++++++++++-----------
- fs/nfsd/trace.h    |   22 ++++++++++++++
- 2 files changed, 85 insertions(+), 15 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -117,6 +117,21 @@ static void nfsd_cacherep_free(struct sv
- 	kmem_cache_free(drc_slab, rp);
- }
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index b772159a84b9c..a6d1276751dcc 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -85,6 +85,7 @@
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
++#define ARM_CPU_PART_CORTEX_X4		0xD82
  
-+static unsigned long
-+nfsd_cacherep_dispose(struct list_head *dispose)
-+{
-+	struct svc_cacherep *rp;
-+	unsigned long freed = 0;
-+
-+	while (!list_empty(dispose)) {
-+		rp = list_first_entry(dispose, struct svc_cacherep, c_lru);
-+		list_del(&rp->c_lru);
-+		nfsd_cacherep_free(rp);
-+		freed++;
-+	}
-+	return freed;
-+}
-+
- static void
- nfsd_cacherep_unlink_locked(struct nfsd_net *nn, struct nfsd_drc_bucket *b,
- 			    struct svc_cacherep *rp)
-@@ -260,6 +275,41 @@ nfsd_cache_bucket_find(__be32 xid, struc
- 	return &nn->drc_hashtbl[hash];
- }
+ #define APM_CPU_PART_POTENZA		0x000
  
-+/*
-+ * Remove and return no more than @max expired entries in bucket @b.
-+ * If @max is zero, do not limit the number of removed entries.
-+ */
-+static void
-+nfsd_prune_bucket_locked(struct nfsd_net *nn, struct nfsd_drc_bucket *b,
-+			 unsigned int max, struct list_head *dispose)
-+{
-+	unsigned long expiry = jiffies - RC_EXPIRE;
-+	struct svc_cacherep *rp, *tmp;
-+	unsigned int freed = 0;
-+
-+	lockdep_assert_held(&b->cache_lock);
-+
-+	/* The bucket LRU is ordered oldest-first. */
-+	list_for_each_entry_safe(rp, tmp, &b->lru_head, c_lru) {
-+		/*
-+		 * Don't free entries attached to calls that are still
-+		 * in-progress, but do keep scanning the list.
-+		 */
-+		if (rp->c_state == RC_INPROG)
-+			continue;
-+
-+		if (atomic_read(&nn->num_drc_entries) <= nn->max_drc_entries &&
-+		    time_before(expiry, rp->c_timestamp))
-+			break;
-+
-+		nfsd_cacherep_unlink_locked(nn, b, rp);
-+		list_add(&rp->c_lru, dispose);
-+
-+		if (max && ++freed > max)
-+			break;
-+	}
-+}
-+
- static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
- 			 unsigned int max)
- {
-@@ -283,11 +333,6 @@ static long prune_bucket(struct nfsd_drc
- 	return freed;
- }
- 
--static long nfsd_prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn)
--{
--	return prune_bucket(b, nn, 3);
--}
--
- /*
-  * Walk the LRU list and prune off entries that are older than RC_EXPIRE.
-  * Also prune the oldest ones when the total exceeds the max number of entries.
-@@ -466,6 +511,8 @@ int nfsd_cache_lookup(struct svc_rqst *r
- 	__wsum			csum;
- 	struct nfsd_drc_bucket	*b;
- 	int type = rqstp->rq_cachetype;
-+	unsigned long freed;
-+	LIST_HEAD(dispose);
- 	int rtn = RC_DOIT;
- 
- 	rqstp->rq_cacherep = NULL;
-@@ -490,20 +537,18 @@ int nfsd_cache_lookup(struct svc_rqst *r
- 	found = nfsd_cache_insert(b, rp, nn);
- 	if (found != rp)
- 		goto found_entry;
--
--	nfsd_stats_rc_misses_inc();
- 	rqstp->rq_cacherep = rp;
- 	rp->c_state = RC_INPROG;
-+	nfsd_prune_bucket_locked(nn, b, 3, &dispose);
-+	spin_unlock(&b->cache_lock);
- 
-+	freed = nfsd_cacherep_dispose(&dispose);
-+	trace_nfsd_drc_gc(nn, freed);
-+
-+	nfsd_stats_rc_misses_inc();
- 	atomic_inc(&nn->num_drc_entries);
- 	nfsd_stats_drc_mem_usage_add(nn, sizeof(*rp));
--
--	nfsd_prune_bucket(b, nn);
--
--out_unlock:
--	spin_unlock(&b->cache_lock);
--out:
--	return rtn;
-+	goto out;
- 
- found_entry:
- 	/* We found a matching entry which is either in progress or done. */
-@@ -541,7 +586,10 @@ found_entry:
- 
- out_trace:
- 	trace_nfsd_drc_found(nn, rqstp, rtn);
--	goto out_unlock;
-+out_unlock:
-+	spin_unlock(&b->cache_lock);
-+out:
-+	return rtn;
- }
- 
- /**
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -1261,6 +1261,28 @@ TRACE_EVENT(nfsd_drc_mismatch,
- 		__entry->ingress)
- );
- 
-+TRACE_EVENT_CONDITION(nfsd_drc_gc,
-+	TP_PROTO(
-+		const struct nfsd_net *nn,
-+		unsigned long freed
-+	),
-+	TP_ARGS(nn, freed),
-+	TP_CONDITION(freed > 0),
-+	TP_STRUCT__entry(
-+		__field(unsigned long long, boot_time)
-+		__field(unsigned long, freed)
-+		__field(int, total)
-+	),
-+	TP_fast_assign(
-+		__entry->boot_time = nn->boot_time;
-+		__entry->freed = freed;
-+		__entry->total = atomic_read(&nn->num_drc_entries);
-+	),
-+	TP_printk("boot_time=%16llx total=%d freed=%lu",
-+		__entry->boot_time, __entry->total, __entry->freed
-+	)
-+);
-+
- TRACE_EVENT(nfsd_cb_args,
- 	TP_PROTO(
- 		const struct nfs4_client *clp,
+@@ -138,6 +139,7 @@
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
++#define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+-- 
+2.43.0
+
 
 
 
