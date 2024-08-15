@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E68952F1B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E7C953171
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0CA61F26212
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92721B23EE1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACB81DFFB;
-	Thu, 15 Aug 2024 13:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DBD19EECF;
+	Thu, 15 Aug 2024 13:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRhy+l4B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpFL1yI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6504B19DFA6;
-	Thu, 15 Aug 2024 13:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6285A18D630;
+	Thu, 15 Aug 2024 13:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728519; cv=none; b=g0mLEu84BgqKyT5sJ42ly8+EGcFUGBIwtiExAivkhSBHe3I9CT8b6tp+jeD8gZvT1IrtzoTgAADlxjdV2FP8i3yHgUrwzUP5PBFJwxdX+cogCYZlFx3qtMG0pz7MZgJCh6S9mXdMq7Umk/GLbDy1eBvZdM//M6X+JGSNR4zw1mM=
+	t=1723730041; cv=none; b=R0ffCNJb8WX7RWKc1CSmxcyYotmUNEV3I9jgCl6OQypauwPx+sIDp0C2/1wdDC+xYZSGTByMf8COWHp5MIUF9bUTvs/vzwtLsHteq/0EL09Ja9tEVIPCI8p8vWKUzPxQs1Q+MS1OCT2uZ0dbKw9lmrTbUAZtqmba0gPm00QaNLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728519; c=relaxed/simple;
-	bh=s59+uAZWXV6ueUyW3Ngyd9LirQxdrF7rXZZpEMweW/0=;
+	s=arc-20240116; t=1723730041; c=relaxed/simple;
+	bh=HnyltDQseZGrIWEC4Q5YL5ahDtCVEV9mT0KZed47hrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NCyqocaoqSiLasytAyYRDA0dRhu91VhWrIdhBNdu9qT6e9BvlrlTPy3kqy+4wI3FEN+5TNyPmlaaxEEb5JcDq5qslESJdcwooaCFDVadaAa/Ul909wCOBFarlhvGRYpHsRFk73c9V/H6Jn46AAeX3x946aIAgxNp523bAS0Sf7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRhy+l4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73A3C32786;
-	Thu, 15 Aug 2024 13:28:38 +0000 (UTC)
+	 MIME-Version; b=ofKTwQtvZG4Ewa7UlAMiAFLYAS8enLsuCTSc29yXiK6D8BrH+mcKk6QT7JcMeb4IKTLahxI54Yck3oAcYHk2K7o7Pt8MWqUN8ImX3JlCS9BM2eUxHD826hEHEmBfCkpbUHFO+lK+P9VY6jwEKcIXMoeGrZ59UUMxDRjJ/qDLqtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpFL1yI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA214C4AF0D;
+	Thu, 15 Aug 2024 13:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728519;
-	bh=s59+uAZWXV6ueUyW3Ngyd9LirQxdrF7rXZZpEMweW/0=;
+	s=korg; t=1723730041;
+	bh=HnyltDQseZGrIWEC4Q5YL5ahDtCVEV9mT0KZed47hrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRhy+l4BqwNDrnELFHvYehLRXdfNdfrOMPRNcIcdi023FvMz+NfmLUhhor+IF23mN
-	 HMgBHrHxB/RSKklxvH+H17/T2mQ7yE0o2SZsRJux3wnG9ZpU+lxS0b1dgGbe9HD4ju
-	 cJn8M6+OtLsINsdowfyjgb0wNYjBeSUYOE4XWRI0=
+	b=OpFL1yI2BYN1sPwgXqKI0+y5cahhvOg/P2EnGVzBLb2wKk4czWQX73raNFHuXYVJo
+	 67hVk8FEmeoQ7AcObjAECo1p4j8wx3UDHx98Tg7OgZjOOMpQLhUb3k+5YA0wZXilCB
+	 pT5UfCSUevu4bpuFcjLOO6ctO3nfxsBDWzjg/QgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Tremblay <vincent@vtremblay.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 026/196] perf: Fix perf_aux_size() for greater-than 32-bit size
+Subject: [PATCH 5.15 285/484] spidev: Add Silicon Labs EM3581 device compatible
 Date: Thu, 15 Aug 2024 15:22:23 +0200
-Message-ID: <20240815131853.088411972@linuxfoundation.org>
+Message-ID: <20240815131952.415856156@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Vincent Tremblay <vincent@vtremblay.dev>
 
-[ Upstream commit 3df94a5b1078dfe2b0c03f027d018800faf44c82 ]
+[ Upstream commit c67d90e058550403a3e6f9b05bfcdcfa12b1815c ]
 
-perf_buffer->aux_nr_pages uses a 32-bit type, so a cast is needed to
-calculate a 64-bit size.
+Add compatible string for Silicon Labs EM3581 device.
 
-Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-5-adrian.hunter@intel.com
+Signed-off-by: Vincent Tremblay <vincent@vtremblay.dev>
+Link: https://lore.kernel.org/r/20221227023550.569547-2-vincent@vtremblay.dev
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: fc28d1c1fe3b ("spi: spidev: add correct compatible for Rohm BH2228FV")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spidev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/events/internal.h b/kernel/events/internal.h
-index 8fc0ddc38cb69..a99713a883e9d 100644
---- a/kernel/events/internal.h
-+++ b/kernel/events/internal.h
-@@ -121,7 +121,7 @@ static inline unsigned long perf_data_size(struct ring_buffer *rb)
- 
- static inline unsigned long perf_aux_size(struct ring_buffer *rb)
- {
--	return rb->aux_nr_pages << PAGE_SHIFT;
-+	return (unsigned long)rb->aux_nr_pages << PAGE_SHIFT;
- }
- 
- #define __DEFINE_OUTPUT_COPY_BODY(advance_buf, memcpy_func, ...)	\
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 4a19c2142e474..c083d511f63dd 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -690,6 +690,7 @@ static const struct spi_device_id spidev_spi_ids[] = {
+ 	{ .name = "m53cpld" },
+ 	{ .name = "spi-petra" },
+ 	{ .name = "spi-authenta" },
++	{ .name = "em3581" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
+@@ -716,6 +717,7 @@ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
+ 	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
+ 	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
++	{ .compatible = "silabs,em3581", .data = &spidev_of_check },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
 -- 
 2.43.0
 
