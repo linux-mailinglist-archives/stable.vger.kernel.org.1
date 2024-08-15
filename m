@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-68402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7E5953205
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:01:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3F4952FC0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 328C71F237C8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:01:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AE61B272AC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15C41A00FF;
-	Thu, 15 Aug 2024 14:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C1E19EED2;
+	Thu, 15 Aug 2024 13:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vi3mK++3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2anLUPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCC31684AC;
-	Thu, 15 Aug 2024 14:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E382D1DA4E;
+	Thu, 15 Aug 2024 13:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730455; cv=none; b=CFkEXa8Dex24rMPqg4nyE5lR0mbo3XFqnq5lFM85lzgDWK5LU4CbEBSKXuHvw6zyksiQWpVk/c/aMpIFFN+V9AdrssGP1StCtJjx7Xn0jHGfGLEPRhUTmy6Z2AvuXjta1Kb9BYIPVVJ1vQ/AnGEt9vWDufJ5HBIzYXqPp+d4ShQ=
+	t=1723728926; cv=none; b=jVEJjdsYIiIVbDWadGThVEGi4CwrmXVsvdnqm2p5xwngiEhEu9hxvZ6LwkSDfylS2MztaQcHcIZ+zjhZakz+HSMj5Iu1WQn+y/bOQBXDPellLOXib97yNjiQeTTx/gPLL6BHZNFK0L/n6gYxn9KaoJL0A1o0Cgmit6PTOob+3Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730455; c=relaxed/simple;
-	bh=1NeDNCmDZ7O2wiuNX16+MsdeeK1xZRZDBFRrYqVnNNQ=;
+	s=arc-20240116; t=1723728926; c=relaxed/simple;
+	bh=gq4jdxdnYks3QmTZshmhOhson2MzC55++mqR6w2ilDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ALasg+dK9+qBaLwgw65gV1Fln763uqpkGedLSkfaMdhsCPBoMt9FxrIudxY7UKMEPW8XcMoo4QtTcudQeghePEJy6QhYVS0n3n8GLH6lf0aogLu5xxdXoEs2IqtYXMVdUJgNWW4/0UiPXbR7Ya8r0dh9vnWfGSDFbY6b15/myyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vi3mK++3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107A0C32786;
-	Thu, 15 Aug 2024 14:00:54 +0000 (UTC)
+	 MIME-Version; b=spYpkeH8Oz3ZldAboS5X2ZwV2XbSnNWwp0519SJO/jrbQUHsRNtVDcvgaeNg6yKY8ES0Cj9gSL4I+Tc/w7bg0ie4dbFVk3Zv/uf94axbWgvcdHN5Gu9TzJWIEuu/bN7hy76ilYs/fosJLlQkEubFYAFvFydtM0cJsg5rY3XtzCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2anLUPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501BAC32786;
+	Thu, 15 Aug 2024 13:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730455;
-	bh=1NeDNCmDZ7O2wiuNX16+MsdeeK1xZRZDBFRrYqVnNNQ=;
+	s=korg; t=1723728925;
+	bh=gq4jdxdnYks3QmTZshmhOhson2MzC55++mqR6w2ilDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vi3mK++3WM29HMtZm0J0SyJCxwWnapLbfgxQoTtcdiNSncIQmngQZgDNznvgylXwE
-	 YtZ3nZx752wxq9Q0NKJDID+Xcm4EnrtcvcWcijYUW83vZ46daNto583Ev7Fe2ScHRl
-	 tvunfxI/BbDVUyaN0wOR/t1mRM4ux4MMGfl8cbY4=
+	b=R2anLUPdpWlYc8SsS0VmGCrK9VbwlmJXioP4qvZsfnrHNKD/XpX58G30P9WuypHge
+	 DCr8S9M4LhsqpGpkv/pQRwk/l16uZDHvmfEMrATviqwLm/uiNTq55aA8DwFWqbavl1
+	 FbtjJaAE0z78sas4gi+uCRbadzxPV/7qUxf+edd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 414/484] ALSA: usb-audio: Re-add ScratchAmp quirk entries
+Subject: [PATCH 4.19 155/196] arm64: cputype: Add Cortex-X925 definitions
 Date: Thu, 15 Aug 2024 15:24:32 +0200
-Message-ID: <20240815131957.445216667@linuxfoundation.org>
+Message-ID: <20240815131858.003699529@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 03898691d42e0170e7d00f07cbe21ce0e9f3a8fa ]
+[ Upstream commit fd2ff5f0b320f418288e7a1f919f648fbc8a0dfc ]
 
-At the code refactoring of USB-audio quirk handling, I assumed that
-the quirk entries of Stanton ScratchAmp devices were only about the
-device name, and moved them completely into the rename table.
-But it seems that the device requires the quirk entry so that it's
-probed by the driver itself.
+Add cputype definitions for Cortex-X925. These will be used for errata
+detection in subsequent patches.
 
-This re-adds back the quirk entries of ScratchAmp, but in a
-minimalistic manner.
+These values can be found in Table A-285 ("MIDR_EL1 bit descriptions")
+in issue 0001-05 of the Cortex-X925 TRM, which can be found at:
 
-Fixes: 5436f59bc5bc ("ALSA: usb-audio: Move device rename and profile quirks to an internal table")
-Link: https://patch.msgid.link/20240808081803.22300-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  https://developer.arm.com/documentation/102807/0001/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-4-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 6d332c9eb4445..b03d671f218d6 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -2594,6 +2594,10 @@ YAMAHA_DEVICE(0x7010, "UB99"),
- 	}
- },
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index f63c5500937d7..304e634c64a05 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -94,6 +94,7 @@
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
++#define ARM_CPU_PART_CORTEX_X925	0xD85
  
-+/* Stanton ScratchAmp */
-+{ USB_DEVICE(0x103d, 0x0100) },
-+{ USB_DEVICE(0x103d, 0x0101) },
-+
- /* Novation EMS devices */
- {
- 	USB_DEVICE_VENDOR_SPEC(0x1235, 0x0001),
+ #define APM_CPU_PART_POTENZA		0x000
+ 
+@@ -135,6 +136,7 @@
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
++#define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 -- 
 2.43.0
 
