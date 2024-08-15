@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-67825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5DD952F46
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F76953197
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46C8F1F26C29
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A1D41F21FEE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679E019DFA6;
-	Thu, 15 Aug 2024 13:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602A81714A1;
+	Thu, 15 Aug 2024 13:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMWx4frp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBLkr5bf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D90019DF9E;
-	Thu, 15 Aug 2024 13:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F18717C9A9;
+	Thu, 15 Aug 2024 13:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728637; cv=none; b=inKW+HXXGRXetSaOlzJG4TPz6q405Ka7PjKbSG80p2uz3sGjxItxwMfB7TByobD5g2rkQR/jBv6c/lLq0++quK60FX2wHdQ6vXDfoWVU8PbY8oVesB+6Envxjn4+yu6L8hTh37yab08Mc+VXXUEI/jm1JJCFVluqnt98k91FIxk=
+	t=1723730159; cv=none; b=EUqO/NXXNwBGRbuicmLffE6xXG+K1QlXUUFaTdxIRb7fEFzti6XwRoFo8pItzlGGW0i7rRmKCna6mbKmaKSO4aSdFCkmuHbtmQGiDWke0LZGBHOu0PG5eOpKV6eHr5ATsClhaGM+Rkx53AO50CnyI7LZGPBjMrVCqRQIxreFmDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728637; c=relaxed/simple;
-	bh=XLoZ/oy099eFbx/caLdlUBMSfNSwI8KAPN6jK5kmB4Y=;
+	s=arc-20240116; t=1723730159; c=relaxed/simple;
+	bh=Bv1j8g7LghvxbO2JahIf4AnYJcAcPsBzYZemsZmg3hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGfqDSB0q/trzj4jmBKe6GxegR8/nJk9C1RWp5VApnHWJsWrj8l7P3mgDwPx2SI+ZYmeqHgSBP9qnp6HULITFtKKmmt4CUVZ6Jr9mjrB/QqZ4LE+frRhxg2QOvKzH4XUKp2XaAz/jCZjqZ7yVKlDdBSb0UP4/zBLevMWDeid9DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMWx4frp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8A5C32786;
-	Thu, 15 Aug 2024 13:30:36 +0000 (UTC)
+	 MIME-Version; b=uL4Ul+m7xGMRe17I4irkpNqKtYjVsJhudGwbqg9YWoi6sU3VQ61RNbL9Hl8RNj5cnfrUwEbFeQNAA+e9dfzVNeyWgHF8vuMN2bgluXCnkf0sqQObQ8PmAk8TUSojmpvXfZElZl+lUbp/mwLgF4hHRqIcftYxPDARBMfL8ntcTyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBLkr5bf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985FAC32786;
+	Thu, 15 Aug 2024 13:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728637;
-	bh=XLoZ/oy099eFbx/caLdlUBMSfNSwI8KAPN6jK5kmB4Y=;
+	s=korg; t=1723730159;
+	bh=Bv1j8g7LghvxbO2JahIf4AnYJcAcPsBzYZemsZmg3hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMWx4frpac8ISBIuRULLS9OeVzeGx3hVg13DyxYggj4iHyw0lOk3XInqi5eIXXiEA
-	 2l6q3P2q4kJI3nfGDb+FC6j7V6nJmUH8dFTLFtTolj1MmFa0NJdRugkOxRZkZBK5IU
-	 uy8//p03alPh56x5OXzmsTSn2lokfwHe4H9kohDI=
+	b=oBLkr5bfSqj0O1uEpOOGw9iKsG6Vv7SnFrVSjSrPyZ4qGO2IuYLR+tMbH2s6iRALe
+	 W4aRvbCRpuT2cvwT+kVd0egLLiOkZkC6Fv4kmmLuCeGvWrous4bYyHNhXAxaa3F1Gn
+	 gdXiHn5Hweih34WYrbM16iu+3oqrlYVFotIhQp7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Liao <liaoyu15@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 4.19 062/196] tick/broadcast: Make takeover of broadcast hrtimer reliable
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 321/484] irqchip/imx-irqsteer: Handle runtime power management correctly
 Date: Thu, 15 Aug 2024 15:22:59 +0200
-Message-ID: <20240815131854.449625304@linuxfoundation.org>
+Message-ID: <20240815131953.808480257@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Liao <liaoyu15@huawei.com>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-commit f7d43dd206e7e18c182f200e67a8db8c209907fa upstream.
+[ Upstream commit 33b1c47d1fc0b5f06a393bb915db85baacba18ea ]
 
-Running the LTP hotplug stress test on a aarch64 machine results in
-rcu_sched stall warnings when the broadcast hrtimer was owned by the
-un-plugged CPU. The issue is the following:
+The power domain is automatically activated from clk_prepare(). However, on
+certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
+sleeping functions, which triggers the 'scheduling while atomic' bug in the
+context switch path during device probing:
 
-CPU1 (owns the broadcast hrtimer)	CPU2
+ BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
+ Call trace:
+  __schedule_bug+0x54/0x6c
+  __schedule+0x7f0/0xa94
+  schedule+0x5c/0xc4
+  schedule_preempt_disabled+0x24/0x40
+  __mutex_lock.constprop.0+0x2c0/0x540
+  __mutex_lock_slowpath+0x14/0x20
+  mutex_lock+0x48/0x54
+  clk_prepare_lock+0x44/0xa0
+  clk_prepare+0x20/0x44
+  imx_irqsteer_resume+0x28/0xe0
+  pm_generic_runtime_resume+0x2c/0x44
+  __genpd_runtime_resume+0x30/0x80
+  genpd_runtime_resume+0xc8/0x2c0
+  __rpm_callback+0x48/0x1d8
+  rpm_callback+0x6c/0x78
+  rpm_resume+0x490/0x6b4
+  __pm_runtime_resume+0x50/0x94
+  irq_chip_pm_get+0x2c/0xa0
+  __irq_do_set_handler+0x178/0x24c
+  irq_set_chained_handler_and_data+0x60/0xa4
+  mxc_gpio_probe+0x160/0x4b0
 
-				tick_broadcast_enter()
-				  // shutdown local timer device
-				  broadcast_shutdown_local()
-				...
-				tick_broadcast_exit()
-				  clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT)
-				  // timer device is not programmed
-				  cpumask_set_cpu(cpu, tick_broadcast_force_mask)
+Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
+callbacks and handle power management in them as they are invoked from
+non-atomic context.
 
-				initiates offlining of CPU1
-take_cpu_down()
-/*
- * CPU1 shuts down and does not
- * send broadcast IPI anymore
- */
-				takedown_cpu()
-				  hotplug_cpu__broadcast_tick_pull()
-				    // move broadcast hrtimer to this CPU
-				    clockevents_program_event()
-				      bc_set_next()
-					hrtimer_start()
-					/*
-					 * timer device is not programmed
-					 * because only the first expiring
-					 * timer will trigger clockevent
-					 * device reprogramming
-					 */
+[ tglx: Rewrote change log, added Fixes tag ]
 
-What happens is that CPU2 exits broadcast mode with force bit set, then the
-local timer device is not reprogrammed and CPU2 expects to receive the
-expired event by the broadcast IPI. But this does not happen because CPU1
-is offlined by CPU2. CPU switches the clockevent device to ONESHOT state,
-but does not reprogram the device.
-
-The subsequent reprogramming of the hrtimer broadcast device does not
-program the clockevent device of CPU2 either because the pending expiry
-time is already in the past and the CPU expects the event to be delivered.
-As a consequence all CPUs which wait for a broadcast event to be delivered
-are stuck forever.
-
-Fix this issue by reprogramming the local timer device if the broadcast
-force bit of the CPU is set so that the broadcast hrtimer is delivered.
-
-[ tglx: Massage comment and change log. Add Fixes tag ]
-
-Fixes: 989dcb645ca7 ("tick: Handle broadcast wakeup of multiple cpus")
-Signed-off-by: Yu Liao <liaoyu15@huawei.com>
+Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240711124843.64167-1-liaoyu15@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-broadcast.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/irqchip/irq-imx-irqsteer.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -941,6 +941,7 @@ void tick_broadcast_switch_to_oneshot(vo
- #ifdef CONFIG_HOTPLUG_CPU
- void hotplug_cpu__broadcast_tick_pull(int deadcpu)
- {
-+	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
- 	struct clock_event_device *bc;
- 	unsigned long flags;
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index 96230a04ec238..44ce85c27f57a 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -35,6 +35,7 @@ struct irqsteer_data {
+ 	int			channel;
+ 	struct irq_domain	*domain;
+ 	u32			*saved_reg;
++	struct device		*dev;
+ };
  
-@@ -948,6 +949,28 @@ void hotplug_cpu__broadcast_tick_pull(in
- 	bc = tick_broadcast_device.evtdev;
+ static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
+@@ -71,10 +72,26 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
  
- 	if (bc && broadcast_needs_cpu(bc, deadcpu)) {
-+		/*
-+		 * If the broadcast force bit of the current CPU is set,
-+		 * then the current CPU has not yet reprogrammed the local
-+		 * timer device to avoid a ping-pong race. See
-+		 * ___tick_broadcast_oneshot_control().
-+		 *
-+		 * If the broadcast device is hrtimer based then
-+		 * programming the broadcast event below does not have any
-+		 * effect because the local clockevent device is not
-+		 * running and not programmed because the broadcast event
-+		 * is not earlier than the pending event of the local clock
-+		 * event device. As a consequence all CPUs waiting for a
-+		 * broadcast event are stuck forever.
-+		 *
-+		 * Detect this condition and reprogram the cpu local timer
-+		 * device to avoid the starvation.
-+		 */
-+		if (tick_check_broadcast_expired()) {
-+			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
-+			tick_program_event(td->evtdev->next_event, 1);
-+		}
++static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
 +
- 		/* This moves the broadcast assignment to this CPU: */
- 		clockevents_program_event(bc, bc->next_event, 1);
- 	}
++	pm_runtime_get_sync(data->dev);
++}
++
++static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_put_autosuspend(data->dev);
++}
++
+ static const struct irq_chip imx_irqsteer_irq_chip = {
+-	.name		= "irqsteer",
+-	.irq_mask	= imx_irqsteer_irq_mask,
+-	.irq_unmask	= imx_irqsteer_irq_unmask,
++	.name			= "irqsteer",
++	.irq_mask		= imx_irqsteer_irq_mask,
++	.irq_unmask		= imx_irqsteer_irq_unmask,
++	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
++	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
+ };
+ 
+ static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
+@@ -149,6 +166,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENOMEM;
+ 
++	data->dev = &pdev->dev;
+ 	data->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(data->regs)) {
+ 		dev_err(&pdev->dev, "failed to initialize reg\n");
+-- 
+2.43.0
+
 
 
 
