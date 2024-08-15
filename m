@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-69020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32397953511
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E04A953512
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEFCD1F2A519
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEEE2283806
 	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716CD1A00CE;
-	Thu, 15 Aug 2024 14:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993651993B9;
+	Thu, 15 Aug 2024 14:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXMySk8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lveWJklY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA0563D5;
-	Thu, 15 Aug 2024 14:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D5E63D5;
+	Thu, 15 Aug 2024 14:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732408; cv=none; b=oFw12xa2EKRv+ZHGuG67CBmVWclntfxqmlhIfaHNFhYj6wH3DngYelSs6v58HOK3wUgI/bdlbOr22wR3oaYq+djlkw20cwD01PcJ88lftTD1ANgk+TyTO4yZT7BcGMFwAI4nCEGk8EW/ouK/xjmNMWpXFov5O7oMEbrnUvcKr4w=
+	t=1723732411; cv=none; b=Vukfi/Tg+pJ2ckLV+M8qAv2Dj6sKVak90vOu3WCcsjWCrcePYgAo2XujP34M1GcmFTYGY0QIY1SJWdVfG7ca1yINm+xxpdDnNsILa+9eC2dzPggFo7dAXTGVTx/bMiQd4ZaSMYxptJp3owXFmxFzgmhJzvP2S8LvrIDvxqYcToo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732408; c=relaxed/simple;
-	bh=ERQBGkXamaDLEjI5xivIKnxhiXvXV+WTvuOX7CTS924=;
+	s=arc-20240116; t=1723732411; c=relaxed/simple;
+	bh=ZxvlsEdqCOY1qh6Tt5IDqxU+iJaHYx8W3YsowL//y2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRJGHjyPYgE60UNoQLKHZRs6bpTUjM7j+v0Ik+cJ9U0pRKdI08qTtAFoGrYPhfFvIfwoYj4azCvJ4AxFFzHS0qHPCEUmKevzmZf1h8nVsYUfXZ9g9RgAwfp4nzFiecRjX2olA0WnECFUqjLv2ex7lOMOTGvU231gko5KH/IyzA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXMySk8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE52EC4AF0D;
-	Thu, 15 Aug 2024 14:33:27 +0000 (UTC)
+	 MIME-Version; b=aD2Je4nglSdm4oOQ4AyEh2SXVIqAl+li+6yLPh9JkXIZC8u5sUOClTpKmSTmrRyRoOGm0JiCzTDdW0DfjorgoYmhNQiTXOI59TYzE5ZxcJ0Va0bPwZp+NPVUNDO72Lx9ZvmDpNzrYSW0V7wQdEAJwpR1eVV3RTEeT0QQYDFggBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lveWJklY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3FDC32786;
+	Thu, 15 Aug 2024 14:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732408;
-	bh=ERQBGkXamaDLEjI5xivIKnxhiXvXV+WTvuOX7CTS924=;
+	s=korg; t=1723732411;
+	bh=ZxvlsEdqCOY1qh6Tt5IDqxU+iJaHYx8W3YsowL//y2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXMySk8XT85NGejJluX+3ucAFB1ti8vGPGdJBJVW+oOScrrI31xPMYXPDrZY5F052
-	 u3WZZgnIPR5dkXO/Si8YAA75rZu/7dsq9pwtA/NTxppPmxfQVL4EeWV77KLnvK/zal
-	 gcsZ9SBrfm+j5eXWnErnK1qKiHHNPQyh3+4sgh2A=
+	b=lveWJklY7iC9wv6VFBSjbsUMjtlbi1eVMGypJ05gpY4pplbRk5wfQb+ldhbClkFyr
+	 BBFasSdRGx0LUl+kN4BxqLeVu+35gerNFTyY59jlJiY2Xzj8yBoJVJ+174E8Y5cFnB
+	 xdXwjf3pKgAl5BPfcsuaaHspZ/xd5cybgXa4avm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Cavenati <cavenati.marco@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.10 170/352] perf/x86/intel/pt: Fix topa_entry base length
-Date: Thu, 15 Aug 2024 15:23:56 +0200
-Message-ID: <20240815131925.845215305@linuxfoundation.org>
+Subject: [PATCH 5.10 171/352] perf/x86/intel/pt: Fix a topa_entry base address calculation
+Date: Thu, 15 Aug 2024 15:23:57 +0200
+Message-ID: <20240815131925.883273555@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -66,45 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marco Cavenati <cavenati.marco@gmail.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 5638bd722a44bbe97c1a7b3fae5b9efddb3e70ff upstream.
+commit ad97196379d0b8cb24ef3d5006978a6554e6467f upstream.
 
-topa_entry->base needs to store a pfn.  It obviously needs to be
-large enough to store the largest possible x86 pfn which is
-MAXPHYADDR-PAGE_SIZE (52-12).  So it is 4 bits too small.
+topa_entry->base is a bit-field. Bit-fields are not promoted to a 64-bit
+type, even if the underlying type is 64-bit, and so, if necessary, must
+be cast to a larger type when calculations are done.
 
-Increase the size of topa_entry->base from 36 bits to 40 bits.
+Fix a topa_entry->base address calculation by adding a cast.
 
-Note, systems where physical addresses can be 256TiB or more are affected.
+Without the cast, the address was limited to 36-bits i.e. 64GiB.
 
-[ Adrian: Amend commit message as suggested by Dave Hansen ]
+The address calculation is used on systems that do not support Multiple
+Entry ToPA (only Broadwell), and affects physical addresses on or above
+64GiB. Instead of writing to the correct address, the address comprising
+the first 36 bits would be written to.
+
+Intel PT snapshot and sampling modes are not affected.
 
 Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
-Signed-off-by: Marco Cavenati <cavenati.marco@gmail.com>
+Reported-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240624201101.60186-2-adrian.hunter@intel.com
+Link: https://lore.kernel.org/r/20240624201101.60186-3-adrian.hunter@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/pt.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/pt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/pt.h
-+++ b/arch/x86/events/intel/pt.h
-@@ -33,8 +33,8 @@ struct topa_entry {
- 	u64	rsvd2	: 1;
- 	u64	size	: 4;
- 	u64	rsvd3	: 2;
--	u64	base	: 36;
--	u64	rsvd4	: 16;
-+	u64	base	: 40;
-+	u64	rsvd4	: 12;
- };
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -861,7 +861,7 @@ static void pt_update_head(struct pt *pt
+  */
+ static void *pt_buffer_region(struct pt_buffer *buf)
+ {
+-	return phys_to_virt(TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
++	return phys_to_virt((phys_addr_t)TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
+ }
  
- /* TSC to Core Crystal Clock Ratio */
+ /**
 
 
 
