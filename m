@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-67856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26DC952F67
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FC1952F6C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B5FA289A32
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51BCAB20F09
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28270198E78;
-	Thu, 15 Aug 2024 13:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B1A19F473;
+	Thu, 15 Aug 2024 13:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urOqXlSk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7xx7qsa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0B71714D0;
-	Thu, 15 Aug 2024 13:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CFF7DA78;
+	Thu, 15 Aug 2024 13:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728736; cv=none; b=Zwm3Qa1ZSDVjyzPhErJbPjMHmYy8qXtIihReN9huFhlh0KYYyGc2J1JdEjK40Q0mptsmsPsc4Fpn6wW6DJkKMINWIQnaECn1vpN0ijJ3fVQKcggQci6quK9K0DQnfEkwogdKLv9fOH8247bWL0EQxYACYQTCwHB5O1c0PFcPdm8=
+	t=1723728743; cv=none; b=hs0cJnkmwAJOSaUzfKT4a9D8RASoBOGnrnUpSI4u1kGgXPiQRUS6vMg246o7WpCdyNez5RIs3cT6Eef5pGQoUmjSlXoGNAjxUZPZ3+KST9xHV6fWvHkaZi5yiWtEjmmgHFXP7Bg+ddsGF20Xb2A2mFFYE+XPCsuaqdTLOx4iJxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728736; c=relaxed/simple;
-	bh=gHTYCWXrn0rmtoM3Z+ImNjGdB7dKPfgFqwAXl7i/PWc=;
+	s=arc-20240116; t=1723728743; c=relaxed/simple;
+	bh=w+ulAHe4Zcr9YZszLM71nnTOS0/1gez5NFwnRvRwiic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7ee805Zlh6ZN/qv0xNc0FNFYA47JDv+EWGO0IpuDiWJI6x97sDycKq8Hj13Z6D1H/WChjnQmdqiKNytdElQEAMLsu2eCDnDOrpK2HYVoG+BA5zStUbX0vvFu6cr4ZHvvEQpTk8V/0vW3EEDuL69Do5Gbez3rfHFV2vCZQSce0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urOqXlSk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60000C32786;
-	Thu, 15 Aug 2024 13:32:16 +0000 (UTC)
+	 MIME-Version; b=azXaD5AudpdbHGThNmeXyTdfTWEhA1LtLebHLjkzrx+lAhx3FShcDBqKoMIm8d+2SUOdnza+MGI06ovDo840GkEqNaKsKvZQiMLJ7K0dq1BUvb4LygRe8cyCnCePmPpYcy2ixgV+VDPbJk9tS2RjkseUG9KXmf4B0Ijv3dN5dQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7xx7qsa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97596C4AF0F;
+	Thu, 15 Aug 2024 13:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728736;
-	bh=gHTYCWXrn0rmtoM3Z+ImNjGdB7dKPfgFqwAXl7i/PWc=;
+	s=korg; t=1723728743;
+	bh=w+ulAHe4Zcr9YZszLM71nnTOS0/1gez5NFwnRvRwiic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=urOqXlSkqGaEuQ6NwUdIgEo5lm/mKPpVHcGP+H9FqnH0Q+qBpwFaaTZnt7sqiBeS2
-	 vh2OGJaR0+tcBHrKPLQ9HOOaTwQ1w+cSdIH42ZjHrqR7YJzcm7Dn+nrW0WVh+dTMgl
-	 h9k2IlqQTff5o2mr2DJOd1YYTVvn6owVodjg3cVI=
+	b=M7xx7qsaCWdH/XbR7zjOyOJPjNzXAU2etHakvTKGkc6Hr/co1wyiDu+auQy7UqUez
+	 VLSd6nKig4njsB7j5bfD/M6jFhvj2XKOQ/9Q1KSdOxX0kXw5IqFZu/9jLcslKaNHPM
+	 S5GZfm77JRO7dCP/jA0hAI3Tlh3k0TKUf4BRp4ME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 094/196] nilfs2: handle inconsistent state in nilfs_btnode_create_block()
-Date: Thu, 15 Aug 2024 15:23:31 +0200
-Message-ID: <20240815131855.679080744@linuxfoundation.org>
+	Wenlin Kang <wenlin.kang@windriver.com>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 095/196] kdb: Fix bound check compiler warning
+Date: Thu, 15 Aug 2024 15:23:32 +0200
+Message-ID: <20240815131855.717225484@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
 References: <20240815131852.063866671@linuxfoundation.org>
@@ -66,98 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Wenlin Kang <wenlin.kang@windriver.com>
 
-commit 4811f7af6090e8f5a398fbdd766f903ef6c0d787 upstream.
+[ Upstream commit ca976bfb3154c7bc67c4651ecd144fdf67ccaee7 ]
 
-Syzbot reported that a buffer state inconsistency was detected in
-nilfs_btnode_create_block(), triggering a kernel bug.
+The strncpy() function may leave the destination string buffer
+unterminated, better use strscpy() instead.
 
-It is not appropriate to treat this inconsistency as a bug; it can occur
-if the argument block address (the buffer index of the newly created
-block) is a virtual block number and has been reallocated due to
-corruption of the bitmap used to manage its allocation state.
+This fixes the following warning with gcc 8.2:
 
-So, modify nilfs_btnode_create_block() and its callers to treat it as a
-possible filesystem error, rather than triggering a kernel bug.
+kernel/debug/kdb/kdb_io.c: In function 'kdb_getstr':
+kernel/debug/kdb/kdb_io.c:449:3: warning: 'strncpy' specified bound 256 equals destination size [-Wstringop-truncation]
+   strncpy(kdb_prompt_str, prompt, CMD_BUFLEN);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Link: https://lkml.kernel.org/r/20240725052007.4562-1-konishi.ryusuke@gmail.com
-Fixes: a60be987d45d ("nilfs2: B-tree node cache")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=89cc4f2324ed37988b60
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wenlin Kang <wenlin.kang@windriver.com>
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Stable-dep-of: 70867efacf43 ("kdb: address -Wformat-security warnings")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btnode.c |   25 ++++++++++++++++++++-----
- fs/nilfs2/btree.c  |    4 ++--
- 2 files changed, 22 insertions(+), 7 deletions(-)
+ kernel/debug/kdb/kdb_io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/btnode.c
-+++ b/fs/nilfs2/btnode.c
-@@ -51,12 +51,21 @@ nilfs_btnode_create_block(struct address
- 
- 	bh = nilfs_grab_buffer(inode, btnc, blocknr, BIT(BH_NILFS_Node));
- 	if (unlikely(!bh))
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	if (unlikely(buffer_mapped(bh) || buffer_uptodate(bh) ||
- 		     buffer_dirty(bh))) {
--		brelse(bh);
--		BUG();
-+		/*
-+		 * The block buffer at the specified new address was already
-+		 * in use.  This can happen if it is a virtual block number
-+		 * and has been reallocated due to corruption of the bitmap
-+		 * used to manage its allocation state (if not, the buffer
-+		 * clearing of an abandoned b-tree node is missing somewhere).
-+		 */
-+		nilfs_error(inode->i_sb,
-+			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%lu)",
-+			    (unsigned long long)blocknr, inode->i_ino);
-+		goto failed;
- 	}
- 	memset(bh->b_data, 0, i_blocksize(inode));
- 	bh->b_bdev = inode->i_sb->s_bdev;
-@@ -67,6 +76,12 @@ nilfs_btnode_create_block(struct address
- 	unlock_page(bh->b_page);
- 	put_page(bh->b_page);
- 	return bh;
-+
-+failed:
-+	unlock_page(bh->b_page);
-+	put_page(bh->b_page);
-+	brelse(bh);
-+	return ERR_PTR(-EIO);
- }
- 
- int nilfs_btnode_submit_block(struct address_space *btnc, __u64 blocknr,
-@@ -224,8 +239,8 @@ retry:
- 	}
- 
- 	nbh = nilfs_btnode_create_block(btnc, newkey);
--	if (!nbh)
--		return -ENOMEM;
-+	if (IS_ERR(nbh))
-+		return PTR_ERR(nbh);
- 
- 	BUG_ON(nbh == obh);
- 	ctxt->newbh = nbh;
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -63,8 +63,8 @@ static int nilfs_btree_get_new_block(con
- 	struct buffer_head *bh;
- 
- 	bh = nilfs_btnode_create_block(btnc, ptr);
--	if (!bh)
--		return -ENOMEM;
-+	if (IS_ERR(bh))
-+		return PTR_ERR(bh);
- 
- 	set_buffer_nilfs_volatile(bh);
- 	*bhp = bh;
+diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
+index acc8e13b823b2..5358e8a8b6f11 100644
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -459,7 +459,7 @@ static char *kdb_read(char *buffer, size_t bufsize)
+ char *kdb_getstr(char *buffer, size_t bufsize, const char *prompt)
+ {
+ 	if (prompt && kdb_prompt_str != prompt)
+-		strncpy(kdb_prompt_str, prompt, CMD_BUFLEN);
++		strscpy(kdb_prompt_str, prompt, CMD_BUFLEN);
+ 	kdb_printf(kdb_prompt_str);
+ 	kdb_nextline = 1;	/* Prompt and input resets line number */
+ 	return kdb_read(buffer, bufsize);
+-- 
+2.43.0
+
 
 
 
