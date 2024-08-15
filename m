@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D6D9534B1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4112F95331F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46811287D68
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D39A9B21D9D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EA217C995;
-	Thu, 15 Aug 2024 14:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0B11A4F16;
+	Thu, 15 Aug 2024 14:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAHhqB1k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERa/nqQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9036063C;
-	Thu, 15 Aug 2024 14:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC061A2570;
+	Thu, 15 Aug 2024 14:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732143; cv=none; b=Ie0OupJZ7pC2YzAC81sXTx7Ax6+cRM/06LPJBPiiaX7z41ZReSVrxGew4FkvIf9A8Hj+ZWNlGJsuFaddQ80dkzjNgocq8KGtkGPFGg30K1ctmBPpPmNGJgQwP7m0ogtfLtJe2aBdfftowxp/11q3tLvWK+XzFe564PgWj5mBFsg=
+	t=1723731066; cv=none; b=ae4JCYYypQz9mnDE7LVzrWJsDXt0cViczIijZe0a54T2f4peMsHRZvz69cN1eMnK/vtnVZBxR19AqCERKSkF0FNDpHbj8RWFLqoyaVXMk/iNzqbCHekAfaCJIVNmMQxVnEazhbiyVa4RbinpP0/cGLudzDGM1s0RIFUigqIisCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732143; c=relaxed/simple;
-	bh=8fwVee6dhvTkcIonHdIZfRtlVGqCU1LMQrAxrlnZ/uA=;
+	s=arc-20240116; t=1723731066; c=relaxed/simple;
+	bh=E8rJfzpLrgBtMxz+h9kz+pMH3Hb3cc/XbVn9QrucjqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWwRgGgSZ8Bh5+SaI/OCjG+ZI8iVH5CMoZFUjv9iHFCft4GohQj6QtJvYzh7IWe+vZNIdjCj0LLn5DBFT8x2UoTP8jssWBkGP5sms7/oMn3of2D35Od8Sapr9GoKDeQsolswzHOPNnVkeW4uIQvVNS88Jvt7dPNi9j0VtVv95Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAHhqB1k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166EDC32786;
-	Thu, 15 Aug 2024 14:29:02 +0000 (UTC)
+	 MIME-Version; b=bEtRou8P86l8HGoC0g9nRckZDGqix6o9Zb8MtLx35gyp7KEomYoH1YshNZk0GksvV2aeEMmODtiPusLtTGRYVKJxnlahVa49kRgsNSSYrLWmZJwajIIGy+8YhQgTtNdEH7cK/+PBtYkVuCqNyWFOd2vwBlheyvhCD722WeCAm14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERa/nqQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E709C32786;
+	Thu, 15 Aug 2024 14:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732143;
-	bh=8fwVee6dhvTkcIonHdIZfRtlVGqCU1LMQrAxrlnZ/uA=;
+	s=korg; t=1723731066;
+	bh=E8rJfzpLrgBtMxz+h9kz+pMH3Hb3cc/XbVn9QrucjqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EAHhqB1kuaw03iiSDHgWvjWThDGvVcw+DOskWm7ebMJXq55AQwRoqbeEYyUoql+7v
-	 50g3VWvVXIOHUjPiwaudmDHDlAMRjDcyI/UADPVI4JPse+RNw7bfWEn4vS9z5LyndA
-	 P1HOP1bAAzBHsm+KY2fu0LunVatdVjgF38/LYPEw=
+	b=ERa/nqQTKfgsJ65LpTgrJudNGvOQzd3Oon1IA65fga4oy9/KaaDGGbhc5xS4OugKG
+	 w9NaeJ1QLRdznGg+VJpWUGo/NQXpyuddzVbSKDvLiaO4l8y5TP/h+yA294faokeKrg
+	 YSOiEaSuJiUTmwNZhB+iILhwBU4IKbe0m/PbmgSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/352] media: renesas: vsp1: Fix _irqsave and _irq mix
+Subject: [PATCH 5.4 013/259] hwmon: (max6697) Fix underflow when writing limit attributes
 Date: Thu, 15 Aug 2024 15:22:26 +0200
-Message-ID: <20240815131922.335933834@linuxfoundation.org>
+Message-ID: <20240815131903.305713500@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 57edbbcf5258c378a9b9d0c80d33b03a010b22c8 ]
+[ Upstream commit cbf7467828cd4ec7ceac7a8b5b5ddb2f69f07b0e ]
 
-The histogram support mixes _irqsave and _irq, causing the following
-smatch warning:
+Using DIV_ROUND_CLOSEST() on an unbound value can result in underflows.
+Indeed, module test scripts report:
 
-     drivers/media/platform/renesas/vsp1/vsp1_histo.c:153 histo_stop_streaming()
-     warn: mixing irqsave and irq
+temp1_max: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
+temp1_crit: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
 
-The histo_stop_streaming() calls spin_lock_irqsave() followed by
-wait_event_lock_irq(). The former hints that interrupts may be disabled
-by the caller, while the latter reenables interrupts unconditionally.
-This doesn't cause any real bug, as the function is always called with
-interrupts enabled, but the pattern is still incorrect.
+Fix by introducing an extra set of clamping.
 
-Fix the problem by using spin_lock_irq() instead of spin_lock_irqsave()
-in histo_stop_streaming(). While at it, switch to spin_lock_irq() and
-spin_lock() as appropriate elsewhere.
-
-Fixes: 99362e32332b ("[media] v4l: vsp1: Add histogram support")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-renesas-soc/164d74ff-312c-468f-be64-afa7182cd2f4@moroto.mountain/
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/vsp1/vsp1_histo.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/hwmon/max6697.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/vsp1/vsp1_histo.c b/drivers/media/platform/vsp1/vsp1_histo.c
-index a91e142bcb948..37df7d2d4639e 100644
---- a/drivers/media/platform/vsp1/vsp1_histo.c
-+++ b/drivers/media/platform/vsp1/vsp1_histo.c
-@@ -36,9 +36,8 @@ struct vsp1_histogram_buffer *
- vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
- {
- 	struct vsp1_histogram_buffer *buf = NULL;
--	unsigned long flags;
+diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
+index 64122eb38060d..cfd5815e60dfa 100644
+--- a/drivers/hwmon/max6697.c
++++ b/drivers/hwmon/max6697.c
+@@ -305,6 +305,7 @@ static ssize_t temp_store(struct device *dev,
+ 		return ret;
  
--	spin_lock_irqsave(&histo->irqlock, flags);
-+	spin_lock(&histo->irqlock);
- 
- 	if (list_empty(&histo->irqqueue))
- 		goto done;
-@@ -49,7 +48,7 @@ vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
- 	histo->readout = true;
- 
- done:
--	spin_unlock_irqrestore(&histo->irqlock, flags);
-+	spin_unlock(&histo->irqlock);
- 	return buf;
- }
- 
-@@ -58,7 +57,6 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
- 				    size_t size)
- {
- 	struct vsp1_pipeline *pipe = histo->entity.pipe;
--	unsigned long flags;
- 
- 	/*
- 	 * The pipeline pointer is guaranteed to be valid as this function is
-@@ -70,10 +68,10 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
- 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, size);
- 	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
- 
--	spin_lock_irqsave(&histo->irqlock, flags);
-+	spin_lock(&histo->irqlock);
- 	histo->readout = false;
- 	wake_up(&histo->wait_queue);
--	spin_unlock_irqrestore(&histo->irqlock, flags);
-+	spin_unlock(&histo->irqlock);
- }
- 
- /* -----------------------------------------------------------------------------
-@@ -124,11 +122,10 @@ static void histo_buffer_queue(struct vb2_buffer *vb)
- 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
- 	struct vsp1_histogram *histo = vb2_get_drv_priv(vb->vb2_queue);
- 	struct vsp1_histogram_buffer *buf = to_vsp1_histogram_buffer(vbuf);
--	unsigned long flags;
- 
--	spin_lock_irqsave(&histo->irqlock, flags);
-+	spin_lock_irq(&histo->irqlock);
- 	list_add_tail(&buf->queue, &histo->irqqueue);
--	spin_unlock_irqrestore(&histo->irqlock, flags);
-+	spin_unlock_irq(&histo->irqlock);
- }
- 
- static int histo_start_streaming(struct vb2_queue *vq, unsigned int count)
-@@ -140,9 +137,8 @@ static void histo_stop_streaming(struct vb2_queue *vq)
- {
- 	struct vsp1_histogram *histo = vb2_get_drv_priv(vq);
- 	struct vsp1_histogram_buffer *buffer;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&histo->irqlock, flags);
-+	spin_lock_irq(&histo->irqlock);
- 
- 	/* Remove all buffers from the IRQ queue. */
- 	list_for_each_entry(buffer, &histo->irqqueue, queue)
-@@ -152,7 +148,7 @@ static void histo_stop_streaming(struct vb2_queue *vq)
- 	/* Wait for the buffer being read out (if any) to complete. */
- 	wait_event_lock_irq(histo->wait_queue, !histo->readout, histo->irqlock);
- 
--	spin_unlock_irqrestore(&histo->irqlock, flags);
-+	spin_unlock_irq(&histo->irqlock);
- }
- 
- static const struct vb2_ops histo_video_queue_qops = {
+ 	mutex_lock(&data->update_lock);
++	temp = clamp_val(temp, -1000000, 1000000);	/* prevent underflow */
+ 	temp = DIV_ROUND_CLOSEST(temp, 1000) + data->temp_offset;
+ 	temp = clamp_val(temp, 0, data->type == max6581 ? 255 : 127);
+ 	data->temp[nr][index] = temp;
 -- 
 2.43.0
 
