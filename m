@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-68983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59ABD9534E3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BE195337A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 002DA2883D6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56DA71C23E4A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE271A01BB;
-	Thu, 15 Aug 2024 14:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F9619EED7;
+	Thu, 15 Aug 2024 14:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/d8n3Ll"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Drp966zg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E3C1A00F8;
-	Thu, 15 Aug 2024 14:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221001AC44F;
+	Thu, 15 Aug 2024 14:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732289; cv=none; b=ul1mLdFgpYGpvyaWU2jjjgu9JyN92UBGMD+i1Wy1tOJ+mx74qJ37EJ3nNFEU7I39QSsXLj6dwldAfpUWsAYBalWcAbAanSmz7UnuhHszDgQ0nAhrHLOgmnG/AWLBoHaaz79DTcDaXCujltxH/oyK5ZqkdURCb7VOdEHjb0Tz9ZY=
+	t=1723731338; cv=none; b=lSXF1gQU+Ct2Q3jd5p7ZVc4i21oU61TPMaFOfBJYFSQHRy/26cHcqdZoVBoVXLp657Lm1leoHpW38Jx3+tuBATv/CrVh3fc0NFIb7gMt6qCm74dX6g1ee9GQziWiT1DMpmSyMkh6E51kcS6UjZCF2mwFoZM9a0EjjY85okpCvlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732289; c=relaxed/simple;
-	bh=V6Ai6/yIK+CekMjuyEwgcJotEfcWiBoFtodwXQ7Z7bE=;
+	s=arc-20240116; t=1723731338; c=relaxed/simple;
+	bh=f82BVEn0+qe8czBxLolKoptMTVhkp9smwM2guZfOhsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSyiR/w+fVYI3IGV/2LvAZiSDaeGdNm5iG7Sg0M4JXefVt4B28vZqnM+0bdIR7wDMbiZPzhVuVNgjbktJzzepc1YaEz7ijMVXO3ujjqnqH4cF8bR9zQPpOnW24iuycIoDI7RMzIZuEqo04Q9UhIiMSnc0/vF0pVud5fNBg08Duk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/d8n3Ll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20694C32786;
-	Thu, 15 Aug 2024 14:31:28 +0000 (UTC)
+	 MIME-Version; b=M4WfY9b84CuyxmpdhnQlHFjMqiTU2lgN0+Qjx3cu9MyC/JYU9lxv5WDNcOxcJx54QA3SNl6oTfnJWZoQpx30PvB+oyfDOV3x7ZCCsgAy9M45IJyuBQra86jW/RmEqR+W7Mufa9KxFA963JQOzJpx7fyO9kHyrSazSTju09B3Fm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Drp966zg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BC3C32786;
+	Thu, 15 Aug 2024 14:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732289;
-	bh=V6Ai6/yIK+CekMjuyEwgcJotEfcWiBoFtodwXQ7Z7bE=;
+	s=korg; t=1723731338;
+	bh=f82BVEn0+qe8czBxLolKoptMTVhkp9smwM2guZfOhsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/d8n3LlP7glkK8PhFKlKaNWb6CEwltEckJrQe8mfJJNZflDT+QX7gmxpY4n+nZzn
-	 R7jn1Ip89vEgD8L8sYwIPwf1YTSS3cORtG6+DnP+BfR5LmllW2zvjyWsjhY7+nkqXw
-	 78dTAsUfhAfa4S2qBGWIXPd5ZSC6qrLeQQclkTOc=
+	b=Drp966zgUlH1QhbZID6q1A4CaKD+AWLcRvjvVUTvKJuokdapRs4Yvxg6sO/xEGNwn
+	 nF7QOg5SDqJyTgvMzKf0lnrUcupKff6Qps+9IeRPZ9rpcGgF0GANIy2smYOrn9BZhO
+	 3flxZoRuG+2v1pOwlUCCnexQNdc2JrdtzFpaQMR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 133/352] ext2: Verify bitmap and itable block numbers before using them
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 066/259] SUNRPC: Fixup gss_status tracepoint error output
 Date: Thu, 15 Aug 2024 15:23:19 +0200
-Message-ID: <20240815131924.396664356@linuxfoundation.org>
+Message-ID: <20240815131905.354065533@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-commit 322a6aff03937aa1ece33b4e46c298eafaf9ac41 upstream.
+[ Upstream commit b9fae9f06d84ffab0f3f9118f3a96bbcdc528bf6 ]
 
-Verify bitmap block numbers and inode table blocks are sane before using
-them for checking bits in the block bitmap.
+The GSS routine errors are values, not flags.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/balloc.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/trace/events/rpcgss.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext2/balloc.c
-+++ b/fs/ext2/balloc.c
-@@ -79,26 +79,33 @@ static int ext2_valid_block_bitmap(struc
- 	ext2_grpblk_t next_zero_bit;
- 	ext2_fsblk_t bitmap_blk;
- 	ext2_fsblk_t group_first_block;
-+	ext2_grpblk_t max_bit;
+diff --git a/include/trace/events/rpcgss.h b/include/trace/events/rpcgss.h
+index d1f7fe1b6fe44..23e8288a76b5c 100644
+--- a/include/trace/events/rpcgss.h
++++ b/include/trace/events/rpcgss.h
+@@ -42,7 +42,7 @@ TRACE_DEFINE_ENUM(GSS_S_UNSEQ_TOKEN);
+ TRACE_DEFINE_ENUM(GSS_S_GAP_TOKEN);
  
- 	group_first_block = ext2_group_first_block_no(sb, block_group);
-+	max_bit = ext2_group_last_block_no(sb, block_group) - group_first_block;
- 
- 	/* check whether block bitmap block number is set */
- 	bitmap_blk = le32_to_cpu(desc->bg_block_bitmap);
- 	offset = bitmap_blk - group_first_block;
--	if (!ext2_test_bit(offset, bh->b_data))
-+	if (offset < 0 || offset > max_bit ||
-+	    !ext2_test_bit(offset, bh->b_data))
- 		/* bad block bitmap */
- 		goto err_out;
- 
- 	/* check whether the inode bitmap block number is set */
- 	bitmap_blk = le32_to_cpu(desc->bg_inode_bitmap);
- 	offset = bitmap_blk - group_first_block;
--	if (!ext2_test_bit(offset, bh->b_data))
-+	if (offset < 0 || offset > max_bit ||
-+	    !ext2_test_bit(offset, bh->b_data))
- 		/* bad block bitmap */
- 		goto err_out;
- 
- 	/* check whether the inode table block number is set */
- 	bitmap_blk = le32_to_cpu(desc->bg_inode_table);
- 	offset = bitmap_blk - group_first_block;
-+	if (offset < 0 || offset > max_bit ||
-+	    offset + EXT2_SB(sb)->s_itb_per_group - 1 > max_bit)
-+		goto err_out;
- 	next_zero_bit = ext2_find_next_zero_bit(bh->b_data,
- 				offset + EXT2_SB(sb)->s_itb_per_group,
- 				offset);
+ #define show_gss_status(x)						\
+-	__print_flags(x, "|",						\
++	__print_symbolic(x, 						\
+ 		{ GSS_S_BAD_MECH, "GSS_S_BAD_MECH" },			\
+ 		{ GSS_S_BAD_NAME, "GSS_S_BAD_NAME" },			\
+ 		{ GSS_S_BAD_NAMETYPE, "GSS_S_BAD_NAMETYPE" },		\
+-- 
+2.43.0
+
 
 
 
