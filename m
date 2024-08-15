@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECA29533F8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFF995355F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EF911C25A77
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A8E1281821
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE711A256C;
-	Thu, 15 Aug 2024 14:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692F419FA9D;
+	Thu, 15 Aug 2024 14:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHaPjV53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htIQMQuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299C91A01BF;
-	Thu, 15 Aug 2024 14:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D2A1DFFB;
+	Thu, 15 Aug 2024 14:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731669; cv=none; b=HB89pR0vWqpcURnUlS8R6ac2BzOvcxghcuxBlZrVSweUQ9pcuMOORiGaWxcvahnFot/heROyRpc2VqC1EZVMUnN+UcC5zEOHYnjpMBsEyml4Dxl3rEd7KoisqqKilJdrlIEh9zTiVGAvoX9ENp55SZFXX1VB7khp22MTARO7eLI=
+	t=1723732625; cv=none; b=OBSU9/zFEUGfGkn4Rjsr+YNa4KE3jvKaVFinAfxHkbDatgSGFF/kmow88B1wPluUVUEqssRT7Sb9+xeeX9ns2lkBjEKcDjHxf4IGJVmHEW3OlrUIiKfwMiKVwyS5JPBYbts03J/vLxCCV4ZLinxQnBELa35L3iszM8q2xVHInyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731669; c=relaxed/simple;
-	bh=Og9SKjd21m0C+uLSpU4aF9ZHRH0Nri6nVj25uKhxApE=;
+	s=arc-20240116; t=1723732625; c=relaxed/simple;
+	bh=7Wmd0g0AiW1Tfw0Uu7OAUIsfvl0klj8dFWHJbeRNnVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRnqd3SPrc9CiS4a6+l0dZ3cs03RX6JV+6RC1AwI9JTdijdNqVgDGKl4WsNAAX3KSnivH+Xj+Gk3mHCaqQ0yWGUTnACjqWo0875X66znCQ+fCNEq8c7rwQchboB7YcE8WV6pE6kZKZ8Wg1cVptAIkOKIQnMmNL4N4IkvF42knxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHaPjV53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A14FC4AF0D;
-	Thu, 15 Aug 2024 14:21:08 +0000 (UTC)
+	 MIME-Version; b=Oq76aUAXaC31Odcws3iCBnsPErkM+dHcrmJHWza80whH1Lcmv9vCA2bHw2zF5HBFZ3O42CZipP5x78clpjpDjoa5gZoLl63zBIQlV+sjMvNZ+OWPMYLZwDKc4tdk1Pa/WmBuUIbJ6HmtT0bJTmuzC08rC4QxU7rnhFWVjrXCrKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htIQMQuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972FAC32786;
+	Thu, 15 Aug 2024 14:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731669;
-	bh=Og9SKjd21m0C+uLSpU4aF9ZHRH0Nri6nVj25uKhxApE=;
+	s=korg; t=1723732625;
+	bh=7Wmd0g0AiW1Tfw0Uu7OAUIsfvl0klj8dFWHJbeRNnVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHaPjV53zHInJ1PCLK/393F5Atkxxb7Uz5ko/IP9V/2tKl5cLwC5Hkxg3oV99Iv3s
-	 1sniAcZUvqdBn23jI3NtwRvMcWRNcYHvRvpqx2Tdw3mVgDeIP/1n2eWCtEJr6fAMtM
-	 Cw3usrw7pYE264mzoX4XCvtPnoVchuvpwKd88Wxk=
+	b=htIQMQuQoXyWikHJI69WvMWQfZm4l3UF9NKLFKoQC3nZtoonqw8nXEM3YRJdrPpkJ
+	 JPjMfIpr1XE4F3MB4/4bMY+16+Fm5A3EFaJRHomDnYErhoNEh1xSjBP5DHaUl9ss6g
+	 bmLC4BFcI4OmNZy9iS0wELdlPXKBu/VH2vClTWlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 169/259] irqchip/imx-irqsteer: Handle runtime power management correctly
+Subject: [PATCH 5.10 236/352] net/iucv: fix use after free in iucv_sock_close()
 Date: Thu, 15 Aug 2024 15:25:02 +0200
-Message-ID: <20240815131909.307613626@linuxfoundation.org>
+Message-ID: <20240815131928.558592869@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-[ Upstream commit 33b1c47d1fc0b5f06a393bb915db85baacba18ea ]
+[ Upstream commit f558120cd709682b739207b48cf7479fd9568431 ]
 
-The power domain is automatically activated from clk_prepare(). However, on
-certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
-sleeping functions, which triggers the 'scheduling while atomic' bug in the
-context switch path during device probing:
+iucv_sever_path() is called from process context and from bh context.
+iucv->path is used as indicator whether somebody else is taking care of
+severing the path (or it is already removed / never existed).
+This needs to be done with atomic compare and swap, otherwise there is a
+small window where iucv_sock_close() will try to work with a path that has
+already been severed and freed by iucv_callback_connrej() called by
+iucv_tasklet_fn().
 
- BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
- Call trace:
-  __schedule_bug+0x54/0x6c
-  __schedule+0x7f0/0xa94
-  schedule+0x5c/0xc4
-  schedule_preempt_disabled+0x24/0x40
-  __mutex_lock.constprop.0+0x2c0/0x540
-  __mutex_lock_slowpath+0x14/0x20
-  mutex_lock+0x48/0x54
-  clk_prepare_lock+0x44/0xa0
-  clk_prepare+0x20/0x44
-  imx_irqsteer_resume+0x28/0xe0
-  pm_generic_runtime_resume+0x2c/0x44
-  __genpd_runtime_resume+0x30/0x80
-  genpd_runtime_resume+0xc8/0x2c0
-  __rpm_callback+0x48/0x1d8
-  rpm_callback+0x6c/0x78
-  rpm_resume+0x490/0x6b4
-  __pm_runtime_resume+0x50/0x94
-  irq_chip_pm_get+0x2c/0xa0
-  __irq_do_set_handler+0x178/0x24c
-  irq_set_chained_handler_and_data+0x60/0xa4
-  mxc_gpio_probe+0x160/0x4b0
+Example:
+[452744.123844] Call Trace:
+[452744.123845] ([<0000001e87f03880>] 0x1e87f03880)
+[452744.123966]  [<00000000d593001e>] iucv_path_sever+0x96/0x138
+[452744.124330]  [<000003ff801ddbca>] iucv_sever_path+0xc2/0xd0 [af_iucv]
+[452744.124336]  [<000003ff801e01b6>] iucv_sock_close+0xa6/0x310 [af_iucv]
+[452744.124341]  [<000003ff801e08cc>] iucv_sock_release+0x3c/0xd0 [af_iucv]
+[452744.124345]  [<00000000d574794e>] __sock_release+0x5e/0xe8
+[452744.124815]  [<00000000d5747a0c>] sock_close+0x34/0x48
+[452744.124820]  [<00000000d5421642>] __fput+0xba/0x268
+[452744.124826]  [<00000000d51b382c>] task_work_run+0xbc/0xf0
+[452744.124832]  [<00000000d5145710>] do_notify_resume+0x88/0x90
+[452744.124841]  [<00000000d5978096>] system_call+0xe2/0x2c8
+[452744.125319] Last Breaking-Event-Address:
+[452744.125321]  [<00000000d5930018>] iucv_path_sever+0x90/0x138
+[452744.125324]
+[452744.125325] Kernel panic - not syncing: Fatal exception in interrupt
 
-Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
-callbacks and handle power management in them as they are invoked from
-non-atomic context.
+Note that bh_lock_sock() is not serializing the tasklet context against
+process context, because the check for sock_owned_by_user() and
+corresponding handling is missing.
 
-[ tglx: Rewrote change log, added Fixes tag ]
+Ideas for a future clean-up patch:
+A) Correct usage of bh_lock_sock() in tasklet context, as described in
+Link: https://lore.kernel.org/netdev/1280155406.2899.407.camel@edumazet-laptop/
+Re-enqueue, if needed. This may require adding return values to the
+tasklet functions and thus changes to all users of iucv.
 
-Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
+B) Change iucv tasklet into worker and use only lock_sock() in af_iucv.
+
+Fixes: 7d316b945352 ("af_iucv: remove IUCV-pathes completely")
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://patch.msgid.link/20240729122818.947756-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-imx-irqsteer.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ net/iucv/af_iucv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index e622dbd614638..23aafc52768c7 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -35,6 +35,7 @@ struct irqsteer_data {
- 	int			channel;
- 	struct irq_domain	*domain;
- 	u32			*saved_reg;
-+	struct device		*dev;
- };
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index 7c73faa5336cd..3d0424e4ae6c9 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -359,8 +359,8 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
+ 	struct iucv_sock *iucv = iucv_sk(sk);
+ 	struct iucv_path *path = iucv->path;
  
- static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
-@@ -71,10 +72,26 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
- 	raw_spin_unlock_irqrestore(&data->lock, flags);
- }
- 
-+static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
-+{
-+	struct irqsteer_data *data = d->chip_data;
-+
-+	pm_runtime_get_sync(data->dev);
-+}
-+
-+static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
-+{
-+	struct irqsteer_data *data = d->chip_data;
-+
-+	pm_runtime_put_autosuspend(data->dev);
-+}
-+
- static const struct irq_chip imx_irqsteer_irq_chip = {
--	.name		= "irqsteer",
--	.irq_mask	= imx_irqsteer_irq_mask,
--	.irq_unmask	= imx_irqsteer_irq_unmask,
-+	.name			= "irqsteer",
-+	.irq_mask		= imx_irqsteer_irq_mask,
-+	.irq_unmask		= imx_irqsteer_irq_unmask,
-+	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
-+	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
- };
- 
- static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
-@@ -152,6 +169,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 	if (!data)
- 		return -ENOMEM;
- 
-+	data->dev = &pdev->dev;
- 	data->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(data->regs)) {
- 		dev_err(&pdev->dev, "failed to initialize reg\n");
+-	if (iucv->path) {
+-		iucv->path = NULL;
++	/* Whoever resets the path pointer, must sever and free it. */
++	if (xchg(&iucv->path, NULL)) {
+ 		if (with_user_data) {
+ 			low_nmcpy(user_data, iucv->src_name);
+ 			high_nmcpy(user_data, iucv->dst_name);
 -- 
 2.43.0
 
