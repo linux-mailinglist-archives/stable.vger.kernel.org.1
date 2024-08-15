@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6689531BB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE677952F65
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97DC61F21DA8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D066B21605
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBAF18D64F;
-	Thu, 15 Aug 2024 13:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0852C19DF9E;
+	Thu, 15 Aug 2024 13:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1Za4p0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjNG+v5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04371714A1;
-	Thu, 15 Aug 2024 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B987118D639;
+	Thu, 15 Aug 2024 13:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730254; cv=none; b=KmQoaZJt/p5fUxT8qLyj1AEkYsypCCAT8/6vC1r+ODzXC141GsDsQCNt0qcWtaNvoICIAlwG7Atwm6fLiHvSgaYTPEZWYQ4mkhklS2LYNSonbTWbBh8MyaM+gvF1etJ7S9vyXTPXR0MhZxvX8BRXX0khE7wJBe//lGa9NxGgP4o=
+	t=1723728730; cv=none; b=gTyfOYNqHdkO0IyaFDizGLKh1U0MiZJG7qT4unZKBh8KaFbnUcNcnpB1MYqBot3yJyreGaDgN2Al/R9bUcckF+DpmGOhbgCxloBbvvXORcGhjjKZuNtLbGMGvxwDFkuuPrtIEybvgHmu4cBaT5OlpZ92aW385gUn3Ks5DiM2OSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730254; c=relaxed/simple;
-	bh=pVt6r0XEqxrCFFScv/zZzp8Vmt94iIEXa4abpduRy/A=;
+	s=arc-20240116; t=1723728730; c=relaxed/simple;
+	bh=z12jLhsFRoBR8onRFLYQ25efagApp/ZoW/+ze5hFAOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evKkDqRhOj+1Meo1gyjWGYEfOgNijspQGwclg1z666//XJIGRL8d+6tpXL0xHcCcjv2UGHZYWRn3lxhozfjhxdSGVRmY11fqXJgze/B+wob2IwwMLfRIXhlLe1D0Sc4yTf3dH9e7NV6oBwQxh2ggiXzjqRulP7OzvdCGk/vv9kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1Za4p0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6033CC32786;
-	Thu, 15 Aug 2024 13:57:33 +0000 (UTC)
+	 MIME-Version; b=SwCY5SvpAWwPm1iTM8SwXbu85C4kLnsU0Mt692V88TUcsBKVatMek8Al7gkNTRzPV9tjidbCsUcOkS/HYGWymdZztlAa0bBc1vZ8hjmajs72FAr4Rqj9c9GfWgZLpMJCHrONrvnxWXfdS59IAOAI8wZ/bO0RFYKtYfdB59ZEQaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjNG+v5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA6BC32786;
+	Thu, 15 Aug 2024 13:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730253;
-	bh=pVt6r0XEqxrCFFScv/zZzp8Vmt94iIEXa4abpduRy/A=;
+	s=korg; t=1723728730;
+	bh=z12jLhsFRoBR8onRFLYQ25efagApp/ZoW/+ze5hFAOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M1Za4p0f4BgZXMIm45mD6nI4NFEj/mIjJjqr+pp/2rsMGmH1/nL/h0GEYxYCuCqUf
-	 hQLglMRCByx9Pg7OHkJzh34SEEbOx2y+HL9Sbg4Y3IsbYbDxKgATIe9JaUba6T2PyW
-	 Ykm3Pb0tkFo9fyAFlg//DBvI1xnleStxr1ur4lvU=
+	b=XjNG+v5pJQKPVOSBnKuXuDw0XqmgoRrxk75bh7+rqsFpgxqSN5D3DZ/tU94ZFN7kl
+	 ka4nFssv+1EcDXUyqhRrkS9zOz+lv/Yfvu607QIyIrV0ng7DV84aHOGEr8t2WdQGo6
+	 65sdWgLb6aRT9ECcAuCG60fzpDminST9zyoFZsiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>
-Subject: [PATCH 5.15 351/484] r8169: dont increment tx_dropped in case of NETDEV_TX_BUSY
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 4.19 092/196] RDMA/iwcm: Fix a use-after-free related to destroying CM IDs
 Date: Thu, 15 Aug 2024 15:23:29 +0200
-Message-ID: <20240815131954.985473851@linuxfoundation.org>
+Message-ID: <20240815131855.602324415@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit d516b187a9cc2e842030dd005be2735db3e8f395 upstream.
+commit aee2424246f9f1dadc33faa78990c1e2eb7826e4 upstream.
 
-The skb isn't consumed in case of NETDEV_TX_BUSY, therefore don't
-increment the tx_dropped counter.
+iw_conn_req_handler() associates a new struct rdma_id_private (conn_id) with
+an existing struct iw_cm_id (cm_id) as follows:
 
-Fixes: 188f4af04618 ("r8169: use NETDEV_TX_{BUSY/OK}")
+        conn_id->cm_id.iw = cm_id;
+        cm_id->context = conn_id;
+        cm_id->cm_handler = cma_iw_handler;
+
+rdma_destroy_id() frees both the cm_id and the struct rdma_id_private. Make
+sure that cm_work_handler() does not trigger a use-after-free by only
+freeing of the struct rdma_id_private after all pending work has finished.
+
 Cc: stable@vger.kernel.org
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/bbba9c48-8bac-4932-9aa1-d2ed63bc9433@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 59c68ac31e15 ("iw_cm: free cm_id resources on the last deref")
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240605145117.397751-6-bvanassche@acm.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/infiniband/core/iwcm.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4283,7 +4283,8 @@ static netdev_tx_t rtl8169_start_xmit(st
- 	if (unlikely(!rtl_tx_slots_avail(tp))) {
- 		if (net_ratelimit())
- 			netdev_err(dev, "BUG! Tx Ring full when queue awake!\n");
--		goto err_stop_0;
-+		netif_stop_queue(dev);
-+		return NETDEV_TX_BUSY;
+--- a/drivers/infiniband/core/iwcm.c
++++ b/drivers/infiniband/core/iwcm.c
+@@ -369,8 +369,10 @@ EXPORT_SYMBOL(iw_cm_disconnect);
+  *
+  * Clean up all resources associated with the connection and release
+  * the initial reference taken by iw_create_cm_id.
++ *
++ * Returns true if and only if the last cm_id_priv reference has been dropped.
+  */
+-static void destroy_cm_id(struct iw_cm_id *cm_id)
++static bool destroy_cm_id(struct iw_cm_id *cm_id)
+ {
+ 	struct iwcm_id_private *cm_id_priv;
+ 	unsigned long flags;
+@@ -438,7 +440,7 @@ static void destroy_cm_id(struct iw_cm_i
+ 		iwpm_remove_mapping(&cm_id->local_addr, RDMA_NL_IWCM);
  	}
  
- 	opts[1] = rtl8169_tx_vlan_tag(skb);
-@@ -4356,11 +4357,6 @@ err_dma_0:
- 	dev_kfree_skb_any(skb);
- 	dev->stats.tx_dropped++;
- 	return NETDEV_TX_OK;
--
--err_stop_0:
--	netif_stop_queue(dev);
--	dev->stats.tx_dropped++;
--	return NETDEV_TX_BUSY;
+-	(void)iwcm_deref_id(cm_id_priv);
++	return iwcm_deref_id(cm_id_priv);
  }
  
- static unsigned int rtl_last_frag_len(struct sk_buff *skb)
+ /*
+@@ -449,7 +451,8 @@ static void destroy_cm_id(struct iw_cm_i
+  */
+ void iw_destroy_cm_id(struct iw_cm_id *cm_id)
+ {
+-	destroy_cm_id(cm_id);
++	if (!destroy_cm_id(cm_id))
++		flush_workqueue(iwcm_wq);
+ }
+ EXPORT_SYMBOL(iw_destroy_cm_id);
+ 
+@@ -1022,7 +1025,7 @@ static void cm_work_handler(struct work_
+ 		if (!test_bit(IWCM_F_DROP_EVENTS, &cm_id_priv->flags)) {
+ 			ret = process_event(cm_id_priv, &levent);
+ 			if (ret)
+-				destroy_cm_id(&cm_id_priv->id);
++				WARN_ON_ONCE(destroy_cm_id(&cm_id_priv->id));
+ 		} else
+ 			pr_debug("dropping event %d\n", levent.event);
+ 		if (iwcm_deref_id(cm_id_priv))
 
 
 
