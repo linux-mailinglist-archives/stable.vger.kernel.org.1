@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-69041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89152953529
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5282995339B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1589BB285ED
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECB0E1F2410A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835E017BEC0;
-	Thu, 15 Aug 2024 14:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8457419DF92;
+	Thu, 15 Aug 2024 14:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVO6D1kn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkhyn1LZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4369463D5;
-	Thu, 15 Aug 2024 14:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4264B1E526;
+	Thu, 15 Aug 2024 14:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732475; cv=none; b=lPO5SuuwRiPGO1RACTz5jzAjHrZKz/3pfdkMpk0j7Use5jRPBTC7w2Qx3uNIQYL4cnhIj4TipYezrv9jC/00mSix6eWFjlhSfTKMc587u32D4YGKTn1h+ODQB8U49YO/AVgJHNl39EyQGRB1j3d7/l/cQSXzydURi/FIC8mPpSU=
+	t=1723731426; cv=none; b=IEowznLTnb78dkcY/jw1gQtCWac8zVYo7LNsaxrBLQrpMBu8a89XZ22vrFrI8oFOLIYd3rprlkk74b8xOPIv73b+zAhsANXW1/UuR/ncNlk9eSRIvNPgrset2a57ro+qmos2zNT9xsX+B2zdsftOW0DU8LW/WXF32Bt0LaANu08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732475; c=relaxed/simple;
-	bh=39fiNUQSlcDzFEx2wPzu0Edl/0dO/ottnwCUhckgYmE=;
+	s=arc-20240116; t=1723731426; c=relaxed/simple;
+	bh=YMBbXb1iFwKais5WCRCoMm0WnwsVxccB0axx9OuNf4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTI+8q6YKjjIuSLwXdxJyRl3CuwG7e/mFqIgh0WLPeTIJOmGnSzacnJrlg2ETc249wCjF7u/HGWfSdQYuknLZZFWzCxecmz/cWp8wUN6oBkSKpKuF1qAWAhXJtnnKR7U3pwBJ+ApNS+05suxzHyCc/FXvGdzz3JWfwM/vhec7yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVO6D1kn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1031C32786;
-	Thu, 15 Aug 2024 14:34:34 +0000 (UTC)
+	 MIME-Version; b=GgdWug45rZf5nP3orFKyddusT09+ILov7jf71uhCF5+DpGmbzKoadQyZBb/hDhpkda0h5mhJQ8Pbq8/1ZtW2uerdzpI+GZ1GIQbsuBr0dDmIpK5wh4s5msSiholZD0pAgQ0PvkwYHhs0hQ8k6hWuGcwQujUKKee0srBx14J8RJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkhyn1LZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07A9C32786;
+	Thu, 15 Aug 2024 14:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732475;
-	bh=39fiNUQSlcDzFEx2wPzu0Edl/0dO/ottnwCUhckgYmE=;
+	s=korg; t=1723731426;
+	bh=YMBbXb1iFwKais5WCRCoMm0WnwsVxccB0axx9OuNf4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVO6D1kngbKzBjTffESJzjJAb2O5sJxCC5m2dwHhb33AnwdINQ1VX/51qw3b8yWqc
-	 9kbrsHUzdQPU0obwebdBgbOFp4ApMhvdoCS3+ndqHiU3+QA4IK6u1HlF3sJFWgDv/y
-	 sn2DzfcoF11a2KkRSOQ5s7kTE9EzF1CjhHbIqlSU=
+	b=hkhyn1LZYOiA6568nkSLqsolheKGHrb6Zkyk+nn3Vo/mroJMYfGMGCTuke/Iu+OBY
+	 X8proXwI64m7p46PDvEhvAGzftc/nMMIcYS1sE6Nz8VLwxlqWTgdiyY1weWal+Qpbf
+	 2UiSL9+xcYxhk+xPORxWbc+M9y/23/jj5OESeKDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 191/352] um: time-travel: fix time-travel-start option
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.4 124/259] platform: mips: cpu_hwmon: Disable driver on unsupported hardware
 Date: Thu, 15 Aug 2024 15:24:17 +0200
-Message-ID: <20240815131926.659265159@linuxfoundation.org>
+Message-ID: <20240815131907.584924335@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 7d0a8a490aa3a2a82de8826aaf1dfa38575cb77a ]
+commit f4d430db17b4ef4e9c3c352a04b2fe3c93011978 upstream.
 
-We need to have the = as part of the option so that the
-value can be parsed properly. Also document that it must
-be given in nanoseconds, not seconds.
+cpu_hwmon is unsupported on CPUs without loongson_chiptemp
+register and csr.
 
-Fixes: 065038706f77 ("um: Support time travel mode")
-Link: https://patch.msgid.link/20240417102744.14b9a9d4eba0.Ib22e9136513126b2099d932650f55f193120cd97@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/kernel/time.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/mips/cpu_hwmon.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/um/kernel/time.c b/arch/um/kernel/time.c
-index 8dafc3f2add42..9a0fcafafd00b 100644
---- a/arch/um/kernel/time.c
-+++ b/arch/um/kernel/time.c
-@@ -756,9 +756,9 @@ int setup_time_travel_start(char *str)
- 	return 1;
- }
+--- a/drivers/platform/mips/cpu_hwmon.c
++++ b/drivers/platform/mips/cpu_hwmon.c
+@@ -166,6 +166,9 @@ static int __init loongson_hwmon_init(vo
+ 		goto fail_hwmon_device_register;
+ 	}
  
--__setup("time-travel-start", setup_time_travel_start);
-+__setup("time-travel-start=", setup_time_travel_start);
- __uml_help(setup_time_travel_start,
--"time-travel-start=<seconds>\n"
-+"time-travel-start=<nanoseconds>\n"
- "Configure the UML instance's wall clock to start at this value rather than\n"
- "the host's wall clock at the time of UML boot.\n");
- #endif
--- 
-2.43.0
-
++	if (!csr_temp_enable && !loongson_chiptemp[0])
++		return -ENODEV;
++
+ 	nr_packages = loongson_sysconf.nr_cpus /
+ 		loongson_sysconf.cores_per_package;
+ 
 
 
 
