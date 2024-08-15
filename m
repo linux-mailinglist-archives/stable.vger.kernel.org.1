@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-68796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755E6953404
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA5C953278
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3431F28161
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B0701C2570A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514AF1A4F16;
-	Thu, 15 Aug 2024 14:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCA91B0127;
+	Thu, 15 Aug 2024 14:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDZ5yLCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIrtShV/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE6D1A3BB6;
-	Thu, 15 Aug 2024 14:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67E31AED33;
+	Thu, 15 Aug 2024 14:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731694; cv=none; b=VO/68SqqqJyeCYd/BGVD/9BpCfX4GIKbsjQ1IMFAauJEiNYZCdLsXYBbENnfAjJlTxYh9QfZGHfLE6X69iT6L8XHB9hNbBVlRETwl3khho1AK5Iqz0L0jltFoU4EaKt0tX13Ssy2vZ4M7r1cNOoC0/YyaUQFREfH4Pe7T/yR/fo=
+	t=1723730683; cv=none; b=RANdSBBuFCLBHC5BvnbF+G80vpfF3lwBdOSoiXeexXcfz7Ycj1xPn7owFtBSYoANsBD1CW/ocGJrXyHee+FkNWCHhHN9lwr3ie3qL9TkziDCpPAqM85WSBLVnuxGDOEW9S6R+n1ULoSHdTybGi8G3WHnxV+PqQceSMkXmMl25d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731694; c=relaxed/simple;
-	bh=jjMndSsj7uBm7k9+N01xydlou3KWmmBZE13EQkzwjvk=;
+	s=arc-20240116; t=1723730683; c=relaxed/simple;
+	bh=1GK7O2m4lMOBZHBR5ucNw/gQOLNbSI/z0hy2e4iqxTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G9bVUDWHJAAwpYO77lZSs7XE+CLyJs4EMA2Sfhnpci+eRv17Ti/NDYulwx0rnKN6HpNSX/ov3CJzrPgfgzmsy9NV/91yZhy+M726dP/3fOSdqsNxYUqzOL6yw+y8XNQr2JO6E3sF1U6MZsdqKCHcJK04H7vvet0SBz2yUU0mm1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDZ5yLCO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B0AC32786;
-	Thu, 15 Aug 2024 14:21:33 +0000 (UTC)
+	 MIME-Version; b=Hepc9xL/57Gqd7+4wVibxMhQ39rDFCi3hJQPtGyFdo5evjnG1R+JDhJq0YgYJP90zhVkLBl7wtUZuD31zc7MIdEEiWhz5WZhKzuPWceE+BE6VVbo/CRjJazZbFQkfZXKrwrF37zlRjxA/bugBvLUKCoTPoig9Zj4WJsNEw9eGqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIrtShV/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D535C4AF0A;
+	Thu, 15 Aug 2024 14:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731693;
-	bh=jjMndSsj7uBm7k9+N01xydlou3KWmmBZE13EQkzwjvk=;
+	s=korg; t=1723730683;
+	bh=1GK7O2m4lMOBZHBR5ucNw/gQOLNbSI/z0hy2e4iqxTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDZ5yLCOSe8V7oA7szLWCaF3WfPsC1i9aXHeyy98kaXllbqh4xEdlrQsAzN5UV5Ff
-	 3/aApiyQ/lYu+d4aQZ0C1SItQOIf4/vG76qRX8HDsplBKcxchWS6Z6vqiTb0Jwuj5E
-	 oS6GNYI9H56uPZfWGmfj5meYV8/f8gzWuZuYcAmo=
+	b=jIrtShV/Sm7gd3IiPfd8+eVP20LXFv0WreL8V/AT7pW+Ohh1Gh1LMJrScgdLG4g8o
+	 KxxIzu4I8J6rSp7vOUWfp7k5347s5ZmREGd+vr3n1KJBqZNFEfVk4pJHJnIOpu6Bjo
+	 g7TMIi33uSk5YtxvJy86iHt4ZzfKMvuEvWggyeTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Besar Wicaksono <bwicaksono@nvidia.com>,
-	James Clark <james.clark@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 209/259] arm64: Add Neoverse-V2 part
+	Michael Walle <mwalle@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 5.15 484/484] ARM: dts: imx6qdl-kontron-samx6i: fix phy-mode
 Date: Thu, 15 Aug 2024 15:25:42 +0200
-Message-ID: <20240815131910.841526937@linuxfoundation.org>
+Message-ID: <20240815132000.178625341@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Besar Wicaksono <bwicaksono@nvidia.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit f4d9d9dcc70b96b5e5d7801bd5fbf8491b07b13d ]
+commit 0df3c7d7a73d75153090637392c0b73a63cdc24a upstream.
 
-Add the part number and MIDR for Neoverse-V2
+The i.MX6 cannot add any RGMII delays. The PHY has to add both the RX
+and TX delays on the RGMII interface. Fix the interface mode. While at
+it, use the new phy-connection-type property name.
 
-Signed-off-by: Besar Wicaksono <bwicaksono@nvidia.com>
-Reviewed-by: James Clark <james.clark@arm.com>
-Link: https://lore.kernel.org/r/20240109192310.16234-2-bwicaksono@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5694eed98cca ("ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 892fc0ceccb85..852cecbe68218 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -80,6 +80,7 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+--- a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
+@@ -260,7 +260,7 @@
+ &fec {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_enet>;
+-	phy-mode = "rgmii";
++	phy-connection-type = "rgmii-id";
+ 	phy-handle = <&ethphy>;
  
- #define APM_CPU_PART_POTENZA		0x000
- 
-@@ -121,6 +122,7 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
--- 
-2.43.0
-
+ 	mdio {
 
 
 
