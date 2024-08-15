@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-69082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7C195355A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:36:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C21953243
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 073EFB21248
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:36:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8DDAB23D03
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7844519FA7A;
-	Thu, 15 Aug 2024 14:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EC11B4C23;
+	Thu, 15 Aug 2024 14:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKtMScl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvpuA2NU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227A61DFFB;
-	Thu, 15 Aug 2024 14:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8451A7076;
+	Thu, 15 Aug 2024 14:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732608; cv=none; b=XrTy2QQGAIswANW5bPPGwHAz8TG4bNTa3hZPpR3t0uLbZxHNfRQcFd+nh4AfsHbQCxucLl1LjIk3Uc3wRWvrycySifbw1u7aRPlYn/DZMD1J2m74CsnEE6LPUD3xlnk1nEsgr9fgaiHjdVQAdjD4ZdoH2fN784jxNA0gKiSVuDc=
+	t=1723730537; cv=none; b=lwNeKEg8a8LDrXH6QHXszP4l2MWXFMgmIRKUC5Sygoyb/mixI3pYbtX4EYwl39D3aS80QvxdkodHMb9dU+nmPAXBxTsaoCHkGQhHB7osTPtrHJDxGquUUqKgCG8o4mDvqrdfnj/qxAbRfMRj3SOxNDRlDrz98Sck9EDHBq/9Upg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732608; c=relaxed/simple;
-	bh=gHBP0GeM8exA/144smdcc4fMcagyrbcpEyIVs0nT6yE=;
+	s=arc-20240116; t=1723730537; c=relaxed/simple;
+	bh=Vgmhrf3GQiynlVqTAR+E+IoV9sU5hSoMnaTQr9Vq8H4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNMXke4yObQJ6KNbtaVPBUzmha9Nzx7PlbwmigA7ZKNtNPGa/8AjAtsdPWyWf2NExZjYgwS+5lbNp12m+iM4ZkCGNKl8Uq2uVgtbuLzO+dOWI7PaPnAKdo/Q7A9pTaccNNfT+Q1PxBKLsKLUqn/XoXl8CSNt7vHlj60GTZfGYO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKtMScl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5A3C32786;
-	Thu, 15 Aug 2024 14:36:47 +0000 (UTC)
+	 MIME-Version; b=L+qBO/+3fs2yQStoLs47f0YMr0o5i5ULvzMa559Jj/SBUx/5FNjyCEnr6NjeTmoKOtdPehN18qPK8Ohq67uZ/XEfw3W1XA+DJ6ZrsBVrSdMt1qah290zFd4UEFzHQpnyHfn8JfXSne80S7OWw04adMpjT7Wpp0+czcKIigEbO68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvpuA2NU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C19EC4AF0A;
+	Thu, 15 Aug 2024 14:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732608;
-	bh=gHBP0GeM8exA/144smdcc4fMcagyrbcpEyIVs0nT6yE=;
+	s=korg; t=1723730537;
+	bh=Vgmhrf3GQiynlVqTAR+E+IoV9sU5hSoMnaTQr9Vq8H4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKtMScl7Re08g7zUI/ySAa2uIgyIG5nwp48ZEdjzjVOKI8lOeYavB4d3tH7p5wReG
-	 omV9AXZrXpwtcRR+G7OxD8psxQvLxS3PxPU8W627gohx+5HQh2i/s3yr4qemyMxhIq
-	 02Uo2lUUKh0AmoJZ24m+01BpWCDddhnBLpRgwkZ8=
+	b=EvpuA2NUXtkx57J2kuhR4D4vB3BivH6oE5Feurgt0uUiOGFtFhQ9xQqr4aRYsee1N
+	 WQ9zHrQ9WJSasdN5T1CbWVRG7EDad33FKutWesA5j2Cm9U4j1zDhtctDm8gIPm27LN
+	 39LJpP80K72Wc67eGJ5cl4xxIgX1NnSaBycXniP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Peng Fan <peng.fan@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 232/352] remoteproc: imx_rproc: Skip over memory region when node value is NULL
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.15 440/484] irqchip/xilinx: Fix shift out of bounds
 Date: Thu, 15 Aug 2024 15:24:58 +0200
-Message-ID: <20240815131928.400409394@linuxfoundation.org>
+Message-ID: <20240815131958.454179329@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-[ Upstream commit 2fa26ca8b786888673689ccc9da6094150939982 ]
+commit d73f0f49daa84176c3beee1606e73c7ffb6af8b2 upstream.
 
-In imx_rproc_addr_init() "nph = of_count_phandle_with_args()" just counts
-number of phandles. But phandles may be empty. So of_parse_phandle() in
-the parsing loop (0 < a < nph) may return NULL which is later dereferenced.
-Adjust this issue by adding NULL-return check.
+The device tree property 'xlnx,kind-of-intr' is sanity checked that the
+bitmask contains only set bits which are in the range of the number of
+interrupts supported by the controller.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The check is done by shifting the mask right by the number of supported
+interrupts and checking the result for zero.
 
-Fixes: a0ff4aa6f010 ("remoteproc: imx_rproc: add a NXP/Freescale imx_rproc driver")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+The data type of the mask is u32 and the number of supported interrupts is
+up to 32. In case of 32 interrupts the shift is out of bounds, resulting in
+a mismatch warning. The out of bounds condition is also reported by UBSAN:
+
+  UBSAN: shift-out-of-bounds in irq-xilinx-intc.c:332:22
+  shift exponent 32 is too large for 32-bit type 'unsigned int'
+
+Fix it by promoting the mask to u64 for the test.
+
+Fixes: d50466c90724 ("microblaze: intc: Refactor DT sanity check")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240606075204.12354-1-amishin@t-argos.ru
-[Fixed title to fit within the prescribed 70-75 charcters]
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/1723186944-3571957-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/imx_rproc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-xilinx-intc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 517d1b5733288..373fce8b91064 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -287,6 +287,8 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
- 		struct resource res;
+--- a/drivers/irqchip/irq-xilinx-intc.c
++++ b/drivers/irqchip/irq-xilinx-intc.c
+@@ -188,7 +188,7 @@ static int __init xilinx_intc_of_init(st
+ 		irqc->intr_mask = 0;
+ 	}
  
- 		node = of_parse_phandle(np, "memory-region", a);
-+		if (!node)
-+			continue;
- 		/* Not map vdevbuffer, vdevring region */
- 		if (!strncmp(node->name, "vdev", strlen("vdev")))
- 			continue;
--- 
-2.43.0
-
+-	if (irqc->intr_mask >> irqc->nr_irq)
++	if ((u64)irqc->intr_mask >> irqc->nr_irq)
+ 		pr_warn("irq-xilinx: mismatch in kind-of-intr param\n");
+ 
+ 	pr_info("irq-xilinx: %pOF: num_irq=%d, edge=0x%x\n",
 
 
 
