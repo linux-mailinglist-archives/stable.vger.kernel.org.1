@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-68426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C736953240
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A024953398
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B97F51F21C05
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344BF1F2480C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3535B1A706A;
-	Thu, 15 Aug 2024 14:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB60180021;
+	Thu, 15 Aug 2024 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="do3bq2qI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxjwg3BG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B3B1B3F2A;
-	Thu, 15 Aug 2024 14:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5E41DFDE;
+	Thu, 15 Aug 2024 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730530; cv=none; b=mELF9RZ735dapM7z5GfGVwM1UuOp5YsuNWV+K0NJn8fZZ6lCYh411kUIiv/IH2V1yddAFElyxTAwShFzXOaU0S9L8iUNx6/eW/Bc0qNGVk67o8Cxdrj7WToyArEcJbOuj+0p3axtQNtZYkoVIilwBkqzHm9CM/hAEMO3NhiwHWs=
+	t=1723731417; cv=none; b=H6KpiBET1n4+B8tTLUibuLoSJapLQobV73Ccew9wr6+1oDIsLeZkDDnl7Bw1zqygsJGY1eRFym6by0UDxNmwM87LFGpZH1lV/vHS2cAoKX9yxeAiHYrqgruzVmRm7TVAv2o7D+jRAh3OwXwQNRm05Z6ezb8+R4A40N5aWvcEb/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730530; c=relaxed/simple;
-	bh=ZTlKmO227NyARBAzhCv1tO359NOfvtyeUKOvOdVjMuc=;
+	s=arc-20240116; t=1723731417; c=relaxed/simple;
+	bh=CgXbnyHfJJqGmyukvWnWkupXTjBlS9ABfxlds9W5syY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqxTXsBrQB2ynQeJud1kgdN+044bRXjn+UC1FfX///J5BO2tziu83FaolILP7WBgB9b6AtCUlm/X/LtpqGiVeG6c3yOuJzQzDbx9flh4JWLGIaXzRZ4U+Y/XV0lB69XzzUNyKz5jbF/XrHCk+hEQTCqU5FAisMNuHnTDQJkU+Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=do3bq2qI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3B4C4AF0D;
-	Thu, 15 Aug 2024 14:02:10 +0000 (UTC)
+	 MIME-Version; b=LGjOOAuoyM0mX1kajhD94hYqxUCC3DHZo3aP24A8lDcmw+R1VUBmVHayRG4gtqxVGZkxsD2aGTIiDc2iKe7/vHfXY3uJBg63XcF2/nCHFt9M3e3wi1KicraodYeWVsH1qvYio6ghwWdmPrK6hM7VWVcfojZ4xvRFM70VZRsZYr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxjwg3BG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D5FC4AF0E;
+	Thu, 15 Aug 2024 14:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730530;
-	bh=ZTlKmO227NyARBAzhCv1tO359NOfvtyeUKOvOdVjMuc=;
+	s=korg; t=1723731416;
+	bh=CgXbnyHfJJqGmyukvWnWkupXTjBlS9ABfxlds9W5syY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=do3bq2qISx+e6jmG6Hs9nzs93bY3mpekzjP14xfVdSaa4Wm0rj6haDJoDwvo/MzHD
-	 9w63v8olQgUAe2KERQY44Z9l/3+f3gxs+HF0SITi123w7pwAIwZ6TLZ+rIbzhO+mHO
-	 PUTcKmthHz16ZP6oG9U/KrXfSJCIaTMKejXngT3M=
+	b=kxjwg3BGp9xdbrAXmBzpO+/rA1NCQrBLBAnQ67CYK/G1GrSF3SsUM7+HV1K9KqzDV
+	 geIEgo5DGVovJz45/ExOTW1Ib/dkwaLX0mBvyy2pN59bfxd8WW/Uv9zXgnCdxEEwtg
+	 0MjuLieQXpx+bJGSUH1O1Idk25uZelqYydu03n+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 396/484] arm64: cputype: Add Neoverse-V3 definitions
-Date: Thu, 15 Aug 2024 15:24:14 +0200
-Message-ID: <20240815131956.745228877@linuxfoundation.org>
+	Joy Chakraborty <joychakr@google.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.4 122/259] rtc: isl1208: Fix return value of nvmem callbacks
+Date: Thu, 15 Aug 2024 15:24:15 +0200
+Message-ID: <20240815131907.507945917@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Joy Chakraborty <joychakr@google.com>
 
-[ Upstream commit 0ce85db6c2141b7ffb95709d76fc55a27ff3cdc1 ]
+commit 70f1ae5f0e7f44edf842444044615da7b59838c1 upstream.
 
-Add cputype definitions for Neoverse-V3. These will be used for errata
-detection in subsequent patches.
+Read/write callbacks registered with nvmem core expect 0 to be returned
+on success and a negative value to be returned on failure.
 
-These values can be found in Table B-249 ("MIDR_EL1 bit descriptions")
-in issue 0001-04 of the Neoverse-V3 TRM, which can be found at:
+isl1208_nvmem_read()/isl1208_nvmem_write() currently return the number of
+bytes read/written on success, fix to return 0 on success and negative on
+failure.
 
-  https://developer.arm.com/documentation/107734/0001/?lang=en
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240508081400.235362-4-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c3544f6f51ed ("rtc: isl1208: Add new style nvmem support to driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+Link: https://lore.kernel.org/r/20240612080831.1227131-1-joychakr@google.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/rtc/rtc-isl1208.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index d222cd4983944..17fb978191d68 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -87,6 +87,7 @@
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_X4		0xD82
-+#define ARM_CPU_PART_NEOVERSE_V3	0xD84
+--- a/drivers/rtc/rtc-isl1208.c
++++ b/drivers/rtc/rtc-isl1208.c
+@@ -743,14 +743,13 @@ static int isl1208_nvmem_read(void *priv
+ {
+ 	struct isl1208_state *isl1208 = priv;
+ 	struct i2c_client *client = to_i2c_client(isl1208->rtc->dev.parent);
+-	int ret;
  
- #define APM_CPU_PART_POTENZA		0x000
+ 	/* nvmem sanitizes offset/count for us, but count==0 is possible */
+ 	if (!count)
+ 		return count;
+-	ret = isl1208_i2c_read_regs(client, ISL1208_REG_USR1 + off, buf,
++
++	return isl1208_i2c_read_regs(client, ISL1208_REG_USR1 + off, buf,
+ 				    count);
+-	return ret == 0 ? count : ret;
+ }
  
-@@ -143,6 +144,7 @@
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
-+#define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
--- 
-2.43.0
-
+ static int isl1208_nvmem_write(void *priv, unsigned int off, void *buf,
+@@ -758,15 +757,13 @@ static int isl1208_nvmem_write(void *pri
+ {
+ 	struct isl1208_state *isl1208 = priv;
+ 	struct i2c_client *client = to_i2c_client(isl1208->rtc->dev.parent);
+-	int ret;
+ 
+ 	/* nvmem sanitizes off/count for us, but count==0 is possible */
+ 	if (!count)
+ 		return count;
+-	ret = isl1208_i2c_set_regs(client, ISL1208_REG_USR1 + off, buf,
+-				   count);
+ 
+-	return ret == 0 ? count : ret;
++	return isl1208_i2c_set_regs(client, ISL1208_REG_USR1 + off, buf,
++				   count);
+ }
+ 
+ static const struct nvmem_config isl1208_nvmem_config = {
 
 
 
