@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F72E95321F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:02:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D646952FCF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 820861C20CB1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:02:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15081B27518
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2096D18D64F;
-	Thu, 15 Aug 2024 14:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732711A01BF;
+	Thu, 15 Aug 2024 13:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnzyomCZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmVhCVIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F451AC8BB;
-	Thu, 15 Aug 2024 14:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C991714AE;
+	Thu, 15 Aug 2024 13:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730499; cv=none; b=KSPzwa72cXtkStlcO0lcQ1hgjsJb8J8pCLCPejlB4JUMlcUHjO68zoCGcxqYK6aFMJE9EF4cAcSTL+imp/GeBjEA+VFqXT5H3iqcso1rXSoAtm5kjF5xvajP4XQDKA8UW4BG71Y5cIMypafzA9B2/VRl/k9uHZ/D4Ib9Vn/BIZw=
+	t=1723728965; cv=none; b=XmKxT2bjqoDEleITg3E3Xogz5deeOB3UwOlvacXf6iLXnCfVRAB/gaPlhxBWGGlrFKQVEZdkjl7Ouvx/vBUUZZdyEl8OQNpQmVAKQF0lyXz5e5umVcSyWuhpJoXiNXNgpwA+KqTLDmKH0yhlbKSYjUfKUUY0wF2JKgE3IcXAQ6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730499; c=relaxed/simple;
-	bh=w9qwJHpyPN8BkQ0mEEIyryeg8c950MrD1jr6CzFxWTs=;
+	s=arc-20240116; t=1723728965; c=relaxed/simple;
+	bh=lwQunaQb4HiyWSOQl6pzj9i1rPmpcD3bsp/mQOE8ySk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lL7uTaDRvkZCWEDFeYfSt+YouR/1+NAsEu5Er2hSPu50t6afrWQHbG21tF3Ng2v996gHAsc6atU7FQrLC1uNjoB14/ixklO5Ly2a4g2Ze5w1O8iM8hflgomN/3hblOKvATwamIA7Hr2qg7x7kqbN/iuYyddBc5EA4YQqhmJJlQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnzyomCZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BF2C32786;
-	Thu, 15 Aug 2024 14:01:39 +0000 (UTC)
+	 MIME-Version; b=KsWZCQ6BOozG/7aKiJOwklHuygwwiTzpPuYcBypn/vXKvSp5vaz2K402Fr6Loq0R8/JHeRGODk3K7WUFHTquiXCAipl54HxiP3BybpEVT8sRQP/k2s1F+0+E3m+lqEcpE/xlnZ+AxJTtZX8E5GpZERyRdy9p3SIAZ58uxHMo8K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmVhCVIe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51F1C4AF0A;
+	Thu, 15 Aug 2024 13:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730499;
-	bh=w9qwJHpyPN8BkQ0mEEIyryeg8c950MrD1jr6CzFxWTs=;
+	s=korg; t=1723728965;
+	bh=lwQunaQb4HiyWSOQl6pzj9i1rPmpcD3bsp/mQOE8ySk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KnzyomCZ+FSnd5XZmAtZ14+3COaHdeugnTZ6hsZm9OC2k/f2WG9Vft/3gGHvXpBsd
-	 fzDsWPhElh9wL8S508pvxp18sIOdNeJX0UVDodTOuE7jQWpEv6o5b1CLkKiGBwhsKe
-	 r9hGEAfGB0IagFdG8AoSnSjm7RE4b/Q1eF9nP8OY=
+	b=kmVhCVIevbmPDrRyqrkDghbgsbLHipIvcN2D+PkCd1UU9wQ4vw/ZMy3SQ4m/EzC+5
+	 YgOy1TzIXc3+OXyEZZN7X4asBwZQX100DmYW2Aa6TRWqoYZ7u2EqDIIwTXozrAi7o7
+	 u7MHFUrMiB5Ubs28RVRFiNbk2edTVDdro+OfZj1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yu Liao <liaoyu15@huawei.com>
-Subject: [PATCH 5.15 426/484] tick/broadcast: Move per CPU pointer access into the atomic section
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 167/196] spi: lpspi: Let watermark change with send data length
 Date: Thu, 15 Aug 2024 15:24:44 +0200
-Message-ID: <20240815131957.911354089@linuxfoundation.org>
+Message-ID: <20240815131858.462580237@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-commit 6881e75237a84093d0986f56223db3724619f26e upstream.
+[ Upstream commit cf86874bb9bdb99ba3620428b59b0408fbc703d0 ]
 
-The recent fix for making the take over of the broadcast timer more
-reliable retrieves a per CPU pointer in preemptible context.
+Configure watermark to change with the length of the sent data.
+Support LPSPI sending message shorter than tx/rxfifosize.
 
-This went unnoticed as compilers hoist the access into the non-preemptible
-region where the pointer is actually used. But of course it's valid that
-the compiler keeps it at the place where the code puts it which rightfully
-triggers:
-
-  BUG: using smp_processor_id() in preemptible [00000000] code:
-       caller is hotplug_cpu__broadcast_tick_pull+0x1c/0xc0
-
-Move it to the actual usage site which is in a non-preemptible region.
-
-Fixes: f7d43dd206e7 ("tick/broadcast: Make takeover of broadcast hrtimer reliable")
-Reported-by: David Wang <00107082@163.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Yu Liao <liaoyu15@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/87ttg56ers.ffs@tglx
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 730bbfaf7d48 ("spi: spi-fsl-lpspi: Fix scldiv calculation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-broadcast.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -1137,7 +1137,6 @@ void tick_broadcast_switch_to_oneshot(vo
- #ifdef CONFIG_HOTPLUG_CPU
- void hotplug_cpu__broadcast_tick_pull(int deadcpu)
- {
--	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
- 	struct clock_event_device *bc;
- 	unsigned long flags;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index cbf165e7bd17b..08dcc3c22e883 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -89,6 +89,7 @@ struct fsl_lpspi_data {
+ 	void (*rx)(struct fsl_lpspi_data *);
  
-@@ -1163,6 +1162,8 @@ void hotplug_cpu__broadcast_tick_pull(in
- 		 * device to avoid the starvation.
- 		 */
- 		if (tick_check_broadcast_expired()) {
-+			struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+ 	u32 remain;
++	u8 watermark;
+ 	u8 txfifosize;
+ 	u8 rxfifosize;
+ 
+@@ -235,7 +236,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	u32 temp;
+ 
+-	temp = fsl_lpspi->txfifosize >> 1 | (fsl_lpspi->rxfifosize >> 1) << 16;
++	temp = fsl_lpspi->watermark >> 1 | (fsl_lpspi->watermark >> 1) << 16;
+ 
+ 	writel(temp, fsl_lpspi->base + IMX7ULP_FCR);
+ 
+@@ -261,7 +262,8 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 	if (prescale == 8 && scldiv >= 256)
+ 		return -EINVAL;
+ 
+-	writel(scldiv, fsl_lpspi->base + IMX7ULP_CCR);
++	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
++					fsl_lpspi->base + IMX7ULP_CCR);
+ 
+ 	dev_dbg(fsl_lpspi->dev, "perclk=%d, speed=%d, prescale =%d, scldiv=%d\n",
+ 		perclk_rate, config.speed_hz, prescale, scldiv);
+@@ -329,6 +331,11 @@ static void fsl_lpspi_setup_transfer(struct spi_device *spi,
+ 		fsl_lpspi->tx = fsl_lpspi_buf_tx_u32;
+ 	}
+ 
++	if (t->len <= fsl_lpspi->txfifosize)
++		fsl_lpspi->watermark = t->len;
++	else
++		fsl_lpspi->watermark = fsl_lpspi->txfifosize;
 +
- 			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
- 			tick_program_event(td->evtdev->next_event, 1);
- 		}
+ 	fsl_lpspi_config(fsl_lpspi);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
