@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7749F953177
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B74C0952F23
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AA2D1F21891
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43AEDB2459F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A115D19DF58;
-	Thu, 15 Aug 2024 13:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A9919DF9E;
+	Thu, 15 Aug 2024 13:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpQgl2em"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJECwFLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE4018D630;
-	Thu, 15 Aug 2024 13:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618971DDF5;
+	Thu, 15 Aug 2024 13:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730062; cv=none; b=k9PUpLec3aLLiA4PwX6aTwWd8m8Ui143fyMsqueGPLQU0PBSUswcm+QkZgUNDMWeQ7TlHqWXLhQiTl+h5nUs7pksc45wUdj7tySOGzO/YDKCzKgyBGx28RV4J0/7bxyaGxA4sSV4IhkHjJAyB0G/e03zByG7Azk5FG/ZV+sv4fo=
+	t=1723728545; cv=none; b=Vtekq8hyRCfSSkeqCb6qyP5xCBqbsv2O9H/2ppXIetWFiYJT61IX7fxwR9MJFy3BdGYzne5+SLq7WZ44kC2sc38sUDWcH7Wd9uV7fni3v20sXp2onFrC4sgS1n6a559LGM3OxO/rtkCeyWeE21/NQcpoaKLdQDmW8nY93eJdyUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730062; c=relaxed/simple;
-	bh=jQj/gOVBqD3xvehnfiHoxFivHF+XdFAX/4rxU5MVTPE=;
+	s=arc-20240116; t=1723728545; c=relaxed/simple;
+	bh=PwnBFNHdYiPlABp79dMHF3dgviJgkHcMh686jfInHd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dm6qDVoQgavEklnlyexhyvwodNjagMkeTO1iEC1Xyzji7eR2brs5ozpvrufSPTx6CLyWdBrULQLLhY/Dp1gIvFW2cUuJO4OIF6iZmbKsgvr+xH/aF5ENaBI4Kkrq0DfyB7yJlgi7k+mYaBhYi9x2xR1N096IBkSIqDhko32QZZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpQgl2em; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7906DC32786;
-	Thu, 15 Aug 2024 13:54:21 +0000 (UTC)
+	 MIME-Version; b=anQwxrqwN4E8PUT1nSx3ZzPlkE1OKTCjSU5X249RcE6iuO2ZbGs/U6IAZro+bl2a1k1cUy+L+QGarkuXCnTwtaEPTgyTS4j2WP/nGKNF/LjcBNSQZ2ivecUpLMpvj18XVYWn6L7lJLIggk5IW5+xcrE1DAgVZ0nQ3Y3yBBfCU1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJECwFLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80632C32786;
+	Thu, 15 Aug 2024 13:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730061;
-	bh=jQj/gOVBqD3xvehnfiHoxFivHF+XdFAX/4rxU5MVTPE=;
+	s=korg; t=1723728544;
+	bh=PwnBFNHdYiPlABp79dMHF3dgviJgkHcMh686jfInHd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NpQgl2emCwZme/doyULsrYvgLKcxoF9r6YM6yEbPXMLKTwcge/1YyxBv8RK6vR3C7
-	 W54cZSR+QyJP5U0ECUVoNPzfwb0/CNwwLGXrIN6uzNe3AMocamNx2d/dEQwhUkWJC8
-	 cyYL3h2EULHWvoAyeP6Yfc2MJTDUz2dvf1Oh5Km0=
+	b=CJECwFLxKMtbiD1zcCJFWlVSIBxXXY0J2gc/9Hk4o2pDYA27LsPTdK3kw19aRR5d0
+	 XetIq9Y/P7w8Y1zkXKeit7R2uUu33TI8CyPJqwsTjvwIRJQVkvfKLVU6VRceFtslyO
+	 akzpYNOe6CdHqWx8OjaYjlahUPe3xJcLsrNeoqLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Daniel Schaefer <dhs@frame.work>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 291/484] s390/pci: Refactor arch_setup_msi_irqs()
-Date: Thu, 15 Aug 2024 15:22:29 +0200
-Message-ID: <20240815131952.647962741@linuxfoundation.org>
+Subject: [PATCH 4.19 033/196] media: uvcvideo: Override default flags
+Date: Thu, 15 Aug 2024 15:22:30 +0200
+Message-ID: <20240815131853.355979591@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Daniel Schaefer <dhs@frame.work>
 
-[ Upstream commit 5fd11b96b43708f2f6e3964412c301c1bd20ec0f ]
+[ Upstream commit 86419686e66da5b90a07fb8a40ab138fe97189b5 ]
 
-Factor out adapter interrupt allocation from arch_setup_msi_irqs() in
-preparation for enabling registration of multiple MSIs. Code movement
-only, no change of functionality intended.
+When the UVC device has a control that is readonly it doesn't set the
+SET_CUR flag. For example the privacy control has SET_CUR flag set in
+the defaults in the `uvc_ctrls` variable. Even if the device does not
+have it set, it's not cleared by uvc_ctrl_get_flags().
 
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
+Originally written with assignment in commit 859086ae3636 ("media:
+uvcvideo: Apply flags from device to actual properties"). But changed to
+|= in commit 0dc68cabdb62 ("media: uvcvideo: Prevent setting unavailable
+flags"). It would not clear the default flags.
+
+With this patch applied the correct flags are reported to user space.
+Tested with:
+
+```
+> v4l2-ctl --list-ctrls | grep privacy
+privacy 0x009a0910 (bool)   : default=0 value=0 flags=read-only
+```
+
+Signed-off-by: Daniel Schaefer <dhs@frame.work>
+Fixes: 0dc68cabdb62 ("media: uvcvideo: Prevent setting unavailable flags")
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240602065053.36850-1-dhs@frame.work
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 54 ++++++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 22 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 49e404c3e987a..39c3c29f0d1d3 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -262,33 +262,20 @@ static void zpci_floating_irq_handler(struct airq_struct *airq, bool floating)
- 	}
- }
- 
--int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
-+			unsigned long *bit)
- {
--	struct zpci_dev *zdev = to_zpci(pdev);
--	unsigned int hwirq, msi_vecs, cpu;
--	unsigned long bit;
--	struct msi_desc *msi;
--	struct msi_msg msg;
--	int cpu_addr;
--	int rc, irq;
--
--	zdev->aisb = -1UL;
--	zdev->msi_first_bit = -1U;
--	if (type == PCI_CAP_ID_MSI && nvec > 1)
--		return 1;
--	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
--
- 	if (irq_delivery == DIRECTED) {
- 		/* Allocate cpu vector bits */
--		bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
-+		if (*bit == -1UL)
- 			return -EIO;
- 	} else {
- 		/* Allocate adapter summary indicator bit */
--		bit = airq_iv_alloc_bit(zpci_sbv);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc_bit(zpci_sbv);
-+		if (*bit == -1UL)
- 			return -EIO;
--		zdev->aisb = bit;
-+		zdev->aisb = *bit;
- 
- 		/* Create adapter interrupt vector */
- 		zdev->aibv = airq_iv_create(msi_vecs, AIRQ_IV_DATA | AIRQ_IV_BITLOCK);
-@@ -296,10 +283,33 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
- 			return -ENOMEM;
- 
- 		/* Wire up shortcut pointer */
--		zpci_ibv[bit] = zdev->aibv;
-+		zpci_ibv[*bit] = zdev->aibv;
- 		/* Each function has its own interrupt vector */
--		bit = 0;
-+		*bit = 0;
- 	}
-+	return 0;
-+}
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index 5d437e33c5902..dee07b0572c6f 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1739,7 +1739,13 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
+ 	else
+ 		ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
+ 				     dev->intfnum, info->selector, data, 1);
+-	if (!ret)
 +
-+int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+{
-+	struct zpci_dev *zdev = to_zpci(pdev);
-+	unsigned int hwirq, msi_vecs, cpu;
-+	struct msi_desc *msi;
-+	struct msi_msg msg;
-+	unsigned long bit;
-+	int cpu_addr;
-+	int rc, irq;
++	if (!ret) {
++		info->flags &= ~(UVC_CTRL_FLAG_GET_CUR |
++				 UVC_CTRL_FLAG_SET_CUR |
++				 UVC_CTRL_FLAG_AUTO_UPDATE |
++				 UVC_CTRL_FLAG_ASYNCHRONOUS);
 +
-+	zdev->aisb = -1UL;
-+	zdev->msi_first_bit = -1U;
-+
-+	if (type == PCI_CAP_ID_MSI && nvec > 1)
-+		return 1;
-+	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
-+
-+	rc = __alloc_airq(zdev, msi_vecs, &bit);
-+	if (rc < 0)
-+		return rc;
+ 		info->flags |= (data[0] & UVC_CONTROL_CAP_GET ?
+ 				UVC_CTRL_FLAG_GET_CUR : 0)
+ 			    |  (data[0] & UVC_CONTROL_CAP_SET ?
+@@ -1748,6 +1754,7 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
+ 				UVC_CTRL_FLAG_AUTO_UPDATE : 0)
+ 			    |  (data[0] & UVC_CONTROL_CAP_ASYNCHRONOUS ?
+ 				UVC_CTRL_FLAG_ASYNCHRONOUS : 0);
++	}
  
- 	/* Request MSI interrupts */
- 	hwirq = bit;
+ 	kfree(data);
+ 	return ret;
 -- 
 2.43.0
 
