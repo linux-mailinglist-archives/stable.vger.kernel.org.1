@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A299532D6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B59953269
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E34A61F22A7E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A53128998C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9A61ABEB1;
-	Thu, 15 Aug 2024 14:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85181AC456;
+	Thu, 15 Aug 2024 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fojPdn+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1KYZJ3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CBA1ABEBD;
-	Thu, 15 Aug 2024 14:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BC01AC432;
+	Thu, 15 Aug 2024 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730891; cv=none; b=kcSsA9jxrFMmDpDkipLHpxd3BYTwZyTco7REr50e+SZwa8qZ2d48Y9nZQ8A2FYSz2sTM4IhdR5NsJcCS2FsAbJIiaWfatmswBVuahfBGNezSIqbUeSnNT8eM4xcUnj+Sf9DuLVBFUzwwOc9YavN2GTDqDsnDdBO9pTHG528kDY8=
+	t=1723730648; cv=none; b=aGITgL085ExjXrW5S1qln1+JYEP2Yy9xawlnWStwKaMeY+ev9ex6K0R8VVSnNMUFoXPU5V7nGTaxJc6P71c06r2lMs+kltG2L0QtZMv4/3iNpQIbL9Dbis3K3tati3V5tLLn9nCcU5GEnjXxSEKYNpYWyrItwTmm9TbLJ9sjvdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730891; c=relaxed/simple;
-	bh=gxhVeNozeR/EsjWzAYamZ9EHjzZtRRlg2+e3xJDyA2E=;
+	s=arc-20240116; t=1723730648; c=relaxed/simple;
+	bh=RPRMQ7FK9HsCuLpzFnFbeHY6T+JUfmBWJPRp5KHUDh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmFMRIbi3i61alpaq4nSbJlFqWhtRbZr5eqFAEM3GwjO2qRGw4B1kzsfwWSiqL7GOCPvYpwzqVgIHa6eEw+i+uQ7bjAgtys9Pu3OjFh/QxvYzy1qHmuNTyXcrsm4+k7j7BqVA0OMTWV0Qpp2ACvuBaL+mSrft+a1JJoDYKCOVqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fojPdn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A64FC32786;
-	Thu, 15 Aug 2024 14:08:10 +0000 (UTC)
+	 MIME-Version; b=uVQ4sIzzHBvkVbUfAq1QRwmFwhr0DFve9rYC/X2BsX8L+WZz75M5xG9iTRHJoIChxxn9hZJJcNGkLoqYc7AIPSnqoka81o46YkVKk1HOBDqe3nlV7R51nQE3MdUsTQuS+muqtcq6jRYaD8T3EvQKqyMJItaljJzNGT8wDCWEmGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1KYZJ3a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE598C32786;
+	Thu, 15 Aug 2024 14:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730891;
-	bh=gxhVeNozeR/EsjWzAYamZ9EHjzZtRRlg2+e3xJDyA2E=;
+	s=korg; t=1723730648;
+	bh=RPRMQ7FK9HsCuLpzFnFbeHY6T+JUfmBWJPRp5KHUDh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0fojPdn+JZsyv0P4RTLDr9WOgx0n9a7F5RAtpWlFV9FL5ik/l6X28b4wt5cWXYn3i
-	 H/D/HfEQzWuuOhdk5ybXmFVvPYb3tuN4aySaPoTnBd/bzzaBmyHurjK8zwHhI/YGOA
-	 zBc9V2487ASsWGO7mOrcqyHNDIGGsMnB8kAJuMtc=
+	b=T1KYZJ3alHzJQqQ8mlT0oFFCwbj8zURs5Fu62aZ98YzsIY9UT7t6H0oA74LyymfKe
+	 UIf8/ZXoOX/gCqAipPYk9ucbPg+hA9IXewkRpDSJOvT/sjv7tzbH8SSjioVj2nPYaR
+	 Tf1NC5F8xoS0pjw80m6a6JPdbp0t8L1SLMGdk6yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hmy <huanglin@uniontech.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.6 18/67] nvme/pci: Add APST quirk for Lenovo N60z laptop
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 474/484] mptcp: fully established after ADD_ADDR echo on MPJ
 Date: Thu, 15 Aug 2024 15:25:32 +0200
-Message-ID: <20240815131839.034985081@linuxfoundation.org>
+Message-ID: <20240815131959.785983201@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit ab091ec536cb7b271983c0c063b17f62f3591583 upstream.
+commit d67c5649c1541dc93f202eeffc6f49220a4ed71d upstream.
 
-There is a hardware power-saving problem with the Lenovo N60z
-board. When turn it on and leave it for 10 hours, there is a
-20% chance that a nvme disk will not wake up until reboot.
+Before this patch, receiving an ADD_ADDR echo on the just connected
+MP_JOIN subflow -- initiator side, after the MP_JOIN 3WHS -- was
+resulting in an MP_RESET. That's because only ACKs with a DSS or
+ADD_ADDRs without the echo bit were allowed.
 
-Link: https://lore.kernel.org/all/2B5581C46AC6E335+9c7a81f1-05fb-4fd0-9fbb-108757c21628@uniontech.com
-Signed-off-by: hmy <huanglin@uniontech.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Not allowing the ADD_ADDR echo after an MP_CAPABLE 3WHS makes sense, as
+we are not supposed to send an ADD_ADDR before because it requires to be
+in full established mode first. For the MP_JOIN 3WHS, that's different:
+the ADD_ADDR can be sent on a previous subflow, and the ADD_ADDR echo
+can be received on the recently created one. The other peer will already
+be in fully established, so it is allowed to send that.
+
+We can then relax the conditions here to accept the ADD_ADDR echo for
+MPJ subflows.
+
+Fixes: 67b12f792d5e ("mptcp: full fully established support after ADD_ADDR")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-1-c8a9b036493b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in options.c, because the context has changed in commit
+  b3ea6b272d79 ("mptcp: consolidate initial ack seq generation"), which
+  is not in this version. This commit is unrelated to this
+  modification. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/mptcp/options.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2931,6 +2931,13 @@ static unsigned long check_vendor_combin
- 			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -923,7 +923,8 @@ static bool check_fully_established(stru
  	}
  
-+	/*
-+	 * NVMe SSD drops off the PCIe bus after system idle
-+	 * for 10 hours on a Lenovo N60z board.
-+	 */
-+	if (dmi_match(DMI_BOARD_NAME, "LXKT-ZXEG-N6"))
-+		return NVME_QUIRK_NO_APST;
-+
- 	return 0;
- }
- 
+ 	if (((mp_opt->suboptions & OPTION_MPTCP_DSS) && mp_opt->use_ack) ||
+-	    ((mp_opt->suboptions & OPTION_MPTCP_ADD_ADDR) && !mp_opt->echo)) {
++	    ((mp_opt->suboptions & OPTION_MPTCP_ADD_ADDR) &&
++	     (!mp_opt->echo || subflow->mp_join))) {
+ 		/* subflows are fully established as soon as we get any
+ 		 * additional ack, including ADD_ADDR.
+ 		 */
 
 
 
