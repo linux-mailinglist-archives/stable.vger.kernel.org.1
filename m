@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-68492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B0395329A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F099535CC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DF64B21270
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D714D281E86
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AE31ABEB4;
-	Thu, 15 Aug 2024 14:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB951B1421;
+	Thu, 15 Aug 2024 14:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lARX/HLv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTncUN8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9EA1AC8BB;
-	Thu, 15 Aug 2024 14:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDAD1A7074;
+	Thu, 15 Aug 2024 14:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730738; cv=none; b=RarG9N4FNavf0EFSW0gXrRdEuN6UM2y/yvTkfWgHYiC392UjX0/9rz0lB4JwJPKVerX+5mTODO9JeRS9i5+pdAOpPuklURysW5kX5B6wd7EjGSDnaKHJHJGxs3hSSqF373WCGIUva9WW7EiuUJDxxdJH0I0wU8NpzfAHpG22L+s=
+	t=1723732874; cv=none; b=jfirIFRYxdqt3wXo6RdIpce4NYmMPK0XIqUAzfjbipKYfNKEiI74uiM0b3Tff6xgbH7g+1Os2EI7ZIUH1Gq3lRuHDhskbjECw9NMSEv+pogXj5bqxfKfRQ+FmkxP3Ggv5ukMcQEPe7L7GYSb9YhdnOJhtQ77HUP3WHf2/fJbGfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730738; c=relaxed/simple;
-	bh=p81gzyceZqV/E+MXsDoOX9TBAmbHlpw2daBtCfq43Jw=;
+	s=arc-20240116; t=1723732874; c=relaxed/simple;
+	bh=uBBoPTGV2zor8M5mczdfX5GkKdjmWgr4GA5i6DlbJyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJAdhe+zqcnVsUs7RNpDWJaPP34D+tZJHQMTkqxTcmWM/sHqXutX9+9cDWQWwsBUyPB8FdHzsi6hxo9lQARJns7jfUX6pVI+aqvld3ZfSIFVbQcXKlCgr+v/bYOOfjylIkGb+GLTkZ/wU9J34cqS/Rw7IkqkDr5fVsNRrZfclF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lARX/HLv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E309C32786;
-	Thu, 15 Aug 2024 14:05:37 +0000 (UTC)
+	 MIME-Version; b=RJ0rnY66kdULZVcX44eydzED41G9GjSjGedV77VqU2amno5nMbcLnUdhId+vD57Y7bZmvEJVXeVM/mlMFI3K77wTGvnkj6s3PWvG/UwmZJhBWf/LhajQOv5Jo4+OP9kLgNWz/0MpYtwaoumXia0pznJJiEAWlKB2y6zonliIGOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTncUN8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35305C4AF0E;
+	Thu, 15 Aug 2024 14:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730738;
-	bh=p81gzyceZqV/E+MXsDoOX9TBAmbHlpw2daBtCfq43Jw=;
+	s=korg; t=1723732873;
+	bh=uBBoPTGV2zor8M5mczdfX5GkKdjmWgr4GA5i6DlbJyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lARX/HLvDXhOCV0qMsEaUX7JTsluZDlNLvmCfc2CsYX0hDPh7GF5j7RoTCnyxKJh3
-	 A7aeQIOlK5jBp53OXXa7fgNOUbeqUi8GfPF5s+cPBYbWS8hIF8I3ZORpBTdbnlqLoH
-	 MTlaHIFj97gm6S6b341NWJnF55CIkOBWqd09z460=
+	b=ZTncUN8pGqDPM47vQooJzukepOCt5CDm7yJ2/NLU1NCjPfovWV6kCXV1CTvooahF1
+	 MvEaAiE8TyL5NTayfKlKcm7BLrrI7GipDWzFyPlJoS+4NzBip7M+/XcZ6dD06LEN2Q
+	 vpqILh0NZiqEAn5kJMf+Y1tTbxF8+DNhh66KnvC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 17/38] NFSD: Fix frame size warning in svc_export_parse()
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 285/352] arm64: errata: Add workaround for Arm errata 3194386 and 3312417
 Date: Thu, 15 Aug 2024 15:25:51 +0200
-Message-ID: <20240815131833.614942006@linuxfoundation.org>
+Message-ID: <20240815131930.464983587@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,169 +64,230 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 6939ace1f22681fface7841cdbf34d3204cc94b5 ]
+[ Upstream commit 7187bb7d0b5c7dfa18ca82e9e5c75e13861b1d88 ]
 
-fs/nfsd/export.c: In function 'svc_export_parse':
-fs/nfsd/export.c:737:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-    737 | }
+Cortex-X4 and Neoverse-V3 suffer from errata whereby an MSR to the SSBS
+special-purpose register does not affect subsequent speculative
+instructions, permitting speculative store bypassing for a window of
+time. This is described in their Software Developer Errata Notice (SDEN)
+documents:
 
-On my systems, svc_export_parse() has a stack frame of over 800
-bytes, not 1040, but nonetheless, it could do with some reduction.
+* Cortex-X4 SDEN v8.0, erratum 3194386:
+  https://developer.arm.com/documentation/SDEN-2432808/0800/
 
-When a struct svc_export is on the stack, it's a temporary structure
-used as an argument, and not visible as an actual exported FS. No
-need to reserve space for export_stats in such cases.
+* Neoverse-V3 SDEN v6.0, erratum 3312417:
+  https://developer.arm.com/documentation/SDEN-2891958/0600/
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310012359.YEw5IrK6-lkp@intel.com/
-Cc: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Stable-dep-of: 4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
-[ cel: adjusted to apply to v6.1.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To workaround these errata, it is necessary to place a speculation
+barrier (SB) after MSR to the SSBS special-purpose register. This patch
+adds the requisite SB after writes to SSBS within the kernel, and hides
+the presence of SSBS from EL0 such that userspace software which cares
+about SSBS will manipulate this via prctl(PR_GET_SPECULATION_CTRL, ...).
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240508081400.235362-5-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Mark: fix conflicts & renames, drop unneeded cpucaps.h, fold in user_feature_fixup() ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/export.c |   32 +++++++++++++++++++++++---------
- fs/nfsd/export.h |    4 ++--
- fs/nfsd/stats.h  |   12 ++++++------
- 3 files changed, 31 insertions(+), 17 deletions(-)
+ Documentation/arm64/silicon-errata.rst |  4 +++
+ arch/arm64/Kconfig                     | 41 ++++++++++++++++++++++++++
+ arch/arm64/include/asm/cpucaps.h       |  3 +-
+ arch/arm64/kernel/cpu_errata.c         | 19 ++++++++++++
+ arch/arm64/kernel/cpufeature.c         | 12 ++++++++
+ arch/arm64/kernel/proton-pack.c        | 12 ++++++++
+ 6 files changed, 90 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -339,12 +339,16 @@ static int export_stats_init(struct expo
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index 10a26d44ef4a9..0ecb714b2c426 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -98,12 +98,16 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A510     | #2457168        | ARM64_ERRATUM_2457168       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X4       | #3194386        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #1349291        | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #1542419        | ARM64_ERRATUM_1542419       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3312417       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 13cf137da999a..0d59e8ab27c88 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -691,6 +691,47 @@ config ARM64_ERRATUM_2457168
  
- static void export_stats_reset(struct export_stats *stats)
- {
--	nfsd_percpu_counters_reset(stats->counter, EXP_STATS_COUNTERS_NUM);
-+	if (stats)
-+		nfsd_percpu_counters_reset(stats->counter,
-+					   EXP_STATS_COUNTERS_NUM);
- }
+ 	  If unsure, say Y.
  
- static void export_stats_destroy(struct export_stats *stats)
- {
--	nfsd_percpu_counters_destroy(stats->counter, EXP_STATS_COUNTERS_NUM);
-+	if (stats)
-+		nfsd_percpu_counters_destroy(stats->counter,
-+					     EXP_STATS_COUNTERS_NUM);
- }
- 
- static void svc_export_put(struct kref *ref)
-@@ -353,7 +357,8 @@ static void svc_export_put(struct kref *
- 	path_put(&exp->ex_path);
- 	auth_domain_put(exp->ex_client);
- 	nfsd4_fslocs_free(&exp->ex_fslocs);
--	export_stats_destroy(&exp->ex_stats);
-+	export_stats_destroy(exp->ex_stats);
-+	kfree(exp->ex_stats);
- 	kfree(exp->ex_uuid);
- 	kfree_rcu(exp, ex_rcu);
- }
-@@ -744,13 +749,15 @@ static int svc_export_show(struct seq_fi
- 	seq_putc(m, '\t');
- 	seq_escape(m, exp->ex_client->name, " \t\n\\");
- 	if (export_stats) {
--		seq_printf(m, "\t%lld\n", exp->ex_stats.start_time);
-+		struct percpu_counter *counter = exp->ex_stats->counter;
++config ARM64_WORKAROUND_SPECULATIVE_SSBS
++	bool
 +
-+		seq_printf(m, "\t%lld\n", exp->ex_stats->start_time);
- 		seq_printf(m, "\tfh_stale: %lld\n",
--			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_FH_STALE]));
-+			   percpu_counter_sum_positive(&counter[EXP_STATS_FH_STALE]));
- 		seq_printf(m, "\tio_read: %lld\n",
--			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_READ]));
-+			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_READ]));
- 		seq_printf(m, "\tio_write: %lld\n",
--			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_WRITE]));
-+			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_WRITE]));
- 		seq_putc(m, '\n');
- 		return 0;
- 	}
-@@ -796,7 +803,7 @@ static void svc_export_init(struct cache
- 	new->ex_layout_types = 0;
- 	new->ex_uuid = NULL;
- 	new->cd = item->cd;
--	export_stats_reset(&new->ex_stats);
-+	export_stats_reset(new->ex_stats);
- }
- 
- static void export_update(struct cache_head *cnew, struct cache_head *citem)
-@@ -832,7 +839,14 @@ static struct cache_head *svc_export_all
- 	if (!i)
- 		return NULL;
- 
--	if (export_stats_init(&i->ex_stats)) {
-+	i->ex_stats = kmalloc(sizeof(*(i->ex_stats)), GFP_KERNEL);
-+	if (!i->ex_stats) {
-+		kfree(i);
-+		return NULL;
-+	}
++config ARM64_ERRATUM_3194386
++	bool "Cortex-X4: 3194386: workaround for MSR SSBS not self-synchronizing"
++	select ARM64_WORKAROUND_SPECULATIVE_SSBS
++	default y
++	help
++	  This option adds the workaround for ARM Cortex-X4 erratum 3194386.
 +
-+	if (export_stats_init(i->ex_stats)) {
-+		kfree(i->ex_stats);
- 		kfree(i);
- 		return NULL;
- 	}
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -64,10 +64,10 @@ struct svc_export {
- 	struct cache_head	h;
- 	struct auth_domain *	ex_client;
- 	int			ex_flags;
-+	int			ex_fsid;
- 	struct path		ex_path;
- 	kuid_t			ex_anon_uid;
- 	kgid_t			ex_anon_gid;
--	int			ex_fsid;
- 	unsigned char *		ex_uuid; /* 16 byte fsid */
- 	struct nfsd4_fs_locations ex_fslocs;
- 	uint32_t		ex_nflavors;
-@@ -76,7 +76,7 @@ struct svc_export {
- 	struct nfsd4_deviceid_map *ex_devid_map;
- 	struct cache_detail	*cd;
- 	struct rcu_head		ex_rcu;
--	struct export_stats	ex_stats;
-+	struct export_stats	*ex_stats;
++	  On affected cores "MSR SSBS, #0" instructions may not affect
++	  subsequent speculative instructions, which may permit unexepected
++	  speculative store bypassing.
++
++	  Work around this problem by placing a speculation barrier after
++	  kernel changes to SSBS. The presence of the SSBS special-purpose
++	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
++	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
++	  SSBS.
++
++	  If unsure, say Y.
++
++config ARM64_ERRATUM_3312417
++	bool "Neoverse-V3: 3312417: workaround for MSR SSBS not self-synchronizing"
++	select ARM64_WORKAROUND_SPECULATIVE_SSBS
++	default y
++	help
++	  This option adds the workaround for ARM Neoverse-V3 erratum 3312417.
++
++	  On affected cores "MSR SSBS, #0" instructions may not affect
++	  subsequent speculative instructions, which may permit unexepected
++	  speculative store bypassing.
++
++	  Work around this problem by placing a speculation barrier after
++	  kernel changes to SSBS. The presence of the SSBS special-purpose
++	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
++	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
++	  SSBS.
++
++	  If unsure, say Y.
++
+ config CAVIUM_ERRATUM_22375
+ 	bool "Cavium erratum 22375, 24313"
+ 	default y
+diff --git a/arch/arm64/include/asm/cpucaps.h b/arch/arm64/include/asm/cpucaps.h
+index d2080a41f6e6f..931c88182fb8b 100644
+--- a/arch/arm64/include/asm/cpucaps.h
++++ b/arch/arm64/include/asm/cpucaps.h
+@@ -69,7 +69,8 @@
+ #define ARM64_SPECTRE_BHB			59
+ #define ARM64_WORKAROUND_2457168		60
+ #define ARM64_WORKAROUND_1742098		61
++#define ARM64_WORKAROUND_SPECULATIVE_SSBS	62
+ 
+-#define ARM64_NCAPS				62
++#define ARM64_NCAPS				63
+ 
+ #endif /* __ASM_CPUCAPS_H */
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index 5d6f19bc628c2..3eabd809aee4a 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -364,6 +364,18 @@ static struct midr_range broken_aarch32_aes[] = {
  };
+ #endif
  
- /* an "export key" (expkey) maps a filehandlefragement to an
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -60,22 +60,22 @@ static inline void nfsd_stats_rc_nocache
- static inline void nfsd_stats_fh_stale_inc(struct svc_export *exp)
++#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
++static const struct midr_range erratum_spec_ssbs_list[] = {
++#ifdef CONFIG_ARM64_ERRATUM_3194386
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
++#endif
++#ifdef CONFIG_ARM64_ERRATUM_3312417
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
++#endif
++	{}
++};
++#endif
++
+ const struct arm64_cpu_capabilities arm64_errata[] = {
+ #ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
+ 	{
+@@ -570,6 +582,13 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ 		CAP_MIDR_RANGE_LIST(broken_aarch32_aes),
+ 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
+ 	},
++#endif
++#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
++	{
++		.desc = "ARM errata 3194386, 3312417",
++		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
++		ERRATA_MIDR_RANGE_LIST(erratum_spec_ssbs_list),
++	},
+ #endif
+ 	{
+ 	}
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 11a42fcf94bfc..dc92fd590f2f9 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -1753,6 +1753,17 @@ static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
+ }
+ #endif /* CONFIG_ARM64_MTE */
+ 
++static void user_feature_fixup(void)
++{
++	if (cpus_have_cap(ARM64_WORKAROUND_SPECULATIVE_SSBS)) {
++		struct arm64_ftr_reg *regp;
++
++		regp = get_arm64_ftr_reg(SYS_ID_AA64PFR1_EL1);
++		if (regp)
++			regp->user_mask &= ~GENMASK(7, 4); /* SSBS */
++	}
++}
++
+ static void elf_hwcap_fixup(void)
  {
- 	percpu_counter_inc(&nfsdstats.counter[NFSD_STATS_FH_STALE]);
--	if (exp)
--		percpu_counter_inc(&exp->ex_stats.counter[EXP_STATS_FH_STALE]);
-+	if (exp && exp->ex_stats)
-+		percpu_counter_inc(&exp->ex_stats->counter[EXP_STATS_FH_STALE]);
+ #ifdef CONFIG_ARM64_ERRATUM_1742098
+@@ -2764,6 +2775,7 @@ void __init setup_cpu_features(void)
+ 	u32 cwg;
+ 
+ 	setup_system_capabilities();
++	user_feature_fixup();
+ 	setup_elf_hwcaps(arm64_elf_hwcaps);
+ 
+ 	if (system_supports_32bit_el0()) {
+diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+index 9c0e9d9eed6e2..b40310e0bdb90 100644
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -574,6 +574,18 @@ static enum mitigation_state spectre_v4_enable_hw_mitigation(void)
+ 
+ 	/* SCTLR_EL1.DSSBS was initialised to 0 during boot */
+ 	asm volatile(SET_PSTATE_SSBS(0));
++
++	/*
++	 * SSBS is self-synchronizing and is intended to affect subsequent
++	 * speculative instructions, but some CPUs can speculate with a stale
++	 * value of SSBS.
++	 *
++	 * Mitigate this with an unconditional speculation barrier, as CPUs
++	 * could mis-speculate branches and bypass a conditional barrier.
++	 */
++	if (IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS))
++		spec_bar();
++
+ 	return SPECTRE_MITIGATED;
  }
  
- static inline void nfsd_stats_io_read_add(struct svc_export *exp, s64 amount)
- {
- 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_READ], amount);
--	if (exp)
--		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_READ], amount);
-+	if (exp && exp->ex_stats)
-+		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_READ], amount);
- }
- 
- static inline void nfsd_stats_io_write_add(struct svc_export *exp, s64 amount)
- {
- 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_WRITE], amount);
--	if (exp)
--		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_WRITE], amount);
-+	if (exp && exp->ex_stats)
-+		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_WRITE], amount);
- }
- 
- static inline void nfsd_stats_payload_misses_inc(struct nfsd_net *nn)
+-- 
+2.43.0
+
 
 
 
