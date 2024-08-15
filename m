@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573769532B5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F3309535B2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3152B26C23
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 841D7B2198B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0601A706B;
-	Thu, 15 Aug 2024 14:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50011A00CF;
+	Thu, 15 Aug 2024 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0M8OOSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZRQtMnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7491A3BCA;
-	Thu, 15 Aug 2024 14:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724821AC893;
+	Thu, 15 Aug 2024 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730794; cv=none; b=Jipmc1cQCZfnMeC7vPoHzJDMyyh/jZ3N8b3/JB7z4b5UWDWLF+FYb0Cz1qQ5tb/7g7rYUgPP+mv2zsMR6W/jYBGXUy62jtY6fsEYRZt0w2PjNdAF/+wDrlcobrhKoKyk7Sl44250FvJV/7wn6XyhYCaw2Wvy5ZYYGL6SbRpXrjU=
+	t=1723732841; cv=none; b=LH76bAk4ZW/yKQEC+vJiFbDogVlqlEHfZ8emFv5mOxln+AQxPLykXKGx7V/CSbbQ5t7zFbOWvDC04Sa4OAmdVTtosMq18fxbHW41E6mhocToNXpmEt1jXbzA9HDNO/icUejM815/77EY8MVS1OVvsd7wKupOJqio2BwBhCvcKmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730794; c=relaxed/simple;
-	bh=iCYHDXCl7ZiTHJwOra1hJap6rkFncKSRXxB3i0YnQzw=;
+	s=arc-20240116; t=1723732841; c=relaxed/simple;
+	bh=YB4ypPWgUT6WNHtbTM/vMcV+49w2Hpm4ZLO2kHNSNBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dmw7IDwiPGyboDxATUTGhsYzsjK1maSH7FTQK7+682VxIS4tZlK09Wz1aWk4LE8mUai3k0JgoV8yF+vYzV93NNYVTxgHoS89/UYd+N2e6qoja4GFdi7EJsXaazZD3sG5w2v5ge3nT9lPpvJ6crggeIExCyIgUQdcoLvtZS8+AP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0M8OOSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE42C32786;
-	Thu, 15 Aug 2024 14:06:33 +0000 (UTC)
+	 MIME-Version; b=KsOWEiPYJXX3U/xWw53xZNcPKxw35pnKcLG12KTYWFw31dpnJzZzRo0IYyi7q8hHbByMh7prrmSRctO0ScJKUbj2HKeGdD48SUgoonXGF8dehAqX9R7JIWuf/J1PDJLtLcqL1A+LmC4UxKermQpoEUY0IKtvDOwDaf/sSbEgalU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZRQtMnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EF7C32786;
+	Thu, 15 Aug 2024 14:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730794;
-	bh=iCYHDXCl7ZiTHJwOra1hJap6rkFncKSRXxB3i0YnQzw=;
+	s=korg; t=1723732841;
+	bh=YB4ypPWgUT6WNHtbTM/vMcV+49w2Hpm4ZLO2kHNSNBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0M8OOSps6r4+5epfM0N293529VRBiP9gCa1tYD1c49aKfuaYOieWvYJEGa09tfSs
-	 IIL1d3glBXcKAfVV1WtJU2zTbytGtRWfMo2LqJMW6EZK7B536XyYSUQ0gytYqAqqUX
-	 7GU4xN41h54bwvTTCtSWeELs0Dy5zeaLzKde2ymo=
+	b=RZRQtMnTOlvdSPIHusHuy9HwZQqnPQCIzD0ySoSPKTq8XzBI6qpGtTuTjWroLKpaB
+	 7LEmxfBm0IlTrD7qH5vNa2kLVmASSvhHvdR7gbvrHgpPu3H8KLGMr/01OCu+5BciqO
+	 TD/u3w6ZPJds1rgIXfNKTi9LqufK3MUoAwy/Az2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 33/38] drm/i915: Fix a NULL vs IS_ERR() bug
-Date: Thu, 15 Aug 2024 15:26:07 +0200
-Message-ID: <20240815131834.230747188@linuxfoundation.org>
+	syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 302/352] ALSA: line6: Fix racy access to midibuf
+Date: Thu, 15 Aug 2024 15:26:08 +0200
+Message-ID: <20240815131931.133286690@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3a89311387cde27da8e290458b2d037133c1f7b5 ]
+commit 15b7a03205b31bc5623378c190d22b7ff60026f1 upstream.
 
-The mmap_offset_attach() function returns error pointers, it doesn't
-return NULL.
+There can be concurrent accesses to line6 midibuf from both the URB
+completion callback and the rawmidi API access.  This could be a cause
+of KMSAN warning triggered by syzkaller below (so put as reported-by
+here).
 
-Fixes: eaee1c085863 ("drm/i915: Add a function to mmap framebuffer obj")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/ZH7tHLRZ9oBjedjN@moroto
-Stable-dep-of: 1ac5167b3a90 ("drm/i915/gem: Adjust vma offset for framebuffer mmap offset")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch protects the midibuf call of the former code path with a
+spinlock for avoiding the possible races.
+
+Reported-by: syzbot+78eccfb8b3c9a85fc6c5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/00000000000000949c061df288c5@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240805130129.10872-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_mman.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/line6/driver.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-index 180b66f6193cb..4a291d29c5af5 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -1118,8 +1118,8 @@ int i915_gem_fb_mmap(struct drm_i915_gem_object *obj, struct vm_area_struct *vma
- 		/* handle stolen and smem objects */
- 		mmap_type = i915_ggtt_has_aperture(ggtt) ? I915_MMAP_TYPE_GTT : I915_MMAP_TYPE_WC;
- 		mmo = mmap_offset_attach(obj, mmap_type, NULL);
--		if (!mmo)
--			return -ENODEV;
-+		if (IS_ERR(mmo))
-+			return PTR_ERR(mmo);
- 	}
+--- a/sound/usb/line6/driver.c
++++ b/sound/usb/line6/driver.c
+@@ -286,12 +286,14 @@ static void line6_data_received(struct u
+ {
+ 	struct usb_line6 *line6 = (struct usb_line6 *)urb->context;
+ 	struct midi_buffer *mb = &line6->line6midi->midibuf_in;
++	unsigned long flags;
+ 	int done;
  
- 	/*
--- 
-2.43.0
-
+ 	if (urb->status == -ESHUTDOWN)
+ 		return;
+ 
+ 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
++		spin_lock_irqsave(&line6->line6midi->lock, flags);
+ 		done =
+ 			line6_midibuf_write(mb, urb->transfer_buffer, urb->actual_length);
+ 
+@@ -300,12 +302,15 @@ static void line6_data_received(struct u
+ 			dev_dbg(line6->ifcdev, "%d %d buffer overflow - message skipped\n",
+ 				done, urb->actual_length);
+ 		}
++		spin_unlock_irqrestore(&line6->line6midi->lock, flags);
+ 
+ 		for (;;) {
++			spin_lock_irqsave(&line6->line6midi->lock, flags);
+ 			done =
+ 				line6_midibuf_read(mb, line6->buffer_message,
+ 						   LINE6_MIDI_MESSAGE_MAXLEN,
+ 						   LINE6_MIDIBUF_READ_RX);
++			spin_unlock_irqrestore(&line6->line6midi->lock, flags);
+ 
+ 			if (done <= 0)
+ 				break;
 
 
 
