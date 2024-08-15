@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-68554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3B19532E7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917AD953412
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1704288FA5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 353872878DC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40031AD419;
-	Thu, 15 Aug 2024 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EAC1A00F5;
+	Thu, 15 Aug 2024 14:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6/CRC7p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTNrvH9X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721E31AC450;
-	Thu, 15 Aug 2024 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74853214;
+	Thu, 15 Aug 2024 14:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730937; cv=none; b=ch3wkS6PWy4DHpZzbVpzQfsEAI2dz2BbCzndRbugRK/euf4q7y+HYIwENORBfPTjq3DhrZNhPnyuSb7zy0cgWTbDTVjvO+FvWpYtHgY+rwpTaWSXVYGn23hpkCaoHCxfXtztE5FczdBdtUOLr/yRLK27wxASl3vKGFBlfVtUiaQ=
+	t=1723731734; cv=none; b=W0YLeucnKsTboelWdUGJzRZ5pQGVZYb2usHyfw34k/9Oy0eCcj6xhqiptqgkb0YxhGDkKRAVDk11V2FXefLvK7c/9dj8ywivYi5Ptz1z198HPOusuuPEtT9YkXSCbCEkRQZ/Y4WAlSRC+9C1cigIER772eg9QBkg2h6tGrPL5BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730937; c=relaxed/simple;
-	bh=XcZ3SPA6wpIWfqLmk+ErnO3OHLfhzQb0jLkOT468GHE=;
+	s=arc-20240116; t=1723731734; c=relaxed/simple;
+	bh=uTiU2GMgK7BItprZBZUQca7a7o1zlblwB0h2zNGyDgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IrbWclQRmZJdRvhR4yZrfIXshHMY/Sc/y1HdVXkvg5wvHUHytoWBcx4W//aWn5S6mSXblmVYB/kGMkhikYbNiy9IXdkJogZvOpbKPEB/55Aj6bTFvHAeSkjQ4mCHo5Aov/jAKL1n85Jg1cU3W76YoGOShhSTVdQuMd2sOAzG2jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6/CRC7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CA5C32786;
-	Thu, 15 Aug 2024 14:08:56 +0000 (UTC)
+	 MIME-Version; b=a6TsE1JYAFbJK0Gbq6g0T13sA5m13+DjhrsQqsqe/1aElNbemKumF6ifjRUxwVIpSQXO0971T1aSCvYrPEYuQXF3HnoeYOam3a3AFyFuXspa9Q127/VVWs8BtVc94t1P5t6QS03ES9D/fM5C8FInaOI0hG51lRngYNE6VXvszRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTNrvH9X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452F3C32786;
+	Thu, 15 Aug 2024 14:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730937;
-	bh=XcZ3SPA6wpIWfqLmk+ErnO3OHLfhzQb0jLkOT468GHE=;
+	s=korg; t=1723731734;
+	bh=uTiU2GMgK7BItprZBZUQca7a7o1zlblwB0h2zNGyDgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6/CRC7p4Xz/oKySxhaPeM4PzYDSeluBKDDimhmObadtkI9uaExzgzH5L4QwLYp6M
-	 WF2cJP6LRB9fd+SK+MjNlgjwyMWeWmldpA/W6a3GbThBDWWHoP/aT4gT+TPjk6peKR
-	 MZG42hpuCgW3MBoDLF9c7XxDTtCdFTg3gFTmrXgc=
+	b=pTNrvH9XcubGvNwd7j23ZB2uDB5UF3+hiDKO5YOP6hxXGCEsNiGm0ua2biFEbDtRE
+	 vOBXV+Hu9bJzgWwyPWHON+oqLVo2FHkkDmFbPy8xJmCjBPB/yK62f/17Wc0mBv+Of0
+	 RaSsam9J0WKg/QRaT4NZsSb4ZsBQmGwfZwH4fR0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6bdfd184eac7709e5cc9@syzkaller.appspotmail.com,
-	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Corey Minyard <cminyard@mvista.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	Wolfram Sang <wsa@the-dreams.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 39/67] pppoe: Fix memory leak in pppoe_sendmsg()
-Date: Thu, 15 Aug 2024 15:25:53 +0200
-Message-ID: <20240815131839.819941430@linuxfoundation.org>
+Subject: [PATCH 5.4 221/259] i2c: smbus: Dont filter out duplicate alerts
+Date: Thu, 15 Aug 2024 15:25:54 +0200
+Message-ID: <20240815131911.306400187@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Corey Minyard <cminyard@mvista.com>
 
-[ Upstream commit dc34ebd5c018b0edf47f39d11083ad8312733034 ]
+[ Upstream commit dca0dd28fa5e0a1ec41a623dbaf667601fc62331 ]
 
-syzbot reports a memory leak in pppoe_sendmsg [1].
+Getting the same alert twice in a row is legal and normal,
+especially on a fast device (like running in qemu).  Kind of
+like interrupts.  So don't report duplicate alerts, and deliver
+them normally.
 
-The problem is in the pppoe_recvmsg() function that handles errors
-in the wrong order. For the skb_recv_datagram() function, check
-the pointer to skb for NULL first, and then check the 'error' variable,
-because the skb_recv_datagram() function can set 'error'
-to -EAGAIN in a loop but return a correct pointer to socket buffer
-after a number of attempts, though 'error' remains set to -EAGAIN.
+[JD: Fixed subject]
 
-skb_recv_datagram
-      __skb_recv_datagram          // Loop. if (err == -EAGAIN) then
-                                   // go to the next loop iteration
-          __skb_try_recv_datagram  // if (skb != NULL) then return 'skb'
-                                   // else if a signal is received then
-                                   // return -EAGAIN
-
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller.
-
-Link: https://syzkaller.appspot.com/bug?extid=6bdfd184eac7709e5cc9 [1]
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+6bdfd184eac7709e5cc9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6bdfd184eac7709e5cc9
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://lore.kernel.org/r/20240214085814.3894917-1-Ilia.Gavrilov@infotecs.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Corey Minyard <cminyard@mvista.com>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Reviewed-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+Stable-dep-of: 37c526f00bc1 ("i2c: smbus: Improve handling of stuck alerts")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/pppoe.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ drivers/i2c/i2c-smbus.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index ba8b6bd8233ca..96cca4ee470a4 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -1007,26 +1007,21 @@ static int pppoe_recvmsg(struct socket *sock, struct msghdr *m,
- 	struct sk_buff *skb;
- 	int error = 0;
+diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
+index 03096f47e6abb..7e2f5d0eacdb0 100644
+--- a/drivers/i2c/i2c-smbus.c
++++ b/drivers/i2c/i2c-smbus.c
+@@ -66,7 +66,6 @@ static irqreturn_t smbus_alert(int irq, void *d)
+ {
+ 	struct i2c_smbus_alert *alert = d;
+ 	struct i2c_client *ara;
+-	unsigned short prev_addr = 0;	/* Not a valid address */
  
--	if (sk->sk_state & PPPOX_BOUND) {
--		error = -EIO;
--		goto end;
--	}
-+	if (sk->sk_state & PPPOX_BOUND)
-+		return -EIO;
+ 	ara = alert->ara;
  
- 	skb = skb_recv_datagram(sk, flags, &error);
--	if (error < 0)
--		goto end;
-+	if (!skb)
-+		return error;
+@@ -90,18 +89,12 @@ static irqreturn_t smbus_alert(int irq, void *d)
+ 		data.addr = status >> 1;
+ 		data.type = I2C_PROTOCOL_SMBUS_ALERT;
  
--	if (skb) {
--		total_len = min_t(size_t, total_len, skb->len);
--		error = skb_copy_datagram_msg(skb, 0, m, total_len);
--		if (error == 0) {
--			consume_skb(skb);
--			return total_len;
+-		if (data.addr == prev_addr) {
+-			dev_warn(&ara->dev, "Duplicate SMBALERT# from dev "
+-				"0x%02x, skipping\n", data.addr);
+-			break;
 -		}
-+	total_len = min_t(size_t, total_len, skb->len);
-+	error = skb_copy_datagram_msg(skb, 0, m, total_len);
-+	if (error == 0) {
-+		consume_skb(skb);
-+		return total_len;
+ 		dev_dbg(&ara->dev, "SMBALERT# from dev 0x%02x, flag %d\n",
+ 			data.addr, data.data);
+ 
+ 		/* Notify driver for the device which issued the alert */
+ 		device_for_each_child(&ara->adapter->dev, &data,
+ 				      smbus_do_alert);
+-		prev_addr = data.addr;
  	}
  
- 	kfree_skb(skb);
--end:
- 	return error;
- }
- 
+ 	return IRQ_HANDLED;
 -- 
 2.43.0
 
