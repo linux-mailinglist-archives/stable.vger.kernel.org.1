@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C759533FD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 405CE9532A3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5803C289602
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C73DFB2471A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5681A01B6;
-	Thu, 15 Aug 2024 14:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBCD1AD3F5;
+	Thu, 15 Aug 2024 14:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrZtMa84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wg9AmXHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF30E1A00F5;
-	Thu, 15 Aug 2024 14:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A4A1AD3F3;
+	Thu, 15 Aug 2024 14:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731688; cv=none; b=siQdsDQFVYjH47gLEq78TjGr3mFmgeFrBPcgZ3ksy98eC1Mx+X0+KqdO5t427SsvjgalYgPMnJk8ZW/2+eO/PrEm5b0PW5hhbc5cmc1GMVPeaeVXThY2AaNbPdJECv6gPB3Sv1ie1BsrPAoGDG+6DwdAizf0BtqJJuUSWoK1cxg=
+	t=1723730762; cv=none; b=ud3rRJBGnYLjsxdvF3d6PmBq2STcGqOuogJEQKbIpyXsYFBLZ5lC1pmiCpbDSc6RjnLcUb276pif+7PeRSKJ/PEBPV1LhvnRTVh1DooNGuGM/TWFQEvfDDYu2YVYSjaYzhxxVCYpMBHSdN9FYFb3DOtyWM5ADnGfRtuUkV/vq1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731688; c=relaxed/simple;
-	bh=QQLffAxN1xoFKx1qAICYipIHRF2T2P05XZLOcHfiZYM=;
+	s=arc-20240116; t=1723730762; c=relaxed/simple;
+	bh=HZI/yFdOoHAwWTIBnCX8u1CbYHq5P0Osyj9GZ4QgdVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MiJs62WSwpjMRkjWm02CHGqR58PFdC42O5wz6daWTYCK5TxeCR28jbQynDK0Uv3aYzmwoXasUcZSGSae0d+7ZBk5KOsGWeDtNG9MgkTEcUUbpzI9d+nwCjGHQYm5lxomychT9rwoIDLfaCyDvwenWek+Rxf97YNSEqKINsUdt3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrZtMa84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BAFC32786;
-	Thu, 15 Aug 2024 14:21:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pWcqyu1/oamBCWB9NcR0QabVzjArr0Mt6twS4q2xSvzra+1E08qBZH7FFCPGvrwoCZkgtibTaugK1KeXc913bfyTfbQZLUhwTzE3CZOav73e58DhTOy3V0EnmqC1H72b4HrRBNJNd3eQWHTgEFdWPmrjh5OiKn8Zu4FRX8Q/bfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wg9AmXHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69F7C4AF0C;
+	Thu, 15 Aug 2024 14:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731687;
-	bh=QQLffAxN1xoFKx1qAICYipIHRF2T2P05XZLOcHfiZYM=;
+	s=korg; t=1723730762;
+	bh=HZI/yFdOoHAwWTIBnCX8u1CbYHq5P0Osyj9GZ4QgdVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrZtMa84MTyW4bMnYwM8U5HRjbIiVRah6IqVyq1piabw6c35BYcb5tULzpYYI56Je
-	 x+NAGETnpS8iKrVCD4WyOfM+pcPlu/vNGLDEzITYrGXrmu4vUDBlLlhEwFCBP6bXtG
-	 riM1kXleSxbXA3VFI+t91yzjTs6x4+z4a2KnbZi8=
+	b=Wg9AmXHMuw8ArlwCMlNFsuCmSR6lv6DRn7TRfw/0BioYbKyseoMFWVhkL7RDzu4/5
+	 C2N8SYbz6/jgoktcvQp5uNQe1lnLHvcfvzHoePds6h6JaDh7KO95ayhtQPClvARcsn
+	 Crn1FNiwcgQrfVTNCKrCSKx8cXJTmoSmnNIFHDJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 207/259] ext4: fix wrong unit use in ext4_mb_find_by_goal
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 06/38] ASoC: topology: Clean up route loading
 Date: Thu, 15 Aug 2024 15:25:40 +0200
-Message-ID: <20240815131910.765117427@linuxfoundation.org>
+Message-ID: <20240815131833.200823878@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit 99c515e3a860576ba90c11acbc1d6488dfca6463 ]
+commit e0e7bc2cbee93778c4ad7d9a792d425ffb5af6f7 upstream.
 
-We need start in block unit while fe_start is in cluster unit. Use
-ext4_grp_offs_to_block helper to convert fe_start to get start in
-block unit.
+Instead of using very long macro name, assign it to shorter variable
+and use it instead. While doing that, we can reduce multiple if checks
+using this define to one.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230603150327.3596033-4-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240603102818.36165-5-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/soc-topology.c |   26 ++++++++------------------
+ 1 file changed, 8 insertions(+), 18 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index b2e7b1907d410..9bc590564ea1f 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1850,8 +1850,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 	if (max >= ac->ac_g_ex.fe_len && ac->ac_g_ex.fe_len == sbi->s_stripe) {
- 		ext4_fsblk_t start;
+--- a/sound/soc/soc-topology.c
++++ b/sound/soc/soc-topology.c
+@@ -1062,6 +1062,7 @@ static int soc_tplg_dapm_graph_elems_loa
+ 	struct snd_soc_tplg_hdr *hdr)
+ {
+ 	struct snd_soc_dapm_context *dapm = &tplg->comp->dapm;
++	const size_t maxlen = SNDRV_CTL_ELEM_ID_NAME_MAXLEN;
+ 	struct snd_soc_tplg_dapm_graph_elem *elem;
+ 	struct snd_soc_dapm_route *route;
+ 	int count, i;
+@@ -1085,38 +1086,27 @@ static int soc_tplg_dapm_graph_elems_loa
+ 		tplg->pos += sizeof(struct snd_soc_tplg_dapm_graph_elem);
  
--		start = ext4_group_first_block_no(ac->ac_sb, e4b->bd_group) +
--			ex.fe_start;
-+		start = ext4_grp_offs_to_block(ac->ac_sb, &ex);
- 		/* use do_div to get remainder (would be 64-bit modulo) */
- 		if (do_div(start, sbi->s_stripe) == 0) {
- 			ac->ac_found++;
--- 
-2.43.0
-
+ 		/* validate routes */
+-		if (strnlen(elem->source, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) ==
+-			    SNDRV_CTL_ELEM_ID_NAME_MAXLEN) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		if (strnlen(elem->sink, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) ==
+-			    SNDRV_CTL_ELEM_ID_NAME_MAXLEN) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		if (strnlen(elem->control, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) ==
+-			    SNDRV_CTL_ELEM_ID_NAME_MAXLEN) {
++		if ((strnlen(elem->source, maxlen) == maxlen) ||
++		    (strnlen(elem->sink, maxlen) == maxlen) ||
++		    (strnlen(elem->control, maxlen) == maxlen)) {
+ 			ret = -EINVAL;
+ 			break;
+ 		}
+ 
+ 		route->source = devm_kmemdup(tplg->dev, elem->source,
+-					     min(strlen(elem->source),
+-						 SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
++					     min(strlen(elem->source), maxlen),
+ 					     GFP_KERNEL);
+ 		route->sink = devm_kmemdup(tplg->dev, elem->sink,
+-					   min(strlen(elem->sink), SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
++					   min(strlen(elem->sink), maxlen),
+ 					   GFP_KERNEL);
+ 		if (!route->source || !route->sink) {
+ 			ret = -ENOMEM;
+ 			break;
+ 		}
+ 
+-		if (strnlen(elem->control, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) != 0) {
++		if (strnlen(elem->control, maxlen) != 0) {
+ 			route->control = devm_kmemdup(tplg->dev, elem->control,
+-						      min(strlen(elem->control),
+-							  SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
++						      min(strlen(elem->control), maxlen),
+ 						      GFP_KERNEL);
+ 			if (!route->control) {
+ 				ret = -ENOMEM;
 
 
 
