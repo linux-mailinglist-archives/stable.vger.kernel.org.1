@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-68515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD639532BB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8123B953593
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3FD0B26C7D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 652711F26BE0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D614C1B0108;
-	Thu, 15 Aug 2024 14:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECEC19FA9D;
+	Thu, 15 Aug 2024 14:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qlurq4rq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwdV+YrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9410C19F473;
-	Thu, 15 Aug 2024 14:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58DA1AC893;
+	Thu, 15 Aug 2024 14:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730813; cv=none; b=tJErcPvigGjOGZW/ZceZEGsvVdC33zSc3bw3F9QNdzO+uS0xIa3YWAfQBQAoIYnvbTCmgLnvA8EjX2ZWpxm831P+cO1o7x7U77wWRlF/9RmG+kmooiCqgZdLRG6Db6Ur/TZiGks0U31mhn5rHgHY/qPWXH0uPR2QYEo731Fm6RU=
+	t=1723732756; cv=none; b=NCeKmlMpURBUeY0s3x5LPU3pvIV+e0zmquusX14H8uja+yA33afm6mSvMXxu2yrXLp6JUiNq9zx4hPYUMSxrrvApXpkqKWvr62lKPd4lkcy3mR3WxKZv/WNF7zcBGrECqGwjcxZw3z6svsgUUwBGFSGIThiiamh/0L4UPzVsOw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730813; c=relaxed/simple;
-	bh=i7UNYnHnV9n+dH6qi8BfTR5yIxB4k2EbBInW++rTkP4=;
+	s=arc-20240116; t=1723732756; c=relaxed/simple;
+	bh=yo9718unBGlHVDwumQmyOc24eGEsAi/82bfzEG4QBaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3VfkWUDw/DR/z0WHdv21lJjtcWQzlo4KtT10YDGGiBYJtnx9w71YI/aeZ8S8bb9oYTaoK29iCCInf7MQR7PbkF5WZgTgDZV4NLjcSXQRswJvJK7RMZOL4WVW+lwcENSdE/W7f5sXZebVRTtPJnfEvBNcdH861s4qPew+UTr9FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qlurq4rq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE01AC4AF0A;
-	Thu, 15 Aug 2024 14:06:52 +0000 (UTC)
+	 MIME-Version; b=KDnJHtXnyTZOUg0GH/HuhPZWtzF5dT1BPajYfyC8rNbxIzBUbaZv2V6cO49gS8k9Z++JxC0xyvGXmCKYVBNn4GDJnvwgEp2yxtHP3Cn+rvNuAJWJ7b9XqLwGMsdkrmn4xjvPtF8HiouvQvhCVvdpTKweP9QsSGsE7SA10UhnUak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwdV+YrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5969C32786;
+	Thu, 15 Aug 2024 14:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730813;
-	bh=i7UNYnHnV9n+dH6qi8BfTR5yIxB4k2EbBInW++rTkP4=;
+	s=korg; t=1723732756;
+	bh=yo9718unBGlHVDwumQmyOc24eGEsAi/82bfzEG4QBaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qlurq4rqJT8eSi8JxdHRwH2tLjSNZX4opP2sJiC636voOQ/yMiXLwP1Ib1nlyxel3
-	 BPrcHv9xjy7C5oia3RxH9A1QGI1aoN+U0FA/+DwrLGsEduCkMFSVGXz7AAZEBC+g9t
-	 X9nkHY1zFKJ2EZWTGwH8UD+sdTBNthtnPXEiQxX4=
+	b=UwdV+YrMDZ2A0Qj/h0veWlOJRjQ8zjcc1Pao9mC47OtPmkDngE8zqU9QM50vaHn14
+	 WjqpXTTY0LekN2bH4XWjE6nLhsN5POzl2F4E5/BplfrKdtj3xr7NG/Tgnb0gyan6FU
+	 jjOu9KTpg/Hewlux4pY6JxvWYf1oKSPae5q3TX/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Vanotti <mvanotti@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.1 08/38] exec: Fix ToCToU between perm check and set-uid/gid usage
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 276/352] jbd2: avoid memleak in jbd2_journal_write_metadata_buffer
 Date: Thu, 15 Aug 2024 15:25:42 +0200
-Message-ID: <20240815131833.274695720@linuxfoundation.org>
+Message-ID: <20240815131930.120014663@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-commit f50733b45d865f91db90919f8311e2127ce5a0cb upstream.
+[ Upstream commit cc102aa24638b90e04364d64e4f58a1fa91a1976 ]
 
-When opening a file for exec via do_filp_open(), permission checking is
-done against the file's metadata at that moment, and on success, a file
-pointer is passed back. Much later in the execve() code path, the file
-metadata (specifically mode, uid, and gid) is used to determine if/how
-to set the uid and gid. However, those values may have changed since the
-permissions check, meaning the execution may gain unintended privileges.
+The new_bh is from alloc_buffer_head, we should call free_buffer_head to
+free it in error case.
 
-For example, if a file could change permissions from executable and not
-set-id:
-
----------x 1 root root 16048 Aug  7 13:16 target
-
-to set-id and non-executable:
-
----S------ 1 root root 16048 Aug  7 13:16 target
-
-it is possible to gain root privileges when execution should have been
-disallowed.
-
-While this race condition is rare in real-world scenarios, it has been
-observed (and proven exploitable) when package managers are updating
-the setuid bits of installed programs. Such files start with being
-world-executable but then are adjusted to be group-exec with a set-uid
-bit. For example, "chmod o-x,u+s target" makes "target" executable only
-by uid "root" and gid "cdrom", while also becoming setuid-root:
-
--rwxr-xr-x 1 root cdrom 16048 Aug  7 13:16 target
-
-becomes:
-
--rwsr-xr-- 1 root cdrom 16048 Aug  7 13:16 target
-
-But racing the chmod means users without group "cdrom" membership can
-get the permission to execute "target" just before the chmod, and when
-the chmod finishes, the exec reaches brpm_fill_uid(), and performs the
-setuid to root, violating the expressed authorization of "only cdrom
-group members can setuid to root".
-
-Re-check that we still have execute permissions in case the metadata
-has changed. It would be better to keep a copy from the perm-check time,
-but until we can do that refactoring, the least-bad option is to do a
-full inode_permission() call (under inode lock). It is understood that
-this is safe against dead-locks, but hardly optimal.
-
-Reported-by: Marco Vanotti <mvanotti@google.com>
-Tested-by: Marco Vanotti <mvanotti@google.com>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240514112438.1269037-2-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/jbd2/journal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1603,6 +1603,7 @@ static void bprm_fill_uid(struct linux_b
- 	unsigned int mode;
- 	kuid_t uid;
- 	kgid_t gid;
-+	int err;
- 
- 	if (!mnt_may_suid(file->f_path.mnt))
- 		return;
-@@ -1619,12 +1620,17 @@ static void bprm_fill_uid(struct linux_b
- 	/* Be careful if suid/sgid is set */
- 	inode_lock(inode);
- 
--	/* reload atomically mode/uid/gid now that lock held */
-+	/* Atomically reload and check mode/uid/gid now that lock held. */
- 	mode = inode->i_mode;
- 	uid = i_uid_into_mnt(mnt_userns, inode);
- 	gid = i_gid_into_mnt(mnt_userns, inode);
-+	err = inode_permission(mnt_userns, inode, MAY_EXEC);
- 	inode_unlock(inode);
- 
-+	/* Did the exec bit vanish out from under us? Give up. */
-+	if (err)
-+		return;
-+
- 	/* We ignore suid/sgid if there are no mappings for them in the ns */
- 	if (!kuid_has_mapping(bprm->cred->user_ns, uid) ||
- 		 !kgid_has_mapping(bprm->cred->user_ns, gid))
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 4ae4b85ea1877..205e6c7c2fd0c 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -412,6 +412,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
+ 		tmp = jbd2_alloc(bh_in->b_size, GFP_NOFS);
+ 		if (!tmp) {
+ 			brelse(new_bh);
++			free_buffer_head(new_bh);
+ 			return -ENOMEM;
+ 		}
+ 		spin_lock(&jh_in->b_state_lock);
+-- 
+2.43.0
+
 
 
 
