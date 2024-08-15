@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35E2952F22
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7749F953177
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83D9B2885D4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AA2D1F21891
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEE717CA1D;
-	Thu, 15 Aug 2024 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A115D19DF58;
+	Thu, 15 Aug 2024 13:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rXCgB8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpQgl2em"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7CA1DDF5;
-	Thu, 15 Aug 2024 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE4018D630;
+	Thu, 15 Aug 2024 13:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728542; cv=none; b=eUEM9R5lK7Ai/hd9r1U4kCOVNqWnsxyygJcJSWHsG+LgkiDVwP7dKdat303ZNX/DL8IntCvlTotXZbqBS3LcipeNY/ODdKEoch0BNWge+TQJnLRoqcRUdCRJVGSN45sN9TqMFk2IKIVV/JpsygbUc+lj57kwTHJWW/++D5AASPE=
+	t=1723730062; cv=none; b=k9PUpLec3aLLiA4PwX6aTwWd8m8Ui143fyMsqueGPLQU0PBSUswcm+QkZgUNDMWeQ7TlHqWXLhQiTl+h5nUs7pksc45wUdj7tySOGzO/YDKCzKgyBGx28RV4J0/7bxyaGxA4sSV4IhkHjJAyB0G/e03zByG7Azk5FG/ZV+sv4fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728542; c=relaxed/simple;
-	bh=L+6SbOMCMbQulkqF+i8xpkzpxedeJbVwUBdbK+sl5i4=;
+	s=arc-20240116; t=1723730062; c=relaxed/simple;
+	bh=jQj/gOVBqD3xvehnfiHoxFivHF+XdFAX/4rxU5MVTPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLHKBr6X4cYOv7CdxCiOktlqx91mwfMiHkQXFxaPDEvjatxwiTqVLUuPi6duoI+AeXWHWzoKiYiSMYiGvCfMNKsn3AaGV9jwL+jJQreJv3eUbP5mLyn+s8VVxUJWVDJ6brrH9HiE3NwhSYND2nve4L0+PUdr75MfV7U5A56q3Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rXCgB8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862BEC32786;
-	Thu, 15 Aug 2024 13:29:01 +0000 (UTC)
+	 MIME-Version; b=Dm6qDVoQgavEklnlyexhyvwodNjagMkeTO1iEC1Xyzji7eR2brs5ozpvrufSPTx6CLyWdBrULQLLhY/Dp1gIvFW2cUuJO4OIF6iZmbKsgvr+xH/aF5ENaBI4Kkrq0DfyB7yJlgi7k+mYaBhYi9x2xR1N096IBkSIqDhko32QZZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpQgl2em; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7906DC32786;
+	Thu, 15 Aug 2024 13:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728541;
-	bh=L+6SbOMCMbQulkqF+i8xpkzpxedeJbVwUBdbK+sl5i4=;
+	s=korg; t=1723730061;
+	bh=jQj/gOVBqD3xvehnfiHoxFivHF+XdFAX/4rxU5MVTPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rXCgB8wBv6PVNKIS8VEDrpsvPHg0lFq9jX0nMM/EFLCHu97m4XsnImQZsNrOQhq7
-	 y6nynHvMiQ8QsRSS16Vxq0FRWWqpKIu8FQLyPbjs1gnkvzxnpcPngLEzHoVV3E8u/w
-	 ktcr/gAzm/shrIo+kV5fYlK7QolwtA7HoswktAE8=
+	b=NpQgl2emCwZme/doyULsrYvgLKcxoF9r6YM6yEbPXMLKTwcge/1YyxBv8RK6vR3C7
+	 W54cZSR+QyJP5U0ECUVoNPzfwb0/CNwwLGXrIN6uzNe3AMocamNx2d/dEQwhUkWJC8
+	 cyYL3h2EULHWvoAyeP6Yfc2MJTDUz2dvf1Oh5Km0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 032/196] media: uvcvideo: Allow entity-defined get_info and get_cur
+Subject: [PATCH 5.15 291/484] s390/pci: Refactor arch_setup_msi_irqs()
 Date: Thu, 15 Aug 2024 15:22:29 +0200
-Message-ID: <20240815131853.315209982@linuxfoundation.org>
+Message-ID: <20240815131952.647962741@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit 65900c581d014499f0f8ceabfc02c652e9a88771 ]
+[ Upstream commit 5fd11b96b43708f2f6e3964412c301c1bd20ec0f ]
 
-Allows controls to get their properties and current value
-from an entity-defined function instead of via a query to the USB
-device.
+Factor out adapter interrupt allocation from arch_setup_msi_irqs() in
+preparation for enabling registration of multiple MSIs. Code movement
+only, no change of functionality intended.
 
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 86419686e66d ("media: uvcvideo: Override default flags")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 22 ++++++++++++++++++----
- drivers/media/usb/uvc/uvcvideo.h |  5 +++++
- 2 files changed, 23 insertions(+), 4 deletions(-)
+ arch/s390/pci/pci_irq.c | 54 ++++++++++++++++++++++++-----------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index 84b1339c2c6e3..5d437e33c5902 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1007,10 +1007,20 @@ static int __uvc_ctrl_get(struct uvc_video_chain *chain,
- 		return -EACCES;
+diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
+index 49e404c3e987a..39c3c29f0d1d3 100644
+--- a/arch/s390/pci/pci_irq.c
++++ b/arch/s390/pci/pci_irq.c
+@@ -262,33 +262,20 @@ static void zpci_floating_irq_handler(struct airq_struct *airq, bool floating)
+ 	}
+ }
  
- 	if (!ctrl->loaded) {
--		ret = uvc_query_ctrl(chain->dev, UVC_GET_CUR, ctrl->entity->id,
--				chain->dev->intfnum, ctrl->info.selector,
-+		if (ctrl->entity->get_cur) {
-+			ret = ctrl->entity->get_cur(chain->dev,
-+				ctrl->entity,
-+				ctrl->info.selector,
- 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
- 				ctrl->info.size);
-+		} else {
-+			ret = uvc_query_ctrl(chain->dev, UVC_GET_CUR,
-+				ctrl->entity->id,
-+				chain->dev->intfnum,
-+				ctrl->info.selector,
-+				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
-+				ctrl->info.size);
-+		}
- 		if (ret < 0)
- 			return ret;
+-int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
++static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
++			unsigned long *bit)
+ {
+-	struct zpci_dev *zdev = to_zpci(pdev);
+-	unsigned int hwirq, msi_vecs, cpu;
+-	unsigned long bit;
+-	struct msi_desc *msi;
+-	struct msi_msg msg;
+-	int cpu_addr;
+-	int rc, irq;
+-
+-	zdev->aisb = -1UL;
+-	zdev->msi_first_bit = -1U;
+-	if (type == PCI_CAP_ID_MSI && nvec > 1)
+-		return 1;
+-	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
+-
+ 	if (irq_delivery == DIRECTED) {
+ 		/* Allocate cpu vector bits */
+-		bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
+-		if (bit == -1UL)
++		*bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
++		if (*bit == -1UL)
+ 			return -EIO;
+ 	} else {
+ 		/* Allocate adapter summary indicator bit */
+-		bit = airq_iv_alloc_bit(zpci_sbv);
+-		if (bit == -1UL)
++		*bit = airq_iv_alloc_bit(zpci_sbv);
++		if (*bit == -1UL)
+ 			return -EIO;
+-		zdev->aisb = bit;
++		zdev->aisb = *bit;
  
-@@ -1723,8 +1733,12 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
- 	if (data == NULL)
- 		return -ENOMEM;
+ 		/* Create adapter interrupt vector */
+ 		zdev->aibv = airq_iv_create(msi_vecs, AIRQ_IV_DATA | AIRQ_IV_BITLOCK);
+@@ -296,10 +283,33 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 			return -ENOMEM;
  
--	ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id, dev->intfnum,
--			     info->selector, data, 1);
-+	if (ctrl->entity->get_info)
-+		ret = ctrl->entity->get_info(dev, ctrl->entity,
-+					     ctrl->info.selector, data);
-+	else
-+		ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
-+				     dev->intfnum, info->selector, data, 1);
- 	if (!ret)
- 		info->flags |= (data[0] & UVC_CONTROL_CAP_GET ?
- 				UVC_CTRL_FLAG_GET_CUR : 0)
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index e8b06164b27ac..4df3b014dd40b 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -345,6 +345,11 @@ struct uvc_entity {
- 	u8 bNrInPins;
- 	u8 *baSourceID;
- 
-+	int (*get_info)(struct uvc_device *dev, struct uvc_entity *entity,
-+			u8 cs, u8 *caps);
-+	int (*get_cur)(struct uvc_device *dev, struct uvc_entity *entity,
-+		       u8 cs, void *data, u16 size);
+ 		/* Wire up shortcut pointer */
+-		zpci_ibv[bit] = zdev->aibv;
++		zpci_ibv[*bit] = zdev->aibv;
+ 		/* Each function has its own interrupt vector */
+-		bit = 0;
++		*bit = 0;
+ 	}
++	return 0;
++}
 +
- 	unsigned int ncontrols;
- 	struct uvc_control *controls;
- };
++int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
++{
++	struct zpci_dev *zdev = to_zpci(pdev);
++	unsigned int hwirq, msi_vecs, cpu;
++	struct msi_desc *msi;
++	struct msi_msg msg;
++	unsigned long bit;
++	int cpu_addr;
++	int rc, irq;
++
++	zdev->aisb = -1UL;
++	zdev->msi_first_bit = -1U;
++
++	if (type == PCI_CAP_ID_MSI && nvec > 1)
++		return 1;
++	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
++
++	rc = __alloc_airq(zdev, msi_vecs, &bit);
++	if (rc < 0)
++		return rc;
+ 
+ 	/* Request MSI interrupts */
+ 	hwirq = bit;
 -- 
 2.43.0
 
