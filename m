@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-69166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57A59535CE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0BB895343A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79BF51F26F79
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 775131F29198
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB2B1A76A2;
-	Thu, 15 Aug 2024 14:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B251A7065;
+	Thu, 15 Aug 2024 14:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zm9qmJ20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQlHwAT9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898061A00CF;
-	Thu, 15 Aug 2024 14:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CA91A7060;
+	Thu, 15 Aug 2024 14:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732883; cv=none; b=TVFinskV6pCtnLFAqBRl2IANidzs1efMt53c/6cmvQ0O6f5QicCnz2ybmoBxNuVMZz27MRL/U04xYTQLYs89+oR5wrG9ILZNEsD1BCf+CSATjzpZEu344yFD3nPapdyklrQjVpMV5qrnXO64szO92cKwn6OgR2Wp+LmY/N5JlqU=
+	t=1723731816; cv=none; b=n1REjA7y6i0r8sc6paPYklpiGZe7zwO5/pYhwmdmAAGdSpCNjH4yxpDUksJpGTBzdj4GIUDw1kOGz3QxhdelAq3SceC2w+Mw9PgW6c3gbwZTI5RgR3Yiyqj2VRHQQJX4nVXfHogRPNU7lupNgDiQs96RWyJoOlWNvVvjA0JbLCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732883; c=relaxed/simple;
-	bh=kAg/+b1pqdJIprs1Sy7HkwjLFU0nQyTyOKhoWyz4vEw=;
+	s=arc-20240116; t=1723731816; c=relaxed/simple;
+	bh=4LJejHPYGH2/eM5zjuYsyI63yRKqZoLTUTNLjUf6lNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rH+OXA+PAd7gBO5npeuVdFg8DUQJGLkQ0pQU7hjxlDnyOkP/7G7mFSLeECCVoMR+WbAyYqiIwJVHFr1lRbpehR1r+3+QE22agg7K7Mjy4QSS8dywatd1K3QaU0LBoVDyRLoh25+UOmRUjdbFs8sPw5c1s4vcefrOMbAYJ1cLH9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm9qmJ20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B32C32786;
-	Thu, 15 Aug 2024 14:41:22 +0000 (UTC)
+	 MIME-Version; b=unzdSCiKFG6gOhAlUEe0LhyHcPUeRO5sq1gmxZASGgxpclKFnCkd1A66ZP5fHKblD0KdTXihd8lD0+7LEoyS79pT2qGeT8/ZnKzkF348Wgdnc+IYpn3h1WNumASqpgM+y4kh4l2Dzm3kProoCFy1AePXVKWrzM1SqefcyG9nNtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQlHwAT9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CECC32786;
+	Thu, 15 Aug 2024 14:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732883;
-	bh=kAg/+b1pqdJIprs1Sy7HkwjLFU0nQyTyOKhoWyz4vEw=;
+	s=korg; t=1723731815;
+	bh=4LJejHPYGH2/eM5zjuYsyI63yRKqZoLTUTNLjUf6lNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zm9qmJ20h4AevWUJWNcJk9ctbL/dQICRhAVpZvto4Tp7V5BOkhGIjmPTi5LqW1fPU
-	 ZPTjYvW/r5QggLvpzcW6Bud6UvLHrB2COVR+GCLeRU+7jew/LtwfKB8bUcXF7rarDh
-	 MVWdKWSF1vsr6Y7m+YJRM0LO7WFr/Hl3ACcWyWGo=
+	b=pQlHwAT9kTq+yt7CmJR8lpvtmBXnvXc7pS8+kYjNVoy9/FKbv/b+tnv4Te6kmC0Gj
+	 gFVHygxS2kHKQTZ/xLPaKKbPQvY4LkjRODDBsJ1LN5SFpVt7ebjNHv3wkUZI1bkYpz
+	 KSglKz+Nt1pHmWwIALIpJqErzhD08N7GZ08SNqys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 314/352] scsi: mpt3sas: Remove scsi_dma_map() error messages
+	Lucas Stach <l.stach@pengutronix.de>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 5.4 247/259] drm/bridge: analogix_dp: properly handle zero sized AUX transactions
 Date: Thu, 15 Aug 2024 15:26:20 +0200
-Message-ID: <20240815131931.594081168@linuxfoundation.org>
+Message-ID: <20240815131912.308486916@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit 0c25422d34b4726b2707d5f38560943155a91b80 ]
+commit e82290a2e0e8ec5e836ecad1ca025021b3855c2d upstream.
 
-When scsi_dma_map() fails by returning a sges_left value less than zero,
-the amount of logging produced can be extremely high.  In a recent end-user
-environment, 1200 messages per second were being sent to the log buffer.
-This eventually overwhelmed the system and it stalled.
+Address only transactions without any data are valid and should not
+be flagged as short transactions. Simply return the message size when
+no transaction errors occured.
 
-These error messages are not needed. Remove them.
-
-Link: https://lore.kernel.org/r/20220303140203.12642-1-sreekanth.reddy@broadcom.com
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 82dbb57ac8d0 ("scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240318203925.2837689-1-l.stach@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_base.c | 18 +++---------------
- 1 file changed, 3 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
-index 2803b475dae6a..de4ec552799dd 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -2431,12 +2431,8 @@ _base_check_pcie_native_sgl(struct MPT3SAS_ADAPTER *ioc,
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_reg.c
+@@ -1115,7 +1115,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 	u32 status_reg;
+ 	u8 *buffer = msg->buffer;
+ 	unsigned int i;
+-	int num_transferred = 0;
+ 	int ret;
  
- 	/* Get the SG list pointer and info. */
- 	sges_left = scsi_dma_map(scmd);
--	if (sges_left < 0) {
--		sdev_printk(KERN_ERR, scmd->device,
--			"scsi_dma_map failed: request for %d bytes!\n",
--			scsi_bufflen(scmd));
-+	if (sges_left < 0)
- 		return 1;
--	}
+ 	/* Buffer size of AUX CH is 16 bytes */
+@@ -1167,7 +1166,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = buffer[i];
+ 			writel(reg, dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 			       4 * i);
+-			num_transferred++;
+ 		}
+ 	}
  
- 	/* Check if we need to build a native SG list. */
- 	if (base_is_prp_possible(ioc, pcie_device,
-@@ -2543,12 +2539,8 @@ _base_build_sg_scmd(struct MPT3SAS_ADAPTER *ioc,
+@@ -1215,7 +1213,6 @@ ssize_t analogix_dp_transfer(struct anal
+ 			reg = readl(dp->reg_base + ANALOGIX_DP_BUF_DATA_0 +
+ 				    4 * i);
+ 			buffer[i] = (unsigned char)reg;
+-			num_transferred++;
+ 		}
+ 	}
  
- 	sg_scmd = scsi_sglist(scmd);
- 	sges_left = scsi_dma_map(scmd);
--	if (sges_left < 0) {
--		sdev_printk(KERN_ERR, scmd->device,
--		 "scsi_dma_map failed: request for %d bytes!\n",
--		 scsi_bufflen(scmd));
-+	if (sges_left < 0)
- 		return -ENOMEM;
--	}
+@@ -1232,7 +1229,7 @@ ssize_t analogix_dp_transfer(struct anal
+ 		 (msg->request & ~DP_AUX_I2C_MOT) == DP_AUX_NATIVE_READ)
+ 		msg->reply = DP_AUX_NATIVE_REPLY_ACK;
  
- 	sg_local = &mpi_request->SGL;
- 	sges_in_segment = ioc->max_sges_in_main_message;
-@@ -2691,12 +2683,8 @@ _base_build_sg_scmd_ieee(struct MPT3SAS_ADAPTER *ioc,
+-	return num_transferred > 0 ? num_transferred : -EBUSY;
++	return msg->size;
  
- 	sg_scmd = scsi_sglist(scmd);
- 	sges_left = scsi_dma_map(scmd);
--	if (sges_left < 0) {
--		sdev_printk(KERN_ERR, scmd->device,
--			"scsi_dma_map failed: request for %d bytes!\n",
--			scsi_bufflen(scmd));
-+	if (sges_left < 0)
- 		return -ENOMEM;
--	}
- 
- 	sg_local = &mpi_request->SGL;
- 	sges_in_segment = (ioc->request_sz -
--- 
-2.43.0
-
+ aux_error:
+ 	/* if aux err happen, reset aux */
 
 
 
