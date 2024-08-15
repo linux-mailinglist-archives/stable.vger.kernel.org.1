@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-68050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2358953063
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:42:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B7D953040
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5DE71C20835
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:42:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E33EF283259
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B6C18D630;
-	Thu, 15 Aug 2024 13:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878BD19F49C;
+	Thu, 15 Aug 2024 13:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4b4Yczj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptbfneDY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26EA19EEBD;
-	Thu, 15 Aug 2024 13:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3103319D89D;
+	Thu, 15 Aug 2024 13:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729338; cv=none; b=e6zVKCf1d9f8vxblsVxXuSdIIfarVZUdUuzjP1Hrb8ypIa8iYyBKzPn6ePq3bXQnko/16mCowjIqaXY/Tn9ANF2cTTmb9i1hF8VRtF6KZXVVxUhOi7f1dVuCkqOUBeuonNu5m1LDnVVqsyz0uQKx8JWfj6UuONR+j65X5OALcgw=
+	t=1723729241; cv=none; b=cVuph7gVAqfAwm6dFmo+MM3tATbc/hwe8NpqDhlAaWYEU1E4GPV19pxe+Km+qEz4zOO888EkQ+mDNbhiM2ojlwzxoKf18mLMjI4ZyPB+uQaFpz74+mZrxGcsy6Ps7SV+6C/PT7emuNGGmMxAK5IbVHv6/tNSxuZTkemEjTylVps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729338; c=relaxed/simple;
-	bh=9pVmLXbH0UtW9Hy8XGWRgg6Zz4GdqbujgffF3maFvk4=;
+	s=arc-20240116; t=1723729241; c=relaxed/simple;
+	bh=5gK4TernKFi1qX3nnlnk6h6XFZV3hcmaZ95466ImHsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edwzmAtoiBsURrVjj21ttMpWgc1GtUOQad5pTsRn1W7QF7BnfnuXfqFTK7ZKgP8PUH+EH6FqP0ePQWy75EzxqKahtKWVHGtRf6CMgcTiiORS+hlNQ+A63Nu7oLv9xKYJKeDd7fj00qf3PAliAnevWsXFQLkVj9+nRJhbQrWNK2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4b4Yczj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CCFC32786;
-	Thu, 15 Aug 2024 13:42:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aSa2j1QHbbJEqu+neMFDE7yuA+utkcMgLYxx2Z5ay4YlbmCrsN2DoCFGP1OemV5SkzshY3iSDvMbIq4oSwCrhx4hYL3URtBqIihKZlBAEBHY9G4DPEUR+vop23UbwYZEUcDdppfRUk8YMtHK06iHw7Pg8sNIP3ydpld9ae6QHkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptbfneDY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3CAC32786;
+	Thu, 15 Aug 2024 13:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729338;
-	bh=9pVmLXbH0UtW9Hy8XGWRgg6Zz4GdqbujgffF3maFvk4=;
+	s=korg; t=1723729241;
+	bh=5gK4TernKFi1qX3nnlnk6h6XFZV3hcmaZ95466ImHsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r4b4YczjkQZyTI+K1axzq1iv32U/iE0zrLXWqJqoYRhprSNYnrxFMAgeuqsL+noA3
-	 +5bo/pbkyaZL0cXMuNmBfIfFZRX0QqWLjrA70+MDDiZpzkjZ1Gp8rwfx2lMfFTCBfc
-	 oeBHkUfiMbF17U1qn7cERVBnHXMZXyUwslNitkrg=
+	b=ptbfneDYOEsIXZscv8bc9lVvUmiEAUEAJU863NyCrUpOly+vAgJQvpQhlMX/SPOo7
+	 3ACujDgCbrAqSz5dkravqQMSOdgejymKkcX9PQm6jG8ruySTl3rzJMGNGuwYl6UzDn
+	 4xc+TszYBQKKffN8hFUi8EPZ5cOVbw8WxiB2dwns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	=?UTF-8?q?Nicolas=20Pomar=C3=A8de?= <npomarede@corp.free.fr>,
+	Christian Zietz <czietz@gmx.net>,
+	Eero Tamminen <oak@helsinkinet.fi>,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/484] arm64: dts: amlogic: gx: correct hdmi clocks
-Date: Thu, 15 Aug 2024 15:18:13 +0200
-Message-ID: <20240815131942.631094863@linuxfoundation.org>
+Subject: [PATCH 5.15 036/484] m68k: atari: Fix TT bootup freeze / unexpected (SCU) interrupt messages
+Date: Thu, 15 Aug 2024 15:18:14 +0200
+Message-ID: <20240815131942.668580286@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -60,67 +63,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Eero Tamminen <oak@helsinkinet.fi>
 
-[ Upstream commit 0602ba0dcd0e76067a0b7543e92b2de3fb231073 ]
+[ Upstream commit f70065a9fd988983b2c693631b801f25a615fc04 ]
 
-The clocks provided to HDMI tx are not consistent between gx and g12:
-* gx receives the peripheral clock as 'isfr' while g12 receives it as
-  'iahb'
-* g12 gets the HDMI system clock as 'isfr' but gx does not even get it.
-  It surely needs that clock since the driver is directly poking around
-  the clock controller's registers for that clock.
+Avoid freeze on Atari TT / MegaSTe boot with continuous messages of:
 
-Align gx SoCs with g12 and provide:
- * the HDMI peripheral clock as 'iahb'
- * the HDMI system clock as 'isfr'
+	unexpected interrupt from 112
 
-Fixes: 6939db7e0dbf ("ARM64: dts: meson-gx: Add support for HDMI output")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240626152733.1350376-2-jbrunet@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Which was due to VBL interrupt being enabled in SCU sys mask, but there
+being no handler for that any more.
+
+(Bug and fix were first verified on real Atari TT HW by Christian,
+ this patch later on in Hatari emulator.)
+
+Fixes: 1fa0b29f3a43f9dd ("fbdev: Kill Atari vblank cursor blinking")
+Reported-by: Nicolas Pomarède <npomarede@corp.free.fr>
+Closes: https://listengine.tuxfamily.org/lists.tuxfamily.org/hatari-devel/2024/06/msg00016.html
+Closes: https://lore.kernel.org/all/9aa793d7-82ed-4fbd-bce5-60810d8a9119@helsinkinet.fi
+Tested-by: Christian Zietz <czietz@gmx.net>
+Signed-off-by: Eero Tamminen <oak@helsinkinet.fi>
+Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/20240624144901.5236-1-oak@helsinkinet.fi
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi | 4 ++--
- arch/arm64/boot/dts/amlogic/meson-gxl.dtsi  | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/m68k/atari/ataints.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-index 7c029f552a23b..256c46771db78 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-@@ -311,8 +311,8 @@ &hdmi_tx {
- 		 <&reset RESET_HDMI_SYSTEM_RESET>,
- 		 <&reset RESET_HDMI_TX>;
- 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
--	clocks = <&clkc CLKID_HDMI_PCLK>,
--		 <&clkc CLKID_CLK81>,
-+	clocks = <&clkc CLKID_HDMI>,
-+		 <&clkc CLKID_HDMI_PCLK>,
- 		 <&clkc CLKID_GCLK_VENCI_INT0>;
- 	clock-names = "isfr", "iahb", "venci";
- };
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-index 3500229350522..a689bd14ece99 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-@@ -323,8 +323,8 @@ &hdmi_tx {
- 		 <&reset RESET_HDMI_SYSTEM_RESET>,
- 		 <&reset RESET_HDMI_TX>;
- 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
--	clocks = <&clkc CLKID_HDMI_PCLK>,
--		 <&clkc CLKID_CLK81>,
-+	clocks = <&clkc CLKID_HDMI>,
-+		 <&clkc CLKID_HDMI_PCLK>,
- 		 <&clkc CLKID_GCLK_VENCI_INT0>;
- 	clock-names = "isfr", "iahb", "venci";
- };
+diff --git a/arch/m68k/atari/ataints.c b/arch/m68k/atari/ataints.c
+index 56f02ea2c248d..715d1e0d973e6 100644
+--- a/arch/m68k/atari/ataints.c
++++ b/arch/m68k/atari/ataints.c
+@@ -302,11 +302,7 @@ void __init atari_init_IRQ(void)
+ 
+ 	if (ATARIHW_PRESENT(SCU)) {
+ 		/* init the SCU if present */
+-		tt_scu.sys_mask = 0x10;		/* enable VBL (for the cursor) and
+-									 * disable HSYNC interrupts (who
+-									 * needs them?)  MFP and SCC are
+-									 * enabled in VME mask
+-									 */
++		tt_scu.sys_mask = 0x0;		/* disable all interrupts */
+ 		tt_scu.vme_mask = 0x60;		/* enable MFP and SCC ints */
+ 	} else {
+ 		/* If no SCU and no Hades, the HSYNC interrupt needs to be
 -- 
 2.43.0
 
