@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5E09534D9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A554953352
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F249E1C2117A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E710A1F23948
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F145617C995;
-	Thu, 15 Aug 2024 14:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AF01A0733;
+	Thu, 15 Aug 2024 14:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkK5EG6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OzgxqhIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3621DFFB;
-	Thu, 15 Aug 2024 14:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2016E176AD7;
+	Thu, 15 Aug 2024 14:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732264; cv=none; b=i+bDWxsvj2zIOLPJgyxIeX2zgzzsYRWOE8CSuhoVYJuMYMDwGzLk2nUjKlswRaeK07Q7TnqmM1vZH9Z/BGSs79VSuObedl0NcMpY+c6Rtw467xQF/XUipQIw6gEdiOcy35iaoa2M2OKUTPv+8do1AyOHF3FVIgMQXVD26qtmfwE=
+	t=1723731221; cv=none; b=gbfMJM3HKJ+oKDrwdNOjbnC77khAwn/sCPIDWXUAt3nCJJmn/nYsty6RDlTYPvgxxe3y9YMrS57QxHBeioZr/DgJEyfSONh3Q+iiK47cEs7suFsOpNAeml0nb3LVouOU3NM4K8/g3tw2ZPZm8S95W5SDAw649cvL9u9x60xZwo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732264; c=relaxed/simple;
-	bh=Li39cDXzwlwtcJrYsSulj42itkjFN02G7Z0T+bzGyGA=;
+	s=arc-20240116; t=1723731221; c=relaxed/simple;
+	bh=kAU7IqNFO9G4g2XaPreZ2SXOi8/oNHi2B0xdLNt5P1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGpvg4Z2p+c+EPJPiFqX3fXLO1h1PcWtOUQEwT7Bj2DV2Md2csF+bvSn4OJ1/pj34MBCGc1XV2hXNHXEy9rIg225+uf6P32C4WLaRMlW0g6etK5ZhQY9+fE2gFUowTmWq7DGb6MrtYJkVBkVMcpjXKCNnS4gzm4oG6KQKNMEO0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkK5EG6f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C18C32786;
-	Thu, 15 Aug 2024 14:31:03 +0000 (UTC)
+	 MIME-Version; b=OW/uUUv2rLlLxSSNt28TOWH+6w7acuk1NPcN2mDLqDs/wTinF0oJ4ypG1QC/tFvUossmLINICpwdEYUN+t3c8s+oa09VZuzlUgnhHcwUZCGODwyaapuxfJENY4wYWRAK1KT9h8XT3IVLWNQPvREfEomap//RejCcf8jK0smSRAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OzgxqhIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E6DC32786;
+	Thu, 15 Aug 2024 14:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732264;
-	bh=Li39cDXzwlwtcJrYsSulj42itkjFN02G7Z0T+bzGyGA=;
+	s=korg; t=1723731221;
+	bh=kAU7IqNFO9G4g2XaPreZ2SXOi8/oNHi2B0xdLNt5P1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkK5EG6fIA5zVP9azNA6FLULCqwzpVkXG8eCz6RCCCiud1ozxtW5bgLeY7wZYoqEs
-	 e7nuyuLKe0dAlA7RcBBjZZgeVmYaE1ahQVWIK1FZuKapVJ14fQ1VYk6GsJF5huMK5k
-	 YOTth+lJjRF2y8a+7yvfqkGN8c2EUc03yOomi6I0=
+	b=OzgxqhITfbOt05VuKq/N03QoC+5WGawAOkT7JfpHEc/kFofhhSoytIcN+IoHh9DoX
+	 a7dn8v3RG3Pg0LDcM3gzf+Eqh7UNW0rESD+tSyF0Ik7wbp07NB2EnCEc80v9T+HHFV
+	 oLDJFUQ9jSYMP7TAvHja+C/8b2OCCBxbUebB1LBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 126/352] net: netconsole: Disable target before netpoll cleanup
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 059/259] perf report: Fix condition in sort__sym_cmp()
 Date: Thu, 15 Aug 2024 15:23:12 +0200
-Message-ID: <20240815131924.124482519@linuxfoundation.org>
+Message-ID: <20240815131905.089640790@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 97d9fba9a812cada5484667a46e14a4c976ca330 upstream.
+[ Upstream commit cb39d05e67dc24985ff9f5150e71040fa4d60ab8 ]
 
-Currently, netconsole cleans up the netpoll structure before disabling
-the target. This approach can lead to race conditions, as message
-senders (write_ext_msg() and write_msg()) check if the target is
-enabled before using netpoll. The sender can validate that the target is
-enabled, but, the netpoll might be de-allocated already, causing
-undesired behaviours.
+It's expected that both hist entries are in the same hists when
+comparing two.  But the current code in the function checks one without
+dso sort key and other with the key.  This would make the condition true
+in any case.
 
-This patch reverses the order of operations:
-1. Disable the target
-2. Clean up the netpoll structure
+I guess the intention of the original commit was to add '!' for the
+right side too.  But as it should be the same, let's just remove it.
 
-This change eliminates the potential race condition, ensuring that
-no messages are sent through a partially cleaned-up netpoll structure.
-
-Fixes: 2382b15bcc39 ("netconsole: take care of NETDEV_UNREGISTER event")
-Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240712143415.1141039-1-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 69849fc5d2119 ("perf hists: Move sort__has_dso into struct perf_hpp_list")
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240621170528.608772-2-namhyung@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netconsole.c |    2 +-
+ tools/perf/util/sort.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -715,6 +715,7 @@ restart:
- 				/* rtnl_lock already held
- 				 * we might sleep in __netpoll_cleanup()
- 				 */
-+				nt->enabled = false;
- 				spin_unlock_irqrestore(&target_list_lock, flags);
- 
- 				__netpoll_cleanup(&nt->np);
-@@ -722,7 +723,6 @@ restart:
- 				spin_lock_irqsave(&target_list_lock, flags);
- 				dev_put(nt->np.dev);
- 				nt->np.dev = NULL;
--				nt->enabled = false;
- 				stopped = true;
- 				netconsole_target_put(nt);
- 				goto restart;
+diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+index baf73ca66a2bd..d2d149966acc8 100644
+--- a/tools/perf/util/sort.c
++++ b/tools/perf/util/sort.c
+@@ -269,7 +269,7 @@ sort__sym_cmp(struct hist_entry *left, struct hist_entry *right)
+ 	 * comparing symbol address alone is not enough since it's a
+ 	 * relative address within a dso.
+ 	 */
+-	if (!hists__has(left->hists, dso) || hists__has(right->hists, dso)) {
++	if (!hists__has(left->hists, dso)) {
+ 		ret = sort__dso_cmp(left, right);
+ 		if (ret != 0)
+ 			return ret;
+-- 
+2.43.0
+
 
 
 
