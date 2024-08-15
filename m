@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FF39532C1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0DC9532FE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17BA1F20F48
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45F76B26139
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49531B1437;
-	Thu, 15 Aug 2024 14:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AC01BA880;
+	Thu, 15 Aug 2024 14:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gp+Z1L0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHE3aSTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A4019D068;
-	Thu, 15 Aug 2024 14:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CBE1BA868;
+	Thu, 15 Aug 2024 14:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730832; cv=none; b=gZiDmhCvXCAsgYWW+9NR8ltnJ6WDgPoRWUx41w9gyDQh2MHEgNdA7KpkRVHLO5vqEkTkBAFmdEyDcc1PKnz72galPMovL0vSlVDZ1m9Xi5wR9fARm3tcwrHDZTSttyjMwnRBW5q3DW1t+uHFRibEC90E4JPtZKiHEMABXP+2v7w=
+	t=1723730988; cv=none; b=TboO8Tes7KbwRVUvxx6vnVjpytT3gys02zz7Lrv0fJTaip5mOOtoG9T4ONWlSM5CCFYT+u/xYsBJVWWw5cTTCtSjSer+dSBUens+stqAsDr+uQfnw8/vtAb7IuhTN8a4lzVY58GShK6OVWO62AtTPwOwh2GcTzUSJ9XZdU2es00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730832; c=relaxed/simple;
-	bh=gD85yB2i4Ii3eVd+PtkA0b1Twt+Spg7r1pIeilwHRCM=;
+	s=arc-20240116; t=1723730988; c=relaxed/simple;
+	bh=IJV4OzBsGWmswCn/fhrJdKR+FrsgpSKvRY9DKjPkJB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZHkyL6fmH348xitl/hzafZD0Bw5uk4tnpmby2hLQB8n/+g7QTc1SrMsToDM5VACIJF7mkYyHXzG9PXUGQccs0pLyfpJs0tJ/W/QPSlPlestnzQai9wJqgEH57pYb2yvVQlLnwSn3ctf1LAjY7jKiyOkLmAJURIEatH1Zv4CLlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gp+Z1L0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D4EC32786;
-	Thu, 15 Aug 2024 14:07:11 +0000 (UTC)
+	 MIME-Version; b=WPe2mfyDd2C5PBklfLrQbuIUsrIUz0mrLMEM2H1Kwqf4WWakuIfwW+09GOjs6Khy9PncIQceOCHuhEfIm0sPofvTpoSPueNMFTcvgcHOS2HTTzM836AR1NChtLex3/vb87PL4piiItes/FYqPliG8glkQX3Dl3FAVvi/HiJUCiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHE3aSTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A876FC32786;
+	Thu, 15 Aug 2024 14:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730832;
-	bh=gD85yB2i4Ii3eVd+PtkA0b1Twt+Spg7r1pIeilwHRCM=;
+	s=korg; t=1723730988;
+	bh=IJV4OzBsGWmswCn/fhrJdKR+FrsgpSKvRY9DKjPkJB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gp+Z1L0cl+2WI4cwTLsIk5QChlLQo1IdLIDzcwYZD0+hC2EDBsZ/UYIQdnR9qG1sX
-	 feFfkpzv4bV9czMkdwTK8lUY6quW8RliuzYBV/lZEQ4Jdmdw1G9HLIj7xbvB3bAF9x
-	 U/QkwmzJwBzpi9zvq71sxbuub/3hX0kywxgwV5W8=
+	b=NHE3aSTkRfI2f3rQAVJE7QoTguC5BwhPcekNwzZ8B5CUFEIC6pqNfCxum/KtN6RZU
+	 9O5HI+v8cNSvNQrABjVG68CUhaSq1OwUyTS+ZSwH+EKys0uD9/WaVeILyU5kumefnV
+	 ZCh8r58rhGqMBF/xhWGrOVyoNAg71L8yJ0M07skI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 04/38] mptcp: pm: do not ignore subflow if signal flag is also set
+	syzbot+25b3a0b24216651bc2af@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 24/67] wifi: mac80211: fix change_address deadlock during unregister
 Date: Thu, 15 Aug 2024 15:25:38 +0200
-Message-ID: <20240815131833.124139178@linuxfoundation.org>
+Message-ID: <20240815131839.261722363@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 85df533a787bf07bf4367ce2a02b822ff1fba1a3 upstream.
+[ Upstream commit 74a7c93f45abba538914a65dd2ef2ea7cf7150e2 ]
 
-Up to the 'Fixes' commit, having an endpoint with both the 'signal' and
-'subflow' flags, resulted in the creation of a subflow and an address
-announcement using the address linked to this endpoint. After this
-commit, only the address announcement was done, ignoring the 'subflow'
-flag.
+When using e.g. bonding, and doing a sequence such as
 
-That's because the same bitmap is used for the two flags. It is OK to
-keep this single bitmap, the already selected local endpoint simply have
-to be re-used, but not via select_local_address() not to look at the
-just modified bitmap.
+ # iw wlan0 set type __ap
+ # ip link add name bond1 type bond
+ # ip link set wlan0 master bond1
+ # iw wlan0 interface del
 
-Note that it is unusual to set the two flags together: creating a new
-subflow using a new local address will implicitly advertise it to the
-other peer. So in theory, no need to advertise it explicitly as well.
-Maybe there are use-cases -- the subflow might not reach the other peer
-that way, we can ask the other peer to try initiating the new subflow
-without delay -- or very likely the user is confused, and put both flags
-"just to be sure at least the right one is set". Still, if it is
-allowed, the kernel should do what has been asked: using this endpoint
-to announce the address and to create a new subflow from it.
+we deadlock, since the wlan0 interface removal will cause
+bonding to reset the MAC address of wlan0.
 
-An alternative is to forbid the use of the two flags together, but
-that's probably too late, there are maybe use-cases, and it was working
-before. This patch will avoid people complaining subflows are not
-created using the endpoint they added with the 'subflow' and 'signal'
-flag.
+The locking would be somewhat difficult to fix, but since
+this only happens during removal, we can simply ignore the
+MAC address change at this time.
 
-Note that with the current patch, the subflow might not be created in
-some corner cases, e.g. if the 'subflows' limit was reached when sending
-the ADD_ADDR, but changed later on. It is probably not worth splitting
-id_avail_bitmap per target ('signal', 'subflow'), which will add another
-large field to the msk "just" to track (again) endpoints. Anyway,
-currently when the limits are changed, the kernel doesn't check if new
-subflows can be created or removed, because we would need to keep track
-of the received ADD_ADDR, and more. It sounds OK to assume that the
-limits should be properly configured before establishing new
-connections.
-
-Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-5-c8a9b036493b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+25b3a0b24216651bc2af@syzkaller.appspotmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/r/20231012123447.9f9d7fd1f237.Ic3a5ef4391b670941a69cec5592aefc79d9c2890@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ net/mac80211/iface.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -524,8 +524,8 @@ __lookup_addr(struct pm_nl_pernet *perne
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 9ac5252c3da00..52b048807feae 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -300,6 +300,14 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
+ 	struct ieee80211_local *local = sdata->local;
+ 	int ret;
  
- static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- {
-+	struct mptcp_pm_addr_entry *local, *signal_and_subflow = NULL;
- 	struct sock *sk = (struct sock *)msk;
--	struct mptcp_pm_addr_entry *local;
- 	unsigned int add_addr_signal_max;
- 	unsigned int local_addr_max;
- 	struct pm_nl_pernet *pernet;
-@@ -591,6 +591,9 @@ static void mptcp_pm_create_subflow_or_s
- 		msk->pm.add_addr_signaled++;
- 		mptcp_pm_announce_addr(msk, &local->addr, false);
- 		mptcp_pm_nl_addr_send_ack(msk);
++	/*
++	 * This happens during unregistration if there's a bond device
++	 * active (maybe other cases?) and we must get removed from it.
++	 * But we really don't care anymore if it's not registered now.
++	 */
++	if (!dev->ieee80211_ptr->registered)
++		return 0;
 +
-+		if (local->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)
-+			signal_and_subflow = local;
- 	}
- 
- subflow:
-@@ -601,9 +604,14 @@ subflow:
- 		bool fullmesh;
- 		int i, nr;
- 
--		local = select_local_address(pernet, msk);
--		if (!local)
--			break;
-+		if (signal_and_subflow) {
-+			local = signal_and_subflow;
-+			signal_and_subflow = NULL;
-+		} else {
-+			local = select_local_address(pernet, msk);
-+			if (!local)
-+				break;
-+		}
- 
- 		fullmesh = !!(local->flags & MPTCP_PM_ADDR_FLAG_FULLMESH);
- 
+ 	wiphy_lock(local->hw.wiphy);
+ 	ret = _ieee80211_change_mac(sdata, addr);
+ 	wiphy_unlock(local->hw.wiphy);
+-- 
+2.43.0
+
 
 
 
