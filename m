@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-67921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CA3952FC3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2EC95320B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42BFD1C244C8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06D991C2585C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1071C19F49C;
-	Thu, 15 Aug 2024 13:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEEF19FA90;
+	Thu, 15 Aug 2024 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgXNT5yN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAIGSe10"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37D51DA4E;
-	Thu, 15 Aug 2024 13:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC89519F49C;
+	Thu, 15 Aug 2024 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728937; cv=none; b=PPAukXEDrc3o9XuaTEz+2hwo0jGvaRqkU6DCA0wZLu7uK/X70gM27ItBOPgvnHIWratmH6DRh+OXe8Y7iy2zr5g3F64WwYiVXhmZXnm0j64ol+LE8ok81LczX5rMGGDFnykWJIdidrTXYaC6z2Pv/TO+wg7zCAb03MhvMM4/Dwk=
+	t=1723730474; cv=none; b=C4OKgbp9OBaT2MzSOV+QwQfINNhCMiZtiPmc30OR0GVf12wLS9/w0CKUT4wv5DqB56KqiYpeK3FNMHgBET3Xzls+2u/juJkM+/UdffP8EgLLICG8RrvJ+4NXwEAYdFySaW9QSzWqh1f1Khvg1MQw7H0ijcKNCyWYisOTahOX/4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728937; c=relaxed/simple;
-	bh=/Z7i05GdBvla17a2SK38mMdEQUdc0S4BL1CkMmxoRA4=;
+	s=arc-20240116; t=1723730474; c=relaxed/simple;
+	bh=dVGMWwahBpEr9LDrzFQA9AptyDV0LYXLZnACkK0ugSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jkGXQAV1RxAALDOse+nEuGWlt8Iz+HXYAbSgjxL7xZ/qx6ApVTllP1XZ1poSzo00zwddQshWbPx36OuHTgXWePq+NThTjczMqLXQJU/iPoUHiZZrLSXo50BtGixVRz7MfQ2wjpyMEBRGFmulVHZrBBFG8g1/nucsetbZS7rDQms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgXNT5yN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7F3C4AF0C;
-	Thu, 15 Aug 2024 13:35:37 +0000 (UTC)
+	 MIME-Version; b=UDIotvzQdSQv5ixI1GKhK0B9L0TU2xq4008Y6TOA+glt9IS0FB+elR7odGE5NYT569kI4hwXLI7rNsCkfEkPAHA0SSqfu3qUO+5Jq4rtrUmVv8JhLCC4Me+KQ3rHdtPAEm9xKxVG91htHzVJULeeYFSx1Ocq1eaNOgxJAENu/40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAIGSe10; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0F3C32786;
+	Thu, 15 Aug 2024 14:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728937;
-	bh=/Z7i05GdBvla17a2SK38mMdEQUdc0S4BL1CkMmxoRA4=;
+	s=korg; t=1723730474;
+	bh=dVGMWwahBpEr9LDrzFQA9AptyDV0LYXLZnACkK0ugSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgXNT5yNiR4qM93Aelh/JTS+pSnnSuGZRUxtAGp3fF7fab/1GxbhQgT9hXhGB7Qww
-	 wPvzm4cQOyqJHOeAPjexfgOQxXdNOLuz7ubTCMuiNdnVYIJqDcsMLg7pHPQwADWPFW
-	 XzXq0QCWvKx5/p17ICFK/xt1MYBBBbGzn00HX6+o=
+	b=hAIGSe10j+LOh1voKMPl6ftAESde4+LYrmCLoPCAA09ikY3DyOUQ9mvWDhUg2rWXY
+	 7a1bSKKOJVDp/3cG4hinoBzXSkan039Hi/MjabgRo9YWIau6X8iqusmBrWT3FOctCo
+	 HFL7ZKzYUX67EKSpKS+3ofsxVchF1eAzEvMY2p2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 159/196] arm64: cputype: Add Cortex-A725 definitions
-Date: Thu, 15 Aug 2024 15:24:36 +0200
-Message-ID: <20240815131858.158468690@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 419/484] ALSA: hda/hdmi: Yet more pin fix for HP EliteDesk 800 G4
+Date: Thu, 15 Aug 2024 15:24:37 +0200
+Message-ID: <20240815131957.640250197@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +60,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9ef54a384526911095db465e77acc1cb5266b32c ]
+commit 176fd1511dd9086ab4fa9323cb232177c6235288 upstream.
 
-Add cputype definitions for Cortex-A725. These will be used for errata
-detection in subsequent patches.
+HP EliteDesk 800 G4 (PCI SSID 103c:83e2) is another Kabylake machine
+where BIOS misses the HDMI pin initializations.  Add the quirk entry.
 
-These values can be found in the Cortex-A725 TRM:
-
-  https://developer.arm.com/documentation/107652/0001/
-
-... in table A-247 ("MIDR_EL1 bit descriptions").
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20240801101803.1982459-3-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240806064918.11132-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_hdmi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index ad054869acf6b..f8be4d7ecde28 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -96,6 +96,7 @@
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
- #define ARM_CPU_PART_CORTEX_X925	0xD85
-+#define ARM_CPU_PART_CORTEX_A725	0xD87
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1960,6 +1960,7 @@ static int hdmi_add_cvt(struct hda_codec
+ }
  
- #define APM_CPU_PART_POTENZA		0x000
- 
-@@ -139,6 +140,7 @@
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
-+#define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
--- 
-2.43.0
-
+ static const struct snd_pci_quirk force_connect_list[] = {
++	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
 
 
 
