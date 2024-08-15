@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-69148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17E69535AC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:40:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F6E95343D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7646B1F26B6A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:40:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 098FCB290B5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D4B1A76A2;
-	Thu, 15 Aug 2024 14:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21201A00F5;
+	Thu, 15 Aug 2024 14:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLcGET9a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G72bxEs8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452671A706F;
-	Thu, 15 Aug 2024 14:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FF11A76A4;
+	Thu, 15 Aug 2024 14:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732825; cv=none; b=M9eTQSxZhmS4NvJAq6ZT+YuW+HTplZpwB2fv8OiD91iY1z3wzUko/aD3By6d2OWvQ6DYYpB9+2NsT44Wi7IMV/Imxdlhgfu4ON4D+CRxmlVBetZGiCecAA9AERhAI1RyUbK3lvJLEYtWTU5eP0+4ubAyPCu5KiJV9ViEiiyjBlI=
+	t=1723731822; cv=none; b=LzEEbTHZrcPpfcaPPN91Un8qlvH64D+9Z+SiIfvLE8sXC+xjpR03J4TyHJHytJCr8HorqNVDvsXeX30U4KQingq4t3ufnormmpHAkQLfu6VYupT9jF1knkMw3OVI9rQfHlfrUjfcI9cNQYdfnXcyFpBWhvGsTGhSSxlHNmcZPDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732825; c=relaxed/simple;
-	bh=WLRLD5j1IPMcR5z2DtBbD3dOv8pYXs456uGiURFPc90=;
+	s=arc-20240116; t=1723731822; c=relaxed/simple;
+	bh=hDbvLinP0MSH8ozdXSL11iRlCvO1liRe7ql8qozDaV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtaqbBtdBy44gUqZUI+oyn310eJaLpvrS6hrFNGombQzdGlGYKghvHV2v/X7fkhgpu5TBuKNoWoAauZto55BaqsdO6jX2w+TEBDwwuqvzO9tp4cc5x3Zf4WVNnUpk58iHiWbAibtoNb1/9qkgldUUVYZhD3z5qOxYtQ5SJdHdRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLcGET9a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC941C32786;
-	Thu, 15 Aug 2024 14:40:24 +0000 (UTC)
+	 MIME-Version; b=SUjNsY165w2BsuBcOuj1XZtnDpTed2SaGF4gDKeRPZRwySRKZI+2UxUmqAzpgbw75OUIMe31g6VVB0dOaYcAt1C5HpBSR0k66pDmT6J1uNPl59qMMsWYhaR04wZA2UuDqtjxjZwGxeEwBwLXgByyX5X0Y12nPv6+pTg1094m428=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G72bxEs8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B844C32786;
+	Thu, 15 Aug 2024 14:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732825;
-	bh=WLRLD5j1IPMcR5z2DtBbD3dOv8pYXs456uGiURFPc90=;
+	s=korg; t=1723731821;
+	bh=hDbvLinP0MSH8ozdXSL11iRlCvO1liRe7ql8qozDaV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLcGET9afhkKjnoeReFgwuabpCq8ISmqqo0IdO0Eh2tr0k4W8vuK+ZXe1eRwQShd+
-	 3FiN89oxhpxjlAugAn44lblH/5zjvIOGQGvLNbFo2wn8OCIIzVT/IGbTZ5JEuztpBP
-	 fgvwehBK1kmw1RXiHwK6Z8AdYuScFqTRSei5MZNk=
+	b=G72bxEs876Se+69vuJLgnVh4jsbku62FCdCx7Owy0ES3rzqmk+q95YpOoFTDPrwMD
+	 PeJF34jvjgd/TQJTVv32C9MAvFPSqRASgyoHyr2spnI63mmS/a+rwYSrwFxdZgHoLF
+	 +G0tSnXIC4/O6Bz1kawp7zsf+XRBpRkg9u7rK9sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 298/352] kprobes: Fix to check symbol prefixes correctly
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.4 231/259] usb: vhci-hcd: Do not drop references before new references are gained
 Date: Thu, 15 Aug 2024 15:26:04 +0200
-Message-ID: <20240815131930.971824720@linuxfoundation.org>
+Message-ID: <20240815131911.699259059@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 8c8acb8f26cbde665b233dd1b9bbcbb9b86822dc ]
+commit afdcfd3d6fcdeca2735ca8d994c5f2d24a368f0a upstream.
 
-Since str_has_prefix() takes the prefix as the 2nd argument and the string
-as the first, is_cfi_preamble_symbol() always fails to check the prefix.
-Fix the function parameter order so that it correctly check the prefix.
+At a few places the driver carries stale pointers
+to references that can still be used. Make sure that does not happen.
+This strictly speaking closes ZDI-CAN-22273, though there may be
+similar races in the driver.
 
-Link: https://lore.kernel.org/all/172260679559.362040.7360872132937227206.stgit@devnote2/
-
-Fixes: de02f2ac5d8c ("kprobes: Prohibit probing on CFI preamble symbol")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240709113851.14691-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kprobes.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/usbip/vhci_hcd.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index dba6541c0fc3c..c8e62458d323f 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1632,8 +1632,8 @@ static bool is_cfi_preamble_symbol(unsigned long addr)
- 	if (lookup_symbol_name(addr, symbuf))
- 		return false;
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -746,6 +746,7 @@ static int vhci_urb_enqueue(struct usb_h
+ 	 *
+ 	 */
+ 	if (usb_pipedevice(urb->pipe) == 0) {
++		struct usb_device *old;
+ 		__u8 type = usb_pipetype(urb->pipe);
+ 		struct usb_ctrlrequest *ctrlreq =
+ 			(struct usb_ctrlrequest *) urb->setup_packet;
+@@ -756,14 +757,15 @@ static int vhci_urb_enqueue(struct usb_h
+ 			goto no_need_xmit;
+ 		}
  
--	return str_has_prefix("__cfi_", symbuf) ||
--		str_has_prefix("__pfx_", symbuf);
-+	return str_has_prefix(symbuf, "__cfi_") ||
-+		str_has_prefix(symbuf, "__pfx_");
- }
++		old = vdev->udev;
+ 		switch (ctrlreq->bRequest) {
+ 		case USB_REQ_SET_ADDRESS:
+ 			/* set_address may come when a device is reset */
+ 			dev_info(dev, "SetAddress Request (%d) to port %d\n",
+ 				 ctrlreq->wValue, vdev->rhport);
  
- static int check_kprobe_address_safe(struct kprobe *p,
--- 
-2.43.0
-
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 
+ 			spin_lock(&vdev->ud.lock);
+ 			vdev->ud.status = VDEV_ST_USED;
+@@ -782,8 +784,8 @@ static int vhci_urb_enqueue(struct usb_h
+ 				usbip_dbg_vhci_hc(
+ 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+ 
+-			usb_put_dev(vdev->udev);
+ 			vdev->udev = usb_get_dev(urb->dev);
++			usb_put_dev(old);
+ 			goto out;
+ 
+ 		default:
+@@ -1090,6 +1092,7 @@ static void vhci_shutdown_connection(str
+ static void vhci_device_reset(struct usbip_device *ud)
+ {
+ 	struct vhci_device *vdev = container_of(ud, struct vhci_device, ud);
++	struct usb_device *old = vdev->udev;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&ud->lock, flags);
+@@ -1097,8 +1100,8 @@ static void vhci_device_reset(struct usb
+ 	vdev->speed  = 0;
+ 	vdev->devid  = 0;
+ 
+-	usb_put_dev(vdev->udev);
+ 	vdev->udev = NULL;
++	usb_put_dev(old);
+ 
+ 	if (ud->tcp_socket) {
+ 		sockfd_put(ud->tcp_socket);
 
 
 
