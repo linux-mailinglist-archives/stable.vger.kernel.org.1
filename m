@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-69025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3444953518
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5812C953387
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A41E52880B6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F32E3282B57
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F045B1A00CE;
-	Thu, 15 Aug 2024 14:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8862B1A01B6;
+	Thu, 15 Aug 2024 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDceCCS/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W42/Syde"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2B01DFFB;
-	Thu, 15 Aug 2024 14:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FA21A706F;
+	Thu, 15 Aug 2024 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732425; cv=none; b=LGnew9CZZNtGiT0h0cpvygB6ClsBoySs2wMvUv8J3RTxrOaQvYWHRKB/+mCgZA83rM5PtIoBetqsS9eAWNMfPq5gZ305pShUMtPlauSIUojaR2P2t0DvZ1h2tkSLB+1jYxo8hR5BNE3HGNVMy+4kDH2J5leksFoNcbtUdVxx3xY=
+	t=1723731373; cv=none; b=TcH0pjnoeVgRddVZakrInK6b1efpkh7KbfCkdat+zyR3VZYxl7AXAbtG877kJZ7TxbHTcaLkb/j52+JNjAXR6ElHwHxjGM9h9iRrrWuBp47ElFp9ipS2a4NjU71WbPINi/6EPXoGjNUrJ5zaT3SuxqxT9RMk+vpOUMQpP7Grm/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732425; c=relaxed/simple;
-	bh=QhA/jbdh2LSkUfsqiKrtQ6nDtZc0z7hudPf/pxz2JY4=;
+	s=arc-20240116; t=1723731373; c=relaxed/simple;
+	bh=+Q5vrW/vXQkLpHuHgQ39uG1Yv9mwsIA7Eg+yxE9Gwas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8DZ1TpRKEclN3BdG0EzJLu+yXMnMhHQdN9TkjxmmQXXYahhhdjMWtuKU6AITfOmOfw2n0l1VHSCl/NfNXwy8F4WFCAYHTJSEdcweOP9CG+H8AYuSYbqqdqmWydSI5fzyBRXeEcPz/4B6Fxg72nZcS5z5c8usNqe0LcRAwaSi6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDceCCS/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F19C32786;
-	Thu, 15 Aug 2024 14:33:44 +0000 (UTC)
+	 MIME-Version; b=EBqlMLnR9PO743Skx2XCjcTAh7jQ2Urfr2wsXHnSdJz720Q/ZIFMwYptbt5W1hH/0eiuQfrG/VwGrQq4j/DWQbBhPOLkCu4UG48cflfshU33PEFSCUJWZmg7dqJxK5cuZr8e+WT1EPhsElz7DrAK9z7qDVROxrLaWX41cmX75rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W42/Syde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE60C4AF0E;
+	Thu, 15 Aug 2024 14:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732425;
-	bh=QhA/jbdh2LSkUfsqiKrtQ6nDtZc0z7hudPf/pxz2JY4=;
+	s=korg; t=1723731372;
+	bh=+Q5vrW/vXQkLpHuHgQ39uG1Yv9mwsIA7Eg+yxE9Gwas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDceCCS/lVWD9wn58QOpUi4X9g830K74dp52rkFJhirXP6XQV2Yw9842Ti3fjTq/n
-	 tsNMhKSmurOnQBmbUxLkv4MfIOD3h6JuLCNRegL6F2+Z3aO522mfJ3snuO1qV2ea3+
-	 PZKZQf4vI5ceGIpEoYQRSLdpYgJ65SLHBFCrKUQY=
+	b=W42/SydeSt8bkzdvC9OchJ6npV9W28GeRjlMAXCCwqLmewo5TrrzA/N9UwccyGG5h
+	 XQShAv/lMZi6B6S1IGM/miS5ehqCTNY2m1bRrHlJ9vIKEM1kUyd7MnU93n41D5gePP
+	 K3YcsL8t/P19RvbNyJy4kGO0QaCp5wiV+NJcLUZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.10 175/352] RDMA/iwcm: Fix a use-after-free related to destroying CM IDs
-Date: Thu, 15 Aug 2024 15:24:01 +0200
-Message-ID: <20240815131926.038742863@linuxfoundation.org>
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 109/259] scsi: qla2xxx: Return ENOBUFS if sg_cnt is more than one for ELS cmds
+Date: Thu, 15 Aug 2024 15:24:02 +0200
+Message-ID: <20240815131907.013353067@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-commit aee2424246f9f1dadc33faa78990c1e2eb7826e4 upstream.
+commit ce2065c4cc4f05635413f63f6dc038d7d4842e31 upstream.
 
-iw_conn_req_handler() associates a new struct rdma_id_private (conn_id) with
-an existing struct iw_cm_id (cm_id) as follows:
+Firmware only supports single DSDs in ELS Pass-through IOCB (0x53h), sg cnt
+is decided by the SCSI ML. User is not aware of the cause of an acutal
+error.
 
-        conn_id->cm_id.iw = cm_id;
-        cm_id->context = conn_id;
-        cm_id->cm_handler = cma_iw_handler;
+Return the appropriate return code that will be decoded by API and
+application and proper error message will be displayed to user.
 
-rdma_destroy_id() frees both the cm_id and the struct rdma_id_private. Make
-sure that cm_work_handler() does not trigger a use-after-free by only
-freeing of the struct rdma_id_private after all pending work has finished.
-
+Fixes: 6e98016ca077 ("[SCSI] qla2xxx: Re-organized BSG interface specific code.")
 Cc: stable@vger.kernel.org
-Fixes: 59c68ac31e15 ("iw_cm: free cm_id resources on the last deref")
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240605145117.397751-6-bvanassche@acm.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-5-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/iwcm.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/scsi/qla2xxx/qla_bsg.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/infiniband/core/iwcm.c
-+++ b/drivers/infiniband/core/iwcm.c
-@@ -370,8 +370,10 @@ EXPORT_SYMBOL(iw_cm_disconnect);
-  *
-  * Clean up all resources associated with the connection and release
-  * the initial reference taken by iw_create_cm_id.
-+ *
-+ * Returns true if and only if the last cm_id_priv reference has been dropped.
-  */
--static void destroy_cm_id(struct iw_cm_id *cm_id)
-+static bool destroy_cm_id(struct iw_cm_id *cm_id)
- {
- 	struct iwcm_id_private *cm_id_priv;
- 	struct ib_qp *qp;
-@@ -441,7 +443,7 @@ static void destroy_cm_id(struct iw_cm_i
- 		iwpm_remove_mapping(&cm_id->local_addr, RDMA_NL_IWCM);
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -297,7 +297,7 @@ qla2x00_process_els(struct bsg_job *bsg_
+ 		    "request_sg_cnt=%x reply_sg_cnt=%x.\n",
+ 		    bsg_job->request_payload.sg_cnt,
+ 		    bsg_job->reply_payload.sg_cnt);
+-		rval = -EPERM;
++		rval = -ENOBUFS;
+ 		goto done;
  	}
  
--	(void)iwcm_deref_id(cm_id_priv);
-+	return iwcm_deref_id(cm_id_priv);
- }
- 
- /*
-@@ -452,7 +454,8 @@ static void destroy_cm_id(struct iw_cm_i
-  */
- void iw_destroy_cm_id(struct iw_cm_id *cm_id)
- {
--	destroy_cm_id(cm_id);
-+	if (!destroy_cm_id(cm_id))
-+		flush_workqueue(iwcm_wq);
- }
- EXPORT_SYMBOL(iw_destroy_cm_id);
- 
-@@ -1036,7 +1039,7 @@ static void cm_work_handler(struct work_
- 		if (!test_bit(IWCM_F_DROP_EVENTS, &cm_id_priv->flags)) {
- 			ret = process_event(cm_id_priv, &levent);
- 			if (ret)
--				destroy_cm_id(&cm_id_priv->id);
-+				WARN_ON_ONCE(destroy_cm_id(&cm_id_priv->id));
- 		} else
- 			pr_debug("dropping event %d\n", levent.event);
- 		if (iwcm_deref_id(cm_id_priv))
 
 
 
