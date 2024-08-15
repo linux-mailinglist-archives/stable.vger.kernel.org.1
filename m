@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4F8952F71
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FECA9531C5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90D04289C0E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E91E42873CA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3696C7DA78;
-	Thu, 15 Aug 2024 13:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4104319E7F6;
+	Thu, 15 Aug 2024 13:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJmmBp/s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebungFfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E983D19EEB6;
-	Thu, 15 Aug 2024 13:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AD317C9A9;
+	Thu, 15 Aug 2024 13:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728762; cv=none; b=Ai7eedn7fcfOZb6WTGQNEqinOTQ0S2D8Yj1Q4ny2MZSTaoIiqJNDjltYXeLCELeMUwyk4vLWO1EjfbzH43iXW/9roSkYfeC+3Txp/sk0znpd2Cf0XOQ9TCNzYiymHQthWN15Wen9VnZza1TYQ1jEtgyUtUCBRMgGXiwmWa963Pg=
+	t=1723730285; cv=none; b=CquVSKpVczNp9Qnp8hK9aaimxgsxcINiHgilmfK+dwrANkevbS+1+mtZjmNz4Uhy8FIVysF2AHuqqHJZKA0cvanS0n9DLyj78Z3LGDbZF3Ba9J2cbf9h/W29jhRXssRRgvjyWnOoHpC6DqIeCysl1G5nvRtgEprJ7MyJ3aJId5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728762; c=relaxed/simple;
-	bh=mUneDBEx7VIv7iC10PG0dgoGen4LHj3ncw/PBMdObYM=;
+	s=arc-20240116; t=1723730285; c=relaxed/simple;
+	bh=MiVHKYv1dUHZz+R8eFmMXKpBqJgObdMOY/BD8dnB1VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EYYMfWG/bVFNQADtkV+XlUQD5pr21Ryo6fGKCHBe6UcIPv6mOP3TlzOgVUSsbtbQo01vSphuoPQ+jVQIemOzH+rbYEu47VjvyxDnliA4nDja3FDVXr1vemwnDcPajMUv1u9RGqDo1BzQzqgDjZOnYgw3Gq0dZ5ooLVxvHZ7skXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJmmBp/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DAAC32786;
-	Thu, 15 Aug 2024 13:32:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PP4UxaY6dV/Ta1H+DyGTg+fr72jKGNz2IuGm5U/GCwG+HWzgahWzYesns8ezoUDZ1H4d606wZbX7jk+r+0oTZfWRd1l5Iy0Lm1eXFJ5HZM4uUBj45cIeMsLRFrYCtts8v8tv17HpSgToNmY1lYkmoxvIVXT9+nfIELCa2Y7a+ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebungFfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C805C32786;
+	Thu, 15 Aug 2024 13:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728761;
-	bh=mUneDBEx7VIv7iC10PG0dgoGen4LHj3ncw/PBMdObYM=;
+	s=korg; t=1723730284;
+	bh=MiVHKYv1dUHZz+R8eFmMXKpBqJgObdMOY/BD8dnB1VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJmmBp/sv44La2C8JReXQV84+YxNGcuRzKcxk2bHnIcGiGDP14vpTgDqFwhvrh3wI
-	 bzYbPNw2NmKK/0XQU4WNRvjlrGsRu8un+yLePPoeiB62RFUmaBK2GIg0gwkb+UinTy
-	 8zsOnKfzW4gzUF1jaPxR6QeT1+CwkAhBF/jlvJh4=
+	b=ebungFfw+lfdxpNKO/oWizqBdI/DeCEtMMXbDQ6wh+1TD+hIh3sl6Rdc3F3OgStEl
+	 qzIcGZtVibt3xYRrM0TXEdzZ4t3biOCEKIubimDHk5qQvWmCOytL7WTLo43e9vxSX6
+	 6+pAaXjFRsRBtG15TeZzPans4RUZMb3kikyFHtCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	David Ahern <dsahern@gmail.com>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 101/196] net: ip_rt_get_source() - use new style struct initializer instead of memset
+Subject: [PATCH 5.15 360/484] net: usb: qmi_wwan: fix memory leak for not ip packets
 Date: Thu, 15 Aug 2024 15:23:38 +0200
-Message-ID: <20240815131855.947694068@linuxfoundation.org>
+Message-ID: <20240815131955.336736626@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Żenczykowski <maze@google.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit e351bb6227fbe2bb5da6f38a4cf5bd18810b0557 ]
+[ Upstream commit 7ab107544b777c3bd7feb9fe447367d8edd5b202 ]
 
-(allows for better compiler optimization)
+Free the unused skb when not ip packets arrive.
 
-Signed-off-by: Maciej Żenczykowski <maze@google.com>
-Reviewed-by: David Ahern <dsahern@gmail.com>
+Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: cc73bbab4b1f ("ipv4: Fix incorrect source address in Record Route option")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 3c5401dafdeed..1aac0d77a3aa1 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1273,18 +1273,15 @@ void ip_rt_get_source(u8 *addr, struct sk_buff *skb, struct rtable *rt)
- 		src = ip_hdr(skb)->saddr;
- 	else {
- 		struct fib_result res;
--		struct flowi4 fl4;
--		struct iphdr *iph;
--
--		iph = ip_hdr(skb);
--
--		memset(&fl4, 0, sizeof(fl4));
--		fl4.daddr = iph->daddr;
--		fl4.saddr = iph->saddr;
--		fl4.flowi4_tos = RT_TOS(iph->tos);
--		fl4.flowi4_oif = rt->dst.dev->ifindex;
--		fl4.flowi4_iif = skb->dev->ifindex;
--		fl4.flowi4_mark = skb->mark;
-+		struct iphdr *iph = ip_hdr(skb);
-+		struct flowi4 fl4 = {
-+			.daddr = iph->daddr,
-+			.saddr = iph->saddr,
-+			.flowi4_tos = RT_TOS(iph->tos),
-+			.flowi4_oif = rt->dst.dev->ifindex,
-+			.flowi4_iif = skb->dev->ifindex,
-+			.flowi4_mark = skb->mark,
-+		};
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index fb09e95cbc258..773a54c083f61 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -201,6 +201,7 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			break;
+ 		default:
+ 			/* not ip - do not know what to do */
++			kfree_skb(skbn);
+ 			goto skip;
+ 		}
  
- 		rcu_read_lock();
- 		if (fib_lookup(dev_net(rt->dst.dev), &fl4, &res, 0) == 0)
 -- 
 2.43.0
 
