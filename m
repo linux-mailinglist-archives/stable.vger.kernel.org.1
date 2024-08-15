@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-68523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9DA9532C3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5EBC9533E1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B3E41F2134B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75FCCB26D74
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD811A01B9;
-	Thu, 15 Aug 2024 14:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FA81A0710;
+	Thu, 15 Aug 2024 14:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCnHCkn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzA389Ki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6371A00F7;
-	Thu, 15 Aug 2024 14:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1DD19DF85;
+	Thu, 15 Aug 2024 14:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730838; cv=none; b=HGVUeUAeUcU1clZgbjXumtC9h7BFkr9X0limDBpdS7302PhJc207QlgGFpLRaaP4pFkeTITJ7s9l9F4vMUhRc4K7C8nUwbEbZMz3BkEThjRIWhTpmnz2QUETSkiHrXgHE4hpZM9ed5eu5KiHtTUpiCbi9wV53PNz3vWpUGe3+zQ=
+	t=1723731607; cv=none; b=DrZNhmpFgvSso8Ly0eqOc0n9+06qarqhH7JdBYqsZq7QNJPi8udhR+lDgAGiyl0n7RF7dgimZYfdoDYyt7oEJWqO+JC8Xk1L1PhOsAPxldUozFbj/kBzB6pF0oLQJhLVGnjYc+FQGw8UYsaowk4JSQTOx6x5yfsrJOhbMmwysmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730838; c=relaxed/simple;
-	bh=gGhKbxHF8jpM4+ivOLkZ22lvlekodIET/rdPcGzXxyk=;
+	s=arc-20240116; t=1723731607; c=relaxed/simple;
+	bh=W8tRTT5ASs5wWs+MKL2K3IfQNk7C6672FxaBgK0r7Oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dd06ozDTTlTefxs/UCP8xl/hyLYAf6/tiYZ2jwi6dxhoTVJjntXSJethLr/RSf6RLxFCj9ruW5wtlpVUHXcusXey940Yjld0xDfYgYE/5S6x+eiUlbYyil4WFGMP8pKScpE8m6C0ucFXicKPapFPVbW24mwnBmcRoDn1r0ayRIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCnHCkn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D3FC32786;
-	Thu, 15 Aug 2024 14:07:17 +0000 (UTC)
+	 MIME-Version; b=GmigbGt2kZ/3ThqtLQRBhzSlXPpT72LFs0SLO/b4yfqX0czw451Lv4qla20ZLSJWAX924j9zbXgH3ltrcuzOAgdYbnffcTUSKq8YlZydFbM4SPNWeKqiODl3VStB/yGkVRglngun0rP3ArLJBAD/vQJWVsEPcszGx2GU0NlSALI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzA389Ki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E593C32786;
+	Thu, 15 Aug 2024 14:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730838;
-	bh=gGhKbxHF8jpM4+ivOLkZ22lvlekodIET/rdPcGzXxyk=;
+	s=korg; t=1723731607;
+	bh=W8tRTT5ASs5wWs+MKL2K3IfQNk7C6672FxaBgK0r7Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCnHCkn4zZPSbUXYK7dgVFCT8QcGeQ/Kg4gKG40dhs/nky0NkNnLkdwMfAxmrUJeg
-	 z+Rim5re2xjPVZp0Soor37TYOHPOHyCGDfHV7CKdBIQVDBBU2JpXkH9YgsmsHgQKGb
-	 VqtPHF1/kIzAt8Ve774yONhKqpOYHblQTx6fSGAI=
+	b=AzA389KibfBWy3VwNZ+z1JHEieLjemUhWySUOQvEhu4VzjxuVqNs1nAxq5ndoRLSM
+	 3Ar+eTEotZ9+f/fqzuAj5lakUs7/WqS5VhKv3lqfUYzt8UIx3E/082Om4bmdUzPWUQ
+	 Q2zntzgIeAeqTvnvXNKsW2e3uhWF69EvOjiFsl6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Vanotti <mvanotti@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.6 01/67] exec: Fix ToCToU between perm check and set-uid/gid usage
+	Alexander Maltsev <keltar.gw@gmail.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 182/259] netfilter: ipset: Add list flush to cancel_gc
 Date: Thu, 15 Aug 2024 15:25:15 +0200
-Message-ID: <20240815131838.370715616@linuxfoundation.org>
+Message-ID: <20240815131909.807678099@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Alexander Maltsev <keltar.gw@gmail.com>
 
-commit f50733b45d865f91db90919f8311e2127ce5a0cb upstream.
+[ Upstream commit c1193d9bbbd379defe9be3c6de566de684de8a6f ]
 
-When opening a file for exec via do_filp_open(), permission checking is
-done against the file's metadata at that moment, and on success, a file
-pointer is passed back. Much later in the execve() code path, the file
-metadata (specifically mode, uid, and gid) is used to determine if/how
-to set the uid and gid. However, those values may have changed since the
-permissions check, meaning the execution may gain unintended privileges.
+Flushing list in cancel_gc drops references to other lists right away,
+without waiting for RCU to destroy list. Fixes race when referenced
+ipsets can't be destroyed while referring list is scheduled for destroy.
 
-For example, if a file could change permissions from executable and not
-set-id:
-
----------x 1 root root 16048 Aug  7 13:16 target
-
-to set-id and non-executable:
-
----S------ 1 root root 16048 Aug  7 13:16 target
-
-it is possible to gain root privileges when execution should have been
-disallowed.
-
-While this race condition is rare in real-world scenarios, it has been
-observed (and proven exploitable) when package managers are updating
-the setuid bits of installed programs. Such files start with being
-world-executable but then are adjusted to be group-exec with a set-uid
-bit. For example, "chmod o-x,u+s target" makes "target" executable only
-by uid "root" and gid "cdrom", while also becoming setuid-root:
-
--rwxr-xr-x 1 root cdrom 16048 Aug  7 13:16 target
-
-becomes:
-
--rwsr-xr-- 1 root cdrom 16048 Aug  7 13:16 target
-
-But racing the chmod means users without group "cdrom" membership can
-get the permission to execute "target" just before the chmod, and when
-the chmod finishes, the exec reaches brpm_fill_uid(), and performs the
-setuid to root, violating the expressed authorization of "only cdrom
-group members can setuid to root".
-
-Re-check that we still have execute permissions in case the metadata
-has changed. It would be better to keep a copy from the perm-check time,
-but until we can do that refactoring, the least-bad option is to do a
-full inode_permission() call (under inode lock). It is understood that
-this is safe against dead-locks, but hardly optimal.
-
-Reported-by: Marco Vanotti <mvanotti@google.com>
-Tested-by: Marco Vanotti <mvanotti@google.com>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 97f7cf1cd80e ("netfilter: ipset: fix performance regression in swap operation")
+Signed-off-by: Alexander Maltsev <keltar.gw@gmail.com>
+Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_list_set.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1609,6 +1609,7 @@ static void bprm_fill_uid(struct linux_b
- 	unsigned int mode;
- 	vfsuid_t vfsuid;
- 	vfsgid_t vfsgid;
-+	int err;
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index 9f4f0126d6ed5..c4aae8c586acf 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -547,6 +547,9 @@ list_set_cancel_gc(struct ip_set *set)
  
- 	if (!mnt_may_suid(file->f_path.mnt))
- 		return;
-@@ -1625,12 +1626,17 @@ static void bprm_fill_uid(struct linux_b
- 	/* Be careful if suid/sgid is set */
- 	inode_lock(inode);
- 
--	/* reload atomically mode/uid/gid now that lock held */
-+	/* Atomically reload and check mode/uid/gid now that lock held. */
- 	mode = inode->i_mode;
- 	vfsuid = i_uid_into_vfsuid(idmap, inode);
- 	vfsgid = i_gid_into_vfsgid(idmap, inode);
-+	err = inode_permission(idmap, inode, MAY_EXEC);
- 	inode_unlock(inode);
- 
-+	/* Did the exec bit vanish out from under us? Give up. */
-+	if (err)
-+		return;
+ 	if (SET_WITH_TIMEOUT(set))
+ 		del_timer_sync(&map->gc);
 +
- 	/* We ignore suid/sgid if there are no mappings for them in the ns */
- 	if (!vfsuid_has_mapping(bprm->cred->user_ns, vfsuid) ||
- 	    !vfsgid_has_mapping(bprm->cred->user_ns, vfsgid))
++	/* Flush list to drop references to other ipsets */
++	list_set_flush(set);
+ }
+ 
+ static const struct ip_set_type_variant set_variant = {
+-- 
+2.43.0
+
 
 
 
