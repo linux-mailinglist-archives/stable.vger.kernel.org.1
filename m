@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5A795331B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 697349534A8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E09D1C22075
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CB821C2362B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C26619D068;
-	Thu, 15 Aug 2024 14:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3606519ADAC;
+	Thu, 15 Aug 2024 14:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqyKb6tn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeVhNAUH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9E017C9B6;
-	Thu, 15 Aug 2024 14:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AA017BEC0;
+	Thu, 15 Aug 2024 14:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731060; cv=none; b=i8vcDwico3HANKmgU22vqseQzI/6QtR7T9auT6a2uq62O+Z+NpANh5vwp9A5GzO3KzX+iO8w2mIqetwPDtdU/N131nnxBlvaetGY+xJWJdnuOLm/ct+JTv58+y8Jnl/veiACIdnWa6pkg5Fk7y9pLhf8UHIofkYJNTtxf8I9LbM=
+	t=1723732117; cv=none; b=d7WIoqMeO20kKXN8Ua/W3dNiXlL9jmctwjTk5uqUuGJcnP/z3KnHpSIas1I72Ny2lbIfpR220lPT8BAkI+/SJsb2IlGxOrrUXJ55dfcI0rJ9LQhBcBdfCS4l63SP8hzZuyd42ni1v9h2AqaG8+mYLqEGa79q8LuNt6wvSUp/UI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731060; c=relaxed/simple;
-	bh=lm+rVBtretfaJfbm8L22yUyMJ04bQGrx/fRffpzzNMU=;
+	s=arc-20240116; t=1723732117; c=relaxed/simple;
+	bh=E8gAiXC2Sctv7gtIk+XoOzE4rcG3EJma1FZVuLtNOzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drZ6RmvYz8Uvq+zzkaPj62zfMvRoeybfPCgJgErSdxsiSw6pRScX+zLWioOvdzCR0heKf7Y0xLcM1qtfF9hvCXPD17U3ClNKFDAn+JmRHdpO+sWHUubAMNMiiawQfbUGpy7GtLCy31RY1IdkZ1HA4Mr43xP01coyObMDZbdTosc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqyKb6tn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E56C32786;
-	Thu, 15 Aug 2024 14:10:59 +0000 (UTC)
+	 MIME-Version; b=VVpmMj0MUCgi/UtjhiVxRP0TQeOjjNuM8h7qAPTjb/DUz78usmihl7/5lGAu0Efpu6MQy/RMiSdqC6t7uKPSeUNxI26DmCH7VcXzueFBuZiJtiWhNvN6Qfcm6acKuVD6OH91dXJ6xdg2uORKZPdfG/I75YtdQM2smCymc0VHqH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeVhNAUH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B237C32786;
+	Thu, 15 Aug 2024 14:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731060;
-	bh=lm+rVBtretfaJfbm8L22yUyMJ04bQGrx/fRffpzzNMU=;
+	s=korg; t=1723732116;
+	bh=E8gAiXC2Sctv7gtIk+XoOzE4rcG3EJma1FZVuLtNOzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqyKb6tncxbqdcZoo5CI1guMRFEysuC77si5APWy1CE3SfbRPzK6Qry+kdmW2NhOI
-	 fllEZQoEfYmDOJ5J0UHjOvzZFAUuepAj+0xXWthYOUfzw+Vh+0mRo4+OxHrfRN1oCJ
-	 NAdaXhAxJW2JtaEitxx6lmQCadXUCL7OpRxp9acE=
+	b=XeVhNAUHGsNtMrXVw+NkLbkoin4HZ1FGfTU0V53K/gux9Mf0V52kAhOCSIzgaZxX2
+	 aUsuHTDUJXAH7KY3yBnbyj3gwfOJ2EVo3lmM6S4IAK1Z64PFZJbDvuD5CGA1aclkbk
+	 1LuS8ITcwMT0uKYhH29xODLsMQraTyzgLJn5AwxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Tung <chineweff@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 011/259] hwmon: (adt7475) Fix default duty on fan is disabled
+Subject: [PATCH 5.10 078/352] media: uvcvideo: Allow entity-defined get_info and get_cur
 Date: Thu, 15 Aug 2024 15:22:24 +0200
-Message-ID: <20240815131903.227893717@linuxfoundation.org>
+Message-ID: <20240815131922.259601454@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Tung <chineweff@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 39b24cced70fdc336dbc0070f8b3bde61d8513a8 ]
+[ Upstream commit 65900c581d014499f0f8ceabfc02c652e9a88771 ]
 
-According to the comments on fan is disabled, we change to manual mode
-and set the duty cycle to 0.
-For setting the duty cycle part, the register is wrong. Fix it.
+Allows controls to get their properties and current value
+from an entity-defined function instead of via a query to the USB
+device.
 
-Fixes: 1c301fc5394f ("hwmon: Add a driver for the ADT7475 hardware monitoring chip")
-Signed-off-by: Wayne Tung <chineweff@gmail.com>
-Link: https://lore.kernel.org/r/20240701073252.317397-1-chineweff@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 86419686e66d ("media: uvcvideo: Override default flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/adt7475.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_ctrl.c | 22 ++++++++++++++++++----
+ drivers/media/usb/uvc/uvcvideo.h |  5 +++++
+ 2 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
-index 5af7226657ab4..cd771285a5cb2 100644
---- a/drivers/hwmon/adt7475.c
-+++ b/drivers/hwmon/adt7475.c
-@@ -1681,7 +1681,7 @@ static void adt7475_read_pwm(struct i2c_client *client, int index)
- 		data->pwm[CONTROL][index] &= ~0xE0;
- 		data->pwm[CONTROL][index] |= (7 << 5);
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index 5e0acabed37a0..e1a98c95b7854 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1002,10 +1002,20 @@ static int __uvc_ctrl_get(struct uvc_video_chain *chain,
+ 		return -EACCES;
  
--		i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(index),
-+		i2c_smbus_write_byte_data(client, PWM_REG(index),
- 					  data->pwm[INPUT][index]);
+ 	if (!ctrl->loaded) {
+-		ret = uvc_query_ctrl(chain->dev, UVC_GET_CUR, ctrl->entity->id,
+-				chain->dev->intfnum, ctrl->info.selector,
++		if (ctrl->entity->get_cur) {
++			ret = ctrl->entity->get_cur(chain->dev,
++				ctrl->entity,
++				ctrl->info.selector,
+ 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 				ctrl->info.size);
++		} else {
++			ret = uvc_query_ctrl(chain->dev, UVC_GET_CUR,
++				ctrl->entity->id,
++				chain->dev->intfnum,
++				ctrl->info.selector,
++				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
++				ctrl->info.size);
++		}
+ 		if (ret < 0)
+ 			return ret;
  
- 		i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(index),
+@@ -1718,8 +1728,12 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
+ 	if (data == NULL)
+ 		return -ENOMEM;
+ 
+-	ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id, dev->intfnum,
+-			     info->selector, data, 1);
++	if (ctrl->entity->get_info)
++		ret = ctrl->entity->get_info(dev, ctrl->entity,
++					     ctrl->info.selector, data);
++	else
++		ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
++				     dev->intfnum, info->selector, data, 1);
+ 	if (!ret)
+ 		info->flags |= (data[0] & UVC_CONTROL_CAP_GET ?
+ 				UVC_CTRL_FLAG_GET_CUR : 0)
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index c75990c0957e7..c3241cf5f7b43 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -354,6 +354,11 @@ struct uvc_entity {
+ 	u8 bNrInPins;
+ 	u8 *baSourceID;
+ 
++	int (*get_info)(struct uvc_device *dev, struct uvc_entity *entity,
++			u8 cs, u8 *caps);
++	int (*get_cur)(struct uvc_device *dev, struct uvc_entity *entity,
++		       u8 cs, void *data, u16 size);
++
+ 	unsigned int ncontrols;
+ 	struct uvc_control *controls;
+ };
 -- 
 2.43.0
 
