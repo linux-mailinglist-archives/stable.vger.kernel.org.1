@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-67894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD834952FA1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:35:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE719531E4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63DD0289FC6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:35:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD2851F25F06
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA56619F482;
-	Thu, 15 Aug 2024 13:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D80B19E7F6;
+	Thu, 15 Aug 2024 13:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrUdAAPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ooO+YkhJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C6519E7F5;
-	Thu, 15 Aug 2024 13:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14827DA7D;
+	Thu, 15 Aug 2024 13:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728855; cv=none; b=tkzkXsvAWw5V7EfcMvyrnvr+w6fMv1cBzbDORZ4M2qGMamq4PgBJ4Gv8v0nGV9rwLgsEioYDkZPERB3i2RWddYyzeHtId8e7YKD4D+FLAzhqTWDCbBRyTw41yUtnU8Z+2tiJzbhXtAMYm0NqRj6wmE46jHO3HzCJkQwWgwbrnJQ=
+	t=1723730382; cv=none; b=A6j6wSZHTHZrdmJz6nLZms6hBswhCn2yeXOHPmkGZUPVkqL7nQpsQRJ0LD9PH73TGp0i8BonNvJobjhPwJF4Ltnw5Rs9UHCd/QqMD3hbANet3JHpf8CvFZVmjRvp3JaXyOWEKNHi+e1njdxuMdRh9+kMYqVdu782l8uiJIxXIwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728855; c=relaxed/simple;
-	bh=f/cYt7z+9W7sF4Tqdsx2HM1NJl8W2cBCqkJgMXqtNyI=;
+	s=arc-20240116; t=1723730382; c=relaxed/simple;
+	bh=mQioZ0Ugkxn6HTWHhwbhI9lqEXQcoWxurrFcrr889/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sIZ8+zzayGQWsHkvytMc0fMdoR0Q/G/KKpzoHNPNRYj3QhqD/vTmrQsU+SH5M6C3tw8jePpS/2WAS9rOWHsFGWIMH94Jp7sxg8R9BXqZJ3cbgWghVkgzakaJJrIQj2U4LNpcIeDIQu902/I62FnZzXhj3nLlMXzUvUuJPlRcLTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrUdAAPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00E6C32786;
-	Thu, 15 Aug 2024 13:34:14 +0000 (UTC)
+	 MIME-Version; b=LdMwLDVstuvRJ2TrJd1T+FCJej1r+/H30zJxgWPAFS5g+9IBpfDyeSNYRzvNLuBJXbj6oduahcQdTEwJiSxYKNsb2IUNlbMT5M6nNLAy9O+nEw4qTSrQ1/WUjwgFwVeZpKBJobVa2VwX1dO98azXJtP45V8efcUOuKia3/8HjEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ooO+YkhJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E04C32786;
+	Thu, 15 Aug 2024 13:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728855;
-	bh=f/cYt7z+9W7sF4Tqdsx2HM1NJl8W2cBCqkJgMXqtNyI=;
+	s=korg; t=1723730381;
+	bh=mQioZ0Ugkxn6HTWHhwbhI9lqEXQcoWxurrFcrr889/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrUdAAPecKgoE1wVqAAGTLXnHAgxoQ1ppnps76CIVLMQfFQwiKb+IBH1iuXceMzjp
-	 DTTWl0x2yMHpErVYEzNyLwgeEVOcyYtwd1nr7vK85q/zPtqZ7KwM2WEa64KWTPBu1k
-	 J5HuCqyoHA4nFapD2Rp3Q1HZVZfbv1MM7awoXydA=
+	b=ooO+YkhJqcg+VLH/JZJvcqDyPYJ20l/0reDhYHln0uASm0YbIevfj3mPwjIlqPULa
+	 ajLNMm71iy9M5TERg85ccHjhlLlT6bgmSu09+ZWq3KpCF9VQp0Ps7rQU90QTGUbZOO
+	 xQl8Kx+zM5XTSoEkwDYXuXyKhVW/TPqcIogP9diY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 131/196] net: usb: qmi_wwan: fix memory leak for not ip packets
+	Zheng Zucheng <zhengzucheng@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.15 390/484] sched/cputime: Fix mul_u64_u64_div_u64() precision for cputime
 Date: Thu, 15 Aug 2024 15:24:08 +0200
-Message-ID: <20240815131857.087241397@linuxfoundation.org>
+Message-ID: <20240815131956.510390814@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +59,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Zheng Zucheng <zhengzucheng@huawei.com>
 
-[ Upstream commit 7ab107544b777c3bd7feb9fe447367d8edd5b202 ]
+commit 77baa5bafcbe1b2a15ef9c37232c21279c95481c upstream.
 
-Free the unused skb when not ip packets arrive.
+In extreme test scenarios:
+the 14th field utime in /proc/xx/stat is greater than sum_exec_runtime,
+utime = 18446744073709518790 ns, rtime = 135989749728000 ns
 
-Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In cputime_adjust() process, stime is greater than rtime due to
+mul_u64_u64_div_u64() precision problem.
+before call mul_u64_u64_div_u64(),
+stime = 175136586720000, rtime = 135989749728000, utime = 1416780000.
+after call mul_u64_u64_div_u64(),
+stime = 135989949653530
+
+unsigned reversion occurs because rtime is less than stime.
+utime = rtime - stime = 135989749728000 - 135989949653530
+		      = -199925530
+		      = (u64)18446744073709518790
+
+Trigger condition:
+  1). User task run in kernel mode most of time
+  2). ARM64 architecture
+  3). TICK_CPU_ACCOUNTING=y
+      CONFIG_VIRT_CPU_ACCOUNTING_NATIVE is not set
+
+Fix mul_u64_u64_div_u64() conversion precision by reset stime to rtime
+
+Fixes: 3dc167ba5729 ("sched/cputime: Improve cputime_adjust()")
+Signed-off-by: Zheng Zucheng <zhengzucheng@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20240726023235.217771-1-zhengzucheng@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/cputime.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 3c65549a8688a..881240d939564 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -241,6 +241,7 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			break;
- 		default:
- 			/* not ip - do not know what to do */
-+			kfree_skb(skbn);
- 			goto skip;
- 		}
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -577,6 +577,12 @@ void cputime_adjust(struct task_cputime
+ 	}
  
--- 
-2.43.0
-
+ 	stime = mul_u64_u64_div_u64(stime, rtime, stime + utime);
++	/*
++	 * Because mul_u64_u64_div_u64() can approximate on some
++	 * achitectures; enforce the constraint that: a*b/(b+c) <= a.
++	 */
++	if (unlikely(stime > rtime))
++		stime = rtime;
+ 
+ update:
+ 	/*
 
 
 
