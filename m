@@ -1,93 +1,68 @@
-Return-Path: <stable+bounces-68451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E3095325C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263FD95328E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80E81B25AEF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC1E628856E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C7C1A2C04;
-	Thu, 15 Aug 2024 14:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pk7mYOPb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248D81A76B5;
+	Thu, 15 Aug 2024 14:05:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5E719DF5F;
-	Thu, 15 Aug 2024 14:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B921A08DD
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 14:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.254.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730610; cv=none; b=DTDOo4I0L1cPUji55V3p0TA83AmEsu349baRbyoSH4QhucNZJH39skfxTUWFR9QSeykP+MkdQW1vTi6MEfNPojSrZ25Yhjg8+wa/EVqjk+ZCqiqNW3uXT7Fwdy49KZ4ZacAjjsLQsnHUW13QJ4NAJBUoPIw3uegRbyQRIxmBtgk=
+	t=1723730719; cv=none; b=mwlZko02KZwrkyxkane00k3wjQPgu+Tr1j3zLVttfi8I6Z+isvPIN0UzXGjvWgrMTHIU5G8wVvfFctNR+ZHxUZOrOQ45wvyhk4vgmVuUCWPDctjN31F+jWNfSCax6lepMTLAWBbEf3eld23jVygR6aC0TZWwL8wuMbpKNk4vyUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730610; c=relaxed/simple;
-	bh=nSYpd62r6UtYUdvlWZL2IxTGJ7K336x2V+hzU1pHV6s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HfjlZBc3Xz+Lq1iWsT7lzbhjjltkklctCjhYPWB6B+KdA+3QuCrDUwvEzq1hITQ7uystOGDEWbxSx0PP+uCS9B+k9T6H68bYeBkhGWDIbVcVL6vSGNYO2nXAb/usPC1uYE8fnnpWSwhglajo45I+9lmCHdVfLB8mAjtgtqQsrSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pk7mYOPb; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Iz5zJYVdt2PwlMZw4lGIuy+KJO4O7HSBp8yg91/HUWY=; b=pk7mYOPbmEErEsdPGoK+fJ2D8D
-	jT54y+y8r050HsiNPWftlDtFpcY93arSmDhaslI9wVsD0dEzvrfLV4/TtlEX5s9WlsyRwQEVOqvY9
-	an4BpyXlPeQcCgWTJYgVP3wZc/ieOjXA0OVwGgUlbwPkg5r6EuyNHHWAxEfL9pp3ltRwQvmd03v9P
-	8S6tral/JF2I32ZAQywFC/b7tLr4audaFqv0yq1rauKvxrr6PlmqeBdFGxIuYZcnpuARnIdyLZCVw
-	jnvvw/ATYnnWGElsuS4C0CtFcePXlVXcsFUJFUNDgFFab5pgf1Ae8v9Qna/Yqtatjdw8AzuDtQDzD
-	yKlk736w==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1seb4N-000000029R0-11tq;
-	Thu, 15 Aug 2024 14:03:15 +0000
-Date: Thu, 15 Aug 2024 15:03:15 +0100
-From: Matthew Wilcox <willy@infradead.org>
+	s=arc-20240116; t=1723730719; c=relaxed/simple;
+	bh=4aZ/oO2nmJFXZ8IT0V5tZwULYNrQ/IrKZ9OYu7pqan4=;
+	h=To:From:Subject:Date:Message-ID:References:Mime-Version:
+	 Content-Type:In-Reply-To:Cc; b=tnVRxzKZy4a13BkBp7dQWo/XzSQ+WeWG/akuF1UCe4bIuICdTC/QVWMkTjZGB7So6l1OHxtxM3VzXAsNo+alzsT66aR7I8xAEpzBRSuccid9sj6v1sPmTpoBsqIVciHJc/+vS6qKMeAJZsZY0nGHMRGm4EXC6sgbJyDCCpEu43k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=m.gmane-mx.org; arc=none smtp.client-ip=116.202.254.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.gmane-mx.org
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+	(envelope-from <glks-stable4@m.gmane-mx.org>)
+	id 1seb6D-0003E3-Bf
+	for stable@vger.kernel.org; Thu, 15 Aug 2024 16:05:09 +0200
+X-Injected-Via-Gmane: http://gmane.org/
 To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>
-Subject: Re: Patch "ext4: convert ext4_da_do_write_end() to take a folio" has
- been added to the 6.6-stable tree
-Message-ID: <Zr4KowVhqnWmmjH_@casper.infradead.org>
-References: <20240815122216.72860-1-sashal@kernel.org>
+From: Ian Pilcher <arequipeno@gmail.com>
+Subject: Re: [PATCH] Revert "ata: libata-scsi: Honor the D_SENSE bit for
+ CK_COND=1 and no error"
+Date: Thu, 15 Aug 2024 09:05:04 -0500
+Message-ID: <v9l1ug$10ii$1@ciao.gmane.io>
+References: <20240813131900.1285842-2-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240815122216.72860-1-sashal@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+In-Reply-To: <20240813131900.1285842-2-cassel@kernel.org>
+Cc: linux-ide@vger.kernel.org
 
-On Thu, Aug 15, 2024 at 08:22:16AM -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     ext4: convert ext4_da_do_write_end() to take a folio
-> 
-> to the 6.6-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      ext4-convert-ext4_da_do_write_end-to-take-a-folio.patch
-> and it can be found in the queue-6.6 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+On 8/13/24 8:19 AM, Niklas Cassel wrote:
+> This reverts commit 28ab9769117ca944cb6eb537af5599aa436287a4.
 
-I'd think you'd want to backport 83f4414b8f84 to before folios existing,
-so you may as well use the same patch for 6.6 as you'd want to use for
-those older kernels.  ie:
+Reviewed-by: Ian Pilcher <arequipeno@gmail.com>
 
-	if (unlikely(!page_buffers(page))) {
-		unlock_page(page);
-		put_page(page);
-		return -EIO;
-	}
+-- 
+========================================================================
+Google                                      Where SkyNet meets Idiocracy
+========================================================================
 
-but maybe this has already been discussed and I wasn't cc'd on that
-discussion.
+
 
