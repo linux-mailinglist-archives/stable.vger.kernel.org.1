@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1FF952F04
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:27:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7261953155
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:53:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E8231C23812
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06E031C22704
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4B319DF9D;
-	Thu, 15 Aug 2024 13:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F8019EECF;
+	Thu, 15 Aug 2024 13:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tux6XfXL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmLkpgo3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAFB1EB44;
-	Thu, 15 Aug 2024 13:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6399219DFA6;
+	Thu, 15 Aug 2024 13:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728464; cv=none; b=SBP1laA7E0MsrEZL7DpQOPCBj9xW3rMjn3z7tg8zervmb5GYM1HCQ/MyNeXMfnnn8bcoJkEqArNVEhDkautYGG+AoQIDXPJwbNaxYVo77o8B0qRWpIn1eSuaJBDBhYGLYLXO09lwyeSwY8kuOxzAXdSdkCe7L3rScxQpfFu76nQ=
+	t=1723729962; cv=none; b=Mj6qjKo90U2bILgzyHcmGnSqHVEIhGv3D7NwXql71zNaEEyWauoO2lUTHXX7PZTQ7lZb6aoKAcEMjAF+rTJpO7OcdoTQsxDxkJvaL478CEwgIbUyazsLXEQMpG9XXGL9820VHdM+83WRSq2IYKz6nt6Zurn9BSunXgI4deBb1z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728464; c=relaxed/simple;
-	bh=vYlab+8dQFwv6sM0k5+1kv1q56dEpKGrrSy9GoVaulA=;
+	s=arc-20240116; t=1723729962; c=relaxed/simple;
+	bh=PjXtw0Yld7Vi3d3jbYoYc5usFdu+ruGIYxs246yz2EE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XipJWm0hucaLEdo7RCi8M4F145kv5U8+qJNxlyJGA5NfsgFg5xARThwqOz0ryje5beR9aJiyY3AMnTHnyBv96cI4P21vZu4CYgZjXAfPCEhfXqXM34L1M2wyQKnN+u4bP8P2I6W2FaS1s5kcqs9xtIkGuXyGhOEbGZdKg77mqL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tux6XfXL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DC9C32786;
-	Thu, 15 Aug 2024 13:27:43 +0000 (UTC)
+	 MIME-Version; b=IDXmt/jLRfHMzQBjOEYJB2VwiovL/ZdQ7+eMbNWrOI8v+VrBbl7VnmNZmm4x+01noMjilRsUdnw4UD7eN8L7QopgFJOY//0mENpmYLJHSNLEewyo7FfFggoSo7H4IXBRwxZdpOzBKlNivnnXVeJlLKqwq/vlP12twE/nywBb61E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmLkpgo3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50761C4AF0A;
+	Thu, 15 Aug 2024 13:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728464;
-	bh=vYlab+8dQFwv6sM0k5+1kv1q56dEpKGrrSy9GoVaulA=;
+	s=korg; t=1723729961;
+	bh=PjXtw0Yld7Vi3d3jbYoYc5usFdu+ruGIYxs246yz2EE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tux6XfXL+UAEPA9YjJWgtFCyuWQFUr4DapKxB5oJyT2rsIIkFp5UxtiBBHl1Ukz1g
-	 H3FZTC77/Ntxy8TkSGTrlIe0OKY41kwsGlMpbWHa8SDp47akL32wQyxlZkc8hIVrg6
-	 Op3EyAifPk1A0Yqns/s9d4W/4gqC+ljQI/j1LQ80=
+	b=CmLkpgo3O9ygO104PJ2eG9mYaz8ckz5gwatcva85RwxmAykR7Udtbxr+YbQPK/0ly
+	 DSZSaTSICqgfzOD63TVkNIUJQxLbLQWTlRUg4i3NE45Yn6c4EtuSzKzQD1vVMw+Wkx
+	 +HIulI6Q7TQpm6kTxiqLQuOiR+6UqhSrMOBDKVog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <groeck@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 001/196] platform/chrome: cros_ec_debugfs: fix wrong EC message version
+Subject: [PATCH 5.15 260/484] kdb: address -Wformat-security warnings
 Date: Thu, 15 Aug 2024 15:21:58 +0200
-Message-ID: <20240815131852.124828489@linuxfoundation.org>
+Message-ID: <20240815131951.445181282@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit c2a28647bbb4e0894e8824362410f72b06ac57a4 ]
+[ Upstream commit 70867efacf4370b6c7cdfc7a5b11300e9ef7de64 ]
 
-ec_read_version_supported() uses ec_params_get_cmd_versions_v1 but it
-wrongly uses message version 0.
+When -Wformat-security is not disabled, using a string pointer
+as a format causes a warning:
 
-Fix it.
+kernel/debug/kdb/kdb_io.c: In function 'kdb_read':
+kernel/debug/kdb/kdb_io.c:365:36: error: format not a string literal and no format arguments [-Werror=format-security]
+  365 |                         kdb_printf(kdb_prompt_str);
+      |                                    ^~~~~~~~~~~~~~
+kernel/debug/kdb/kdb_io.c: In function 'kdb_getstr':
+kernel/debug/kdb/kdb_io.c:456:20: error: format not a string literal and no format arguments [-Werror=format-security]
+  456 |         kdb_printf(kdb_prompt_str);
+      |                    ^~~~~~~~~~~~~~
 
-Fixes: e86264595225 ("mfd: cros_ec: add debugfs, console log file")
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Link: https://lore.kernel.org/r/20240611113110.16955-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Use an explcit "%s" format instead.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240528121154.3662553-1-arnd@kernel.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_debugfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/debug/kdb/kdb_io.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_debugfs.c b/drivers/platform/chrome/cros_ec_debugfs.c
-index c62ee8e610a0f..5aed088371a72 100644
---- a/drivers/platform/chrome/cros_ec_debugfs.c
-+++ b/drivers/platform/chrome/cros_ec_debugfs.c
-@@ -292,6 +292,7 @@ static int ec_read_version_supported(struct cros_ec_dev *ec)
- 	if (!msg)
- 		return 0;
- 
-+	msg->version = 1;
- 	msg->command = EC_CMD_GET_CMD_VERSIONS + ec->cmd_offset;
- 	msg->outsize = sizeof(*params);
- 	msg->insize = sizeof(*response);
+diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
+index a3b4b55d2e2e1..a4256e558a701 100644
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -358,7 +358,7 @@ static char *kdb_read(char *buffer, size_t bufsize)
+ 			if (i >= dtab_count)
+ 				kdb_printf("...");
+ 			kdb_printf("\n");
+-			kdb_printf(kdb_prompt_str);
++			kdb_printf("%s",  kdb_prompt_str);
+ 			kdb_printf("%s", buffer);
+ 			if (cp != lastchar)
+ 				kdb_position_cursor(kdb_prompt_str, buffer, cp);
+@@ -450,7 +450,7 @@ char *kdb_getstr(char *buffer, size_t bufsize, const char *prompt)
+ {
+ 	if (prompt && kdb_prompt_str != prompt)
+ 		strscpy(kdb_prompt_str, prompt, CMD_BUFLEN);
+-	kdb_printf(kdb_prompt_str);
++	kdb_printf("%s", kdb_prompt_str);
+ 	kdb_nextline = 1;	/* Prompt and input resets line number */
+ 	return kdb_read(buffer, bufsize);
+ }
 -- 
 2.43.0
 
