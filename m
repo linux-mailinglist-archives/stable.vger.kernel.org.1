@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-68723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA849533AA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3CD953538
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 149A8285636
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FD0D1F2A7A5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E093A1A3BD0;
-	Thu, 15 Aug 2024 14:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F172619FA90;
+	Thu, 15 Aug 2024 14:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6vPyumy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDHB8jzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995C71A01DA;
-	Thu, 15 Aug 2024 14:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFD117BEC0;
+	Thu, 15 Aug 2024 14:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731462; cv=none; b=XLe2oZakyxHXU44hWBpoqSkyrBkps9SPx/mMohejOT9VQtzAXHGpOJClgsSkR/Ur1zv9ylywCXzfDJAt5OC6FMp+VuUDMhxuY/iZ25VidHOrT/8Hc++ZShxhTOp4u6GELlSvuBEwygNw1WAAgJL68RHn8xYtuHma/2VSjtWCY+4=
+	t=1723732523; cv=none; b=eDynzvT0zPObCOepdrrkjPVOmNUurI+TPqtoAMzIFBJg6uxoX7oAm1AvmRDM5fOgs5FEpR660ouh3c5rqT6xM58V1kKSO2ymCp2TICRKb4Q88SW51PexH7OAdMJOilN6RJ88uwwgc4jmkBUGpvUdOGRmYxUp4KIhO2+aiqJonz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731462; c=relaxed/simple;
-	bh=IM5HZC8sLHW1FoTehDirCwNbK4k0uW67rgZJ89C+AsY=;
+	s=arc-20240116; t=1723732523; c=relaxed/simple;
+	bh=3AptlZz955Ij+jyziNkdDq1zm+R0Ror5jaHFtqamHsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYtKXImGHS3vQV3Z3QJw9o5TfxajL5UqMbEjVitTjrA/JxQG1ZMXp5WiTryrO7mLJxw1Rknv+JIz2KaKUv/IuNgDHkN/bLanAaVfQDxu/i1aqWNbC5rTvwlqJ5wB29abjJ0/b1nw5/ncdJwcwvZMbYfKWK+5d5e8HBr1ruaFUJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6vPyumy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17752C32786;
-	Thu, 15 Aug 2024 14:17:41 +0000 (UTC)
+	 MIME-Version; b=ZemVRspeIlaxdxiY/GQV8qMiQHjUtE5JpLGpjdk6fx2+WsdG/1Of/Y4GFYpiHhnBKrtYAeOcDq58WWHYYW3v2jOuCIEdlDponjRzThJjg+fXhmfNtf4cSZ0Dxx8FGcuSy/TOwwzOx+EfBbrXT206N3TbUOE/Djrbjxlf3GSmII4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDHB8jzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E188C4AF0D;
+	Thu, 15 Aug 2024 14:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731462;
-	bh=IM5HZC8sLHW1FoTehDirCwNbK4k0uW67rgZJ89C+AsY=;
+	s=korg; t=1723732523;
+	bh=3AptlZz955Ij+jyziNkdDq1zm+R0Ror5jaHFtqamHsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6vPyumyKD0mYuYiD8VHA5MOo7y47yr98EVa6p+zlQ6kL/UDYsX85DziGNbWXRPVa
-	 AF8P8wDPCthsaEZjMRdPk6yKYNssqKCjWBPZiXc40q3MV6tQ8FKeFeUzy1JFx6lVx8
-	 ecZBUjzibqg7vAx1PI0n+0IYOKc2oFqvLcn7W8l8=
+	b=iDHB8jzN9iVTrjot99fT1R1YEbFbUNoayd6mHW5tOqzT+WSkOgMah3Lfky9gzb5So
+	 m8Xmv3kpP+3paf+q9jUnrO08Rm4YmPvfqWt/6NoZ83bM2MVwr8AYrPSr5KaZzNJnJy
+	 KM9cZY+7Prs9sglzNdUv+9Jcf8T11z8g3Ml3baHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 138/259] libbpf: Fix no-args func prototype BTF dumping syntax
+Subject: [PATCH 5.10 205/352] powerpc: fix a file leak in kvm_vcpu_ioctl_enable_cap()
 Date: Thu, 15 Aug 2024 15:24:31 +0200
-Message-ID: <20240815131908.122308023@linuxfoundation.org>
+Message-ID: <20240815131927.198057699@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 189f1a976e426011e6a5588f1d3ceedf71fe2965 ]
+[ Upstream commit b4cf5fc01ce83e5c0bcf3dbb9f929428646b9098 ]
 
-For all these years libbpf's BTF dumper has been emitting not strictly
-valid syntax for function prototypes that have no input arguments.
+missing fdput() on one of the failure exits
 
-Instead of `int (*blah)()` we should emit `int (*blah)(void)`.
-
-This is not normally a problem, but it manifests when we get kfuncs in
-vmlinux.h that have no input arguments. Due to compiler internal
-specifics, we get no BTF information for such kfuncs, if they are not
-declared with proper `(void)`.
-
-The fix is trivial. We also need to adjust a few ancient tests that
-happily assumed `()` is correct.
-
-Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
-Reported-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://lore.kernel.org/bpf/20240712224442.282823-1-andrii@kernel.org
+Fixes: eacc56bb9de3e # v5.2
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/btf_dump.c                                  | 8 +++++---
- .../selftests/bpf/progs/btf_dump_test_case_multidim.c     | 4 ++--
- .../selftests/bpf/progs/btf_dump_test_case_syntax.c       | 4 ++--
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ arch/powerpc/kvm/powerpc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
-index a1176a9e8430a..1391f6c292054 100644
---- a/tools/lib/bpf/btf_dump.c
-+++ b/tools/lib/bpf/btf_dump.c
-@@ -1302,10 +1302,12 @@ static void btf_dump_emit_type_chain(struct btf_dump *d,
- 			 * Clang for BPF target generates func_proto with no
- 			 * args as a func_proto with a single void arg (e.g.,
- 			 * `int (*f)(void)` vs just `int (*f)()`). We are
--			 * going to pretend there are no args for such case.
-+			 * going to emit valid empty args (void) syntax for
-+			 * such case. Similarly and conveniently, valid
-+			 * no args case can be special-cased here as well.
- 			 */
--			if (vlen == 1 && p->type == 0) {
--				btf_dump_printf(d, ")");
-+			if (vlen == 0 || (vlen == 1 && p->type == 0)) {
-+				btf_dump_printf(d, "void)");
- 				return;
- 			}
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index ef8077a739b88..0f5ebec660a78 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -1956,8 +1956,10 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
+ 			break;
  
-diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
-index ba97165bdb282..a657651eba523 100644
---- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
-+++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
-@@ -14,9 +14,9 @@ typedef int *ptr_arr_t[6];
+ 		r = -ENXIO;
+-		if (!xive_enabled())
++		if (!xive_enabled()) {
++			fdput(f);
+ 			break;
++		}
  
- typedef int *ptr_multiarr_t[7][8][9][10];
- 
--typedef int * (*fn_ptr_arr_t[11])();
-+typedef int * (*fn_ptr_arr_t[11])(void);
- 
--typedef int * (*fn_ptr_multiarr_t[12][13])();
-+typedef int * (*fn_ptr_multiarr_t[12][13])(void);
- 
- struct root_struct {
- 	arr_t _1;
-diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
-index 0620580a5c16c..1fcca43ab342d 100644
---- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
-+++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
-@@ -67,7 +67,7 @@ typedef void (*printf_fn_t)(const char *, ...);
-  *   `int -> char *` function and returns pointer to a char. Equivalent:
-  *   typedef char * (*fn_input_t)(int);
-  *   typedef char * (*fn_output_outer_t)(fn_input_t);
-- *   typedef const fn_output_outer_t (* fn_output_inner_t)();
-+ *   typedef const fn_output_outer_t (* fn_output_inner_t)(void);
-  *   typedef const fn_output_inner_t fn_ptr_arr2_t[5];
-  */
- /* ----- START-EXPECTED-OUTPUT ----- */
-@@ -94,7 +94,7 @@ typedef void (* (*signal_t)(int, void (*)(int)))(int);
- 
- typedef char * (*fn_ptr_arr1_t[10])(int **);
- 
--typedef char * (* (* const fn_ptr_arr2_t[5])())(char * (*)(int));
-+typedef char * (* (* const fn_ptr_arr2_t[5])(void))(char * (*)(int));
- 
- struct struct_w_typedefs {
- 	int_t a;
+ 		r = -EPERM;
+ 		dev = kvm_device_from_filp(f.file);
 -- 
 2.43.0
 
