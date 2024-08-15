@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19604953346
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBF49534F1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D4941C23B63
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1D7D1F29DFE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5A81B3F26;
-	Thu, 15 Aug 2024 14:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9973B1A01C6;
+	Thu, 15 Aug 2024 14:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZA3AQC4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcmVXAAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C061AC432;
-	Thu, 15 Aug 2024 14:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D9C1A00D1;
+	Thu, 15 Aug 2024 14:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731186; cv=none; b=PeGNAUU29oxPESFaqODJwbn9nYeBWodWQ1huyWxEwI6j5ijV4BEkbBeL5dhvwvCkEz+RKFM2+Ml3wgv64PCLwbdd2iBUyka4NZEZldzkeyv4OMn+Eq1kPUk+9DFujmazb98PqbyuFZS/VPBC51EN2Swvzr6VsI2AhCurPOZyOn0=
+	t=1723732320; cv=none; b=nvhrLT1jeuBu7lDUhj8ds1So+bbrvq5atChcFFTDSDg+1PtmQcYkya07P1P+oWIuy1qyRYT2yJfJs0f7SNTiEr3iUXHkoBB+0bBZ4rxYoXPQWZHlsEUnbMK5bxKJYUReywD6/33VLLgGLtV1Yo+eaEsdoKZhbnBEIXjdp6FPUdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731186; c=relaxed/simple;
-	bh=LhS83TKx5iyV6evjA1hhLMCoaYqy4PWIYmoxXqNURH0=;
+	s=arc-20240116; t=1723732320; c=relaxed/simple;
+	bh=/QbhHnkUiS47F3OC4pI4DdX3rhlzrckdEVsu9jJBhUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDieLXI4l682pwonmuExW93TkJ9YBnEP/rLFdi0aXtyhFBANNHLXXo8yNS5+cM0B+GRAHMXyQ3EepHXQx8j89kFqE8dOWL7JVQMCp21v+2nk2hhZIq+uT9QA+kzhxYGYoc26HmYX1UqZTDFxBx6f/aukDePrisG5Qn+n+38lMEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZA3AQC4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAA2C32786;
-	Thu, 15 Aug 2024 14:13:05 +0000 (UTC)
+	 MIME-Version; b=Oa9+pKNDBk90RfSpm0w8qCL6jESzHeRUBIghj5sefyp7M8D1OUCTrBB6MvZeck3r3DZKuco/6O6WPiuJu3M1/rTje1LSOpgoOs2lR5TB0O4kt0Ff+jm3O9uUtQXdznWW97fflW+9L9n9iJrBjA6kJlimUXc5DlghthBV50pz+Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcmVXAAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63C4C32786;
+	Thu, 15 Aug 2024 14:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731186;
-	bh=LhS83TKx5iyV6evjA1hhLMCoaYqy4PWIYmoxXqNURH0=;
+	s=korg; t=1723732320;
+	bh=/QbhHnkUiS47F3OC4pI4DdX3rhlzrckdEVsu9jJBhUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rZA3AQC4Tai9glyztCUIdkYP8MPLwzXFtvrxfgiJpB9s8zP6ST3eI1RjSdAaifXVX
-	 wz+s/etujWuk9s+vq9/2lvyL6F++J2ccKycPGv5PcPh+cK7ue1jIJuM4VMsH3ZvOap
-	 p9hKDH5bEeQ/UFaNlZCZSo9PAuXm9qyqvIbg5U74=
+	b=hcmVXAAuGWqQFngSbhrN8MHMnwMlBKMTdQHeI09GpEbZC2z8qXMdGZDfd1SkYO100
+	 pRkAZaJbWnjBn76ng4b+0/6O6yAPVmkXkaBrhPiTDsS79P0hujN9Kef9zIuM5ihvj0
+	 KbtqTKZv0baHtWRb0Y9QGUSRliThTy4rKs7ueXxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/259] selftests: forwarding: devlink_lib: Wait for udev events after reloading
+Subject: [PATCH 5.10 116/352] pinctrl: single: fix possible memory leak when pinctrl_enable() fails
 Date: Thu, 15 Aug 2024 15:23:02 +0200
-Message-ID: <20240815131904.698384432@linuxfoundation.org>
+Message-ID: <20240815131923.738003930@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit f67a90a0c8f5b3d0acc18f10650d90fec44775f9 ]
+[ Upstream commit 8f773bfbdd428819328a2d185976cfc6ae811cd3 ]
 
-Lately, an additional locking was added by commit c0a40097f0bc
-("drivers: core: synchronize really_probe() and dev_uevent()"). The
-locking protects dev_uevent() calling. This function is used to send
-messages from the kernel to user space. Uevent messages notify user space
-about changes in device states, such as when a device is added, removed,
-or changed. These messages are used by udev (or other similar user-space
-tools) to apply device-specific rules.
+This driver calls pinctrl_register_and_init() which is not
+devm_ managed, it will leads memory leak if pinctrl_enable()
+fails. Replace it with devm_pinctrl_register_and_init().
+And call pcs_free_resources() if pinctrl_enable() fails.
 
-After reloading devlink instance, udev events should be processed. This
-locking causes a short delay of udev events handling.
-
-One example for useful udev rule is renaming ports. 'forwading.config'
-can be configured to use names after udev rules are applied. Some tests run
-devlink_reload() and immediately use the updated names. This worked before
-the above mentioned commit was pushed, but now the delay of uevent messages
-causes that devlink_reload() returns before udev events are handled and
-tests fail.
-
-Adjust devlink_reload() to not assume that udev events are already
-processed when devlink reload is done, instead, wait for udev events to
-ensure they are processed before returning from the function.
-
-Without this patch:
-TESTS='rif_mac_profile' ./resource_scale.sh
-TEST: 'rif_mac_profile' 4                                           [ OK ]
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
-Cannot find device "swp1"
-Cannot find device "swp2"
-TEST: setup_wait_dev (: Interface swp1 does not come up.) [FAIL]
-
-With this patch:
-$ TESTS='rif_mac_profile' ./resource_scale.sh
-TEST: 'rif_mac_profile' 4                                           [ OK ]
-TEST: 'rif_mac_profile' overflow 5                                  [ OK ]
-
-This is relevant not only for this test.
-
-Fixes: bc7cbb1e9f4c ("selftests: forwarding: Add devlink_lib.sh")
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/89367666e04b38a8993027f1526801ca327ab96a.1720709333.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240606023704.3931561-3-yangyingliang@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/devlink_lib.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/pinctrl-single.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/devlink_lib.sh b/tools/testing/selftests/net/forwarding/devlink_lib.sh
-index 13d03a6d85ba9..dd9a856318588 100644
---- a/tools/testing/selftests/net/forwarding/devlink_lib.sh
-+++ b/tools/testing/selftests/net/forwarding/devlink_lib.sh
-@@ -102,6 +102,8 @@ devlink_reload()
- 	still_pending=$(devlink resource show "$DEVLINK_DEV" | \
- 			grep -c "size_new")
- 	check_err $still_pending "Failed reload - There are still unset sizes"
-+
-+	udevadm settle
- }
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 22e471933b373..4860c4dd853f3 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -1332,7 +1332,6 @@ static void pcs_irq_free(struct pcs_device *pcs)
+ static void pcs_free_resources(struct pcs_device *pcs)
+ {
+ 	pcs_irq_free(pcs);
+-	pinctrl_unregister(pcs->pctl);
  
- declare -A DEVLINK_ORIG
+ #if IS_BUILTIN(CONFIG_PINCTRL_SINGLE)
+ 	if (pcs->missing_nr_pinctrl_cells)
+@@ -1889,7 +1888,7 @@ static int pcs_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto free;
+ 
+-	ret = pinctrl_register_and_init(&pcs->desc, pcs->dev, pcs, &pcs->pctl);
++	ret = devm_pinctrl_register_and_init(pcs->dev, &pcs->desc, pcs, &pcs->pctl);
+ 	if (ret) {
+ 		dev_err(pcs->dev, "could not register single pinctrl driver\n");
+ 		goto free;
+@@ -1922,8 +1921,10 @@ static int pcs_probe(struct platform_device *pdev)
+ 
+ 	dev_info(pcs->dev, "%i pins, size %u\n", pcs->desc.npins, pcs->size);
+ 
+-	return pinctrl_enable(pcs->pctl);
++	if (pinctrl_enable(pcs->pctl))
++		goto free;
+ 
++	return 0;
+ free:
+ 	pcs_free_resources(pcs);
+ 
 -- 
 2.43.0
 
