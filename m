@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-68430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED225953246
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:04:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA8B95355E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FED5B23D71
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376C11F2A7D7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C62319FA7E;
-	Thu, 15 Aug 2024 14:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28FF1A00CF;
+	Thu, 15 Aug 2024 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XespUck+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrQcuDe7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396411B4C31;
-	Thu, 15 Aug 2024 14:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6601DFFB;
+	Thu, 15 Aug 2024 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730543; cv=none; b=R5QEFytZwGzctVV3Ge/Nwl8rdVdkWN9FiUECr2T+pVe0HBZYvgmOm4VPPR8c1kJdZ2TzcMyL7cs15SYMiXgkS8tOqFdxZ3FhmP/f8mW5uzdahFUJ3gbTl1JdOn/4cddmQ8iitR8GaQWAkjpBA+eI7gn/6P7EJqVw1suRg2XcC+E=
+	t=1723732618; cv=none; b=b4bez20hkteZB2Rb5NJxUgomxAfhwEGhF97RtQ1eSOQlZaj5+F98+Q6n9akMZNYBi7UjY9bf0zAtZbleXwPS3nD/y4OHHlZGDmk/+8/y8S8Aq2v3jPST50LhGUeW1xEl390cWSls0RBl6R9CK4caKQewjkkqzafiOwub0MblHqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730543; c=relaxed/simple;
-	bh=8g7rTr4taSEugZP9giu426HbT5YqcR8ASFg/PWOkalM=;
+	s=arc-20240116; t=1723732618; c=relaxed/simple;
+	bh=NdmxRZ/Eu87FpZLaQuHLARz523kTFj4vS6NrF1Cmu6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZOy3ox20a0GgN24wvBBLfWpS7chg0gI1kmUllClGnfWlK7DVhlRBXQns4AMTPSjrKbQID/PDai9QdtgZUNZZxEkvxP6Zk34vW7J/0hPwnAPYlEIhWs0M5omBcvSHIiqZetGQsO/5Nq5Jh0kl+OEHV491lKw38Us4vEhVCPopMEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XespUck+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00ACC4AF0A;
-	Thu, 15 Aug 2024 14:02:22 +0000 (UTC)
+	 MIME-Version; b=eXHJ/33ClRciw3TRd2Vy0OCKy+rFqP3/FT9FEq71n4oh9FEjRaVpCsmpjNhGLjfwfwLh7QjK/Mt5czHtKNt9wpYUYP52UqF9s2R4M+dys0qewcEfMHv4KNvTLHMHXAcLhlopSFp2v3YDMcTfHP4QPSC7hPkqsUeF77O83Yrmqmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrQcuDe7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB78C32786;
+	Thu, 15 Aug 2024 14:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730543;
-	bh=8g7rTr4taSEugZP9giu426HbT5YqcR8ASFg/PWOkalM=;
+	s=korg; t=1723732618;
+	bh=NdmxRZ/Eu87FpZLaQuHLARz523kTFj4vS6NrF1Cmu6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XespUck+rx3ACz35CPpdC6CpC3q85WbL7w1H+YuvEPJEGGmS7FZ81z9+g3r6S+qTg
-	 T49i7fYXuhv9/c3TJ0lbzjLoTmlp7jfg2ase5t5CCgPCMr5OD19BHc72OUUkIMi6Oz
-	 22O1fSgkLzj2tn39/wExDen4y6DsOmHfypcpkmkE=
+	b=nrQcuDe765WsBVXja256hPuWsJQw0wjYAU7TEASvUewcxEP5kkZ+I42G/vdH58vcq
+	 LEcf+CJua5hMii3CId7JYsCsJStANWSbvNcpbe2u+ejiuGinxGDQCmy9/vC6mawoPV
+	 krXnFAIXl3NsfqTUFS3UtMgM7BRYnzzOtmrCoScI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.15 442/484] power: supply: axp288_charger: Fix constant_charge_voltage writes
+	Doug Brown <doug@schmorgal.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 234/352] drm/vmwgfx: Fix overlay when using Screen Targets
 Date: Thu, 15 Aug 2024 15:25:00 +0200
-Message-ID: <20240815131958.532288470@linuxfoundation.org>
+Message-ID: <20240815131928.481191884@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit b34ce4a59cfe9cd0d6f870e6408e8ec88a964585 upstream.
+[ Upstream commit cb372a505a994cb39aa75acfb8b3bcf94787cf94 ]
 
-info->max_cv is in millivolts, divide the microvolt value being written
-to constant_charge_voltage by 1000 *before* clamping it to info->max_cv.
+This code was never updated to support Screen Targets.
+Fixes a bug where Xv playback displays a green screen instead of actual
+video contents when 3D acceleration is disabled in the guest.
 
-Before this fix the code always tried to set constant_charge_voltage
-to max_cv / 1000 = 4 millivolt, which ends up in setting it to 4.1V
-which is the lowest supported value.
-
-Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240717200333.56669-1-hdegoede@redhat.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8261a961ece ("vmwgfx: Major KMS refactoring / cleanup in preparation of screen targets")
+Reported-by: Doug Brown <doug@schmorgal.com>
+Closes: https://lore.kernel.org/all/bd9cb3c7-90e8-435d-bc28-0e38fee58977@schmorgal.com
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Tested-by: Doug Brown <doug@schmorgal.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240719163627.20888-1-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/axp288_charger.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/power/supply/axp288_charger.c
-+++ b/drivers/power/supply/axp288_charger.c
-@@ -371,8 +371,8 @@ static int axp288_charger_usb_set_proper
- 			dev_warn(&info->pdev->dev, "set charge current failed\n");
- 		break;
- 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
--		scaled_val = min(val->intval, info->max_cv);
--		scaled_val = DIV_ROUND_CLOSEST(scaled_val, 1000);
-+		scaled_val = DIV_ROUND_CLOSEST(val->intval, 1000);
-+		scaled_val = min(scaled_val, info->max_cv);
- 		ret = axp288_charger_set_cv(info, scaled_val);
- 		if (ret < 0)
- 			dev_warn(&info->pdev->dev, "set charge voltage failed\n");
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+index cd7ed1650d60c..7aa1d9218ea6b 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+@@ -98,7 +98,7 @@ static int vmw_overlay_send_put(struct vmw_private *dev_priv,
+ {
+ 	struct vmw_escape_video_flush *flush;
+ 	size_t fifo_size;
+-	bool have_so = (dev_priv->active_display_unit == vmw_du_screen_object);
++	bool have_so = (dev_priv->active_display_unit != vmw_du_legacy);
+ 	int i, num_items;
+ 	SVGAGuestPtr ptr;
+ 
+-- 
+2.43.0
+
 
 
 
