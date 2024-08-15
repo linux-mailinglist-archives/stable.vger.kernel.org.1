@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-69085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA8B95355E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1989533F4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376C11F2A7D7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 266CA2892B0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28FF1A00CF;
-	Thu, 15 Aug 2024 14:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FBD817BEAD;
+	Thu, 15 Aug 2024 14:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrQcuDe7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OG/e4gHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6601DFFB;
-	Thu, 15 Aug 2024 14:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC691AC8AE;
+	Thu, 15 Aug 2024 14:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732618; cv=none; b=b4bez20hkteZB2Rb5NJxUgomxAfhwEGhF97RtQ1eSOQlZaj5+F98+Q6n9akMZNYBi7UjY9bf0zAtZbleXwPS3nD/y4OHHlZGDmk/+8/y8S8Aq2v3jPST50LhGUeW1xEl390cWSls0RBl6R9CK4caKQewjkkqzafiOwub0MblHqI=
+	t=1723731662; cv=none; b=OpWDVsU8gWZI2sbJk6m+SS84q+JMgwpExFEqGY7oLoq2SAEKPApLimNIdUtMZuzDPFRgk6nHUxghU1KWsZODZFS6QAiPIPuHD97jNSpucqUrs/mG13FdVWUKLa8q+sltzwX+UwlCZQWsDCu3c1p4VJfdIss/TAtPeBi/1gZ+7Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732618; c=relaxed/simple;
-	bh=NdmxRZ/Eu87FpZLaQuHLARz523kTFj4vS6NrF1Cmu6c=;
+	s=arc-20240116; t=1723731662; c=relaxed/simple;
+	bh=4Llp3lqRu+8td1SJYAz+sxKBtHVF7Y9e3k+2W9Bxek8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXHJ/33ClRciw3TRd2Vy0OCKy+rFqP3/FT9FEq71n4oh9FEjRaVpCsmpjNhGLjfwfwLh7QjK/Mt5czHtKNt9wpYUYP52UqF9s2R4M+dys0qewcEfMHv4KNvTLHMHXAcLhlopSFp2v3YDMcTfHP4QPSC7hPkqsUeF77O83Yrmqmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrQcuDe7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB78C32786;
-	Thu, 15 Aug 2024 14:36:57 +0000 (UTC)
+	 MIME-Version; b=h+i9gIrae/uKTGfTgQgO3iaZRtqrc2/Xzqcj5SaKbFyvhHcrfUcoIT6HY6kBjvY3DuYup5m0izBTm2+adfpJ9c1GgegiS9LC6OL3QYmLkm7baPcMT+tq+RkHEHDQGAbxPhnqU6sMovVPJiO4GFC+Um1S06D4KHzifCWVtGWzUkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OG/e4gHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97855C32786;
+	Thu, 15 Aug 2024 14:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732618;
-	bh=NdmxRZ/Eu87FpZLaQuHLARz523kTFj4vS6NrF1Cmu6c=;
+	s=korg; t=1723731662;
+	bh=4Llp3lqRu+8td1SJYAz+sxKBtHVF7Y9e3k+2W9Bxek8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrQcuDe765WsBVXja256hPuWsJQw0wjYAU7TEASvUewcxEP5kkZ+I42G/vdH58vcq
-	 LEcf+CJua5hMii3CId7JYsCsJStANWSbvNcpbe2u+ejiuGinxGDQCmy9/vC6mawoPV
-	 krXnFAIXl3NsfqTUFS3UtMgM7BRYnzzOtmrCoScI=
+	b=OG/e4gHdDbLi9vO9IzyIarR1S1eoYPNbz96BCKLaNSWQMaPO6PBLgt9x8p8S3Pqx5
+	 U8WDKQ+qBFQCcxlAj6vkW3MdluplG/C+8HPQHjg2WqhcvTI01b2FXy5KxE35EpGmQC
+	 aeDjxAgaNbmjWNVWrVDMbwrE8Mmw59oJimeg3TlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Brown <doug@schmorgal.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 234/352] drm/vmwgfx: Fix overlay when using Screen Targets
+Subject: [PATCH 5.4 167/259] irqchip/imx-irqsteer: Constify irq_chip struct
 Date: Thu, 15 Aug 2024 15:25:00 +0200
-Message-ID: <20240815131928.481191884@linuxfoundation.org>
+Message-ID: <20240815131909.230915108@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit cb372a505a994cb39aa75acfb8b3bcf94787cf94 ]
+[ Upstream commit e9a50f12e579a48e124ac5adb93dafc35f0a46b8 ]
 
-This code was never updated to support Screen Targets.
-Fixes a bug where Xv playback displays a green screen instead of actual
-video contents when 3D acceleration is disabled in the guest.
+The imx_irqsteer_irq_chip struct is constant data.
 
-Fixes: c8261a961ece ("vmwgfx: Major KMS refactoring / cleanup in preparation of screen targets")
-Reported-by: Doug Brown <doug@schmorgal.com>
-Closes: https://lore.kernel.org/all/bd9cb3c7-90e8-435d-bc28-0e38fee58977@schmorgal.com
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Tested-by: Doug Brown <doug@schmorgal.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240719163627.20888-1-ian.forbes@broadcom.com
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20220406163701.1277930-1-l.stach@pengutronix.de
+Stable-dep-of: 33b1c47d1fc0 ("irqchip/imx-irqsteer: Handle runtime power management correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c | 2 +-
+ drivers/irqchip/irq-imx-irqsteer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-index cd7ed1650d60c..7aa1d9218ea6b 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-@@ -98,7 +98,7 @@ static int vmw_overlay_send_put(struct vmw_private *dev_priv,
- {
- 	struct vmw_escape_video_flush *flush;
- 	size_t fifo_size;
--	bool have_so = (dev_priv->active_display_unit == vmw_du_screen_object);
-+	bool have_so = (dev_priv->active_display_unit != vmw_du_legacy);
- 	int i, num_items;
- 	SVGAGuestPtr ptr;
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index 290531ec3d61e..1b01e655b9923 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -70,7 +70,7 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
  
+-static struct irq_chip imx_irqsteer_irq_chip = {
++static const struct irq_chip imx_irqsteer_irq_chip = {
+ 	.name		= "irqsteer",
+ 	.irq_mask	= imx_irqsteer_irq_mask,
+ 	.irq_unmask	= imx_irqsteer_irq_unmask,
 -- 
 2.43.0
 
