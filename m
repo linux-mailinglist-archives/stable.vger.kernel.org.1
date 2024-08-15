@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-68841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19799953440
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:25:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B977953601
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B72B11F291E0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:25:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 241DA283703
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B02C1A76A7;
-	Thu, 15 Aug 2024 14:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4201B1417;
+	Thu, 15 Aug 2024 14:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQtEv4c3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9VXpiY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9A43214;
-	Thu, 15 Aug 2024 14:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEA01A7060;
+	Thu, 15 Aug 2024 14:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731832; cv=none; b=ZTsOZ8+Q846mwsfe9RZfeCjxZVfLERtBCaJKqi8n6f3o4LimiiD8kH+lR/vxxk6ViEk34JQz7D187ZVPfNIvDuRjDts1RIdMxL3cz0nvHS6n13kKIrmtu52FDqm6zIA3qQ82t/7pLhMfhlbkAPoXBqRg5PxxVMARPKURElMUXKA=
+	t=1723732985; cv=none; b=i1jZWRyKZ66tLWgAY3L55yuJP49uoayM1l1zJVuyfX0f9mLtK0cWT8AEp7TNMaN+iKrYeJwp44P3OcwihYzu+VnrB34HiZrMBnv5kSFDJ2fXIovGaHmlxgEY9qyzyeleBOl1YjEqBopCd3wU2zocQ5NYchmX7W8+kq01R5MLEPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731832; c=relaxed/simple;
-	bh=v/I9aFmL/vPUrtLGL/L5xd7HQWz3r3ARkk4MZpnAyjo=;
+	s=arc-20240116; t=1723732985; c=relaxed/simple;
+	bh=CmsCnkz3N1cTiMe3T30l8Lf7t+Wj6ak8j8baqd2Hsfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eklZAcGEvGzpUHqMmkhPiQKTe+jYrq6gOyWAh1VGMWFuCWJUO/gkfYJEvK1xFKVbuTF+6aVidqNsLuh/xkv7CINzn70P8yZLX+CnzO+OqTllr4JM2j1doPTBbFjGRTBVCZ07KDEiS21o+gFa9s8hB0NpAupEkIoV/Ja/oJQuJMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQtEv4c3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122C3C32786;
-	Thu, 15 Aug 2024 14:23:50 +0000 (UTC)
+	 MIME-Version; b=EOgkUa08hhb18gm+gixcqv03ZBc2uF4jhvE3ZRMC8fa5F3BoQg+Ln07uqU2OZITVM2ZOr62b3WqzhfxIFAo1ZOBtHRADys5U0UHUcoHdC99l1X9fR3Z5chBoOa/NlIcTqGYn09fZA54kb/P7MM4+pTiT1tmswi9VZdjqwXEeNNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9VXpiY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C35C4AF0D;
+	Thu, 15 Aug 2024 14:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731831;
-	bh=v/I9aFmL/vPUrtLGL/L5xd7HQWz3r3ARkk4MZpnAyjo=;
+	s=korg; t=1723732985;
+	bh=CmsCnkz3N1cTiMe3T30l8Lf7t+Wj6ak8j8baqd2Hsfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQtEv4c3d4mYb6TrIDk1qHCzaBnXG+VUUC+evFc9AvHs/ZpFHfWggLSJgFA8q3OCj
-	 971AH7v2eNgUHJLbTom1XTCDaEySUtqNyuMAzXSDTzXgf7BHG6B4xQxdo0ZPWycpuP
-	 JwRErXopnCjBiqY/2H9ihWPvOV0NmDT7cpDsbLTE=
+	b=o9VXpiY+2U6Y+cUhtebDYwgkcvSdM0KNFh9nnW02HbG9DEedneN5VMPibw2Alrj1/
+	 J6gEkHXzSfbKFxkq5ukGM1XqwQFTzW2DFuROp2xjg8gaIzOd6IGNLWhfDlmYuswNod
+	 mAWlE4/dvTGx/l2HgE4bRs3IzsFABz/IVULRGtHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 251/259] netfilter: nf_tables: set element extended ACK reporting support
-Date: Thu, 15 Aug 2024 15:26:24 +0200
-Message-ID: <20240815131912.463897394@linuxfoundation.org>
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.10 319/352] irqchip/xilinx: Fix shift out of bounds
+Date: Thu, 15 Aug 2024 15:26:25 +0200
+Message-ID: <20240815131931.785564104@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-commit b53c116642502b0c85ecef78bff4f826a7dd4145 upstream.
+commit d73f0f49daa84176c3beee1606e73c7ffb6af8b2 upstream.
 
-Report the element that causes problems via netlink extended ACK for set
-element commands.
+The device tree property 'xlnx,kind-of-intr' is sanity checked that the
+bitmask contains only set bits which are in the range of the number of
+interrupts supported by the controller.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The check is done by shifting the mask right by the number of supported
+interrupts and checking the result for zero.
+
+The data type of the mask is u32 and the number of supported interrupts is
+up to 32. In case of 32 interrupts the shift is out of bounds, resulting in
+a mismatch warning. The out of bounds condition is also reported by UBSAN:
+
+  UBSAN: shift-out-of-bounds in irq-xilinx-intc.c:332:22
+  shift exponent 32 is too large for 32-bit type 'unsigned int'
+
+Fix it by promoting the mask to u64 for the test.
+
+Fixes: d50466c90724 ("microblaze: intc: Refactor DT sanity check")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/1723186944-3571957-1-git-send-email-radhey.shyam.pandey@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-xilinx-intc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4670,8 +4670,10 @@ static int nf_tables_getsetelem(struct n
- 
- 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
- 		err = nft_get_set_elem(&ctx, set, attr);
--		if (err < 0)
-+		if (err < 0) {
-+			NL_SET_BAD_ATTR(extack, attr);
- 			break;
-+		}
+--- a/drivers/irqchip/irq-xilinx-intc.c
++++ b/drivers/irqchip/irq-xilinx-intc.c
+@@ -201,7 +201,7 @@ static int __init xilinx_intc_of_init(st
+ 		irqc->intr_mask = 0;
  	}
  
- 	return err;
-@@ -5063,8 +5065,10 @@ static int nf_tables_newsetelem(struct n
+-	if (irqc->intr_mask >> irqc->nr_irq)
++	if ((u64)irqc->intr_mask >> irqc->nr_irq)
+ 		pr_warn("irq-xilinx: mismatch in kind-of-intr param\n");
  
- 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
- 		err = nft_add_set_elem(&ctx, set, attr, nlh->nlmsg_flags);
--		if (err < 0)
-+		if (err < 0) {
-+			NL_SET_BAD_ATTR(extack, attr);
- 			return err;
-+		}
- 	}
- 
- 	if (nft_net->validate_state == NFT_VALIDATE_DO)
-@@ -5264,9 +5268,10 @@ static int nf_tables_delsetelem(struct n
- 
- 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
- 		err = nft_del_setelem(&ctx, set, attr);
--		if (err < 0)
-+		if (err < 0) {
-+			NL_SET_BAD_ATTR(extack, attr);
- 			break;
--
-+		}
- 		set->ndeact++;
- 	}
- 	return err;
+ 	pr_info("irq-xilinx: %pOF: num_irq=%d, edge=0x%x\n",
 
 
 
