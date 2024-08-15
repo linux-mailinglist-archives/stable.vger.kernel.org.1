@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 415D0953165
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:53:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AF7952F2F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D319BB23C3F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:53:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DC62B26854
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD1119EEAA;
-	Thu, 15 Aug 2024 13:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F4E19DFA4;
+	Thu, 15 Aug 2024 13:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nn+rNk3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Rv9Tf6U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1F919DF58;
-	Thu, 15 Aug 2024 13:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A236A1714D0;
+	Thu, 15 Aug 2024 13:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730001; cv=none; b=o8Lw+uw0xHrPCL2h/CtQEWahD7JckMyghEJTvkyTmX3i28osgwqa7gKs7CMC/+Oj6UO6T5szclvHCpdxL+lAOpXqfJImt3I8U1B9OwQK6h3/020Y4zeFl1OyqLuxK8InYYmx10zmWdG5nXsjeS+s5vurfp0n1PayMC9sGva3AcE=
+	t=1723728583; cv=none; b=KEgyyt5F72j2m9jJSoaaMCwA5SYJLiHv+elPVXQW9xMJIk3v2bivDn8LCUG9lWnwSyfZDqoJlAzKALd6r+bI8BO+k+7EOEgOB0FYfyXFJduG1OjxGAjSPuC2K6br7g44OvDlVa98AjuMCxmzTDNCEv6DBH9CDkeztvCVVIQZ/pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730001; c=relaxed/simple;
-	bh=+rxsnZp6/KWp98j03MtWAGf1hDGpagfvnV9saVPDjXA=;
+	s=arc-20240116; t=1723728583; c=relaxed/simple;
+	bh=K+HNh5NYi4fTvex+pY40mu6lHyyUyhoDQ3aW/ODeSG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c98RzyiHM5QeNhNyHW5ywXP6EvEHm6ia0PHHkL5hYGJabUN2+hJEGga9CVLjgadZmi+8bDkY9NnvAQramUEusMejgD3E2NmxNMMZbqQEKESKBKGUMW3ewn+atT8X3Lvx57qH1TD3I4ys6GO7Ma4NV+hgyISxr2lzZmu2JQYkvNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nn+rNk3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14F1C32786;
-	Thu, 15 Aug 2024 13:53:20 +0000 (UTC)
+	 MIME-Version; b=WQ9YYk2GVNp3YpHevBb3xSi9TtQT7dUUOfRSoIB91OjIVGuITKh4mMILRxR1V9KBYyIqM2dGN2TgbB91yPd5XBP08YQEpXpYL2PqeWRkxwA3qX8uC9OzxxJ5mwNnsFC9a+iGIMFXNUwSYv/ZAT2jtTF0+DL8KOJD/Rby2cmNbGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Rv9Tf6U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF17DC32786;
+	Thu, 15 Aug 2024 13:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730001;
-	bh=+rxsnZp6/KWp98j03MtWAGf1hDGpagfvnV9saVPDjXA=;
+	s=korg; t=1723728583;
+	bh=K+HNh5NYi4fTvex+pY40mu6lHyyUyhoDQ3aW/ODeSG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nn+rNk3KEwdl78ACmfdGHLhZQo6S5O/Y2wzAgfPBAbcU0DHgGNcR/I4MzDZfLr5RT
-	 3iqyBqiQfo+A9J5s3b5rpCe8NVGCQY9bpDkKB6wVynFcmC9/BsQnwO+il7sRrFNuqw
-	 1lL9JNAmcDt7Xj9EsrSVLxoPguDnvAV3QIVhW+aM=
+	b=2Rv9Tf6UoZO8j6cYAzmFutBICXgSNPVfXJdPO8CI7o9xPwj/SMnQIA5Vxwh9KP6L9
+	 F9a+D1pKwOUJqJZn/A4t8LFYFu9QYgl76lZyzZbFZl/rxEW5ODR1Cu2MR16GPSS6Ee
+	 IuEaYffV33j6xHMqOD6EUTFu92Fv+g7KA1LRYjyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Tung Nguyen <tung.q.nguyen@endava.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 274/484] tipc: Return non-zero value from tipc_udp_addr2str() on error
+Subject: [PATCH 4.19 015/196] x86/xen: Convert comma to semicolon
 Date: Thu, 15 Aug 2024 15:22:12 +0200
-Message-ID: <20240815131951.989863904@linuxfoundation.org>
+Message-ID: <20240815131852.659411721@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit fa96c6baef1b5385e2f0c0677b32b3839e716076 ]
+[ Upstream commit 349d271416c61f82b853336509b1d0dc04c1fcbb ]
 
-tipc_udp_addr2str() should return non-zero value if the UDP media
-address is invalid. Otherwise, a buffer overflow access can occur in
-tipc_media_addr_printf(). Fix this by returning 1 on an invalid UDP
-media address.
+Replace a comma between expression statements by a semicolon.
 
-Fixes: d0f91938bede ("tipc: add ip/udp media type")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Tung Nguyen <tung.q.nguyen@endava.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 8310b77b48c5 ("Xen/gnttab: handle p2m update errors on a per-slot basis")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20240702031010.1411875-1-nichen@iscas.ac.cn
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/udp_media.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/xen/p2m.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index 0a85244fd6188..73e461dc12d7b 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -135,8 +135,11 @@ static int tipc_udp_addr2str(struct tipc_media_addr *a, char *buf, int size)
- 		snprintf(buf, size, "%pI4:%u", &ua->ipv4, ntohs(ua->port));
- 	else if (ntohs(ua->proto) == ETH_P_IPV6)
- 		snprintf(buf, size, "%pI6:%u", &ua->ipv6, ntohs(ua->port));
--	else
-+	else {
- 		pr_err("Invalid UDP media address\n");
-+		return 1;
-+	}
-+
- 	return 0;
- }
+diff --git a/arch/x86/xen/p2m.c b/arch/x86/xen/p2m.c
+index f9b31eb6846c4..8cbdc5e6863c3 100644
+--- a/arch/x86/xen/p2m.c
++++ b/arch/x86/xen/p2m.c
+@@ -733,7 +733,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
+ 		 * immediate unmapping.
+ 		 */
+ 		map_ops[i].status = GNTST_general_error;
+-		unmap[0].host_addr = map_ops[i].host_addr,
++		unmap[0].host_addr = map_ops[i].host_addr;
+ 		unmap[0].handle = map_ops[i].handle;
+ 		map_ops[i].handle = ~0;
+ 		if (map_ops[i].flags & GNTMAP_device_map)
+@@ -743,7 +743,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
  
+ 		if (kmap_ops) {
+ 			kmap_ops[i].status = GNTST_general_error;
+-			unmap[1].host_addr = kmap_ops[i].host_addr,
++			unmap[1].host_addr = kmap_ops[i].host_addr;
+ 			unmap[1].handle = kmap_ops[i].handle;
+ 			kmap_ops[i].handle = ~0;
+ 			if (kmap_ops[i].flags & GNTMAP_device_map)
 -- 
 2.43.0
 
